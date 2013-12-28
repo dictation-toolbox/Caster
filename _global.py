@@ -7,13 +7,15 @@ class MainRule(MappingRule):
     
 	'deactivate': 			Playback([(["go", "to", "sleep"], 0.0)]),
 	'scratch': 			Playback([(["scratch", "that"], 0.0)]),
-    
+    '(number|numbers) mode':             Playback([(["numbers", "mode", "on"], 0.0)]),
+    'spell mode':             Playback([(["spell", "mode", "on"], 0.0)]),
+    '(normal|dictation) mode':             Playback([(["dictation", "mode", "on"], 0.0)]),
 	
     #mouse control
-    'left': 			Mouse("left:1"),#Playback([(["mouse", "left", "click"], 0.0)]),something
-	'mid': 				Mouse("middle:1"),#Playback([(["mouse", "middle", "click"], 0.0)]),
-	'right': 			Mouse("right:1"),#Playback([(["mouse", "right", "click"], 0.0)]),
-    'double':           Mouse("left:2"),
+    'kick left': 			Mouse("left:1"),#Playback([(["mouse", "left", "click"], 0.0)]),something
+	'kick mid': 				Mouse("middle:1"),#Playback([(["mouse", "middle", "click"], 0.0)]),
+	'kick right': 			Mouse("right:1"),#Playback([(["mouse", "right", "click"], 0.0)]),
+    '(kick double|double kick)':           Mouse("left:2"),
 	'drag':				Mouse("left:down"),
 	'release':			Mouse("left:up"),
     'right drag':                Mouse("right:down"),
