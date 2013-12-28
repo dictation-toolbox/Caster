@@ -25,6 +25,9 @@ class CommandRule(MappingRule):
     mapping = {
         "close tab":                    Key("c-w"),
         "new tab":                    	Key("c-t"),
+        "reopen tab":                   Key("cs-t"),
+        "next tab":                        Key("c-tab"),
+        "last tab":                        Key("cs-tab"),
         
         }
     extras = [
