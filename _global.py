@@ -97,6 +97,8 @@ class MainRule(MappingRule):
     "fly right [<xtimes>]":               Key("c-right") * Repeat(extra="xtimes"),
     "color left [<xtimes>]":                Key("cs-left") * Repeat(extra="xtimes"),
     "color right [<xtimes>]":               Key("cs-right") * Repeat(extra="xtimes"),
+    "color up [<xtimes>]":               Key("shift:down, up, shift:up") * Repeat(extra="xtimes"),
+    "color down [<xtimes>]":               Key("shift:down, down, shift:up") * Repeat(extra="xtimes"),
     "end of line":                  Key("end"),
     "end of (all lines|text|page)": Key("c-end"),
     "find":                         Key("c-f"),

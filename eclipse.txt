@@ -76,7 +76,8 @@ cmd.map = {
      	   "import":						Text( "import" ),
      	   "add comment":					Text( "//" ),
      	   
-     	   "effigy <text> chop":						   Text("%(text)s"),
+     	   #"bark <n> bark":						   Text("%(n)d"),
+     	   "string <text> string":						   Text("%(text)s"),
      	  
      	   "previous (editor | tab) [<n>]":			Key("cs-f6")* Repeat(extra="n"),# these two must be set up in the eclipse preferences
      	   "next (editor | tab) [<n>]":				Key("c-f6")* Repeat(extra="n"),
@@ -90,6 +91,8 @@ cmd.map = {
      	   
      	   "color left [<n>]":                Key("cs-left") * Repeat(extra="n"),
     		"color right [<n>]":               Key("cs-right") * Repeat(extra="n"),
+    		"color up [<n>]":               Key("shift:down, up, shift:up") * Repeat(extra="n"),
+    		"color down [<n>]":               Key("shift:down, down, shift:up") * Repeat(extra="n"),
 
 			"new class":				Key( "as-n, down, down, down, down, enter"),
      	   
