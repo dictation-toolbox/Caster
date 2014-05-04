@@ -5,7 +5,7 @@
 #
 
 """
-Command-module for ECLIPSE
+Command-module for git
 
 """
 
@@ -20,15 +20,11 @@ from dragonfly import (Grammar, AppContext, MappingRule,
 class CommandRule(MappingRule):
 
     mapping = {
-        "close tab":            Key("c-w"),
-        "new tab":                    	Key("c-t"),
-        "reopen tab":                   Key("cs-t"),
-        "next tab":                        Key("c-tab"),
-        "previous tab":                        Key("cs-tab"),
-        "show history":               Key("c-h"),
-        "show downloads":               Key("c-j"),
-        "zoom in <level>":              Key("c-plus") * Repeat(extra="level"),
-        "zoom out <level>":             Key("c-minus") * Repeat(extra="level"),
+        "initialize":            Text( "git init" )+Key("enter"),
+        "add":            Text( "git add ." )+Key("enter"),
+        "status":            Text( "git status" )+Key("enter"),
+        "commit":            Text( "git commit -am ''" )+Key("left"),
+        "push":            Text( "git push" )+Key("enter"),
         
         }
     extras = [
@@ -47,8 +43,8 @@ class CommandRule(MappingRule):
 
 #---------------------------------------------------------------------------
 
-context = AppContext(executable="chrome")
-grammar = Grammar("Google Chrome", context=context)
+context = AppContext(executable="sh")
+grammar = Grammar("MINGW32", context=context)
 grammar.add_rule(CommandRule())
 grammar.load()
 

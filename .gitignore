@@ -1,0 +1,8 @@
+PSTools/
+nircmd/
+installed_requirements/
+MultiMonitorTool/
+_w.py
+*.pyc
+*.bak
+core/

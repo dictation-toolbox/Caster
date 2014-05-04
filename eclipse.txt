@@ -1,0 +1,176 @@
+#
+# This is a config file for Dragonfly's _multiedit.py command-module.
+#  To use this config, you must rename this file to _multiedit.txt and
+#  place it in the same directory as the _multiedit.py file.
+#
+
+# Pull in all of Dragonfly's action objects so that we can use them here.
+
+from dragonfly import *
+
+
+#---------------------------------------------------------------------------
+# Here we define the release action which releases all
+#  modifier-keys used within this grammar.  It is defined here
+#  because this functionality is used in many different places.
+#  Note that it is harmless to release ("...:up") a key multiple
+#  times or when that key is not held down at all.
+
+release = Key("shift:up, ctrl:up")
+
+
+#---------------------------------------------------------------------------
+# Here we define the single-action commands.  These can be spoken
+#  in series so as to execute multiple actions within a single utterance.
+
+cmd.map = {
+           # Spoken-form    ->    ->    ->     Action object
+
+           "up [<n>]":                         Key("up:%(n)d"),
+           "down [<n>]":                       Key("down:%(n)d"),
+           "left [<n>]":                       Key("left:%(n)d"),
+           "right [<n>]":                      Key("right:%(n)d"),
+           "page up [<n>]":                    Key("pgup:%(n)d"),
+           "page down [<n>]":                  Key("pgdown:%(n)d"),
+           "up <n> (page | pages)":            Key("pgup:%(n)d"),
+           "down <n> (page | pages)":          Key("pgdown:%(n)d"),
+           "left <n> (word | words)":          Key("c-left:%(n)d"),
+           "right <n> (word | words)":         Key("c-right:%(n)d"),
+           "home":                             Key("home"),
+           "end":                              Key("end"),
+           "doc home":                         Key("c-home"),
+           "doc end":                          Key("c-end"),
+           "refresh":                          Key("f5"),
+
+           "space [<n>]":                      release + Key("space:%(n)d"),
+           "enter [<n>]":                      release + Key("enter:%(n)d"),
+           "tab [<n>]":                        Key("tab:%(n)d"),
+           "delete [<n>]":                     release + Key("del:%(n)d"),
+           "delete [<n> | this] (line|lines)": release + Key("home, s-down:%(n)d, del"),
+           "backspace [<n>]":                  release + Key("backspace:%(n)d"),
+           "pop up":                           release + Key("apps"),
+
+           "paste":                            release + Key("c-v"),
+           "duplicate <n>":                    release + Key("c-c, c-v:%(n)d"),
+           "copy":                             release + Key("c-c"),
+           "cut":                              release + Key("c-x"),
+           "select all":                       release + Key("c-a"),
+           "[hold] shift":                     Key("shift:down"),
+           "release shift":                    Key("shift:up"),
+           "[hold] control":                   Key("ctrl:down"),
+           "release control":                  Key("ctrl:up"),
+           "release [all]":                    release,
+
+           "unicorn <text> and <text2>":                       release + Text("%(text)s") +Text("%(text2)s"),
+           "mimic <text>":                     release + Mimic(extra="text"),
+           
+           
+     	   "if":                               Key("i,f,lparen,rparen,space,lbrace,enter,up,left"),
+     	   "[is] greater than":				   Key("rangle"),
+     	   "[is] less than":				   Key("langle"),
+     	   "[is] greater [than] [or] equal [to]":				   Key("rangle, equals"),
+     	   "[is] less [than] [or] equal [to]":				   Key("langle, equals"),
+     	   "[is] equal to":				   Key("equals,equals"),
+     	   "switch":						Text("switch(){\ncase : break;\ndefault: break;")+Key("up,up,left,left"),
+     	   
+     	   "import":						Text( "import" ),
+     	   "add comment":					Text( "//" ),
+     	   
+     	   "effigy <text> chop":						   Text("%(text)s"),
+     	  
+     	   "previous (editor | tab) [<n>]":			Key("cs-f6")* Repeat(extra="n"),# these two must be set up in the eclipse preferences
+     	   "next (editor | tab) [<n>]":				Key("c-f6")* Repeat(extra="n"),
+     	   "open resource":					Key("cs-r"),
+     	   "open type":					Key("cs-t"),
+     	   "go to line":				Key("c-l"),
+     	   "go to declaration":				Key("f3"),
+     	   "cancel":					Key("escape"),
+     	   "editor select":				Key("c-e"),
+     	   #previous editoroopen resourceopen resource
+     	   
+     	   "color left [<n>]":                Key("cs-left") * Repeat(extra="n"),
+    		"color right [<n>]":               Key("cs-right") * Repeat(extra="n"),
+
+			"new class":				Key( "as-n, down, down, down, down, enter"),
+     	   
+     	   "step [<n>]":				Key("f6")* Repeat(extra="n"),
+     	   "step into":				Key("f5"),
+     	   "step out [of]":				Key("f7"),
+     	   "debug last":				Key("f11"),
+     	   
+     	   "show (java | coffee) perspective":				Key("cas-j"),
+     	   "show debug perspective":				Key("cas-d"),
+     	   "show python perspective":				Key("cas-p"),
+     	   
+     	   "dot":                 		Key("dot"),
+	   "format code":			Key("cs-f"),
+	   "(do imports | import all)":	Key("cs-o"),
+        "comment line":                  Key("c-slash"),
+	   
+       
+        # logic shortcuts
+        "and":                          Text("&&"),
+        "or":                           Text("||"),
+        "equals":                       Key("equals"),
+        "if":                           Text("if() {")+Key("enter,up,left"),
+        "else block":                   Text("else {")+Key("enter"),
+        "ternary":                      Text("()?;") + (Key("left") * 3),
+        "pair":                     Text("()"),
+        "bracket":                  Text("[]"),
+        "curly":                    Text("{}"),
+        "plus":						Text("+"),
+     	   
+          }
+
+
+#---------------------------------------------------------------------------
+# Here we define various functions for formatting text.
+# Each of these functions must have a docstring which defines its
+#  spoken-form.  This docstring must include the "<dictation>" extra.
+#  See below for various examples.
+
+# Format: some_words
+def format_score(dictation):          # Function name must start with "format_".
+    """ score <dictation> """         # Docstring defining spoken-form.
+    text = str(dictation)             # Get written-form of dictated text.
+    return "_".join(text.split(" "))  # Put underscores between words.
+
+# Format: some_words()
+def format_under_function(dictation):
+    """ under func <dictation> """
+    text = str(dictation)
+    return "_".join(text.split(" ")) + "()"
+
+# Format: SomeWords
+def format_studley(dictation):
+    """ studley <dictation> """
+    text = str(dictation)
+    words = [word.capitalize() for word in text.split(" ")]
+    return "".join(words)
+
+# Format: somewords
+def format_one_word(dictation):
+    """ [all] one word <dictation> """
+    text = str(dictation)
+    return "".join(text.split(" "))
+
+# Format: SOMEWORDS
+def format_upper_one_word(dictation):
+    """ one word upper <dictation> """
+    text = str(dictation)
+    words = [word.upper() for word in text.split(" ")]
+    return "".join(words)
+
+# Format: SOME_WORDS
+def format_upper_score(dictation):
+    """ upper score <dictation> """
+    text = str(dictation)
+    words = [word.upper() for word in text.split(" ")]
+    return "_".join(words)
+
+# Format: someWords
+def format_java(dictation):
+    """ Java <dictation> """
+    text = str(dictation)
+    words = text.split(" ")
+    return words[0] + "".join(w.capitalize() for w in words[1:])

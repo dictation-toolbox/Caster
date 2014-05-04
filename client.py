@@ -20,22 +20,26 @@ from dragonfly import (Grammar, AppContext, MappingRule,
 class CommandRule(MappingRule):
 
     mapping = {
-        "close tab":            Key("c-w"),
-        "new tab":                    	Key("c-t"),
-        "reopen tab":                   Key("cs-t"),
-        "next tab":                        Key("c-tab"),
-        "previous tab":                        Key("cs-tab"),
-        "show history":               Key("c-h"),
-        "show downloads":               Key("c-j"),
-        "zoom in <level>":              Key("c-plus") * Repeat(extra="level"),
-        "zoom out <level>":             Key("c-minus") * Repeat(extra="level"),
+        "war and peace":                   Key("c-a") ,
+        "hide":                    Key("c-h") ,
+        "talk town":                    Key("c-b") ,
+        "last item":                    Key("c-i") ,
+        "last skill":                    Key("c-l") ,
+        "provoke":                    Key("c-p") ,
+        "don't kill me":                    Key("a-p") ,
+        "say <dict>":                           Text("%(dict)s"),
+        "clear [<level>]":                Key("backspace")* Repeat(extra="level"),
+        #"introduce myself":                    Key("c-b") ,
+        #"monsters":                    Key("c-b") ,
+        "give delta [<level>]":                    Key("s-d, enter") * Repeat(extra="level"),
+        "skip [<level>]":                    Key("enter") * Repeat(extra="level"),
         
         }
     extras = [
               Dictation("dict"),
               Dictation("dict2"),
               IntegerRef("1to9", 1, 10),
-              IntegerRef("level",1, 100),
+              IntegerRef("level",1, 1000),
               NumberRef("int2"),
               Choice("zoom",
                     {"75": "7", "100": "1", "page width": "p",
@@ -44,11 +48,10 @@ class CommandRule(MappingRule):
              ]
     defaults ={"level": 1}
 
-
 #---------------------------------------------------------------------------
 
-context = AppContext(executable="chrome")
-grammar = Grammar("Google Chrome", context=context)
+context = AppContext(executable="client")
+grammar = Grammar("Ultima Online", context=context)
 grammar.add_rule(CommandRule())
 grammar.load()
 

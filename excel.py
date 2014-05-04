@@ -20,15 +20,11 @@ from dragonfly import (Grammar, AppContext, MappingRule,
 class CommandRule(MappingRule):
 
     mapping = {
-        "close tab":            Key("c-w"),
-        "new tab":                    	Key("c-t"),
-        "reopen tab":                   Key("cs-t"),
-        "next tab":                        Key("c-tab"),
-        "previous tab":                        Key("cs-tab"),
-        "show history":               Key("c-h"),
-        "show downloads":               Key("c-j"),
-        "zoom in <level>":              Key("c-plus") * Repeat(extra="level"),
-        "zoom out <level>":             Key("c-minus") * Repeat(extra="level"),
+        "give alpha [<level>]":                    Key("s-a, enter") * Repeat(extra="level"),
+        "give beta [<level>]":                    Key("s-b, enter") * Repeat(extra="level"),
+        "give charlie [<level>]":                    Key("s-c, enter") * Repeat(extra="level"),
+        "give delta [<level>]":                    Key("s-d, enter") * Repeat(extra="level"),
+        "skip [<level>]":                    Key("enter") * Repeat(extra="level"),
         
         }
     extras = [
@@ -44,11 +40,10 @@ class CommandRule(MappingRule):
              ]
     defaults ={"level": 1}
 
-
 #---------------------------------------------------------------------------
 
-context = AppContext(executable="chrome")
-grammar = Grammar("Google Chrome", context=context)
+context = AppContext(executable="excel")
+grammar = Grammar("Microsoft Excel", context=context)
 grammar.add_rule(CommandRule())
 grammar.load()
 
