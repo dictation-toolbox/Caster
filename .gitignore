@@ -6,3 +6,4 @@ _w.py
 *.pyc
 *.bak
 core/
+standalone/

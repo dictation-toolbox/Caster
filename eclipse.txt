@@ -115,9 +115,9 @@ cmd.map = {
         "if":                           Text("if() {")+Key("enter,up,left"),
         "else block":                   Text("else {")+Key("enter"),
         "ternary":                      Text("()?;") + (Key("left") * 3),
-        "pair":                     Text("()"),
-        "bracket":                  Text("[]"),
-        "curly":                    Text("{}"),
+        "pair":                     Text("()")+ Key("left"),
+        "bracket":                  Text("[]")+ Key("left"),
+        "curly":                    Text("{}")+ Key("left"),
         "plus":						Text("+"),
      	   
           }
