@@ -116,7 +116,7 @@ class MainRule(MappingRule):
     '(open|launch) everything':        BringApp(r"D:\PROGRAMS\NON_install\Everything"),
     '(open|launch) chrome':        BringApp(r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"),
     '(open|launch) process explorer':        BringApp(r"D:\PROGRAMS\NON_install\procexp.exe"),
-    '(put on|play) Pandora':        Playback([(["open", "chrome"], 0.5), (["new", 'tab'], 0.5)])+ Key( "f6")+ Text( "Pandora.com")+ Key( "enter"),
+    '(put on|play) Pandora':        BringApp(r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")+Pause("100")+Key("c-t")+Pause("100")+ Text( "Pandora.com")+Pause("50")+ Key( "enter"),
     '(open|launch) (grep|homegroup)':        BringApp(r"D:\PROGRAMS\NON_install\AstroGrep\AstroGrep.exe"),
     'minimize':                     Playback([(["minimize", "window"], 0.0)]),
     'maximize':                     Playback([(["maximize", "window"], 0.0)]),
