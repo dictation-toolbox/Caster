@@ -196,6 +196,8 @@ class KeystrokeRule(MappingRule):
     mapping  = config.cmd.map
     extras   = [
                 IntegerRef("n", 1, 100),
+                IntegerRef("n2", 1, 100),
+                IntegerRef("n3", 1, 100),
                 Dictation("text"),
                 Dictation("text2"),
                ]

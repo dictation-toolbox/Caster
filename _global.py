@@ -30,32 +30,6 @@ def paste_clip(xtimes):
     Key( "c-"+base)._execute()
     Key( "c-v")._execute()
     
-def program_to_other_monitor(text):
-    try:
-        process_name= ""+ text.format()
-        capitalized_process_names=["Hearthstone","iTunes"]
-        if process_name not in capitalized_process_names:
-            process_name=process_name.lower()
-        if process_name== "google chrome":
-            process_name= "chrome"
-        process_name="\""+process_name+ ".exe\""
-        print "cmd  attempting to toggle "+process_name
-        BringApp(r"C:\NatLink\NatLink\MacroSystem\MultiMonitorTool\MultiMonitorTool.exe", r"/MoveWindow", "Next", "Process", process_name)._execute()
-        Key("a-f2")._execute()
-        Pause("50").execute()
-        Key("c,m,d,tab")._execute()
-        
-        commands_text=r"C:\NatLink\NatLink\MacroSystem\MultiMonitorTool\MultiMonitorTool.exe /MoveWindow Next Process "+process_name
-        
-        Text(commands_text)._execute()
-        Pause("50").execute()
-        Key("enter")._execute()
-        Pause("50").execute()
-        Key("e,x,i,t,enter")._execute()
-    except Exception:
-        print "Unexpected error:", sys.exc_info()[0]
-        print "Unexpected error:", sys.exc_info()[1]
-
 def suicide():
     BringApp(r"C:\NatLink\NatLink\MacroSystem\suicide.bat")._execute()
 
@@ -125,7 +99,6 @@ class MainRule(MappingRule):
     
     'toggle monitor one':               BringApp(r"C:\NatLink\NatLink\MacroSystem\MultiMonitorTool\MultiMonitorTool.exe", r"/switch",r"\\.\DISPLAY1"),
     'toggle monitor two':               BringApp(r"C:\NatLink\NatLink\MacroSystem\MultiMonitorTool\MultiMonitorTool.exe", r"/switch",r"\\.\DISPLAY2"),
-    'toggle program <text>': Function(program_to_other_monitor, extra='text'),
     
     #military alphabet
     "alpha": Key("a"),
