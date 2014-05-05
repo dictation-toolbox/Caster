@@ -70,7 +70,7 @@ except ImportError:
     pass
 
 from dragonfly import *
-
+import natlink
 
 #---------------------------------------------------------------------------
 # Here we globally defined the release action which releases all
@@ -81,13 +81,13 @@ from dragonfly import *
 
 release = Key("shift:up, ctrl:up")
 
-
+#Trash heap
 #---------------------------------------------------------------------------
 # Set up this module's configuration.
 
-config            = Config("eclipse")
-config.cmd        = Section("Language section")
-config.cmd.map    = Item(
+configJava           = Config("eclipse Java")
+configJava.cmd        = Section("Language section")
+configJava.cmd.map    = Item(
     # Here we define the *default* command map.  If you would like to
     #  modify it to your personal taste, please *do not* make changes
     #  here.  Instead change the *config file* called "_multiedit.txt".
@@ -135,16 +135,17 @@ config.cmd.map    = Item(
      "Text":  Text,
     }
 )
-namespace = config.load()
+JavaPath = "C:\NatLink\NatLink\MacroSystem\languages\configjava.txt"
+namespaceJava = configJava.load(JavaPath)
 
 #---------------------------------------------------------------------------
 # Here we prepare the list of formatting functions from the config file.
 
 # Retrieve text-formatting functions from this module's config file.
 #  Each of these functions must have a name that starts with "format_".
-format_functions = {}
-if namespace:
-    for name, function in namespace.items():
+format_functionsJava = {}
+if namespaceJava:
+    for name, function in namespaceJava.items():
      if name.startswith("format_") and callable(function):
         spoken_form = function.__doc__.strip()
 
@@ -158,20 +159,20 @@ if namespace:
             return Function(_function)
 
         action = wrap_function(function)
-        format_functions[spoken_form] = action
+        format_functionsJava[spoken_form] = action
 
 
 # Here we define the text formatting rule.
 # The contents of this rule were built up from the "format_*"
 #  functions in this module's config file.
-if format_functions:
-    class FormatRule(MappingRule):
+if format_functionsJava:
+    class FormatRuleJava(MappingRule):
 
-        mapping  = format_functions
+        mapping  = format_functionsJava
         extras   = [Dictation("dictation")]
 
 else:
-    FormatRule = None
+    FormatRuleJava = None
 
 
 #---------------------------------------------------------------------------
@@ -193,7 +194,7 @@ class KeystrokeRule(MappingRule):
 
     exported = False
 
-    mapping  = config.cmd.map
+    mapping  = configJava.cmd.map
     extras   = [
                 IntegerRef("n", 1, 100),
                 IntegerRef("n2", 1, 100),
@@ -218,11 +219,11 @@ class KeystrokeRule(MappingRule):
 # First we create an element that references the keystroke rule.
 #  Note: when processing a recognition, the *value* of this element
 #  will be the value of the referenced rule: an action.
-alternatives = []
-alternatives.append(RuleRef(rule=KeystrokeRule()))
-if FormatRule:
-    alternatives.append(RuleRef(rule=FormatRule()))
-single_action = Alternative(alternatives)
+alternativesJava = []
+alternativesJava.append(RuleRef(rule=KeystrokeRule()))
+if FormatRuleJava:
+    alternativesJava.append(RuleRef(rule=FormatRuleJava()))
+single_actionJava = Alternative(alternativesJava)
 
 # Second we create a repetition of keystroke elements.
 #  This element will match anywhere between 1 and 16 repetitions
@@ -232,7 +233,7 @@ single_action = Alternative(alternatives)
 # Note: when processing a recognition, the *value* of this element
 #  will be a sequence of the contained elements: a sequence of
 #  actions.
-sequence = Repetition(single_action, min=1, max=16, name="sequence")
+sequenceJava = Repetition(single_actionJava, min=1, max=16, name="sequenceJava")
 
 
 #---------------------------------------------------------------------------
@@ -243,12 +244,12 @@ sequence = Repetition(single_action, min=1, max=16, name="sequence")
 #  method will be called.  It receives information about the 
 #  recognition in the "extras" argument: the sequence of 
 #  actions and the number of times to repeat them.
-class RepeatRule(CompoundRule):
+class RepeatRuleJava(CompoundRule):
 
     # Here we define this rule's spoken-form and special elements.
-    spec     = "<sequence> [[[and] repeat [that]] <n> times]"
+    spec     = "<sequenceJava> [[[and] repeat [that]] <n> times]"
     extras   = [
-                sequence,                 # Sequence of actions defined above.
+                sequenceJava,                 # Sequence of actions defined above.
                 IntegerRef("n", 1, 100),  # Times to repeat the sequence.
                ]
     defaults = {
@@ -260,12 +261,12 @@ class RepeatRule(CompoundRule):
     #  - node -- root node of the recognition parse tree.
     #  - extras -- dict of the "w" special elements:
     #     . extras["sequence"] gives the sequence of actions.
-    #     . extras["n"] gives the repeat count.
+    #     . extras["n"] gives the repeat count. 
     def _process_recognition(self, node, extras):
-        sequence = extras["sequence"]   # A sequence of actions.
+        sequenceJava = extras["sequenceJava"]   # A sequence of actions.
         count = extras["n"]             # An integer repeat count.
         for i in range(count):
-            for action in sequence:
+            for action in sequenceJava:
                 action.execute()
         release.execute()
 
@@ -273,12 +274,40 @@ class RepeatRule(CompoundRule):
 #---------------------------------------------------------------------------
 # Create and load this module's grammar.
 context = AppContext(executable="eclipse")
-grammar = Grammar("Eclipse", context=context)   # Create this module's grammar.
-grammar.add_rule(RepeatRule())    # Add the top-level rule.
-grammar.load()                    # Load the grammar.
+
+
+class JavaEnabler(CompoundRule):
+    spec = "Enable Java"                  # Spoken command to enable the Java grammar.
+    
+    def _process_recognition(self, node, extras):   # Callback when command is spoken.
+        javaBootstrap.disable()
+        grammarJava.enable()
+        natlink.execScript ("TTSPlayString \"" +"Java grammar enabled"+ "\"")
+
+class JavaDisabler(CompoundRule):
+    spec = "switch language"                  # spoken command to disable the Java grammar.
+    
+    def _process_recognition(self, node, extras):   # Callback when command is spoken.
+        grammarJava.disable()
+        javaBootstrap.enable()
+        natlink.execScript ("TTSPlayString \"" +"Java grammar disabled"+ "\"")
+
+# The main Python grammar rules are activated here
+javaBootstrap = Grammar("java bootstrap", context=context)                
+javaBootstrap.add_rule(JavaEnabler())
+javaBootstrap.load()
+
+grammarJava = Grammar("Eclipse Java", context=context)   # Create this module's grammar.
+grammarJava.add_rule(RepeatRuleJava())    # Add the top-level rule.
+grammarJava.add_rule(JavaDisabler())
+grammarJava.load()                    # Load the grammar.
+#grammarJava.disable()
 
 # Unload function which will be called at unload time.
 def unload():
-    global grammar
-    if grammar: grammar.unload()
-    grammar = None
+    global javaBootstrap
+    if javaBootstrap: javaBootstrap.unload()
+    javaBootstrap = None
+    global grammarJava
+    if grammarJava: grammarJava.unload()
+    grammarJava = None

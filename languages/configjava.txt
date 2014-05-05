@@ -18,28 +18,13 @@ from dragonfly import *
 
 release = Key("shift:up, ctrl:up")
 
-#---------------------------------------------------------------------------
-# Here we define the single-action commands.  These can be spoken
+#--------------------------------------------------------------------------
+# Here we define the single-action commands.  These can bepop-up spoken
 #  in series so as to execute multiple actions within a single utterance.
 
 cmd.map = {
            # Spoken-form    ->    ->    ->     Action object
-
-           "up [<n>]":                         Key("up:%(n)d"),
-           "down [<n>]":                       Key("down:%(n)d"),
-           "left [<n>]":                       Key("left:%(n)d"),
-           "right [<n>]":                      Key("right:%(n)d"),
-           "page up [<n>]":                    Key("pgup:%(n)d"),
-           "page down [<n>]":                  Key("pgdown:%(n)d"),
-           "up <n> (page | pages)":            Key("pgup:%(n)d"),
-           "down <n> (page | pages)":          Key("pgdown:%(n)d"),
-           "left <n> (word | words)":          Key("c-left:%(n)d"),
-           "right <n> (word | words)":         Key("c-right:%(n)d"),
-           "home":                             Key("home"),
-           "end":                              Key("end"),
-           "doc home":                         Key("c-home"),
-           "doc end":                          Key("c-end"),
-           
+			
            "space [<n>]":                      release + Key("space:%(n)d"),
            "enter [<n>]":                      release + Key("enter:%(n)d"),
            "tab [<n>]":                        Key("tab:%(n)d"),
@@ -57,12 +42,9 @@ cmd.map = {
            "release shift":                    Key("shift:up"),
            "[hold] control":                   Key("ctrl:down"),
            "release control":                  Key("ctrl:up"),
-           "release [all]":                    release,
+           "release [all]":                    release,           
 
-           "unicorn <text> and <text2>":                       release + Text("%(text)s") +Text("%(text2)s"),
-           "mimic <text>":                     release + Mimic(extra="text"),
-           
-           
+		   #java specific macros           
      	   "if":                               Key("i,f,lparen,rparen,space,lbrace,enter,up,left"),
      	   "[is] greater than":				   Key("rangle"),
      	   "[is] less than":				   Key("langle"),
@@ -70,10 +52,22 @@ cmd.map = {
      	   "[is] less [than] [or] equal [to]":				   Key("langle, equals"),
      	   "[is] equal to":				   Key("equals,equals"),
      	   "switch":						Text("switch(){\ncase : break;\ndefault: break;")+Key("up,up,left,left"),
-     	   
      	   "import":						Text( "import" ),
      	   "add comment":					Text( "//" ),
-     	   
+			"new class":				Key( "as-n, down, down, down, down, enter"),
+        # logic shortcuts
+        "and":                          Text("&&"),
+        "or":                           Text("||"),
+        "equals":                       Key("equals"),
+        "if":                           Text("if() {")+Key("enter,up,left"),
+        "else block":                   Text("else {")+Key("enter"),
+        "ternary":                      Text("()?;") + (Key("left") * 3),
+        "pair":                     Text("()")+ Key("left"),
+        "[square] (bracket | brackets)":    Text("[]")+ Key("left"),
+        "curly":                    Text("{}")+ Key("left"),
+        "plus":						Text("+"),
+			
+			 "pipe symbol":			 Text( "|"),      	   
      	   "bark <n> bark":						   Text("%(n)d"),
      	   "bark <n> <n2> bark":						   Text("%(n)d%(n2)d"),
      	   "bark <n> <n2> <n3> bark":						   Text("%(n)d%(n2)d%(n3)d"),
@@ -83,19 +77,17 @@ cmd.map = {
      	   "next (editor | tab) [<n>]":				Key("c-f6")* Repeat(extra="n"),
      	   "open resource":					Key("cs-r"),
      	   "open type":					Key("cs-t"),
+     	   "go to line":				Key("c-l"),
      	   "go to line <n>":				Key("c-l")+Pause("50")+Text("%(n)d")+Key("enter"),
      	   "go to declaration":				Key("f3"),
      	   "cancel":					Key("escape"),
      	   "editor select":				Key("c-e"),
-     	   #previous editoroopen resourceopen resource
      	   
      	   "color left [<n>]":                Key("cs-left") * Repeat(extra="n"),
     		"color right [<n>]":               Key("cs-right") * Repeat(extra="n"),
     		"color up [<n>]":               Key("shift:down, up, shift:up") * Repeat(extra="n"),
     		"color down [<n>]":               Key("shift:down, down, shift:up") * Repeat(extra="n"),
 
-			"new class":				Key( "as-n, down, down, down, down, enter"),
-     	   
      	   "step [<n>]":				Key("f6")* Repeat(extra="n"),
      	   "step into":				Key("f5"),
      	   "step out [of]":				Key("f7"),
@@ -111,17 +103,6 @@ cmd.map = {
         "comment line":                  Key("c-slash"),
 	   
        
-        # logic shortcuts
-        "and":                          Text("&&"),
-        "or":                           Text("||"),
-        "equals":                       Key("equals"),
-        "if":                           Text("if() {")+Key("enter,up,left"),
-        "else block":                   Text("else {")+Key("enter"),
-        "ternary":                      Text("()?;") + (Key("left") * 3),
-        "pair":                     Text("()")+ Key("left"),
-        "bracket":                  Text("[]")+ Key("left"),
-        "curly":                    Text("{}")+ Key("left"),
-        "plus":						Text("+"),
      	   
           }
 
