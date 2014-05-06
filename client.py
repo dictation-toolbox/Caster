@@ -5,7 +5,7 @@
 #
 
 """
-Command-module for ECLIPSE
+Command-module for Ultima Online
 
 """
 
