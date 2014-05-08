@@ -18,6 +18,7 @@ dragonfly and natlink documentation
 --
  - http://pythonhosted.org/dragonfly/py-modindex.html
  - http://pythonhosted.org/dragonfly/index.html
+ - http://qh.antenna.nl/unimacro/index.html
  - http://qh.antenna.nl/unimacro/implementation_and_acceptance_of_natlink.pdf
  - http://www.synapseadaptive.com/joel/NatLinkTalk.ppt
 
@@ -27,6 +28,10 @@ other dragonfly repositories
  - https://github.com/davitenio/dragonfly-macros
  - https://github.com/poppe1219/dragonfly-scripts
  - http://code.ohloh.net/project?pid=YwZsjw4lsms&prevcid=1&cid=NfME9QgiIC4&fp=194084&projSelected=true
+ - https://github.com/whIzz2000/natlink-py-scripts
+ - https://github.com/barrysims/dragonfly
+ - https://github.com/ccrusius/dragonfly-modules
+ - https://github.com/Mozillion/SublimeSpeech
 
 other
 --
