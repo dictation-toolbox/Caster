@@ -46,7 +46,6 @@ class CommandRule(MappingRule):
             "show debug perspective":                Key("cas-d"),
             "show python perspective":                Key("cas-p"),
             
-            "dot":                         Key("dot"),
        "format code":            Key("cs-f"),
        "(do imports | import all)":    Key("cs-o"),
         "comment line":                  Key("c-slash"),

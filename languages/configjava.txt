@@ -67,44 +67,11 @@ cmd.map = {
 #  spoken-form.  This docstring must include the "<dictation>" extra.
 #  See below for various examples.
 
-# Format: some_words
-def format_score(dictation):          # Function name must start with "format_".
-    """ score <dictation> """         # Docstring defining spoken-form.
+# Format: some.words
+def format_dot_word(dictation):          # Function name must start with "format_".
+    """ dot word <dictation> """         # Docstring defining spoken-form.
     text = str(dictation)             # Get written-form of dictated text.
-    return "_".join(text.split(" "))  # Put underscores between words.
-
-# Format: some_words()
-def format_under_function(dictation):
-    """ under func <dictation> """
-    text = str(dictation)
-    return "_".join(text.split(" ")) + "()"
-
-# Format: SomeWords
-def format_studley(dictation):
-    """ studley <dictation> """
-    text = str(dictation)
-    words = [word.capitalize() for word in text.split(" ")]
-    return "".join(words)
-
-# Format: somewords
-def format_one_word(dictation):
-    """ [all] one word <dictation> """
-    text = str(dictation)
-    return "".join(text.split(" "))
-
-# Format: SOMEWORDS
-def format_upper_one_word(dictation):
-    """ one word upper <dictation> """
-    text = str(dictation)
-    words = [word.upper() for word in text.split(" ")]
-    return "".join(words)
-
-# Format: SOME_WORDS
-def format_upper_score(dictation):
-    """ upper score <dictation> """
-    text = str(dictation)
-    words = [word.upper() for word in text.split(" ")]
-    return "_".join(words)
+    return ".".join(text.split(" "))  # Put dots between words.
 
 # Format: someWords
 def format_java(dictation):
