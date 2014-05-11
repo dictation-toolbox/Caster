@@ -25,7 +25,7 @@ class CommandRule(MappingRule):
         "status":            Text( "git status" )+Key("enter"),
         "commit":            Text( "git commit -am ''" )+Key("left"),
         "push":            Text( "git push" )+Key("enter"),
-        
+        "pull":            Text( "git pull" )+Key("enter"),
         }
     extras = [
               Dictation("dict"),

@@ -24,6 +24,7 @@ class CommandRule(MappingRule):
            
             "previous (editor | tab) [<n>]":            Key("cs-f6") * Repeat(extra="n"),  # these two must be set up in the eclipse preferences
             "next (editor | tab) [<n>]":                Key("c-f6") * Repeat(extra="n"),
+            "close (editor | tab) [<n>]":                Key("c-w") * Repeat(extra="n"),
             "open resource":                    Key("cs-r"),
             "open type":                    Key("cs-t"),
             "go to line":                Key("c-l"),
@@ -31,6 +32,7 @@ class CommandRule(MappingRule):
             "go to declaration":                Key("f3"),
             "cancel":                    Key("escape"),
             "editor select":                Key("c-e"),
+            "pop":                Key("c-space, down, up"),
             
             "color left [<n>]":                Key("cs-left") * Repeat(extra="n"),
             "color right [<n>]":               Key("cs-right") * Repeat(extra="n"),

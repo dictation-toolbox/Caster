@@ -49,6 +49,7 @@ cmd.map = {
         "[square] (bracket | brackets)":    Text("[]")+ Key("left"),
         "curly":                    Text("{}")+ Key("left"),
         "plus":						Text("+"),
+        "minus":						Text("-"),
 			
 			"pipe symbol":             Text("|"),
             "bark <n> bark":                           Text("%(n)d"),

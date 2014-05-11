@@ -1,6 +1,7 @@
 from dragonfly import *
-import os, natlink, sys
+import os, natlink, sys, win32api
 import string
+from win32con import *
 
 def clear_pyc():
     path = "C:\NatLink\NatLink\MacroSystem"
@@ -19,6 +20,15 @@ def auto_spell(text):
      except Exception:
         print "Unexpected error:", sys.exc_info()[0]
         print "Unexpected error:", sys.exc_info()[1]
+        
+def scroll(text, xtimes):
+    direction=str(text)
+    updown=-100
+    if direction== "up" or direction == "north":
+        updown= 100
+    (x, y) = win32api.GetCursorPos()
+    win32api.mouse_event(MOUSEEVENTF_WHEEL, x, y, updown*xtimes, 0)
+
     
 def copy_clip(xtimes):
     base=str(xtimes)
@@ -54,7 +64,7 @@ class MainRule(MappingRule):
 	'release':			Mouse("left:up"),
     'right drag':                Mouse("right:down"),
     'right release':            Mouse("right:up"),
-    
+    "scroll [<text>] <xtimes>":     Function(scroll, extra={'text', 'xtimes'}),
     
     #keyboard shortcuts
 	"username":                    Text("synkarius"),
@@ -137,7 +147,9 @@ class MainRule(MappingRule):
               Dictation("text2"),
               Dictation("text3"),
              ]
-    defaults ={"xtimes": 1}
+    defaults ={"xtimes": 1,
+               "text": ""
+               }
 
 grammar = Grammar('Global')
 grammar.add_rule(MainRule())
