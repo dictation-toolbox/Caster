@@ -20,13 +20,16 @@ except ImportError:
 from dragonfly import *
 import natlink
 
+import config
+config_settings = config.get_config()
+JAVAPATH = "C:\NatLink\NatLink\MacroSystem\languages\configjava.txt"
 
 #---------------------------------------------------------------------------
 # Each of the following steps needs to be done per programming language
 
-configJava           = Config("eclipse Java")
-configJava.cmd        = Section("Language section")
-configJava.cmd.map    = Item(
+config_java           = Config("eclipse Java")
+config_java.cmd        = Section("Language section")
+config_java.cmd.map    = Item(
     {
      "mimic <text>":                     Mimic(extra="text"),
     },
@@ -35,17 +38,16 @@ configJava.cmd.map    = Item(
      "Text":  Text,
     }
 )
-JavaPath = "C:\NatLink\NatLink\MacroSystem\languages\configjava.txt"
-namespaceJava = configJava.load(JavaPath)
+namespace_java = config_java.load(JAVAPATH)
 
 #---------------------------------------------------------------------------
 # Here we prepare the list of formatting functions from the config file.
 
 # Retrieve text-formatting functions from this module's config file.
 #  Each of these functions must have a name that starts with "format_".
-format_functionsJava = {}
-if namespaceJava:
-    for name, function in namespaceJava.items():
+format_functions_java = {}
+if namespace_java:
+    for name, function in namespace_java.items():
      if name.startswith("format_") and callable(function):
         spoken_form = function.__doc__.strip()
 
@@ -59,16 +61,16 @@ if namespaceJava:
             return Function(_function)
 
         action = wrap_function(function)
-        format_functionsJava[spoken_form] = action
+        format_functions_java[spoken_form] = action
 
 
 # Here we define the text formatting rule.
 # The contents of this rule were built up from the "format_*"
 #  functions in this module's config file.
-if format_functionsJava:
+if format_functions_java:
     class FormatRuleJava(MappingRule):
 
-        mapping  = format_functionsJava
+        mapping  = format_functions_java
         extras   = [Dictation("dictation")]
 
 else:
@@ -82,7 +84,7 @@ class KeystrokeRule(MappingRule):
 
     exported = False
 
-    mapping  = configJava.cmd.map
+    mapping  = config_java.cmd.map
     extras   = [
                 IntegerRef("n", 1, 100),
                 IntegerRef("n2", 1, 100),
@@ -102,34 +104,34 @@ class KeystrokeRule(MappingRule):
 # First we create an element that references the keystroke rule.
 #  Note: when processing a recognition, the *value* of this element
 #  will be the value of the referenced rule: an action.
-alternativesJava = []
-alternativesJava.append(RuleRef(rule=KeystrokeRule()))
+alternatives_java = []
+alternatives_java.append(RuleRef(rule=KeystrokeRule()))
 if FormatRuleJava:
-    alternativesJava.append(RuleRef(rule=FormatRuleJava()))
-single_actionJava = Alternative(alternativesJava)
+    alternatives_java.append(RuleRef(rule=FormatRuleJava()))
+single_action_java = Alternative(alternatives_java)
 
 # Second we create a repetition of keystroke elements.
 # Note that we give this element the name "sequence" so that it can be used as an extra in the rule definition below.
-sequenceJava = Repetition(single_actionJava, min=1, max=16, name="sequenceJava")
+sequence_java = Repetition(single_action_java, min=1, max=16, name="sequence_java")
 
 
 #---------------------------------------------------------------------------
 # Here we define the top-level rule which the user can say.
 class RepeatRuleJava(CompoundRule):
     # Here we define this rule's spoken-form and special elements.
-    spec     = "<sequenceJava> [[[and] repeat [that]] <n> times]"
+    spec     = "<sequence_java> [[[and] repeat [that]] <n> times]"
     extras   = [
-                sequenceJava,                 # Sequence of actions defined above.
+                sequence_java,                 # Sequence of actions defined above.
                 IntegerRef("n", 1, 100),  # Times to repeat the sequence.
                ]
     defaults = {
                 "n": 1,                   # Default repeat count.
                }
     def _process_recognition(self, node, extras):
-        sequenceJava = extras["sequenceJava"]   # A sequence of actions.
+        sequence_java = extras["sequence_java"]   # A sequence of actions.
         count = extras["n"]             # An integer repeat count.
         for i in range(count):
-            for action in sequenceJava:
+            for action in sequence_java:
                 action.execute()
         #release.execute()
 
