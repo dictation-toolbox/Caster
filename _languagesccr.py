@@ -167,15 +167,15 @@ class JavaDisabler(CompoundRule):
 javaBootstrap = Grammar("java bootstrap", context=context)                
 javaBootstrap.add_rule(JavaEnabler())
 javaBootstrap.load()
-if not "java" in config_settings.keys():
-    config_settings["java"] = False
-    config.save_config()
 
 grammarJava = Grammar("Eclipse Java", context=context)   # Create this module's grammar.
 grammarJava.add_rule(RepeatRuleJava())    # Add the top-level rule.
 grammarJava.add_rule(JavaDisabler())
 grammarJava.load()                    # Load the grammar.
 grammarJava.disable()
+
+if config_settings["java"] == True:
+    grammarJava.enable()
 
 # Unload function which will be called at unload time.
 def unload():
