@@ -37,7 +37,6 @@ WORKING_PATH = os.path.dirname(os.path.abspath(__file__))
 
 CONFIG_PATH = WORKING_PATH + "\\config.json"
 CONFIG = {}  # Empty, default config.
-print CONFIG_PATH
 
 def save_config():
     global CONFIG
@@ -68,16 +67,16 @@ def load_config():
 def init_default_values():
     global CONFIG
     valueChangeCount = 0
-    defaultValues = [
-        ("aenea.enabled", False),
-        ("aenea.path", None),
-    ]
-    for (name, value) in defaultValues:
-        if not name in CONFIG.keys():
-            CONFIG[name] = value
-            valueChangeCount += 1
-    if valueChangeCount > 0:
-        save_config()
+#     defaultValues = [
+#         ("aenea.enabled", False),
+#         ("aenea.path", None),
+#     ]
+#     for (name, value) in defaultValues:
+#         if not name in CONFIG.keys():
+#             CONFIG[name] = value
+#             valueChangeCount += 1
+#     if valueChangeCount > 0:
+#         save_config()
 
 
 def get_config():

@@ -145,6 +145,9 @@ class JavaEnabler(CompoundRule):
     spec = "Enable Java"                  # Spoken command to enable the Java grammar.
     
     def _process_recognition(self, node, extras):   # Callback when command is spoken.
+        global config_settings
+        config_settings["java"] = True
+        config.save_config()
         javaBootstrap.disable()
         grammarJava.enable()
         natlink.execScript ("TTSPlayString \"" +"Java grammar enabled"+ "\"")
@@ -153,6 +156,9 @@ class JavaDisabler(CompoundRule):
     spec = "switch language"                  # spoken command to disable the Java grammar.
     
     def _process_recognition(self, node, extras):   # Callback when command is spoken.
+        global config_settings
+        config_settings["java"] = False
+        config.save_config()
         grammarJava.disable()
         javaBootstrap.enable()
         natlink.execScript ("TTSPlayString \"" +"Java grammar disabled"+ "\"")
@@ -161,6 +167,9 @@ class JavaDisabler(CompoundRule):
 javaBootstrap = Grammar("java bootstrap", context=context)                
 javaBootstrap.add_rule(JavaEnabler())
 javaBootstrap.load()
+if not "java" in config_settings.keys():
+    config_settings["java"] = False
+    config.save_config()
 
 grammarJava = Grammar("Eclipse Java", context=context)   # Create this module's grammar.
 grammarJava.add_rule(RepeatRuleJava())    # Add the top-level rule.
