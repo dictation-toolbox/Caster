@@ -80,10 +80,8 @@ else:
 #---------------------------------------------------------------------------
 # Here we define the keystroke rule.
 
-class KeystrokeRule(MappingRule):
-
+class KeystrokeRuleJava(MappingRule):
     exported = False
-
     mapping  = config_java.cmd.map
     extras   = [
                 IntegerRef("n", 1, 100),
@@ -105,7 +103,7 @@ class KeystrokeRule(MappingRule):
 #  Note: when processing a recognition, the *value* of this element
 #  will be the value of the referenced rule: an action.
 alternatives_java = []
-alternatives_java.append(RuleRef(rule=KeystrokeRule()))
+alternatives_java.append(RuleRef(rule=KeystrokeRuleJava()))
 if FormatRuleJava:
     alternatives_java.append(RuleRef(rule=FormatRuleJava()))
 single_action_java = Alternative(alternatives_java)
