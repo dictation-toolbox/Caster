@@ -4,7 +4,7 @@ import natlink,os,win32gui
 MACRO_PATH='C:\NatLink\NatLink\MacroSystem\\'
 
 def foo():
-   natlink.execScript ("TTSPlayString \"" +"I am Serena, version 0.1.57"+ "\"")
+   natlink.execScript ("TTSPlayString \"" +"I am Serena, version 0.1.58"+ "\"")
    
 def repeat_after(text):
    natlink.execScript ("TTSPlayString \"" +str(text)+ "\"")

@@ -14,7 +14,7 @@ Command-module for Chrome
 
 from dragonfly import (Grammar, AppContext, MappingRule,
                        Dictation, Choice, IntegerRef, NumberRef,
-                       Key, Text, Repeat, Function)
+                       Key, Text, Repeat, Function, Pause)
 
 def go(n):
     number=str(n)
@@ -24,7 +24,7 @@ def go(n):
 class CommandRule(MappingRule):
 
     mapping = {
-        "close tab [<n>]":            Key("c-w") * Repeat(extra="n"),
+        "close tab [<n>]":            (Key("c-w")+Pause("10")) * Repeat(extra="n"),
         "new tab [<n>]":                    	Key("c-t") * Repeat(extra="n"),
         "reopen tab [<n>]":                   Key("cs-t") * Repeat(extra="n"),
         "next tab [<n>]":                        Key("c-tab") * Repeat(extra="n"),
@@ -36,6 +36,7 @@ class CommandRule(MappingRule):
         "go [to] <n>":             Function(go, extra = "n"),
         "navigate (in | current | here)":            Key("f"),
         "navigate out":            Key("s-f"),
+        "refresh":            Key("c-r"),
         }
     extras = [
               Dictation("dict"),
