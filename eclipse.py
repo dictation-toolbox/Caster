@@ -30,15 +30,9 @@ class CommandRule(MappingRule):
             "go to line":                Key("c-l"),
             "go to line <n>":                Key("c-l") + Pause("50") + Text("%(n)d") + Key("enter"),
             "go to declaration":                Key("f3"),
-            "cancel":                    Key("escape"),
             "editor select":                Key("c-e"),
             "pop":                Key("c-space, down, up"),
             
-            "color left [<n>]":                Key("cs-left") * Repeat(extra="n"),
-            "color right [<n>]":               Key("cs-right") * Repeat(extra="n"),
-            "color up [<n>]":               Key("shift:down, up, shift:up") * Repeat(extra="n"),
-            "color down [<n>]":               Key("shift:down, down, shift:up") * Repeat(extra="n"),
-
             "step [<n>]":                Key("f6") * Repeat(extra="n"),
             "step into":                Key("f5"),
             "step out [of]":                Key("f7"),
@@ -52,24 +46,12 @@ class CommandRule(MappingRule):
        "(do imports | import all)":    Key("cs-o"),
         "comment line":                  Key("c-slash"),
         
-        "space [<n>]":                      Key("space:%(n)d"),
-           "enter [<n>]":                      Key("enter:%(n)d"),
-           "tab [<n>]":                        Key("tab:%(n)d"),
-           "delete [<n>]":                     Key("del:%(n)d"),
-           "delete [<n> | this] (line|lines)": Key("home, s-down:%(n)d, del"),
-           "backspace [<n>]":                  Key("backspace:%(n)d"),
-           "pop up":                           Key("apps"),
+#         "space [<n>]":                      Key("space:%(n)d"),
+#            "enter [<n>]":                      Key("enter:%(n)d"),
+#            
+#            "pop up":                           Key("apps"),
 
-           "paste":                            Key("c-v"),
-           "duplicate <n>":                    Key("c-c, c-v:%(n)d"),
-           "copy":                             Key("c-c"),
-           "cut":                              Key("c-x"),
-           "select all":                       Key("c-a"),
-           "[hold] shift":                     Key("shift:down"),
-           "release shift":                    Key("shift:up"),
-           "[hold] control":                   Key("ctrl:down"),
-           "release control":                  Key("ctrl:up"),  
-        
+           
         }
     extras = [
               Dictation("text"),
