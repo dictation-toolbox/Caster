@@ -50,9 +50,9 @@ cmd.map = {
         "minus":						Text("-"),
 			
 			"pipe symbol":             Text("|"),
-            "bark <n> bark":                           Text("%(n)d"),
-            "bark <n> <n2> bark":                           Text("%(n)d%(n2)d"),
-            "bark <n> <n2> <n3> bark":                           Text("%(n)d%(n2)d%(n3)d"),
+            "<n> bark":                           Text("%(n)d"),
+            "<n> <n2> bark":                           Text("%(n)d%(n2)d"),
+            "<n> <n2> <n3> bark":                           Text("%(n)d%(n2)d%(n3)d"),
             "string <text> string":                           Text("%(text)s"), 
 	   
        

@@ -36,9 +36,9 @@ cmd.map = {
         "minus":						Text("-"),
 			
 			"pipe symbol":             Text("|"),
-            "bark <n> bark":                           Text("%(n)d"),
-            "bark <n> <n2> bark":                           Text("%(n)d%(n2)d"),
-            "bark <n> <n2> <n3> bark":                           Text("%(n)d%(n2)d%(n3)d"),
+            "<n> bark":                           Text("%(n)d"),
+            "<n> <n2> bark":                           Text("%(n)d%(n2)d"),
+            "<n> <n2> <n3> bark":                           Text("%(n)d%(n2)d%(n3)d"),
             "string <text> string":                           Text("%(text)s"), 
 	   
        
@@ -58,9 +58,8 @@ def format_dot_word(dictation):          # Function name must start with "format
     text = str(dictation)             # Get written-form of dictated text.
     return ".".join(text.split(" "))  # Put dots between words.
 
-# Format: someWords
-def format_java(dictation):
-    """ Java <dictation> """
-    text = str(dictation)
-    words = text.split(" ")
-    return words[0] + "".join(w.capitalize() for w in words[1:])
+# Format: some_words
+def format_score(dictation):
+    """ score <dictation> """         # Docstring defining spoken-form.
+    text = str(dictation)             # Get written-form of dictated text.
+    return "_".join(text.split(" ")) #
