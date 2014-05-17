@@ -1,9 +1,6 @@
 # Ignore programs called by dragonfly, so I don't have to deal with their licensing
-PSTools/
-nircmd/
+exe/
 installed_requirements/
-MultiMonitorTool/
-standalone/
 
 # Ignore work files
 _w.py
@@ -11,6 +8,7 @@ _w.py
 # Ignore junk
 *.pyc
 *.bak
+old/
 
 # Ignore natlink files
 core/

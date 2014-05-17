@@ -2,22 +2,26 @@ from dragonfly import *
 import os, natlink, sys, win32api
 import string
 from win32con import *
+import paths
+
+BASE_PATH = paths.get_base()
+MMT_PATH = paths.get_mmt()
 
 def clear_pyc():
-    path = "C:\NatLink\NatLink\MacroSystem"
-    os.chdir(path)
+    global BASE_PATH
+    os.chdir(BASE_PATH)
     for files in os.listdir("."):
         if files.endswith(".pyc"):
-            filepath=path+"\\"+files
+            filepath=BASE_PATH+files
             os.remove(filepath)
             print "Deleted: "+filepath
     
 def auto_spell(text):
     #To do: add capitalization, support for military alphabet
-     try:
+    try:
         base="".join(str(text).split(" ")).lower()
         Text(base)._execute()
-     except Exception:
+    except Exception:
         print "Unexpected error:", sys.exc_info()[0]
         print "Unexpected error:", sys.exc_info()[1]
         
@@ -41,9 +45,10 @@ def paste_clip(xtimes):
     Key( "c-v")._execute()
     
 def suicide():
-    BringApp(r"C:\NatLink\NatLink\MacroSystem\suicide.bat")._execute()
+    BringApp(BASE_PATH + "suicide.bat")._execute()
 
 class MainRule(MappingRule):
+    global MMT_PATH
     mapping = {
     '(reload|restart|reboot) (dragon|dragonfly)':         Function(clear_pyc)+
                                                         Playback([(["stop", "listening"], 0.5), (["wake", 'up'], 0.0)]),
@@ -60,10 +65,6 @@ class MainRule(MappingRule):
 	'kick mid': 				Mouse("middle:1"),#Playback([(["mouse", "middle", "click"], 0.0)]),
 	'kick right': 			Mouse("right:1"),#Playback([(["mouse", "right", "click"], 0.0)]),
     '(kick double|double kick)':           Mouse("left:2"),
-# 	'drag':				Mouse("left:down"),
-# 	'release':			Mouse("left:up"),
-#     'right drag':                Mouse("right:down"),
-#     'right release':            Mouse("right:up"),
     "scroll [<text>] <xtimes>":     Function(scroll, extra={'text', 'xtimes'}),
     
     #keyboard shortcuts
@@ -95,7 +96,6 @@ class MainRule(MappingRule):
     "clear [<xtimes>]":                Key("backspace") * Repeat(extra="xtimes"),
     "(cancel | escape)":                Key("escape"),
     
-    
     "copy clip [<xtimes>]":         Key("c-%(xtimes)d,c-c"),
     "paste clip [<xtimes>]":         Key("c-%(xtimes)d,c-v"),
     
@@ -111,8 +111,8 @@ class MainRule(MappingRule):
     'minimize':                     Playback([(["minimize", "window"], 0.0)]),
     'maximize':                     Playback([(["maximize", "window"], 0.0)]),
     
-    'toggle monitor one':               BringApp(r"C:\NatLink\NatLink\MacroSystem\MultiMonitorTool\MultiMonitorTool.exe", r"/switch",r"\\.\DISPLAY1"),
-    'toggle monitor two':               BringApp(r"C:\NatLink\NatLink\MacroSystem\MultiMonitorTool\MultiMonitorTool.exe", r"/switch",r"\\.\DISPLAY2"),
+    'toggle monitor one':               BringApp(MMT_PATH, r"/switch",r"\\.\DISPLAY1"),
+    'toggle monitor two':               BringApp(MMT_PATH, r"/switch",r"\\.\DISPLAY2"),
     
     #military alphabet
     "alpha": Key("a"),
@@ -142,8 +142,6 @@ class MainRule(MappingRule):
     "yankee": Key("y"),
     "Zulu": Key("z"),
     
-    #'(put on|play) [some] music':   BringApp(r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")
-    #                                +WaitWindow("Chrome", "chrome.exe", 2000)+Key("f6,w,w,w,dot,p,a,n,d,o,r,a,dot,c,o,m,enter"),
     }
     extras = [
               IntegerRef("xtimes", 1, 10000),
@@ -158,4 +156,3 @@ class MainRule(MappingRule):
 grammar = Grammar('Global')
 grammar.add_rule(MainRule())
 grammar.load()
-#Reload Dragon

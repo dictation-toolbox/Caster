@@ -20,9 +20,9 @@ except ImportError:
 from dragonfly import *
 import natlink
 
-import config
+import config, paths
 config_settings = config.get_config()
-JAVAPATH = "C:\NatLink\NatLink\MacroSystem\languages\configjava.txt"
+JAVA_CONFIG_PATH = paths.get_javaconfig()
 
 #---------------------------------------------------------------------------
 # Each of the following steps needs to be done per programming language
@@ -38,7 +38,7 @@ config_java.cmd.map    = Item(
      "Text":  Text,
     }
 )
-namespace_java = config_java.load(JAVAPATH)
+namespace_java = config_java.load(JAVA_CONFIG_PATH)
 
 #---------------------------------------------------------------------------
 # Here we prepare the list of formatting functions from the config file.
@@ -48,20 +48,20 @@ namespace_java = config_java.load(JAVAPATH)
 format_functions_java = {}
 if namespace_java:
     for name, function in namespace_java.items():
-     if name.startswith("format_") and callable(function):
-        spoken_form = function.__doc__.strip()
-
-        # We wrap generation of the Function action in a function so
-        #  that its *function* variable will be local.  Otherwise it
-        #  would change during the next iteration of the namespace loop.
-        def wrap_function(function):
-            def _function(dictation):
-                formatted_text = function(dictation)
-                Text(formatted_text).execute()
-            return Function(_function)
-
-        action = wrap_function(function)
-        format_functions_java[spoken_form] = action
+        if name.startswith("format_") and callable(function):
+            spoken_form = function.__doc__.strip()
+    
+            # We wrap generation of the Function action in a function so
+            #  that its *function* variable will be local.  Otherwise it
+            #  would change during the next iteration of the namespace loop.
+            def wrap_function(function):
+                def _function(dictation):
+                    formatted_text = function(dictation)
+                    Text(formatted_text).execute()
+                return Function(_function)
+    
+            action = wrap_function(function)
+            format_functions_java[spoken_form] = action
 
 
 # Here we define the text formatting rule.
@@ -138,6 +138,8 @@ class RepeatRuleJava(CompoundRule):
 # Create and load this module's grammar.
 context = AppContext(executable="eclipse")
 
+javaBootstrap = Grammar("java bootstrap", context=context)  
+grammarJava = Grammar("Eclipse Java", context=context)   # Create this module's grammar.
 
 class JavaEnabler(CompoundRule):
     spec = "Enable Java"                  # Spoken command to enable the Java grammar.
@@ -160,17 +162,16 @@ class JavaDisabler(CompoundRule):
         grammarJava.disable()
         javaBootstrap.enable()
         natlink.execScript ("TTSPlayString \"" +"Java grammar disabled"+ "\"")
-
-# The main Python grammar rules are activated here
-javaBootstrap = Grammar("java bootstrap", context=context)                
+       
+# The main Python grammar rules are activated here       
 javaBootstrap.add_rule(JavaEnabler())
 javaBootstrap.load()
 
-grammarJava = Grammar("Eclipse Java", context=context)   # Create this module's grammar.
 grammarJava.add_rule(RepeatRuleJava())    # Add the top-level rule.
 grammarJava.add_rule(JavaDisabler())
 grammarJava.load()                    # Load the grammar.
 grammarJava.disable()
+
 
 if config_settings["java"] == True:
     grammarJava.enable()

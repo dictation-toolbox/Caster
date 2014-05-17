@@ -1,6 +1,6 @@
-START C:\NatLink\NatLink\MacroSystem\PSTools\pskill.exe natspeak.exe
-START C:\NatLink\NatLink\MacroSystem\PSTools\pskill.exe dgnuiasvr_x64.exe
-START C:\NatLink\NatLink\MacroSystem\PSTools\pskill.exe dnsspserver.exe
+START C:\NatLink\NatLink\MacroSystem\exe\PSTools\pskill.exe natspeak.exe
+START C:\NatLink\NatLink\MacroSystem\exe\PSTools\pskill.exe dgnuiasvr_x64.exe
+START C:\NatLink\NatLink\MacroSystem\exe\PSTools\pskill.exe dnsspserver.exe
 echo.
 echo Waiting For One Hour... 
 TIMEOUT /T 2 /NOBREAK

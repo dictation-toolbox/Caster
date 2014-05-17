@@ -1,32 +1,34 @@
 from dragonfly import *
-import natlink,os,win32gui
+import natlink,os,win32gui,sys
+import paths
 
-MACRO_PATH='C:\NatLink\NatLink\MacroSystem\\'
+BASE_PATH = paths.get_base()
+NIRCMD_PATH = paths.get_nircmd()
 
-def foo():
-   natlink.execScript ("TTSPlayString \"" +"I am Serena, version 0.1.61"+ "\"")
+def talk_to_me():
+    natlink.execScript ("TTSPlayString \"" +"I am Serena, version 0.1.62"+ "\"")
    
 def repeat_after(text):
-   natlink.execScript ("TTSPlayString \"" +str(text)+ "\"")
-   print "\n\nwe just said:"+str(text)
+    natlink.execScript ("TTSPlayString \"" +str(text)+ "\"")
+    print "\n\nwe just said:"+str(text)
    
 def get_mouse_point():
-    global MACRO_PATH
+    global BASE_PATH
     x,y= win32gui.GetCursorPos()
     natlink.execScript ("TTSPlayString \"" +"mouse coordinates "+str(x) + " by " +str(y)+ "\"")
-    f = open(MACRO_PATH+'mouse_points_universal.txt','a')
+    f = open(BASE_PATH+'mouse_points_universal.txt','a')
     f.write(str(x)+', ' + str(y)+'\n')
     f.close() 
 
 def goto_point(quantity):
-    global MACRO_PATH
-    f = open(MACRO_PATH+'mouse_points_universal.txt','r')
-    list=f.readlines()
+    global BASE_PATH
+    f = open(BASE_PATH+'mouse_points_universal.txt','r')
+    listFile=f.readlines()
     f.close()
-    if len( list )>=quantity:
+    if len( listFile )>=quantity:
         is_docked=not win32gui.IsIconic(win32gui.FindWindow(None, "DragonBar - Premium"))
         
-        pieces =list[quantity-1].rstrip('\n').split( ",")
+        pieces =listFile[quantity-1].rstrip('\n').split( ",")
         x= int(pieces[0])
         y= int(pieces[1])
         if is_docked:
@@ -40,9 +42,15 @@ def goto_point(quantity):
                   
 
 def volume_control(quantity):
+    global NIRCMD_PATH
     max_volume = 65535
     chosen_level=str(int(quantity* 1.0/100*max_volume))
-    BringApp(r"C:\NatLink\NatLink\MacroSystem\nircmd\nircmd.exe", r"setsysvolume",chosen_level).execute()
+    try:
+        BringApp(NIRCMD_PATH, r"setsysvolume",chosen_level).execute()
+    except Exception:
+        print "Unexpected error:", sys.exc_info()[0]
+        print "Unexpected error:", sys.exc_info()[1]
+    BringApp(NIRCMD_PATH, r"setsysvolume",chosen_level).execute()
     natlink.execScript ("TTSPlayString \"" +"setting volume to "+str( quantity )+ "\"")
           
 
@@ -54,10 +62,10 @@ class MainRule(MappingRule):
                
                
     #speech functions
-    'talk to me':       Function(foo),
+    'talk to me':       Function(talk_to_me),
     'repeat after me <text>': Function(repeat_after, extra='text'),
     "point save":   Function(get_mouse_point),
-    'point show':        BringApp(r"pythonw",r"C:\Users\dave\Dropbox\backup\dragonfly\_screenGrid.py"),
+#     'point show':        BringApp(r"pythonw",r"C:\Users\dave\Dropbox\backup\dragonfly\_screenGrid.py"),
     "fly go [to] <quantity>": Function(goto_point, extra='quantity'),
     "set [system] volume [to] <quantity>": Function(volume_control, extra='quantity'),
     }
