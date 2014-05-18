@@ -6,7 +6,7 @@ Continuous command recognition for programmers
 This module allows the user switch quickly between programming languages
 and use continuous command  recognition with each. It is based on the work
 of many others, including people that I haven't listed here.
-Thanks Christo Butcher, davitenio, poppe1219
+Thanks Christo Butcher, davitenio, poppe1219, ccowan
 
 
 """

@@ -5,6 +5,7 @@
 from dragonfly import *
 
 release = Key("shift:up, ctrl:up")
+noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added on the right side
 
 cmd.map = {
            # Spoken-form    ->    ->    ->     Action object
@@ -12,8 +13,8 @@ cmd.map = {
            
 
 		   #Python specific macros           
-     	   "quotes":						Key("dquote,dquote,left"),
-           "thin quotes":						Key("apostrophe,apostrophe,left"),
+     	   "quotes":						Key("dquote,dquote,left")+noSpaceNoCaps,
+           "thin quotes":						Key("apostrophe,apostrophe,left")+noSpaceNoCaps,
      	   "[is] greater than":				   Key("rangle"),
      	   "[is] less than":				   Key("langle"),
      	   "[is] greater [than] [or] equal [to]":				   Key("rangle, equals"),

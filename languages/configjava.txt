@@ -2,7 +2,6 @@
 # This is a config file for Dragonfly's _multiedit.py command-module.
 #  To use this config, you must rename this file to _multiedit.txt and
 #  place it in the same directory as the _multiedit.py file.
-#
 
 # Pull in all of Dragonfly's action objects so that we can use them here.
 
@@ -17,6 +16,7 @@ from dragonfly import *
 #  times or when that key is not held down at all.
 
 release = Key("shift:up, ctrl:up")
+noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on")
 
 #--------------------------------------------------------------------------
 # Here we define the single-action commands.  These can bepop-up spoken
