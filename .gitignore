@@ -9,6 +9,7 @@ _w.py
 *.pyc
 *.bak
 old/
+test.py
 
 # Ignore natlink files
 core/

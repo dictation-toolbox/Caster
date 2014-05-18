@@ -2,6 +2,8 @@ from dragonfly import *
 import natlink,os,win32gui,sys
 import paths
 
+import test
+
 BASE_PATH = paths.get_base()
 NIRCMD_PATH = paths.get_nircmd()
 
