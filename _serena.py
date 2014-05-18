@@ -2,13 +2,11 @@ from dragonfly import *
 import natlink,os,win32gui,sys
 import paths
 
-import test
-
 BASE_PATH = paths.get_base()
 NIRCMD_PATH = paths.get_nircmd()
 
 def talk_to_me():
-    natlink.execScript ("TTSPlayString \"" +"I am Serena, version 0.1.62"+ "\"")
+    natlink.execScript ("TTSPlayString \"" +"I am Serena, version 0.1.64"+ "\"")
    
 def repeat_after(text):
     natlink.execScript ("TTSPlayString \"" +str(text)+ "\"")

@@ -34,6 +34,8 @@ cmd.map = {
         "curly":                    Text("{}")+ Key("left"),
         "plus":						Text("+"),
         "minus":						Text("-"),
+        "for each":					Text("for  in :")+ Key("left:5"),
+        "for I":					Text("for i in range(0, ):")+ Key("left:2"),
 			
 			"pipe symbol":             Text("|"),
             "<n> bark":                           Text("%(n)d"),
