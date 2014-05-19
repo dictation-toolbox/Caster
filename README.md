@@ -36,3 +36,4 @@ other dragonfly repositories
 other
 --
  - http://www.youtube.com/watch?v=8SkdfdXWYaI (Tavis Rudd talk)
+ - http://pydev.org/manual_adv_remote_debugger.html
