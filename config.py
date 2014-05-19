@@ -35,12 +35,13 @@ def load_config():
         print("Could not load config file: %s" % str(e))
 
 
-def init_default_values():
+def init_default_values():# new languages must be added here and in paths.py
     global CONFIG
     valueChangeCount = 0
     defaultValues = [
         ("java", False),
         ("python", False),
+        ("html", False)
     ]
     for (name, value) in defaultValues:
         if not name in CONFIG.keys():

@@ -37,6 +37,8 @@ class CommandRule(MappingRule):
         "navigate (in | current | here)":            Key("f"),
         "navigate out":            Key("s-f"),
         "refresh":            Key("c-r"),
+        
+        "git hub":          Text("github"),
         }
     extras = [
               Dictation("dict"),

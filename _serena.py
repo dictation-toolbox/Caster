@@ -6,7 +6,7 @@ BASE_PATH = paths.get_base()
 NIRCMD_PATH = paths.get_nircmd()
 
 def talk_to_me():
-    natlink.execScript ("TTSPlayString \"" +"I am Serena, version 0.1.64"+ "\"")
+    natlink.execScript ("TTSPlayString \"" +"I am Serena, version 0.1.66"+ "\"")
    
 def repeat_after(text):
     natlink.execScript ("TTSPlayString \"" +str(text)+ "\"")
@@ -52,7 +52,6 @@ def volume_control(quantity):
         print "Unexpected error:", sys.exc_info()[1]
     BringApp(NIRCMD_PATH, r"setsysvolume",chosen_level).execute()
     natlink.execScript ("TTSPlayString \"" +"setting volume to "+str( quantity )+ "\"")
-          
 
 
 class MainRule(MappingRule):

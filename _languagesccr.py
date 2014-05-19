@@ -23,7 +23,9 @@ import natlink
 import config, paths
 config_settings = config.get_config()
 ALL_LANGUAGE_CONFIGS=paths.get_all_language_configs()
-# JAVA_CONFIG_PATH = paths.get_javaconfig()
+
+rules = []
+            
 
 class GrammarHolder():
     def __init__(self, gram, enab, nam):
@@ -155,6 +157,7 @@ def generate_language_rule(path):
         def _process_recognition(self, node, extras):   # Callback when command is spoken.
             global config_settings
             config_settings[language] = True
+            import pydevd;pydevd.settrace()
             config.save_config()
             bootstrap.disable()
             grammar.enable()
@@ -187,7 +190,7 @@ def generate_language_rule(path):
 
 #---------------------------------------------------------------------------    
 
-rules = []
+
 
 for path in ALL_LANGUAGE_CONFIGS:
     rules.append(generate_language_rule(path))

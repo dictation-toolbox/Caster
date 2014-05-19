@@ -1,6 +1,6 @@
 #
 # This is a heavily modified version of Dragonfly's _multiedit.py command-module
-#  meant to enable python  syntax in eclipse
+#  meant to enable python  syntax with CCR
 
 from dragonfly import *
 
