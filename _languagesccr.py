@@ -25,13 +25,24 @@ config_settings = config.get_config()
 ALL_LANGUAGE_CONFIGS=paths.get_all_language_configs()
 
 rules = []
+           
+def disable_all_except(language):
+    global rules
+    global config_settings
+    #import pydevd;pydevd.settrace()
+    for holder in rules:
+        if not holder.language == language:
+            config_settings[holder.language] = False
+            config.save_config()
+            holder.grammar.disable()
+            holder.bootstrap.enable()
             
 
 class GrammarHolder():
-    def __init__(self, gram, enab, nam):
+    def __init__(self, gram, boot, lan):
         self.grammar = gram
-        self.enabler = enab
-        self.name = nam
+        self.bootstrap = boot
+        self.language = lan
 
 def generate_language_rule(path):
     #---------------------------------------------------------------------------
@@ -157,10 +168,10 @@ def generate_language_rule(path):
         def _process_recognition(self, node, extras):   # Callback when command is spoken.
             global config_settings
             config_settings[language] = True
-            import pydevd;pydevd.settrace()
             config.save_config()
             bootstrap.disable()
             grammar.enable()
+            disable_all_except(language)
             natlink.execScript ("TTSPlayString \"" +language+" grammar enabled"+ "\"")
     
     class Disabler(CompoundRule):
@@ -191,17 +202,9 @@ def generate_language_rule(path):
 #---------------------------------------------------------------------------    
 
 
-
 for path in ALL_LANGUAGE_CONFIGS:
     rules.append(generate_language_rule(path))
     
-
-
-
-
-
-
-
 
 
 
@@ -211,12 +214,6 @@ def unload():
     for holder in rules:
         holder.grammar.unload()
         holder.grammar = None
-        holder.enabler.unload()
-        holder.enabler = None
+        holder.bootstrap.unload()
+        holder.bootstrap = None
     holder = None
-#     global bootstrap
-#     if bootstrap: bootstrap.unload()
-#     bootstrap = None
-#     global grammar
-#     if grammar: grammar.unload()
-#     grammar = None
