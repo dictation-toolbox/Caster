@@ -1,5 +1,6 @@
 {
     "html": false, 
     "java": false, 
+    "pascal": true, 
     "python": false
 }
