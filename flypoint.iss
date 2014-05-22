@@ -10,9 +10,6 @@ OutputDir=old\output
 
 [Dirs]
 Name: "{app}\exe"
-Name: "{app}\exe\MultiMonitorTool"
-Name: "{app}\exe\nircmd"
-Name: "{app}\exe\PSTools"
 Name: "{app}\languages"
 
 [Files]
@@ -28,24 +25,10 @@ Source: "sh.py"; DestDir: "{app}";
 ; Note to self: Python remote debugging will have to be set up manually
 
 ; Language config files
-Source: "languages\confightml.txt"; DestDir: "{app}\languages";
-Source: "languages\configjava.txt"; DestDir: "{app}\languages";
-Source: "languages\configpython.txt"; DestDir: "{app}\languages";
+Source: "languages\*.*"; DestDir: "{app}\languages";Flags: replacesameversion recursesubdirs
 
 ; Executables
-Source: "exe\Switcher.exe"; DestDir: "{app}\exe";
-Source: "exe\MultiMonitorTool\MultiMonitorTool.exe"; DestDir: "{app}\exe\MultiMonitorTool";
-Source: "exe\MultiMonitorTool\readme.txt"; DestDir: "{app}\exe\MultiMonitorTool";
-Source: "exe\nircmd\nircmd.exe"; DestDir: "{app}\exe\nircmd";
-Source: "exe\nircmd\nircmdc.exe"; DestDir: "{app}\exe\nircmd";
-Source: "exe\nircmd\NirCmd.chm"; DestDir: "{app}\exe\nircmd";
-Source: "exe\PSTools\pskill.exe"; DestDir: "{app}\exe\PSTools";
-Source: "exe\PSTools\psshutdown.exe"; DestDir: "{app}\exe\PSTools";
-Source: "exe\PSTools\Pstools.chm"; DestDir: "{app}\exe\PSTools";
-
-;Source: "README.md"; DestDir: "{app}";
-;Source: "README.md"; DestDir: "{app}";
-;Source: "README.md"; DestDir: "{app}";
+Source: "exe\*.*"; DestDir: "{app}\exe";Flags: replacesameversion recursesubdirs
 
 ; Miscellaneous
 Source: "README.md"; DestDir: "{app}";
