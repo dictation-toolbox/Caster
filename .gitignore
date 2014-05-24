@@ -1,15 +1,18 @@
 # Ignore programs called by dragonfly, so I don't have to deal with their licensing
 exe/
-installed_requirements/
+installer_requirements/
 
 # Ignore work files
 _w.py
+flypoint_private.iss
 
 # Ignore junk
 *.pyc
 *.bak
 old/
 test.py
+*.tmp
+unins000.*
 
 # Ignore natlink files
 core/
