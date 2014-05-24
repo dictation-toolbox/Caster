@@ -69,9 +69,7 @@ class MainRule(MappingRule):
     
     #keyboard shortcuts
 	"username":                    Text("synkarius"),
-    'email one':			        Text("synkarius@gmail.com"),
-	'email two':			        Text("dconway1985@gmail.com"),
-    'email three':                    Text("kyran36@hotmail.com"),
+    "nat link":                     Text( "natlink" ),
     'save [work]':                  Key("c-s"),
     'enter':                        Key("enter"),
     "(down | south) [<xtimes>]":                Key("down") * Repeat(extra="xtimes"),
@@ -102,12 +100,6 @@ class MainRule(MappingRule):
     'auto spell <text>': Function(auto_spell, extra='text'),
     "alt tab":          Key( "w-backtick"),#activates Switcher
     
-    '(open|launch) eclipse':        BringApp(r"D:\PROGRAMS\NON_install\eclipse\eclipse.exe"),
-    '(open|launch) everything':        BringApp(r"D:\PROGRAMS\NON_install\Everything"),
-    '(open|launch) chrome':        BringApp(r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"),
-    '(open|launch) process explorer':        BringApp(r"D:\PROGRAMS\NON_install\procexp.exe"),
-    '(put on|play) Pandora':        BringApp(r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")+Pause("100")+Key("c-t")+Pause("100")+ Text( "Pandora.com")+Pause("50")+ Key( "enter"),
-    '(open|launch) (grep|homegroup)':        BringApp(r"D:\PROGRAMS\NON_install\AstroGrep\AstroGrep.exe"),
     'minimize':                     Playback([(["minimize", "window"], 0.0)]),
     'maximize':                     Playback([(["maximize", "window"], 0.0)]),
     

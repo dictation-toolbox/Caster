@@ -26,6 +26,12 @@ class CommandRule(MappingRule):
         "commit":            Text( "git commit -am ''" )+Key("left"),
         "push":            Text( "git push" )+Key("enter"),
         "pull":            Text( "git pull" )+Key("enter"),
+        "CD up":            Text( "cd .." )+Key("enter"),
+        "CD":            Text( "cd " ),
+        "list":            Text( "ls" )+Key("enter"),
+        "make directory":  Text( "mkdir " ),
+        
+        
         }
     extras = [
               Dictation("dict"),

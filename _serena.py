@@ -64,7 +64,6 @@ class MainRule(MappingRule):
     'talk to me':       Function(talk_to_me),
     'repeat after me <text>': Function(repeat_after, extra='text'),
     "point save":   Function(get_mouse_point),
-#     'point show':        BringApp(r"pythonw",r"C:\Users\dave\Dropbox\backup\dragonfly\_screenGrid.py"),
     "fly go [to] <quantity>": Function(goto_point, extra='quantity'),
     "set [system] volume [to] <quantity>": Function(volume_control, extra='quantity'),
     }

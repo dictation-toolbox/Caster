@@ -21,6 +21,7 @@ cmd.map = {
      	   "[is] less [than] [or] equal [to]":				   Key("langle, equals"),
      	   "[is] equal to":				   Key("equals,equals"),
      	   "import":						Text( "import " ),
+     	   "from":						Text( "from " ),
      	   "add comment":					Text( "#" ),
 			"new class":				Key( "as-n, down, down, down, down, enter"),
         # logic shortcuts
@@ -35,6 +36,7 @@ cmd.map = {
         "curly":                    Text("{}")+ Key("left"),
         "plus":						Text("+"),
         "minus":						Text("-"),
+        "times":						Text("*"),
         "for each":					Text("for  in :")+ Key("left:5"),
         "for I":					Text("for i in range(0, ):")+ Key("left:2"),
 			
