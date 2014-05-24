@@ -2,7 +2,7 @@
 ; – – – – – – –
 ; Flypoint Installer will do the following:
 ;
-; – install natlink
+;– install natlink
 ;– install dragonfly
 ;– install tenclips
 ;– install flypoint
@@ -52,6 +52,7 @@ Source: "LICENSE"; DestDir: "{app}";
 Source: "suicide.bat"; DestDir: "{app}";
 Source: "dragonfly_upgrade.iss"; DestDir: "{app}";
 Source: "flypoint.iss"; DestDir: "{app}";
+Source: "dragonfly_upgrade.iss"; DestDir: "{app}";
 Source: ".gitignore"; DestDir: "{app}";
 Source: "config.json"; DestDir: "{app}"; 
 
