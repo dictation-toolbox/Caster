@@ -25,33 +25,37 @@ def auto_spell(text):
         print "Unexpected error:", sys.exc_info()[0]
         print "Unexpected error:", sys.exc_info()[1]
         
-def scroll(text, xtimes):
+def scroll(text, xnumber):
     direction=str(text)
     updown=-100
     if direction== "up" or direction == "north":
         updown= 100
     (x, y) = win32api.GetCursorPos()
-    win32api.mouse_event(MOUSEEVENTF_WHEEL, x, y, updown*xtimes, 0)
+    win32api.mouse_event(MOUSEEVENTF_WHEEL, x, y, updown*xnumber, 0)
 
     
-def copy_clip(xtimes):
-    base=str(xtimes)
+def copy_clip(xnumber):
+    base=str(xnumber)
     Key( "c-"+base)._execute()
     Key( "c-c")._execute()
     
-def paste_clip(xtimes):
-    base=str(xtimes)
+def paste_clip(xnumber):
+    base=str(xnumber)
     Key( "c-"+base)._execute()
     Key( "c-v")._execute()
     
 def suicide():
-    BringApp(BASE_PATH + "suicide.bat")._execute()
+    BringApp(BASE_PATH + r"\suicide.bat")._execute()
+    
+def open_and(text,text2):
+    print text
+    print text2
 
 class MainRule(MappingRule):
     global MMT_PATH
     mapping = {
-    '(reload|restart|reboot) (dragon|dragonfly)':         Function(clear_pyc)+
-                                                        Playback([(["stop", "listening"], 0.5), (["wake", 'up'], 0.0)]),
+    # Dragon NaturallySpeaking management
+    '(reload|restart|reboot) (dragon|dragonfly)':         Function(clear_pyc)+Playback([(["stop", "listening"], 0.5), (["wake", 'up'], 0.0)]),
 	'deactivate': 			Playback([(["go", "to", "sleep"], 0.0)]),
 	'scratch': 			Playback([(["scratch", "that"], 0.0)]),
     '(number|numbers) mode':             Playback([(["numbers", "mode", "on"], 0.0)]),
@@ -61,27 +65,27 @@ class MainRule(MappingRule):
     "dragon (death | suicide) and rebirth":   Function( suicide ),
 	
     #mouse control
-    '(kick left|kick)': 			Mouse("left:1"),#Playback([(["mouse", "left", "click"], 0.0)]),something
-	'kick mid': 				Mouse("middle:1"),#Playback([(["mouse", "middle", "click"], 0.0)]),
-	'kick right': 			Mouse("right:1"),#Playback([(["mouse", "right", "click"], 0.0)]),
-    '(kick double|double kick)':           Mouse("left:2"),
-    "scroll [<text>] <xtimes>":     Function(scroll, extra={'text', 'xtimes'}),
+    '(kick left|kick)': 			Playback([(["mouse", "left", "click"], 0.0)]),
+	'kick mid': 				    Playback([(["mouse", "middle", "click"], 0.0)]),
+	'kick right': 	                Playback([(["mouse", "right", "click"], 0.0)]),
+    '(kick double|double kick)':    Playback([(["mouse", "double", "click"], 0.0)]),
+    "scroll [<text>] <xnumber>":     Function(scroll, extra={'text', 'xnumber'}),
     
     #keyboard shortcuts
 	"username":                    Text("synkarius"),
     "nat link":                     Text( "natlink" ),
     'save [work]':                  Key("c-s"),
     'enter':                        Key("enter"),
-    "(down | south) [<xtimes>]":                Key("down") * Repeat(extra="xtimes"),
-    "(up | north) [<xtimes>]":                  Key("up") * Repeat(extra="xtimes"),
-    "(left | west) [<xtimes>]":               Key("left") * Repeat(extra="xtimes"),
-    "(right | east) [<xtimes>]":               Key("right") * Repeat(extra="xtimes"),
-    "fly (left | west | back) [<xtimes>]":                Key("c-left") * Repeat(extra="xtimes"),
-    "fly [(right | east)] [<xtimes>]":               Key("c-right") * Repeat(extra="xtimes"),
-    "color (left | west | back) [<xtimes>]":                Key("cs-left") * Repeat(extra="xtimes"),
-    "color [(right | east)] [<xtimes>]":               Key("cs-right") * Repeat(extra="xtimes"),
-    "color (up | north) [<xtimes>]":               Key("shift:down, up, shift:up") * Repeat(extra="xtimes"),
-    "color (down | south) [<xtimes>]":               Key("shift:down, down, shift:up") * Repeat(extra="xtimes"),
+    "(down | south) [<xnumber>]":                Key("down") * Repeat(extra="xnumber"),
+    "(up | north) [<xnumber>]":                  Key("up") * Repeat(extra="xnumber"),
+    "(left | west) [<xnumber>]":               Key("left") * Repeat(extra="xnumber"),
+    "(right | east) [<xnumber>]":               Key("right") * Repeat(extra="xnumber"),
+    "fly (left | west | back) [<xnumber>]":                Key("c-left") * Repeat(extra="xnumber"),
+    "fly [(right | east)] [<xnumber>]":               Key("c-right") * Repeat(extra="xnumber"),
+    "color (left | west | back) [<xnumber>]":                Key("cs-left") * Repeat(extra="xnumber"),
+    "color [(right | east)] [<xnumber>]":               Key("cs-right") * Repeat(extra="xnumber"),
+    "color (up | north) [<xnumber>]":               Key("shift:down, up, shift:up") * Repeat(extra="xnumber"),
+    "color (down | south) [<xnumber>]":               Key("shift:down, down, shift:up") * Repeat(extra="xnumber"),
     "end of line":                  Key("end"),
     "end of (all lines|text|page)": Key("c-end"),
     "find":                         Key("c-f"),
@@ -89,22 +93,25 @@ class MainRule(MappingRule):
     "copy":                             Key("c-c"),
     "cut":                              Key("c-x"),
     "select all":                       Key("c-a"),
-    "paste":                            Key("c-v"),
-    "delete [<xtimes>]":                (Key("del")+Pause("5")) * Repeat(extra="xtimes"),
-    "clear [<xtimes>]":                Key("backspace") * Repeat(extra="xtimes"),
+    "drop":                            Key("c-v"),
+    "delete [<xnumber>]":                (Key("del")+Pause("5")) * Repeat(extra="xnumber"),
+    "clear [<xnumber>]":                Key("backspace") * Repeat(extra="xnumber"),
     "(cancel | escape)":                Key("escape"),
     
-    "copy clip [<xtimes>]":         Key("c-%(xtimes)d,c-c"),
-    "paste clip [<xtimes>]":         Key("c-%(xtimes)d,c-v"),
-    
+    # miscellaneous
+    "copy clip [<xnumber>]":         Key("c-%(xnumber)d,c-c"),# shortcut for tenclips
+    "paste clip [<xnumber>]":         Key("c-%(xnumber)d,c-v"),# shortcut for tenclips
     'auto spell <text>': Function(auto_spell, extra='text'),
-    "alt tab":          Key( "w-backtick"),#activates Switcher
     
-    'minimize':                     Playback([(["minimize", "window"], 0.0)]),
-    'maximize':                     Playback([(["maximize", "window"], 0.0)]),
-    
+    # monitor management
     'toggle monitor one':               BringApp(MMT_PATH, r"/switch",r"\\.\DISPLAY1"),
     'toggle monitor two':               BringApp(MMT_PATH, r"/switch",r"\\.\DISPLAY2"),
+    
+    # window management
+    "open <text> and <text2>":      Function(open_and, extra={'text','text2'}),
+    "alt tab":          Key( "w-backtick"),#activates Switcher
+    'minimize':                     Playback([(["minimize", "window"], 0.0)]),
+    'maximize':                     Playback([(["maximize", "window"], 0.0)]),
     
     #military alphabet
     "alpha": Key("a"),
@@ -136,12 +143,12 @@ class MainRule(MappingRule):
     
     }
     extras = [
-              IntegerRef("xtimes", 1, 10000),
+              IntegerRef("xnumber", 1, 10000),
               Dictation("text"),
               Dictation("text2"),
               Dictation("text3"),
              ]
-    defaults ={"xtimes": 1,
+    defaults ={"xnumber": 1,
                "text": ""
                }
 

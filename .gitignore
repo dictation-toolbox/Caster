@@ -16,3 +16,6 @@ unins000.*
 
 # Ignore natlink files
 core/
+
+# Ignore personal
+media/

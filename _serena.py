@@ -6,7 +6,7 @@ BASE_PATH = paths.get_base()
 NIRCMD_PATH = paths.get_nircmd()
 
 def talk_to_me():
-    natlink.execScript ("TTSPlayString \"" +"I am Serena, version 0.1.66"+ "\"")
+    natlink.execScript ("TTSPlayString \"" +"I am Serena, version 0.1.67"+ "\"")
    
 def repeat_after(text):
     natlink.execScript ("TTSPlayString \"" +str(text)+ "\"")

@@ -3,10 +3,9 @@
 import os
 import sys
 import json
+import paths
 
-WORKING_PATH = os.path.dirname(os.path.abspath(__file__))
-
-CONFIG_PATH = WORKING_PATH + "\\config.json"
+CONFIG_PATH = paths.get_config_path()
 CONFIG = {}  # Empty, default config.
 
 def save_config():
