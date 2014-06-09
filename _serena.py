@@ -63,8 +63,6 @@ class MainRule(MappingRule):
     #speech functions
     'talk to me':       Function(talk_to_me),
     'repeat after me <text>': Function(repeat_after, extra='text'),
-    "point save":   Function(get_mouse_point),
-    "fly go [to] <quantity>": Function(goto_point, extra='quantity'),
     "set [system] volume [to] <quantity>": Function(volume_control, extra='quantity'),
     }
     extras = [

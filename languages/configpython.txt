@@ -46,7 +46,7 @@ cmd.map = {
             "<n> <n2> <n3> bark":                           Text("%(n)d%(n2)d%(n3)d"),
             "string <text> string":                           Text("%(text)s"), 
 	   
-       
+       	"[dot] (pie | pi)":			Text(".py"),
      	   
           }
 

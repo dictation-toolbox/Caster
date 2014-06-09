@@ -70,6 +70,7 @@ class MainRule(MappingRule):
 	'kick right': 	                Playback([(["mouse", "right", "click"], 0.0)]),
     '(kick double|double kick)':    Playback([(["mouse", "double", "click"], 0.0)]),
     "scroll [<text>] <xnumber>":     Function(scroll, extra={'text', 'xnumber'}),
+    'grid app position mode':               BringApp("pythonw", paths.get_grid(), r"--positionMode"),
     
     #keyboard shortcuts
 	"username":                    Text("synkarius"),
