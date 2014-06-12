@@ -11,8 +11,11 @@ def press_digits(n):
     for digit in number:
         Key(digit).execute()
         
-def get_active_window():
+def get_active_window_hwnd():
+    return str(win32gui.GetForegroundWindow())
+
+def get_active_window_path():
     name = win32gui.GetForegroundWindow()
     t,p = win32process.GetWindowThreadProcessId(name)
     handle = win32api.OpenProcess(0x0410,False,p)
-    print win32process.GetModuleFileNameEx( handle, 0 )
+    return win32process.GetModuleFileNameEx( handle, 0 )

@@ -18,30 +18,27 @@ from dragonfly import (Grammar, AppContext, MappingRule,
 import paths, utilities
 BASE_PATH=paths.get_base()
 
-def navigate_grid(n, n2, type):
-#     print n
-#     print n2
-#     print type
+def navigate_grid(n, n2, click):
     Key("c").execute()
     utilities.press_digits(n)
     Key("r").execute()
-    utilities.press_digits(n)
+    utilities.press_digits(n2)
     Key("enter").execute()
     if not type=="0":
-        Key(str(type)).execute()
+        Key(str(click)).execute()
 
 class CommandRule(MappingRule):
 
     mapping = {
         'help':                 Key("question"),
-        "<n> by <n2> [<type>]": Function(navigate_grid,extra={'n', 'n2','type'}),        
+        "<n> by <n2> [<click>]":Function(navigate_grid,extra={'n', 'n2','type'}),        
         }
     extras = [
               Dictation("dict"),
               Dictation("dict2"),
               IntegerRef("n", 1, 1000),
               IntegerRef("n2", 1, 1000),
-              Choice("type",
+              Choice("click",
                     {"default": "0", "left": "s", "double": "d",
                      "dub": "d", "right": "t",
                     }),

@@ -11,6 +11,7 @@ MMT_PATH = paths.get_mmt()
     
 def auto_spell(text):
     #To do: add capitalization, support for military alphabet
+    # use a Choice to switch between modes
     try:
         base="".join(str(text).split(" ")).lower()
         Text(base)._execute()
@@ -39,10 +40,9 @@ def paste_clip(n):
     
 def test():
     #import pydevd;pydevd.settrace()
-    utilities.get_active_window()
     BringApp("pythonw", paths.get_grid(), "--width","364" , "--height","182" , "--locationx","93" , 
              "--locationy","120" , "--rowheight","20" , "--columnwidth","20" , "--numrows","20" , 
-             "--numcolumns","20")._execute()
+             "--numcolumns","20","--sizeToClient",utilities.get_active_window_hwnd())._execute()
 
 class MainRule(MappingRule):
     global MMT_PATH
