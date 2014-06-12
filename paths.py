@@ -19,6 +19,7 @@ JAVA_CONFIG_PATH = "C:\NatLink\NatLink\MacroSystem\languages\configjava.txt"
 PYTHON_CONFIG_PATH = "C:\NatLink\NatLink\MacroSystem\languages\configpython.txt"
 HTML_CONFIG_PATH = "C:\NatLink\NatLink\MacroSystem\languages\confightml.txt"
 PASCAL_CONFIG_PATH = "C:\NatLink\NatLink\MacroSystem\languages\configpascal.txt"
+ALPHABET_CONFIG_PATH = "C:\NatLink\NatLink\MacroSystem\languages\configalphabet.txt"
 
 MEDIA_PATH = r"C:\NatLink\NatLink\MacroSystem\media"
 
@@ -32,10 +33,6 @@ def get_config_path():
     global CONFIG_PATH
     return CONFIG_PATH
 
-# def get_working_path():
-#     global BASE_PATH
-#     return BASE_PATH
-
 def get_nircmd():
     global NIRCMD_PATH
     return NIRCMD_PATH
@@ -48,7 +45,8 @@ def get_all_language_configs():
     global JAVA_CONFIG_PATH
     global PYTHON_CONFIG_PATH
     global HTML_CONFIG_PATH
-    return [JAVA_CONFIG_PATH, PYTHON_CONFIG_PATH, HTML_CONFIG_PATH, PASCAL_CONFIG_PATH]
+    return [JAVA_CONFIG_PATH, PYTHON_CONFIG_PATH, HTML_CONFIG_PATH, 
+            PASCAL_CONFIG_PATH, ALPHABET_CONFIG_PATH]
 
 def get_media_path():
     global MEDIA_PATH

@@ -41,7 +41,8 @@ def init_default_values():# new languages must be added here and in paths.py
         ("java", False),
         ("python", False),
         ("html", False),
-        ("pascal", False)
+        ("pascal", False),
+        ("alphabet", False)
     ]
     for (name, value) in defaultValues:
         if not name in CONFIG.keys():

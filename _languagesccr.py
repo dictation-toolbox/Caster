@@ -30,12 +30,15 @@ def disable_all_except(language):
     global rules
     global config_settings
     #import pydevd;pydevd.settrace()
-    for holder in rules:
-        if not holder.language == language:
-            config_settings[holder.language] = False
-            config.save_config()
-            holder.grammar.disable()
-            holder.bootstrap.enable()
+    compatibility_list = ["html","css","alphabet"]# alphabets and markup languages can be handled in the same way as programming languages
+    is_compatible = (language in compatibility_list)
+    if not is_compatible:
+        for holder in rules:
+            if (not holder.language == language) and (holder.language not in compatibility_list):
+                config_settings[holder.language] = False
+                config.save_config()
+                holder.grammar.disable()
+                holder.bootstrap.enable()
             
 
 class GrammarHolder():
