@@ -20,15 +20,15 @@ def get_mouse_point():
     f.write(str(x)+', ' + str(y)+'\n')
     f.close() 
 
-def goto_point(quantity):
+def goto_point(n):
     global BASE_PATH
     f = open(BASE_PATH+'mouse_points_universal.txt','r')
     listFile=f.readlines()
     f.close()
-    if len( listFile )>=quantity:
+    if len( listFile )>=n:
         is_docked=not win32gui.IsIconic(win32gui.FindWindow(None, "DragonBar - Premium"))
         
-        pieces =listFile[quantity-1].rstrip('\n').split( ",")
+        pieces =listFile[n-1].rstrip('\n').split( ",")
         x= int(pieces[0])
         y= int(pieces[1])
         if is_docked:
@@ -41,17 +41,17 @@ def goto_point(quantity):
             
                   
 
-def volume_control(quantity):
+def volume_control(n):
     global NIRCMD_PATH
     max_volume = 65535
-    chosen_level=str(int(quantity* 1.0/100*max_volume))
+    chosen_level=str(int(n* 1.0/100*max_volume))
     try:
         BringApp(NIRCMD_PATH, r"setsysvolume",chosen_level).execute()
     except Exception:
         print "Unexpected error:", sys.exc_info()[0]
         print "Unexpected error:", sys.exc_info()[1]
     BringApp(NIRCMD_PATH, r"setsysvolume",chosen_level).execute()
-    natlink.execScript ("TTSPlayString \"" +"setting volume to "+str( quantity )+ "\"")
+    natlink.execScript ("TTSPlayString \"" +"setting volume to "+str( n )+ "\"")
 
 
 class MainRule(MappingRule):
@@ -63,14 +63,14 @@ class MainRule(MappingRule):
     #speech functions
     'talk to me':       Function(talk_to_me),
     'repeat after me <text>': Function(repeat_after, extra='text'),
-    "set [system] volume [to] <quantity>": Function(volume_control, extra='quantity'),
+    "set [system] volume [to] <n>": Function(volume_control, extra='n'),
     }
     extras = [
-              IntegerRef("quantity", 1, 100),
+              IntegerRef("n", 1, 100),
               Dictation("text"),
               Dictation("text2")
              ]
-    defaults ={"quantity": 1}
+    defaults ={"n": 1}
 
 grammar = Grammar('Serena')
 grammar.add_rule(MainRule())

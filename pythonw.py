@@ -13,27 +13,40 @@ Command-module for pythonw
 #---------------------------------------------------------------------------
 
 from dragonfly import (Grammar, AppContext, MappingRule,
-                       Dictation, Choice, IntegerRef, NumberRef,
-                       Key, Text, Repeat,BringApp)
-import paths
+                       Dictation, Choice, IntegerRef, 
+                       Key, Text, Repeat,BringApp, Function)
+import paths, utilities
 BASE_PATH=paths.get_base()
+
+def navigate_grid(n, n2, type):
+#     print n
+#     print n2
+#     print type
+    Key("c").execute()
+    utilities.press_digits(n)
+    Key("r").execute()
+    utilities.press_digits(n)
+    Key("enter").execute()
+    if not type=="0":
+        Key(str(type)).execute()
 
 class CommandRule(MappingRule):
 
     mapping = {
-        'help':               Key("question")        
+        'help':                 Key("question"),
+        "<n> by <n2> [<type>]": Function(navigate_grid,extra={'n', 'n2','type'}),        
         }
     extras = [
               Dictation("dict"),
               Dictation("dict2"),
-              IntegerRef("number", 1, 100),
-              NumberRef("int2"),
-              Choice("zoom",
-                    {"75": "7", "100": "1", "page width": "p",
-                     "text width": "t", "whole page": "w",
+              IntegerRef("n", 1, 1000),
+              IntegerRef("n2", 1, 1000),
+              Choice("type",
+                    {"default": "0", "left": "s", "double": "d",
+                     "dub": "d", "right": "t",
                     }),
              ]
-    defaults ={"level": 1}
+    defaults ={"n": 1,"type":"0"}
 
 #---------------------------------------------------------------------------
 

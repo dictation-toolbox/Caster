@@ -25,22 +25,22 @@ def auto_spell(text):
         print "Unexpected error:", sys.exc_info()[0]
         print "Unexpected error:", sys.exc_info()[1]
         
-def scroll(text, xnumber):
+def scroll(text, n):
     direction=str(text)
     updown=-100
     if direction== "up" or direction == "north":
         updown= 100
     (x, y) = win32api.GetCursorPos()
-    win32api.mouse_event(MOUSEEVENTF_WHEEL, x, y, updown*xnumber, 0)
+    win32api.mouse_event(MOUSEEVENTF_WHEEL, x, y, updown*n, 0)
 
     
-def copy_clip(xnumber):
-    base=str(xnumber)
+def copy_clip(n):
+    base=str(n)
     Key( "c-"+base)._execute()
     Key( "c-c")._execute()
     
-def paste_clip(xnumber):
-    base=str(xnumber)
+def paste_clip(n):
+    base=str(n)
     Key( "c-"+base)._execute()
     Key( "c-v")._execute()
     
@@ -50,6 +50,10 @@ def suicide():
 def open_and(text,text2):
     print text
     print text2
+    
+def test():
+    import pydevd;pydevd.settrace()
+    BringApp("pythonw", paths.get_grid(), r" --width 364" , r" --height 182" , r" --locationx 93" , r" --locationy 120" , r" --rowheight 20" , r" --columnwidth 20" , r" --numrows 20" , r" --numcolumns 20")._execute()
 
 class MainRule(MappingRule):
     global MMT_PATH
@@ -69,24 +73,26 @@ class MainRule(MappingRule):
 	'kick mid': 				    Playback([(["mouse", "middle", "click"], 0.0)]),
 	'kick right': 	                Playback([(["mouse", "right", "click"], 0.0)]),
     '(kick double|double kick)':    Playback([(["mouse", "double", "click"], 0.0)]),
-    "scroll [<text>] <xnumber>":     Function(scroll, extra={'text', 'xnumber'}),
+    "scroll [<text>] <n>":     Function(scroll, extra={'text', 'n'}),
     'grid app position mode':               BringApp("pythonw", paths.get_grid(), r"--positionMode"),
+    'grid app test mode':               Function(test),
+    
     
     #keyboard shortcuts
 	"username":                    Text("synkarius"),
     "nat link":                     Text( "natlink" ),
     'save [work]':                  Key("c-s"),
     'enter':                        Key("enter"),
-    "(down | south) [<xnumber>]":                Key("down") * Repeat(extra="xnumber"),
-    "(up | north) [<xnumber>]":                  Key("up") * Repeat(extra="xnumber"),
-    "(left | west) [<xnumber>]":               Key("left") * Repeat(extra="xnumber"),
-    "(right | east) [<xnumber>]":               Key("right") * Repeat(extra="xnumber"),
-    "fly (left | west | back) [<xnumber>]":                Key("c-left") * Repeat(extra="xnumber"),
-    "fly [(right | east)] [<xnumber>]":               Key("c-right") * Repeat(extra="xnumber"),
-    "color (left | west | back) [<xnumber>]":                Key("cs-left") * Repeat(extra="xnumber"),
-    "color [(right | east)] [<xnumber>]":               Key("cs-right") * Repeat(extra="xnumber"),
-    "color (up | north) [<xnumber>]":               Key("shift:down, up, shift:up") * Repeat(extra="xnumber"),
-    "color (down | south) [<xnumber>]":               Key("shift:down, down, shift:up") * Repeat(extra="xnumber"),
+    "(down | south) [<n>]":                Key("down") * Repeat(extra="n"),
+    "(up | north) [<n>]":                  Key("up") * Repeat(extra="n"),
+    "(left | west) [<n>]":               Key("left") * Repeat(extra="n"),
+    "(right | east) [<n>]":               Key("right") * Repeat(extra="n"),
+    "fly (left | west | back) [<n>]":                Key("c-left") * Repeat(extra="n"),
+    "fly [(right | east)] [<n>]":               Key("c-right") * Repeat(extra="n"),
+    "color (left | west | back) [<n>]":                Key("cs-left") * Repeat(extra="n"),
+    "color [(right | east)] [<n>]":               Key("cs-right") * Repeat(extra="n"),
+    "color (up | north) [<n>]":               Key("shift:down, up, shift:up") * Repeat(extra="n"),
+    "color (down | south) [<n>]":               Key("shift:down, down, shift:up") * Repeat(extra="n"),
     "end of line":                  Key("end"),
     "end of (all lines|text|page)": Key("c-end"),
     "find":                         Key("c-f"),
@@ -95,13 +101,13 @@ class MainRule(MappingRule):
     "cut":                              Key("c-x"),
     "select all":                       Key("c-a"),
     "drop":                            Key("c-v"),
-    "delete [<xnumber>]":                (Key("del")+Pause("5")) * Repeat(extra="xnumber"),
-    "clear [<xnumber>]":                Key("backspace") * Repeat(extra="xnumber"),
+    "delete [<n>]":                (Key("del")+Pause("5")) * Repeat(extra="n"),
+    "clear [<n>]":                Key("backspace") * Repeat(extra="n"),
     "(cancel | escape)":                Key("escape"),
     
     # miscellaneous
-    "copy clip [<xnumber>]":         Key("c-%(xnumber)d,c-c"),# shortcut for tenclips
-    "paste clip [<xnumber>]":         Key("c-%(xnumber)d,c-v"),# shortcut for tenclips
+    "copy clip [<n>]":         Key("c-%(n)d,c-c"),# shortcut for tenclips
+    "paste clip [<n>]":         Key("c-%(n)d,c-v"),# shortcut for tenclips
     'auto spell <text>': Function(auto_spell, extra='text'),
     
     # monitor management
@@ -144,12 +150,12 @@ class MainRule(MappingRule):
     
     }
     extras = [
-              IntegerRef("xnumber", 1, 10000),
+              IntegerRef("n", 1, 10000),
               Dictation("text"),
               Dictation("text2"),
               Dictation("text3"),
              ]
-    defaults ={"xnumber": 1,
+    defaults ={"n": 1,
                "text": ""
                }
 

@@ -16,10 +16,7 @@ from dragonfly import (Grammar, AppContext, MappingRule,
                        Dictation, Choice, IntegerRef, NumberRef,
                        Key, Text, Repeat, Function, Pause)
 
-def go(n):
-    number=str(n)
-    for digit in number:
-        Key(digit).execute()
+import utilities
     
 class CommandRule(MappingRule):
 
@@ -33,7 +30,7 @@ class CommandRule(MappingRule):
         "show downloads":               Key("c-j"),
         "zoom in <n>":              Key("c-plus") * Repeat(extra="n"),
         "zoom out <n>":             Key("c-minus") * Repeat(extra="n"),
-        "go [to] <n>":             Function(go, extra = "n"),
+        "go [to] <n>":             Function(utilities.press_digits, extra = "n"),
         "navigate (in | current | here)":            Key("f"),
         "navigate out":            Key("s-f"),
         "refresh":            Key("c-r"),
