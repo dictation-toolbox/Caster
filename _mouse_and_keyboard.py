@@ -1,6 +1,6 @@
 from dragonfly import ( Key, Text , Playback, Function, Repeat,
                         BringApp,IntegerRef, Grammar, Dictation,
-                        MappingRule, Pause)
+                        MappingRule, Pause, Mouse)
 import sys, win32api
 from win32con import MOUSEEVENTF_WHEEL
 import paths, utilities
@@ -54,6 +54,7 @@ class MainRule(MappingRule):
 	'kick mid': 				    Playback([(["mouse", "middle", "click"], 0.0)]),
 	'kick right': 	                Playback([(["mouse", "right", "click"], 0.0)]),
     '(kick double|double kick)':    Playback([(["mouse", "double", "click"], 0.0)]),
+    "shift right click":            Key("shift:down")+ Mouse("right")+ Key("shift:up"),
     "scroll [<text>] <n>":     Function(scroll, extra={'text', 'n'}),
     'grid app position mode':               BringApp("pythonw", paths.get_grid(), r"--positionMode"),
     'grid app test mode':               Function(test),
@@ -102,6 +103,6 @@ class MainRule(MappingRule):
                "text": ""
                }
 
-grammar = Grammar('Global')
+grammar = Grammar('mouse_and_keyboard')
 grammar.add_rule(MainRule())
 grammar.load()

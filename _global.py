@@ -44,7 +44,7 @@ class MainRule(MappingRule):
     'minimize':                     Playback([(["minimize", "window"], 0.0)]),
     'maximize':                     Playback([(["maximize", "window"], 0.0)]),
     
-
+    "open natlink folder":          BringApp("explorer", "C:\NatLink\NatLink\MacroSystem"),
     
     }
     extras = [

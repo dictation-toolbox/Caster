@@ -1,11 +1,80 @@
-#
-# This file is a command-module for Dragonfly.
-# (c) Copyright 2008 by Christo Butcher
-# Licensed under the LGPL, see <http://www.gnu.org/licenses/>
-#
-
 """
-Command-module for pythonw
+---------------------------
+Custom Grid Help
+---------------------------
+usage: CustomGrid.py [-h] [-p] [--width WIDTH] [--height HEIGHT]
+                     [--locationx LOCATIONX] [--locationy LOCATIONY]
+                     [--sizeToClient SIZETOCLIENT] [--rowheight ROWHEIGHT]
+                     [--columnwidth COLUMNWIDTH] [--numrows NUMROWS]
+                     [--numcolumns NUMCOLUMNS] [--sticky] [--opacity OPACITY]
+                     [--alwaysontop]
+
+Displays a custom grid to assist with voice recognition control of the mouse.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p, --positionMode    Allows you to resize the grid and determine the
+                        desired parameters. When the window is closed,
+                        parameters are printed to the command line.
+  --width WIDTH         Specify the width of the grid in pixels. You may omit
+                        this switch if you specify both --columnwidth and
+                        --numcolumns.
+  --height HEIGHT       Specify the height of the grid in pixels. You may omit
+                        this switch if you specify both --rowheight and
+                        --numrows.
+  --locationx LOCATIONX
+                        Specify the x pixel screen coordinates of the upper
+                        left corner of the grid. Default is 0.
+  --locationy LOCATIONY
+                        Specify the y pixel screen coordinates of the upper
+                        left corner of the grid. Default is 0.
+  --sizeToClient SIZETOCLIENT
+                        Use this switch to size and position the grid over the
+                        client window of the given application. Specify the
+                        process file name of the target application or the
+                        HWND of the application window. This switch overrides
+                        the width, height, locationx and locationy switches.
+                        It is ignored in position mode.
+  --rowheight ROWHEIGHT
+                        Specify the height of a grid row in pixels.
+  --columnwidth COLUMNWIDTH
+                        Specify the width of a grid column in pixels.
+  --numrows NUMROWS     Specify the number of rows in the grid.
+  --numcolumns NUMCOLUMNS
+                        Specify the number of columns in the grid.
+  --sticky              Include this switch to make the grid sticky.
+  --opacity OPACITY     Value from 0 to 100. 0 makes the grid completely
+                        transparent. 100 makes the grid completely opaque.
+  --alwaysontop         Include this switch to make the grid stay on top of
+                        all windows.
+
+Once the grid is displayed, you can control the application using the following commands:
+    ?: show this help text.
+
+    r##: move the pointer to the indicated row.  To move to row 23, type 'r23' followed by <enter>.
+    c##: move the pointer to the indicated column.  To move to column 45, type 'c45' followed by <enter>.
+    You can also combine a row and column in a single command:  'r23c45' followed by <enter>  does a single move.
+
+    s: single click the mouse.
+    d: double click the mouse.
+    t: right click the mouse.
+
+    y: toggle the sticky setting.  If sticky, the grid will remain displayed after issuing a click.
+                                   If not sticky, the grid will close after issuing a click.
+    h: refresh the display. This is especially useful with the "sticky" setting turned on.
+    l: allow you to enter new command line arguments and reconfigure the grid without restarting the application.
+
+    <up arrow>: increase row height
+    <down arrow>: decrease row height
+    <left arrow>: decrease column width
+    <right arrow>: increase column width
+
+    <ctrl>c: copy the current parameters into the clipboard as the commandline switches needed to run the grid
+
+    <esc>: hide the grid.
+    x: close the application.
+
+In position mode, the origin of the grid as indicated by a small circle at the top left corner of the grid.  This point will be the locationx and location y values.
 
 """
 
