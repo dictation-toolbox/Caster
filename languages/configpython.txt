@@ -34,6 +34,10 @@ cmd.map = {
         "pair":                     Text("()")+ Key("left"),
         "[square] (bracket | brackets)":    Text("[]")+ Key("left"),
         "curly":                    Text("{}")+ Key("left"),
+        "angle":                    Text("<>")+ Key("left"),
+        
+        "convert to string":		Text("str()")+ Key("left"),
+        
         "plus":						Text("+"),
         "minus":						Text("-"),
         "times":						Text("*"),

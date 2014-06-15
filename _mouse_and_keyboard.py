@@ -3,6 +3,7 @@ from dragonfly import ( Key, Text , Playback, Function, Repeat,
                         MappingRule, Pause, Mouse)
 import sys, win32api
 from win32con import MOUSEEVENTF_WHEEL
+from win32api import GetSystemMetrics
 import paths, utilities
 
 BASE_PATH = paths.get_base()
@@ -38,14 +39,20 @@ def paste_clip(n):
     Key( "c-"+base)._execute()
     Key( "c-v")._execute()
     
-def test():
+def grid_to_window():
     #import pydevd;pydevd.settrace()
-    BringApp("pythonw", paths.get_grid(), "--width","364" , "--height","182" , "--locationx","93" , 
-             "--locationy","120" , "--rowheight","20" , "--columnwidth","20" , "--numrows","20" , 
+    BringApp("pythonw", paths.get_grid(), "--rowheight","20" , "--columnwidth","20" , "--numrows","20" , 
              "--numcolumns","20","--sizeToClient",utilities.get_active_window_hwnd())._execute()
+             
+def grid_full():
+    screen_width = GetSystemMetrics (0)
+    screen_height =GetSystemMetrics (1)
+    BringApp("pythonw", paths.get_grid(),
+        "--width",str((screen_width - 20)),"--height",str((screen_height - 30)),"--locationx","10","--locationy","15", 
+        "--rowheight","20" , "--columnwidth","20" , "--numrows","20", "--numcolumns","20")._execute()
+    
 
 class MainRule(MappingRule):
-    global MMT_PATH
     mapping = {
 
 	
@@ -55,16 +62,17 @@ class MainRule(MappingRule):
 	'kick right': 	                Playback([(["mouse", "right", "click"], 0.0)]),
     '(kick double|double kick)':    Playback([(["mouse", "double", "click"], 0.0)]),
     "shift right click":            Key("shift:down")+ Mouse("right")+ Key("shift:up"),
-    "scroll [<text>] <n>":     Function(scroll, extra={'text', 'n'}),
-    'grid app position mode':               BringApp("pythonw", paths.get_grid(), r"--positionMode"),
-    'grid app test mode':               Function(test),
-    
+    "scroll [<text>] <n>":          Function(scroll, extra={'text', 'n'}),
+    'grid position mode':           BringApp("pythonw", paths.get_grid(), r"--positionMode"),
+    'grid wrap':                    Function(grid_to_window),
+    'grid (full | f s)':            Function(grid_full),
     
     #keyboard shortcuts
-	"username":                    Text("synkarius"),
+	"username":                     Text("synkarius"),
     "nat link":                     Text( "natlink" ),
     'save [work]':                  Key("c-s"),
-    'enter':                        Key("enter"),
+    'enter [<n>]':                        Key("enter")* Repeat(extra="n"),
+    'space [<n>]':                        Key("space")* Repeat(extra="n"),
     "(down | south) [<n>]":                Key("down") * Repeat(extra="n"),
     "(up | north) [<n>]":                  Key("up") * Repeat(extra="n"),
     "(left | west) [<n>]":               Key("left") * Repeat(extra="n"),

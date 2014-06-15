@@ -82,8 +82,8 @@ In position mode, the origin of the grid as indicated by a small circle at the t
 #---------------------------------------------------------------------------
 
 from dragonfly import (Grammar, AppContext, MappingRule,
-                       Dictation, Choice, IntegerRef, 
-                       Key, Text, Repeat,BringApp, Function)
+                       Choice, IntegerRef, 
+                       Key, Function)
 import paths, utilities
 BASE_PATH=paths.get_base()
 
@@ -95,21 +95,43 @@ def navigate_grid(n, n2, click):
     Key("enter").execute()
     if not type=="0":
         Key(str(click)).execute()
+        
+def single_line(line,n):
+    Key(line).execute()
+    utilities.press_digits(n)
 
 class CommandRule(MappingRule):
 
     mapping = {
         'help':                 Key("question"),
-        "<n> by <n2> [<click>]":Function(navigate_grid,extra={'n', 'n2','type'}),        
+        "<n> by <n2> [<click>]":Function(navigate_grid,extra={'n', 'n2','click'}),
+        "<line> <n>":           Function(navigate_grid,extra={'n','line'}),
+        
+        "left":                 Key("s"),
+        "double":               Key("d"),
+        "right":                Key("t"),
+        
+        "sticky":               Key("y"),
+        "refresh":              Key("h"),
+        "reconfigure":          Key("l"),
+        "increase row height":  Key("up"),
+        "decrease row height":  Key("down"),
+        "decrease column width":Key("left"),
+        "increase column width":Key("right"),
+        "copy parameters":      Key("c-c"),
+        "hide":                 Key("escape"),
+        "exit":                 Key("x"),
+        
         }
     extras = [
-              Dictation("dict"),
-              Dictation("dict2"),
               IntegerRef("n", 1, 1000),
               IntegerRef("n2", 1, 1000),
               Choice("click",
                     {"default": "0", "left": "s", "double": "d",
                      "dub": "d", "right": "t",
+                    }),
+              Choice("line",
+                    {"row": "r", "column": "c",
                     }),
              ]
     defaults ={"n": 1,"type":"0"}
