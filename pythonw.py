@@ -93,7 +93,7 @@ def navigate_grid(n, n2, click):
     Key("r").execute()
     utilities.press_digits(n2)
     Key("enter").execute()
-    if not type=="0":
+    if not click=="0":
         Key(str(click)).execute()
         
 def single_line(line,n):
@@ -107,9 +107,9 @@ class CommandRule(MappingRule):
         "<n> by <n2> [<click>]":Function(navigate_grid,extra={'n', 'n2','click'}),
         "<line> <n>":           Function(navigate_grid,extra={'n','line'}),
         
-        "left":                 Key("s"),
-        "double":               Key("d"),
-        "right":                Key("t"),
+        "I left":               Key("s"),
+        "I double":             Key("d"),
+        "I right":              Key("t"),
         
         "sticky":               Key("y"),
         "refresh":              Key("h"),
@@ -134,7 +134,7 @@ class CommandRule(MappingRule):
                     {"row": "r", "column": "c",
                     }),
              ]
-    defaults ={"n": 1,"type":"0"}
+    defaults ={"n": 1,"click":"0"}
 
 #---------------------------------------------------------------------------
 

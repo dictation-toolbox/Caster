@@ -1,7 +1,7 @@
 from dragonfly import ( Key, Text , Playback, Function, Repeat,
                         BringApp,IntegerRef, Grammar, Dictation,
-                        MappingRule, Pause, Mouse)
-import sys, win32api
+                        MappingRule, Pause, Mouse, Choice)
+import sys, win32api, win32gui
 from win32con import MOUSEEVENTF_WHEEL
 from win32api import GetSystemMetrics
 import paths, utilities
@@ -51,7 +51,19 @@ def grid_full():
         "--width",str((screen_width - 20)),"--height",str((screen_height - 30)),"--locationx","10","--locationy","15", 
         "--rowheight","20" , "--columnwidth","20" , "--numrows","20", "--numcolumns","20")._execute()
     
-
+def pixel_jump(direction,n):
+    x,y= win32gui.GetCursorPos()
+    dir=str(direction)
+    if dir=="up":
+        y=y-n
+    elif dir=="down":
+        y=y+n
+    elif dir=="left":
+        x=x-n
+    elif dir=="right":
+        x=x+n
+    Mouse("["+ str(x)+ ", "+str(y)+ "]").execute()
+    
 class MainRule(MappingRule):
     mapping = {
 
@@ -66,6 +78,7 @@ class MainRule(MappingRule):
     'grid position mode':           BringApp("pythonw", paths.get_grid(), r"--positionMode"),
     'grid wrap':                    Function(grid_to_window),
     'grid (full | f s)':            Function(grid_full),
+    "pixel <direction> <n>":        Function(pixel_jump, extra={"direction","n"}),
     
     #keyboard shortcuts
 	"username":                     Text("synkarius"),
@@ -106,6 +119,9 @@ class MainRule(MappingRule):
               Dictation("text"),
               Dictation("text2"),
               Dictation("text3"),
+              Choice("direction",
+                    {"up": "up", "down": "down", "left": "left", "right": "right",
+                    }),
              ]
     defaults ={"n": 1,
                "text": ""
