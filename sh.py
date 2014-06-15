@@ -30,7 +30,7 @@ class CommandRule(MappingRule):
         "CD":            Text( "cd " ),
         "list":            Text( "ls" )+Key("enter"),
         "make directory":  Text( "mkdir " ),
-        
+        "exit":            Text( "exit" )+Key("enter"),
         
         }
     extras = [
