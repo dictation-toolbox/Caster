@@ -97,15 +97,20 @@ def navigate_grid(n, n2, click):
         Key(str(click)).execute()
         
 def single_line(line,n):
-    Key(line).execute()
-    utilities.press_digits(n)
-
+    try:
+        Key(line).execute()
+        utilities.press_digits(n)
+        Key("enter").execute()
+    except Exception:
+        print "Unexpected error:", sys.exc_info()[0]
+        print "Unexpected error:", sys.exc_info()[1]
+    
 class CommandRule(MappingRule):
 
     mapping = {
         'help':                 Key("question"),
         "<n> by <n2> [<click>]":Function(navigate_grid,extra={'n', 'n2','click'}),
-        "<line> <n>":           Function(navigate_grid,extra={'n','line'}),
+        "<line> <n>":           Function(single_line,extra={'line','n'}),
         
         "I left":               Key("s"),
         "I double":             Key("d"),
