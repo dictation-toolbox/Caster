@@ -13,7 +13,6 @@ Command-module for git
 #---------------------------------------------------------------------------
 
 from dragonfly import (Grammar, AppContext, MappingRule,
-                       Dictation, Choice, IntegerRef, NumberRef,
                        Key, Text, Repeat)
 
 
@@ -34,17 +33,9 @@ class CommandRule(MappingRule):
         
         }
     extras = [
-              Dictation("dict"),
-              Dictation("dict2"),
-              IntegerRef("1to9", 1, 10),
-              IntegerRef("level",1, 100),
-              NumberRef("int2"),
-              Choice("zoom",
-                    {"75": "7", "100": "1", "page width": "p",
-                     "text width": "t", "whole page": "w",
-                    }),
+              
              ]
-    defaults ={"level": 1}
+    defaults ={}
 
 
 #---------------------------------------------------------------------------

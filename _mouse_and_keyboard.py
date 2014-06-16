@@ -103,7 +103,7 @@ class MainRule(MappingRule):
     "copy":                             Key("c-c"),
     "cut":                              Key("c-x"),
     "select all":                       Key("c-a"),
-    "drop":                            Key("c-v"),
+    "drop [<n>]":                       Key("c-v")* Repeat(extra="n"),
     "delete [<n>]":                (Key("del")+Pause("5")) * Repeat(extra="n"),
     "clear [<n>]":                Key("backspace") * Repeat(extra="n"),
     "(cancel | escape)":                Key("escape"),
