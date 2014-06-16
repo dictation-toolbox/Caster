@@ -10,24 +10,19 @@ BASE_PATH = paths.get_base()
 MMT_PATH = paths.get_mmt()
 
     
-def auto_spell(text):
-    #To do: add capitalization, support for military alphabet
-    # use a Choice to switch between modes
-    try:
+def auto_spell(mode, text):
+    # to do: add support for other modes
+    format_mode=str(mode)
+    if format_mode == "spell":
         base="".join(str(text).split(" ")).lower()
         Text(base)._execute()
-    except Exception:
-        print "Unexpected error:", sys.exc_info()[0]
-        print "Unexpected error:", sys.exc_info()[1]
         
-def scroll(text, n):
-    direction=str(text)
+def scroll(direction, n):
     updown=-100
-    if direction== "up" or direction == "north":
+    if str(direction)== "up":
         updown= 100
     (x, y) = win32api.GetCursorPos()
     win32api.mouse_event(MOUSEEVENTF_WHEEL, x, y, updown*n, 0)
-
     
 def copy_clip(n):
     base=str(n)
@@ -74,44 +69,45 @@ class MainRule(MappingRule):
 	'kick right': 	                Playback([(["mouse", "right", "click"], 0.0)]),
     '(kick double|double kick)':    Playback([(["mouse", "double", "click"], 0.0)]),
     "shift right click":            Key("shift:down")+ Mouse("right")+ Key("shift:up"),
-    "scroll [<text>] <n>":          Function(scroll, extra={'text', 'n'}),
+    "scroll [<direction>] <n>":     Function(scroll, extra={'direction', 'n'}),
     'grid position mode':           BringApp("pythonw", paths.get_grid(), r"--positionMode"),
     'grid wrap':                    Function(grid_to_window),
-    'grid (full | f s)':            Function(grid_full),
+    'grid':                         Function(grid_full),
     "pixel <direction> <n>":        Function(pixel_jump, extra={"direction","n"}),
     
     #keyboard shortcuts
 	"username":                     Text("synkarius"),
     "nat link":                     Text( "natlink" ),
     'save [work]':                  Key("c-s"),
-    'enter [<n>]':                        Key("enter")* Repeat(extra="n"),
-    'space [<n>]':                        Key("space")* Repeat(extra="n"),
-    "(down | south) [<n>]":                Key("down") * Repeat(extra="n"),
-    "(up | north) [<n>]":                  Key("up") * Repeat(extra="n"),
-    "(left | west) [<n>]":               Key("left") * Repeat(extra="n"),
-    "(right | east) [<n>]":               Key("right") * Repeat(extra="n"),
-    "fly (left | west | back) [<n>]":                Key("c-left") * Repeat(extra="n"),
-    "fly [(right | east)] [<n>]":               Key("c-right") * Repeat(extra="n"),
-    "color (left | west | back) [<n>]":                Key("cs-left") * Repeat(extra="n"),
-    "color [(right | east)] [<n>]":               Key("cs-right") * Repeat(extra="n"),
-    "color (up | north) [<n>]":               Key("shift:down, up, shift:up") * Repeat(extra="n"),
-    "color (down | south) [<n>]":               Key("shift:down, down, shift:up") * Repeat(extra="n"),
+    'enter [<n>]':                  Key("enter")* Repeat(extra="n"),
+    'space [<n>]':                  Key("space")* Repeat(extra="n"),
+    "down [<n>]":                   Key("down") * Repeat(extra="n"),
+    "up [<n>]":                     Key("up") * Repeat(extra="n"),
+    "left [<n>]":                   Key("left") * Repeat(extra="n"),
+    "right [<n>]":                  Key("right") * Repeat(extra="n"),
+    "fly (left | back) [<n>]":      Key("c-left") * Repeat(extra="n"),
+    "fly [right] [<n>]":            Key("c-right") * Repeat(extra="n"),
+    "color (left | back) [<n>]":    Key("cs-left") * Repeat(extra="n"),
+    "color [right] [<n>]":          Key("cs-right") * Repeat(extra="n"),
+    "color up [<n>]":               Key("shift:down, up, shift:up") * Repeat(extra="n"),
+    "color down [<n>]":             Key("shift:down, down, shift:up") * Repeat(extra="n"),
     "end of line":                  Key("end"),
     "end of (all lines|text|page)": Key("c-end"),
     "find":                         Key("c-f"),
     "replace":                      Key("c-h"),
-    "copy":                             Key("c-c"),
-    "cut":                              Key("c-x"),
-    "select all":                       Key("c-a"),
-    "drop [<n>]":                       Key("c-v")* Repeat(extra="n"),
-    "delete [<n>]":                (Key("del")+Pause("5")) * Repeat(extra="n"),
-    "clear [<n>]":                Key("backspace") * Repeat(extra="n"),
-    "(cancel | escape)":                Key("escape"),
+    "copy":                         Key("c-c"),
+    "cut":                          Key("c-x"),
+    "select all":                   Key("c-a"),
+    "drop [<n>]":                   Key("c-v")* Repeat(extra="n"),
+    "delete [<n>]":                 (Key("del")+Pause("5")) * Repeat(extra="n"),
+    "true delete line":             Playback([(["delete", "line"], 0.0)])* Repeat(3),
+    "clear [<n>]":                  Key("backspace") * Repeat(extra="n"),
+    "(cancel | escape)":            Key("escape"),
     
     # miscellaneous
-    "copy clip [<n>]":         Key("c-%(n)d,c-c"),# shortcut for tenclips
-    "paste clip [<n>]":         Key("c-%(n)d,c-v"),# shortcut for tenclips
-    'auto spell <text>': Function(auto_spell, extra='text'),
+    "copy clip [<n>]":              Key("c-%(n)d,c-c"),# shortcut for tenclips
+    "paste clip [<n>]":             Key("c-%(n)d,c-v"),# shortcut for tenclips
+    'auto <mode> <text>':           Function(auto_spell, extra={"mode","text"}),
     
     }
     extras = [
@@ -122,9 +118,11 @@ class MainRule(MappingRule):
               Choice("direction",
                     {"up": "up", "down": "down", "left": "left", "right": "right",
                     }),
+              Choice("mode",
+                    {"spell": "spell", "sent": "sent", "crunch": "crunch", "caps": "caps",
+                    }),
              ]
-    defaults ={"n": 1,
-               "text": ""
+    defaults ={"n": 1,"text": ""
                }
 
 grammar = Grammar('mouse_and_keyboard')
