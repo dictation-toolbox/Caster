@@ -38,13 +38,16 @@ class MainRule(MappingRule):
     
     "open natlink folder":          BringApp("explorer", "C:\NatLink\NatLink\MacroSystem"),
     
-    "setup help":                   Function(helpdisplay.setup_help),
+    "help <choice>":                Function(helpdisplay.get_help,extra={"choice"}),
     }
     extras = [
               IntegerRef("n", 1, 1000),
               Dictation("text"),
               Dictation("text2"),
               Dictation("text3"),
+              Choice("choice",
+                    {"alphabet": "configalphabet.txt", "python": "configpython.txt", 
+                    }),
              ]
     defaults ={"n": 1,
                "text": ""

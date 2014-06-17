@@ -37,6 +37,7 @@ cmd.map = {
         "angle":                    Text("<>")+ Key("left"),
         
         "convert to string":		Text("str()")+ Key("left"),
+        "length":					Text("len()"),
         
         "plus":						Text("+"),
         "minus":						Text("-"),
