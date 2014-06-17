@@ -5,6 +5,10 @@ Created on Jun 12, 2014
 '''
 from dragonfly import Key
 import win32gui, win32process, win32api
+import os
+import paths
+
+BASE_PATH = paths.get_base()
 
 def press_digits(n):
     number=str(n)
@@ -19,3 +23,12 @@ def get_active_window_path():
     t,p = win32process.GetWindowThreadProcessId(name)
     handle = win32api.OpenProcess(0x0410,False,p)
     return win32process.GetModuleFileNameEx( handle, 0 )
+
+def clear_pyc():
+    global BASE_PATH
+    os.chdir(BASE_PATH)
+    for files in os.listdir("."):
+        if files.endswith(".pyc"):
+            filepath=BASE_PATH+files
+            os.remove(filepath)
+            print "Deleted: "+filepath

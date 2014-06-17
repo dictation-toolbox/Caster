@@ -13,23 +13,23 @@ Command-module for git
 #---------------------------------------------------------------------------
 
 from dragonfly import (Grammar, AppContext, MappingRule,
-                       Key, Text, Repeat)
+                       Key, Text)
 
 
 class CommandRule(MappingRule):
 
     mapping = {
-        "initialize":            Text( "git init" )+Key("enter"),
-        "add":            Text( "git add ." )+Key("enter"),
-        "status":            Text( "git status" )+Key("enter"),
-        "commit":            Text( "git commit -am ''" )+Key("left"),
-        "push":            Text( "git push" )+Key("enter"),
-        "pull":            Text( "git pull" )+Key("enter"),
+        "initialize":       Text( "git init" )+Key("enter"),
+        "add":              Text( "git add ." )+Key("enter"),
+        "status":           Text( "git status" )+Key("enter"),
+        "commit":           Text( "git commit -am ''" )+Key("left"),
+        "push":             Text( "git push" )+Key("enter"),
+        "pull":             Text( "git pull" )+Key("enter"),
         "CD up":            Text( "cd .." )+Key("enter"),
-        "CD":            Text( "cd " ),
-        "list":            Text( "ls" )+Key("enter"),
-        "make directory":  Text( "mkdir " ),
-        "exit":            Text( "exit" )+Key("enter"),
+        "CD":               Text( "cd " ),
+        "list":             Text( "ls" )+Key("enter"),
+        "make directory":   Text( "mkdir " ),
+        "exit":             Text( "exit" )+Key("enter"),
         
         }
     extras = [

@@ -111,7 +111,7 @@ class MainRule(MappingRule):
     
     }
     extras = [
-              IntegerRef("n", 1, 10000),
+              IntegerRef("n", 1, 500),
               Dictation("text"),
               Dictation("text2"),
               Dictation("text3"),

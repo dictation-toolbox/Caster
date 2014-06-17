@@ -4,10 +4,9 @@ import paths
 
 BASE_PATH = paths.get_base()
 NIRCMD_PATH = paths.get_nircmd()
-# SYSTEM_VOLUME=
 
 def talk_to_me():
-    natlink.execScript ("TTSPlayString \"" +"I am Serena, version 0.1.67"+ "\"")
+    natlink.execScript ("TTSPlayString \"" +"I am Serena, version 0.1.68"+ "\"")
    
 def repeat_after(text):
     natlink.execScript ("TTSPlayString \"" +str(text)+ "\"")

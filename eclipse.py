@@ -45,13 +45,7 @@ class CommandRule(MappingRule):
        "format code":            Key("cs-f"),
        "(do imports | import all)":    Key("cs-o"),
         "comment line":                  Key("c-slash"),
-        
-#         "space [<n>]":                      Key("space:%(n)d"),
-#            "enter [<n>]":                      Key("enter:%(n)d"),
-#            
-#            "pop up":                           Key("apps"),
-
-           
+       
         }
     extras = [
               Dictation("text"),

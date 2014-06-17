@@ -29,8 +29,6 @@ class CommandRule(MappingRule):
         "don't kill me":                    Key("a-p") ,
         "say <dict>":                           Text("%(dict)s"),
         "clear [<level>]":                Key("backspace")* Repeat(extra="level"),
-        #"introduce myself":                    Key("c-b") ,
-        #"monsters":                    Key("c-b") ,
         "give delta [<level>]":                    Key("s-d, enter") * Repeat(extra="level"),
         "skip [<level>]":                    Key("enter") * Repeat(extra="level"),
         

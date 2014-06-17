@@ -12,7 +12,7 @@ usage: CustomGrid.py [-h] [-p] [--width WIDTH] [--height HEIGHT]
 Displays a custom grid to assist with voice recognition control of the mouse.
 
 optional arguments:
-  -h, --help            show this help message and exit
+  -h, --helpdisplay            show this helpdisplay message and exit
   -p, --positionMode    Allows you to resize the grid and determine the
                         desired parameters. When the window is closed,
                         parameters are printed to the command line.
@@ -49,7 +49,7 @@ optional arguments:
                         all windows.
 
 Once the grid is displayed, you can control the application using the following commands:
-    ?: show this help text.
+    ?: show this helpdisplay text.
 
     r##: move the pointer to the indicated row.  To move to row 23, type 'r23' followed by <enter>.
     c##: move the pointer to the indicated column.  To move to column 45, type 'c45' followed by <enter>.
@@ -84,7 +84,9 @@ In position mode, the origin of the grid as indicated by a small circle at the t
 from dragonfly import (Grammar, AppContext, MappingRule,
                        Choice, IntegerRef, 
                        Key, Function)
+import sys
 import paths, utilities
+
 BASE_PATH=paths.get_base()
 
 def navigate_grid(n, n2, click):
@@ -108,7 +110,7 @@ def single_line(line,n):
 class CommandRule(MappingRule):
 
     mapping = {
-        'help':                 Key("question"),
+        'helpdisplay':                 Key("question"),
         "<n> by <n2> [<click>]":Function(navigate_grid,extra={'n', 'n2','click'}),
         "<line> <n>":           Function(single_line,extra={'line','n'}),
         

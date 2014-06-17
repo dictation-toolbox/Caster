@@ -58,10 +58,3 @@ def get_config():
 
 
 load_config()
-
-# aeneaPath = CONFIG.get("aenea.path", None)
-# if not aeneaPath:
-#     path = os.path.dirname(os.path.abspath(__file__))
-#     aeneaPath = os.path.split(path)[:-1]
-# if not aeneaPath in sys.path:
-#     sys.path.insert(0, aeneaPath)
