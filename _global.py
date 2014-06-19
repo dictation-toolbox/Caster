@@ -39,6 +39,7 @@ class MainRule(MappingRule):
     "open natlink folder":          BringApp("explorer", "C:\NatLink\NatLink\MacroSystem"),
     
     "help <choice>":                Function(helpdisplay.get_help,extra={"choice"}),
+    "variable":                     BringApp("python","variable.py"),
     }
     extras = [
               IntegerRef("n", 1, 1000),

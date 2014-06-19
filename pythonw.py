@@ -111,7 +111,7 @@ class CommandRule(MappingRule):
 
     mapping = {
         'helpdisplay':                 Key("question"),
-        "<n> by <n2> [<click>]":Function(navigate_grid,extra={'n', 'n2','click'}),
+        "(<n> by <n2> | row <n2> column <n> | column <n> row <n2>) [<click>]":Function(navigate_grid,extra={'n', 'n2','click'}),
         "<line> <n>":           Function(single_line,extra={'line','n'}),
         
         "I left":               Key("s"),
