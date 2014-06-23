@@ -46,17 +46,17 @@ def grid_full():
         "--width",str((screen_width - 20)),"--height",str((screen_height - 30)),"--locationx","10","--locationy","15", 
         "--rowheight","20" , "--columnwidth","20" , "--numrows","20", "--numcolumns","20")._execute()
     
-def pixel_jump(direction,n):
+def pixel_jump(direction,n2):
     x,y= win32gui.GetCursorPos()
-    dir=str(direction)
-    if dir=="up":
-        y=y-n
+    d=str(direction)
+    if d=="up":
+        y=y-n2
     elif dir=="down":
-        y=y+n
-    elif dir=="left":
-        x=x-n
-    elif dir=="right":
-        x=x+n
+        y=y+n2
+    elif d=="left":
+        x=x-n2
+    elif d=="right":
+        x=x+n2
     Mouse("["+ str(x)+ ", "+str(y)+ "]").execute()
     
 class MainRule(MappingRule):
@@ -65,7 +65,7 @@ class MainRule(MappingRule):
 	
     #mouse control
     '(kick left|kick)': 			Playback([(["mouse", "left", "click"], 0.0)]),
-	'kick mid': 				    Playback([(["mouse", "middle", "click"], 0.0)]),
+# 	'kick mid': 				    Playback([(["mouse", "middle", "click"], 0.0)]),# doesn't work, use a Python function
 	'kick right': 	                Playback([(["mouse", "right", "click"], 0.0)]),
     '(kick double|double kick)':    Playback([(["mouse", "double", "click"], 0.0)]),
     "shift right click":            Key("shift:down")+ Mouse("right")+ Key("shift:up"),
@@ -73,7 +73,7 @@ class MainRule(MappingRule):
     'grid position mode':           BringApp("pythonw", paths.get_grid(), r"--positionMode"),
     'grid wrap':                    Function(grid_to_window),
     'grid':                         Function(grid_full),
-    "pixel <direction> <n>":        Function(pixel_jump, extra={"direction","n"}),
+    "pixel <direction> <n2>":        Function(pixel_jump, extra={"direction","n2"}),
     
     #keyboard shortcuts
 	"username":                     Text("synkarius"),
@@ -103,6 +103,7 @@ class MainRule(MappingRule):
     "true delete line":             Playback([(["delete", "line"], 0.0)])* Repeat(3),
     "clear [<n>]":                  Key("backspace") * Repeat(extra="n"),
     "(cancel | escape)":            Key("escape"),
+    "excite mark":                  Text("!"),
     
     # miscellaneous
     "copy clip [<n>]":              Key("c-%(n)d,c-c"),# shortcut for tenclips
@@ -112,6 +113,7 @@ class MainRule(MappingRule):
     }
     extras = [
               IntegerRef("n", 1, 500),
+              IntegerRef("n2", 1, 1000),
               Dictation("text"),
               Dictation("text2"),
               Dictation("text3"),
@@ -122,7 +124,7 @@ class MainRule(MappingRule):
                     {"spell": "spell", "sent": "sent", "crunch": "crunch", "caps": "caps",
                     }),
              ]
-    defaults ={"n": 1,"text": ""
+    defaults ={"n": 1,"n2": 1,"text": ""
                }
 
 grammar = Grammar('mouse_and_keyboard')

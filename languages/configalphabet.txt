@@ -69,7 +69,7 @@ cmd.map = {
 					 
 					 "upper whiskey"  : Key("W"),
 					 "upper x-ray"    : Key("X"),
-					 "upper yellow"   : Key("Y"),
+					 "upper yankee"   : Key("Y"),
 					 "upper Zulu"     : Key("Z"),
 					 
      	   

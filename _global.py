@@ -18,7 +18,7 @@ class MainRule(MappingRule):
     mapping = {
     # Dragon NaturallySpeaking management
     'reboot dragon':                Function(utilities.clear_pyc)+Playback([(["stop", "listening"], 0.5), (["wake", 'up'], 0.0)]),
-	'deactivate': 			        Playback([(["go", "to", "sleep"], 0.0)]),
+	'(lock Dragon | deactivate)':   Playback([(["go", "to", "sleep"], 0.0)]),
 	'scratch':           			Playback([(["scratch", "that"], 0.0)]),
     '(number|numbers) mode':        Playback([(["numbers", "mode", "on"], 0.0)]),
     'spell mode':                   Playback([(["spell", "mode", "on"], 0.0)]),
