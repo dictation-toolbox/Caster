@@ -1,5 +1,7 @@
 #http://effbot.org/tkinterbook/tkinter-events-and-bindings.htm
 import Tkinter as tk
+import tkFileDialog
+import os
 """
 - 1 to 10 sticky list at the top
 - Automatically figures out which file is open by continually scanning the top-level window and looking for something with the file extension
@@ -16,17 +18,17 @@ import Tkinter as tk
 """
 class VariablesHelper:
     
-    
-    def move_to_top(self,name):
-        self.all_names.remove(name)
-        self.all_names=[name]+self.all_names
-    
     def __init__(self):
         self.all_names=[]
         self.root=tk.Tk()
         
-        
-        
+        # setup options for directory ask
+        self.dir_opt = options = {}
+        options['initialdir'] = 'C:\\natlink\\natlink\\macrosystem\\'
+        options['mustexist'] = False
+        options['parent'] = self.root
+        options['title'] = 'Please select directory'
+
         listbox = tk.Listbox(self.root)
         listbox.pack()
         
@@ -34,23 +36,30 @@ class VariablesHelper:
         
         for item in ["one", "two", "three", "four"]:
             listbox.insert(tk.END, item)
-#         root.bind_all("1", self.woot)
+        self.root.bind_all("1", self.get_new)
         label1 = tk.Label(text="Label 1", name="label1")
         entry1 = tk.Entry(name="entry1")
 
         label1.pack()
         entry1.pack()
         self.root.mainloop()
+    
+    def move_to_top(self,name):
+        self.all_names.remove(name)
+        self.all_names=[name]+self.all_names
+        
+    def get_new(self,event):
+        self.scan_directory(self.ask_directory())
         
     def scan_directory(self,directory):
-        import os
-
-        # traverse root directory, and list directories as dirs and files as files
-        for root, dirs, files in os.walk(directory):
-            path = root.split('/')
-            print (len(path) - 1) *'---' , os.path.basename(root)       
+        acceptable_extensions=[".py"]# this is hardcoded for now, will read from a box later
+        for base, dirs, files in os.walk(directory):# traverse base directory, and list directories as dirs and files as files
+            path = base.split('/')
+            print (len(path) - 1) *'---' , os.path.basename(base)       
             for file in files:
-                print len(path)*'---', file
+                extension="."+file.split(".")[-1]
+                if extension in acceptable_extensions:
+                    print len(path)*'---', file
                 
     def scan_file(self, path, language):
         f = open(path)
@@ -58,10 +67,10 @@ class VariablesHelper:
         f.close()
         for line in lines:
             print line#this is where we do language-based syntax scanning
-
-    def woot(self, event):
-        print "woot!", event.widget
-
+        
+    def ask_directory(self):# returns a string of the directory name
+        return tkFileDialog.askdirectory(**self.dir_opt)
+        
 
 
 
