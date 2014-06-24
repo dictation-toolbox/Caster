@@ -1,7 +1,6 @@
 #Based heavily on the work of https://github.com/poppe1219/dragonfly-scripts/blob/master/lib/config.py
 
 import os
-import sys
 import json
 import paths
 
@@ -16,6 +15,7 @@ def save_config():
             ensure_ascii=False)
         with open(CONFIG_PATH, "w+") as f:
             f.write(configData)  # Save config to file.
+            f.close()
     except Exception as e:
         print("Could not save config file: %s" % str(e))
 

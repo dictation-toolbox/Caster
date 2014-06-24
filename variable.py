@@ -1,7 +1,8 @@
 #http://effbot.org/tkinterbook/tkinter-events-and-bindings.htm
 import Tkinter as tk
 import tkFileDialog
-import os
+import os, re, sys
+import paths
 """
 - 1 to 10 sticky list at the top
 - Automatically figures out which file is open by continually scanning the top-level window and looking for something with the file extension
@@ -16,6 +17,18 @@ import os
 
 
 """
+
+SCANNED_FOLDERS_PATH=paths.get_scanned_folders_path()
+SCANNED_FILES={}
+
+GENERIC_PATTERN=re.compile("([A-Za-z0-9.]+\s*=)|(import [A-Za-z0-9.]+)")
+
+class ScannedFile:
+    def __init__(self):
+        self.filename=""
+        self.absolute_path=""
+        self.variables=[]
+
 class VariablesHelper:
     
     def __init__(self):
@@ -44,6 +57,8 @@ class VariablesHelper:
         entry1.pack()
         self.root.mainloop()
     
+#     def save_to_XML(self, list_of_source_files):
+    
     def move_to_top(self,name):
         self.all_names.remove(name)
         self.all_names=[name]+self.all_names
@@ -52,14 +67,48 @@ class VariablesHelper:
         self.scan_directory(self.ask_directory())
         
     def scan_directory(self,directory):
-        acceptable_extensions=[".py"]# this is hardcoded for now, will read from a box later
-        for base, dirs, files in os.walk(directory):# traverse base directory, and list directories as dirs and files as files
-            path = base.split('/')
-            print (len(path) - 1) *'---' , os.path.basename(base)       
-            for file in files:
-                extension="."+file.split(".")[-1]
-                if extension in acceptable_extensions:
-                    print len(path)*'---', file
+        global GENERIC_PATTERN
+        global SCANNED_FILES
+        pattern_being_used=GENERIC_PATTERN# later on, can add code to choose which pattern to use
+        
+        
+        try:
+            acceptable_extensions=[".py"]# this is hardcoded for now, will read from a box later
+            for base, dirs, files in os.walk(directory):# traverse base directory, and list directories as dirs and files as files
+                path = base.split('/')
+                
+                print (len(path) - 1) *'---' , base       
+                for file in files:
+                    extension="."+file.split(".")[-1]
+                    if extension in acceptable_extensions:
+                        print len(path)*'---', file
+                        scanned_file=ScannedFile()
+                        scanned_file.filename=file
+                        scanned_file.absolute_path=base
+                        f = open(base+"\\"+file, "r")
+                        lines = f.readlines()
+                        f.close()
+                        
+                        for line in lines:
+                            match_objects=pattern_being_used.findall(line)
+                            if not len(match_objects)==  0:# if we found variable name in the line
+                                mo=match_objects[0][0]
+                                result=""
+                                if "." in mo:# figure out whether it's an import#----- to do: this check doesn't work right
+                                    result=mo.split(".")[-1]
+                                else:# Or not an import
+                                    result=mo.replace(" ", "").split("=")[0]
+                                
+                                if not result in scanned_file.variables:
+                                    scanned_file.variables.append(result)
+                        
+                        SCANNED_FILES[scanned_file.absolute_path]=scanned_file
+        except Exception:
+            print "Unexpected error:", sys.exc_info()[0]
+            print "Unexpected error:", sys.exc_info()[1]
+        
+        
+                        
                 
     def scan_file(self, path, language):
         f = open(path)

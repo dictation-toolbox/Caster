@@ -8,6 +8,7 @@ import sys, os
 #BASE_PATH='C:\NatLink\NatLink\MacroSystem\\'
 BASE_PATH = os.path.dirname(os.path.abspath(__file__)) + "\\"
 CONFIG_PATH = BASE_PATH + "config.json"
+SCANNED_FOLDERS_PATH = BASE_PATH + "folders.json"
 
 #REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
 REMOTE_DEBUGGER_PATH ="D:\PROGRAMS\NON_install\eclipse\plugins\org.python.pydev_3.4.1.201403181715\pysrc"
@@ -32,6 +33,10 @@ def get_base():
 def get_config_path():
     global CONFIG_PATH
     return CONFIG_PATH
+
+def get_scanned_folders_path():
+    global SCANNED_FOLDERS_PATH
+    return SCANNED_FOLDERS_PATH
 
 def get_nircmd():
     global NIRCMD_PATH
