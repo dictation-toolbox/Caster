@@ -1,7 +1,7 @@
 #http://effbot.org/tkinterbook/tkinter-events-and-bindings.htm
 import Tkinter as tk
 import tkFileDialog
-import os, re, sys
+import os, re, sys, json
 import paths
 """
 - 1 to 10 sticky list at the top
@@ -21,7 +21,7 @@ import paths
 SCANNED_FOLDERS_PATH=paths.get_scanned_folders_path()
 SCANNED_FILES={}
 
-GENERIC_PATTERN=re.compile("([A-Za-z0-9.]+\s*=)|(import [A-Za-z0-9.]+)")
+GENERIC_PATTERN=re.compile("([A-Za-z0-9._]+\s*=)|(import [A-Za-z0-9._]+)")
 
 class ScannedFile:
     def __init__(self):
@@ -64,7 +64,15 @@ class VariablesHelper:
         self.all_names=[name]+self.all_names
         
     def get_new(self,event):
-        self.scan_directory(self.ask_directory())
+        global SCANNED_FILES
+        global SCANNED_FOLDERS_PATH
+        directory=self.ask_directory()
+        self.scan_directory(directory)
+        scan_data = json.dumps(SCANNED_FILES, sort_keys=True, indent=4,
+            ensure_ascii=False)
+        with open(SCANNED_FOLDERS_PATH, "w+") as f:
+            f.write(scan_data)  # Save config to file.
+            f.close()
         
     def scan_directory(self,directory):
         global GENERIC_PATTERN
@@ -81,10 +89,10 @@ class VariablesHelper:
                 for file in files:
                     extension="."+file.split(".")[-1]
                     if extension in acceptable_extensions:
-                        print len(path)*'---', file
-                        scanned_file=ScannedFile()
-                        scanned_file.filename=file
-                        scanned_file.absolute_path=base
+                        scanned_file={}
+                        scanned_file["filename"]=file
+                        scanned_file["absolute_path"]=base+"/"+file
+                        scanned_file["variables"]=[]
                         f = open(base+"\\"+file, "r")
                         lines = f.readlines()
                         f.close()
@@ -99,10 +107,10 @@ class VariablesHelper:
                                 else:# Or not an import
                                     result=mo.replace(" ", "").split("=")[0]
                                 
-                                if not result in scanned_file.variables:
-                                    scanned_file.variables.append(result)
+                                if not result in scanned_file["variables"] and not result=="":
+                                    scanned_file["variables"].append(result)
                         
-                        SCANNED_FILES[scanned_file.absolute_path]=scanned_file
+                        SCANNED_FILES[scanned_file["absolute_path"]]=scanned_file
         except Exception:
             print "Unexpected error:", sys.exc_info()[0]
             print "Unexpected error:", sys.exc_info()[1]
