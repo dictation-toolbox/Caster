@@ -16,6 +16,13 @@ def auto_spell(mode, text):
     if format_mode == "spell":
         base="".join(str(text).split(" ")).lower()
         Text(base)._execute()
+    elif format_mode == "crunch":
+        Text(str(text).lower())._execute()
+    elif format_mode == "caps":
+        Text(str(text).upper())._execute()
+    elif format_mode == "sent":
+        base=str(text).capitalize()
+        Text(base)._execute()
         
 def scroll(direction, n):
     updown=-100
