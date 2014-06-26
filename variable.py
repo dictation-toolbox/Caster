@@ -1,8 +1,11 @@
 #http://effbot.org/tkinterbook/tkinter-events-and-bindings.htm
 import Tkinter as tk
 import tkFileDialog
+from Tkinter import (StringVar, OptionMenu, Scrollbar, Frame)
 import os, re, sys, json
 import paths
+
+
 """
 - 1 to 10 sticky list at the top
 - Automatically figures out which file is open by continually scanning the top-level window and looking for something with the file extension
@@ -15,7 +18,7 @@ import paths
 
 
 
-
+- Create better patterns than the generic pattern
 """
 
 SCANNED_FOLDERS_PATH=paths.get_scanned_folders_path()
@@ -32,33 +35,60 @@ class ScannedFile:
 class VariablesHelper:
     
     def __init__(self):
+        global ICON_PATH
         self.all_names=[]
         self.root=tk.Tk()
+        self.root.title("Element v.01")
+        self.root.geometry("200x500")
         
         # setup options for directory ask
-        self.dir_opt = options = {}
-        options['initialdir'] = 'C:\\natlink\\natlink\\macrosystem\\'
-        options['mustexist'] = False
-        options['parent'] = self.root
-        options['title'] = 'Please select directory'
-
-        listbox = tk.Listbox(self.root)
-        listbox.pack()
+        self.dir_opt = {}
+        self.dir_opt['initialdir'] = 'C:\\natlink\\natlink\\macrosystem\\'
+        self.dir_opt['mustexist'] = False
+        self.dir_opt['parent'] = self.root
+        self.dir_opt['title'] = 'Please select directory'
         
-        listbox.insert(tk.END, "a list entry")
+        # setup drop-down box
+        selected=StringVar(self.root)
+        selected.set("Please select a scanned folder")
+        self.dropdown=OptionMenu(self.root, selected, "Please select a scanned folder")
+        self.dropdown.pack()
         
-        for item in ["one", "two", "three", "four"]:
-            listbox.insert(tk.END, item)
+        # set up list
+        label1 = tk.Label(text="Variable Names", name="label1")
+        label1.pack()
+        listframe= Frame(self.root)
+        scrollbar = Scrollbar(listframe, orient=tk.VERTICAL)
+        self.listbox_numbering = tk.Listbox(listframe, yscrollcommand=scrollbar.set)
+        self.listbox_content = tk.Listbox(listframe, yscrollcommand=scrollbar.set)
+        
+        scrollbar.config(command=self.scroll_lists)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        self.listbox_numbering.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
+        lbn_opt={}
+        lbn_opt["width"]=2
+        self.listbox_numbering.config(lbn_opt)
+        self.listbox_content.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
+        counter= 1 
+        for item in ["e one", "e two", "e three", "e four"]:
+            self.listbox_numbering.insert(tk.END, counter)
+            counter+=1
+            self.listbox_content.insert(tk.END, item)
+        listframe.pack()
+        
+                
         self.root.bind_all("1", self.get_new)
-        label1 = tk.Label(text="Label 1", name="label1")
+        
         entry1 = tk.Entry(name="entry1")
 
-        label1.pack()
+        
         entry1.pack()
         self.root.mainloop()
     
-#     def save_to_XML(self, list_of_source_files):
-    
+    def scroll_lists(self, *args):
+        apply(self.listbox_numbering.yview, args)
+        apply(self.listbox_content.yview, args)
+        
     def move_to_top(self,name):
         self.all_names.remove(name)
         self.all_names=[name]+self.all_names
