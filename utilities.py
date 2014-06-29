@@ -18,6 +18,9 @@ def press_digits(n):
 def get_active_window_hwnd():
     return str(win32gui.GetForegroundWindow())
 
+def get_active_window_title():
+    return win32gui.GetWindowText(win32gui.GetForegroundWindow())
+
 def get_active_window_path():
     name = win32gui.GetForegroundWindow()
     t,p = win32process.GetWindowThreadProcessId(name)

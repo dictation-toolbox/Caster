@@ -1,5 +1,6 @@
 from dragonfly import *
-import os
+import os,sys
+import httplib
 import paths, utilities
 import helpdisplay
 
@@ -12,6 +13,17 @@ def suicide():
 def open_and(text,text2):
     print text
     print text2
+
+def run_element():
+    
+    try:
+        c = httplib.HTTPConnection('localhost', 8080)
+        c.request('POST', '/process', '{}')
+        doc = c.getresponse().read()
+        print doc
+    except Exception:
+        for line in sys.exc_info():
+            print line
 
 class MainRule(MappingRule):
     global MMT_PATH
@@ -40,6 +52,7 @@ class MainRule(MappingRule):
     
     "help <choice>":                Function(helpdisplay.get_help,extra={"choice"}),
     "variable":                     BringApp("python","variable.py"),
+    "test feature":                 Function(run_element),
     }
     extras = [
               IntegerRef("n", 1, 1000),

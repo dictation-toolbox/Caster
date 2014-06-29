@@ -24,27 +24,28 @@ class CommandRule(MappingRule):
            
             "previous (editor | tab) [<n>]":            Key("cs-f6") * Repeat(extra="n"),  # these two must be set up in the eclipse preferences
             "next (editor | tab) [<n>]":                Key("c-f6") * Repeat(extra="n"),
-            "close (editor | tab) [<n>]":                Key("c-w") * Repeat(extra="n"),
-            "open resource":                    Key("cs-r"),
-            "open type":                    Key("cs-t"),
-            "go to line":                Key("c-l"),
-            "go to line <n>":                Key("c-l") + Pause("50") + Text("%(n)d") + Key("enter"),
-            "go to declaration":                Key("f3"),
-            "editor select":                Key("c-e"),
-            "pop":                Key("c-space, down, up"),
+            "close (editor | tab) [<n>]":               Key("c-w") * Repeat(extra="n"),
+            "open resource":                            Key("cs-r"),
+            "open type":                                Key("cs-t"),
+            "go to line":                               Key("c-l"),
+            "go to line <n>":                           Key("c-l") + Pause("50") + Text("%(n)d") + Key("enter"),
+            "go to declaration":                        Key("f3"),
+            "editor select":                            Key("c-e"),
+            "pop":                                      Key("c-space, down, up"),
             
-            "step [<n>]":                Key("f6") * Repeat(extra="n"),
-            "step into":                Key("f5"),
-            "step out [of]":                Key("f7"),
-            "debug last":                Key("f11"),
+            "step [<n>]":                               Key("f6") * Repeat(extra="n"),
+            "step into":                                Key("f5"),
+            "step out [of]":                            Key("f7"),
+            "(debug | run) last":                       Key("f11"),
             
-            "show (java | coffee) perspective":                Key("cas-j"),
-            "show debug perspective":                Key("cas-d"),
-            "show python perspective":                Key("cas-p"),
+            "show (java | coffee) perspective":         Key("cas-j"),
+            "show debug perspective":                   Key("cas-d"),
+            "show python perspective":                  Key("cas-p"),
             
-       "format code":            Key("cs-f"),
-       "(do imports | import all)":    Key("cs-o"),
-        "comment line":                  Key("c-slash"),
+            
+            "format code":                              Key("cs-f"),
+            "(do imports | import all)":                Key("cs-o"),
+            "comment line":                             Key("c-slash"),
        
         }
     extras = [

@@ -1,10 +1,13 @@
 #http://effbot.org/tkinterbook/tkinter-events-and-bindings.htm
 import Tkinter as tk
 import tkFileDialog
+from threading import (Timer, Thread)
 from Tkinter import (StringVar, OptionMenu, Scrollbar, Frame)
 import os, re, sys, json
-import paths
+import paths, utilities
 
+
+from bottle import run, post, request, response
 
 """
 - 1 to 10 sticky list at the top
@@ -33,14 +36,16 @@ class ScannedFile:
         self.variables=[]
 
 class VariablesHelper:
-    
     def __init__(self):
-        global ICON_PATH
+
+        
+
         self.all_names=[]
         self.root=tk.Tk()
         self.root.title("Element v.01")
         self.root.geometry("200x500")
         self.root.wm_attributes("-topmost", 1)
+        self.root.protocol("WM_DELETE_WINDOW", self.on_exit)
         
         # setup options for directory ask
         self.dir_opt = {}
@@ -81,19 +86,45 @@ class VariablesHelper:
         self.root.bind_all("1", self.get_new)
         
         entry1 = tk.Entry(name="entry1")
-
-        
         entry1.pack()
+        
+        # update active file every n seconds
+        self.interval=5
+        Timer(self.interval, self.update_active_file).start()
+        
+        # start bottle server
+        Timer(self.interval, self.start_server).start()
+        
         self.root.mainloop()
+    
+    def on_exit(self):
+        print "shutting down"
+        self.root.destroy()
+    
+    def start_server(self):
+        run(host='localhost', port=8080, debug=True)
+    
+    def update_active_file(self):
+        
+        self.add_to_list(utilities.get_active_window_title())
+        Timer(self.interval, self.update_active_file).start()
+        
+    def add_to_list(self, item):
+        self.listbox_numbering.insert(tk.END, str(self.listbox_numbering.size()+1))
+        self.listbox_content.insert(tk.END, item)
     
     def scroll_lists(self, *args):
         apply(self.listbox_numbering.yview, args)
         apply(self.listbox_content.yview, args)
-        
+    
+    
+    #FOR MANIPULATING THE     LIST    
     def move_to_top(self,name):
         self.all_names.remove(name)
         self.all_names=[name]+self.all_names
-        
+    
+    
+    #FOR SCANNING AND SAVING FILES    
     def get_new(self,event):
         global SCANNED_FILES
         global SCANNED_FOLDERS_PATH
@@ -146,9 +177,6 @@ class VariablesHelper:
             print "Unexpected error:", sys.exc_info()[0]
             print "Unexpected error:", sys.exc_info()[1]
         
-        
-                        
-                
     def scan_file(self, path, language):
         f = open(path)
         lines = f.readlines()
@@ -158,8 +186,20 @@ class VariablesHelper:
         
     def ask_directory(self):# returns a string of the directory name
         return tkFileDialog.askdirectory(**self.dir_opt)
-        
+    
+    @staticmethod    
+    @post('/process')
+    def my_process():
+        req_obj = json.loads(request.body.read())
+        # do something with req_obj
+        # ...
+        return 'All done'
+
+# app= None
 
 
-
+# print " gottoservercode"
 app=VariablesHelper()
+
+
+
