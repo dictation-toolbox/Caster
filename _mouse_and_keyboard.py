@@ -54,17 +54,20 @@ def grid_full():
         "--rowheight","20" , "--columnwidth","20" , "--numrows","20", "--numcolumns","20")._execute()
     
 def pixel_jump(direction,n2):
-    x,y= win32gui.GetCursorPos()
+    x,y= 0, 0#win32gui.GetCursorPos()
     d=str(direction)
+#     n2=int(n2)#
+#     print d,x,y,n2
     if d=="up":
-        y=y-n2
-    elif dir=="down":
-        y=y+n2
+        y=-n2
+    elif d=="down":
+        y=n2
     elif d=="left":
-        x=x-n2
+        x=-n2
     elif d=="right":
-        x=x+n2
-    Mouse("["+ str(x)+ ", "+str(y)+ "]").execute()
+        x=n2
+    print d,x,y,n2
+    Mouse("<"+ str(x)+ ", "+str(y)+ ">").execute()
     
 class MainRule(MappingRule):
     mapping = {

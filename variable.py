@@ -40,6 +40,7 @@ class VariablesHelper:
         self.root=tk.Tk()
         self.root.title("Element v.01")
         self.root.geometry("200x500")
+        self.root.wm_attributes("-topmost", 1)
         
         # setup options for directory ask
         self.dir_opt = {}
