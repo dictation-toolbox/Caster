@@ -69,6 +69,21 @@ def pixel_jump(direction,n2):
     print d,x,y,n2
     Mouse("<"+ str(x)+ ", "+str(y)+ ">").execute()
     
+def highlight_text(color_mode, n):
+    c=str(color_mode)
+    if c=="up":
+        Key("shift:down, up/5:"+str(n)+", shift:up").execute()
+    elif c=="down":
+        Key("shift:down, down/5:"+str(n)+", shift:up").execute()
+    elif c=="left" or c=="back":
+        Key("cs-left/5:"+str(n)).execute()
+    elif c=="right":
+        Key("cs-right/5:"+str(n)).execute()
+    elif c=="home":
+        Key("s-home").execute()
+    elif c=="end":
+        Key("s-end").execute()
+    
 class MainRule(MappingRule):
     mapping = {
 
@@ -97,12 +112,9 @@ class MainRule(MappingRule):
     "right [<n>]":                  Key("right") * Repeat(extra="n"),
     "fly (left | back) [<n>]":      Key("c-left") * Repeat(extra="n"),
     "fly [right] [<n>]":            Key("c-right") * Repeat(extra="n"),
-    "color (left | back) [<n>]":    Key("cs-left") * Repeat(extra="n"),
-    "color [right] [<n>]":          Key("cs-right") * Repeat(extra="n"),
-    "color up [<n>]":               Key("shift:down, up, shift:up") * Repeat(extra="n"),
-    "color down [<n>]":             Key("shift:down, down, shift:up") * Repeat(extra="n"),
+    "color [<color_mode>] [<n>]":   Function(highlight_text, extra={"color_mode", "n"}),
     "end of line":                  Key("end"),
-    "end of (all lines|text|page)": Key("c-end"),
+    "end of (text|page)":           Key("c-end"),
     "find":                         Key("c-f"),
     "replace":                      Key("c-h"),
     "copy":                         Key("c-c"),
@@ -133,8 +145,12 @@ class MainRule(MappingRule):
               Choice("mode",
                     {"spell": "spell", "sent": "sent", "crunch": "crunch", "caps": "caps",
                     }),
+              Choice("color_mode",
+                    {"left": "left", "back": "back", "up": "up", "down": "down", 
+                     "right": "right", "home": "home", "end": "end",
+                    }),
              ]
-    defaults ={"n": 1,"n2": 1,"text": ""
+    defaults ={"n": 1,"n2": 1,"text": "", "color_mode":"right",
                }
 
 grammar = Grammar('mouse_and_keyboard')

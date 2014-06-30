@@ -2,6 +2,7 @@
 import Tkinter as tk
 import tkFileDialog
 from threading import (Timer, Thread)
+import signal
 from Tkinter import (StringVar, OptionMenu, Scrollbar, Frame)
 import os, re, sys, json
 import paths, utilities
@@ -35,17 +36,19 @@ class ScannedFile:
         self.absolute_path=""
         self.variables=[]
 
-class VariablesHelper:
+class Element:
     def __init__(self):
 
-        
-
+        # setup tk
         self.all_names=[]
         self.root=tk.Tk()
         self.root.title("Element v.01")
         self.root.geometry("200x500")
         self.root.wm_attributes("-topmost", 1)
         self.root.protocol("WM_DELETE_WINDOW", self.on_exit)
+        
+        # setup hotkeys
+        self.root.bind_all("1", self.get_new)
         
         # setup options for directory ask
         self.dir_opt = {}
@@ -75,38 +78,45 @@ class VariablesHelper:
         lbn_opt["width"]=2
         self.listbox_numbering.config(lbn_opt)
         self.listbox_content.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
-        counter= 1 
         for item in ["e one", "e two", "e three", "e four"]:
-            self.listbox_numbering.insert(tk.END, counter)
-            counter+=1
-            self.listbox_content.insert(tk.END, item)
+            self.add_to_list(item)
         listframe.pack()
         
-                
-        self.root.bind_all("1", self.get_new)
-        
-        entry1 = tk.Entry(name="entry1")
-        entry1.pack()
+        # setup search box
+        self.search_box = tk.Entry(name="search_box")
+        self.search_box.pack()
         
         # update active file every n seconds
         self.interval=5
+        self.filename_pattern=re.compile(r"[/\\]([\w]+\.[\w]+)")
         Timer(self.interval, self.update_active_file).start()
         
-        # start bottle server
+        # start bottle server, tk main loop
         Timer(self.interval, self.start_server).start()
-        
         self.root.mainloop()
     
     def on_exit(self):
-        print "shutting down"
+        print "Element: shutting down"
         self.root.destroy()
+        os.kill(os.getpid(), signal.SIGTERM)
     
     def start_server(self):
         run(host='localhost', port=8080, debug=True)
     
     def update_active_file(self):
-        
-        self.add_to_list(utilities.get_active_window_title())
+        active_window_title=utilities.get_active_window_title()
+        filename=""
+#         
+        match_objects=self.filename_pattern.findall(active_window_title)
+        if not len(match_objects)==  0:# if we found variable name in the line
+            filename=match_objects[0]
+#         if "\\" in active_window_title:
+#             filename=active_window_title.split("\\")[-1]
+#         elif "/" in active_window_title: 
+#             filename=active_window_title.split("/")[-1]
+         
+        if not filename=="":
+            print filename
         Timer(self.interval, self.update_active_file).start()
         
     def add_to_list(self, item):
@@ -199,7 +209,7 @@ class VariablesHelper:
 
 
 # print " gottoservercode"
-app=VariablesHelper()
+app=Element()
 
 
 
