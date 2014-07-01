@@ -86,7 +86,7 @@ def color(color_mode, n):
 
 def fly(fly_mode, n):
     f=str(fly_mode)
-    if f=="home":
+    if f=="top":
         Key("c-home").execute()
     elif f=="bottom":
         Key("c-end").execute()
@@ -167,7 +167,7 @@ class MainRule(MappingRule):
                      "right": "right", "home": "home", "end": "end",
                     }),
              ]
-    defaults ={"n": 1,"n2": 1,"text": "", "color_mode":"right",
+    defaults ={"n": 1,"n2": 1,"text": "", "color_mode":"right", "fly_mode":"right"
                }
 
 grammar = Grammar('mouse_and_keyboard')
