@@ -110,10 +110,6 @@ class Element:
         match_objects=self.filename_pattern.findall(active_window_title)
         if not len(match_objects)==  0:# if we found variable name in the line
             filename=match_objects[0]
-#         if "\\" in active_window_title:
-#             filename=active_window_title.split("\\")[-1]
-#         elif "/" in active_window_title: 
-#             filename=active_window_title.split("/")[-1]
          
         if not filename=="":
             print filename

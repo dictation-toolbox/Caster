@@ -69,7 +69,7 @@ def pixel_jump(direction,n2):
     print d,x,y,n2
     Mouse("<"+ str(x)+ ", "+str(y)+ ">").execute()
     
-def highlight_text(color_mode, n):
+def color(color_mode, n):
     c=str(color_mode)
     if c=="up":
         Key("shift:down, up/5:"+str(n)+", shift:up").execute()
@@ -83,6 +83,22 @@ def highlight_text(color_mode, n):
         Key("s-home").execute()
     elif c=="end":
         Key("s-end").execute()
+
+def fly(fly_mode, n):
+    f=str(fly_mode)
+    if f=="home":
+        Key("c-home").execute()
+    elif f=="bottom":
+        Key("c-end").execute()
+    elif f=="left" or f=="back":
+        Key("c-left/5:"+str(n)).execute()
+    elif f=="right":
+        Key("c-right/5:"+str(n)).execute()
+    elif f=="home":
+        Key("home").execute()
+    elif f=="end":
+        Key("end").execute()
+
     
 class MainRule(MappingRule):
     mapping = {
@@ -110,11 +126,8 @@ class MainRule(MappingRule):
     "up [<n>]":                     Key("up") * Repeat(extra="n"),
     "left [<n>]":                   Key("left") * Repeat(extra="n"),
     "right [<n>]":                  Key("right") * Repeat(extra="n"),
-    "fly (left | back) [<n>]":      Key("c-left") * Repeat(extra="n"),
-    "fly [right] [<n>]":            Key("c-right") * Repeat(extra="n"),
-    "color [<color_mode>] [<n>]":   Function(highlight_text, extra={"color_mode", "n"}),
-    "end of line":                  Key("end"),
-    "end of (text|page)":           Key("c-end"),
+    "fly [<fly_mode>] [<n>]":       Function(fly, extra={"fly_mode", " n"}),
+    "color [<color_mode>] [<n>]":   Function(color, extra={"color_mode", "n"}),
     "find":                         Key("c-f"),
     "replace":                      Key("c-h"),
     "copy":                         Key("c-c"),
@@ -147,6 +160,10 @@ class MainRule(MappingRule):
                     }),
               Choice("color_mode",
                     {"left": "left", "back": "back", "up": "up", "down": "down", 
+                     "right": "right", "home": "home", "end": "end",
+                    }),
+              Choice("fly_mode",
+                    {"left": "left", "back": "back", "top": "top", "bottom": "bottom", 
                      "right": "right", "home": "home", "end": "end",
                     }),
              ]
