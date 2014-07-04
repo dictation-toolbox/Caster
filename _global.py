@@ -46,6 +46,7 @@ class MainRule(MappingRule):
     # window management
     "open <text> and <text2>":      Function(open_and, extra={'text','text2'}),
     "alt tab":                      Key( "w-backtick"),#activates Switcher
+    "flip":                         Playback([(["alt", "tab"], 0.0)])+ WaitWindow(executable="Switcher.exe")+Playback([(["choose", "two"], 0.0)]),
     'minimize':                     Playback([(["minimize", "window"], 0.0)]),
     'maximize':                     Playback([(["maximize", "window"], 0.0)]),
     

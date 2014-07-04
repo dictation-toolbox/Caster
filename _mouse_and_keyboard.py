@@ -1,6 +1,6 @@
 from dragonfly import ( Key, Text , Playback, Function, Repeat,
                         BringApp,IntegerRef, Grammar, Dictation,
-                        MappingRule, Pause, Mouse, Choice)
+                        MappingRule, Pause, Mouse, Choice, WaitWindow)
 import sys, win32api, win32gui
 from win32con import MOUSEEVENTF_WHEEL
 from win32api import GetSystemMetrics
@@ -46,14 +46,14 @@ def grid_to_window():
     BringApp("pythonw", paths.get_grid(), "--rowheight","20" , "--columnwidth","20" , "--numrows","20" , 
              "--numcolumns","20","--sizeToClient",utilities.get_active_window_hwnd())._execute()
              
-def grid_full():
+def grid_full():# make sure to change both references to pythonw when you upgrade this
     screen_width = GetSystemMetrics (0)
     screen_height =GetSystemMetrics (1)
     BringApp("pythonw", paths.get_grid(),
         "--width",str((screen_width - 20)),"--height",str((screen_height - 30)),"--locationx","10","--locationy","15", 
         "--rowheight","20" , "--columnwidth","20" , "--numrows","20", "--numcolumns","20")._execute()
-    Pause("100")._execute()
-    Key("h")._execute()# this and the pause are to auto refresh the grid
+    WaitWindow(executable="pythonw.exe")._execute()
+    Key("h")._execute()
     
 def pixel_jump(direction,n2):
     x,y= 0, 0
@@ -133,12 +133,12 @@ class MainRule(MappingRule):
     "cut":                          Key("c-x"),
     "select all":                   Key("c-a"),
     "drop [<n>]":                   Key("c-v")* Repeat(extra="n"),
-    "delete [<n>]":                 (Key("del")+Pause("5")) * Repeat(extra="n"),
+    "delete [<n>]":                 Key("del/5") * Repeat(extra="n"),
     "true delete line":             Playback([(["delete", "line"], 0.0)])* Repeat(3),
     "clear [<n>]":                  Key("backspace") * Repeat(extra="n"),
     "(cancel | escape)":            Key("escape"),
     "excite mark":                  Text("!"),
-    
+     
     # miscellaneous
     "copy clip [<n>]":              Key("c-%(n)d,c-c"),# shortcut for tenclips
     "paste clip [<n>]":             Key("c-%(n)d,c-v"),# shortcut for tenclips
