@@ -14,12 +14,13 @@ cmd.map = {
      	   "quotes":						Key("dquote,dquote,left")+noSpaceNoCaps,
            "thin quotes":						Key("apostrophe,apostrophe,left")+noSpaceNoCaps,
            
-     	   "HTML":						Text("<HTML>" )+ Key("enter")+ Text("</HTML>"),
-     	   "head":						Text("<HEAD>" )+ Key("enter")+ Text("</HEAD>"),
-     	   "body":						Text("<BODY>" )+ Key("enter")+ Text("</BODY>"),
-     	   "div":						Text("<DIV>" )+ Key("enter")+ Text("</DIV>"),
-     	   
-     	   
+     	    "HTML":						Text("<HTML>" )+ Key("enter")+ Text("</HTML>"),
+     	    "head":						Text("<HEAD>" )+ Key("enter")+ Text("</HEAD>"),
+     	    "body":						Text("<BODY>" )+ Key("enter")+ Text("</BODY>"),
+     	    "div":						Text("<DIV>" )+ Key("enter")+ Text("</DIV>"),
+			"subscript":				Text("<SUB></SUB>")+  Key("left/10:6"),     	   
+     	   	"superscript":				Text("<SUP></SUP>")+  Key("left/10:6"),
+     	   	
      	   	"add comment":					Text( "#" ),
 	        "equals":                       Key("equals"),
 	        "pair":                     Text("()")+ Key("left"),
