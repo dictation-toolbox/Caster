@@ -52,12 +52,12 @@ def grid_full():
     BringApp("pythonw", paths.get_grid(),
         "--width",str((screen_width - 20)),"--height",str((screen_height - 30)),"--locationx","10","--locationy","15", 
         "--rowheight","20" , "--columnwidth","20" , "--numrows","20", "--numcolumns","20")._execute()
+    Pause("100")._execute()
+    Key("h")._execute()# this and the pause are to auto refresh the grid
     
 def pixel_jump(direction,n2):
-    x,y= 0, 0#win32gui.GetCursorPos()
+    x,y= 0, 0
     d=str(direction)
-#     n2=int(n2)#
-#     print d,x,y,n2
     if d=="up":
         y=-n2
     elif d=="down":
@@ -66,7 +66,6 @@ def pixel_jump(direction,n2):
         x=-n2
     elif d=="right":
         x=n2
-    print d,x,y,n2
     Mouse("<"+ str(x)+ ", "+str(y)+ ">").execute()
     
 def color(color_mode, n):
@@ -114,7 +113,7 @@ class MainRule(MappingRule):
     'grid position mode':           BringApp("pythonw", paths.get_grid(), r"--positionMode"),
     'grid wrap':                    Function(grid_to_window),
     'grid':                         Function(grid_full),
-    "pixel <direction> <n2>":        Function(pixel_jump, extra={"direction","n2"}),
+    "pixel <direction> <n2>":       Function(pixel_jump, extra={"direction","n2"}),
     
     #keyboard shortcuts
 	"username":                     Text("synkarius"),

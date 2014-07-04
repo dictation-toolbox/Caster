@@ -3,6 +3,7 @@ import os,sys
 import httplib
 import paths, utilities
 import helpdisplay
+import dptools._myclickLocations
 
 BASE_PATH = paths.get_base()
 MMT_PATH = paths.get_mmt()

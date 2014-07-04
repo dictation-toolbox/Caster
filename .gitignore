@@ -20,11 +20,3 @@ _vocola_main.py
 
 # Ignore personal
 media/
-
-# Ignore things not made by me
-argparse.py
-CustomGrid.py
-_keyCodes.py
-_mycommon.py
-_myclickLocations.py
-

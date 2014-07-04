@@ -20,10 +20,10 @@ from dragonfly import (Grammar, AppContext, MappingRule,
 class CommandRule(MappingRule):
 
     mapping = {
-        "tick forward [<n>]":               Key("s-right") * Repeat(extra="level"),
-        "tick back [<n>]":                  Key("s-left") * Repeat(extra="level"),
-        "forward [<n>]":                    Key("c-left") * Repeat(extra="level"),
-        "back [<n>]":                       Key("c-left") * Repeat(extra="level"),
+        "tick forward [<n>]":               Key("s-right") * Repeat(extra="n"),
+        "tick back [<n>]":                  Key("s-left") * Repeat(extra="n"),
+        "forward [<n>]":                    Key("c-left") * Repeat(extra="n"),
+        "back [<n>]":                       Key("c-left") * Repeat(extra="n"),
         
         
         }
