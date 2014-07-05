@@ -55,17 +55,19 @@ def grid_full():# make sure to change both references to pythonw when you upgrad
     WaitWindow(executable="pythonw.exe")._execute()
     Key("h")._execute()
     
-def pixel_jump(direction,n2):
+def pixel_jump(direction,direction2,n2):
     x,y= 0, 0
     d=str(direction)
-    if d=="up":
+    d2=str(direction2)
+    if d=="up" or d2=="up":
         y=-n2
-    elif d=="down":
+    if d=="down" or d2=="down":
         y=n2
-    elif d=="left":
+    if d=="left" or d2=="left":
         x=-n2
-    elif d=="right":
+    if d=="right" or d2=="right":
         x=n2
+    
     Mouse("<"+ str(x)+ ", "+str(y)+ ">").execute()
     
 def color(color_mode, n):
@@ -113,7 +115,7 @@ class MainRule(MappingRule):
     'grid position mode':           BringApp("pythonw", paths.get_grid(), r"--positionMode"),
     'grid wrap':                    Function(grid_to_window),
     'grid':                         Function(grid_full),
-    "pixel <direction> <n2>":       Function(pixel_jump, extra={"direction","n2"}),
+    "pixel <direction> [<direction2>] <n2>":Function(pixel_jump, extra={"direction","direction2","n2"}),
     
     #keyboard shortcuts
 	"username":                     Text("synkarius"),
@@ -154,6 +156,9 @@ class MainRule(MappingRule):
               Choice("direction",
                     {"up": "up", "down": "down", "left": "left", "right": "right",
                     }),
+              Choice("direction2",
+                    {"up": "up", "down": "down", "left": "left", "right": "right",
+                    }),
               Choice("mode",
                     {"spell": "spell", "sent": "sent", "crunch": "crunch", "caps": "caps",
                     }),
@@ -166,7 +171,8 @@ class MainRule(MappingRule):
                      "right": "right", "home": "home", "end": "end",
                     }),
              ]
-    defaults ={"n": 1,"n2": 1,"text": "", "color_mode":"right", "fly_mode":"right"
+    defaults ={"n": 1,"n2": 1,"text": "", "color_mode":"right", "fly_mode":"right",
+               "direction2":""
                }
 
 grammar = Grammar('mouse_and_keyboard')
