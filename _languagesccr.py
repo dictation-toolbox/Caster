@@ -80,7 +80,7 @@ def generate_language_rule(path):
                 spoken_form = function.__doc__.strip()
         
                 # We wrap generation of the Function action in a function so
-                #  that its *function* variable will be local.  Otherwise it
+                #  that its *function* element will be local.  Otherwise it
                 #  would change during the next iteration of the namespace loop.
                 def wrap_function(function):
                     def _function(dictation):

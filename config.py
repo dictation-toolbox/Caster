@@ -2,7 +2,7 @@
 
 import os
 import json
-import paths
+import paths, utilities
 
 CONFIG_PATH = paths.get_config_path()
 CONFIG = {}  # Empty, default config.
@@ -10,29 +10,13 @@ CONFIG = {}  # Empty, default config.
 def save_config():
     global CONFIG
     global CONFIG_PATH
-    try:
-        configData = json.dumps(CONFIG, sort_keys=True, indent=4,
-            ensure_ascii=False)
-        with open(CONFIG_PATH, "w+") as f:
-            f.write(configData)  # Save config to file.
-            f.close()
-    except Exception as e:
-        print("Could not save config file: %s" % str(e))
-
+    utilities.save_json_file(CONFIG, CONFIG_PATH)
 
 def load_config():
     global CONFIG
     global CONFIG_PATH
-    try:
-        if os.path.isfile(CONFIG_PATH):  # If the config file exists.
-            with open(CONFIG_PATH, "r") as f:
-                CONFIG = json.loads(f.read())  # Load saved configuration.
-                init_default_values()
-        else:  # If the config file does not exist.
-            save_config()  # Save the default config to file.
-    except Exception as e:
-        print("Could not load config file: %s" % str(e))
-
+    CONFIG = utilities.load_json_file(CONFIG_PATH)
+    init_default_values()
 
 def init_default_values():# new languages must be added here and in paths.py
     global CONFIG

@@ -1,9 +1,9 @@
-from dragonfly import *
-import os,sys
-import httplib
-import paths, utilities
-import helpdisplay
-import dptools._myclickLocations
+from dragonfly import (BringApp, Key, Function, Text, Grammar, Playback, 
+                       IntegerRef,Dictation,Choice,WaitWindow,MappingRule)
+import sys, httplib
+import paths, utilities, helpdisplay
+
+ 
 
 BASE_PATH = paths.get_base()
 MMT_PATH = paths.get_mmt()
@@ -11,10 +11,6 @@ MMT_PATH = paths.get_mmt()
 def suicide():
     BringApp(BASE_PATH + r"\suicide.bat")._execute()
     
-def open_and(text,text2):
-    print text
-    print text2
-
 def run_element():
     
     try:
@@ -44,7 +40,6 @@ class MainRule(MappingRule):
     'toggle monitor two':           BringApp(MMT_PATH, r"/switch",r"\\.\DISPLAY2"),
     
     # window management
-    "open <text> and <text2>":      Function(open_and, extra={'text','text2'}),
     "alt tab":                      Key( "w-backtick"),#activates Switcher
     "flip":                         Playback([(["alt", "tab"], 0.0)])+ WaitWindow(executable="Switcher.exe")+Playback([(["choose", "two"], 0.0)]),
     'minimize':                     Playback([(["minimize", "window"], 0.0)]),
@@ -53,8 +48,6 @@ class MainRule(MappingRule):
     "open natlink folder":          BringApp("explorer", "C:\NatLink\NatLink\MacroSystem"),
     
     "help <choice>":                Function(helpdisplay.get_help,extra={"choice"}),
-    "variable":                     BringApp("python","variable.py"),
-    "test feature":                 Function(run_element),
     }
     extras = [
               IntegerRef("n", 1, 1000),

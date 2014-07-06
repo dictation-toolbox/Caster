@@ -136,11 +136,7 @@ class Element:
         global SCANNED_FOLDERS_PATH
         directory=self.ask_directory()
         self.scan_directory(directory)
-        scan_data = json.dumps(SCANNED_FILES, sort_keys=True, indent=4,
-            ensure_ascii=False)
-        with open(SCANNED_FOLDERS_PATH, "w+") as f:
-            f.write(scan_data)  # Save config to file.
-            f.close()
+        utilities.save_json_file(SCANNED_FILES, SCANNED_FOLDERS_PATH)
         
     def scan_directory(self,directory):
         global GENERIC_PATTERN

@@ -1,7 +1,7 @@
 from dragonfly import ( Key, Text , Playback, Function, Repeat,
                         BringApp,IntegerRef, Grammar, Dictation,
                         MappingRule, Pause, Mouse, Choice, WaitWindow)
-import sys, win32api, win32gui
+import sys, win32api, win32gui, time, win32clipboard, natlink
 from win32con import MOUSEEVENTF_WHEEL
 from win32api import GetSystemMetrics
 import paths, utilities
@@ -9,6 +9,40 @@ import paths, utilities
 BASE_PATH = paths.get_base()
 MMT_PATH = paths.get_mmt()
 
+MULTI_CLIPBOARD = {}
+
+def initialize_clipboard():
+    global MULTI_CLIPBOARD
+    MULTI_CLIPBOARD = utilities.load_json_file(paths.get_saved_clipboard_path())
+    print "Clipboard initialized..."
+
+def copy(n):
+    global MULTI_CLIPBOARD
+    key=str(n)
+    Key("c-c")._execute()
+    time.sleep(0.05)# time for keypress to execute
+    win32clipboard.OpenClipboard()
+    MULTI_CLIPBOARD[key]=win32clipboard.GetClipboardData()
+    win32clipboard.CloseClipboard()
+    utilities.save_json_file(MULTI_CLIPBOARD, paths.get_saved_clipboard_path())
+    
+def cut():
+    copy(1)
+    Key("c-x")._execute()
+
+def drop(n, n2):
+    global MULTI_CLIPBOARD
+    key=str(n)
+    times=int(n2)
+    if key in MULTI_CLIPBOARD:
+        win32clipboard.OpenClipboard()
+        win32clipboard.EmptyClipboard()
+        win32clipboard.SetClipboardText(MULTI_CLIPBOARD[key])
+        win32clipboard.CloseClipboard()
+        for i in range(0, times):
+            Key("c-v")._execute()
+    else:
+        natlink.execScript ("TTSPlayString \"slot empty\"")
     
 def auto_spell(mode, text):
     # to do: add support for other modes
@@ -131,19 +165,16 @@ class MainRule(MappingRule):
     "color [<color_mode>] [<n>]":   Function(color, extra={"color_mode", "n"}),
     "find":                         Key("c-f"),
     "replace":                      Key("c-h"),
-    "copy":                         Key("c-c"),
-    "cut":                          Key("c-x"),
+    "copy [<n>]":                   Function(copy, extra="n"),
+    "cut":                          Function(cut),
     "select all":                   Key("c-a"),
-    "drop [<n>]":                   Key("c-v")* Repeat(extra="n"),
+    "drop [<n>] [times <n2>]":      Function(drop, extra={"n","n2"}),
     "delete [<n>]":                 Key("del/5") * Repeat(extra="n"),
-    "true delete line":             Playback([(["delete", "line"], 0.0)])* Repeat(3),
     "clear [<n>]":                  Key("backspace") * Repeat(extra="n"),
     "(cancel | escape)":            Key("escape"),
     "excite mark":                  Text("!"),
      
     # miscellaneous
-    "copy clip [<n>]":              Key("c-%(n)d,c-c"),# shortcut for tenclips
-    "paste clip [<n>]":             Key("c-%(n)d,c-v"),# shortcut for tenclips
     'auto <mode> <text>':           Function(auto_spell, extra={"mode","text"}),
     
     }
@@ -168,13 +199,14 @@ class MainRule(MappingRule):
                     }),
               Choice("fly_mode",
                     {"left": "left", "back": "back", "top": "top", "bottom": "bottom", 
-                     "right": "right", "home": "home", "end": "end",
+                     "right": "right", "home": "home", "end": "end", "away": "end",
                     }),
              ]
     defaults ={"n": 1,"n2": 1,"text": "", "color_mode":"right", "fly_mode":"right",
                "direction2":""
                }
 
+initialize_clipboard()
 grammar = Grammar('mouse_and_keyboard')
 grammar.add_rule(MainRule())
 grammar.load()

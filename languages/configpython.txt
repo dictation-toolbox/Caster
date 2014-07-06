@@ -48,7 +48,8 @@ cmd.map = {
         "times":					Text("*"),
         "for each":					Text("for  in :")+ Key("left:5"),
         "for I":					Text("for i in range(0, ):")+ Key("left:2"),
-			
+		"while":					Text("while :")+ Key("left"),
+					
 		"pipe symbol":              Text("|"),
         "<n> bark":                 Text("%(n)d"),
         "<n> <n2> bark":            Text("%(n)d%(n2)d"),

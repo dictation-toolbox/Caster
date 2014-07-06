@@ -5,7 +5,7 @@ Created on Jun 12, 2014
 '''
 from dragonfly import Key
 import win32gui, win32process, win32api
-import os
+import os, json
 import paths
 
 BASE_PATH = paths.get_base()
@@ -35,3 +35,26 @@ def clear_pyc():
             filepath=BASE_PATH+files
             os.remove(filepath)
             print "Deleted: "+filepath
+
+def save_json_file(data, path):
+    try:
+        formatted_data = json.dumps(data, sort_keys=True, indent=4,
+            ensure_ascii=False)
+        with open(path, "w+") as f:
+            f.write(formatted_data)
+            f.close()
+    except Exception as e:
+        print("Could not save file: %s" % str(e))
+
+def load_json_file(path):
+    result={}
+    try:
+        if os.path.isfile(path):  # If the file exists.
+            with open(path, "r") as f:
+                result = json.loads(f.read())
+                f.close()
+        else:
+            save_json_file(result, path)
+    except Exception as e:
+        print("Could not load file: %s" % str(e))
+    return result

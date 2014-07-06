@@ -258,7 +258,7 @@ def getHwndProcessName(hwnd):
         if pHandle:
             return win32process.GetModuleFileNameEx(pHandle, 0)
 
-# The following method stores the found hwnd in this global variable
+# The following method stores the found hwnd in this global element
 foundProcessHwnd = None
 def checkHwndForProcessName(hwnd, name):
     global foundProcessHwnd
