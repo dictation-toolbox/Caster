@@ -129,7 +129,16 @@ class Element:
         self.all_names.remove(name)
         self.all_names=[name]+self.all_names
     
-    
+    #FOR LOADING 
+    def populate_dropdown(self):
+        global SCANNED_FILES
+        global SCANNED_FOLDERS_PATH
+        SCANNED_FILES = utilities.load_json_file(SCANNED_FOLDERS_PATH)
+        menu = self.dropdown["menu"]
+        for key in SCANNED_FILES:
+            
+            menu.add_command(label=key, value=key)
+        
     #FOR SCANNING AND SAVING FILES    
     def get_new(self,event):
         global SCANNED_FILES
@@ -137,13 +146,14 @@ class Element:
         directory=self.ask_directory()
         self.scan_directory(directory)
         utilities.save_json_file(SCANNED_FILES, SCANNED_FOLDERS_PATH)
+        self.populate_dropdown()
         
     def scan_directory(self,directory):
         global GENERIC_PATTERN
         global SCANNED_FILES
         pattern_being_used=GENERIC_PATTERN# later on, can add code to choose which pattern to use
         
-        
+        scanned_directory={}
         try:
             acceptable_extensions=[".py"]# this is hardcoded for now, will read from a box later
             for base, dirs, files in os.walk(directory):# traverse base directory, and list directories as dirs and files as files
@@ -174,10 +184,11 @@ class Element:
                                 if not result in scanned_file["variables"] and not result=="":
                                     scanned_file["variables"].append(result)
                         
-                        SCANNED_FILES[scanned_file["absolute_path"]]=scanned_file
+                        scanned_directory[scanned_file["absolute_path"]]=scanned_file
         except Exception:
             print "Unexpected error:", sys.exc_info()[0]
             print "Unexpected error:", sys.exc_info()[1]
+        SCANNED_FILES[directory]=scanned_directory
         
     def scan_file(self, path, language):
         f = open(path)

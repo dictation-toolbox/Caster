@@ -67,7 +67,6 @@ def scroll(direction, n):
     
 def kick():
     window_title=utilities.get_active_window_title()
-    print window_title
     if window_title=="Custom Grid":
         Playback([(["I", "left"], 0.0)])._execute()
     else:
