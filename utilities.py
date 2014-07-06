@@ -58,3 +58,7 @@ def load_json_file(path):
     except Exception as e:
         print("Could not load file: %s" % str(e))
     return result
+
+def remote_debug():
+    import pydevd;#@UnresolvedImport
+    pydevd.settrace()

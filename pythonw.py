@@ -82,7 +82,7 @@ In position mode, the origin of the grid as indicated by a small circle at the t
 #---------------------------------------------------------------------------
 
 from dragonfly import (Grammar, AppContext, MappingRule,
-                       Choice, IntegerRef, 
+                       Choice, IntegerRef, Playback,
                        Key, Function)
 import sys
 import paths, utilities
@@ -128,6 +128,8 @@ class CommandRule(MappingRule):
         "copy parameters":      Key("c-c"),
         "hide":                 Key("escape"),
         "exit":                 Key("x"),
+        
+
         
         }
     extras = [

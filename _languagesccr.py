@@ -29,7 +29,6 @@ rules = []
 def disable_all_except(language):
     global rules
     global config_settings
-    #import pydevd;pydevd.settrace()
     compatibility_list = ["html","css","alphabet"]# alphabets and markup languages can be handled in the same way as programming languages
     is_compatible = (language in compatibility_list)
     if not is_compatible:

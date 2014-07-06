@@ -65,18 +65,15 @@ def scroll(direction, n):
     (x, y) = win32api.GetCursorPos()
     win32api.mouse_event(MOUSEEVENTF_WHEEL, x, y, updown*n, 0)
     
-def copy_clip(n):
-    base=str(n)
-    Key( "c-"+base)._execute()
-    Key( "c-c")._execute()
-    
-def paste_clip(n):
-    base=str(n)
-    Key( "c-"+base)._execute()
-    Key( "c-v")._execute()
-    
+def kick():
+    window_title=utilities.get_active_window_title()
+    print window_title
+    if window_title=="Custom Grid":
+        Playback([(["I", "left"], 0.0)])._execute()
+    else:
+        Playback([(["mouse", "left", "click"], 0.0)])._execute()
+
 def grid_to_window():
-    #import pydevd;pydevd.settrace()
     BringApp("pythonw", paths.get_grid(), "--rowheight","20" , "--columnwidth","20" , "--numrows","20" , 
              "--numcolumns","20","--sizeToClient",utilities.get_active_window_hwnd())._execute()
              
@@ -140,7 +137,7 @@ class MainRule(MappingRule):
 
 	
     #mouse control
-    '(kick left|kick)': 			Playback([(["mouse", "left", "click"], 0.0)]),
+    'kick':                         Function(kick),
 # 	'kick mid': 				    Playback([(["mouse", "middle", "click"], 0.0)]),# doesn't work, use a Python function
 	'kick right': 	                Playback([(["mouse", "right", "click"], 0.0)]),
     '(kick double|double kick)':    Playback([(["mouse", "double", "click"], 0.0)]),

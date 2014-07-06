@@ -37,7 +37,6 @@ def setup_help():
         print "Rereading commands from command files..."
         SETS={}
         os.chdir(BASE_PATH)
-#         import pydevd;pydevd.settrace()
         banned_list=["_keyCodes.py","_languagesccr.py","_myclickLocations.py","_mycommon.py"
                      "_w.py","argparse.py"]
         for files in os.listdir("."):
