@@ -16,20 +16,15 @@ def initialize_clipboard():
     MULTI_CLIPBOARD = utilities.load_json_file(paths.get_saved_clipboard_path())
     print "Clipboard initialized..."
 
-def copy(n):
+def clipboard_to_file(n):
     global MULTI_CLIPBOARD
     key=str(n)
-    Key("c-c")._execute()
     time.sleep(0.05)# time for keypress to execute
     win32clipboard.OpenClipboard()
     MULTI_CLIPBOARD[key]=win32clipboard.GetClipboardData()
     win32clipboard.CloseClipboard()
     utilities.save_json_file(MULTI_CLIPBOARD, paths.get_saved_clipboard_path())
     
-def cut():
-    copy(1)
-    Key("c-x")._execute()
-
 def drop(n, n2):
     global MULTI_CLIPBOARD
     key=str(n)
@@ -161,8 +156,8 @@ class MainRule(MappingRule):
     "color [<color_mode>] [<n>]":   Function(color, extra={"color_mode", "n"}),
     "find":                         Key("c-f"),
     "replace":                      Key("c-h"),
-    "copy [<n>]":                   Function(copy, extra="n"),
-    "cut":                          Function(cut),
+    "copy [<n>]":                   Key("c-c")+Function(clipboard_to_file, extra="n"),
+    "cut [<n>]":                    Key("c-x")+Function(clipboard_to_file, extra="n"),
     "select all":                   Key("c-a"),
     "drop [<n>] [times <n2>]":      Function(drop, extra={"n","n2"}),
     "delete [<n>]":                 Key("del/5") * Repeat(extra="n"),

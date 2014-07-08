@@ -46,7 +46,10 @@ class CommandRule(MappingRule):
             "format code":                              Key("cs-f"),
             "(do imports | import all)":                Key("cs-o"),
             "comment line":                             Key("c-slash"),
-       
+            
+            # requires quick bookmarks plug-in:
+            "set mark [<n>]":                           Key("a-%(n)d"),
+            "go mark [<n>]":                            Key("as-%(n)d"),
         }
     extras = [
               Dictation("text"),

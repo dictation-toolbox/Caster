@@ -58,9 +58,9 @@ class Element:
         self.dir_opt['title'] = 'Please select directory'
         
         # setup drop-down box
-        selected=StringVar(self.root)
-        selected.set("Please select a scanned folder")
-        self.dropdown=OptionMenu(self.root, selected, "Please select a scanned folder")
+        self.dropdown_selected=StringVar(self.root)
+        self.dropdown_selected.set("Please select a scanned folder")
+        self.dropdown=OptionMenu(self.root, self.dropdown_selected, "Please select a scanned folder")
         self.dropdown.pack()
         
         # set up list
@@ -135,9 +135,9 @@ class Element:
         global SCANNED_FOLDERS_PATH
         SCANNED_FILES = utilities.load_json_file(SCANNED_FOLDERS_PATH)
         menu = self.dropdown["menu"]
+        menu.delete(0, tk.END)
         for key in SCANNED_FILES:
-            
-            menu.add_command(label=key, value=key)
+            menu.add_command(label=key, command=lambda key=key: self.dropdown_selected.set(key))
         
     #FOR SCANNING AND SAVING FILES    
     def get_new(self,event):

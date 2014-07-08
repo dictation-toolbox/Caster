@@ -1,4 +1,5 @@
 {
-    "1": "populate_dropdown", 
+    "1": "dropdown_selected", 
+    "4": "optionMenuWidget[\"menu\"].add_command(label=i, command=lambda temp = i: optionMenuWidget.setvar(optionMenuWidget.cget(\"textvariable\"), value = temp))\r\n", 
     "5": "save_json_file"
 }
