@@ -8,7 +8,7 @@ import sys, os
 #BASE_PATH='C:\NatLink\NatLink\MacroSystem\\'
 BASE_PATH = os.path.dirname(os.path.abspath(__file__)) + "\\"
 CONFIG_PATH = BASE_PATH + "data\\config.json"
-SCANNED_FOLDERS_PATH = BASE_PATH + "data\\element.json"
+ELEMENT_JSON_PATH = BASE_PATH + "data\\element.json"
 SAVED_CLIPBOARD_PATH = BASE_PATH + "data\\clipboard.json"
 
 #REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
@@ -35,9 +35,9 @@ def get_config_path():
     global CONFIG_PATH
     return CONFIG_PATH
 
-def get_scanned_folders_path():
-    global SCANNED_FOLDERS_PATH
-    return SCANNED_FOLDERS_PATH
+def get_element_json_path():
+    global ELEMENT_JSON_PATH
+    return ELEMENT_JSON_PATH
 
 def get_saved_clipboard_path():
     global SAVED_CLIPBOARD_PATH

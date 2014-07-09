@@ -24,6 +24,8 @@ cmd.map = {
  	   "from":						Text( "from " ),
  	   "self":						Text("self"),
  	   "self dot":					Text("self")+ Key("dot"),
+		"none":						Text("None"),
+		"print":					Text("print "),
  	   "add comment":				Text( "#" ),
 		"new class":				Key( "as-n, down, down, down, down, enter"),
 		

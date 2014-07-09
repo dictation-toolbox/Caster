@@ -1,5 +1,7 @@
 {
-    "1": "dropdown_selected", 
-    "4": "optionMenuWidget[\"menu\"].add_command(label=i, command=lambda temp = i: optionMenuWidget.setvar(optionMenuWidget.cget(\"textvariable\"), value = temp))\r\n", 
-    "5": "save_json_file"
+    "1": "0, tk.END", 
+    "2": "\"Please select a scanned folder\"", 
+    "4": "\"\"\"", 
+    "5": "http://badassdigest.com/2012/04/03/the-ending-of-mass-effect-3-is-spectacular/", 
+    "7": "self.root.bind_all(\"1\", self.get_new)"
 }

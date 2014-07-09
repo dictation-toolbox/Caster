@@ -25,8 +25,8 @@ from bottle import run, post, request, response
 - Create better patterns than the generic pattern
 """
 
-SCANNED_FOLDERS_PATH=paths.get_scanned_folders_path()
-SCANNED_FILES={}
+JSON_PATH=paths.get_element_json_path()
+TOTAL_SAVED_INFO={}
 
 GENERIC_PATTERN=re.compile("([A-Za-z0-9._]+\s*=)|(import [A-Za-z0-9._]+)")
 
@@ -49,6 +49,7 @@ class Element:
         
         # setup hotkeys
         self.root.bind_all("1", self.get_new)
+        self.root.bind_all("2", lambda event, file_to_activate="Switcher.py": self.populate_list(file_to_activate))
         
         # setup options for directory ask
         self.dir_opt = {}
@@ -59,9 +60,11 @@ class Element:
         
         # setup drop-down box
         self.dropdown_selected=StringVar(self.root)
-        self.dropdown_selected.set("Please select a scanned folder")
-        self.dropdown=OptionMenu(self.root, self.dropdown_selected, "Please select a scanned folder")
+        self.default_dropdown_message="Please select a scanned folder"
+        self.dropdown_selected.set(self.default_dropdown_message)
+        self.dropdown=OptionMenu(self.root, self.dropdown_selected, self.default_dropdown_message)
         self.dropdown.pack()
+        self.populate_dropdown()
         
         # set up list
         label1 = tk.Label(text="Variable Names", name="label1")
@@ -123,6 +126,9 @@ class Element:
         apply(self.listbox_numbering.yview, args)
         apply(self.listbox_content.yview, args)
     
+    def clear_lists(self):
+        self.listbox_numbering.delete(0, tk.END)
+        self.listbox_content.delete(0, tk.END)
     
     #FOR MANIPULATING THE     LIST    
     def move_to_top(self,name):
@@ -131,31 +137,52 @@ class Element:
     
     #FOR LOADING 
     def populate_dropdown(self):
-        global SCANNED_FILES
-        global SCANNED_FOLDERS_PATH
-        SCANNED_FILES = utilities.load_json_file(SCANNED_FOLDERS_PATH)
+        global TOTAL_SAVED_INFO
+        global JSON_PATH
+        TOTAL_SAVED_INFO = utilities.load_json_file(JSON_PATH)
         menu = self.dropdown["menu"]
         menu.delete(0, tk.END)
-        for key in SCANNED_FILES:
+        for key in TOTAL_SAVED_INFO:
             menu.add_command(label=key, command=lambda key=key: self.dropdown_selected.set(key))
         
+    def populate_list(self, file_to_activate):
+        """
+        target behavior:
+        Takes a filename (either from scan or from a second drop-down), 
+        and searches for it in the selected folder. 
+        Later on,  add an option to allow it to search in non-selected folders as well
+        """
+        global TOTAL_SAVED_INFO
+        selected_directory=self.dropdown_selected.get()
+        file_record=None
+        if selected_directory==self.default_dropdown_message:
+            return#  if a scanned for hasn't been selected, there's no need to go any further
+        self.clear_lists()
+        for absolute_path in TOTAL_SAVED_INFO[selected_directory]["files"]:
+            if absolute_path.endswith(file_to_activate):
+                file_record=TOTAL_SAVED_INFO[selected_directory]["files"][absolute_path]
+                break
+        if not file_record==None:
+            for name in file_record["names"]:
+                self.add_to_list(name)
+    
     #FOR SCANNING AND SAVING FILES    
     def get_new(self,event):
-        global SCANNED_FILES
-        global SCANNED_FOLDERS_PATH
+        global TOTAL_SAVED_INFO
+        global JSON_PATH
         directory=self.ask_directory()
         self.scan_directory(directory)
-        utilities.save_json_file(SCANNED_FILES, SCANNED_FOLDERS_PATH)
+        utilities.save_json_file(TOTAL_SAVED_INFO, JSON_PATH)
         self.populate_dropdown()
         
     def scan_directory(self,directory):
         global GENERIC_PATTERN
-        global SCANNED_FILES
+        global TOTAL_SAVED_INFO
         pattern_being_used=GENERIC_PATTERN# later on, can add code to choose which pattern to use
         
         scanned_directory={}
+        acceptable_extensions=[".py"]# this is hardcoded for now, will read from a box later
         try:
-            acceptable_extensions=[".py"]# this is hardcoded for now, will read from a box later
             for base, dirs, files in os.walk(directory):# traverse base directory, and list directories as dirs and files as files
                 path = base.split('/')
                 
@@ -165,8 +192,8 @@ class Element:
                     if extension in acceptable_extensions:
                         scanned_file={}
                         scanned_file["filename"]=file
-                        scanned_file["absolute_path"]=base+"/"+file
-                        scanned_file["variables"]=[]
+                        absolute_path=base+"/"+file
+                        scanned_file["names"]=[]
                         f = open(base+"\\"+file, "r")
                         lines = f.readlines()
                         f.close()
@@ -180,15 +207,19 @@ class Element:
                                     result=mo.split(".")[-1]
                                 else:# Or not an import
                                     result=mo.replace(" ", "").split("=")[0]
+                                # also to do: scan for function names
                                 
-                                if not result in scanned_file["variables"] and not result=="":
-                                    scanned_file["variables"].append(result)
+                                if not result in scanned_file["names"] and not result=="":
+                                    scanned_file["names"].append(result)
                         
-                        scanned_directory[scanned_file["absolute_path"]]=scanned_file
+                        scanned_directory[absolute_path]=scanned_file
         except Exception:
             print "Unexpected error:", sys.exc_info()[0]
             print "Unexpected error:", sys.exc_info()[1]
-        SCANNED_FILES[directory]=scanned_directory
+        meta_information={}
+        meta_information["files"]=scanned_directory
+        meta_information["extensions"]=acceptable_extensions
+        TOTAL_SAVED_INFO[directory]=meta_information
         
     def scan_file(self, path, language):
         f = open(path)
