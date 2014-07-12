@@ -13,6 +13,7 @@ old/
 test.py
 *.tmp
 unins000.*
+clipboard.json
 
 # Ignore natlink files
 core/

@@ -12,28 +12,29 @@ from bottle import run, post, request, response
 
 """
 - 1 to 10 sticky list at the top
-- Automatically figures out which file is open by continually scanning the top-level window and looking for something with the file extension
+X    - Automatically figures out which file is open by continually scanning the top-level window and looking for something with the file extension
 X    - it scans an entire directory, creating an XML file for that directory, which contains the names of all imports and things which follow a single
        = operator, or other language specific traits
 - It also has a drop-down box for manually switching files, and associated hotkey
 - It has hotkeys for everything, and so can be voice controlled
 - Each word also has a hotkey/button to delete it and to make it sticky
 - It can also take the highlighted text and add it to the list
-
+- It remembers what folder was opened last, maybe save this to the json file
+- A  rescan directory command
 
 
 - Create better patterns than the generic pattern
 """
 
-JSON_PATH=paths.get_element_json_path()
-TOTAL_SAVED_INFO={}
-
-GENERIC_PATTERN=re.compile("([A-Za-z0-9._]+\s*=)|(import [A-Za-z0-9._]+)")
-
-
 class Element:
     def __init__(self):
+        
+        # setup stuff that were previously globals
+        self.JSON_PATH=paths.get_element_json_path()
+        self.TOTAL_SAVED_INFO={}
+        self.GENERIC_PATTERN=re.compile("([A-Za-z0-9._]+\s*=)|(import [A-Za-z0-9._]+)")
 
+        
         # setup tk
         self.all_names=[]
         self.root=tk.Tk()
@@ -44,7 +45,7 @@ class Element:
         
         # setup hotkeys
         self.root.bind_all("1", self.get_new)
-        self.root.bind_all("2", lambda event, file_to_activate="Switcher.py": self.populate_list(file_to_activate))
+        
         
         # setup options for directory ask
         self.dir_opt = {}
@@ -60,15 +61,20 @@ class Element:
         self.dropdown=OptionMenu(self.root, self.dropdown_selected, self.default_dropdown_message)
         self.dropdown.pack()
         self.populate_dropdown()
+        if len(self.TOTAL_SAVED_INFO)==0:# if this is being run for the first time:
+            self.TOTAL_SAVED_INFO["directories"]={}
+            self.TOTAL_SAVED_INFO["config"]={}
+        else:
+            self.dropdown_selected.set(self.TOTAL_SAVED_INFO["config"]["last_directory"])
         
         # set up list
         label1 = tk.Label(text="Variable Names", name="label1")
         label1.pack()
         listframe= Frame(self.root)
         scrollbar = Scrollbar(listframe, orient=tk.VERTICAL)
+        self.listbox_index=0
         self.listbox_numbering = tk.Listbox(listframe, yscrollcommand=scrollbar.set)
         self.listbox_content = tk.Listbox(listframe, yscrollcommand=scrollbar.set)
-        
         scrollbar.config(command=self.scroll_lists)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.listbox_numbering.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
@@ -119,7 +125,8 @@ class Element:
         Timer(self.interval, self.update_active_file).start()
         
     def add_to_list(self, item):
-        self.listbox_numbering.insert(tk.END, str((self.listbox_numbering.size()+1)))
+        self.listbox_index+=1    
+        self.listbox_numbering.insert(tk.END, str(self.listbox_index))
         self.listbox_content.insert(tk.END, item)
     
     def scroll_lists(self, *args):
@@ -137,14 +144,18 @@ class Element:
     
     #FOR LOADING 
     def populate_dropdown(self):
-        global TOTAL_SAVED_INFO
-        global JSON_PATH
-        TOTAL_SAVED_INFO = utilities.load_json_file(JSON_PATH)
+        self.TOTAL_SAVED_INFO = utilities.load_json_file(self.JSON_PATH)
         menu = self.dropdown["menu"]
         menu.delete(0, tk.END)
-        for key in TOTAL_SAVED_INFO:
-            menu.add_command(label=key, command=lambda key=key: self.dropdown_selected.set(key))
-        
+        if "directories" in self.TOTAL_SAVED_INFO:
+            for key in self.TOTAL_SAVED_INFO["directories"]:
+                menu.add_command(label=key, command=lambda key=key: self.select_from_dropdown(key))
+    
+    def select_from_dropdown(self, key):
+        self.TOTAL_SAVED_INFO["config"]["last_directory"]=key
+        utilities.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
+        self.dropdown_selected.set(key)
+    
     def populate_list(self, file_to_activate):
         """
         target behavior:
@@ -152,33 +163,33 @@ class Element:
         and searches for it in the selected folder. 
         Later on,  add an option to allow it to search in non-selected folders as well
         """
-        global TOTAL_SAVED_INFO
+        
         selected_directory=self.dropdown_selected.get()
         file_record=None
         if selected_directory==self.default_dropdown_message:
             return#  if a scanned for hasn't been selected, there's no need to go any further
         self.clear_lists()
-        for absolute_path in TOTAL_SAVED_INFO[selected_directory]["files"]:
+        for absolute_path in self.TOTAL_SAVED_INFO["directories"][selected_directory]["files"]:
             if absolute_path.endswith(file_to_activate):
-                file_record=TOTAL_SAVED_INFO[selected_directory]["files"][absolute_path]
+                file_record=self.TOTAL_SAVED_INFO["directories"][selected_directory]["files"][absolute_path]
                 break
         if not file_record==None:
-            for name in file_record["names"]:
-                self.add_to_list(name)
+            self.reload_list(file_record["names"])
     
+    def reload_list(self, list):
+        self.listbox_index=0# reset index upon reload
+        for name in list:
+            self.add_to_list(name)
+                
     #FOR SCANNING AND SAVING FILES    
     def get_new(self,event):
-        global TOTAL_SAVED_INFO
-        global JSON_PATH
         directory=self.ask_directory()
         self.scan_directory(directory)
-        utilities.save_json_file(TOTAL_SAVED_INFO, JSON_PATH)
+        utilities.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
         self.populate_dropdown()
         
     def scan_directory(self,directory):
-        global GENERIC_PATTERN
-        global TOTAL_SAVED_INFO
-        pattern_being_used=GENERIC_PATTERN# later on, can add code to choose which pattern to use
+        pattern_being_used=self.GENERIC_PATTERN# later on, can add code to choose which pattern to use
         
         scanned_directory={}
         acceptable_extensions=[".py"]# this is hardcoded for now, will read from a box later
@@ -219,7 +230,7 @@ class Element:
         meta_information={}
         meta_information["files"]=scanned_directory
         meta_information["extensions"]=acceptable_extensions
-        TOTAL_SAVED_INFO[directory]=meta_information
+        self.TOTAL_SAVED_INFO["directories"][directory]=meta_information
         
     def scan_file(self, path, language):
         f = open(path)
@@ -239,11 +250,4 @@ class Element:
         # ...
         return 'All done'
 
-# app= None
-
-
-# print " gottoservercode"
 app=Element()
-
-
-
