@@ -27,7 +27,6 @@ other dragonfly repositories
  - https://github.com/ccowan/code-by-voice
  - https://github.com/davitenio/dragonfly-macros
  - https://github.com/poppe1219/dragonfly-scripts
- - https://github.com/dictation-toolbox/dragonfly-scripts
  - http://code.ohloh.net/project?pid=YwZsjw4lsms&prevcid=1&cid=NfME9QgiIC4&fp=194084&projSelected=true
  - https://github.com/whIzz2000/natlink-py-scripts
  - https://github.com/barrysims/dragonfly
@@ -43,5 +42,6 @@ other
 --
  - http://www.youtube.com/watch?v=8SkdfdXWYaI (Tavis Rudd talk)
  - http://pydev.org/manual_adv_remote_debugger.html
+ - http://ergoemacs.org/emacs/emacs_hand_pain_celebrity.html
  - https://github.com/TalAter/annyang (in browser voice recognition JS library)
  - http://sean.wenzel.net/voicerecognition
