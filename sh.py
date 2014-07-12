@@ -29,6 +29,9 @@ class CommandRule(MappingRule):
         "CD":               Text( "cd " ),
         "list":             Text( "ls" )+Key("enter"),
         "make directory":   Text( "mkdir " ),
+        "undo [last] commit": Text("git reset --soft HEAD~1")+Key("enter"),
+        "visualize":        Text("gitk")+Key("enter"),
+        "stop tracking [file]": Text("git rm --cached FILENAME"),
         "exit":             Text( "exit" )+Key("enter"),
         
         }
