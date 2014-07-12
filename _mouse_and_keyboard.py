@@ -154,6 +154,8 @@ class MainRule(MappingRule):
     "right [<n>]":                  Key("right") * Repeat(extra="n"),
     "fly [<fly_mode>] [<n>]":       Function(fly, extra={"fly_mode", " n"}),
     "color [<color_mode>] [<n>]":   Function(color, extra={"color_mode", "n"}),
+    "shin [<n>]":                   Key("s-right") * Repeat(extra="n"),
+    "shin back [<n>]":              Key("s-left") * Repeat(extra="n"),
     "find":                         Key("c-f"),
     "replace":                      Key("c-h"),
     "copy [<n>]":                   Key("c-c")+Function(clipboard_to_file, extra="n"),

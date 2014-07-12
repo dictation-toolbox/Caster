@@ -13,8 +13,8 @@ from bottle import run, post, request, response
 """
 - 1 to 10 sticky list at the top
 - Automatically figures out which file is open by continually scanning the top-level window and looking for something with the file extension
- - it scans an entire directory, creating an XML file for that directory, which contains the names of all imports and things which follow a single
-   = operator, or other language specific traits
+X    - it scans an entire directory, creating an XML file for that directory, which contains the names of all imports and things which follow a single
+       = operator, or other language specific traits
 - It also has a drop-down box for manually switching files, and associated hotkey
 - It has hotkeys for everything, and so can be voice controlled
 - Each word also has a hotkey/button to delete it and to make it sticky
@@ -30,11 +30,6 @@ TOTAL_SAVED_INFO={}
 
 GENERIC_PATTERN=re.compile("([A-Za-z0-9._]+\s*=)|(import [A-Za-z0-9._]+)")
 
-class ScannedFile:
-    def __init__(self):
-        self.filename=""
-        self.absolute_path=""
-        self.variables=[]
 
 class Element:
     def __init__(self):
@@ -78,7 +73,7 @@ class Element:
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.listbox_numbering.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
         lbn_opt={}
-        lbn_opt["width"]=2
+        lbn_opt["width"]=4
         self.listbox_numbering.config(lbn_opt)
         self.listbox_content.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
         for item in ["e one", "e two", "e three", "e four"]:
@@ -90,8 +85,9 @@ class Element:
         self.search_box.pack()
         
         # update active file every n seconds
-        self.interval=5
+        self.interval=1
         self.filename_pattern=re.compile(r"[/\\]([\w]+\.[\w]+)")
+        self.old_active_window_title=""
         Timer(self.interval, self.update_active_file).start()
         
         # start bottle server, tk main loop
@@ -107,19 +103,23 @@ class Element:
         run(host='localhost', port=8080, debug=True)
     
     def update_active_file(self):
+        
         active_window_title=utilities.get_active_window_title()
-        filename=""
-#         
-        match_objects=self.filename_pattern.findall(active_window_title)
-        if not len(match_objects)==  0:# if we found variable name in the line
-            filename=match_objects[0]
-         
-        if not filename=="":
-            print filename
+        if not self.old_active_window_title==active_window_title:
+            
+            filename=""
+            
+            match_objects=self.filename_pattern.findall(active_window_title)
+            if not len(match_objects)==  0:# if we found variable name in the line
+                filename=match_objects[0]
+             
+            if not filename=="":
+                self.old_active_window_title=active_window_title# only update were on a new file, not just a new window
+                self.populate_list(filename)
         Timer(self.interval, self.update_active_file).start()
         
     def add_to_list(self, item):
-        self.listbox_numbering.insert(tk.END, str(self.listbox_numbering.size()+1))
+        self.listbox_numbering.insert(tk.END, str((self.listbox_numbering.size()+1)))
         self.listbox_content.insert(tk.END, item)
     
     def scroll_lists(self, *args):
