@@ -1,16 +1,18 @@
 from dragonfly import *
 import natlink,os,win32gui,sys
-import paths
+import paths, utilities, config
 
 BASE_PATH = paths.get_base()
 NIRCMD_PATH = paths.get_nircmd()
 
 def talk_to_me():
-    natlink.execScript ("TTSPlayString \"" +"I am Serena, version 0.1.68"+ "\"")
-   
+    version_number="0.1.80"
+    utilities.report("I am Serena, version "+version_number, speak=True)
+       
 def repeat_after(text):
-    natlink.execScript ("TTSPlayString \"" +str(text)+ "\"")
-    print "\n\nwe just said:"+str(text)
+    utilities.report(str(text))
+#     natlink.execScript ("TTSPlayString \"" +str(text)+ "\"")
+#     print "\n\nwe just said:"+str(text)
    
 # def get_mouse_point():
 #     global BASE_PATH
@@ -59,9 +61,11 @@ def volume_control(n, mode):
     try:
         BringApp(NIRCMD_PATH, command, chosen_level).execute()
     except Exception:
-        print "Unexpected error:", sys.exc_info()[0]
-        print "Unexpected error:", sys.exc_info()[1]
-    natlink.execScript ("TTSPlayString \"" +message+str( n )+ "\"")
+        utilities.report(utilities.list_to_string(sys.exc_info()))
+#         print "Unexpected error:", sys.exc_info()[0]
+#         print "Unexpected error:", sys.exc_info()[1]
+    utilities.report(message+str(n), speak=config.SPEAK)
+#     natlink.execScript ("TTSPlayString \"" +message+str( n )+ "\"")
 
 
 class MainRule(MappingRule):

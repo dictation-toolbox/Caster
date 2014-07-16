@@ -4,6 +4,7 @@ Created on Jun 12, 2014
 @author: dave
 '''
 from dragonfly import Key
+import natlink
 import win32gui, win32process, win32api
 import os, json
 import paths
@@ -34,7 +35,7 @@ def clear_pyc():
         if files.endswith(".pyc"):
             filepath=BASE_PATH+files
             os.remove(filepath)
-            print "Deleted: "+filepath
+            report("Deleted: "+filepath)
 
 def save_json_file(data, path):
     try:
@@ -44,7 +45,7 @@ def save_json_file(data, path):
             f.write(formatted_data)
             f.close()
     except Exception as e:
-        print("Could not save file: %s" % str(e))
+        report("Could not save file: %s" % str(e))
 
 def load_json_file(path):
     result={}
@@ -56,9 +57,19 @@ def load_json_file(path):
         else:
             save_json_file(result, path)
     except Exception as e:
-        print("Could not load file: %s" % str(e))
+        report("Could not load file: %s" % str(e))
     return result
 
 def remote_debug():
     import pydevd;#@UnresolvedImport
     pydevd.settrace()
+    
+def report(message, speak=False, console=True, log=False):
+    if console:
+        print message
+    if speak:
+        natlink.execScript ("TTSPlayString \"" +message+ "\"")
+    #To do: logging
+    
+def list_to_string(l):
+    return "\n".join([str(x) for x in l])

@@ -6,6 +6,7 @@ import paths, utilities
 
 CONFIG_PATH = paths.get_config_path()
 CONFIG = {}  # Empty, default config.
+SPEAK = False # to do,: add this value to the config
 
 def save_config():
     global CONFIG

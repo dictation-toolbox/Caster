@@ -13,9 +13,22 @@ Command-module for Chrome
 #---------------------------------------------------------------------------
 
 from dragonfly import (Grammar, AppContext, MappingRule,
-                       Dictation, Choice, IntegerRef, NumberRef,
-                       Key, Text, Repeat, WaitWindow)
+                       Dictation, Playback, IntegerRef, Function,
+                       Key, Text, Repeat, WaitWindow, Mouse, Pause)
 
+def save_image(dict, n):
+    s=str(dict)
+    Mouse("right")._execute()
+    Pause("40")._execute()
+    Key("up/10:5")._execute()
+    Key("enter")._execute()
+    Key("c-tab")._execute()
+    Key("c-s")._execute()
+    if not s=="nothing":
+        n=str(int(n))
+        Pause("40")._execute()
+        Text((s[0]+n+"_"))._execute()
+    
 
 class CommandRule(MappingRule):
 
@@ -32,12 +45,14 @@ class CommandRule(MappingRule):
         "refresh":                      Key("c-r"),
         "search for <dict>":            Key("c-t")+WaitWindow(title="New Tab")+ Text("%(dict)s"),
         "git hub":                      Text("github"),
+        "save image [<dict> <n>]":      Function(save_image, extra={"dict", "n"}),
+        
         }
     extras = [
               Dictation("dict"),
               IntegerRef("n",1, 100),
              ]
-    defaults ={"n": 1}
+    defaults ={"n": 1, "dict":"nothing"}
 
 
 #---------------------------------------------------------------------------

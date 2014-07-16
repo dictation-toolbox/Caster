@@ -14,7 +14,7 @@ MULTI_CLIPBOARD = {}
 def initialize_clipboard():
     global MULTI_CLIPBOARD
     MULTI_CLIPBOARD = utilities.load_json_file(paths.get_saved_clipboard_path())
-    print "Clipboard initialized..."
+    utilities.report("Clipboard initialized...")
 
 def clipboard_to_file(n):
     global MULTI_CLIPBOARD
@@ -153,7 +153,7 @@ class MainRule(MappingRule):
     "left [<n>]":                   Key("left") * Repeat(extra="n"),
     "right [<n>]":                  Key("right") * Repeat(extra="n"),
     "fly [<fly_mode>] [<n>]":       Function(fly, extra={"fly_mode", " n"}),
-    "color [<color_mode>] [<n>]":   Function(color, extra={"color_mode", "n"}),
+    "(coup | color) [<color_mode>] [<n>]":   Function(color, extra={"color_mode", "n"}),
     "shin [<n>]":                   Key("s-right") * Repeat(extra="n"),
     "shin back [<n>]":              Key("s-left") * Repeat(extra="n"),
     "find":                         Key("c-f"),

@@ -17,11 +17,11 @@ X    - it scans an entire directory, creating an XML file for that directory, wh
        = operator, or other language specific traits
 - It also has a drop-down box for manually switching files, and associated hotkey
 - It has hotkeys for everything, and so can be voice controlled
-- Each word also has a hotkey/button to delete it and to make it sticky
+- Each name also has a hotkey/button to delete it and to make it sticky
 - It can also take the highlighted text and add it to the list
-- It remembers what folder was opened last, maybe save this to the json file
+X    - It remembers what folder was opened last, maybe save this to the json file
 - A  rescan directory command
-
+- Make it longer and docked on the right
 
 - Create better patterns than the generic pattern
 """
@@ -101,7 +101,7 @@ class Element:
         self.root.mainloop()
     
     def on_exit(self):
-        print "Element: shutting down"
+        utilities.report("Element: shutting down")
         self.root.destroy()
         os.kill(os.getpid(), signal.SIGTERM)
     
@@ -195,17 +195,15 @@ class Element:
         acceptable_extensions=[".py"]# this is hardcoded for now, will read from a box later
         try:
             for base, dirs, files in os.walk(directory):# traverse base directory, and list directories as dirs and files as files
-                path = base.split('/')
-                
-                print (len(path) - 1) *'---' , base       
-                for file in files:
-                    extension="."+file.split(".")[-1]
+                utilities.report(base)
+                for fname in files:
+                    extension="."+fname.split(".")[-1]
                     if extension in acceptable_extensions:
                         scanned_file={}
-                        scanned_file["filename"]=file
-                        absolute_path=base+"/"+file
+                        scanned_file["filename"]=fname
+                        absolute_path=base+"/"+fname
                         scanned_file["names"]=[]
-                        f = open(base+"\\"+file, "r")
+                        f = open(base+"\\"+fname, "r")
                         lines = f.readlines()
                         f.close()
                         
@@ -225,19 +223,13 @@ class Element:
                         
                         scanned_directory[absolute_path]=scanned_file
         except Exception:
-            print "Unexpected error:", sys.exc_info()[0]
-            print "Unexpected error:", sys.exc_info()[1]
+            utilities.report(utilities.list_to_string(sys.exc_info()))
         meta_information={}
         meta_information["files"]=scanned_directory
         meta_information["extensions"]=acceptable_extensions
         self.TOTAL_SAVED_INFO["directories"][directory]=meta_information
         
-    def scan_file(self, path, language):
-        f = open(path)
-        lines = f.readlines()
-        f.close()
-        for line in lines:
-            print line#this is where we do language-based syntax scanning
+
         
     def ask_directory(self):# returns a string of the directory name
         return tkFileDialog.askdirectory(**self.dir_opt)
