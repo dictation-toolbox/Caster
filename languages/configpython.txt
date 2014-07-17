@@ -54,7 +54,9 @@ cmd.map = {
 
 		"true":						Text("True"),
 		"false":					Text("False"),
-					
+
+		"return":					Text("return "),
+							
 		"pipe symbol":              Text("|"),
         "<n> bark":                 Text("%(n)d"),
         "<n> <n2> bark":            Text("%(n)d%(n2)d"),

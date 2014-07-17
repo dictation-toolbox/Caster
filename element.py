@@ -7,7 +7,7 @@ from Tkinter import (StringVar, OptionMenu, Scrollbar, Frame)
 import os, re, sys, json
 import paths, utilities
 
-
+import bottle
 from bottle import run, post, request, response
 
 """
@@ -25,6 +25,10 @@ X    - It remembers what folder was opened last, maybe save this to the json fil
 
 - Create better patterns than the generic pattern
 """
+
+def start_server():
+    run(host='localhost', port=1337, debug=True)
+
 
 class Element:
     def __init__(self):
@@ -97,16 +101,13 @@ class Element:
         Timer(self.interval, self.update_active_file).start()
         
         # start bottle server, tk main loop
-        Timer(self.interval, self.start_server).start()
+        Timer(self.interval, start_server).start()
         self.root.mainloop()
     
     def on_exit(self):
         utilities.report("Element: shutting down")
         self.root.destroy()
         os.kill(os.getpid(), signal.SIGTERM)
-    
-    def start_server(self):
-        run(host='localhost', port=8080, debug=True)
     
     def update_active_file(self):
         
@@ -234,12 +235,29 @@ class Element:
     def ask_directory(self):# returns a string of the directory name
         return tkFileDialog.askdirectory(**self.dir_opt)
     
-    @staticmethod    
-    @post('/process')
-    def my_process():
-        req_obj = json.loads(request.body.read())
-        # do something with req_obj
-        # ...
-        return 'All done: '+req_obj["test case"]
+    def get_name(self, index):
+        return self.listbox_content.get(index, index+1)[0]
 
-app=Element()
+    def my_process(self):
+        request_object = json.loads(request.body.read())
+#         action_type=request_object["action_type"]
+#         if action_type=="retrieve":
+#             global app
+#             return app.get_name(int(request_object["index"]))
+            
+        return 'All done: '+request_object["action_type"]
+
+app=Element()   
+bottle.route('/process',method="GET")(app.my_process)
+    
+# @post('/process')
+# def my_process():
+#     request_object = json.loads(request.body.read())
+#     action_type=request_object["action_type"]
+#     if action_type=="retrieve":
+#         global app
+#         return app.get_name(int(request_object["index"]))
+#         
+#     return 'All done: '+request_object["action_type"]
+
+
