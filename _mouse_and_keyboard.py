@@ -4,7 +4,7 @@ from dragonfly import ( Key, Text , Playback, Function, Repeat,
 import sys, win32api, win32gui, time, win32clipboard, natlink
 from win32con import MOUSEEVENTF_WHEEL
 from win32api import GetSystemMetrics
-import paths, utilities
+import paths, utilities, config
 
 BASE_PATH = paths.get_base()
 MMT_PATH = paths.get_mmt()
@@ -24,6 +24,28 @@ def clipboard_to_file(n):
     MULTI_CLIPBOARD[key]=win32clipboard.GetClipboardData()
     win32clipboard.CloseClipboard()
     utilities.save_json_file(MULTI_CLIPBOARD, paths.get_saved_clipboard_path())
+
+def volume_control(n, mode):
+    global NIRCMD_PATH
+    max_volume = 65535
+    sign=1
+    command="setsysvolume"# default
+    mode=str(mode)
+    message="setting volume to "
+    if mode=="up":
+        command="changesysvolume"
+        message="increasing volume by "
+    elif mode=="down":
+        command="changesysvolume"
+        message="decreasing volume by "
+        sign=-1
+    chosen_level=str(int(n*sign* 1.0/100*max_volume))
+    try:
+        BringApp(NIRCMD_PATH, command, chosen_level).execute()
+    except Exception:
+        utilities.report(utilities.list_to_string(sys.exc_info()))
+    utilities.report(message+str(n), speak=config.SPEAK)
+ 
     
 def drop(n, n2):
     global MULTI_CLIPBOARD
@@ -169,7 +191,7 @@ class MainRule(MappingRule):
      
     # miscellaneous
     'auto <mode> <text>':           Function(auto_spell, extra={"mode","text"}),
-    
+    "(<volume_mode> [system] volume [to] <n> | volume <volume_mode> <n>)": Function(volume_control, extra={'n','volume_mode'}),
     }
     extras = [
               IntegerRef("n", 1, 500),
@@ -190,13 +212,16 @@ class MainRule(MappingRule):
                     {"left": "left", "back": "back", "up": "up", "down": "down", 
                      "right": "right", "home": "home", "end": "end",
                     }),
+              Choice("volume_mode",
+                    {"set": "set", "increase": "up", "decrease": "down",
+                     "up":"up","down":"down"}),
               Choice("fly_mode",
                     {"left": "left", "back": "back", "top": "top", "bottom": "bottom", 
                      "right": "right", "home": "home", "end": "end", "away": "end",
                     }),
              ]
     defaults ={"n": 1,"n2": 1,"text": "", "color_mode":"right", "fly_mode":"right",
-               "direction2":""
+               "direction2":"", "volume_mode": "setsysvolume"
                }
 
 initialize_clipboard()

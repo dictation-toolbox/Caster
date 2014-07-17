@@ -51,6 +51,9 @@ cmd.map = {
         "for each":					Text("for  in :")+ Key("left:5"),
         "for I":					Text("for i in range(0, ):")+ Key("left:2"),
 		"while":					Text("while :")+ Key("left"),
+
+		"true":						Text("True"),
+		"false":					Text("False"),
 					
 		"pipe symbol":              Text("|"),
         "<n> bark":                 Text("%(n)d"),
@@ -59,7 +62,7 @@ cmd.map = {
         "string <text> string":     Text("%(text)s"), 
 	   
        	"[dot] (pie | pi)":			Text(".py"),
-     	   
+		"jason":					Text("json"),     	   
           }
 
 

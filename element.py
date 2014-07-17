@@ -240,6 +240,6 @@ class Element:
         req_obj = json.loads(request.body.read())
         # do something with req_obj
         # ...
-        return 'All done'
+        return 'All done: '+req_obj["test case"]
 
 app=Element()
