@@ -9,7 +9,7 @@ def run_element():
         c = httplib.HTTPConnection('localhost', 1337)
         data_to_send={}
         data_to_send["action_type"]="retrieve"
-        data_to_send["index"]=1
+        data_to_send["index"]=0
         c.request('POST', '/process', json.dumps(data_to_send))
         doc = c.getresponse().read()
         utilities.report(doc)

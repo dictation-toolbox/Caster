@@ -26,8 +26,7 @@ X    - It remembers what folder was opened last, maybe save this to the json fil
 - Create better patterns than the generic pattern
 """
 
-def start_server():
-    run(host='localhost', port=1337, debug=True)
+
 
 
 class Element:
@@ -101,13 +100,17 @@ class Element:
         Timer(self.interval, self.update_active_file).start()
         
         # start bottle server, tk main loop
-        Timer(self.interval, start_server).start()
+        Timer(self.interval, self.start_server).start()
+        bottle.route('/process',method="POST")(self.my_process)
         self.root.mainloop()
     
     def on_exit(self):
         utilities.report("Element: shutting down")
         self.root.destroy()
         os.kill(os.getpid(), signal.SIGTERM)
+    
+    def start_server(self):
+        run(host='localhost', port=1337, debug=True)
     
     def update_active_file(self):
         
@@ -240,15 +243,15 @@ class Element:
 
     def my_process(self):
         request_object = json.loads(request.body.read())
-#         action_type=request_object["action_type"]
-#         if action_type=="retrieve":
-#             global app
-#             return app.get_name(int(request_object["index"]))
+        action_type=request_object["action_type"]
+        if action_type=="retrieve":
+            return self.get_name(int(request_object["index"]))
             
         return 'All done: '+request_object["action_type"]
 
-app=Element()   
-bottle.route('/process',method="GET")(app.my_process)
+
+app=Element()  
+
     
 # @post('/process')
 # def my_process():
