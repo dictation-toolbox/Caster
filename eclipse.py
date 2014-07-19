@@ -27,8 +27,8 @@ class CommandRule(MappingRule):
             "close (editor | tab) [<n>]":               Key("c-w") * Repeat(extra="n"),
             "open resource":                            Key("cs-r"),
             "open type":                                Key("cs-t"),
-            "go to line":                               Key("c-l"),
-            "go to line <n>":                           Key("c-l") + Pause("50") + Text("%(n)d") + Key("enter"),
+#             "go to line":                               Key("c-l"),
+            "[go to] line <n>":                         Key("c-l") + Pause("50") + Text("%(n)d") + Key("enter"),
             "go to declaration":                        Key("f3"),
             "editor select":                            Key("c-e"),
             "pop":                                      Key("c-space, down, up"),
@@ -53,14 +53,8 @@ class CommandRule(MappingRule):
         }
     extras = [
               Dictation("text"),
-              Dictation("dict2"),
-              IntegerRef("1to9", 1, 10),
-              IntegerRef("n", 1, 100),
-              NumberRef("int2"),
-              Choice("zoom",
-                    {"75": "7", "100": "1", "page width": "p",
-                     "text width": "t", "whole page": "w",
-                    }),
+              IntegerRef("n", 1, 1000),
+              
              ]
     defaults = {"n": 1}
 

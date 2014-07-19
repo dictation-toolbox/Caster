@@ -8,6 +8,7 @@ import paths, utilities, config
 
 BASE_PATH = paths.get_base()
 MMT_PATH = paths.get_mmt()
+NIRCMD_PATH = paths.get_nircmd()
 
 MULTI_CLIPBOARD = {}
 
@@ -25,12 +26,12 @@ def clipboard_to_file(n):
     win32clipboard.CloseClipboard()
     utilities.save_json_file(MULTI_CLIPBOARD, paths.get_saved_clipboard_path())
 
-def volume_control(n, mode):
+def volume_control(n, volume_mode):
     global NIRCMD_PATH
     max_volume = 65535
     sign=1
     command="setsysvolume"# default
-    mode=str(mode)
+    mode=str(volume_mode)
     message="setting volume to "
     if mode=="up":
         command="changesysvolume"

@@ -101,7 +101,7 @@ class Element:
         
         # start bottle server, tk main loop
         Timer(self.interval, self.start_server).start()
-        bottle.route('/process',method="POST")(self.my_process)
+        bottle.route('/process',method="POST")(self.process_request)
         self.root.mainloop()
     
     def on_exit(self):
@@ -241,26 +241,29 @@ class Element:
     def get_name(self, index):
         return self.listbox_content.get(index, index+1)[0]
 
-    def my_process(self):
+    def process_request(self):#GENERIC_PATTERN=listbox_numbering =
         request_object = json.loads(request.body.read())
         action_type=request_object["action_type"]
-        if action_type=="retrieve":
-            return self.get_name(int(request_object["index"]))
-            
-        return 'All done: '+request_object["action_type"]
+        if "index" in request_object:
+            index=int(request_object["index"])
+            if action_type=="retrieve":
+                return self.get_name(index)
+            elif action_type=="sticky":
+                return "mode not ready yet"
+                # here you need a third piece of data, to let you know whether this word was already in the non-sticky list, or if it's new
+            elif action_type=="delete":
+                return "mode not ready yet"
+            elif action_type=="unsticky":
+                return "mode not ready yet"
+        elif "name" in request_object:
+            name=request_object["name"]
+            if action_type=="add":
+                if name not in self.all_names:
+                    self.all_names.append(name)
+                    #save json
+                    # reload list- you want to make sure that all_names is being used in the first place
+            return "mode not ready yet"
+        return 'unrecognized request received: '+request_object["action_type"]
 
 
 app=Element()  
-
-    
-# @post('/process')
-# def my_process():
-#     request_object = json.loads(request.body.read())
-#     action_type=request_object["action_type"]
-#     if action_type=="retrieve":
-#         global app
-#         return app.get_name(int(request_object["index"]))
-#         
-#     return 'All done: '+request_object["action_type"]
-
-
