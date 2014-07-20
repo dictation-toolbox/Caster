@@ -15,18 +15,17 @@ from bottle import run, post, request, response
 X    - Automatically figures out which file is open by continually scanning the top-level window and looking for something with the file extension
 X    - it scans an entire directory, creating an XML file for that directory, which contains the names of all imports and things which follow a single
        = operator, or other language specific traits
-- It also has a drop-down box for manually switching files, and associated hotkey
-- It has hotkeys for everything, and so can be voice controlled
+- It also has a drop-down box for manually switching files, and associated command
 - Each name also has a hotkey/button to delete it and to make it sticky
 - It can also take the highlighted text and add it to the list
 X    - It remembers what folder was opened last, maybe save this to the json file
 - A  rescan directory command
-- Make it longer and docked on the right
-
+X    - Make it longer and docked on the right
+X    - Ability to scroll the list
 - Create better patterns than the generic pattern
 """
 
-
+   
 
 
 class Element:
@@ -42,13 +41,13 @@ class Element:
         self.all_names=[]
         self.root=tk.Tk()
         self.root.title("Element v.01")
-        self.root.geometry("200x500")
+        self.root.geometry("200x"+str(self.root.winfo_screenheight()-100)+"-1+20")
         self.root.wm_attributes("-topmost", 1)
         self.root.protocol("WM_DELETE_WINDOW", self.on_exit)
         
         # setup hotkeys
         self.root.bind_all("1", self.get_new)
-        
+#         self.root.bind_all("2", self.do_scrolling)
         
         # setup options for directory ask
         self.dir_opt = {}
@@ -65,26 +64,57 @@ class Element:
         self.dropdown.pack()
         self.populate_dropdown()
         if len(self.TOTAL_SAVED_INFO)==0:# if this is being run for the first time:
-            self.TOTAL_SAVED_INFO["directories"]={}
             self.TOTAL_SAVED_INFO["config"]={}
+            self.TOTAL_SAVED_INFO["directories"]={}
         else:
             self.dropdown_selected.set(self.TOTAL_SAVED_INFO["config"]["last_directory"])
         
         # set up list
         label1 = tk.Label(text="Variable Names", name="label1")
         label1.pack()
+        
+        stickyframe=Frame(self.root)
+        stickyscrollbar =  Scrollbar(stickyframe, orient=tk.VERTICAL)
+        self.sticky_listbox_numbering = tk.Listbox(stickyframe, yscrollcommand=stickyscrollbar.set)
+        self.sticky_listbox_content = tk.Listbox(stickyframe, yscrollcommand=stickyscrollbar.set)
+
+        self.sticky_listbox_index=0
+        s_lbn_opt={}
+        s_lbn_opt_height=10
+        s_lbn_opt["height"]=s_lbn_opt_height
+        s_lbn_opt["width"]=4
+        s_lbn_opt2={}
+        s_lbn_opt2["height"]=s_lbn_opt_height
+        
+        stickyscrollbar.config(command=self.sticky_scroll_lists)
+        stickyscrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        self.sticky_listbox_numbering.config(s_lbn_opt)
+        self.sticky_listbox_numbering.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
+        self.sticky_listbox_content.config(s_lbn_opt2)
+        self.sticky_listbox_content.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
+        stickyframe.pack()
+        #-------
+        
         listframe= Frame(self.root)
         scrollbar = Scrollbar(listframe, orient=tk.VERTICAL)
-        self.listbox_index=0
         self.listbox_numbering = tk.Listbox(listframe, yscrollcommand=scrollbar.set)
         self.listbox_content = tk.Listbox(listframe, yscrollcommand=scrollbar.set)
+        
+        self.listbox_index=0
+        lbn_opt={}
+        lbn_opt_height=30
+        lbn_opt["height"]=lbn_opt_height
+        lbn_opt["width"]=4
+        lbn_opt2={}
+        lbn_opt2["height"]=lbn_opt_height
+        
         scrollbar.config(command=self.scroll_lists)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        self.listbox_numbering.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
-        lbn_opt={}
-        lbn_opt["width"]=4
         self.listbox_numbering.config(lbn_opt)
+        self.listbox_numbering.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
+        self.listbox_content.config(lbn_opt2)
         self.listbox_content.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
+        
         for item in ["e one", "e two", "e three", "e four"]:
             self.add_to_list(item)
         listframe.pack()
@@ -133,13 +163,22 @@ class Element:
         self.listbox_numbering.insert(tk.END, str(self.listbox_index))
         self.listbox_content.insert(tk.END, item)
     
-    def scroll_lists(self, *args):
+    def scroll_to(self, index):#don't need this for sticky list
+        self.scroll_lists(index)
+    
+    def scroll_lists(self, *args):# synchronizes  numbering list and  content list with a single scrollbar
         apply(self.listbox_numbering.yview, args)
         apply(self.listbox_content.yview, args)
     
-    def clear_lists(self):
+    def sticky_scroll_lists(self, *args):
+        apply(self.sticky_listbox_numbering.yview, args)
+        apply(self.sticky_listbox_content.yview, args)
+        
+    def clear_lists(self):# used when changing files
         self.listbox_numbering.delete(0, tk.END)
         self.listbox_content.delete(0, tk.END)
+        self.sticky_listbox_numbering.delete(0, tk.END)
+        self.sticky_listbox_content.delete(0, tk.END)
     
     #FOR MANIPULATING THE     LIST    
     def move_to_top(self,name):
@@ -148,7 +187,7 @@ class Element:
     
     #FOR LOADING 
     def populate_dropdown(self):
-        self.TOTAL_SAVED_INFO = utilities.load_json_file(self.JSON_PATH)
+        self.TOTAL_SAVED_INFO=utilities.load_json_file(self.JSON_PATH)
         menu = self.dropdown["menu"]
         menu.delete(0, tk.END)
         if "directories" in self.TOTAL_SAVED_INFO:
@@ -161,28 +200,22 @@ class Element:
         self.dropdown_selected.set(key)
     
     def populate_list(self, file_to_activate):
-        """
-        target behavior:
-        Takes a filename (either from scan or from a second drop-down), 
-        and searches for it in the selected folder. 
-        Later on,  add an option to allow it to search in non-selected folders as well
-        """
-        
+
         selected_directory=self.dropdown_selected.get()
         file_record=None
         if selected_directory==self.default_dropdown_message:
             return#  if a scanned for hasn't been selected, there's no need to go any further
         self.clear_lists()
         for absolute_path in self.TOTAL_SAVED_INFO["directories"][selected_directory]["files"]:
-            if absolute_path.endswith(file_to_activate):
+            if absolute_path.endswith("/"+file_to_activate) or absolute_path.endswith("\\"+file_to_activate):
                 file_record=self.TOTAL_SAVED_INFO["directories"][selected_directory]["files"][absolute_path]
                 break
         if not file_record==None:
             self.reload_list(file_record["names"])
     
-    def reload_list(self, list):
+    def reload_list(self, namelist):
         self.listbox_index=0# reset index upon reload
-        for name in list:
+        for name in namelist:
             self.add_to_list(name)
                 
     #FOR SCANNING AND SAVING FILES    
@@ -246,7 +279,11 @@ class Element:
         action_type=request_object["action_type"]
         if "index" in request_object:
             index=int(request_object["index"])
-            if action_type=="retrieve":
+            if action_type=="scroll":
+                if index<self.listbox_content.size():
+                    self.scroll_to(index)
+                return "c"
+            elif action_type=="retrieve":
                 return self.get_name(index)
             elif action_type=="sticky":
                 return "mode not ready yet"

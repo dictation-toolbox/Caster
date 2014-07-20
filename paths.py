@@ -25,7 +25,7 @@ ALPHABET_CONFIG_PATH = "C:\NatLink\NatLink\MacroSystem\languages\configalphabet.
 
 MEDIA_PATH = r"C:\NatLink\NatLink\MacroSystem\media"
 
-GRID_PATH=BASE_PATH+"dptools\\CustomGrid.py"
+GRID_PATH=BASE_PATH+"exe\\custom_grid\\CustomGrid.exe"
 
 def get_base():
     global BASE_PATH

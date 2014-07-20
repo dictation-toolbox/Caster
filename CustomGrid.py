@@ -147,7 +147,7 @@ class CommandRule(MappingRule):
 
 #---------------------------------------------------------------------------
 
-context = AppContext(executable="pythonw")
+context = AppContext(executable="CustomGrid")
 grammar = Grammar("Custom Grid", context=context)
 grammar.add_rule(CommandRule())
 grammar.load()
