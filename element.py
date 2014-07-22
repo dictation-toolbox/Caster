@@ -11,18 +11,18 @@ import bottle
 from bottle import run, post, request, response
 
 """
-- 1 to 10 sticky list at the top
 X    - Automatically figures out which file is open by continually scanning the top-level window and looking for something with the file extension
 X    - it scans an entire directory, creating an XML file for that directory, which contains the names of all imports and things which follow a single
        = operator, or other language specific traits
-- It also has a drop-down box for manually switching files, and associated command
-- Each name also has a hotkey/button to delete it and to make it sticky
-- It can also take the highlighted text and add it to the list
 X    - It remembers what folder was opened last, maybe save this to the json file
-- A  rescan directory command
 X    - Make it longer and docked on the right
 X    - Ability to scroll the list
+- 1 to 10 sticky list at the top, non-sticky list starts from index 11 --  this way, we don't need  separate commands for picking from the sticky list
 - Create better patterns than the generic pattern
+- It also has a drop-down box for manually switching files, and associated command
+- It can also take the highlighted text and add it to the list
+- A  rescan directory command
+- Element control commands activate and deactivate with Element-- is it possible to do this from the element code?apparently not, at least not easily
 """
 
    
@@ -30,6 +30,7 @@ X    - Ability to scroll the list
 
 class Element:
     def __init__(self):
+        
         
         # setup stuff that were previously globals
         self.JSON_PATH=paths.get_element_json_path()

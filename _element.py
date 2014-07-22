@@ -28,8 +28,8 @@ def send(action_type, data):
         return "SEND() ERROR"
 
 class MainRule(MappingRule):
-    
     mapping = {
+    "disable element":              Function(disable_element_commands),
     "scroll to <n>":                Function(scroll, extra="n"),
     "get <n>":                      Function(retrieve, extra="n"),
     
@@ -45,3 +45,23 @@ class MainRule(MappingRule):
 grammar = Grammar('element')
 grammar.add_rule(MainRule())
 grammar.load()
+grammar.disable()
+
+class EnablerRule(MappingRule):
+    mapping = {
+    "enable element":              Function(enable_element_commands),
+    }
+
+enabler = Grammar('element_enabler')
+enabler.add_rule(EnablerRule())
+enabler.load()
+
+def enable_element_commands():
+    # to do: bringapp on the executable
+    grammar.enable()
+    enabler.disable()
+    
+def disable_element_commands():
+    # to do:  kill the executable
+    grammar.disable()
+    enabler.enable()
