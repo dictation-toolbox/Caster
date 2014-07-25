@@ -27,6 +27,16 @@ def send(action_type, data):
         utilities.report(utilities.list_to_string(sys.exc_info()))
         return "SEND() ERROR"
 
+def enable_element_commands():
+    # to do: bringapp on the executable
+    grammar.enable()
+    enabler.disable()
+    
+def disable_element_commands():
+    # to do:  kill the executable
+    grammar.disable()
+    enabler.enable()
+
 class MainRule(MappingRule):
     mapping = {
     "disable element":              Function(disable_element_commands),
@@ -55,13 +65,3 @@ class EnablerRule(MappingRule):
 enabler = Grammar('element_enabler')
 enabler.add_rule(EnablerRule())
 enabler.load()
-
-def enable_element_commands():
-    # to do: bringapp on the executable
-    grammar.enable()
-    enabler.disable()
-    
-def disable_element_commands():
-    # to do:  kill the executable
-    grammar.disable()
-    enabler.enable()

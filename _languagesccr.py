@@ -21,7 +21,7 @@ from dragonfly import *
 import natlink
 
 import settings, paths
-config_settings = settings.get_config()
+config_settings = settings.get_settings()
 ALL_LANGUAGE_CONFIGS=paths.get_all_language_configs()
 
 rules = []
