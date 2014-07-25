@@ -20,8 +20,8 @@ except ImportError:
 from dragonfly import *
 import natlink
 
-import config, paths
-config_settings = config.get_config()
+import settings, paths
+config_settings = settings.get_config()
 ALL_LANGUAGE_CONFIGS=paths.get_all_language_configs()
 
 rules = []
@@ -35,7 +35,7 @@ def disable_all_except(language):
         for holder in rules:
             if (not holder.language == language) and (holder.language not in compatibility_list):
                 config_settings[holder.language] = False
-                config.save_config()
+                settings.save_config()
                 holder.grammar.disable()
                 holder.bootstrap.enable()
             
@@ -170,7 +170,7 @@ def generate_language_rule(path):
         def _process_recognition(self, node, extras):   # Callback when command is spoken.
             global config_settings
             config_settings[language] = True
-            config.save_config()
+            settings.save_config()
             bootstrap.disable()
             grammar.enable()
             disable_all_except(language)
@@ -182,7 +182,7 @@ def generate_language_rule(path):
         def _process_recognition(self, node, extras):   # Callback when command is spoken.
             global config_settings
             config_settings[language] = False
-            config.save_config()
+            settings.save_config()
             grammar.disable()
             bootstrap.enable()
             natlink.execScript ("TTSPlayString \"" +language+" grammar disabled"+ "\"")

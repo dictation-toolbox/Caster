@@ -4,23 +4,23 @@ import os
 import json
 import paths, utilities
 
-CONFIG_PATH = paths.get_config_path()
-CONFIG = {}  # Empty, default config.
+SETTINGS_PATH = paths.get_settings_path()
+SETTINGS = {}  # Empty, default config.
 SPEAK = False # to do,: add this value to the config
 
 def save_config():
-    global CONFIG
-    global CONFIG_PATH
-    utilities.save_json_file(CONFIG, CONFIG_PATH)
+    global SETTINGS
+    global SETTINGS_PATH
+    utilities.save_json_file(SETTINGS, SETTINGS_PATH)
 
-def load_config():
-    global CONFIG
-    global CONFIG_PATH
-    CONFIG = utilities.load_json_file(CONFIG_PATH)
+def load_settings():
+    global SETTINGS
+    global SETTINGS_PATH
+    SETTINGS = utilities.load_json_file(SETTINGS_PATH)
     init_default_values()
 
 def init_default_values():# new languages must be added here and in paths.py
-    global CONFIG
+    global SETTINGS
     valueChangeCount = 0
     defaultValues = [
         ("java", False),
@@ -30,16 +30,16 @@ def init_default_values():# new languages must be added here and in paths.py
         ("alphabet", False)
     ]
     for (name, value) in defaultValues:
-        if not name in CONFIG.keys():
-            CONFIG[name] = value
+        if not name in SETTINGS.keys():
+            SETTINGS[name] = value
             valueChangeCount += 1
     if valueChangeCount > 0:
         save_config()
 
 
-def get_config():
-    global CONFIG
-    return CONFIG
+def get_settings():
+    global SETTINGS
+    return SETTINGS
 
 
-load_config()
+load_settings()

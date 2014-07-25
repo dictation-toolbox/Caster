@@ -7,7 +7,7 @@ import sys, os
 
 #BASE_PATH='C:\NatLink\NatLink\MacroSystem\\'
 BASE_PATH = os.path.dirname(os.path.abspath(__file__)) + "\\"
-CONFIG_PATH = BASE_PATH + "data\\config.json"
+SETTINGS_PATH = BASE_PATH + "data\\settings.json"
 ELEMENT_JSON_PATH = BASE_PATH + "data\\element.json"
 SAVED_CLIPBOARD_PATH = BASE_PATH + "data\\clipboard.json"
 
@@ -31,9 +31,9 @@ def get_base():
     global BASE_PATH
     return BASE_PATH
 
-def get_config_path():
-    global CONFIG_PATH
-    return CONFIG_PATH
+def get_settings_path():
+    global SETTINGS_PATH
+    return SETTINGS_PATH
 
 def get_element_json_path():
     global ELEMENT_JSON_PATH

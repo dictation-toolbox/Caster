@@ -4,7 +4,7 @@ from dragonfly import ( Key, Text , Playback, Function, Repeat,
 import sys, win32api, win32gui, time, win32clipboard, natlink
 from win32con import MOUSEEVENTF_WHEEL
 from win32api import GetSystemMetrics
-import paths, utilities, config
+import paths, utilities, settings
 
 BASE_PATH = paths.get_base()
 MMT_PATH = paths.get_mmt()
@@ -45,7 +45,7 @@ def volume_control(n, volume_mode):
         BringApp(NIRCMD_PATH, command, chosen_level).execute()
     except Exception:
         utilities.report(utilities.list_to_string(sys.exc_info()))
-    utilities.report(message+str(n), speak=config.SPEAK)
+    utilities.report(message+str(n), speak=settings.SPEAK)
  
     
 def drop(n, n2):

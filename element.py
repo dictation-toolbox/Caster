@@ -22,7 +22,7 @@ X    - Ability to scroll the list
 - It also has a drop-down box for manually switching files, and associated command
 - It can also take the highlighted text and add it to the list
 - A  rescan directory command
-- Element control commands activate and deactivate with Element-- is it possible to do this from the element code?apparently not, at least not easily
+- Element control commands activate and deactivate with Element-- is it possible to do this from the element code?apparently not, at least not easily.
 """
 
    
