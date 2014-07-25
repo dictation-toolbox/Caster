@@ -17,6 +17,7 @@ X    - it scans an entire directory, creating an XML file for that directory, wh
 X    - It remembers what folder was opened last, maybe save this to the json file
 X    - Make it longer and docked on the right
 X    - Ability to scroll the list
+- a box into which to type file extensions
 - 1 to 10 sticky list at the top, non-sticky list starts from index 11 --  this way, we don't need  separate commands for picking from the sticky list
 - Create better patterns than the generic pattern
 - It also has a drop-down box for manually switching files, and associated command
@@ -35,6 +36,8 @@ class Element:
         # setup stuff that were previously globals
         self.JSON_PATH=paths.get_element_json_path()
         self.TOTAL_SAVED_INFO={}
+        self.current_file=None
+        self.last_file_loaded=None
         self.GENERIC_PATTERN=re.compile("([A-Za-z0-9._]+\s*=)|(import [A-Za-z0-9._]+)")
 
         
@@ -116,8 +119,6 @@ class Element:
         self.listbox_content.config(lbn_opt2)
         self.listbox_content.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
         
-        for item in ["e one", "e two", "e three", "e four"]:
-            self.add_to_list(item)
         listframe.pack()
         
         # setup search box
@@ -157,13 +158,9 @@ class Element:
             if not filename=="":
                 self.old_active_window_title=active_window_title# only update were on a new file, not just a new window
                 self.populate_list(filename)
+                self.last_file_loaded=filename
         Timer(self.interval, self.update_active_file).start()
         
-    def add_to_list(self, item):
-        self.listbox_index+=1    
-        self.listbox_numbering.insert(tk.END, str(self.listbox_index))
-        self.listbox_content.insert(tk.END, item)
-    
     def scroll_to(self, index):#don't need this for sticky list
         self.scroll_lists(index)
     
@@ -203,22 +200,34 @@ class Element:
     def populate_list(self, file_to_activate):
 
         selected_directory=self.dropdown_selected.get()
-        file_record=None
+        self.current_file=None
         if selected_directory==self.default_dropdown_message:
             return#  if a scanned for hasn't been selected, there's no need to go any further
         self.clear_lists()
         for absolute_path in self.TOTAL_SAVED_INFO["directories"][selected_directory]["files"]:
             if absolute_path.endswith("/"+file_to_activate) or absolute_path.endswith("\\"+file_to_activate):
-                file_record=self.TOTAL_SAVED_INFO["directories"][selected_directory]["files"][absolute_path]
+                self.current_file=self.TOTAL_SAVED_INFO["directories"][selected_directory]["files"][absolute_path]
                 break
-        if not file_record==None:
-            self.reload_list(file_record["names"])
+        if not self.current_file==None:
+            self.reload_list(self.current_file["names"],self.current_file["sticky"])
     
-    def reload_list(self, namelist):
+    def reload_list(self, namelist, stickylist):
         self.listbox_index=0# reset index upon reload
+        for i in range(0, 10):
+            self.add_to_stickylist(stickylist[i])
         for name in namelist:
             self.add_to_list(name)
-                
+
+    def add_to_list(self, item):
+        self.listbox_index+=1    
+        self.listbox_numbering.insert(tk.END, str(self.listbox_index))
+        self.listbox_content.insert(tk.END, item)
+    
+    def add_to_stickylist(self, sticky):
+        self.listbox_index+=1
+        self.sticky_listbox_numbering.insert(tk.END, str(self.listbox_index))
+        self.sticky_listbox_content.insert(tk.END, sticky)
+    
     #FOR SCANNING AND SAVING FILES    
     def get_new(self,event):
         directory=self.ask_directory()
@@ -241,24 +250,26 @@ class Element:
                         scanned_file["filename"]=fname
                         absolute_path=base+"/"+fname
                         scanned_file["names"]=[]
+                        scanned_file["sticky"]=["","","","","","","","","",""]
                         f = open(base+"\\"+fname, "r")
                         lines = f.readlines()
                         f.close()
                         
-                        for line in lines:
+                        for line in lines:#search out imports, function names, variable names
                             match_objects=pattern_being_used.findall(line)
-                            if not len(match_objects)==  0:# if we found variable name in the line
+                            if not len(match_objects)==  0:# if we found  something relevant in the line
                                 mo=match_objects[0][0]
                                 result=""
                                 if "." in mo:# figure out whether it's an import#----- to do: this check doesn't work right
                                     result=mo.split(".")[-1]
-                                else:# Or not an import
+                                else:
                                     result=mo.replace(" ", "").split("=")[0]
                                 # also to do: scan for function names
                                 
-                                if not result in scanned_file["names"] and not result=="":
+                                if not (result in scanned_file["names"] or result in scanned_file["sticky"]) and not result=="":
                                     scanned_file["names"].append(result)
                         
+                        scanned_file["names"].sort()
                         scanned_directory[absolute_path]=scanned_file
         except Exception:
             utilities.report(utilities.list_to_string(sys.exc_info()))
@@ -272,10 +283,10 @@ class Element:
     def ask_directory(self):# returns a string of the directory name
         return tkFileDialog.askdirectory(**self.dir_opt)
     
-    def get_name(self, index):
-        return self.listbox_content.get(index, index+1)[0]
-
-    def process_request(self):#GENERIC_PATTERN=listbox_numbering =
+    def process_request(self):
+        if self.current_file==None:
+            return "No file is currently loaded."
+        
         request_object = json.loads(request.body.read())
         action_type=request_object["action_type"]
         if "index" in request_object:
@@ -285,10 +296,29 @@ class Element:
                     self.scroll_to(index)
                 return "c"
             elif action_type=="retrieve":
-                return self.get_name(index)
-            elif action_type=="sticky":
-                return "mode not ready yet"
-                # here you need a third piece of data, to let you know whether this word was already in the non-sticky list, or if it's new
+                index_plus_one=index+1
+                if index<10:# if sticky
+                    return self.sticky_listbox_content.get(index, index_plus_one)[0]#
+                else:
+                    return self.listbox_content.get(index-10, index_plus_one-10)[0]
+            elif action_type=="sticky":# requires sticky_index,auto_sticky regardless of what mode it's in
+                sticky_index=request_object["sticky_index"]# the index of the slot on the sticky list to be overwritten
+                sticky_previous=self.current_file["sticky"][sticky_index]
+                if not sticky_previous=="":# if you overwrite an old sticky entry, move it back down to the unordered list
+                    self.current_file["names"].append(sticky_previous)
+
+                # now, either replace the slot with a string or a word from the unordered list, first a string:                
+                if not request_object["auto_sticky"]=="":
+                    self.current_file["sticky"][sticky_index]=request_object["auto_sticky"]
+                else:
+                    index_plus_one= index+1
+                    target_word=self.listbox_content.get(index-10, index_plus_one-10)[0]
+                    self.current_file["sticky"][sticky_index]=target_word
+                    self.current_file["names"].remove(target_word)
+#
+                utilities.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
+                self.populate_list(self.last_file_loaded)
+                return "c"
             elif action_type=="delete":
                 return "mode not ready yet"
             elif action_type=="unsticky":
