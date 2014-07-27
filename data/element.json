@@ -80,6 +80,7 @@
                 "C:/NatLink/NatLink/MacroSystem/_element.py": {
                     "filename": "_element.py", 
                     "names": [
+                        "action_type", 
                         "c", 
                         "data_to_send", 
                         "defaults", 
@@ -89,7 +90,8 @@
                         "extras", 
                         "grammar", 
                         "mapping", 
-                        "n"
+                        "n", 
+                        "n2"
                     ], 
                     "sticky": [
                         "", 
@@ -184,7 +186,7 @@
                     "names": [
                         "BASE_PATH", 
                         "MMT_PATH", 
-                        "MULTI_CLIPBOARD", 
+                        "MULTI_CLIPBOARD =", 
                         "NIRCMD_PATH", 
                         "base", 
                         "c", 
@@ -307,15 +309,10 @@
                 "C:/NatLink/NatLink/MacroSystem/element.py": {
                     "filename": "element.py", 
                     "names": [
-                        "GENERIC_PATTERN=", 
-                        "JSON_PATH=", 
                         "TOTAL_SAVED_INFO=", 
-                        "absolute_path", 
                         "acceptable_extensions", 
                         "action_type", 
                         "active_window_title", 
-                        "all_names=", 
-                        "app", 
                         "command", 
                         "current_file=", 
                         "default_dropdown_message=", 
@@ -325,7 +322,6 @@
                         "dropdown_selected=", 
                         "extension", 
                         "f", 
-                        "file_record", 
                         "filename", 
                         "filename_pattern=", 
                         "host", 
@@ -334,6 +330,7 @@
                         "interval=", 
                         "label", 
                         "label1", 
+                        "last_file_loaded=", 
                         "lbn_opt", 
                         "lbn_opt2", 
                         "lbn_opt_height", 
@@ -347,7 +344,6 @@
                         "meta_information", 
                         "method", 
                         "mo", 
-                        "name", 
                         "old_active_window_title=", 
                         "pattern_being_used", 
                         "request_object", 
@@ -366,6 +362,7 @@
                         "sticky_listbox_content =", 
                         "sticky_listbox_index=", 
                         "sticky_listbox_numbering =", 
+                        "sticky_previous", 
                         "stickyframe", 
                         "stickyscrollbar", 
                         "target_word"
@@ -494,6 +491,7 @@
                     "filename": "utilities.py", 
                     "names": [
                         "BASE_PATH", 
+                        "MULTI_CLIPBOARD", 
                         "ensure_ascii", 
                         "filepath", 
                         "formatted_data", 

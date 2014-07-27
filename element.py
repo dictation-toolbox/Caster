@@ -17,13 +17,13 @@ X    - it scans an entire directory, creating an XML file for that directory, wh
 X    - It remembers what folder was opened last, maybe save this to the json file
 X    - Make it longer and docked on the right
 X    - Ability to scroll the list
+X    - 1 to 10 sticky list at the top, non-sticky list starts from index 11 --  this way, we don't need  separate commands for picking from the sticky list
+X    - It can also take the highlighted text and add it to the list
 - a box into which to type file extensions
-- 1 to 10 sticky list at the top, non-sticky list starts from index 11 --  this way, we don't need  separate commands for picking from the sticky list
 - Create better patterns than the generic pattern
 - It also has a drop-down box for manually switching files, and associated command
-- It can also take the highlighted text and add it to the list
 - A  rescan directory command
-- Element control commands activate and deactivate with Element-- is it possible to do this from the element code?apparently not, at least not easily.
+- Element control commands activate and deactivate with Element
 """
 
    
@@ -42,7 +42,6 @@ class Element:
 
         
         # setup tk
-        self.all_names=[]
         self.root=tk.Tk()
         self.root.title("Element v.01")
         self.root.geometry("200x"+str(self.root.winfo_screenheight()-100)+"-1+20")
@@ -178,11 +177,6 @@ class Element:
         self.sticky_listbox_numbering.delete(0, tk.END)
         self.sticky_listbox_content.delete(0, tk.END)
     
-    #FOR MANIPULATING THE     LIST    
-    def move_to_top(self,name):
-        self.all_names.remove(name)
-        self.all_names=[name]+self.all_names
-    
     #FOR LOADING 
     def populate_dropdown(self):
         self.TOTAL_SAVED_INFO=utilities.load_json_file(self.JSON_PATH)
@@ -213,8 +207,8 @@ class Element:
     
     def reload_list(self, namelist, stickylist):
         self.listbox_index=0# reset index upon reload
-        for i in range(0, 10):
-            self.add_to_stickylist(stickylist[i])
+        for sticky in stickylist:
+            self.add_to_stickylist(sticky)
         for name in namelist:
             self.add_to_list(name)
 
@@ -293,7 +287,7 @@ class Element:
             index=int(request_object["index"])
             if action_type=="scroll":
                 if index<self.listbox_content.size():
-                    self.scroll_to(index)
+                    self.scroll_to(index-10)
                 return "c"
             elif action_type=="retrieve":
                 index_plus_one=index+1
@@ -306,7 +300,7 @@ class Element:
                 sticky_previous=self.current_file["sticky"][sticky_index]
                 if not sticky_previous=="":# if you overwrite an old sticky entry, move it back down to the unordered list
                     self.current_file["names"].append(sticky_previous)
-
+                    self.current_file["names"].sort()
                 # now, either replace the slot with a string or a word from the unordered list, first a string:                
                 if not request_object["auto_sticky"]=="":
                     self.current_file["sticky"][sticky_index]=request_object["auto_sticky"]
@@ -315,22 +309,29 @@ class Element:
                     target_word=self.listbox_content.get(index-10, index_plus_one-10)[0]
                     self.current_file["sticky"][sticky_index]=target_word
                     self.current_file["names"].remove(target_word)
-#
+
                 utilities.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
                 self.populate_list(self.last_file_loaded)
                 return "c"
-            elif action_type=="delete":
+            elif action_type=="remove":
+                index_plus_one= index+1
+                if index<10:
+                    self.current_file["sticky"][index]=""
+                else:
+                    target_word=self.listbox_content.get(index-10, index_plus_one-10)[0]# unordered
+                    self.current_file["names"].remove(target_word)
+                utilities.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
+                self.populate_list(self.last_file_loaded)
+                
                 return "mode not ready yet"
             elif action_type=="unsticky":
                 return "mode not ready yet"
         elif "name" in request_object:
-            name=request_object["name"]
-            if action_type=="add":
-                if name not in self.all_names:
-                    self.all_names.append(name)
-                    #save json
-                    # reload list- you want to make sure that all_names is being used in the first place
-            return "mode not ready yet"
+            self.current_file["names"].append(request_object["name"])
+            self.current_file["names"].sort()
+            utilities.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
+            self.populate_list(self.last_file_loaded)
+            return "c"
         return 'unrecognized request received: '+request_object["action_type"]
 
 

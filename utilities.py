@@ -11,6 +11,8 @@ import paths
 
 BASE_PATH = paths.get_base()
 
+MULTI_CLIPBOARD = {}
+
 def press_digits(n):
     number=str(n)
     for digit in number:

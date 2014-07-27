@@ -10,21 +10,17 @@ BASE_PATH = paths.get_base()
 MMT_PATH = paths.get_mmt()
 NIRCMD_PATH = paths.get_nircmd()
 
-MULTI_CLIPBOARD = {}
-
 def initialize_clipboard():
-    global MULTI_CLIPBOARD
-    MULTI_CLIPBOARD = utilities.load_json_file(paths.get_saved_clipboard_path())
+    utilities.MULTI_CLIPBOARD = utilities.load_json_file(paths.get_saved_clipboard_path())
     utilities.report("Clipboard initialized...")
 
 def clipboard_to_file(n):
-    global MULTI_CLIPBOARD
     key=str(n)
     time.sleep(0.05)# time for keypress to execute
     win32clipboard.OpenClipboard()
-    MULTI_CLIPBOARD[key]=win32clipboard.GetClipboardData()
+    utilities.MULTI_CLIPBOARD[key]=win32clipboard.GetClipboardData()
     win32clipboard.CloseClipboard()
-    utilities.save_json_file(MULTI_CLIPBOARD, paths.get_saved_clipboard_path())
+    utilities.save_json_file(utilities.MULTI_CLIPBOARD, paths.get_saved_clipboard_path())
 
 def volume_control(n, volume_mode):
     global NIRCMD_PATH
@@ -49,13 +45,12 @@ def volume_control(n, volume_mode):
  
     
 def drop(n, n2):
-    global MULTI_CLIPBOARD
     key=str(n)
     times=int(n2)
-    if key in MULTI_CLIPBOARD:
+    if key in utilities.MULTI_CLIPBOARD:
         win32clipboard.OpenClipboard()
         win32clipboard.EmptyClipboard()
-        win32clipboard.SetClipboardText(MULTI_CLIPBOARD[key])
+        win32clipboard.SetClipboardText(utilities.MULTI_CLIPBOARD[key])
         win32clipboard.CloseClipboard()
         for i in range(0, times):
             Key("c-v")._execute()
