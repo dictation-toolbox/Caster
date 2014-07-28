@@ -16,14 +16,16 @@ def set_alarm():
         Timer(INTERVAL, set_alarm).start()
         
 
-def printer():
+def printer(first_time=False):
     global remaining_minutes
+    if not first_time:
+        remaining_minutes-=1
     print "minutes remaining: "+str(remaining_minutes)
-    remaining_minutes-=1
+    
     Timer( 60, printer).start()
 
 
-print "Simple Alarm 0.1 by synkarius"
+print "Simple Alarm 0.2 by synkarius"
 print "---"
-printer()
+printer(True)
 set_alarm()

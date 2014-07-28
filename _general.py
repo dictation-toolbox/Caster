@@ -7,16 +7,13 @@ import winsound
 BASE_PATH = paths.get_base()
 MMT_PATH = paths.get_mmt()
 
-def alarm(minutes):
-    minutes=int(minutes)*60
-    print minutes
-    BringApp("python", paths.BASE_PATH+"\\alarm.py", str( minutes ))._execute()
+
 
 class MainRule(MappingRule):
     global MMT_PATH
     mapping = {
     # alarm
-    "set alarm [<minutes> minutes]":Function(alarm, extra={"minutes"}),
+    "set alarm [<minutes> minutes]":Function(utilities.alarm, extra={"minutes"}),
                
     # Dragon NaturallySpeaking management
     'reboot dragon':                Function(utilities.clear_pyc)+Playback([(["stop", "listening"], 0.5), (["wake", 'up'], 0.0)]),

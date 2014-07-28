@@ -3,7 +3,7 @@ Created on Jun 12, 2014
 
 @author: dave
 '''
-from dragonfly import Key
+from dragonfly import Key, BringApp
 import natlink
 import win32gui, win32process, win32api
 import os, json
@@ -75,3 +75,7 @@ def report(message, speak=False, console=True, log=False):
     
 def list_to_string(l):
     return "\n".join([str(x) for x in l])
+
+def alarm(minutes):
+    minutes=int(minutes)*60
+    BringApp("python", paths.BASE_PATH+"\\alarm.py", str( minutes ))._execute()
