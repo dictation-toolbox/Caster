@@ -3,7 +3,7 @@ import Tkinter as tk
 import tkFileDialog
 from threading import (Timer, Thread)
 import signal
-from Tkinter import (StringVar, OptionMenu, Scrollbar, Frame)
+from Tkinter import (StringVar, OptionMenu, Scrollbar, Frame, Label, Entry)
 import os, re, sys, json
 import paths, utilities
 
@@ -58,6 +58,9 @@ class Element:
         self.dir_opt['mustexist'] = False
         self.dir_opt['parent'] = self.root
         self.dir_opt['title'] = 'Please select directory'
+
+        # directory drop-down label
+        path_label = Label(self.root, text="Directory, File:", name="pathlabel").pack()
         
         # setup drop-down box
         self.dropdown_selected=StringVar(self.root)
@@ -71,11 +74,31 @@ class Element:
             self.TOTAL_SAVED_INFO["directories"]={}
         else:
             self.dropdown_selected.set(self.TOTAL_SAVED_INFO["config"]["last_directory"])
+        # setup drop-down box for files manual selection
+        self.file_dropdown_selected=StringVar(self.root)
+        self.file_default_dropdown_message="Select file"
+        self.file_dropdown_selected.set(self.file_default_dropdown_message)
+        self.file_dropdown=OptionMenu(self.root, self.file_dropdown_selected, self.file_default_dropdown_message)
+        self.file_dropdown.pack()
+
+
+        # file extension label and box
+        ext_frame= Frame(self.root)
+        extension_label = Label(ext_frame, text="Ext(s):", name="extensionlabel").pack(side=tk.LEFT)
+        self.ext_box= Entry(ext_frame, name="ext_box")
+        self.ext_box.pack(side=tk.LEFT)
+        ext_frame.pack()
+                
+        # sticky label
+        label1 = tk.Label(text="Sticky Box", name="label1").pack()
+
+        # setup search box
+        search_frame= Frame(self.root)
+        search_label= Label(search_frame, text="Search:").pack(side=tk.LEFT)
+        self.search_box = tk.Entry(search_frame, name="search_box")
+        self.search_box.pack(side=tk.LEFT)
         
-        # set up list
-        label1 = tk.Label(text="Variable Names", name="label1")
-        label1.pack()
-        
+        # set up lists
         stickyframe=Frame(self.root)
         stickyscrollbar =  Scrollbar(stickyframe, orient=tk.VERTICAL)
         self.sticky_listbox_numbering = tk.Listbox(stickyframe, yscrollcommand=stickyscrollbar.set)
@@ -97,7 +120,8 @@ class Element:
         self.sticky_listbox_content.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
         stickyframe.pack()
         #-------
-        
+        search_frame.pack()
+        #-------
         listframe= Frame(self.root)
         scrollbar = Scrollbar(listframe, orient=tk.VERTICAL)
         self.listbox_numbering = tk.Listbox(listframe, yscrollcommand=scrollbar.set)
@@ -119,10 +143,6 @@ class Element:
         self.listbox_content.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
         
         listframe.pack()
-        
-        # setup search box
-        self.search_box = tk.Entry(name="search_box")
-        self.search_box.pack()
         
         # update active file every n seconds
         self.interval=1
@@ -278,11 +298,10 @@ class Element:
         return tkFileDialog.askdirectory(**self.dir_opt)
     
     def process_request(self):
-        if self.current_file==None:
-            return "No file is currently loaded."
-        
         request_object = json.loads(request.body.read())
         action_type=request_object["action_type"]
+        if self.current_file==None and (not action_type in ["extensions","scan_new"]):#only these are allowed when no file is loaded
+            return "No file is currently loaded."
         if "index" in request_object:
             index=int(request_object["index"])
             if action_type=="scroll":
@@ -332,6 +351,13 @@ class Element:
             utilities.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
             self.populate_list(self.last_file_loaded)
             return "c"
+        else:
+            if action_type=="search":
+                self.search_box.focus_set()
+            elif action_type=="extensions":
+                self.ext_box.focus_set()
+            return "c"
+        
         return 'unrecognized request received: '+request_object["action_type"]
 
 

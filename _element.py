@@ -30,6 +30,14 @@ def remove_word(n):
     n = int(n)-1
     send("remove", n)
 
+def search():
+    # to do: put a wait window here, also, bringapp
+    send("search", "")
+
+def extensions():
+    # to do: put a wait window here
+    send("extensions", "")
+
 def send(action_type, data, *more_data):
     try:
         c = httplib.HTTPConnection('localhost', 1337)
@@ -71,7 +79,8 @@ class MainRule(MappingRule):
     "sticky copy [<n>]":            Function(sticky_copy, extra="n"),
     "add word":                     Function(add_word),
     "remove word <n>":              Function(remove_word, extra="n"),
-    
+    "search":                       Function(search),
+    "extensions":                   Function(extensions),
     
     
     }

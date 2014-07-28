@@ -1,13 +1,23 @@
 from dragonfly import (BringApp, Key, Function, Text, Grammar, Playback, 
                        IntegerRef,Dictation,Choice,WaitWindow,MappingRule)
 import paths, utilities, helpdisplay
+from threading import Timer
+import winsound
 
 BASE_PATH = paths.get_base()
 MMT_PATH = paths.get_mmt()
 
+def alarm(minutes):
+    minutes=int(minutes)*60
+    print minutes
+    BringApp("python", paths.BASE_PATH+"\\alarm.py", str( minutes ))._execute()
+
 class MainRule(MappingRule):
     global MMT_PATH
     mapping = {
+    # alarm
+    "set alarm [<minutes> minutes]":Function(alarm, extra={"minutes"}),
+               
     # Dragon NaturallySpeaking management
     'reboot dragon':                Function(utilities.clear_pyc)+Playback([(["stop", "listening"], 0.5), (["wake", 'up'], 0.0)]),
 	'(lock Dragon | deactivate)':   Playback([(["go", "to", "sleep"], 0.0)]),
@@ -37,6 +47,7 @@ class MainRule(MappingRule):
     }
     extras = [
               IntegerRef("n", 1, 1000),
+              IntegerRef("minutes", 1, 720),
               Dictation("text"),
               Dictation("text2"),
               Dictation("text3"),
@@ -44,7 +55,7 @@ class MainRule(MappingRule):
                     {"alphabet": "configalphabet.txt", "python": "configpython.txt", 
                     }),
              ]
-    defaults ={"n": 1,
+    defaults ={"n": 1, "minutes": 20,
                "text": ""
                }
 
