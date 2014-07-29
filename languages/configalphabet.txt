@@ -9,7 +9,11 @@ noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added 
 cmd.map = {
            	# Spoken-form    ->    ->    ->     Action object
 			
-                      
+			"underscore": Key("underscore"),
+			"dot": Key("dot"),
+			"comma": Key("comma"),
+			"space": Key("space"),
+			                      
      	    #military alphabet
 		    "alpha": Key("a"),
 		    "bravo": Key("b"),

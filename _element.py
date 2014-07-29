@@ -10,6 +10,12 @@ def retrieve(n):
 def scroll(n):#n is the index of the list item to scroll to
     send("scroll", (int(n)-1))
 
+def scan_new():
+    send("scan_new","")
+    
+def rescan():
+    send("rescan","")
+
 def sticky_from_unordered(n, n2):
     n = int(n)-1# index of word in unordered list
     if n<10:
@@ -81,7 +87,8 @@ class MainRule(MappingRule):
     "remove word <n>":              Function(remove_word, extra="n"),
     "search":                       Function(search),
     "extensions":                   Function(extensions),
-    
+    "rescan":                       Function(rescan),
+    "scan new":                     Function(scan_new),
     
     }
     extras = [

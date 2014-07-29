@@ -98,18 +98,18 @@ def grid_full():# make sure to change both references to pythonw when you upgrad
     WaitWindow(executable="CustomGrid.exe")._execute()
     Key("h")._execute()
     
-def pixel_jump(direction,direction2,n2):
+def pixel_jump(direction,direction2,n5):
     x,y= 0, 0
     d=str(direction)
     d2=str(direction2)
     if d=="up" or d2=="up":
-        y=-n2
+        y=-n5
     if d=="down" or d2=="down":
-        y=n2
+        y=n5
     if d=="left" or d2=="left":
-        x=-n2
+        x=-n5
     if d=="right" or d2=="right":
-        x=n2
+        x=n5
     
     Mouse("<"+ str(x)+ ", "+str(y)+ ">").execute()
     
@@ -158,12 +158,16 @@ class MainRule(MappingRule):
     'grid position mode':           BringApp("pythonw", paths.get_grid(), r"--positionMode"),
     'grid wrap':                    Function(grid_to_window),
     'grid':                         Function(grid_full),
-    "pixel <direction> [<direction2>] <n2>":Function(pixel_jump, extra={"direction","direction2","n2"}),
+    "curse <direction> [<direction2>] [<n5>]":Function(pixel_jump, extra={"direction","direction2","n5"}),
+    "side left":                    Playback([(["MouseGrid"], 0.1),(["four", "four"], 0.1),(["click"], 0.0)]),
+    "side right":                   Playback([(["MouseGrid"], 0.1),(["six", "six"], 0.1),(["click"], 0.0)]),
+    "center":                       Playback([(["MouseGrid"], 0.1),(["click"], 0.0)]),
+    
+    
     
     #keyboard shortcuts
 	"username":                     Text("synkarius"),
-    "nat link":                     Text( "natlink" ),
-    'save [work]':                  Key("c-s"),
+    'save':                         Key("c-s"),
     'enter [<n>]':                  Key("enter")* Repeat(extra="n"),
     'space [<n>]':                  Key("space")* Repeat(extra="n"),
     "down [<n>]":                   Key("down") * Repeat(extra="n"),
@@ -192,6 +196,7 @@ class MainRule(MappingRule):
     extras = [
               IntegerRef("n", 1, 500),
               IntegerRef("n2", 1, 1000),
+              IntegerRef("n5", 1, 1000),
               Dictation("text"),
               Dictation("text2"),
               Dictation("text3"),
@@ -216,7 +221,7 @@ class MainRule(MappingRule):
                      "right": "right", "home": "home", "end": "end", "away": "end",
                     }),
              ]
-    defaults ={"n": 1,"n2": 1,"text": "", "color_mode":"right", "fly_mode":"right",
+    defaults ={"n": 1,"n2": 1,"text": "", "n5":5, "color_mode":"right", "fly_mode":"right",
                "direction2":"", "volume_mode": "setsysvolume"
                }
 

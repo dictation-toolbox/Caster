@@ -19,7 +19,7 @@ X    - Make it longer and docked on the right
 X    - Ability to scroll the list
 X    - 1 to 10 sticky list at the top, non-sticky list starts from index 11 --  this way, we don't need  separate commands for picking from the sticky list
 X    - It can also take the highlighted text and add it to the list
-- a box into which to type file extensions
+X    - a box into which to type file extensions, reads those extensions at scan time
 - Create better patterns than the generic pattern
 - It also has a drop-down box for manually switching files, and associated command
 - A  rescan directory command
@@ -49,7 +49,7 @@ class Element:
         self.root.protocol("WM_DELETE_WINDOW", self.on_exit)
         
         # setup hotkeys
-        self.root.bind_all("1", self.get_new)
+        self.root.bind_all("1", self.scan_new)
 #         self.root.bind_all("2", self.do_scrolling)
         
         # setup options for directory ask
@@ -69,11 +69,7 @@ class Element:
         self.dropdown=OptionMenu(self.root, self.dropdown_selected, self.default_dropdown_message)
         self.dropdown.pack()
         self.populate_dropdown()
-        if len(self.TOTAL_SAVED_INFO)==0:# if this is being run for the first time:
-            self.TOTAL_SAVED_INFO["config"]={}
-            self.TOTAL_SAVED_INFO["directories"]={}
-        else:
-            self.dropdown_selected.set(self.TOTAL_SAVED_INFO["config"]["last_directory"])
+
         # setup drop-down box for files manual selection
         self.file_dropdown_selected=StringVar(self.root)
         self.file_default_dropdown_message="Select file"
@@ -88,6 +84,16 @@ class Element:
         self.ext_box= Entry(ext_frame, name="ext_box")
         self.ext_box.pack(side=tk.LEFT)
         ext_frame.pack()
+
+        # fill in remembered information  if it exists
+        if len(self.TOTAL_SAVED_INFO)==0:# if this is being run for the first time:
+            self.TOTAL_SAVED_INFO["config"]={}
+            self.TOTAL_SAVED_INFO["directories"]={}
+        else:
+            last_dir=self.TOTAL_SAVED_INFO["config"]["last_directory"]
+            self.dropdown_selected.set(last_dir)
+            self.ext_box.insert(0, ",".join(self.TOTAL_SAVED_INFO["directories"][last_dir]["extensions"]))
+
                 
         # sticky label
         label1 = tk.Label(text="Sticky Box", name="label1").pack()
@@ -243,17 +249,21 @@ class Element:
         self.sticky_listbox_content.insert(tk.END, sticky)
     
     #FOR SCANNING AND SAVING FILES    
-    def get_new(self,event):
+    def scan_new(self, event):
         directory=self.ask_directory()
         self.scan_directory(directory)
         utilities.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
         self.populate_dropdown()
+
+    def get_acceptable_extensions(self):
+        ext_text=self.ext_box.get().replace(" ", "")
+        return ext_text.split(",")       
         
     def scan_directory(self,directory):
         pattern_being_used=self.GENERIC_PATTERN# later on, can add code to choose which pattern to use
         
         scanned_directory={}
-        acceptable_extensions=[".py"]# this is hardcoded for now, will read from a box later
+        acceptable_extensions=self.get_acceptable_extensions()
         try:
             for base, dirs, files in os.walk(directory):# traverse base directory, and list directories as dirs and files as files
                 utilities.report(base)
@@ -341,10 +351,7 @@ class Element:
                     self.current_file["names"].remove(target_word)
                 utilities.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
                 self.populate_list(self.last_file_loaded)
-                
-                return "mode not ready yet"
-            elif action_type=="unsticky":
-                return "mode not ready yet"
+                return "c"
         elif "name" in request_object:
             self.current_file["names"].append(request_object["name"])
             self.current_file["names"].sort()
@@ -356,6 +363,10 @@ class Element:
                 self.search_box.focus_set()
             elif action_type=="extensions":
                 self.ext_box.focus_set()
+            elif action_type=="scan_new":
+                top=self.root.focus_get()
+#                 Timer(1, self.scan_new).start()
+                self.scan_new(1)
             return "c"
         
         return 'unrecognized request received: '+request_object["action_type"]

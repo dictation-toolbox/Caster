@@ -5,12 +5,16 @@
     "directories": {
         "": {
             "extensions": [
+                ".as", 
+                ".java", 
                 ".py"
             ], 
             "files": {}
         }, 
         "C:/NatLink/NatLink/MacroSystem": {
             "extensions": [
+                ".as", 
+                ".java", 
                 ".py"
             ], 
             "files": {
@@ -81,7 +85,6 @@
                     "filename": "_element.py", 
                     "names": [
                         "action_type", 
-                        "c", 
                         "data_to_send", 
                         "defaults", 
                         "doc", 
@@ -89,9 +92,7 @@
                         "extra", 
                         "extras", 
                         "grammar", 
-                        "mapping", 
-                        "n", 
-                        "n2"
+                        "mapping"
                     ], 
                     "sticky": [
                         "", 
@@ -257,6 +258,29 @@
                         ""
                     ]
                 }, 
+                "C:/NatLink/NatLink/MacroSystem/alarm.py": {
+                    "filename": "alarm.py", 
+                    "names": [
+                        "CONTINUE", 
+                        "INTERVAL", 
+                        "first_time", 
+                        "minutes", 
+                        "original_remaining_minutes", 
+                        "remaining_minutes"
+                    ], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
                 "C:/NatLink/NatLink/MacroSystem/chrome.py": {
                     "filename": "chrome.py", 
                     "names": [
@@ -309,19 +333,25 @@
                 "C:/NatLink/NatLink/MacroSystem/element.py": {
                     "filename": "element.py", 
                     "names": [
+                        "GENERIC_PATTERN=", 
                         "TOTAL_SAVED_INFO=", 
+                        "absolute_path", 
                         "acceptable_extensions", 
                         "action_type", 
                         "active_window_title", 
+                        "app", 
                         "command", 
                         "current_file=", 
-                        "default_dropdown_message=", 
                         "dir_opt =", 
                         "directory", 
                         "dropdown=", 
                         "dropdown_selected=", 
+                        "ext_box=", 
+                        "ext_frame", 
+                        "ext_text", 
                         "extension", 
-                        "f", 
+                        "file_dropdown=", 
+                        "file_dropdown_selected=", 
                         "filename", 
                         "filename_pattern=", 
                         "host", 
@@ -345,6 +375,7 @@
                         "method", 
                         "mo", 
                         "old_active_window_title=", 
+                        "path_label", 
                         "pattern_being_used", 
                         "request_object", 
                         "result", 
@@ -356,6 +387,8 @@
                         "scanned_file", 
                         "scrollbar", 
                         "search_box =", 
+                        "search_frame", 
+                        "search_label", 
                         "selected_directory", 
                         "side", 
                         "sticky_index", 
@@ -368,16 +401,16 @@
                         "target_word"
                     ], 
                     "sticky": [
+                        "opdown=", 
+                        "", 
+                        "", 
+                        "", 
+                        "JSON_PATH=", 
                         "", 
                         "", 
                         "", 
                         "", 
-                        "", 
-                        "", 
-                        "", 
-                        "", 
-                        "", 
-                        ""
+                        "default_dropdown_message="
                     ]
                 }, 
                 "C:/NatLink/NatLink/MacroSystem/helpdisplay.py": {
@@ -496,6 +529,7 @@
                         "filepath", 
                         "formatted_data", 
                         "handle", 
+                        "minutes", 
                         "name", 
                         "number", 
                         "p", 

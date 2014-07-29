@@ -67,4 +67,4 @@ def get_help(choice):
         for command in SETS[filename].commands:
             print command
 
-setup_help()
+# setup_help()
