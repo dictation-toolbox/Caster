@@ -5,8 +5,8 @@ Created on May 17, 2014
 '''
 import sys, os
 
-#BASE_PATH='C:\NatLink\NatLink\MacroSystem\\'
 BASE_PATH = os.path.dirname(os.path.abspath(__file__)) + "\\"
+
 SETTINGS_PATH = BASE_PATH + "data\\settings.json"
 ELEMENT_JSON_PATH = BASE_PATH + "data\\element.json"
 SAVED_CLIPBOARD_PATH = BASE_PATH + "data\\clipboard.json"
@@ -14,18 +14,19 @@ SAVED_CLIPBOARD_PATH = BASE_PATH + "data\\clipboard.json"
 #REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
 REMOTE_DEBUGGER_PATH ="D:\PROGRAMS\NON_install\eclipse\plugins\org.python.pydev_3.4.1.201403181715\pysrc"
 
+MEDIA_PATH = r"C:\NatLink\NatLink\MacroSystem\media"
+GRID_PATH=BASE_PATH+"exe\\custom_grid\\CustomGrid.exe"
 NIRCMD_PATH=r"C:\NatLink\NatLink\MacroSystem\exe\nircmd\nircmd.exe"
 MMT_PATH =r"C:\NatLink\NatLink\MacroSystem\exe\MultiMonitorTool\MultiMonitorTool.exe"
+PY2EXE_PATH=r"C:\NatLink\NatLink\MacroSystem\exe\py2exe"
+HOMEBREW_PATH=r"C:\NatLink\NatLink\MacroSystem\exe\homebrew"
 
-JAVA_CONFIG_PATH = "C:\NatLink\NatLink\MacroSystem\languages\configjava.txt"
-PYTHON_CONFIG_PATH = "C:\NatLink\NatLink\MacroSystem\languages\configpython.txt"
-HTML_CONFIG_PATH = "C:\NatLink\NatLink\MacroSystem\languages\confightml.txt"
-PASCAL_CONFIG_PATH = "C:\NatLink\NatLink\MacroSystem\languages\configpascal.txt"
-ALPHABET_CONFIG_PATH = "C:\NatLink\NatLink\MacroSystem\languages\configalphabet.txt"
+JAVA_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\languages\configjava.txt"
+PYTHON_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\languages\configpython.txt"
+HTML_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\languages\confightml.txt"
+PASCAL_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\languages\configpascal.txt"
+ALPHABET_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\languages\configalphabet.txt"
 
-MEDIA_PATH = r"C:\NatLink\NatLink\MacroSystem\media"
-
-GRID_PATH=BASE_PATH+"exe\\custom_grid\\CustomGrid.exe"
 
 def get_base():
     global BASE_PATH
@@ -61,6 +62,14 @@ def get_all_language_configs():
 def get_media_path():
     global MEDIA_PATH
     return MEDIA_PATH
+
+def get_homebrew_path():
+    global HOMEBREW_PATH
+    return HOMEBREW_PATH
+
+def get_py2exe_path():
+    global PY2EXE_PATH
+    return PY2EXE_PATH
 
 def get_grid():
     global GRID_PATH

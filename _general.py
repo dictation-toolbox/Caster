@@ -1,20 +1,14 @@
-from dragonfly import (BringApp, Key, Function, Text, Grammar, Playback, 
+from dragonfly import (BringApp, Key, Function, Grammar, Playback, 
                        IntegerRef,Dictation,Choice,WaitWindow,MappingRule)
-import paths, utilities, helpdisplay
-from threading import Timer
-import winsound
+import paths, utilities
 
 BASE_PATH = paths.get_base()
 MMT_PATH = paths.get_mmt()
 
 
-
 class MainRule(MappingRule):
     global MMT_PATH
     mapping = {
-    # alarm
-    "set alarm [<minutes> minutes]":Function(utilities.alarm, extra={"minutes"}),
-               
     # Dragon NaturallySpeaking management
     'reboot dragon':                Function(utilities.clear_pyc)+Playback([(["stop", "listening"], 0.5), (["wake", 'up'], 0.0)]),
 	'(lock Dragon | deactivate)':   Playback([(["go", "to", "sleep"], 0.0)]),
@@ -35,11 +29,12 @@ class MainRule(MappingRule):
     'minimize':                     Playback([(["minimize", "window"], 0.0)]),
     'maximize':                     Playback([(["maximize", "window"], 0.0)]),
     
-    # miscellaneous
+    # development related
+    "set alarm [<minutes> minutes]":Function(utilities.alarm, extra={"minutes"}),
     "open natlink folder":          BringApp("explorer", "C:\NatLink\NatLink\MacroSystem"),
-    "help <choice>":                Function(helpdisplay.get_help,extra={"choice"}),
+    "compile <choice>":             Function(utilities.py2exe_compile, extra={"choice"}),
     
-    
+    # miscellaneous
     
     }
     extras = [
@@ -49,7 +44,7 @@ class MainRule(MappingRule):
               Dictation("text2"),
               Dictation("text3"),
               Choice("choice",
-                    {"alphabet": "configalphabet.txt", "python": "configpython.txt", 
+                    {"alarm": "alarm", "custom grid": "CustomGrid", "element": "element"
                     }),
              ]
     defaults ={"n": 1, "minutes": 20,

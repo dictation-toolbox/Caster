@@ -1,4 +1,4 @@
-import paths
+import paths#compile_requisite
 import winsound, sys
 from threading import Timer
 

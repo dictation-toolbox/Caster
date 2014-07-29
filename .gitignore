@@ -21,3 +21,7 @@ _vocola_main.py
 
 # Ignore personal
 media/
+
+# Ignore Microsoft licensed
+exe/py2exe/msvcp90.dll
+exe/py2exe/msvcr90.dll

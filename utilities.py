@@ -6,7 +6,7 @@ Created on Jun 12, 2014
 from dragonfly import Key, BringApp
 import natlink
 import win32gui, win32process, win32api
-import os, json
+import os, json, shutil,sys
 import paths
 
 BASE_PATH = paths.get_base()
@@ -79,3 +79,24 @@ def list_to_string(l):
 def alarm(minutes):
     minutes=int(minutes)*60
     BringApp("python", paths.BASE_PATH+"\\alarm.py", str( minutes ))._execute()
+    
+def py2exe_compile(choice):
+    dirname=str(choice)
+    
+    try:
+        # zero, check to see if the target directory exists, if it does delete it
+        target_location=paths.get_homebrew_path()+"\\"+dirname
+        if os.path.isdir(target_location):
+            shutil.rmtree(target_location)
+        # first, copy all the files needed- standard stuff plus utilities, paths, and whatever is getting turned into an executable
+        shutil.copytree(paths.get_py2exe_path(),target_location+"\\setup")
+        # next, modify run.py, replacing "target" with whatever the actual file is
+        # run the batch file
+        # move the results to the desired location
+        
+#         shutil.copyfile(paths.BASE_PATH+"old\\helpdisplay.py" ,paths.BASE_PATH+"old\\helpdisplay2.py" )
+#         shutil.copytree(paths.BASE_PATH+"media",paths.BASE_PATH+"old\\media")
+    except Exception:
+        report(list_to_string(sys.exc_info()))
+    
+    

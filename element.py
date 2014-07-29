@@ -1,14 +1,14 @@
 #http://effbot.org/tkinterbook/tkinter-events-and-bindings.htm
 import Tkinter as tk
 import tkFileDialog
-from threading import (Timer, Thread)
+from threading import Timer
 import signal
 from Tkinter import (StringVar, OptionMenu, Scrollbar, Frame, Label, Entry)
 import os, re, sys, json
-import paths, utilities
+import paths, utilities#compile_requisite
 
 import bottle
-from bottle import run, post, request, response
+from bottle import run, request#, post,response
 
 """
 X    - Automatically figures out which file is open by continually scanning the top-level window and looking for something with the file extension
@@ -60,7 +60,7 @@ class Element:
         self.dir_opt['title'] = 'Please select directory'
 
         # directory drop-down label
-        path_label = Label(self.root, text="Directory, File:", name="pathlabel").pack()
+        Label(self.root, text="Directory, File:", name="pathlabel").pack()
         
         # setup drop-down box
         self.dropdown_selected=StringVar(self.root)
@@ -80,7 +80,7 @@ class Element:
 
         # file extension label and box
         ext_frame= Frame(self.root)
-        extension_label = Label(ext_frame, text="Ext(s):", name="extensionlabel").pack(side=tk.LEFT)
+        Label(ext_frame, text="Ext(s):", name="extensionlabel").pack(side=tk.LEFT)
         self.ext_box= Entry(ext_frame, name="ext_box")
         self.ext_box.pack(side=tk.LEFT)
         ext_frame.pack()
@@ -96,11 +96,11 @@ class Element:
 
                 
         # sticky label
-        label1 = tk.Label(text="Sticky Box", name="label1").pack()
+        Label(text="Sticky Box", name="label1").pack()
 
         # setup search box
         search_frame= Frame(self.root)
-        search_label= Label(search_frame, text="Search:").pack(side=tk.LEFT)
+        Label(search_frame, text="Search:").pack(side=tk.LEFT)
         self.search_box = tk.Entry(search_frame, name="search_box")
         self.search_box.pack(side=tk.LEFT)
         
@@ -364,7 +364,7 @@ class Element:
             elif action_type=="extensions":
                 self.ext_box.focus_set()
             elif action_type=="scan_new":
-                top=self.root.focus_get()
+                
 #                 Timer(1, self.scan_new).start()
                 self.scan_new(1)
             return "c"

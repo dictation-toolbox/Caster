@@ -13,7 +13,7 @@ Command-module for ECLIPSE
 #---------------------------------------------------------------------------
 
 from dragonfly import (Grammar, AppContext, MappingRule,
-                       Dictation, Choice, IntegerRef, NumberRef,
+                       Dictation, IntegerRef,
                        Key, Text, Repeat, Pause)
 
 
@@ -27,7 +27,7 @@ class CommandRule(MappingRule):
             "close (editor | tab) [<n>]":               Key("c-w") * Repeat(extra="n"),
             "open resource":                            Key("cs-r"),
             "open type":                                Key("cs-t"),
-#             "go to line":                               Key("c-l"),
+
             "[go to] line <n>":                         Key("c-l") + Pause("50") + Text("%(n)d") + Key("enter"),
             "go to declaration":                        Key("f3"),
             "editor select":                            Key("c-e"),
