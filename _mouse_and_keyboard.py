@@ -1,7 +1,7 @@
 from dragonfly import ( Key, Text , Playback, Function, Repeat,
                         BringApp,IntegerRef, Grammar, Dictation,
-                        MappingRule, Pause, Mouse, Choice, WaitWindow)
-import sys, win32api, win32gui, time, win32clipboard, natlink
+                        MappingRule, Mouse, Choice, WaitWindow)
+import sys, win32api, time, win32clipboard, natlink
 from win32con import MOUSEEVENTF_WHEEL
 from win32api import GetSystemMetrics
 import paths, utilities, settings

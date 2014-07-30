@@ -1,7 +1,3 @@
-# Ignore programs called by dragonfly, so I don't have to deal with their licensing
-exe/
-installer_requirements/
-
 # Ignore work files
 _w.py
 flypoint_private.iss
@@ -14,6 +10,8 @@ test.py
 *.tmp
 unins000.*
 clipboard.json
+build/
+tcl/
 
 # Ignore natlink files
 core/
@@ -21,3 +19,11 @@ _vocola_main.py
 
 # Ignore personal
 media/
+
+# Ignore anything with a potential licensing problem
+msvcp90.dll
+msvcr90.dll
+exe/Switcher.exe
+exe/nircmd/
+exe/PSTools/
+exe/MultiMonitorTool/

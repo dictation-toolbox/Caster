@@ -6,7 +6,7 @@ Created on Jun 12, 2014
 from dragonfly import Key, BringApp
 import natlink
 import win32gui, win32process, win32api
-import os, json
+import os, json, shutil,sys,errno,stat,io, time
 import paths
 
 BASE_PATH = paths.get_base()
@@ -79,3 +79,48 @@ def list_to_string(l):
 def alarm(minutes):
     minutes=int(minutes)*60
     BringApp("python", paths.BASE_PATH+"\\alarm.py", str( minutes ))._execute()
+
+permanent=None
+    
+def py2exe_compile(choice):# requires the file to be compiled to be in the macrosystem folder
+    dirname=str(choice)
+    
+    try:
+        # -1, shut down the process just in case it was open
+        BringApp(paths.get_pstools_path()+"\\pskill.exe", dirname+".exe")._execute()
+        # zero, check to see if the target directory exists, if it does delete it
+        target_location=paths.get_homebrew_path()+"\\"+dirname
+        if os.path.isdir(target_location):
+            shutil.rmtree(target_location, ignore_errors=False, onerror=handle_remove_readonly)
+        # first, copy all the files needed- standard stuff plus utilities, paths, and whatever is getting turned into an executable
+        shutil.copytree(paths.get_py2exe_path(),target_location)
+        shutil.copyfile(paths.BASE_PATH+"utilities.py",target_location+"\\utilities.py")
+        shutil.copyfile(paths.BASE_PATH+"paths.py",target_location+"\\paths.py")
+        shutil.copyfile(paths.BASE_PATH+dirname+".py",target_location+"\\"+dirname+".py")
+        # next, modify run.py, replacing "target" with whatever the actual file is
+#         remote_debug()
+        f_in= open(target_location+"\\run.py", "r")
+        lines=f_in.readlines()
+        f_in.close()
+        for i in range(0, len(lines)):
+            if "target" in lines[i]:
+                lines[i]=lines[i].replace("target","\""+paths.get_homebrew_path()+"\\\\"+dirname+"\\\\"+dirname+".py\"")
+                break
+        f_out=open(target_location+"\\run.py", "w")
+        f_out.writelines(lines)
+        f_out.close()
+        # run the batch file
+        time.sleep(1)
+        os.chdir(target_location)
+        BringApp("compile.bat")._execute()
+    except Exception:
+        report(list_to_string(sys.exc_info()))
+    
+    
+def handle_remove_readonly(func, path, exc):# for use with py2exe_compile 
+    excvalue = exc[1]
+    if func in (os.rmdir, os.remove) and excvalue.errno == errno.EACCES:
+        os.chmod(path, stat.S_IRWXU| stat.S_IRWXG| stat.S_IRWXO) # 0777
+        func(path)
+    else:
+        raise
