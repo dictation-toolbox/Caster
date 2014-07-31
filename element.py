@@ -86,7 +86,7 @@ class Element:
         ext_frame.pack()
 
         # fill in remembered information  if it exists
-        if len(self.TOTAL_SAVED_INFO)==0:# if this is being run for the first time:
+        if not "config" in self.TOTAL_SAVED_INFO:# if this is being run for the first time:
             self.TOTAL_SAVED_INFO["config"]={}
             self.TOTAL_SAVED_INFO["directories"]={}
         else:
@@ -211,6 +211,8 @@ class Element:
         if "directories" in self.TOTAL_SAVED_INFO:
             for key in self.TOTAL_SAVED_INFO["directories"]:
                 menu.add_command(label=key, command=lambda key=key: self.select_from_dropdown(key))
+        else:
+            self.TOTAL_SAVED_INFO["directories"]={}
     
     def select_from_dropdown(self, key):
         self.TOTAL_SAVED_INFO["config"]["last_directory"]=key

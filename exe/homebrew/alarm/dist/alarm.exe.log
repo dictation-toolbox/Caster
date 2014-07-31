@@ -1,3 +1,0 @@
-Traceback (most recent call last):
-  File "alarm.py", line 6, in <module>
-IndexError: list index out of range

@@ -43,6 +43,9 @@ def save_json_file(data, path):
     try:
         formatted_data = json.dumps(data, sort_keys=True, indent=4,
             ensure_ascii=False)
+        if not os.path.exists(path):
+            f= open(path,"w")
+            f.close()
         with open(path, "w+") as f:
             f.write(formatted_data)
             f.close()
@@ -93,26 +96,26 @@ def py2exe_compile(choice):# requires the file to be compiled to be in the macro
         if os.path.isdir(target_location):
             shutil.rmtree(target_location, ignore_errors=False, onerror=handle_remove_readonly)
         # first, copy all the files needed- standard stuff plus utilities, paths, and whatever is getting turned into an executable
-        shutil.copytree(paths.get_py2exe_path(),target_location)
-        shutil.copyfile(paths.BASE_PATH+"utilities.py",target_location+"\\utilities.py")
-        shutil.copyfile(paths.BASE_PATH+"paths.py",target_location+"\\paths.py")
-        shutil.copyfile(paths.BASE_PATH+dirname+".py",target_location+"\\"+dirname+".py")
-        # next, modify run.py, replacing "target" with whatever the actual file is
-#         remote_debug()
-        f_in= open(target_location+"\\run.py", "r")
-        lines=f_in.readlines()
-        f_in.close()
-        for i in range(0, len(lines)):
-            if "target" in lines[i]:
-                lines[i]=lines[i].replace("target","\""+paths.get_homebrew_path()+"\\\\"+dirname+"\\\\"+dirname+".py\"")
-                break
-        f_out=open(target_location+"\\run.py", "w")
-        f_out.writelines(lines)
-        f_out.close()
+        if not os.path.exists(target_location+"\\dist"):
+            os.makedirs(target_location)
+            os.makedirs(target_location+"\\dist")
+        for fb in ["utilities.py","paths.py",dirname+".py"]:  # base path
+            shutil.copyfile(paths.BASE_PATH+fb,target_location+"\\"+fb)
+        for fp in ["compile.bat","icon.ico","msvcp90.dll","msvcr90.dll"]:                           # py2exe path
+            shutil.copyfile(paths.get_py2exe_path()+"\\"+fp,target_location+"\\"+fp)
+        shutil.copyfile(paths.get_py2exe_path()+"\\"+dirname+"_run.py",target_location+"\\run.py")
+#         os.rename(target_location+"\\"+dirname+"_run.py", target_location+"\\run.py")
+
+        # next, copy any additional required files
+        if dirname=="element":
+            os.makedirs(target_location+"\\data")
+            shutil.copyfile(paths.get_py2exe_path()+"\\"+"tk85.dll",target_location+"\\dist\\tk85.dll")
+            shutil.copyfile(paths.get_py2exe_path()+"\\"+"tcl85.dll",target_location+"\\dist\\tcl85.dll")
+
         # run the batch file
         time.sleep(1)
         os.chdir(target_location)
-        BringApp("compile.bat")._execute()
+        BringApp(target_location+ "\\compile.bat")._execute()
     except Exception:
         report(list_to_string(sys.exc_info()))
     
