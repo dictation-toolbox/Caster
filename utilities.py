@@ -1,8 +1,7 @@
-'''
-Created on Jun 12, 2014
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+import codecs
 
-@author: dave
-'''
 from dragonfly import Key, BringApp
 import natlink
 import win32gui, win32process, win32api
@@ -75,7 +74,7 @@ def report(message, speak=False, console=True, log=False):
     if speak:
         natlink.execScript ("TTSPlayString \"" +message+ "\"")
     if log:
-        f = open(paths.get_log_path(),'a')
+        f = open(paths.get_log_path(),'a') 
         f.write(str(message)+"\n")
         f.close()
     
@@ -100,15 +99,20 @@ def py2exe_compile(choice):# requires the file to be compiled to be in the macro
         if not os.path.exists(target_location+"\\dist"):
             os.makedirs(target_location)
             os.makedirs(target_location+"\\dist")
-        for fb in ["utilities.py","paths.py",dirname+".py"]:  # base path
+        for fb in ["utilities.py","paths.py"]:  # base path
             shutil.copyfile(paths.BASE_PATH+fb,target_location+"\\"+fb)
         for fp in ["compile.bat","icon.ico","msvcp90.dll","msvcr90.dll"]:                           # py2exe path
             shutil.copyfile(paths.get_py2exe_path()+"\\"+fp,target_location+"\\"+fp)
         shutil.copyfile(paths.get_py2exe_path()+"\\"+dirname+"_run.py",target_location+"\\run.py")
-
+        if not dirname=="CustomGrid":
+            shutil.copyfile(paths.BASE_PATH+"exe\\homebrew\\"+dirname+".py",target_location+"\\"+dirname+".py")
+        else:
+            shutil.copyfile(paths.BASE_PATH+"dptools\\"+dirname+".py",target_location+"\\"+dirname+".py")
+            for fcg in ["argparse.py","_keyCodes.py","_myclickLocations.py","_mycommon.py"]:
+                shutil.copyfile("C:\\NatLink\\NatLink\\MacroSystem\\dptools\\"+fcg,target_location+"\\"+fcg)
         # next, copy any additional required files
         if dirname=="element":
-            os.makedirs(target_location+"\\data")
+            os.makedirs(target_location+"\\dist\\data")
             shutil.copyfile(paths.get_py2exe_path()+"\\"+"tk85.dll",target_location+"\\dist\\tk85.dll")
             shutil.copyfile(paths.get_py2exe_path()+"\\"+"tcl85.dll",target_location+"\\dist\\tcl85.dll")
 

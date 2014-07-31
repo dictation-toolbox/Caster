@@ -64,7 +64,8 @@ cmd.map = {
         "string <text> string":     Text("%(text)s"), 
 	   
        	"[dot] (pie | pi)":			Text(".py"),
-		"jason":					Text("json"),     	   
+		"jason":					Text("json"),
+		"pie to ex":				Text("py2exe"),
           }
 
 

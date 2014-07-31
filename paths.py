@@ -6,6 +6,8 @@ Created on May 17, 2014
 import sys, os
 
 BASE_PATH = os.path.dirname(os.path.abspath(__file__)) + "\\"
+if r"\library.zip" in BASE_PATH:# fixes py2exe bug
+    BASE_PATH=BASE_PATH.replace(r"\library.zip","")
 
 SETTINGS_PATH = BASE_PATH + "data\\settings.json"
 ELEMENT_JSON_PATH = BASE_PATH + "data\\element.json"
@@ -16,7 +18,7 @@ REMOTE_DEBUGGER_PATH ="D:\PROGRAMS\NON_install\eclipse\plugins\org.python.pydev_
 
 ELEMENT_PATH = r"C:\NatLink\NatLink\MacroSystem\exe\homebrew\element\dist\element.exe"
 MEDIA_PATH = r"C:\NatLink\NatLink\MacroSystem\media"
-GRID_PATH=BASE_PATH+"exe\\custom_grid\\CustomGrid.exe"
+GRID_PATH=r"C:\NatLink\NatLink\MacroSystem\exe\homebrew\CustomGrid\dist\CustomGrid.exe"
 NIRCMD_PATH=r"C:\NatLink\NatLink\MacroSystem\exe\nircmd\nircmd.exe"
 PSTOOLS_PATH=r"C:\NatLink\NatLink\MacroSystem\exe\PSTools"
 PSKILL_PATH=r"C:\NatLink\NatLink\MacroSystem\exe\PSTools\pskill.exe"
