@@ -27,5 +27,8 @@ exe/Switcher.exe
 exe/nircmd/
 exe/PSTools/
 exe/MultiMonitorTool/
+exe/homebrew/element/
+exe/homebrew/alarm/
+exe/homebrew/CustomGrid/
 
 
