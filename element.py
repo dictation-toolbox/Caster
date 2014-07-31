@@ -31,7 +31,7 @@ X    - a box into which to type file extensions, reads those extensions at scan 
 
 class Element:
     def __init__(self):
-        
+        utilities.report("element logging test",log=True)
         
         # setup stuff that were previously globals
         self.JSON_PATH=paths.get_element_json_path()
@@ -162,7 +162,7 @@ class Element:
         self.root.mainloop()
     
     def on_exit(self):
-        utilities.report("Element: shutting down")
+        utilities.report("Element: shutting down", log=True)
         self.root.destroy()
         os.kill(os.getpid(), signal.SIGTERM)
     
@@ -252,10 +252,15 @@ class Element:
     
     #FOR SCANNING AND SAVING FILES    
     def scan_new(self, event):
+        utilities.report(1, log=True)
         directory=self.ask_directory()
+        utilities.report(2, log=True)
         self.scan_directory(directory)
+        utilities.report(3, log=True)
         utilities.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
+        utilities.report(4, log=True)
         self.populate_dropdown()
+        utilities.report(5, log=True)
 
     def get_acceptable_extensions(self):
         ext_text=self.ext_box.get().replace(" ", "")

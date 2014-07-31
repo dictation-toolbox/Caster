@@ -1,7 +1,7 @@
-from dragonfly import (Function, Text, Grammar,  
+from dragonfly import (Function, Text, Grammar,BringApp,  
                        IntegerRef,Dictation,Mimic,MappingRule)
 import sys, httplib, json
-import utilities
+import utilities, paths
 
 def retrieve(n):
     n = int(n)-1
@@ -67,12 +67,12 @@ def send(action_type, data, *more_data):
         return "SEND() ERROR"
 
 def enable_element_commands():
-    # to do: bringapp on the executable
+    BringApp(paths.get_element_path())._execute()
     grammar.enable()
     enabler.disable()
     
 def disable_element_commands():
-    # to do:  kill the executable
+    BringApp(paths.get_pskill_path(),"element.exe")._execute()
     grammar.disable()
     enabler.enable()
 

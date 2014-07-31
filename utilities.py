@@ -74,7 +74,10 @@ def report(message, speak=False, console=True, log=False):
         print message
     if speak:
         natlink.execScript ("TTSPlayString \"" +message+ "\"")
-    #To do: logging
+    if log:
+        f = open(paths.get_log_path(),'a')
+        f.write(str(message)+"\n")
+        f.close()
     
 def list_to_string(l):
     return "\n".join([str(x) for x in l])
@@ -83,8 +86,6 @@ def alarm(minutes):
     minutes=int(minutes)*60
     BringApp("python", paths.BASE_PATH+"\\alarm.py", str( minutes ))._execute()
 
-permanent=None
-    
 def py2exe_compile(choice):# requires the file to be compiled to be in the macrosystem folder
     dirname=str(choice)
     

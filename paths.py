@@ -14,13 +14,16 @@ SAVED_CLIPBOARD_PATH = BASE_PATH + "data\\clipboard.json"
 #REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
 REMOTE_DEBUGGER_PATH ="D:\PROGRAMS\NON_install\eclipse\plugins\org.python.pydev_3.4.1.201403181715\pysrc"
 
+ELEMENT_PATH = r"C:\NatLink\NatLink\MacroSystem\exe\homebrew\element\dist\element.exe"
 MEDIA_PATH = r"C:\NatLink\NatLink\MacroSystem\media"
 GRID_PATH=BASE_PATH+"exe\\custom_grid\\CustomGrid.exe"
 NIRCMD_PATH=r"C:\NatLink\NatLink\MacroSystem\exe\nircmd\nircmd.exe"
 PSTOOLS_PATH=r"C:\NatLink\NatLink\MacroSystem\exe\PSTools"
+PSKILL_PATH=r"C:\NatLink\NatLink\MacroSystem\exe\PSTools\pskill.exe"
 MMT_PATH =r"C:\NatLink\NatLink\MacroSystem\exe\MultiMonitorTool\MultiMonitorTool.exe"
 PY2EXE_PATH=r"C:\NatLink\NatLink\MacroSystem\exe\py2exe"
 HOMEBREW_PATH=r"C:\NatLink\NatLink\MacroSystem\exe\homebrew"
+LOG_PATH=r"C:\NatLink\NatLink\MacroSystem\data\log.txt"
 
 JAVA_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\languages\configjava.txt"
 PYTHON_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\languages\configpython.txt"
@@ -32,6 +35,10 @@ ALPHABET_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\languages\configalp
 def get_base():
     global BASE_PATH
     return BASE_PATH
+
+def get_element_path():
+    global ELEMENT_PATH
+    return ELEMENT_PATH
 
 def get_settings_path():
     global SETTINGS_PATH
@@ -64,6 +71,11 @@ def get_media_path():
     global MEDIA_PATH
     return MEDIA_PATH
 
+def get_log_path():
+    global LOG_PATH
+    return LOG_PATH
+
+
 def get_homebrew_path():
     global HOMEBREW_PATH
     return HOMEBREW_PATH
@@ -79,6 +91,10 @@ def get_grid():
 def get_pstools_path():
     global PSTOOLS_PATH
     return PSTOOLS_PATH
+
+def get_pskill_path():
+    global PSKILL_PATH
+    return PSKILL_PATH
 
 if not REMOTE_DEBUGGER_PATH in sys.path:
     sys.path.append(REMOTE_DEBUGGER_PATH)

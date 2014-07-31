@@ -12,6 +12,7 @@ unins000.*
 clipboard.json
 build/
 tcl/
+data/log.txt
 
 # Ignore natlink files
 core/
