@@ -104,7 +104,6 @@ def py2exe_compile(choice):# requires the file to be compiled to be in the macro
         for fp in ["compile.bat","icon.ico","msvcp90.dll","msvcr90.dll"]:                           # py2exe path
             shutil.copyfile(paths.get_py2exe_path()+"\\"+fp,target_location+"\\"+fp)
         shutil.copyfile(paths.get_py2exe_path()+"\\"+dirname+"_run.py",target_location+"\\run.py")
-#         os.rename(target_location+"\\"+dirname+"_run.py", target_location+"\\run.py")
 
         # next, copy any additional required files
         if dirname=="element":
@@ -118,8 +117,7 @@ def py2exe_compile(choice):# requires the file to be compiled to be in the macro
         BringApp(target_location+ "\\compile.bat")._execute()
     except Exception:
         report(list_to_string(sys.exc_info()))
-    
-    
+        
 def handle_remove_readonly(func, path, exc):# for use with py2exe_compile 
     excvalue = exc[1]
     if func in (os.rmdir, os.remove) and excvalue.errno == errno.EACCES:

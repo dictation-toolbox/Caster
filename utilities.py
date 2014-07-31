@@ -117,8 +117,7 @@ def py2exe_compile(choice):# requires the file to be compiled to be in the macro
         BringApp(target_location+ "\\compile.bat")._execute()
     except Exception:
         report(list_to_string(sys.exc_info()))
-    
-    
+        
 def handle_remove_readonly(func, path, exc):# for use with py2exe_compile 
     excvalue = exc[1]
     if func in (os.rmdir, os.remove) and excvalue.errno == errno.EACCES:
