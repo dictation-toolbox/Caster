@@ -4,7 +4,7 @@ from threading import Timer
 import signal
 from Tkinter import (StringVar, OptionMenu, Scrollbar, Frame, Label, Entry)
 import os, re, sys, json
-import paths, utilities#compile_requisite
+import paths, utilities, settings
 
 import bottle
 from bottle import run, request#, post,response
@@ -19,10 +19,11 @@ X    - Ability to scroll the list
 X    - 1 to 10 sticky list at the top, non-sticky list starts from index 11 --  this way, we don't need  separate commands for picking from the sticky list
 X    - It can also take the highlighted text and add it to the list
 X    - a box into which to type file extensions, reads those extensions at scan time
+X    - Element control commands activate and deactivate with Element
 - Create better patterns than the generic pattern
 - It also has a drop-down box for manually switching files, and associated command
 - A  rescan directory command
-- Element control commands activate and deactivate with Element
+
 """
 
    
@@ -41,13 +42,13 @@ class Element:
         
         # setup tk
         self.root=tk.Tk()
-        self.root.title("Element v.01")
+        self.root.title(settings.ELEMENT_VERSION)
         self.root.geometry("200x"+str(self.root.winfo_screenheight()-100)+"-1+20")
         self.root.wm_attributes("-topmost", 1)
         self.root.protocol("WM_DELETE_WINDOW", self.on_exit)
         
         # setup hotkeys
-        self.root.bind_all("1", self.scan_new)
+        self.root.bind_all("<Home>", self.scan_new)
 #         self.root.bind_all("2", self.do_scrolling)
         
         # setup options for directory ask
@@ -87,7 +88,7 @@ class Element:
         if not "config" in self.TOTAL_SAVED_INFO:# if this is being run for the first time:
             self.TOTAL_SAVED_INFO["config"]={}
             self.TOTAL_SAVED_INFO["directories"]={}
-        else:
+        elif "last_directory" in self.TOTAL_SAVED_INFO["config"]:
             last_dir=self.TOTAL_SAVED_INFO["config"]["last_directory"]
             self.dropdown_selected.set(last_dir)
             self.ext_box.insert(0, ",".join(self.TOTAL_SAVED_INFO["directories"][last_dir]["extensions"]))
@@ -158,7 +159,7 @@ class Element:
         Timer(self.interval, self.start_server).start()
         bottle.route('/process',method="POST")(self.process_request)
         self.root.mainloop()
-#
+
     def on_exit(self):
         self.root.destroy()
         os.kill(os.getpid(), signal.SIGTERM)

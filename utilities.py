@@ -29,6 +29,10 @@ def get_active_window_path():
     handle = win32api.OpenProcess(0x0410,False,p)
     return win32process.GetModuleFileNameEx( handle, 0 )
 
+def get_window_by_title(title):
+    hwnd = win32gui.FindWindowEx(0,0,0, title)
+    return hwnd
+
 def clear_pyc():
     global BASE_PATH
     os.chdir(BASE_PATH)
@@ -99,7 +103,7 @@ def py2exe_compile(choice):# requires the file to be compiled to be in the macro
         if not os.path.exists(target_location+"\\dist"):
             os.makedirs(target_location)
             os.makedirs(target_location+"\\dist")
-        for fb in ["utilities.py","paths.py"]:  # base path
+        for fb in ["utilities.py","paths.py","settings.py"]:  # base path
             shutil.copyfile(paths.BASE_PATH+fb,target_location+"\\"+fb)
         for fp in ["compile.bat","icon.ico","msvcp90.dll","msvcr90.dll"]:                           # py2exe path
             shutil.copyfile(paths.get_py2exe_path()+"\\"+fp,target_location+"\\"+fp)

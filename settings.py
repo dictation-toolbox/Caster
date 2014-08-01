@@ -1,12 +1,11 @@
 #Based heavily on the work of https://github.com/poppe1219/dragonfly-scripts/blob/master/lib/config.py
 
-import os
-import json
 import paths, utilities
 
 SETTINGS_PATH = paths.get_settings_path()
 SETTINGS = {}  # Empty, default config.
 SPEAK = False # to do,: add this value to the config
+ELEMENT_VERSION="Element v.02"
 
 def save_config():
     global SETTINGS
@@ -36,10 +35,6 @@ def init_default_values():# new languages must be added here and in paths.py
     if valueChangeCount > 0:
         save_config()
 
-
 def get_settings():
     global SETTINGS
     return SETTINGS
-
-
-load_settings()

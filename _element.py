@@ -1,7 +1,7 @@
 from dragonfly import (Function, Text, Grammar,BringApp,  
                        IntegerRef,Dictation,Mimic,MappingRule)
-import sys, httplib, json
-import utilities, paths
+import sys, httplib, json, win32api, win32con
+import utilities, paths, settings
 
 def retrieve(n):
     n = int(n)-1
@@ -9,9 +9,6 @@ def retrieve(n):
 
 def scroll(n):#n is the index of the list item to scroll to
     send("scroll", (int(n)-1))
-
-def scan_new():
-    send("scan_new","")
     
 def rescan():
     send("rescan","")
@@ -43,7 +40,7 @@ def search():
 def extensions():
     # to do: put a wait window here
     send("extensions", "")
-
+    
 def send(action_type, data, *more_data):
     try:
         c = httplib.HTTPConnection('localhost', 1337)
@@ -65,6 +62,18 @@ def send(action_type, data, *more_data):
     except Exception:
         utilities.report(utilities.list_to_string(sys.exc_info()))
         return "SEND() ERROR"
+
+def scan_new():
+    send_key_to_element("scan_new")
+
+def send_key_to_element(action_type):# for some reason, some events are untriggerable without a keypress it seems, hence this
+    try:
+        element_hwnd= utilities.get_window_by_title(settings.ELEMENT_VERSION)
+    except Exception:
+        utilities.report(utilities.list_to_string(sys.exc_info()))
+    if action_type=="scan_new":
+        win32api.SendMessage(element_hwnd, win32con.WM_KEYDOWN, win32con.VK_HOME, 0)
+        win32api.PostMessage(element_hwnd, win32con.WM_KEYUP, win32con.VK_HOME, 0)
 
 def enable_element_commands():
     BringApp(paths.get_element_path())._execute()

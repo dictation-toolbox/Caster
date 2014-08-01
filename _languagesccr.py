@@ -19,8 +19,9 @@ except ImportError:
 
 from dragonfly import *
 import natlink
-
 import settings, paths
+
+settings.load_settings()
 config_settings = settings.get_settings()
 ALL_LANGUAGE_CONFIGS=paths.get_all_language_configs()
 
