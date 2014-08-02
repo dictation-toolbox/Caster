@@ -20,10 +20,10 @@ X    - 1 to 10 sticky list at the top, non-sticky list starts from index 11 --  
 X    - It can also take the highlighted text and add it to the list
 X    - a box into which to type file extensions, reads those extensions at scan time
 X    - Element control commands activate and deactivate with Element
+X    - A  rescan directory command
+- Fix the quirks with the rescan command: sticky box gets lost, added words get lost
 - Create better patterns than the generic pattern
-- It also has a drop-down box for manually switching files, and associated command
-- A  rescan directory command
-
+- Fix the bug which makes it not scan directories recursively
 """
 
    
@@ -31,14 +31,21 @@ X    - Element control commands activate and deactivate with Element
 
 class Element:
     def __init__(self):
+        # fix all the crap surrounding the first scan
+        # as soon as the scan happens, select the scan folder and  set last directory
         
-        # setup stuff that were previously globals
+        # setup basics
         self.JSON_PATH=paths.get_element_json_path()
-        self.TOTAL_SAVED_INFO={}
+        self.TOTAL_SAVED_INFO=utilities.load_json_file(self.JSON_PATH)
+        if "config" in self.TOTAL_SAVED_INFO and "last_directory" in self.TOTAL_SAVED_INFO["config"]:
+            self.first_run=False
+        else:
+            self.TOTAL_SAVED_INFO["config"]={}
+            self.TOTAL_SAVED_INFO["directories"]={}
         self.current_file=None
         self.last_file_loaded=None
+        self.first_run=True
         self.GENERIC_PATTERN=re.compile("([A-Za-z0-9._]+\s*=)|(import [A-Za-z0-9._]+)")
-
         
         # setup tk
         self.root=tk.Tk()
@@ -49,7 +56,6 @@ class Element:
         
         # setup hotkeys
         self.root.bind_all("<Home>", self.scan_new)
-#         self.root.bind_all("2", self.do_scrolling)
         
         # setup options for directory ask
         self.dir_opt = {}
@@ -67,7 +73,8 @@ class Element:
         self.dropdown_selected.set(self.default_dropdown_message)
         self.dropdown=OptionMenu(self.root, self.dropdown_selected, self.default_dropdown_message)
         self.dropdown.pack()
-        self.populate_dropdown()
+        if not self.first_run:
+            self.populate_dropdown()
 
         # setup drop-down box for files manual selection
         self.file_dropdown_selected=StringVar(self.root)
@@ -85,14 +92,10 @@ class Element:
         ext_frame.pack()
 
         # fill in remembered information  if it exists
-        if not "config" in self.TOTAL_SAVED_INFO:# if this is being run for the first time:
-            self.TOTAL_SAVED_INFO["config"]={}
-            self.TOTAL_SAVED_INFO["directories"]={}
-        elif "last_directory" in self.TOTAL_SAVED_INFO["config"]:
+        if not self.first_run:
             last_dir=self.TOTAL_SAVED_INFO["config"]["last_directory"]
             self.dropdown_selected.set(last_dir)
             self.ext_box.insert(0, ",".join(self.TOTAL_SAVED_INFO["directories"][last_dir]["extensions"]))
-
                 
         # sticky label
         Label(text="Sticky Box", name="label1").pack()
@@ -183,7 +186,12 @@ class Element:
                 self.populate_list(filename)
                 self.last_file_loaded=filename
         Timer(self.interval, self.update_active_file).start()
+    
+    def rescan_directory(self):
+        self.scan_directory(self.dropdown_selected.get())
+        self.old_active_window_title="Directory has been rescanned"
         
+            
     def scroll_to(self, index):#don't need this for sticky list
         self.scroll_lists(index)
     
@@ -202,20 +210,9 @@ class Element:
         self.sticky_listbox_content.delete(0, tk.END)
     
     #FOR LOADING 
-    def populate_dropdown(self):
-        self.TOTAL_SAVED_INFO=utilities.load_json_file(self.JSON_PATH)
-        menu = self.dropdown["menu"]
-        menu.delete(0, tk.END)
-        if "directories" in self.TOTAL_SAVED_INFO:
-            for key in self.TOTAL_SAVED_INFO["directories"]:
-                menu.add_command(label=key, command=lambda key=key: self.select_from_dropdown(key))
-        else:
-            self.TOTAL_SAVED_INFO["directories"]={}
     
-    def select_from_dropdown(self, key):
-        self.TOTAL_SAVED_INFO["config"]["last_directory"]=key
-        utilities.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
-        self.dropdown_selected.set(key)
+    
+    
     
     def populate_list(self, file_to_activate):
 
@@ -248,12 +245,31 @@ class Element:
         self.sticky_listbox_numbering.insert(tk.END, str(self.listbox_index))
         self.sticky_listbox_content.insert(tk.END, sticky)
     
+    def trigger_directory_box(self, event):
+        self.dropdown.focus_set()
+    
     #FOR SCANNING AND SAVING FILES    
     def scan_new(self, event):
         directory=self.ask_directory()
-        self.scan_directory(directory)
-        utilities.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
-        self.populate_dropdown()
+        if not directory=="":
+            self.scan_directory(directory)
+            utilities.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
+            self.populate_dropdown()
+            self.select_from_dropdown(directory,False)
+            
+    def select_from_dropdown(self, key, save=True):
+        self.TOTAL_SAVED_INFO["config"]["last_directory"]=key
+        if save:
+            utilities.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
+        self.dropdown_selected.set(key)
+        
+    def populate_dropdown(self):
+        self.TOTAL_SAVED_INFO=utilities.load_json_file(self.JSON_PATH)
+        menu = self.dropdown["menu"]
+        menu.delete(0, tk.END)
+        for key in self.TOTAL_SAVED_INFO["directories"]:
+            if not key=="":
+                menu.add_command(label=key, command=lambda key=key: self.select_from_dropdown(key))
         
     def get_acceptable_extensions(self):
         ext_text=self.ext_box.get().replace(" ", "")
@@ -310,7 +326,7 @@ class Element:
     def process_request(self):
         request_object = json.loads(request.body.read())
         action_type=request_object["action_type"]
-        if self.current_file==None and (not action_type in ["extensions","scan_new"]):#only these are allowed when no file is loaded
+        if self.current_file==None and (not action_type in ["extensions","trigger_directory_box","scan_new"]):#only these are allowed when no file is loaded
             return "No file is currently loaded."
         if "index" in request_object:
             index=int(request_object["index"])
@@ -363,10 +379,10 @@ class Element:
                 self.search_box.focus_set()
             elif action_type=="extensions":
                 self.ext_box.focus_set()
-            elif action_type=="scan_new":
-                
-#                 Timer(1, self.scan_new).start()
-                self.scan_new(1)
+            elif action_type=="trigger_directory_box":
+                self.dropdown.focus_set()
+            elif action_type=="rescan":
+                self.rescan_directory()
             return "c"
         
         return 'unrecognized request received: '+request_object["action_type"]

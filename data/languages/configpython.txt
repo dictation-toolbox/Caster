@@ -32,6 +32,8 @@ cmd.map = {
         # logic shortcuts
         "and":                      Text(" and "),
         "or":                       Text(" or "),
+        "not":                      Text(" not "),
+        "in":                       Text(" in "),
         "equals":                   Key("equals"),
         "if":                       Key("i,f,space,colon,left"),
         "else if":                  Key("e,l,i,f,space,colon,left"),

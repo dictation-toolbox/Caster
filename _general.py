@@ -4,7 +4,15 @@ import paths, utilities
 
 BASE_PATH = paths.get_base()
 MMT_PATH = paths.get_mmt()
+monitor_orientation=0
 
+def flip_monitor_orientations():
+    global monitor_orientation
+    if monitor_orientation==0:
+        monitor_orientation= 180
+    else:
+        monitor_orientation=0
+    BringApp(paths.get_mmt(),r"/SetOrientation",r"\\.\DISPLAY1",str(monitor_orientation),r"\\.\DISPLAY2",str(monitor_orientation))._execute()#
 
 class MainRule(MappingRule):
     global MMT_PATH
@@ -22,6 +30,7 @@ class MainRule(MappingRule):
     # monitor management
     'toggle monitor one':           BringApp(MMT_PATH, r"/switch",r"\\.\DISPLAY1"),
     'toggle monitor two':           BringApp(MMT_PATH, r"/switch",r"\\.\DISPLAY2"),
+    "monitors one eighty":          Function(flip_monitor_orientations),
     
     # window management
     "alt tab":                      Key("w-backtick"),#activates Switcher

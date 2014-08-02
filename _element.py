@@ -1,4 +1,4 @@
-from dragonfly import (Function, Text, Grammar,BringApp,  
+from dragonfly import (Function, Text, Grammar,BringApp,WaitWindow,Key,  
                        IntegerRef,Dictation,Mimic,MappingRule)
 import sys, httplib, json, win32api, win32con
 import utilities, paths, settings
@@ -33,13 +33,21 @@ def remove_word(n):
     n = int(n)-1
     send("remove", n)
 
+def focus_element():
+    BringApp("pythonw.exe")._execute()
+    WaitWindow(title=settings.ELEMENT_VERSION)._execute()
+
 def search():
-    # to do: put a wait window here, also, bringapp
-    send("search", "")
+    focus_element()
+    send("search", None)
 
 def extensions():
-    # to do: put a wait window here
-    send("extensions", "")
+    focus_element()
+    send("extensions", None)
+
+def trigger_directory_box():
+    focus_element()    
+    send("trigger_directory_box",None)
     
 def send(action_type, data, *more_data):
     try:
@@ -64,30 +72,34 @@ def send(action_type, data, *more_data):
         return "SEND() ERROR"
 
 def scan_new():
-    send_key_to_element("scan_new")
+    focus_element()
+    WaitWindow(title=settings.ELEMENT_VERSION)._execute()
+    Key("home")._execute()
+    
+    
+#     send_key_to_element("scan_new")
 
 def send_key_to_element(action_type):# for some reason, some events are untriggerable without a keypress it seems, hence this
     try:
         element_hwnd= utilities.get_window_by_title(settings.ELEMENT_VERSION)
+        print element_hwnd
     except Exception:
         utilities.report(utilities.list_to_string(sys.exc_info()))
     if action_type=="scan_new":
         win32api.SendMessage(element_hwnd, win32con.WM_KEYDOWN, win32con.VK_HOME, 0)
         win32api.PostMessage(element_hwnd, win32con.WM_KEYUP, win32con.VK_HOME, 0)
 
-def enable_element_commands():
-    BringApp(paths.get_element_path())._execute()
-    grammar.enable()
-    enabler.disable()
+def enable_element():
+    BringApp("pythonw", r"C:\NatLink\NatLink\MacroSystem\exe\homebrew\element\element.py")._execute()
+#     BringApp(paths.get_element_path())._execute()
     
-def disable_element_commands():
-    BringApp(paths.get_pskill_path(),"element.exe")._execute()
-    grammar.disable()
-    enabler.enable()
+def disable_element():
+    BringApp(paths.get_pskill_path(),"pythonw.exe")._execute()
 
 class MainRule(MappingRule):
     mapping = {
-    "disable element":              Function(disable_element_commands),
+    "run element":                  Function(enable_element),
+    "kill element":                 Function(disable_element),
     "scroll to <n>":                Function(scroll, extra="n"),
     "get <n>":                      Function(retrieve, extra="n"),
     "sticky list <n> to <n2>":      Function(sticky_from_unordered, extra={"n","n2"}),
@@ -96,9 +108,9 @@ class MainRule(MappingRule):
     "remove word <n>":              Function(remove_word, extra="n"),
     "search":                       Function(search),
     "extensions":                   Function(extensions),
-    "rescan":                       Function(rescan),
     "scan new":                     Function(scan_new),
-    
+    "change directory":             Function(trigger_directory_box),
+    "rescan directory":             Function(rescan),
     }
     extras = [
               IntegerRef("n", 1, 500),
@@ -112,13 +124,3 @@ class MainRule(MappingRule):
 grammar = Grammar('element')
 grammar.add_rule(MainRule())
 grammar.load()
-grammar.disable()
-
-class EnablerRule(MappingRule):
-    mapping = {
-    "enable element":              Function(enable_element_commands),
-    }
-
-enabler = Grammar('element_enabler')
-enabler.add_rule(EnablerRule())
-enabler.load()
