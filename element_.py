@@ -26,7 +26,7 @@ X    - A  rescan directory command
 - Fix the bug which makes it not scan directories recursively
 """
 
-   
+
 
 
 class Element:
@@ -37,6 +37,7 @@ class Element:
         # setup basics
         self.JSON_PATH=paths.get_element_json_path()
         self.TOTAL_SAVED_INFO=utilities.load_json_file(self.JSON_PATH)
+        utilities.remote_debug()
         if "config" in self.TOTAL_SAVED_INFO and "last_directory" in self.TOTAL_SAVED_INFO["config"]:
             self.first_run=False
         else:
@@ -45,7 +46,14 @@ class Element:
         self.current_file=None
         self.last_file_loaded=None
         self.first_run=True
+        
+        # REGULAR EXPRESSION PATTERNS
         self.GENERIC_PATTERN=re.compile("([A-Za-z0-9._]+\s*=)|(import [A-Za-z0-9._]+)")
+        # python
+        self.PYTHON_IMPORTS=re.compile("((\bimport\b|\bfrom\b|\bas\b)(,| )*[A-Za-z0-9._]+)")# capture group 4
+        self.PYTHON_FUNCTIONS=re.compile("(\bdef \b([A-Za-z0-9_]+)\()|(\.([A-Za-z0-9_]+)\()")# capture group 2 or 4 
+        self.PYTHON_VARIABLES=re.compile("(([A-Za-z0-9_]+)[ ]*=)|((\(|,| )([A-Za-z0-9_]+)(\)|,| ))")# 2 or 5
+        
         
         # setup tk
         self.root=tk.Tk()
@@ -171,20 +179,22 @@ class Element:
         run(host='localhost', port=1337, debug=True, server='cherrypy')
     
     def update_active_file(self):
-        
-        active_window_title=utilities.get_active_window_title()
-        if not self.old_active_window_title==active_window_title:
-            
-            filename=""
-            
-            match_objects=self.filename_pattern.findall(active_window_title)
-            if not len(match_objects)==  0:# if we found variable name in the line
-                filename=match_objects[0]
-             
-            if not filename=="":
-                self.old_active_window_title=active_window_title# only update were on a new file, not just a new window
-                self.populate_list(filename)
-                self.last_file_loaded=filename
+        try: #doesn't crash now on a bad update attempt
+            active_window_title=utilities.get_active_window_title()
+            if not self.old_active_window_title==active_window_title:
+                
+                filename=""
+                
+                match_objects=self.filename_pattern.findall(active_window_title)
+                if not len(match_objects)==  0:# if we found variable name in the line
+                    filename=match_objects[0]
+                 
+                if not filename=="":
+                    self.old_active_window_title=active_window_title# only update were on a new file, not just a new window
+                    self.populate_list(filename)
+                    self.last_file_loaded=filename
+        except Exception:
+            utilities.report(utilities.list_to_string(sys.exc_info()))
         Timer(self.interval, self.update_active_file).start()
     
     def rescan_directory(self):

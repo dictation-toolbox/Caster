@@ -9,6 +9,7 @@ BASE_PATH = os.path.dirname(os.path.abspath(__file__)) + "\\"
 if r"\library.zip" in BASE_PATH:# fixes py2exe bug
     BASE_PATH=BASE_PATH.replace(r"\library.zip","")
 
+
 SETTINGS_PATH = BASE_PATH + "data\\settings.json"
 ELEMENT_JSON_PATH = BASE_PATH + "data\\element.json"
 SAVED_CLIPBOARD_PATH = BASE_PATH + "data\\clipboard.json"

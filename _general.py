@@ -26,7 +26,7 @@ class MainRule(MappingRule):
     'dictation mode':               Playback([(["dictation", "mode", "on"], 0.0)]),
     'normal mode':                  Playback([(["normal", "mode", "on"], 0.0)]),
     "dragon death and rebirth":     BringApp(BASE_PATH + r"\suicide.bat"),
-    
+    #MMT_PATHself and take up more space
     # monitor management
     'toggle monitor one':           BringApp(MMT_PATH, r"/switch",r"\\.\DISPLAY1"),
     'toggle monitor two':           BringApp(MMT_PATH, r"/switch",r"\\.\DISPLAY2"),
