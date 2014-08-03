@@ -21,9 +21,12 @@ X    - It can also take the highlighted text and add it to the list
 X    - a box into which to type file extensions, reads those extensions at scan time
 X    - Element control commands activate and deactivate with Element
 X    - A  rescan directory command
+X    - Create better patterns than the generic pattern
+X    - Fix the bug which makes it not scan directories recursively
+X    - Fix the bug that makes it not reload the list
+X    - Fix the bug about reloading the list with bad list index
 - Fix the quirks with the rescan command: sticky box gets lost, added words get lost
-- Create better patterns than the generic pattern
-- Fix the bug which makes it not scan directories recursively
+
 """
 
 
@@ -37,7 +40,8 @@ class Element:
         # setup basics
         self.JSON_PATH=paths.get_element_json_path()
         self.TOTAL_SAVED_INFO=utilities.load_json_file(self.JSON_PATH)
-        utilities.remote_debug()
+#         utilities.remote_debug()
+        self.first_run=True
         if "config" in self.TOTAL_SAVED_INFO and "last_directory" in self.TOTAL_SAVED_INFO["config"]:
             self.first_run=False
         else:
@@ -45,12 +49,12 @@ class Element:
             self.TOTAL_SAVED_INFO["directories"]={}
         self.current_file=None
         self.last_file_loaded=None
-        self.first_run=True
+        
         
         # REGULAR EXPRESSION PATTERNS
         self.GENERIC_PATTERN=re.compile("([A-Za-z0-9._]+\s*=)|(import [A-Za-z0-9._]+)")
         # python
-        self.PYTHON_IMPORTS=re.compile("((\bimport\b|\bfrom\b|\bas\b)(,| )*[A-Za-z0-9._]+)")# capture group 4
+        self.PYTHON_IMPORTS=re.compile("((\bimport\b|\bfrom\b|\bas\b)(\(|,| )*[A-Za-z0-9._]+)")# capture group 4
         self.PYTHON_FUNCTIONS=re.compile("(\bdef \b([A-Za-z0-9_]+)\()|(\.([A-Za-z0-9_]+)\()")# capture group 2 or 4 
         self.PYTHON_VARIABLES=re.compile("(([A-Za-z0-9_]+)[ ]*=)|((\(|,| )([A-Za-z0-9_]+)(\)|,| ))")# 2 or 5
         
@@ -160,14 +164,15 @@ class Element:
         
         listframe.pack()
         
-        # update active file every n seconds
-        self.interval=1
+        # update active file
+        self.update_interval= 100
         self.filename_pattern=re.compile(r"[/\\]([\w]+\.[\w]+)")
         self.old_active_window_title=""
-        Timer(self.interval, self.update_active_file).start()
+        self.root.after(self.update_interval, self.update_active_file)
         
         # start bottle server, tk main loop
-        Timer(self.interval, self.start_server).start()
+        Timer(1, self.start_server).start()
+#         self.root.after(self.interval, self.start_server)
         bottle.route('/process',method="POST")(self.process_request)
         self.root.mainloop()
 
@@ -195,7 +200,7 @@ class Element:
                     self.last_file_loaded=filename
         except Exception:
             utilities.report(utilities.list_to_string(sys.exc_info()))
-        Timer(self.interval, self.update_active_file).start()
+        self.root.after(self.update_interval, self.update_active_file)
     
     def rescan_directory(self):
         self.scan_directory(self.dropdown_selected.get())
@@ -265,7 +270,7 @@ class Element:
             self.scan_directory(directory)
             utilities.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
             self.populate_dropdown()
-            self.select_from_dropdown(directory,False)
+            self.select_from_dropdown(directory)
             
     def select_from_dropdown(self, key, save=True):
         self.TOTAL_SAVED_INFO["config"]["last_directory"]=key
@@ -286,7 +291,6 @@ class Element:
         return ext_text.split(",")       
         
     def scan_directory(self,directory):
-        pattern_being_used=self.GENERIC_PATTERN# later on, can add code to choose which pattern to use
         
         scanned_directory={}
         acceptable_extensions=self.get_acceptable_extensions()
@@ -306,16 +310,8 @@ class Element:
                         f.close()
                         
                         for line in lines:#search out imports, function names, variable names
-                            match_objects=pattern_being_used.findall(line)
-                            if not len(match_objects)==  0:# if we found  something relevant in the line
-                                mo=match_objects[0][0]
-                                result=""
-                                if "." in mo:# figure out whether it's an import#----- to do: this check doesn't work right
-                                    result=mo.split(".")[-1]
-                                else:
-                                    result=mo.replace(" ", "").split("=")[0]
-                                # also to do: scan for function names
-                                
+                            filter_results=self.filter(line, extension)
+                            for result in filter_results:                                
                                 if not (result in scanned_file["names"] or result in scanned_file["sticky"]) and not result=="":
                                     scanned_file["names"].append(result)
                         
@@ -328,8 +324,35 @@ class Element:
         meta_information["extensions"]=acceptable_extensions
         self.TOTAL_SAVED_INFO["directories"][directory]=meta_information
         
-
+    def filter(self, line, extension):
+        if extension==".py":
+            results=[]
+            import_match_object=self.PYTHON_IMPORTS.findall( line )
+            function_match_object=self.PYTHON_FUNCTIONS.findall( line )
+            variable_match_object=self.PYTHON_VARIABLES.findall( line )
+            if len(import_match_object)>0:
+                    results=self.process_match(import_match_object, [3], results)
+            if len(function_match_object)>0:
+                    results=self.process_match(function_match_object, [1,3], results)
+            if len(variable_match_object)>0:
+                results=self.process_match(variable_match_object, [1,4], results)
+            return results
         
+        results=[]
+        generic_match_object=self.GENERIC_PATTERN.findall(line)# for languages without specific regular expressions made yet
+        if len(generic_match_object)>0:
+            results=self.process_match(generic_match_object, [0], results)
+        return results
+    
+    def process_match(self, match_object, desired_indices, results):
+        for match_tuple in match_object:
+            for index in desired_indices:
+                match=match_tuple[index]
+                if not (match=="" or match.isdigit() or match in results):
+                    results.append(match)
+        return results
+        
+         
     def ask_directory(self):# returns a string of the directory name
         return tkFileDialog.askdirectory(**self.dir_opt)
     
@@ -342,7 +365,7 @@ class Element:
             index=int(request_object["index"])
             if action_type=="scroll":
                 if index<self.listbox_content.size():
-                    self.scroll_to(index-10)
+                    self.root.after(10, lambda: self.scroll_to(index-10))# now thread safe
                 return "c"
             elif action_type=="retrieve":
                 index_plus_one=index+1
@@ -366,7 +389,7 @@ class Element:
                     self.current_file["names"].remove(target_word)
 
                 utilities.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
-                self.populate_list(self.last_file_loaded)
+                self.root.after(10, lambda: self.populate_list(self.last_file_loaded))
                 return "c"
             elif action_type=="remove":
                 index_plus_one= index+1
@@ -376,21 +399,21 @@ class Element:
                     target_word=self.listbox_content.get(index-10, index_plus_one-10)[0]# unordered
                     self.current_file["names"].remove(target_word)
                 utilities.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
-                self.populate_list(self.last_file_loaded)
+                self.root.after(10, lambda: self.populate_list(self.last_file_loaded))
                 return "c"
         elif "name" in request_object:
             self.current_file["names"].append(request_object["name"])
             self.current_file["names"].sort()
             utilities.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
-            self.populate_list(self.last_file_loaded)
+            self.root.after(10, lambda: self.populate_list(self.last_file_loaded))
             return "c"
         else:
             if action_type=="search":
-                self.search_box.focus_set()
+                self.root.after(10, self.search_box.focus_set)
             elif action_type=="extensions":
-                self.ext_box.focus_set()
+                self.root.after(10, self.ext_box.focus_set)
             elif action_type=="trigger_directory_box":
-                self.dropdown.focus_set()
+                self.root.after(10, self.dropdown.focus_set)
             elif action_type=="rescan":
                 self.rescan_directory()
             return "c"

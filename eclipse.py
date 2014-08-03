@@ -33,9 +33,10 @@ class CommandRule(MappingRule):
             "editor select":                            Key("c-e"),
             "pop":                                      Key("c-space, down, up"),
             
-            "step [<n>]":                               Key("f6") * Repeat(extra="n"),
+            "step over [<n>]":                          Key("f6/50") * Repeat(extra="n"),
             "step into":                                Key("f5"),
             "step out [of]":                            Key("f7"),
+            "resume":                                   Key("f8"),
             "(debug | run) last":                       Key("f11"),
             
             "show (java | coffee) perspective":         Key("cas-j"),
