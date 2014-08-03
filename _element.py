@@ -73,7 +73,6 @@ def send(action_type, data, *more_data):
 
 def scan_new():
     focus_element()
-    WaitWindow(title=settings.ELEMENT_VERSION)._execute()
     Key("home")._execute()
     
     

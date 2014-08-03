@@ -294,26 +294,52 @@ class Element:
         
         scanned_directory={}
         acceptable_extensions=self.get_acceptable_extensions()
+        
         try:
             for base, dirs, files in os.walk(directory):# traverse base directory, and list directories as dirs and files as files
                 utilities.report(base)
                 for fname in files:
                     extension="."+fname.split(".")[-1]
                     if extension in acceptable_extensions:
+                        absolute_path=base+"/"+fname
+                        
+                        # check for old information on the same file, save it if it exists
+                        old_sticky_list=[]
+                        old_added_list=[]
+                        if "directories" in self.TOTAL_SAVED_INFO:
+                            if base in self.TOTAL_SAVED_INFO["directories"]:
+                                if absolute_path in self.TOTAL_SAVED_INFO["directories"][base]["files"]:
+                                    old_sticky_list=self.TOTAL_SAVED_INFO["directories"][base]["files"][absolute_path]["sticky"]
+                                    old_added_list=self.TOTAL_SAVED_INFO["directories"][base]["files"][absolute_path]["added"]
+
+                        
+                        # set up dictionary for new scan      
                         scanned_file={}
                         scanned_file["filename"]=fname
-                        absolute_path=base+"/"+fname
                         scanned_file["names"]=[]
                         scanned_file["sticky"]=["","","","","","","","","",""]
-                        f = open(base+"\\"+fname, "r")
+                        scanned_file["added"]=[]
+                        
+                        # add old sticky list back in
+                        if len(filter(lambda i: not i=="",old_sticky_list))>0:# if there are any nonblank values in old_sticky_list
+                            scanned_file["sticky"]=old_sticky_list
+                        
+                        #search out imports, function names, variable names
+                        f = open(base+"/"+fname, "r")
                         lines = f.readlines()
                         f.close()
-                        
-                        for line in lines:#search out imports, function names, variable names
+                        for line in lines:
                             filter_results=self.filter(line, extension)
                             for result in filter_results:                                
-                                if not (result in scanned_file["names"] or result in scanned_file["sticky"]) and not result=="":
+                                if not (result in scanned_file["names"] or result in scanned_file["sticky"] or result in old_sticky_list) and not result=="":
                                     scanned_file["names"].append(result)
+                        
+                        # re-add stuff that was manually added before
+                        scanned_file["added"]=old_added_list
+                        for added_name in scanned_file["added"]:
+                            if not (added_name in scanned_file["names"] or added_name in scanned_file["sticky"] or added_name in old_sticky_list) and not added_name=="":
+                                scanned_file["names"].append(added_name)
+                        
                         
                         scanned_file["names"].sort()
                         scanned_directory[absolute_path]=scanned_file
@@ -393,16 +419,21 @@ class Element:
                 return "c"
             elif action_type=="remove":
                 index_plus_one= index+1
+                target_word=None
                 if index<10:
+                    target_word=self.current_file["sticky"][index]
                     self.current_file["sticky"][index]=""
                 else:
                     target_word=self.listbox_content.get(index-10, index_plus_one-10)[0]# unordered
                     self.current_file["names"].remove(target_word)
+                if target_word in self.current_file["added"]:
+                    self.current_file["added"].remove(target_word)
                 utilities.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
                 self.root.after(10, lambda: self.populate_list(self.last_file_loaded))
                 return "c"
         elif "name" in request_object:
             self.current_file["names"].append(request_object["name"])
+            self.current_file["added"].append(request_object["name"])
             self.current_file["names"].sort()
             utilities.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
             self.root.after(10, lambda: self.populate_list(self.last_file_loaded))
