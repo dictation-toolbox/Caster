@@ -10,22 +10,8 @@ import bottle
 from bottle import run, request#, post,response
 
 """
-X    - Automatically figures out which file is open by continually scanning the top-level window and looking for something with the file extension
-X    - it scans an entire directory, creating an XML file for that directory, which contains the names of all imports and things which follow a single
-       = operator, or other language specific traits
-X    - It remembers what folder was opened last, maybe save this to the json file
-X    - Make it longer and docked on the right
-X    - Ability to scroll the list
-X    - 1 to 10 sticky list at the top, non-sticky list starts from index 11 --  this way, we don't need  separate commands for picking from the sticky list
-X    - It can also take the highlighted text and add it to the list
-X    - a box into which to type file extensions, reads those extensions at scan time
-X    - Element control commands activate and deactivate with Element
-X    - A  rescan directory command
-X    - Create better patterns than the generic pattern
-X    - Fix the bug which makes it not scan directories recursively
-X    - Fix the bug that makes it not reload the list
-X    - Fix the bug about reloading the list with bad list index
-- Fix the quirks with the rescan command: sticky box gets lost, added words get lost
+New Future Features List:
+
 
 """
 
@@ -34,13 +20,11 @@ X    - Fix the bug about reloading the list with bad list index
 
 class Element:
     def __init__(self):
-        # fix all the crap surrounding the first scan
-        # as soon as the scan happens, select the scan folder and  set last directory
-        
+       
         # setup basics
         self.JSON_PATH=paths.get_element_json_path()
         self.TOTAL_SAVED_INFO=utilities.load_json_file(self.JSON_PATH)
-#         utilities.remote_debug()
+
         self.first_run=True
         if "config" in self.TOTAL_SAVED_INFO and "last_directory" in self.TOTAL_SAVED_INFO["config"]:
             self.first_run=False
@@ -53,11 +37,15 @@ class Element:
         
         # REGULAR EXPRESSION PATTERNS
         self.GENERIC_PATTERN=re.compile("([A-Za-z0-9._]+\s*=)|(import [A-Za-z0-9._]+)")
-        # python
-        self.PYTHON_IMPORTS=re.compile("((\bimport\b|\bfrom\b|\bas\b)(\(|,| )*[A-Za-z0-9._]+)")# capture group 4
-        self.PYTHON_FUNCTIONS=re.compile("(\bdef \b([A-Za-z0-9_]+)\()|(\.([A-Za-z0-9_]+)\()")# capture group 2 or 4 
-        self.PYTHON_VARIABLES=re.compile("(([A-Za-z0-9_]+)[ ]*=)|((\(|,| )([A-Za-z0-9_]+)(\)|,| ))")# 2 or 5
-        
+        # python language
+        self.PYTHON_IMPORTS=re.compile("((\bimport\b|\bfrom\b|\bas\b)(\(|,| )*[A-Za-z0-9._]+)")# capture group index 3
+        self.PYTHON_FUNCTIONS=re.compile("(\bdef \b([A-Za-z0-9_]+)\()|(\.([A-Za-z0-9_]+)\()")# cgi 1 or 3
+        self.PYTHON_VARIABLES=re.compile("(([A-Za-z0-9_]+)[ ]*=)|((\(|,| )([A-Za-z0-9_]+)(\)|,| ))")# 1 or 4
+        # java language
+        self.JAVA_IMPORTS=re.compile("")# don't forget things following the word "new"
+        self.JAVA_METHODS=re.compile("")
+        # to do: add detection for parameters in methods
+        self.JAVA_VARIABLES=re.compile("([ \.]*([A-Za-z0-9_]+)[ ]*=)|((\bpublic\b|\bprivate\b|\binternal\b|\bfinal\b|\bstatic\b)[ ]+[A-Za-z0-9_]+[ ]+([A-Za-z0-9_]+)[ ]*[;=])")#1 or 4
         
         # setup tk
         self.root=tk.Tk()
@@ -69,9 +57,11 @@ class Element:
         # setup hotkeys
         self.root.bind_all("<Home>", self.scan_new)
         
+        
+         
         # setup options for directory ask
         self.dir_opt = {}
-        self.dir_opt['initialdir'] = 'C:\\natlink\\natlink\\macrosystem\\'
+        self.dir_opt['initialdir'] = os.environ["HOME"]+'\\'
         self.dir_opt['mustexist'] = False
         self.dir_opt['parent'] = self.root
         self.dir_opt['title'] = 'Please select directory'
@@ -184,22 +174,20 @@ class Element:
         run(host='localhost', port=1337, debug=True, server='cherrypy')
     
     def update_active_file(self):
-        try: #doesn't crash now on a bad update attempt
-            active_window_title=utilities.get_active_window_title()
-            if not self.old_active_window_title==active_window_title:
-                
-                filename=""
-                
-                match_objects=self.filename_pattern.findall(active_window_title)
-                if not len(match_objects)==  0:# if we found variable name in the line
-                    filename=match_objects[0]
-                 
-                if not filename=="":
-                    self.old_active_window_title=active_window_title# only update were on a new file, not just a new window
-                    self.populate_list(filename)
-                    self.last_file_loaded=filename
-        except Exception:
-            utilities.report(utilities.list_to_string(sys.exc_info()))
+        active_window_title=utilities.get_active_window_title()
+        if not self.old_active_window_title==active_window_title:
+            
+            filename=""
+            
+            match_objects=self.filename_pattern.findall(active_window_title)
+            if not len(match_objects)==  0:# if we found variable name in the line
+                filename=match_objects[0]
+             
+            if not filename=="":
+                self.old_active_window_title=active_window_title# only update were on a new file, not just a new window
+                self.populate_list(filename)
+                self.last_file_loaded=filename
+
         self.root.after(self.update_interval, self.update_active_file)
     
     def rescan_directory(self):
@@ -351,23 +339,45 @@ class Element:
         self.TOTAL_SAVED_INFO["directories"][directory]=meta_information
         
     def filter(self, line, extension):
-        if extension==".py":
+        #  handle the case that a regular expression hasn't been made  for this language yet
+        if not extension in [".py",".java"]:
             results=[]
+            generic_match_object=self.GENERIC_PATTERN.findall(line)# for languages without specific regular expressions made yet
+            if len(generic_match_object)>0:
+                results=self.process_match(generic_match_object, [0], results)
+            return results
+        
+        # setup        
+        import_match_object=None
+        function_match_object=None
+        variable_match_object=None
+        import_indices=None
+        function_indices=None
+        variable_indices=None
+        
+        # Python        
+        if extension==".py":
             import_match_object=self.PYTHON_IMPORTS.findall( line )
             function_match_object=self.PYTHON_FUNCTIONS.findall( line )
             variable_match_object=self.PYTHON_VARIABLES.findall( line )
-            if len(import_match_object)>0:
-                    results=self.process_match(import_match_object, [3], results)
-            if len(function_match_object)>0:
-                    results=self.process_match(function_match_object, [1,3], results)
-            if len(variable_match_object)>0:
-                results=self.process_match(variable_match_object, [1,4], results)
-            return results
+            import_indices=[3]
+            function_indices=[1,3]
+            variable_indices=[1,4]
+        elif extension==".java":
+            import_match_object=self.JAVA_IMPORTS.findall( line )
+            function_match_object=self.JAVA_METHODS.findall( line )
+            variable_match_object=self.JAVA_VARIABLES.findall( line )
+            import_indices=[]
+            function_indices=[]
+            variable_indices=[1,4]
         
         results=[]
-        generic_match_object=self.GENERIC_PATTERN.findall(line)# for languages without specific regular expressions made yet
-        if len(generic_match_object)>0:
-            results=self.process_match(generic_match_object, [0], results)
+        if len(import_match_object)>0:
+                results=self.process_match(import_match_object, import_indices, results)
+        if len(function_match_object)>0:
+                results=self.process_match(function_match_object, function_indices, results)
+        if len(variable_match_object)>0:
+            results=self.process_match(variable_match_object, variable_indices, results)
         return results
     
     def process_match(self, match_object, desired_indices, results):

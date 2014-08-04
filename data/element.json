@@ -1,6 +1,6 @@
 {
     "config": {
-        "last_directory": "C:/NatLink/NatLink/MacroSystem"
+        "last_directory": "C:/Users/dave/workspace/simulator"
     }, 
     "directories": {
         "C:/NatLink/NatLink/MacroSystem": {
@@ -1541,6 +1541,736 @@
                         "write", 
                         "x", 
                         "zero"
+                    ], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }
+            }
+        }, 
+        "C:/Users/dave/workspace/simulator": {
+            "extensions": [
+                ".java"
+            ], 
+            "files": {
+                "C:/Users/dave/workspace/simulator\\src\\cards/CardBase.java": {
+                    "added": [], 
+                    "filename": "CardBase.java", 
+                    "names": [
+                        "this.name =", 
+                        "this.type ="
+                    ], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\cards/CardList.java": {
+                    "added": [], 
+                    "filename": "CardList.java", 
+                    "names": [
+                        "ENEMIES =", 
+                        "TRAPS =", 
+                        "TREASURES ="
+                    ], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\cards/CardType.java": {
+                    "added": [], 
+                    "filename": "CardType.java", 
+                    "names": [], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\cards\\enemy/EnemyBase.java": {
+                    "added": [], 
+                    "filename": "EnemyBase.java", 
+                    "names": [], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\cards\\enemy\\mine/BatCard.java": {
+                    "added": [], 
+                    "filename": "BatCard.java", 
+                    "names": [
+                        "this.name =", 
+                        "this.type ="
+                    ], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\cards\\enemy\\mine/ChillCard.java": {
+                    "added": [], 
+                    "filename": "ChillCard.java", 
+                    "names": [
+                        "i =", 
+                        "this.name =", 
+                        "this.type ="
+                    ], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\cards\\enemy\\mine/GhostCard.java": {
+                    "added": [], 
+                    "filename": "GhostCard.java", 
+                    "names": [
+                        "this.name =", 
+                        "this.type ="
+                    ], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\cards\\enemy\\mine/SnakeCard.java": {
+                    "added": [], 
+                    "filename": "SnakeCard.java", 
+                    "names": [
+                        "this.name =", 
+                        "this.numberToKillParty =", 
+                        "this.type ="
+                    ], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\cards\\enemy\\mine/SpiderCard.java": {
+                    "added": [], 
+                    "filename": "SpiderCard.java", 
+                    "names": [
+                        "this.name =", 
+                        "this.recurring =", 
+                        "this.type ="
+                    ], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\cards\\trap/ArrowTrapCard.java": {
+                    "added": [], 
+                    "filename": "ArrowTrapCard.java", 
+                    "names": [
+                        "this.name =", 
+                        "this.numberToKillParty =", 
+                        "this.type ="
+                    ], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\cards\\trap/BoulderCard.java": {
+                    "added": [], 
+                    "filename": "BoulderCard.java", 
+                    "names": [
+                        "this.name =", 
+                        "this.type ="
+                    ], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\cards\\trap/TrapBase.java": {
+                    "added": [], 
+                    "filename": "TrapBase.java", 
+                    "names": [], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\cards\\treasure/BombableTreasureCard.java": {
+                    "added": [], 
+                    "filename": "BombableTreasureCard.java", 
+                    "names": [
+                        "this.available =", 
+                        "this.bombValue =", 
+                        "this.type ="
+                    ], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\cards\\treasure/IdolCard.java": {
+                    "added": [], 
+                    "filename": "IdolCard.java", 
+                    "names": [
+                        "lucky =", 
+                        "this.available =", 
+                        "this.name =", 
+                        "this.type =", 
+                        "this.valueToAddToBoard =", 
+                        "valueToAddToBoard ="
+                    ], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\cards\\treasure/RopeableTreasureCard.java": {
+                    "added": [], 
+                    "filename": "RopeableTreasureCard.java", 
+                    "names": [
+                        "this.ropeCard =", 
+                        "this.type ="
+                    ], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\cards\\treasure/TreasureCard.java": {
+                    "added": [], 
+                    "filename": "TreasureCard.java", 
+                    "names": [
+                        "result =", 
+                        "this.name =", 
+                        "this.type =", 
+                        "this.value ="
+                    ], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\main/Log.java": {
+                    "added": [], 
+                    "filename": "Log.java", 
+                    "names": [
+                        "card.type =", 
+                        "chosenStr =", 
+                        "itemsString =", 
+                        "leavingPlayersNames =", 
+                        "pNames =", 
+                        "playersGold =", 
+                        "plural =", 
+                        "this.log =", 
+                        "this.loggingOn ="
+                    ], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\main/Main.java": {
+                    "added": [], 
+                    "filename": "Main.java", 
+                    "names": [
+                        "game =", 
+                        "i =", 
+                        "mc ="
+                    ], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\main/Runner.java": {
+                    "added": [], 
+                    "filename": "Runner.java", 
+                    "names": [
+                        "bc =", 
+                        "bc.available =", 
+                        "bc.bombValue =", 
+                        "board =", 
+                        "bombableTotalValue =", 
+                        "bomber =", 
+                        "card =", 
+                        "log =", 
+                        "playersBombing =", 
+                        "playersRoping =", 
+                        "rc =", 
+                        "rc.value =", 
+                        "reward =", 
+                        "ropeValue =", 
+                        "skip =", 
+                        "skipCard =", 
+                        "splittable =", 
+                        "unsplittable =", 
+                        "winner ="
+                    ], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\model/ActionType.java": {
+                    "added": [], 
+                    "filename": "ActionType.java", 
+                    "names": [], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\model/Board.java": {
+                    "added": [], 
+                    "filename": "Board.java", 
+                    "names": [
+                        "actionCardsReceived =", 
+                        "bc =", 
+                        "card.type =", 
+                        "decks =", 
+                        "escapee =", 
+                        "flippedCards =", 
+                        "gold =", 
+                        "goldPerPlayer =", 
+                        "goldReceived =", 
+                        "has1UP =", 
+                        "i =", 
+                        "i=", 
+                        "idolValue =", 
+                        "leaving =", 
+                        "leftOver =", 
+                        "numplayers =", 
+                        "p =", 
+                        "p.active =", 
+                        "p.chosenAction =", 
+                        "p1 =", 
+                        "players =", 
+                        "rc =", 
+                        "result =", 
+                        "threshold ="
+                    ], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\model/Deck.java": {
+                    "added": [], 
+                    "filename": "Deck.java", 
+                    "names": [
+                        "binPath=", 
+                        "c.type =", 
+                        "card =", 
+                        "cards =", 
+                        "i =", 
+                        "line =", 
+                        "result =", 
+                        "rs =", 
+                        "s =", 
+                        "seed =", 
+                        "setup =", 
+                        "this.name =", 
+                        "this.numCards =", 
+                        "this.type ="
+                    ], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\model/Player.java": {
+                    "added": [], 
+                    "filename": "Player.java", 
+                    "names": [
+                        "actions =", 
+                        "active =", 
+                        "chosenAction =", 
+                        "currentGold =", 
+                        "dead =", 
+                        "roundGold =", 
+                        "this.name =", 
+                        "this.strategy ="
+                    ], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\model/RoundType.java": {
+                    "added": [], 
+                    "filename": "RoundType.java", 
+                    "names": [], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\model/Tools.java": {
+                    "added": [], 
+                    "filename": "Tools.java", 
+                    "names": [], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\stats/GameResult.java": {
+                    "added": [], 
+                    "filename": "GameResult.java", 
+                    "names": [
+                        "strategy ="
+                    ], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\stats/MonteCarlo.java": {
+                    "added": [], 
+                    "filename": "MonteCarlo.java", 
+                    "names": [
+                        "oneUp =", 
+                        "results =", 
+                        "smart =", 
+                        "toss =", 
+                        "wait ="
+                    ], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\strategy/CoinToss.java": {
+                    "added": [], 
+                    "filename": "CoinToss.java", 
+                    "names": [
+                        "result =", 
+                        "this.id ="
+                    ], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\strategy/OneUpAndOut.java": {
+                    "added": [], 
+                    "filename": "OneUpAndOut.java", 
+                    "names": [
+                        "highestScore =", 
+                        "this.id="
+                    ], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\strategy/SmartBot.java": {
+                    "added": [], 
+                    "filename": "SmartBot.java", 
+                    "names": [
+                        "rand =", 
+                        "this.id ="
+                    ], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\strategy/StratList.java": {
+                    "added": [], 
+                    "filename": "StratList.java", 
+                    "names": [
+                        "coinToss =", 
+                        "oneUp =", 
+                        "smartBot =", 
+                        "waitGold2 =", 
+                        "waitGold5 ="
+                    ], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\strategy/StrategyBase.java": {
+                    "added": [], 
+                    "filename": "StrategyBase.java", 
+                    "names": [
+                        "this.id ="
+                    ], 
+                    "sticky": [
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        "", 
+                        ""
+                    ]
+                }, 
+                "C:/Users/dave/workspace/simulator\\src\\strategy/ThresholdGold.java": {
+                    "added": [], 
+                    "filename": "ThresholdGold.java", 
+                    "names": [
+                        "this.amount =", 
+                        "this.id ="
                     ], 
                     "sticky": [
                         "", 

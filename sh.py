@@ -34,6 +34,10 @@ class CommandRule(MappingRule):
         "stop tracking [file]": Text("git rm --cached FILENAME"),
         "exit":             Text( "exit" )+Key("enter"),
         
+        # navigation to specific project paths
+        "go to simulator":  Text("cd C:/Users/dave/workspace/simulator")+Key("enter"),
+        "go to dragonfly":  Text("cd C:/NatLink/NatLink/MacroSystem")+Key("enter"),
+        
         }
     extras = [
               
