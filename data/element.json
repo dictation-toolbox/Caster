@@ -1566,8 +1566,11 @@
                     "added": [], 
                     "filename": "CardBase.java", 
                     "names": [
-                        "this.name =", 
-                        "this.type ="
+                        "board", 
+                        "log", 
+                        "name", 
+                        "players", 
+                        "type"
                     ], 
                     "sticky": [
                         "", 
@@ -1586,9 +1589,20 @@
                     "added": [], 
                     "filename": "CardList.java", 
                     "names": [
-                        "ENEMIES =", 
-                        "TRAPS =", 
-                        "TREASURES ="
+                        "ARROWTRAP", 
+                        "BAT", 
+                        "BOULDER", 
+                        "CHILL", 
+                        "ENEMIES", 
+                        "ENEMY", 
+                        "GHOST", 
+                        "SNAKE", 
+                        "SPIDER", 
+                        "TRAPS", 
+                        "TREASURE", 
+                        "TREASURES", 
+                        "card", 
+                        "type"
                     ], 
                     "sticky": [
                         "", 
@@ -1606,7 +1620,21 @@
                 "C:/Users/dave/workspace/simulator\\src\\cards/CardType.java": {
                     "added": [], 
                     "filename": "CardType.java", 
-                    "names": [], 
+                    "names": [
+                        "BAT", 
+                        "BOMB", 
+                        "BOULDER", 
+                        "CHILL", 
+                        "DEFAULT", 
+                        "ENEMY", 
+                        "GHOST", 
+                        "IDOL", 
+                        "ITEM", 
+                        "ROPE", 
+                        "SNAKE", 
+                        "SPIDER", 
+                        "TREASURE"
+                    ], 
                     "sticky": [
                         "", 
                         "", 
@@ -1623,7 +1651,11 @@
                 "C:/Users/dave/workspace/simulator\\src\\cards\\enemy/EnemyBase.java": {
                     "added": [], 
                     "filename": "EnemyBase.java", 
-                    "names": [], 
+                    "names": [
+                        "board", 
+                        "log", 
+                        "players"
+                    ], 
                     "sticky": [
                         "", 
                         "", 
@@ -1641,8 +1673,14 @@
                     "added": [], 
                     "filename": "BatCard.java", 
                     "names": [
-                        "this.name =", 
-                        "this.type ="
+                        "BAT", 
+                        "board", 
+                        "log", 
+                        "name", 
+                        "p", 
+                        "players", 
+                        "this", 
+                        "type"
                     ], 
                     "sticky": [
                         "", 
@@ -1661,9 +1699,12 @@
                     "added": [], 
                     "filename": "ChillCard.java", 
                     "names": [
-                        "i =", 
-                        "this.name =", 
-                        "this.type ="
+                        "board", 
+                        "i", 
+                        "log", 
+                        "name", 
+                        "players", 
+                        "type"
                     ], 
                     "sticky": [
                         "", 
@@ -1682,8 +1723,13 @@
                     "added": [], 
                     "filename": "GhostCard.java", 
                     "names": [
-                        "this.name =", 
-                        "this.type ="
+                        "board", 
+                        "log", 
+                        "name", 
+                        "p", 
+                        "players", 
+                        "this", 
+                        "type"
                     ], 
                     "sticky": [
                         "", 
@@ -1702,9 +1748,15 @@
                     "added": [], 
                     "filename": "SnakeCard.java", 
                     "names": [
-                        "this.name =", 
-                        "this.numberToKillParty =", 
-                        "this.type ="
+                        "SNAKE", 
+                        "board", 
+                        "log", 
+                        "name", 
+                        "numberToKillParty", 
+                        "p", 
+                        "players", 
+                        "this", 
+                        "type"
                     ], 
                     "sticky": [
                         "", 
@@ -1723,9 +1775,13 @@
                     "added": [], 
                     "filename": "SpiderCard.java", 
                     "names": [
-                        "this.name =", 
-                        "this.recurring =", 
-                        "this.type ="
+                        "board", 
+                        "log", 
+                        "name", 
+                        "players", 
+                        "recurring", 
+                        "this", 
+                        "type"
                     ], 
                     "sticky": [
                         "", 
@@ -1744,9 +1800,15 @@
                     "added": [], 
                     "filename": "ArrowTrapCard.java", 
                     "names": [
-                        "this.name =", 
-                        "this.numberToKillParty =", 
-                        "this.type ="
+                        "ARROWTRAP", 
+                        "board", 
+                        "log", 
+                        "name", 
+                        "numberToKillParty", 
+                        "p", 
+                        "players", 
+                        "this", 
+                        "type"
                     ], 
                     "sticky": [
                         "", 
@@ -1765,8 +1827,14 @@
                     "added": [], 
                     "filename": "BoulderCard.java", 
                     "names": [
-                        "this.name =", 
-                        "this.type ="
+                        "BOULDER", 
+                        "board", 
+                        "log", 
+                        "name", 
+                        "p", 
+                        "players", 
+                        "this", 
+                        "type"
                     ], 
                     "sticky": [
                         "", 
@@ -1784,7 +1852,11 @@
                 "C:/Users/dave/workspace/simulator\\src\\cards\\trap/TrapBase.java": {
                     "added": [], 
                     "filename": "TrapBase.java", 
-                    "names": [], 
+                    "names": [
+                        "board", 
+                        "log", 
+                        "players"
+                    ], 
                     "sticky": [
                         "", 
                         "", 
@@ -1802,9 +1874,13 @@
                     "added": [], 
                     "filename": "BombableTreasureCard.java", 
                     "names": [
-                        "this.available =", 
-                        "this.bombValue =", 
-                        "this.type ="
+                        "available", 
+                        "board", 
+                        "bombValue", 
+                        "log", 
+                        "players", 
+                        "type", 
+                        "value"
                     ], 
                     "sticky": [
                         "", 
@@ -1823,12 +1899,15 @@
                     "added": [], 
                     "filename": "IdolCard.java", 
                     "names": [
-                        "lucky =", 
-                        "this.available =", 
-                        "this.name =", 
-                        "this.type =", 
-                        "this.valueToAddToBoard =", 
-                        "valueToAddToBoard ="
+                        "available", 
+                        "board", 
+                        "log", 
+                        "lucky", 
+                        "name", 
+                        "players", 
+                        "type", 
+                        "value", 
+                        "valueToAddToBoard"
                     ], 
                     "sticky": [
                         "", 
@@ -1847,8 +1926,14 @@
                     "added": [], 
                     "filename": "RopeableTreasureCard.java", 
                     "names": [
-                        "this.ropeCard =", 
-                        "this.type ="
+                        "TREASURE", 
+                        "TreasureCard", 
+                        "board", 
+                        "log", 
+                        "players", 
+                        "ropeCard", 
+                        "type", 
+                        "value"
                     ], 
                     "sticky": [
                         "", 
@@ -1867,10 +1952,13 @@
                     "added": [], 
                     "filename": "TreasureCard.java", 
                     "names": [
-                        "result =", 
-                        "this.name =", 
-                        "this.type =", 
-                        "this.value ="
+                        "board", 
+                        "log", 
+                        "name", 
+                        "players", 
+                        "result", 
+                        "type", 
+                        "value"
                     ], 
                     "sticky": [
                         "", 
@@ -1889,15 +1977,38 @@
                     "added": [], 
                     "filename": "Log.java", 
                     "names": [
-                        "card.type =", 
-                        "chosenStr =", 
-                        "itemsString =", 
-                        "leavingPlayersNames =", 
-                        "pNames =", 
-                        "playersGold =", 
-                        "plural =", 
-                        "this.log =", 
-                        "this.loggingOn ="
+                        "BOMB", 
+                        "BombableTreasureCard", 
+                        "DEAD", 
+                        "ROPE", 
+                        "RopeableTreasureCard", 
+                        "amount", 
+                        "b", 
+                        "card", 
+                        "cards", 
+                        "chosenAction", 
+                        "chosenStr", 
+                        "dead", 
+                        "entry", 
+                        "gold", 
+                        "itemsString", 
+                        "killer", 
+                        "leavingPlayersNames", 
+                        "leftOver", 
+                        "log", 
+                        "loggingOn", 
+                        "name", 
+                        "on", 
+                        "pNames", 
+                        "perPlayer", 
+                        "player", 
+                        "players", 
+                        "playersGold", 
+                        "plural", 
+                        "remaining", 
+                        "s", 
+                        "type", 
+                        "victim"
                     ], 
                     "sticky": [
                         "", 
@@ -1916,9 +2027,12 @@
                     "added": [], 
                     "filename": "Main.java", 
                     "names": [
-                        "game =", 
-                        "i =", 
-                        "mc ="
+                        "args", 
+                        "e", 
+                        "game", 
+                        "i", 
+                        "loggingOn", 
+                        "mc"
                     ], 
                     "sticky": [
                         "", 
@@ -1937,25 +2051,37 @@
                     "added": [], 
                     "filename": "Runner.java", 
                     "names": [
-                        "bc =", 
-                        "bc.available =", 
-                        "bc.bombValue =", 
-                        "board =", 
-                        "bombableTotalValue =", 
-                        "bomber =", 
-                        "card =", 
-                        "log =", 
-                        "playersBombing =", 
-                        "playersRoping =", 
-                        "rc =", 
-                        "rc.value =", 
-                        "reward =", 
-                        "ropeValue =", 
-                        "skip =", 
-                        "skipCard =", 
-                        "splittable =", 
-                        "unsplittable =", 
-                        "winner ="
+                        "BOMB", 
+                        "BombableTreasureCard", 
+                        "DEEPER", 
+                        "MINE", 
+                        "ROPE", 
+                        "RopeableTreasureCard", 
+                        "available", 
+                        "bc", 
+                        "board", 
+                        "bombValue", 
+                        "bombableTotalValue", 
+                        "bomber", 
+                        "bombs", 
+                        "c", 
+                        "card", 
+                        "false", 
+                        "flippedCards", 
+                        "log", 
+                        "playersBombing", 
+                        "playersRoping", 
+                        "rc", 
+                        "recurring", 
+                        "reward", 
+                        "ropeValue", 
+                        "s", 
+                        "skip", 
+                        "skipCard", 
+                        "splittable", 
+                        "unsplittable", 
+                        "value", 
+                        "winner"
                     ], 
                     "sticky": [
                         "", 
@@ -1973,7 +2099,14 @@
                 "C:/Users/dave/workspace/simulator\\src\\model/ActionType.java": {
                     "added": [], 
                     "filename": "ActionType.java", 
-                    "names": [], 
+                    "names": [
+                        "BOMB", 
+                        "DEEPER", 
+                        "GLASSES", 
+                        "LEAVE", 
+                        "ROCK", 
+                        "ROPE"
+                    ], 
                     "sticky": [
                         "", 
                         "", 
@@ -1991,30 +2124,50 @@
                     "added": [], 
                     "filename": "Board.java", 
                     "names": [
-                        "actionCardsReceived =", 
-                        "bc =", 
-                        "card.type =", 
-                        "decks =", 
-                        "escapee =", 
-                        "flippedCards =", 
-                        "gold =", 
-                        "goldPerPlayer =", 
-                        "goldReceived =", 
-                        "has1UP =", 
-                        "i =", 
-                        "i=", 
-                        "idolValue =", 
-                        "leaving =", 
-                        "leftOver =", 
-                        "numplayers =", 
-                        "p =", 
-                        "p.active =", 
-                        "p.chosenAction =", 
-                        "p1 =", 
-                        "players =", 
-                        "rc =", 
-                        "result =", 
-                        "threshold ="
+                        "BOMB", 
+                        "BombableTreasureCard", 
+                        "IDOL", 
+                        "LEAVE", 
+                        "ROPE", 
+                        "RopeableTreasureCard", 
+                        "action", 
+                        "actionCardsReceived", 
+                        "active", 
+                        "amount", 
+                        "available", 
+                        "bc", 
+                        "card", 
+                        "chosenAction", 
+                        "coinToss", 
+                        "decks", 
+                        "escapee", 
+                        "flippedCards", 
+                        "gold", 
+                        "goldPerPlayer", 
+                        "goldReceived", 
+                        "has1UP", 
+                        "i", 
+                        "idolValue", 
+                        "int", 
+                        "leaving", 
+                        "leftOver", 
+                        "log", 
+                        "number", 
+                        "numplayers", 
+                        "oneUp", 
+                        "p", 
+                        "p1", 
+                        "player", 
+                        "players", 
+                        "rc", 
+                        "result", 
+                        "rock", 
+                        "smartBot", 
+                        "specs", 
+                        "this", 
+                        "threshold", 
+                        "type", 
+                        "waitGold2"
                     ], 
                     "sticky": [
                         "", 
@@ -2033,20 +2186,23 @@
                     "added": [], 
                     "filename": "Deck.java", 
                     "names": [
-                        "binPath=", 
-                        "c.type =", 
-                        "card =", 
-                        "cards =", 
-                        "i =", 
-                        "line =", 
-                        "result =", 
-                        "rs =", 
-                        "s =", 
-                        "seed =", 
-                        "setup =", 
-                        "this.name =", 
-                        "this.numCards =", 
-                        "this.type ="
+                        "binPath", 
+                        "c", 
+                        "card", 
+                        "cards", 
+                        "fname", 
+                        "i", 
+                        "line", 
+                        "n", 
+                        "name", 
+                        "null", 
+                        "numCards", 
+                        "result", 
+                        "rs", 
+                        "s", 
+                        "seed", 
+                        "setup", 
+                        "type"
                     ], 
                     "sticky": [
                         "", 
@@ -2065,14 +2221,22 @@
                     "added": [], 
                     "filename": "Player.java", 
                     "names": [
-                        "actions =", 
-                        "active =", 
-                        "chosenAction =", 
-                        "currentGold =", 
-                        "dead =", 
-                        "roundGold =", 
-                        "this.name =", 
-                        "this.strategy ="
+                        "BOMB", 
+                        "DEEPER", 
+                        "LEAVE", 
+                        "ROPE", 
+                        "actions", 
+                        "active", 
+                        "amount", 
+                        "board", 
+                        "chosenAction", 
+                        "currentGold", 
+                        "dead", 
+                        "log", 
+                        "name", 
+                        "roundGold", 
+                        "strategy", 
+                        "this"
                     ], 
                     "sticky": [
                         "", 
@@ -2090,7 +2254,12 @@
                 "C:/Users/dave/workspace/simulator\\src\\model/RoundType.java": {
                     "added": [], 
                     "filename": "RoundType.java", 
-                    "names": [], 
+                    "names": [
+                        "ICECAVE", 
+                        "JUNGLE", 
+                        "MINE", 
+                        "TEMPLE"
+                    ], 
                     "sticky": [
                         "", 
                         "", 
@@ -2107,7 +2276,9 @@
                 "C:/Users/dave/workspace/simulator\\src\\model/Tools.java": {
                     "added": [], 
                     "filename": "Tools.java", 
-                    "names": [], 
+                    "names": [
+                        "dc"
+                    ], 
                     "sticky": [
                         "", 
                         "", 
@@ -2125,7 +2296,9 @@
                     "added": [], 
                     "filename": "GameResult.java", 
                     "names": [
-                        "strategy ="
+                        "flippedCards", 
+                        "strategy", 
+                        "winner"
                     ], 
                     "sticky": [
                         "", 
@@ -2144,11 +2317,13 @@
                     "added": [], 
                     "filename": "MonteCarlo.java", 
                     "names": [
-                        "oneUp =", 
-                        "results =", 
-                        "smart =", 
-                        "toss =", 
-                        "wait ="
+                        "gr", 
+                        "oneUp", 
+                        "results", 
+                        "smart", 
+                        "strategy", 
+                        "toss", 
+                        "wait"
                     ], 
                     "sticky": [
                         "", 
@@ -2167,8 +2342,10 @@
                     "added": [], 
                     "filename": "CoinToss.java", 
                     "names": [
-                        "result =", 
-                        "this.id ="
+                        "board", 
+                        "id", 
+                        "player", 
+                        "result"
                     ], 
                     "sticky": [
                         "", 
@@ -2187,8 +2364,10 @@
                     "added": [], 
                     "filename": "OneUpAndOut.java", 
                     "names": [
-                        "highestScore =", 
-                        "this.id="
+                        "board", 
+                        "highestScore", 
+                        "id", 
+                        "player"
                     ], 
                     "sticky": [
                         "", 
@@ -2207,8 +2386,10 @@
                     "added": [], 
                     "filename": "SmartBot.java", 
                     "names": [
-                        "rand =", 
-                        "this.id ="
+                        "board", 
+                        "id", 
+                        "player", 
+                        "rand"
                     ], 
                     "sticky": [
                         "", 
@@ -2227,11 +2408,11 @@
                     "added": [], 
                     "filename": "StratList.java", 
                     "names": [
-                        "coinToss =", 
-                        "oneUp =", 
-                        "smartBot =", 
-                        "waitGold2 =", 
-                        "waitGold5 ="
+                        "coinToss", 
+                        "oneUp", 
+                        "smartBot", 
+                        "waitGold2", 
+                        "waitGold5"
                     ], 
                     "sticky": [
                         "", 
@@ -2250,7 +2431,9 @@
                     "added": [], 
                     "filename": "StrategyBase.java", 
                     "names": [
-                        "this.id ="
+                        "board", 
+                        "id", 
+                        "player"
                     ], 
                     "sticky": [
                         "", 
@@ -2269,8 +2452,10 @@
                     "added": [], 
                     "filename": "ThresholdGold.java", 
                     "names": [
-                        "this.amount =", 
-                        "this.id ="
+                        "amount", 
+                        "board", 
+                        "id", 
+                        "player"
                     ], 
                     "sticky": [
                         "", 

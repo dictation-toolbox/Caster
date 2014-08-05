@@ -1,7 +1,7 @@
 {
     "alphabet": true, 
     "html": false, 
-    "java": true, 
+    "java": false, 
     "pascal": false, 
-    "python": false
+    "python": true
 }

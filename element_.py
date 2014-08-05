@@ -45,7 +45,7 @@ class Element:
         self.JAVA_IMPORTS=re.compile("")# don't forget things following the word "new"
         self.JAVA_METHODS=re.compile("")
         # to do: add detection for parameters in methods
-        self.JAVA_VARIABLES=re.compile("([ \.]*([A-Za-z0-9_]+)[ ]*=)|((\bpublic\b|\bprivate\b|\binternal\b|\bfinal\b|\bstatic\b)[ ]+[A-Za-z0-9_]+[ ]+([A-Za-z0-9_]+)[ ]*[;=])")#1 or 4
+        self.JAVA_VARIABLES=re.compile("([ \.]*([A-Za-z0-9_]+)[ ]*=)|((\bpublic\b|\bprivate\b|\binternal\b|\bfinal\b|\bstatic\b)[ ]+[A-Za-z0-9_]+[ ]+([A-Za-z0-9_]+)[ ]*[;=])|(([A-Za-z0-9_]+)[ ]*[,\)])")#1,4,6
         
         # setup tk
         self.root=tk.Tk()
@@ -193,6 +193,7 @@ class Element:
     def rescan_directory(self):
         self.scan_directory(self.dropdown_selected.get())
         self.old_active_window_title="Directory has been rescanned"
+        utilities.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
         
             
     def scroll_to(self, index):#don't need this for sticky list
@@ -369,7 +370,7 @@ class Element:
             variable_match_object=self.JAVA_VARIABLES.findall( line )
             import_indices=[]
             function_indices=[]
-            variable_indices=[1,4]
+            variable_indices=[1,4,6]
         
         results=[]
         if len(import_match_object)>0:
