@@ -42,7 +42,11 @@ class Element:
         self.PYTHON_FUNCTIONS=re.compile("(\bdef \b([A-Za-z0-9_]+)\()|(\.([A-Za-z0-9_]+)\()")# cgi 1 or 3
         self.PYTHON_VARIABLES=re.compile("(([A-Za-z0-9_]+)[ ]*=)|((\(|,| )([A-Za-z0-9_]+)(\)|,| ))")# 1 or 4
         # java language
-        self.JAVA_IMPORTS=re.compile("\bimport\b[A-Za-z0-9_\. ]+\.([A-Za-z0-9_]+);|\bthrows \b([A-Za-z0-9_]+)|([A-Za-z0-9_]+)\.|\bnew \b([A-Za-z0-9_\<\>]+)")
+        
+        # figure out why the hell this isn't working,, won't pick up FileNotFoundException from other place that it's in in Deck.java
+#         self.JAVA_IMPORTS=re.compile("(\bimport\b[A-Za-z0-9_\. ]+\.([A-Za-z0-9_]+);|\bthrows \b([A-Za-z0-9_]+)|([A-Za-z0-9_]+)\.|\bnew \b([A-Za-z0-9_\<\>]+))")
+        self.JAVA_IMPORTS=re.compile("import [A-Za-z0-9_\\.]+\.([A-Za-z0-9_]+);|throws ([A-Za-z0-9_]+)|new ([A-Za-z0-9_<>]+)|([A-Za-z0-9_]+)\.")
+
         self.JAVA_METHODS=re.compile("[ \.]([A-Za-z0-9_]+)\(")
         self.JAVA_VARIABLES=re.compile("([ \.]*([A-Za-z0-9_]+)[ ]*=)|((\bpublic\b|\bprivate\b|\binternal\b|\bfinal\b|\bstatic\b)[ ]+[A-Za-z0-9_]+[ ]+([A-Za-z0-9_]+)[ ]*[;=])|(([A-Za-z0-9_]+)[ ]*[,\)])")#1,4,6
         
