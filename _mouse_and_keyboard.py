@@ -2,6 +2,7 @@ from dragonfly import ( Key, Text , Playback, Function, Repeat,
                         BringApp,IntegerRef, Grammar, Dictation,
                         MappingRule, Mouse, Choice, WaitWindow)
 import sys, win32api, time, win32clipboard, natlink
+from ctypes import windll
 from win32con import MOUSEEVENTF_WHEEL
 from win32api import GetSystemMetrics
 import paths, utilities, settings
@@ -12,7 +13,6 @@ NIRCMD_PATH = paths.get_nircmd()
 
 def initialize_clipboard():
     utilities.MULTI_CLIPBOARD = utilities.load_json_file(paths.get_saved_clipboard_path())
-    utilities.report("Clipboard initialized...")
 
 def clipboard_to_file(n):
     key=str(n)
@@ -85,6 +85,17 @@ def kick():
     else:
         Playback([(["mouse", "left", "click"], 0.0)])._execute()
 
+def kick_right():
+    window_title=utilities.get_active_window_title()
+    if window_title=="Custom Grid":
+        Playback([(["I", "right"], 0.0)])._execute()
+    else:
+        Playback([(["mouse", "right", "click"], 0.0)])._execute()
+
+def kick_middle():
+    windll.user32.mouse_event(0x00000020,0,0,0,0)
+    windll.user32.mouse_event(0x00000040,0,0,0,0)
+
 def grid_to_window():
     BringApp("pythonw", paths.get_grid(), "--rowheight","20" , "--columnwidth","20" , "--numrows","20" , 
              "--numcolumns","20","--sizeToClient",utilities.get_active_window_hwnd())._execute()
@@ -150,8 +161,8 @@ class MainRule(MappingRule):
 	
     #mouse control
     'kick':                         Function(kick),
-# 	'kick mid': 				    Playback([(["mouse", "middle", "click"], 0.0)]),# doesn't work, use a Python function
-	'kick right': 	                Playback([(["mouse", "right", "click"], 0.0)]),
+	'kick mid': 				    Function(kick_middle),
+	'kick right': 	                Function(kick_right),
     '(kick double|double kick)':    Playback([(["mouse", "double", "click"], 0.0)]),
     "shift right click":            Key("shift:down")+ Mouse("right")+ Key("shift:up"),
     "scroll [<direction>] <n>":     Function(scroll, extra={'direction', 'n'}),
@@ -168,6 +179,7 @@ class MainRule(MappingRule):
     #keyboard shortcuts
 	"username":                     Text("synkarius"),
     'save':                         Key("c-s"),
+    'scratch':                      Playback([(["scratch", "that"], 0.0)]),
     'enter [<n>]':                  Key("enter")* Repeat(extra="n"),
     'space [<n>]':                  Key("space")* Repeat(extra="n"),
     "down [<n>]":                   Key("down") * Repeat(extra="n"),

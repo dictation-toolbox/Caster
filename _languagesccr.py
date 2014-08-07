@@ -112,9 +112,9 @@ def generate_language_rule(path):
         exported = False
         mapping  = configuration.cmd.map
         extras   = [
-                    IntegerRef("n", 1, 100),
-                    IntegerRef("n2", 1, 100),
-                    IntegerRef("n3", 1, 100),
+                    IntegerRef("n", 0, 100),
+                    IntegerRef("n2", 0, 100),
+                    IntegerRef("n3", 0, 100),
                     Dictation("text"),
                     Dictation("text2"),
                    ]

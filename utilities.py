@@ -4,13 +4,20 @@ import codecs
 
 from dragonfly import Key, BringApp
 import natlink
-import win32gui, win32process, win32api
+import win32gui, win32process, win32api, win32ui
 import os, json, shutil,sys,errno,stat,io, time
 import paths
 
 BASE_PATH = paths.get_base()
-
 MULTI_CLIPBOARD = {}
+
+def window_exists(classname, windowname):
+    try:
+        win32ui.FindWindow(classname, windowname)
+    except win32ui.error:
+        return False
+    else:
+        return True
 
 def press_digits(n):
     number=str(n)

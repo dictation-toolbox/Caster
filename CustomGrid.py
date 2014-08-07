@@ -137,7 +137,7 @@ class CommandRule(MappingRule):
               IntegerRef("n2", 1, 1000),
               Choice("click",
                     {"default": "0", "left": "s", "double": "d",
-                     "dub": "d", "right": "t",
+                     "dub": "d", "right": "t", "kick": "s"
                     }),
               Choice("line",
                     {"row": "r", "column": "c",

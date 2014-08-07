@@ -1,10 +1,20 @@
 from dragonfly import (BringApp, Key, Function, Grammar, Playback, 
                        IntegerRef,Dictation,Choice,WaitWindow,MappingRule)
-import paths, utilities
+import paths, utilities, settings
+import natlink
+
 
 BASE_PATH = paths.get_base()
 MMT_PATH = paths.get_mmt()
 monitor_orientation=0
+
+def flip():
+    Playback([(["alt", "tab"], 0.0)])._execute()
+    WaitWindow(executable="Switcher.exe")._execute()
+    if utilities.window_exists(None, settings.ELEMENT_VERSION):
+        Playback([(["choose", "three"], 0.0)])._execute()
+    else:
+        Playback([(["choose", "two"], 0.0)])._execute()
 
 def flip_monitor_orientations():
     global monitor_orientation
@@ -14,27 +24,36 @@ def flip_monitor_orientations():
         monitor_orientation=0
     BringApp(paths.get_mmt(),r"/SetOrientation",r"\\.\DISPLAY1",str(monitor_orientation),r"\\.\DISPLAY2",str(monitor_orientation))._execute()#
 
+def change_microphone(mic):
+    m=str(mic)
+    if m=="wired":
+        print natlink.getCurrentUser()
+    elif m=="wireless":
+        print natlink.getAllUsers()
+    elif m=="phone":
+        print 2        
+
 class MainRule(MappingRule):
     global MMT_PATH
     mapping = {
     # Dragon NaturallySpeaking management
     'reboot dragon':                Function(utilities.clear_pyc)+Playback([(["stop", "listening"], 0.5), (["wake", 'up'], 0.0)]),
 	'(lock Dragon | deactivate)':   Playback([(["go", "to", "sleep"], 0.0)]),
-	'scratch':           			Playback([(["scratch", "that"], 0.0)]),
     '(number|numbers) mode':        Playback([(["numbers", "mode", "on"], 0.0)]),
     'spell mode':                   Playback([(["spell", "mode", "on"], 0.0)]),
     'dictation mode':               Playback([(["dictation", "mode", "on"], 0.0)]),
     'normal mode':                  Playback([(["normal", "mode", "on"], 0.0)]),
     "dragon death and rebirth":     BringApp(BASE_PATH + r"\suicide.bat"),
-    #MMT_PATHself and take up more space
-    # monitor management
+    
+    # hardware management
     'toggle monitor one':           BringApp(MMT_PATH, r"/switch",r"\\.\DISPLAY1"),
     'toggle monitor two':           BringApp(MMT_PATH, r"/switch",r"\\.\DISPLAY2"),
     "monitors one eighty":          Function(flip_monitor_orientations),
+    "change Mike to <mic>":         Function(change_microphone, extra="mic"),
     
     # window management
     "alt tab":                      Key("w-backtick"),#activates Switcher
-    "flip":                         Playback([(["alt", "tab"], 0.0)])+ WaitWindow(executable="Switcher.exe")+Playback([(["choose", "two"], 0.0)]),
+    "flip":                         Function(flip),
     'minimize':                     Playback([(["minimize", "window"], 0.0)]),
     'maximize':                     Playback([(["maximize", "window"], 0.0)]),
     
@@ -54,6 +73,9 @@ class MainRule(MappingRule):
               Dictation("text3"),
               Choice("choice",
                     {"alarm": "alarm", "custom grid": "CustomGrid", "element": "element"
+                    }),
+              Choice("mic",
+                    {"wired": "wired", "wireless": "wireless", "phone": "phone"
                     }),
              ]
     defaults ={"n": 1, "minutes": 20,
