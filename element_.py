@@ -331,8 +331,6 @@ class Element:
                         f = open(base+"/"+fname, "r")
                         lines = f.readlines()
                         f.close()
-                        if fname=="Deck.java":
-                            print " breakpoint"
                         for line in lines:
                             filter_results=self.filter(line, extension)
                             for result in filter_results:                                

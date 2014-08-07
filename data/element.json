@@ -9893,14 +9893,15 @@
                 }, 
                 "C:/Users/dave/workspace/simulator\\src\\main/Main.java": {
                     "added": [], 
-                    "banned": [], 
+                    "banned": [
+                        "e"
+                    ], 
                     "filename": "Main.java", 
                     "names": [
                         "MonteCarlo", 
                         "Runner", 
                         "addResult", 
                         "args", 
-                        "e", 
                         "game", 
                         "i", 
                         "log", 
@@ -10151,11 +10152,13 @@
                 }, 
                 "C:/Users/dave/workspace/simulator\\src\\model/Deck.java": {
                     "added": [], 
-                    "banned": [], 
+                    "banned": [
+                        "add", 
+                        "c"
+                    ], 
                     "filename": "Deck.java", 
                     "names": [
                         "ArrayList", 
-                        "ArrayList<CardBase>", 
                         "ArrayList<DeckCard>", 
                         "ArrowTrapCard", 
                         "BatCard", 
@@ -10180,12 +10183,10 @@
                         "SpiderCard", 
                         "System", 
                         "TreasureCard", 
-                        "add", 
                         "addCard", 
                         "binPath", 
                         "build", 
                         "buildMineDeck", 
-                        "c", 
                         "card", 
                         "cards", 
                         "close", 
@@ -10221,7 +10222,7 @@
                         "type"
                     ], 
                     "sticky": [
-                        "", 
+                        "ArrayList<CardBase>", 
                         "", 
                         "", 
                         "", 

@@ -5,7 +5,7 @@ import paths, utilities
 SETTINGS_PATH = paths.get_settings_path()
 SETTINGS = {}  # Empty, default config.
 SPEAK = False # to do,: add this value to the config
-ELEMENT_VERSION="Element v.03"
+ELEMENT_VERSION="Element v.04"
 
 def save_config():
     global SETTINGS
