@@ -31,7 +31,7 @@ def change_microphone(mic):
     elif m=="wireless":
         print natlink.getAllUsers()
     elif m=="phone":
-        print 2        
+        print natlink.getWordInfo("phonekkk")
 
 class MainRule(MappingRule):
     global MMT_PATH

@@ -1,7 +1,10 @@
 from dragonfly import (Function, Text, Grammar,BringApp,WaitWindow,Key,  
                        IntegerRef,Dictation,Mimic,MappingRule)
-import sys, httplib, json, win32api, win32con
+import sys, httplib, json, win32api, win32con,re
 import utilities, paths, settings
+import natlink
+
+STRICT_PARSER=re.compile('((?<=[a-z0-9])[A-Z]|(?!^)[A-Z](?=[a-z]))')
 
 def retrieve(n):
     n = int(n)-1
@@ -49,6 +52,12 @@ def trigger_directory_box():
     focus_element()    
     send("trigger_directory_box",None)
     
+def filter_strict_request_for_data():
+    send("filter_strict_request_for_data",None)
+    
+def filter_strict_return_processed_data(processed_data):
+    send("filter_strict_return_processed_data", processed_data)
+    
 def send(action_type, data, *more_data):
     try:
         c = httplib.HTTPConnection('localhost', 1337)
@@ -59,17 +68,47 @@ def send(action_type, data, *more_data):
             if action_type=="sticky":
                 data_to_send["sticky_index"]=more_data[0]
                 data_to_send["auto_sticky"]=more_data[1]
-        elif action_type in ["add"]:
+        elif action_type =="add":
             data_to_send["name"]=data
+        elif action_type=="filter_strict_return_processed_data":
+            data_to_send["processed_data"]=data
         c.request('POST', '/process', json.dumps(data_to_send))
-        doc = c.getresponse().read()
-        if len(doc)>100:
-            doc="length error in send()"
-        utilities.report(doc)
-        return doc
+        response_data = c.getresponse().read()
+        if len(response_data)>100:# request for strict mode filtering
+            utilities.report("Data returned for strict mode processing... processing and returning ...")
+            strict_filter(response_data)
+            return None
+        else:
+            utilities.report(response_data)
+            return response_data
     except Exception:
         utilities.report(utilities.list_to_string(sys.exc_info()))
         return "SEND() ERROR"
+
+def strict_filter(response_data):
+    directory=json.loads(response_data)
+    for f in directory["files"].values():
+        acceptably_difficult_to_type=[]
+        for name in f["names"]:
+            difficult_to_type=word_breakdown(name)
+            if difficult_to_type:
+                acceptably_difficult_to_type.append(name)
+        f["names"]=acceptably_difficult_to_type
+    
+    send("filter_strict_return_processed_data", json.dumps(directory))
+            
+def word_breakdown(name):
+    global STRICT_PARSER
+    found_something_difficult_to_type=False
+    capitals_changed_to_underscores =STRICT_PARSER.sub(r'_\1', name).lower()
+    broken_by_underscores=capitals_changed_to_underscores.split("_")
+    for name_piece in broken_by_underscores:
+        if not name_piece=="" and len(name_piece)>1:
+            dragon_check=natlink.getWordInfo(name_piece,7)
+            if dragon_check==None:# only add letter combinations that Dragon doesn't recognize as words
+                found_something_difficult_to_type=True
+                break
+    return found_something_difficult_to_type
 
 def scan_new():
     focus_element()
@@ -109,6 +148,7 @@ class MainRule(MappingRule):
     "scan new":                     Function(scan_new),
     "change directory":             Function(trigger_directory_box),
     "rescan directory":             Function(rescan),
+    "filter strict":                Function(filter_strict_request_for_data),
     }
     extras = [
               IntegerRef("n", 1, 500),
