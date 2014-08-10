@@ -14,12 +14,27 @@ cmd.map = {
      	   "quotes":						Key("dquote,dquote,left")+noSpaceNoCaps,
            "thin quotes":						Key("apostrophe,apostrophe,left")+noSpaceNoCaps,
            
-     	    "HTML":						Text("<HTML>" )+ Key("enter")+ Text("</HTML>"),
-     	    "head":						Text("<HEAD>" )+ Key("enter")+ Text("</HEAD>"),
-     	    "body":						Text("<BODY>" )+ Key("enter")+ Text("</BODY>"),
-     	    "div":						Text("<DIV>" )+ Key("enter")+ Text("</DIV>"),
-			"subscript":				Text("<SUB></SUB>")+  Key("left/10:6"),     	   
-     	   	"superscript":				Text("<SUP></SUP>")+  Key("left/10:6"),
+     	    "HTML":						Text("<html>" )+ Key("enter")+ Text("</html>")+ Key("up"),
+     	    "head":						Text("<head>" )+ Key("enter")+ Text("</head>")+ Key("up"),
+     	    "title":					Text("<title></title>")+  Key("left/10:8"),
+     	    "body":						Text("<body>" )+ Key("enter")+ Text("</body>")+ Key("up"),
+     	    "div":						Text("<div></div>")+  Key("left/10:6"),
+			"subscript":				Text("<sub></sub>")+  Key("left/10:6"),     	   
+     	   	"superscript":				Text("<sup></sup>")+  Key("left/10:6"),
+     	   	"be are":					Text("<br>"),
+     	   	
+     	   	"table":					Text("<table>")+ Key("enter")+Text("<tr>")+ Key("enter")+Text("<td></td>")+Key("enter")+Text("</tr>")+Key("enter")+Text("</table>"),
+     	   	"tee are":					Text("<tr></tr>"),
+     	   	"tee D":					Text("<td></td>"),
+     	   	
+     	   	"bold":						Text("<b></b>")+  Key("left/10:4"),
+     	   	"italics":					Text("<i></i>")+  Key("left/10:4"),
+     	   	"underline":				Text("<u></u>")+  Key("left/10:4"),
+     	   	
+     	   	"make link":				Text("<a href=''></a>")+  Key("left/10:6"),
+     	   	
+     	   	"add class":				Text(" class=''" )+  Key("left/10:3"),
+     	   	"add ID":					Text(" id=''" )+  Key("left/10:3"),
      	   	
      	   	"add comment":					Text( "#" ),
 	        "equals":                       Key("equals"),
