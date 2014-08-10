@@ -1,7 +1,7 @@
-#dragonfly-grammars
-==================
+#Dragonfly::Sorcery
+##_Natlink/Dragonfly speech recognition macros + voice programming assistance tools_
 
-If you have found my humble Dragonfly repository, perhaps some of these links will be useful to you. I am still finding Natlink and Dragonfly resources and I have listed some of the best below for my own reference and yours.
+If you've found my humble Dragonfly repository, perhaps some of these links will be useful to you. I am still finding Natlink and Dragonfly resources and I have listed some of the best below for my own reference and yours.
 
 forums and community
 --
@@ -37,6 +37,10 @@ commercial Dragon add-ons
 --
  - http://www.ergoarchitect.com/ShowNumbersPlus.html
  - http://www.voicecomputer.com
+
+installation instructions from ground zero for D::S + Element
+--
+ - http://explosionduck.com/ds/
 
 other
 --
