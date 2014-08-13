@@ -51,3 +51,4 @@ other
  - http://ergoemacs.org/emacs/emacs_hand_pain_celebrity.html
  - https://github.com/TalAter/annyang (in browser voice recognition JS library)
  - http://sean.wenzel.net/voicerecognition
+ - https://github.com/OpenLeap/PyLeapMouse
