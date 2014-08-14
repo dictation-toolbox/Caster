@@ -33,8 +33,9 @@ other dragonfly repositories
  - https://github.com/ccrusius/dragonfly-modules
  - https://github.com/Mozillion/SublimeSpeech
 
-commercial Dragon add-ons
+open source and commercial Dragon add-ons
 --
+ - http://sourceforge.net/projects/voicecode/
  - http://www.ergoarchitect.com/ShowNumbersPlus.html
  - http://www.voicecomputer.com
 
@@ -46,6 +47,8 @@ other
 --
  - http://www.youtube.com/watch?v=8SkdfdXWYaI (Tavis Rudd talk)
  - http://pydev.org/manual_adv_remote_debugger.html
+ - http://alpacatechnologies.com/tiki-download_file.php?fileId=21 (VoiceCode academic paper)
  - http://ergoemacs.org/emacs/emacs_hand_pain_celebrity.html
  - https://github.com/TalAter/annyang (in browser voice recognition JS library)
  - http://sean.wenzel.net/voicerecognition
+ - https://github.com/OpenLeap/PyLeapMouse
