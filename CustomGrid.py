@@ -85,7 +85,7 @@ from dragonfly import (Grammar, AppContext, MappingRule,
                        Choice, IntegerRef, Playback,
                        Key, Function)
 import sys
-import paths, utilities
+from lib import paths, utilities
 
 BASE_PATH=paths.get_base()
 

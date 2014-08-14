@@ -2,7 +2,7 @@
     "alphabet": true, 
     "html": false, 
     "java": false, 
-    "navigation": false, 
+    "navigation": true, 
     "pascal": false, 
-    "python": false
+    "python": true
 }

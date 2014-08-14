@@ -1,6 +1,6 @@
 from dragonfly import (BringApp, Key, Function, Grammar, Playback, 
                        IntegerRef,Dictation,Choice,WaitWindow,MappingRule)
-import paths, utilities, settings
+from lib import paths, utilities, settings, navigation
 import natlink
 
 
@@ -50,6 +50,7 @@ class MainRule(MappingRule):
     'toggle monitor two':           BringApp(MMT_PATH, r"/switch",r"\\.\DISPLAY2"),
     "monitors one eighty":          Function(flip_monitor_orientations),
     "change Mike to <mic>":         Function(change_microphone, extra="mic"),
+    "(<volume_mode> [system] volume [to] <n> | volume <volume_mode> <n>)": Function(navigation.volume_control, extra={'n','volume_mode'}),
     
     # window management
     "alt tab":                      Key("w-backtick"),#activates Switcher
@@ -77,6 +78,10 @@ class MainRule(MappingRule):
               Choice("mic",
                     {"wired": "wired", "wireless": "wireless", "phone": "phone"
                     }),
+              Choice("volume_mode",
+                    {"set": "set", "increase": "up", "decrease": "down",
+                     "up":"up","down":"down"
+                     }),
              ]
     defaults ={"n": 1, "minutes": 20,
                "text": ""

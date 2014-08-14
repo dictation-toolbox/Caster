@@ -1,6 +1,6 @@
 #Based heavily on the work of https://github.com/poppe1219/dragonfly-scripts/blob/master/lib/config.py
-
-import paths, utilities
+from lib import utilities
+import paths
 
 SETTINGS_PATH = paths.get_settings_path()
 SETTINGS = {}  # Empty, default config.

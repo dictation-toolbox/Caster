@@ -19,7 +19,7 @@ except ImportError:
 
 from dragonfly import *
 import natlink
-import settings, paths
+from lib import settings, paths
 
 settings.load_settings()
 config_settings = settings.get_settings()
@@ -30,7 +30,7 @@ rules = []
 def disable_all_except(language):
     global rules
     global config_settings
-    compatibility_list = ["html","css","alphabet"]# alphabets and markup languages can be handled in the same way as programming languages
+    compatibility_list = ["html","css","alphabet", "navigation"]# alphabets and markup languages can be handled in the same way as programming languages
     is_compatible = (language in compatibility_list)
     if not is_compatible:
         for holder in rules:
@@ -65,7 +65,7 @@ def generate_language_rule(path):
          "Text":  Text,
         }
     )
-    configuration.cmd.extras = Item([])
+    configuration.cmd.extras = Item([Dictation("text")])
     configuration.cmd.defaults = Item({})
     namespace = configuration.load(path)
     

@@ -3,4 +3,4 @@ Created on Jun 29, 2014
 
 @author: dave
 '''
-import dptools._myclickLocations
+import lib.dptools._myclickLocations

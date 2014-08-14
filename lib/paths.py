@@ -5,14 +5,15 @@ Created on May 17, 2014
 '''
 import sys, os
 
-BASE_PATH = os.path.dirname(os.path.abspath(__file__)) + "\\"
+BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
+#os.path.dirname(os.path.abspath(__file__)) + "\\"
 if r"\library.zip" in BASE_PATH:# fixes py2exe bug
     BASE_PATH=BASE_PATH.replace(r"\library.zip","")
 
 
-SETTINGS_PATH = BASE_PATH + "data\\settings.json"
-ELEMENT_JSON_PATH = BASE_PATH + "data\\element.json"
-SAVED_CLIPBOARD_PATH = BASE_PATH + "data\\clipboard.json"
+SETTINGS_PATH = BASE_PATH + "\\data\\settings.json"
+ELEMENT_JSON_PATH = BASE_PATH + "\\data\\element.json"
+SAVED_CLIPBOARD_PATH = BASE_PATH + "\\data\\clipboard.json"
 
 #REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
 REMOTE_DEBUGGER_PATH ="D:\PROGRAMS\NON_install\eclipse\plugins\org.python.pydev_3.4.1.201403181715\pysrc"

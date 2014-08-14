@@ -1,7 +1,7 @@
 from dragonfly import (Function, Text, Grammar,BringApp,WaitWindow,Key,  
                        IntegerRef,Dictation,Mimic,MappingRule)
 import sys, httplib, json, win32api, win32con,re
-import utilities, paths, settings
+from lib import utilities, paths, settings
 import natlink
 
 STRICT_PARSER=re.compile('((?<=[a-z0-9])[A-Z]|(?!^)[A-Z](?=[a-z]))')
