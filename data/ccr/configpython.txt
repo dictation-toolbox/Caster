@@ -71,6 +71,15 @@ cmd.map = {
 		"pie to ex":				Text("py2exe"),
           }
 
+cmd.extras   = [
+            IntegerRef("n", 0, 100),
+            IntegerRef("n2", 0, 100),
+            IntegerRef("n3", 0, 100),
+            Dictation("text"),
+           ]
+cmd.defaults = {
+            "n": 1,
+           }
 
 #---------------------------------------------------------------------------
 # Here we define various functions for formatting text.

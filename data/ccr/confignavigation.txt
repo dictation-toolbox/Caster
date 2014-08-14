@@ -1,0 +1,16 @@
+from dragonfly import *
+
+cmd.map = {
+       # Spoken-form    ->    ->    ->     Action object
+		"pipe symbol":              Text("|"),
+          }
+
+cmd.extras   = [
+            IntegerRef("n", 0, 100),
+            IntegerRef("n2", 0, 100),
+            IntegerRef("n3", 0, 100),
+            Dictation("text"),
+           ]
+cmd.defaults = {
+            "n": 1,
+           }

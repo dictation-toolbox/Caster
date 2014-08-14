@@ -11,6 +11,7 @@ import paths
 BASE_PATH = paths.get_base()
 MULTI_CLIPBOARD = {}
 
+
 def window_exists(classname, windowname):
     try:
         win32ui.FindWindow(classname, windowname)

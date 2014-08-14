@@ -26,6 +26,7 @@ def init_default_values():# new languages must be added here and in paths.py
         ("python", False),
         ("html", False),
         ("pascal", False),
+        ("navigation", False),
         ("alphabet", False)
     ]
     for (name, value) in defaultValues:

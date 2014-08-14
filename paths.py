@@ -28,11 +28,12 @@ PY2EXE_PATH=r"C:\NatLink\NatLink\MacroSystem\exe\py2exe"
 HOMEBREW_PATH=r"C:\NatLink\NatLink\MacroSystem\exe\homebrew"
 LOG_PATH=r"C:\NatLink\NatLink\MacroSystem\data\log.txt"
 
-JAVA_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\languages\configjava.txt"
-PYTHON_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\languages\configpython.txt"
-HTML_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\languages\confightml.txt"
-PASCAL_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\languages\configpascal.txt"
-ALPHABET_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\languages\configalphabet.txt"
+JAVA_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\ccr\configjava.txt"
+PYTHON_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\ccr\configpython.txt"
+HTML_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\ccr\confightml.txt"
+PASCAL_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\ccr\configpascal.txt"
+ALPHABET_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\ccr\configalphabet.txt"
+NAVIGATION_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\ccr\confignavigation.txt"
 
 
 def get_base():
@@ -68,7 +69,8 @@ def get_all_language_configs():
     global PYTHON_CONFIG_PATH
     global HTML_CONFIG_PATH
     return [JAVA_CONFIG_PATH, PYTHON_CONFIG_PATH, HTML_CONFIG_PATH, 
-            PASCAL_CONFIG_PATH, ALPHABET_CONFIG_PATH]
+            PASCAL_CONFIG_PATH, ALPHABET_CONFIG_PATH,
+            NAVIGATION_CONFIG_PATH]
 
 def get_media_path():
     global MEDIA_PATH

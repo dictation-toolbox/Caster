@@ -65,6 +65,8 @@ def generate_language_rule(path):
          "Text":  Text,
         }
     )
+    configuration.cmd.extras = Item([])
+    configuration.cmd.defaults = Item({})
     namespace = configuration.load(path)
     
     #---------------------------------------------------------------------------
@@ -111,16 +113,8 @@ def generate_language_rule(path):
     class KeystrokeRule(MappingRule):
         exported = False
         mapping  = configuration.cmd.map
-        extras   = [
-                    IntegerRef("n", 0, 100),
-                    IntegerRef("n2", 0, 100),
-                    IntegerRef("n3", 0, 100),
-                    Dictation("text"),
-                    Dictation("text2"),
-                   ]
-        defaults = {
-                    "n": 1,
-                   }
+        extras   = configuration.cmd.extras
+        defaults = configuration.cmd.defaults
     
     
     

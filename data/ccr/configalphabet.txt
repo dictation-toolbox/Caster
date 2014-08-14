@@ -80,3 +80,7 @@ cmd.map = {
           }
 
 
+cmd.extras = []
+cmd.defaults = {}
+
+
