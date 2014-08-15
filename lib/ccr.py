@@ -1,6 +1,6 @@
 from lib import paths, settings,utilities
 import io,sys
-
+from dragonfly import Text
 
 
 def combine_CCR_files(enable, a,b,c,d):
@@ -121,9 +121,9 @@ def combine_CCR_files(enable, a,b,c,d):
 def camel_case(text):
     t = str(text)
     words = t.split(" ")
-    return words[0] + "".join(w.capitalize() for w in words[1:])
+    Text(words[0] + "".join(w.capitalize() for w in words[1:]))._execute()
     
-def format_score(text):
+def score(text):
     """ score <dictation> """         # Docstring defining spoken-form.
     t = str(text)             # Get written-form of dictated text.
-    return "_".join(t.split(" ")) #
+    Text("_".join(t.split(" ")))._execute()

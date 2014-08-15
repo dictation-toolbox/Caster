@@ -1,5 +1,5 @@
 from dragonfly import *
-from lib import utilities
+from lib import ccr
 
 release = Key("shift:up, ctrl:up")
 noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on")
@@ -7,7 +7,7 @@ noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on")
 
 cmd.map = {
            # Spoken-form    ->    ->    ->     Action object
-			
+		"ja <text>":					Function(ccr.camel_case, extra="text"),			
 		
 		"public":						Text("public "),
 		"private":						Text("private "),
@@ -50,7 +50,7 @@ cmd.map = {
         "<njv> bark":                   Text("%(njv)d"),
         "<njv> <n2jv> bark":            Text("%(njv)d%(n2jv)d"),
         "<njv> <n2jv> <n3jv> bark":     Text("%(njv)d%(n2jv)d%(n3jv)d"),
-        "<textjv> spell":			    Text("%(textjv)s"), 
+        "<text> spell":			    Text("%(text)s"), 
 	   
      	   
           }
@@ -59,7 +59,7 @@ cmd.extras   = [
             IntegerRef("njv", 0, 100),
             IntegerRef("n2jv", 0, 100),
             IntegerRef("n3jv", 0, 100),
-            Dictation("textjv"),
+            Dictation("text"),
            ]
 cmd.defaults = {
             "njv": 1,

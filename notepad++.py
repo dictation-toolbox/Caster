@@ -20,8 +20,8 @@ from dragonfly import (Grammar, AppContext, MappingRule,
 class CommandRule(MappingRule):
 
     mapping = {
-        
-           
+            "next tab":                             Key("c-pgdown"),
+            "previous tab":                         Key("c-pgup"),
             
             "preview in chrome":                    Key("cas-r"),
         }

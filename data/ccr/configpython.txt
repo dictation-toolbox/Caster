@@ -3,13 +3,14 @@
 #  meant to enable python  syntax with CCR
 
 from dragonfly import *
+from lib import ccr
 
 release = Key("shift:up, ctrl:up")
 noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added on the right side
 
 cmd.map = {
        # Spoken-form    ->    ->    ->     Action object
-		
+		"score <text>":				Function(ccr.score, extra="text"),		
        
 
 	   #Python specific macros           

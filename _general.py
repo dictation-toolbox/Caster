@@ -50,7 +50,7 @@ class MainRule(MappingRule):
     'toggle monitor two':           BringApp(MMT_PATH, r"/switch",r"\\.\DISPLAY2"),
     "monitors one eighty":          Function(flip_monitor_orientations),
     "change Mike to <mic>":         Function(change_microphone, extra="mic"),
-    "(<volume_mode> [system] volume [to] <n> | volume <volume_mode> <n>)": Function(navigation.volume_control, extra={'n','volume_mode'}),
+    "(<volume_mode> [system] volume [to] <nnv> | volume <volume_mode> <nnv>)": Function(navigation.volume_control, extra={'nnv','volume_mode'}),
     
     # window management
     "alt tab":                      Key("w-backtick"),#activates Switcher
@@ -61,6 +61,7 @@ class MainRule(MappingRule):
     # development related
     "set alarm [<minutes> minutes]":Function(utilities.alarm, extra={"minutes"}),
     "open natlink folder":          BringApp("explorer", "C:\NatLink\NatLink\MacroSystem"),
+    
     "compile <choice>":             Function(utilities.py2exe_compile, extra={"choice"}),
     
     # miscellaneous
@@ -68,6 +69,7 @@ class MainRule(MappingRule):
     }
     extras = [
               IntegerRef("n", 1, 1000),
+              IntegerRef("nnv", 1, 100),
               IntegerRef("minutes", 1, 720),
               Dictation("text"),
               Dictation("text2"),
@@ -83,7 +85,7 @@ class MainRule(MappingRule):
                      "up":"up","down":"down"
                      }),
              ]
-    defaults ={"n": 1, "minutes": 20,
+    defaults ={"n": 1, "minutes": 20, "nnv": 1,
                "text": "", "volume_mode": "setsysvolume"
                }
 
