@@ -47,41 +47,21 @@ cmd.map = {
         "minus":						Text("-"),
 			
 		"pipe symbol": 		            Text("|"),
-        "<n> bark":                     Text("%(n)d"),
-        "<n> <n2> bark":                Text("%(n)d%(n2)d"),
-        "<n> <n2> <n3> bark":           Text("%(n)d%(n2)d%(n3)d"),
-        "<text> spell":			        Text("%(text)s"), 
+        "<njv> bark":                   Text("%(njv)d"),
+        "<njv> <n2jv> bark":            Text("%(njv)d%(n2jv)d"),
+        "<njv> <n2jv> <n3jv> bark":     Text("%(njv)d%(n2jv)d%(n3jv)d"),
+        "<textjv> spell":			    Text("%(textjv)s"), 
 	   
      	   
           }
 
 cmd.extras   = [
-            IntegerRef("n", 0, 100),
-            IntegerRef("n2", 0, 100),
-            IntegerRef("n3", 0, 100),
-            Dictation("text"),
+            IntegerRef("njv", 0, 100),
+            IntegerRef("n2jv", 0, 100),
+            IntegerRef("n3jv", 0, 100),
+            Dictation("textjv"),
            ]
 cmd.defaults = {
-            "n": 1,
+            "njv": 1,
            }
     
-    
-    
-#---------------------------------------------------------------------------
-# Here we define various functions for formatting text.
-# Each of these functions must have a docstring which defines its
-#  spoken-form.  This docstring must include the "<dictation>" extra.
-#  See below for various examples.
-
-# Format: some.words
-def format_dot_word(dictation):          # Function name must start with "format_".
-    """ dot word <dictation> """         # Docstring defining spoken-form.
-    text = str(dictation)             # Get written-form of dictated text.
-    return ".".join(text.split(" "))  # Put dots between words.
-
-# Format: someWords
-def format_java(dictation):
-    """ Ja <dictation> """
-    text = str(dictation)
-    words = text.split(" ")
-    return words[0] + "".join(w.capitalize() for w in words[1:])

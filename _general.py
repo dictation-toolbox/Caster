@@ -84,7 +84,7 @@ class MainRule(MappingRule):
                      }),
              ]
     defaults ={"n": 1, "minutes": 20,
-               "text": ""
+               "text": "", "volume_mode": "setsysvolume"
                }
 
 grammar = Grammar('Global')

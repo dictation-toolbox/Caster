@@ -33,18 +33,7 @@ cmd.map = {
      	   	
      	   	"make link":				Text("<a href=''></a>")+  Key("left/10:6"),
      	   	
-     	   	"add class":				Text(" class=''" )+  Key("left/10:3"),
-     	   	"add ID":					Text(" id=''" )+  Key("left/10:3"),
      	   	
-     	   	"add comment":					Text( "#" ),
-	        "equals":                       Key("equals"),
-	        "pair":                     Text("()")+ Key("left"),
-	        "[square] (bracket | brackets)":    Text("[]")+ Key("left"),
-	        "curly":                    Text("{}")+ Key("left"),
-            "<n> bark":                           Text("%(n)d"),
-            "<n> <n2> bark":                           Text("%(n)d%(n2)d"),
-            "<n> <n2> <n3> bark":                           Text("%(n)d%(n2)d%(n3)d"),
-            "string <text> string":                           Text("%(text)s"), 
 	   
        
      	   
@@ -52,13 +41,8 @@ cmd.map = {
 
 
 cmd.extras   = [
-            IntegerRef("n", 0, 100),
-            IntegerRef("n2", 0, 100),
-            IntegerRef("n3", 0, 100),
-            Dictation("text"),
            ]
 cmd.defaults = {
-            "n": 1,
            }
 
 

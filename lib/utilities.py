@@ -8,7 +8,6 @@ import win32gui, win32process, win32api, win32ui
 import os, json, shutil,sys,errno,stat,io, time
 import paths
 
-BASE_PATH = paths.get_base()
 MULTI_CLIPBOARD = {}
 
 
@@ -42,13 +41,13 @@ def get_window_by_title(title):
     return hwnd
 
 def clear_pyc():
-    global BASE_PATH
-    os.chdir(BASE_PATH)
-    for files in os.listdir("."):
-        if files.endswith(".pyc"):
-            filepath=BASE_PATH+files
-            os.remove(filepath)
-            report("Deleted: "+filepath)
+    b=paths.get_base()
+    for base, dirs, files in os.walk(b):
+        for f in files:
+            if f.endswith(".pyc"):
+                filepath=b+"\\"+f
+                os.remove(filepath)
+                report("Deleted: "+filepath)
 
 def save_json_file(data, path):
     try:

@@ -29,6 +29,7 @@ PY2EXE_PATH=r"C:\NatLink\NatLink\MacroSystem\exe\py2exe"
 HOMEBREW_PATH=r"C:\NatLink\NatLink\MacroSystem\exe\homebrew"
 LOG_PATH=r"C:\NatLink\NatLink\MacroSystem\data\log.txt"
 
+GENERIC_CONFIG_PATH=r"C:\NatLink\NatLink\MacroSystem\data\ccr"
 JAVA_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\ccr\configjava.txt"
 PYTHON_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\ccr\configpython.txt"
 HTML_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\ccr\confightml.txt"
@@ -64,6 +65,10 @@ def get_nircmd():
 def get_mmt():
     global MMT_PATH
     return MMT_PATH
+
+def get_generic_config_path():
+    global GENERIC_CONFIG_PATH
+    return GENERIC_CONFIG_PATH
 
 def get_all_language_configs():
     global JAVA_CONFIG_PATH

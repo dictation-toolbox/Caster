@@ -80,7 +80,9 @@ cmd.map = {
           }
 
 
-cmd.extras = [Dictation("text"),]
-cmd.defaults = {}
+cmd.extras = [
+	]
+cmd.defaults = {
+	}
 
 

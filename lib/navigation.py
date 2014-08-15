@@ -14,15 +14,15 @@ NIRCMD_PATH = paths.get_nircmd()
 def initialize_clipboard():
     utilities.MULTI_CLIPBOARD = utilities.load_json_file(paths.get_saved_clipboard_path())
 
-def clipboard_to_file(n):
-    key=str(n)
+def clipboard_to_file(nnv):
+    key=str(nnv)
     time.sleep(0.05)# time for keypress to execute
     win32clipboard.OpenClipboard()
     utilities.MULTI_CLIPBOARD[key]=win32clipboard.GetClipboardData()
     win32clipboard.CloseClipboard()
     utilities.save_json_file(utilities.MULTI_CLIPBOARD, paths.get_saved_clipboard_path())
 
-def volume_control(n, volume_mode):
+def volume_control(nnv, volume_mode):
     global NIRCMD_PATH
     max_volume = 65535
     sign=1
@@ -36,17 +36,17 @@ def volume_control(n, volume_mode):
         command="changesysvolume"
         message="decreasing volume by "
         sign=-1
-    chosen_level=str(int(n*sign* 1.0/100*max_volume))
+    chosen_level=str(int(nnv*sign* 1.0/100*max_volume))
     try:
         BringApp(NIRCMD_PATH, command, chosen_level).execute()
     except Exception:
         utilities.report(utilities.list_to_string(sys.exc_info()))
-    utilities.report(message+str(n), speak=settings.SPEAK)
+    utilities.report(message+str(nnv), speak=settings.SPEAK)
  
     
-def drop(n, n2):
-    key=str(n)
-    times=int(n2)
+def drop(nnv, n2nv):
+    key=str(nnv)
+    times=int(n2nv)
     if key in utilities.MULTI_CLIPBOARD:
         win32clipboard.OpenClipboard()
         win32clipboard.EmptyClipboard()
@@ -57,26 +57,26 @@ def drop(n, n2):
     else:
         natlink.execScript ("TTSPlayString \"slot empty\"")
     
-def auto_spell(mode, text):
+def auto_spell(mode, textnv):
     # to do: add support for other modes
     format_mode=str(mode)
     if format_mode == "spell":
-        base="".join(str(text).split(" ")).lower()
+        base="".join(str(textnv).split(" ")).lower()
         Text(base)._execute()
     elif format_mode == "crunch":
-        Text(str(text).lower())._execute()
+        Text(str(textnv).lower())._execute()
     elif format_mode == "caps":
-        Text(str(text).upper())._execute()
+        Text(str(textnv).upper())._execute()
     elif format_mode == "sent":
-        base=str(text).capitalize()
+        base=str(textnv).capitalize()
         Text(base)._execute()
         
-def scroll(direction, n):
+def scroll(direction, nnv):
     updown=-100
     if str(direction)== "up":
         updown= 100
     (x, y) = win32api.GetCursorPos()
-    win32api.mouse_event(MOUSEEVENTF_WHEEL, x, y, updown*n, 0)
+    win32api.mouse_event(MOUSEEVENTF_WHEEL, x, y, updown*nnv, 0)
     
 def kick():
     window_title=utilities.get_active_window_title()
@@ -109,46 +109,46 @@ def grid_full():# make sure to change both references to pythonw when you upgrad
     WaitWindow(executable="CustomGrid.exe")._execute()
     Key("h")._execute()
     
-def pixel_jump(direction,direction2,n5):
+def pixel_jump(direction,direction2,n5nv):
     x,y= 0, 0
     d=str(direction)
     d2=str(direction2)
     if d=="up" or d2=="up":
-        y=-n5
+        y=-n5nv
     if d=="down" or d2=="down":
-        y=n5
+        y=n5nv
     if d=="left" or d2=="left":
-        x=-n5
+        x=-n5nv
     if d=="right" or d2=="right":
-        x=n5
+        x=n5nv
     
     Mouse("<"+ str(x)+ ", "+str(y)+ ">").execute()
     
-def color(color_mode, n):
+def color(color_mode, nnv):
     c=str(color_mode)
     if c=="up":
-        Key("shift:down, up/5:"+str(n)+", shift:up").execute()
+        Key("shift:down, up/5:"+str(nnv)+", shift:up").execute()
     elif c=="down":
-        Key("shift:down, down/5:"+str(n)+", shift:up").execute()
+        Key("shift:down, down/5:"+str(nnv)+", shift:up").execute()
     elif c=="left" or c=="back":
-        Key("cs-left/5:"+str(n)).execute()
+        Key("cs-left/5:"+str(nnv)).execute()
     elif c=="right":
-        Key("cs-right/5:"+str(n)).execute()
+        Key("cs-right/5:"+str(nnv)).execute()
     elif c=="home":
         Key("s-home").execute()
     elif c=="end":
         Key("s-end").execute()
 
-def fly(fly_mode, n):
+def fly(fly_mode, nnv):
     f=str(fly_mode)
     if f=="top":
         Key("c-home").execute()
     elif f=="bottom":
         Key("c-end").execute()
     elif f=="left" or f=="back":
-        Key("c-left/5:"+str(n)).execute()
+        Key("c-left/5:"+str(nnv)).execute()
     elif f=="right":
-        Key("c-right/5:"+str(n)).execute()
+        Key("c-right/5:"+str(nnv)).execute()
     elif f=="home":
         Key("home").execute()
     elif f=="end":
