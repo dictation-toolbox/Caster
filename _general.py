@@ -1,7 +1,7 @@
 from dragonfly import (BringApp, Key, Function, Grammar, Playback, 
                        IntegerRef,Dictation,Choice,WaitWindow,MappingRule)
-from lib import paths, utilities, settings, navigation
-import natlink
+from lib import paths, utilities, settings, navigation,ccr
+import os
 
 
 BASE_PATH = paths.get_base()
@@ -24,17 +24,19 @@ def flip_monitor_orientations():
         monitor_orientation=0
     BringApp(paths.get_mmt(),r"/SetOrientation",r"\\.\DISPLAY1",str(monitor_orientation),r"\\.\DISPLAY2",str(monitor_orientation))._execute()#
 
-def change_microphone(mic):
-    m=str(mic)
-    if m=="wired":
-        print natlink.getCurrentUser()
-    elif m=="wireless":
-        print natlink.getAllUsers()
-    elif m=="phone":
-        print natlink.getWordInfo("phonekkk")
-
+    
 class MainRule(MappingRule):
     global MMT_PATH
+    
+    @staticmethod
+    def generate_CCR_choices():
+        choices={}
+        for f in os.listdir(paths.get_generic_config_path()):
+            if f.endswith(".txt"):
+                ccr_choice = f.replace("config","").replace(".txt","")
+                choices[ccr_choice]=ccr_choice
+        return Choice("ccr_mode", choices)
+    
     mapping = {
     # Dragon NaturallySpeaking management
     'reboot dragon':                Function(utilities.clear_pyc)+Playback([(["stop", "listening"], 0.5), (["wake", 'up'], 0.0)]),
@@ -49,7 +51,6 @@ class MainRule(MappingRule):
     'toggle monitor one':           BringApp(MMT_PATH, r"/switch",r"\\.\DISPLAY1"),
     'toggle monitor two':           BringApp(MMT_PATH, r"/switch",r"\\.\DISPLAY2"),
     "monitors one eighty":          Function(flip_monitor_orientations),
-    "change Mike to <mic>":         Function(change_microphone, extra="mic"),
     "(<volume_mode> [system] volume [to] <nnv> | volume <volume_mode> <nnv>)": Function(navigation.volume_control, extra={'nnv','volume_mode'}),
     
     # window management
@@ -61,11 +62,10 @@ class MainRule(MappingRule):
     # development related
     "set alarm [<minutes> minutes]":Function(utilities.alarm, extra={"minutes"}),
     "open natlink folder":          BringApp("explorer", "C:\NatLink\NatLink\MacroSystem"),
-    
     "compile <choice>":             Function(utilities.py2exe_compile, extra={"choice"}),
     
     # miscellaneous
-    
+    "<enable_disable> <ccr_mode>":  Function(ccr.change_CCR, extra={"enable_disable", "ccr_mode"}),
     }
     extras = [
               IntegerRef("n", 1, 1000),
@@ -77,18 +77,20 @@ class MainRule(MappingRule):
               Choice("choice",
                     {"alarm": "alarm", "custom grid": "CustomGrid", "element": "element"
                     }),
-              Choice("mic",
-                    {"wired": "wired", "wireless": "wireless", "phone": "phone"
+              Choice("enable_disable",
+                    {"enable": "enable", "disable": "disable"
                     }),
               Choice("volume_mode",
                     {"set": "set", "increase": "up", "decrease": "down",
                      "up":"up","down":"down"
                      }),
+              generate_CCR_choices.__func__()
              ]
     defaults ={"n": 1, "minutes": 20, "nnv": 1,
                "text": "", "volume_mode": "setsysvolume"
                }
 
-grammar = Grammar('Global')
+
+grammar = Grammar('general')
 grammar.add_rule(MainRule())
 grammar.load()
