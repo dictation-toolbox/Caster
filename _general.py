@@ -7,6 +7,7 @@ import os
 BASE_PATH = paths.get_base()
 MMT_PATH = paths.get_mmt()
 monitor_orientation=0
+ccr.refresh()
 
 def flip():
     Playback([(["alt", "tab"], 0.0)])._execute()
@@ -94,3 +95,10 @@ class MainRule(MappingRule):
 grammar = Grammar('general')
 grammar.add_rule(MainRule())
 grammar.load()
+
+
+def unload():
+    global grammar
+    if grammar: grammar.unload()
+    grammar = None
+    ccr.unload()

@@ -30,6 +30,7 @@ HOMEBREW_PATH=r"C:\NatLink\NatLink\MacroSystem\exe\homebrew"
 LOG_PATH=r"C:\NatLink\NatLink\MacroSystem\data\log.txt"
 
 GENERIC_CONFIG_PATH=r"C:\NatLink\NatLink\MacroSystem\data\ccr"
+UNIFIED_CONFIG_PATH=r"C:\NatLink\NatLink\MacroSystem\data\ccr\unified\config.txt"
 JAVA_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\ccr\configjava.txt"
 PYTHON_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\ccr\configpython.txt"
 HTML_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\ccr\confightml.txt"
@@ -69,6 +70,10 @@ def get_mmt():
 def get_generic_config_path():
     global GENERIC_CONFIG_PATH
     return GENERIC_CONFIG_PATH
+
+def get_unified_config_path():
+    global UNIFIED_CONFIG_PATH
+    return UNIFIED_CONFIG_PATH
 
 def get_all_language_configs():
     global JAVA_CONFIG_PATH
