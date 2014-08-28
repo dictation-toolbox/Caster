@@ -14,9 +14,9 @@ cmd.map = {
     'be grid wrap':                 Function(navigation.grid_to_window),
     'be grid':                      Function(navigation.grid_full),
     "curse <direction> [<direction2>] [<n5nv>]":Function(navigation.pixel_jump, extra={"direction","direction2","n5nv"}),
-    "side left":                    Playback([(["MouseGrid"], 0.1),(["four", "four"], 0.1),(["click"], 0.0)]),
-    "side right":                   Playback([(["MouseGrid"], 0.1),(["six", "six"], 0.1),(["click"], 0.0)]),
-    "center":                       Playback([(["MouseGrid"], 0.1),(["click"], 0.0)]),
+    "left point":                   Playback([(["MouseGrid"], 0.1),(["four", "four"], 0.1),(["click"], 0.0)]),
+    "right point":                  Playback([(["MouseGrid"], 0.1),(["six", "six"], 0.1),(["click"], 0.0)]),
+    "center point":                 Playback([(["MouseGrid"], 0.1),(["click"], 0.0)]),
     
     
     

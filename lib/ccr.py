@@ -275,7 +275,6 @@ def refresh():
     global unified_grammar
     unified_grammar = generate_language_rule(paths.get_unified_config_path())
     unified_grammar.load()  # Load the grammar.
-    utilities.report("refreshing CCR")
 
 # Unload function which will be called at unload time.
 def unload():
