@@ -53,3 +53,4 @@ other
  - https://github.com/TalAter/annyang (in browser voice recognition JS library)
  - http://sean.wenzel.net/voicerecognition
  - https://github.com/OpenLeap/PyLeapMouse
+ - https://gist.github.com/tavisrudd/5226505
