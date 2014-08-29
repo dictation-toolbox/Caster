@@ -33,6 +33,7 @@ other dragonfly repositories
  - https://github.com/barrysims/dragonfly
  - https://github.com/ccrusius/dragonfly-modules
  - https://github.com/Mozillion/SublimeSpeech
+ - https://github.com/haughki/MyDragonfly
 
 open source and commercial Dragon add-ons
 --
@@ -54,3 +55,4 @@ other
  - http://sean.wenzel.net/voicerecognition
  - https://github.com/OpenLeap/PyLeapMouse
  - https://gist.github.com/tavisrudd/5226505
+ - http://www.synapseadaptive.com/joel/VoiceCoders.ppt ("Secrets of VDct" by Joel Gould)
