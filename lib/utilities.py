@@ -9,7 +9,7 @@ import os, json, shutil, sys, errno, stat, io, time
 import paths
 
 MULTI_CLIPBOARD = {}
-
+LAST_RESULT = None
 
 def window_exists(classname, windowname):
     try:

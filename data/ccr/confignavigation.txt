@@ -6,7 +6,7 @@ navigation.initialize_clipboard()
 cmd.map = {
     'kick':                         Function(navigation.kick),
 	'kick mid': 				    Function(navigation.kick_middle),
-	'kick right': 	                Function(navigation.kick_right),
+	'psychic':	 	                Function(navigation.kick_right),
     '(kick double|double kick)':    Playback([(["mouse", "double", "click"], 0.0)]),
     "shift right click":            Key("shift:down")+ Mouse("right")+ Key("shift:up"),
     "scroll [<direction>] <nnv>":   Function(navigation.scroll, extra={'direction', "nnv"}),

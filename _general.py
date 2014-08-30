@@ -1,7 +1,9 @@
 from dragonfly import (BringApp, Key, Function, Grammar, Playback, 
                        IntegerRef,Dictation,Choice,WaitWindow,MappingRule)
 from lib import paths, utilities, settings, navigation,ccr
-import os
+import os, sys
+import natlink
+from natlinkutils import *
 
 
 BASE_PATH = paths.get_base()
@@ -9,6 +11,16 @@ MMT_PATH = paths.get_mmt()
 monitor_orientation=0
 ccr.refresh()
 
+def fix_Dragon_double():
+    try:
+        lr=utilities.LAST_RESULT
+        lu=" ".join(lr)
+        Key("left/5:"+str(len(lu))+", del")._execute()
+    except Exception:
+        utilities.report(utilities.list_to_string(sys.exc_info()))
+    
+    
+    
 def flip():
     Playback([(["alt", "tab"], 0.0)])._execute()
     WaitWindow(executable="Switcher.exe")._execute()
@@ -47,6 +59,7 @@ class MainRule(MappingRule):
     'dictation mode':               Playback([(["dictation", "mode", "on"], 0.0)]),
     'normal mode':                  Playback([(["normal", "mode", "on"], 0.0)]),
     "dragon death and rebirth":     BringApp(BASE_PATH + r"\suicide.bat"),
+    "fix dragon double":            Function(fix_Dragon_double),
     
     # hardware management
     'toggle monitor one':           BringApp(MMT_PATH, r"/switch",r"\\.\DISPLAY1"),
@@ -96,8 +109,61 @@ grammar = Grammar('general')
 grammar.add_rule(MainRule())
 grammar.load()
 
+# modeled on Joel Gould's "repeat that" grammar.
+class SaveLastGrammar(GrammarBase):
+
+    gramSpec = """
+        <start> exported = {emptyList};
+    """
+
+    def initialize(self):
+        self.load(self.gramSpec,allResults=1)
+        self.activateAll()
+
+    def gotResultsObject(self,recogType,resObj):
+        
+        if recogType == 'reject':
+            utilities.LAST_RESULT = None
+        elif resObj.getWords(0)[:1] != ['repeat','that']:
+            utilities.LAST_RESULT = resObj.getWords(0)
+            
+class AgainGrammar(GrammarBase):
+
+    gramSpec = """
+        <start> exported = repeat that
+          [ ( 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
+              10 | 20 | 30 | 40 | 50 | 100 ) times ];
+    """
+    
+    def initialize(self):
+        self.load(self.gramSpec)
+        self.activateAll()
+
+    def gotResults_start(self,words,fullResults):
+        
+        if len(words) > 2:
+            count = int(words[2])
+        else:
+            count = 1
+        if utilities.LAST_RESULT:
+            for i in range(count):
+                natlink.recognitionMimic(utilities.LAST_RESULT)
+
+slGrammar = SaveLastGrammar()
+slGrammar.initialize()
+rGrammar = AgainGrammar()
+rGrammar.initialize()
 
 def unload():
+    global slGrammar
+    global rGrammar
+    if slGrammar:
+        slGrammar.unload()
+    slGrammar = None
+    if rGrammar:
+        rGrammar.unload()
+    rGrammar = None
+
     global grammar
     if grammar: grammar.unload()
     grammar = None
