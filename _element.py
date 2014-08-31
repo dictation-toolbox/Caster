@@ -161,4 +161,4 @@ class MainRule(MappingRule):
 
 grammar = Grammar('element')
 grammar.add_rule(MainRule())
-grammar.load()
+grammar.load() 

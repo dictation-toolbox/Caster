@@ -2,7 +2,7 @@ from dragonfly import *
 from lib import ccr
 release = Key("shift:up, ctrl:up")
 noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added on the right side
-from lib import navigation, paths
+from lib import navigation, paths, context
 navigation.initialize_clipboard()
 cmd.map= {
 		"score <text>":				Function(ccr.score, extra="text"),		
@@ -111,6 +111,23 @@ cmd.map= {
 					 "upper x-ray"    : Key("X"),
 					 "upper yankee"   : Key("Y"),
 					 "upper Zulu"     : Key("Z"),
+     	   "quotes":						Key("dquote,dquote,left")+noSpaceNoCaps,
+           "thin quotes":						Key("apostrophe,apostrophe,left")+noSpaceNoCaps,
+     	    "HTML":						Text("<html>" )+ Key("enter")+ Text("</html>")+ Key("up"),
+     	    "head":						Text("<head>" )+ Key("enter")+ Text("</head>")+ Key("up"),
+     	    "title":					Text("<title></title>")+  Key("left/10:8"),
+     	    "body":						Text("<body>" )+ Key("enter")+ Text("</body>")+ Key("up"),
+     	    "div":						Text("<div></div>")+  Key("left/10:6"),
+			"subscript":				Text("<sub></sub>")+  Key("left/10:6"),     	   
+     	   	"superscript":				Text("<sup></sup>")+  Key("left/10:6"),
+     	   	"be are":					Text("<br>"),
+     	   	"table":					Text("<table>")+ Key("enter")+Text("<tr>")+ Key("enter")+Text("<td></td>")+Key("enter")+Text("</tr>")+Key("enter")+Text("</table>"),
+     	   	"tee are":					Text("<tr></tr>"),
+     	   	"tee D":					Text("<td></td>"),
+     	   	"bold":						Text("<b></b>")+  Key("left/10:4"),
+     	   	"italics":					Text("<i></i>")+  Key("left/10:4"),
+     	   	"underline":				Text("<u></u>")+  Key("left/10:4"),
+     	   	"make link":				Text("<a href=''></a>")+  Key("left/10:6"),
     'kick':                         Function(navigation.kick),
 	'kick mid': 				    Function(navigation.kick_middle),
 	'psychic':	 	                Function(navigation.kick_right),
@@ -124,6 +141,7 @@ cmd.map= {
     "left point":                   Playback([(["MouseGrid"], 0.1),(["four", "four"], 0.1),(["click"], 0.0)]),
     "right point":                  Playback([(["MouseGrid"], 0.1),(["six", "six"], 0.1),(["click"], 0.0)]),
     "center point":                 Playback([(["MouseGrid"], 0.1),(["click"], 0.0)]),
+    "gopher <direction3> <target>": Function(context.navigate_to_character, extras={"direction3","target"}),    
 	"username":                     Text("synkarius"),
     'save':                         Key("c-s"),
     'scratch':                      Playback([(["scratch", "that"], 0.0)]),
@@ -147,6 +165,7 @@ cmd.map= {
     "clear [<nnv>]":                Key("backspace") * Repeat(extra="nnv"),
     "(cancel | escape)":            Key("escape"),
     "excite mark":                  Text("!"),
+    "colon":						Text(":"),
     'auto <mode> <textnv>':         Function(navigation.auto_spell, extra={"mode","textnv"}),
     "wait":							Pause("100"),
 }
@@ -164,6 +183,13 @@ cmd.extras= [
                 }),
           Choice("direction2",
                 {"right": "right", "up": "up", "down": "down", "left": "left", 
+                }),
+          Choice("direction3",
+                {"out": "right", "back out": "left", "next": "right", "previous": "left"
+                }),
+          Choice("target",
+                {"comma": ",", "(period | dot)": ".", "(pair | parentheses)": "()",
+                "[square] (bracket | brackets)": "[]", "curly [brace]": "{}"
                 }),
           Choice("mode",
                 {"spell": "spell", "sent": "sent", "crunch": "crunch", "caps": "caps",

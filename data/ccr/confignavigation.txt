@@ -1,5 +1,5 @@
 from dragonfly import *
-from lib import navigation, paths
+from lib import navigation, paths, context
 
 navigation.initialize_clipboard()
 
@@ -18,7 +18,7 @@ cmd.map = {
     "right point":                  Playback([(["MouseGrid"], 0.1),(["six", "six"], 0.1),(["click"], 0.0)]),
     "center point":                 Playback([(["MouseGrid"], 0.1),(["click"], 0.0)]),
     
-    
+    "gopher <direction3> <target>": Function(context.navigate_to_character, extras={"direction3","target"}),    
     
     #keyboard shortcuts
 	"username":                     Text("synkarius"),
@@ -44,6 +44,7 @@ cmd.map = {
     "clear [<nnv>]":                Key("backspace") * Repeat(extra="nnv"),
     "(cancel | escape)":            Key("escape"),
     "excite mark":                  Text("!"),
+    "colon":						Text(":"),
      
     # miscellaneous
     'auto <mode> <textnv>':         Function(navigation.auto_spell, extra={"mode","textnv"}),
@@ -61,6 +62,13 @@ cmd.extras = [
                 }),
           Choice("direction2",
                 {"right": "right", "up": "up", "down": "down", "left": "left", 
+                }),
+          Choice("direction3",
+                {"out": "right", "back out": "left", "next": "right", "previous": "left"
+                }),
+          Choice("target",
+                {"comma": ",", "(period | dot)": ".", "(pair | parentheses)": "()",
+                "[square] (bracket | brackets)": "[]", "curly [brace]": "{}"
                 }),
           Choice("mode",
                 {"spell": "spell", "sent": "sent", "crunch": "crunch", "caps": "caps",
