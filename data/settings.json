@@ -1,6 +1,6 @@
 {
     "alphabet": true, 
-    "html": true, 
+    "html": false, 
     "java": false, 
     "navigation": true, 
     "pascal": false, 

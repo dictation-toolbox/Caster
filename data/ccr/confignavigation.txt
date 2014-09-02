@@ -67,8 +67,9 @@ cmd.extras = [
                 {"out": "right", "back out": "left", "next": "right", "previous": "left"
                 }),
           Choice("target",
-                {"comma": ",", "(period | dot)": ".", "(pair | parentheses)": "()",
-                "[square] (bracket | brackets)": "[]", "curly [brace]": "{}"
+                {"comma": ",", "(period | dot)": ".", "(pair | parentheses)": "(~)",
+                "[square] (bracket | brackets)": "[~]", "curly [brace]": "{~}",
+                "loop": "for~while"
                 }),
           Choice("mode",
                 {"spell": "spell", "sent": "sent", "crunch": "crunch", "caps": "caps",

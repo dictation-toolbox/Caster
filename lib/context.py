@@ -53,7 +53,8 @@ def characters_until(look_left, target, max_lines=30):
 
 #
 def find_index_in_context(target, context, look_left):
-    tlist=list(target)
+    tlist=target.split("~")
+#     tlist=list(target)
     index=-1
     if look_left:
         index=0
