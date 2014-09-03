@@ -82,7 +82,7 @@ def report(message, speak=False, console=True, log=False):
     if console:
         print message
     if speak:
-        natlink.execScript ("TTSPlayString \"" + message + "\"")
+        natlink.execScript("TTSPlayString \"" + message + "\"")
     if log:
         f = open(paths.get_log_path(), 'a') 
         f.write(str(message) + "\n")
