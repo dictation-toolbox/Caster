@@ -101,6 +101,7 @@ class MainFrame (wx.Frame):
         self.Bind(wx.EVT_KEY_UP, self.OnKeyDown)
         self.Bind(wx.EVT_CLOSE, self.OnClose)
         self.Bind(wx.EVT_ACTIVATE, self.OnActivate)
+        self.Bind(wx.EVT_MIDDLE_DCLICK, self.EndMe)# added this as a safety feature for full-screen mode
 
         self.SetBackgroundColour("White")
 
@@ -114,7 +115,10 @@ class MainFrame (wx.Frame):
 
         if self.opacity > 0:
             self.MakeTransparent(self.opacity)
-
+    
+    def EndMe(self, e):
+        self.Close(True)
+    
     def CalculateGrid(self):
         if self.positionMode:
             # Need to determine x, y of client area

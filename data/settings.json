@@ -4,5 +4,6 @@
     "java": false, 
     "navigation": true, 
     "pascal": false, 
+    "php": false, 
     "python": true
 }

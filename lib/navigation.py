@@ -100,9 +100,9 @@ def grid_to_window():
     BringApp("pythonw", paths.get_grid(), "--rowheight","20" , "--columnwidth","20" , "--numrows","20" , 
              "--numcolumns","20","--sizeToClient",utilities.get_active_window_hwnd())._execute()
              
-def grid_full():# make sure to change both references to pythonw when you upgrade this
-    screen_width = GetSystemMetrics (0)
-    screen_height =GetSystemMetrics (1)
+def grid_full():
+    screen_width = GetSystemMetrics(0)
+    screen_height =GetSystemMetrics(1)
     BringApp(paths.get_grid(),
         "--width",str((screen_width - 20)),"--height",str((screen_height - 30)),"--locationx","10","--locationy","15", 
         "--rowheight","20" , "--columnwidth","20" , "--numrows","20", "--numcolumns","20")._execute()

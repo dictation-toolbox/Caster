@@ -44,10 +44,8 @@ class MainRule(MappingRule):
     @staticmethod
     def generate_CCR_choices():
         choices={}
-        for f in os.listdir(paths.get_generic_config_path()):
-            if f.endswith(".txt"):
-                ccr_choice = f.replace("config","").replace(".txt","")
-                choices[ccr_choice]=ccr_choice
+        for ccr_choice in utilities.get_list_of_individual_config_files():
+            choices[ccr_choice]=ccr_choice
         return Choice("ccr_mode", choices)
     
     mapping = {

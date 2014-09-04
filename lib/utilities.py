@@ -48,6 +48,14 @@ def clear_pyc():
                 filepath = b + "\\" + f
                 os.remove(filepath)
                 report("Deleted: " + filepath)
+            
+def get_list_of_individual_config_files():
+    results=[]
+    for f in os.listdir(paths.get_generic_config_path()):
+        if f.endswith(".txt"):
+            results.append(f.replace("config","").replace(".txt",""))
+    return results
+    
 
 def save_json_file(data, path):
     try:
@@ -102,6 +110,7 @@ def py2exe_compile(choice):  # requires the file to be compiled to be in the mac
         # -1, shut down the process just in case it was open
         BringApp(paths.get_pstools_path() + "\\pskill.exe", dirname + ".exe")._execute()
         # zero, check to see if the target directory exists, if it does delete it
+        
         target_location = paths.get_homebrew_path() + "\\" + dirname
         if os.path.isdir(target_location):
             shutil.rmtree(target_location, ignore_errors=False, onerror=handle_remove_readonly)
@@ -115,7 +124,7 @@ def py2exe_compile(choice):  # requires the file to be compiled to be in the mac
             shutil.copyfile(paths.get_py2exe_path() + "\\" + fp, target_location + "\\" + fp)
         shutil.copyfile(paths.get_py2exe_path() + "\\" + dirname + "_run.py", target_location + "\\run.py")
         if not dirname == "CustomGrid":
-            shutil.copyfile(paths.BASE_PATH + "exe\\homebrew\\" + dirname + ".py", target_location + "\\" + dirname + ".py")
+            shutil.copyfile(paths.BASE_PATH + "lib\\dptools\\" + dirname + ".py", target_location + "\\" + dirname + ".py")
         else:
             shutil.copyfile(paths.BASE_PATH + "dptools\\" + dirname + ".py", target_location + "\\" + dirname + ".py")
             for fcg in ["argparse.py", "_keyCodes.py", "_myclickLocations.py", "_mycommon.py"]:

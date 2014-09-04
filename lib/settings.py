@@ -18,17 +18,12 @@ def load_settings():
     SETTINGS = utilities.load_json_file(SETTINGS_PATH)
     init_default_values()
 
-def init_default_values():# new languages must be added here and in paths.py
+def init_default_values():
     global SETTINGS
     valueChangeCount = 0
-    defaultValues = [
-        ("java", False),
-        ("python", False),
-        ("html", False),
-        ("pascal", False),
-        ("navigation", False),
-        ("alphabet", False)
-    ]
+    defaultValues = []
+    for c in utilities.get_list_of_individual_config_files():
+        defaultValues.append((c,False))
     for (name, value) in defaultValues:
         if not name in SETTINGS.keys():
             SETTINGS[name] = value

@@ -31,13 +31,6 @@ LOG_PATH=r"C:\NatLink\NatLink\MacroSystem\data\log.txt"
 
 GENERIC_CONFIG_PATH=r"C:\NatLink\NatLink\MacroSystem\data\ccr"
 UNIFIED_CONFIG_PATH=r"C:\NatLink\NatLink\MacroSystem\data\ccr\unified\config.txt"
-JAVA_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\ccr\configjava.txt"
-PYTHON_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\ccr\configpython.txt"
-HTML_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\ccr\confightml.txt"
-PASCAL_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\ccr\configpascal.txt"
-ALPHABET_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\ccr\configalphabet.txt"
-NAVIGATION_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\data\ccr\confignavigation.txt"
-
 
 def get_base():
     global BASE_PATH
@@ -75,14 +68,6 @@ def get_unified_config_path():
     global UNIFIED_CONFIG_PATH
     return UNIFIED_CONFIG_PATH
 
-def get_all_language_configs():
-    global JAVA_CONFIG_PATH
-    global PYTHON_CONFIG_PATH
-    global HTML_CONFIG_PATH
-    return [JAVA_CONFIG_PATH, PYTHON_CONFIG_PATH, HTML_CONFIG_PATH, 
-            PASCAL_CONFIG_PATH, ALPHABET_CONFIG_PATH,
-            NAVIGATION_CONFIG_PATH]
-
 def get_media_path():
     global MEDIA_PATH
     return MEDIA_PATH
@@ -90,7 +75,6 @@ def get_media_path():
 def get_log_path():
     global LOG_PATH
     return LOG_PATH
-
 
 def get_homebrew_path():
     global HOMEBREW_PATH
