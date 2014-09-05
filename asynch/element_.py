@@ -4,16 +4,12 @@ from threading import Timer
 import signal
 from Tkinter import (StringVar, OptionMenu, Scrollbar, Frame, Label, Entry)
 import os, re, sys, json
-from lib import paths, utilities, settings
 import bottle
 from bottle import run, request  # , post,response
 
-"""
-New Future Features List:
-
-
-"""
-
+BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
+sys.path.append(BASE_PATH)
+from lib import paths, utilities, settings
 
 
 

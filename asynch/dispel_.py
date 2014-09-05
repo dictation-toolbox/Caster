@@ -56,7 +56,7 @@ class Dispel:
         action_type = request_object["action_type"]
 
         
-        if action_type == "search":
+        if action_type == "delay":
             self.root.after(10, self.search_box.focus_set)
         elif action_type == "extensions":
             self.root.after(10, self.ext_box.focus_set)

@@ -128,7 +128,7 @@ def send_key_to_element(action_type):# for some reason, some events are untrigge
         win32api.PostMessage(element_hwnd, win32con.WM_KEYUP, win32con.VK_HOME, 0)
 
 def enable_element():
-    BringApp("pythonw", r"C:\NatLink\NatLink\MacroSystem\element_.py")._execute()
+    BringApp("pythonw", r"C:\NatLink\NatLink\MacroSystem\asynch\element_.py")._execute()
     
 def disable_element():
     BringApp(paths.get_pskill_path(),"pythonw.exe")._execute()
