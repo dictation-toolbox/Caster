@@ -9,7 +9,6 @@ Command-module for Chrome
 
 """
 
-
 #---------------------------------------------------------------------------
 
 from dragonfly import (Grammar, AppContext, MappingRule,

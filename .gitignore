@@ -3,9 +3,9 @@ _w.py
 flypoint_private.iss
 
 # Ignore junk
+bin/misc
 *.pyc
 *.bak
-old/
 test.py
 *.tmp
 unins000.*
@@ -18,18 +18,16 @@ data/log.txt
 core/
 _vocola_main.py
 
-# Ignore personal
-media/
-
 # Ignore anything with a potential licensing problem
 msvcp90.dll
 msvcr90.dll
-exe/Switcher.exe
-exe/nircmd/
-exe/PSTools/
-exe/MultiMonitorTool/
-exe/homebrew/element/
-exe/homebrew/alarm/
-exe/homebrew/CustomGrid/
+bin/Switcher.exe
+bin/nircmd/
+bin/PSTools/
+bin/MultiMonitorTool/
+bin/homebrew/element/
+bin/homebrew/alarm/
+bin/homebrew/CustomGrid/
+bin/media/
 
 

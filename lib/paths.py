@@ -11,26 +11,26 @@ if r"\library.zip" in BASE_PATH:# fixes py2exe bug
     BASE_PATH=BASE_PATH.replace(r"\library.zip","")
 
 
-SETTINGS_PATH = BASE_PATH + "\\data\\settings.json"
-ELEMENT_JSON_PATH = BASE_PATH + "\\data\\element.json"
-SAVED_CLIPBOARD_PATH = BASE_PATH + "\\data\\clipboard.json"
+SETTINGS_PATH = BASE_PATH + "\\bin\\data\\settings.json"
+ELEMENT_JSON_PATH = BASE_PATH + "\\bin\\data\\element.json"
+SAVED_CLIPBOARD_PATH = BASE_PATH + "\\bin\\data\\clipboard.json"
 
 #REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
 REMOTE_DEBUGGER_PATH ="D:\PROGRAMS\NON_install\eclipse\plugins\org.python.pydev_3.4.1.201403181715\pysrc"
 
-ELEMENT_PATH = r"C:\NatLink\NatLink\MacroSystem\exe\homebrew\element\dist\element.exe"
-MEDIA_PATH = r"C:\NatLink\NatLink\MacroSystem\media"
-GRID_PATH=r"C:\NatLink\NatLink\MacroSystem\exe\homebrew\CustomGrid\dist\CustomGrid.exe"
-NIRCMD_PATH=r"C:\NatLink\NatLink\MacroSystem\exe\nircmd\nircmd.exe"
-PSTOOLS_PATH=r"C:\NatLink\NatLink\MacroSystem\exe\PSTools"
-PSKILL_PATH=r"C:\NatLink\NatLink\MacroSystem\exe\PSTools\pskill.exe"
-MMT_PATH =r"C:\NatLink\NatLink\MacroSystem\exe\MultiMonitorTool\MultiMonitorTool.exe"
-PY2EXE_PATH=r"C:\NatLink\NatLink\MacroSystem\exe\py2exe"
-HOMEBREW_PATH=r"C:\NatLink\NatLink\MacroSystem\exe\homebrew"
-LOG_PATH=r"C:\NatLink\NatLink\MacroSystem\data\log.txt"
+ELEMENT_PATH = r"C:\NatLink\NatLink\MacroSystem\bin\homebrew\element\dist\element.exe"
+MEDIA_PATH = r"C:\NatLink\NatLink\MacroSystem\bin\media"
+GRID_PATH=r"C:\NatLink\NatLink\MacroSystem\bin\homebrew\CustomGrid\dist\CustomGrid.exe"
+NIRCMD_PATH=r"C:\NatLink\NatLink\MacroSystem\bin\nircmd\nircmd.exe"
+PSTOOLS_PATH=r"C:\NatLink\NatLink\MacroSystem\bin\PSTools"
+PSKILL_PATH=r"C:\NatLink\NatLink\MacroSystem\bin\PSTools\pskill.exe"
+MMT_PATH =r"C:\NatLink\NatLink\MacroSystem\bin\MultiMonitorTool\MultiMonitorTool.exe"
+PY2EXE_PATH=r"C:\NatLink\NatLink\MacroSystem\bin\py2exe"
+HOMEBREW_PATH=r"C:\NatLink\NatLink\MacroSystem\bin\homebrew"
+LOG_PATH=r"C:\NatLink\NatLink\MacroSystem\bin\data\log.txt"
 
-GENERIC_CONFIG_PATH=r"C:\NatLink\NatLink\MacroSystem\data\ccr"
-UNIFIED_CONFIG_PATH=r"C:\NatLink\NatLink\MacroSystem\data\ccr\unified\config.txt"
+GENERIC_CONFIG_PATH=r"C:\NatLink\NatLink\MacroSystem\bin\data\ccr"
+UNIFIED_CONFIG_PATH=r"C:\NatLink\NatLink\MacroSystem\bin\data\ccr\unified\config.txt"
 
 def get_base():
     global BASE_PATH

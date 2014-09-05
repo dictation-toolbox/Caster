@@ -56,7 +56,7 @@ class MainRule(MappingRule):
     'spell mode':                   Playback([(["spell", "mode", "on"], 0.0)]),
     'dictation mode':               Playback([(["dictation", "mode", "on"], 0.0)]),
     'normal mode':                  Playback([(["normal", "mode", "on"], 0.0)]),
-    "dragon death and rebirth":     BringApp(BASE_PATH + r"\suicide.bat"),
+    "dragon death and rebirth":     BringApp(BASE_PATH + r"\bin\suicide.bat"),
     "fix dragon double":            Function(fix_Dragon_double),
     
     # hardware management
