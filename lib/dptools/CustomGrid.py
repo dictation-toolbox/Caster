@@ -332,30 +332,30 @@ class MainFrame (wx.Frame):
             self.FinishKeyMode()
             Timer(0.1, self.moveMouse).start()
             #wx.CallAfter(self.moveMouse)
-        elif keycode == wx.WXK_UP:
-            # increase row height
-            self.rowHeight = self.rowHeight + 1
-            self.CalculateGrid()
-            self.DrawGrid()
-            self.Refresh()
-        elif keycode == wx.WXK_DOWN:
-            # decrease row height
-            self.rowHeight = self.rowHeight - 1
-            self.CalculateGrid()
-            self.DrawGrid()
-            self.Refresh()
-        elif keycode == wx.WXK_LEFT:
-            # decrease column width
-            self.columnWidth = self.columnWidth - 1
-            self.CalculateGrid()
-            self.DrawGrid()
-            self.Refresh()
-        elif keycode == wx.WXK_RIGHT:
-            # increase column width
-            self.columnWidth = self.columnWidth + 1
-            self.CalculateGrid()
-            self.DrawGrid()
-            self.Refresh()
+#         elif keycode == wx.WXK_UP:
+#             # increase row height
+#             self.rowHeight = self.rowHeight + 1
+#             self.CalculateGrid()
+#             self.DrawGrid()
+#             self.Refresh()
+#         elif keycode == wx.WXK_DOWN:
+#             # decrease row height
+#             self.rowHeight = self.rowHeight - 1
+#             self.CalculateGrid()
+#             self.DrawGrid()
+#             self.Refresh()
+#         elif keycode == wx.WXK_LEFT:
+#             # decrease column width
+#             self.columnWidth = self.columnWidth - 1
+#             self.CalculateGrid()
+#             self.DrawGrid()
+#             self.Refresh()
+#         elif keycode == wx.WXK_RIGHT:
+#             # increase column width
+#             self.columnWidth = self.columnWidth + 1
+#             self.CalculateGrid()
+#             self.DrawGrid()
+#             self.Refresh()
         else:
             # Characters
             try:
