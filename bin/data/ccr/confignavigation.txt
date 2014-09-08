@@ -34,8 +34,7 @@ cmd.map = {
     "right [<nnv>]":                Key("right") * Repeat(extra="nnv"),
     "fly [<fly_mode>] [<nnv>]":     Function(navigation.fly, extra={"fly_mode", "nnv"}),
     "color [<color_mode>] [<nnv>]": Function(navigation.color, extra={"color_mode", "nnv"}),
-    "shin [<nnv>]":                 Key("s-right") * Repeat(extra="nnv"),
-    "shin back [<nnv>]":            Key("s-left") * Repeat(extra="nnv"),
+    "shin [<color_mode>] [<nnv>]":  Function(navigation.shin, extra={"color_mode", "nnv"}),
     "find":                         Key("c-f"),
     "replace":                      Key("c-h"),
     "copy [<nnv>]":                 Key("c-c")+Function(navigation.clipboard_to_file, extra="nnv"),
@@ -47,7 +46,7 @@ cmd.map = {
     "(cancel | escape)":            Key("escape"),
      
     # miscellaneous
-    'auto <mode> <textnv>':         Function(navigation.auto_spell, extra={"mode","textnv"}),
+    'auto <mode> <textnv> [go]':    Function(navigation.auto_spell, extra={"mode","textnv"}),
     "wait":							Pause("100"),
 
           }

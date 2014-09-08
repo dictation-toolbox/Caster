@@ -2,7 +2,7 @@
     "alphabet": true, 
     "html": false, 
     "java": false, 
-    "javascript": false, 
+    "javascript": true, 
     "navigation": true, 
     "pascal": false, 
     "php": false, 

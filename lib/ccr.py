@@ -313,4 +313,4 @@ def format_ecma_loop(looptype, text, condition, increment):
             i="++"
         Text("for (" + letter + "= PARAMETER; " + letter + c+" PARAMETER; " + letter + i+"){\n\n}")._execute()
     elif lt == "each":
-        print ""
+        print "for each not implemented"

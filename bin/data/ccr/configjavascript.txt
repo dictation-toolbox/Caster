@@ -24,13 +24,12 @@ cmd.map = {
         "not":                      Text("!"),
         
         #continue working from here
-        "if":						Text("if (){}")+Key("left, enter:2, up:3, end, home, right:4"),
-        "else":						Text("else {}")+Key("left, enter:2, up:3, end, home, right:6"),
+        "if":						Text("if (){}")+Key("left, enter"),
+        "else":						Text("else {}")+Key("up"),
         
         "abstract":					Text("abstract"),
         "case":						Text("case :")+Key("left"),
         "continue":					Text("continue"),
-        "double":					Text("double "),
         "extends":					Text("extends "),
         "import":					Text("import "),
         "short":					Text("short "),
@@ -43,7 +42,7 @@ cmd.map = {
         
         "catch":					Text("catch(e) {\n\n}")+Key("up"),
 		"false":					Text("false"),
-		"function":					Text("function"),
+		"function":					Text("function (){\n\n}")+Key("up:3, end, left:2"),
 		"in":						Text("in"),
 		"long":						Text("long"),
 		"private":					Text("private"),

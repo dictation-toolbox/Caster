@@ -36,7 +36,9 @@ cmd.map = {
 		"at sign":						Text("@"),
 		"apostrophe":					Text("'"),
 		"underscore":					Text("_"),		
-		     	   
+		"backslash":					Text("\\"),
+		"slash":						Text("/"),
+	    'tabby [<npn>]':                Key("tab")* Repeat(extra="npn"),				     	   
           }
 
 

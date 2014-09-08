@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-import codecs
+
+import natlink
+import os, json, shutil, sys, errno, stat, io, time
 
 from dragonfly import Key, BringApp
-import natlink
 import win32gui, win32process, win32api, win32ui
-import os, json, shutil, sys, errno, stat, io, time
+
 import paths
+
 
 MULTI_CLIPBOARD = {}
 LAST_RESULT = None

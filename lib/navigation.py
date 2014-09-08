@@ -56,6 +56,7 @@ def drop(nnv, n2nv):
             Key("c-v")._execute()
     else:
         natlink.execScript ("TTSPlayString \"slot empty\"")
+    time.sleep(0.05)
     
 def auto_spell(mode, textnv):
     # to do: add support for other modes
@@ -124,6 +125,14 @@ def pixel_jump(direction,direction2,n5nv):
     
     Mouse("<"+ str(x)+ ", "+str(y)+ ">").execute()
     
+def shin(color_mode, nnv):
+    c=str(color_mode)
+    if c=="left" or c=="back":
+        Key("s-left/5:"+str(nnv)).execute()
+    elif c=="right":
+        Key("s-right/5:"+str(nnv)).execute()
+    time.sleep(0.05)
+
 def color(color_mode, nnv):
     c=str(color_mode)
     if c=="up":
@@ -138,6 +147,7 @@ def color(color_mode, nnv):
         Key("s-home").execute()
     elif c=="end":
         Key("s-end").execute()
+    time.sleep(0.05)
 
 def fly(fly_mode, nnv):
     f=str(fly_mode)
@@ -153,4 +163,5 @@ def fly(fly_mode, nnv):
         Key("home").execute()
     elif f=="end":
         Key("end").execute()
+    time.sleep(0.05)
 

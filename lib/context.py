@@ -10,8 +10,9 @@ def navigate_to_character(direction3, target):
         look_left = left_or_right == "left"
         up_or_down="up" if look_left else "down" 
         home_or_end="end, home, home" if look_left==False else "end"
-        #if looking/going right and down, get number of presses right from beginning of line?
-        # yes, that's what we want 
+        
+        # make sure nothing is highlighted to boot
+        Key("right, left" if look_left else "left, right")._execute()
         
         c, n = characters_until(look_left, str(target))
         keystring=""
@@ -19,6 +20,7 @@ def navigate_to_character(direction3, target):
             keystring+=up_or_down+"/5:"+str(n)+", "+home_or_end+", "
         keystring += left_or_right + "/5:" + str(c) + ", s-" + left_or_right
         Key(keystring)._execute()
+#         utilities.wait_for_keypress_execution()
     except Exception:
         utilities.report(utilities.list_to_string(sys.exc_info()))
 
@@ -29,7 +31,7 @@ def characters_until(look_left, target, max_lines=30):
 #     utilities.remote_debug()
     for i in range(0, max_lines):
         if look_left:
-            if i==0:#debugging point
+            if i==0:#debugging point 
                 Key("s-home")._execute()
             else:
                 Key("s-up, s-home")._execute()
@@ -113,9 +115,6 @@ def read_selected_without_altering_clipboard():
         return None
     return highlighted
 
-def jump_out(direction3, levels):
-    print ""
-    d = str(direction3)
     
 
     
