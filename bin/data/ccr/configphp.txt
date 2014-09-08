@@ -18,14 +18,6 @@ cmd.map = {
 		"sort":							Text("sort()") +Key("left,left"),
 		
 		
-		"semi":							Key("semicolon"),		
-        "quotes":						Key("dquote,dquote,left"),
-        "thin quotes":					Key("apostrophe,apostrophe,left"),	           
-     	"[is] greater than":			Key("rangle"),
-     	"[is] less than":				Key("langle"),
-     	"[is] greater [than] [or] equal [to]":				   Key("rangle, equals"),
-     	"[is] less [than] [or] equal [to]":				   Key("langle, equals"),
-     	"[is] equal to":		    	Key("equals,equals"),
         
 		"and":                          Text("&&"),
         "or":                           Text("||"),
@@ -35,17 +27,10 @@ cmd.map = {
 #        "else block":                   Text("else {")+Key("enter"),
         "ternary":                      Text("()?;") + (Key("left") * 3),
 
-        "pair":                     	Text("()")+ Key("left"),
-        "[square] (bracket | brackets)":Text("[]")+ Key("left"),
-        "curly":                    	Text("{}")+ Key("left"),
-        "plus":							Text("+"),
-        "minus":						Text("-"),
-			
-		"pipe symbol": 		            Text("|"),
         "<njv> bark":                   Text("%(njv)d"),
         "<njv> <n2jv> bark":            Text("%(njv)d%(n2jv)d"),
         "<njv> <n2jv> <n3jv> bark":     Text("%(njv)d%(n2jv)d%(n3jv)d"),
-        "<text> spell":			    Text("%(text)s"), 
+         
 	   
      	   
           }

@@ -18,7 +18,7 @@ def change_CCR(enable_disable, ccr_mode):
     # Make the combined file
     compatibility_success = combine_CCR_files(enable, ccrm)
     if not compatibility_success[0]:
-        utilities.report("INCOMPATIBILITY: "+compatibility_success[1])
+        utilities.report("INCOMPATIBILITY: " + compatibility_success[1])
         return
     
     # If compatibility success failed, no need to worry about writing the config file wrong
@@ -141,7 +141,7 @@ def combine_CCR_files(enable, a, b="", c="", d=""):
                 fw.write(ld)
             fw.write("}\n")
         
-        return (True,"")
+        return (True, "")
     except Exception:
         utilities.report(utilities.list_to_string(sys.exc_info()))
     
@@ -293,3 +293,24 @@ def score(text):
     """ score <dictation> """  # Docstring defining spoken-form.
     t = str(text)  # Get written-form of dictated text.
     Text("_".join(t.split(" ")))._execute()
+
+def format_ecma_loop(looptype, text, condition, increment):
+    lt = str(looptype)
+    # to do: check settings to find which language is active
+    letter = str(text)
+    if not letter == "":
+        letter = letter[0].lower()
+    else:
+        letter="i"
+    print lt
+        
+    if lt == "letter":
+        c=str(condition)
+        if c=="":
+            c="<"
+        i=str(increment)
+        if i=="":
+            i="++"
+        Text("for (" + letter + "= PARAMETER; " + letter + c+" PARAMETER; " + letter + i+"){\n\n}")._execute()
+    elif lt == "each":
+        print ""

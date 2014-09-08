@@ -1,9 +1,12 @@
-from dragonfly import (BringApp, Key, Function, Grammar, Playback, 
-                       IntegerRef,Dictation,Choice,WaitWindow,MappingRule)
-from lib import paths, utilities, settings, navigation,ccr
-import os, sys
 import natlink
 from natlinkutils import *
+import os, sys
+
+from dragonfly import (BringApp, Key, Function, Grammar, Playback,
+                       IntegerRef, Dictation, Choice, WaitWindow, MappingRule)
+from dragonfly.actions.action_text import Text
+
+from lib import paths, utilities, settings, navigation, ccr
 
 
 BASE_PATH = paths.get_base()
@@ -75,6 +78,7 @@ class MainRule(MappingRule):
     "set alarm [<minutes> minutes]":Function(utilities.alarm, extra={"minutes"}),
     "open natlink folder":          BringApp("explorer", "C:\NatLink\NatLink\MacroSystem"),
     "compile <choice>":             Function(utilities.py2exe_compile, extra={"choice"}),
+    "reserved word <text>":         Key("dquote,dquote,left")+Text("%(text)s")+Key("right, colon, tab/5:5")+Text("Text(\"%(text)s\"),"),
     
     # miscellaneous
     "<enable_disable> <ccr_mode>":  Function(ccr.change_CCR, extra={"enable_disable", "ccr_mode"}),

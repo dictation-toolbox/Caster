@@ -13,13 +13,6 @@ cmd.map = {
            
 
 		   #Pascal specific macros           
-     	   "quotes":						Key("dquote,dquote,left")+noSpaceNoCaps,
-           "thin quotes":						Key("apostrophe,apostrophe,left")+noSpaceNoCaps,
-     	   "[is] greater than":				   Key("rangle"),
-     	   "[is] less than":				   Key("langle"),
-     	   "[is] greater [than] [or] equal [to]":				   Key("rangle, equals"),
-     	   "[is] less [than] [or] equal [to]":				   Key("langle, equals"),
-     	   "[is] equal to":				   Key("equals,equals"),
      	   "[is] not equal to":				   Key("langle,rangle"),
      	   "import":						Text( "import " ),
      	   "add comment":					Text( "//" ),
@@ -27,21 +20,16 @@ cmd.map = {
         # logic shortcuts
         "and":                          Text(" and "),
         "or":                           Text(" or "),
-        "equals":                       Text(":="),
+#        "equals":                       Text(":="),
         "if then":                      Text("if  then"),
         "if then begin":                Text("if  then")+ Key("enter")+ Text("begin\n\nend;")+ Key("up, up,up,left"),
         "function":						Text("function FNAME():RETURNTYPE;\nvar\nNAME:TYPE;\nbegin\n\nend;"),
         "procedure":						Text("procedure PNAME();\nvar\nNAME:TYPE;\nbegin\n\nend;"),
         
-        "pair":                     Text("()")+ Key("left"),
-        "[square] (bracket | brackets)":    Text("[]")+ Key("left"),
-        "curly":                    Text("{}")+ Key("left"),
-        "plus":						Text("+"),
-        "minus":						Text("-"),
         "for each":					Text("for  in :")+ Key("left:5"),
         "for I":					Text("for i in range(0, ):")+ Key("left:2"),
 			
-			"pipe symbol":             Text("|"),
+			
             "<n> bark":                           Text("%(n)d"),
             "<n> <n2> bark":                           Text("%(n)d%(n2)d"),
             "<n> <n2> <n3> bark":                           Text("%(n)d%(n2)d%(n3)d"),

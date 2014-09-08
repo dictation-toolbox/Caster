@@ -22,18 +22,18 @@ cmd.map = {
     "jump in":						Playback([(["gopher", "next", "openers", "right"], 0.0)]),
     "jump out":						Playback([(["gopher", "next", "closers", "right"], 0.0)]),
     "jump back":					Playback([(["gopher", "previous", "openers", "left"], 0.0)]),
+    "fill that":					Playback([(["gopher", "previous", "parameter", "left", "color"], 0.0)]),
     
     #keyboard shortcuts
 	'save':                         Key("c-s"),
     'scratch':                      Playback([(["scratch", "that"], 0.0)]),
     'enter [<nnv>]':                Key("enter")* Repeat(extra="nnv"),
-    'space [<nnv>]':                Key("space")* Repeat(extra="nnv"),
     "down [<nnv>]":                 Key("down") * Repeat(extra="nnv"),
     "up [<nnv>]":                   Key("up") * Repeat(extra="nnv"),
     "left [<nnv>]":                 Key("left") * Repeat(extra="nnv"),
     "right [<nnv>]":                Key("right") * Repeat(extra="nnv"),
     "fly [<fly_mode>] [<nnv>]":     Function(navigation.fly, extra={"fly_mode", "nnv"}),
-    "(coup | color) [<color_mode>] [<nnv>]":   Function(navigation.color, extra={"color_mode", "nnv"}),
+    "color [<color_mode>] [<nnv>]": Function(navigation.color, extra={"color_mode", "nnv"}),
     "shin [<nnv>]":                 Key("s-right") * Repeat(extra="nnv"),
     "shin back [<nnv>]":            Key("s-left") * Repeat(extra="nnv"),
     "find":                         Key("c-f"),
@@ -45,8 +45,6 @@ cmd.map = {
     "delete [<nnv>]":               Key("del/5") * Repeat(extra="nnv"),
     "clear [<nnv>]":                Key("backspace") * Repeat(extra="nnv"),
     "(cancel | escape)":            Key("escape"),
-    "excite mark":                  Text("!"),
-    "colon":						Text(":"),
      
     # miscellaneous
     'auto <mode> <textnv>':         Function(navigation.auto_spell, extra={"mode","textnv"}),
@@ -72,7 +70,7 @@ cmd.extras = [
                 {"comma": ",", "(period | dot)": ".", "(pair | parentheses)": "(~)",
                 "[square] (bracket | brackets)": "[~]", "curly [brace]": "{~}",
                 "loop": "for~while", "L paren": "(", "are paren": ")", "openers": "(~[~{",
-                "closers": "}~]~)",
+                "closers": "}~]~)", "parameter": "PARAMETER",
                 }),
           Choice("mode",
                 {"spell": "spell", "sent": "sent", "crunch": "crunch", "caps": "caps",

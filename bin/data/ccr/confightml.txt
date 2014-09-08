@@ -11,9 +11,6 @@ cmd.map = {
            # Spoken-form    ->    ->    ->     Action object
 			
                       
-     	   "quotes":						Key("dquote,dquote,left")+noSpaceNoCaps,
-           "thin quotes":						Key("apostrophe,apostrophe,left")+noSpaceNoCaps,
-           
      	    "HTML":						Text("<html>" )+ Key("enter")+ Text("</html>")+ Key("up"),
      	    "head":						Text("<head>" )+ Key("enter")+ Text("</head>")+ Key("up"),
      	    "title":					Text("<title></title>")+  Key("left/10:8"),

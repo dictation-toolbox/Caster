@@ -1,0 +1,50 @@
+#
+# This is a heavily modified version of Dragonfly's _multiedit.py command-module
+
+from dragonfly import *
+
+release = Key("shift:up, ctrl:up")
+noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added on the right side
+
+cmd.map = {
+           	# Spoken-form    ->    ->    ->     Action object
+			
+		"semi":							Key("semicolon"),		
+        "quotes":						Key("dquote,dquote,left"),
+        "thin quotes":					Key("apostrophe,apostrophe,left"),	           
+     	"[is] greater than":			Key("rangle"),
+     	"[is] less than":				Key("langle"),
+     	"[is] greater [than] [or] equal [to]":				   Key("rangle, equals"),
+     	"[is] less [than] [or] equal [to]":				   Key("langle, equals"),
+     	"[is] equal to":		    	Key("equals,equals"),
+        "equals":                       Key("equals"),
+        "pair":                     	Text("()")+ Key("left"),
+        "[square] (bracket | brackets)":Text("[]")+ Key("left"),
+        "curly":                    	Text("{}")+ Key("left"),
+        "angle":                    	Text("<>")+ Key("left"),
+        "plus":							Text("+"),
+        "minus":						Text("-"),
+		"pipe symbol": 		            Text("|"),
+	    'space [<npn>]':                Key("space")* Repeat(extra="npn"),
+    	"excite mark":                  Text("!"),
+    	"colon":						Text(":"),
+		"(times | star)":				Key("asterisk"),
+		"question":						Text("?"),
+		"comma":						Text(","),
+		"carrot":						Text("^"),					 
+		"(period | dot)":				Text("."),
+		"at sign":						Text("@"),
+		"apostrophe":					Text("'"),
+		"underscore":					Text("_"),		
+		     	   
+          }
+
+
+cmd.extras = [
+			IntegerRef("npn", 0, 100),
+	]
+cmd.defaults = {
+			"npn": 1,
+	}
+
+
