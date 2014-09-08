@@ -9,15 +9,17 @@ forums and community
  - http://www.knowbrainer.com/forums/forum/index.cfm
  - https://web.archive.org/web/20130805104835/http://speechcomputing.com/forum
 
-sources and modules on google code
+sources and modules
 --
- - https://code.google.com/p/dragonfly/
- - https://code.google.com/p/dragonfly-modules/
+ - https://github.com/t4ngo/dragonfly
+ - https://code.google.com/p/dragonfly/ (old)
+ - https://code.google.com/p/dragonfly-modules/ (old)
 
 dragonfly and natlink documentation
 --
- - http://pythonhosted.org/dragonfly/py-modindex.html
- - http://pythonhosted.org/dragonfly/index.html
+ - http://dragonfly.readthedocs.org/en/latest/
+ - http://pythonhosted.org/dragonfly/py-modindex.html (old)
+ - http://pythonhosted.org/dragonfly/index.html (old)
  - http://qh.antenna.nl/unimacro/index.html
  - http://qh.antenna.nl/unimacro/implementation_and_acceptance_of_natlink.pdf
  - http://www.synapseadaptive.com/joel/NatLinkTalk.ppt
