@@ -37,6 +37,8 @@ class CommandRule(MappingRule):
         # navigation to specific project paths
         "go to simulator":  Text("cd C:/Users/dave/workspace/simulator")+Key("enter"),
         "go to dragonfly":  Text("cd C:/NatLink/NatLink/MacroSystem")+Key("enter"),
+        "go to salty":  Text("cd C:/Users/dave/workspace/aptana/saltybot")+Key("enter"),
+        
         
         }
     extras = [

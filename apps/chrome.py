@@ -45,7 +45,7 @@ class CommandRule(MappingRule):
         "search for <dict>":            Key("c-t")+WaitWindow(title="New Tab")+ Text("%(dict)s"),
         "git hub":                      Text("github"),
         "save image [<dict> <n>]":      Function(save_image, extra={"dict", "n"}),
-        
+        "developer tools":              Key("f12"),
         }
     extras = [
               Dictation("dict"),

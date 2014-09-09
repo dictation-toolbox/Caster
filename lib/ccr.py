@@ -1,12 +1,17 @@
+import io, sys
+import time
+
+from dragonfly import *
+
+from lib import paths, settings, utilities
+
+
 try:
     import pkg_resources
     pkg_resources.require("dragonfly >= 0.6.5beta1.dev-r99")
 except ImportError:
     pass
 
-from lib import paths, settings, utilities
-import io, sys
-from dragonfly import *
 
 
 # this stuff shouldn't be called here
@@ -311,6 +316,8 @@ def format_ecma_loop(looptype, text, condition, increment):
         i=str(increment)
         if i=="":
             i="++"
-        Text("for (" + letter + "= PARAMETER; " + letter + c+" PARAMETER; " + letter + i+"){\n\n}")._execute()
+        Text("for (" + letter + "= PARAMETER; " + letter + c+" PARAMETER; " + letter + i+"){}")._execute()
+        Key("left, enter/5:2, up")._execute()
+        time.sleep(0.05)
     elif lt == "each":
         print "for each not implemented"

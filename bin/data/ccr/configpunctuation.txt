@@ -38,9 +38,10 @@ cmd.map = {
 		"underscore":					Text("_"),		
 		"backslash":					Text("\\"),
 		"slash":						Text("/"),
-	    'tabby [<npn>]':                Key("tab")* Repeat(extra="npn"),				     	   
+	    'tabby [<npn>]':                Key("tab")* Repeat(extra="npn"),
+	    "boom":							Text(", "),				     	   
           }
-
+ 
 
 cmd.extras = [
 			IntegerRef("npn", 0, 100),
