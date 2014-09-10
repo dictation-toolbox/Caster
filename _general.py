@@ -1,9 +1,11 @@
 import natlink
 from natlinkutils import *
 import os, sys
+import codecs
 
 from dragonfly import (BringApp, Key, Function, Grammar, Playback,
                        IntegerRef, Dictation, Choice, WaitWindow, MappingRule)
+from dragonfly.actions.action_pause import Pause
 from dragonfly.actions.action_text import Text
 
 from lib import paths, utilities, settings, navigation, ccr
@@ -22,8 +24,6 @@ def fix_Dragon_double():
     except Exception:
         utilities.report(utilities.list_to_string(sys.exc_info()))
     
-    
-    
 def flip():
     Playback([(["alt", "tab"], 0.0)])._execute()
     WaitWindow(executable="Switcher.exe")._execute()
@@ -32,14 +32,49 @@ def flip():
     else:
         Playback([(["choose", "two"], 0.0)])._execute()
 
-def flip_monitor_orientations():
-    global monitor_orientation
-    if monitor_orientation==0:
-        monitor_orientation= 180
-    else:
-        monitor_orientation=0
-    BringApp(paths.get_mmt(),r"/SetOrientation",r"\\.\DISPLAY1",str(monitor_orientation),r"\\.\DISPLAY2",str(monitor_orientation))._execute()#
-
+def switch_monitors():
+    debug=False
+    try:
+        monitor_info_path=BASE_PATH + r"\bin\monitors.txt"
+        BringApp(MMT_PATH, r"/stext", monitor_info_path)._execute()
+        time.sleep(1)
+        content=None
+        with codecs.open(monitor_info_path, "r", encoding="utf-16") as f:
+            content=f.readlines()
+        is_a_real_monitor=False# for some reason, fake monitors get made up sometimes
+        is_active=False
+        active_monitors=[]
+#         utilities.remote_debug()
+        inactive_monitors=[]
+        for line in content:
+            line=line.replace(" ", "")
+            if line.startswith("Resolution"):
+                line=line.split(":")[1]
+                is_a_real_monitor= (not line.startswith("0X0"))
+            elif line.startswith("Active") and is_a_real_monitor:
+                line=line.split(":")[1]
+                is_active= line.startswith("Yes")
+            elif line.startswith("Name") and is_a_real_monitor:
+                line=line.split(":")[1]
+                if is_active:
+                    active_monitors.append(line.replace("\r\n", ""))
+                else:
+                    inactive_monitors.append(line.replace("\r\n", ""))
+        if debug:
+            print "active: "
+            print active_monitors
+            print "inactive: "
+            print inactive_monitors
+        how_many_active=len(active_monitors)
+        how_many_inactive=len(inactive_monitors)
+        if how_many_active==1 and how_many_inactive==1:
+            BringApp(MMT_PATH, r"/switch", inactive_monitors[0])._execute()
+            time.sleep(2)
+            BringApp(MMT_PATH, r"/switch", active_monitors[0])._execute()
+        # other cases go here
+    except Exception:
+        utilities.report(utilities.list_to_string(sys.exc_info()))
+            
     
 class MainRule(MappingRule):
     global MMT_PATH
@@ -53,19 +88,17 @@ class MainRule(MappingRule):
     
     mapping = {
     # Dragon NaturallySpeaking management
-    'reboot dragon':                Function(utilities.clear_pyc)+Playback([(["stop", "listening"], 0.5), (["wake", 'up'], 0.0)]),
+#     'reboot dragon':                Function(utilities.clear_pyc)+Playback([(["stop", "listening"], 0.5), (["wake", 'up'], 0.0)]),
 	'(lock Dragon | deactivate)':   Playback([(["go", "to", "sleep"], 0.0)]),
     '(number|numbers) mode':        Playback([(["numbers", "mode", "on"], 0.0)]),
     'spell mode':                   Playback([(["spell", "mode", "on"], 0.0)]),
     'dictation mode':               Playback([(["dictation", "mode", "on"], 0.0)]),
     'normal mode':                  Playback([(["normal", "mode", "on"], 0.0)]),
-    "dragon death and rebirth":     BringApp(BASE_PATH + r"\bin\suicide.bat"),
+    "reboot dragon":                BringApp(BASE_PATH + r"\bin\suicide.bat"),
     "fix dragon double":            Function(fix_Dragon_double),
     
     # hardware management
-    'toggle monitor one':           BringApp(MMT_PATH, r"/switch",r"\\.\DISPLAY1"),
-    'toggle monitor two':           BringApp(MMT_PATH, r"/switch",r"\\.\DISPLAY2"),
-    "monitors one eighty":          Function(flip_monitor_orientations),
+    "switch monitors":              Function(switch_monitors),
     "(<volume_mode> [system] volume [to] <nnv> | volume <volume_mode> <nnv>)": Function(navigation.volume_control, extra={'nnv','volume_mode'}),
     
     # window management

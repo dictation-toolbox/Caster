@@ -35,7 +35,7 @@ cmd.map = {
         
         "convert to string":		Text("str()")+ Key("left"),
         "convert to integer":		Text("int()")+ Key("left"),
-        "length":					Text("len()"),
+        "length":					Text("len()")+ Key("left"),
         
         
         "for each":					Text("for  in :")+ Key("left:5"),

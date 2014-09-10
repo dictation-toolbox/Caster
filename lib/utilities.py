@@ -43,13 +43,17 @@ def get_window_by_title(title):
     return hwnd
 
 def clear_pyc():
-    b = paths.get_base()
-    for base, dirs, files in os.walk(b):
-        for f in files:
-            if f.endswith(".pyc"):
-                filepath = b + "\\" + f
-                os.remove(filepath)
-                report("Deleted: " + filepath)
+    try:
+        for dirpath, dirnames, files in os.walk(paths.get_base()):#os.walk produces a list of 3-tuples
+            if r"MacroSystem\.git" in dirpath or r"MacroSystem\core" in dirpath:
+                continue
+            for f in files:
+                if f.endswith(".pyc"):
+                    f=os.path.join(dirpath, f)
+                    os.remove(f)
+                    report("Deleted: " + f)
+    except Exception:
+        report(list_to_string(sys.exc_info()))
             
 def get_list_of_individual_config_files():
     results=[]

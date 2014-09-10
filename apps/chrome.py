@@ -46,6 +46,7 @@ class CommandRule(MappingRule):
         "git hub":                      Text("github"),
         "save image [<dict> <n>]":      Function(save_image, extra={"dict", "n"}),
         "developer tools":              Key("f12"),
+        "[add] bookmark":               Key("c-d"),
         }
     extras = [
               Dictation("dict"),
