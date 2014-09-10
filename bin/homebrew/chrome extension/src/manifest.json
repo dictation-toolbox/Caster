@@ -1,0 +1,39 @@
+{
+	"manifest_version": 2,
+
+	"name": "Pandora Controller",
+	"description": "This extension works with Dragon NaturallySpeaking to control Pandora.",
+	"version": "1.0",
+	"commands": {
+		"pandoraDislike": {
+			"suggested_key": {
+				"default": "Ctrl+Shift+3"
+			},
+			"description": "Pandora dislike"
+		},
+		"pandoraLike": {
+			"suggested_key": {
+				"default": "Ctrl+Shift+1"
+			},
+			"description": "Pandora like"
+		},
+		"pandoraSkip": {
+			"suggested_key": {
+				"default": "Ctrl+Shift+2"
+			},
+			"description": "Pandora skip"
+		}
+	},
+	"background": {
+		"scripts": ["background.js"],
+		"persistent": false
+	},
+	"permissions": ["tabs", "*://*/*"],
+	"content_scripts": [
+		{
+			"matches": ["*://*/*"],
+			"js": ["content.js"],
+			"run_at": "document_start"
+		}
+	]
+}

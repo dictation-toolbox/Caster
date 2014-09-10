@@ -306,17 +306,17 @@ def format_ecma_loop(looptype, text, condition, increment):
     if not letter == "":
         letter = letter[0].lower()
     else:
-        letter="i"
+        letter = "i"
     print lt
         
     if lt == "letter":
-        c=str(condition)
-        if c=="":
-            c="<"
-        i=str(increment)
-        if i=="":
-            i="++"
-        Text("for (" + letter + "= PARAMETER; " + letter + c+" PARAMETER; " + letter + i+"){}")._execute()
+        c = str(condition)
+        if c == "":
+            c = "<"
+        i = str(increment)
+        if i == "":
+            i = "++"
+        Text("for (var " + letter + " = PARAMETER; " + letter + " " + c + " PARAMETER; " + letter + i + "){}")._execute()
         Key("left, enter/5:2, up")._execute()
         time.sleep(0.05)
     elif lt == "each":

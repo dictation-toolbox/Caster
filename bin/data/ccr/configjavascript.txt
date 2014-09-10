@@ -16,6 +16,7 @@ cmd.map = {
 		"timer":					Text("setInterval()"),
 		"print":					Text("console.log()")+Key("left"),
 		"document":					Text("document"),
+		"index of":					Text(".indexOf()")+Key("left"),
 		
  	   "import":					Text( "import " ),
 		"null":						Text("null"),

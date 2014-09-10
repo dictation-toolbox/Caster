@@ -45,8 +45,17 @@ class CommandRule(MappingRule):
         "search for <dict>":            Key("c-t")+WaitWindow(title="New Tab")+ Text("%(dict)s"),
         "git hub":                      Text("github"),
         "save image [<dict> <n>]":      Function(save_image, extra={"dict", "n"}),
-        "developer tools":              Key("f12"),
         "[add] bookmark":               Key("c-d"),
+        
+        "developer tools":              Key("f12"),
+        "resume":                       Key("f8"),
+        "step over":                    Key("f10"),
+        "step into":                    Key("f11"),
+        "step out":                     Key("s-f11"),
+        
+        "pandora dislike":              Key("cs-3"),
+        "pandora like":                 Key("cs-1"),
+        "pandora skip":                 Key("cs-2"),
         }
     extras = [
               Dictation("dict"),

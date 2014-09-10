@@ -61,7 +61,7 @@ class CommandRule(MappingRule):
 
 #---------------------------------------------------------------------------
 
-context = AppContext(executable="eclipse")
+context = AppContext(executable="eclipse") | AppContext(executable="AptanaStudio3")
 grammar = Grammar("Eclipse", context=context)
 grammar.add_rule(CommandRule())
 grammar.load()
