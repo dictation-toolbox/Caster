@@ -13,6 +13,9 @@ clipboard.json
 build/
 tcl/
 data/log.txt
+bin/monitors.txt
+bin/data/settings.json
+bin/data/ccr/unified/config.txt
 
 # Ignore natlink files
 core/

@@ -17,138 +17,185 @@ except ImportError:
 # this stuff shouldn't be called here
 unified_grammar = None
 
+class CCRFile:
+    # representation of a text file, used for compatibility so we don't have to read the text file multiple times
+    def __init__(self):
+        self.name = None
+        self.mapping = []
+        self.extras = []
+        self.defaults = []
+        self.other = []
+
 def change_CCR(enable_disable, ccr_mode):
     enable = True if str(enable_disable) == "enable" else False
-    ccrm = str(ccr_mode)
+    mode = str(ccr_mode)
+    
+    # get models of all relevant CCR files
+    models = get_models(mode if enable else "")
+    
+    active_modes = get_active_modes()
+    master_model=CCRFile()
+    override_mode = True
+    report = False
+    
+    if len(models[1])>1:
+        raise Exception("you need to go back into the compatibility section and check the incoming modes against themselves")
+    
+    
+    if enable:
+        # check for compatibility
+        incompatibilities = []
+        for current in models[0]:  # current is one of the currently enabled CCR files
+            for incoming in models[1]:
+                for line in incoming.mapping:
+                    if line in current.mapping:
+                        if report:
+                            utilities.report("CCR incompatibility found (mapping): " + line)
+                        incompatibilities.append((current.name, incoming.name))
+                        break
+                for line in incoming.defaults:
+                    if line in current.defaults and line.strip()!="}),":
+                        if report:
+                            utilities.report("CCR incompatibility found (defaults): " + line)
+                        incompatibilities.append((current.name, incoming.name))
+                        break
+                for line in incoming.extras:
+                    if line in current.extras:
+                        if report:
+                            utilities.report("CCR incompatibility found (extras): " + line)
+                        incompatibilities.append((current.name, incoming.name))
+                        break
+#                 for line in incoming.other:
+#                     if line in current.other:
+#                         if report:
+#                             utilities.report("CCR incompatibility found (others): " + line)
+#                         incompatibilities.append((current.name, incoming.name))
+                        
+        if override_mode:# remove current mode(s) which is(/are) incompatible with new mode(s)
+            if len(incompatibilities) > 0:
+                for incompatibility in incompatibilities:
+                    if incompatibility[0] in active_modes:
+                        active_modes.remove(incompatibility[0])
+        
+        active_modes.append(mode)#active_modes is now the master list of stuff that should go in
+        
+    
+    else:
+        if mode in active_modes:
+            active_modes.remove(mode)
+    all_models = models[0] + models[1]
+    for m in all_models:
+        if not m.name in active_modes:
+            all_models.remove(m)
+    for model in all_models:
+        master_model.mapping+=model.mapping
+        master_model.extras+=model.extras
+        master_model.defaults+=model.defaults
+        master_model.other+=model.other    
+            
     # Make the combined file
-    compatibility_success = combine_CCR_files(enable, ccrm)
-    if not compatibility_success[0]:
-        utilities.report("INCOMPATIBILITY: " + compatibility_success[1])
-        return
+    success=combine_CCR_files(master_model)
+    
     
     # If compatibility success failed, no need to worry about writing the config file wrong
+    if success:
+        config_settings = settings.get_settings()
+        for s in config_settings:
+            config_settings[s]=s in active_modes
+        settings.save_config()
+        # Now, toss the old grammar and make a new one
+        unload()
+        refresh()
+        utilities.report(str(enable_disable).capitalize() + "d " + ccr_mode, speak=True)
+    else:
+        utilities.report("failed to initialize " + ccr_mode, speak=True)
+
+def get_active_modes():
     config_settings = settings.get_settings()
-    config_settings[ccrm] = enable
-    settings.save_config()
-    # Now, toss the old grammar and make a new one
-    unload()
-    refresh()
-    utilities.report(str(enable_disable).capitalize() + "d " + ccr_mode, speak=True)
+    results = []
+    for s in config_settings:
+        if config_settings[s] == True:
+            results.append(s)
+    return results
 
+def get_models(mode_1="", mode_2="", mode_3="", mode_4=""):
+    # all four parameters are strings,
+    # if mode_1 is null, then we are disabling
+    old_ccr_files = []
+    new_ccr_file = []
+    
+    for m in get_active_modes():
+        old_ccr_files.append(get_ccr_file(m))
+    for n in [mode_1, mode_2, mode_3, mode_4]:
+        if n != "":
+            new_ccr_file.append(get_ccr_file(str(n)))
+    return (old_ccr_files, new_ccr_file)
+            
+def get_ccr_file(mode):
+    ccr_file = CCRFile()
+    ccr_file.name = mode
+    with open(paths.get_generic_config_path() + "\\config" + mode + ".txt", "r") as f:
+        
+        mapping = False
+        extras = False
+        defaults = False
+        lines = f.readlines()
+        for line in lines:
+            no_whitespace = line.strip()
+            
+            # parse the file
+            # first, either change the mode or skip the line if appropriate
+            if line.startswith("cmd.map"):
+                mapping = True
+                continue
+            elif line.startswith("cmd.extras"):
+                extras = True
+                continue
+            elif line.startswith("cmd.defaults"):
+                defaults = True
+                continue
+            elif (no_whitespace.startswith("}") or no_whitespace.startswith("]")) and len(no_whitespace) == 1:
+                mapping = False
+                extras = False
+                defaults = False
+                continue
+            elif no_whitespace in ["", "\n"] or no_whitespace.startswith("#"):
+                continue
+            
+            
+            if mapping:
+                ccr_file.mapping.append(line)
+            elif extras:
+                ccr_file.extras.append(line)
+#                         if not line in relevant_configs["extras"] or no_whitespace == "}),":
+            elif defaults:
+                ccr_file.defaults.append(line)
+            else:
+                ccr_file.other.append(line)
+    return ccr_file
 
-
-def combine_CCR_files(enable, a, b="", c="", d=""):
-    # enable is a Boolean
-    # a,b,c,d are all the same dynamically generated choice, some may be blank-- that should be determined here
-#     utilities.remote_debug()
+def combine_CCR_files(master_model):
     try:
-        str_a = str(a)
-        str_b = str(b)
-        str_c = str(c)
-        str_d = str(d)
-        chosen_modes = []
-        for s in [str_a, str_b, str_c, str_d]:
-            if not s == "":
-                chosen_modes.append(s)
-        
-        config_settings = settings.get_settings()  # this is a dictionary of settings.json
-        backup = []
-        def reset_settings():
-            for setting in config_settings:
-                if setting in backup:
-                    config_settings[setting] = True
-                else:
-                    config_settings[setting] = False
-        
-        if enable:
-            # in case there is a compatibility problem, save what was active before changing the settings
-            for s in config_settings:
-                if config_settings[s] == True:
-                    backup.append(s)
-            # now change the settings 
-            for cm in chosen_modes:
-                config_settings[cm] = True
-        else:
-            for cm in chosen_modes:
-                config_settings[cm] = False
-
-        # now, using the settings, scan in all the appropriate files and check for compatibility
-        relevant_configs = {}
-        relevant_configs["non_cmd"] = []
-        relevant_configs["mapping"] = []
-        relevant_configs["extras"] = []
-        relevant_configs["defaults"] = []
-        for m in config_settings:
-            if config_settings[m] == True:
-                with open(paths.get_generic_config_path() + "\\config" + m + ".txt", "r") as f:
-                    # these three Booleans will determine where a line gets put in the big dictionary
-                    mapping = False
-                    extras = False
-                    defaults = False
-                    lines = f.readlines()
-                    for line in lines:
-                        no_whitespace = line.strip()
-                        
-                        if line.startswith("cmd.map"):
-                            mapping = True
-                            continue
-                        elif line.startswith("cmd.extras"):
-                            extras = True
-                            continue
-                        elif line.startswith("cmd.defaults"):
-                            defaults = True
-                            continue
-                        elif (no_whitespace.startswith("}") or no_whitespace.startswith("]")) and len(no_whitespace) == 1:
-                            mapping = False
-                            extras = False
-                            defaults = False
-                            continue
-                        
-                        if no_whitespace == "" or no_whitespace.startswith("#"):
-                            continue
-                        
-                        if mapping:
-                            if not line in relevant_configs["mapping"]:
-                                relevant_configs["mapping"].append(line)
-                            elif not line == "\n":
-                                reset_settings()
-                                return (False, line)
-                        elif extras:
-                            if not line in relevant_configs["extras"] or no_whitespace == "}),":
-                                relevant_configs["extras"].append(line)
-                            elif not line == "\n":
-                                reset_settings()
-                                return (False, line)
-                        elif defaults:
-                            if not line in relevant_configs["defaults"]:
-                                relevant_configs["defaults"].append(line)
-                            elif not line == "\n":
-                                reset_settings()
-                                return (False, line)
-                        else:
-                            if not line in relevant_configs["non_cmd"]:
-                                relevant_configs["non_cmd"].append(line)
-
-        # At this point, either we have all the lines or the function is returned False
         with open(paths.get_unified_config_path(), "w") as fw:
-            for lnc in relevant_configs["non_cmd"]:
+            for lnc in master_model.other:
                 fw.write(lnc)
             fw.write("cmd.map= {\n")
-            for lm in relevant_configs["mapping"]:
+            for lm in master_model.mapping:
                 fw.write(lm)
             fw.write("}\n")
             fw.write("cmd.extras= [\n")
-            for le in relevant_configs["extras"]:
+            for le in master_model.extras:
                 fw.write(le)
             fw.write("]\n")
             fw.write("cmd.defaults= {\n")
-            for ld in relevant_configs["defaults"]:
+            for ld in master_model.defaults:
                 fw.write(ld)
             fw.write("}\n")
         
-        return (True, "")
+        return True
     except Exception:
         utilities.report(utilities.list_to_string(sys.exc_info()))
+        return False
     
 
 """
