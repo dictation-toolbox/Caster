@@ -1,18 +1,17 @@
 from dragonfly import ( Key, Text , Playback, Function, Repeat,
-                        BringApp,IntegerRef, Grammar, Dictation,
-                        MappingRule, Mouse, Choice, WaitWindow)
+                        BringApp, Mouse, Choice, WaitWindow)
 import sys, win32api, time, win32clipboard, natlink
 from ctypes import windll
 from win32con import MOUSEEVENTF_WHEEL
 from win32api import GetSystemMetrics
 import paths, utilities, settings
 
-BASE_PATH = paths.get_base()
-MMT_PATH = paths.get_mmt()
-NIRCMD_PATH = paths.get_nircmd()
+BASE_PATH = paths.BASE_PATH
+MMT_PATH = paths.MMT_PATH
+NIRCMD_PATH = paths.NIRCMD_PATH
 
 def initialize_clipboard():
-    utilities.MULTI_CLIPBOARD = utilities.load_json_file(paths.get_saved_clipboard_path())
+    utilities.MULTI_CLIPBOARD = utilities.load_json_file(paths.SAVED_CLIPBOARD_PATH)
 
 def clipboard_to_file(nnv):
     key=str(nnv)
@@ -20,7 +19,7 @@ def clipboard_to_file(nnv):
     win32clipboard.OpenClipboard()
     utilities.MULTI_CLIPBOARD[key]=win32clipboard.GetClipboardData()
     win32clipboard.CloseClipboard()
-    utilities.save_json_file(utilities.MULTI_CLIPBOARD, paths.get_saved_clipboard_path())
+    utilities.save_json_file(utilities.MULTI_CLIPBOARD, paths.SAVED_CLIPBOARD_PATH)
 
 def volume_control(nnv, volume_mode):
     global NIRCMD_PATH
@@ -98,13 +97,13 @@ def kick_middle():
     windll.user32.mouse_event(0x00000040,0,0,0,0)
 
 def grid_to_window():
-    BringApp("pythonw", paths.get_grid(), "--rowheight","20" , "--columnwidth","20" , "--numrows","20" , 
+    BringApp("pythonw", paths.GRID_PATH, "--rowheight","20" , "--columnwidth","20" , "--numrows","20" , 
              "--numcolumns","20","--sizeToClient",utilities.get_active_window_hwnd())._execute()
              
 def grid_full():
     screen_width = GetSystemMetrics(0)
     screen_height =GetSystemMetrics(1)
-    BringApp(paths.get_grid(),
+    BringApp(paths.GRID_PATH,
         "--width",str((screen_width - 20)),"--height",str((screen_height - 30)),"--locationx","10","--locationy","15", 
         "--rowheight","20" , "--columnwidth","20" , "--numrows","20", "--numcolumns","20")._execute()
     WaitWindow(executable="CustomGrid.exe")._execute()

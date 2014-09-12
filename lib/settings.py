@@ -2,7 +2,7 @@
 from lib import utilities
 import paths
 
-SETTINGS_PATH = paths.get_settings_path()
+SETTINGS_PATH = paths.SETTINGS_PATH
 SETTINGS = {}  # Empty, default config.
 SPEAK = False # to do,: add this value to the config
 ELEMENT_VERSION="Element v.04"

@@ -21,7 +21,7 @@ class Element:
     def __init__(self):
         
         # setup basics
-        self.JSON_PATH = paths.get_element_json_path()
+        self.JSON_PATH = paths.ELEMENT_JSON_PATH
         self.TOTAL_SAVED_INFO = utilities.load_json_file(self.JSON_PATH)
 
         self.first_run = True

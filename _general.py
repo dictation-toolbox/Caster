@@ -1,19 +1,15 @@
 import natlink
-from natlinkutils import *
-import os, sys
-import codecs
+from natlinkutils import GrammarBase
+import sys, codecs, time
 
 from dragonfly import (BringApp, Key, Function, Grammar, Playback,
-                       IntegerRef, Dictation, Choice, WaitWindow, MappingRule)
-from dragonfly.actions.action_pause import Pause
-from dragonfly.actions.action_text import Text
+                       IntegerRef, Dictation, Choice, WaitWindow, MappingRule, Text)
 
 from lib import paths, utilities, settings, navigation, ccr
 
 
-BASE_PATH = paths.get_base()
-MMT_PATH = paths.get_mmt()
-monitor_orientation=0
+BASE_PATH = paths.BASE_PATH
+MMT_PATH = paths.MMT_PATH
 ccr.refresh()
 
 def fix_Dragon_double():
@@ -35,7 +31,7 @@ def flip():
 def switch_monitors():
     debug=False
     try:
-        monitor_info_path=BASE_PATH + r"\bin\monitors.txt"
+        monitor_info_path=paths.MONITOR_INFO_PATH
         BringApp(MMT_PATH, r"/stext", monitor_info_path)._execute()
         time.sleep(1)
         content=None
@@ -44,7 +40,6 @@ def switch_monitors():
         is_a_real_monitor=False# for some reason, fake monitors get made up sometimes
         is_active=False
         active_monitors=[]
-#         utilities.remote_debug()
         inactive_monitors=[]
         for line in content:
             line=line.replace(" ", "")
@@ -88,7 +83,7 @@ class MainRule(MappingRule):
     
     mapping = {
     # Dragon NaturallySpeaking management
-#     'reboot dragon':                Function(utilities.clear_pyc)+Playback([(["stop", "listening"], 0.5), (["wake", 'up'], 0.0)]),
+    'refresh directory':            Function(utilities.clear_pyc),
 	'(lock Dragon | deactivate)':   Playback([(["go", "to", "sleep"], 0.0)]),
     '(number|numbers) mode':        Playback([(["numbers", "mode", "on"], 0.0)]),
     'spell mode':                   Playback([(["spell", "mode", "on"], 0.0)]),
@@ -110,7 +105,6 @@ class MainRule(MappingRule):
     'maximize':                     Playback([(["maximize", "window"], 0.0)]),
     
     # development related
-   
     "open natlink folder":          BringApp("explorer", "C:\NatLink\NatLink\MacroSystem"),
     "compile <choice>":             Function(utilities.py2exe_compile, extra={"choice"}),
     "reserved word <text>":         Key("dquote,dquote,left")+Text("%(text)s")+Key("right, colon, tab/5:5")+Text("Text(\"%(text)s\"),"),

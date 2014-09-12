@@ -87,7 +87,7 @@ from dragonfly import (Grammar, AppContext, MappingRule,
 import sys
 from lib import paths, utilities
 
-BASE_PATH=paths.get_base()
+BASE_PATH=paths.BASE_PATH
 
 def navigate_grid(n, n2, click):
     Key("c").execute()

@@ -42,7 +42,7 @@ def get_window_by_title(title):
 
 def clear_pyc():
     try:
-        for dirpath, dirnames, files in os.walk(paths.get_base()):#os.walk produces a list of 3-tuples
+        for dirpath, dirnames, files in os.walk(paths.BASE_PATH):#os.walk produces a list of 3-tuples
             if r"MacroSystem\.git" in dirpath or r"MacroSystem\core" in dirpath:
                 continue
             for f in files:
@@ -55,7 +55,7 @@ def clear_pyc():
             
 def get_list_of_individual_config_files():
     results=[]
-    for f in os.listdir(paths.get_generic_config_path()):
+    for f in os.listdir(paths.GENERIC_CONFIG_PATH):
         if f.endswith(".txt"):
             results.append(f.replace("config","").replace(".txt",""))
     return results
@@ -96,7 +96,7 @@ def report(message, speak=False, console=True, log=False):
     if speak:
         natlink.execScript("TTSPlayString \"" + message + "\"")
     if log:
-        f = open(paths.get_log_path(), 'a') 
+        f = open(paths.LOG_PATH, 'a') 
         f.write(str(message) + "\n")
         f.close()
     
@@ -108,10 +108,10 @@ def py2exe_compile(choice):  # requires the file to be compiled to be in the mac
     
     try:
         # -1, shut down the process just in case it was open
-        BringApp(paths.get_pstools_path() + "\\pskill.exe", dirname + ".exe")._execute()
+        BringApp(paths.PSKILL_PATH, dirname + ".exe")._execute()
         # zero, check to see if the target directory exists, if it does delete it
         
-        target_location = paths.get_homebrew_path() + "\\" + dirname
+        target_location = paths.HOMEBREW_PATH + "\\" + dirname
         if os.path.isdir(target_location):
             shutil.rmtree(target_location, ignore_errors=False, onerror=handle_remove_readonly)
         # first, copy all the files needed- standard stuff plus utilities, paths, and whatever is getting turned into an executable
@@ -121,8 +121,8 @@ def py2exe_compile(choice):  # requires the file to be compiled to be in the mac
         for fb in ["utilities.py", "paths.py", "settings.py"]:  # base path
             shutil.copyfile(paths.BASE_PATH + fb, target_location + "\\" + fb)
         for fp in ["compile.bat", "icon.ico", "msvcp90.dll", "msvcr90.dll"]:  # py2exe path
-            shutil.copyfile(paths.get_py2exe_path() + "\\" + fp, target_location + "\\" + fp)
-        shutil.copyfile(paths.get_py2exe_path() + "\\" + dirname + "_run.py", target_location + "\\run.py")
+            shutil.copyfile(paths.PY2EXE_PATH + "\\" + fp, target_location + "\\" + fp)
+        shutil.copyfile(paths.PY2EXE_PATH + "\\" + dirname + "_run.py", target_location + "\\run.py")
         if not dirname == "CustomGrid":
             shutil.copyfile(paths.BASE_PATH + "lib\\dptools\\" + dirname + ".py", target_location + "\\" + dirname + ".py")
         else:
@@ -132,8 +132,8 @@ def py2exe_compile(choice):  # requires the file to be compiled to be in the mac
         # next, copy any additional required files
         if dirname == "element":
             os.makedirs(target_location + "\\dist\\data")
-            shutil.copyfile(paths.get_py2exe_path() + "\\" + "tk85.dll", target_location + "\\dist\\tk85.dll")
-            shutil.copyfile(paths.get_py2exe_path() + "\\" + "tcl85.dll", target_location + "\\dist\\tcl85.dll")
+            shutil.copyfile(paths.PY2EXE_PATH + "\\" + "tk85.dll", target_location + "\\dist\\tk85.dll")
+            shutil.copyfile(paths.PY2EXE_PATH + "\\" + "tcl85.dll", target_location + "\\dist\\tcl85.dll")
 
         # run the batch file
         time.sleep(1)

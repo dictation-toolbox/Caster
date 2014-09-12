@@ -134,7 +134,7 @@ def get_models(mode_1="", mode_2="", mode_3="", mode_4=""):
 def get_ccr_file(mode):
     ccr_file = CCRFile()
     ccr_file.name = mode
-    with open(paths.get_generic_config_path() + "\\config" + mode + ".txt", "r") as f:
+    with open(paths.GENERIC_CONFIG_PATH + "\\config" + mode + ".txt", "r") as f:
         
         mapping = False
         extras = False
@@ -176,7 +176,7 @@ def get_ccr_file(mode):
 
 def combine_CCR_files(master_model):
     try:
-        with open(paths.get_unified_config_path(), "w") as fw:
+        with open(paths.UNIFIED_CONFIG_PATH, "w") as fw:
             for lnc in master_model.other:
                 fw.write(lnc)
             fw.write("cmd.map= {\n")
@@ -325,7 +325,7 @@ def generate_language_rule(path):
     
 def refresh():
     global unified_grammar
-    unified_grammar = generate_language_rule(paths.get_unified_config_path())
+    unified_grammar = generate_language_rule(paths.UNIFIED_CONFIG_PATH)
     unified_grammar.load()  # Load the grammar.
 
 # Unload function which will be called at unload time.
