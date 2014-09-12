@@ -6,6 +6,7 @@ SETTINGS_PATH = paths.get_settings_path()
 SETTINGS = {}  # Empty, default config.
 SPEAK = False # to do,: add this value to the config
 ELEMENT_VERSION="Element v.04"
+DISPEL_VERSION="Dispel v.02"
 
 def save_config():
     global SETTINGS

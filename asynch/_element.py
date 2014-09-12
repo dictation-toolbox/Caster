@@ -3,6 +3,7 @@ from dragonfly import (Function, Text, Grammar,BringApp,WaitWindow,Key,
 import sys, httplib, json, win32api, win32con,re
 from lib import utilities, paths, settings
 import natlink
+from dragonfly.actions.action_focuswindow import FocusWindow
 
 STRICT_PARSER=re.compile('((?<=[a-z0-9])[A-Z]|(?!^)[A-Z](?=[a-z]))')
 
@@ -37,7 +38,8 @@ def remove_word(n):
     send("remove", n)
 
 def focus_element():
-    BringApp("pythonw.exe")._execute()
+    FocusWindow(executable="pythonw.exe", title=settings.ELEMENT_VERSION)
+#     BringApp("pythonw.exe")._execute()
     WaitWindow(title=settings.ELEMENT_VERSION)._execute()
 
 def search():
@@ -128,15 +130,15 @@ def send_key_to_element(action_type):# for some reason, some events are untrigge
         win32api.PostMessage(element_hwnd, win32con.WM_KEYUP, win32con.VK_HOME, 0)
 
 def enable_element():
-    BringApp("pythonw", r"C:\NatLink\NatLink\MacroSystem\asynch\element_.py")._execute()
+    BringApp("pythonw", r"C:\NatLink\NatLink\MacroSystem\asynch\element_src.py", "shell=True")._execute()
     
-def disable_element():
-    BringApp(paths.get_pskill_path(),"pythonw.exe")._execute()
+def kill():
+    send("kill","")
 
 class MainRule(MappingRule):
     mapping = {
     "run element":                  Function(enable_element),
-    "kill element":                 Function(disable_element),
+    "kill element":                 Function(kill),
     "scroll to <n>":                Function(scroll, extra="n"),
     "get <n>":                      Function(retrieve, extra="n"),
     "sticky list <n> to <n2>":      Function(sticky_from_unordered, extra={"n","n2"}),

@@ -96,6 +96,8 @@ class MainRule(MappingRule):
     'normal mode':                  Playback([(["normal", "mode", "on"], 0.0)]),
     "reboot dragon":                BringApp(BASE_PATH + r"\bin\suicide.bat"),
     "fix dragon double":            Function(fix_Dragon_double),
+    "(show | open) documentation":  BringApp('C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe') + WaitWindow(executable="chrome.exe") + Key('c-t') + WaitWindow(title="New Tab") + Text('http://dragonfly.readthedocs.org/en/latest') + Key('enter'),
+    #http://dragonfly.readthedocs.org/en/latest
     
     # hardware management
     "switch monitors":              Function(switch_monitors),
@@ -108,7 +110,7 @@ class MainRule(MappingRule):
     'maximize':                     Playback([(["maximize", "window"], 0.0)]),
     
     # development related
-    "set alarm [<minutes> minutes]":Function(utilities.alarm, extra={"minutes"}),
+   
     "open natlink folder":          BringApp("explorer", "C:\NatLink\NatLink\MacroSystem"),
     "compile <choice>":             Function(utilities.py2exe_compile, extra={"choice"}),
     "reserved word <text>":         Key("dquote,dquote,left")+Text("%(text)s")+Key("right, colon, tab/5:5")+Text("Text(\"%(text)s\"),"),

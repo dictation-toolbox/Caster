@@ -20,6 +20,7 @@ REMOTE_DEBUGGER_PATH ="D:\PROGRAMS\NON_install\eclipse\plugins\org.python.pydev_
 
 ELEMENT_PATH = r"C:\NatLink\NatLink\MacroSystem\bin\homebrew\element\dist\element.exe"
 MEDIA_PATH = r"C:\NatLink\NatLink\MacroSystem\bin\media"
+ALARM_SOUND_PATH = r"C:\NatLink\NatLink\MacroSystem\bin\media\49685__ejfortin__nano-blade-loop.wav"
 GRID_PATH=r"C:\NatLink\NatLink\MacroSystem\bin\homebrew\CustomGrid\dist\CustomGrid.exe"
 NIRCMD_PATH=r"C:\NatLink\NatLink\MacroSystem\bin\nircmd\nircmd.exe"
 PSTOOLS_PATH=r"C:\NatLink\NatLink\MacroSystem\bin\PSTools"

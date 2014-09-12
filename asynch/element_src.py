@@ -7,9 +7,13 @@ import os, re, sys, json
 import bottle
 from bottle import run, request  # , post,response
 
-BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
-sys.path.append(BASE_PATH)
-from lib import paths, utilities, settings
+try:
+    from lib import paths, utilities, settings
+except ImportError:
+    BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
+    sys.path.append(BASE_PATH)
+    from lib import paths, utilities, settings
+
 
 
 
@@ -411,6 +415,8 @@ class Element:
     def process_request(self):
         request_object = json.loads(request.body.read())
         action_type = request_object["action_type"]
+        if action_type=="kill":
+            self.on_exit()
         if self.current_file == None and (not action_type in ["extensions", "trigger_directory_box", "rescan", "scan_new"]):  # only these are allowed when no file is loaded
             return "No file is currently loaded."
         if "index" in request_object:
@@ -483,6 +489,7 @@ class Element:
             return "c"
         
         return 'unrecognized request received: ' + request_object["action_type"]
+
 
 
 app = Element()  

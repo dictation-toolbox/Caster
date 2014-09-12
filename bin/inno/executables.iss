@@ -4,14 +4,14 @@
 
 [Setup]
 AppName=DSExecutables
-AppVersion=0.1
-DefaultDirName={drive:C:}\NatLink\NatLink\MacroSystem\exe
+AppVersion=0.2
+DefaultDirName={drive:C:}\NatLink\NatLink\MacroSystem\bin
 DefaultGroupName=DSExecutables
 DirExistsWarning=no
 OutputDir=installer_requirements\output
 
 [Files]
-Source: "exe\*.*"; DestDir: "{app}";Flags: replacesameversion recursesubdirs
+Source: "bin\*.*"; Excludes: "\data, \inno, \media, \misc, \py2exe, monitors.txt"; DestDir: "{app}";Flags: replacesameversion recursesubdirs
 
 [Run]
 Filename: "{app}\Switcher.exe"

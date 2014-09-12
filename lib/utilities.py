@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import natlink
-import os, json, shutil, sys, errno, stat, io, time
-
+import os, json, sys, errno, stat, io, time
+import natlink,shutil
 from dragonfly import Key, BringApp
 import win32gui, win32process, win32api, win32ui
-
 import paths
 
 
@@ -104,10 +102,6 @@ def report(message, speak=False, console=True, log=False):
     
 def list_to_string(l):
     return "\n".join([str(x) for x in l])
-
-def alarm(minutes):
-    minutes = int(minutes) * 60
-    BringApp("python", paths.BASE_PATH + "\\alarm.py", str(minutes))._execute()
 
 def py2exe_compile(choice):  # requires the file to be compiled to be in the macrosystem folder
     dirname = str(choice)
