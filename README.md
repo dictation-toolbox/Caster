@@ -43,7 +43,7 @@ open source and commercial Dragon add-ons
  - http://www.ergoarchitect.com/ShowNumbersPlus.html
  - http://www.voicecomputer.com
 
-installation instructions from ground zero for D::S + Element
+installation instructions from ground zero for D::S
 --
  - http://explosionduck.com/ds/
 
