@@ -67,6 +67,7 @@ class MainRule(MappingRule):
     mapping = {
     "run dispel":                   Function(ALARM.start),
     "kill dispel":                  Function(ALARM.stop),
+    "resume dispel":                Function(ALARM.resume),
 #
     "delay dispel":                 Function(ALARM.delay),
     "I am (sitting | standing) [now]":Function(ALARM.reset),

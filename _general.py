@@ -95,7 +95,7 @@ class MainRule(MappingRule):
     #http://dragonfly.readthedocs.org/en/latest
     
     # hardware management
-    "switch monitors":              Function(switch_monitors),
+    "(switch | change) monitors":              Function(switch_monitors),
     "(<volume_mode> [system] volume [to] <nnv> | volume <volume_mode> <nnv>)": Function(navigation.volume_control, extra={'nnv','volume_mode'}),
     
     # window management

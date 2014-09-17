@@ -27,7 +27,7 @@ cmd.map = {
 		"pipe symbol": 		            Text("|"),
 	    'space [<npn>]':                Key("space")* Repeat(extra="npn"),
     	"excite mark":                  Text("!"),
-    	"colon":						Text(":"),
+    	"cold":							Text(":"),
 		"(times | star)":				Key("asterisk"),
 		"question":						Text("?"),
 		"comma":						Text(","),
