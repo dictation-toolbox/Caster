@@ -9,7 +9,7 @@ noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added 
 cmd.map = {
            	# Spoken-form    ->    ->    ->     Action object
 			
-		"semi":							Key("semicolon"),		
+		"semi (cult | cold)":			Key("semicolon"),		
         "quotes":						Key("dquote,dquote,left"),
         "thin quotes":					Key("apostrophe,apostrophe,left"),	           
      	"[is] greater than":			Key("rangle"),

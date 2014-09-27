@@ -30,7 +30,7 @@ cmd.map = {
      	   	
      	   	"make link":				Text("<a href=''></a>")+  Key("left/10:6"),
      	   	
-     	   	
+     	   	"span":						Text("<span></span>")+  Key("left/10:7"),
 	   
        
      	   

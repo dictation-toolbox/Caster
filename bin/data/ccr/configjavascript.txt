@@ -13,11 +13,17 @@ cmd.map = {
 		"score <text>":				Function(ccr.score, extra="text"),		
        "ja <text>":					Function(ccr.camel_case, extra="text"),	
 		
-		"timer":					Text("setInterval()"),
+		"timer":					Text("setInterval()")+Key("left"),
+		"timeout":					Text("setTimeout()")+Key("left"),
 		"print":					Text("console.log()")+Key("left"),
 		"document":					Text("document"),
 		"index of":					Text(".indexOf()")+Key("left"),
 		"has own property":			Text(".hasOwnProperty()")+Key("left"),
+		"length":					Text("length"),
+		"self":						Text("self"),
+		"push":						Text("push"),
+		"undefined":				Text("undefined"),
+		"inner HTML":				Text("innerHTML"),
 		
  	   "import":					Text( "import " ),
 		"null":						Text("null"),
@@ -31,12 +37,12 @@ cmd.map = {
         
         #continue working from here
         "if":						Text("if (){}")+Key("left, enter:2, up"),
+        "short form if":			Text("if()")+Key("left"),
         "else":						Text("else {}")+Key("left, enter:2, up"),
         
         "abstract":					Text("abstract"),
         "case":						Text("case :")+Key("left"),
         "continue":					Text("continue"),
-        "extends":					Text("extends "),
         "import":					Text("import "),
         "short":					Text("short "),
         "this":						Text("this"),
