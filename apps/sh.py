@@ -23,7 +23,7 @@ class CommandRule(MappingRule):
         "add":              Text( "git add ." )+Key("enter"),
         "status":           Text( "git status" )+Key("enter"),
         "commit":           Text( "git commit -am ''" )+Key("left"),
-        "push":             Text( "git push" )+Key("enter"),
+        "(get push | push)":Text( "git push" )+Key("enter"),
         "pull":             Text( "git pull" )+Key("enter"),
         "CD up":            Text( "cd .." )+Key("enter"),
         "CD":               Text( "cd " ),

@@ -18,7 +18,7 @@ cmd.map = {
      	    "div":						Text("<div></div>")+  Key("left/10:6"),
 			"subscript":				Text("<sub></sub>")+  Key("left/10:6"),     	   
      	   	"superscript":				Text("<sup></sup>")+  Key("left/10:6"),
-     	   	"be are":					Text("<br>"),
+     	   	"(be are | BR)":			Text("<br>"),
      	   	
      	   	"table":					Text("<table>")+ Key("enter")+Text("<tr>")+ Key("enter")+Text("<td></td>")+Key("enter")+Text("</tr>")+Key("enter")+Text("</table>"),
      	   	"tee are":					Text("<tr></tr>"),
@@ -32,7 +32,9 @@ cmd.map = {
      	   	
      	   	"span":						Text("<span></span>")+  Key("left/10:7"),
 	   
-       
+       		"checkbox":					Text("<input type=\"checkbox\">"),
+       		"label":					Text("<label>"),
+       		"close tag":				Key("c-left/10:2"),
      	   
           }
 
