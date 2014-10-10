@@ -28,6 +28,9 @@ cmd.map = {
         "or":                       Text(" or "),
         "not":                      Text(" not "),
         "in":                       Text(" in "),
+        "with":						Text("with "),
+        "open file":				Text("open('filename','r') as f:"),
+        "read lines":				Text("content = f.readlines()"),
         
         "if":                       Key("i,f,space,colon,left"),
         "else if":                  Key("e,l,i,f,space,colon,left"),

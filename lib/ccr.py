@@ -34,11 +34,11 @@ def change_CCR(enable_disable, ccr_mode):
     models = get_models(mode if enable else "")
     
     active_modes = get_active_modes()
-    master_model=CCRFile()
+    master_model = CCRFile()
     override_mode = True
     report = False
     
-    if len(models[1])>1:
+    if len(models[1]) > 1:
         raise Exception("you need to go back into the compatibility section and check the incoming modes against themselves")
     
     
@@ -54,7 +54,7 @@ def change_CCR(enable_disable, ccr_mode):
                         incompatibilities.append((current.name, incoming.name))
                         break
                 for line in incoming.defaults:
-                    if line in current.defaults and line.strip()!="}),":
+                    if line in current.defaults and line.strip() != "}),":
                         if report:
                             utilities.report("CCR incompatibility found (defaults): " + line)
                         incompatibilities.append((current.name, incoming.name))
@@ -71,13 +71,13 @@ def change_CCR(enable_disable, ccr_mode):
 #                             utilities.report("CCR incompatibility found (others): " + line)
 #                         incompatibilities.append((current.name, incoming.name))
                         
-        if override_mode:# remove current mode(s) which is(/are) incompatible with new mode(s)
+        if override_mode:  # remove current mode(s) which is(/are) incompatible with new mode(s)
             if len(incompatibilities) > 0:
                 for incompatibility in incompatibilities:
                     if incompatibility[0] in active_modes:
                         active_modes.remove(incompatibility[0])
         
-        active_modes.append(mode)#active_modes is now the master list of stuff that should go in
+        active_modes.append(mode)  # active_modes is now the master list of stuff that should go in
         
     
     else:
@@ -88,20 +88,20 @@ def change_CCR(enable_disable, ccr_mode):
         if not m.name in active_modes:
             all_models.remove(m)
     for model in all_models:
-        master_model.mapping+=model.mapping
-        master_model.extras+=model.extras
-        master_model.defaults+=model.defaults
-        master_model.other+=model.other    
+        master_model.mapping += model.mapping
+        master_model.extras += model.extras
+        master_model.defaults += model.defaults
+        master_model.other += model.other    
             
     # Make the combined file
-    success=combine_CCR_files(master_model)
+    success = combine_CCR_files(master_model)
     
     
     # If compatibility success failed, no need to worry about writing the config file wrong
     if success:
         config_settings = settings.get_settings()
         for s in config_settings:
-            config_settings[s]=s in active_modes
+            config_settings[s] = s in active_modes
         settings.save_config()
         # Now, toss the old grammar and make a new one
         unload()
@@ -367,4 +367,14 @@ def format_ecma_loop(looptype, text, condition, increment):
         Key("left, enter/5:2, up")._execute()
         time.sleep(0.05)
     elif lt == "each":
-        print "for each not implemented"
+        language_dependent = None
+        config_settings = settings.get_settings()
+        if config_settings["java"]:
+            language_dependent = "for (PARAMETER " + letter + " : PARAMETER){}"
+        elif config_settings["javascript"]:
+            language_dependent = "for (var " + letter + " in PARAMETER){}"
+        else:
+            language_dependent = "please_configure_language"
+        Text(language_dependent)._execute()
+        Key("left, enter/5:2, up")._execute()
+        time.sleep(0.05)
