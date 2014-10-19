@@ -38,6 +38,7 @@ cmd.map = {
         
         "convert to string":		Text("str()")+ Key("left"),
         "convert to integer":		Text("int()")+ Key("left"),
+        "convert to float":			Text("float()")+ Key("left"),
         "length":					Text("len()")+ Key("left"),
         
         

@@ -2,10 +2,10 @@
     "alphabet": true, 
     "html": false, 
     "java": false, 
-    "javascript": true, 
+    "javascript": false, 
     "navigation": true, 
     "pascal": false, 
     "php": false, 
     "punctuation": true, 
-    "python": false
+    "python": true
 }

@@ -13,7 +13,8 @@ unins000.*
 build/
 tcl/
 data/log.txt
-bin/monitors.txt
+bin/monitorscans/
+bin/legion_signatures/
 bin/data/ccr/unified/config.txt
 
 # Ignore natlink files
@@ -31,5 +32,7 @@ bin/homebrew/element/
 bin/homebrew/alarm/
 bin/homebrew/CustomGrid/
 bin/media/
+lib/TiRG_Python_20110202.py
+bin/data/legion_signatures/
 
 

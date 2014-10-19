@@ -28,6 +28,8 @@ cmd.map = {
 	'save':                         Key("c-s"),
     'scratch':                      Playback([(["scratch", "that"], 0.0)]),
     'enter [<nnv>]':                Key("enter")* Repeat(extra="nnv"),
+    "(F to | F2)":					Key("f2"),
+    "(F six | F6)":					Key("f6"),
     "down [<nnv>]":                 Key("down") * Repeat(extra="nnv"),
     "up [<nnv>]":                   Key("up") * Repeat(extra="nnv"),
     "left [<nnv>]":                 Key("left") * Repeat(extra="nnv"),

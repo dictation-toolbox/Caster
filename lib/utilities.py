@@ -1,15 +1,20 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from datetime import datetime
+import natlink, shutil
 import os, json, sys, errno, stat, io, time
-import natlink,shutil
+
 from dragonfly import Key, BringApp
 import win32gui, win32process, win32api, win32ui
+
 import paths
 
 
 MULTI_CLIPBOARD = {}
 LAST_RESULT = None
+STORE_LAST_RESULT = False
+DICTATION_CACHE = []
 
 def window_exists(classname, windowname):
     try:
@@ -42,22 +47,22 @@ def get_window_by_title(title):
 
 def clear_pyc():
     try:
-        for dirpath, dirnames, files in os.walk(paths.BASE_PATH):#os.walk produces a list of 3-tuples
+        for dirpath, dirnames, files in os.walk(paths.BASE_PATH):  # os.walk produces a list of 3-tuples
             if r"MacroSystem\.git" in dirpath or r"MacroSystem\core" in dirpath:
                 continue
             for f in files:
                 if f.endswith(".pyc"):
-                    f=os.path.join(dirpath, f)
+                    f = os.path.join(dirpath, f)
                     os.remove(f)
                     report("Deleted: " + f)
     except Exception:
         report(list_to_string(sys.exc_info()))
             
 def get_list_of_individual_config_files():
-    results=[]
+    results = []
     for f in os.listdir(paths.GENERIC_CONFIG_PATH):
         if f.endswith(".txt"):
-            results.append(f.replace("config","").replace(".txt",""))
+            results.append(f.replace("config", "").replace(".txt", ""))
     return results
     
 
@@ -103,49 +108,35 @@ def report(message, speak=False, console=True, log=False):
 def list_to_string(l):
     return "\n".join([str(x) for x in l])
 
-def py2exe_compile(choice):  # requires the file to be compiled to be in the macrosystem folder
-    dirname = str(choice)
-    
-    try:
-        # -1, shut down the process just in case it was open
-        BringApp(paths.PSKILL_PATH, dirname + ".exe")._execute()
-        # zero, check to see if the target directory exists, if it does delete it
-        
-        target_location = paths.HOMEBREW_PATH + "\\" + dirname
-        if os.path.isdir(target_location):
-            shutil.rmtree(target_location, ignore_errors=False, onerror=handle_remove_readonly)
-        # first, copy all the files needed- standard stuff plus utilities, paths, and whatever is getting turned into an executable
-        if not os.path.exists(target_location + "\\dist"):
-            os.makedirs(target_location)
-            os.makedirs(target_location + "\\dist")
-        for fb in ["utilities.py", "paths.py", "settings.py"]:  # base path
-            shutil.copyfile(paths.BASE_PATH + fb, target_location + "\\" + fb)
-        for fp in ["compile.bat", "icon.ico", "msvcp90.dll", "msvcr90.dll"]:  # py2exe path
-            shutil.copyfile(paths.PY2EXE_PATH + "\\" + fp, target_location + "\\" + fp)
-        shutil.copyfile(paths.PY2EXE_PATH + "\\" + dirname + "_run.py", target_location + "\\run.py")
-        if not dirname == "CustomGrid":
-            shutil.copyfile(paths.BASE_PATH + "lib\\dptools\\" + dirname + ".py", target_location + "\\" + dirname + ".py")
-        else:
-            shutil.copyfile(paths.BASE_PATH + "dptools\\" + dirname + ".py", target_location + "\\" + dirname + ".py")
-            for fcg in ["argparse.py", "_keyCodes.py", "_myclickLocations.py", "_mycommon.py"]:
-                shutil.copyfile("C:\\NatLink\\NatLink\\MacroSystem\\dptools\\" + fcg, target_location + "\\" + fcg)
-        # next, copy any additional required files
-        if dirname == "element":
-            os.makedirs(target_location + "\\dist\\data")
-            shutil.copyfile(paths.PY2EXE_PATH + "\\" + "tk85.dll", target_location + "\\dist\\tk85.dll")
-            shutil.copyfile(paths.PY2EXE_PATH + "\\" + "tcl85.dll", target_location + "\\dist\\tcl85.dll")
+def current_time_to_string():
+    return datetime.now().strftime("%Y%m%d%H%M%S")
 
-        # run the batch file
-        time.sleep(1)
-        os.chdir(target_location)
-        BringApp(target_location + "\\compile.bat")._execute()
-    except Exception:
-        report(list_to_string(sys.exc_info()))
-        
-def handle_remove_readonly(func, path, exc):  # for use with py2exe_compile 
-    excvalue = exc[1]
-    if func in (os.rmdir, os.remove) and excvalue.errno == errno.EACCES:
-        os.chmod(path, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)  # 0777
-        func(path)
-    else:
-        raise
+def get_most_recent(path, extension):
+    recent=0
+    for f in os.listdir(path):
+        if f.endswith(extension):
+            cur=int(f)
+            if cur>recent:
+                recent=cur
+    if recent==0:
+        return None
+    return str(recent)+extension
+
+def clean_temporary_files():
+    temp_folders=[paths.MONITOR_INFO_PATH, paths.LEGION_SIGNATURE_PATH]
+    for p in temp_folders:
+        if os.path.exists(p):
+            for f in os.listdir(p):
+                os.remove(p+f)
+
+def py2exe_compile(choice):
+    # the contents of this function have been replaced by instructions to do it manually
+    #
+    # copy generic dependencies: something_run.py, ["utilities.py", "paths.py", "settings.py"], ["compile.bat", "icon.ico", "msvcp90.dll", "msvcr90.dll"]
+    # rename something_run.py to run.py
+    # copy the python file
+    # copy specific dependencies 
+    # (dptools requires ["argparse.py", "_keyCodes.py", "_myclickLocations.py", "_mycommon.py"])
+    # (element requires "tk85.dll", "tcl85.dll")
+    # run the batch file compile.bat
+    print "this function has been removed "
