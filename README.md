@@ -36,6 +36,7 @@ other dragonfly repositories
  - https://github.com/ccrusius/dragonfly-modules
  - https://github.com/Mozillion/SublimeSpeech
  - https://github.com/haughki/MyDragonfly
+ - https://github.com/danielgm/JarvisGrammars
 
 open source and commercial Dragon add-ons
 --
