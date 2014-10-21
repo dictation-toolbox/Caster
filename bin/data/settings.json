@@ -1,11 +1,14 @@
 {
-    "alphabet": true, 
-    "html": false, 
-    "java": false, 
-    "javascript": false, 
-    "navigation": true, 
-    "pascal": false, 
-    "php": false, 
-    "punctuation": true, 
-    "python": true
+    "ccr": {
+        "alphabet": false, 
+        "html": false, 
+        "java": false, 
+        "javascript": false, 
+        "navigation": false, 
+        "pascal": false, 
+        "php": false, 
+        "punctuation": false, 
+        "python": false
+    }, 
+    "last_monitor_was_flipped": true
 }

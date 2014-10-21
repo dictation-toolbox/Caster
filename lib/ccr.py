@@ -99,7 +99,7 @@ def change_CCR(enable_disable, ccr_mode):
     
     # If compatibility success failed, no need to worry about writing the config file wrong
     if success:
-        config_settings = settings.get_settings()
+        config_settings = settings.SETTINGS["ccr"]
         for s in config_settings:
             config_settings[s] = s in active_modes
         settings.save_config()
@@ -111,7 +111,7 @@ def change_CCR(enable_disable, ccr_mode):
         utilities.report("failed to initialize " + ccr_mode, speak=True)
 
 def get_active_modes():
-    config_settings = settings.get_settings()
+    config_settings = settings.SETTINGS["ccr"]
     results = []
     for s in config_settings:
         if config_settings[s] == True:
@@ -368,7 +368,7 @@ def format_ecma_loop(looptype, text, condition, increment):
         time.sleep(0.05)
     elif lt == "each":
         language_dependent = None
-        config_settings = settings.get_settings()
+        config_settings = settings.SETTINGS["ccr"]
         if config_settings["java"]:
             language_dependent = "for (PARAMETER " + letter + " : PARAMETER){}"
         elif config_settings["javascript"]:

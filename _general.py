@@ -29,60 +29,53 @@ def flip():
         Playback([(["choose", "two"], 0.0)])._execute()
 
 def switch_monitors():
-    debug = True
+    debug = False
     try:
-        if not os.path.exists(paths.MONITOR_INFO_PATH):
-            os.makedirs(paths.MONITOR_INFO_PATH)
-        monitor_scan_path = paths.MONITOR_INFO_PATH + utilities.current_time_to_string() + ".txt"
-        BringApp(paths.MMT_PATH, r"/stext", monitor_scan_path)._execute()
-        time.sleep(1)
-        content = None
-        with codecs.open(monitor_scan_path, "r", encoding="utf-16") as f:
-            content = f.readlines()
-        is_active = False
-        active_monitors = []
-        inactive_monitors = []
-        resolution = None
-        # Maximum Resolution: 1600 X 900
-        for line in content:
-            line = line.replace(" ", "")
-            if line.startswith("Maximum"):
-                line = line.split(":")[1]
-                rwh = line = line.split("X")
-                resolution = (int(rwh[0]), int(rwh[1]))
-            elif line.startswith("Active"):
-                line = line.split(":")[1]
-                is_active = line.startswith("Yes")
-            elif line.startswith("Name"):
-                line = line.split(":")[1]
-                if is_active:
-                    active_monitors.append(line.replace("\r\n", ""))
-                else:
-                    inactive_monitors.append((line.replace("\r\n", ""), resolution))
+        do_flip=settings.SETTINGS["last_monitor_was_flipped"]
+        monitors=utilities.parse_monitor_scan(utilities.scan_monitors())
+        
         if debug:
             print "active: "
-            print active_monitors
+            print monitors["active"]
             print "inactive: "
-            print inactive_monitors
-        how_many_active = len(active_monitors)
-        how_many_inactive = len(inactive_monitors)
-        if how_many_active == 1 and how_many_inactive > 0:
-            BringApp(paths.MMT_PATH, r"/switch", inactive_monitors[0][0])._execute()
+            print monitors["inactive"]
+        #to do: stop hard coding it using the second monitor
+        if len(monitors["active"]) == 1 and len(monitors["inactive"]) > 0:
+            # preserve orientation information
+            settings.SETTINGS["last_monitor_was_flipped"]=monitors["active"][0]["orientation"].startswith("180")
+            settings.save_config()
+            
+            # activate the inactive monitor
+            BringApp(paths.MMT_PATH, r"/switch", monitors["inactive"][0]["name"])._execute()
             time.sleep(2)
-            BringApp(paths.MMT_PATH, r"/switch", active_monitors[0])._execute()
+            
+            # set the orientation
+            if do_flip:
+                BringApp(paths.MMT_PATH, r"/SetOrientation", monitors["inactive"][0]["name"], "180")._execute()
+            else:
+                BringApp(paths.MMT_PATH, r"/SetOrientation", monitors["inactive"][0]["name"], "0")._execute()
+            time.sleep(10)
+            
+            # deactivate the active monitor
+            BringApp(paths.MMT_PATH, r"/switch", monitors["active"][0]["name"])._execute()
             time.sleep(2)
-            BringApp(paths.NIRCMD_PATH, "setdisplay", str(inactive_monitors[0][1][0]), str(inactive_monitors[0][1][1]), "32")._execute()
+            
+            # set the resolution
+            BringApp(paths.NIRCMD_PATH, "setdisplay", str(monitors["inactive"][0]["resolution"][0]), str(monitors["inactive"][0]["resolution"][1]), "32")._execute()
+#             time.sleep(10)
+            
+
         # other cases go here
     except Exception:
         utilities.report(utilities.list_to_string(sys.exc_info()))
-            
+        #
     
 class MainRule(MappingRule):
     
     @staticmethod
     def generate_CCR_choices():
         choices = {}
-        for ccr_choice in utilities.get_list_of_individual_config_files():
+        for ccr_choice in utilities.get_list_of_ccr_config_files():
             choices[ccr_choice] = ccr_choice
         return Choice("ccr_mode", choices)
     

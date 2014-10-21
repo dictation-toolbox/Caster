@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import codecs
 from datetime import datetime
 import natlink, shutil
 import os, json, sys, errno, stat, io, time
@@ -58,7 +59,7 @@ def clear_pyc():
     except Exception:
         report(list_to_string(sys.exc_info()))
             
-def get_list_of_individual_config_files():
+def get_list_of_ccr_config_files():
     results = []
     for f in os.listdir(paths.GENERIC_CONFIG_PATH):
         if f.endswith(".txt"):
@@ -112,22 +113,62 @@ def current_time_to_string():
     return datetime.now().strftime("%Y%m%d%H%M%S")
 
 def get_most_recent(path, extension):
-    recent=0
+    recent = 0
     for f in os.listdir(path):
         if f.endswith(extension):
-            cur=int(f)
-            if cur>recent:
-                recent=cur
-    if recent==0:
+            cur = int(f)
+            if cur > recent:
+                recent = cur
+    if recent == 0:
         return None
-    return str(recent)+extension
+    return str(recent) + extension
 
 def clean_temporary_files():
-    temp_folders=[paths.MONITOR_INFO_PATH, paths.LEGION_SIGNATURE_PATH]
+    temp_folders = [paths.MONITOR_INFO_PATH, paths.LEGION_SIGNATURE_PATH]
     for p in temp_folders:
         if os.path.exists(p):
             for f in os.listdir(p):
-                os.remove(p+f)
+                os.remove(p + f)
+
+def scan_monitors():
+    if not os.path.exists(paths.MONITOR_INFO_PATH):
+        os.makedirs(paths.MONITOR_INFO_PATH)
+    monitor_scan_path = paths.MONITOR_INFO_PATH + current_time_to_string() + ".txt"
+    BringApp(paths.MMT_PATH, r"/stext", monitor_scan_path)._execute()
+    time.sleep(1)
+    return monitor_scan_path
+
+def parse_monitor_scan(monitor_scan_path):
+    monitors = {"active": [], "inactive": []}
+#     content = None
+    with codecs.open(monitor_scan_path, "r", encoding="utf-16") as f:
+        content = f.readlines()
+#     is_active = False
+#     active_monitors = []
+#     inactive_monitors = []
+#     resolution = None
+    current_monitor = None
+    # Maximum Resolution: 1600 X 900
+    # remote_debug()
+    for line in content:
+        line = line.replace(" ", "")
+        if line.startswith("Resolution"):
+            current_monitor = {"resolution":(1600 , 900), "maximum":None, "active":False, "name":""}
+        elif line.startswith("Orientation"):
+            current_monitor["orientation"] = line.split(":")[1]
+        elif line.startswith("Maximum"):
+            current_monitor["maximum"] = line.split(":")[1].split("X")
+            current_monitor["maximum"][0] = int(current_monitor["maximum"][0])
+            current_monitor["maximum"][1] = int(current_monitor["maximum"][1].replace("\r\n", ""))
+        elif line.startswith("Active"):
+            current_monitor["active"] = line.split(":")[1].startswith("Yes")
+        elif line.startswith("Name"):
+            current_monitor["name"] = line.split(":")[1].replace("\r\n", "")
+            if current_monitor["active"]:
+                monitors["active"].append(current_monitor)
+            else:
+                monitors["inactive"].append(current_monitor)
+    return monitors
 
 def py2exe_compile(choice):
     # the contents of this function have been replaced by instructions to do it manually

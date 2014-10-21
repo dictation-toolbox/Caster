@@ -10,7 +10,7 @@ cmd.map = {
            	# Spoken-form    ->    ->    ->     Action object
 			
      	    #military alphabet
-		    "ashy": Key("a"),
+		    "(alpha | ashy)": Key("a"),
 		    "bravo": Key("b"),
 		    "charlie": Key("c"),
 		    "delta": Key("d"),
@@ -38,7 +38,7 @@ cmd.map = {
 		    "Zulu": Key("z"),
 	   
        	
-					 "big ashy"    : Key("A"),
+					 "big (alpha | ashy)"    : Key("A"),
 					 "big bravo"    : Key("B"),
 					 "big Charlie"  : Key("C"),
 					 

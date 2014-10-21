@@ -1,12 +1,12 @@
-#Based heavily on the work of https://github.com/poppe1219/dragonfly-scripts/blob/master/lib/config.py
+# Based heavily on the work of https://github.com/poppe1219/dragonfly-scripts/blob/master/lib/config.py
 from lib import utilities
 import paths
 
 SETTINGS_PATH = paths.SETTINGS_PATH
-SETTINGS = {}  # Empty, default config.
-SPEAK = False # to do,: add this value to the config
-ELEMENT_VERSION="Element v.04"
-DISPEL_VERSION="Dispel v.02"
+SETTINGS = {"ccr":{}, "monitors":[]}  # Empty, default config.
+SPEAK = False  # to do,: add this value to the config
+ELEMENT_VERSION = "Element v.04"
+DISPEL_VERSION = "Dispel v.02"
 
 def save_config():
     global SETTINGS
@@ -22,12 +22,20 @@ def load_settings():
 def init_default_values():
     global SETTINGS
     valueChangeCount = 0
-    defaultValues = []
-    for c in utilities.get_list_of_individual_config_files():
-        defaultValues.append((c,False))
-    for (name, value) in defaultValues:
-        if not name in SETTINGS.keys():
-            SETTINGS[name] = value
+    ccrNames = []
+    for c in utilities.get_list_of_ccr_config_files():
+        ccrNames.append((c, False))
+    #
+    if not "ccr" in SETTINGS.keys():  # enter
+        SETTINGS["ccr"] = {}
+        valueChangeCount += 1
+    if not "last_monitor_was_flipped" in SETTINGS.keys():  # enter
+        SETTINGS["last_monitor_was_flipped"] = False
+        valueChangeCount += 1
+    #
+    for (name, value) in ccrNames:
+        if not name in SETTINGS["ccr"]:  # .keys()
+            SETTINGS["ccr"][name] = value
             valueChangeCount += 1
     if valueChangeCount > 0:
         save_config()
