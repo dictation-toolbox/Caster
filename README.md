@@ -37,6 +37,7 @@ other dragonfly repositories
  - https://github.com/Mozillion/SublimeSpeech
  - https://github.com/haughki/MyDragonfly
  - https://github.com/danielgm/JarvisGrammars
+ - https://github.com/tgrosinger/aenea-grammars (aenea)
 
 open source and commercial Dragon add-ons
 --
