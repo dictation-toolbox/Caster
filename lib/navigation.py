@@ -10,6 +10,10 @@ BASE_PATH = paths.BASE_PATH
 MMT_PATH = paths.MMT_PATH
 NIRCMD_PATH = paths.NIRCMD_PATH
 
+def chain(textnv):
+    chainable= str(textnv).split(" ")
+    Playback([(chainable, 0.0)]).execute()
+
 def initialize_clipboard():
     utilities.MULTI_CLIPBOARD = utilities.load_json_file(paths.SAVED_CLIPBOARD_PATH)
 

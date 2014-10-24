@@ -81,7 +81,6 @@ class MainRule(MappingRule):
     
     mapping = {
     # Dragon NaturallySpeaking management
-    "test Legion":                  Function(legion.get_screen_signature),
     'refresh directory':            Function(utilities.clear_pyc),
 	'(lock Dragon | deactivate)':   Playback([(["go", "to", "sleep"], 0.0)]),
     '(number|numbers) mode':        Playback([(["numbers", "mode", "on"], 0.0)]),
@@ -102,11 +101,12 @@ class MainRule(MappingRule):
     "flip":                         Function(flip),
     'minimize':                     Playback([(["minimize", "window"], 0.0)]),
     'maximize':                     Playback([(["maximize", "window"], 0.0)]),
+    "remax":                        Key("a-space/10,r/10,a-space/10,x"), 
     
     # development related
     "open natlink folder":          BringApp("explorer", "C:\NatLink\NatLink\MacroSystem"),
-    "compile <choice>":             Function(utilities.py2exe_compile, extra={"choice"}),
     "reserved word <text>":         Key("dquote,dquote,left") + Text("%(text)s") + Key("right, colon, tab/5:5") + Text("Text(\"%(text)s\"),"),
+    "test Legion":                  Function(legion.get_screen_signature),
     
     # passwords
     'hash password <text> <text2> <text3>':                    Function(password.hash_password, extra={'text', 'text2', 'text3'}),

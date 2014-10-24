@@ -1,4 +1,7 @@
 from dragonfly import *
+release = Key("shift:up, ctrl:up")
+noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added on the right side
+from dragonfly import *
 from lib import ccr
 release = Key("shift:up, ctrl:up")
 noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added on the right side
@@ -8,10 +11,38 @@ noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added 
 from dragonfly import *
 from lib import navigation, paths, context
 navigation.initialize_clipboard()
-from dragonfly import *
-release = Key("shift:up, ctrl:up")
-noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added on the right side
 cmd.map= {
+		"semi (cult | cold)":			Key("semicolon"),		
+        "quotes":						Key("dquote,dquote,left"),
+        "thin quotes":					Key("apostrophe,apostrophe,left"),	           
+     	"[is] greater than":			Key("rangle"),
+     	"[is] less than":				Key("langle"),
+     	"[is] greater [than] [or] equal [to]":				   Key("rangle, equals"),
+     	"[is] less [than] [or] equal [to]":				   Key("langle, equals"),
+     	"[is] equal to":		    	Key("equals,equals"),
+        "(equals | leak)":              Key("equals"),
+        "pair":                     	Text("()")+ Key("left"),
+        "[square] (bracket | brackets)":Text("[]")+ Key("left"),
+        "curly":                    	Text("{}")+ Key("left"),
+        "angle":                    	Text("<>")+ Key("left"),
+        "plus":							Text("+"),
+        "minus":						Text("-"),
+		"pipe symbol": 		            Text("|"),
+	    'space [<npn>]':                Key("space")* Repeat(extra="npn"),
+    	"excite mark":                  Text("!"),
+    	"cold":							Text(":"),
+		"(times | star)":				Key("asterisk"),
+		"question":						Text("?"),
+		"comma":						Text(","),
+		"carrot":						Text("^"),					 
+		"(period | dot)":				Text("."),
+		"at sign":						Text("@"),
+		"apostrophe":					Text("'"),
+		"underscore":					Text("_"),		
+		"backslash":					Text("\\"),
+		"slash":						Text("/"),
+	    'tabby [<npn>]':                Key("tab")* Repeat(extra="npn"),
+	    "boom":							Text(", "),				     	   
 		"score <text>":				Function(ccr.score, extra="text"),		
  	   "import":					Text( "import " ),
  	   "from":						Text( "from " ),
@@ -143,39 +174,10 @@ cmd.map= {
     "(cancel | escape)":            Key("escape"),
     'auto <mode> <textnv> [go]':    Function(navigation.auto_spell, extra={"mode","textnv"}),
     "wait":							Pause("100"),
-		"semi (cult | cold)":			Key("semicolon"),		
-        "quotes":						Key("dquote,dquote,left"),
-        "thin quotes":					Key("apostrophe,apostrophe,left"),	           
-     	"[is] greater than":			Key("rangle"),
-     	"[is] less than":				Key("langle"),
-     	"[is] greater [than] [or] equal [to]":				   Key("rangle, equals"),
-     	"[is] less [than] [or] equal [to]":				   Key("langle, equals"),
-     	"[is] equal to":		    	Key("equals,equals"),
-        "(equals | leak)":              Key("equals"),
-        "pair":                     	Text("()")+ Key("left"),
-        "[square] (bracket | brackets)":Text("[]")+ Key("left"),
-        "curly":                    	Text("{}")+ Key("left"),
-        "angle":                    	Text("<>")+ Key("left"),
-        "plus":							Text("+"),
-        "minus":						Text("-"),
-		"pipe symbol": 		            Text("|"),
-	    'space [<npn>]':                Key("space")* Repeat(extra="npn"),
-    	"excite mark":                  Text("!"),
-    	"cold":							Text(":"),
-		"(times | star)":				Key("asterisk"),
-		"question":						Text("?"),
-		"comma":						Text(","),
-		"carrot":						Text("^"),					 
-		"(period | dot)":				Text("."),
-		"at sign":						Text("@"),
-		"apostrophe":					Text("'"),
-		"underscore":					Text("_"),		
-		"backslash":					Text("\\"),
-		"slash":						Text("/"),
-	    'tabby [<npn>]':                Key("tab")* Repeat(extra="npn"),
-	    "boom":							Text(", "),				     	   
+    "channel <textnv>":				Function(navigation.chain, extra="textnv"),
 }
 cmd.extras= [
+			IntegerRef("npn", 0, 100),
             IntegerRef("n", 0, 100),
             IntegerRef("n2", 0, 100),
             IntegerRef("n3", 0, 100),
@@ -210,11 +212,10 @@ cmd.extras= [
                 {"left": "left", "back": "back", "top": "top", "bottom": "bottom", 
                  "right": "right", "home": "home", "end": "end", "away": "end",
                 }),
-			IntegerRef("npn", 0, 100),
 ]
 cmd.defaults= {
+			"npn": 1,
             "n": 1,
 			"nnv": 1,"n2nv": 1,"textnv": "", "n5nv":5, "color_mode":"right", "fly_mode":"right",
            	"direction2":"", 
-			"npn": 1,
 }
