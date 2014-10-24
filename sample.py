@@ -1,8 +1,9 @@
 
+# These lines that start with the # are called comments. They don't affect the way the code runs.
+# In this tutorial file, I put comments above the relevant lines.
 
 
-
-# It's worth noting that the name of this file, sample.py, will cause it to never run.
+# Before we begin, it's worth noting that the name of this file, sample.py, will cause it to never run.
 # You will have to rename it to "_sample.py".
 # Putting an underscore as the first character of a grammar Python file will tell dragonfly
 # that you want  this file to run all the time. Grammars that run all the time are good way to start.
@@ -10,7 +11,7 @@
 
 
 
-
+# You can skip down to the next comment, none of this stuff is really important...
 
 from dragonfly import (BringApp, Key, Function, Grammar, Playback,
                        IntegerRef, Dictation, Choice, WaitWindow, MappingRule, Text)
@@ -48,9 +49,9 @@ class MainRule(MappingRule):
     
     # If you need to do more complicated tasks, or use external resources, a function might be what you need.
     # note that here, I'm using extras: "n" and "text"
-    # the angle brackets <> meaning I'm using an extra, and the square brackets [] mean that I don't have to speak that word, it's optional
-    # advice: if you use an optional extra, like I am with "text", you should set a default value  in the defaults section down below
-    # to trigger the following command, you would have to say the word "function" followed by a number between 1 and 1000
+    # The angle brackets <> meaning I'm using an extra, and the square brackets [] mean that I don't have to speak that word, it's optional.
+    # Advice: if you use an optional extra, like I am with "text", you should set a default value  in the defaults section down below.
+    # To trigger the following command, you would have to say the word "function" followed by a number between 1 and 1000.
     '[use] function <n> [<text>]':    Function(my_function, extra={'n', 'text'}),
     
     
