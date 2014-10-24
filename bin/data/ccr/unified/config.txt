@@ -11,6 +11,9 @@ noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added 
 from dragonfly import *
 from lib import navigation, paths, context
 navigation.initialize_clipboard()
+from dragonfly import *
+release = Key("shift:up, ctrl:up")
+noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added on the right side
 cmd.map= {
 		"semi (cult | cold)":			Key("semicolon"),		
         "quotes":						Key("dquote,dquote,left"),
@@ -175,6 +178,25 @@ cmd.map= {
     'auto <mode> <textnv> [go]':    Function(navigation.auto_spell, extra={"mode","textnv"}),
     "wait":							Pause("100"),
     "channel <textnv>":				Function(navigation.chain, extra="textnv"),
+     	    "HTML":						Text("<html>" )+ Key("enter")+ Text("</html>")+ Key("up"),
+     	    "head":						Text("<head>" )+ Key("enter")+ Text("</head>")+ Key("up"),
+     	    "title":					Text("<title></title>")+  Key("left/10:8"),
+     	    "body":						Text("<body>" )+ Key("enter")+ Text("</body>")+ Key("up"),
+     	    "div":						Text("<div></div>")+  Key("left/10:6"),
+			"subscript":				Text("<sub></sub>")+  Key("left/10:6"),     	   
+     	   	"superscript":				Text("<sup></sup>")+  Key("left/10:6"),
+     	   	"(be are | BR)":			Text("<br>"),
+     	   	"table":					Text("<table>")+ Key("enter")+Text("<tr>")+ Key("enter")+Text("<td></td>")+Key("enter")+Text("</tr>")+Key("enter")+Text("</table>"),
+     	   	"tee are":					Text("<tr></tr>"),
+     	   	"tee D":					Text("<td></td>"),
+     	   	"bold":						Text("<b></b>")+  Key("left/10:4"),
+     	   	"italics":					Text("<i></i>")+  Key("left/10:4"),
+     	   	"underline":				Text("<u></u>")+  Key("left/10:4"),
+     	   	"make link":				Text("<a href=''></a>")+  Key("left/10:6"),
+     	   	"span":						Text("<span></span>")+  Key("left/10:7"),
+       		"checkbox":					Text("<input type=\"checkbox\">"),
+       		"label":					Text("<label>"),
+       		"close tag":				Key("c-left/10:2"),
 }
 cmd.extras= [
 			IntegerRef("npn", 0, 100),

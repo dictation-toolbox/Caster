@@ -2,11 +2,11 @@
 
 
 
-# it's worth noting that the name of this file, sample.py, will never trigger
-# you will have to rename it to _sample.py
-# putting an underscore as the first character of a grammar Python file will tell dragonfly
-# that you want  this file to run all the time-- that's a good place to start
-# the alternative is making grammars for specific programs that only trigger when the programs are active
+# It's worth noting that the name of this file, sample.py, will cause it to never run.
+# You will have to rename it to "_sample.py".
+# Putting an underscore as the first character of a grammar Python file will tell dragonfly
+# that you want  this file to run all the time. Grammars that run all the time are good way to start.
+# The alternative is making grammars for specific programs that only trigger when the programs are active.
 
 
 
@@ -27,8 +27,8 @@ class MainRule(MappingRule):
                
     # in the next line, there are two things to observe:
     # the first is the use of parentheses and the pipe symbol (|)
-    # this lets me use either "lock dragon" or "deactivate" to trigger that command
-    # the next is the playback action, which lets me tell Dragon to simulate me speaking some words    
+    # --this lets me use either "lock dragon" or "deactivate" to trigger that command.
+    # The next is the playback action, which lets me tell Dragon to simulate me speaking some words.
 	'(lock Dragon | deactivate)':   Playback([(["go", "to", "sleep"], 0.0)]),
     
     # Here I'm using BringApp-- this is the same as typing what goes in between the parentheses
@@ -46,7 +46,7 @@ class MainRule(MappingRule):
     # here I'm just saying one word to trigger some other words
     "hotel":                        Text("hotels are not cheap"),
     
-    # if you need to do more complicated tasks, or use external resources,, a function might be what you need.
+    # If you need to do more complicated tasks, or use external resources, a function might be what you need.
     # note that here, I'm using extras: "n" and "text"
     # the angle brackets <> meaning I'm using an extra, and the square brackets [] mean that I don't have to speak that word, it's optional
     # advice: if you use an optional extra, like I am with "text", you should set a default value  in the defaults section down below

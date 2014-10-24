@@ -1,7 +1,7 @@
 {
     "ccr": {
         "alphabet": true, 
-        "html": false, 
+        "html": true, 
         "java": false, 
         "javascript": false, 
         "navigation": true, 
@@ -10,5 +10,5 @@
         "punctuation": true, 
         "python": true
     }, 
-    "last_monitor_was_flipped": false
+    "last_monitor_was_flipped": true
 }
