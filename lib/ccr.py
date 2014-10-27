@@ -77,7 +77,7 @@ def change_CCR(enable_disable, ccr_mode):
                     if incompatibility[0] in active_modes:
                         active_modes.remove(incompatibility[0])
         
-        active_modes.append(mode)  # active_modes is now the master list of stuff that should go in
+        active_modes.append(purify_name(mode))  # active_modes is now the master list of stuff that should go in
         
     
     else:
@@ -110,12 +110,18 @@ def change_CCR(enable_disable, ccr_mode):
     else:
         utilities.report("failed to initialize " + mode, speak=True)
 
+def purify_name(name):
+    # fixes the problem of filenames having symbols the Dragon can't say in sequence, like C++
+    if " plus" in name:
+        name = name.replace(" plus", "+")
+    return name
+
 def get_active_modes():
     config_settings = settings.SETTINGS["ccr"]
     results = []
     for s in config_settings:
         if config_settings[s] == True:
-            results.append(s)
+            results.append(purify_name(s))
     return results
 
 def get_models(mode_1="", mode_2="", mode_3="", mode_4=""):
@@ -124,13 +130,8 @@ def get_models(mode_1="", mode_2="", mode_3="", mode_4=""):
     old_ccr_files = []
     new_ccr_file = []
     
-    def purify_name(name):
-        if " plus" in name:
-            name = name.replace(" plus", "+")
-        return name
-    
     for m in get_active_modes():
-        old_ccr_files.append(get_ccr_file(purify_name(m)))
+        old_ccr_files.append(get_ccr_file(m))
     for n in [mode_1, mode_2, mode_3, mode_4]:
         if n != "":
             n = purify_name(n)
