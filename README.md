@@ -26,6 +26,7 @@ dragonfly and natlink documentation
 
 other dragonfly repositories
 --
+ - https://github.com/dictation-toolbox
  - https://github.com/ccowan/code-by-voice
  - https://github.com/simianhacker/code-by-voice
  - https://github.com/davitenio/dragonfly-macros
