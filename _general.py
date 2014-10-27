@@ -75,6 +75,7 @@ class MainRule(MappingRule):
     @staticmethod
     def generate_CCR_choices():
         choices = {}
+#         utilities.remote_debug()
         for ccr_choice in utilities.get_list_of_ccr_config_files():
             choices[ccr_choice] = ccr_choice
         return Choice("ccr_mode", choices)

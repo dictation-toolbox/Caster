@@ -63,6 +63,7 @@ def get_list_of_ccr_config_files():
     results = []
     for f in os.listdir(paths.GENERIC_CONFIG_PATH):
         if f.endswith(".txt"):
+            f=f.replace("+", " plus")
             results.append(f.replace("config", "").replace(".txt", ""))
     return results
     
@@ -169,6 +170,15 @@ def parse_monitor_scan(monitor_scan_path):
             else:
                 monitors["inactive"].append(current_monitor)
     return monitors
+
+def subtract_matrices(matrix_a, matrix_b):
+    result = []
+    for i in xrange(len(matrix_a)):
+        tmp = []
+        for a, b in zip(matrix_a[i], matrix_b[i]):
+            tmp.append(a - b)
+        result.append(tmp[:])
+    return result[:]
 
 def py2exe_compile(choice):
     # the contents of this function have been replaced by instructions to do it manually

@@ -33,5 +33,6 @@ bin/homebrew/alarm/
 bin/homebrew/CustomGrid/
 bin/media/
 lib/TiRG_Python_20110202.py
+lib/dll/
 
 

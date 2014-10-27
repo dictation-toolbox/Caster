@@ -1,14 +1,15 @@
 {
     "ccr": {
+        "C plus plus": true, 
         "alphabet": true, 
-        "html": true, 
+        "html": false, 
         "java": false, 
         "javascript": false, 
         "navigation": true, 
         "pascal": false, 
         "php": false, 
         "punctuation": true, 
-        "python": true
+        "python": false
     }, 
-    "last_monitor_was_flipped": true
+    "last_monitor_was_flipped": false
 }

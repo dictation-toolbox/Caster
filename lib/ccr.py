@@ -40,7 +40,7 @@ def change_CCR(enable_disable, ccr_mode):
     
     if len(models[1]) > 1:
         raise Exception("you need to go back into the compatibility section and check the incoming modes against themselves")
-    
+    # Enable C++
     
     if enable:
         # check for compatibility
@@ -106,9 +106,9 @@ def change_CCR(enable_disable, ccr_mode):
         # Now, toss the old grammar and make a new one
         unload()
         refresh()
-        utilities.report(str(enable_disable).capitalize() + "d " + ccr_mode, speak=True)
+        utilities.report(str(enable_disable).capitalize() + "d " + mode, speak=True)
     else:
-        utilities.report("failed to initialize " + ccr_mode, speak=True)
+        utilities.report("failed to initialize " + mode, speak=True)
 
 def get_active_modes():
     config_settings = settings.SETTINGS["ccr"]
@@ -124,10 +124,16 @@ def get_models(mode_1="", mode_2="", mode_3="", mode_4=""):
     old_ccr_files = []
     new_ccr_file = []
     
+    def purify_name(name):
+        if " plus" in name:
+            name = name.replace(" plus", "+")
+        return name
+    
     for m in get_active_modes():
-        old_ccr_files.append(get_ccr_file(m))
+        old_ccr_files.append(get_ccr_file(purify_name(m)))
     for n in [mode_1, mode_2, mode_3, mode_4]:
         if n != "":
+            n = purify_name(n)
             new_ccr_file.append(get_ccr_file(str(n)))
     return (old_ccr_files, new_ccr_file)
             
@@ -355,7 +361,9 @@ def format_ecma_loop(looptype, text, condition, increment):
     else:
         letter = "i"
     print lt
-        
+    
+    language_dependent = None
+    config_settings = settings.SETTINGS["ccr"]
     if lt == "letter":
         c = str(condition)
         if c == "":
@@ -363,12 +371,18 @@ def format_ecma_loop(looptype, text, condition, increment):
         i = str(increment)
         if i == "":
             i = "++"
-        Text("for (var " + letter + " = PARAMETER; " + letter + " " + c + " PARAMETER; " + letter + i + "){}")._execute()
+        if config_settings["javascript"]:
+            language_dependent = "for (var " + letter + " = PARAMETER; " + letter + " " + c + " PARAMETER; " + letter + i + "){}"
+        elif config_settings["C plus plus"]:
+            language_dependent = "for (int " + letter + " = PARAMETER; " + letter + " " + c + " PARAMETER; " + letter + i + "){}"
+        else:
+            language_dependent = "please_configure_language"
+        Text(language_dependent)._execute()
         Key("left, enter/5:2, up")._execute()
         time.sleep(0.05)
     elif lt == "each":
-        language_dependent = None
-        config_settings = settings.SETTINGS["ccr"]
+        
+        
         if config_settings["java"]:
             language_dependent = "for (PARAMETER " + letter + " : PARAMETER){}"
         elif config_settings["javascript"]:

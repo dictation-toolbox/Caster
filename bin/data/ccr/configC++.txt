@@ -1,0 +1,71 @@
+from dragonfly import *
+from lib import ccr
+
+release = Key("shift:up, ctrl:up")
+noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on")
+
+
+cmd.map = {
+           # Spoken-form    ->    ->    ->     Action object
+		"ja <text>":					Function(ccr.camel_case, extra="text"),
+		"for <looptype> [<text> [<condition>] [<increment>]]":	Function(ccr.format_ecma_loop, extra={"looptype", "text", "condition", "increment"}),
+		"score <text>":				Function(ccr.score, extra="text"),		
+		
+		"public":						Text("public "),
+		"private":						Text("private "),
+		"static":						Text("static "),
+		"final":						Text("final "),
+		
+		"name":							Text("::"),
+		"Dino Ray":						Text("vector<>")+ Key("left"),
+		"pushback":						Text("push_back"),
+		"include":						Text("#include"),
+		"standard":						Text("std"),
+		"reference parameter":			Text("&"),
+		"constant":						Text("const"),
+		
+				
+		"new":							Text("new "),
+		"integer":						Text("int "),
+		"double":						Text("double "),
+		"big integer":					Text("Integer"),
+		"convert to integer":			Text("int()")+ Key("left"),
+		"string":						Text("String "),
+		
+     	"switch":						Text("switch(){\ncase : break;\ndefault: break;")+Key("up,up,left,left"),
+     	"import":						Text( "import " ),
+     	"add comment":					Text( "//" ),
+        
+		"and":                          Text("&&"),
+        "or":                           Text("||"),
+        "if":                           Text("if() {")+Key("enter,up,left"),
+        "else block":                   Text("else {")+Key("enter"),
+        "ternary":                      Text("()?;") + (Key("left") * 3),
+			
+        "<njv> bark":                   Text("%(njv)d"),
+        "<njv> <n2jv> bark":            Text("%(njv)d%(n2jv)d"),
+        "<njv> <n2jv> <n3jv> bark":     Text("%(njv)d%(n2jv)d%(n3jv)d"),
+         
+	   
+     	   
+          }
+
+cmd.extras   = [
+            IntegerRef("njv", 0, 100),
+            IntegerRef("n2jv", 0, 100),
+            IntegerRef("n3jv", 0, 100),
+            Dictation("text"),
+            Choice("looptype",
+                    {"eye": "letter", "each": "each"
+                    }),
+              Choice("condition",
+                    {"greater than": ">", "less than": "<", "greater than [or] equal to": ">=", "less than [or] equal to": "<=", 
+                    }),
+              Choice("increment",
+                    {"plus": "++", "minus": "--"
+                    }),
+           ]
+cmd.defaults = {
+            "njv": 1,
+           }
+    

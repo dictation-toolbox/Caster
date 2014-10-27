@@ -2,18 +2,11 @@ from dragonfly import *
 release = Key("shift:up, ctrl:up")
 noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added on the right side
 from dragonfly import *
-from lib import ccr
-release = Key("shift:up, ctrl:up")
-noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added on the right side
-from dragonfly import *
 release = Key("shift:up, ctrl:up")
 noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added on the right side
 from dragonfly import *
 from lib import navigation, paths, context
 navigation.initialize_clipboard()
-from dragonfly import *
-release = Key("shift:up, ctrl:up")
-noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added on the right side
 cmd.map= {
 		"semi (cult | cold)":			Key("semicolon"),		
         "quotes":						Key("dquote,dquote,left"),
@@ -46,43 +39,6 @@ cmd.map= {
 		"slash":						Text("/"),
 	    'tabby [<npn>]':                Key("tab")* Repeat(extra="npn"),
 	    "boom":							Text(", "),				     	   
-		"score <text>":				Function(ccr.score, extra="text"),		
- 	   "import":					Text( "import " ),
- 	   "from":						Text( "from " ),
- 	   "self":						Text("self"),
- 	   "self dot":					Text("self")+ Key("dot"),
-		"none":						Text("None"),
-		"print":					Text("print "),
- 	   "add comment":				Text( "#" ),
-		"new class":				Key( "as-n, down, down, down, down, enter"),
-        "and":                      Text(" and "),
-        "or":                       Text(" or "),
-        "not":                      Text(" not "),
-        "in":                       Text(" in "),
-        "with":						Text("with "),
-        "open file":				Text("open('filename','r') as f:"),
-        "read lines":				Text("content = f.readlines()"),
-        "if":                       Key("i,f,space,colon,left"),
-        "else if":                  Key("e,l,i,f,space,colon,left"),
-        "else block":               Text("else:")+Key("enter"),
-        "convert to string":		Text("str()")+ Key("left"),
-        "convert to integer":		Text("int()")+ Key("left"),
-        "convert to float":			Text("float()")+ Key("left"),
-        "length":					Text("len()")+ Key("left"),
-        "for each":					Text("for  in :")+ Key("left:5"),
-        "for I":					Text("for i in range(0, ):")+ Key("left:2"),
-		"while":					Text("while :")+ Key("left"),
-		"true":						Text("True"),
-		"false":					Text("False"),
-		"return":					Text("return "),
-		"global":					Text("global "),
-        "<n> bark":                 Text("%(n)d"),
-        "<n> <n2> bark":            Text("%(n)d%(n2)d"),
-        "<n> <n2> <n3> bark":       Text("%(n)d%(n2)d%(n3)d"),
-        "string <text> string":     Text("%(text)s"), 
-       	"[dot] (pie | pi)":			Text(".py"),
-		"jason":					Text("json"),
-		"pie to ex":				Text("py2exe"),
 		    "(alpha | ashy)": Key("a"),
 		    "bravo": Key("b"),
 		    "charlie": Key("c"),
@@ -178,32 +134,9 @@ cmd.map= {
     'auto <mode> <textnv> [go]':    Function(navigation.auto_spell, extra={"mode","textnv"}),
     "wait":							Pause("100"),
     "channel <textnv>":				Function(navigation.chain, extra="textnv"),
-     	    "HTML":						Text("<html>" )+ Key("enter")+ Text("</html>")+ Key("up"),
-     	    "head":						Text("<head>" )+ Key("enter")+ Text("</head>")+ Key("up"),
-     	    "title":					Text("<title></title>")+  Key("left/10:8"),
-     	    "body":						Text("<body>" )+ Key("enter")+ Text("</body>")+ Key("up"),
-     	    "div":						Text("<div></div>")+  Key("left/10:6"),
-			"subscript":				Text("<sub></sub>")+  Key("left/10:6"),     	   
-     	   	"superscript":				Text("<sup></sup>")+  Key("left/10:6"),
-     	   	"(be are | BR)":			Text("<br>"),
-     	   	"table":					Text("<table>")+ Key("enter")+Text("<tr>")+ Key("enter")+Text("<td></td>")+Key("enter")+Text("</tr>")+Key("enter")+Text("</table>"),
-     	   	"tee are":					Text("<tr></tr>"),
-     	   	"tee D":					Text("<td></td>"),
-     	   	"bold":						Text("<b></b>")+  Key("left/10:4"),
-     	   	"italics":					Text("<i></i>")+  Key("left/10:4"),
-     	   	"underline":				Text("<u></u>")+  Key("left/10:4"),
-     	   	"make link":				Text("<a href=''></a>")+  Key("left/10:6"),
-     	   	"span":						Text("<span></span>")+  Key("left/10:7"),
-       		"checkbox":					Text("<input type=\"checkbox\">"),
-       		"label":					Text("<label>"),
-       		"close tag":				Key("c-left/10:2"),
 }
 cmd.extras= [
 			IntegerRef("npn", 0, 100),
-            IntegerRef("n", 0, 100),
-            IntegerRef("n2", 0, 100),
-            IntegerRef("n3", 0, 100),
-            Dictation("text"),
           IntegerRef("nnv", 1, 500),
           IntegerRef("n2nv", 1, 1000),
           IntegerRef("n5nv", 1, 1000),
@@ -237,7 +170,6 @@ cmd.extras= [
 ]
 cmd.defaults= {
 			"npn": 1,
-            "n": 1,
 			"nnv": 1,"n2nv": 1,"textnv": "", "n5nv":5, "color_mode":"right", "fly_mode":"right",
            	"direction2":"", 
 }
