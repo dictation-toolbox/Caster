@@ -57,6 +57,7 @@ other
  - http://alpacatechnologies.com/tiki-download_file.php?fileId=21 (VoiceCode academic paper)
  - http://ergoemacs.org/emacs/emacs_hand_pain_celebrity.html
  - https://github.com/TalAter/annyang (in browser voice recognition JS library)
+ - http://zenorocha.github.io/voice-elements/
  - http://sean.wenzel.net/voicerecognition
  - https://github.com/OpenLeap/PyLeapMouse
  - https://gist.github.com/tavisrudd/5226505
