@@ -9,7 +9,7 @@
         "pascal": false, 
         "php": false, 
         "punctuation": true, 
-        "python": false
+        "python": true
     }, 
     "last_monitor_was_flipped": false
 }

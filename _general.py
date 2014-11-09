@@ -54,7 +54,7 @@ def switch_monitors():
                 BringApp(paths.MMT_PATH, r"/SetOrientation", monitors["inactive"][0]["name"], "180")._execute()
             else:
                 BringApp(paths.MMT_PATH, r"/SetOrientation", monitors["inactive"][0]["name"], "0")._execute()
-            time.sleep(10)
+            time.sleep(5)
             
             # deactivate the active monitor
             BringApp(paths.MMT_PATH, r"/switch", monitors["active"][0]["name"])._execute()

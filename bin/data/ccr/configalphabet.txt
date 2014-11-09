@@ -31,7 +31,7 @@ cmd.map = {
 		    "Sierra": Key("s"),
 		    "tango": Key("t"),
 		    "uniform": Key("u"),
-		    "victor": Key("v"),
+		    "violin": Key("v"),
 		    "whiskey": Key("w"),
 		    "x-ray": Key("x"),
 		    "yankee": Key("y"),
@@ -64,7 +64,7 @@ cmd.map = {
 					 "big tango"    : Key("T"),
 					 
 					 "big uniform"  : Key("U"),
-					 "big Victor"   : Key("V"),
+					 "big violin"   : Key("V"),
 					 
 					 "big whiskey"  : Key("W"),
 					 "big x-ray"    : Key("X"),

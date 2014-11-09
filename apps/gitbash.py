@@ -38,7 +38,7 @@ class CommandRule(MappingRule):
         "go to simulator":  Text("cd C:/Users/dave/workspace/simulator")+Key("enter"),
         "go to dragonfly":  Text("cd C:/NatLink/NatLink/MacroSystem")+Key("enter"),
         "go to salty":  Text("cd C:/Users/dave/workspace/aptana/saltybot")+Key("enter"),
-        
+        "go to screen reader":  Text("cd \"C:/Users/dave/workspace/visual studio 2013/Projects/tirg-dll/tirg-dll\"")+Key("enter"),
         
         }
     extras = [

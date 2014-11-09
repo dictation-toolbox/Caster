@@ -5,7 +5,7 @@ if r"\library.zip" in BASE_PATH:  # fixes py2exe bug
     BASE_PATH = BASE_PATH.replace(r"\library.zip", "")
 
 # DATA
-DLL_PATH = r"C:\NatLink\NatLink\MacroSystem\lib\dll"
+DLL_PATH = r"C:\NatLink\NatLink\MacroSystem\lib\dll\\"
 SETTINGS_PATH = BASE_PATH + "\\bin\\data\\settings.json"
 ELEMENT_JSON_PATH = BASE_PATH + "\\bin\\data\\element.json"
 DISPEL_JSON_PATH = BASE_PATH + "\\bin\\data\\dispel.json"

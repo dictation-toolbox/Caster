@@ -16,20 +16,34 @@ cmd.map = {
 		"static":						Text("static "),
 		"final":						Text("final "),
 		
-		"name":							Text("::"),
-		"Dino Ray":						Text("vector<>")+ Key("left"),
+		"static cast integer":			Text("static_cast<int>()") + Key("left"),
+		"static cast double":			Text("static_cast<double>()") + Key("left"),
+		"convert to integer":			Text("(int)"),
+		"convert to double":			Text("(double)"),
+		
+		#"enumerator":					Text("enum"),
+				
+		"([global] scope | names)":		Text("::"),
+		"vector":						Text("vector"),
 		"pushback":						Text("push_back"),
 		"include":						Text("#include"),
 		"standard":						Text("std"),
-		"reference parameter":			Text("&"),
 		"constant":						Text("const"),
+		"array":						Mimic("brackets"),
+		
+		#http://www.learncpp.com/cpp-tutorial/67-introduction-to-pointers/
+		"(reference to | address of)":	Text("&"),
+		"(pointer | D reference)":		Text("*"),
+		"member":						Text("->"),
 		
 				
 		"new":							Text("new "),
 		"integer":						Text("int "),
 		"double":						Text("double "),
+		"character":					Text("char "),
 		"big integer":					Text("Integer"),
-		"convert to integer":			Text("int()")+ Key("left"),
+		"convert to integer":			Text("int()") + Key("left"),
+		"convert to string":			Text("to_string") + Key("left"),
 		"string":						Text("String "),
 		
      	"switch":						Text("switch(){\ncase : break;\ndefault: break;")+Key("up,up,left,left"),
