@@ -16,6 +16,9 @@ data/log.txt
 bin/data/monitorscans/
 bin/data/legion_signatures/
 bin/data/ccr/unified/config.txt
+bin/data/element.json
+bin/data/log.txt
+bin/data/settings.json
 
 # Ignore natlink files
 core/

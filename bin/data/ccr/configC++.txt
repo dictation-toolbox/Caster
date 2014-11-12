@@ -30,6 +30,7 @@ cmd.map = {
 		"standard":						Text("std"),
 		"constant":						Text("const"),
 		"array":						Mimic("brackets"),
+		"return":						Text("return"),
 		
 		#http://www.learncpp.com/cpp-tutorial/67-introduction-to-pointers/
 		"(reference to | address of)":	Text("&"),
@@ -44,7 +45,7 @@ cmd.map = {
 		"big integer":					Text("Integer"),
 		"convert to integer":			Text("int()") + Key("left"),
 		"convert to string":			Text("to_string") + Key("left"),
-		"string":						Text("String "),
+		"string":						Text("string "),
 		
      	"switch":						Text("switch(){\ncase : break;\ndefault: break;")+Key("up,up,left,left"),
      	"import":						Text( "import " ),

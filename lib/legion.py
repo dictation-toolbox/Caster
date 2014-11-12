@@ -1,8 +1,10 @@
+from ctypes import *
 import os, sys
 
 from PIL import ImageGrab
-from ctypes import *
+
 from lib import paths, utilities
+
 
 LAST_SIGNATURE = None
 
@@ -34,33 +36,25 @@ class Signature:
 
 def get_screen_signature():
     global LAST_SIGNATURE
-    signature_path = paths.LEGION_SIGNATURE_PATH + utilities.current_time_to_string()
-    if not os.path.exists(paths.LEGION_SIGNATURE_PATH):
-        os.makedirs(paths.LEGION_SIGNATURE_PATH)
-    
+
+    # use Pillow to get screenshot
     sw = 101
     sh = 101
     img = ImageGrab.grab(bbox=(sw, sh, sw + 300, sh + 225))
     sig = Signature(img)
     LAST_SIGNATURE = sig
     
-    # write raw bytes to file
-    with open(signature_path, 'wb') as f:
-        f.write(img.tobytes())
-    
     # setup dll
     tirg_dll = cdll.LoadLibrary(paths.DLL_PATH + "tirg-dll.dll")
-    tirg_dll.getTextBBoxes.argtypes = [c_char_p, c_int, c_int]
-    tirg_dll.getTextBBoxes.restype = c_char_p  
+    tirg_dll.getTextBBoxesFromFile.argtypes = [c_char_p, c_int, c_int]
+    tirg_dll.getTextBBoxesFromFile.restype = c_char_p
     tirg_dll.getTextBBoxesFromBytes.argtypes = [c_char_p, c_int, c_int]
-    tirg_dll.getTextBBoxesFromBytes.restype = c_char_p  
-    
-    try:
-        result2 = tirg_dll.getTextBBoxes(signature_path, img.size[0], img.size[1])
-        print "was path returned: " + str(result2)
-    except Exception:
-        utilities.report(utilities.list_to_string(sys.exc_info()))
+    tirg_dll.getTextBBoxesFromBytes.restype = c_char_p
+
+    # get bounding boxes
+    bbstring = tirg_dll.getTextBBoxesFromBytes(img.tobytes(), img.size[0], img.size[1])
+    print "resulting string: \n" +bbstring
     
 def compare_signatures():
-    print ""
+    print "1,8,108,15,1,38,58,45,1,53,58,60,3,83,120,90"
     
