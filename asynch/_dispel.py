@@ -6,9 +6,8 @@ from lib import utilities, paths, settings
 
 class Dispel:# this needs an entry in the settings file, needs to retain information when Dragon is reset
     def __init__(self):
-        self.second = 1000
-        self.minute = 60000
-        self.hour = 3600000
+        self.minute = 60
+        self.hour = 3600
         #
         self.settings=utilities.load_json_file(paths.DISPEL_JSON_PATH)
         self.PERIOD=25# number of minutes
@@ -23,15 +22,19 @@ class Dispel:# this needs an entry in the settings file, needs to retain informa
     def start(self):
         self.reset()
         utilities.report("T: " +str(self.remaining)+" m")
-        natlink.setTimerCallback(self.tick, self.minute)
+        utilities.remote_debug()
+        utilities.TIMER_MANAGER.add_callback(self.tick, self.minute)
+#         natlink.setTimerCallback(self.tick, self.minute)
     def resume(self):
         utilities.report("T: " +str(self.remaining)+" m")
-        natlink.setTimerCallback(self.tick, self.minute)
+        utilities.TIMER_MANAGER.add_callback(self.tick, self.minute)
+#         natlink.setTimerCallback(self.tick, self.minute)
     def stop(self):
         self.active=False
         self.save_settings()
         utilities.report("ending dispel")
-        natlink.setTimerCallback(None, 0)
+        utilities.TIMER_MANAGER.remove_callback(self.tick)
+#         natlink.setTimerCallback(None, 0)
     
     def save_settings(self):
         self.settings["remaining"]=self.remaining

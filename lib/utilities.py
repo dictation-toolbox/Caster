@@ -8,6 +8,7 @@ import os, json, sys, errno, stat, io, time
 
 from dragonfly import Key, BringApp
 from dragonfly.grammar.recobs import RecognitionHistory
+from dragonfly.timer import _Timer
 import win32gui, win32process, win32api, win32ui
 
 import paths
@@ -16,6 +17,7 @@ import paths
 MULTI_CLIPBOARD = {}
 DICTATION_CACHE = RecognitionHistory(10)
 DICTATION_CACHE.register()
+TIMER_MANAGER = _Timer(1)
 
 def window_exists(classname, windowname):
     try:
@@ -63,7 +65,7 @@ def get_list_of_ccr_config_files():
     results = []
     for f in os.listdir(paths.GENERIC_CONFIG_PATH):
         if f.endswith(".txt"):
-            f=f.replace("+", " plus")
+            f = f.replace("+", " plus")
             results.append(f.replace("config", "").replace(".txt", ""))
     return results
     
