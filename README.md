@@ -63,3 +63,4 @@ other
  - https://gist.github.com/tavisrudd/5226505
  - http://www.synapseadaptive.com/joel/VoiceCoders.ppt ("Secrets of VDct" by Joel Gould)
  - https://web.archive.org/web/20141113151730/http://forums.steampowered.com/forums/showthread.php?t=1239646
+ - http://www.westga.edu/~drocco/voice/NatLink/
