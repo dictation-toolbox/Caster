@@ -56,6 +56,8 @@ class CommandRule(MappingRule):
         "pandora dislike":              Key("cs-3"),
         "pandora like":                 Key("cs-1"),
         "pandora skip":                 Key("cs-2"),
+        
+        "IRC identify":                 Text("/msg NickServ identify PASSWORD"),
         }
     extras = [
               Dictation("dict"),

@@ -1,7 +1,4 @@
-import natlink
-from natlinkutils import GrammarBase
-import os
-import sys, codecs, time
+import sys, time
 
 from dragonfly import (BringApp, Key, Function, Grammar, Playback,
                        IntegerRef, Dictation, Choice, WaitWindow, MappingRule, Text)
@@ -14,7 +11,7 @@ utilities.clean_temporary_files()
 
 def fix_Dragon_double():
     try:
-        lr = utilities.LAST_RESULT
+        lr = utilities.DICTATION_CACHE[len(utilities.DICTATION_CACHE)-1]
         lu = " ".join(lr)
         Key("left/5:" + str(len(lu)) + ", del")._execute()
     except Exception:
@@ -22,11 +19,19 @@ def fix_Dragon_double():
     
 def flip():
     Playback([(["alt", "tab"], 0.0)])._execute()
-    WaitWindow(executable="Switcher.exe")._execute()
+    WaitWindow(executable="Switcher.exe", timeout=5)._execute()
     if utilities.window_exists(None, settings.ELEMENT_VERSION):
         Playback([(["choose", "three"], 0.0)])._execute()
     else:
         Playback([(["choose", "two"], 0.0)])._execute()
+        
+def repeat_that(n):
+    try:
+        if len(utilities.DICTATION_CACHE)>0:
+            for i in range(int(n)):
+                Playback([([str(x) for x in " ".join(utilities.DICTATION_CACHE[len(utilities.DICTATION_CACHE)-1]).split()], 0.0)])._execute()
+    except Exception:
+        utilities.report(utilities.list_to_string(sys.exc_info()))
 
 def switch_monitors():
     debug = False
@@ -117,6 +122,7 @@ class MainRule(MappingRule):
     
     # miscellaneous
     "<enable_disable> <ccr_mode>":  Function(ccr.change_CCR, extra={"enable_disable", "ccr_mode"}),
+    "again <n> [times]":      Function(repeat_that, extra={"n"}),
     }
     extras = [
               IntegerRef("n", 1, 1000),
@@ -146,61 +152,7 @@ grammar = Grammar('general')
 grammar.add_rule(MainRule())
 grammar.load()
 
-# modeled on Joel Gould's "repeat that" grammar.
-class SaveLastGrammar(GrammarBase):
-
-    gramSpec = """
-        <start> exported = {emptyList};
-    """
-
-    def initialize(self):
-        self.load(self.gramSpec, allResults=1)
-        self.activateAll()
-
-    def gotResultsObject(self, recogType, resObj):
-        
-        if recogType == 'reject':
-            utilities.LAST_RESULT = None
-        elif resObj.getWords(0)[:1] != ['repeat', 'that']:
-            utilities.LAST_RESULT = resObj.getWords(0)
-            
-class AgainGrammar(GrammarBase):
-
-    gramSpec = """
-        <start> exported = repeat that
-          [ ( 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
-              10 | 20 | 30 | 40 | 50 | 100 ) times ];
-    """
-    
-    def initialize(self):
-        self.load(self.gramSpec)
-        self.activateAll()
-
-    def gotResults_start(self, words, fullResults):
-        
-        if len(words) > 2:
-            count = int(words[2])
-        else:
-            count = 1
-        if utilities.LAST_RESULT:
-            for i in range(count):
-                natlink.recognitionMimic(utilities.LAST_RESULT)
-
-slGrammar = SaveLastGrammar()
-slGrammar.initialize()
-rGrammar = AgainGrammar()
-rGrammar.initialize()
-
 def unload():
-    global slGrammar
-    global rGrammar
-    if slGrammar:
-        slGrammar.unload()
-    slGrammar = None
-    if rGrammar:
-        rGrammar.unload()
-    rGrammar = None
-
     global grammar
     if grammar: grammar.unload()
     grammar = None

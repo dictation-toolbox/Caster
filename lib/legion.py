@@ -7,6 +7,14 @@ from lib import paths, utilities
 
 
 LAST_SIGNATURE = None
+TIRG_DLL = None
+
+def setup_dll():
+    TIRG_DLL = cdll.LoadLibrary(paths.DLL_PATH + "tirg-dll.dll")
+    TIRG_DLL.getTextBBoxesFromFile.argtypes = [c_char_p, c_int, c_int]
+    TIRG_DLL.getTextBBoxesFromFile.restype = c_char_p
+    TIRG_DLL.getTextBBoxesFromBytes.argtypes = [c_char_p, c_int, c_int]
+    TIRG_DLL.getTextBBoxesFromBytes.restype = c_char_p
 
 class Signature:
     def __init__(self, img):
@@ -36,24 +44,19 @@ class Signature:
 
 def get_screen_signature():
     global LAST_SIGNATURE
+    global TIRG_DLL
 
     # use Pillow to get screenshot
-    sw = 101
-    sh = 101
-    img = ImageGrab.grab(bbox=(sw, sh, sw + 300, sh + 225))
+    img = ImageGrab.grab()
     sig = Signature(img)
     LAST_SIGNATURE = sig
     
-    # setup dll
-    tirg_dll = cdll.LoadLibrary(paths.DLL_PATH + "tirg-dll.dll")
-    tirg_dll.getTextBBoxesFromFile.argtypes = [c_char_p, c_int, c_int]
-    tirg_dll.getTextBBoxesFromFile.restype = c_char_p
-    tirg_dll.getTextBBoxesFromBytes.argtypes = [c_char_p, c_int, c_int]
-    tirg_dll.getTextBBoxesFromBytes.restype = c_char_p
+    if not TIRG_DLL:
+        setup_dll()    
 
     # get bounding boxes
-    bbstring = tirg_dll.getTextBBoxesFromBytes(img.tobytes(), img.size[0], img.size[1])
-    print "resulting string: \n" +bbstring
+    bbstring = TIRG_DLL.getTextBBoxesFromBytes(img.tobytes(), img.size[0], img.size[1])
+    print "resulting string: \n" + bbstring
     
 def compare_signatures():
     print "1,8,108,15,1,38,58,45,1,53,58,60,3,83,120,90"

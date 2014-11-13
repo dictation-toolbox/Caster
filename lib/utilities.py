@@ -7,15 +7,15 @@ import natlink, shutil
 import os, json, sys, errno, stat, io, time
 
 from dragonfly import Key, BringApp
+from dragonfly.grammar.recobs import RecognitionHistory
 import win32gui, win32process, win32api, win32ui
 
 import paths
 
 
 MULTI_CLIPBOARD = {}
-LAST_RESULT = None
-STORE_LAST_RESULT = False
-DICTATION_CACHE = []
+DICTATION_CACHE = RecognitionHistory(10)
+DICTATION_CACHE.register()
 
 def window_exists(classname, windowname):
     try:
@@ -125,7 +125,7 @@ def get_most_recent(path, extension):
     return str(recent) + extension
 
 def clean_temporary_files():
-    temp_folders = [paths.MONITOR_INFO_PATH, paths.LEGION_SIGNATURE_PATH]
+    temp_folders = [paths.MONITOR_INFO_PATH]
     for p in temp_folders:
         if os.path.exists(p):
             for f in os.listdir(p):
