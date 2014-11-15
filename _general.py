@@ -3,7 +3,7 @@ import sys, time
 from dragonfly import (BringApp, Key, Function, Grammar, Playback,
                        IntegerRef, Dictation, Choice, WaitWindow, MappingRule, Text)
 
-from lib import paths, utilities, settings, navigation, ccr, legion, password
+from lib import paths, utilities, settings, navigation, ccr, password
 
 
 ccr.refresh()
@@ -112,7 +112,6 @@ class MainRule(MappingRule):
     # development related
     "open natlink folder":          BringApp("explorer", "C:\NatLink\NatLink\MacroSystem"),
     "reserved word <text>":         Key("dquote,dquote,left") + Text("%(text)s") + Key("right, colon, tab/5:5") + Text("Text(\"%(text)s\"),"),
-    "test Legion":                  Function(legion.get_screen_signature),
     
     # passwords
     'hash password <text> <text2> <text3>':                    Function(password.hash_password, extra={'text', 'text2', 'text3'}),

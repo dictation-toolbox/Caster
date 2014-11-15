@@ -160,7 +160,6 @@ class Element:
         
         # start bottle server, tk main loop
         Timer(1, self.start_server).start()
-#         self.root.after(self.interval, self.start_server)
         bottle.route('/process', method="POST")(self.process_request)
         self.root.mainloop()
 

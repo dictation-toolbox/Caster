@@ -3,14 +3,16 @@ from __future__ import unicode_literals
 
 import codecs
 from datetime import datetime
-import natlink, shutil
-import os, json, sys, errno, stat, io, time
+import natlink
+
+import os, json, sys, time
 
 from dragonfly import Key, BringApp
 from dragonfly.grammar.recobs import RecognitionHistory
 from dragonfly.timer import _Timer
 import win32gui, win32process, win32api, win32ui
 
+from lib.filter import Filter
 import paths
 
 
@@ -18,6 +20,14 @@ MULTI_CLIPBOARD = {}
 DICTATION_CACHE = RecognitionHistory(10)
 DICTATION_CACHE.register()
 TIMER_MANAGER = _Timer(1)
+FILTER = Filter()
+#FILTER.initialize()
+# also need to do filter clean up, unloading
+
+
+
+
+
 
 def window_exists(classname, windowname):
     try:
@@ -181,6 +191,8 @@ def subtract_matrices(matrix_a, matrix_b):
             tmp.append(a - b)
         result.append(tmp[:])
     return result[:]
+
+
 
 def py2exe_compile(choice):
     # the contents of this function have been replaced by instructions to do it manually

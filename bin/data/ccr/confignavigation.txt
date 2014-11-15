@@ -50,7 +50,7 @@ cmd.map = {
     # miscellaneous
     'auto <mode> <textnv> [escaping]':    Function(navigation.auto_spell, extra={"mode","textnv"}),
     "wait":							Pause("100"),
-    "channel <textnv>":				Function(navigation.chain, extra="textnv"),
+    "<textnv> channel":				Function(navigation.chain, extra="textnv"),
 
           }
 

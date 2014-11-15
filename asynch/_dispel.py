@@ -22,7 +22,6 @@ class Dispel:# this needs an entry in the settings file, needs to retain informa
     def start(self):
         self.reset()
         utilities.report("T: " +str(self.remaining)+" m")
-        utilities.remote_debug()
         utilities.TIMER_MANAGER.add_callback(self.tick, self.minute)
 #         natlink.setTimerCallback(self.tick, self.minute)
     def resume(self):
