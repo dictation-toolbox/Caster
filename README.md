@@ -39,6 +39,8 @@ other dragonfly repositories
  - https://github.com/haughki/MyDragonfly
  - https://github.com/danielgm/JarvisGrammars
  - https://github.com/tgrosinger/aenea-grammars (aenea)
+ - https://github.com/danzel/NatlinkVisualStudioMacros
+ - https://github.com/jiqimaogou/NatLink-MacroSystem
 
 open source and commercial Dragon add-ons
 --
@@ -64,3 +66,4 @@ other
  - http://www.synapseadaptive.com/joel/VoiceCoders.ppt ("Secrets of VDct" by Joel Gould)
  - https://web.archive.org/web/20141113151730/http://forums.steampowered.com/forums/showthread.php?t=1239646
  - http://www.westga.edu/~drocco/voice/NatLink/
+ - https://github.com/dictation-toolbox/aenea-grammars/issues/1
