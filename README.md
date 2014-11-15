@@ -6,7 +6,7 @@ If you've found my humble Dragonfly repository, perhaps some of these links will
 forums and community
 --
  - https://groups.google.com/forum/#!forum/dragonflyspeech
- - http://www.knowbrainer.com/forums/forum/index.cfm
+ - http://www.knowbrainer.com/forums/forum/categories.cfm?catid=25
  - https://web.archive.org/web/20130805104835/http://speechcomputing.com/forum
 
 sources and modules
@@ -39,6 +39,8 @@ other dragonfly repositories
  - https://github.com/haughki/MyDragonfly
  - https://github.com/danielgm/JarvisGrammars
  - https://github.com/tgrosinger/aenea-grammars (aenea)
+ - https://github.com/danzel/NatlinkVisualStudioMacros
+ - https://github.com/jiqimaogou/NatLink-MacroSystem
 
 open source and commercial Dragon add-ons
 --
@@ -64,3 +66,6 @@ other
  - http://www.synapseadaptive.com/joel/VoiceCoders.ppt ("Secrets of VDct" by Joel Gould)
  - https://web.archive.org/web/20141113151730/http://forums.steampowered.com/forums/showthread.php?t=1239646
  - http://www.westga.edu/~drocco/voice/NatLink/
+ - https://github.com/dictation-toolbox/aenea-grammars/issues/1
+ - https://www.youtube.com/watch?v=g3c5H7sAbBQ (explanation of continuous command recognition)
+ - http://www.youtube.com/watch?v=LVAO8DXUnRI (a voice programmer)
