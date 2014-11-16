@@ -69,3 +69,4 @@ other
  - https://github.com/dictation-toolbox/aenea-grammars/issues/1
  - https://www.youtube.com/watch?v=g3c5H7sAbBQ (explanation of continuous command recognition)
  - http://www.youtube.com/watch?v=LVAO8DXUnRI (a voice programmer)
+ - http://www.extrahop.com/post/blog/programming-by-voice-staying-productive-without-harming-yourself/
