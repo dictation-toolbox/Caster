@@ -25,7 +25,7 @@ cmd.map = {
         "plus":							Text("+"),
         "minus":						Text("-"),
 		"pipe symbol": 		            Text("|"),
-	    '(space | ace) [<npn>]':        Key("space")* Repeat(extra="npn"),
+	    '(space | ace) [<npunc>]':        Key("space")* Repeat(extra="npunc"),
     	"excite mark":                  Text("!"),
     	"cold":							Text(":"),
 		"(times | star)":				Key("asterisk"),
@@ -38,16 +38,16 @@ cmd.map = {
 		"underscore":					Text("_"),		
 		"backslash":					Text("\\"),
 		"slash":						Text("/"),
-	    'tabby [<npn>]':                Key("tab")* Repeat(extra="npn"),
+	    'tabby [<npunc>]':                Key("tab")* Repeat(extra="npunc"),
 	    "boom":							Text(", "),				     	   
           }
  
 
 cmd.extras = [
-			IntegerRef("npn", 0, 100),
+			IntegerRef("npunc", 0, 10),
 	]
 cmd.defaults = {
-			"npn": 1,
+			"npunc": 1,
 	}
 
 

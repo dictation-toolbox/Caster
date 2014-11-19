@@ -59,8 +59,6 @@ cmd.map = {
 		"function":					Text("function PARAMETER(){}")+Key("left, enter:2, up"),
 		"in":						Text(" in "),
 		"long":						Text("long "),
-		"private":					Text("private "),
-		"static":					Text("static "),
 		"throw":					Text("throw "),
 		"type of":					Text("typeof "),
 		"boolean":					Text("boolean "),
@@ -74,31 +72,22 @@ cmd.map = {
         "class":					Text("class "),
         
         "eval":						Text("eval"),
-        "finally":					Text("finally"),
         "integer":					Text("int "),
         "new":						Text("new "),
         "switch":					Text("switch(){}")+Key("left, enter:2, up"),
-        "void":						Text("void"),
-        "byte":						Text("byte "),
-        #"constant":				Text("const"),
         "float":					Text("float "),
-        "implements":				Text("implements"),
-        "interface":				Text("interface"),
         "null":						Text("null"),
         "return":					Text("return "),
         "true":						Text("true"),
         
-        "<n> bark":                 Text("%(n)d"),
-        "<n> <n2> bark":            Text("%(n)d%(n2)d"),
-        "<n> <n2> <n3> bark":       Text("%(n)d%(n2)d%(n3)d"),
-        "string <text> string":     Text("%(text)s"), 
+        "<n10a> [<n10b>] [<n10c>] bark":Function(navigation.numbers, extra={"n10a", "n10b", "n10c"}),
 	   
           }
 
 cmd.extras   = [
-            IntegerRef("n", 0, 100),
-            IntegerRef("n2", 0, 100),
-            IntegerRef("n3", 0, 100),
+            IntegerRef("n10a", 0, 10),
+            IntegerRef("n10b", 0, 10),
+            IntegerRef("n10c", 0, 10),
             Dictation("text"),
               Choice("looptype",
                     {"(I | eye)": "letter", "each": "each"
@@ -112,5 +101,5 @@ cmd.extras   = [
             
            ]
 cmd.defaults = {
-            "n": 1, "text": "", "condition": "", "increment": "",
+            "n10a": 1, "n10b": -1, "n10c": -1, "text": "", "condition": "", "increment": "",
            }

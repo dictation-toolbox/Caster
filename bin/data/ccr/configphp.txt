@@ -27,21 +27,19 @@ cmd.map = {
 #        "else block":                   Text("else {")+Key("enter"),
         "ternary":                      Text("()?;") + (Key("left") * 3),
 
-        "<njv> bark":                   Text("%(njv)d"),
-        "<njv> <n2jv> bark":            Text("%(njv)d%(n2jv)d"),
-        "<njv> <n2jv> <n3jv> bark":     Text("%(njv)d%(n2jv)d%(n3jv)d"),
+        "<n10a> [<n10b>] [<n10c>] bark":Function(navigation.numbers, extra={"n10a", "n10b", "n10c"}),
          
 	   
      	   
           }
 
 cmd.extras   = [
-            IntegerRef("njv", 0, 100),
-            IntegerRef("n2jv", 0, 100),
-            IntegerRef("n3jv", 0, 100),
+            IntegerRef("n10a", 0, 10),
+            IntegerRef("n10b", 0, 10),
+            IntegerRef("n10c", 0, 10),
             Dictation("text"),
            ]
 cmd.defaults = {
-            "njv": 1,
+            "n10a": 1, "n10b": -1, "n10c": -1,
            }
     

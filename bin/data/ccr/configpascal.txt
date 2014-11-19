@@ -29,21 +29,17 @@ cmd.map = {
         "for each":					Text("for  in :")+ Key("left:5"),
         "for I":					Text("for i in range(0, ):")+ Key("left:2"),
 			
-			
-            "<n> bark":                           Text("%(n)d"),
-            "<n> <n2> bark":                           Text("%(n)d%(n2)d"),
-            "<n> <n2> <n3> bark":                           Text("%(n)d%(n2)d%(n3)d"),
-            "string <text> string":                           Text("%(text)s"), 
+		"<n10a> [<n10b>] [<n10c>] bark":Function(navigation.numbers, extra={"n10a", "n10b", "n10c"}),
 	   
        
      	   
           }
 cmd.extras   = [
-            IntegerRef("n", 0, 100),
-            IntegerRef("n2", 0, 100),
-            IntegerRef("n3", 0, 100),
+            IntegerRef("n10a", 0, 10),
+            IntegerRef("n10b", 0, 10),
+            IntegerRef("n10c", 0, 10),
             Dictation("text"),
            ]
 cmd.defaults = {
-            "n": 1,
+            "n10a": 1, "n10b": -1, "n10c": -1,
            }

@@ -8,73 +8,57 @@ def navigate_to_character(direction3, target):
     try:
         left_or_right = str(direction3)
         look_left = left_or_right == "left"
-        up_or_down="up" if look_left else "down" 
-        home_or_end="end, home, home" if look_left==False else "end"
+        is_character = str(target) in [".", ",", "(~)", "[~]", "{~}", "(", ")", "(~[~{", "}~]~)"]
         
         # make sure nothing is highlighted to boot
         Key("right, left" if look_left else "left, right")._execute()
         
-        c, n = characters_until(look_left, str(target))
-        keystring=""
-        if n>0:
-            keystring+=up_or_down+"/5:"+str(n)+", "+home_or_end+", "
-        keystring += left_or_right + "/5:" + str(c) + ", s-" + left_or_right
-        Key(keystring)._execute()
-#         utilities.wait_for_keypress_execution()
+        max_highlights = 100
+        index = -1
+        last_copy_was_successful = True
+        context = None
+        for i in range(0, max_highlights):
+            if last_copy_was_successful:
+                if look_left:
+                    Key("cs-left")._execute()
+                else:
+                    Key("cs-right")._execute()
+                # reset success indicator
+                last_copy_was_successful = True
+            results = read_selected_without_altering_clipboard()
+            error_code = results[0] 
+            if error_code == 1:
+                continue
+            if error_code == 2:
+                last_copy_was_successful = False
+                continue
+            context = results[1]
+            
+            index = find_index_in_context(target, context, look_left)
+            if index != -1:
+                print "the index is: " + str(index)
+                break
+        
+        # highlight only the target
+        if index != -1:
+            Key("left" if look_left else "right")._execute()
+            print "len(context)="+str(len( context ))
+            print "len(context.replace(stuff))="+str(len( context.replace("\r\n", "\n") ))
+            nt = index if look_left else len(context) - index - 1  # number of times to press left or right before the highlight
+            print "nt= " + str(nt)
+            if nt != 0:
+                Key("right/5:" + str(nt) if look_left else "left/5:" + str(nt))._execute()
+            if is_character:
+                Key("s-right" if look_left else "s-left")._execute()
+            else:
+                Key("cs-right" if look_left else "cs-left")._execute()
+        else:
+            # reset cursor
+            Key("left" if not look_left else "right")._execute()
+            
     except Exception:
         utilities.report(utilities.list_to_string(sys.exc_info()))
 
-def characters_until(look_left, target, max_lines=30):
-    characters = 0
-    index = 0  # the index in the context of the desired character or word
-    new_lines = 0  # the number of new lines between the index and the cursor
-#     utilities.remote_debug()
-    for i in range(0, max_lines):
-        if look_left:
-            if i==0:#debugging point 
-                Key("s-home")._execute()
-            else:
-                Key("s-up, s-home")._execute()
-        else:
-            if i==0:
-                Key("s-end")._execute()
-            else:
-                Key("s-down, s-end")._execute()
-        context = read_selected_without_altering_clipboard()
-        
-        if context==None:
-            continue# if copying the line was unsuccessful, skip it; the one in case where this can happen is if this macro is called at the end of the line
-        
-        if "\r\n" in context:# it has trouble with line breaks, counts them as two characters, so:
-            context = context.replace("\r\n", "\n")
-        
-        if context.endswith("\n"):# this is so that the string.split below works
-            context=context.rstrip("\n")
-        
-        new_lines = i#context.count("\n")
-        # new way of thinking: using the arrow keys for every value of i is a default
-        # therefore, the characters that get returned are only the characters for the relevant line
-        # again, remember  you have to press home or end before starting to press left and right
-        
-        relevant_context=context.split("\n")[0 if look_left else -1]
-        index = find_index_in_context(target, relevant_context, look_left)
-        
-        if look_left and index != -1:
-            characters = len(relevant_context) - index - 1
-            break
-        elif look_left == False and index != -1:
-            characters = index
-            break
-        else:
-            continue
-    if look_left:  # reset cursor position
-        Key("right")._execute()
-    else:
-        Key("left")._execute()
-
-    return (characters, new_lines)
-
-#
 def find_index_in_context(target, context, look_left):
     tlist = target.split("~")
     index = -1
@@ -95,25 +79,26 @@ def find_index_in_context(target, context, look_left):
     return index
 
 def read_selected_without_altering_clipboard():
-    # first, get whatever was in the clipboard
-#     utilities.remote_debug()()()
+    '''Returns a tuple:
+    (0, "text from system") - indicates success
+    (1, None) - indicates no change
+    (2, None) - indicates clipboard error, should not advance cursor before trying again
+    '''
     time.sleep(0.05)  # time for previous keypress to execute
-    win32clipboard.OpenClipboard()
-    prior_content = win32clipboard.GetClipboardData(win32con.CF_UNICODETEXT)
-    win32clipboard.CloseClipboard()
-
-    Key("c-c")._execute()
-    time.sleep(0.05)  # time for keypress to execute
-
-    win32clipboard.OpenClipboard()
-    highlighted = win32clipboard.GetClipboardData(win32con.CF_UNICODETEXT)
-    win32clipboard.EmptyClipboard()
-    win32clipboard.SetClipboardText(prior_content)
-    win32clipboard.CloseClipboard()
+    temporary = None
+    try: 
+        prior_content = Clipboard(from_system=True)
     
-    if prior_content==highlighted:
-        return None
-    return highlighted
+        Key("c-c")._execute()
+        time.sleep(0.05)  # time for keypress to execute
+        temporary = Clipboard.get_system_text()
+        prior_content.copy_to_system()
+    except Exception:
+        utilities.report("Clipboard Problem (skipped):\n" + utilities.list_to_string(sys.exc_info()))
+        return (2, None)
+    if prior_content == temporary:
+        return (1, None)
+    return (0, temporary)
 
     
 

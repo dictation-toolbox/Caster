@@ -100,7 +100,7 @@ class MainRule(MappingRule):
     
     # hardware management
     "(switch | change) monitors":              Function(switch_monitors),
-    "(<volume_mode> [system] volume [to] <nnv> | volume <volume_mode> <nnv>)": Function(navigation.volume_control, extra={'nnv', 'volume_mode'}),
+    "(<volume_mode> [system] volume [to] <n> | volume <volume_mode> <n>)": Function(navigation.volume_control, extra={'n', 'volume_mode'}),
     
     # window management
     "alt tab":                      Key("w-backtick"),  # activates Switcher
@@ -124,8 +124,7 @@ class MainRule(MappingRule):
     "again <n> [times]":      Function(repeat_that, extra={"n"}),
     }
     extras = [
-              IntegerRef("n", 1, 1000),
-              IntegerRef("nnv", 1, 100),
+              IntegerRef("n", 1, 100),
               IntegerRef("minutes", 1, 720),
               Dictation("text"),
               Dictation("text2"),
