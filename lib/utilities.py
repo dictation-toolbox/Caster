@@ -21,7 +21,7 @@ DICTATION_CACHE = RecognitionHistory(10)
 DICTATION_CACHE.register()
 TIMER_MANAGER = _Timer(1)
 FILTER = Filter()
-#FILTER.initialize()
+# FILTER.initialize()
 # also need to do filter clean up, unloading
 
 
@@ -105,9 +105,14 @@ def load_json_file(path):
         report("Could not load file: %s" % str(e))
     return result
 
-def remote_debug():
+def remote_debug(who_called_it=None):
     import pydevd;  # @UnresolvedImport
-    pydevd.settrace()
+    if who_called_it == None:
+        who_called_it = "An unidentified process"
+    try:
+        pydevd.settrace()
+    except Exception:
+        print "ERROR: " + who_called_it + " called utilities.remote_debug() but the debug server wasn't running."
     
 def report(message, speak=False, console=True, log=False):
     if console:
