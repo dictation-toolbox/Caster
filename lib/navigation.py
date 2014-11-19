@@ -10,21 +10,42 @@ BASE_PATH = paths.BASE_PATH
 MMT_PATH = paths.MMT_PATH
 NIRCMD_PATH = paths.NIRCMD_PATH
 
-# if chain doesn't get used it has to go
-def chain(textnv):
-    chainable = str(textnv).split(" ")
-    Playback([([str(x) for x in chainable], 0.0)])._execute()
-
 def initialize_clipboard():
     utilities.MULTI_CLIPBOARD = utilities.load_json_file(paths.SAVED_CLIPBOARD_PATH)
 
 def clipboard_to_file(nnavi500):
     key = str(nnavi500)
-    time.sleep(0.05)  # time for keypress to execute
-    win32clipboard.OpenClipboard()
-    utilities.MULTI_CLIPBOARD[key] = win32clipboard.GetClipboardData()
-    win32clipboard.CloseClipboard()
-    utilities.save_json_file(utilities.MULTI_CLIPBOARD, paths.SAVED_CLIPBOARD_PATH)
+    while True:
+        failure=False
+        try:
+            time.sleep(0.05)  # time for keypress to execute
+            win32clipboard.OpenClipboard()
+            utilities.MULTI_CLIPBOARD[key] = win32clipboard.GetClipboardData()
+            win32clipboard.CloseClipboard()
+            utilities.save_json_file(utilities.MULTI_CLIPBOARD, paths.SAVED_CLIPBOARD_PATH)
+        except Exception:
+            failure=True
+        if not failure:
+            break
+
+def drop(nnavi500):
+    key = str(nnavi500)
+    while True:
+        failure=False
+        try:
+            if key in utilities.MULTI_CLIPBOARD:
+                win32clipboard.OpenClipboard()
+                win32clipboard.EmptyClipboard()
+                win32clipboard.SetClipboardText(utilities.MULTI_CLIPBOARD[key])
+                win32clipboard.CloseClipboard()
+                Key("c-v")._execute()
+            else:
+                natlink.execScript ("TTSPlayString \"slot empty\"")
+            time.sleep(0.05)
+        except Exception:
+            failure=True
+        if not failure:
+            break
 
 def volume_control(n, volume_mode):
     global NIRCMD_PATH
@@ -55,18 +76,6 @@ def numbers(n10a, n10b, n10c):
     if n10c != -1:
         n10c_str = str(n10c)
     Text(str(n10a) + n10b_str + n10c_str)._execute()
-    
-def drop(nnavi500):
-    key = str(nnavi500)
-    if key in utilities.MULTI_CLIPBOARD:
-        win32clipboard.OpenClipboard()
-        win32clipboard.EmptyClipboard()
-        win32clipboard.SetClipboardText(utilities.MULTI_CLIPBOARD[key])
-        win32clipboard.CloseClipboard()
-        Key("c-v")._execute()
-    else:
-        natlink.execScript ("TTSPlayString \"slot empty\"")
-    time.sleep(0.05)
     
 def auto_spell(mode, textnv):
     # to do: add support for other modes
