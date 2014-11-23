@@ -24,11 +24,6 @@ FILTER = Filter()
 # FILTER.initialize()
 # also need to do filter clean up, unloading
 
-
-
-
-
-
 def window_exists(classname, windowname):
     try:
         win32ui.FindWindow(classname, windowname)

@@ -21,7 +21,8 @@ cmd.map = {
 		"none":						Text("None"),
 		"print":					Text("print "),
  	   "add comment":				Text( "#" ),
-		"new class":				Key( "as-n, down, down, down, down, enter"),
+		"class":					Text("class"),
+		"long comment":				Text("''''''") + Key("left:3"),
 		
         # logic shortcuts
         "and":                      Text(" and "),
@@ -43,7 +44,7 @@ cmd.map = {
         
         
         "for each":					Text("for  in :")+ Key("left:5"),
-        "for I":					Text("for i in range(0, ):")+ Key("left:2"),
+        "for loop":					Text("for i in range(0, ):")+ Key("left:2"),
 		"while":					Text("while :")+ Key("left"),
 		"break":					Text("break"),
 

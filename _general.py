@@ -9,6 +9,14 @@ from lib import paths, utilities, settings, navigation, ccr, password
 ccr.refresh()
 utilities.clean_temporary_files()
 
+def experiment():
+    '''this function is for testing things in development'''
+    try: 
+        from subprocess import call
+        call('pythonw C:/NatLink/NatLink/MacroSystem/lib/display.py'.split(),shell=True)
+    except Exception:
+        utilities.report(utilities.list_to_string(sys.exc_info()))
+
 def fix_Dragon_double():
     try:
         lr = utilities.DICTATION_CACHE[len(utilities.DICTATION_CACHE)-1]
@@ -80,7 +88,6 @@ class MainRule(MappingRule):
     @staticmethod
     def generate_CCR_choices():
         choices = {}
-#         utilities.remote_debug()
         for ccr_choice in utilities.get_list_of_ccr_config_files():
             choices[ccr_choice] = ccr_choice
         return Choice("ccr_mode", choices)
@@ -112,6 +119,7 @@ class MainRule(MappingRule):
     # development related
     "open natlink folder":          BringApp("explorer", "C:\NatLink\NatLink\MacroSystem"),
     "reserved word <text>":         Key("dquote,dquote,left") + Text("%(text)s") + Key("right, colon, tab/5:5") + Text("Text(\"%(text)s\"),"),
+    "experiment":                   Function(experiment),
     
     # passwords
     'hash password <text> <text2> <text3>':                    Function(password.hash_password, extra={'text', 'text2', 'text3'}),
