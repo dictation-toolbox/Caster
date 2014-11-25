@@ -25,13 +25,14 @@ def fix_Dragon_double():
     except Exception:
         utilities.report(utilities.list_to_string(sys.exc_info()))
     
-def flip():
-    Playback([(["alt", "tab"], 0.0)])._execute()
-    WaitWindow(executable="Switcher.exe", timeout=5)._execute()
-    if utilities.window_exists(None, settings.ELEMENT_VERSION):
-        Playback([(["choose", "three"], 0.0)])._execute()
+FLIP=False
+def flip_monitor():
+    global FLIP
+    if FLIP:
+        BringApp(paths.MMT_PATH, r"/SetOrientation", r"\\.\DISPLAY1", "180")._execute()
     else:
-        Playback([(["choose", "two"], 0.0)])._execute()
+        BringApp(paths.MMT_PATH, r"/SetOrientation", r"\\.\DISPLAY1", "0")._execute()
+    FLIP = not FLIP
         
 def repeat_that(n):
     try:
@@ -108,10 +109,10 @@ class MainRule(MappingRule):
     # hardware management
     "(switch | change) monitors":              Function(switch_monitors),
     "(<volume_mode> [system] volume [to] <n> | volume <volume_mode> <n>)": Function(navigation.volume_control, extra={'n', 'volume_mode'}),
+    "flip monitor":                 Function(flip_monitor),
     
     # window management
     "alt tab":                      Key("w-backtick"),  # activates Switcher
-    "flip":                         Function(flip),
     'minimize':                     Playback([(["minimize", "window"], 0.0)]),
     'maximize':                     Playback([(["maximize", "window"], 0.0)]),
     "remax":                        Key("a-space/10,r/10,a-space/10,x"), 

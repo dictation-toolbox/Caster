@@ -22,180 +22,7 @@ class Dimensions:
         self.x = x
         self.y = y
 
-# class WxTransparent(wx.Frame):
-#     def __init__(self, wtitle):
-#         self.dimensions = self.get_dimensions_fullscreen()
-#         self.clientBitmap=None
-#         self.FONT_SIZE=20
-#         self.columnWidth=30
-#         
-#         wx.Frame.__init__(self, None, title=wtitle, style=wx.BORDER_NONE | wx.STAY_ON_TOP)
-#         
-#         self.Bind(wx.EVT_PAINT, self.on_paint)
-#         self.Bind(wx.EVT_KEY_UP, self.on_key_up)
-#         self.Bind(wx.EVT_CLOSE, self.on_close)
-#         self.Bind(wx.EVT_ACTIVATE, self.on_activate)
-#         self.Bind(wx.EVT_MIDDLE_DCLICK, self.on_exit)
-#         
-#         self.SetBackgroundColour("White")
-#         self.DrawGrid()
-#         self.Show()
-#     
-#     def DrawGrid(self):
-#         # Do Screen capture of desktop behind window client area
-#         self.clientBitmap = wx.EmptyBitmap(self.dimensions.width, self.dimensions.height)
-# 
-#         memoryDc = wx.MemoryDC()
-#         memoryDc.SelectObject(self.clientBitmap)
-# 
-# 
-#         self.ClearBackground()
-#         sourceDc = wx.ScreenDC()
-#         memoryDc.Blit(0, 0, self.dimensions.width, self.dimensions.height, sourceDc, self.dimensions.x, self.dimensions.y)
-# 
-#         # Draw grid
-# 
-#         # Labels setup
-#         memoryDc.SetTextForeground(wx.Colour(255, 255, 255))
-#         memoryDc.SetTextBackground(wx.Colour(0, 0, 0))
-#         memoryDc.SetBackgroundMode(wx.SOLID)
-# 
-#         # Columns
-# #         columnx = self.LABEL_WIDTH
-# #         gridWidth = 0
-#         memoryDc.SetPen(wx.Pen ("#000000", 1))
-# #         columnNum = 1
-# #         if self.columnWidth == None:
-# #               self.columnWidth = self.gridWidth / self.numColumns
-# 
-#         # Make sure label is not too big
-#         fontSize = self.FONT_SIZE
-#         memoryDc.SetFont(wx.Font(fontSize, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
-#         extentx, extenty = memoryDc.GetTextExtent('99')
-#         while extentx > self.columnWidth:
-#             fontSize = fontSize - 1
-#             memoryDc.SetFont(wx.Font(fontSize, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
-#             extentx, extenty = memoryDc.GetTextExtent('99')
-# 
-#         # Print columns
-#         '''
-#         while gridWidth <= self.gridWidth:
-#             # print line to the left
-#             memoryDc.DrawLine(columnx, 0, columnx, self.clientHeight)
-#             # print top label
-#             memoryDc.DrawText(str(columnNum), columnx + 1, 1)
-#             # print final label
-#             memoryDc.DrawText(str(columnNum), columnx + 1, self.clientHeight - extenty)
-#             columnx = columnx + self.columnWidth
-#             gridWidth = gridWidth + self.columnWidth
-#             columnNum = columnNum + 1
-#         '''
-#         # Right side border
-# #         memoryDc.DrawLine(self.clientWidth - 1, 0, self.clientWidth - 1, self.clientHeight)
-# # 
-# #         # Rows
-# #         rowy = self.LABEL_HEIGHT
-# #         gridHeight = 0
-# #         rowNum = 1
-# # 
-# #         if self.rowHeight == None:
-# #             self.rowHeight = self.gridHeight / self.numRows
-# # 
-# #         # Make sure label is not too big
-# #         fontSize = self.FONT_SIZE
-# #         memoryDc.SetFont(wx.Font(fontSize, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
-# #         extentx, extenty = memoryDc.GetTextExtent('99')
-# #         while extenty > self.rowHeight:
-# #             fontSize = fontSize - 1
-# #             memoryDc.SetFont(wx.Font(fontSize, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
-# #             extentx, extenty = memoryDc.GetTextExtent('99')
-# # 
-# #         # print rows
-# #         while gridHeight <= self.gridHeight:
-# #             # Print line above
-# #             memoryDc.DrawLine(0, rowy, self.clientWidth, rowy)
-# #             # Print left label
-# #             memoryDc.DrawText(str(rowNum), 1, rowy + 1)
-# #             # Print right labal
-# #             memoryDc.DrawText(str(rowNum), self.clientWidth - extentx, rowy + 1)
-# #             rowy = rowy + self.rowHeight
-# #             gridHeight = gridHeight + self.rowHeight
-# #             rowNum = rowNum + 1
-# # 
-# #         # Bottom border
-# #         memoryDc.DrawLine(0, self.clientHeight - 1, self.clientWidth, self.clientHeight - 1)
-# # 
-# #         # Draw dot at top left corner for position mode
-# #         if self.positionMode:
-# #             memoryDc.SetBrush(wx.Brush(wx.Colour(0, 0, 0)))
-# #             memoryDc.DrawCircle(self.LABEL_WIDTH, self.LABEL_HEIGHT, 2)
-# 
-#         # All done
-#         memoryDc.SelectObject(wx.NullBitmap)
-#     
-#     def reset_xs_ys(self):
-#         self.xs = []
-#         self.ys = []
-#     
-#     def hide(self, minimize=False):
-#         if minimize:
-#             self.Iconize()
-#         else:
-#             self.Show(False)
-#     
-#     def pre_redraw(self):
-#         '''gets the window ready to be redrawn'''
-#         self.deiconify()
-#         self._canvas.delete("all")
-#         
-#     
-#     def unhide(self):
-#         ''''''
-#         
-#         
-#     def on_exit(self, e=None):
-# #         os.kill(os.getpid(), signal.SIGTERM)
-#         self.Close(True)
-#         
-#     def xs_ys_filled(self):
-#         return len(self.xs) > 0 or len(self.ys) > 0;
-#     
-#     def get_dimensions_fullscreen(self):
-#         return Dimensions(win32api.GetSystemMetrics(0), win32api.GetSystemMetrics(1), 0, 0)
-# 
-#     
-#     
-#     def moveMouse(self):
-#         win32api.SetCursorPos((self.nextCursorX, self.nextCursorY))
-# 
-#     def clickMouse(self):
-#         win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, self.nextCursorX, self.nextCursorY, 0, 0)
-#         win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, self.nextCursorX, self.nextCursorY, 0, 0)
-#         self.stickyShow()
-# 
-#     def doubleClickMouse(self):
-#         win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, self.nextCursorX, self.nextCursorY, 0, 0)
-#         win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, self.nextCursorX, self.nextCursorY, 0, 0)
-#         win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, self.nextCursorX, self.nextCursorY, 0, 0)
-#         win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, self.nextCursorX, self.nextCursorY, 0, 0)
-#         self.stickyShow()
-# 
-#     def rightClickMouse(self):
-#         win32api.mouse_event(win32con.MOUSEEVENTF_RIGHTDOWN, self.nextCursorX, self.nextCursorY, 0, 0)
-#         win32api.mouse_event(win32con.MOUSEEVENTF_RIGHTUP, self.nextCursorX, self.nextCursorY, 0, 0)
-#         self.stickyShow()
-#     
-#     # dp stuff
-#     def on_paint(self, e):
-#         dc = wx.BufferedPaintDC(self, self.clientBitmap)
-#         return
-#     def on_key_up(self, e):
-#         ''''''
-#     def on_close(self, e):
-#         e.Skip()
-#     def on_activate(self, e):  # prevent beep
-#         self.SetFocus()
-#         e.Skip()
+
 
 # rewrite dp grid using this
 class TkTransparent(tk.Tk):
@@ -213,6 +40,9 @@ class TkTransparent(tk.Tk):
     def get_dimensions_string(self):
         return "%dx%d+%d+%d" % (self.dimensions.width, self.dimensions.height, self.dimensions.x, self.dimensions.y)
     
+    def key(self, e):
+        '''virtual method'''#e.char
+    
     def __init__(self, name, dimensions=None):
         tk.Tk.__init__(self, baseName="")
         if not dimensions:
@@ -229,6 +59,7 @@ class TkTransparent(tk.Tk):
         self._canvas = tk.Canvas(master=self, width=dimensions.width, height=dimensions.height, bg='white', bd=-2)
         self._canvas.pack()
         self.protocol("WM_DELETE_WINDOW", self.on_exit)
+        self.bind("<Key>", self.key)
         # self.mainloop()#do this in the child classes
     
     def pre_redraw(self):
@@ -253,6 +84,22 @@ class TkTransparent(tk.Tk):
         self.destroy()
         os.kill(os.getpid(), signal.SIGTERM)
         
+    def move_mouse(self, mx, my):
+        win32api.SetCursorPos((mx, my))
+ 
+    def click_mouse(self, mx, my):
+        win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, mx, my, 0, 0)
+        win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, mx, my, 0, 0)
+ 
+    def double_click_mouse(self, mx, my):
+        win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, mx, my, 0, 0)
+        win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, mx, my, 0, 0)
+        win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, mx, my, 0, 0)
+        win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, mx, my, 0, 0)
+ 
+    def right_click_mouse(self, mx, my):
+        win32api.mouse_event(win32con.MOUSEEVENTF_RIGHTDOWN, mx, my, 0, 0)
+        win32api.mouse_event(win32con.MOUSEEVENTF_RIGHTUP, mx, my, 0, 0)
     
 
 
@@ -271,6 +118,7 @@ class RainbowGrid(TkTransparent):
                        (0, 0, 125, self.square_alpha),  # blue
                        (128, 0, 128, self.square_alpha)  # purple
                        ]
+        self.coordinates=None
         self.draw()
         self.mainloop()
         
@@ -285,6 +133,9 @@ class RainbowGrid(TkTransparent):
                 self.xs.append(x * self.square_size)
             for y in range(0, int(self.dimensions.height / self.square_size) + 2):
                 self.ys.append(y * self.square_size)
+            self.coordinates = [[(x, y) for y in range(len(self.ys))] for x in range(len(self.xs))]
+            #self.coordinates[x][y]
+            print len(self.xs),len(self.ys),len(self.coordinates),len(self.coordinates[0])
         
     def draw(self):
         self.pre_redraw()
@@ -330,6 +181,9 @@ class RainbowGrid(TkTransparent):
         del draw
 
 class DouglasGrid(TkTransparent):
+    def key(self, e):
+        '''virtual method'''#e.char
+    
     def __init__(self, grid_size=None, square_size=None):
         '''square_size is an integer'''
         TkTransparent.__init__(self, "douglasgrid", grid_size)
