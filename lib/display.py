@@ -10,7 +10,8 @@ import time
 from PIL import ImageGrab, ImageTk, ImageFilter, ImageDraw, ImageFont
 import win32api
 import win32con
-import wx
+import re 
+
 
 import Tkinter as tk
 
@@ -41,7 +42,7 @@ class TkTransparent(tk.Tk):
         return "%dx%d+%d+%d" % (self.dimensions.width, self.dimensions.height, self.dimensions.x, self.dimensions.y)
     
     def key(self, e):
-        '''virtual method'''#e.char
+        '''virtual method'''  # e.char
     
     def __init__(self, name, dimensions=None):
         tk.Tk.__init__(self, baseName="")
@@ -86,20 +87,6 @@ class TkTransparent(tk.Tk):
         
     def move_mouse(self, mx, my):
         win32api.SetCursorPos((mx, my))
- 
-    def click_mouse(self, mx, my):
-        win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, mx, my, 0, 0)
-        win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, mx, my, 0, 0)
- 
-    def double_click_mouse(self, mx, my):
-        win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, mx, my, 0, 0)
-        win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, mx, my, 0, 0)
-        win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, mx, my, 0, 0)
-        win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, mx, my, 0, 0)
- 
-    def right_click_mouse(self, mx, my):
-        win32api.mouse_event(win32con.MOUSEEVENTF_RIGHTDOWN, mx, my, 0, 0)
-        win32api.mouse_event(win32con.MOUSEEVENTF_RIGHTUP, mx, my, 0, 0)
     
 
 
@@ -118,13 +105,65 @@ class RainbowGrid(TkTransparent):
                        (0, 0, 125, self.square_alpha),  # blue
                        (128, 0, 128, self.square_alpha)  # purple
                        ]
-        self.coordinates=None
+        self.position_index = None
+        '''mode information:
+        p  = the next input will be an int representing pre-color information (which red do I want? the first, second? etc.)
+        c  = the next input will be an int representing the selected color (1-"red", 5-"blue", etc.)
+        n  = the next input will be 2 ints representing a number between 0-99
+        xx = exit program
+        
+        any other sequence should activate null-mode
+        '''
+        self.mode = ""  # null-mode
+        self.digits = ""
+        self.allowed_characters = r"[pcnx0-9]"
+        self.info_pre = 0
+        self.info_color = 0
+        self.info_num = 0
+        
         self.draw()
         self.mainloop()
         
     def finalize(self):
         self.imgtk = ImageTk.PhotoImage(self.img)
         self._canvas.create_image(self.dimensions.width / 2, self.dimensions.height / 2, image=self.imgtk)
+    
+    def key(self, e):
+        if re.search(self.allowed_characters, e.char):
+            if e.char == 'x':
+                if self.mode == "x":
+                    self.on_exit()
+                self.mode = "x"
+                self.digits = ""
+            elif e.char == 'p':
+                self.mode = "p"
+                self.digits = ""
+            elif e.char == 'c':
+                self.mode = "c"
+                self.digits = ""
+            elif e.char == 'n':
+                self.mode = "n"
+                self.digits = ""
+            else:
+                self.digits += e.char
+                if len(self.digits) == 2:
+                    self.process()
+    
+    def process(self):
+        ''''''
+        if self.mode == "p":
+            self.info_pre = int(self.digits)
+        elif self.mode == "c":
+            self.info_color = int(self.digits)
+        elif self.mode == "n":
+            self.info_num = int(self.digits)
+            
+            # have all required info, proceed to do action
+            selected_index = self.position_index[self.info_color + self.info_pre * len(self.position_index)][self.info_num]
+#             self.hide()
+            self.move_mouse(selected_index[0], selected_index[1])
+            self.mode = ""
+                
     
     def fill_xs_ys(self):
         # only figure out the coordinates of the lines once
@@ -133,9 +172,9 @@ class RainbowGrid(TkTransparent):
                 self.xs.append(x * self.square_size)
             for y in range(0, int(self.dimensions.height / self.square_size) + 2):
                 self.ys.append(y * self.square_size)
-            self.coordinates = [[(x, y) for y in range(len(self.ys))] for x in range(len(self.xs))]
-            #self.coordinates[x][y]
-            print len(self.xs),len(self.ys),len(self.coordinates),len(self.coordinates[0])
+            self.position_index = []
+            # add first "color":
+            self.position_index.append([])
         
     def draw(self):
         self.pre_redraw()
@@ -147,6 +186,8 @@ class RainbowGrid(TkTransparent):
         
     def draw_squares(self):
         self.fill_xs_ys()
+        # 
+        
         text_background_buffer = int(self.square_size / 10)
         xs_size = len(self.xs)
         ys_size = len(self.ys)
@@ -154,14 +195,15 @@ class RainbowGrid(TkTransparent):
         colors_index = 0
         font = ImageFont.truetype("arialbd.ttf", 15)
         draw = ImageDraw.Draw(self.img, 'RGBA')
+        
         for ly in range(0, ys_size):
             if  ly + 1 < ys_size:
                 for lx in range(0, xs_size):
                     if lx + 1 < xs_size:
                         txt = str(box_number)
                         tw, th = draw.textsize(txt, font)
-                        text_x = int((self.xs[lx] + self.xs[lx + 1] - tw) / 2)+1
-                        text_y = int((self.ys[ly] + self.ys[ly + 1] - th) / 2)-1
+                        text_x = int((self.xs[lx] + self.xs[lx + 1] - tw) / 2) + 1
+                        text_y = int((self.ys[ly] + self.ys[ly + 1] - th) / 2) - 1
                         draw.rectangle([self.xs[lx] + text_background_buffer,
                                                        self.ys[ly] + text_background_buffer,
                                                        self.xs[lx + 1] - text_background_buffer,
@@ -172,17 +214,23 @@ class RainbowGrid(TkTransparent):
                         draw.text((text_x + 1, text_y - 1), txt, (0, 0, 0), font=font)
                         draw.text((text_x - 1, text_y - 1), txt, (0, 0, 0), font=font)
                         draw.text((text_x, text_y), txt, (255, 255, 255), font=font)
+                        # index the position
+                        self.position_index[len(self.position_index) - 1].append((int((self.xs[lx] + self.xs[lx + 1]) / 2), int((self.ys[ly] + self.ys[ly + 1]) / 2)))
+                        
+                        # update for next iteration
                         box_number += 1
                         if box_number == 100:
+                            # next color
                             box_number = 0
                             colors_index += 1
+                            self.position_index.append([])
                             if colors_index == len(self.colors):
                                 colors_index = 0
         del draw
 
 class DouglasGrid(TkTransparent):
     def key(self, e):
-        '''virtual method'''#e.char
+        '''virtual method'''  # e.char
     
     def __init__(self, grid_size=None, square_size=None):
         '''square_size is an integer'''

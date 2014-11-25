@@ -35,7 +35,7 @@ def window_exists(classname, windowname):
 def press_digits(n):
     number = str(n)
     for digit in number:
-        Key(digit).execute()
+        Key(digit)._execute()
         
 def get_active_window_hwnd():
     return str(win32gui.GetForegroundWindow())
