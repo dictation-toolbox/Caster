@@ -3,17 +3,47 @@ Command-module for RainbowGrid
 
 """
 
-from dragonfly import (Grammar, AppContext, CompoundRule,
-                       IntegerRef,Repeat,
-                       Key, Choice)
+import time
 
-from lib import utilities
+from dragonfly import (Grammar, AppContext, Function,
+                       IntegerRef, Repeat, Playback,
+                       Key, Choice, MappingRule)
+
+from lib import utilities, navigation
 
 
-class GridControlRule(CompoundRule):
+def send_input(pre, color, n, action):
+    Key("p")._execute()
+    utilities.press_digits(0)
+    utilities.press_digits(pre)
+    Key("c")._execute()
+    utilities.press_digits(0)
+    utilities.press_digits(color)
+    Key("n")._execute()
+    if int(n) < 10:
+        utilities.press_digits(0)
+    utilities.press_digits(n)
+    int_a = int(action)
+    if int_a != -1:
+        for i in range(0, 2):
+            Key("x")._execute()
+        time.sleep(0.1)
+        if int_a==0:
+            Playback([(["mouse", "left", "click"], 0.0)])._execute()
+        elif int_a==1:
+            Playback([(["mouse", "right", "click"], 0.0)])._execute()
 
-    spec = "[<pre>] <color> <n>"
-    extras = [IntegerRef("pre", 0, 9),
+
+class GridControlRule(MappingRule):
+
+    mapping = {
+        "[<pre>] <color> <n> [<action>]":   Function(send_input, extras={"pre", "color", "n"}),
+        "exit":                             Key("x") * Repeat(2),
+
+
+        }
+    extras = [
+              IntegerRef("pre", 0, 9),
               Choice("color", {
                               "red": "0",
                               "(orange | tan | brown)": "1",
@@ -23,39 +53,24 @@ class GridControlRule(CompoundRule):
                               "purple": "5"
                              }
                     ),
+              Choice("action", {
+                              "kick": "0",
+                              "psychic": "1",
+                             }
+                    ),
               IntegerRef("n", 0, 100),
+              
              ]
     defaults = {
-                "pre": 0,
-               }
+            "pre": 0,
+            "action": "-1",
+            }
 
-    def _process_recognition(self, node, extras):
-        Key("p")._execute()
-        utilities.press_digits(0)
-        utilities.press_digits(extras["pre"])
-        Key("c")._execute()
-        utilities.press_digits(0)
-        utilities.press_digits(extras["color"])
-        Key("n")._execute()
-        if int(extras["n"]<10):
-            utilities.press_digits(0)
-        utilities.press_digits(extras["n"])
-
-class ExitRule(CompoundRule):
-
-    spec = "exit"
-    extras = []
-    defaults = {}
-
-    def _process_recognition(self, node, extras):
-        for i in range(0, 2):
-            Key("x")._execute()
 #---------------------------------------------------------------------------
 
 context = AppContext(title="rainbowgrid")
 grammar = Grammar("rainbowgrid", context=context)
 grammar.add_rule(GridControlRule())
-grammar.add_rule(ExitRule())
 grammar.load()
 
 def unload():

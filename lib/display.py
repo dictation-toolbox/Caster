@@ -95,9 +95,9 @@ class RainbowGrid(TkTransparent):
     def __init__(self, grid_size=None, square_size=None, square_alpha=None):
         '''square_size is an integer'''
         TkTransparent.__init__(self, "rainbowgrid", grid_size)
-        self.attributes("-alpha", 1.0)
+        self.attributes("-alpha", 0.5)
         self.square_size = square_size if square_size else 37
-        self.square_alpha = square_alpha if square_alpha else 60
+        self.square_alpha = square_alpha if square_alpha else 125
         self.colors = [(255, 0, 0, self.square_alpha),  # red
                        (187, 122, 0, self.square_alpha),  # orange 255, 165, 0
                        (255, 255, 0, self.square_alpha),  # yellow
@@ -111,19 +111,25 @@ class RainbowGrid(TkTransparent):
         c  = the next input will be an int representing the selected color (1-"red", 5-"blue", etc.)
         n  = the next input will be 2 ints representing a number between 0-99
         xx = exit program
+        r  = refresh
         
         any other sequence should activate null-mode
         '''
         self.mode = ""  # null-mode
         self.digits = ""
-        self.allowed_characters = r"[pcnx0-9]"
+        self.allowed_characters = r"[pcnxr0-9]"
         self.info_pre = 0
         self.info_color = 0
         self.info_num = 0
         
-        self.draw()
+        self.refresh()
         self.mainloop()
-        
+    
+    def refresh(self):
+        '''thread safe'''
+        self.hide()
+        self.after(10, self.draw)
+    
     def finalize(self):
         self.imgtk = ImageTk.PhotoImage(self.img)
         self._canvas.create_image(self.dimensions.width / 2, self.dimensions.height / 2, image=self.imgtk)
@@ -134,7 +140,8 @@ class RainbowGrid(TkTransparent):
                 if self.mode == "x":
                     self.on_exit()
                 self.mode = "x"
-                self.digits = ""
+            elif e.char=='r':
+                self.refresh()
             elif e.char == 'p':
                 self.mode = "p"
                 self.digits = ""
@@ -153,13 +160,15 @@ class RainbowGrid(TkTransparent):
         ''''''
         if self.mode == "p":
             self.info_pre = int(self.digits)
+            if self.info_pre > 0:
+                self.info_pre -= 1
         elif self.mode == "c":
             self.info_color = int(self.digits)
         elif self.mode == "n":
             self.info_num = int(self.digits)
             
             # have all required info, proceed to do action
-            selected_index = self.position_index[self.info_color + self.info_pre * len(self.position_index)][self.info_num]
+            selected_index = self.position_index[self.info_color + self.info_pre * len(self.colors)][self.info_num]
 #             self.hide()
             self.move_mouse(selected_index[0], selected_index[1])
             self.mode = ""
@@ -172,9 +181,9 @@ class RainbowGrid(TkTransparent):
                 self.xs.append(x * self.square_size)
             for y in range(0, int(self.dimensions.height / self.square_size) + 2):
                 self.ys.append(y * self.square_size)
-            self.position_index = []
-            # add first "color":
-            self.position_index.append([])
+        self.position_index = []
+        # add first "color":
+        self.position_index.append([])
         
     def draw(self):
         self.pre_redraw()
@@ -188,7 +197,7 @@ class RainbowGrid(TkTransparent):
         self.fill_xs_ys()
         # 
         
-        text_background_buffer = int(self.square_size / 10)
+        text_background_buffer = int(self.square_size / 6)
         xs_size = len(self.xs)
         ys_size = len(self.ys)
         box_number = 0

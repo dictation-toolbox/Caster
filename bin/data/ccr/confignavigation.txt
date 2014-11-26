@@ -48,7 +48,7 @@ cmd.map = {
     "(cancel | escape)":            Key("escape"),
      
     # miscellaneous
-    'auto <mode> <textnv> [escaping]':    Function(navigation.auto_spell, extra={"mode","textnv"}),
+    'auto <mode> <textnv> [the tiger is gone]':    Function(navigation.auto_spell, extra={"mode","textnv"}),
     "wait":							Pause("100"),
 
           }
