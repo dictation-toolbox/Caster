@@ -102,7 +102,7 @@ def kick():
     window_title = utilities.get_active_window_title()
     if window_title == "Custom Grid":
         Playback([(["I", "left"], 0.0)])._execute()
-    elif window_title=="rainbowgrid":
+    elif window_title=="rainbowgrid" or window_title=="douglasgrid":
         for i in range(0, 2):
             Key("x")._execute()
         time.sleep(0.1)
@@ -114,7 +114,7 @@ def kick_right():
     window_title = utilities.get_active_window_title()
     if window_title == "Custom Grid":
         Playback([(["I", "right"], 0.0)])._execute()
-    elif window_title=="rainbowgrid":
+    elif window_title=="rainbowgrid" or window_title=="douglasgrid":
         for i in range(0, 2):
             Key("x")._execute()
         time.sleep(0.1)

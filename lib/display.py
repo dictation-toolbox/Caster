@@ -140,7 +140,7 @@ class RainbowGrid(TkTransparent):
                 if self.mode == "x":
                     self.on_exit()
                 self.mode = "x"
-            elif e.char=='r':
+            elif e.char == 'r':
                 self.refresh()
             elif e.char == 'p':
                 self.mode = "p"
@@ -238,15 +238,50 @@ class RainbowGrid(TkTransparent):
         del draw
 
 class DouglasGrid(TkTransparent):
-    def key(self, e):
-        '''virtual method'''  # e.char
     
     def __init__(self, grid_size=None, square_size=None):
         '''square_size is an integer'''
         TkTransparent.__init__(self, "douglasgrid", grid_size)
-        self.square_size = square_size if square_size else 30
+        self.square_size = square_size if square_size else 25
+        
+        '''mode information:
+        b  = separator for X and Y grid number values
+        xx = exit program
+        
+        any other sequence should activate null-mode
+        '''
+        self.mode = "y"  # null-mode
+        self.digits = ""
+        self.allowed_characters = r"[bx0-9]"
+        self.y_coord = None
+        
         self.draw()
         self.mainloop()
+    
+    def key(self, e):
+        if re.search(self.allowed_characters, e.char):
+            if e.char == 'b':
+                self.mode = "x"
+            elif e.char == 'x':
+                if self.mode == "e":
+                    self.on_exit()
+                self.mode = "e"
+            else:
+                if self.mode == "e":
+                    self.mode = "y"
+                self.digits += e.char
+                if len(self.digits) == 2:
+                    self.process()
+                    self.digits=""
+    
+    def process(self):
+        ''''''
+        if self.mode == "y":
+            self.y_coord = int(self.digits) * self.square_size + int(self.square_size / 2)
+        elif self.mode == "x":
+            x_coord = int(self.digits) * self.square_size + int(self.square_size / 2)
+            self.move_mouse(x_coord, self.y_coord)
+            self.mode = "y"
     
     def fill_xs_ys(self):
         # only figure out the coordinates of the lines once
@@ -326,11 +361,8 @@ class DouglasGrid(TkTransparent):
         
 
 def run():
-    dg = RainbowGrid()
+    dg = DouglasGrid()#grid_size=Dimensions(400, 300, 0, 0)
     
-
-# t = threading.Thread(target=run)
-# t.start()
 
 if __name__ == '__main__':
     # Start bar as a process
