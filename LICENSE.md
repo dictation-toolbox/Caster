@@ -172,3 +172,4 @@ Library.
 ##Licenses for Non-Original Code
 Below is a list of all the non-original code used in this work, and the licenses each respective piece uses.
 - Custom Grid by Douglas Parent: license unknown; Parent made his code freely available on the former speechcomputing.com site, but provided no licensing information
+- SysTrayIcon by Simon Brunning: license unknown; the code is available on Brunning's website (www.brunningonline.net, www.brunningonline.net/simon/blog/archives/SysTrayIcon.py.html), but no licensing information is provided
