@@ -27,15 +27,10 @@ _vocola_main.py
 # Ignore anything with a potential licensing problem
 msvcp90.dll
 msvcr90.dll
-bin/Switcher.exe
+bin/homebrew/CustomGrid/
 bin/nircmd/
 bin/PSTools/
 bin/MultiMonitorTool/
-bin/homebrew/element/
-bin/homebrew/alarm/
-bin/homebrew/CustomGrid/
 bin/media/
-lib/TiRG_Python_20110202.py
-lib/dll/
 
 
