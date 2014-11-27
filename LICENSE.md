@@ -1,3 +1,8 @@
+##Contents
+1. License for Original Code
+2. License for Non-Original Code
+
+##License for Original Code
 GNU LESSER GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
 
@@ -163,3 +168,7 @@ whether future versions of the GNU Lesser General Public License shall
 apply, that proxy's public statement of acceptance of any version is
 permanent authorization for you to choose that version for the
 Library.
+
+##Licenses for Non-Original Code
+Below is a list of all the non-original code used in this work, and the licenses each respective piece uses.
+- Custom Grid by Douglas Parent: license unknown; Parent made his code freely available on the former speechcomputing.com site, but provided no licensing information
