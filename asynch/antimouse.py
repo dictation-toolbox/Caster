@@ -3,19 +3,14 @@ Created on Nov 15, 2014
 
 @author: dave
 '''
-from collections import namedtuple
 import json
-import os
-import signal
-from threading import Timer
-import time
 
 from bottle import run, request
 import bottle
 
 
         
-class ContingencyServer:
+class BottleServer:
     class Message:
         def __init__(self, content="", destination=0):
             self.content = content
@@ -27,11 +22,13 @@ class ContingencyServer:
         bottle.route('/process', method="POST")(self.process_request)
         run(host='localhost', port=self.listening_port, debug=False, server='cherrypy')        
     
+    def receive_request(self):
+        self.request_object = json.loads(request.body.read())
+        #action_type = self.request_object["action_type"]
+    
     def process_request(self):
-        request_object = json.loads(request.body.read())
-        action_type = request_object["action_type"]
+        '''virtual method'''
     
     
 
-c = ContingencyServer(1338)
-# TkTransparent("test", namedtuple("test", "width height x y")(width=400,height=300, x=0, y=0))
+#c = BottleServer(1338)

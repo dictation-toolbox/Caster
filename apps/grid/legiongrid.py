@@ -1,5 +1,5 @@
 """
-Command-module for RainbowGrid
+Command-module for Legion
 
 """
 
@@ -9,13 +9,10 @@ from dragonfly import (Grammar, AppContext, Function,
                        IntegerRef, Repeat, Playback,
                        Key, Choice, MappingRule)
 
-from lib import utilities, navigation
+from lib import utilities
 
 
-def send_input(pre, color, n, action):
-    Key("p")._execute()
-    utilities.press_digits(0)
-    utilities.press_digits(pre)
+def send_input(color, n, action):
     Key("c")._execute()
     utilities.press_digits(0)
     utilities.press_digits(color)
@@ -37,20 +34,15 @@ def send_input(pre, color, n, action):
 class GridControlRule(MappingRule):
 
     mapping = {
-        "[<pre>] <color> <n> [<action>]":   Function(send_input, extras={"pre", "color", "n", "action"}),
+        "<color> <n> [<action>]":           Function(send_input, extras={"color", "n"}),
         "exit":                             Key("x") * Repeat(2),
 
 
         }
     extras = [
-              IntegerRef("pre", 0, 9),
               Choice("color", {
                               "red": "0",
-                              "(orange | tan | brown)": "1",
-                              "yellow": "2",
                               "green": "3",
-                              "blue": "4",
-                              "purple": "5"
                              }
                     ),
               Choice("action", {
@@ -58,18 +50,17 @@ class GridControlRule(MappingRule):
                               "psychic": "1",
                              }
                     ),
-              IntegerRef("n", 0, 100),
+              IntegerRef("n", 0, 1000),
               
              ]
     defaults = {
-            "pre": 0,
             "action": "-1",
             }
 
 #---------------------------------------------------------------------------
 
-context = AppContext(title="rainbowgrid")
-grammar = Grammar("rainbowgrid", context=context)
+context = AppContext(title="legiongrid")
+grammar = Grammar("legiongrid", context=context)
 grammar.add_rule(GridControlRule())
 grammar.load()
 

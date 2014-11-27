@@ -88,8 +88,29 @@ class TkTransparent(tk.Tk):
     def move_mouse(self, mx, my):
         win32api.SetCursorPos((mx, my))
     
+class LegionGrid(TkTransparent):
+    def __init__(self, grid_size=None):
+        '''square_size is an integer'''
+        TkTransparent.__init__(self, "legiongrid", grid_size)
+        self.attributes("-alpha", 0.5)
+        
+        '''mode information:
+        r  = refresh
+        
+        any other sequence should activate null-mode
+        '''
+        self.mode = ""  # null-mode
+        self.digits = ""
+        self.allowed_characters = r"[cnx0-9]"
+        self.mainloop()
 
-
+    def draw(self):
+        self.pre_redraw()
+        # drawing code here
+        self.unhide()
+        
+    def draw_squares(self):
+        ''''''
 
 class RainbowGrid(TkTransparent):
     def __init__(self, grid_size=None, square_size=None, square_alpha=None):
