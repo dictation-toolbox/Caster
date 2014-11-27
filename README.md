@@ -41,6 +41,7 @@ other dragonfly repositories
  - https://github.com/tgrosinger/aenea-grammars (aenea)
  - https://github.com/danzel/NatlinkVisualStudioMacros
  - https://github.com/jiqimaogou/NatLink-MacroSystem
+ - https://github.com/codebold/hiccup
 
 open source and commercial Dragon add-ons
 --
