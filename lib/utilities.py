@@ -3,17 +3,32 @@ from __future__ import unicode_literals
 
 import codecs
 from datetime import datetime
-import natlink
-
+import multiprocessing
 import os, json, sys, time
 
-from dragonfly import Key, BringApp
-from dragonfly.grammar.recobs import RecognitionHistory
-from dragonfly.timer import _Timer
-import win32gui, win32process, win32api, win32ui
+try:
+    from lib.filter import Filter
+    import paths
+    import win32gui, win32process, win32api, win32ui
+    import natlink
+    from dragonfly import Key, BringApp, RecognitionHistory
+    from dragonfly.timer import _Timer
+except ImportError:
+    # for when utilities is used outside of Dragon
+    BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
+    GD_PATH = r"C:\Python27\Lib\site-packages"
+    sys.path.append(BASE_PATH)
+    sys.path.append(GD_PATH)
+    sys.path.append(r"C:\NatLink\NatLink\MacroSystem\core")
+    from lib.filter import Filter
+    import paths
+    import win32gui, win32process, win32api, win32ui
+    import natlink
+    from dragonfly import Key, BringApp, RecognitionHistory
+    from dragonfly.timer import _Timer
 
-from lib.filter import Filter
-import paths
+
+
 
 
 MULTI_CLIPBOARD = {}
@@ -183,15 +198,14 @@ def parse_monitor_scan(monitor_scan_path):
                 monitors["inactive"].append(current_monitor)
     return monitors
 
-def subtract_matrices(matrix_a, matrix_b):
-    result = []
-    for i in xrange(len(matrix_a)):
-        tmp = []
-        for a, b in zip(matrix_a[i], matrix_b[i]):
-            tmp.append(a - b)
-        result.append(tmp[:])
-    return result[:]
+def run_in_separate_thread(func):
+    p = multiprocessing.Process(target=func)
+    p.start()
+    p.join(300)
 
+    if p.is_alive():
+        p.terminate()
+        p.join()
 
 
 def py2exe_compile(choice):

@@ -1,20 +1,24 @@
 from __future__ import division
 
-import math
 import multiprocessing
 import os
+import re 
 import signal
-import threading
+import sys
 import time
 
 from PIL import ImageGrab, ImageTk, ImageFilter, ImageDraw, ImageFont
 import win32api
-import win32con
-import re 
-
 
 import Tkinter as tk
 
+
+try:
+    from lib import utilities
+except ImportError:
+    BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
+    sys.path.append(BASE_PATH)
+    from lib import utilities
 
 class Dimensions:
     def __init__(self, w, h, x, y):
@@ -382,18 +386,15 @@ class DouglasGrid(TkTransparent):
         
 
 def run():
-    dg = DouglasGrid()#grid_size=Dimensions(400, 300, 0, 0)
+    dg = DouglasGrid(grid_size=Dimensions(400, 300, 0, 0))#grid_size=Dimensions(400, 300, 0, 0)
     
 
 if __name__ == '__main__':
-    # Start bar as a process
     p = multiprocessing.Process(target=run)
     p.start()
-
-    # Wait for 5 minutes or until process finishes
     p.join(300)
-
-    # If thread is still active
+ 
     if p.is_alive():
         p.terminate()
         p.join()
+#     utilities.run_in_separate_thread(run)

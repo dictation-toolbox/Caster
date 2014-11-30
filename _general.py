@@ -138,9 +138,6 @@ class MainRule(MappingRule):
               Dictation("text"),
               Dictation("text2"),
               Dictation("text3"),
-              Choice("choice",
-                    {"alarm": "alarm", "custom grid": "CustomGrid", "element": "element"
-                    }),
               Choice("enable_disable",
                     {"enable": "enable", "disable": "disable"
                     }),

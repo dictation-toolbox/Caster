@@ -1,15 +1,21 @@
-from dragonfly import (Function, Text, Grammar,BringApp,WaitWindow,Key,  
-                       IntegerRef,Dictation,Mimic,MappingRule)
-import sys, httplib, json, win32api, win32con,re
-from lib import utilities, paths, settings
 import natlink
+import sys, httplib, json, win32api, win32con, re
+import time
+
+from dragonfly import (Function, Text, Grammar, BringApp, WaitWindow, Key,
+                       IntegerRef, Dictation, Mimic, MappingRule)
 from dragonfly.actions.action_focuswindow import FocusWindow
+
+from lib import utilities, paths, settings
+
 
 STRICT_PARSER=re.compile('((?<=[a-z0-9])[A-Z]|(?!^)[A-Z](?=[a-z]))')
 
 def retrieve(n):
     n = int(n)-1
+    t=time.time()
     Text(send("retrieve", n))._execute()
+    print "retrieved in seconds: "+str(t-time.time())
 
 def scroll(n):#n is the index of the list item to scroll to
     send("scroll", (int(n)-1))

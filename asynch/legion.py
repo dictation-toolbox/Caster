@@ -4,8 +4,7 @@ import re
 
 from PIL import ImageGrab
 
-from lib import paths, utilities
-from lib.display import TkTransparent
+from lib import paths
 
 
 # things to fix: _general, 
@@ -30,11 +29,4 @@ class LegionScanner:
     def do_scans(self):
         img = ImageGrab.grab()
         self.tirg_scan(img)
-
-class LegionDisplay(TkTransparent):
-    def __init__(self, name):
-        TkTransparent.__init__(self, name, namedtuple("test", "width height x y")(width=400,height=300, x=0, y=0))
-    
-if __name__ == "__main__":
-    ld=LegionDisplay("Legion Display")
     

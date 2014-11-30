@@ -1,18 +1,22 @@
-import Tkinter as tk
-import tkFileDialog
-from threading import Timer
-import signal
 from Tkinter import (StringVar, OptionMenu, Scrollbar, Frame, Label, Entry)
 import os, re, sys, json
-import bottle
-from bottle import run, request  # , post,response
+import signal
+from threading import Timer
+import tkFileDialog
+from multiprocessing import Process, freeze_support
 
-try:
-    from lib import paths, utilities, settings
-except ImportError:
-    BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
-    sys.path.append(BASE_PATH)
-    from lib import paths, utilities, settings
+from bottle import run, request  # , post,response
+import bottle
+
+import Tkinter as tk
+
+# 
+# try:
+#     from lib import paths, utilities, settings
+# except ImportError:
+#     BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
+#     sys.path.append(BASE_PATH)
+#     from lib import paths, utilities, settings
 
 
 
@@ -23,7 +27,7 @@ class Element:
         # setup basics
         self.JSON_PATH = paths.ELEMENT_JSON_PATH
         self.TOTAL_SAVED_INFO = utilities.load_json_file(self.JSON_PATH)
-
+ 
         self.first_run = True
         if "config" in self.TOTAL_SAVED_INFO and "last_directory" in self.TOTAL_SAVED_INFO["config"]:
             self.first_run = False
@@ -32,8 +36,8 @@ class Element:
             self.TOTAL_SAVED_INFO["directories"] = {}
         self.current_file = None
         self.last_file_loaded = None
-        
-        
+         
+         
         # REGULAR EXPRESSION PATTERNS
         self.GENERIC_PATTERN = re.compile("([A-Za-z0-9._]+\s*=)|(import [A-Za-z0-9._]+)")
         # python language
@@ -47,26 +51,26 @@ class Element:
         
         # setup tk
         self.root = tk.Tk()
-        self.root.title(settings.ELEMENT_VERSION)
+#         self.root.title(settings.ELEMENT_VERSION)
         self.root.geometry("200x" + str(self.root.winfo_screenheight() - 100) + "-1+20")
         self.root.wm_attributes("-topmost", 1)
         self.root.protocol("WM_DELETE_WINDOW", self.on_exit)
         
         # setup hotkeys
         self.root.bind_all("<Home>", self.scan_new)
-        
-        
          
+         
+          
         # setup options for directory ask
         self.dir_opt = {}
         self.dir_opt['initialdir'] = os.environ["HOME"] + '\\'
         self.dir_opt['mustexist'] = False
         self.dir_opt['parent'] = self.root
         self.dir_opt['title'] = 'Please select directory'
-
+ 
         # directory drop-down label
         Label(self.root, text="Directory, File:", name="pathlabel").pack()
-        
+         
         # setup drop-down box
         self.dropdown_selected = StringVar(self.root)
         self.default_dropdown_message = "Please select a scanned folder"
@@ -75,43 +79,43 @@ class Element:
         self.dropdown.pack()
         if not self.first_run:
             self.populate_dropdown()
-
+ 
         # setup drop-down box for files manual selection
         self.file_dropdown_selected = StringVar(self.root)
         self.file_default_dropdown_message = "Select file"
         self.file_dropdown_selected.set(self.file_default_dropdown_message)
         self.file_dropdown = OptionMenu(self.root, self.file_dropdown_selected, self.file_default_dropdown_message)
         self.file_dropdown.pack()
-
-
+ 
+ 
         # file extension label and box
         ext_frame = Frame(self.root)
         Label(ext_frame, text="Ext(s):", name="extensionlabel").pack(side=tk.LEFT)
         self.ext_box = Entry(ext_frame, name="ext_box")
         self.ext_box.pack(side=tk.LEFT)
         ext_frame.pack()
-
+ 
         # fill in remembered information  if it exists
         if not self.first_run:
             last_dir = self.TOTAL_SAVED_INFO["config"]["last_directory"]
             self.dropdown_selected.set(last_dir)
             self.ext_box.insert(0, ",".join(self.TOTAL_SAVED_INFO["directories"][last_dir]["extensions"]))
-                
+                 
         # sticky label
         Label(text="Sticky Box", name="label1").pack()
-
+ 
         # setup search box
         search_frame = Frame(self.root)
         Label(search_frame, text="Search:").pack(side=tk.LEFT)
         self.search_box = tk.Entry(search_frame, name="search_box")
         self.search_box.pack(side=tk.LEFT)
-        
+         
         # set up lists
         stickyframe = Frame(self.root)
         stickyscrollbar = Scrollbar(stickyframe, orient=tk.VERTICAL)
         self.sticky_listbox_numbering = tk.Listbox(stickyframe, yscrollcommand=stickyscrollbar.set)
         self.sticky_listbox_content = tk.Listbox(stickyframe, yscrollcommand=stickyscrollbar.set)
-
+ 
         self.sticky_listbox_index = 0
         s_lbn_opt = {}
         s_lbn_opt_height = 10
@@ -119,7 +123,7 @@ class Element:
         s_lbn_opt["width"] = 4
         s_lbn_opt2 = {}
         s_lbn_opt2["height"] = s_lbn_opt_height
-        
+         
         stickyscrollbar.config(command=self.sticky_scroll_lists)
         stickyscrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.sticky_listbox_numbering.config(s_lbn_opt)
@@ -134,7 +138,7 @@ class Element:
         scrollbar = Scrollbar(listframe, orient=tk.VERTICAL)
         self.listbox_numbering = tk.Listbox(listframe, yscrollcommand=scrollbar.set)
         self.listbox_content = tk.Listbox(listframe, yscrollcommand=scrollbar.set)
-        
+         
         self.listbox_index = 0
         lbn_opt = {}
         lbn_opt_height = 30
@@ -142,33 +146,38 @@ class Element:
         lbn_opt["width"] = 4
         lbn_opt2 = {}
         lbn_opt2["height"] = lbn_opt_height
-        
+         
         scrollbar.config(command=self.scroll_lists)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.listbox_numbering.config(lbn_opt)
         self.listbox_numbering.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
         self.listbox_content.config(lbn_opt2)
         self.listbox_content.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
-        
+         
         listframe.pack()
-        
+         
         # update active file
         self.update_interval = 100
         self.filename_pattern = re.compile(r"[/\\]([\w]+\.[\w]+)")
         self.old_active_window_title = ""
         self.root.after(self.update_interval, self.update_active_file)
-        
-        # start bottle server, tk main loop
+         
+        # start bottleserver server, tk main loop
         Timer(1, self.start_server).start()
+        Timer(0.2, self.start_tk).start()
         bottle.route('/process', method="POST")(self.process_request)
-        self.root.mainloop()
+        self.start_tk()
 
     def on_exit(self):
         self.root.destroy()
         os.kill(os.getpid(), signal.SIGTERM)
     
     def start_server(self):
-        run(host='localhost', port=1337, debug=True, server='cherrypy')
+        ''''''
+        run(host='localhost', port=1337, debug=False, server='cherrypy')#bottle is about a full second faster
+        
+    def start_tk(self):
+        self.root.mainloop()
     
     def update_active_file(self):
         active_window_title = utilities.get_active_window_title()
@@ -490,5 +499,22 @@ class Element:
         return 'unrecognized request received: ' + request_object["action_type"]
 
 
+def go():
+    app = Element()
+    app.start_tk()
 
-app = Element()  
+# p=None
+
+if __name__ == '__main__':
+#     global p
+#     go()
+    freeze_support()
+    p = Process(target=go)
+    p.start()
+     
+    p.join(300)
+  
+    if p.is_alive():
+        p.terminate()
+        p.join()
+#     

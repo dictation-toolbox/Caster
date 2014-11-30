@@ -37,7 +37,7 @@ def send_input(pre, color, n, action):
 class GridControlRule(MappingRule):
 
     mapping = {
-        "[<pre>] <color> <n> [<action>]":   Function(send_input, extras={"pre", "color", "n", "action"}),
+        "[<pre>] <color> <n> [<action>]":   Function(send_input, extra={"pre", "color", "n", "action"}),
         "exit":                             Key("x") * Repeat(2),
 
 

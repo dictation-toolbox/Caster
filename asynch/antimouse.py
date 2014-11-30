@@ -3,32 +3,55 @@ Created on Nov 15, 2014
 
 @author: dave
 '''
-import json
+import itertools, glob
+from threading import Timer
 
-from bottle import run, request
-import bottle
+# from asynch.bottleserver import BottleServer
+# from asynch.legion import LegionScanner
+from lib.systemtrayicon.sti import SysTrayIcon
 
 
+# class AMServer(BottleServer):
+#     def __init__(self):
+#         ''''''
+#         BottleServer.__init__(self, 1339)
+#         #am=BottleServer.Message()
+
+class AntiMouse(SysTrayIcon):
+    
+    icons = itertools.cycle(glob.glob('*.ico'))
+    hover_text = "AntiMouse Dragon Assistant"
+    def hello(self, sysTrayIcon): print "Hello World."
+    def simon(self, sysTrayIcon): print "Hello Simon."
+    def switch_icon(self, sysTrayIcon):
+        sysTrayIcon.icon = self.icons.next()
+        sysTrayIcon.refresh_icon()
+    
+    def bye(self, sysTrayIcon): 
+        print 'Bye, then.'
+        raise IndexError()
+        if self.server:
+            self.server.die()
+    
+    def start_everything(self):
+        ''''''
+#         self.legion_scanner = LegionScanner()
+#         self.server = AMServer()
+    
+    def __init__(self):
+        self.server = None
+        self.legion_scanner = None
+        self.rectangle_scanner = None
         
-class BottleServer:
-    class Message:
-        def __init__(self, content="", destination=0):
-            self.content = content
-            self.destination = destination
-        
-    def __init__(self, listening_port):
-        self.listening_port = listening_port
-        self.message_queue = []
-        bottle.route('/process', method="POST")(self.process_request)
-        run(host='localhost', port=self.listening_port, debug=False, server='cherrypy')        
-    
-    def receive_request(self):
-        self.request_object = json.loads(request.body.read())
-        #action_type = self.request_object["action_type"]
-    
-    def process_request(self):
-        '''virtual method'''
-    
-    
+        menu_options = (('Say Hello', self.icons.next(), self.hello),
+                    ('Switch Icon', None, self.switch_icon),
+                    ('A sub-menu', self.icons.next(), (('Say Hello to Simon', self.icons.next(), self.simon),
+                                                  ('Switch Icon', self.icons.next(), self.switch_icon),
+                                                 ))
+                   )
+        Timer(1, self.start_everything).start()
+        SysTrayIcon.__init__(self, self.icons.next(), self.hover_text, menu_options, on_quit=self.bye, default_menu_index=1)
+        print " do we get here "
 
-#c = BottleServer(1338)
+# c = BottleServer(1338)
+c = AntiMouse()
