@@ -3,11 +3,10 @@ import sys, time
 from dragonfly import (BringApp, Key, Function, Grammar, Playback,
                        IntegerRef, Dictation, Choice, WaitWindow, MappingRule, Text)
 
-from lib import paths, utilities, settings, navigation, ccr, password
+from lib import paths, utilities, settings, navigation, ccr, password, common
 
 
-ccr.refresh()
-utilities.clean_temporary_files()
+
 
 def experiment():
     '''this function is for testing things in development'''
@@ -19,7 +18,7 @@ def experiment():
 
 def fix_Dragon_double():
     try:
-        lr = utilities.DICTATION_CACHE[len(utilities.DICTATION_CACHE)-1]
+        lr = common.DICTATION_CACHE[len(common.DICTATION_CACHE)-1]
         lu = " ".join(lr)
         Key("left/5:" + str(len(lu)) + ", del")._execute()
     except Exception:
@@ -36,9 +35,9 @@ def flip_monitor():
         
 def repeat_that(n):
     try:
-        if len(utilities.DICTATION_CACHE)>0:
+        if len(common.DICTATION_CACHE)>0:
             for i in range(int(n)):
-                Playback([([str(x) for x in " ".join(utilities.DICTATION_CACHE[len(utilities.DICTATION_CACHE)-1]).split()], 0.0)])._execute()
+                Playback([([str(x) for x in " ".join(common.DICTATION_CACHE[len(common.DICTATION_CACHE)-1]).split()], 0.0)])._execute()
     except Exception:
         utilities.report(utilities.list_to_string(sys.exc_info()))
 

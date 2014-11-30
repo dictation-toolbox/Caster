@@ -1,17 +1,21 @@
+from ctypes import windll
+import sys, win32api, time, win32clipboard, natlink
+
 from dragonfly import (Key, Text , Playback, Function, Repeat,
                         BringApp, Mouse, Choice, WaitWindow)
-import sys, win32api, time, win32clipboard, natlink
-from ctypes import windll
-from win32con import MOUSEEVENTF_WHEEL
 from win32api import GetSystemMetrics
+from win32con import MOUSEEVENTF_WHEEL
+
+from lib import common
 import paths, utilities, settings
+
 
 BASE_PATH = paths.BASE_PATH
 MMT_PATH = paths.MMT_PATH
 NIRCMD_PATH = paths.NIRCMD_PATH
 
 def initialize_clipboard():
-    utilities.MULTI_CLIPBOARD = utilities.load_json_file(paths.SAVED_CLIPBOARD_PATH)
+    common.MULTI_CLIPBOARD = utilities.load_json_file(paths.SAVED_CLIPBOARD_PATH)
 
 def clipboard_to_file(nnavi500):
     key = str(nnavi500)
@@ -20,9 +24,9 @@ def clipboard_to_file(nnavi500):
         try:
             time.sleep(0.05)  # time for keypress to execute
             win32clipboard.OpenClipboard()
-            utilities.MULTI_CLIPBOARD[key] = win32clipboard.GetClipboardData()
+            common.MULTI_CLIPBOARD[key] = win32clipboard.GetClipboardData()
             win32clipboard.CloseClipboard()
-            utilities.save_json_file(utilities.MULTI_CLIPBOARD, paths.SAVED_CLIPBOARD_PATH)
+            utilities.save_json_file(common.MULTI_CLIPBOARD, paths.SAVED_CLIPBOARD_PATH)
         except Exception:
             failure=True
         if not failure:
@@ -33,10 +37,10 @@ def drop(nnavi500):
     while True:
         failure=False
         try:
-            if key in utilities.MULTI_CLIPBOARD:
+            if key in common.MULTI_CLIPBOARD:
                 win32clipboard.OpenClipboard()
                 win32clipboard.EmptyClipboard()
-                win32clipboard.SetClipboardText(utilities.MULTI_CLIPBOARD[key])
+                win32clipboard.SetClipboardText(common.MULTI_CLIPBOARD[key])
                 win32clipboard.CloseClipboard()
                 Key("c-v")._execute()
             else:

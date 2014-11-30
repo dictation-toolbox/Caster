@@ -7,7 +7,7 @@ import signal
 import sys
 import time
 
-from PIL import ImageGrab, ImageTk, ImageFilter, ImageDraw, ImageFont
+from PIL import ImageGrab, ImageTk, ImageDraw, ImageFont
 import win32api
 
 import Tkinter as tk

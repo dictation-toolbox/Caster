@@ -10,13 +10,13 @@ import bottle
 
 import Tkinter as tk
 
-# 
-# try:
-#     from lib import paths, utilities, settings
-# except ImportError:
-#     BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
-#     sys.path.append(BASE_PATH)
-#     from lib import paths, utilities, settings
+ 
+try:
+    from lib import paths, utilities, settings
+except ImportError:
+    BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
+    sys.path.append(BASE_PATH)
+    from lib import paths, utilities, settings
 
 
 

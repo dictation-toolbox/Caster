@@ -4,40 +4,13 @@ from __future__ import unicode_literals
 import codecs
 from datetime import datetime
 import multiprocessing
+import natlink
 import os, json, sys, time
 
-try:
-    from lib.filter import Filter
-    import paths
-    import win32gui, win32process, win32api, win32ui
-    import natlink
-    from dragonfly import Key, BringApp, RecognitionHistory
-    from dragonfly.timer import _Timer
-except ImportError:
-    # for when utilities is used outside of Dragon
-    BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
-    GD_PATH = r"C:\Python27\Lib\site-packages"
-    sys.path.append(BASE_PATH)
-    sys.path.append(GD_PATH)
-    sys.path.append(r"C:\NatLink\NatLink\MacroSystem\core")
-    from lib.filter import Filter
-    import paths
-    import win32gui, win32process, win32api, win32ui
-    import natlink
-    from dragonfly import Key, BringApp, RecognitionHistory
-    from dragonfly.timer import _Timer
+from dragonfly import Key, BringApp
+import win32gui, win32process, win32api, win32ui
 
-
-
-
-
-MULTI_CLIPBOARD = {}
-DICTATION_CACHE = RecognitionHistory(10)
-DICTATION_CACHE.register()
-TIMER_MANAGER = _Timer(1)
-FILTER = Filter()
-# FILTER.initialize()
-# also need to do filter clean up, unloading
+import paths
 
 def window_exists(classname, windowname):
     try:
@@ -168,16 +141,10 @@ def scan_monitors():
 
 def parse_monitor_scan(monitor_scan_path):
     monitors = {"active": [], "inactive": []}
-#     content = None
     with codecs.open(monitor_scan_path, "r", encoding="utf-16") as f:
         content = f.readlines()
-#     is_active = False
-#     active_monitors = []
-#     inactive_monitors = []
-#     resolution = None
     current_monitor = None
     # Maximum Resolution: 1600 X 900
-    # remote_debug()
     for line in content:
         line = line.replace(" ", "")
         if line.startswith("Resolution"):

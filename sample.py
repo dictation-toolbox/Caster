@@ -68,7 +68,7 @@ class MainRule(MappingRule):
                "text": "", 
                }
 
-# this stuff is required too-- where I have the word "sample" below, each grammar file should have something unique
+# this stuff is required too-- where I have the word "sample" below, each grammar file should have external unique
 grammar = Grammar('sample')
 grammar.add_rule(MainRule())
 grammar.load()
