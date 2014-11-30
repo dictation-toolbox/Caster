@@ -8,6 +8,7 @@ forums and community
  - https://groups.google.com/forum/#!forum/dragonflyspeech
  - http://www.knowbrainer.com/forums/forum/categories.cfm?catid=25
  - https://web.archive.org/web/20130805104835/http://speechcomputing.com/forum
+ - http://www.newswebreader.com/comp.lang.beta
 
 sources and modules
 --
@@ -23,6 +24,7 @@ dragonfly and natlink documentation
  - http://qh.antenna.nl/unimacro/index.html
  - http://qh.antenna.nl/unimacro/implementation_and_acceptance_of_natlink.pdf
  - http://www.synapseadaptive.com/joel/NatLinkTalk.ppt
+ - http://www.synapseadaptive.com/joel/VoiceCoders.ppt ("Secrets of VDct" by Joel Gould)
 
 other dragonfly repositories
 --
@@ -43,32 +45,44 @@ other dragonfly repositories
  - https://github.com/jiqimaogou/NatLink-MacroSystem
  - https://github.com/codebold/hiccup
 
+other related documents
+--
+- http://www.knowbrainer.com/index.cfm/wiki/knowbrainer-dragon-and-computer-tweaks/
+- http://knowbrainer.com/index.cfm/wiki/dragon-naturallyspeaking-13-review/
+- http://alpacatechnologies.com/tiki-download_file.php?fileId=21 (VoiceCode academic paper)
+
 open source and commercial Dragon add-ons
 --
  - http://sourceforge.net/projects/voicecode/
  - http://www.ergoarchitect.com/ShowNumbersPlus.html
  - http://www.voicecomputer.com
 
+youtube
+--
+- http://www.youtube.com/watch?v=8SkdfdXWYaI (Tavis Rudd talk)
+- https://www.youtube.com/watch?v=g3c5H7sAbBQ (explanation of continuous command recognition)
+- http://www.youtube.com/watch?v=LVAO8DXUnRI (a voice programmer)
+
+dragonfly/natlink publicity
+--
+- https://web.archive.org/web/20141113151730/http://forums.steampowered.com/forums/showthread.php?t=1239646
+- http://www.extrahop.com/post/blog/programming-by-voice-staying-productive-without-harming-yourself/
+
 installation instructions from ground zero for D::S
 --
  - http://explosionduck.com/ds/
 
+legacy
+--
+- http://www.westga.edu/~drocco/voice/NatLink/
+- https://web.archive.org/web/20110917000900/http://sean.wenzel.net/voicerecognition/index.epl
+
 other
 --
- - http://www.youtube.com/watch?v=8SkdfdXWYaI (Tavis Rudd talk)
  - http://pydev.org/manual_adv_remote_debugger.html
- - http://alpacatechnologies.com/tiki-download_file.php?fileId=21 (VoiceCode academic paper)
  - http://ergoemacs.org/emacs/emacs_hand_pain_celebrity.html
  - https://github.com/TalAter/annyang (in browser voice recognition JS library)
  - http://zenorocha.github.io/voice-elements/
- - http://sean.wenzel.net/voicerecognition
- - https://github.com/OpenLeap/PyLeapMouse
  - https://gist.github.com/tavisrudd/5226505
- - http://www.synapseadaptive.com/joel/VoiceCoders.ppt ("Secrets of VDct" by Joel Gould)
- - https://web.archive.org/web/20141113151730/http://forums.steampowered.com/forums/showthread.php?t=1239646
- - http://www.westga.edu/~drocco/voice/NatLink/
  - https://github.com/dictation-toolbox/aenea-grammars/issues/1
- - https://www.youtube.com/watch?v=g3c5H7sAbBQ (explanation of continuous command recognition)
- - http://www.youtube.com/watch?v=LVAO8DXUnRI (a voice programmer)
- - http://www.extrahop.com/post/blog/programming-by-voice-staying-productive-without-harming-yourself/
  - https://github.com/Uberi/speech_recognition
