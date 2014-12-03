@@ -26,7 +26,7 @@ class BottleServer:
             #action_type = self.request_object["action_type"]
     
     def process_requests(self):
-        '''virtual method'''
+        '''override this'''
 
 
 
