@@ -17,3 +17,7 @@ class Filter(GrammarBase):
                 # do whatever sort of filtering you want here
             except Exception:
                 break
+
+# FILTER=Filter()
+# FILTER.initialize()
+# also do cleanup

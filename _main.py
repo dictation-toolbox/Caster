@@ -1,3 +1,4 @@
+from subprocess import Popen
 import sys, time
 
 from dragonfly import (BringApp, Key, Function, Grammar, Playback,
@@ -5,14 +6,10 @@ from dragonfly import (BringApp, Key, Function, Grammar, Playback,
 
 from lib import paths, utilities, settings, navigation, ccr, password, common
 
-
-
-
 def experiment():
     '''this function is for testing things in development'''
     try: 
-        from subprocess import call
-        call('pythonw C:/NatLink/NatLink/MacroSystem/lib/display.py'.split(),shell=True)
+        Popen('pythonw C:/NatLink/NatLink/MacroSystem/lib/display.py'.split(),shell=False, stdin=None, stdout=None, stderr=None, close_fds=True)
     except Exception:
         utilities.report(utilities.list_to_string(sys.exc_info()))
 

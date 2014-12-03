@@ -25,17 +25,14 @@ class Dispel:  # this needs an entry in the settings file, needs to retain infor
         self.reset()
         utilities.report("T: " + str(self.remaining) + " m")
         common.TIMER_MANAGER.add_callback(self.tick, self.minute)
-#         natlink.setTimerCallback(self.tick, self.minute)
     def resume(self):
         utilities.report("T: " + str(self.remaining) + " m")
         common.TIMER_MANAGER.add_callback(self.tick, self.minute)
-#         natlink.setTimerCallback(self.tick, self.minute)
     def stop(self):
         self.active = False
         self.save_settings()
         utilities.report("ending dispel")
         common.TIMER_MANAGER.remove_callback(self.tick)
-#         natlink.setTimerCallback(None, 0)
     
     def save_settings(self):
         self.settings["remaining"] = self.remaining

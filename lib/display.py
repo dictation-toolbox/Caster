@@ -5,12 +5,14 @@ import os
 import re 
 import signal
 import sys
+import threading
 import time
 
 from PIL import ImageGrab, ImageTk, ImageDraw, ImageFont
 import win32api
 
 import Tkinter as tk
+from asynch.bottleserver import BottleServer
 
 
 try:
@@ -93,11 +95,24 @@ class TkTransparent(tk.Tk):
         win32api.SetCursorPos((mx, my))
     
 class LegionGrid(TkTransparent):
+    class LServer(BottleServer):
+        def __init__(self):
+            ''''''
+            
+            self.most_recent_scan=None
+            BottleServer.__init__(self, 1340)
+        
+        def process_requests(self):
+            '''takes most recent scan result and makes it ready to be read by grid app, then discards everything'''
+#             with self.lock: 
+                
+            
+    
     def __init__(self, grid_size=None):
         '''square_size is an integer'''
         TkTransparent.__init__(self, "legiongrid", grid_size)
         self.attributes("-alpha", 0.5)
-        
+        self.server = self.LServer()
         '''mode information:
         r  = refresh
         
@@ -297,7 +312,7 @@ class DouglasGrid(TkTransparent):
                 self.digits += e.char
                 if len(self.digits) == 2:
                     self.process()
-                    self.digits=""
+                    self.digits = ""
     
     def process(self):
         ''''''
@@ -386,15 +401,15 @@ class DouglasGrid(TkTransparent):
         
 
 def run():
-    dg = DouglasGrid(grid_size=Dimensions(400, 300, 0, 0))#grid_size=Dimensions(400, 300, 0, 0)
+    dg = DouglasGrid(grid_size=Dimensions(400, 300, 0, 0))  # grid_size=Dimensions(400, 300, 0, 0)
     
 
 if __name__ == '__main__':
     p = multiprocessing.Process(target=run)
     p.start()
-    p.join(300)
- 
-    if p.is_alive():
-        p.terminate()
-        p.join()
+#     p.join(300)
+#  
+#     if p.is_alive():
+#         p.terminate()
+#         p.join()
 #     utilities.run_in_separate_thread(run)

@@ -4,13 +4,14 @@ from __future__ import unicode_literals
 import codecs
 from datetime import datetime
 import multiprocessing
-import natlink
 import os, json, sys, time
 
 from dragonfly import Key, BringApp
+import dragonfly
 import win32gui, win32process, win32api, win32ui
 
 import paths
+
 
 def window_exists(classname, windowname):
     try:
@@ -101,7 +102,7 @@ def report(message, speak=False, console=True, log=False):
     if console:
         print message
     if speak:
-        natlink.execScript("TTSPlayString \"" + message + "\"")
+        dragonfly.get_engine().speak(message)
     if log:
         f = open(paths.LOG_PATH, 'a') 
         f.write(str(message) + "\n")

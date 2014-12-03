@@ -1,8 +1,9 @@
 from ctypes import windll
-import sys, win32api, time, win32clipboard, natlink
+import sys, win32api, time, win32clipboard
 
 from dragonfly import (Key, Text , Playback, Function, Repeat,
                         BringApp, Mouse, Choice, WaitWindow)
+import dragonfly
 from win32api import GetSystemMetrics
 from win32con import MOUSEEVENTF_WHEEL
 
@@ -44,7 +45,7 @@ def drop(nnavi500):
                 win32clipboard.CloseClipboard()
                 Key("c-v")._execute()
             else:
-                natlink.execScript ("TTSPlayString \"slot empty\"")
+                dragonfly.get_engine().speak("slot empty")
             time.sleep(0.05)
         except Exception:
             failure=True

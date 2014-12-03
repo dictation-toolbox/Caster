@@ -166,7 +166,6 @@ class Element:
         Timer(1, self.start_server).start()
         Timer(0.2, self.start_tk).start()
         bottle.route('/process', method="POST")(self.process_request)
-        self.start_tk()
 
     def on_exit(self):
         self.root.destroy()
