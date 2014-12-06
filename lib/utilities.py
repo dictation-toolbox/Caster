@@ -8,6 +8,7 @@ import os, json, sys, time
 
 from dragonfly import Key, BringApp
 import dragonfly
+import psutil
 import win32gui, win32process, win32api, win32ui
 
 import paths
@@ -20,6 +21,14 @@ def window_exists(classname, windowname):
         return False
     else:
         return True
+
+def kill_process(executable):
+    for proc in psutil.process_iter():
+        try:
+            if proc.name() == executable:
+                proc.kill()
+        except:
+            pass
 
 def press_digits(n):
     number = str(n)

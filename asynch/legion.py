@@ -1,10 +1,162 @@
 from ctypes import *
+import getopt
 import re
+import sys
+from threading import Timer
 import threading
 
 from PIL import ImageGrab
 
-from lib import paths
+
+try:
+    from asynch.bottleserver import BottleServer
+    from lib import paths
+    from lib.display import TkTransparent
+except ImportError:
+    BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
+    sys.path.append(BASE_PATH)
+    from asynch.bottleserver import BottleServer
+    from lib import paths
+    from lib.display import TkTransparent
+
+
+class Rectangle:
+    top = None
+    bottom = None
+    left = None
+    right = None
+
+class LServer(BottleServer):
+    def __init__(self, tk, draw_fn):
+        
+        # TiRG 
+        self.has_tirg_update = False
+        self.tirg_rectangles = None
+        self.most_recent_tirg_scan = None
+        
+        self.draw_fn = draw_fn
+        self.tk = tk
+        
+        BottleServer.__init__(self, 1340)
+    
+    def receive_initial_data(self, tirg=None, rex=None):
+        data = {}
+        if tirg != None:
+            data["data_tirg"] = tirg
+            self.has_tirg_update = True
+        if rex != None:
+            data["data_rex"] = rex
+        if tirg != None or rex != None:
+            data["redraw"] = True
+        with self.lock:
+            self.incoming.append(data)
+        self.process_requests()
+        # self.tk.after() doesn't work here because self.mainloop() hasn't been called yet
+        if tirg != None or rex != None:
+            self.draw_fn()
+#             Timer(0.05, ).start()
+    
+    def process_requests(self):
+        '''takes most recent scan result and makes it ready to be read by grid app, then discards everything'''
+        do_redraw = False
+        
+        with self.lock:
+            self.has_tirg_update = False
+            tirg_string = None
+            ts_len = len(self.incoming)
+            if ts_len > 0:
+                # loop through all requests
+                for k in range(0, ts_len):
+                    if "data_tirg" in self.incoming[k]:
+                        tirg_string = self.incoming[k]["data_tirg"]
+                        self.has_tirg_update = True
+                    elif "redraw" in self.incoming[k]:
+                        do_redraw = True
+            if self.has_tirg_update:
+                tirg_list = tirg_string.split(",")
+                self.tirg_rectangles = []
+                curr_rect = None
+                for i in range(0, len(tirg_list)):
+                    ii = i % 4
+                    if ii == 0:
+                        
+                        curr_rect = Rectangle()
+                        curr_rect.left = int(tirg_list[i])
+                    elif ii == 1:
+                        
+                        curr_rect.top = int(tirg_list[i])
+                    elif ii == 2:
+                        curr_rect.right = int(tirg_list[i])
+                    elif ii == 3:
+                        curr_rect.bottom = int(tirg_list[i])
+                        self.tirg_rectangles.append(curr_rect)
+                        
+            self.incoming = []
+        
+        if do_redraw:
+            self.tk.after(10, self.draw_fn)
+
+class LegionGrid(TkTransparent):
+    def __init__(self, grid_size=None, tirg=None, auto_quit=False):
+        '''square_size is an integer'''
+        TkTransparent.__init__(self, "legiongrid", grid_size)
+        self.attributes("-alpha", 0.7)
+        self.server = LServer(self, self.draw)
+        '''mode information:
+        r  = refresh
+        
+        any other sequence should activate null-mode
+        '''
+        self.mode = ""  # null-mode
+        self.digits = ""
+        self.allowed_characters = r"[cnx0-9]"
+        self.auto_quit = auto_quit
+        
+        self.server.receive_initial_data(tirg=tirg, rex=None)
+        
+        self.mainloop()
+        
+    
+    def draw(self):
+        if self.server.has_tirg_update:
+            ''' or self.server.has_rect_update'''
+            self.pre_redraw()
+            self.draw_tirg_squares()
+        self.unhide()
+        
+    def draw_tirg_squares(self):
+        ''''''
+        font = "Arial 12 bold"
+        fill_inner = "Red"
+        fill_outer = "Black"
+        rect_num = 0
+        with self.server.lock:
+            for rect in self.server.tirg_rectangles:
+                center_x = int((rect.left + rect.right) / 2)
+                center_y = int((rect.top + rect.bottom) / 2)
+                # lines
+                self._canvas.create_line(rect.left, rect.top, rect.right, rect.top, fill=fill_inner)
+                self._canvas.create_line(rect.left, rect.bottom, rect.right, rect.bottom, fill=fill_inner)
+                self._canvas.create_line(rect.left, rect.top, rect.left, rect.bottom, fill=fill_inner)
+                self._canvas.create_line(rect.right, rect.top, rect.right, rect.bottom, fill=fill_inner)
+                
+                # text
+                self._canvas.create_text(center_x + 1, center_y + 1, text=str(rect_num), font=font, fill=fill_outer)
+                self._canvas.create_text(center_x - 1, center_y + 1, text=str(rect_num), font=font, fill=fill_outer)
+                self._canvas.create_text(center_x + 1, center_y - 1, text=str(rect_num), font=font, fill=fill_outer)
+                self._canvas.create_text(center_x - 1, center_y - 1, text=str(rect_num), font=font, fill=fill_outer)
+                self._canvas.create_text(center_x, center_y, text=str(rect_num), font=font, fill=fill_inner)
+                
+                rect_num += 1
+
+
+
+
+
+
+
+
+
 
 class LegionScanner:
     def __init__(self):
@@ -31,7 +183,7 @@ class LegionScanner:
         
     def scan(self):
         img = ImageGrab.grab()
-        result=self.tirg_scan(img)
+        result = self.tirg_scan(img)
         if result != self.last_signature:
             with self.lock:
                 self.last_signature = result
@@ -41,7 +193,34 @@ class LegionScanner:
     def get_update(self):
         with self.lock:
             if self.screen_has_changed:
-                self.screen_has_changed=False
-                return (self.last_signature, None)#None should be replaced with rectangle scan results
+                self.screen_has_changed = False
+                return (self.last_signature, None)  # None should be replaced with rectangle scan results
             else:
                 return None
+
+
+def main(argv):
+    help_message = 'legion.py -t <tirg> -d <dimensions> -a <autoquit>'
+    tirg = None
+    dimensions = None
+    auto_quit = False
+    try:
+        opts, args = getopt.getopt(argv, "ht:a:d:", ["tirg=", "dimensions=", "autoquit="])
+    except getopt.GetoptError:
+        print help_message
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt == '-h':
+            print help_message
+            sys.exit()
+        elif opt in ("-t", "--tirg"):
+            tirg = arg
+        elif opt in ("-d", "--dimensions"):
+            dimensions = arg
+        elif opt in ("-a", "--autoquit"):
+            auto_quit = arg in ("1", "t")    
+            
+    lg = LegionGrid(grid_size=dimensions, tirg=tirg, auto_quit=auto_quit)
+
+if __name__ == "__main__":
+    main(sys.argv[1:])

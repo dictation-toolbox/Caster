@@ -19,6 +19,7 @@ if not REMOTE_DEBUGGER_PATH in sys.path:
     sys.path.append(REMOTE_DEBUGGER_PATH)
 
 # EXECUTABLES
+WSR_PATH=r"C:\Windows\Speech\Common\sapisvr.exe"
 ELEMENT_PATH = r"C:\NatLink\NatLink\MacroSystem\bin\homebrew\element\dist\element.exe"
 GRID_PATH = r"C:\NatLink\NatLink\MacroSystem\bin\homebrew\CustomGrid\dist\CustomGrid.exe"
 NIRCMD_PATH = r"C:\NatLink\NatLink\MacroSystem\bin\nircmd\nircmd.exe"
