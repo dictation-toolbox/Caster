@@ -13,10 +13,7 @@ from lib import utilities
 
 
 def send_input(color, n, action):
-    Key("c")._execute()
-    utilities.press_digits(0)
-    utilities.press_digits(color)
-    Key("n")._execute()
+    Key(str(color))._execute()    
     if int(n) < 10:
         utilities.press_digits(0)
     utilities.press_digits(n)
@@ -34,15 +31,16 @@ def send_input(color, n, action):
 class GridControlRule(MappingRule):
 
     mapping = {
-        "<color> <n> [<action>]":           Function(send_input, extra={"color", "n"}),
+        "<color> <n> [<action>]":           Function(send_input, extra={"color", "n", "action"}),
+        "refresh":                          Key("r"),
         "exit":                             Key("x") * Repeat(2),
 
 
         }
     extras = [
               Choice("color", {
-                              "red": "0",
-                              "green": "3",
+                              "red": "t",
+                              "green": "e",
                              }
                     ),
               Choice("action", {

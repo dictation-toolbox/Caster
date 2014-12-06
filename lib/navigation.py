@@ -1,4 +1,5 @@
 from ctypes import windll
+from subprocess import Popen
 import sys, win32api, time, win32clipboard
 
 from dragonfly import (Key, Text , Playback, Function, Repeat,
@@ -14,6 +15,21 @@ import paths, utilities, settings
 BASE_PATH = paths.BASE_PATH
 MMT_PATH = paths.MMT_PATH
 NIRCMD_PATH = paths.NIRCMD_PATH
+
+def grid_to_window():
+    '''deprecated'''
+             
+def grid_full():
+    '''deprecated'''
+
+def mouse_alternates(mode):
+    if mode=="legion":
+        Popen(["pythonw", paths.LEGION_PATH], shell=False, stdin=None, stdout=None, stderr=None, close_fds=True)
+    elif mode=="rainbow":
+        Popen(["pythonw", paths.RAINBOW_PATH, "-m", "r"], shell=False, stdin=None, stdout=None, stderr=None, close_fds=True)
+    elif mode=="douglas":
+        Popen(["pythonw", paths.DOUGLAS_PATH, "-m", "d"], shell=False, stdin=None, stdout=None, stderr=None, close_fds=True)
+    
 
 def initialize_clipboard():
     common.MULTI_CLIPBOARD = utilities.load_json_file(paths.SAVED_CLIPBOARD_PATH)
@@ -107,7 +123,7 @@ def kick():
     window_title = utilities.get_active_window_title()
     if window_title == "Custom Grid":
         Playback([(["I", "left"], 0.0)])._execute()
-    elif window_title=="rainbowgrid" or window_title=="douglasgrid":
+    elif window_title=="rainbowgrid" or window_title=="douglasgrid" or window_title=="legiongrid":
         for i in range(0, 2):
             Key("x")._execute()
         time.sleep(0.1)
@@ -119,7 +135,7 @@ def kick_right():
     window_title = utilities.get_active_window_title()
     if window_title == "Custom Grid":
         Playback([(["I", "right"], 0.0)])._execute()
-    elif window_title=="rainbowgrid" or window_title=="douglasgrid":
+    elif window_title=="rainbowgrid" or window_title=="douglasgrid" or window_title=="legiongrid":
         for i in range(0, 2):
             Key("x")._execute()
         time.sleep(0.1)
@@ -131,18 +147,7 @@ def kick_middle():
     windll.user32.mouse_event(0x00000020, 0, 0, 0, 0)
     windll.user32.mouse_event(0x00000040, 0, 0, 0, 0)
 
-def grid_to_window():
-    BringApp("pythonw", paths.GRID_PATH, "--rowheight", "20" , "--columnwidth", "20" , "--numrows", "20" ,
-             "--numcolumns", "20", "--sizeToClient", utilities.get_active_window_hwnd())._execute()
-             
-def grid_full():
-    screen_width = GetSystemMetrics(0)
-    screen_height = GetSystemMetrics(1)
-    BringApp(paths.GRID_PATH,
-        "--width", str((screen_width - 20)), "--height", str((screen_height - 30)), "--locationx", "10", "--locationy", "15",
-        "--rowheight", "20" , "--columnwidth", "20" , "--numrows", "20", "--numcolumns", "20")._execute()
-    WaitWindow(executable="CustomGrid.exe")._execute()
-    Key("h")._execute()
+
     
 def pixel_jump(direction, direction2, nnavi500):
     x, y = 0, 0

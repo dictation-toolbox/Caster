@@ -2,7 +2,6 @@ from ctypes import *
 import getopt
 import re
 import sys
-from threading import Timer
 import threading
 
 from PIL import ImageGrab
@@ -19,6 +18,7 @@ except ImportError:
     from lib import paths
     from lib.display import TkTransparent
 
+LEGION_LISTENING_PORT = 1340
 
 class Rectangle:
     top = None
@@ -28,6 +28,7 @@ class Rectangle:
 
 class LServer(BottleServer):
     def __init__(self, tk, draw_fn):
+        global LEGION_LISTENING_PORT
         
         # TiRG 
         self.has_tirg_update = False
@@ -37,7 +38,7 @@ class LServer(BottleServer):
         self.draw_fn = draw_fn
         self.tk = tk
         
-        BottleServer.__init__(self, 1340)
+        BottleServer.__init__(self, LEGION_LISTENING_PORT)
     
     def receive_initial_data(self, tirg=None, rex=None):
         data = {}
@@ -54,7 +55,10 @@ class LServer(BottleServer):
         # self.tk.after() doesn't work here because self.mainloop() hasn't been called yet
         if tirg != None or rex != None:
             self.draw_fn()
-#             Timer(0.05, ).start()
+    
+    def receive_request(self):
+        BottleServer.receive_request(self)
+        self.process_requests()
     
     def process_requests(self):
         '''takes most recent scan result and makes it ready to be read by grid app, then discards everything'''
@@ -70,9 +74,11 @@ class LServer(BottleServer):
                     if "data_tirg" in self.incoming[k]:
                         tirg_string = self.incoming[k]["data_tirg"]
                         self.has_tirg_update = True
-                    elif "redraw" in self.incoming[k]:
+                    if "redraw" in self.incoming[k]:
                         do_redraw = True
             if self.has_tirg_update:
+                if tirg_string.endswith(",") :
+                    tirg_string = tirg_string[:-1]
                 tirg_list = tirg_string.split(",")
                 self.tirg_rectangles = []
                 curr_rect = None
@@ -103,19 +109,47 @@ class LegionGrid(TkTransparent):
         self.attributes("-alpha", 0.7)
         self.server = LServer(self, self.draw)
         '''mode information:
-        r  = refresh
-        
-        any other sequence should activate null-mode
+        t = tirg mode
+        r = refresh
+        e = rex mode
+        x = exit
         '''
         self.mode = ""  # null-mode
         self.digits = ""
-        self.allowed_characters = r"[cnx0-9]"
+        self.allowed_characters = r"[trex0-9]"
         self.auto_quit = auto_quit
         
+        self.tirg_positions = {}
         self.server.receive_initial_data(tirg=tirg, rex=None)
         
         self.mainloop()
         
+    
+    def key(self, e):
+        if re.search(self.allowed_characters, e.char):
+            if e.char == 'x':
+                if self.mode == "x":
+                    self.on_exit()
+                self.mode = "x"
+            elif e.char == 'r':
+                self.after(10, self.draw)
+            elif e.char == 't':
+                self.mode = "t"
+            elif e.char == 'e':
+                self.mode = "e"
+            else:
+                self.digits += e.char
+                if len(self.digits) == 2:
+                    self.process()
+    
+    def process(self):
+        if self.mode == "t":
+            p_index = str(int(self.digits))
+            self.move_mouse(int(self.tirg_positions[p_index][0]), int(self.tirg_positions[p_index][1]))
+        elif self.mode == "e":
+            ''''''
+        self.mode=""
+        self.digits=""
     
     def draw(self):
         if self.server.has_tirg_update:
@@ -134,6 +168,7 @@ class LegionGrid(TkTransparent):
             for rect in self.server.tirg_rectangles:
                 center_x = int((rect.left + rect.right) / 2)
                 center_y = int((rect.top + rect.bottom) / 2)
+                label = str(rect_num)
                 # lines
                 self._canvas.create_line(rect.left, rect.top, rect.right, rect.top, fill=fill_inner)
                 self._canvas.create_line(rect.left, rect.bottom, rect.right, rect.bottom, fill=fill_inner)
@@ -141,12 +176,13 @@ class LegionGrid(TkTransparent):
                 self._canvas.create_line(rect.right, rect.top, rect.right, rect.bottom, fill=fill_inner)
                 
                 # text
-                self._canvas.create_text(center_x + 1, center_y + 1, text=str(rect_num), font=font, fill=fill_outer)
-                self._canvas.create_text(center_x - 1, center_y + 1, text=str(rect_num), font=font, fill=fill_outer)
-                self._canvas.create_text(center_x + 1, center_y - 1, text=str(rect_num), font=font, fill=fill_outer)
-                self._canvas.create_text(center_x - 1, center_y - 1, text=str(rect_num), font=font, fill=fill_outer)
-                self._canvas.create_text(center_x, center_y, text=str(rect_num), font=font, fill=fill_inner)
+                self._canvas.create_text(center_x + 1, center_y + 1, text=label, font=font, fill=fill_outer)
+                self._canvas.create_text(center_x - 1, center_y + 1, text=label, font=font, fill=fill_outer)
+                self._canvas.create_text(center_x + 1, center_y - 1, text=label, font=font, fill=fill_outer)
+                self._canvas.create_text(center_x - 1, center_y - 1, text=label, font=font, fill=fill_outer)
+                self._canvas.create_text(center_x, center_y, text=label, font=font, fill=fill_inner)
                 
+                self.tirg_positions[label] = (center_x, center_y)
                 rect_num += 1
 
 

@@ -20,13 +20,13 @@ if not REMOTE_DEBUGGER_PATH in sys.path:
 
 # EXECUTABLES
 WSR_PATH=r"C:\Windows\Speech\Common\sapisvr.exe"
-ELEMENT_PATH = r"C:\NatLink\NatLink\MacroSystem\bin\homebrew\element\dist\element.exe"
-GRID_PATH = r"C:\NatLink\NatLink\MacroSystem\bin\homebrew\CustomGrid\dist\CustomGrid.exe"
+ELEMENT_PATH = r"C:\NatLink\NatLink\MacroSystem\asynch\element_src.py"
+LEGION_PATH = r"C:\NatLink\NatLink\MacroSystem\asynch\legion.py"
+RAINBOW_PATH = r"C:\NatLink\NatLink\MacroSystem\lib\display.py"
+DOUGLAS_PATH = r"C:\NatLink\NatLink\MacroSystem\lib\display.py"
 NIRCMD_PATH = r"C:\NatLink\NatLink\MacroSystem\bin\nircmd\nircmd.exe"
-PSTOOLS_PATH = r"C:\NatLink\NatLink\MacroSystem\bin\PSTools"
-PSKILL_PATH = r"C:\NatLink\NatLink\MacroSystem\bin\PSTools\pskill.exe"
 MMT_PATH = r"C:\NatLink\NatLink\MacroSystem\bin\MultiMonitorTool\MultiMonitorTool.exe"
-PY2EXE_PATH = r"C:\NatLink\NatLink\MacroSystem\bin\py2exe"
+
 
 # CCR
 GENERIC_CONFIG_PATH = r"C:\NatLink\NatLink\MacroSystem\bin\data\ccr"

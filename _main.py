@@ -20,15 +20,6 @@ def fix_Dragon_double():
         Key("left/5:" + str(len(lu)) + ", del")._execute()
     except Exception:
         utilities.report(utilities.list_to_string(sys.exc_info()))
-    
-FLIP=False
-def flip_monitor():
-    global FLIP
-    if FLIP:
-        BringApp(paths.MMT_PATH, r"/SetOrientation", r"\\.\DISPLAY1", "180")._execute()
-    else:
-        BringApp(paths.MMT_PATH, r"/SetOrientation", r"\\.\DISPLAY1", "0")._execute()
-    FLIP = not FLIP
         
 def repeat_that(n):
     try:
@@ -97,18 +88,15 @@ class MainRule(MappingRule):
     'spell mode':                   Playback([(["spell", "mode", "on"], 0.0)]),
     'dictation mode':               Playback([(["dictation", "mode", "on"], 0.0)]),
     'normal mode':                  Playback([(["normal", "mode", "on"], 0.0)]),
-    "reboot dragon":                Function(utilities.reboot),#BringApp(paths.BASE_PATH + r"\bin\suicide.bat"),
+    "reboot dragon":                Function(utilities.reboot),
     "fix dragon double":            Function(fix_Dragon_double),
     "(show | open) documentation":  BringApp('C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe') + WaitWindow(executable="chrome.exe") + Key('c-t') + WaitWindow(title="New Tab") + Text('http://dragonfly.readthedocs.org/en/latest') + Key('enter'),
-    # http://dragonfly.readthedocs.org/en/latest
     
     # hardware management
     "(switch | change) monitors":              Function(switch_monitors),
     "(<volume_mode> [system] volume [to] <n> | volume <volume_mode> <n>)": Function(navigation.volume_control, extra={'n', 'volume_mode'}),
-    "flip monitor":                 Function(flip_monitor),
     
     # window management
-    "alt tab":                      Key("w-backtick"),  # activates Switcher
     'minimize':                     Playback([(["minimize", "window"], 0.0)]),
     'maximize':                     Playback([(["maximize", "window"], 0.0)]),
     "remax":                        Key("a-space/10,r/10,a-space/10,x"), 
@@ -123,6 +111,11 @@ class MainRule(MappingRule):
     'get password <text> <text2> <text3>':                     Function(password.get_password, extra={'text', 'text2', 'text3'}),
     'get restricted password <text> <text2> <text3>':          Function(password.get_restricted_password, extra={'text', 'text2', 'text3'}),
     'quick pass <text> <text2> <text3>':                       Function(password.get_simple_password, extra={'text', 'text2', 'text3'}),
+    
+    # mouse alternatives
+    "legion":                       Function(navigation.mouse_alternates, mode="legion"),
+    "rainbow":                      Function(navigation.mouse_alternates, mode="rainbow"),
+    "douglas":                      Function(navigation.mouse_alternates, mode="douglas"),
     
     # miscellaneous
     "<enable_disable> <ccr_mode>":  Function(ccr.change_CCR, extra={"enable_disable", "ccr_mode"}),

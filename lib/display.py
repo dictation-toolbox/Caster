@@ -1,5 +1,6 @@
 from __future__ import division
 
+import getopt
 import multiprocessing
 import os
 import re 
@@ -357,16 +358,25 @@ class DouglasGrid(TkTransparent):
 
         
 
-def run():
-    dg = DouglasGrid(grid_size=Dimensions(400, 300, 0, 0))  # grid_size=Dimensions(400, 300, 0, 0)
+
     
+def main(argv):
+    help_message = 'display.py -m <mode>\nr\trainbow grid\nd\tdouglas grid'
+    try:
+        opts, args = getopt.getopt(argv, "hm:")
+    except getopt.GetoptError:
+        print help_message
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt == '-h':
+            print help_message
+            sys.exit()
+        elif opt == '-m':
+            if arg=="r":
+                rg=RainbowGrid()
+            elif arg == 'd':
+                dg = DouglasGrid()  # grid_size=Dimensions(400, 300, 0, 0)  
+            
 
 if __name__ == '__main__':
-    p = multiprocessing.Process(target=run)
-    p.start()
-#     p.join(300)
-#  
-#     if p.is_alive():
-#         p.terminate()
-#         p.join()
-#     utilities.run_in_separate_thread(run)
+    main(sys.argv[1:])

@@ -7,11 +7,11 @@ import getopt
 import multiprocessing
 import os, json, sys, time
 from subprocess import Popen
+import psutil
+import win32gui, win32process, win32api, win32ui
 
 from dragonfly import Key, BringApp
 import dragonfly
-import psutil
-import win32gui, win32process, win32api, win32ui
 
 import paths
 
@@ -177,10 +177,10 @@ def parse_monitor_scan(monitor_scan_path):
                 monitors["inactive"].append(current_monitor)
     return monitors
 
-def run_in_separate_thread(func):
+def run_in_separate_thread(func, timeout_in_seconds=300):
     p = multiprocessing.Process(target=func)
     p.start()
-    p.join(300)
+    p.join(timeout_in_seconds)
 
     if p.is_alive():
         p.terminate()
