@@ -8,7 +8,7 @@ forums and community
  - https://groups.google.com/forum/#!forum/dragonflyspeech
  - http://www.knowbrainer.com/forums/forum/categories.cfm?catid=25
  - https://web.archive.org/web/20130805104835/http://speechcomputing.com/forum
- - http://www.newswebreader.com/comp.lang.beta
+ - https://groups.google.com/forum/#!forum/comp.lang.beta
 
 sources and modules
 --
@@ -50,12 +50,14 @@ other related documents
 - http://www.knowbrainer.com/index.cfm/wiki/knowbrainer-dragon-and-computer-tweaks/
 - http://knowbrainer.com/index.cfm/wiki/dragon-naturallyspeaking-13-review/
 - http://alpacatechnologies.com/tiki-download_file.php?fileId=21 (VoiceCode academic paper)
+- http://njr.sabi.net/2014/04/13/creating-a-dictation-buffer/
 
 open source and commercial Dragon add-ons
 --
  - http://sourceforge.net/projects/voicecode/
  - http://www.ergoarchitect.com/ShowNumbersPlus.html
  - http://www.voicecomputer.com
+ - https://github.com/nriley/DragonControl
 
 youtube
 --
