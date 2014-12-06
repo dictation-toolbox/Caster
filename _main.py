@@ -97,7 +97,7 @@ class MainRule(MappingRule):
     'spell mode':                   Playback([(["spell", "mode", "on"], 0.0)]),
     'dictation mode':               Playback([(["dictation", "mode", "on"], 0.0)]),
     'normal mode':                  Playback([(["normal", "mode", "on"], 0.0)]),
-    "reboot dragon":                BringApp(paths.BASE_PATH + r"\bin\suicide.bat"),
+    "reboot dragon":                Function(utilities.reboot),#BringApp(paths.BASE_PATH + r"\bin\suicide.bat"),
     "fix dragon double":            Function(fix_Dragon_double),
     "(show | open) documentation":  BringApp('C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe') + WaitWindow(executable="chrome.exe") + Key('c-t') + WaitWindow(title="New Tab") + Text('http://dragonfly.readthedocs.org/en/latest') + Key('enter'),
     # http://dragonfly.readthedocs.org/en/latest

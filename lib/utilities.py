@@ -3,8 +3,10 @@ from __future__ import unicode_literals
 
 import codecs
 from datetime import datetime
+import getopt
 import multiprocessing
 import os, json, sys, time
+from subprocess import Popen
 
 from dragonfly import Key, BringApp
 import dragonfly
@@ -196,3 +198,29 @@ def py2exe_compile(choice):
     # (element requires "tk85.dll", "tcl85.dll")
     # run the batch file compile.bat
     print "this function has been removed "
+
+def reboot():
+    Popen('python C:/NatLink/NatLink/MacroSystem/lib/utilities.py -r'.split(), shell=False, stdin=None, stdout=None, stderr=None, close_fds=True)
+
+def main(argv):
+    help_message = 'utilities.py -r\nr\treboot dragon'
+    try:
+        opts, args = getopt.getopt(argv, "hr")
+    except getopt.GetoptError:
+        print help_message
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt == '-h':
+            print help_message
+            sys.exit()
+        elif opt == '-r':
+            print "Dragon Reboot Sequence"
+            kill_process("natspeak.exe")
+            kill_process("dgnuiasvr_x64.exe")
+            kill_process("dnsspserver.exe")
+            time.sleep(3)
+            Popen([r"C:\Program Files (x86)\Nuance\NaturallySpeaking12\Program\natspeak.exe"], shell=False, stdin=None, stdout=None, stderr=None, close_fds=True)
+            
+
+if __name__ == "__main__":
+    main(sys.argv[1:])

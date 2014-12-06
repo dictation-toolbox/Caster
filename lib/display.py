@@ -5,22 +5,13 @@ import os
 import re 
 import signal
 import sys
-import threading
 import time
 
 from PIL import ImageGrab, ImageTk, ImageDraw, ImageFont
 import win32api
 
 import Tkinter as tk
-from asynch.bottleserver import BottleServer
 
-
-try:
-    from lib import utilities
-except ImportError:
-    BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
-    sys.path.append(BASE_PATH)
-    from lib import utilities
 
 class Dimensions:
     def __init__(self, w, h, x, y):
