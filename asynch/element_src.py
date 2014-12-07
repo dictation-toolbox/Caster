@@ -1,22 +1,23 @@
 from Tkinter import (StringVar, OptionMenu, Scrollbar, Frame, Label, Entry)
+from multiprocessing import Process, freeze_support
 import os, re, sys, json
 import signal
 from threading import Timer
 import tkFileDialog
-from multiprocessing import Process, freeze_support
 
 from bottle import run, request  # , post,response
 import bottle
 
 import Tkinter as tk
+from lib import utilities
 
- 
+
 try:
-    from lib import paths, utilities, settings
+    from lib import paths, settings
 except ImportError:
     BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
     sys.path.append(BASE_PATH)
-    from lib import paths, utilities, settings
+    from lib import paths, settings
 
 
 
@@ -297,7 +298,7 @@ class Element:
         
         try:
             for base, dirs, files in os.walk(directory):  # traverse base directory, and list directories as dirs and files as files
-                utilities.report(base)
+#                 utilities.report(base)
                 for fname in files:
                     extension = "." + fname.split(".")[-1]
                     if extension in acceptable_extensions:
@@ -343,7 +344,7 @@ class Element:
                         scanned_file["names"].sort()
                         scanned_directory[absolute_path] = scanned_file
         except Exception:
-            utilities.report(utilities.list_to_string(sys.exc_info()))
+            utilities.simple_log(True)
         
         
         meta_information = {}

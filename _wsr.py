@@ -1,7 +1,8 @@
 from subprocess import Popen
 import time, pythoncom
 
-    
+from lib import runner
+
 
 if __name__ == "__main__":
     print "WSR Speech Recognition is garbage; it is recommended that you not run Sorcery this way."
@@ -14,13 +15,14 @@ else:
     
     from dragonfly import Choice, MappingRule, Grammar, Function
     import natlink
-    from lib import paths, utilities
+    from lib import paths
+    from lib import utilities
     
     def deactivate_natlink():
         natlink.setMicState("sleeping")
         
     def activate_wsr():
-        Popen([paths.WSR_PATH, "-SpeechUX"],shell=False, stdin=None, stdout=None, stderr=None, close_fds=True)
+        runner.run([paths.WSR_PATH, "-SpeechUX"])
     
     def kill_wsr():
         utilities.kill_process("sapisvr.exe")

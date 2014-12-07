@@ -4,14 +4,17 @@ import sys, time
 from dragonfly import (BringApp, Key, Function, Grammar, Playback,
                        IntegerRef, Dictation, Choice, WaitWindow, MappingRule, Text)
 
-from lib import paths, utilities, settings, navigation, ccr, password, common
+from lib import paths, settings, navigation, ccr, password, common
+from lib import runner
+from lib import utilities
+
 
 def experiment():
     '''this function is for testing things in development'''
     try: 
-        Popen('pythonw C:/NatLink/NatLink/MacroSystem/lib/display.py'.split(),shell=False, stdin=None, stdout=None, stderr=None, close_fds=True)
+        runner.run('pythonw C:/NatLink/NatLink/MacroSystem/lib/display.py'.split())
     except Exception:
-        utilities.report(utilities.list_to_string(sys.exc_info()))
+        utilities.simple_log(False)
 
 def fix_Dragon_double():
     try:
@@ -19,7 +22,7 @@ def fix_Dragon_double():
         lu = " ".join(lr)
         Key("left/5:" + str(len(lu)) + ", del")._execute()
     except Exception:
-        utilities.report(utilities.list_to_string(sys.exc_info()))
+        utilities.simple_log(False)
         
 def repeat_that(n):
     try:
@@ -27,7 +30,7 @@ def repeat_that(n):
             for i in range(int(n)):
                 Playback([([str(x) for x in " ".join(common.DICTATION_CACHE[len(common.DICTATION_CACHE)-1]).split()], 0.0)])._execute()
     except Exception:
-        utilities.report(utilities.list_to_string(sys.exc_info()))
+        utilities.simple_log(False)
 
 def switch_monitors():
     debug = False
@@ -68,8 +71,7 @@ def switch_monitors():
 
         # other cases go here
     except Exception:
-        utilities.report(utilities.list_to_string(sys.exc_info()))
-        #
+        utilities.simple_log(False)        #
     
 class MainRule(MappingRule):
     

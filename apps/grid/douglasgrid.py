@@ -9,7 +9,8 @@ from dragonfly import (Grammar, AppContext, Function,
                        IntegerRef, Repeat, Playback,
                        Key, Choice, MappingRule)
 
-from lib import utilities, navigation
+from lib import navigation
+from lib import utilities
 
 
 def send_input(n, n2, action):

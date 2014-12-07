@@ -6,7 +6,8 @@ from dragonfly import (Function, Text, Grammar, BringApp, WaitWindow, Key,
                        IntegerRef, Dictation, Mimic, MappingRule)
 from dragonfly.actions.action_focuswindow import FocusWindow
 
-from lib import utilities, paths, settings, common
+from lib import paths, settings, common
+from lib import utilities
 
 
 STRICT_PARSER = re.compile('((?<=[a-z0-9])[A-Z]|(?!^)[A-Z](?=[a-z]))')
@@ -90,7 +91,7 @@ def send(action_type, data, *more_data):
             utilities.report(response_data)
             return response_data
     except Exception:
-        utilities.report(utilities.list_to_string(sys.exc_info()))
+        utilities.simple_log(False)
         return "SEND() ERROR"
 
 def strict_filter(response_data):
@@ -130,7 +131,7 @@ def send_key_to_element(action_type):  # for some reason, some events are untrig
         element_hwnd = utilities.get_window_by_title(settings.ELEMENT_VERSION)
         print element_hwnd
     except Exception:
-        utilities.report(utilities.list_to_string(sys.exc_info()))
+        utilities.simple_log(False)
     if action_type == "scan_new":
         win32api.SendMessage(element_hwnd, win32con.WM_KEYDOWN, win32con.VK_HOME, 0)
         win32api.PostMessage(element_hwnd, win32con.WM_KEYUP, win32con.VK_HOME, 0)

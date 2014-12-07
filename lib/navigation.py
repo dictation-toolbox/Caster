@@ -3,32 +3,41 @@ from subprocess import Popen
 import sys, win32api, time, win32clipboard
 
 from dragonfly import (Key, Text , Playback, Function, Repeat,
-                        BringApp, Mouse, Choice, WaitWindow)
+                        BringApp, Mouse, Choice, WaitWindow, FocusWindow)
 import dragonfly
 from win32api import GetSystemMetrics
 from win32con import MOUSEEVENTF_WHEEL
 
-from lib import common
-import paths, utilities, settings
+from asynch.legion import LegionScanner
+from lib import common, communications
+from lib import runner
+from lib import utilities
+import paths, settings
 
 
 BASE_PATH = paths.BASE_PATH
 MMT_PATH = paths.MMT_PATH
 NIRCMD_PATH = paths.NIRCMD_PATH
 
-def grid_to_window():
-    '''deprecated'''
-             
-def grid_full():
-    '''deprecated'''
-
 def mouse_alternates(mode):
-    if mode=="legion":
-        Popen(["pythonw", paths.LEGION_PATH], shell=False, stdin=None, stdout=None, stderr=None, close_fds=True)
-    elif mode=="rainbow":
-        Popen(["pythonw", paths.RAINBOW_PATH, "-m", "r"], shell=False, stdin=None, stdout=None, stderr=None, close_fds=True)
-    elif mode=="douglas":
-        Popen(["pythonw", paths.DOUGLAS_PATH, "-m", "d"], shell=False, stdin=None, stdout=None, stderr=None, close_fds=True)
+    try:
+        if mode=="legion":
+            ls=LegionScanner()
+            ls.scan()
+            tscan=ls.get_update()
+            if utilities.window_exists(None, "legiongrid"):
+                FocusWindow(title="legiongrid")._execute()
+                WaitWindow(title="legiongrid", timeout=5)
+                communications.send("legion", tscan, "scan")
+            else:
+                runner.run(["pythonw", paths.LEGION_PATH, "-t", tscan[0]])
+            
+        elif mode=="rainbow":
+            runner.run(["pythonw", paths.RAINBOW_PATH, "-m", "r"])
+        elif mode=="douglas":
+            runner.run(["pythonw", paths.DOUGLAS_PATH, "-m", "d"])
+    except Exception:
+        utilities.simple_log(False)
     
 
 def initialize_clipboard():
@@ -86,7 +95,7 @@ def volume_control(n, volume_mode):
     try:
         BringApp(NIRCMD_PATH, command, chosen_level).execute()
     except Exception:
-        utilities.report(utilities.list_to_string(sys.exc_info()))
+        utilities.simple_log(False)
     utilities.report(message + str(n), speak=settings.SPEAK)
 
 def numbers(n10a, n10b, n10c):

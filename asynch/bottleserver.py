@@ -1,10 +1,28 @@
+import httplib
 import json
+from threading import Timer
 import threading
 
 from bottle import run, request
 import bottle
-from threading import Timer
 
+'''
+        formatted_data={}
+        listening_port=None
+        if destination=="legion":
+            from asynch import legion
+            listening_port=legion.LEGION_LISTENING_PORT
+            ''''''
+            if dtype=="scan":
+                formatted_data["data_tirg"]=data[0]
+                formatted_data["data_rex"]=data[1]
+                formatted_data["redraw"]=True
+        elif destination=="antimouse":
+            listening_port=legion.LEGION_LISTENING_PORT
+            if dtype=="req_tirg_update":
+                formatted_data["origin"]="legion"
+                formatted_data["type"]="req_tirg_update"
+'''
 
 class BottleServer:
     class Message:
@@ -33,7 +51,18 @@ class BottleServer:
     def process_requests(self):
         '''override this'''
 
-
+    def send(self, destination, data,dtype=None,  response_required=False):
+        try:
+            c = httplib.HTTPConnection('localhost', destination)
+            c.request('POST', '/process', json.dumps(data))
+            if response_required:
+                r = c.getresponse().read()
+                return r
+        except Exception:
+            from lib import utilities
+            utilities.simple_log(False)
+            
+        return None
 
 
 

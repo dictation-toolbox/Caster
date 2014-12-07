@@ -85,7 +85,6 @@ class LServer(BottleServer):
                 for i in range(0, len(tirg_list)):
                     ii = i % 4
                     if ii == 0:
-                        
                         curr_rect = Rectangle()
                         curr_rect.left = int(tirg_list[i])
                     elif ii == 1:
@@ -110,13 +109,12 @@ class LegionGrid(TkTransparent):
         self.server = LServer(self, self.draw)
         '''mode information:
         t = tirg mode
-        r = refresh
         e = rex mode
         x = exit
         '''
         self.mode = ""  # null-mode
         self.digits = ""
-        self.allowed_characters = r"[trex0-9]"
+        self.allowed_characters = r"[tex0-9]"
         self.auto_quit = auto_quit
         
         self.tirg_positions = {}
@@ -131,8 +129,6 @@ class LegionGrid(TkTransparent):
                 if self.mode == "x":
                     self.on_exit()
                 self.mode = "x"
-            elif e.char == 'r':
-                self.after(10, self.draw)
             elif e.char == 't':
                 self.mode = "t"
             elif e.char == 'e':

@@ -3,7 +3,8 @@ import winsound
 from dragonfly import (Function, Text, Grammar, BringApp, WaitWindow, Key,
                        IntegerRef, Dictation, Mimic, MappingRule)
 
-from lib import common, utilities, paths
+from lib import common, paths
+from lib import utilities
 
 
 class Dispel:  # this needs an entry in the settings file, needs to retain information when Dragon is reset

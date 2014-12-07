@@ -3,7 +3,8 @@ import time
 
 from dragonfly import *
 
-from lib import paths, settings, utilities
+from lib import paths, settings
+from lib import utilities
 
 
 try:
@@ -201,7 +202,7 @@ def combine_CCR_files(master_model):
         
         return True
     except Exception:
-        utilities.report(utilities.list_to_string(sys.exc_info()))
+        utilities.simple_log(False)
         return False
     
 

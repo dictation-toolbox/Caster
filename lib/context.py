@@ -1,7 +1,11 @@
 import time
+
 from dragonfly import *
 import win32clipboard, sys, win32con
-from lib import utilities, paths
+
+
+from lib import utilities
+
 
 def navigate_to_character(direction3, target):
     # to do: possibly speed up the keypresses by figuring out how many lines up or down to go first
@@ -57,7 +61,7 @@ def navigate_to_character(direction3, target):
             Key("left" if not look_left else "right")._execute()
             
     except Exception:
-        utilities.report(utilities.list_to_string(sys.exc_info()))
+        utilities.simple_log(False)
 
 def find_index_in_context(target, context, look_left):
     tlist = target.split("~")
@@ -94,7 +98,7 @@ def read_selected_without_altering_clipboard():
         temporary = Clipboard.get_system_text()
         prior_content.copy_to_system()
     except Exception:
-        utilities.report("Clipboard Problem (skipped):\n" + utilities.list_to_string(sys.exc_info()))
+        utilities.simple_log(False)
         return (2, None)
     if prior_content == temporary:
         return (1, None)

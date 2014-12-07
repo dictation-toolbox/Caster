@@ -9,7 +9,7 @@ from dragonfly import (Grammar, AppContext, Function,
                        IntegerRef, Repeat, Playback,
                        Key, Choice, MappingRule)
 
-from lib import utilities
+from lib import utilities, navigation
 
 
 def send_input(color, n, action):
@@ -32,7 +32,7 @@ class GridControlRule(MappingRule):
 
     mapping = {
         "<color> <n> [<action>]":           Function(send_input, extra={"color", "n", "action"}),
-        "refresh":                          Key("r"),
+        "refresh":                          Function(navigation.mouse_alternates, mode="legion"),
         "exit":                             Key("x") * Repeat(2),
 
 

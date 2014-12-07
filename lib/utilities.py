@@ -6,15 +6,19 @@ from datetime import datetime
 import getopt
 import multiprocessing
 import os, json, sys, time
-from subprocess import Popen
+
+from dragonfly import Key, BringApp
 import psutil
 import win32gui, win32process, win32api, win32ui
 
-from dragonfly import Key, BringApp
-import dragonfly
-
-import paths
-
+try:
+    from lib import paths
+    from lib import runner
+except ImportError:
+    BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
+    sys.path.append(BASE_PATH)
+    from lib import paths
+    from lib import runner
 
 def window_exists(classname, windowname):
     try:
@@ -53,27 +57,10 @@ def get_window_by_title(title):
     hwnd = win32gui.FindWindowEx(0, 0, 0, title)
     return hwnd
 
-def clear_pyc():
-    try:
-        for dirpath, dirnames, files in os.walk(paths.BASE_PATH):  # os.walk produces a list of 3-tuples
-            if r"MacroSystem\.git" in dirpath or r"MacroSystem\core" in dirpath:
-                continue
-            for f in files:
-                if f.endswith(".pyc"):
-                    f = os.path.join(dirpath, f)
-                    os.remove(f)
-                    report("Deleted: " + f)
-    except Exception:
-        report(list_to_string(sys.exc_info()))
-            
-def get_list_of_ccr_config_files():
-    results = []
-    for f in os.listdir(paths.GENERIC_CONFIG_PATH):
-        if f.endswith(".txt"):
-            f = f.replace("+", " plus")
-            results.append(f.replace("config", "").replace(".txt", ""))
-    return results
-    
+
+
+
+# begin stuff that was moved
 
 def save_json_file(data, path):
     try:
@@ -84,8 +71,8 @@ def save_json_file(data, path):
             f.close()
         with open(path, "w") as f:
             f.write(formatted_data)
-    except Exception as e:
-        report("Could not save file: %s" % str(e))
+    except Exception:
+        simple_log(True)
 
 def load_json_file(path):
     result = {}
@@ -96,34 +83,21 @@ def load_json_file(path):
                 f.close()
         else:
             save_json_file(result, path)
-    except Exception as e:
-        report("Could not load file: %s" % str(e))
+    except Exception:
+        simple_log(True)
     return result
 
-def remote_debug(who_called_it=None):
-    import pydevd;  # @UnresolvedImport
-    if who_called_it == None:
-        who_called_it = "An unidentified process"
+def clear_pyc():
     try:
-        pydevd.settrace()
+        for dirpath, dirnames, files in os.walk(paths.BASE_PATH):  # os.walk produces a list of 3-tuples
+            if r"MacroSystem\.git" in dirpath or r"MacroSystem\core" in dirpath:
+                continue
+            for f in files:
+                if f.endswith(".pyc"):
+                    f = os.path.join(dirpath, f)
+                    os.remove(f)
     except Exception:
-        print "ERROR: " + who_called_it + " called utilities.remote_debug() but the debug server wasn't running."
-    
-def report(message, speak=False, console=True, log=False):
-    if console:
-        print message
-    if speak:
-        dragonfly.get_engine().speak(message)
-    if log:
-        f = open(paths.LOG_PATH, 'a') 
-        f.write(str(message) + "\n")
-        f.close()
-    
-def list_to_string(l):
-    return "\n".join([str(x) for x in l])
-
-def current_time_to_string():
-    return datetime.now().strftime("%Y%m%d%H%M%S")
+        simple_log(True)
 
 def get_most_recent(path, extension):
     recent = 0
@@ -142,6 +116,66 @@ def clean_temporary_files():
         if os.path.exists(p):
             for f in os.listdir(p):
                 os.remove(p + f)
+                
+def get_list_of_ccr_config_files():
+    results = []
+    for f in os.listdir(paths.GENERIC_CONFIG_PATH):
+        if f.endswith(".txt"):
+            f = f.replace("+", " plus")
+            results.append(f.replace("config", "").replace(".txt", ""))
+    return results
+
+
+
+
+def list_to_string(l):
+    return "\n".join([str(x) for x in l])
+            
+def simple_log(to_file=False):
+    msg= list_to_string(sys.exc_info())
+    print msg
+    if to_file:
+        f = open(paths.LOG_PATH, 'a') 
+        f.write(msg + "\n")
+        f.close()
+
+
+
+
+def report(message, speak=False, console=True, log=False):
+    import dragonfly
+    from lib import paths
+    if console:
+        print message
+    if speak:
+        dragonfly.get_engine().speak(message)
+    if log:
+        f = open(paths.LOG_PATH, 'a') 
+        f.write(str(message) + "\n")
+        f.close()
+
+
+
+
+
+
+
+# end stuff that was moved
+def remote_debug(who_called_it=None):
+    import pydevd;  # @UnresolvedImport
+    if who_called_it == None:
+        who_called_it = "An unidentified process"
+    try:
+        pydevd.settrace()
+    except Exception:
+        print "ERROR: " + who_called_it + " called utilities.remote_debug() but the debug server wasn't running."
+    
+
+
+def current_time_to_string():
+    return datetime.now().strftime("%Y%m%d%H%M%S")
+
+
 
 def scan_monitors():
     if not os.path.exists(paths.MONITOR_INFO_PATH):
@@ -200,10 +234,10 @@ def py2exe_compile(choice):
     print "this function has been removed "
 
 def reboot():
-    Popen('python C:/NatLink/NatLink/MacroSystem/lib/utilities.py -r'.split(), shell=False, stdin=None, stdout=None, stderr=None, close_fds=True)
+    runner.run('python C:/NatLink/NatLink/MacroSystem/lib/utilities.py -r'.split())
 
 def main(argv):
-    help_message = 'utilities.py -r\nr\treboot dragon'
+    help_message = 'main.py -r\nr\treboot dragon'
     try:
         opts, args = getopt.getopt(argv, "hr")
     except getopt.GetoptError:
@@ -219,8 +253,8 @@ def main(argv):
             kill_process("dgnuiasvr_x64.exe")
             kill_process("dnsspserver.exe")
             time.sleep(3)
-            Popen([r"C:\Program Files (x86)\Nuance\NaturallySpeaking12\Program\natspeak.exe"], shell=False, stdin=None, stdout=None, stderr=None, close_fds=True)
-            
+            runner.run([r"C:\Program Files (x86)\Nuance\NaturallySpeaking12\Program\natspeak.exe"])
+                        
 
 if __name__ == "__main__":
     main(sys.argv[1:])

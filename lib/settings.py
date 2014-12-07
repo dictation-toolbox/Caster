@@ -1,6 +1,7 @@
-# Based heavily on the work of https://github.com/poppe1219/dragonfly-scripts/blob/master/lib/config.py
+
 from lib import utilities
 import paths
+
 
 SETTINGS_PATH = paths.SETTINGS_PATH
 SETTINGS = {"ccr":{}, "monitors":[]}  # Empty, default config.
