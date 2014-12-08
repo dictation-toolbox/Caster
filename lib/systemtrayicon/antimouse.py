@@ -14,6 +14,9 @@ from threading import Timer
 
 from bottle import request
 
+BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
+if BASE_PATH not in sys.path:
+    sys.path.append(BASE_PATH)
 from asynch import legion
 from asynch.bottleserver import BottleServer
 from asynch.legion import LegionScanner
@@ -21,11 +24,6 @@ from lib import paths
 from lib.systemtrayicon.sti import SysTrayIcon
 from lib import runner
 from lib import utilities
-
-
-BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
-sys.path.append(BASE_PATH)
-
 
 class AMServer(BottleServer):
     def __init__(self, legion_update_fn):

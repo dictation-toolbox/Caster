@@ -1,5 +1,4 @@
 from Tkinter import (StringVar, OptionMenu, Scrollbar, Frame, Label, Entry)
-from multiprocessing import Process, freeze_support
 import os, re, sys, json
 import signal
 from threading import Timer
@@ -9,15 +8,10 @@ from bottle import run, request  # , post,response
 import bottle
 
 import Tkinter as tk
-from lib import utilities
-
-
-try:
-    from lib import paths, settings
-except ImportError:
-    BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
+BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
+if BASE_PATH not in sys.path:
     sys.path.append(BASE_PATH)
-    from lib import paths, settings
+from lib import paths, settings, utilities
 
 
 
@@ -52,7 +46,7 @@ class Element:
         
         # setup tk
         self.root = tk.Tk()
-#         self.root.title(settings.ELEMENT_VERSION)
+        self.root.title(settings.ELEMENT_VERSION)
         self.root.geometry("200x" + str(self.root.winfo_screenheight() - 100) + "-1+20")
         self.root.wm_attributes("-topmost", 1)
         self.root.protocol("WM_DELETE_WINDOW", self.on_exit)
@@ -165,19 +159,17 @@ class Element:
          
         # start bottleserver server, tk main loop
         Timer(1, self.start_server).start()
-        Timer(0.2, self.start_tk).start()
         bottle.route('/process', method="POST")(self.process_request)
+        self.root.mainloop()
 
     def on_exit(self):
         self.root.destroy()
         os.kill(os.getpid(), signal.SIGTERM)
     
     def start_server(self):
-        ''''''
         run(host='localhost', port=1337, debug=False, server='cherrypy')#bottle is about a full second faster
         
-    def start_tk(self):
-        self.root.mainloop()
+        
     
     def update_active_file(self):
         active_window_title = utilities.get_active_window_title()
@@ -499,22 +491,6 @@ class Element:
         return 'unrecognized request received: ' + request_object["action_type"]
 
 
-def go():
-    app = Element()
-    app.start_tk()
-
-# p=None
-
 if __name__ == '__main__':
-#     global p
-#     go()
-    freeze_support()
-    p = Process(target=go)
-    p.start()
-     
-    p.join(300)
-  
-    if p.is_alive():
-        p.terminate()
-        p.join()
-#     
+    app = Element()
+    

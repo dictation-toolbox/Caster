@@ -8,6 +8,7 @@ SETTINGS = {"ccr":{}, "monitors":[]}  # Empty, default config.
 SPEAK = False  # to do,: add this value to the config
 ELEMENT_VERSION = "Element v.04"
 DISPEL_VERSION = "Dispel v.02"
+HOMUNCULUS_VERSION="HMC v.01"
 PBASE1="4dg62sQ$Pm&"
 PBASE2="4dg62sQ4Pm7"
 PBASE3="1Q2w3"

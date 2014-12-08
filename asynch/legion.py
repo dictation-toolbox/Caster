@@ -6,17 +6,12 @@ import threading
 
 from PIL import ImageGrab
 
-
-try:
-    from asynch.bottleserver import BottleServer
-    from lib import paths
-    from lib.display import TkTransparent
-except ImportError:
-    BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
+BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
+if BASE_PATH not in sys.path:
     sys.path.append(BASE_PATH)
-    from asynch.bottleserver import BottleServer
-    from lib import paths
-    from lib.display import TkTransparent
+from asynch.bottleserver import BottleServer
+from lib import paths
+from lib.display import TkTransparent
 
 LEGION_LISTENING_PORT = 1340
 

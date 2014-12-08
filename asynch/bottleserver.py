@@ -23,12 +23,29 @@ import bottle
                 formatted_data["origin"]="legion"
                 formatted_data["type"]="req_tirg_update"
 '''
+class Sender:
+    def __init__(self, report=False):
+        self.report=report
+    def send(self, destination, data,dtype=None,  response_required=False):
+        try:
+            c = httplib.HTTPConnection('localhost', destination)
+            c.request('POST', '/process', json.dumps(data))
+            if response_required:
+                r = json.loads(c.getresponse().read())
+                return r
+        except Exception:
+            if self.report:
+                from lib import utilities
+                utilities.simple_log(False)
+            
+        return None
 
 class BottleServer:
     class Message:
         def __init__(self, content="", destination=""):
             self.content = content
             self.destination = destination
+            self.sender= Sender()
         
     def __init__(self, listening_port, lock=None):
         self.listening_port = listening_port
@@ -52,17 +69,7 @@ class BottleServer:
         '''override this'''
 
     def send(self, destination, data,dtype=None,  response_required=False):
-        try:
-            c = httplib.HTTPConnection('localhost', destination)
-            c.request('POST', '/process', json.dumps(data))
-            if response_required:
-                r = c.getresponse().read()
-                return r
-        except Exception:
-            from lib import utilities
-            utilities.simple_log(False)
-            
-        return None
+        return self.sender.send(destination, data, dtype, response_required)
 
 
 

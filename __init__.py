@@ -4,10 +4,13 @@ Created on Jun 29, 2014
 @author: dave
 '''
 from apps import *
-from lib import common, settings, ccr, utilities
-from asynch import _element, _dispel
+from asynch import _element, _dispel, homunculus
+from lib import control
+from lib import settings, ccr, utilities
 
-common.print_startup_message()
+
+control.print_startup_message()
 settings.load_settings()
 ccr.refresh()
 utilities.clean_temporary_files()
+homunculus.clean_homunculi()

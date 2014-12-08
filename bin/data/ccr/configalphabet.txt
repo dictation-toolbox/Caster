@@ -25,13 +25,13 @@ cmd.map = {
 		    "Mike": Key("m"),
 		    "November": Key("n"),
 		    "oscar": Key("o"),
-		    "pinto": Key("p"),
+		    "prime": Key("p"),
 		    "Quebec": Key("q"),
 		    "Romeo": Key("r"),
 		    "Sierra": Key("s"),
 		    "tango": Key("t"),
 		    "uniform": Key("u"),
-		    "violin": Key("v"),
+		    "victor": Key("v"),
 		    "whiskey": Key("w"),
 		    "x-ray": Key("x"),
 		    "yankee": Key("y"),
@@ -57,14 +57,14 @@ cmd.map = {
 					 
 					 "big November" : Key("N"),
 					 "big Oscar"    : Key("O"),
-					 "big pinto"     : Key("P"),
+					 "big prime"     : Key("P"),
 					 "big Quebec"    : Key("Q"),
 					 "big Romeo"    : Key("R"),
 					 "big Sierra"      : Key("S"),
 					 "big tango"    : Key("T"),
-					 
+
 					 "big uniform"  : Key("U"),
-					 "big violin"   : Key("V"),
+					 "big victor"   : Key("V"),
 					 
 					 "big whiskey"  : Key("W"),
 					 "big x-ray"    : Key("X"),

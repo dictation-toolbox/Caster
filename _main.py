@@ -1,24 +1,32 @@
-from subprocess import Popen
-import sys, time
+import time
 
-from dragonfly import (BringApp, Key, Function, Grammar, Playback,
+from dragonfly import (BringApp, Key, Function, Grammar, Playback,FocusWindow, 
                        IntegerRef, Dictation, Choice, WaitWindow, MappingRule, Text)
 
-from lib import paths, settings, navigation, ccr, password, common
-from lib import runner
+import _w
+from asynch import queue, homunculus
+from lib import control
+from lib import paths, settings, navigation, ccr, password
 from lib import utilities
 
+
+def say(data):
+    _w.repeat_after(data["response"])
 
 def experiment():
     '''this function is for testing things in development'''
     try: 
-        runner.run('pythonw C:/NatLink/NatLink/MacroSystem/lib/display.py'.split())
+        queue.add_query(say)
+        homunculus.launch()
+        WaitWindow(title=settings.HOMUNCULUS_VERSION, timeout=5)._execute()
+        FocusWindow(title=settings.HOMUNCULUS_VERSION)._execute()
+        Key("tab")._execute()
     except Exception:
         utilities.simple_log(False)
 
 def fix_Dragon_double():
     try:
-        lr = common.DICTATION_CACHE[len(common.DICTATION_CACHE)-1]
+        lr = control.DICTATION_CACHE[len(control.DICTATION_CACHE)-1]
         lu = " ".join(lr)
         Key("left/5:" + str(len(lu)) + ", del")._execute()
     except Exception:
@@ -26,9 +34,9 @@ def fix_Dragon_double():
         
 def repeat_that(n):
     try:
-        if len(common.DICTATION_CACHE)>0:
+        if len(control.DICTATION_CACHE)>0:
             for i in range(int(n)):
-                Playback([([str(x) for x in " ".join(common.DICTATION_CACHE[len(common.DICTATION_CACHE)-1]).split()], 0.0)])._execute()
+                Playback([([str(x) for x in " ".join(control.DICTATION_CACHE[len(control.DICTATION_CACHE)-1]).split()], 0.0)])._execute()
     except Exception:
         utilities.simple_log(False)
 

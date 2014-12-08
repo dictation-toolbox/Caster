@@ -3,7 +3,8 @@ import winsound
 from dragonfly import (Function, Text, Grammar, BringApp, WaitWindow, Key,
                        IntegerRef, Dictation, Mimic, MappingRule)
 
-from lib import common, paths
+from lib import paths
+from lib import control
 from lib import utilities
 
 
@@ -25,15 +26,15 @@ class Dispel:  # this needs an entry in the settings file, needs to retain infor
     def start(self):
         self.reset()
         utilities.report("T: " + str(self.remaining) + " m")
-        common.TIMER_MANAGER.add_callback(self.tick, self.minute)
+        control.TIMER_MANAGER.add_callback(self.tick, self.minute)
     def resume(self):
         utilities.report("T: " + str(self.remaining) + " m")
-        common.TIMER_MANAGER.add_callback(self.tick, self.minute)
+        control.TIMER_MANAGER.add_callback(self.tick, self.minute)
     def stop(self):
         self.active = False
         self.save_settings()
         utilities.report("ending dispel")
-        common.TIMER_MANAGER.remove_callback(self.tick)
+        control.TIMER_MANAGER.remove_callback(self.tick)
     
     def save_settings(self):
         self.settings["remaining"] = self.remaining

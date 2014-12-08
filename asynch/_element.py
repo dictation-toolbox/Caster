@@ -6,11 +6,13 @@ from dragonfly import (Function, Text, Grammar, BringApp, WaitWindow, Key,
                        IntegerRef, Dictation, Mimic, MappingRule)
 from dragonfly.actions.action_focuswindow import FocusWindow
 
-from lib import paths, settings, common
+from lib import paths, settings, runner
+from lib import control
 from lib import utilities
 
 
 STRICT_PARSER = re.compile('((?<=[a-z0-9])[A-Z]|(?!^)[A-Z](?=[a-z]))')
+
 
 def retrieve(n):
     n = int(n) - 1
@@ -34,19 +36,18 @@ def sticky_from_unordered(n, n2):
 def sticky_copy(n):
     n = int(n) - 1  # index of target slot in sticky list
     Mimic("copy", "one")._execute()
-    send("sticky", "1", n, common.MULTI_CLIPBOARD["1"])
+    send("sticky", "1", n, control.MULTI_CLIPBOARD["1"])
 
 def add_word():
     Mimic("copy", "one")._execute()
-    send("add", common.MULTI_CLIPBOARD["1"])
+    send("add", control.MULTI_CLIPBOARD["1"])
 
 def remove_word(n):
     n = int(n) - 1
     send("remove", n)
 
 def focus_element():
-    FocusWindow(executable="pythonw.exe", title=settings.ELEMENT_VERSION)
-#     BringApp("pythonw.exe")._execute()
+    FocusWindow(title=settings.ELEMENT_VERSION)._execute()
     WaitWindow(title=settings.ELEMENT_VERSION)._execute()
 
 def search():
@@ -137,15 +138,13 @@ def send_key_to_element(action_type):  # for some reason, some events are untrig
         win32api.PostMessage(element_hwnd, win32con.WM_KEYUP, win32con.VK_HOME, 0)
 
 def enable_element():
-    BringApp("pythonw", r"C:\NatLink\NatLink\MacroSystem\asynch\element_src.py", "shell=True")._execute()
+    runner.run(["pythonw", paths.ELEMENT_PATH])
     
 def kill():
     send("kill", "")
 
-class MainRule(MappingRule):
+class ElementUsageRule(MappingRule):
     mapping = {
-    "run element":                  Function(enable_element),
-    "kill element":                 Function(kill),
     "L scroll to <n>":              Function(scroll, extra="n"),
     "L get <n>":                    Function(retrieve, extra="n"),
     "L sticky list <n> to <n2>":    Function(sticky_from_unordered, extra={"n", "n2"}),
@@ -160,14 +159,31 @@ class MainRule(MappingRule):
     "L filter strict":              Function(filter_strict_request_for_data),
     }   
     extras = [
-              IntegerRef("n", 1, 500),
-              IntegerRef("n2", 1, 500),
+              IntegerRef("n", 1, 100),
+              IntegerRef("n2", 1, 100),
               Dictation("text"),
              ]
     defaults = {"n": 1, "n2": 1,
                "text": "",
                }
 
+eur=ElementUsageRule()
+
+class ElementLaunchRule(MappingRule):
+    mapping = {
+    "run element":                  Function(enable_element)+Function(eur.enable),
+    "kill element":                 Function(kill)+Function(eur.disable),
+    }   
+    extras = []
+    defaults = {}
+
+
+elr=ElementLaunchRule()
+
 grammar = Grammar('element')
-grammar.add_rule(MainRule())
-grammar.load() 
+grammar.add_rule(elr)
+grammar.add_rule(eur)
+grammar.load()
+
+if not utilities.window_exists(classname= None, windowname=settings.ELEMENT_VERSION):
+    eur.disable()

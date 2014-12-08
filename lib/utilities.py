@@ -11,14 +11,11 @@ from dragonfly import Key, BringApp
 import psutil
 import win32gui, win32process, win32api, win32ui
 
-try:
-    from lib import paths
-    from lib import runner
-except ImportError:
-    BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
+BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
+if BASE_PATH not in sys.path:
     sys.path.append(BASE_PATH)
-    from lib import paths
-    from lib import runner
+from lib import paths
+from lib import runner
 
 def window_exists(classname, windowname):
     try:
@@ -35,6 +32,8 @@ def kill_process(executable):
                 proc.kill()
         except:
             pass
+
+
 
 def press_digits(n):
     number = str(n)
@@ -248,11 +247,18 @@ def main(argv):
             print help_message
             sys.exit()
         elif opt == '-r':
-            print "Dragon Reboot Sequence"
+            print "\nDragon Reboot Sequence"
+            time.sleep(0.3)
+            print "kill: natspeak.exe"
             kill_process("natspeak.exe")
+            time.sleep(0.3)
+            print "kill: dgnuiasvr_x64.exe"
             kill_process("dgnuiasvr_x64.exe")
+            time.sleep(0.3)
+            print "kill: dnsspserver.exe"
             kill_process("dnsspserver.exe")
-            time.sleep(3)
+            time.sleep(0.3)
+            print "Relaunch!"
             runner.run([r"C:\Program Files (x86)\Nuance\NaturallySpeaking12\Program\natspeak.exe"])
                         
 

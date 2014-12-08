@@ -8,8 +8,9 @@ import dragonfly
 from win32api import GetSystemMetrics
 from win32con import MOUSEEVENTF_WHEEL
 
+from asynch.bottleserver import Sender
 from asynch.legion import LegionScanner
-from lib import common, communications
+from lib import control
 from lib import runner
 from lib import utilities
 import paths, settings
@@ -28,7 +29,8 @@ def mouse_alternates(mode):
             if utilities.window_exists(None, "legiongrid"):
                 FocusWindow(title="legiongrid")._execute()
                 WaitWindow(title="legiongrid", timeout=5)
-                communications.send("legion", tscan, "scan")
+                s=Sender()
+                s.send("legion", tscan, "scan")
             else:
                 runner.run(["pythonw", paths.LEGION_PATH, "-t", tscan[0]])
             
@@ -41,7 +43,7 @@ def mouse_alternates(mode):
     
 
 def initialize_clipboard():
-    common.MULTI_CLIPBOARD = utilities.load_json_file(paths.SAVED_CLIPBOARD_PATH)
+    control.MULTI_CLIPBOARD = utilities.load_json_file(paths.SAVED_CLIPBOARD_PATH)
 
 def clipboard_to_file(nnavi500):
     key = str(nnavi500)
@@ -50,9 +52,9 @@ def clipboard_to_file(nnavi500):
         try:
             time.sleep(0.05)  # time for keypress to execute
             win32clipboard.OpenClipboard()
-            common.MULTI_CLIPBOARD[key] = win32clipboard.GetClipboardData()
+            control.MULTI_CLIPBOARD[key] = win32clipboard.GetClipboardData()
             win32clipboard.CloseClipboard()
-            utilities.save_json_file(common.MULTI_CLIPBOARD, paths.SAVED_CLIPBOARD_PATH)
+            utilities.save_json_file(control.MULTI_CLIPBOARD, paths.SAVED_CLIPBOARD_PATH)
         except Exception:
             failure=True
         if not failure:
@@ -63,10 +65,10 @@ def drop(nnavi500):
     while True:
         failure=False
         try:
-            if key in common.MULTI_CLIPBOARD:
+            if key in control.MULTI_CLIPBOARD:
                 win32clipboard.OpenClipboard()
                 win32clipboard.EmptyClipboard()
-                win32clipboard.SetClipboardText(common.MULTI_CLIPBOARD[key])
+                win32clipboard.SetClipboardText(control.MULTI_CLIPBOARD[key])
                 win32clipboard.CloseClipboard()
                 Key("c-v")._execute()
             else:
