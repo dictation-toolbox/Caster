@@ -29,6 +29,7 @@ dragonfly and natlink documentation
 other dragonfly repositories
 --
  - https://github.com/dictation-toolbox
+ - https://github.com/russell/damselfly
  - https://github.com/ccowan/code-by-voice
  - https://github.com/simianhacker/code-by-voice
  - https://github.com/davitenio/dragonfly-macros
@@ -82,6 +83,7 @@ legacy
 other
 --
  - http://pydev.org/manual_adv_remote_debugger.html
+ - http://nuancedev.github.io/samples/http/python/
  - http://ergoemacs.org/emacs/emacs_hand_pain_celebrity.html
  - https://github.com/TalAter/annyang (in browser voice recognition JS library)
  - http://zenorocha.github.io/voice-elements/
