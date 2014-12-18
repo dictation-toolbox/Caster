@@ -1,7 +1,7 @@
 '''
 Message queue
 '''
-from asynch import homunculus
+from asynch.hmc import homunculus
 from asynch.bottleserver import Sender
 from lib import control, utilities
 

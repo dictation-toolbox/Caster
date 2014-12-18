@@ -59,33 +59,37 @@ class Homunculus(tk.Tk):
         self.protocol("WM_DELETE_WINDOW", self.on_exit)
  
         # 
-        label_text=None
+        self.instructions=""
         if self.htype=="-d":
-            label_text="Enter Response"
-        else:
-            '''differentiate here'''
-        Label(self, text=label_text, name="pathlabel").pack()
- 
-        # file extension label and box
-        self.ext_box = Text(self, name="ext_box")
-        self.ext_box.pack(side=tk.LEFT)
+            self.instructions="Enter Response"
+            Label(self, text=self.instructions, name="pathlabel").pack()
+            self.ext_box = Text(self, name="ext_box")
+            self.ext_box.pack(side=tk.LEFT)
         
+ 
+        # 
         self.bind("<Return>", self.complete)
+        
+        
         # start bottleserver server, tk main loop
         Timer(1, self.start_server).start()
         # backup plan in case for whatever reason Dragon doesn't shut it down:
         Timer(300, self.on_exit).start()
-        self.mainloop()
+        Timer(0.05, self.start_tk).start()
 
     def on_exit(self):
         self.destroy()
         os.kill(os.getpid(), signal.SIGTERM)
+    
+    def start_tk(self):
+        self.mainloop()
     
     def start_server(self):
         global HMC_LISTENING_PORT
         self.server = HServer(HMC_LISTENING_PORT, self.on_exit, self.htype)
         
     def complete(self, e):
+        '''override this for every new child class'''
         with self.server.lock:
             self.server.response=self.ext_box.get("1.0",tk.END)
         self.withdraw()
@@ -101,6 +105,8 @@ def launch(htype=None):
 
 def clean_homunculi():
     while utilities.window_exists(None, settings.HOMUNCULUS_VERSION):
+        utilities.kill_process("pythonw.exe")
+    while utilities.window_exists(None, settings.HOMUNCULUS_VERSION+" :: Vocabulary Manager"):
         utilities.kill_process("pythonw.exe")
 
 if __name__ == '__main__':

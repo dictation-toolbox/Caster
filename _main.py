@@ -1,14 +1,40 @@
+import re
 import time
 
-from dragonfly import (BringApp, Key, Function, Grammar, Playback,FocusWindow, 
+from dragonfly import (BringApp, Key, Function, Grammar, Playback, FocusWindow,
                        IntegerRef, Dictation, Choice, WaitWindow, MappingRule, Text)
+import dragonfly
 
 import _w
-from asynch import queue, homunculus
-from lib import control
+from asynch import queue
+from asynch.hmc import homunculus
+from lib import control, context
 from lib import paths, settings, navigation, ccr, password
 from lib import utilities
 
+
+def add_vocab():
+    engine=dragonfly.get_engine()
+    if engine.name!="natlink":
+        utilities.report("feature unavailable in your speech recognition engine", speak=True)
+        return
+    
+    command=["pythonw", paths.HOMUNCULUS_PATH, "-a"]
+    # attempts to get what was highlighted first
+    highlighted=context.read_selected_without_altering_clipboard()
+    
+    # change the following regex to accept alphabetical only
+    disallow="^[A-Za-z]*$"
+    if highlighted[0]==0:
+        if not re.match(disallow, highlighted[1]):
+            utilities.report("only used for single words", speak=True)
+            return
+        command.append("-f", highlighted)
+    
+    # make all the options available as UI choices in tk
+    
+    #...including delete and modify          
+    
 
 def say(data):
     _w.repeat_after(data["response"])
@@ -101,6 +127,7 @@ class MainRule(MappingRule):
     "reboot dragon":                Function(utilities.reboot),
     "fix dragon double":            Function(fix_Dragon_double),
     "(show | open) documentation":  BringApp('C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe') + WaitWindow(executable="chrome.exe") + Key('c-t') + WaitWindow(title="New Tab") + Text('http://dragonfly.readthedocs.org/en/latest') + Key('enter'),
+    "add word to vocabulary":       Function(add_vocab),
     
     # hardware management
     "(switch | change) monitors":              Function(switch_monitors),
