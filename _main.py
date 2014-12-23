@@ -5,9 +5,8 @@ from dragonfly import (BringApp, Key, Function, Grammar, Playback, FocusWindow,
                        IntegerRef, Dictation, Choice, WaitWindow, MappingRule, Text)
 import dragonfly
 
-import _w
 from asynch import queue
-from asynch.hmc import homunculus
+from asynch.hmc import homunculus, h_launch, hmc_vocabulary
 from lib import control, context
 from lib import paths, settings, navigation, ccr, password
 from lib import utilities
@@ -19,7 +18,7 @@ def add_vocab():
         utilities.report("feature unavailable in your speech recognition engine", speak=True)
         return
     
-    command=["pythonw", paths.HOMUNCULUS_PATH, "-a"]
+    command=["pythonw", paths.HOMUNCULUS_PATH, hmc_vocabulary.QTYPE_SET]
     # attempts to get what was highlighted first
     highlighted=context.read_selected_without_altering_clipboard()
     
@@ -29,7 +28,7 @@ def add_vocab():
         if not re.match(disallow, highlighted[1]):
             utilities.report("only used for single words", speak=True)
             return
-        command.append("-f", highlighted)
+        command.append(highlighted)
     
     # make all the options available as UI choices in tk
     
@@ -37,13 +36,13 @@ def add_vocab():
     
 
 def say(data):
-    _w.repeat_after(data["response"])
+    print data
 
 def experiment():
     '''this function is for testing things in development'''
     try: 
-        queue.add_query(say)
-        homunculus.launch()
+        queue.add_query(say, {"qtype": hmc_vocabulary.QTYPE_SET})
+        h_launch.launch(hmc_vocabulary.QTYPE_SET, "test")
         WaitWindow(title=settings.HOMUNCULUS_VERSION, timeout=5)._execute()
         FocusWindow(title=settings.HOMUNCULUS_VERSION)._execute()
         Key("tab")._execute()

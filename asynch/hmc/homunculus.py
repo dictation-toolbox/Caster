@@ -8,13 +8,12 @@ if BASE_PATH not in sys.path:
     sys.path.append(BASE_PATH)
 import Tkinter as tk
 from asynch.bottleserver import BottleServer
-from lib import paths, settings, utilities
-from lib import runner
+from lib import paths, settings
 
 
 
 
-
+QTYPE_DEFAULT="default"
 
 
 
@@ -48,6 +47,7 @@ class HServer(BottleServer):
 
 class Homunculus(tk.Tk):
     def __init__(self, htype):
+        global QTYPE_DEFAULT
         tk.Tk.__init__(self, baseName="")
         self.htype=htype
         self.server = None
@@ -60,7 +60,7 @@ class Homunculus(tk.Tk):
  
         # 
         self.instructions=""
-        if self.htype=="-d":
+        if self.htype==QTYPE_DEFAULT:
             self.instructions="Enter Response"
             Label(self, text=self.instructions, name="pathlabel").pack()
             self.ext_box = Text(self, name="ext_box")
@@ -93,22 +93,3 @@ class Homunculus(tk.Tk):
         with self.server.lock:
             self.server.response=self.ext_box.get("1.0",tk.END)
         self.withdraw()
-
-
-def launch(htype=None):
-    instructions=["pythonw", paths.HOMUNCULUS_PATH]
-    if htype!=None:
-        instructions.append("-"+htype)
-    else:
-        instructions.append("-d")
-    runner.run(instructions)
-
-def clean_homunculi():
-    while utilities.window_exists(None, settings.HOMUNCULUS_VERSION):
-        utilities.kill_process("pythonw.exe")
-    while utilities.window_exists(None, settings.HOMUNCULUS_VERSION+" :: Vocabulary Manager"):
-        utilities.kill_process("pythonw.exe")
-
-if __name__ == '__main__':
-    app = Homunculus(sys.argv[1])
-#     

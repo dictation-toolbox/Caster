@@ -24,7 +24,7 @@ ELEMENT_PATH = r"C:\NatLink\NatLink\MacroSystem\asynch\element_src.py"
 LEGION_PATH = r"C:\NatLink\NatLink\MacroSystem\asynch\legion.py"
 RAINBOW_PATH = r"C:\NatLink\NatLink\MacroSystem\lib\display.py"
 DOUGLAS_PATH = r"C:\NatLink\NatLink\MacroSystem\lib\display.py"
-HOMUNCULUS_PATH = r"C:\NatLink\NatLink\MacroSystem\asynch\hmc\homunculus.py"
+HOMUNCULUS_PATH = r"C:\NatLink\NatLink\MacroSystem\asynch\hmc\h_launch.py"
 NIRCMD_PATH = r"C:\NatLink\NatLink\MacroSystem\bin\nircmd\nircmd.exe"
 MMT_PATH = r"C:\NatLink\NatLink\MacroSystem\bin\MultiMonitorTool\MultiMonitorTool.exe"
 

@@ -8,9 +8,7 @@ from lib import control, utilities
 
 LAST_QUERY=None
 QUERY_CHECKER = Sender()
-second = 1
-DEFAULT_TYPE={}
-DEFAULT_TYPE["qtype"]="-d"
+
 
 
 class Query:
@@ -39,8 +37,10 @@ def check_for_response():
 
 def add_query(callback, data=None):
     global LAST_QUERY
-    global DEFAULT_TYPE
+    second = 1
     if data==None:
-        data=DEFAULT_TYPE
+        data={"qtype": homunculus.QTYPE_DEFAULT}
+    
+        
     LAST_QUERY=Query(data, callback)
     control.TIMER_MANAGER.add_callback(check_for_response, second)
