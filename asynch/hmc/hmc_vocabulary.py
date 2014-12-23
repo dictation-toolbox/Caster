@@ -16,7 +16,7 @@ from lib import settings
 
 QTYPE_SET="set"
 QTYPE_REM="rem"
-
+HMC_TITLE_VOCABULARY=" :: Vocabulary Manager"
 
 
 
@@ -31,9 +31,10 @@ class Homunculus_Vocabulary(Homunculus):
     def __init__(self, params):
         global QTYPE_SET
         global QTYPE_REM
+        global HMC_TITLE_VOCABULARY
         self.grid_row = 0
         Homunculus.__init__(self, params[0])
-        self.title(settings.HOMUNCULUS_VERSION + " :: Vocabulary Manager")
+        self.title(settings.HOMUNCULUS_VERSION + HMC_TITLE_VOCABULARY)
         
         self.last_key=""
         self.bind("<Control-Key>", self.key)
