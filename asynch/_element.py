@@ -138,7 +138,7 @@ def send_key_to_element(action_type):  # for some reason, some events are untrig
         win32api.PostMessage(element_hwnd, win32con.WM_KEYUP, win32con.VK_HOME, 0)
 
 def enable_element():
-    runner.run(["pythonw", paths.ELEMENT_PATH])
+    runner.run(["pythonw", settings.SETTINGS["paths"]["ELEMENT_PATH"]])
     
 def kill():
     send("kill", "")

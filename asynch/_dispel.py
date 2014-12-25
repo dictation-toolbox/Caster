@@ -3,8 +3,8 @@ import winsound
 from dragonfly import (Function, Text, Grammar, BringApp, WaitWindow, Key,
                        IntegerRef, Dictation, Mimic, MappingRule)
 
-from lib import paths
 from lib import control
+from lib import paths, settings
 from lib import utilities
 
 
@@ -13,7 +13,7 @@ class Dispel:  # this needs an entry in the settings file, needs to retain infor
         self.minute = 60
         self.hour = 3600
         #
-        self.settings = utilities.load_json_file(paths.DISPEL_JSON_PATH)
+        self.settings = utilities.load_json_file(settings.SETTINGS["paths"]["DISPEL_JSON_PATH"])
         self.PERIOD = 25  # number of minutes
         self.DELAY_AMOUNT = 5
         self.remaining = 0
@@ -39,7 +39,7 @@ class Dispel:  # this needs an entry in the settings file, needs to retain infor
     def save_settings(self):
         self.settings["remaining"] = self.remaining
         self.settings["active"] = self.active
-        utilities.save_json_file(self.settings, paths.DISPEL_JSON_PATH)
+        settings.save_json_file(self.settings, settings.SETTINGS["paths"]["DISPEL_JSON_PATH"])
     def load(self):
         if "remaining" in self.settings and "active" in self.settings:
             self.remaining = int(self.settings["remaining"])
@@ -52,7 +52,7 @@ class Dispel:  # this needs an entry in the settings file, needs to retain infor
         self.remaining -= 1
         self.save_settings()
         if self.remaining <= 0:
-            winsound.PlaySound(paths.ALARM_SOUND_PATH, winsound.SND_FILENAME)
+            winsound.PlaySound(settings.SETTINGS["paths"]["ALARM_SOUND_PATH"], winsound.SND_FILENAME)
         utilities.report("T: " + str(self.remaining) + " m")
         
     def delay(self):

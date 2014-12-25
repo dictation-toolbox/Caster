@@ -11,7 +11,7 @@ from asynch.hmc import hmc_vocabulary, homunculus
 
 
 def launch(htype=None, info=None):
-    instructions=["pythonw", paths.HOMUNCULUS_PATH]
+    instructions=["pythonw", settings.SETTINGS["paths"]["HOMUNCULUS_PATH"]]
     if htype!=None:
         instructions.append(htype)
         if info!=None:

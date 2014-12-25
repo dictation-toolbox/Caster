@@ -16,9 +16,9 @@ from lib import utilities
 import paths, settings
 
 
-BASE_PATH = paths.BASE_PATH
-MMT_PATH = paths.MMT_PATH
-NIRCMD_PATH = paths.NIRCMD_PATH
+BASE_PATH = settings.SETTINGS["paths"]["BASE_PATH"]
+MMT_PATH = settings.SETTINGS["paths"]["MMT_PATH"]
+NIRCMD_PATH = settings.SETTINGS["paths"]["NIRCMD_PATH"]
 
 def mouse_alternates(mode):
     try:
@@ -32,18 +32,18 @@ def mouse_alternates(mode):
                 s=Sender()
                 s.send("legion", tscan, "scan")
             else:
-                runner.run(["pythonw", paths.LEGION_PATH, "-t", tscan[0]])
+                runner.run(["pythonw", settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0]])
             
         elif mode=="rainbow":
-            runner.run(["pythonw", paths.RAINBOW_PATH, "-m", "r"])
+            runner.run(["pythonw", settings.SETTINGS["paths"]["RAINBOW_PATH"], "-m", "r"])
         elif mode=="douglas":
-            runner.run(["pythonw", paths.DOUGLAS_PATH, "-m", "d"])
+            runner.run(["pythonw", settings.SETTINGS["paths"]["DOUGLAS_PATH"], "-m", "d"])
     except Exception:
         utilities.simple_log(False)
     
 
 def initialize_clipboard():
-    control.MULTI_CLIPBOARD = utilities.load_json_file(paths.SAVED_CLIPBOARD_PATH)
+    control.MULTI_CLIPBOARD = utilities.load_json_file(settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
 
 def clipboard_to_file(nnavi500):
     key = str(nnavi500)
@@ -54,7 +54,7 @@ def clipboard_to_file(nnavi500):
             win32clipboard.OpenClipboard()
             control.MULTI_CLIPBOARD[key] = win32clipboard.GetClipboardData()
             win32clipboard.CloseClipboard()
-            utilities.save_json_file(control.MULTI_CLIPBOARD, paths.SAVED_CLIPBOARD_PATH)
+            settings.save_json_file(control.MULTI_CLIPBOARD, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
         except Exception:
             failure=True
         if not failure:

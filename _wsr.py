@@ -1,7 +1,6 @@
-from subprocess import Popen
 import time, pythoncom
 
-from lib import runner
+from lib import runner, settings
 
 
 if __name__ == "__main__":
@@ -15,14 +14,13 @@ else:
     
     from dragonfly import Choice, MappingRule, Grammar, Function
     import natlink
-    from lib import paths
     from lib import utilities
     
     def deactivate_natlink():
         natlink.setMicState("sleeping")
         
     def activate_wsr():
-        runner.run([paths.WSR_PATH, "-SpeechUX"])
+        runner.run([settings.SETTINGS["paths"]["WSR_PATH"], "-SpeechUX"])
     
     def kill_wsr():
         utilities.kill_process("sapisvr.exe")

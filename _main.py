@@ -1,15 +1,9 @@
-import re
-import time
 
 from dragonfly import (BringApp, Key, Function, Grammar, Playback, FocusWindow,
                        IntegerRef, Dictation, Choice, WaitWindow, MappingRule, Text)
-import dragonfly
 
-from asynch import queue
-from asynch.hmc import homunculus, h_launch, hmc_vocabulary, \
-    vocabulary_processing
-from lib import control, context
-from lib import paths, settings, navigation, ccr, password
+from asynch.hmc import h_launch, hmc_vocabulary, vocabulary_processing
+from lib import control,  settings, navigation, ccr, password
 from lib import utilities
 
 
@@ -40,53 +34,13 @@ def repeat_that(n):
     except Exception:
         utilities.simple_log(False)
 
-def switch_monitors():
-    debug = False
-    try:
-        do_flip=settings.SETTINGS["last_monitor_was_flipped"]
-        monitors=utilities.parse_monitor_scan(utilities.scan_monitors())
-        
-        if debug:
-            print "active: "
-            print monitors["active"]
-            print "inactive: "
-            print monitors["inactive"]
-        #to do: stop hard coding it using the second monitor
-        if len(monitors["active"]) == 1 and len(monitors["inactive"]) > 0:
-            # preserve orientation information
-            settings.SETTINGS["last_monitor_was_flipped"]=monitors["active"][0]["orientation"].startswith("180")
-            settings.save_config()
-            
-            # activate the inactive monitor
-            BringApp(paths.MMT_PATH, r"/switch", monitors["inactive"][0]["name"])._execute()
-            time.sleep(2)
-            
-            # set the orientation
-            if do_flip:
-                BringApp(paths.MMT_PATH, r"/SetOrientation", monitors["inactive"][0]["name"], "180")._execute()
-            else:
-                BringApp(paths.MMT_PATH, r"/SetOrientation", monitors["inactive"][0]["name"], "0")._execute()
-            time.sleep(5)
-            
-            # deactivate the active monitor
-            BringApp(paths.MMT_PATH, r"/switch", monitors["active"][0]["name"])._execute()
-            time.sleep(2)
-            
-            # set the resolution
-            BringApp(paths.NIRCMD_PATH, "setdisplay", str(monitors["inactive"][0]["resolution"][0]), str(monitors["inactive"][0]["resolution"][1]), "32")._execute()
-#             time.sleep(10)
-            
-
-        # other cases go here
-    except Exception:
-        utilities.simple_log(False)        #
-    
+   
 class MainRule(MappingRule):
     
     @staticmethod
     def generate_CCR_choices():
         choices = {}
-        for ccr_choice in utilities.get_list_of_ccr_config_files():
+        for ccr_choice in settings.get_list_of_ccr_config_files():
             choices[ccr_choice] = ccr_choice
         return Choice("ccr_mode", choices)
     
@@ -105,7 +59,7 @@ class MainRule(MappingRule):
     "delete word from vocabulary":  Function(vocabulary_processing.del_vocab),
     
     # hardware management
-    "(switch | change) monitors":              Function(switch_monitors),
+#     "(switch | change) monitors":              Function(switch_monitors),
     "(<volume_mode> [system] volume [to] <n> | volume <volume_mode> <n>)": Function(navigation.volume_control, extra={'n', 'volume_mode'}),
     
     # window management

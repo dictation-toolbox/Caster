@@ -101,8 +101,8 @@ def change_CCR(enable_disable, ccr_mode):
     # If compatibility success failed, no need to worry about writing the config file wrong
     if success:
         config_settings = settings.SETTINGS["ccr"]
-        for s in config_settings:
-            config_settings[s] = s in active_modes
+        for s in config_settings.keys():
+            config_settings[s]["active"] = s in active_modes
         settings.save_config()
         # Now, toss the old grammar and make a new one
         unload()
@@ -120,8 +120,8 @@ def purify_name(name):
 def get_active_modes():
     config_settings = settings.SETTINGS["ccr"]
     results = []
-    for s in config_settings:
-        if config_settings[s] == True:
+    for s in config_settings.keys():
+        if config_settings[s]["active"] == True:
             results.append(purify_name(s))
     return results
 
@@ -142,7 +142,7 @@ def get_models(mode_1="", mode_2="", mode_3="", mode_4=""):
 def get_ccr_file(mode):
     ccr_file = CCRFile()
     ccr_file.name = mode
-    with open(paths.GENERIC_CONFIG_PATH + "\\config" + mode + ".txt", "r") as f:
+    with open(settings.SETTINGS["paths"]["GENERIC_CONFIG_PATH"] + "\\config" + mode + ".txt", "r") as f:
         
         mapping = False
         extras = False
@@ -184,7 +184,7 @@ def get_ccr_file(mode):
 
 def combine_CCR_files(master_model):
     try:
-        with open(paths.UNIFIED_CONFIG_PATH, "w") as fw:
+        with open(settings.SETTINGS["paths"]["UNIFIED_CONFIG_PATH"], "w") as fw:
             for lnc in master_model.other:
                 fw.write(lnc)
             fw.write("cmd.map= {\n")
@@ -333,7 +333,7 @@ def generate_language_rule(path):
     
 def refresh():
     global unified_grammar
-    unified_grammar = generate_language_rule(paths.UNIFIED_CONFIG_PATH)
+    unified_grammar = generate_language_rule(settings.SETTINGS["paths"]["UNIFIED_CONFIG_PATH"])
     unified_grammar.load()  # Load the grammar.
 
 # Unload function which will be called at unload time.
@@ -373,9 +373,9 @@ def format_ecma_loop(looptype, text, condition, increment):
         i = str(increment)
         if i == "":
             i = "++"
-        if config_settings["javascript"]:
+        if "javascript" in config_settings.keys() and config_settings["javascript"]["active"]:
             language_dependent = "for (var " + letter + " = PARAMETER; " + letter + " " + c + " PARAMETER; " + letter + i + "){}"
-        elif config_settings["C plus plus"]:
+        elif "C plus plus" in config_settings.keys() and config_settings["C plus plus"]["active"]:
             language_dependent = "for (int " + letter + " = PARAMETER; " + letter + " " + c + " PARAMETER; " + letter + i + "){}"
         else:
             language_dependent = "please_configure_language"

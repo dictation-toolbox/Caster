@@ -1,21 +1,25 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+import os, json, sys, time
 
+BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
+if BASE_PATH not in sys.path:
+    sys.path.append(BASE_PATH)
 import codecs
 from datetime import datetime
 import getopt
 import multiprocessing
-import os, json, sys, time
+
 
 from dragonfly import Key, BringApp
 import psutil
 import win32gui, win32process, win32api, win32ui
 
-BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
-if BASE_PATH not in sys.path:
-    sys.path.append(BASE_PATH)
-from lib import paths
+from lib import paths, settings
 from lib import runner
+
+
+
 
 def window_exists(classname, windowname):
     try:
@@ -88,7 +92,7 @@ def load_json_file(path):
 
 def clear_pyc():
     try:
-        for dirpath, dirnames, files in os.walk(paths.BASE_PATH):  # os.walk produces a list of 3-tuples
+        for dirpath, dirnames, files in os.walk(settings.SETTINGS["paths"]["BASE_PATH"]):  # os.walk produces a list of 3-tuples
             if r"MacroSystem\.git" in dirpath or r"MacroSystem\core" in dirpath:
                 continue
             for f in files:
@@ -110,19 +114,13 @@ def get_most_recent(path, extension):
     return str(recent) + extension
 
 def clean_temporary_files():
-    temp_folders = [paths.MONITOR_INFO_PATH]
+    temp_folders = [settings.SETTINGS["paths"]["MONITOR_INFO_PATH"]]
     for p in temp_folders:
         if os.path.exists(p):
             for f in os.listdir(p):
                 os.remove(p + f)
                 
-def get_list_of_ccr_config_files():
-    results = []
-    for f in os.listdir(paths.GENERIC_CONFIG_PATH):
-        if f.endswith(".txt"):
-            f = f.replace("+", " plus")
-            results.append(f.replace("config", "").replace(".txt", ""))
-    return results
+
 
 
 
@@ -134,7 +132,7 @@ def simple_log(to_file=False):
     msg= list_to_string(sys.exc_info())
     print msg
     if to_file:
-        f = open(paths.LOG_PATH, 'a') 
+        f = open(settings.SETTINGS["paths"]["LOG_PATH"], 'a') 
         f.write(msg + "\n")
         f.close()
 
@@ -149,7 +147,7 @@ def report(message, speak=False, console=True, log=False):
     if speak:
         dragonfly.get_engine().speak(message)
     if log:
-        f = open(paths.LOG_PATH, 'a') 
+        f = open(settings.SETTINGS["paths"]["LOG_PATH"], 'a') 
         f.write(str(message) + "\n")
         f.close()
 
@@ -177,10 +175,10 @@ def current_time_to_string():
 
 
 def scan_monitors():
-    if not os.path.exists(paths.MONITOR_INFO_PATH):
-        os.makedirs(paths.MONITOR_INFO_PATH)
-    monitor_scan_path = paths.MONITOR_INFO_PATH + current_time_to_string() + ".txt"
-    BringApp(paths.MMT_PATH, r"/stext", monitor_scan_path)._execute()
+    if not os.path.exists(settings.SETTINGS["paths"]["MONITOR_INFO_PATH"]):
+        os.makedirs(settings.SETTINGS["paths"]["MONITOR_INFO_PATH"])
+    monitor_scan_path = settings.SETTINGS["paths"]["MONITOR_INFO_PATH"] + current_time_to_string() + ".txt"
+    BringApp(settings.SETTINGS["paths"]["MMT_PATH"], r"/stext", monitor_scan_path)._execute()
     time.sleep(1)
     return monitor_scan_path
 

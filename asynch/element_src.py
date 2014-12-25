@@ -20,7 +20,7 @@ class Element:
     def __init__(self):
         
         # setup basics
-        self.JSON_PATH = paths.ELEMENT_JSON_PATH
+        self.JSON_PATH = settings.SETTINGS["paths"]["ELEMENT_JSON_PATH"]
         self.TOTAL_SAVED_INFO = utilities.load_json_file(self.JSON_PATH)
  
         self.first_run = True
@@ -191,7 +191,7 @@ class Element:
     def rescan_directory(self):
         self.scan_directory(self.dropdown_selected.get())
         self.old_active_window_title = "Directory has been rescanned"
-        utilities.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
+        settings.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
         
             
     def scroll_to(self, index):  # don't need this for sticky list
@@ -257,7 +257,7 @@ class Element:
         directory = self.ask_directory()
         if not directory == "":
             self.scan_directory(directory)
-            utilities.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
+            settings.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
             self.populate_dropdown()
             self.select_from_dropdown(directory)
             
@@ -265,7 +265,7 @@ class Element:
         self.TOTAL_SAVED_INFO["config"]["last_directory"] = key
         
         if save:
-            utilities.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
+            settings.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
         self.dropdown_selected.set(key)
         self.ext_box.delete(0, tk.END)
         self.ext_box.insert(0, ",".join(self.TOTAL_SAVED_INFO["directories"][key]["extensions"]))
@@ -446,7 +446,7 @@ class Element:
                     self.current_file["sticky"][sticky_index] = target_word
                     self.current_file["names"].remove(target_word)
 
-                utilities.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
+                settings.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
                 self.root.after(10, lambda: self.populate_list(self.last_file_loaded))
                 return "c"
             elif action_type == "remove":
@@ -461,14 +461,14 @@ class Element:
                 if target_word in self.current_file["added"]:
                     self.current_file["added"].remove(target_word)
                 self.current_file["banned"].append(target_word)
-                utilities.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
+                settings.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
                 self.root.after(10, lambda: self.populate_list(self.last_file_loaded))
                 return "c"
         elif "name" in request_object:
             self.current_file["names"].append(request_object["name"])
             self.current_file["added"].append(request_object["name"])
             self.current_file["names"].sort()
-            utilities.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
+            settings.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
             self.root.after(10, lambda: self.populate_list(self.last_file_loaded))
             return "c"
         else:
@@ -485,7 +485,7 @@ class Element:
             elif action_type=="filter_strict_return_processed_data":
                 self.TOTAL_SAVED_INFO["directories"][self.dropdown_selected.get()]=json.loads(request_object["processed_data"])
                 self.old_active_window_title = "Directory has been strict- modified"
-                utilities.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
+                settings.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
             return "c"
         
         return 'unrecognized request received: ' + request_object["action_type"]

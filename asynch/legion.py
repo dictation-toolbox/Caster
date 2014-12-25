@@ -3,15 +3,17 @@ import getopt
 import re
 import sys
 import threading
-
-from PIL import ImageGrab
-
 BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
 if BASE_PATH not in sys.path:
     sys.path.append(BASE_PATH)
+from PIL import ImageGrab
+
 from asynch.bottleserver import BottleServer
-from lib import paths
+from lib import paths, settings
 from lib.display import TkTransparent
+
+
+
 
 LEGION_LISTENING_PORT = 1340
 
@@ -196,7 +198,7 @@ class LegionScanner:
         self.screen_has_changed = False
 
     def setup_dll(self):
-        self.tirg_dll = cdll.LoadLibrary(paths.DLL_PATH + "tirg-dll.dll")
+        self.tirg_dll = cdll.LoadLibrary(settings.SETTINGS["paths"]["DLL_PATH"] + "tirg-dll.dll")
         self.tirg_dll.getTextBBoxesFromFile.argtypes = [c_char_p, c_int, c_int]
         self.tirg_dll.getTextBBoxesFromFile.restype = c_char_p
         self.tirg_dll.getTextBBoxesFromBytes.argtypes = [c_char_p, c_int, c_int]
