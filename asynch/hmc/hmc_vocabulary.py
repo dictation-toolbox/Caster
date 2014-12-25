@@ -59,7 +59,9 @@ class Homunculus_Vocabulary(Homunculus):
             self.pronunciation_box = Entry(self, name="pronunciation_box")
             self.pronunciation_box.grid(row=p_row, column=1, sticky=tk.W)
             
-            
+            self.force_add_var = tk.IntVar()
+            self.force_add_var.set(True)
+            self.force_add = Checkbutton(self, text="Force Add", variable=self.force_add_var).grid(row=self.get_row(), column=0, sticky=tk.W)            
             
             Label(self, text="Options", name="optionslabel").grid(row=self.get_row(), column=1, sticky=tk.E)
             self.word_state = []
@@ -139,6 +141,7 @@ class Homunculus_Vocabulary(Homunculus):
             if len(pronunciation)==0:
                 pronunciation=""
             response["pronunciation"]=pronunciation
+            response["force"]=self.force_add_var.get()
             word_info=0x00000000
             for ws in self.word_state:
                 if ws[0].get()==1:

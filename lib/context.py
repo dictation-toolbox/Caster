@@ -82,25 +82,32 @@ def find_index_in_context(target, context, look_left):
         return -1
     return index
 
-def read_selected_without_altering_clipboard():
+def read_selected_without_altering_clipboard(same_is_okay=False):
     '''Returns a tuple:
     (0, "text from system") - indicates success
     (1, None) - indicates no change
     (2, None) - indicates clipboard error, should not advance cursor before trying again
     '''
     time.sleep(0.05)  # time for previous keypress to execute
+    cb= Clipboard(from_system=True)
     temporary = None
+    prior_content=None
     try: 
-        prior_content = Clipboard(from_system=True)
+
+        prior_content =Clipboard.get_system_text()
+        Clipboard.set_system_text("")
     
         Key("c-c")._execute()
         time.sleep(0.05)  # time for keypress to execute
         temporary = Clipboard.get_system_text()
-        prior_content.copy_to_system()
+        cb.copy_to_system()
+
+        
     except Exception:
         utilities.simple_log(False)
         return (2, None)
-    if prior_content == temporary:
+#     if temporary:
+    if prior_content == temporary and not same_is_okay:
         return (1, None)
     return (0, temporary)
 

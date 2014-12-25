@@ -24,12 +24,14 @@ def add_vocab():
     
     
     # attempts to get what was highlighted first
-    highlighted=context.read_selected_without_altering_clipboard()
+    highlighted=context.read_selected_without_altering_clipboard(True)
+    print highlighted
     
     # change the following regex to accept alphabetical only
     disallow="^[A-Za-z]*$"
     selected=None
-    if highlighted[0]==0:
+    
+    if highlighted[0]==0 and highlighted[1]!="":
         if not re.match(disallow, highlighted[1]):
             utilities.report("only used for single words", speak=True)
             return
@@ -58,7 +60,34 @@ def del_vocab():
 def process_set(data):
     ''''''
     print "set "+str(data)
+    word=data["response"]["word"]
+    pronunciation=data["response"]["pronunciation"]
+    if pronunciation=="":
+        pronunciation=None
+    word_info=data["response"]["word_info"]
+    #missingno
+    import natlink
+    result=0
+    if pronunciation==None:
+        result=natlink.addWord(word, word_info)
+        if result==0 and data["response"]["force"]==1:
+            process_delete(data)
+            result=natlink.addWord(word, word_info)
+    else:
+        print data
+        print pronunciation
+        result=natlink.addWord(word, word_info, str(pronunciation))
+        if result==0 and data["response"]["force"]==1:
+            process_delete(data)
+            result=natlink.addWord(word, word_info, str(pronunciation))
+    
+    if result==1:
+        utilities.report("word added successfully: "+word, False)
+    else:
+        utilities.report("word add failed: "+word, False)
 
 def process_delete(data):
+    import natlink
+    natlink.deleteWord(data["response"]["word"])
     print "deleting "+str(data)
     
