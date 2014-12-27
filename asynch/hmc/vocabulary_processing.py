@@ -13,7 +13,7 @@ from dragonfly.actions.action_waitwindow import WaitWindow
 
 from asynch import queue
 from asynch.hmc import hmc_vocabulary, h_launch
-from lib import utilities, paths, context, settings
+from lib import utilities,  context, settings
 
 
 def add_vocab():

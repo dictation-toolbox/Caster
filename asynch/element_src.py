@@ -11,7 +11,7 @@ import Tkinter as tk
 BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
 if BASE_PATH not in sys.path:
     sys.path.append(BASE_PATH)
-from lib import paths, settings, utilities
+from lib import  settings, utilities
 
 
 

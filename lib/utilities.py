@@ -15,7 +15,7 @@ from dragonfly import Key, BringApp
 import psutil
 import win32gui, win32process, win32api, win32ui
 
-from lib import paths, settings
+from lib import  settings
 from lib import runner
 
 
@@ -141,7 +141,6 @@ def simple_log(to_file=False):
 
 def report(message, speak=False, console=True, log=False):
     import dragonfly
-    from lib import paths
     if console:
         print message
     if speak:

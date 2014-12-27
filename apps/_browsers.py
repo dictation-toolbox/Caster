@@ -42,8 +42,6 @@ class CommandRule(MappingRule):
         "zoom in <n>":                  Key("c-plus/20") * Repeat(extra="n"),
         "zoom out <n>":                 Key("c-minus/20") * Repeat(extra="n"),
         "refresh":                      Key("c-r"),
-        "search for <dict>":            Key("c-t")+WaitWindow(title="New Tab")+ Text("%(dict)s"),
-        "git hub":                      Text("github"),
         "save image [<dict> <n>]":      Function(save_image, extra={"dict", "n"}),
         "[add] bookmark":               Key("c-d"),
         
@@ -52,10 +50,6 @@ class CommandRule(MappingRule):
         "step over":                    Key("f10"),
         "step into":                    Key("f11"),
         "step out":                     Key("s-f11"),
-        
-        "pandora dislike":              Key("cs-3"),
-        "pandora like":                 Key("cs-1"),
-        "pandora skip":                 Key("cs-2"),
         
         "IRC identify":                 Text("/msg NickServ identify PASSWORD"),
         }
@@ -68,8 +62,8 @@ class CommandRule(MappingRule):
 
 #---------------------------------------------------------------------------
 
-context = AppContext(executable="chrome")
-grammar = Grammar("Google Chrome", context=context)
+context = AppContext(executable="chrome") | AppContext(executable="firefox")
+grammar = Grammar("browsers", context=context)
 grammar.add_rule(CommandRule())
 grammar.load()
 

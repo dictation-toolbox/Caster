@@ -6,7 +6,7 @@ from dragonfly import (Function, Text, Grammar, BringApp, WaitWindow, Key,
                        IntegerRef, Dictation, Mimic, MappingRule)
 from dragonfly.actions.action_focuswindow import FocusWindow
 
-from lib import paths, settings, runner
+from lib import  settings, runner
 from lib import control
 from lib import utilities
 

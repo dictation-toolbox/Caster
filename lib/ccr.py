@@ -3,7 +3,7 @@ import time
 
 from dragonfly import *
 
-from lib import paths, settings
+from lib import  settings
 from lib import utilities
 
 

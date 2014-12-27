@@ -8,7 +8,7 @@ if BASE_PATH not in sys.path:
     sys.path.append(BASE_PATH)
 import Tkinter as tk
 from asynch.bottleserver import BottleServer
-from lib import paths, settings
+from lib import  settings
 
 
 

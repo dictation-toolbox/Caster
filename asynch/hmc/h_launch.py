@@ -5,7 +5,7 @@ if BASE_PATH not in sys.path:
     sys.path.append(BASE_PATH)
 from asynch.hmc.hmc_vocabulary import Homunculus_Vocabulary
 from asynch.hmc.homunculus import Homunculus
-from lib import paths, settings, utilities
+from lib import settings, utilities
 from lib import runner
 from asynch.hmc import hmc_vocabulary, homunculus
 

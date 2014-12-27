@@ -1,5 +1,5 @@
 from dragonfly import *
-from lib import navigation, paths, context
+from lib import navigation, context
 
 navigation.initialize_clipboard()
 

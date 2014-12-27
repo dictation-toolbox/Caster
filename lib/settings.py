@@ -133,6 +133,15 @@ def init_default_values():
             SETTINGS["ccr"][name]["active"] = value
             SETTINGS["ccr"][name]["pronunciation"] = ""
             values_change_count += 1
+    
+    # passwords section
+    if not "password" in SETTINGS.keys():
+        SETTINGS["password"] = {}
+        SETTINGS["password"]["seed1"]="abc123"
+        SETTINGS["password"]["seed2"]="abd124"
+        SETTINGS["password"]["seed3"]="abe125"
+        SETTINGS["password"]["seed4"]="abf126"
+        values_change_count += 1
 
 def get_settings():
     global SETTINGS

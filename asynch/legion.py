@@ -9,7 +9,7 @@ if BASE_PATH not in sys.path:
 from PIL import ImageGrab
 
 from asynch.bottleserver import BottleServer
-from lib import paths, settings
+from lib import  settings
 from lib.display import TkTransparent
 
 

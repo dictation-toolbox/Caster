@@ -13,7 +13,7 @@ from asynch.legion import LegionScanner
 from lib import control
 from lib import runner
 from lib import utilities
-import paths, settings
+import  settings
 
 
 BASE_PATH = settings.SETTINGS["paths"]["BASE_PATH"]

@@ -4,7 +4,7 @@ from dragonfly import (Function, Text, Grammar, BringApp, WaitWindow, Key,
                        IntegerRef, Dictation, Mimic, MappingRule)
 
 from lib import control
-from lib import paths, settings
+from lib import settings
 from lib import utilities
 
 
