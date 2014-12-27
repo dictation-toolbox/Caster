@@ -9,6 +9,48 @@ cmd.map = {
            # Spoken-form    ->    ->    ->     Action object
 		"ja <text>":					Function(ccr.camel_case, extra="text"),			
 		
+		# CCR PROGRAMMING STANDARD
+		"if":                           Text("if() {")+Key("enter,up,left"),
+        "else":		                    Text("else {")+Key("enter"),		
+		#
+		"switch":						Text("switch(){\ncase : break;\ndefault: break;")+Key("up,up,left,left"),
+		"case":							Text("case :")+Key("left"),
+		"break":						Text("break;"),
+		"default":						Text("default: "),
+		#
+		"do loop":						Text("do {}")+Key("left, enter:2"),
+        "while":						Text("while ()")+Key("left"),
+        "for loop":						Text("for (int i=0; i<VALUE; i++)"),
+		"for each":						Text("for (CLASS TYPE : LIST)"),
+		#
+		"convert to integer":			Text("int()")+ Key("left"),
+		"convert to floating point":	Text("Double.parseDouble()")+ Key("left"),
+		"convert to string":			Key("dquote, dquote, plus"),
+		#
+		"and":                          Text("&&"),
+        "or":                           Text("||"),
+        "not":                          Text("!"),
+        #
+        "print":						Text("System.out.println()")+Key("left"),
+        #
+        "import":						Text( "import " ),
+        #
+        "function":						Text("SCOPE TYPE NAME(){}")+Key("left"),
+        "class":    					Key( "as-n, down, down, down, down, enter"),
+		#
+		"add comment":					Text( "//" ),
+		"long comment":					Text("/**/")+Key("left,left"),
+		#
+		"null":							Text("null"),
+		#
+		"return":						Text("return "),
+		#
+		"true":							Text("true"),
+		"false":						Text("false"),
+		
+		
+		# Java specific
+		
 		"public":						Text("public "),
 		"private":						Text("private "),
 		"static":						Text("static "),
@@ -18,18 +60,10 @@ cmd.map = {
 		"new":							Text("new "),
 		"integer":						Text("int "),
 		"big integer":					Text("Integer"),
-		"convert to integer":			Text("int()")+ Key("left"),
+		
 		"string":						Text("String "),
 		
-     	"switch":						Text("switch(){\ncase : break;\ndefault: break;")+Key("up,up,left,left"),
-     	"import":						Text( "import " ),
-     	"add comment":					Text( "//" ),
-		"new class":    				Key( "as-n, down, down, down, down, enter"),
-        
-		"and":                          Text("&&"),
-        "or":                           Text("||"),
-        "if":                           Text("if() {")+Key("enter,up,left"),
-        "else block":                   Text("else {")+Key("enter"),
+     	
         "ternary":                      Text("()?;") + (Key("left") * 3),
 			
         "<n10a> [<n10b>] [<n10c>] bark":Function(navigation.numbers, extra={"n10a", "n10b", "n10c"}),

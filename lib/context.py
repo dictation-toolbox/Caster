@@ -1,7 +1,6 @@
 import time
 
 from dragonfly import *
-import win32clipboard, sys, win32con
 
 
 from lib import utilities
@@ -112,7 +111,9 @@ def read_selected_without_altering_clipboard(same_is_okay=False):
     return (0, temporary)
 
     
-
+def fill_blanks(target):
+    sequence=["gopher", "previous", str(target), "left", "color"]
+    Playback([(sequence, 0.0)])._execute()
     
 
 

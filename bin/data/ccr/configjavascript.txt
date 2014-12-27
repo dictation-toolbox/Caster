@@ -11,75 +11,77 @@ noCaps = Mimic("\\no-caps-on")
 cmd.map = {
        # Spoken-form    ->    ->    ->     Action object
 		"score <text>":				Function(ccr.score, extra="text"),		
-       "ja <text>":					Function(ccr.camel_case, extra="text"),	
+        "ja <text>":					Function(ccr.camel_case, extra="text"),	
+		
+		# CCR PROGRAMMING STANDARD
+		"if":						Text("if()")+Key("left"),
+		"else":						Text("else {}")+Key("left, enter:2, up"),
+		#
+		"switch":					Text("switch(){}")+Key("left, enter:2, up"),
+		"case":						Text("case :")+Key("left"),
+		"break":					Text("break;"),
+		"default":					Text("default: "),
+		#
+		"do loop":					Text("do {}")+Key("left, enter:2"),
+        "while":					Text("while ()")+Key("left"),
+        "for loop":					Text("for (int i=0; i<VALUE; i++)"),
+		"for each":					Text("for each (VARIABLE in OBJECT)"),
+        #
+        "convert to string":		Key("dquote, dquote, plus"),
+		"convert to integer":		Text("parseInt()")+Key("left"),
+		"convert to floating point":Text("parseFloat()")+Key("left"),
+		#
+		"and":                      Text(" && "),
+        "or":                       Text(" || "),
+        "not":                      Text("!"),
+        #
+		"print":					Text("console.log()")+Key("left"),
+		#
+		# (no imports in javascript)
+		# 
+		"function":					Text("function PARAMETER(){}")+Key("left, enter:2, up"),
+		# (no classes in javascript)
+		#
+		"add comment":				Text("//"),
+		"long comment":				Text("/**/")+Key("left,left"),
+		#
+		"null":						Text("null"),
+		#
+		"return":					Text("return "),
+		#
+		"true":						Text("true"),
+		"false":					Text("false"),
+		
+		
+		# JavaScript specific
 		
 		"timer":					Text("setInterval()")+Key("left"),
 		"timeout":					Text("setTimeout()")+Key("left"),
-		"print":					Text("console.log()")+Key("left"),
+		"long form if":				Text("if (){}")+Key("left, enter:2, up"),
 		"document":					Text("document"),
 		"index of":					Text("indexOf()")+Key("left"),
 		"has own property":			Text("hasOwnProperty()")+Key("left"),
 		"length":					Text("length"),
 		"self":						Text("self"),
 		"push":						Text("push"),
-		"undefined":				Text("undefined"),
 		"inner HTML":				Text("innerHTML"),
-		"parse integer":			Text("parseInt()")+Key("left"),
-		"parse float":				Text("parseFloat()")+Key("left"),
 		
- 	   "import":					Text( "import " ),
-		"null":						Text("null"),
- 	   "add comment":				Text("//"),
-		
-		
-        # logic shortcuts
-        "and":                      Text(" && "),
-        "or":                       Text(" || "),
-        "not":                      Text("!"),
-        
-        #continue working from here
-        "if":						Text("if (){}")+Key("left, enter:2, up"),
-        "short form if":			Text("if()")+Key("left"),
-        "else":						Text("else {}")+Key("left, enter:2, up"),
-        
-        "abstract":					Text("abstract"),
-        "case":						Text("case :")+Key("left"),
         "continue":					Text("continue"),
-        "import":					Text("import "),
-        "short":					Text("short "),
+
         "this":						Text("this"),
         "try":						Text("try {}")+Key("left, enter:2, up"),
         
-        "do loop":					Text("do {}")+Key("left, enter:2"),
-        "while":					Text("while ()")+Key("left"),
-        "for <looptype> [<text> [<condition>] [<increment>]]":	Function(ccr.format_ecma_loop, extra={"looptype", "text", "condition", "increment"}),
-        
         "catch":					Text("catch(e) {}")+Key("left, enter:2, up"),
-		"false":					Text("false"),
-		"function":					Text("function PARAMETER(){}")+Key("left, enter:2, up"),
-		"in":						Text(" in "),
-		"long":						Text("long "),
+		
 		"throw":					Text("throw "),
-		"type of":					Text("typeof "),
-		"boolean":					Text("boolean "),
-		"char":						Text("char "),
-		"default":					Text("default: "),
-		"final":					Text("final "),
 		"instance of":				Text("instanceof "), 
         "throws":					Text("throws "),
         "(far | variable)":			Text("var "),
-        "break":					Text("break;"),
-        "class":					Text("class "),
         
-        "eval":						Text("eval"),
         "integer":					Text("int "),
         "new":						Text("new "),
-        "switch":					Text("switch(){}")+Key("left, enter:2, up"),
-        "float":					Text("float "),
-        "null":						Text("null"),
-        "return":					Text("return "),
-        "true":						Text("true"),
         
+        "float":					Text("float "),
         "<n10a> [<n10b>] [<n10c>] bark":Function(navigation.numbers, extra={"n10a", "n10b", "n10c"}),
 	   
           }

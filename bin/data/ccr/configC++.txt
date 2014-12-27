@@ -8,8 +8,49 @@ noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on")
 cmd.map = {
            # Spoken-form    ->    ->    ->     Action object
 		"ja <text>":					Function(ccr.camel_case, extra="text"),
-		"for <looptype> [<text> [<condition>] [<increment>]] loop":	Function(ccr.format_ecma_loop, extra={"looptype", "text", "condition", "increment"}),
 		"score <text>":				Function(ccr.score, extra="text"),		
+		
+		# CCR PROGRAMMING STANDARD
+		"if":                           Text("if() {")+Key("enter,up,left"),
+        "else":        		            Text("else {")+Key("enter"),
+        #
+        "switch":						Text("switch(){\ncase : break;\ndefault: break;")+Key("up,up,left,left"),
+        "case":							Text("case :")+Key("left"),
+		"break":						Text("break;"),
+		"default":						Text("default: "),
+		#
+		"do loop":						Text("do {}")+Key("left, enter:2"),
+        "while":						Text("while ()")+Key("left"),
+        "for loop":						Text("for (int i=0; i<VALUE; i++)"),
+        "for each":						Text("for_each (VALUE, VALUE, FUNCTION);"),
+        #
+        "convert to integer":			Text("(int)"),
+		"convert to floating point":	Text("(double)"),
+		"convert to string":			Text("std::to_string()")+Key("left"),
+		#
+		"and":                          Text("&&"),
+        "or":                           Text("||"),
+        "not":							Text("!"),
+        #
+        "print":						Text("cout <<"),
+        #
+        "import":						Text("#include"),
+        #
+        "function":						Text("TYPE NAME(){}")+Key("left"),
+        "class":						Text("class NAME{}")+Key("left"),
+		#
+		"add comment":					Text( "//" ),
+		"long comment":					Text("/**/")+Key("left, left"),
+		#
+		"null":							Text("null"),
+		#
+		"return":						Text("return"),
+		#
+		"true":							Text("true"),
+		"false":						Text("false"),
+		
+		
+		# C++ specific
 		
 		"public":						Text("public "),
 		"private":						Text("private "),
@@ -18,19 +59,14 @@ cmd.map = {
 		
 		"static cast integer":			Text("static_cast<int>()") + Key("left"),
 		"static cast double":			Text("static_cast<double>()") + Key("left"),
-		"convert to integer":			Text("(int)"),
-		"convert to double":			Text("(double)"),
 		
-		#"enumerator":					Text("enum"),
-				
-		"([global] scope | names)":		Text("::"),
-		"vector":						Text("vector"),
+		"([global] scope | name)":		Text("::"),
+		"Vic":							Text("vector"),
 		"pushback":						Text("push_back"),
-		"include":						Text("#include"),
+		
 		"standard":						Text("std"),
 		"constant":						Text("const"),
 		"array":						Mimic("brackets"),
-		"return":						Text("return"),
 		
 		#http://www.learncpp.com/cpp-tutorial/67-introduction-to-pointers/
 		"(reference to | address of)":	Text("&"),
@@ -43,19 +79,9 @@ cmd.map = {
 		"double":						Text("double "),
 		"character":					Text("char "),
 		"big integer":					Text("Integer"),
-		"convert to integer":			Text("int()") + Key("left"),
-		"convert to string":			Text("to_string") + Key("left"),
 		"string":						Text("string "),
 		
-     	"switch":						Text("switch(){\ncase : break;\ndefault: break;")+Key("up,up,left,left"),
-     	"import":						Text( "import " ),
-     	"add comment":					Text( "//" ),
-        
-		"and":                          Text("&&"),
-        "or":                           Text("||"),
-        "if":                           Text("if() {")+Key("enter,up,left"),
-        "else block":                   Text("else {")+Key("enter"),
-        "ternary":                      Text("()?;") + (Key("left") * 3),
+     	"ternary":                      Text("()?;") + (Key("left") * 3),
 			
 
         "<n10a> [<n10b>] [<n10c>] bark":Function(navigation.numbers, extra={"n10a", "n10b", "n10c"}),

@@ -9,57 +9,69 @@ release = Key("shift:up, ctrl:up")
 noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added on the right side
 
 cmd.map = {
-       # Spoken-form    ->    ->    ->     Action object
-		"score <text>":				Function(ccr.score, extra="text"),		
-       
-
-	   #Python specific macros           
- 	   "import":					Text( "import " ),
- 	   "from":						Text( "from " ),
- 	   "self":						Text("self"),
- 	   "self dot":					Text("self")+ Key("dot"),
-		"none":						Text("None"),
-		"print":					Text("print "),
- 	   "add comment":				Text( "#" ),
-		"class":					Text("class"),
-		"long comment":				Text("''''''") + Key("left:3"),
+        # Spoken-form    ->    ->    ->     Action object
+	    "score <text>":				Function(ccr.score, extra="text"),		
 		
-        # logic shortcuts
+		# CCR PROGRAMMING STANDARD
+		#
+		"if":                       Key("i,f,space,colon,left"),
+		"else":                     Text("else:")+Key("enter"),		
+		#
+		# (no switch in Python)
+		"break":					Text("break"),
+		#
+		"for each":					Text("for  in :")+ Key("left:5"),
+        "for loop":					Text("for i in range(0, ):")+ Key("left:2"),
+		"while":					Text("while :")+ Key("left"),
+		# (no do-while in Python)
+		#
+		"convert to string":		Text("str()")+ Key("left"),
+        "convert to integer":		Text("int()")+ Key("left"),
+        "convert to floating point":Text("float()")+ Key("left"),
+        #
         "and":                      Text(" and "),
         "or":                       Text(" or "),
         "not":                      Text(" not "),
-        "in":                       Text(" in "),
+        #
+        "print":					Text("print "),
+        #
+		"import":					Text( "import " ),
+		#
+		"function":					Text("def "),        
+		"class":					Text("class "),
+		#
+		"add comment":				Text( "#" ),
+		"long comment":				Text("''''''") + Key("left:3"),
+		#				
+		"null":						Text("None"),
+		#
+		"return":					Text("return "),
+		#
+		"true":						Text("True"),
+		"false":					Text("False"),
+				
+		
+	    # Python specific           
+ 	    
+ 	    "from":						Text( "from " ),
+ 	    "self":						Text("self"),
+ 	    "not equals":					Text("!="),
+		"in":                       Text(" in "),
         "with":						Text("with "),
         "open file":				Text("open('filename','r') as f:"),
         "read lines":				Text("content = f.readlines()"),
-        
-        "if":                       Key("i,f,space,colon,left"),
-        "else if":                  Key("e,l,i,f,space,colon,left"),
-        "else block":               Text("else:")+Key("enter"),
-        
-        "convert to string":		Text("str()")+ Key("left"),
-        "convert to integer":		Text("int()")+ Key("left"),
-        "convert to float":			Text("float()")+ Key("left"),
+        "L if":                  Key("e,l,i,f,space,colon,left"),
+        "convert to character": 	Text("chr()")+ Key("left"),
         "length":					Text("len()")+ Key("left"),
-        
-        
-        "for each":					Text("for  in :")+ Key("left:5"),
-        "for loop":					Text("for i in range(0, ):")+ Key("left:2"),
-		"while":					Text("while :")+ Key("left"),
-		"break":					Text("break"),
-
-		"true":						Text("True"),
-		"false":					Text("False"),
-
-		"return":					Text("return "),
-		"global":					Text("global "),
-							
+ 		
+	 	"global":					Text("global "),
+						
 		
-        "<n10a> [<n10b>] [<n10c>] bark":Function(navigation.numbers, extra={"n10a", "n10b", "n10c"}),
+         "<n10a> [<n10b>] [<n10c>] bark":Function(navigation.numbers, extra={"n10a", "n10b", "n10c"}),
 	   
-       	"[dot] (pie | pi)":			Text(".py"),
-		"jason":					Text("json"),
-		"pie to ex":				Text("py2exe"),
+       	 "[dot] (pie | pi)":			Text(".py"),
+		 "jason":					Text("json"),
+		 
           }
 
 cmd.extras   = [

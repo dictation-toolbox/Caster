@@ -98,7 +98,7 @@ def volume_control(n, volume_mode):
         BringApp(NIRCMD_PATH, command, chosen_level).execute()
     except Exception:
         utilities.simple_log(False)
-    utilities.report(message + str(n), speak=settings.SPEAK)
+    utilities.report(message + str(n), speak=settings.SETTINGS["debug_speak"])
 
 def numbers(n10a, n10b, n10c):
     n10b_str = ""

@@ -1,16 +1,11 @@
 import json
 import os
 import sys
-inisetpath='C:/NatLink/NatLink/MacroSystem/bin/data/settings.json'
+INISETPATH = 'C:/NatLink/NatLink/MacroSystem/bin/data/settings.json'
 
-SPEAK = False  # to do,: add this value to the config
 ELEMENT_VERSION = "Element v.04"
 DISPEL_VERSION = "Dispel v.02"
 HOMUNCULUS_VERSION = "HMC v.01"
-PBASE1 = "4dg62sQ$Pm&"
-PBASE2 = "4dg62sQ4Pm7"
-PBASE3 = "1Q2w3"
-PBASE4 = "4"
 
 SETTINGS = None
 
@@ -33,7 +28,7 @@ def save_json_file(data, path):
         with open(path, "w") as f:
             f.write(formatted_data)
     except Exception:
-        print "error saving json file: "+path
+        print "error saving json file: " + path
 
 def load_json_file(path):
     result = {}
@@ -45,20 +40,20 @@ def load_json_file(path):
         else:
             save_json_file(result, path)
     except Exception:
-        print "error loading json file: "+path
+        print "error loading json file: " + path
     return result
 
 def save_config():
     global SETTINGS
     global SETTINGS_PATH
-    global inisetpath
-    save_json_file(SETTINGS, inisetpath if SETTINGS==None or not "SETTINGS" in SETTINGS.keys() else SETTINGS["SETTINGS_PATH"])
+    global INISETPATH
+    save_json_file(SETTINGS, INISETPATH if SETTINGS == None or not "SETTINGS" in SETTINGS.keys() else SETTINGS["SETTINGS_PATH"])
 
 def load_settings():
     global SETTINGS
     global SETTINGS_PATH
-    global inisetpath
-    SETTINGS = load_json_file(inisetpath if SETTINGS==None else SETTINGS["SETTINGS_PATH"])
+    global INISETPATH
+    SETTINGS = load_json_file(INISETPATH if SETTINGS == None else SETTINGS["SETTINGS_PATH"])
     init_default_values()
 
 def init_default_values():
@@ -117,9 +112,6 @@ def init_default_values():
         SETTINGS["macros"] = {}
         values_change_count += 1
     
-    if values_change_count > 0:
-        save_config()
-    
     # CCR section
     ccrNamesFromFiles = []
     for ccrn in get_list_of_ccr_config_files():
@@ -137,11 +129,20 @@ def init_default_values():
     # passwords section
     if not "password" in SETTINGS.keys():
         SETTINGS["password"] = {}
-        SETTINGS["password"]["seed1"]="abc123"
-        SETTINGS["password"]["seed2"]="abd124"
-        SETTINGS["password"]["seed3"]="abe125"
-        SETTINGS["password"]["seed4"]="abf126"
+        SETTINGS["password"]["seed1"] = "abc123"
+        SETTINGS["password"]["seed2"] = "abd124"
+        SETTINGS["password"]["seed3"] = "abe125"
+        SETTINGS["password"]["seed4"] = "abf126"
         values_change_count += 1
+    
+    # miscellaneous section
+    if not "miscellaneous" in SETTINGS.keys():
+        SETTINGS["miscellaneous"] = {}
+        SETTINGS["miscellaneous"]["debug_speak"] = False
+        values_change_count += 1
+    
+    if values_change_count > 0:
+        save_config()
 
 def get_settings():
     global SETTINGS
