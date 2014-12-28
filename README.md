@@ -30,6 +30,7 @@ other dragonfly repositories
 --
  - https://github.com/dictation-toolbox
  - https://github.com/russell/damselfly
+ - https://github.com/codebold/hiccup
  - https://github.com/ccowan/code-by-voice
  - https://github.com/simianhacker/code-by-voice
  - https://github.com/davitenio/dragonfly-macros
@@ -44,7 +45,7 @@ other dragonfly repositories
  - https://github.com/tgrosinger/aenea-grammars (aenea)
  - https://github.com/danzel/NatlinkVisualStudioMacros
  - https://github.com/jiqimaogou/NatLink-MacroSystem
- - https://github.com/codebold/hiccup
+ - https://github.com/tjanpool/myDragonflyScripts
 
 other related documents
 --
@@ -60,16 +61,18 @@ open source and commercial Dragon add-ons
  - http://www.voicecomputer.com
  - https://github.com/nriley/DragonControl
 
-youtube
+video
 --
 - http://www.youtube.com/watch?v=8SkdfdXWYaI (Tavis Rudd talk)
 - https://www.youtube.com/watch?v=g3c5H7sAbBQ (explanation of continuous command recognition)
 - http://www.youtube.com/watch?v=LVAO8DXUnRI (a voice programmer)
+- http://vimeo.com/9156942 (tutorial on setting Dragonfly up -- outdated)
 
 dragonfly/natlink publicity
 --
 - https://web.archive.org/web/20141113151730/http://forums.steampowered.com/forums/showthread.php?t=1239646
 - http://www.extrahop.com/post/blog/programming-by-voice-staying-productive-without-harming-yourself/
+- http://voicecontrol.blogspot.nl/
 
 installation instructions from ground zero for D::S
 --
