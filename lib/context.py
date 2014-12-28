@@ -41,16 +41,12 @@ def navigate_to_character(direction3, target):
             
             index = find_index_in_context(target, context, look_left)
             if index != -1:
-                print "the index is: " + str(index)
                 break
         
         # highlight only the target
         if index != -1:
             Key("left" if look_left else "right")._execute()
-            print "len(context)=" + str(len(context))
-            print "len(context.replace(stuff))=" + str(len(context.replace("\r\n", "\n")))
             nt = index if look_left else len(context) - index - 1  # number of times to press left or right before the highlight
-            print "nt= " + str(nt)
             if nt != 0:
                 Key("right/5:" + str(nt) if look_left else "left/5:" + str(nt))._execute()
             if is_character:
@@ -117,11 +113,16 @@ def fill_blanks(target):
     sequence = ["gopher", "previous", str(target).lower()]
     Playback([(sequence, 0.0)])._execute()
 
+
+#--------------------------------- macro recording section =================================
+
+
+
 class RecordedRule(CompoundRule):
     def __init__(self, commands, name=None, spec=None, extras=None,
         defaults=None, exported=None, context=None):
         CompoundRule.__init__(self, name=name, spec=spec, extras=extras, defaults=defaults, exported=exported, context=context)
-        self.playback_array=[]
+        self.playback_array = []
         for command in commands:
             self.playback_array.append((command, 0.05))
             
@@ -146,14 +147,12 @@ def add_recorded_macro(data):
     
     for i in range(0, len(control.DICTATION_CACHE)):
         d = control.DICTATION_CACHE[i]
-        print d
         if not beginning_found:
             if d[0] == "begin" and d[1] == "recording":
                 beginning_found = True
             continue
         
-        if d[0] == "experiment"  or (d[0] == "end" and d[1] == "recording"):
-            print "the loop should terminate here "
+        if d[0] == "end" and d[1] == "recording":
             break
         # take every tuple after that  and turn it into a comma separated list
         commands.append(list(d))
@@ -175,7 +174,7 @@ def add_recorded_macro(data):
     
     # immediately make a new compound rule  and add to a set grammar
     control.RECORDED_MACROS_GRAMMAR.unload()
-    rule = RecordedRule(commands=commands, spec=spec, name="recorded_rule_"+spec)
+    rule = RecordedRule(commands=commands, spec=spec, name="recorded_rule_" + spec)
     control.RECORDED_MACROS_GRAMMAR.add_rule(rule)
     control.RECORDED_MACROS_GRAMMAR.load()
     
@@ -190,19 +189,43 @@ def null_func():
 def load_recorded_rules():
     recorded_macros = settings.load_json_file(settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
     for spec in recorded_macros:
-        commands=recorded_macros[spec]
-        rule = RecordedRule(commands=commands, spec=spec, name="recorded_rule_"+spec)
+        commands = recorded_macros[spec]
+        rule = RecordedRule(commands=commands, spec=spec, name="recorded_rule_" + spec)
         control.RECORDED_MACROS_GRAMMAR.add_rule(rule)
-    if len(control.RECORDED_MACROS_GRAMMAR.rules)>0:
+    if len(control.RECORDED_MACROS_GRAMMAR.rules) > 0:
         control.RECORDED_MACROS_GRAMMAR.load()
 
 def delete_recorded_rules():
     settings.save_json_file({}, settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
     control.RECORDED_MACROS_GRAMMAR.unload()
-    while len(control.RECORDED_MACROS_GRAMMAR.rules)>0:
-        rule=control.RECORDED_MACROS_GRAMMAR.rules[0]
+    while len(control.RECORDED_MACROS_GRAMMAR.rules) > 0:
+        rule = control.RECORDED_MACROS_GRAMMAR.rules[0]
         control.RECORDED_MACROS_GRAMMAR.remove_rule(rule)
 
 
         
     
+#--------------------------------- context action section =================================
+
+class SelectiveAction(ActionBase):
+    def __init__(self, action, executables, negate=True):
+        '''
+        action: another Dragonfly action
+        executables: an array of strings, each of which is the name of an executable
+        negate: if True, the action should not occur during any of the listed executables, if false the opposite
+        '''
+        ActionBase.__init__(self)
+        self.action = action
+        self.executables = executables
+        self.negate = negate
+        
+    def _execute(self, data=None):
+        executable = utilities.get_active_window_path().split("\\")[-1]
+        is_executable=executable in self.executables
+        if (is_executable and not self.negate) or (self.negate and not is_executable):
+            self.action._execute()
+        
+        
+        
+        
+        

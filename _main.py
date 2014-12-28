@@ -5,12 +5,14 @@ from dragonfly import (BringApp, Key, Function, Grammar, Playback, FocusWindow,
 from asynch.hmc import vocabulary_processing
 from lib import control, settings, navigation, ccr, password, context
 from lib import utilities
+from lib.context import SelectiveAction
 
 
 def experiment():
     '''this function is for testing things in development'''
+    #
     try: 
-        context.get_macro_spec()
+        SelectiveAction(Text("eclipse"), ["eclipse.exe"])._execute()
     except Exception:
         utilities.simple_log(False)
 

@@ -55,7 +55,7 @@ cmd.map = {
  	    
  	    "from":						Text( "from " ),
  	    "self":						Text("self"),
- 	    "long not":					Text("not"),
+ 	    "long not":					Text(" not "),
 		"in":                       Text(" in "),
         "with":						Text("with "),
         "open file":				Text("open('filename','r') as f:"),
