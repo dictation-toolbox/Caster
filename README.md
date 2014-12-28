@@ -22,7 +22,8 @@ dragonfly and natlink documentation
  - http://pythonhosted.org/dragonfly/py-modindex.html (old)
  - http://pythonhosted.org/dragonfly/index.html (old)
  - http://qh.antenna.nl/unimacro/index.html
- - http://qh.antenna.nl/unimacro/implementation_and_acceptance_of_natlink.pdf
+ - http://qh.antenna.nl/unimacro/implementation_and_acceptance_of_natlink.
+ - http://www.synapseadaptive.com/joel/welcomeapage.htm
  - http://www.synapseadaptive.com/joel/NatLinkTalk.ppt
  - http://www.synapseadaptive.com/joel/VoiceCoders.ppt ("Secrets of VDct" by Joel Gould)
 
