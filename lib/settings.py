@@ -75,7 +75,7 @@ def init_default_values():
         ("ELEMENT_JSON_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/element.json"),
         ("DISPEL_JSON_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/dispel.json"),
         ("SAVED_CLIPBOARD_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/clipboard.json"),
-        ("MONITOR_INFO_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/monitorscans/"),
+        ("RECORDED_MACROS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/recorded_macros.json"),
         ("LOG_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/log.txt"),
         
         # REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
@@ -107,10 +107,6 @@ def init_default_values():
     if not SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"] in sys.path:
         sys.path.append(SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"])
     
-    # macros section
-    if not "macros" in SETTINGS.keys():
-        SETTINGS["macros"] = {}
-        values_change_count += 1
     
     # CCR section
     ccrNamesFromFiles = []

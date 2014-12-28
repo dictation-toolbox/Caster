@@ -114,7 +114,7 @@ def get_most_recent(path, extension):
     return str(recent) + extension
 
 def clean_temporary_files():
-    temp_folders = [settings.SETTINGS["paths"]["MONITOR_INFO_PATH"]]
+    temp_folders = []
     for p in temp_folders:
         if os.path.exists(p):
             for f in os.listdir(p):
@@ -173,39 +173,7 @@ def current_time_to_string():
 
 
 
-def scan_monitors():
-    if not os.path.exists(settings.SETTINGS["paths"]["MONITOR_INFO_PATH"]):
-        os.makedirs(settings.SETTINGS["paths"]["MONITOR_INFO_PATH"])
-    monitor_scan_path = settings.SETTINGS["paths"]["MONITOR_INFO_PATH"] + current_time_to_string() + ".txt"
-    BringApp(settings.SETTINGS["paths"]["MMT_PATH"], r"/stext", monitor_scan_path)._execute()
-    time.sleep(1)
-    return monitor_scan_path
 
-def parse_monitor_scan(monitor_scan_path):
-    monitors = {"active": [], "inactive": []}
-    with codecs.open(monitor_scan_path, "r", encoding="utf-16") as f:
-        content = f.readlines()
-    current_monitor = None
-    # Maximum Resolution: 1600 X 900
-    for line in content:
-        line = line.replace(" ", "")
-        if line.startswith("Resolution"):
-            current_monitor = {"resolution":(1600 , 900), "maximum":None, "active":False, "name":""}
-        elif line.startswith("Orientation"):
-            current_monitor["orientation"] = line.split(":")[1]
-        elif line.startswith("Maximum"):
-            current_monitor["maximum"] = line.split(":")[1].split("X")
-            current_monitor["maximum"][0] = int(current_monitor["maximum"][0])
-            current_monitor["maximum"][1] = int(current_monitor["maximum"][1].replace("\r\n", ""))
-        elif line.startswith("Active"):
-            current_monitor["active"] = line.split(":")[1].startswith("Yes")
-        elif line.startswith("Name"):
-            current_monitor["name"] = line.split(":")[1].replace("\r\n", "")
-            if current_monitor["active"]:
-                monitors["active"].append(current_monitor)
-            else:
-                monitors["inactive"].append(current_monitor)
-    return monitors
 
 def run_in_separate_thread(func, timeout_in_seconds=300):
     p = multiprocessing.Process(target=func)

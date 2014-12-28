@@ -2,8 +2,10 @@ import time
 
 from dragonfly import *
 
-
-from lib import utilities
+from asynch import queue
+from asynch.hmc import h_launch, homunculus
+from lib import utilities, settings, control
+from __builtin__ import True
 
 
 def navigate_to_character(direction3, target):
@@ -45,8 +47,8 @@ def navigate_to_character(direction3, target):
         # highlight only the target
         if index != -1:
             Key("left" if look_left else "right")._execute()
-            print "len(context)="+str(len( context ))
-            print "len(context.replace(stuff))="+str(len( context.replace("\r\n", "\n") ))
+            print "len(context)=" + str(len(context))
+            print "len(context.replace(stuff))=" + str(len(context.replace("\r\n", "\n")))
             nt = index if look_left else len(context) - index - 1  # number of times to press left or right before the highlight
             print "nt= " + str(nt)
             if nt != 0:
@@ -88,12 +90,12 @@ def read_selected_without_altering_clipboard(same_is_okay=False):
     (2, None) - indicates clipboard error, should not advance cursor before trying again
     '''
     time.sleep(0.05)  # time for previous keypress to execute
-    cb= Clipboard(from_system=True)
+    cb = Clipboard(from_system=True)
     temporary = None
-    prior_content=None
+    prior_content = None
     try: 
 
-        prior_content =Clipboard.get_system_text()
+        prior_content = Clipboard.get_system_text()
         Clipboard.set_system_text("")
     
         Key("c-c")._execute()
@@ -112,16 +114,94 @@ def read_selected_without_altering_clipboard(same_is_okay=False):
 
     
 def fill_blanks(target):
-    sequence=["gopher", "previous", str(target), "left", "color"]
+    sequence = ["gopher", "previous", str(target).lower()]
     Playback([(sequence, 0.0)])._execute()
+
+class RecordedRule(CompoundRule):
+    def __init__(self, commands, name=None, spec=None, extras=None,
+        defaults=None, exported=None, context=None):
+        CompoundRule.__init__(self, name=name, spec=spec, extras=extras, defaults=defaults, exported=exported, context=context)
+        self.playback_array=[]
+        for command in commands:
+            self.playback_array.append((command, 0.05))
+            
+    def _process_recognition(self, node, extras):
+        Playback(self.playback_array)._execute()
+
+def get_macro_spec():
+    ''''''
+    h_launch.launch(homunculus.QTYPE_DEFAULT)
+    WaitWindow(title=settings.HOMUNCULUS_VERSION, timeout=5)._execute()
+    FocusWindow(title=settings.HOMUNCULUS_VERSION)._execute()
+    Key("tab")._execute()
+    queue.add_query(add_recorded_macro)
+
+def add_recorded_macro(data):
+    ''''''
+    # use a response window to get a spec for the new macro: handled by calling function
     
+    # search through dictation cache for "begin recording macro"
+    beginning_found = False
+    commands = []
+    
+    for i in range(0, len(control.DICTATION_CACHE)):
+        d = control.DICTATION_CACHE[i]
+        print d
+        if not beginning_found:
+            if d[0] == "begin" and d[1] == "recording":
+                beginning_found = True
+            continue
+        
+        if d[0] == "experiment"  or (d[0] == "end" and d[1] == "recording"):
+            print "the loop should terminate here "
+            break
+        # take every tuple after that  and turn it into a comma separated list
+        commands.append(list(d))
+    
+    spec = data["response"]
+    # clean the results
+    for l in commands:
+        for w in l:
+            if "\\" in w:
+                w = w.split("\\")[0]
+    spec = spec.replace("\n", "") 
+    
+    # store the list in the macros section of the settings file
+    recorded_macros = None
+    if spec != "" and len(commands) > 0:
+        recorded_macros = settings.load_json_file(settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
+        recorded_macros[spec] = commands
+        settings.save_json_file(recorded_macros, settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
+    
+    # immediately make a new compound rule  and add to a set grammar
+    control.RECORDED_MACROS_GRAMMAR.unload()
+    rule = RecordedRule(commands=commands, spec=spec, name="recorded_rule_"+spec)
+    control.RECORDED_MACROS_GRAMMAR.add_rule(rule)
+    control.RECORDED_MACROS_GRAMMAR.load()
+    
+    # clear the dictation cache
+    while len(control.DICTATION_CACHE) > 0:
+        control.DICTATION_CACHE.pop()
 
 
+def null_func():
+    '''this function intentionally does nothing, is for use with macro recording'''
 
+def load_recorded_rules():
+    recorded_macros = settings.load_json_file(settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
+    for spec in recorded_macros:
+        commands=recorded_macros[spec]
+        rule = RecordedRule(commands=commands, spec=spec, name="recorded_rule_"+spec)
+        control.RECORDED_MACROS_GRAMMAR.add_rule(rule)
+    if len(control.RECORDED_MACROS_GRAMMAR.rules)>0:
+        control.RECORDED_MACROS_GRAMMAR.load()
 
-
-
-
+def delete_recorded_rules():
+    settings.save_json_file({}, settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
+    control.RECORDED_MACROS_GRAMMAR.unload()
+    while len(control.RECORDED_MACROS_GRAMMAR.rules)>0:
+        rule=control.RECORDED_MACROS_GRAMMAR.rules[0]
+        control.RECORDED_MACROS_GRAMMAR.remove_rule(rule)
 
 
         

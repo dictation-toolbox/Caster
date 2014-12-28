@@ -2,19 +2,15 @@
 from dragonfly import (BringApp, Key, Function, Grammar, Playback, FocusWindow,
                        IntegerRef, Dictation, Choice, WaitWindow, MappingRule, Text)
 
-from asynch.hmc import h_launch, hmc_vocabulary, vocabulary_processing
-from lib import control,  settings, navigation, ccr, password
+from asynch.hmc import vocabulary_processing
+from lib import control, settings, navigation, ccr, password, context
 from lib import utilities
 
 
 def experiment():
     '''this function is for testing things in development'''
     try: 
-#         queue.add_query(say, {"qtype": hmc_vocabulary.QTYPE_SET})
-        h_launch.launch(hmc_vocabulary.QTYPE_SET, "test")
-        WaitWindow(title=settings.HOMUNCULUS_VERSION+hmc_vocabulary.HMC_TITLE_VOCABULARY, timeout=5)._execute()
-        FocusWindow(title=settings.HOMUNCULUS_VERSION+hmc_vocabulary.HMC_TITLE_VOCABULARY)._execute()
-        Key("tab")._execute()
+        context.get_macro_spec()
     except Exception:
         utilities.simple_log(False)
 
@@ -85,7 +81,10 @@ class MainRule(MappingRule):
     
     # miscellaneous
     "<enable_disable> <ccr_mode>":  Function(ccr.change_CCR, extra={"enable_disable", "ccr_mode"}),
-    "again <n> [times]":      Function(repeat_that, extra={"n"}),
+    "again <n> [times]":            Function(repeat_that, extra={"n"}),
+    "begin recording macro":        Function(context.null_func),
+    "end recording macro":          Function(context.get_macro_spec),
+    "delete recorded macros":       Function(context.delete_recorded_rules),
     }
     extras = [
               IntegerRef("n", 1, 100),

@@ -1,4 +1,4 @@
-from dragonfly import RecognitionHistory
+from dragonfly import RecognitionHistory, Grammar
 from dragonfly.timer import _Timer
 
 
@@ -8,6 +8,8 @@ DICTATION_CACHE=RecognitionHistory(10)
 DICTATION_CACHE.register()
 
 TIMER_MANAGER=_Timer(1)
+
+RECORDED_MACROS_GRAMMAR = Grammar("recorded_macros")
 
 
 def print_startup_message():

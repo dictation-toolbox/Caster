@@ -31,7 +31,7 @@ cmd.map = {
         #
         "and":                      Text(" and "),
         "or":                       Text(" or "),
-        "not":                      Text(" not "),
+        "not":                      Text("!"),
         #
         "print":					Text("print "),
         #
@@ -55,7 +55,7 @@ cmd.map = {
  	    
  	    "from":						Text( "from " ),
  	    "self":						Text("self"),
- 	    "not equals":					Text("!="),
+ 	    "long not":					Text("not"),
 		"in":                       Text(" in "),
         "with":						Text("with "),
         "open file":				Text("open('filename','r') as f:"),
