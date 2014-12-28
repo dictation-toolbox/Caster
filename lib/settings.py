@@ -90,6 +90,7 @@ def init_default_values():
         ("HOMUNCULUS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/asynch/hmc/h_launch.py"),
         ("NIRCMD_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/nircmd/nircmd.exe"),
         ("MMT_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/MultiMonitorTool/MultiMonitorTool.exe"),
+        ("DEFAULT_BROWSER_PATH",  "C:/Program Files (x86)/Mozilla Firefox/firefox.exe"),
         
         
         # CCR
@@ -143,5 +144,9 @@ def init_default_values():
 def get_settings():
     global SETTINGS
     return SETTINGS
+
+def get_default_browser_executable():
+    global SETTINGS
+    return SETTINGS["paths"]["DEFAULT_BROWSER_PATH"].split("/")[-1]
 
 load_settings()

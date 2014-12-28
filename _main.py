@@ -50,7 +50,7 @@ class MainRule(MappingRule):
     'normal mode':                  Playback([(["normal", "mode", "on"], 0.0)]),
     "reboot dragon":                Function(utilities.reboot),
     "fix dragon double":            Function(fix_Dragon_double),
-    "(show | open) documentation":  BringApp('C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe') + WaitWindow(executable="chrome.exe") + Key('c-t') + WaitWindow(title="New Tab") + Text('http://dragonfly.readthedocs.org/en/latest') + Key('enter'),
+    "(show | open) documentation":  BringApp(settings.SETTINGS["paths"]["DEFAULT_BROWSER_PATH"]) + WaitWindow(executable=settings.get_default_browser_executable()) + Key('c-t') + WaitWindow(title="New Tab") + Text('http://dragonfly.readthedocs.org/en/latest') + Key('enter'),
     "add word to vocabulary":       Function(vocabulary_processing.add_vocab),
     "delete word from vocabulary":  Function(vocabulary_processing.del_vocab),
     
@@ -64,7 +64,7 @@ class MainRule(MappingRule):
     "remax":                        Key("a-space/10,r/10,a-space/10,x"), 
     
     # development related
-    "open natlink folder":          BringApp("explorer", "C:\NatLink\NatLink\MacroSystem"),
+    "open natlink folder":          BringApp("explorer", settings.SETTINGS["paths"]["BASE_PATH"]),
     "reserved word <text>":         Key("dquote,dquote,left") + Text("%(text)s") + Key("right, colon, tab/5:5") + Text("Text(\"%(text)s\"),"),
     "experiment":                   Function(experiment),
     
