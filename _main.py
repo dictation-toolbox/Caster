@@ -1,9 +1,10 @@
 
-from dragonfly import (BringApp, Key, Function, Grammar, Playback, FocusWindow,
+from dragonfly import (BringApp, Key, Function, Grammar, Playback,
                        IntegerRef, Dictation, Choice, WaitWindow, MappingRule, Text)
 
 from asynch.hmc import vocabulary_processing
-from lib import control, settings, navigation, ccr, password, context
+from lib import control, settings, navigation, password, context
+from lib import ccr
 from lib import utilities
 from lib.context import SelectiveAction
 
@@ -39,7 +40,7 @@ class MainRule(MappingRule):
     def generate_CCR_choices():
         choices = {}
         for ccr_choice in settings.get_list_of_ccr_config_files():
-            choices[ccr_choice] = ccr_choice
+            choices[settings.get_ccr_config_file_pronunciation(ccr_choice)] = ccr_choice
         return Choice("ccr_mode", choices)
     
     mapping = {
@@ -66,7 +67,7 @@ class MainRule(MappingRule):
     "remax":                        Key("a-space/10,r/10,a-space/10,x"), 
     
     # development related
-    "open natlink folder":          BringApp("explorer", settings.SETTINGS["paths"]["BASE_PATH"]),
+    "open natlink folder":          BringApp("explorer", settings.SETTINGS["paths"]["BASE_PATH"].replace("/", "\\")),
     "reserved word <text>":         Key("dquote,dquote,left") + Text("%(text)s") + Key("right, colon, tab/5:5") + Text("Text(\"%(text)s\"),"),
     "experiment":                   Function(experiment),
     
@@ -82,7 +83,8 @@ class MainRule(MappingRule):
     "douglas":                      Function(navigation.mouse_alternates, mode="douglas"),
     
     # miscellaneous
-    "<enable_disable> <ccr_mode>":  Function(ccr.change_CCR, extra={"enable_disable", "ccr_mode"}),
+#     "<enable_disable> <ccr_mode>":  Function(ccr.change_CCR, extra={"enable_disable", "ccr_mode"}),
+    "<enable_disable> <ccr_mode>":  Function(ccr.set_active, extra={"enable_disable", "ccr_mode"}),
     "again <n> [times]":            Function(repeat_that, extra={"n"}),
     "begin recording macro":        Function(context.null_func),
     "end recording macro":          Function(context.get_macro_spec),
@@ -95,7 +97,7 @@ class MainRule(MappingRule):
               Dictation("text2"),
               Dictation("text3"),
               Choice("enable_disable",
-                    {"enable": "enable", "disable": "disable"
+                    {"enable": 1, "disable": 0
                     }),
               Choice("volume_mode",
                     {"set": "set", "increase": "up", "decrease": "down",
@@ -104,7 +106,8 @@ class MainRule(MappingRule):
               generate_CCR_choices.__func__()
              ]
     defaults = {"n": 1, "minutes": 20, "nnv": 1,
-               "text": "", "volume_mode": "setsysvolume"
+               "text": "", "volume_mode": "setsysvolume", 
+               "enable": -1
                }
 
 

@@ -1,14 +1,12 @@
 import sys
-
 BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
 if BASE_PATH not in sys.path:
     sys.path.append(BASE_PATH)
+from asynch.hmc import hmc_vocabulary, homunculus
 from asynch.hmc.hmc_vocabulary import Homunculus_Vocabulary
 from asynch.hmc.homunculus import Homunculus
 from lib import settings, utilities
-from lib import runner
-from asynch.hmc import hmc_vocabulary, homunculus
-
+from lib.dragonfree import launch as ll
 
 def launch(htype=None, info=None):
     instructions=["pythonw", settings.SETTINGS["paths"]["HOMUNCULUS_PATH"]]
@@ -18,13 +16,13 @@ def launch(htype=None, info=None):
             instructions.append(info)
     else:
         instructions.append(homunculus.QTYPE_DEFAULT)
-    runner.run(instructions)
+    ll.run(instructions)
 
 def clean_homunculi():
     while utilities.window_exists(None, settings.HOMUNCULUS_VERSION):
-        utilities.kill_process("pythonw.exe")
+        ll.kill_process("pythonw.exe")
     while utilities.window_exists(None, settings.HOMUNCULUS_VERSION+" :: Vocabulary Manager"):
-        utilities.kill_process("pythonw.exe")
+        ll.kill_process("pythonw.exe")
 
 if __name__ == '__main__':
     if sys.argv[1]==homunculus.QTYPE_DEFAULT:

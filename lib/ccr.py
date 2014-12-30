@@ -1,210 +1,4 @@
-import io, sys
-import time
-
-from dragonfly import *
-
-from lib import  settings
-from lib import utilities
-
-
-try:
-    import pkg_resources
-    pkg_resources.require("dragonfly >= 0.6.5beta1.dev-r99")
-except ImportError:
-    pass
-
-
-
-# this stuff shouldn't be called here
-unified_grammar = None
-
-class CCRFile:
-    # representation of a text file, used for compatibility so we don't have to read the text file multiple times
-    def __init__(self):
-        self.name = None
-        self.mapping = []
-        self.extras = []
-        self.defaults = []
-        self.other = []
-
-def change_CCR(enable_disable, ccr_mode):
-    enable = True if str(enable_disable) == "enable" else False
-    mode = str(ccr_mode)
-    
-    # get models of all relevant CCR files
-    models = get_models(mode if enable else "")
-    
-    active_modes = get_active_modes()
-    master_model = CCRFile()
-    override_mode = True
-    report = False
-    
-    if len(models[1]) > 1:
-        raise Exception("you need to go back into the compatibility section and check the incoming modes against themselves")
-    # Enable C++
-    
-    if enable:
-        # check for compatibility
-        incompatibilities = []
-        for current in models[0]:  # current is one of the currently enabled CCR files
-            for incoming in models[1]:
-                for line in incoming.mapping:
-                    if line in current.mapping:
-                        if report:
-                            utilities.report("CCR incompatibility found (mapping): " + line)
-                        incompatibilities.append((current.name, incoming.name))
-                        break
-                for line in incoming.defaults:
-                    if line in current.defaults and line.strip() != "}),":
-                        if report:
-                            utilities.report("CCR incompatibility found (defaults): " + line)
-                        incompatibilities.append((current.name, incoming.name))
-                        break
-                for line in incoming.extras:
-                    if line in current.extras:
-                        if report:
-                            utilities.report("CCR incompatibility found (extras): " + line)
-                        incompatibilities.append((current.name, incoming.name))
-                        break
-#                 for line in incoming.other:
-#                     if line in current.other:
-#                         if report:
-#                             utilities.report("CCR incompatibility found (others): " + line)
-#                         incompatibilities.append((current.name, incoming.name))
-                        
-        if override_mode:  # remove current mode(s) which is(/are) incompatible with new mode(s)
-            if len(incompatibilities) > 0:
-                for incompatibility in incompatibilities:
-                    if incompatibility[0] in active_modes:
-                        active_modes.remove(incompatibility[0])
-        
-        active_modes.append(purify_name(mode))  # active_modes is now the master list of stuff that should go in
-        
-    
-    else:
-        if mode in active_modes:
-            active_modes.remove(mode)
-    all_models = models[0] + models[1]
-    for m in all_models:
-        if not m.name in active_modes:
-            all_models.remove(m)
-    for model in all_models:
-        master_model.mapping += model.mapping
-        master_model.extras += model.extras
-        master_model.defaults += model.defaults
-        master_model.other += model.other    
-            
-    # Make the combined file
-    success = combine_CCR_files(master_model)
-    
-    
-    # If compatibility success failed, no need to worry about writing the config file wrong
-    if success:
-        config_settings = settings.SETTINGS["ccr"]
-        for s in config_settings.keys():
-            config_settings[s]["active"] = s in active_modes
-        settings.save_config()
-        # Now, toss the old grammar and make a new one
-        unload()
-        refresh()
-        utilities.report(str(enable_disable).capitalize() + "d " + mode, speak=True)
-    else:
-        utilities.report("failed to initialize " + mode, speak=True)
-
-def purify_name(name):
-    # fixes the problem of filenames having symbols the Dragon can't say in sequence, like C++
-    if " plus" in name:
-        name = name.replace(" plus", "+")
-    return name
-
-def get_active_modes():
-    config_settings = settings.SETTINGS["ccr"]
-    results = []
-    for s in config_settings.keys():
-        if config_settings[s]["active"] == True:
-            results.append(purify_name(s))
-    return results
-
-def get_models(mode_1="", mode_2="", mode_3="", mode_4=""):
-    # all four parameters are strings,
-    # if mode_1 is null, then we are disabling
-    old_ccr_files = []
-    new_ccr_file = []
-    
-    for m in get_active_modes():
-        old_ccr_files.append(get_ccr_file(m))
-    for n in [mode_1, mode_2, mode_3, mode_4]:
-        if n != "":
-            n = purify_name(n)
-            new_ccr_file.append(get_ccr_file(str(n)))
-    return (old_ccr_files, new_ccr_file)
-            
-def get_ccr_file(mode):
-    ccr_file = CCRFile()
-    ccr_file.name = mode
-    with open(settings.SETTINGS["paths"]["GENERIC_CONFIG_PATH"] + "\\config" + mode + ".txt", "r") as f:
-        
-        mapping = False
-        extras = False
-        defaults = False
-        lines = f.readlines()
-        for line in lines:
-            no_whitespace = line.strip()
-            
-            # parse the file
-            # first, either change the mode or skip the line if appropriate
-            if line.startswith("cmd.map"):
-                mapping = True
-                continue
-            elif line.startswith("cmd.extras"):
-                extras = True
-                continue
-            elif line.startswith("cmd.defaults"):
-                defaults = True
-                continue
-            elif (no_whitespace.startswith("}") or no_whitespace.startswith("]")) and len(no_whitespace) == 1:
-                mapping = False
-                extras = False
-                defaults = False
-                continue
-            elif no_whitespace in ["", "\n"] or no_whitespace.startswith("#"):
-                continue
-            
-            
-            if mapping:
-                ccr_file.mapping.append(line)
-            elif extras:
-                ccr_file.extras.append(line)
-#                         if not line in relevant_configs["extras"] or no_whitespace == "}),":
-            elif defaults:
-                ccr_file.defaults.append(line)
-            else:
-                ccr_file.other.append(line)
-    return ccr_file
-
-def combine_CCR_files(master_model):
-    try:
-        with open(settings.SETTINGS["paths"]["UNIFIED_CONFIG_PATH"], "w") as fw:
-            for lnc in master_model.other:
-                fw.write(lnc)
-            fw.write("cmd.map= {\n")
-            for lm in master_model.mapping:
-                fw.write(lm)
-            fw.write("}\n")
-            fw.write("cmd.extras= [\n")
-            for le in master_model.extras:
-                fw.write(le)
-            fw.write("]\n")
-            fw.write("cmd.defaults= {\n")
-            for ld in master_model.defaults:
-                fw.write(ld)
-            fw.write("}\n")
-        
-        return True
-    except Exception:
-        utilities.simple_log(False)
-        return False
-    
+﻿
 
 """
 Continuous command recognition for programmers
@@ -217,13 +11,55 @@ Thanks Christo Butcher, davitenio, poppe1219, ccowan
 
 
 """
+from dragonfly import *
+
+from lib import settings, utilities
+
+
+try:
+    import pkg_resources
+    pkg_resources.require("dragonfly >= 0.6.5beta1.dev-r99")
+except ImportError:
+    pass
+
+grammar = None
+current_combined_rule = None
+rules = {}
+
+def merge_copy(rule1, rule2, context):
+    if rule1 == None:
+        raise Exception("first parameter can't be null")
+    if rule2 != None:
+        mapping = rule1._mapping.copy()
+        mapping.update(rule2._mapping)
+        extras_dict = rule1._extras.copy()
+        extras_dict.update(rule2._extras)
+        extras = extras_dict.values()
+        defaults = rule1._defaults.copy()
+        defaults.update(rule2._defaults)
+        return MappingRule(rule1._name + "+" + rule2._name, mapping, extras, defaults, rule1._exported, context)
+    else:
+        return MappingRule(rule1._name, rule1._mapping, rule1._extras.values(), rule1._defaults, rule1._exported, context)
+
+def merge_copy_compatible(rule1, rule2):
+    '''
+    ccrc: another CCR_Container
+    '''
+    if rule1 == None:
+        raise Exception("first parameter can't be null")
+    if rule2 == None:
+        return True
+    for key in rule1._mapping:
+        if key in rule2._mapping:
+            return False
+    return True
+
 def generate_language_rule(path):
+    ''' Turns the original _multiedit.py into a rule factory '''
+
     #---------------------------------------------------------------------------
-    # Each of the following steps needs to be done per programming language
+    language = path.split("/")[-1].split(".")[-2]
     
-    language = "unified"  # path.split('config', 1)[-1].split(".", 1)[0]
-    
-    # STEP 1: create the config object
     configuration = Config("CCR " + language)
     configuration.cmd = Section("Language section")
     configuration.cmd.map = Item(
@@ -237,72 +73,24 @@ def generate_language_rule(path):
     )
     configuration.cmd.extras = Item([Dictation("text")])
     configuration.cmd.defaults = Item({})
-    namespace = configuration.load(path)
-    
+    configuration.load(path)
     #---------------------------------------------------------------------------
-    # STEP 2: formatting functions
-    # Here we prepare the list of formatting functions from the config file.
-    
-    # Retrieve text-formatting functions from this module's config file.
-    #  Each of these functions must have a name that starts with "format_".
-    format_functions = {}
-    if namespace:
-        for name, function in namespace.items():
-            if name.startswith("format_") and callable(function):
-                spoken_form = function.__doc__.strip()
-        
-                # We wrap generation of the Function action in a function so
-                #  that its *function* element will be local.  Otherwise it
-                #  would change during the next iteration of the namespace loop.
-                def wrap_function(function):
-                    def _function(dictation):
-                        formatted_text = function(dictation)
-                        Text(formatted_text).execute()
-                    return Function(_function)
-        
-                action = wrap_function(function)
-                format_functions[spoken_form] = action
-    
-    
-    # Here we define the text formatting rule.
-    # The contents of this rule were built up from the "format_*"
-    #  functions in this module's config file.
-    if format_functions:
-        class FormatRule(MappingRule):
-    
-            mapping = format_functions
-            extras = [Dictation("dictation")]
-    
-    else:
-        FormatRule = None
-    
-    
-    #---------------------------------------------------------------------------
-    # Here we define the keystroke rule.
     
     class KeystrokeRule(MappingRule):
         exported = False
         mapping = configuration.cmd.map
         extras = configuration.cmd.extras
         defaults = configuration.cmd.defaults
-    
-    
-    
     #---------------------------------------------------------------------------
-    # Here we create an element which is the sequence of keystrokes.
-    
-    # First we create an element that references the keystroke rule.
-    #  Note: when processing a recognition, the *value* of this element
-    #  will be the value of the referenced rule: an action.
+    return KeystrokeRule()
+
+def create_repeat_rule(ks_rule):
+
     alternatives = []
-    alternatives.append(RuleRef(rule=KeystrokeRule()))
-    if FormatRule:
-        alternatives.append(RuleRef(rule=FormatRule()))
+    alternatives.append(RuleRef(rule=ks_rule))
     single_action = Alternative(alternatives)
     
-    # Second we create a repetition of keystroke elements.
-    # Note that we give this element the name "sequence" so that it can be used as an extra in the rule definition below.
-    sequence_name = "sequence_" + language
+    sequence_name = "sequence_" + "language"
     sequence = Repetition(single_action, min=1, max=16, name=sequence_name)
     
     
@@ -326,23 +114,84 @@ def generate_language_rule(path):
                     action.execute()
 
     #---------------------------------------------------------------------------
-    grammar = Grammar(language)  # Create this module's grammar .
-    grammar.add_rule(RepeatRule())  # Add the top-level rule.
     
-    return grammar    
-    
+    return RepeatRule()
+# Create and load this module's grammar.
 def refresh():
-    global unified_grammar
-    unified_grammar = generate_language_rule(settings.SETTINGS["paths"]["UNIFIED_CONFIG_PATH"])
-    unified_grammar.load()  # Load the grammar.
+    global grammar
+    unload()
+    grammar = Grammar("multi edit")
+    if current_combined_rule!=None:
+        grammar.add_rule(create_repeat_rule(current_combined_rule))
+        grammar.load()
+
+def initialize_ccr():
+    global current_combined_rule
+    
+    # read from file if active, standard or common
+    for r in settings.SETTINGS["ccr"]["modes"]:
+        if settings.SETTINGS["ccr"]["modes"][r] or r in settings.SETTINGS["ccr"]["common"] or r in settings.SETTINGS["ccr"]["standard"]:
+            rules[r] = generate_language_rule(settings.SETTINGS["paths"]["GENERIC_CONFIG_PATH"] + "/config" + r + ".txt")
+    
+    # activate if marked as active
+    for r in settings.SETTINGS["ccr"]["modes"]:
+        if settings.SETTINGS["ccr"]["modes"][r]:
+            current_combined_rule = merge_copy(rules[r], current_combined_rule, None)
+    refresh()
+    
+    
+
+def set_active(enable_disable, ccr_mode):
+    ccr_mode = str(ccr_mode)
+    enable_disable = int(enable_disable)
+    global rules
+    global current_combined_rule
+    new_rule = None
+    if enable_disable == -1:
+        return
+    elif enable_disable == 0:
+        settings.SETTINGS["ccr"]["modes"][ccr_mode] = False
+    elif enable_disable == 1:
+        # obtain rule: either retrieve it or generate it
+        
+        target_rule = None
+        for rule_name in rules:
+            if rule_name == ccr_mode:
+                target_rule = rules[rule_name]
+        if target_rule == None:
+            target_rule = generate_language_rule(settings.SETTINGS["paths"]["GENERIC_CONFIG_PATH"] + "/config" + ccr_mode + ".txt")
+            rules[ccr_mode] = target_rule
+        
+        # determine compatibility
+        if merge_copy_compatible(target_rule,current_combined_rule):
+            new_rule = merge_copy(target_rule,current_combined_rule, None)
+        else:
+            for r in settings.SETTINGS["ccr"]["modes"]:
+                if settings.SETTINGS["ccr"]["modes"][r] and not merge_copy_compatible(target_rule, rules[r]):
+                    settings.SETTINGS["ccr"]["modes"][r] = False
+                    print "setting "+r+" to False"
+                    # add disabled rule to common section of settings
+                    
+        settings.SETTINGS["ccr"]["modes"][ccr_mode] = True
+        print "setting "+ccr_mode+" to True"
+    
+    # rebuild if necessary
+    if new_rule == None:
+        for r in settings.SETTINGS["ccr"]["modes"]:
+            if settings.SETTINGS["ccr"]["modes"][r]:
+                new_rule = merge_copy(rules[r], new_rule, None)
+        
+    
+    # activate and save
+    settings.save_config()
+    current_combined_rule = new_rule
+    refresh()  
 
 # Unload function which will be called at unload time.
 def unload():
-    global unified_grammar 
-    if unified_grammar: 
-        unified_grammar.disable()
-        unified_grammar.unload()
-    unified_grammar = None
+    global grammar
+    if grammar: grammar.unload()
+    grammar = None
 
 def camel_case(text):
     t = str(text)
@@ -353,44 +202,3 @@ def score(text):
     """ score <dictation> """  # Docstring defining spoken-form.
     t = str(text)  # Get written-form of dictated text.
     Text("_".join(t.split(" ")))._execute()
-
-def format_ecma_loop(looptype, text, condition, increment):
-    lt = str(looptype)
-    # to do: check settings to find which language is active
-    letter = str(text)
-    if not letter == "":
-        letter = letter[0].lower()
-    else:
-        letter = "i"
-    print lt
-    
-    language_dependent = None
-    config_settings = settings.SETTINGS["ccr"]
-    if lt == "letter":
-        c = str(condition)
-        if c == "":
-            c = "<"
-        i = str(increment)
-        if i == "":
-            i = "++"
-        if "javascript" in config_settings.keys() and config_settings["javascript"]["active"]:
-            language_dependent = "for (var " + letter + " = PARAMETER; " + letter + " " + c + " PARAMETER; " + letter + i + "){}"
-        elif "C plus plus" in config_settings.keys() and config_settings["C plus plus"]["active"]:
-            language_dependent = "for (int " + letter + " = PARAMETER; " + letter + " " + c + " PARAMETER; " + letter + i + "){}"
-        else:
-            language_dependent = "please_configure_language"
-        Text(language_dependent)._execute()
-        Key("left, enter/5:2, up")._execute()
-        time.sleep(0.05)
-    elif lt == "each":
-        
-        
-        if config_settings["java"]:
-            language_dependent = "for (PARAMETER " + letter + " : PARAMETER){}"
-        elif config_settings["javascript"]:
-            language_dependent = "for (var " + letter + " in PARAMETER){}"
-        else:
-            language_dependent = "please_configure_language"
-        Text(language_dependent)._execute()
-        Key("left, enter/5:2, up")._execute()
-        time.sleep(0.05)

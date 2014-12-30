@@ -1,22 +1,19 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-import os, json, sys, time
+import os, json, sys
+
 
 BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
 if BASE_PATH not in sys.path:
     sys.path.append(BASE_PATH)
-import codecs
 from datetime import datetime
-import getopt
 import multiprocessing
 
 
-from dragonfly import Key, BringApp
-import psutil
+from dragonfly import Key
 import win32gui, win32process, win32api, win32ui
-
+from lib.dragonfree import launch
 from lib import  settings
-from lib import runner
 
 
 
@@ -29,13 +26,7 @@ def window_exists(classname, windowname):
     else:
         return True
 
-def kill_process(executable):
-    for proc in psutil.process_iter():
-        try:
-            if proc.name() == executable:
-                proc.kill()
-        except:
-            pass
+
 
 
 
@@ -198,34 +189,6 @@ def py2exe_compile(choice):
     print "this function has been removed "
 
 def reboot():
-    runner.run('python C:/NatLink/NatLink/MacroSystem/lib/utilities.py -r'.split())
+    launch.run('python C:/NatLink/NatLink/MacroSystem/lib/dragonfree/launch.py -r'.split())
 
-def main(argv):
-    help_message = 'main.py -r\nr\treboot dragon'
-    try:
-        opts, args = getopt.getopt(argv, "hr")
-    except getopt.GetoptError:
-        print help_message
-        sys.exit(2)
-    for opt, arg in opts:
-        if opt == '-h':
-            print help_message
-            sys.exit()
-        elif opt == '-r':
-            print "\nDragon Reboot Sequence"
-            time.sleep(0.3)
-            print "kill: natspeak.exe"
-            kill_process("natspeak.exe")
-            time.sleep(0.3)
-            print "kill: dgnuiasvr_x64.exe"
-            kill_process("dgnuiasvr_x64.exe")
-            time.sleep(0.3)
-            print "kill: dnsspserver.exe"
-            kill_process("dnsspserver.exe")
-            time.sleep(0.3)
-            print "Relaunch!"
-            runner.run([r"C:\Program Files (x86)\Nuance\NaturallySpeaking12\Program\natspeak.exe"])
-                        
 
-if __name__ == "__main__":
-    main(sys.argv[1:])

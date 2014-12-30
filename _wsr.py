@@ -1,6 +1,6 @@
 import time, pythoncom
 
-from lib import runner, settings
+
 
 
 if __name__ == "__main__":
@@ -14,16 +14,17 @@ else:
     
     from dragonfly import Choice, MappingRule, Grammar, Function
     import natlink
-    from lib import utilities
+    from lib import settings
+    from lib.dragonfree import launch
     
     def deactivate_natlink():
         natlink.setMicState("sleeping")
         
     def activate_wsr():
-        runner.run([settings.SETTINGS["paths"]["WSR_PATH"], "-SpeechUX"])
+        launch.run([settings.SETTINGS["paths"]["WSR_PATH"], "-SpeechUX"])
     
     def kill_wsr():
-        utilities.kill_process("sapisvr.exe")
+        launch.kill_process("sapisvr.exe")
         
     class WSR_Rule(MappingRule):
     

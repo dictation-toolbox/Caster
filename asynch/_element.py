@@ -6,9 +6,10 @@ from dragonfly import (Function, Text, Grammar, BringApp, WaitWindow, Key,
                        IntegerRef, Dictation, Mimic, MappingRule)
 from dragonfly.actions.action_focuswindow import FocusWindow
 
-from lib import  settings, runner
+from lib import  settings
 from lib import control
 from lib import utilities
+from lib.dragonfree import launch
 
 
 STRICT_PARSER = re.compile('((?<=[a-z0-9])[A-Z]|(?!^)[A-Z](?=[a-z]))')
@@ -138,7 +139,7 @@ def send_key_to_element(action_type):  # for some reason, some events are untrig
         win32api.PostMessage(element_hwnd, win32con.WM_KEYUP, win32con.VK_HOME, 0)
 
 def enable_element():
-    runner.run(["pythonw", settings.SETTINGS["paths"]["ELEMENT_PATH"]])
+    launch.run(["pythonw", settings.SETTINGS["paths"]["ELEMENT_PATH"]])
     
 def kill():
     send("kill", "")

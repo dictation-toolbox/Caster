@@ -11,9 +11,9 @@ from win32con import MOUSEEVENTF_WHEEL
 from asynch.bottleserver import Sender
 from asynch.legion import LegionScanner
 from lib import control
-from lib import runner
 from lib import utilities
 import  settings
+from lib.dragonfree import launch
 
 
 BASE_PATH = settings.SETTINGS["paths"]["BASE_PATH"]
@@ -32,12 +32,12 @@ def mouse_alternates(mode):
                 s=Sender()
                 s.send("legion", tscan, "scan")
             else:
-                runner.run(["pythonw", settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0]])
+                launch.run(["pythonw", settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0]])
             
         elif mode=="rainbow":
-            runner.run(["pythonw", settings.SETTINGS["paths"]["RAINBOW_PATH"], "-m", "r"])
+            launch.run(["pythonw", settings.SETTINGS["paths"]["RAINBOW_PATH"], "-m", "r"])
         elif mode=="douglas":
-            runner.run(["pythonw", settings.SETTINGS["paths"]["DOUGLAS_PATH"], "-m", "d"])
+            launch.run(["pythonw", settings.SETTINGS["paths"]["DOUGLAS_PATH"], "-m", "d"])
     except Exception:
         utilities.simple_log(False)
     

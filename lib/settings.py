@@ -14,9 +14,14 @@ def get_list_of_ccr_config_files():
     results = []
     for f in os.listdir(SETTINGS["paths"]["GENERIC_CONFIG_PATH"]):
         if f.endswith(".txt"):
-            f = f.replace("+", " plus")
             results.append(f.replace("config", "").replace(".txt", ""))
     return results
+
+def get_ccr_config_file_pronunciation(config_file_name):
+    global SETTINGS
+    if config_file_name in SETTINGS["pronunciations"]:
+        return SETTINGS["pronunciations"][config_file_name]
+    return config_file_name
 
 def save_json_file(data, path):
     try:
@@ -49,7 +54,7 @@ def save_config():
     global INISETPATH
     save_json_file(SETTINGS, INISETPATH if SETTINGS == None or not "SETTINGS" in SETTINGS.keys() else SETTINGS["SETTINGS_PATH"])
 
-def load_settings():
+def load_config():
     global SETTINGS
     global SETTINGS_PATH
     global INISETPATH
@@ -115,12 +120,14 @@ def init_default_values():
         ccrNamesFromFiles.append((ccrn, False))
     if not "ccr" in SETTINGS.keys():
         SETTINGS["ccr"] = {}
+        SETTINGS["ccr"]["modes"]={}
+        SETTINGS["ccr"]["common"]=[]
+        SETTINGS["ccr"]["standard"]=["alphabet", "navigation", "punctuation"]
+        SETTINGS["ccr"]["nonglobal_sets"]=[]
         values_change_count += 1
     for (name, value) in ccrNamesFromFiles:
-        if not name in SETTINGS["ccr"]:  # .keys()
-            SETTINGS["ccr"][name] = {}
-            SETTINGS["ccr"][name]["active"] = value
-            SETTINGS["ccr"][name]["pronunciation"] = ""
+        if not name in SETTINGS["ccr"]["modes"]:
+            SETTINGS["ccr"]["modes"][name] = value
             values_change_count += 1
     
     # passwords section
@@ -138,7 +145,20 @@ def init_default_values():
         SETTINGS["miscellaneous"]["debug_speak"] = False
         values_change_count += 1
     
+    # pronunciations section
+    if not "pronunciations" in SETTINGS.keys():
+        SETTINGS["pronunciations"] = {}
+        values_change_count += 1
+    for (word, pronunciation) in [
+        ("c++", "C plus plus"),
+        ("jquery", "J query"),
+        ]:
+        if not word in SETTINGS["pronunciations"]:  # .keys()
+            SETTINGS["pronunciations"][word] = pronunciation
+            values_change_count += 1
+    
     if values_change_count > 0:
+        print values_change_count
         save_config()
 
 def get_settings():
@@ -149,4 +169,4 @@ def get_default_browser_executable():
     global SETTINGS
     return SETTINGS["paths"]["DEFAULT_BROWSER_PATH"].split("/")[-1]
 
-load_settings()
+load_config()
