@@ -47,6 +47,7 @@ other dragonfly repositories
  - https://github.com/danzel/NatlinkVisualStudioMacros
  - https://github.com/jiqimaogou/NatLink-MacroSystem
  - https://github.com/tjanpool/myDragonflyScripts
+ - https://github.com/m48/accessibility-macgyvering/tree/master/natlink
 
 other related documents
 --
