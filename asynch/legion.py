@@ -1,7 +1,9 @@
 from ctypes import *
 import getopt
+import json
 import re
 import sys
+from threading import Timer
 import threading
 BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
 if BASE_PATH not in sys.path:
@@ -15,6 +17,14 @@ from lib.display import TkTransparent
 
 
 
+
+
+
+
+
+
+
+
 LEGION_LISTENING_PORT = 1340
 
 class Rectangle:
@@ -24,7 +34,7 @@ class Rectangle:
     right = None
 
 class LServer(BottleServer):
-    def __init__(self, tk, draw_fn):
+    def __init__(self, tk, draw_fn, retrieval_fn):
         global LEGION_LISTENING_PORT
         
         # TiRG 
@@ -33,6 +43,7 @@ class LServer(BottleServer):
         self.most_recent_tirg_scan = None
         
         self.draw_fn = draw_fn
+        self.retrieval_fn = retrieval_fn
         self.tk = tk
         
         BottleServer.__init__(self, LEGION_LISTENING_PORT)
@@ -55,11 +66,12 @@ class LServer(BottleServer):
     
     def receive_request(self):
         BottleServer.receive_request(self)
-        self.process_requests()
+        return self.process_requests()
     
     def process_requests(self):
         '''takes most recent scan result and makes it ready to be read by grid app, then discards everything'''
         do_redraw = False
+        return_position_data = None
         
         with self.lock:
             self.has_tirg_update = False
@@ -73,6 +85,8 @@ class LServer(BottleServer):
                         self.has_tirg_update = True
                     if "redraw" in self.incoming[k]:
                         do_redraw = True
+                    if "coordinates_index" in self.incoming[k]:
+                        return_position_data = self.incoming[k]["coordinates_index"]
             if self.has_tirg_update:
                 if tirg_string.endswith(",") :
                     tirg_string = tirg_string[:-1]
@@ -97,21 +111,25 @@ class LServer(BottleServer):
         
         if do_redraw:
             self.tk.after(10, self.draw_fn)
+        if return_position_data!=None:
+            return self.retrieval_fn(str(return_position_data))
+        return json.dumps({})
 
 class LegionGrid(TkTransparent):
     def __init__(self, grid_size=None, tirg=None, auto_quit=False):
         '''square_size is an integer'''
         TkTransparent.__init__(self, "legiongrid", grid_size)
         self.attributes("-alpha", 0.7)
-        self.server = LServer(self, self.draw)
+        self.server = LServer(self, self.draw, self.retrieve_data_for_highlight)
         '''mode information:
         t = tirg mode
+        r = retrieval
         e = rex mode
         x = exit
         '''
         self.mode = ""  # null-mode
         self.digits = ""
-        self.allowed_characters = r"[tex0-9]"
+        self.allowed_characters = r"[trex0-9]"
         self.auto_quit = auto_quit
         
         self.tirg_positions = {}
@@ -130,6 +148,8 @@ class LegionGrid(TkTransparent):
                 self.mode = "t"
             elif e.char == 'e':
                 self.mode = "e"
+            elif e.char == 'r':
+                self.mode = "r"
             else:
                 self.digits += e.char
                 if len(self.digits) == 2:
@@ -141,8 +161,8 @@ class LegionGrid(TkTransparent):
             self.move_mouse(int(self.tirg_positions[p_index][0]), int(self.tirg_positions[p_index][1]))
         elif self.mode == "e":
             ''''''
-        self.mode=""
-        self.digits=""
+        self.mode = ""
+        self.digits = ""
     
     def draw(self):
         if self.server.has_tirg_update:
@@ -150,7 +170,16 @@ class LegionGrid(TkTransparent):
             self.pre_redraw()
             self.draw_tirg_squares()
         self.unhide()
-        
+    
+    def retrieve_data_for_highlight(self, index):
+        with self.server.lock:
+            if index in self.tirg_positions:
+                position_data = self.tirg_positions[index]
+                Timer(0.01, self.on_exit).start()
+                return json.dumps({"l": position_data[2], "r": position_data[3], "y": position_data[1]})
+            else:
+                return json.dumps({"err": index+" not in map"})
+    
     def draw_tirg_squares(self):
         ''''''
         font = "Arial 12 bold"
@@ -175,7 +204,8 @@ class LegionGrid(TkTransparent):
                 self._canvas.create_text(center_x - 1, center_y - 1, text=label, font=font, fill=fill_outer)
                 self._canvas.create_text(center_x, center_y, text=label, font=font, fill=fill_inner)
                 
-                self.tirg_positions[label] = (center_x, center_y)
+                # rect.left, rect.right are now being saved below for the highlight function
+                self.tirg_positions[label] = (center_x, center_y, rect.left, rect.right)
                 rect_num += 1
 
 

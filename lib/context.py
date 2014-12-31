@@ -2,7 +2,7 @@ import time
 
 from dragonfly import *
 
-from asynch import queue
+from asynch import squeue
 from asynch.hmc import h_launch, homunculus
 from lib import utilities, settings, control
 from __builtin__ import True
@@ -135,7 +135,7 @@ def get_macro_spec():
     WaitWindow(title=settings.HOMUNCULUS_VERSION, timeout=5)._execute()
     FocusWindow(title=settings.HOMUNCULUS_VERSION)._execute()
     Key("tab")._execute()
-    queue.add_query(add_recorded_macro)
+    squeue.add_query(add_recorded_macro)
 
 def add_recorded_macro(data):
     ''''''

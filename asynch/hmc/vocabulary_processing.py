@@ -11,7 +11,7 @@ from dragonfly.actions.action_key import Key
 from dragonfly.actions.action_waitwindow import WaitWindow
 
 
-from asynch import queue
+from asynch import squeue
 from asynch.hmc import hmc_vocabulary, h_launch
 from lib import utilities,  context, settings
 
@@ -38,7 +38,7 @@ def add_vocab():
         
         selected=highlighted[1]
     try: 
-        queue.add_query(process_set, {"qtype": hmc_vocabulary.QTYPE_SET})
+        squeue.add_query(process_set, {"qtype": hmc_vocabulary.QTYPE_SET})
         h_launch.launch(hmc_vocabulary.QTYPE_SET, selected)
         WaitWindow(title=settings.HOMUNCULUS_VERSION+hmc_vocabulary.HMC_TITLE_VOCABULARY, timeout=5)._execute()
         FocusWindow(title=settings.HOMUNCULUS_VERSION+hmc_vocabulary.HMC_TITLE_VOCABULARY)._execute()
@@ -49,7 +49,7 @@ def add_vocab():
 
 def del_vocab():
     try: 
-        queue.add_query(process_delete, {"qtype": hmc_vocabulary.QTYPE_REM})
+        squeue.add_query(process_delete, {"qtype": hmc_vocabulary.QTYPE_REM})
         h_launch.launch(hmc_vocabulary.QTYPE_REM)
         WaitWindow(title=settings.HOMUNCULUS_VERSION+hmc_vocabulary.HMC_TITLE_VOCABULARY, timeout=5)._execute()
         FocusWindow(title=settings.HOMUNCULUS_VERSION+hmc_vocabulary.HMC_TITLE_VOCABULARY)._execute()

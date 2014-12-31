@@ -25,8 +25,8 @@ import bottle
 '''
 class Sender:
     def __init__(self, report=False):
-        self.report=report
-    def send(self, destination, data,dtype=None,  response_required=False):
+        self.report = report
+    def send(self, destination, data, dtype=None, response_required=False):
         try:
             c = httplib.HTTPConnection('localhost', destination)
             c.request('POST', '/process', json.dumps(data))
@@ -45,7 +45,7 @@ class BottleServer:
         def __init__(self, content="", destination=""):
             self.content = content
             self.destination = destination
-            self.sender= Sender()
+            self.sender = Sender()
         
     def __init__(self, listening_port, lock=None):
         self.listening_port = listening_port
@@ -68,7 +68,7 @@ class BottleServer:
     def process_requests(self):
         '''override this'''
 
-    def send(self, destination, data,dtype=None,  response_required=False):
+    def send(self, destination, data, dtype=None, response_required=False):
         return self.sender.send(destination, data, dtype, response_required)
 
 

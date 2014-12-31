@@ -8,12 +8,13 @@ import dragonfly
 from win32api import GetSystemMetrics
 from win32con import MOUSEEVENTF_WHEEL
 
+from asynch import legion
 from asynch.bottleserver import Sender
 from asynch.legion import LegionScanner
 from lib import control
 from lib import utilities
-import  settings
 from lib.dragonfree import launch
+import  settings
 
 
 BASE_PATH = settings.SETTINGS["paths"]["BASE_PATH"]
@@ -30,7 +31,7 @@ def mouse_alternates(mode):
                 FocusWindow(title="legiongrid")._execute()
                 WaitWindow(title="legiongrid", timeout=5)
                 s=Sender()
-                s.send("legion", tscan, "scan")
+                s.send(legion.LEGION_LISTENING_PORT, tscan, "scan")
             else:
                 launch.run(["pythonw", settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0]])
             
