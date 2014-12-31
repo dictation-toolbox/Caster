@@ -1,10 +1,13 @@
 
 from dragonfly import (BringApp, Key, Function, Grammar, Playback,
                        IntegerRef, Dictation, Choice, WaitWindow, MappingRule, Text)
+from dragonfly.actions.action_focuswindow import FocusWindow
 
-from asynch.hmc import vocabulary_processing
-from lib import control, settings, navigation, password, context
+from asynch import squeue, element
+from asynch.bottleserver import Sender
+from asynch.hmc import vocabulary_processing, homunculus, h_launch
 from lib import ccr
+from lib import control, settings, navigation, password, context
 from lib import utilities
 from lib.context import SelectiveAction
 
@@ -13,13 +16,14 @@ def experiment():
     '''this function is for testing things in development'''
     #
     try: 
+        
         SelectiveAction(Text("eclipse"), ["eclipse.exe"])._execute()
     except Exception:
         utilities.simple_log(False)
 
 def fix_Dragon_double():
     try:
-        lr = control.DICTATION_CACHE[len(control.DICTATION_CACHE)-1]
+        lr = control.DICTATION_CACHE[len(control.DICTATION_CACHE) - 1]
         lu = " ".join(lr)
         Key("left/5:" + str(len(lu)) + ", del")._execute()
     except Exception:
@@ -27,9 +31,9 @@ def fix_Dragon_double():
         
 def repeat_that(n):
     try:
-        if len(control.DICTATION_CACHE)>0:
+        if len(control.DICTATION_CACHE) > 0:
             for i in range(int(n)):
-                Playback([([str(x) for x in " ".join(control.DICTATION_CACHE[len(control.DICTATION_CACHE)-1]).split()], 0.0)])._execute()
+                Playback([([str(x) for x in " ".join(control.DICTATION_CACHE[len(control.DICTATION_CACHE) - 1]).split()], 0.0)])._execute()
     except Exception:
         utilities.simple_log(False)
 
@@ -64,7 +68,7 @@ class MainRule(MappingRule):
     # window management
     'minimize':                     Playback([(["minimize", "window"], 0.0)]),
     'maximize':                     Playback([(["maximize", "window"], 0.0)]),
-    "remax":                        Key("a-space/10,r/10,a-space/10,x"), 
+    "remax":                        Key("a-space/10,r/10,a-space/10,x"),
     
     # development related
     "open natlink folder":          BringApp("explorer", settings.SETTINGS["paths"]["BASE_PATH"].replace("/", "\\")),
@@ -106,8 +110,8 @@ class MainRule(MappingRule):
               generate_CCR_choices.__func__()
              ]
     defaults = {"n": 1, "minutes": 20, "nnv": 1,
-               "text": "", "volume_mode": "setsysvolume", 
-               "enable": -1
+               "text": "", "volume_mode": "setsysvolume",
+               "enable":-1
                }
 
 

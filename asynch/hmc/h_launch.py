@@ -35,4 +35,6 @@ if __name__ == '__main__':
             app = Homunculus_Vocabulary([hmc_vocabulary.QTYPE_SET, found_word])
         elif sys.argv[1]==hmc_vocabulary.QTYPE_REM:
             app = Homunculus_Vocabulary([hmc_vocabulary.QTYPE_REM, found_word])
+    elif sys.argv[1]==homunculus.QTYPE_INSTRUCTIONS:
+        app = Homunculus(sys.argv[1], sys.argv[2])
             

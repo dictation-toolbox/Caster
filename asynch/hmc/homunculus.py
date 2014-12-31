@@ -13,32 +13,32 @@ from lib import  settings
 
 
 
-QTYPE_DEFAULT="default"
+QTYPE_DEFAULT = "default"
+QTYPE_INSTRUCTIONS = "instructions"
 
 
 
 
 
 
-
-HMC_LISTENING_PORT=1341
+HMC_LISTENING_PORT = 1341
 
 class HServer(BottleServer):
     def __init__(self, listening_port, kill_fn, htype, lock=None):
-        self.response=None
-        self.kill_fn=kill_fn
-        self.htype=htype
+        self.response = None
+        self.kill_fn = kill_fn
+        self.htype = htype
         BottleServer.__init__(self, listening_port, lock=lock)
     
     def receive_request(self):
         '''will only get one kind of request'''
-        message={}
+        message = {}
         
         
-        if self.response!=None:
+        if self.response != None:
             with self.lock:
-                message["qtype"]=self.htype
-                message["response"]=self.response
+                message["qtype"] = self.htype
+                message["response"] = self.response
             Timer(1, self.kill_fn).start()
         return json.dumps(message)
         
@@ -46,10 +46,10 @@ class HServer(BottleServer):
         
 
 class Homunculus(tk.Tk):
-    def __init__(self, htype):
+    def __init__(self, htype, data=None):
         global QTYPE_DEFAULT
         tk.Tk.__init__(self, baseName="")
-        self.htype=htype
+        self.htype = htype
         self.server = None
         
 
@@ -59,14 +59,14 @@ class Homunculus(tk.Tk):
         self.protocol("WM_DELETE_WINDOW", self.on_exit)
  
         # 
-        self.instructions=""
-        if self.htype==QTYPE_DEFAULT:
-            self.instructions="Enter Response"
-            Label(self, text=self.instructions, name="pathlabel").pack()
+        if self.htype == QTYPE_DEFAULT:
+            Label(self, text="Enter Response", name="pathlabel").pack()
             self.ext_box = Text(self, name="ext_box")
             self.ext_box.pack(side=tk.LEFT)
-        
- 
+        elif self.htype == QTYPE_INSTRUCTIONS:
+            Label(self, text=" ".join(data.split("_")), name="pathlabel").pack()
+            self.ext_box = Text(self, name="ext_box")
+            self.ext_box.pack(side=tk.LEFT)
         # 
         self.bind("<Return>", self.complete)
         
@@ -91,5 +91,5 @@ class Homunculus(tk.Tk):
     def complete(self, e):
         '''override this for every new child class'''
         with self.server.lock:
-            self.server.response=self.ext_box.get("1.0",tk.END)
+            self.server.response = self.ext_box.get("1.0", tk.END)
         self.withdraw()

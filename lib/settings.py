@@ -3,10 +3,9 @@ import os
 import sys
 INISETPATH = 'C:/NatLink/NatLink/MacroSystem/bin/data/settings.json'
 
-ELEMENT_VERSION = "Element v.04"
+ELEMENT_VERSION = "Element v.10"
 DISPEL_VERSION = "Dispel v.02"
-HOMUNCULUS_VERSION = "HMC v.01"
-
+HOMUNCULUS_VERSION = "HMC v.03"
 SETTINGS = None
 
 def get_list_of_ccr_config_files():
@@ -88,7 +87,7 @@ def init_default_values():
         
         # EXECUTABLES
         ("WSR_PATH", "C:/Windows/Speech/Common/sapisvr.exe"),
-        ("ELEMENT_PATH", SETTINGS["paths"]["BASE_PATH"] + "/asynch/element_src.py"),
+        ("ELEMENT_PATH", SETTINGS["paths"]["BASE_PATH"] + "/asynch/element.py"),
         ("LEGION_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/asynch/legion.py"),
         ("RAINBOW_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/lib/display.py"),
         ("DOUGLAS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/lib/display.py"),

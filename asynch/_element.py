@@ -6,6 +6,9 @@ from dragonfly import (Function, Text, Grammar, BringApp, WaitWindow, Key,
                        IntegerRef, Dictation, Mimic, MappingRule)
 from dragonfly.actions.action_focuswindow import FocusWindow
 
+from asynch import element, squeue
+from asynch.bottleserver import Sender
+from asynch.hmc import homunculus, h_launch
 from lib import  settings
 from lib import control
 from lib import utilities
@@ -52,8 +55,17 @@ def focus_element():
     WaitWindow(title=settings.ELEMENT_VERSION)._execute()
 
 def search():
-    focus_element()
-    send("search", None)
+    if utilities.window_exists(None, settings.ELEMENT_VERSION):
+        squeue.add_query(homunculus_to_element, {"qtype": homunculus.QTYPE_INSTRUCTIONS})
+        h_launch.launch(homunculus.QTYPE_INSTRUCTIONS, "enter_search_word")
+        WaitWindow(title=settings.HOMUNCULUS_VERSION, timeout=5)._execute()
+        FocusWindow(title=settings.HOMUNCULUS_VERSION)._execute()
+        Key("tab")._execute()
+
+def homunculus_to_element(data):
+    word = data["response"].replace("\n", "").rstrip()
+    s = Sender()
+    s.send(element.ELEMENT_LISTENING_PORT, data={"action_type":"search", "word": word})
 
 def extensions():
     focus_element()
@@ -71,7 +83,7 @@ def filter_strict_return_processed_data(processed_data):
     
 def send(action_type, data, *more_data):
     try:
-        c = httplib.HTTPConnection('localhost', 1337)
+        c = httplib.HTTPConnection('localhost', element.ELEMENT_LISTENING_PORT)
         data_to_send = {}
         data_to_send["action_type"] = str(action_type)
         if action_type in ["retrieve", "sticky", "remove", "unsticky", "scroll"]:
@@ -125,9 +137,6 @@ def scan_new():
     focus_element()
     Key("home")._execute()
     
-    
-#     send_key_to_element("scan_new")
-
 def send_key_to_element(action_type):  # for some reason, some events are untriggerable without a keypress it seems, hence this
     try:
         element_hwnd = utilities.get_window_by_title(settings.ELEMENT_VERSION)
@@ -158,9 +167,10 @@ class ElementUsageRule(MappingRule):
     "L change directory":           Function(trigger_directory_box),
     "L rescan directory":           Function(rescan),
     "L filter strict":              Function(filter_strict_request_for_data),
+    
     }   
     extras = [
-              IntegerRef("n", 1, 100),
+              IntegerRef("n", 1, 200),
               IntegerRef("n2", 1, 100),
               Dictation("text"),
              ]

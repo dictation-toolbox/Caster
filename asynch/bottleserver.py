@@ -6,23 +6,6 @@ import threading
 from bottle import run, request
 import bottle
 
-'''
-        formatted_data={}
-        listening_port=None
-        if destination=="legion":
-            from asynch import legion
-            listening_port=legion.LEGION_LISTENING_PORT
-            ''''''
-            if dtype=="scan":
-                formatted_data["data_tirg"]=data[0]
-                formatted_data["data_rex"]=data[1]
-                formatted_data["redraw"]=True
-        elif destination=="antimouse":
-            listening_port=legion.LEGION_LISTENING_PORT
-            if dtype=="req_tirg_update":
-                formatted_data["origin"]="legion"
-                formatted_data["type"]="req_tirg_update"
-'''
 class Sender:
     def __init__(self, report=False):
         self.report = report

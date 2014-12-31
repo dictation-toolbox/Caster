@@ -3,153 +3,26 @@ import os, re, sys, json
 import signal
 from threading import Timer
 import tkFileDialog
+import tkFont
 
+BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
+if BASE_PATH not in sys.path:
+    sys.path.append(BASE_PATH)
 from bottle import run, request  # , post,response
 import bottle
 
 import Tkinter as tk
-BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
-if BASE_PATH not in sys.path:
-    sys.path.append(BASE_PATH)
 from lib import  settings, utilities
 
+
+ELEMENT_LISTENING_PORT = 1337
 
 
 
 class Element:
     def __init__(self):
-        
-        # setup basics
-        self.JSON_PATH = settings.SETTINGS["paths"]["ELEMENT_JSON_PATH"]
-        self.TOTAL_SAVED_INFO = utilities.load_json_file(self.JSON_PATH)
- 
-        self.first_run = True
-        if "config" in self.TOTAL_SAVED_INFO and "last_directory" in self.TOTAL_SAVED_INFO["config"]:
-            self.first_run = False
-        else:
-            self.TOTAL_SAVED_INFO["config"] = {}
-            self.TOTAL_SAVED_INFO["directories"] = {}
-        self.current_file = None
-        self.last_file_loaded = None
-         
-         
-        # REGULAR EXPRESSION PATTERNS
-        self.GENERIC_PATTERN = re.compile("([A-Za-z0-9._]+\s*=)|(import [A-Za-z0-9._]+)")
-        # python language
-        self.PYTHON_IMPORTS = re.compile("((\bimport\b|\bfrom\b|\bas\b)(\(|,| )*[A-Za-z0-9._]+)")  # capture group index 3
-        self.PYTHON_FUNCTIONS = re.compile("(\bdef \b([A-Za-z0-9_]+)\()|(\.([A-Za-z0-9_]+)\()")  # cgi 1 or 3
-        self.PYTHON_VARIABLES = re.compile("(([A-Za-z0-9_]+)[ ]*=)|((\(|,| )([A-Za-z0-9_]+)(\)|,| ))")  # 1 or 4
-        # java language
-        self.JAVA_IMPORTS = re.compile("import [A-Za-z0-9_\\.]+\.([A-Za-z0-9_]+);|throws ([A-Za-z0-9_]+)|new ([A-Za-z0-9_<>]+)|([A-Za-z0-9_]+)\.")
-        self.JAVA_METHODS = re.compile("[ \.]([A-Za-z0-9_]+)\(")
-        self.JAVA_VARIABLES = re.compile("([ \.]*([A-Za-z0-9_]+)[ ]*=)|((\bpublic\b|\bprivate\b|\binternal\b|\bfinal\b|\bstatic\b)[ ]+[A-Za-z0-9_]+[ ]+([A-Za-z0-9_]+)[ ]*[;=])|(([A-Za-z0-9_]+)[ ]*[,\)])")  # 1,4,6
-        
-        # setup tk
-        self.root = tk.Tk()
-        self.root.title(settings.ELEMENT_VERSION)
-        self.root.geometry("200x" + str(self.root.winfo_screenheight() - 100) + "-1+20")
-        self.root.wm_attributes("-topmost", 1)
-        self.root.protocol("WM_DELETE_WINDOW", self.on_exit)
-        
-        # setup hotkeys
-        self.root.bind_all("<Home>", self.scan_new)
-         
-         
-          
-        # setup options for directory ask
-        self.dir_opt = {}
-        self.dir_opt['initialdir'] = os.environ["HOME"] + '\\'
-        self.dir_opt['mustexist'] = False
-        self.dir_opt['parent'] = self.root
-        self.dir_opt['title'] = 'Please select directory'
- 
-        # directory drop-down label
-        Label(self.root, text="Directory, File:", name="pathlabel").pack()
-         
-        # setup drop-down box
-        self.dropdown_selected = StringVar(self.root)
-        self.default_dropdown_message = "Please select a scanned folder"
-        self.dropdown_selected.set(self.default_dropdown_message)
-        self.dropdown = OptionMenu(self.root, self.dropdown_selected, self.default_dropdown_message)
-        self.dropdown.pack()
-        if not self.first_run:
-            self.populate_dropdown()
- 
-        # setup drop-down box for files manual selection
-        self.file_dropdown_selected = StringVar(self.root)
-        self.file_default_dropdown_message = "Select file"
-        self.file_dropdown_selected.set(self.file_default_dropdown_message)
-        self.file_dropdown = OptionMenu(self.root, self.file_dropdown_selected, self.file_default_dropdown_message)
-        self.file_dropdown.pack()
- 
- 
-        # file extension label and box
-        ext_frame = Frame(self.root)
-        Label(ext_frame, text="Ext(s):", name="extensionlabel").pack(side=tk.LEFT)
-        self.ext_box = Entry(ext_frame, name="ext_box")
-        self.ext_box.pack(side=tk.LEFT)
-        ext_frame.pack()
- 
-        # fill in remembered information  if it exists
-        if not self.first_run:
-            last_dir = self.TOTAL_SAVED_INFO["config"]["last_directory"]
-            self.dropdown_selected.set(last_dir)
-            self.ext_box.insert(0, ",".join(self.TOTAL_SAVED_INFO["directories"][last_dir]["extensions"]))
-                 
-        # sticky label
-        Label(text="Sticky Box", name="label1").pack()
- 
-        # setup search box
-        search_frame = Frame(self.root)
-        Label(search_frame, text="Search:").pack(side=tk.LEFT)
-        self.search_box = tk.Entry(search_frame, name="search_box")
-        self.search_box.pack(side=tk.LEFT)
-         
-        # set up lists
-        stickyframe = Frame(self.root)
-        stickyscrollbar = Scrollbar(stickyframe, orient=tk.VERTICAL)
-        self.sticky_listbox_numbering = tk.Listbox(stickyframe, yscrollcommand=stickyscrollbar.set)
-        self.sticky_listbox_content = tk.Listbox(stickyframe, yscrollcommand=stickyscrollbar.set)
- 
-        self.sticky_listbox_index = 0
-        s_lbn_opt = {}
-        s_lbn_opt_height = 10
-        s_lbn_opt["height"] = s_lbn_opt_height
-        s_lbn_opt["width"] = 4
-        s_lbn_opt2 = {}
-        s_lbn_opt2["height"] = s_lbn_opt_height
-         
-        stickyscrollbar.config(command=self.sticky_scroll_lists)
-        stickyscrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        self.sticky_listbox_numbering.config(s_lbn_opt)
-        self.sticky_listbox_numbering.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
-        self.sticky_listbox_content.config(s_lbn_opt2)
-        self.sticky_listbox_content.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
-        stickyframe.pack()
-        #-------
-        search_frame.pack()
-        #-------
-        listframe = Frame(self.root)
-        scrollbar = Scrollbar(listframe, orient=tk.VERTICAL)
-        self.listbox_numbering = tk.Listbox(listframe, yscrollcommand=scrollbar.set)
-        self.listbox_content = tk.Listbox(listframe, yscrollcommand=scrollbar.set)
-         
-        self.listbox_index = 0
-        lbn_opt = {}
-        lbn_opt_height = 30
-        lbn_opt["height"] = lbn_opt_height
-        lbn_opt["width"] = 4
-        lbn_opt2 = {}
-        lbn_opt2["height"] = lbn_opt_height
-         
-        scrollbar.config(command=self.scroll_lists)
-        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        self.listbox_numbering.config(lbn_opt)
-        self.listbox_numbering.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
-        self.listbox_content.config(lbn_opt2)
-        self.listbox_content.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
-         
-        listframe.pack()
+        self.setup_regexes()
+        self.setup_UI()
          
         # update active file
         self.update_interval = 100
@@ -161,13 +34,26 @@ class Element:
         Timer(1, self.start_server).start()
         bottle.route('/process', method="POST")(self.process_request)
         self.root.mainloop()
-
+    
+    def setup_regexes(self):
+        self.GENERIC_PATTERN = re.compile("([A-Za-z0-9._]+\s*=)|(import [A-Za-z0-9._]+)")
+        # python language
+        self.PYTHON_IMPORTS = re.compile("((\bimport\b|\bfrom\b|\bas\b)(\(|,| )*[A-Za-z0-9._]+)")  # capture group index 3
+        self.PYTHON_FUNCTIONS = re.compile("(\bdef \b([A-Za-z0-9_]+)\()|(\.([A-Za-z0-9_]+)\()")  # cgi 1 or 3
+        self.PYTHON_VARIABLES = re.compile("(([A-Za-z0-9_]+)[ ]*=)|((\(|,| )([A-Za-z0-9_]+)(\)|,| ))")  # 1 or 4
+        # java language
+        self.JAVA_IMPORTS = re.compile("import [A-Za-z0-9_\\.]+\.([A-Za-z0-9_]+);|throws ([A-Za-z0-9_]+)|new ([A-Za-z0-9_<>]+)|([A-Za-z0-9_]+)\.")
+        self.JAVA_METHODS = re.compile("[ \.]([A-Za-z0-9_]+)\(")
+        self.JAVA_VARIABLES = re.compile("([ \.]*([A-Za-z0-9_]+)[ ]*=)|((\bpublic\b|\bprivate\b|\binternal\b|\bfinal\b|\bstatic\b)[ ]+[A-Za-z0-9_]+[ ]+([A-Za-z0-9_]+)[ ]*[;=])|(([A-Za-z0-9_]+)[ ]*[,\)])")  # 1,4,6
+        
+    
     def on_exit(self):
         self.root.destroy()
         os.kill(os.getpid(), signal.SIGTERM)
     
     def start_server(self):
-        run(host='localhost', port=1337, debug=False, server='cherrypy')#bottle is about a full second faster
+        global ELEMENT_LISTENING_PORT
+        run(host='localhost', port=ELEMENT_LISTENING_PORT, debug=False, server='cherrypy')  # bottle is about a full second faster
         
         
     
@@ -272,7 +158,7 @@ class Element:
         self.clear_lists()
         
     def populate_dropdown(self):
-        self.TOTAL_SAVED_INFO = utilities.load_json_file(self.JSON_PATH)
+        self.TOTAL_SAVED_INFO = settings.load_json_file(self.JSON_PATH)
         menu = self.dropdown["menu"]
         menu.delete(0, tk.END)
         for key in self.TOTAL_SAVED_INFO["directories"]:
@@ -398,13 +284,15 @@ class Element:
         return results
     
     def passes_battery_of_tests(self, word, scanned_file, check_banlist=False):
+        # short words can be gotten faster by just spelling them
+        too_short = len(word) < 4
         already_in_names = word in scanned_file["names"]
         already_in_sticky = word in scanned_file["sticky"]
         is_empty = word == ""
         is_banned = False
         if check_banlist:
             is_banned = word in scanned_file["banned"]
-        if not (already_in_names or already_in_sticky or is_empty or is_banned):
+        if not (already_in_names or already_in_sticky or is_empty or is_banned or too_short):
             return True
         else:
             return False
@@ -415,9 +303,9 @@ class Element:
     def process_request(self):
         request_object = json.loads(request.body.read())
         action_type = request_object["action_type"]
-        if action_type=="kill":
+        if action_type == "kill":
             self.on_exit()
-        if self.current_file == None and (not action_type in ["extensions", "trigger_directory_box", "rescan", "scan_new"]):  # only these are allowed when no file is loaded
+        if self.current_file == None and (not action_type in ["extensions", "trigger_directory_box", "rescan", "scan_new", "search"]):  # only these are allowed when no file is loaded
             return "No file is currently loaded."
         if "index" in request_object:
             index = int(request_object["index"])
@@ -473,22 +361,154 @@ class Element:
             return "c"
         else:
             if action_type == "search":
-                self.root.after(10, self.search_box.focus_set)
+                self.root.after(10, lambda: self.search(request_object["word"]))
+#                 self.root.after(10, self.search_box.focus_set)
             elif action_type == "extensions":
                 self.root.after(10, self.ext_box.focus_set)
             elif action_type == "trigger_directory_box":
                 self.root.after(10, self.dropdown.focus_set)
             elif action_type == "rescan":
                 self.rescan_directory()
-            elif action_type=="filter_strict_request_for_data":
+            elif action_type == "filter_strict_request_for_data":
                 return json.dumps(self.TOTAL_SAVED_INFO["directories"][self.dropdown_selected.get()])
-            elif action_type=="filter_strict_return_processed_data":
-                self.TOTAL_SAVED_INFO["directories"][self.dropdown_selected.get()]=json.loads(request_object["processed_data"])
+            elif action_type == "filter_strict_return_processed_data":
+                self.TOTAL_SAVED_INFO["directories"][self.dropdown_selected.get()] = json.loads(request_object["processed_data"])
                 self.old_active_window_title = "Directory has been strict- modified"
                 settings.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
             return "c"
         
         return 'unrecognized request received: ' + request_object["action_type"]
+    
+    def search(self, word):
+        ''''''
+        # get index
+        all_symbols = self.listbox_content.get(0, self.listbox_content.size())
+        high_score = [0, 0]
+        # high_score = index, score
+        for i in range(0, self.listbox_content.size()):
+            
+#             print all_symbols[i] == word, all_symbols[i], ", ", word, i
+            score = self.word_similarity_score(all_symbols[i], word)
+            print "comparing " + all_symbols[i], score
+            if score > high_score[1]:
+                high_score = [i, score]
+                if score == len(word):
+                    break
+    
+        # scroll and select
+        self.scroll_to(high_score[0])
+        self.listbox_numbering.selection_set(high_score[0])
+    
+    def word_similarity_score(self, w1, w2):
+        smaller_len = len(w1)
+        w2_len = len(w2)
+        if w2_len < smaller_len:
+            smaller_len = w2_len
+        score = 0
+        for i in range(0, smaller_len):
+            if w1[i] == w2[i]:
+                score += 1
+            else:
+                return score
+        return score
+    
+    def setup_UI(self):
+        # setup basics
+        self.JSON_PATH = settings.SETTINGS["paths"]["ELEMENT_JSON_PATH"]
+        self.TOTAL_SAVED_INFO = settings.load_json_file(self.JSON_PATH)
+ 
+        self.first_run = True
+        if "config" in self.TOTAL_SAVED_INFO and "last_directory" in self.TOTAL_SAVED_INFO["config"]:
+            self.first_run = False
+        else:
+            self.TOTAL_SAVED_INFO["config"] = {}
+            self.TOTAL_SAVED_INFO["directories"] = {}
+        self.current_file = None
+        self.last_file_loaded = None
+         
+        # setup tk
+        self.root = tk.Tk()
+        self.root.title(settings.ELEMENT_VERSION)
+        self.root.geometry("180x" + str(self.root.winfo_screenheight() - 100) + "-50+20")
+        self.root.wm_attributes("-topmost", 1)
+        self.root.protocol("WM_DELETE_WINDOW", self.on_exit)
+        self.customFont = tkFont.Font(family="Helvetica", size=8)
+        
+        # setup hotkeys
+        self.root.bind_all("<Home>", self.scan_new)
+          
+        # setup options for directory ask
+        self.dir_opt = {}
+        self.dir_opt['initialdir'] = os.environ["HOME"] + '\\'
+        self.dir_opt['mustexist'] = False
+        self.dir_opt['parent'] = self.root
+        self.dir_opt['title'] = 'Please select directory'
+         
+        # setup drop-down box
+        self.dropdown_selected = StringVar(self.root)
+        self.default_dropdown_message = "Please select a scanned folder"
+        self.dropdown_selected.set(self.default_dropdown_message)
+        self.dropdown = OptionMenu(self.root, self.dropdown_selected, self.default_dropdown_message)
+        self.dropdown.pack()
+        if not self.first_run:
+            self.populate_dropdown()
+ 
+        # file extension label and box
+        ext_frame = Frame(self.root)
+        Label(ext_frame, text="Ext(s):", name="extensionlabel", font=self.customFont).pack(side=tk.LEFT)
+        self.ext_box = Entry(ext_frame, name="ext_box", font=self.customFont)
+        self.ext_box.pack(side=tk.LEFT)
+        ext_frame.pack()
+ 
+        # fill in remembered information  if it exists
+        if not self.first_run:
+            last_dir = self.TOTAL_SAVED_INFO["config"]["last_directory"]
+            self.dropdown_selected.set(last_dir)
+            self.ext_box.insert(0, ",".join(self.TOTAL_SAVED_INFO["directories"][last_dir]["extensions"]))
+
+        # set up lists
+        stickyframe = Frame(self.root)
+        stickyscrollbar = Scrollbar(stickyframe, orient=tk.VERTICAL)
+        self.sticky_listbox_numbering = tk.Listbox(stickyframe, yscrollcommand=stickyscrollbar.set, font=self.customFont)
+        self.sticky_listbox_content = tk.Listbox(stickyframe, yscrollcommand=stickyscrollbar.set, font=self.customFont)
+ 
+        self.sticky_listbox_index = 0
+        s_lbn_opt = {}
+        s_lbn_opt_height = 10
+        s_lbn_opt["height"] = s_lbn_opt_height
+        s_lbn_opt["width"] = 4
+        s_lbn_opt2 = {}
+        s_lbn_opt2["height"] = s_lbn_opt_height
+         
+        stickyscrollbar.config(command=self.sticky_scroll_lists)
+        stickyscrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        self.sticky_listbox_numbering.config(s_lbn_opt)
+        self.sticky_listbox_numbering.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
+        self.sticky_listbox_content.config(s_lbn_opt2)
+        self.sticky_listbox_content.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
+        stickyframe.pack()
+        #-------
+        listframe = Frame(self.root)
+        scrollbar = Scrollbar(listframe, orient=tk.VERTICAL)
+        self.listbox_numbering = tk.Listbox(listframe, yscrollcommand=scrollbar.set, font=self.customFont)
+        self.listbox_content = tk.Listbox(listframe, yscrollcommand=scrollbar.set, font=self.customFont)
+         
+        self.listbox_index = 0
+        lbn_opt = {}
+        lbn_opt_height = 39
+        lbn_opt["height"] = lbn_opt_height
+        lbn_opt["width"] = 4
+        lbn_opt2 = {}
+        lbn_opt2["height"] = lbn_opt_height
+         
+        scrollbar.config(command=self.scroll_lists)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        self.listbox_numbering.config(lbn_opt)
+        self.listbox_numbering.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
+        self.listbox_content.config(lbn_opt2)
+        self.listbox_content.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
+         
+        listframe.pack()
 
 
 if __name__ == '__main__':
