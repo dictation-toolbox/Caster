@@ -142,6 +142,7 @@ def init_default_values():
     if not "miscellaneous" in SETTINGS.keys():
         SETTINGS["miscellaneous"] = {}
         SETTINGS["miscellaneous"]["debug_speak"] = False
+        SETTINGS["miscellaneous"]["dev_commands"] = False
         values_change_count += 1
     
     # pronunciations section

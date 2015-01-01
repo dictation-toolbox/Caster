@@ -36,6 +36,7 @@ class MainRule(MappingRule):
     # into the Windows command prompt, without the quotes and commas, like:
     # explorer C:\NatLink\NatLink\MacroSystem
     # -- (which would open Windows Explorer at the specified location). Anything you can do with the command line can be done this way
+    # IMPORTANT: If you don't have Dragonfly  6.6  or later, lines 40 and 46  will cause this file to crash and should be commented out
     "open natlink folder":          BringApp("explorer", "C:\NatLink\NatLink\MacroSystem"),
     
     # here I'm using the Key action to press some keys -- see the documentation here: http://dragonfly.readthedocs.org/en/latest/actions.html?highlight=key#module-dragonfly.actions.action_key

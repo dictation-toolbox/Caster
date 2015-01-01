@@ -1,25 +1,18 @@
+'''
+_main.py
+
+General enhancements for Dragon NaturallySpeaking.
+
+'''
 
 from dragonfly import (BringApp, Key, Function, Grammar, Playback,
                        IntegerRef, Dictation, Choice, WaitWindow, MappingRule, Text)
 from dragonfly.actions.action_focuswindow import FocusWindow
 
-from asynch import squeue, element
-from asynch.bottleserver import Sender
-from asynch.hmc import vocabulary_processing, homunculus, h_launch
+from asynch.hmc import vocabulary_processing
 from lib import ccr
 from lib import control, settings, navigation, password, context
 from lib import utilities
-from lib.context import SelectiveAction
-
-
-def experiment():
-    '''this function is for testing things in development'''
-    #
-    try: 
-        
-        SelectiveAction(Text("eclipse"), ["eclipse.exe"])._execute()
-    except Exception:
-        utilities.simple_log(False)
 
 def fix_Dragon_double():
     try:
@@ -49,32 +42,24 @@ class MainRule(MappingRule):
     
     mapping = {
     # Dragon NaturallySpeaking management
-    'refresh directory':            Function(utilities.clear_pyc),
-	'(lock Dragon | deactivate)':   Playback([(["go", "to", "sleep"], 0.0)]),
+    '(lock Dragon | deactivate)':   Playback([(["go", "to", "sleep"], 0.0)]),
     '(number|numbers) mode':        Playback([(["numbers", "mode", "on"], 0.0)]),
     'spell mode':                   Playback([(["spell", "mode", "on"], 0.0)]),
     'dictation mode':               Playback([(["dictation", "mode", "on"], 0.0)]),
     'normal mode':                  Playback([(["normal", "mode", "on"], 0.0)]),
     "reboot dragon":                Function(utilities.reboot),
     "fix dragon double":            Function(fix_Dragon_double),
-    "(show | open) documentation":  BringApp(settings.SETTINGS["paths"]["DEFAULT_BROWSER_PATH"]) + WaitWindow(executable=settings.get_default_browser_executable()) + Key('c-t') + WaitWindow(title="New Tab") + Text('http://dragonfly.readthedocs.org/en/latest') + Key('enter'),
     "add word to vocabulary":       Function(vocabulary_processing.add_vocab),
     "delete word from vocabulary":  Function(vocabulary_processing.del_vocab),
     
     # hardware management
-#     "(switch | change) monitors":              Function(switch_monitors),
     "(<volume_mode> [system] volume [to] <n> | volume <volume_mode> <n>)": Function(navigation.volume_control, extra={'n', 'volume_mode'}),
     
     # window management
     'minimize':                     Playback([(["minimize", "window"], 0.0)]),
     'maximize':                     Playback([(["maximize", "window"], 0.0)]),
     "remax":                        Key("a-space/10,r/10,a-space/10,x"),
-    
-    # development related
-    "open natlink folder":          BringApp("explorer", settings.SETTINGS["paths"]["BASE_PATH"].replace("/", "\\")),
-    "reserved word <text>":         Key("dquote,dquote,left") + Text("%(text)s") + Key("right, colon, tab/5:5") + Text("Text(\"%(text)s\"),"),
-    "experiment":                   Function(experiment),
-    
+        
     # passwords
     'hash password <text> <text2> <text3>':                    Function(password.hash_password, extra={'text', 'text2', 'text3'}),
     'get password <text> <text2> <text3>':                     Function(password.get_password, extra={'text', 'text2', 'text3'}),
@@ -87,16 +72,16 @@ class MainRule(MappingRule):
     "douglas":                      Function(navigation.mouse_alternates, mode="douglas"),
     
     # miscellaneous
-#     "<enable_disable> <ccr_mode>":  Function(ccr.change_CCR, extra={"enable_disable", "ccr_mode"}),
     "<enable_disable> <ccr_mode>":  Function(ccr.set_active, extra={"enable_disable", "ccr_mode"}),
-    "again <n> [times]":            Function(repeat_that, extra={"n"}),
+    "again <n> [(times|time)]":     Function(repeat_that, extra={"n"}),
     "begin recording macro":        Function(context.null_func),
     "end recording macro":          Function(context.get_macro_spec),
     "delete recorded macros":       Function(context.delete_recorded_rules),
+    "find":                         Key("c-f"),
+    "replace":                      Key("c-h"),
     }
     extras = [
               IntegerRef("n", 1, 100),
-              IntegerRef("minutes", 1, 720),
               Dictation("text"),
               Dictation("text2"),
               Dictation("text3"),
@@ -109,7 +94,7 @@ class MainRule(MappingRule):
                      }),
               generate_CCR_choices.__func__()
              ]
-    defaults = {"n": 1, "minutes": 20, "nnv": 1,
+    defaults = {"n": 1, "nnv": 1,
                "text": "", "volume_mode": "setsysvolume",
                "enable":-1
                }

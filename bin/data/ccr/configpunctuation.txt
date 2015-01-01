@@ -17,7 +17,7 @@ cmd.map = {
      	"[is] greater [than] [or] equal [to]":				   Key("rangle, equals"),
      	"[is] less [than] [or] equal [to]":				   Key("langle, equals"),
      	"[is] equal to":		    	Key("equals,equals"),
-        "(equals | leak)":              Key("equals"),
+        "equals":              			Key("equals"),
         "pair":                     	Text("()")+ Key("left"),
         "[square] (bracket | brackets)":Text("[]")+ Key("left"),
         "curly":                    	Text("{}")+ Key("left"),
