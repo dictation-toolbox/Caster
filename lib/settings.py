@@ -81,6 +81,7 @@ def init_default_values():
         ("SAVED_CLIPBOARD_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/clipboard.json"),
         ("RECORDED_MACROS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/recorded_macros.json"),
         ("LOG_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/log.txt"),
+        ("SIKULI_SCRIPTS_PATH", ""),
         
         # REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
         ("REMOTE_DEBUGGER_PATH" , "D:/PROGRAMS/NON_install/eclipse/plugins/org.python.pydev_3.4.1.201403181715/pysrc"),
@@ -95,7 +96,7 @@ def init_default_values():
         ("NIRCMD_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/nircmd/nircmd.exe"),
         ("MMT_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/MultiMonitorTool/MultiMonitorTool.exe"),
         ("DEFAULT_BROWSER_PATH",  "C:/Program Files (x86)/Mozilla Firefox/firefox.exe"),
-        
+        ("SIKULI_IDE_PATH", ""),
         
         # CCR
         ("GENERIC_CONFIG_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/ccr"),
@@ -143,6 +144,7 @@ def init_default_values():
         SETTINGS["miscellaneous"] = {}
         SETTINGS["miscellaneous"]["debug_speak"] = False
         SETTINGS["miscellaneous"]["dev_commands"] = False
+        SETTINGS["miscellaneous"]["sikuli_enabled"]=False
         values_change_count += 1
     
     # pronunciations section

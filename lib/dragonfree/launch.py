@@ -6,8 +6,8 @@ import psutil
 from subprocess import Popen
 
 
-def run(args):
-    Popen(args, shell=False, stdin=None, stdout=None, stderr=None, close_fds=True)
+def run(arguments):
+    Popen(arguments, shell=False, stdin=None, stdout=None, stderr=None, close_fds=True)
 
 def kill_process(executable):
     for proc in psutil.process_iter():

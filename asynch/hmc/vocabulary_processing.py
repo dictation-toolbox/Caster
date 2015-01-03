@@ -45,7 +45,6 @@ def add_vocab():
         Key("tab")._execute()
     except Exception:
         utilities.simple_log(False)
-#     dragon_check = natlink.getWordInfo(name_piece, 7)
 
 def del_vocab():
     try: 

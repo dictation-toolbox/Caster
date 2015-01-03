@@ -13,6 +13,7 @@ from asynch.hmc import vocabulary_processing
 from lib import ccr
 from lib import control, settings, navigation, password, context
 from lib import utilities
+from lib.sikuli import sikuli
 
 def fix_Dragon_double():
     try:
@@ -109,3 +110,4 @@ def unload():
     if grammar: grammar.unload()
     grammar = None
     ccr.unload()
+    sikuli.unload()
