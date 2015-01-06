@@ -1,9 +1,8 @@
 '''
 Message queue
 '''
-from asynch.hmc import homunculus
 from asynch.bottleserver import Sender
-from lib import control, utilities
+from lib import control, utilities, settings
 
 
 LAST_QUERY=None
@@ -22,7 +21,7 @@ def check_for_response():
     global LAST_QUERY
     if LAST_QUERY!=None:
         # response should have at least: qtype, data
-        response = QUERY_CHECKER.send(homunculus.HMC_LISTENING_PORT, {}, None, True)
+        response = QUERY_CHECKER.send(settings.HMC_LISTENING_PORT, {}, None, True)
         if response != None and "qtype" in response:
             if LAST_QUERY.qtype == response["qtype"]:
                 try: 
@@ -39,7 +38,7 @@ def add_query(callback, data=None):
     global LAST_QUERY
     second = 1
     if data==None:
-        data={"qtype": homunculus.QTYPE_DEFAULT}
+        data={"qtype": settings.QTYPE_DEFAULT}
     
         
     LAST_QUERY=Query(data, callback)

@@ -31,7 +31,7 @@ def mouse_alternates(mode):
                 FocusWindow(title="legiongrid")._execute()
                 WaitWindow(title="legiongrid", timeout=5)
                 s=Sender()
-                s.send(legion.LEGION_LISTENING_PORT, tscan, "scan")
+                s.send(settings.LEGION_LISTENING_PORT, tscan, "scan")
             else:
                 launch.run(["pythonw", settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0]])
             

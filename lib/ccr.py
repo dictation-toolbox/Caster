@@ -169,11 +169,11 @@ def set_active(enable_disable, ccr_mode):
             for r in settings.SETTINGS["ccr"]["modes"]:
                 if settings.SETTINGS["ccr"]["modes"][r] and not merge_copy_compatible(target_rule, rules[r]):
                     settings.SETTINGS["ccr"]["modes"][r] = False
-                    print "setting "+r+" to False"
+                    utilities.report("setting "+r+" to False")
                     # add disabled rule to common section of settings
                     
         settings.SETTINGS["ccr"]["modes"][ccr_mode] = True
-        print "setting "+ccr_mode+" to True"
+        utilities.report("setting "+ccr_mode+" to True")
     
     # rebuild if necessary
     if new_rule == None:

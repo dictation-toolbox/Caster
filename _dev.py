@@ -1,14 +1,13 @@
 from dragonfly import (Function, Key, BringApp, Text, WaitWindow, IntegerRef, Dictation, Choice, Grammar, MappingRule)
 
-from lib.sikuli.sikuli import refresh_sikuli
+from asynch.sikuli import sikuli
 from lib import utilities, settings
-from lib.context import SelectiveAction
 
 
 def experiment():
     '''this function is for tests'''
     try: 
-        refresh_sikuli()
+        sikuli.refresh_sikuli()
 #         SelectiveAction(Text("eclipse"), ["eclipse.exe"])._execute()
     except Exception:
         utilities.simple_log(False)

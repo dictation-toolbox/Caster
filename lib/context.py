@@ -131,7 +131,7 @@ class RecordedRule(CompoundRule):
 
 def get_macro_spec():
     ''''''
-    h_launch.launch(homunculus.QTYPE_DEFAULT)
+    h_launch.launch(settings.QTYPE_DEFAULT)
     WaitWindow(title=settings.HOMUNCULUS_VERSION, timeout=5)._execute()
     FocusWindow(title=settings.HOMUNCULUS_VERSION)._execute()
     Key("tab")._execute()

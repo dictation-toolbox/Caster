@@ -10,10 +10,11 @@ from dragonfly import (BringApp, Key, Function, Grammar, Playback,
 from dragonfly.actions.action_focuswindow import FocusWindow
 
 from asynch.hmc import vocabulary_processing
+from asynch.sikuli import sikuli
 from lib import ccr
 from lib import control, settings, navigation, password, context
 from lib import utilities
-from lib.sikuli import sikuli
+
 
 def fix_Dragon_double():
     try:

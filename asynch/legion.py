@@ -16,17 +16,6 @@ from lib.display import TkTransparent
 
 
 
-
-
-
-
-
-
-
-
-
-LEGION_LISTENING_PORT = 1340
-
 class Rectangle:
     top = None
     bottom = None
@@ -35,7 +24,6 @@ class Rectangle:
 
 class LServer(BottleServer):
     def __init__(self, tk, draw_fn, retrieval_fn):
-        global LEGION_LISTENING_PORT
         
         # TiRG 
         self.has_tirg_update = False
@@ -46,7 +34,7 @@ class LServer(BottleServer):
         self.retrieval_fn = retrieval_fn
         self.tk = tk
         
-        BottleServer.__init__(self, LEGION_LISTENING_PORT)
+        BottleServer.__init__(self, settings.LEGION_LISTENING_PORT)
     
     def receive_initial_data(self, tirg=None, rex=None):
         data = {}

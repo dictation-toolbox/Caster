@@ -1,12 +1,27 @@
 import json
 import os
 import sys
+
+SETTINGS = None
+
 INISETPATH = 'C:/NatLink/NatLink/MacroSystem/bin/data/settings.json'
 
+#titles
 ELEMENT_VERSION = "Element v.10"
 DISPEL_VERSION = "Dispel v.02"
 HOMUNCULUS_VERSION = "HMC v.03"
-SETTINGS = None
+HMC_TITLE_VOCABULARY = " :: Vocabulary Manager"
+
+#enums
+QTYPE_DEFAULT = "default"
+QTYPE_SET = "set"
+QTYPE_REM = "rem"
+QTYPE_INSTRUCTIONS = "instructions"
+
+#listening ports
+ELEMENT_LISTENING_PORT = 1337
+LEGION_LISTENING_PORT = 1338
+HMC_LISTENING_PORT = 1339
 
 def get_list_of_ccr_config_files():
     global SETTINGS
@@ -95,8 +110,10 @@ def init_default_values():
         ("HOMUNCULUS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/asynch/hmc/h_launch.py"),
         ("NIRCMD_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/nircmd/nircmd.exe"),
         ("MMT_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/MultiMonitorTool/MultiMonitorTool.exe"),
-        ("DEFAULT_BROWSER_PATH",  "C:/Program Files (x86)/Mozilla Firefox/firefox.exe"),
+        ("DEFAULT_BROWSER_PATH", "C:/Program Files (x86)/Mozilla Firefox/firefox.exe"),
         ("SIKULI_IDE_PATH", ""),
+        ("SIKULI_SCRIPT_RUNNER_PATH", ""),
+        ("SIKULI_SERVER_PATH", SETTINGS["paths"]["BASE_PATH"] +"asynch/sikuli/scripts/xmlrpc_server.sikuli"),
         
         # CCR
         ("GENERIC_CONFIG_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/ccr"),
@@ -120,10 +137,10 @@ def init_default_values():
         ccrNamesFromFiles.append((ccrn, False))
     if not "ccr" in SETTINGS.keys():
         SETTINGS["ccr"] = {}
-        SETTINGS["ccr"]["modes"]={}
-        SETTINGS["ccr"]["common"]=[]
-        SETTINGS["ccr"]["standard"]=["alphabet", "navigation", "punctuation"]
-        SETTINGS["ccr"]["nonglobal_sets"]=[]
+        SETTINGS["ccr"]["modes"] = {}
+        SETTINGS["ccr"]["common"] = []
+        SETTINGS["ccr"]["standard"] = ["alphabet", "navigation", "punctuation"]
+        SETTINGS["ccr"]["nonglobal_sets"] = []
         values_change_count += 1
     for (name, value) in ccrNamesFromFiles:
         if not name in SETTINGS["ccr"]["modes"]:
@@ -144,7 +161,7 @@ def init_default_values():
         SETTINGS["miscellaneous"] = {}
         SETTINGS["miscellaneous"]["debug_speak"] = False
         SETTINGS["miscellaneous"]["dev_commands"] = False
-        SETTINGS["miscellaneous"]["sikuli_enabled"]=False
+        SETTINGS["miscellaneous"]["sikuli_enabled"] = False
         values_change_count += 1
     
     # pronunciations section

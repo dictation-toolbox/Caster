@@ -11,9 +11,8 @@ from dragonfly import (Grammar, AppContext, Function,
 import win32api
 import win32con
 
-from asynch import legion
 from asynch.bottleserver import Sender
-from lib import utilities, navigation
+from lib import utilities, navigation, settings
 
 
 def press_keys(color, n):
@@ -36,7 +35,7 @@ def send_input(color, n, action):
             Playback([(["mouse", "right", "click"], 0.0)])._execute()
         elif int_a == 2:
             s = Sender()
-            response = s.send(legion.LEGION_LISTENING_PORT, data={"coordinates_index": int(n)}, response_required=True)
+            response = s.send(settings.LEGION_LISTENING_PORT, data={"coordinates_index": int(n)}, response_required=True)
             x1=response["l"]
             x2=response["r"]
             y=response["y"]

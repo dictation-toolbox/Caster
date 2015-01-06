@@ -1,22 +1,11 @@
 from Tkinter import Frame, Label, Entry, Checkbutton
 import sys
-import time
 BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
 if BASE_PATH not in sys.path:
     sys.path.append(BASE_PATH)
 import Tkinter as tk
 from asynch.hmc.homunculus import Homunculus
 from lib import settings
-
-
-
-
-
-
-
-QTYPE_SET="set"
-QTYPE_REM="rem"
-HMC_TITLE_VOCABULARY=" :: Vocabulary Manager"
 
 
 
@@ -29,12 +18,9 @@ class Homunculus_Vocabulary(Homunculus):
         return result
 
     def __init__(self, params):
-        global QTYPE_SET
-        global QTYPE_REM
-        global HMC_TITLE_VOCABULARY
         self.grid_row = 0
         Homunculus.__init__(self, params[0])
-        self.title(settings.HOMUNCULUS_VERSION + HMC_TITLE_VOCABULARY)
+        self.title(settings.HOMUNCULUS_VERSION + settings.HMC_TITLE_VOCABULARY)
         
         self.last_key=""
         self.bind("<Control-Key>", self.key)
@@ -42,7 +28,7 @@ class Homunculus_Vocabulary(Homunculus):
         self.mode = params[0]
         clipboard_text=params[1]
         
-        if self.mode == QTYPE_SET:
+        if self.mode == settings.QTYPE_SET:
             self.geometry("640x480+" + str(int(self.winfo_screenwidth() / 2 - 320)) + "+" + str(int(self.winfo_screenheight() / 2 - 240)))
             self.instructions = "Add/Modify Word"
             Label(self, text=self.instructions, name="pathlabel").grid(row=self.get_row(), column=1, sticky=tk.E)
@@ -113,7 +99,7 @@ class Homunculus_Vocabulary(Homunculus):
                 cb_number += 1
                 Label(self, text=state[0], name="cb_label" + str(cb_number)).grid(row=cb_row, column=cb_col, sticky=tk.W)
                 self.word_state.append((word_state_var, state[1]))
-        elif self.mode == QTYPE_REM:
+        elif self.mode == settings.QTYPE_REM:
             self.geometry("300x100+" + str(int(self.winfo_screenwidth() / 2 - 150)) + "+" + str(int(self.winfo_screenheight() / 2 - 50)))
             
             self.instructions = "Delete Word"
@@ -129,13 +115,12 @@ class Homunculus_Vocabulary(Homunculus):
     
     def complete(self, e):
         ''''''   
-        global QTYPE_SET
         response={"mode": self.mode}
         word=self.word_box.get()
         if len(word)==0:
             self.on_exit()
         response["word"]=word
-        if self.mode==QTYPE_SET:
+        if self.mode==settings.QTYPE_SET:
             
             pronunciation=self.pronunciation_box.get()
             if len(pronunciation)==0:
@@ -152,9 +137,8 @@ class Homunculus_Vocabulary(Homunculus):
         self.withdraw()
     
     def key(self, e):
-        global QTYPE_REM
         '''acceptable keys are numbers and w and p'''
-        if self.mode!=QTYPE_REM:
+        if self.mode!=settings.QTYPE_REM:
             if e.keycode in [48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 80, 87]:
                 self.last_key+=chr(e.keycode)
             if self.last_key in ["W", "P"] or len(self.last_key)==2:

@@ -1,1 +1,0 @@
-java -jar D:\PROGRAMS\SikuliX\sikuli-script.jar -r D:\PROGRAMS\SikuliX\scripts\ff.sikuli

@@ -15,7 +15,7 @@ def launch(htype=None, info=None):
         if info!=None:
             instructions.append(info)
     else:
-        instructions.append(homunculus.QTYPE_DEFAULT)
+        instructions.append(settings.QTYPE_DEFAULT)
     ll.run(instructions)
 
 def clean_homunculi():
@@ -25,16 +25,16 @@ def clean_homunculi():
         ll.kill_process("pythonw.exe")
 
 if __name__ == '__main__':
-    if sys.argv[1]==homunculus.QTYPE_DEFAULT:
+    if sys.argv[1]==settings.QTYPE_DEFAULT:
         app = Homunculus(sys.argv[1])
-    elif sys.argv[1] in [hmc_vocabulary.QTYPE_SET, hmc_vocabulary.QTYPE_REM]:
+    elif sys.argv[1] in [settings.QTYPE_SET, settings.QTYPE_REM]:
         found_word=None
         if len(sys.argv)>2:
             found_word=sys.argv[2]
-        if sys.argv[1]==hmc_vocabulary.QTYPE_SET:
-            app = Homunculus_Vocabulary([hmc_vocabulary.QTYPE_SET, found_word])
-        elif sys.argv[1]==hmc_vocabulary.QTYPE_REM:
-            app = Homunculus_Vocabulary([hmc_vocabulary.QTYPE_REM, found_word])
-    elif sys.argv[1]==homunculus.QTYPE_INSTRUCTIONS:
+        if sys.argv[1]==settings.QTYPE_SET:
+            app = Homunculus_Vocabulary([settings.QTYPE_SET, found_word])
+        elif sys.argv[1]==settings.QTYPE_REM:
+            app = Homunculus_Vocabulary([settings.QTYPE_REM, found_word])
+    elif sys.argv[1]==settings.QTYPE_INSTRUCTIONS:
         app = Homunculus(sys.argv[1], sys.argv[2])
             

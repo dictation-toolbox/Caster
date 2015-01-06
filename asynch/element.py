@@ -15,7 +15,7 @@ import Tkinter as tk
 from lib import  settings, utilities
 
 
-ELEMENT_LISTENING_PORT = 1337
+
 
 
 
@@ -52,8 +52,7 @@ class Element:
         os.kill(os.getpid(), signal.SIGTERM)
     
     def start_server(self):
-        global ELEMENT_LISTENING_PORT
-        run(host='localhost', port=ELEMENT_LISTENING_PORT, debug=False, server='cherrypy')  # bottle is about a full second faster
+        run(host='localhost', port=settings.ELEMENT_LISTENING_PORT, debug=False, server='cherrypy')  # bottle is about a full second faster
         
         
     
@@ -386,10 +385,7 @@ class Element:
         high_score = [0, 0]
         # high_score = index, score
         for i in range(0, self.listbox_content.size()):
-            
-#             print all_symbols[i] == word, all_symbols[i], ", ", word, i
             score = self.word_similarity_score(all_symbols[i], word)
-            print "comparing " + all_symbols[i], score
             if score > high_score[1]:
                 high_score = [i, score]
                 if score == len(word):

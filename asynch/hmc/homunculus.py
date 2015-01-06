@@ -13,15 +13,6 @@ from lib import  settings
 
 
 
-QTYPE_DEFAULT = "default"
-QTYPE_INSTRUCTIONS = "instructions"
-
-
-
-
-
-
-HMC_LISTENING_PORT = 1341
 
 class HServer(BottleServer):
     def __init__(self, listening_port, kill_fn, htype, lock=None):
@@ -47,7 +38,6 @@ class HServer(BottleServer):
 
 class Homunculus(tk.Tk):
     def __init__(self, htype, data=None):
-        global QTYPE_DEFAULT
         tk.Tk.__init__(self, baseName="")
         self.htype = htype
         self.server = None
@@ -59,11 +49,11 @@ class Homunculus(tk.Tk):
         self.protocol("WM_DELETE_WINDOW", self.on_exit)
  
         # 
-        if self.htype == QTYPE_DEFAULT:
+        if self.htype == settings.QTYPE_DEFAULT:
             Label(self, text="Enter Response", name="pathlabel").pack()
             self.ext_box = Text(self, name="ext_box")
             self.ext_box.pack(side=tk.LEFT)
-        elif self.htype == QTYPE_INSTRUCTIONS:
+        elif self.htype == settings.QTYPE_INSTRUCTIONS:
             Label(self, text=" ".join(data.split("_")), name="pathlabel").pack()
             self.ext_box = Text(self, name="ext_box")
             self.ext_box.pack(side=tk.LEFT)
@@ -85,8 +75,7 @@ class Homunculus(tk.Tk):
         self.mainloop()
     
     def start_server(self):
-        global HMC_LISTENING_PORT
-        self.server = HServer(HMC_LISTENING_PORT, self.on_exit, self.htype)
+        self.server = HServer(settings.HMC_LISTENING_PORT, self.on_exit, self.htype)
         
     def complete(self, e):
         '''override this for every new child class'''

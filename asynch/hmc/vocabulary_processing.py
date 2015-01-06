@@ -12,7 +12,7 @@ from dragonfly.actions.action_waitwindow import WaitWindow
 
 
 from asynch import squeue
-from asynch.hmc import hmc_vocabulary, h_launch
+from asynch.hmc import h_launch
 from lib import utilities,  context, settings
 
 
@@ -25,7 +25,6 @@ def add_vocab():
     
     # attempts to get what was highlighted first
     highlighted=context.read_selected_without_altering_clipboard(True)
-    print highlighted
     
     # change the following regex to accept alphabetical only
     disallow="^[A-Za-z]*$"
@@ -38,27 +37,26 @@ def add_vocab():
         
         selected=highlighted[1]
     try: 
-        squeue.add_query(process_set, {"qtype": hmc_vocabulary.QTYPE_SET})
-        h_launch.launch(hmc_vocabulary.QTYPE_SET, selected)
-        WaitWindow(title=settings.HOMUNCULUS_VERSION+hmc_vocabulary.HMC_TITLE_VOCABULARY, timeout=5)._execute()
-        FocusWindow(title=settings.HOMUNCULUS_VERSION+hmc_vocabulary.HMC_TITLE_VOCABULARY)._execute()
+        squeue.add_query(process_set, {"qtype": settings.QTYPE_SET})
+        h_launch.launch(settings.QTYPE_SET, selected)
+        WaitWindow(title=settings.HOMUNCULUS_VERSION+settings.HMC_TITLE_VOCABULARY, timeout=5)._execute()
+        FocusWindow(title=settings.HOMUNCULUS_VERSION+settings.HMC_TITLE_VOCABULARY)._execute()
         Key("tab")._execute()
     except Exception:
         utilities.simple_log(False)
 
 def del_vocab():
     try: 
-        squeue.add_query(process_delete, {"qtype": hmc_vocabulary.QTYPE_REM})
-        h_launch.launch(hmc_vocabulary.QTYPE_REM)
-        WaitWindow(title=settings.HOMUNCULUS_VERSION+hmc_vocabulary.HMC_TITLE_VOCABULARY, timeout=5)._execute()
-        FocusWindow(title=settings.HOMUNCULUS_VERSION+hmc_vocabulary.HMC_TITLE_VOCABULARY)._execute()
+        squeue.add_query(process_delete, {"qtype": settings.QTYPE_REM})
+        h_launch.launch(settings.QTYPE_REM)
+        WaitWindow(title=settings.HOMUNCULUS_VERSION+settings.HMC_TITLE_VOCABULARY, timeout=5)._execute()
+        FocusWindow(title=settings.HOMUNCULUS_VERSION+settings.HMC_TITLE_VOCABULARY)._execute()
         Key("tab")._execute()
     except Exception:
         utilities.simple_log(False)
 
 def process_set(data):
     ''''''
-    print "set "+str(data)
     word=data["response"]["word"]
     pronunciation=data["response"]["pronunciation"]
     if pronunciation=="":
@@ -73,8 +71,6 @@ def process_set(data):
             process_delete(data)
             result=natlink.addWord(word, word_info)
     else:
-        print data
-        print pronunciation
         result=natlink.addWord(word, word_info, str(pronunciation))
         if result==0 and data["response"]["force"]==1:
             process_delete(data)
@@ -88,5 +84,4 @@ def process_set(data):
 def process_delete(data):
     import natlink
     natlink.deleteWord(data["response"]["word"])
-    print "deleting "+str(data)
     
