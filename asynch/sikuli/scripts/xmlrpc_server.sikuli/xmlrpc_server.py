@@ -13,7 +13,9 @@ class MathHandler(SimpleXMLRPCRequestHandler):
             return apply(func, params)
 
     def log_message(self, format, *args):
-        pass # maybe do something fancy like write the messages to a file
+        pass
+    def export_ping(self):
+        return 1
     def export_fclick(self):
         print "attempting to click"
         click("1420309222009.png")

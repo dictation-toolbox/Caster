@@ -22,6 +22,7 @@ QTYPE_INSTRUCTIONS = "instructions"
 ELEMENT_LISTENING_PORT = 1337
 LEGION_LISTENING_PORT = 1338
 HMC_LISTENING_PORT = 1339
+SIKULI_LISTENING_PORT = 8000
 
 def get_list_of_ccr_config_files():
     global SETTINGS
@@ -96,7 +97,7 @@ def init_default_values():
         ("SAVED_CLIPBOARD_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/clipboard.json"),
         ("RECORDED_MACROS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/recorded_macros.json"),
         ("LOG_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/log.txt"),
-        ("SIKULI_SCRIPTS_PATH", ""),
+        ("SIKULI_SCRIPTS_FOLDER_PATH", ""),
         
         # REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
         ("REMOTE_DEBUGGER_PATH" , "D:/PROGRAMS/NON_install/eclipse/plugins/org.python.pydev_3.4.1.201403181715/pysrc"),
@@ -111,9 +112,10 @@ def init_default_values():
         ("NIRCMD_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/nircmd/nircmd.exe"),
         ("MMT_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/MultiMonitorTool/MultiMonitorTool.exe"),
         ("DEFAULT_BROWSER_PATH", "C:/Program Files (x86)/Mozilla Firefox/firefox.exe"),
-        ("SIKULI_IDE_PATH", ""),
-        ("SIKULI_SCRIPT_RUNNER_PATH", ""),
+        ("SIKULI_IDE_JAR_PATH", ""),
+        ("SIKULI_SCRIPTS_JAR_PATH", ""),
         ("SIKULI_SERVER_PATH", SETTINGS["paths"]["BASE_PATH"] +"asynch/sikuli/scripts/xmlrpc_server.sikuli"),
+        ("SIKULI_COMPATIBLE_JAVA_EXE_PATH", ""),
         
         # CCR
         ("GENERIC_CONFIG_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/ccr"),
@@ -177,7 +179,7 @@ def init_default_values():
             values_change_count += 1
     
     if values_change_count > 0:
-        print values_change_count
+        print "settings values changed: ", values_change_count
         save_config()
 
 def get_settings():

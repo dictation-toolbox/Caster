@@ -1,61 +1,60 @@
-import os
+import xmlrpclib
 
 from dragonfly import (Grammar, MappingRule, Function)
 
-from lib import settings
+from lib import settings, control, utilities
 from lib.dragonfree import launch
 
-
 grammar = None
+server_proxy = None
 
 def launch_IDE():
-    launch.run(["java", "-jar", settings.SETTINGS["paths"]["SIKULI_IDE_PATH"]])
+    launch.run([settings.SETTINGS["paths"]["SIKULI_COMPATIBLE_JAVA_EXE_PATH"],
+                "-jar", settings.SETTINGS["paths"]["SIKULI_IDE_JAR_PATH"]])
     
 def launch_server():
-    launch.run(["java", "-jar", settings.SETTINGS["paths"]["SIKULI_SCRIPT_RUNNER_PATH"], "-r", settings.SETTINGS["paths"]["SIKULI_SERVER_PATH"]])
+    launch.run([settings.SETTINGS["paths"]["SIKULI_COMPATIBLE_JAVA_EXE_PATH"],
+                "-jar", settings.SETTINGS["paths"]["SIKULI_SCRIPTS_JAR_PATH"],
+                "-r", settings.SETTINGS["paths"]["SIKULI_SERVER_PATH"]])
 
-def refresh_sikuli():
-#     unload()
+def start_server_proxy():
+    global server_proxy
+    server_proxy = xmlrpclib.ServerProxy("http://localhost:" + str(settings.SIKULI_LISTENING_PORT))
+    server_proxy.ping()
+    utilities.report("sikuli server proxy started successfully")
+#     print dir(server_proxy)
     
-    # rebuild from filenames
-    mapping = {}
+def server_proxy_timer_fn():
+    utilities.report("attempting server proxy")
+    try:
+        start_server_proxy()
+        control.TIMER_MANAGER.remove_callback(server_proxy_timer_fn)
+    except Exception:
+        pass
     
-#     natlink_available = False
-#     try:
-#         import natlink
-#         natlink_available = True
-#     except ImportError:
-#         # just do regular expression checking
-#         pass
-#     default_number = 0
-#     for f in os.listdir(settings.SETTINGS["paths"]["SIKULI_SCRIPTS_PATH"]):
-#         if f.endswith(".sikuli"):
-#             words = f.split(".")[0].split("_")
-#             # check to make sure the command is made of proper words
-#             can_be_pronounced = True
-#             for word in words:
-#                 if natlink_available:
-#                     if natlink.getWordInfo(word, 7) == None:
-#                         can_be_pronounced = False
-#                         break
-#                 else:
-#                     if word.isalpha() == False:
-#                         can_be_pronounced = False
-#                         break
-#             # PATH-TO-SIKULIsikuli-ide.exe -r xxxx.sikuli 
-#             if can_be_pronounced:
-#                 mapping[" ".join(words)] = Function(launch.run, arguments=[settings.SETTINGS["SIKULI_IDE_PATH"], "-r", f])
-
+def refresh():
+    ''' should be able to add new scripts on the fly and then call this '''
 
 class SikuliControlRule(MappingRule):
     mapping = {
     "launch sick IDE":           Function(launch_IDE),
-    "Launch sick server":        Function(launch_server),    
+    "Launch sick server":        Function(launch_server),
     }
 
-grammar = Grammar("sikuli")
-grammar.add_rule(SikuliControlRule())
-grammar.load()
+if settings.SETTINGS["miscellaneous"]["sikuli_enabled"]:
+    grammar = Grammar("sikuli")
+    grammar.add_rule(SikuliControlRule())
+    grammar.load()
+    
+    # start server
+    try:
+        # if the server is already running, this should go off without a hitch
+        start_server_proxy()
+    except Exception:
+        launch_server()
+        seconds5 = 5
+        control.TIMER_MANAGER.add_callback(server_proxy_timer_fn, seconds5)
+        
 
 def unload():
     global grammar
