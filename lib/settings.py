@@ -45,8 +45,9 @@ def save_json_file(data, path):
         if not os.path.exists(path):
             f = open(path, "w")
             f.close()
-        with open(path, "w") as f:
-            f.write(formatted_data)
+        f = open(path, "w")
+        f.write(formatted_data)
+        f.close()
     except Exception:
         print "error saving json file: " + path
 
@@ -54,9 +55,9 @@ def load_json_file(path):
     result = {}
     try:
         if os.path.isfile(path):  # If the file exists.
-            with open(path, "r") as f:
-                result = json.loads(f.read())
-                f.close()
+            f = open(path, "r")
+            result = json.loads(f.read())
+            f.close()
         else:
             save_json_file(result, path)
     except Exception:
@@ -97,7 +98,7 @@ def init_default_values():
         ("SAVED_CLIPBOARD_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/clipboard.json"),
         ("RECORDED_MACROS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/recorded_macros.json"),
         ("LOG_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/log.txt"),
-        ("SIKULI_SCRIPTS_FOLDER_PATH", ""),
+        ("SIKULI_SCRIPTS_FOLDER_PATH", SETTINGS["paths"]["BASE_PATH"] + "/asynch/sikuli/scripts"),
         
         # REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
         ("REMOTE_DEBUGGER_PATH" , "D:/PROGRAMS/NON_install/eclipse/plugins/org.python.pydev_3.4.1.201403181715/pysrc"),

@@ -8,6 +8,7 @@ from lib.dragonfree import launch
 grammar = None
 server_proxy = None
 
+
 def launch_IDE():
     launch.run([settings.SETTINGS["paths"]["SIKULI_COMPATIBLE_JAVA_EXE_PATH"],
                 "-jar", settings.SETTINGS["paths"]["SIKULI_IDE_JAR_PATH"]])
@@ -15,7 +16,8 @@ def launch_IDE():
 def launch_server():
     launch.run([settings.SETTINGS["paths"]["SIKULI_COMPATIBLE_JAVA_EXE_PATH"],
                 "-jar", settings.SETTINGS["paths"]["SIKULI_SCRIPTS_JAR_PATH"],
-                "-r", settings.SETTINGS["paths"]["SIKULI_SERVER_PATH"]])
+                "-r", settings.SETTINGS["paths"]["SIKULI_SERVER_PATH"]
+                ])
 
 def start_server_proxy():
     global server_proxy
@@ -32,6 +34,8 @@ def server_proxy_timer_fn():
     except Exception:
         pass
     
+
+
 def refresh():
     ''' should be able to add new scripts on the fly and then call this '''
 
