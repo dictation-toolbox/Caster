@@ -1,8 +1,11 @@
 import sys
-BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
-if BASE_PATH not in sys.path:
-    sys.path.append(BASE_PATH)
-from asynch.hmc import hmc_vocabulary, homunculus
+try:
+    # this section only necessary if called externally to Dragon
+    BASE_PATH = sys.argv[0].split("MacroSystem")[0] + "MacroSystem"
+    if BASE_PATH not in sys.path:
+        sys.path.append(BASE_PATH)
+except Exception:
+    pass
 from asynch.hmc.hmc_vocabulary import Homunculus_Vocabulary
 from asynch.hmc.homunculus import Homunculus
 from lib import settings, utilities

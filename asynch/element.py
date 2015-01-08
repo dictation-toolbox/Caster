@@ -5,7 +5,8 @@ from threading import Timer
 import tkFileDialog
 import tkFont
 
-BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
+# BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
+BASE_PATH = sys.argv[0].split("MacroSystem")[0] + "MacroSystem"
 if BASE_PATH not in sys.path:
     sys.path.append(BASE_PATH)
 from bottle import run, request  # , post,response

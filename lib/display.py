@@ -1,7 +1,6 @@
 from __future__ import division
 
 import getopt
-import multiprocessing
 import os
 import re 
 import signal
