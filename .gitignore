@@ -8,6 +8,7 @@ bin/misc
 *.json
 *.bak
 *.class
+*.sikuli
 test.py
 *.tmp
 unins000.*

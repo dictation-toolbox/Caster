@@ -1,11 +1,27 @@
 import SimpleXMLRPCServer
 from SimpleXMLRPCServer import *
 import sys
-
-available_function_names = []
+from inspect import getmembers, isfunction
 
 SCRIPTS_PATH = sys.argv[0].split("\\xmlrpc_server.sikuli")[0]
 BASE_PATH = sys.argv[0].split("MacroSystem")[0] + "MacroSystem"
+
+modules = []
+server = SimpleXMLRPCServer(("localhost", 8000), allow_none=True)
+quit = 0
+
+def ping():
+    return 1
+def list_functions():
+    global modules
+    return modules
+def terminate():
+    global quit
+    quit = 1
+    return 1
+
+server.register_function(list_functions, "list_functions")
+server.register_function(terminate, "terminate")
 
 if SCRIPTS_PATH not in sys.path:
     sys.path.append(SCRIPTS_PATH)
@@ -13,39 +29,28 @@ for s in [x[0] for x in os.walk(SCRIPTS_PATH)]:
     if s.endswith(".sikuli") and not s.endswith("xmlrpc_server.sikuli"):
         mdl_name = s.split(".")[0].split("\\")[-1]
         exec("import " + mdl_name)
-        # at this point, module names still have underscores
-        available_function_names.append(mdl_name)
-        print "importing " + mdl_name
+        exec("l = getmembers(" + mdl_name+", isfunction)")
+        for d in l:
+            if d[0].startswith("export_"):
+                registered_function_name=mdl_name+"_"+d[0].replace("export_", "")
+                modules.append(registered_function_name)
+                exec("server.register_function("+mdl_name+"."+d[0]+", '"+registered_function_name+"')")
+                
+        
+print "Sorcery Sikuli Bridge\n\nlist of available commands " + str(modules)
 
 
-class MathHandler(SimpleXMLRPCRequestHandler):
-    def _dispatch(self, method, params):
-        try:
-            # We are forcing the 'export_' prefix on methods that are
-            # callable through XML-RPC to prevent potential security
-            # problems
-            func = getattr(self, 'export_' + method)
-        except AttributeError:
-            raise Exception('method "%s" is not supported' % method)
-        else:
-            return apply(func, params)
 
-    def log_message(self, format, *args):
-        pass
-    def export_ping(self):
-        return 1
-    def export_fclick(self):
-        print "attempting to click"
-        click("1420309222009.png")
-        click("1420309222009.png")
-        return 1
-    def export_add(self, x, y):
-        return x + y
+# examples
+def add(self, x, y):
+    return x + y
 
-server = SimpleXMLRPCServer(("localhost", 8000), MathHandler)
+
+
 
 try:
-    print 'Use Control-C to exit'
-    server.serve_forever()
+    while not quit:
+        server.handle_request()
+#     server.serve_forever()
 except KeyboardInterrupt:
     print 'Exiting'
