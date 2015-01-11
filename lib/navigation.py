@@ -18,7 +18,6 @@ import  settings
 
 
 BASE_PATH = settings.SETTINGS["paths"]["BASE_PATH"]
-MMT_PATH = settings.SETTINGS["paths"]["MMT_PATH"]
 NIRCMD_PATH = settings.SETTINGS["paths"]["NIRCMD_PATH"]
 
 def mouse_alternates(mode):

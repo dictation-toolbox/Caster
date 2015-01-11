@@ -1,9 +1,10 @@
 import xmlrpclib
 
-from dragonfly import (Grammar, MappingRule, Function)
+from dragonfly import (Grammar, MappingRule, Function, Key)
 
 from lib import settings, control, utilities
 from lib.dragonfree import launch
+
 
 grammar = None
 server_proxy = None
@@ -40,7 +41,7 @@ def generate_commands(list_of_functions):
 
 def start_server_proxy():
     global server_proxy
-    server_proxy = xmlrpclib.ServerProxy("http://localhost:" + str(settings.SIKULI_LISTENING_PORT))
+    server_proxy = xmlrpclib.ServerProxy("http://127.0.0.1:" + str(settings.SIKULI_LISTENING_PORT))
     generate_commands(server_proxy.list_functions())
     utilities.report("sikuli server proxy started successfully")
     
@@ -70,6 +71,7 @@ def refresh():
     "launch sick IDE":           Function(launch_IDE),
     "launch sick server":        Function(launch_server),
     "refresh sick you Lee":      Function(refresh_sick_command),
+    "sick shot":                 Key("cs-2"),
     }
     grammar.add_rule(MappingRule(name="sik", mapping=mapping))
     grammar.load()

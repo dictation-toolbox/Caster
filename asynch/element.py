@@ -1,29 +1,25 @@
+import SimpleXMLRPCServer
+from SimpleXMLRPCServer import *
 from Tkinter import (StringVar, OptionMenu, Scrollbar, Frame, Label, Entry)
 import os, re, sys, json
 import signal
 from threading import Timer
 import tkFileDialog
 import tkFont
+import Tkinter as tk
 
-# BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
 BASE_PATH = sys.argv[0].split("MacroSystem")[0] + "MacroSystem"
 if BASE_PATH not in sys.path:
     sys.path.append(BASE_PATH)
-from bottle import run, request  # , post,response
-import bottle
-
-import Tkinter as tk
-from lib import  settings, utilities
-
-
-
-
-
+    from lib import  settings, utilities
+else:
+    from lib import  settings, utilities
 
 class Element:
     def __init__(self):
         self.setup_regexes()
         self.setup_UI()
+        self.setup_XMLRPC_server()
          
         # update active file
         self.update_interval = 100
@@ -31,9 +27,11 @@ class Element:
         self.old_active_window_title = ""
         self.root.after(self.update_interval, self.update_active_file)
          
-        # start bottleserver server, tk main loop
-        Timer(1, self.start_server).start()
-        bottle.route('/process', method="POST")(self.process_request)
+        # start server, tk main loop
+        def start_server():
+            while not self.server_quit:
+                self.server.handle_request()  
+        Timer(1, start_server).start()
         self.root.mainloop()
     
     def setup_regexes(self):
@@ -48,14 +46,103 @@ class Element:
         self.JAVA_VARIABLES = re.compile("([ \.]*([A-Za-z0-9_]+)[ ]*=)|((\bpublic\b|\bprivate\b|\binternal\b|\bfinal\b|\bstatic\b)[ ]+[A-Za-z0-9_]+[ ]+([A-Za-z0-9_]+)[ ]*[;=])|(([A-Za-z0-9_]+)[ ]*[,\)])")  # 1,4,6
         
     
-    def on_exit(self):
+    def setup_XMLRPC_server(self): 
+        self.server_quit = 0
+        self.server = SimpleXMLRPCServer(("127.0.0.1", settings.ELEMENT_LISTENING_PORT), allow_none=True)
+        self.server.register_function(self.xmlrpc_kill, "kill")
+        self.server.register_function(self.xmlrpc_scroll, "scroll")
+        self.server.register_function(self.xmlrpc_retrieve, "retrieve")
+        self.server.register_function(self.xmlrpc_sticky, "sticky")
+        self.server.register_function(self.xmlrpc_remove, "remove")   
+        self.server.register_function(self.xmlrpc_add_name, "add_name")
+        self.server.register_function(self.xmlrpc_search, "search")
+        self.server.register_function(self.xmlrpc_focus_extensions, "focus_extensions")
+        self.server.register_function(self.xmlrpc_focus_directory_box, "focused_directory_box")
+        self.server.register_function(self.xmlrpc_rescan, "rescan")
+        self.server.register_function(self.xmlrpc_filter_strict_request_for_data, "filter_strict_request_for_data")
+        self.server.register_function(self.xmlrpc_filter_strict_return_processed_data, "filter_strict_return_processed_data")
+        
+    
+
+    
+    def xmlrpc_kill(self):  #
+        self.server_quit = 1
         self.root.destroy()
         os.kill(os.getpid(), signal.SIGTERM)
+        
+    def xmlrpc_scroll(self, index):  #
+        if index < self.listbox_content.size():
+            self.root.after(10, lambda: self.scroll_to(index - 10))
     
-    def start_server(self):
-        run(host='localhost', port=settings.ELEMENT_LISTENING_PORT, debug=False, server='cherrypy')  # bottle is about a full second faster
+    def xmlrpc_retrieve(self, index):  #
+        index_plus_one = index + 1
+        if index < 10:  # if sticky
+            return self.sticky_listbox_content.get(index, index_plus_one)[0]  #
+        else:
+            return self.listbox_content.get(index - 10, index_plus_one - 10)[0]
+    
+    def xmlrpc_sticky(self, index, sticky_index, auto_sticky=""):#
+        # requires sticky_index,auto_sticky regardless of what mode it's in
+        # sticky_index = # the index of the slot on the sticky list to be overwritten
+        sticky_previous = self.current_file["sticky"][sticky_index]
+        if not sticky_previous == "":  # if you overwrite an old sticky entry, move it back down to the unordered list
+            self.current_file["names"].append(sticky_previous)
+            self.current_file["names"].sort()
+        # now, either replace the slot with a string or a word from the unordered list, first a string:                
+        if not auto_sticky == "":
+            self.current_file["sticky"][sticky_index] = auto_sticky
+        else:
+            index_plus_one = index + 1
+            target_word = self.listbox_content.get(index - 10, index_plus_one - 10)[0]
+            self.current_file["sticky"][sticky_index] = target_word
+            self.current_file["names"].remove(target_word)
+
+        settings.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
+        self.root.after(10, lambda: self.populate_list(self.last_file_loaded))
+    
+    def xmlrpc_remove(self, index):#
+        index_plus_one = index + 1
+        target_word = None
+        if index < 10:
+            target_word = self.current_file["sticky"][index]
+            self.current_file["sticky"][index] = ""
+        else:
+            target_word = self.listbox_content.get(index - 10, index_plus_one - 10)[0]  # unordered
+            self.current_file["names"].remove(target_word)
+        if target_word in self.current_file["added"]:
+            self.current_file["added"].remove(target_word)
+        self.current_file["banned"].append(target_word)
+        settings.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
+        self.root.after(10, lambda: self.populate_list(self.last_file_loaded))
+    
+    def xmlrpc_add_name(self, name):#
+        self.current_file["names"].append(name)
+        self.current_file["added"].append(name)
+        self.current_file["names"].sort()
+        settings.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
+        self.root.after(10, lambda: self.populate_list(self.last_file_loaded))
+    
+    def xmlrpc_search(self, word):
+        self.root.after(10, lambda: self.search(word))
         
-        
+    def xmlrpc_focus_extensions(self):
+        self.root.after(10, self.ext_box.focus_set)
+    
+    def xmlrpc_focus_directory_box(self):
+        self.root.after(10, self.dropdown.focus_set)
+    
+    def xmlrpc_rescan(self):
+        self.rescan_directory()
+    
+    def xmlrpc_filter_strict_request_for_data(self):
+        return json.dumps(self.TOTAL_SAVED_INFO["directories"][self.dropdown_selected.get()])
+    
+    def xmlrpc_filter_strict_return_processed_data(self, processed_data):
+        self.TOTAL_SAVED_INFO["directories"][self.dropdown_selected.get()] = json.loads(processed_data)
+        self.old_active_window_title = "Directory has been strict- modified"
+        settings.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
+    
+
     
     def update_active_file(self):
         active_window_title = utilities.get_active_window_title()
@@ -300,84 +387,7 @@ class Element:
     def ask_directory(self):  # returns a string of the directory name
         return tkFileDialog.askdirectory(**self.dir_opt)
     
-    def process_request(self):
-        request_object = json.loads(request.body.read())
-        action_type = request_object["action_type"]
-        if action_type == "kill":
-            self.on_exit()
-        if self.current_file == None and (not action_type in ["extensions", "trigger_directory_box", "rescan", "scan_new", "search"]):  # only these are allowed when no file is loaded
-            return "No file is currently loaded."
-        if "index" in request_object:
-            index = int(request_object["index"])
-            if action_type == "scroll":
-                if index < self.listbox_content.size():
-                    self.root.after(10, lambda: self.scroll_to(index - 10))  # now thread safe
-                return "c"
-            elif action_type == "retrieve":
-                index_plus_one = index + 1
-                if index < 10:  # if sticky
-                    return self.sticky_listbox_content.get(index, index_plus_one)[0]  #
-                else:
-                    return self.listbox_content.get(index - 10, index_plus_one - 10)[0]
-            elif action_type == "sticky":  # requires sticky_index,auto_sticky regardless of what mode it's in
-                sticky_index = request_object["sticky_index"]  # the index of the slot on the sticky list to be overwritten
-                sticky_previous = self.current_file["sticky"][sticky_index]
-                if not sticky_previous == "":  # if you overwrite an old sticky entry, move it back down to the unordered list
-                    self.current_file["names"].append(sticky_previous)
-                    self.current_file["names"].sort()
-                # now, either replace the slot with a string or a word from the unordered list, first a string:                
-                if not request_object["auto_sticky"] == "":
-                    self.current_file["sticky"][sticky_index] = request_object["auto_sticky"]
-                else:
-                    index_plus_one = index + 1
-                    target_word = self.listbox_content.get(index - 10, index_plus_one - 10)[0]
-                    self.current_file["sticky"][sticky_index] = target_word
-                    self.current_file["names"].remove(target_word)
-
-                settings.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
-                self.root.after(10, lambda: self.populate_list(self.last_file_loaded))
-                return "c"
-            elif action_type == "remove":
-                index_plus_one = index + 1
-                target_word = None
-                if index < 10:
-                    target_word = self.current_file["sticky"][index]
-                    self.current_file["sticky"][index] = ""
-                else:
-                    target_word = self.listbox_content.get(index - 10, index_plus_one - 10)[0]  # unordered
-                    self.current_file["names"].remove(target_word)
-                if target_word in self.current_file["added"]:
-                    self.current_file["added"].remove(target_word)
-                self.current_file["banned"].append(target_word)
-                settings.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
-                self.root.after(10, lambda: self.populate_list(self.last_file_loaded))
-                return "c"
-        elif "name" in request_object:
-            self.current_file["names"].append(request_object["name"])
-            self.current_file["added"].append(request_object["name"])
-            self.current_file["names"].sort()
-            settings.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
-            self.root.after(10, lambda: self.populate_list(self.last_file_loaded))
-            return "c"
-        else:
-            if action_type == "search":
-                self.root.after(10, lambda: self.search(request_object["word"]))
-#                 self.root.after(10, self.search_box.focus_set)
-            elif action_type == "extensions":
-                self.root.after(10, self.ext_box.focus_set)
-            elif action_type == "trigger_directory_box":
-                self.root.after(10, self.dropdown.focus_set)
-            elif action_type == "rescan":
-                self.rescan_directory()
-            elif action_type == "filter_strict_request_for_data":
-                return json.dumps(self.TOTAL_SAVED_INFO["directories"][self.dropdown_selected.get()])
-            elif action_type == "filter_strict_return_processed_data":
-                self.TOTAL_SAVED_INFO["directories"][self.dropdown_selected.get()] = json.loads(request_object["processed_data"])
-                self.old_active_window_title = "Directory has been strict- modified"
-                settings.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
-            return "c"
-        
-        return 'unrecognized request received: ' + request_object["action_type"]
+    
     
     def search(self, word):
         ''''''
@@ -428,7 +438,7 @@ class Element:
         self.root.title(settings.ELEMENT_VERSION)
         self.root.geometry("180x" + str(self.root.winfo_screenheight() - 100) + "-50+20")
         self.root.wm_attributes("-topmost", 1)
-        self.root.protocol("WM_DELETE_WINDOW", self.on_exit)
+        self.root.protocol("WM_DELETE_WINDOW", self.xmlrpc_kill)
         self.customFont = tkFont.Font(family="Helvetica", size=8)
         
         # setup hotkeys

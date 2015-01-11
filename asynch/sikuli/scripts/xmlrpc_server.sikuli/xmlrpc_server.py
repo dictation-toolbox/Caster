@@ -7,7 +7,7 @@ SCRIPTS_PATH = sys.argv[0].split("\\xmlrpc_server.sikuli")[0]
 BASE_PATH = sys.argv[0].split("MacroSystem")[0] + "MacroSystem"
 
 modules = []
-server = SimpleXMLRPCServer(("localhost", 8000), allow_none=True)
+server = SimpleXMLRPCServer(("127.0.0.1", 8000), allow_none=True)
 quit = 0
 
 def ping():

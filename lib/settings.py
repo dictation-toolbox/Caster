@@ -111,7 +111,6 @@ def init_default_values():
         ("DOUGLAS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/lib/display.py"),
         ("HOMUNCULUS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/asynch/hmc/h_launch.py"),
         ("NIRCMD_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/nircmd/nircmd.exe"),
-        ("MMT_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/MultiMonitorTool/MultiMonitorTool.exe"),
         ("DEFAULT_BROWSER_PATH", "C:/Program Files (x86)/Mozilla Firefox/firefox.exe"),
         ("SIKULI_IDE_JAR_PATH", ""),
         ("SIKULI_SCRIPTS_JAR_PATH", ""),
@@ -120,12 +119,11 @@ def init_default_values():
         
         # CCR
         ("GENERIC_CONFIG_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/ccr"),
-        ("UNIFIED_CONFIG_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/ccr/unified/config.txt"),
-        
+                
         # MISC
         ("ALARM_SOUND_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/media/49685__ejfortin__nano-blade-loop.wav"),
         ("MEDIA_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/media"),
-        ("HOMEBREW_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/homebrew")                          
+                                  
         ]:
         if not name in SETTINGS["paths"]:  # .keys()
             SETTINGS["paths"][name] = value
