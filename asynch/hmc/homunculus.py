@@ -1,52 +1,31 @@
+import SimpleXMLRPCServer
+from SimpleXMLRPCServer import *
 from Tkinter import (Label, Text)
-import json
 import os, sys
 import signal
 from threading import Timer
-BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
-if BASE_PATH not in sys.path:
-    sys.path.append(BASE_PATH)
+
 import Tkinter as tk
-from asynch.bottleserver import BottleServer
-from lib import  settings
-
-
-
-
-
-class HServer(BottleServer):
-    def __init__(self, listening_port, kill_fn, htype, lock=None):
-        self.response = None
-        self.kill_fn = kill_fn
-        self.htype = htype
-        BottleServer.__init__(self, listening_port, lock=lock)
-    
-    def receive_request(self):
-        '''will only get one kind of request'''
-        message = {}
-        
-        
-        if self.response != None:
-            with self.lock:
-                message["qtype"] = self.htype
-                message["response"] = self.response
-            Timer(1, self.kill_fn).start()
-        return json.dumps(message)
-        
-            
-        
+if __name__ == "__main__":
+    BASE_PATH = sys.argv[0].split("MacroSystem")[0] + "MacroSystem"
+    if BASE_PATH not in sys.path:
+        sys.path.append(BASE_PATH)
+    from lib import  settings
+else:
+    from lib import  settings
 
 class Homunculus(tk.Tk):
     def __init__(self, htype, data=None):
         tk.Tk.__init__(self, baseName="")
+        self.setup_XMLRPC_server()
         self.htype = htype
-        self.server = None
+        self.completed = False
         
 
         self.title(settings.HOMUNCULUS_VERSION)
         self.geometry("300x200+" + str(int(self.winfo_screenwidth() / 2 - 150)) + "+" + str(int(self.winfo_screenheight() / 2 - 100)))
         self.wm_attributes("-topmost", 1)
-        self.protocol("WM_DELETE_WINDOW", self.on_exit)
+        self.protocol("WM_DELETE_WINDOW", self.xmlrpc_kill)
  
         # 
         if self.htype == settings.QTYPE_DEFAULT:
@@ -61,24 +40,38 @@ class Homunculus(tk.Tk):
         self.bind("<Return>", self.complete)
         
         
-        # start bottleserver server, tk main loop
-        Timer(1, self.start_server).start()
-        # backup plan in case for whatever reason Dragon doesn't shut it down:
-        Timer(300, self.on_exit).start()
+        # start server, tk main loop
+        def start_server():
+            while not self.server_quit:
+                self.server.handle_request()  
+        Timer(1, start_server).start()
         Timer(0.05, self.start_tk).start()
+        # backup plan in case for whatever reason Dragon doesn't shut it down:
+        Timer(300, self.xmlrpc_kill).start()
+        
 
-    def on_exit(self):
+    def xmlrpc_kill(self):
+        self.server_quit = 1
         self.destroy()
         os.kill(os.getpid(), signal.SIGTERM)
     
     def start_tk(self):
         self.mainloop()
     
-    def start_server(self):
-        self.server = HServer(settings.HMC_LISTENING_PORT, self.on_exit, self.htype)
+    def setup_XMLRPC_server(self): 
+        self.server_quit = 0
+        self.server = SimpleXMLRPCServer(("127.0.0.1", settings.HMC_LISTENING_PORT), allow_none=True)
+        self.server.register_function(self.xmlrpc_kill, "kill")
+        self.server.register_function(self.xmlrpc_get_message, "get_message")
         
     def complete(self, e):
+        self.completed = True
+        
+    def xmlrpc_get_message(self, e):
         '''override this for every new child class'''
-        with self.server.lock:
-            self.server.response = self.ext_box.get("1.0", tk.END)
-        self.withdraw()
+        if self.completed:
+            Timer(1, self.xmlrpc_kill).start()
+            self.withdraw()
+            return self.ext_box.get("1.0", tk.END).replace("\n", "")
+        else:
+            return None

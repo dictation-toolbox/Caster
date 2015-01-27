@@ -1,4 +1,4 @@
-import json, win32api, win32con, re
+import win32api, win32con, re
 import xmlrpclib
 
 from dragonfly import (Function, Text, Grammar, BringApp, WaitWindow, Key,
@@ -95,8 +95,7 @@ def homunculus_to_element(data):
     word = data["response"].replace("\n", "").rstrip()
     communicate().search(word)
 
-def strict_filter(response_data):
-    directory = json.loads(response_data)
+def strict_filter(directory):
     for f in directory["files"].values():
         acceptably_difficult_to_type = []
         for name in f["names"]:
@@ -105,7 +104,7 @@ def strict_filter(response_data):
                 acceptably_difficult_to_type.append(name)
         f["names"] = acceptably_difficult_to_type
     
-    communicate().filter_strict_return_processed_data(json.dumps(directory))
+    communicate().filter_strict_return_processed_data(directory)
             
 def word_breakdown(name):
     

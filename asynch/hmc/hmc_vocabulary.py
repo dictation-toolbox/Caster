@@ -1,11 +1,20 @@
 from Tkinter import Frame, Label, Entry, Checkbutton
 import sys
-BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
-if BASE_PATH not in sys.path:
-    sys.path.append(BASE_PATH)
+from threading import Timer
+
 import Tkinter as tk
-from asynch.hmc.homunculus import Homunculus
-from lib import settings
+
+if __name__ == "__main__":
+    BASE_PATH = sys.argv[0].split("MacroSystem")[0] + "MacroSystem"
+    if BASE_PATH not in sys.path:
+        sys.path.append(BASE_PATH)
+        from lib import  settings
+        from asynch.hmc.homunculus import Homunculus
+else:
+    from lib import  settings
+    from asynch.hmc.homunculus import Homunculus
+
+
 
 
 
@@ -113,28 +122,31 @@ class Homunculus_Vocabulary(Homunculus):
         
         
     
-    def complete(self, e):
-        ''''''   
-        response={"mode": self.mode}
-        word=self.word_box.get()
-        if len(word)==0:
-            self.on_exit()
-        response["word"]=word
-        if self.mode==settings.QTYPE_SET:
+    def xmlrpc_get_message(self, e):
+        if self.completed:
+            response={"mode": self.mode}
+            word=self.word_box.get()
+            if len(word)==0:
+                self.xmlrpc_kill()
+            response["word"]=word
+            if self.mode==settings.QTYPE_SET:
+                pronunciation=self.pronunciation_box.get()
+                if len(pronunciation)==0:
+                    pronunciation=""
+                response["pronunciation"]=pronunciation
+                response["force"]=self.force_add_var.get()
+                word_info=0x00000000
+                for ws in self.word_state:
+                    if ws[0].get()==1:
+                        word_info+=ws[1]
+                response["word_info"]=word_info
             
-            pronunciation=self.pronunciation_box.get()
-            if len(pronunciation)==0:
-                pronunciation=""
-            response["pronunciation"]=pronunciation
-            response["force"]=self.force_add_var.get()
-            word_info=0x00000000
-            for ws in self.word_state:
-                if ws[0].get()==1:
-                    word_info+=ws[1]
-            response["word_info"]=word_info
-        with self.server.lock:
-            self.server.response=response
-        self.withdraw()
+            
+            Timer(1, self.xmlrpc_kill).start()
+            self.withdraw()
+            return response
+        else:
+            return None
     
     def key(self, e):
         '''acceptable keys are numbers and w and p'''

@@ -1,7 +1,6 @@
 import SimpleXMLRPCServer
 from SimpleXMLRPCServer import *
 from Tkinter import (StringVar, OptionMenu, Scrollbar, Frame, Label, Entry)
-import os, re, sys, json
 import signal
 from threading import Timer
 import tkFileDialog
@@ -135,10 +134,12 @@ class Element:
         self.rescan_directory()
     
     def xmlrpc_filter_strict_request_for_data(self):
-        return json.dumps(self.TOTAL_SAVED_INFO["directories"][self.dropdown_selected.get()])
+        return self.TOTAL_SAVED_INFO["directories"][self.dropdown_selected.get()]
+#         return json.dumps(self.TOTAL_SAVED_INFO["directories"][self.dropdown_selected.get()])
     
     def xmlrpc_filter_strict_return_processed_data(self, processed_data):
-        self.TOTAL_SAVED_INFO["directories"][self.dropdown_selected.get()] = json.loads(processed_data)
+        self.TOTAL_SAVED_INFO["directories"][self.dropdown_selected.get()] = processed_data
+#         self.TOTAL_SAVED_INFO["directories"][self.dropdown_selected.get()] = json.loads(processed_data)
         self.old_active_window_title = "Directory has been strict- modified"
         settings.save_json_file(self.TOTAL_SAVED_INFO, self.JSON_PATH)
     

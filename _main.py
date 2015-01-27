@@ -6,7 +6,7 @@ General enhancements for Dragon NaturallySpeaking.
 '''
 
 from dragonfly import (BringApp, Key, Function, Grammar, Playback,
-                       IntegerRef, Dictation, Choice, WaitWindow, MappingRule, Text)
+                       IntegerRef, Dictation, Choice, Pause, MappingRule, Text)
 from dragonfly.actions.action_focuswindow import FocusWindow
 
 from asynch.hmc import vocabulary_processing
@@ -32,7 +32,12 @@ def repeat_that(n):
     except Exception:
         utilities.simple_log(False)
 
-   
+def change_monitor():
+    if settings.SETTINGS["miscellaneous"]["sikuli_enabled"]:
+        Playback([(["monitor", "select"], 0.0)])._execute()
+    else:
+        utilities.report("This command requires SikuliX to be enabled in the settings file")
+       
 class MainRule(MappingRule):
     
     @staticmethod
@@ -56,6 +61,7 @@ class MainRule(MappingRule):
     
     # hardware management
     "(<volume_mode> [system] volume [to] <n> | volume <volume_mode> <n>)": Function(navigation.volume_control, extra={'n', 'volume_mode'}),
+    "change monitor":               Key("w-p")+Pause("100")+Function(change_monitor),
     
     # window management
     'minimize':                     Playback([(["minimize", "window"], 0.0)]),
