@@ -13,7 +13,7 @@ RECORDED_MACROS_GRAMMAR = Grammar("recorded_macros")
 
 
 def print_startup_message():
-    print "*- Starting Sorcery v.203 -*"
+    print "*- Starting Caster v 0.3 -*"
 
 
 

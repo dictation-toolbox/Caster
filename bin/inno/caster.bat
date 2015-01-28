@@ -4,21 +4,21 @@ cd C:\NatLink\NatLink\MacroSystem
 
 @echo on
 
-git clone https://github.com/synkarius/dragonfly-sorcery.git
+git clone https://github.com/synkarius/caster.git
 
 @echo off
 
-cd C:\NatLink\NatLink\MacroSystem\dragonfly-sorcery
+cd C:\NatLink\NatLink\MacroSystem\caster
 
 mv * ../
 mv .git ../
 mv .gitignore ../
 
 cd C:\NatLink\NatLink\MacroSystem
-rmdir dragonfly-sorcery
+rmdir caster
 
 echo ------------------------------------------
-echo Dragonfly Sorcery installation complete...
+echo Caster installation complete...
 echo ------------------------------------------
 
 pause

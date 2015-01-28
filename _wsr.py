@@ -4,7 +4,7 @@ import time, pythoncom
 
 
 if __name__ == "__main__":
-    print "WSR Speech Recognition is garbage; it is recommended that you not run Sorcery this way."
+    print "WSR Speech Recognition is garbage; it is recommended that you not run Caster this way."
     import __init__
     import _main
     while True:

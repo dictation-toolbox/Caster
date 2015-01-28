@@ -37,7 +37,7 @@ for s in [x[0] for x in os.walk(SCRIPTS_PATH)]:
                 exec("server.register_function("+mdl_name+"."+d[0]+", '"+registered_function_name+"')")
                 
         
-print "Sorcery Sikuli Bridge\n\nlist of available commands " + str(modules)
+print "Caster Sikuli Bridge\n\nlist of available commands " + str(modules)
 
 
 
