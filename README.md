@@ -1,4 +1,4 @@
-#Dragonfly::Sorcery
+#Caster
 ##_Natlink/Dragonfly speech recognition macros + voice programming assistance tools_
 
 If you've found my humble Dragonfly repository, perhaps some of these links will be useful to you. I am still finding Natlink and Dragonfly resources and I have listed some of the best below for my own reference and yours.
@@ -76,7 +76,7 @@ dragonfly/natlink publicity
 - http://www.extrahop.com/post/blog/programming-by-voice-staying-productive-without-harming-yourself/
 - http://voicecontrol.blogspot.nl/
 
-installation instructions from ground zero for D::S
+installation instructions for Caster (outdated, update coming soon)
 --
  - http://explosionduck.com/ds/
 
