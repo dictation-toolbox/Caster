@@ -2,7 +2,7 @@ import time
 
 from dragonfly import *
 
-from asynch import squeue
+from asynch.hmc import squeue
 from asynch.hmc import h_launch, homunculus
 from lib import utilities, settings, control
 from __builtin__ import True
@@ -157,7 +157,7 @@ def add_recorded_macro(data):
         # take every tuple after that  and turn it into a comma separated list
         commands.append(list(d))
     
-    spec = data["response"]
+    spec = data
     # clean the results
     for l in commands:
         for w in l:

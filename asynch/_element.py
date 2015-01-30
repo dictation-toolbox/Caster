@@ -5,7 +5,7 @@ from dragonfly import (Function, Text, Grammar, BringApp, WaitWindow, Key,
                        IntegerRef, Dictation, Mimic, MappingRule)
 from dragonfly.actions.action_focuswindow import FocusWindow
 
-from asynch import squeue
+from asynch.hmc import squeue
 from asynch.hmc import h_launch
 from lib import  settings
 from lib import control
@@ -64,7 +64,7 @@ def focus_element():
 
 def search():
     if utilities.window_exists(None, settings.ELEMENT_VERSION):
-        squeue.add_query(homunculus_to_element, {"qtype": settings.QTYPE_INSTRUCTIONS})
+        squeue.add_query(homunculus_to_element)
         h_launch.launch(settings.QTYPE_INSTRUCTIONS, "enter_search_word")
         WaitWindow(title=settings.HOMUNCULUS_VERSION, timeout=5)._execute()
         FocusWindow(title=settings.HOMUNCULUS_VERSION)._execute()
@@ -92,7 +92,7 @@ def scan_new():
     Key("home")._execute()
 
 def homunculus_to_element(data):
-    word = data["response"].replace("\n", "").rstrip()
+    word = data.replace("\n", "").rstrip()
     communicate().search(word)
 
 def strict_filter(directory):

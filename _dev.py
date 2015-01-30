@@ -7,12 +7,13 @@ from lib import utilities, settings
 def experiment():
     '''this function is for tests'''
     try: 
-        sikuli.refresh_sikuli()
+        ''''''
 #         SelectiveAction(Text("eclipse"), ["eclipse.exe"])._execute()
     except Exception:
         utilities.simple_log(False)
 
-class MainRule(MappingRule):
+
+class DevRule(MappingRule):
     
     mapping = {
     'refresh directory':            Function(utilities.clear_pyc),
@@ -36,7 +37,7 @@ grammar = None
 
 def load():
     grammar=Grammar('development')
-    grammar.add_rule(MainRule())
+    grammar.add_rule(DevRule())
     grammar.load()
 
 if settings.SETTINGS["miscellaneous"]["dev_commands"]:

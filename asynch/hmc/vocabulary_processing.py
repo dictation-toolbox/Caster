@@ -10,10 +10,9 @@ from dragonfly.actions.action_focuswindow import FocusWindow
 from dragonfly.actions.action_key import Key
 from dragonfly.actions.action_waitwindow import WaitWindow
 
-
-from asynch import squeue
-from asynch.hmc import h_launch
-from lib import utilities,  context, settings
+from asynch.hmc import squeue
+from asynch.hmc import h_launch, homunculus
+from lib import utilities, context, settings
 
 
 def add_vocab():
@@ -37,7 +36,7 @@ def add_vocab():
         
         selected=highlighted[1]
     try: 
-        squeue.add_query(process_set, {"qtype": settings.QTYPE_SET})
+        squeue.add_query(process_set)
         h_launch.launch(settings.QTYPE_SET, selected)
         WaitWindow(title=settings.HOMUNCULUS_VERSION+settings.HMC_TITLE_VOCABULARY, timeout=5)._execute()
         FocusWindow(title=settings.HOMUNCULUS_VERSION+settings.HMC_TITLE_VOCABULARY)._execute()
@@ -47,7 +46,7 @@ def add_vocab():
 
 def del_vocab():
     try: 
-        squeue.add_query(process_delete, {"qtype": settings.QTYPE_REM})
+        squeue.add_query(process_delete)
         h_launch.launch(settings.QTYPE_REM)
         WaitWindow(title=settings.HOMUNCULUS_VERSION+settings.HMC_TITLE_VOCABULARY, timeout=5)._execute()
         FocusWindow(title=settings.HOMUNCULUS_VERSION+settings.HMC_TITLE_VOCABULARY)._execute()
@@ -57,22 +56,22 @@ def del_vocab():
 
 def process_set(data):
     ''''''
-    word=data["response"]["word"]
-    pronunciation=data["response"]["pronunciation"]
+    word=data["word"]
+    pronunciation=data["pronunciation"]
     if pronunciation=="":
         pronunciation=None
-    word_info=data["response"]["word_info"]
+    word_info=data["word_info"]
     #missingno
     import natlink
     result=0
     if pronunciation==None:
         result=natlink.addWord(word, word_info)
-        if result==0 and data["response"]["force"]==1:
+        if result==0 and data["force"]==1:
             process_delete(data)
             result=natlink.addWord(word, word_info)
     else:
         result=natlink.addWord(word, word_info, str(pronunciation))
-        if result==0 and data["response"]["force"]==1:
+        if result==0 and data["force"]==1:
             process_delete(data)
             result=natlink.addWord(word, word_info, str(pronunciation))
     
@@ -83,5 +82,5 @@ def process_set(data):
 
 def process_delete(data):
     import natlink
-    natlink.deleteWord(data["response"]["word"])
+    natlink.deleteWord(data["word"])
     

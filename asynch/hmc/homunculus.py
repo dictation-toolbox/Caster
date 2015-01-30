@@ -14,6 +14,9 @@ if __name__ == "__main__":
 else:
     from lib import  settings
 
+def communicate():
+    return xmlrpclib.ServerProxy("http://127.0.0.1:" + str(settings.HMC_LISTENING_PORT))
+
 class Homunculus(tk.Tk):
     def __init__(self, htype, data=None):
         tk.Tk.__init__(self, baseName="")
@@ -55,6 +58,7 @@ class Homunculus(tk.Tk):
         self.destroy()
         os.kill(os.getpid(), signal.SIGTERM)
     
+    
     def start_tk(self):
         self.mainloop()
     
@@ -67,11 +71,11 @@ class Homunculus(tk.Tk):
     def complete(self, e):
         self.completed = True
         
-    def xmlrpc_get_message(self, e):
+    def xmlrpc_get_message(self):
         '''override this for every new child class'''
         if self.completed:
             Timer(1, self.xmlrpc_kill).start()
-            self.withdraw()
+            self.after(10, self.withdraw)
             return self.ext_box.get("1.0", tk.END).replace("\n", "")
         else:
             return None

@@ -137,9 +137,7 @@ def report(message, speak=False, console=True, log=False):
     if speak:
         dragonfly.get_engine().speak(message)
     if log:
-        f = open(settings.SETTINGS["paths"]["LOG_PATH"], 'a') 
-        f.write(str(message) + "\n")
-        f.close()
+        settings.report_to_file(message)
 
 
 

@@ -189,4 +189,10 @@ def get_default_browser_executable():
     global SETTINGS
     return SETTINGS["paths"]["DEFAULT_BROWSER_PATH"].split("/")[-1]
 
+def report_to_file(message):
+    global SETTINGS
+    f = open(SETTINGS["paths"]["LOG_PATH"], 'a') 
+    f.write(str(message) + "\n")
+    f.close()
+
 load_config()

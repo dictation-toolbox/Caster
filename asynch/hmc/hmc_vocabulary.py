@@ -1,4 +1,4 @@
-from Tkinter import Frame, Label, Entry, Checkbutton
+from Tkinter import Label, Entry, Checkbutton
 import sys
 from threading import Timer
 
@@ -122,7 +122,7 @@ class Homunculus_Vocabulary(Homunculus):
         
         
     
-    def xmlrpc_get_message(self, e):
+    def xmlrpc_get_message(self):
         if self.completed:
             response={"mode": self.mode}
             word=self.word_box.get()
@@ -143,7 +143,8 @@ class Homunculus_Vocabulary(Homunculus):
             
             
             Timer(1, self.xmlrpc_kill).start()
-            self.withdraw()
+            self.after(10, self.withdraw)
+            
             return response
         else:
             return None
