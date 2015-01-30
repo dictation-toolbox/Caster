@@ -3,6 +3,7 @@ Command-module for Legion
 
 """
 
+
 import time
 
 from dragonfly import (Grammar, AppContext, Function,
@@ -11,7 +12,7 @@ from dragonfly import (Grammar, AppContext, Function,
 import win32api
 import win32con
 
-from asynch.bottleserver import Sender
+from asynch import legion
 from lib import utilities, navigation, settings
 
 
@@ -34,8 +35,7 @@ def send_input(color, n, action):
             press_keys(color, n)
             Playback([(["mouse", "right", "click"], 0.0)])._execute()
         elif int_a == 2:
-            s = Sender()
-            response = s.send(settings.LEGION_LISTENING_PORT, data={"coordinates_index": int(n)}, response_required=True)
+            response=legion.communicate().retrieve_data_for_highlight(str(int(n)))
             x1=response["l"]
             x2=response["r"]
             y=response["y"]

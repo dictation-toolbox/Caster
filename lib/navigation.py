@@ -9,7 +9,6 @@ from win32api import GetSystemMetrics
 from win32con import MOUSEEVENTF_WHEEL
 
 from asynch import legion
-from asynch.bottleserver import Sender
 from asynch.legion import LegionScanner
 from lib import control
 from lib import utilities
@@ -23,15 +22,12 @@ NIRCMD_PATH = settings.SETTINGS["paths"]["NIRCMD_PATH"]
 def mouse_alternates(mode):
     try:
         if mode=="legion":
-            ls=LegionScanner()
-            ls.scan()
-            tscan=ls.get_update()
             if utilities.window_exists(None, "legiongrid"):
-                FocusWindow(title="legiongrid")._execute()
-                WaitWindow(title="legiongrid", timeout=5)
-                s=Sender()
-                s.send(settings.LEGION_LISTENING_PORT, tscan, "scan")
+                pass
             else:
+                ls=LegionScanner()
+                ls.scan()
+                tscan=ls.get_update()
                 launch.run(["pythonw", settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0]])
             
         elif mode=="rainbow":
