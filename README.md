@@ -76,9 +76,9 @@ dragonfly/natlink publicity
 - http://www.extrahop.com/post/blog/programming-by-voice-staying-productive-without-harming-yourself/
 - http://voicecontrol.blogspot.nl/
 
-installation instructions for Caster (outdated, update coming soon)
+installation instructions for Caster
 --
- - http://explosionduck.com/ds/
+ - http://explosionduck.com/caster/install
 
 legacy
 --
