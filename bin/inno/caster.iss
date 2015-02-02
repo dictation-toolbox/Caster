@@ -8,10 +8,10 @@ AppVersion=0.3
 DefaultDirName={drive:C:}\temp\caster
 DefaultGroupName=Caster
 DirExistsWarning=no
-OutputDir=installer_requirements\output
+OutputDir=inst
 
 [Files]
-Source: "old\caster.bat"; DestDir: "{app}";Flags: replacesameversion recursesubdirs
+Source: "caster.bat"; DestDir: "{app}";Flags: replacesameversion recursesubdirs
 
 [Run]
 Filename: "{app}\caster.bat"

@@ -175,3 +175,4 @@ Below is a list of all the non-original code used in this work, and the licenses
 - Pillow: PIL Software License
 - PSUtil: New BSD License
 - TiRG by trg787: Public Domain License, see (github.com/synkarius/tirg-dll)
+- NirCmd: NirSoft Freeware License

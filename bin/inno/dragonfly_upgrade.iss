@@ -1,16 +1,17 @@
-; Dragonfly Upgrade
+; Dragonfly Upgrader
 ; – – – – – – – – – – – – – – – – – – 
-; This upgrades Dragonfly from 0.6.5 to 0.6.6b1.
+; This upgrades Dragonfly from 0.6.5 to the most recent version from Github.
 
 [Setup]
-AppName=Dragonfly 0.6.6b1 Upgrader
-AppVersion=0.1
-DefaultDirName={drive:C:}\Python27\Lib\site-packages\dragonfly
-DefaultGroupName=Dragonfly 0.6.6b1 Upgrader Installer
+AppName=Dragonfly Github Upgrader
+AppVersion=0.2
+DefaultDirName={drive:C:}\temp\dragonfly
+DefaultGroupName=Dragonfly Github Upgrader
 DirExistsWarning=no
-OutputDir=installer_requirements\output
+OutputDir=inst
 
 [Files]
-; the dragonfly directory contains all of the 0.6.6b1 files from here: 
-; https://code.google.com/p/dragonfly/source/browse/trunk#trunk%2Fdragonfly
-Source: "installer_requirements\dragonfly\*.*"; DestDir: "{app}";Flags: replacesameversion recursesubdirs
+Source: "dragonfly_upgrade.bat"; DestDir: "{app}";Flags: replacesameversion recursesubdirs
+
+[Run]
+Filename: "{app}\dragonfly_upgrade.bat"

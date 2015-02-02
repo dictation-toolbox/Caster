@@ -18,7 +18,7 @@ cd C:\NatLink\NatLink\MacroSystem
 rmdir caster
 
 echo ------------------------------------------
-echo Caster installation complete...
+echo      Caster Installation Complete
 echo ------------------------------------------
 
 pause
