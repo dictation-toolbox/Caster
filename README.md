@@ -35,6 +35,7 @@ other dragonfly repositories
  - https://github.com/ccowan/code-by-voice
  - https://github.com/simianhacker/code-by-voice
  - https://github.com/davitenio/dragonfly-macros
+ - https://github.com/saltlakeryan/dragonfly-rules
  - https://github.com/poppe1219/dragonfly-scripts
  - http://code.ohloh.net/project?pid=YwZsjw4lsms&prevcid=1&cid=NfME9QgiIC4&fp=194084&projSelected=true
  - https://github.com/whIzz2000/natlink-py-scripts
