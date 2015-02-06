@@ -116,6 +116,7 @@ def init_default_values():
         ("SIKULI_SCRIPTS_JAR_PATH", ""),
         ("SIKULI_SERVER_PATH", SETTINGS["paths"]["BASE_PATH"] +"asynch/sikuli/scripts/xmlrpc_server.sikuli"),
         ("SIKULI_COMPATIBLE_JAVA_EXE_PATH", ""),
+        ("ENGINE_PATH", "C:/Program Files (x86)/Nuance/NaturallySpeaking12/Program/natspeak.exe"),
         
         # CCR
         ("GENERIC_CONFIG_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/ccr"),

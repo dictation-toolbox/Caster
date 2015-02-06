@@ -162,8 +162,6 @@ def current_time_to_string():
 
 
 
-
-
 def run_in_separate_thread(func, timeout_in_seconds=300):
     p = multiprocessing.Process(target=func)
     p.start()

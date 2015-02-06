@@ -1,10 +1,18 @@
 import getopt
+from subprocess import Popen
 import sys
 import time
 
 import psutil
-from subprocess import Popen
 
+try:
+    # this section only necessary if called externally to Dragon
+    BASE_PATH = "C:/NatLink/NatLink/MacroSystem"
+    if BASE_PATH not in sys.path:
+        sys.path.append(BASE_PATH)
+except Exception:
+    pass
+from lib import settings
 
 def run(arguments):
     Popen(arguments, shell=False, stdin=None, stdout=None, stderr=None, close_fds=True)
@@ -40,8 +48,12 @@ def main(argv):
             print "kill: dnsspserver.exe"
             kill_process("dnsspserver.exe")
             time.sleep(0.3)
+            print "kill: dragonbar.exe"
+            kill_process("dragonbar.exe")
+            time.sleep(0.3)
             print "Relaunch!"
-            run([r"C:\Program Files (x86)\Nuance\NaturallySpeaking12\Program\natspeak.exe"])
+            
+            run([settings.SETTINGS["paths"]["ENGINE_PATH"]])
                         
 
 if __name__ == "__main__":
