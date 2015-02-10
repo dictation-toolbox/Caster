@@ -141,7 +141,7 @@ def init_default_values():
         SETTINGS["ccr"] = {}
         SETTINGS["ccr"]["modes"] = {}
         SETTINGS["ccr"]["common"] = []
-        SETTINGS["ccr"]["standard"] = ["alphabet", "navigation", "punctuation"]
+        SETTINGS["ccr"]["standard"] = ["alphabet", "navigation", "punctuation", "numbers"]
         SETTINGS["ccr"]["nonglobal_sets"] = []
         values_change_count += 1
     for (name, value) in ccrNamesFromFiles:

@@ -1,14 +1,10 @@
 from ctypes import windll
-from subprocess import Popen
 import sys, win32api, time, win32clipboard
 
-from dragonfly import (Key, Text , Playback, Function, Repeat,
-                        BringApp, Mouse, Choice, WaitWindow, FocusWindow)
+from dragonfly import (Key, Text , Playback, BringApp, Mouse)
 import dragonfly
-from win32api import GetSystemMetrics
 from win32con import MOUSEEVENTF_WHEEL
 
-from asynch import legion
 from asynch.legion import LegionScanner
 from lib import control
 from lib import utilities
@@ -18,6 +14,34 @@ import  settings
 
 BASE_PATH = settings.SETTINGS["paths"]["BASE_PATH"]
 NIRCMD_PATH = settings.SETTINGS["paths"]["NIRCMD_PATH"]
+
+def word_number(wn):
+    numbers_to_words={
+                      0: "zero", 
+                      1: "one", 
+                      2: "two", 
+                      3: "three", 
+                      4: "four", 
+                      5: "five", 
+                      6: "six", 
+                      7: "seven", 
+                      8: "eight", 
+                      9: "nine"
+    }
+    Text(numbers_to_words[int(wn)])._execute()
+
+def numbers(n10a, n10b, n10c):
+    n10b_str = ""
+    n10c_str = ""
+    if n10b != -1:
+        n10b_str = str(n10b)
+    if n10c != -1:
+        n10c_str = str(n10c)
+    Text(str(n10a) + n10b_str + n10c_str)._execute()
+    
+def numbers2(wnKK):
+    ''''''
+    Text(str(wnKK))._execute()
 
 def mouse_alternates(mode):
     try:
@@ -96,14 +120,8 @@ def volume_control(n, volume_mode):
         utilities.simple_log(False)
     utilities.report(message + str(n), speak=settings.SETTINGS["miscellaneous"]["debug_speak"])
 
-def numbers(n10a, n10b, n10c):
-    n10b_str = ""
-    n10c_str = ""
-    if n10b != -1:
-        n10b_str = str(n10b)
-    if n10c != -1:
-        n10c_str = str(n10c)
-    Text(str(n10a) + n10b_str + n10c_str)._execute()
+
+    
     
 def auto_spell(mode, textnv):
     # to do: add support for other modes

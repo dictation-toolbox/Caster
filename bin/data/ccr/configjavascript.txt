@@ -82,26 +82,12 @@ cmd.map = {
         "new":						Text("new "),
         
         "float":					Text("float "),
-        "<n10a> [<n10b>] [<n10c>] bark":Function(navigation.numbers, extra={"n10a", "n10b", "n10c"}),
 	   
           }
 
 cmd.extras   = [
-            IntegerRef("n10a", 0, 10),
-            IntegerRef("n10b", 0, 10),
-            IntegerRef("n10c", 0, 10),
             Dictation("text"),
-              Choice("looptype",
-                    {"(I | eye)": "letter", "each": "each"
-                    }),
-              Choice("condition",
-                    {"greater than": ">", "less than": "<", "greater than [or] equal to": ">=", "less than [or] equal to": "<=", 
-                    }),
-              Choice("increment",
-                    {"plus": "++", "minus": "--"
-                    }),
             
            ]
 cmd.defaults = {
-            "n10a": 1, "n10b": -1, "n10c": -1, "text": "", "condition": "", "increment": "",
            }

@@ -67,7 +67,6 @@ cmd.map = {
 	 	"global":					Text("global "),
 						
 		
-         "<n10a> [<n10b>] [<n10c>] bark":Function(navigation.numbers, extra={"n10a", "n10b", "n10c"}),
 	   
        	 "[dot] (pie | pi)":			Text(".py"),
 		 "jason":					Text("json"),
@@ -75,11 +74,7 @@ cmd.map = {
           }
 
 cmd.extras   = [
-            IntegerRef("n10a", 0, 10),
-            IntegerRef("n10b", 0, 10),
-            IntegerRef("n10c", 0, 10),
             Dictation("text"),
            ]
 cmd.defaults = {
-            "n10a": 1, "n10b": -1, "n10c": -1,
            }
