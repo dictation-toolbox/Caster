@@ -7,7 +7,6 @@ from asynch.hmc import h_launch, homunculus
 from lib import utilities, settings, control
 from __builtin__ import True
 
-
 def navigate_to_character(direction3, target):
     # to do: possibly speed up the keypresses by figuring out how many lines up or down to go first
     try:
