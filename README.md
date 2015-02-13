@@ -9,6 +9,7 @@ forums and community
  - http://www.knowbrainer.com/forums/forum/categories.cfm?catid=25
  - https://web.archive.org/web/20130805104835/http://speechcomputing.com/forum
  - https://groups.google.com/forum/#!forum/comp.lang.beta
+ - http://nuance-community.custhelp.com/hives/be1ac29547/summary
 
 sources and modules
 --
