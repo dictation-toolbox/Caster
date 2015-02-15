@@ -23,7 +23,7 @@ class DevRule(MappingRule):
     "reserved word <text>":         Key("dquote,dquote,left") + Text("%(text)s") + Key("right, colon, tab/5:5") + Text("Text(\"%(text)s\"),"),
     "experiment":                   Function(experiment),
     
-
+    
     }
     extras = [
               Dictation("text"),

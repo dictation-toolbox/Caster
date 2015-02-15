@@ -10,6 +10,7 @@ from lib import control
 from lib import utilities
 from lib.dragonfree import launch
 import  settings
+from dragonfly.actions.action_base import Repeat
 
 
 BASE_PATH = settings.SETTINGS["paths"]["BASE_PATH"]
@@ -100,28 +101,8 @@ def drop(nnavi500):
             break
 
 def volume_control(n, volume_mode):
-    global NIRCMD_PATH
-    max_volume = 65535
-    sign = 1
-    command = "setsysvolume"  # default
-    mode = str(volume_mode)
-    message = "setting volume to "
-    if mode == "up":
-        command = "changesysvolume"
-        message = "increasing volume by "
-    elif mode == "down":
-        command = "changesysvolume"
-        message = "decreasing volume by "
-        sign = -1
-    chosen_level = str(int(n * sign * 1.0 / 100 * max_volume))
-    try:
-        BringApp(NIRCMD_PATH, command, chosen_level).execute()
-    except Exception:
-        utilities.simple_log(False)
-    utilities.report(message + str(n), speak=settings.SETTINGS["miscellaneous"]["debug_speak"])
-
-
-    
+    for i in range(0, int(n)):
+        Key("volume"+str(volume_mode))._execute()
     
 def auto_spell(mode, textnv):
     # to do: add support for other modes

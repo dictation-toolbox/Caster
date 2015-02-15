@@ -60,7 +60,7 @@ class MainRule(MappingRule):
     "delete word from vocabulary":  Function(vocabulary_processing.del_vocab),
     
     # hardware management
-    "(<volume_mode> [system] volume [to] <n> | volume <volume_mode> <n>)": Function(navigation.volume_control, extra={'n', 'volume_mode'}),
+    "volume <volume_mode> [<n>]":   Function(navigation.volume_control, extra={'n', 'volume_mode'}),
     "change monitor":               Key("w-p")+Pause("100")+Function(change_monitor),
     
     # window management
@@ -97,8 +97,7 @@ class MainRule(MappingRule):
                     {"enable": 1, "disable": 0
                     }),
               Choice("volume_mode",
-                    {"set": "set", "increase": "up", "decrease": "down",
-                     "up":"up", "down":"down"
+                    {"mute": "mute", "up":"up", "down":"down"
                      }),
               generate_CCR_choices.__func__()
              ]
