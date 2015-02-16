@@ -2,15 +2,25 @@
 # This is a heavily modified version of Dragonfly's _multiedit.py command-module
 
 from dragonfly import *
+from lib import navigation
 
 release = Key("shift:up, ctrl:up")
 noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added on the right side
 
 cmd.map = {
            	# Spoken-form    ->    ->    ->     Action object
-			
-     	    #military alphabet
-		    "(alpha | ashy)": Key("a"),
+           	
+           	"([<big>] <letter> [<dict2>] | [<dict1>] [<big>] <letter>)": Function(navigation.letters, extra ={"big", "dict1", "dict2", "letter"}), 
+     	   
+          }
+
+
+cmd.extras = [
+		Dictation("dict1"),
+        Dictation("dict2"),
+        Choice("letter",
+              {
+            "ashy": Key("a"),
 		    "bravo": Key("b"),
 		    "charlie": Key("c"),
 		    "delta": Key("d"),
@@ -36,48 +46,13 @@ cmd.map = {
 		    "x-ray": Key("x"),
 		    "yankee": Key("y"),
 		    "Zulu": Key("z"),
-	   
-       	
-					 "big (alpha | ashy)"    : Key("A"),
-					 "big bravo"    : Key("B"),
-					 "big Charlie"  : Key("C"),
-					 
-					 "big Delta"    : Key("D"),
-					 "big echo"     : Key("E"),
-					 "big foxtrot"  : Key("F"),
-					 "big golf"     : Key("G"),
-					 "big gamma"    : Key("G"),
-					 "big Juliet"   : Key("J"),
-					 "big hotel"    : Key("H"),
-					 "big India"    : Key("I"),
-					 
-					 "big kilo"     : Key("K"),
-					 "big Lima"     : Key("L"),
-					 "big Mike"     : Key("M"),
-					 
-					 "big November" : Key("N"),
-					 "big Oscar"    : Key("O"),
-					 "big prime"     : Key("P"),
-					 "big Quebec"    : Key("Q"),
-					 "big Romeo"    : Key("R"),
-					 "big Sierra"      : Key("S"),
-					 "big tango"    : Key("T"),
-
-					 "big uniform"  : Key("U"),
-					 "big victor"   : Key("V"),
-					 
-					 "big whiskey"  : Key("W"),
-					 "big x-ray"    : Key("X"),
-					 "big yankee"   : Key("Y"),
-					 "big Zulu"     : Key("Z"),
-					 
-     	   
-          }
-
-
-cmd.extras = [
+               }),
+        Choice("big",
+              {"big": "big",
+               }),
 	]
 cmd.defaults = {
+	"dict1": "", "dict2": "", "big": "", 
 	}
 
 

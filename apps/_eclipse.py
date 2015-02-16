@@ -3,32 +3,31 @@
 # (c) Copyright 2008 by Christo Butcher
 # Licensed under the LGPL, see <http://www.gnu.org/licenses/>
 #
-
 """
 Command-module for ECLIPSE
 
 """
-
-
 #---------------------------------------------------------------------------
 
 from dragonfly import (Grammar, AppContext, MappingRule,
                        Dictation, IntegerRef,
                        Key, Text, Repeat, Pause)
+from dragonfly.actions.action_function import Function
+from dragonfly.actions.action_mimic import Mimic
+
 
 
 class CommandRule(MappingRule):
 
     mapping = {
-        
-           
+                    
             "previous (editor | tab) [<n>]":            Key("cs-f6") * Repeat(extra="n"),  # these two must be set up in the eclipse preferences
             "next (editor | tab) [<n>]":                Key("c-f6") * Repeat(extra="n"),
             "close (editor | tab) [<n>]":               Key("c-w") * Repeat(extra="n"),
             "open resource":                            Key("cs-r"),
             "open type":                                Key("cs-t"),
 
-            "[go to] line <n>":                         Key("c-l") + Pause("50") + Text("%(n)d") + Key("enter"),
+            "[go to] line <n> [<mim>]":                 Key("c-l") + Pause("50") + Text("%(n)d") + Key("enter")+ Pause("50")+Mimic(extra="mim"),
             "go to declaration":                        Key("f3"),
             "editor select":                            Key("c-e"),
             "pop":                                      Key("c-space, down, up"),
@@ -45,7 +44,7 @@ class CommandRule(MappingRule):
             
             
             "format code":                              Key("cs-f"),
-            "(do imports | import all)":                Key("cs-o"),
+            "do imports":                               Key("cs-o"),
             "comment line":                             Key("c-slash"),
             
             # requires quick bookmarks plug-in:
@@ -54,10 +53,11 @@ class CommandRule(MappingRule):
         }
     extras = [
               Dictation("text"),
+              Dictation("mim"),
               IntegerRef("n", 1, 1000),
               
              ]
-    defaults = {"n": 1}
+    defaults = {"n": 1, "mim":""}
 
 #---------------------------------------------------------------------------
 

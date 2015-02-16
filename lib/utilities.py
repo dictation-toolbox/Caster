@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import os, json, sys
+from dragonfly.actions.action_mimic import Mimic
 
 
 BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
@@ -16,7 +17,11 @@ from lib.dragonfree import launch
 from lib import  settings
 
 
-
+def mimic(mim):
+    print mim, str(mim)
+    if mim=="":
+        return 
+    Mimic(mim.split(" "))._execute()
 
 def window_exists(classname, windowname):
     try:

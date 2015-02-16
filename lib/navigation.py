@@ -39,6 +39,19 @@ def numbers(n10a, n10b, n10c):
     if n10c != -1:
         n10c_str = str(n10c)
     Text(str(n10a) + n10b_str + n10c_str)._execute()
+
+def letters(big, dict1, dict2, letter):
+    d1=str(dict1)
+    if d1!="":
+        Text(d1)._execute()
+    if str(big)!="":
+        Key("shift:down")._execute()
+    letter._execute()
+    if str(big)!="":
+        Key("shift:up")._execute()
+    d2=str(dict2)
+    if d2!="":
+        Text(d2)._execute()
     
 def numbers2(wnKK):
     ''''''

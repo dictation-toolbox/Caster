@@ -1,8 +1,22 @@
 from dragonfly import (Function, Key, BringApp, Text, WaitWindow, IntegerRef, Dictation, Choice, Grammar, MappingRule)
+from dragonfly.actions.action_mimic import Mimic
 
 from asynch.sikuli import sikuli
 from lib import utilities, settings
 
+# def dec1(f):
+#     def new_f():
+#         print "Entering", f.__name__
+#         f()
+#         print "Exited", f.__name__
+#     return new_f
+# from dec import dec1
+# 
+# @dec1
+# def my_function():
+#     print "k"
+#     
+# my_function()
 
 def experiment():
     '''this function is for tests'''
@@ -11,6 +25,7 @@ def experiment():
 #         SelectiveAction(Text("eclipse"), ["eclipse.exe"])._execute()
     except Exception:
         utilities.simple_log(False)
+
 
 
 class DevRule(MappingRule):
@@ -27,9 +42,10 @@ class DevRule(MappingRule):
     }
     extras = [
               Dictation("text"),
+              
              ]
     defaults = {
-               "text": ""
+               "text": "", 
                }
 
 
