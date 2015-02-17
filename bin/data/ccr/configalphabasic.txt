@@ -1,0 +1,82 @@
+#
+# This is a heavily modified version of Dragonfly's _multiedit.py command-module
+
+from dragonfly import *
+
+release = Key("shift:up, ctrl:up")
+noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added on the right side
+
+cmd.map = {
+           	# Spoken-form    ->    ->    ->     Action object
+           	
+           	     	    #military alphabet
+		    "ashy": Key("a"),
+		    "bravo": Key("b"),
+		    "charlie": Key("c"),
+		    "delta": Key("d"),
+		    "echo": Key("e"),
+		    "foxtrot": Key("f"),
+		    "golf": Key("g"),
+		    "hotel": Key("h"),
+		    "India": Key("i"),
+		    "Juliet": Key("j"),
+		    "kilo": Key("k"),
+		    "Lima": Key("l"),
+		    "Mike": Key("m"),
+		    "November": Key("n"),
+		    "oscar": Key("o"),
+		    "prime": Key("p"),
+		    "Quebec": Key("q"),
+		    "Romeo": Key("r"),
+		    "Sierra": Key("s"),
+		    "tango": Key("t"),
+		    "uniform": Key("u"),
+		    "victor": Key("v"),
+		    "whiskey": Key("w"),
+		    "x-ray": Key("x"),
+		    "yankee": Key("y"),
+		    "Zulu": Key("z"),
+	   
+       	
+					 "big (alpha | ashy)"    : Key("A"),
+					 "big bravo"    : Key("B"),
+					 "big Charlie"  : Key("C"),
+					 
+					 "big Delta"    : Key("D"),
+					 "big echo"     : Key("E"),
+					 "big foxtrot"  : Key("F"),
+					 "big golf"     : Key("G"),
+					 "big gamma"    : Key("G"),
+					 "big Juliet"   : Key("J"),
+					 "big hotel"    : Key("H"),
+					 "big India"    : Key("I"),
+					 
+					 "big kilo"     : Key("K"),
+					 "big Lima"     : Key("L"),
+					 "big Mike"     : Key("M"),
+					 
+					 "big November" : Key("N"),
+					 "big Oscar"    : Key("O"),
+					 "big prime"     : Key("P"),
+					 "big Quebec"    : Key("Q"),
+					 "big Romeo"    : Key("R"),
+					 "big Sierra"      : Key("S"),
+					 "big tango"    : Key("T"),
+
+					 "big uniform"  : Key("U"),
+					 "big victor"   : Key("V"),
+					 
+					 "big whiskey"  : Key("W"),
+					 "big x-ray"    : Key("X"),
+					 "big yankee"   : Key("Y"),
+					 "big Zulu"     : Key("Z"),
+     	   
+          }
+
+
+cmd.extras = [
+	]
+cmd.defaults = {
+	}
+
+

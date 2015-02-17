@@ -43,13 +43,20 @@ cmd.map = {
     "(cancel | escape)":            Key("escape"),
      
     # miscellaneous
-    'auto <mode> <textnv> [escaping word]':    Function(navigation.auto_spell, extra={"mode","textnv"}),
+    "[<capitalization>] [<spacing>] (bow|bowel) <textnv>":  Function(navigation.master_format_text, extra={"capitalization", "spacing", "textnv"}), 
+    #'auto <mode> <textnv> [escaping word]':    Function(navigation.auto_spell, extra={"mode","textnv"}),
 
           }
 
 cmd.extras = [
           IntegerRef("nnavi500", 1, 500),
           Dictation("textnv"),
+          Choice("capitalization",
+                    {"yell": 1, "tie": 2,"camel": 3,"sing":4, "low":5
+                    }),
+          Choice("spacing",
+                    {"gum": 1, "gun": 1, "spine": 2, "snake":3
+                    }),
           Choice("direction",
                 {"up": "up", "down": "down", "left": "left", "right": "right",
                 }),
@@ -82,5 +89,5 @@ cmd.extras = [
                 }),
          ]
 cmd.defaults ={
-			"nnavi500": 1, "textnv": "", "color_mode":"right", "fly_mode":"right", "direction2":"", 
+			"nnavi500": 1, "textnv": "", "capitalization": 0, "spacing":0, "color_mode":"right", "fly_mode":"right", "direction2":"", 
            }

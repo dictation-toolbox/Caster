@@ -17,16 +17,16 @@ BASE_PATH = settings.SETTINGS["paths"]["BASE_PATH"]
 NIRCMD_PATH = settings.SETTINGS["paths"]["NIRCMD_PATH"]
 
 def word_number(wn):
-    numbers_to_words={
-                      0: "zero", 
-                      1: "one", 
-                      2: "two", 
-                      3: "three", 
-                      4: "four", 
-                      5: "five", 
-                      6: "six", 
-                      7: "seven", 
-                      8: "eight", 
+    numbers_to_words = {
+                      0: "zero",
+                      1: "one",
+                      2: "two",
+                      3: "three",
+                      4: "four",
+                      5: "five",
+                      6: "six",
+                      7: "seven",
+                      8: "eight",
                       9: "nine"
     }
     Text(numbers_to_words[int(wn)])._execute()
@@ -41,16 +41,16 @@ def numbers(n10a, n10b, n10c):
     Text(str(n10a) + n10b_str + n10c_str)._execute()
 
 def letters(big, dict1, dict2, letter):
-    d1=str(dict1)
-    if d1!="":
+    d1 = str(dict1)
+    if d1 != "":
         Text(d1)._execute()
-    if str(big)!="":
+    if str(big) != "":
         Key("shift:down")._execute()
     letter._execute()
-    if str(big)!="":
+    if str(big) != "":
         Key("shift:up")._execute()
-    d2=str(dict2)
-    if d2!="":
+    d2 = str(dict2)
+    if d2 != "":
         Text(d2)._execute()
     
 def numbers2(wnKK):
@@ -59,18 +59,18 @@ def numbers2(wnKK):
 
 def mouse_alternates(mode):
     try:
-        if mode=="legion":
+        if mode == "legion":
             if utilities.window_exists(None, "legiongrid"):
                 pass
             else:
-                ls=LegionScanner()
+                ls = LegionScanner()
                 ls.scan()
-                tscan=ls.get_update()
+                tscan = ls.get_update()
                 launch.run(["pythonw", settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0]])
             
-        elif mode=="rainbow":
+        elif mode == "rainbow":
             launch.run(["pythonw", settings.SETTINGS["paths"]["RAINBOW_PATH"], "-m", "r"])
-        elif mode=="douglas":
+        elif mode == "douglas":
             launch.run(["pythonw", settings.SETTINGS["paths"]["DOUGLAS_PATH"], "-m", "d"])
     except Exception:
         utilities.simple_log(False)
@@ -82,7 +82,7 @@ def initialize_clipboard():
 def clipboard_to_file(nnavi500):
     key = str(nnavi500)
     while True:
-        failure=False
+        failure = False
         try:
             time.sleep(0.05)  # time for keypress to execute
             win32clipboard.OpenClipboard()
@@ -90,14 +90,14 @@ def clipboard_to_file(nnavi500):
             win32clipboard.CloseClipboard()
             settings.save_json_file(control.MULTI_CLIPBOARD, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
         except Exception:
-            failure=True
+            failure = True
         if not failure:
             break
 
 def drop(nnavi500):
     key = str(nnavi500)
     while True:
-        failure=False
+        failure = False
         try:
             if key in control.MULTI_CLIPBOARD:
                 win32clipboard.OpenClipboard()
@@ -109,13 +109,13 @@ def drop(nnavi500):
                 dragonfly.get_engine().speak("slot empty")
             time.sleep(0.05)
         except Exception:
-            failure=True
+            failure = True
         if not failure:
             break
 
 def volume_control(n, volume_mode):
     for i in range(0, int(n)):
-        Key("volume"+str(volume_mode))._execute()
+        Key("volume" + str(volume_mode))._execute()
     
 def auto_spell(mode, textnv):
     # to do: add support for other modes
@@ -130,6 +130,46 @@ def auto_spell(mode, textnv):
     elif format_mode == "sent":
         base = str(textnv).capitalize()
         Text(base)._execute()
+
+def master_format_text(capitalization, spacing, textnv):
+    '''
+    Commands for capitalization: 
+    1 yell - ALLCAPS
+    2 tie  - TitleCase
+    3 k    - camelCase
+    4 sing - Sentencecase
+    5 low  - alllower
+    Commands for word spacing: 
+    1 gum  - wordstogether
+    2 spine- words-with-hyphens
+    3 snake- words_with_underscores
+    '''
+    t = str(textnv)
+    tlen = len(t)
+    if capitalization != 0:
+        if capitalization == 1:
+            t = t.upper()
+        elif capitalization == 2:
+            t = t.title()
+        elif capitalization == 3:
+            if tlen > 1:
+                t = t.title()
+                t = t[0].lower() + t[1:]
+            else:
+                t=t[0].lower()
+        elif capitalization==4:
+            t=t.capitalize()
+        elif capitalization==5:
+            t=t.lower()
+    if spacing!=0:
+        if spacing==1:
+            t="".join(t.split(" "))
+        elif spacing==2:
+            t="-".join(t.split(" "))
+        elif spacing==3:
+            t="_".join(t.split(" "))
+    Text(t)._execute()
+    
         
 def scroll(direction, nnavi500):
     updown = -100
@@ -142,7 +182,7 @@ def kick():
     window_title = utilities.get_active_window_title()
     if window_title == "Custom Grid":
         Playback([(["I", "left"], 0.0)])._execute()
-    elif window_title=="rainbowgrid" or window_title=="douglasgrid" or window_title=="legiongrid":
+    elif window_title == "rainbowgrid" or window_title == "douglasgrid" or window_title == "legiongrid":
         for i in range(0, 2):
             Key("x")._execute()
         time.sleep(0.1)
@@ -154,7 +194,7 @@ def kick_right():
     window_title = utilities.get_active_window_title()
     if window_title == "Custom Grid":
         Playback([(["I", "right"], 0.0)])._execute()
-    elif window_title=="rainbowgrid" or window_title=="douglasgrid" or window_title=="legiongrid":
+    elif window_title == "rainbowgrid" or window_title == "douglasgrid" or window_title == "legiongrid":
         for i in range(0, 2):
             Key("x")._execute()
         time.sleep(0.1)

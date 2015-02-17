@@ -10,13 +10,13 @@ try:
     from lib import utilities
     from lib import ccr
     from lib import control
-    from lib import settings, context
+    from lib import settings, context, recording
     
     control.print_startup_message()
     ccr.initialize_ccr()
     utilities.clean_temporary_files()
     h_launch.clean_homunculi()
-    context.load_recorded_rules()
+    recording.load_recorded_rules()
 except:
     import sys
     print sys.exc_info(), "\nAttempting to load CCR anyway..."

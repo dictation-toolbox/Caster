@@ -1,22 +1,8 @@
 from dragonfly import (Function, Key, BringApp, Text, WaitWindow, IntegerRef, Dictation, Choice, Grammar, MappingRule)
-from dragonfly.actions.action_mimic import Mimic
+from dragonfly.actions.action_startapp import StartApp
 
-from asynch.sikuli import sikuli
 from lib import utilities, settings
 
-# def dec1(f):
-#     def new_f():
-#         print "Entering", f.__name__
-#         f()
-#         print "Exited", f.__name__
-#     return new_f
-# from dec import dec1
-# 
-# @dec1
-# def my_function():
-#     print "k"
-#     
-# my_function()
 
 def experiment():
     '''this function is for tests'''
@@ -26,7 +12,8 @@ def experiment():
     except Exception:
         utilities.simple_log(False)
 
-
+'''
+'''
 
 class DevRule(MappingRule):
     
@@ -38,14 +25,15 @@ class DevRule(MappingRule):
     "reserved word <text>":         Key("dquote,dquote,left") + Text("%(text)s") + Key("right, colon, tab/5:5") + Text("Text(\"%(text)s\"),"),
     "experiment":                   Function(experiment),
     
-    
+    "auto hotkey test":             StartApp("C:/Program Files (x86)/AutoHotkey/AutoHotkey.exe", "C:/Users/dave/Desktop/demo.ahk"),
     }
     extras = [
               Dictation("text"),
+              Dictation("textnv"),
               
              ]
     defaults = {
-               "text": "", 
+               "text": ""
                }
 
 
