@@ -78,9 +78,6 @@ def add_recorded_macro(data):
     control.PRESERVED_CACHE = None
 
 
-def null_func():
-    '''this function intentionally does nothing, is for use with macro recording'''
-
 def load_recorded_rules():
     recorded_macros = settings.load_json_file(settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
     for spec in recorded_macros:
