@@ -43,7 +43,7 @@ cmd.map = {
     "(cancel | escape)":            Key("escape"),
      
     # miscellaneous
-    "[<capitalization>] [<spacing>] (bow|bowel) <textnv>":  Function(navigation.master_format_text, extra={"capitalization", "spacing", "textnv"}), 
+    "(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel) <textnv>":  Function(navigation.master_format_text, extra={"capitalization", "spacing", "textnv"}), 
     #'auto <mode> <textnv> [escaping word]':    Function(navigation.auto_spell, extra={"mode","textnv"}),
 
           }

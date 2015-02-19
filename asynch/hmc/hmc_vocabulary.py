@@ -5,7 +5,8 @@ from threading import Timer
 import Tkinter as tk
 
 if __name__ == "__main__":
-    BASE_PATH = sys.argv[0].split("MacroSystem")[0] + "MacroSystem"
+#     BASE_PATH = sys.argv[0].split("MacroSystem")[0] + "MacroSystem"
+    BASE_PATH = r"C:/NatLink/NatLink/MacroSystem"
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
         from lib import  settings
@@ -16,26 +17,20 @@ else:
 
 
 
-
-
-
 class Homunculus_Vocabulary(Homunculus):
     
     def get_row(self, cut_off=0):
         result = self.grid_row - cut_off
         self.grid_row += 1
         return result
-
+    
     def __init__(self, params):
         self.grid_row = 0
         Homunculus.__init__(self, params[0])
         self.title(settings.HOMUNCULUS_VERSION + settings.HMC_TITLE_VOCABULARY)
-        
-        self.last_key=""
-        self.bind("<Control-Key>", self.key)
             
         self.mode = params[0]
-        clipboard_text=params[1]
+        clipboard_text = params[1]
         
         if self.mode == settings.QTYPE_SET:
             self.geometry("640x480+" + str(int(self.winfo_screenwidth() / 2 - 320)) + "+" + str(int(self.winfo_screenheight() / 2 - 240)))
@@ -46,7 +41,7 @@ class Homunculus_Vocabulary(Homunculus):
             Label(self, text="(W)ord:", name="wordlabel").grid(row=wf_row, column=0, sticky=tk.W)
             self.word_box = Entry(self, name="word_box")
             self.word_box.grid(row=wf_row, column=1, sticky=tk.W)
-            if clipboard_text!=None:
+            if clipboard_text != None:
                 self.word_box.insert(0, clipboard_text)
             
             p_row = self.get_row()
@@ -124,22 +119,22 @@ class Homunculus_Vocabulary(Homunculus):
     
     def xmlrpc_get_message(self):
         if self.completed:
-            response={"mode": self.mode}
-            word=self.word_box.get()
-            if len(word)==0:
+            response = {"mode": self.mode}
+            word = self.word_box.get()
+            if len(word) == 0:
                 self.xmlrpc_kill()
-            response["word"]=word
-            if self.mode==settings.QTYPE_SET:
-                pronunciation=self.pronunciation_box.get()
-                if len(pronunciation)==0:
-                    pronunciation=""
-                response["pronunciation"]=pronunciation
-                response["force"]=self.force_add_var.get()
-                word_info=0x00000000
+            response["word"] = word
+            if self.mode == settings.QTYPE_SET:
+                pronunciation = self.pronunciation_box.get()
+                if len(pronunciation) == 0:
+                    pronunciation = ""
+                response["pronunciation"] = pronunciation
+                response["force"] = self.force_add_var.get()
+                word_info = 0x00000000
                 for ws in self.word_state:
-                    if ws[0].get()==1:
-                        word_info+=ws[1]
-                response["word_info"]=word_info
+                    if ws[0].get() == 1:
+                        word_info += ws[1]
+                response["word_info"] = word_info
             
             
             Timer(1, self.xmlrpc_kill).start()
@@ -149,29 +144,19 @@ class Homunculus_Vocabulary(Homunculus):
         else:
             return None
     
-    def key(self, e):
+    def xmlrpc_do_action(self, action, details=None):
         '''acceptable keys are numbers and w and p'''
-        if self.mode!=settings.QTYPE_REM:
-            if e.keycode in [48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 80, 87]:
-                self.last_key+=chr(e.keycode)
-            if self.last_key in ["W", "P"] or len(self.last_key)==2:
-                if self.last_key=="W":
-                    ''' focus word box '''
-#                     self.unhide()
-#                     self.word_box.focus_force()
-#                     self.word_box.focus_set() 
-                    self.word_box.focus_set()
-                elif self.last_key=="P":
-                    ''' focus pronunciation box '''
-                    self.pronunciation_box.focus_set()
-                else:
-                    box_index=int(self.last_key)
-                    if box_index>=1 and box_index<=25:
-                        if self.word_state[box_index-1][0].get()==0:
-                            self.word_state[box_index-1][0].set(True)
+        if action == "check":
+            for box_index in details:
+                if box_index >= 1 and box_index <= 25:
+                        if self.word_state[box_index - 1][0].get() == 0:
+                            self.word_state[box_index - 1][0].set(True)
                         else:
-                            self.word_state[box_index-1][0].set(False)
-                
-                self.last_key=""
-            
+                            self.word_state[box_index - 1][0].set(False)
+        elif action == "focus":
+            if details == "word":
+                self.word_box.focus_set()
+            elif details == "pronunciation":
+                self.pronunciation_box.focus_set()
+
 

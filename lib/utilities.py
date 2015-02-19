@@ -53,6 +53,7 @@ def get_active_window_path():
     return win32process.GetModuleFileNameEx(handle, 0)
 
 def get_window_by_title(title):
+    # returns 0 if nothing found
     hwnd = win32gui.FindWindowEx(0, 0, 0, title)
     return hwnd
 

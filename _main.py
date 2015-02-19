@@ -82,8 +82,7 @@ class MainRule(MappingRule):
     # miscellaneous
     "<enable_disable> <ccr_mode>":  Function(ccr.set_active, extra={"enable_disable", "ccr_mode"}),
     "again <n> [(times|time)]":     Function(repeat_that, extra={"n"}),
-    "begin recording macro":        Function(recording.null_func),
-    "end recording macro":          Function(recording.get_macro_spec),
+    "record from history":          Function(recording.record_from_history), 
     "delete recorded macros":       Function(recording.delete_recorded_rules),
     "find":                         Key("c-f"),
     "replace":                      Key("c-h"),

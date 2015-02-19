@@ -23,6 +23,7 @@ class Homunculus(tk.Tk):
         self.setup_XMLRPC_server()
         self.htype = htype
         self.completed = False
+        self.max_after_completed=10
         
 
         self.title(settings.HOMUNCULUS_VERSION)
@@ -32,15 +33,13 @@ class Homunculus(tk.Tk):
  
         # 
         if self.htype == settings.QTYPE_DEFAULT:
-            Label(self, text="Enter Response", name="pathlabel").pack()
+            Label(self, text="Enter response then say 'complete'", name="pathlabel").pack()
             self.ext_box = Text(self, name="ext_box")
             self.ext_box.pack(side=tk.LEFT)
         elif self.htype == settings.QTYPE_INSTRUCTIONS:
             Label(self, text=" ".join(data.split("_")), name="pathlabel").pack()
             self.ext_box = Text(self, name="ext_box")
             self.ext_box.pack(side=tk.LEFT)
-        # 
-        self.bind("<Return>", self.complete)
         
         
         # start server, tk main loop
@@ -51,13 +50,6 @@ class Homunculus(tk.Tk):
         Timer(0.05, self.start_tk).start()
         # backup plan in case for whatever reason Dragon doesn't shut it down:
         Timer(300, self.xmlrpc_kill).start()
-        
-
-    def xmlrpc_kill(self):
-        self.server_quit = 1
-        self.destroy()
-        os.kill(os.getpid(), signal.SIGTERM)
-    
     
     def start_tk(self):
         self.mainloop()
@@ -65,17 +57,28 @@ class Homunculus(tk.Tk):
     def setup_XMLRPC_server(self): 
         self.server_quit = 0
         self.server = SimpleXMLRPCServer(("127.0.0.1", settings.HMC_LISTENING_PORT), allow_none=True)
-        self.server.register_function(self.xmlrpc_kill, "kill")
+        self.server.register_function(self.xmlrpc_do_action, "do_action")
+        self.server.register_function(self.xmlrpc_complete, "complete")
         self.server.register_function(self.xmlrpc_get_message, "get_message")
+        self.server.register_function(self.xmlrpc_kill, "kill")
+    
+    def xmlrpc_kill(self):
+        self.server_quit = 1
+        self.destroy()
+        os.kill(os.getpid(), signal.SIGTERM)
         
-    def complete(self, e):
+    def xmlrpc_complete(self):
         self.completed = True
+        self.after(10, self.withdraw)
+        Timer(self.max_after_completed, self.xmlrpc_kill).start()
         
     def xmlrpc_get_message(self):
         '''override this for every new child class'''
         if self.completed:
             Timer(1, self.xmlrpc_kill).start()
-            self.after(10, self.withdraw)
-            return self.ext_box.get("1.0", tk.END).replace("\n", "")
+            return self.ext_box.get("1.0", tk.END)
         else:
             return None
+    
+    def xmlrpc_do_action(self, action, details=None):
+        '''override'''

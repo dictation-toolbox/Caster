@@ -5,7 +5,7 @@ from dragonfly.actions.action_waitwindow import WaitWindow
 from dragonfly.grammar.rule_compound import CompoundRule
 
 from asynch.hmc import h_launch, squeue
-from lib import settings, control
+from lib import settings, control, utilities
 
 
 class RecordedRule(CompoundRule):
@@ -27,33 +27,39 @@ def get_macro_spec():
     Key("tab")._execute()
     squeue.add_query(add_recorded_macro)
 
+def record_from_history():
+    # save the list as it was when the command was spoken
+    control.PRESERVED_CACHE = control.DICTATION_CACHE[:]
+    
+    # format for display
+    formatted = ""
+    for t in control.PRESERVED_CACHE:
+        for w in t:
+            formatted += w.split("\\")[0] + "[w]"
+        formatted += "[s]"
+    
+    h_launch.launch(settings.QTYPE_RECORDING, formatted)
+    WaitWindow(title=settings.HOMUNCULUS_VERSION + settings.HMC_TITLE_RECORDING, timeout=5)._execute()
+    FocusWindow(title=settings.HOMUNCULUS_VERSION + settings.HMC_TITLE_RECORDING)._execute()
+    Key("tab")._execute()
+    squeue.add_query(add_recorded_macro)
+    
+
 def add_recorded_macro(data):
-    ''''''
     # use a response window to get a spec for the new macro: handled by calling function
-    
-    # search through dictation cache for "begin recording macro"
-    beginning_found = False
     commands = []
+    print control.PRESERVED_CACHE
+    for i in data["selected_indices"]:
+        print i, ":", control.PRESERVED_CACHE[i]
+        commands.append(control.PRESERVED_CACHE[i])
     
-    for i in range(0, len(control.DICTATION_CACHE)):
-        d = control.DICTATION_CACHE[i]
-        if not beginning_found:
-            if d[0] == "begin" and d[1] == "recording":
-                beginning_found = True
-            continue
-        
-        if d[0] == "end" and d[1] == "recording":
-            break
-        # take every tuple after that  and turn it into a comma separated list
-        commands.append(list(d))
     
-    spec = data
+    spec = data["word"]
     # clean the results
     for l in commands:
         for w in l:
             if "\\" in w:
                 w = w.split("\\")[0]
-    spec = spec.replace("\n", "") 
     
     # store the list in the macros section of the settings file
     recorded_macros = None
@@ -69,8 +75,7 @@ def add_recorded_macro(data):
     control.RECORDED_MACROS_GRAMMAR.load()
     
     # clear the dictation cache
-    while len(control.DICTATION_CACHE) > 0:
-        control.DICTATION_CACHE.pop()
+    control.PRESERVED_CACHE = None
 
 
 def null_func():

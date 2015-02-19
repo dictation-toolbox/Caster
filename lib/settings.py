@@ -11,12 +11,14 @@ ELEMENT_VERSION = "Element v.10"
 DISPEL_VERSION = "Dispel v.02"
 HOMUNCULUS_VERSION = "HMC v.03"
 HMC_TITLE_VOCABULARY = " :: Vocabulary Manager"
+HMC_TITLE_RECORDING = " :: Recording Manager"
 
 #enums
 QTYPE_DEFAULT = "default"
 QTYPE_SET = "set"
 QTYPE_REM = "rem"
 QTYPE_INSTRUCTIONS = "instructions"
+QTYPE_RECORDING = "rec"
 
 #listening ports
 ELEMENT_LISTENING_PORT = 1337
