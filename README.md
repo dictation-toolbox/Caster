@@ -90,6 +90,7 @@ legacy
 
 other
 --
+ - http://voicecode.io/
  - http://pydev.org/manual_adv_remote_debugger.html
  - http://nuancedev.github.io/samples/http/python/
  - http://ergoemacs.org/emacs/emacs_hand_pain_celebrity.html
