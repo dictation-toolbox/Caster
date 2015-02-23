@@ -1,4 +1,5 @@
 import os
+import re
 
 from lib import utilities, settings
 from lib.element import regex
@@ -6,6 +7,9 @@ from lib.element.regex import LanguageRegexSet
 
 
 DATA = {}
+# JSON_PATH = settings.SETTINGS["paths"]["ELEMENT_JSON_PATH"]
+# settings.load_json_file(JSON_PATH)
+# self.filename_pattern = re.compile(r"[/\\]([\w]+\.[\w]+)")
 
 def scan_directory(directory):
     '''
@@ -85,3 +89,49 @@ def _passes_tests(self, word, scanned_file):
     too_short = len(word) < 4
     already_in_names = word in scanned_file["names"]
     return already_in_names or too_short
+
+
+
+
+
+
+
+
+
+
+NATLINK_AVAILABLE=True
+try:
+    import natlink
+except Exception:
+    NATLINK_AVAILABLE=False
+    
+def filter_strict():
+    global NATLINK_AVAILABLE
+    if NATLINK_AVAILABLE:
+        _strict_filter()
+    else:
+        utilities.report("Dragon required for this feature ('filter strict')")
+
+def _strict_filter(directory):
+    for f in directory["files"].values():
+        acceptably_difficult_to_type = []
+        for name in f["names"]:
+            difficult_to_type = _word_breakdown(name)
+            if difficult_to_type:
+                acceptably_difficult_to_type.append(name)
+        f["names"] = acceptably_difficult_to_type
+            
+def _word_breakdown(name):
+    
+    global STRICT_PARSER
+    found_something_difficult_to_type = False
+    capitals_changed_to_underscores = STRICT_PARSER.sub(r'_\1', name).lower()
+    broken_by_underscores = capitals_changed_to_underscores.split("_")
+    for name_piece in broken_by_underscores:
+        if not name_piece == "" and len(name_piece) > 1:
+            dragon_check = natlink.getWordInfo(name_piece, 7)
+            if dragon_check == None:  # only add letter combinations that Dragon doesn't recognize as words
+                found_something_difficult_to_type = True
+                break
+    return found_something_difficult_to_type
+STRICT_PARSER = re.compile('((?<=[a-z0-9])[A-Z]|(?!^)[A-Z](?=[a-z]))')
