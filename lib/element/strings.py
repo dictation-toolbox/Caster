@@ -1,20 +1,20 @@
 def get_similar_symbol_name(spoken_phrase, list_of_symbols):
 
     best = (0, "")
-    without_homonyms = abbreviated_string(spoken_phrase)
-    with_homonyms = abbreviated_string(homonym_replaced_string(spoken_phrase))
+    without_homonyms = _abbreviated_string(spoken_phrase)
+    with_homonyms = _abbreviated_string(_homonym_replaced_string(spoken_phrase))
     
     for w in list_of_symbols:
-        score = phrase_to_symbol_similarity_score(without_homonyms.lower(), w.lower())
+        score = _phrase_to_symbol_similarity_score(without_homonyms.lower(), w.lower())
         if score > best[0]:
             best = (score, w)
-        score = phrase_to_symbol_similarity_score(with_homonyms.lower(), w.lower())
+        score = _phrase_to_symbol_similarity_score(with_homonyms.lower(), w.lower())
         if score > best[0]:
             best = (score, w)
      
     return best[1]
 
-def homonym_replaced_string(s):
+def _homonym_replaced_string(s):
     # if there are numbers or things which sound like numbers in the symbol, replace those things in the spoken phrase before breaking it
     homonym_replacements = {"one":1, "won":1, "two":2, "to":2, "too":2, "three":3, "for":4, "four":4, "five":5, "six":6, "sex":6,
                           "seven":7, "eight":8, "ate":8, "nine":9, "zero":0
@@ -24,7 +24,7 @@ def homonym_replaced_string(s):
             s = s.replace(homonym, " " + str(homonym_replacements[homonym]) + " ")
     return s.replace("  ", " ").rstrip()
 
-def abbreviated_string(s):
+def _abbreviated_string(s):
     # get power characters from spoken phrase
     words_in_phrase = s.split(" ")
     abbrev = ""
@@ -40,7 +40,7 @@ def abbreviated_string(s):
                     abbrev += w[-1]
     return abbrev
 
-def phrase_to_symbol_similarity_score(abbrev, symbol):
+def _phrase_to_symbol_similarity_score(abbrev, symbol):
     score = 0
     index_abbrev = 0
     len_abbrev = len(abbrev)
@@ -62,4 +62,34 @@ def phrase_to_symbol_similarity_score(abbrev, symbol):
             # else bump up the abbreviation index
             else:
                 index_abbrev += 1
+    return score
+
+####################################################################################
+####################################################################################
+####################################################################################
+
+def _search(all_symbols, word):
+    '''old search code from element'''
+    # get index
+    high_score = [0, 0]
+    # high_score = index, score
+    for i in range(0, len(all_symbols)):
+        score = _word_similarity_score(all_symbols[i], word)
+        if score > high_score[1]:
+            high_score = [i, score]
+            if score == len(word):
+                break
+    return high_score
+
+def _word_similarity_score(w1, w2):
+    smaller_len = len(w1)
+    w2_len = len(w2)
+    if w2_len < smaller_len:
+        smaller_len = w2_len
+    score = 0
+    for i in range(0, smaller_len):
+        if w1[i] == w2[i]:
+            score += 1
+        else:
+            return score
     return score

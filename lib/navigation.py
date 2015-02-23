@@ -41,6 +41,7 @@ def numbers(n10a, n10b, n10c):
     Text(str(n10a) + n10b_str + n10c_str)._execute()
 
 def letters(big, dict1, dict2, letter):
+    '''used with alphabet.txt'''
     d1 = str(dict1)
     if d1 != "":
         Text(d1)._execute()
@@ -54,7 +55,6 @@ def letters(big, dict1, dict2, letter):
         Text(d2)._execute()
     
 def numbers2(wnKK):
-    ''''''
     Text(str(wnKK))._execute()
 
 def mouse_alternates(mode):
@@ -146,6 +146,10 @@ def master_format_text(capitalization, spacing, textnv):
     '''
     t = str(textnv)
     tlen = len(t)
+    
+    if capitalization == 0 and settings.SETTINGS["ccr"]["default_lower"]:
+        capitalization = 5
+    
     if capitalization != 0:
         if capitalization == 1:
             t = t.upper()
@@ -156,18 +160,18 @@ def master_format_text(capitalization, spacing, textnv):
                 t = t.title()
                 t = t[0].lower() + t[1:]
             else:
-                t=t[0].lower()
-        elif capitalization==4:
-            t=t.capitalize()
-        elif capitalization==5:
-            t=t.lower()
-    if spacing!=0:
-        if spacing==1:
-            t="".join(t.split(" "))
-        elif spacing==2:
-            t="-".join(t.split(" "))
-        elif spacing==3:
-            t="_".join(t.split(" "))
+                t = t[0].lower()
+        elif capitalization == 4:
+            t = t.capitalize()
+        elif capitalization == 5:
+            t = t.lower()
+    if spacing != 0:
+        if spacing == 1:
+            t = "".join(t.split(" "))
+        elif spacing == 2:
+            t = "-".join(t.split(" "))
+        elif spacing == 3:
+            t = "_".join(t.split(" "))
     Text(t)._execute()
     
         

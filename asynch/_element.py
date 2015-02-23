@@ -64,13 +64,7 @@ def focus_element():
 
 def search():
     if utilities.window_exists(None, settings.ELEMENT_VERSION):
-        squeue.add_query(homunculus_to_element)
-        h_launch.launch(settings.QTYPE_INSTRUCTIONS, "enter_search_word")
-        WaitWindow(title=settings.HOMUNCULUS_VERSION, timeout=5)._execute()
-        FocusWindow(title=settings.HOMUNCULUS_VERSION)._execute()
-        Key("tab")._execute()
-
-
+        h_launch.launch(settings.QTYPE_INSTRUCTIONS, "enter_search_word", homunculus_to_element)
 
 def focus_extensions():
     focus_element()

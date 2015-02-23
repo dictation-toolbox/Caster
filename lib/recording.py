@@ -19,13 +19,8 @@ class RecordedRule(CompoundRule):
     def _process_recognition(self, node, extras):
         Playback(self.playback_array)._execute()
 
-def get_macro_spec():
-    ''''''
-    h_launch.launch(settings.QTYPE_DEFAULT)
-    WaitWindow(title=settings.HOMUNCULUS_VERSION, timeout=5)._execute()
-    FocusWindow(title=settings.HOMUNCULUS_VERSION)._execute()
-    Key("tab")._execute()
-    squeue.add_query(add_recorded_macro)
+def get_macro_spec(): 
+    h_launch.launch(settings.QTYPE_DEFAULT, None, add_recorded_macro)
 
 def record_from_history():
     # save the list as it was when the command was spoken
@@ -38,11 +33,7 @@ def record_from_history():
             formatted += w.split("\\")[0] + "[w]"
         formatted += "[s]"
     
-    h_launch.launch(settings.QTYPE_RECORDING, formatted)
-    WaitWindow(title=settings.HOMUNCULUS_VERSION + settings.HMC_TITLE_RECORDING, timeout=5)._execute()
-    FocusWindow(title=settings.HOMUNCULUS_VERSION + settings.HMC_TITLE_RECORDING)._execute()
-    Key("tab")._execute()
-    squeue.add_query(add_recorded_macro)
+    h_launch.launch(settings.QTYPE_RECORDING, formatted, add_recorded_macro)
     
 
 def add_recorded_macro(data):

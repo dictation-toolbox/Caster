@@ -5,7 +5,7 @@
 [Setup]
 AppName=Caster Dependencies
 AppVersion=0.3
-DefaultDirName={drive:C:}\NatLink\NatLink\MacroSystem\bin
+DefaultDirName={drive:C:}\temp
 DefaultGroupName=Caster Dependencies
 DirExistsWarning=no
 OutputDir=inst

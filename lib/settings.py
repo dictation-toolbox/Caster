@@ -6,21 +6,23 @@ SETTINGS = None
 
 INISETPATH = 'C:/NatLink/NatLink/MacroSystem/bin/data/settings.json'
 
-#titles
-ELEMENT_VERSION = "Element v.10"
-DISPEL_VERSION = "Dispel v.02"
-HOMUNCULUS_VERSION = "HMC v.03"
+# titles
+ELEMENT_VERSION = "Element v.20"
+DISPEL_VERSION = "Dispel v.2"
+HOMUNCULUS_VERSION = "HMC v.5"
 HMC_TITLE_VOCABULARY = " :: Vocabulary Manager"
 HMC_TITLE_RECORDING = " :: Recording Manager"
+HMC_TITLE_DIRECTORY= " :: Directory Selector"
 
-#enums
-QTYPE_DEFAULT = "default"
+# enums
+QTYPE_DEFAULT = "def"
 QTYPE_SET = "set"
 QTYPE_REM = "rem"
-QTYPE_INSTRUCTIONS = "instructions"
+QTYPE_INSTRUCTIONS = "ins"
 QTYPE_RECORDING = "rec"
+QTYPE_DIRECTORY = "dir"
 
-#listening ports
+# listening ports
 ELEMENT_LISTENING_PORT = 1337
 LEGION_LISTENING_PORT = 1338
 HMC_LISTENING_PORT = 1339
@@ -115,7 +117,7 @@ def init_default_values():
         ("DEFAULT_BROWSER_PATH", "C:/Program Files (x86)/Mozilla Firefox/firefox.exe"),
         ("SIKULI_IDE_JAR_PATH", ""),
         ("SIKULI_SCRIPTS_JAR_PATH", ""),
-        ("SIKULI_SERVER_PATH", SETTINGS["paths"]["BASE_PATH"] +"asynch/sikuli/scripts/xmlrpc_server.sikuli"),
+        ("SIKULI_SERVER_PATH", SETTINGS["paths"]["BASE_PATH"] + "asynch/sikuli/scripts/xmlrpc_server.sikuli"),
         ("SIKULI_COMPATIBLE_JAVA_EXE_PATH", ""),
         ("ENGINE_PATH", "C:/Program Files (x86)/Nuance/NaturallySpeaking12/Program/natspeak.exe"),
         
@@ -144,6 +146,7 @@ def init_default_values():
         SETTINGS["ccr"]["common"] = []
         SETTINGS["ccr"]["standard"] = ["alphabet", "navigation", "punctuation", "numbers"]
         SETTINGS["ccr"]["nonglobal_sets"] = []
+        SETTINGS["ccr"]["default_lower"] = True
         values_change_count += 1
     for (name, value) in ccrNamesFromFiles:
         if not name in SETTINGS["ccr"]["modes"]:
@@ -165,6 +168,14 @@ def init_default_values():
         SETTINGS["miscellaneous"]["debug_speak"] = False
         SETTINGS["miscellaneous"]["dev_commands"] = False
         SETTINGS["miscellaneous"]["sikuli_enabled"] = False
+        values_change_count += 1
+    
+    # element section
+    if not "element" in SETTINGS.keys():
+        SETTINGS["element"] = {}
+        SETTINGS["element"]["recent_files"] = 10
+        SETTINGS["element"]["extensions"] = [".py", ".java", ".cpp", ".h", ".js"]
+        SETTINGS["element"]["executables"] = ["eclipse", "WDExpress", "notepad++"]
         values_change_count += 1
     
     # pronunciations section

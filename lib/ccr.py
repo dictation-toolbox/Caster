@@ -192,13 +192,3 @@ def unload():
     global grammar
     if grammar: grammar.unload()
     grammar = None
-
-def camel_case(text):
-    t = str(text)
-    words = t.split(" ")
-    Text(words[0] + "".join(w.capitalize() for w in words[1:]))._execute()
-    
-def score(text):
-    """ score <dictation> """  # Docstring defining spoken-form.
-    t = str(text)  # Get written-form of dictated text.
-    Text("_".join(t.split(" ")))._execute()

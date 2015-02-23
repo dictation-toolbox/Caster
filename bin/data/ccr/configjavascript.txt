@@ -2,7 +2,6 @@
 # This is a heavily modified version of Dragonfly's _multiedit.py command-module
 
 from dragonfly import *
-from lib import ccr, navigation
 
 release = Key("shift:up, ctrl:up")
 noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added on the right side
@@ -10,8 +9,6 @@ noCaps = Mimic("\\no-caps-on")
 
 cmd.map = {
        # Spoken-form    ->    ->    ->     Action object
-		"score <text>":				Function(ccr.score, extra="text"),		
-        "ja <text>":					Function(ccr.camel_case, extra="text"),	
 		
 		# CCR PROGRAMMING STANDARD
 		"if":						Text("if()")+Key("left"),
@@ -86,7 +83,6 @@ cmd.map = {
           }
 
 cmd.extras   = [
-            Dictation("text"),
             
            ]
 cmd.defaults = {

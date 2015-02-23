@@ -1,5 +1,4 @@
 from dragonfly import *
-from lib import ccr, navigation
 
 release = Key("shift:up, ctrl:up")
 noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on")
@@ -7,8 +6,6 @@ noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on")
 
 cmd.map = {
            # Spoken-form    ->    ->    ->     Action object
-		"ja <text>":					Function(ccr.camel_case, extra="text"),
-		"score <text>":				Function(ccr.score, extra="text"),		
 		
 		# CCR PROGRAMMING STANDARD
 		"if":                           Text("if() {")+Key("enter,up,left"),
@@ -88,7 +85,6 @@ cmd.map = {
           }
 
 cmd.extras   = [
-            Dictation("text"),
            ]
 cmd.defaults = {
            }

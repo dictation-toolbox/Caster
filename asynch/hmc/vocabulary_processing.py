@@ -36,21 +36,13 @@ def add_vocab():
         
         selected=highlighted[1]
     try: 
-        squeue.add_query(process_set)
-        h_launch.launch(settings.QTYPE_SET, selected)
-        WaitWindow(title=settings.HOMUNCULUS_VERSION+settings.HMC_TITLE_VOCABULARY, timeout=5)._execute()
-        FocusWindow(title=settings.HOMUNCULUS_VERSION+settings.HMC_TITLE_VOCABULARY)._execute()
-        Key("tab")._execute()
+        h_launch.launch(settings.QTYPE_SET, selected, process_set)
     except Exception:
         utilities.simple_log(False)
 
 def del_vocab():
     try: 
-        squeue.add_query(process_delete)
-        h_launch.launch(settings.QTYPE_REM)
-        WaitWindow(title=settings.HOMUNCULUS_VERSION+settings.HMC_TITLE_VOCABULARY, timeout=5)._execute()
-        FocusWindow(title=settings.HOMUNCULUS_VERSION+settings.HMC_TITLE_VOCABULARY)._execute()
-        Key("tab")._execute()
+        h_launch.launch(settings.QTYPE_REM, None, process_delete)
     except Exception:
         utilities.simple_log(False)
 
