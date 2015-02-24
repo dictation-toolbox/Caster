@@ -15,7 +15,6 @@ class Query:
         self.callback = callback
 
 def check_for_response():
-    print "checking response"
     global LAST_QUERY, TRIES
     if LAST_QUERY != None:
         data = None
@@ -46,7 +45,6 @@ def add_query(callback, data=None):
     second = 1
     LAST_QUERY = Query({}, callback)
     control.TIMER_MANAGER.add_callback(check_for_response, second)
-    print "query added successfully "
     
     
     

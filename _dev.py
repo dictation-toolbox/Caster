@@ -15,7 +15,7 @@ def experiment():
 
 def scan_directory(data):
     scanner.scan_directory(data["path"])
-    for k in scanner.DATA:
+    for k in scanner.DATA["directories"]:
         print k
 
 class DevRule(MappingRule):

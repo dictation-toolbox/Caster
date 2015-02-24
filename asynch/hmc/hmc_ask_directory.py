@@ -42,17 +42,19 @@ class Homunculus_Directory(Homunculus):
             return response
         else:
             return None
-
+    
+    def _ask_directory(self):
+        dir_opt = {}
+        dir_opt['initialdir'] = os.environ["HOME"] + '\\'
+        dir_opt['mustexist'] = False
+        dir_opt['parent'] = self
+        dir_opt['title'] = 'Please select directory'
+        result = tkFileDialog.askdirectory(**dir_opt)
+        self.content.set(result)
     
     def xmlrpc_do_action(self, action, details=None):
-        if action == "ask":
-            dir_opt = {}
-            dir_opt['initialdir'] = os.environ["HOME"] + '\\'
-            dir_opt['mustexist'] = False
-            dir_opt['parent'] = self
-            dir_opt['title'] = 'Please select directory'
-            result = tkFileDialog.askdirectory(**self.dir_opt)
-            self.content.set(result)
+        if action == "dir":
+            self.after(10, self._ask_directory)
 
 
 

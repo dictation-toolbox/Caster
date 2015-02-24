@@ -6,7 +6,7 @@ from lib.element import regex
 from lib.element.regex import LanguageRegexSet
 
 
-DATA = {}
+DATA = {"directories":{}}
 # JSON_PATH = settings.SETTINGS["paths"]["ELEMENT_JSON_PATH"]
 # settings.load_json_file(JSON_PATH)
 # self.filename_pattern = re.compile(r"[/\\]([\w]+\.[\w]+)")
@@ -17,7 +17,7 @@ def scan_directory(directory):
     '''
     
     global DATA
-    languageRegexSets={}
+    languageRegexSets = {}
     scanned_directory = {}
     
     try:
@@ -31,7 +31,7 @@ def scan_directory(directory):
                     
                     # may as well reuse these
                     if not (extension in languageRegexSets):
-                        languageRegexSets[extension]=LanguageRegexSet(extension)
+                        languageRegexSets[extension] = LanguageRegexSet(extension)
                     
                     # search out imports, function names, variable names
                     scanned_file = {}
@@ -65,15 +65,13 @@ def _filter_words(line, lrs):
         return results
     
     results = []
-    if len(lrs.import_match_object) > 0:
-        results = _process_match(lrs.import_match_object, lrs.import_indices, results)
-    if len(lrs.function_match_object) > 0:
-        results = _process_match(lrs.function_match_object, lrs.function_indices, results)
-    if len(lrs.variable_match_object) > 0:
-        results = _process_match(lrs.variable_match_object, lrs.variable_indices, results)
+    for match_object, indices in [(lrs.import_regex.findall(line), lrs.import_indices),
+                                  (lrs.function_regex.findall(line), lrs.function_indices),
+                                  (lrs.variable_regex.findall(line), lrs.variable_indices), ]:
+        results = _process_match(match_object, indices, results)
     return results
 
-def _process_match(self, match_object, indices, results):
+def _process_match(match_object, indices, results):
     for m in match_object:
         if isinstance(m, tuple):
             for index in indices:
@@ -84,7 +82,7 @@ def _process_match(self, match_object, indices, results):
             results.append(m)
     return results
 
-def _passes_tests(self, word, scanned_file):
+def _passes_tests(word, scanned_file):
     # short words can be gotten faster by just spelling them
     too_short = len(word) < 4
     already_in_names = word in scanned_file["names"]
@@ -99,11 +97,11 @@ def _passes_tests(self, word, scanned_file):
 
 
 
-NATLINK_AVAILABLE=True
+NATLINK_AVAILABLE = True
 try:
     import natlink
 except Exception:
-    NATLINK_AVAILABLE=False
+    NATLINK_AVAILABLE = False
     
 def filter_strict():
     global NATLINK_AVAILABLE

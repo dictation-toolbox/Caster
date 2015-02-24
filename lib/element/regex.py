@@ -22,7 +22,7 @@ JAVA_IMPORTS = re.compile("import [A-Za-z0-9_\\.]+\.([A-Za-z0-9_]+);|throws ([A-
 JAVA_METHODS = re.compile("[ \.]([A-Za-z0-9_]+)\(")
 JAVA_VARIABLES = re.compile("([ \.]*([A-Za-z0-9_]+)[ ]*=)|((\bpublic\b|\bprivate\b|\binternal\b|\bfinal\b|\bstatic\b)[ ]+[A-Za-z0-9_]+[ ]+([A-Za-z0-9_]+)[ ]*[;=])|(([A-Za-z0-9_]+)[ ]*[,\)])")  # 1,4,6
 JAVA_IMPORT_INDICES = [0, 1, 2, 3]
-JAVA_FUNCTION_INDICES = [0]
+JAVA_METHOD_INDICES = [0]
 JAVA_VARIABLE_INDICES = [1, 4, 6]
 
 class LanguageRegexSet:
@@ -32,17 +32,17 @@ class LanguageRegexSet:
         
         if self.extension == ".java":
             global JAVA_IMPORTS, JAVA_METHODS, JAVA_VARIABLES, JAVA_IMPORT_INDICES, \
-            JAVA_FUNCTION_INDICES, JAVA_VARIABLE_INDICES 
-            self.import_match_object, self.function_match_object, self.variable_match_object, \
+            JAVA_METHOD_INDICES, JAVA_VARIABLE_INDICES 
+            self.import_regex, self.function_regex, self.variable_regex, \
             self.import_indices, self.function_indices, self.variable_indices = \
             JAVA_IMPORTS, JAVA_METHODS, JAVA_VARIABLES, JAVA_IMPORT_INDICES, \
-            JAVA_FUNCTION_INDICES, JAVA_VARIABLE_INDICES
+            JAVA_METHOD_INDICES, JAVA_VARIABLE_INDICES
         elif self.extension == ".py":
-            global PYTHON_IMPORTS, PYTHON_METHODS, PYTHON_VARIABLES, PYTHON_IMPORT_INDICES, \
+            global PYTHON_IMPORTS, PYTHON_FUNCTIONS, PYTHON_VARIABLES, PYTHON_IMPORT_INDICES, \
             PYTHON_FUNCTION_INDICES, PYTHON_VARIABLE_INDICES 
-            self.import_match_object, self.function_match_object, self.variable_match_object, \
+            self.import_regex, self.function_regex, self.variable_regex, \
             self.import_indices, self.function_indices, self.variable_indices = \
-            PYTHON_IMPORTS, PYTHON_METHODS, PYTHON_VARIABLES, PYTHON_IMPORT_INDICES, \
+            PYTHON_IMPORTS, PYTHON_FUNCTIONS, PYTHON_VARIABLES, PYTHON_IMPORT_INDICES, \
             PYTHON_FUNCTION_INDICES, PYTHON_VARIABLE_INDICES
         else:
             self.unmatched = True

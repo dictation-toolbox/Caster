@@ -29,7 +29,7 @@ def hmc_recording_exclude(n):
     communicate().do_action("exclude", int(n))
 
 def hmc_directory_browse():
-    communicate().do_action("browse")
+    communicate().do_action("dir")
 
 class HMCRule(MappingRule):
     mapping = {
