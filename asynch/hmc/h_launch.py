@@ -1,4 +1,5 @@
 import sys
+import time
 try:
     # this section only necessary if called externally to Dragon
 #     BASE_PATH = sys.argv[0].split("MacroSystem")[0] + "MacroSystem"
@@ -7,16 +8,13 @@ try:
         sys.path.append(BASE_PATH)
 except Exception:
     pass
-from dragonfly.actions.action_focuswindow import FocusWindow
-from dragonfly.actions.action_key import Key
-from dragonfly.actions.action_waitwindow import WaitWindow
 
-from asynch.hmc import squeue
+
 from asynch.hmc.hmc_ask_directory import Homunculus_Directory
 from asynch.hmc.hmc_recording import Homunculus_Recording
 from asynch.hmc.hmc_vocabulary import Homunculus_Vocabulary
 from asynch.hmc.homunculus import Homunculus
-from lib import settings, utilities
+from lib import settings
 from lib.dragonfree import launch as ll
 '''
 To add a new homunculus type:
@@ -27,17 +25,25 @@ To add a new homunculus type:
 '''
 
 def launch(hmc_type, callback, data=None):
+    
     instructions=["pythonw", settings.SETTINGS["paths"]["HOMUNCULUS_PATH"], hmc_type]
+    print 1
     if data!=None:
+        print 2
         instructions.append(data)
+        print 3
     ll.run(instructions)
+    print 4
     
-    hmc_title=_get_title(hmc_type)
-    WaitWindow(title=hmc_title, timeout=5)._execute()
-    FocusWindow(title=hmc_title)._execute()
-    Key("tab")._execute()
-    
+#         hmc_title=_get_title(hmc_type)
+#         WaitWindow(title=hmc_title, timeout=10)._execute()
+#         time.sleep(2 or : one)
+#         FocusWindow(title=hmc_title)._execute()
+#         Key("tab")._execute()
+    print 5
+    from asynch.hmc import squeue
     squeue.add_query(callback)
+    print 6
 
 def _get_title(hmc_type):
     default=settings.HOMUNCULUS_VERSION
@@ -51,6 +57,7 @@ def _get_title(hmc_type):
         return default+settings.HMC_TITLE_DIRECTORY
 
 def clean_homunculi():
+    from lib import utilities
     while utilities.window_exists(None, settings.HOMUNCULUS_VERSION):
         ll.kill_process("pythonw.exe")
     while utilities.window_exists(None, settings.HOMUNCULUS_VERSION+settings.HMC_TITLE_VOCABULARY):

@@ -15,7 +15,8 @@ except Exception:
 from lib import settings
 
 def run(arguments):
-    Popen(arguments, shell=False, stdin=None, stdout=None, stderr=None, close_fds=True)
+#     Popen(arguments, shell=False, stdin=None, stdout=None, stderr=None, close_fds=True)
+    Popen(arguments)
 
 def kill_process(executable):
     for proc in psutil.process_iter():

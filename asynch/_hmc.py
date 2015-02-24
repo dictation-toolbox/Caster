@@ -28,6 +28,9 @@ def hmc_recording_check_range(n, n2):
 def hmc_recording_exclude(n):
     communicate().do_action("exclude", int(n))
 
+def hmc_directory_browse():
+    communicate().do_action("browse")
+
 class HMCRule(MappingRule):
     mapping = {
         "kill homunculus":              Function(kill),
@@ -35,8 +38,10 @@ class HMCRule(MappingRule):
         "check <n>":                    Function(hmc_checkbox, extra="n"),
         "focus <field> [box]":          Function(hmc_focus, extra="field"),
         # specific to macro recorder
-        "check from <n> to <n2>":       Function(hmc_recording_check_range, extra={"n", "n2"}), 
-        "exclude <n>":                  Function(hmc_recording_exclude, extra="n"), 
+        "check from <n> to <n2>":       Function(hmc_recording_check_range, extra={"n", "n2"}),
+        "exclude <n>":                  Function(hmc_recording_exclude, extra="n"),
+        # specific to your directory browser
+        "browse":                       Function(hmc_directory_browse),
     }   
     extras = [
               IntegerRef("n", 1, 25),
@@ -50,10 +55,8 @@ class HMCRule(MappingRule):
                }
 
 
-context = AppContext(title=settings.HOMUNCULUS_VERSION) \
-        | AppContext(title=settings.HOMUNCULUS_VERSION + settings.HMC_TITLE_VOCABULARY) \
-        | AppContext(title=settings.HOMUNCULUS_VERSION + settings.HMC_TITLE_RECORDING)
-grammar = Grammar("hmc", context=context)
+c = AppContext(title=settings.HOMUNCULUS_VERSION)
+grammar = Grammar("hmc", context=c)
 grammar.add_rule(HMCRule())
 grammar.load()
 

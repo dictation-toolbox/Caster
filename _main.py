@@ -61,7 +61,7 @@ class MainRule(MappingRule):
     
     # hardware management
     "volume <volume_mode> [<n>]":   Function(navigation.volume_control, extra={'n', 'volume_mode'}),
-    "change monitor":               Key("w-p")+Pause("100")+Function(change_monitor),
+    "change monitor":               Key("w-p") + Pause("100") + Function(change_monitor),
     
     # window management
     'minimize':                     Playback([(["minimize", "window"], 0.0)]),
@@ -82,7 +82,7 @@ class MainRule(MappingRule):
     # miscellaneous
     "<enable_disable> <ccr_mode>":  Function(ccr.set_active, extra={"enable_disable", "ccr_mode"}),
     "again <n> [(times|time)]":     Function(repeat_that, extra={"n"}),
-    "record from history":          Function(recording.record_from_history), 
+    "record from history":          Function(recording.record_from_history),
     "delete recorded macros":       Function(recording.delete_recorded_rules),
     "find":                         Key("c-f"),
     "replace":                      Key("c-h"),

@@ -63,7 +63,7 @@ class ElementLaunchRule(MappingRule):
 
 elr=ElementLaunchRule()
 
-grammar = Grammar('element')
+grammar = Grammar('elementview')
 grammar.add_rule(elr)
 grammar.add_rule(eur)
 grammar.load()

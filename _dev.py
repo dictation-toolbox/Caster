@@ -2,18 +2,21 @@ from dragonfly import (Function, Key, BringApp, Text, WaitWindow, IntegerRef, Di
 from dragonfly.actions.action_startapp import StartApp
 
 from lib import utilities, settings
+from asynch.hmc import h_launch
+from lib.element import scanner
 
 
 def experiment():
     '''this function is for tests'''
     try: 
-        ''''''
-#         SelectiveAction(Text("eclipse"), ["eclipse.exe"])._execute()
+        h_launch.launch(settings.QTYPE_DIRECTORY, scan_directory, None)
     except Exception:
         utilities.simple_log(False)
 
-'''
-'''
+def scan_directory(data):
+    scanner.scan_directory(data["path"])
+    for k in scanner.DATA:
+        print k
 
 class DevRule(MappingRule):
     
@@ -24,8 +27,6 @@ class DevRule(MappingRule):
     "open natlink folder":          BringApp("explorer", settings.SETTINGS["paths"]["BASE_PATH"].replace("/", "\\")),
     "reserved word <text>":         Key("dquote,dquote,left") + Text("%(text)s") + Key("right, colon, tab/5:5") + Text("Text(\"%(text)s\"),"),
     "experiment":                   Function(experiment),
-    
-    "auto hotkey test":             StartApp("C:/Program Files (x86)/AutoHotkey/AutoHotkey.exe", "C:/Users/dave/Desktop/demo.ahk"),
     }
     extras = [
               Dictation("text"),

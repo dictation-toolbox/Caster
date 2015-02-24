@@ -123,5 +123,3 @@ class Homunculus_Recording(Homunculus):
             box_index = details
             if box_index >= 1 and box_index <= self.cb_max:
                 self.word_state[box_index - 1][0].set(False)
-
-# c=Homunculus_Recording(["b", "a"])

@@ -1,7 +1,6 @@
 import SimpleXMLRPCServer
 from SimpleXMLRPCServer import *
 from Tkinter import (Label, Text)
-import os, sys
 import signal
 from threading import Timer
 

@@ -13,7 +13,7 @@ if BASE_PATH not in sys.path:
 else:
     from lib import  settings, utilities
 
-class ElementViewer:
+class StickyList:
     def __init__(self):
         self.setup_UI()
         self.setup_XMLRPC_server()
@@ -87,5 +87,5 @@ class ElementViewer:
 
 
 if __name__ == '__main__':
-    app = ElementViewer()
+    app = StickyList()
     

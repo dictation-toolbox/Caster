@@ -6,6 +6,7 @@ from lib import control, utilities
 
 
 LAST_QUERY = None
+TRIES=0
 
 class Query:
     def __init__(self, data, callback):
@@ -14,9 +15,19 @@ class Query:
         self.callback = callback
 
 def check_for_response():
-    global LAST_QUERY
+    print "checking response"
+    global LAST_QUERY, TRIES
     if LAST_QUERY != None:
-        data = homunculus.communicate().get_message()
+        data = None
+        try: 
+            data = homunculus.communicate().get_message()
+        except Exception:
+            TRIES+=1
+            if TRIES>9:
+                TRIES=0
+                control.TIMER_MANAGER.remove_callback(check_for_response)
+                return
+        
         if data == None:
             return
         
@@ -35,6 +46,7 @@ def add_query(callback, data=None):
     second = 1
     LAST_QUERY = Query({}, callback)
     control.TIMER_MANAGER.add_callback(check_for_response, second)
+    print "query added successfully "
     
     
     

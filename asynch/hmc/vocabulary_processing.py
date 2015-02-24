@@ -36,13 +36,13 @@ def add_vocab():
         
         selected=highlighted[1]
     try: 
-        h_launch.launch(settings.QTYPE_SET, selected, process_set)
+        h_launch.launch(settings.QTYPE_SET, process_set, selected)
     except Exception:
         utilities.simple_log(False)
 
 def del_vocab():
     try: 
-        h_launch.launch(settings.QTYPE_REM, None, process_delete)
+        h_launch.launch(settings.QTYPE_REM, process_delete, None)
     except Exception:
         utilities.simple_log(False)
 

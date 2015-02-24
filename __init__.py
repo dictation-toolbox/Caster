@@ -5,7 +5,8 @@ Created on Jun 29, 2014
 '''
 try:
     from apps import *
-    from asynch import _element, _dispel, _hmc
+    from asynch import _dispel, _hmc
+    import _element
     from asynch.hmc import h_launch
     from lib import utilities
     from lib import ccr

@@ -20,7 +20,7 @@ class RecordedRule(CompoundRule):
         Playback(self.playback_array)._execute()
 
 def get_macro_spec(): 
-    h_launch.launch(settings.QTYPE_DEFAULT, None, add_recorded_macro)
+    h_launch.launch(settings.QTYPE_DEFAULT, add_recorded_macro, None)
 
 def record_from_history():
     # save the list as it was when the command was spoken
@@ -33,7 +33,7 @@ def record_from_history():
             formatted += w.split("\\")[0] + "[w]"
         formatted += "[s]"
     
-    h_launch.launch(settings.QTYPE_RECORDING, formatted, add_recorded_macro)
+    h_launch.launch(settings.QTYPE_RECORDING, add_recorded_macro, formatted)
     
 
 def add_recorded_macro(data):
