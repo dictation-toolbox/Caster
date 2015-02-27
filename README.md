@@ -28,7 +28,7 @@ dragonfly and natlink documentation
  - http://www.synapseadaptive.com/joel/NatLinkTalk.ppt
  - http://www.synapseadaptive.com/joel/VoiceCoders.ppt ("Secrets of VDct" by Joel Gould)
 
-other dragonfly and natlink repositories
+other dragonfly repositories
 --
  - https://github.com/dictation-toolbox
  - https://github.com/russell/damselfly
