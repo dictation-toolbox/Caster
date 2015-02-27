@@ -1,19 +1,16 @@
 '''
-_main.py
-
-General enhancements for Dragon NaturallySpeaking.
-
+main Caster module
 '''
 
-from dragonfly import (BringApp, Key, Function, Grammar, Playback,
-                       IntegerRef, Dictation, Choice, Pause, MappingRule, Text)
-from dragonfly.actions.action_focuswindow import FocusWindow
+from dragonfly import (Key, Function, Grammar, Playback,
+                       IntegerRef, Dictation, Choice, Pause, MappingRule)
 
 from asynch.hmc import vocabulary_processing
 from asynch.sikuli import sikuli
 from lib import ccr, recording
-from lib import control, settings, navigation, password, context
+from lib import control, settings, navigation, password
 from lib import utilities
+from lib.element import scanner
 
 
 def fix_Dragon_double():
@@ -54,6 +51,8 @@ class MainRule(MappingRule):
     'spell mode':                   Playback([(["spell", "mode", "on"], 0.0)]),
     'dictation mode':               Playback([(["dictation", "mode", "on"], 0.0)]),
     'normal mode':                  Playback([(["normal", "mode", "on"], 0.0)]),
+    'com on':                       Playback([(["command", "mode", "on"], 0.0)]),
+    'com off':                      Playback([(["command", "mode", "off"], 0.0)]),
     "reboot dragon":                Function(utilities.reboot),
     "fix dragon double":            Function(fix_Dragon_double),
     "add word to vocabulary":       Function(vocabulary_processing.add_vocab),
@@ -78,6 +77,9 @@ class MainRule(MappingRule):
     "legion":                       Function(navigation.mouse_alternates, mode="legion"),
     "rainbow":                      Function(navigation.mouse_alternates, mode="rainbow"),
     "douglas":                      Function(navigation.mouse_alternates, mode="douglas"),
+    
+    # element
+    "element scan directory":       Function(scanner.scan_directory),
     
     # miscellaneous
     "<enable_disable> <ccr_mode>":  Function(ccr.set_active, extra={"enable_disable", "ccr_mode"}),

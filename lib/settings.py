@@ -12,7 +12,7 @@ DISPEL_VERSION = "Dispel v.2"
 HOMUNCULUS_VERSION = "HMC v.5"
 HMC_TITLE_VOCABULARY = " :: Vocabulary Manager"
 HMC_TITLE_RECORDING = " :: Recording Manager"
-HMC_TITLE_DIRECTORY= " :: Directory Selector"
+HMC_TITLE_DIRECTORY = " :: Directory Selector"
 
 # enums
 QTYPE_DEFAULT = "def"
@@ -176,6 +176,7 @@ def init_default_values():
         SETTINGS["element"]["recent_files"] = 10
         SETTINGS["element"]["extensions"] = [".py", ".java", ".cpp", ".h", ".js"]
         SETTINGS["element"]["executables"] = ["eclipse", "WDExpress", "notepad++"]
+        SETTINGS["element"]["filter_strict"] = False
         values_change_count += 1
     
     # pronunciations section

@@ -1,7 +1,4 @@
-from dragonfly.actions.action_focuswindow import FocusWindow
-from dragonfly.actions.action_key import Key
 from dragonfly.actions.action_playback import Playback
-from dragonfly.actions.action_waitwindow import WaitWindow
 from dragonfly.grammar.rule_compound import CompoundRule
 
 from asynch.hmc import h_launch, squeue

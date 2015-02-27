@@ -16,7 +16,6 @@ from dragonfly.actions.action_function import Function
 from dragonfly.actions.action_mimic import Mimic
 
 
-
 class CommandRule(MappingRule):
 
     mapping = {
@@ -65,7 +64,7 @@ context = AppContext(executable="eclipse") | AppContext(executable="AptanaStudio
 grammar = Grammar("Eclipse", context=context)
 grammar.add_rule(CommandRule())
 grammar.load()
-
+#Digital and 66 go to line 66;;some words cohere
 def unload():
     global grammar
     if grammar: grammar.unload()

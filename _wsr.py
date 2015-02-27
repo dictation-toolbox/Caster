@@ -1,12 +1,22 @@
+'''
+--Caster WSR module--
+Can be run by itself to use Caster with Windows Speech Recognition or 
+to activate WSR after Dragon is already running. 
+
+If you're interested in running Dragonfly, but not Caster, use a similar
+pattern to the
+if __name__ == "__main__":
+section.
+
+'''
+
 import time, pythoncom
-
-
 
 
 if __name__ == "__main__":
     print "WSR Speech Recognition is garbage; it is recommended that you not run Caster this way."
     import __init__
-    import _main
+    import _caster
     while True:
         pythoncom.PumpWaitingMessages()
         time.sleep(.1)
