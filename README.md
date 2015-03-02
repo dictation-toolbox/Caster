@@ -68,7 +68,8 @@ open source and commercial Dragon add-ons
 
 video
 --
-- http://www.youtube.com/watch?v=8SkdfdXWYaI (Tavis Rudd talk)
+- http://www.youtube.com/watch?v=8SkdfdXWYaI (Tavis Rudd Pycon talk)
+- https://www.youtube.com/watch?v=qXvbQQV1ydo (another Tavis Rudd talk)
 - https://www.youtube.com/watch?v=g3c5H7sAbBQ (explanation of continuous command recognition)
 - http://www.youtube.com/watch?v=LVAO8DXUnRI (a voice programmer)
 - http://vimeo.com/9156942 (tutorial on setting Dragonfly up -- outdated)
