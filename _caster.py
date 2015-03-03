@@ -10,7 +10,7 @@ from asynch.sikuli import sikuli
 from lib import ccr, recording
 from lib import control, settings, navigation, password
 from lib import utilities
-from lib.element import scanner
+from lib.pita import scanner
 
 
 def fix_Dragon_double():

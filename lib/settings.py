@@ -7,9 +7,11 @@ SETTINGS = None
 INISETPATH = 'C:/NatLink/NatLink/MacroSystem/bin/data/settings.json'
 
 # titles
-ELEMENT_VERSION = "Element v.20"
-DISPEL_VERSION = "Dispel v.2"
-HOMUNCULUS_VERSION = "HMC v.5"
+SOFTWARE_VERSION_NUMBER="0.3.1"
+SOFTWARE_NAME="Caster v "+SOFTWARE_VERSION_NUMBER
+ELEMENT_VERSION = "Element v "+SOFTWARE_VERSION_NUMBER
+DISPEL_VERSION = "Dispel v "+SOFTWARE_VERSION_NUMBER
+HOMUNCULUS_VERSION = "HMC v "+SOFTWARE_VERSION_NUMBER
 HMC_TITLE_VOCABULARY = " :: Vocabulary Manager"
 HMC_TITLE_RECORDING = " :: Recording Manager"
 HMC_TITLE_DIRECTORY = " :: Directory Selector"
@@ -24,8 +26,8 @@ QTYPE_DIRECTORY = "dir"
 
 # listening ports
 ELEMENT_LISTENING_PORT = 1337
-LEGION_LISTENING_PORT = 1338
-HMC_LISTENING_PORT = 1339
+HMC_LISTENING_PORT = 1338
+GRIDS_LISTENING_PORT = 1339
 SIKULI_LISTENING_PORT = 8000
 
 def get_list_of_ccr_config_files():
@@ -66,6 +68,7 @@ def load_json_file(path):
             save_json_file(result, path)
     except Exception:
         print "error loading json file: " + path
+        print sys.exc_info()
     return result
 
 def save_config():
@@ -110,14 +113,14 @@ def init_default_values():
         # EXECUTABLES
         ("WSR_PATH", "C:/Windows/Speech/Common/sapisvr.exe"),
         ("ELEMENT_PATH", SETTINGS["paths"]["BASE_PATH"] + "/asynch/element.py"),
-        ("LEGION_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/asynch/legion.py"),
-        ("RAINBOW_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/lib/display.py"),
-        ("DOUGLAS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/lib/display.py"),
+        ("LEGION_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/asynch/mouse/legion.py"),
+        ("RAINBOW_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/asynch/mouse/grids.py"),
+        ("DOUGLAS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/asynch/mouse/grids.py"),
         ("HOMUNCULUS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/asynch/hmc/h_launch.py"),
         ("DEFAULT_BROWSER_PATH", "C:/Program Files (x86)/Mozilla Firefox/firefox.exe"),
         ("SIKULI_IDE_JAR_PATH", ""),
         ("SIKULI_SCRIPTS_JAR_PATH", ""),
-        ("SIKULI_SERVER_PATH", SETTINGS["paths"]["BASE_PATH"] + "asynch/sikuli/scripts/xmlrpc_server.sikuli"),
+        ("SIKULI_SERVER_PATH", SETTINGS["paths"]["BASE_PATH"] + "/asynch/sikuli/scripts/xmlrpc_server.sikuli"),
         ("SIKULI_COMPATIBLE_JAVA_EXE_PATH", ""),
         ("ENGINE_PATH", "C:/Program Files (x86)/Nuance/NaturallySpeaking12/Program/natspeak.exe"),
         

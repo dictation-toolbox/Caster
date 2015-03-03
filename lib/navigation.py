@@ -5,16 +5,61 @@ from dragonfly import (Key, Text , Playback, BringApp, Mouse)
 import dragonfly
 from win32con import MOUSEEVENTF_WHEEL
 
-from asynch.legion import LegionScanner
+from asynch.mouse.legion import LegionScanner
 from lib import control
 from lib import utilities
 from lib.dragonfree import launch
-import  settings
-from dragonfly.actions.action_base import Repeat
+from lib.pita import scanner, selector, strings
+import settings
 
 
-BASE_PATH = settings.SETTINGS["paths"]["BASE_PATH"]
-NIRCMD_PATH = settings.SETTINGS["paths"]["NIRCMD_PATH"]
+OLD_ACTIVE_WINDOW_TITLE = None
+ACTIVE_FILE_PATH = [None, None]
+
+def pita(textnv):
+    global OLD_ACTIVE_WINDOW_TITLE, ACTIVE_FILE_PATH
+    '''this function is for tests'''
+    try:
+        print 1, 2
+        '''check to see if the active file has changed;
+        if not, skip this step
+        '''
+        active_window_title = utilities.get_active_window_title().replace("\\", "/")
+        active_has_changed = OLD_ACTIVE_WINDOW_TITLE != active_window_title
+        filename = None
+        path_folders = None
+         
+        
+        if active_has_changed:
+            OLD_ACTIVE_WINDOW_TITLE = active_window_title
+            '''get name of active file and folders in path;
+            will be needed to look up collection of symbols
+            in scanner data'''
+            # active file
+            match_object = scanner.FILENAME_PATTERN.findall(active_window_title)
+            if len(match_object) > 0:  
+                filename = match_object[0]
+            else:
+                nothing_found()
+                return
+            # path folders
+            path_folders = active_window_title.split("/")[:-1]
+            ACTIVE_FILE_PATH = selector.guess_file_based_on_window_title(filename, path_folders)
+         
+        if ACTIVE_FILE_PATH[0] != None:
+            result=strings.get_similar_symbol_name(str(textnv), scanner.DATA["directories"][ACTIVE_FILE_PATH[0]]["files"][ACTIVE_FILE_PATH[1]]["names"])
+            print "fuzzy match: ", str(textnv), "->", result
+            Text(result)._execute()
+        else:
+            print "ACTIVE_FILE_PATH: ", ACTIVE_FILE_PATH
+            print "filename: ", filename
+            print "path_folders: ", path_folders
+        
+    except Exception:
+        utilities.simple_log(False)
+
+def nothing_found():
+    utilities.report("pita: nothing found")
 
 def word_number(wn):
     numbers_to_words = {
@@ -117,20 +162,6 @@ def volume_control(n, volume_mode):
     for i in range(0, int(n)):
         Key("volume" + str(volume_mode))._execute()
     
-def auto_spell(mode, textnv):
-    # to do: add support for other modes
-    format_mode = str(mode)
-    if format_mode == "spell":
-        base = "".join(str(textnv).split(" ")).lower()
-        Text(base)._execute()
-    elif format_mode == "crunch":
-        Text(str(textnv).lower())._execute()
-    elif format_mode == "caps":
-        Text(str(textnv).upper())._execute()
-    elif format_mode == "sent":
-        base = str(textnv).capitalize()
-        Text(base)._execute()
-
 def master_format_text(capitalization, spacing, textnv):
     '''
     Commands for capitalization: 

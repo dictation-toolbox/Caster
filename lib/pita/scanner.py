@@ -3,8 +3,8 @@ import re
 
 from asynch.hmc import h_launch
 from lib import utilities, settings
-from lib.element import regex
-from lib.element.regex import LanguageRegexSet
+from lib.pita import regex
+from lib.pita.regex import LanguageRegexSet
 
 
 NATLINK_AVAILABLE = True
@@ -17,7 +17,7 @@ _d = settings.load_json_file(settings.SETTINGS["paths"]["ELEMENT_JSON_PATH"])
 DATA = _d if _d != {} else {"directories":{}}
 
 # filename_pattern was used to determine when to update the list in the element window, checked to see when a new file name had appeared
-FILENAME_PATTERN = re.compile(r"[/\\]([\w]+\.[\w]+)")
+FILENAME_PATTERN = re.compile(r"[/\\]([\w_]+\.[\w]+)")
 
 def scan_directory():
     h_launch.launch(settings.QTYPE_DIRECTORY, _scan_directory, None)
@@ -32,7 +32,7 @@ def _scan_directory(data):
     directory=data["path"]
     languageRegexSets = {}
     scanned_directory = {}
-    
+    utilities.remote_debug("scanner")
     try:
         for base, dirs, files in os.walk(directory):  # traverse base directory, and list directories as dirs and files as files
             for fname in files:

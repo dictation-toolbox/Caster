@@ -1,27 +1,17 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import os, json, sys
-from dragonfly.actions.action_mimic import Mimic
-
+from datetime import datetime
+import multiprocessing
+import win32gui, win32process, win32api, win32ui
 
 BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
 if BASE_PATH not in sys.path:
     sys.path.append(BASE_PATH)
-from datetime import datetime
-import multiprocessing
-
-
-from dragonfly import Key
-import win32gui, win32process, win32api, win32ui
 from lib.dragonfree import launch
 from lib import  settings
 
 
-def mimic(mim):
-    print mim, str(mim)
-    if mim=="":
-        return 
-    Mimic(mim.split(" "))._execute()
 
 def window_exists(classname, windowname):
     try:
@@ -33,13 +23,6 @@ def window_exists(classname, windowname):
 
 
 
-
-
-def press_digits(n):
-    number = str(n)
-    for digit in number:
-        Key(digit)._execute()
-        
 def get_active_window_hwnd():
     return str(win32gui.GetForegroundWindow())
 

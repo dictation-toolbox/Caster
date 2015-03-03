@@ -6,7 +6,7 @@ from threading import Timer
 
 import Tkinter as tk
 if __name__ == "__main__":
-    BASE_PATH = sys.argv[0].split("MacroSystem")[0] + "MacroSystem"
+    BASE_PATH = "C:/NatLink/NatLink/MacroSystem"
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
     from lib import  settings
@@ -81,3 +81,4 @@ class Homunculus(tk.Tk):
     
     def xmlrpc_do_action(self, action, details=None):
         '''override'''
+

@@ -1,10 +1,11 @@
 from __future__ import division
 
+import SimpleXMLRPCServer
+from SimpleXMLRPCServer import *
 import getopt
-import os
-import re 
 import signal
 import sys
+from threading import Timer
 import time
 
 from PIL import ImageGrab, ImageTk, ImageDraw, ImageFont
@@ -12,6 +13,17 @@ import win32api
 
 import Tkinter as tk
 
+
+try:
+    BASE_PATH = "C:/NatLink/NatLink/MacroSystem"
+    if BASE_PATH not in sys.path:
+        sys.path.append(BASE_PATH)
+    from lib import  settings
+except Exception:
+    from lib import  settings
+
+def communicate():
+    return xmlrpclib.ServerProxy("http://127.0.0.1:" + str(settings.GRIDS_LISTENING_PORT))
 
 class Dimensions:
     def __init__(self, w, h, x, y):
@@ -43,6 +55,7 @@ class TkTransparent(tk.Tk):
     
     def __init__(self, name, dimensions=None):
         tk.Tk.__init__(self, baseName="")
+        self.setup_XMLRPC_server()
         if not dimensions:
             dimensions = self.get_dimensions_fullscreen()
         self.dimensions = dimensions
@@ -56,9 +69,18 @@ class TkTransparent(tk.Tk):
         self.wm_geometry(self.get_dimensions_string())
         self._canvas = tk.Canvas(master=self, width=dimensions.width, height=dimensions.height, bg='white', bd=-2)
         self._canvas.pack()
-        self.protocol("WM_DELETE_WINDOW", self.on_exit)
-        self.bind("<Key>", self.key)
+        self.protocol("WM_DELETE_WINDOW", self.xmlrpc_kill)
+#        self.bind("<Key>", self.key)
         # self.mainloop()#do this in the child classes
+        def start_server():
+            while not self.server_quit:
+                self.server.handle_request()  
+        Timer(1, start_server).start()
+    
+    def setup_XMLRPC_server(self): 
+        self.server_quit = 0
+        self.server = SimpleXMLRPCServer(("127.0.0.1", settings.GRIDS_LISTENING_PORT), allow_none=True)
+        self.server.register_function(self.xmlrpc_kill, "kill")
     
     def pre_redraw(self):
         '''gets the window ready to be redrawn'''
@@ -77,8 +99,12 @@ class TkTransparent(tk.Tk):
     
     def hide(self):
         self.withdraw()
-        
-    def on_exit(self):
+    
+    def xmlrpc_kill(self):
+        self.after(10, self.die)
+    
+    def die(self):
+        self.server_quit = 1
         self.destroy()
         os.kill(os.getpid(), signal.SIGTERM)
         
@@ -103,18 +129,7 @@ class RainbowGrid(TkTransparent):
                        (128, 0, 128, self.square_alpha)  # purple
                        ]
         self.position_index = None
-        '''mode information:
-        p  = the next input will be an int representing pre-color information (which red do I want? the first, second? etc.)
-        c  = the next input will be an int representing the selected color (1-"red", 5-"blue", etc.)
-        n  = the next input will be 2 ints representing a number between 0-99
-        xx = exit program
-        r  = refresh
-        
-        any other sequence should activate null-mode
-        '''
-        self.mode = ""  # null-mode
-        self.digits = ""
-        self.allowed_characters = r"[pcnxr0-9]"
+
         self.info_pre = 0
         self.info_color = 0
         self.info_num = 0
@@ -131,27 +146,15 @@ class RainbowGrid(TkTransparent):
         self.imgtk = ImageTk.PhotoImage(self.img)
         self._canvas.create_image(self.dimensions.width / 2, self.dimensions.height / 2, image=self.imgtk)
     
-    def key(self, e):
-        if re.search(self.allowed_characters, e.char):
-            if e.char == 'x':
-                if self.mode == "x":
-                    self.on_exit()
-                self.mode = "x"
-            elif e.char == 'r':
-                self.refresh()
-            elif e.char == 'p':
-                self.mode = "p"
-                self.digits = ""
-            elif e.char == 'c':
-                self.mode = "c"
-                self.digits = ""
-            elif e.char == 'n':
-                self.mode = "n"
-                self.digits = ""
-            else:
-                self.digits += e.char
-                if len(self.digits) == 2:
-                    self.process()
+    def setup_XMLRPC_server(self):
+        TkTransparent.setup_XMLRPC_server(self)
+        self.server.register_function(self.xmlrpc_move_mouse, "move_mouse")
+    
+    def xmlrpc_move_mouse(self, pre, color, num):
+        if pre > 0:
+            pre -= 1
+        selected_index = self.position_index[color + pre * len(self.colors)][num]
+        self.move_mouse(selected_index[0], selected_index[1])
     
     def process(self):
         ''''''
@@ -184,7 +187,6 @@ class RainbowGrid(TkTransparent):
         
     def draw(self):
         self.pre_redraw()
-        # drawing code here
         self.img = ImageGrab.grab()  # .filter(ImageFilter.BLUR)
         self.draw_squares()
         self.finalize()
@@ -237,48 +239,23 @@ class RainbowGrid(TkTransparent):
 class DouglasGrid(TkTransparent):
     
     def __init__(self, grid_size=None, square_size=None):
-        '''square_size is an integer'''
         TkTransparent.__init__(self, "douglasgrid", grid_size)
         self.square_size = square_size if square_size else 25
-        
-        '''mode information:
-        b  = separator for X and Y grid number values
-        xx = exit program
-        
-        any other sequence should activate null-mode
-        '''
-        self.mode = "y"  # null-mode
-        self.digits = ""
-        self.allowed_characters = r"[bx0-9]"
-        self.y_coord = None
-        
+                
         self.draw()
         self.mainloop()
     
-    def key(self, e):
-        if re.search(self.allowed_characters, e.char):
-            if e.char == 'b':
-                self.mode = "x"
-            elif e.char == 'x':
-                if self.mode == "e":
-                    self.on_exit()
-                self.mode = "e"
-            else:
-                if self.mode == "e":
-                    self.mode = "y"
-                self.digits += e.char
-                if len(self.digits) == 2:
-                    self.process()
-                    self.digits = ""
+    def setup_XMLRPC_server(self):
+        TkTransparent.setup_XMLRPC_server(self)
+        self.server.register_function(self.xmlrpc_move_mouse, "move_mouse")
     
-    def process(self):
-        ''''''
-        if self.mode == "y":
-            self.y_coord = int(self.digits) * self.square_size + int(self.square_size / 2)
-        elif self.mode == "x":
-            x_coord = int(self.digits) * self.square_size + int(self.square_size / 2)
-            self.move_mouse(x_coord, self.y_coord)
-            self.mode = "y"
+    def xmlrpc_move_mouse(self, x, y):
+        self.move_mouse(x* self.square_size + int(self.square_size / 2), y* self.square_size + int(self.square_size / 2))
+    
+    def draw(self):
+        self.pre_redraw()
+        self.draw_lines_and_numbers()
+        self.unhide()
     
     def fill_xs_ys(self):
         # only figure out the coordinates of the lines once
@@ -287,15 +264,7 @@ class DouglasGrid(TkTransparent):
                 self.xs.append(x * self.square_size)
             for y in range(0, int(self.dimensions.height / self.square_size)):
                 self.ys.append(y * self.square_size)
-        
-    def draw(self):
-        self.pre_redraw()
-        # drawing code here
-        self.draw_lines_and_numbers()
-        
-        
-        self.unhide()
-
+    
     def draw_lines_and_numbers(self):
         
         self.fill_xs_ys()
@@ -360,7 +329,7 @@ class DouglasGrid(TkTransparent):
 
     
 def main(argv):
-    help_message = 'display.py -m <mode>\nr\trainbow grid\nd\tdouglas grid'
+    help_message = 'mouse.py -m <mode>\nr\trainbow grid\nd\tdouglas grid'
     try:
         opts, args = getopt.getopt(argv, "hm:")
     except getopt.GetoptError:

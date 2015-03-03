@@ -1,18 +1,6 @@
-#
-# This file is a command-module for Dragonfly.
-# (c) Copyright 2008 by Christo Butcher
-# Licensed under the LGPL, see <http://www.gnu.org/licenses/>
-#
-"""
-Command-module for ECLIPSE
-
-"""
-#---------------------------------------------------------------------------
-
 from dragonfly import (Grammar, AppContext, MappingRule,
                        Dictation, IntegerRef,
                        Key, Text, Repeat, Pause)
-from dragonfly.actions.action_function import Function
 from dragonfly.actions.action_mimic import Mimic
 
 
@@ -60,11 +48,11 @@ class CommandRule(MappingRule):
 
 #---------------------------------------------------------------------------
 
-context = AppContext(executable="eclipse") | AppContext(executable="AptanaStudio3")
+context = AppContext(executable="javaw", title="Eclipse") | AppContext(executable="AptanaStudio3")
 grammar = Grammar("Eclipse", context=context)
 grammar.add_rule(CommandRule())
 grammar.load()
-#Digital and 66 go to line 66;;some words cohere
+
 def unload():
     global grammar
     if grammar: grammar.unload()

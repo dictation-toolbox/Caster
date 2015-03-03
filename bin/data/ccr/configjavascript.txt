@@ -2,6 +2,7 @@
 # This is a heavily modified version of Dragonfly's _multiedit.py command-module
 
 from dragonfly import *
+from lib.dfplus.additions import SelectiveAction
 
 release = Key("shift:up, ctrl:up")
 noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added on the right side
@@ -21,8 +22,8 @@ cmd.map = {
 		#
 		"do loop":					Text("do {}")+Key("left, enter:2"),
         "while":					Text("while ()")+Key("left"),
-        "for loop":					Text("for (int i=0; i<VALUE; i++)"),
-		"for each":					Text("for each (VARIABLE in OBJECT)"),
+        "for loop":					Text("for (var i=0; i<VALUE; i++)"),
+		"for each":					Text("for (VARIABLE in OBJECT)"),
         #
         "convert to string":		Key("dquote, dquote, plus"),
 		"convert to integer":		Text("parseInt()")+Key("left"),
@@ -36,7 +37,7 @@ cmd.map = {
 		#
 		# (no imports in javascript)
 		# 
-		"function":					Text("function PARAMETER(){}")+Key("left, enter:2, up"),
+		"function":					Text("function NAME(){};")+Key("left:2, enter")+SelectiveAction(Key("enter, up"), ["AptanaStudio3.exe"]),
 		# (no classes in javascript)
 		#
 		"add comment":				Text("//"),
@@ -62,7 +63,7 @@ cmd.map = {
 		"self":						Text("self"),
 		"push":						Text("push"),
 		"inner HTML":				Text("innerHTML"),
-		
+		"new":					    Text("new "),
         "continue":					Text("continue"),
 
         "this":						Text("this"),
@@ -74,11 +75,6 @@ cmd.map = {
 		"instance of":				Text("instanceof "), 
         "throws":					Text("throws "),
         "(far | variable)":			Text("var "),
-        
-        "integer":					Text("int "),
-        "new":						Text("new "),
-        
-        "float":					Text("float "),
 	   
           }
 

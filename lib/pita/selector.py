@@ -3,7 +3,7 @@ Created on Feb 26, 2015
 
 @author: dave
 '''
-from lib.element import scanner
+from lib.pita import scanner
 def guess_file_based_on_window_title(title_file, title_path_folders):
         
     d_candidate_best = ["", 0]

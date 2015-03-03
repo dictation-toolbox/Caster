@@ -15,11 +15,14 @@ cmd.map = {
     "right point":                  Playback([(["MouseGrid"], 0.1),(["six", "six"], 0.1),(["click"], 0.0)]),
     "center point":                 Playback([(["MouseGrid"], 0.1),(["click"], 0.0)]),
     
+    #Voicecode-inspired
     "gopher <direction3> <target>": Function(context.navigate_to_character, extra={"direction3","target"}),    
     "jump in":						Playback([(["gopher", "next", "openers", "right"], 0.0)]),
     "jump out":						Playback([(["gopher", "next", "closers", "right"], 0.0)]),
     "jump back":					Playback([(["gopher", "previous", "openers", "left"], 0.0)]),
     "fill <target>":				Function(context.fill_blanks, extra="target"),
+    "pita <textnv>":				Function(navigation.pita, extra="textnv"), 
+    
     
     #keyboard shortcuts
 	'save':                         Key("c-s"),

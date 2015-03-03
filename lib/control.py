@@ -1,6 +1,8 @@
 from dragonfly import RecognitionHistory, Grammar
 from dragonfly.timer import _Timer
 
+from lib import settings
+
 
 MULTI_CLIPBOARD={}
 
@@ -14,7 +16,7 @@ RECORDED_MACROS_GRAMMAR = Grammar("recorded_macros")
 
 
 def print_startup_message():
-    print "*- Starting Caster v 0.3 -*"
+    print "*- Starting "+settings.SOFTWARE_NAME+" -*"
 
 
 
