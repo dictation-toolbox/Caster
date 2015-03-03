@@ -3,13 +3,17 @@
 
 If you've found my humble Dragonfly repository, perhaps some of these links will be useful to you. I am still finding Natlink and Dragonfly resources and I have listed some of the best below for my own reference and yours.
 
-forums and community
+forums, community, publicity
 --
  - https://groups.google.com/forum/#!forum/dragonflyspeech
  - http://www.knowbrainer.com/forums/forum/categories.cfm?catid=25
+ - http://handsfreecoding.org/
  - https://web.archive.org/web/20130805104835/http://speechcomputing.com/forum
  - https://groups.google.com/forum/#!forum/comp.lang.beta
  - http://nuance-community.custhelp.com/hives/be1ac29547/summary
+ - https://web.archive.org/web/20141113151730/http://forums.steampowered.com/forums/showthread.php?t=1239646
+ - http://www.extrahop.com/post/blog/programming-by-voice-staying-productive-without-harming-yourself/
+ - http://voicecontrol.blogspot.nl/
 
 sources and modules
 --
@@ -74,15 +78,10 @@ video
 - http://www.youtube.com/watch?v=LVAO8DXUnRI (a voice programmer)
 - http://vimeo.com/9156942 (tutorial on setting Dragonfly up -- outdated)
 
-dragonfly/natlink publicity
+installation instructions
 --
-- https://web.archive.org/web/20141113151730/http://forums.steampowered.com/forums/showthread.php?t=1239646
-- http://www.extrahop.com/post/blog/programming-by-voice-staying-productive-without-harming-yourself/
-- http://voicecontrol.blogspot.nl/
-
-installation instructions for Caster
---
- - http://explosionduck.com/caster/install
+ - http://explosionduck.com/caster/install (Caster)
+ - http://explosionduck.com/caster/install/dragonfly.html (Dragonfly)
 
 legacy
 --
