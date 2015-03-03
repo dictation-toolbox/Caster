@@ -1,16 +1,17 @@
 #Caster
 ##Natlink/Dragonfly speech recognition macros + voice programming assistance tools
 
-##contents
+##contents (mostly about natlink/dragonfly, not caster)
 1. [about this page](#about)
-2. [forums, community, publicity](#forums-community-publicity)
-2. [sources and modules](#sources-and-modules)
-3. [documentation](#dragonfly-and-natlink-documentation)
-4. [repositories](#other-dragonfly-repositories)
+2. [forums, community, publicity](#forums-community-publicity) 
+2. [sources and modules](#sources-and-modules) 
+3. [documentation](#dragonfly-and-natlink-documentation) 
+4. [repositories](#other-dragonfly-repositories) 
 5. [other documents](#other-related-documents)
 6. [DNS add-ons, commercial and free](#open-source-and-commercial-dragon-add-ons)
 7. [video](#video)
-8. [installation instructions](#installation-instructions)
+8. [installation instructions](#installation-instructions) (dragonfly and caster)
+9. [caster wiki](https://github.com/synkarius/caster/wiki)
 9. [legacy links](#legacy)
 10. [miscellaneous other](#other)
 
