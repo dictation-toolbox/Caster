@@ -27,6 +27,9 @@ def hmc_recording_check_range(n, n2):
 
 def hmc_recording_exclude(n):
     communicate().do_action("exclude", int(n))
+    
+def hmc_recording_repeatable():
+    communicate().do_action("repeatable")
 
 def hmc_directory_browse():
     communicate().do_action("dir")
@@ -40,6 +43,7 @@ class HMCRule(MappingRule):
         # specific to macro recorder
         "check from <n> to <n2>":       Function(hmc_recording_check_range, extra={"n", "n2"}),
         "exclude <n>":                  Function(hmc_recording_exclude, extra="n"),
+        "[make] repeatable":            Function(hmc_recording_repeatable),
         # specific to your directory browser
         "browse":                       Function(hmc_directory_browse),
     }   

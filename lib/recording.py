@@ -1,8 +1,7 @@
-from dragonfly.actions.action_playback import Playback
-from dragonfly.grammar.rule_compound import CompoundRule
+from dragonfly import (Playback, CompoundRule, IntegerRef)
 
-from asynch.hmc import h_launch, squeue
-from lib import settings, control, utilities
+from asynch.hmc import h_launch
+from lib import settings, control
 
 
 class RecordedRule(CompoundRule):
@@ -14,7 +13,11 @@ class RecordedRule(CompoundRule):
             self.playback_array.append((command, 0.05))
             
     def _process_recognition(self, node, extras):
-        Playback(self.playback_array)._execute()
+        if "n" in extras:
+            for i in range(0, int(extras["n"])):
+                Playback(self.playback_array)._execute()
+        else:
+            Playback(self.playback_array)._execute()
 
 def get_macro_spec(): 
     h_launch.launch(settings.QTYPE_DEFAULT, add_recorded_macro, None)
@@ -49,18 +52,24 @@ def add_recorded_macro(data):
             if "\\" in w:
                 w = w.split("\\")[0]
     
-    # store the list in the macros section of the settings file
     recorded_macros = None
     if spec != "" and len(commands) > 0:
+        extras=None
+        defaults=None
+        if data["repeatable"]:
+            spec+=" [times <n>]"
+            extras=[IntegerRef("n", 1, 50)]
+            defaults={"n":1}
+        
         recorded_macros = settings.load_json_file(settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
         recorded_macros[spec] = commands
         settings.save_json_file(recorded_macros, settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
-    
-    # immediately make a new compound rule  and add to a set grammar
-    control.RECORDED_MACROS_GRAMMAR.unload()
-    rule = RecordedRule(commands=commands, spec=spec, name="recorded_rule_" + spec)
-    control.RECORDED_MACROS_GRAMMAR.add_rule(rule)
-    control.RECORDED_MACROS_GRAMMAR.load()
+        
+        # immediately make a new compound rule  and add to a set grammar
+        control.RECORDED_MACROS_GRAMMAR.unload()
+        rule = RecordedRule(commands=commands, spec=spec, name="recorded_rule_" + spec, extras=extras, defaults=defaults)
+        control.RECORDED_MACROS_GRAMMAR.add_rule(rule)
+        control.RECORDED_MACROS_GRAMMAR.load()
     
     # clear the dictation cache
     control.PRESERVED_CACHE = None
@@ -70,7 +79,7 @@ def load_recorded_rules():
     recorded_macros = settings.load_json_file(settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
     for spec in recorded_macros:
         commands = recorded_macros[spec]
-        rule = RecordedRule(commands=commands, spec=spec, name="recorded_rule_" + spec)
+        rule = RecordedRule(commands=commands, spec=spec, name="recorded_rule_" + spec, extras=[IntegerRef("n", 1, 50)], defaults={"n":1})
         control.RECORDED_MACROS_GRAMMAR.add_rule(rule)
     if len(control.RECORDED_MACROS_GRAMMAR.rules) > 0:
         control.RECORDED_MACROS_GRAMMAR.load()

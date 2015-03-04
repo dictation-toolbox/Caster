@@ -22,6 +22,27 @@ from lib import utilities, settings
 #                 Mimic("command", "mode", "off")._execute()
 #             
 #         time.sleep(0.5)
+def get_filter():
+    from natlinkutils import GrammarBase
+    class Filter(GrammarBase):
+    
+        # this spec will catch everything
+        gramSpec = """
+            <start> exported = {emptyList};
+        """
+    
+        def initialize(self):
+            self.load(self.gramSpec, allResults=1)
+            self.activateAll()
+    
+        def gotResultsObject(self, recogType, resObj):
+            for x in range(0, 100):
+                try:
+                    possible_interpretation = resObj.getWords(x)
+                    # do whatever sort of filtering you want here
+                except Exception:
+                    break
+    return Filter()
 
 def navigate_to_character(direction3, target):
     # to do: possibly speed up the keypresses by figuring out how many lines up or down to go first

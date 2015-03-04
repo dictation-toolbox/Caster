@@ -35,11 +35,14 @@ class Homunculus_Recording(Homunculus):
         self.geometry("640x480+" + str(int(self.winfo_screenwidth() / 2 - 320)) + "+" + str(int(self.winfo_screenheight() / 2 - 240)))
         self.instructions = "Macro Recording Options"
         Label(self, text=self.instructions, name="pathlabel").grid(row=self.get_row(), column=1, sticky=tk.E)
-                  
+                          
         wf_row = self.get_row()
         Label(self, text="Command Words:", name="wordlabel").grid(row=wf_row, column=0, sticky=tk.W)
         self.word_box = Entry(self, name="word_box")
-        self.word_box.grid(row=wf_row, column=1, sticky=tk.W)       
+        self.word_box.grid(row=wf_row, column=1, sticky=tk.W)
+        
+        self.repeatable = tk.IntVar()
+        Checkbutton(self, text="Make Repeatable", variable=self.repeatable).grid(row=self.get_row(), column=0, sticky=tk.W)
         
         Label(self, text="Dictation History", name="optionslabel").grid(row=self.get_row(), column=1, sticky=tk.E)
         self.word_state = []
@@ -83,12 +86,13 @@ class Homunculus_Recording(Homunculus):
             if len(word) == 0:
                 self.xmlrpc_kill()
             response["word"] = word
+            response["repeatable"] = self.repeatable.get()
             
-            selected_indices=[]
+            selected_indices = []
             for ws in self.word_state:
-                if ws[0].get()==1:
-                    selected_indices.append(ws[1]-1)
-            response["selected_indices"]=selected_indices
+                if ws[0].get() == 1:
+                    selected_indices.append(ws[1] - 1)
+            response["selected_indices"] = selected_indices
             
             Timer(1, self.xmlrpc_kill).start()
             self.after(10, self.withdraw)
@@ -123,3 +127,6 @@ class Homunculus_Recording(Homunculus):
             box_index = details
             if box_index >= 1 and box_index <= self.cb_max:
                 self.word_state[box_index - 1][0].set(False)
+        elif action == "repeatable":
+            self.repeatable.set(not self.repeatable.get())
+# c=Homunculus_Recording(["", ""])

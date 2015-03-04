@@ -3,8 +3,8 @@ import re
 
 from asynch.hmc import h_launch
 from lib import utilities, settings
-from lib.pita import regex
-from lib.pita.regex import LanguageRegexSet
+from lib.pita import filters
+from lib.pita.filters import LanguageFilter
 
 
 NATLINK_AVAILABLE = True
@@ -29,10 +29,9 @@ def _scan_directory(data):
     '''
     
     global DATA
-    directory=data["path"]
-    languageRegexSets = {}
+    directory = data["path"]
+    languageFilters = {}
     scanned_directory = {}
-    utilities.remote_debug("scanner")
     try:
         for base, dirs, files in os.walk(directory):  # traverse base directory, and list directories as dirs and files as files
             for fname in files:
@@ -43,17 +42,20 @@ def _scan_directory(data):
                     f.close()
                     
                     # may as well reuse these
-                    if not (extension in languageRegexSets):
-                        languageRegexSets[extension] = LanguageRegexSet(extension)
+                    if not (extension in languageFilters):
+                        languageFilters[extension] = LanguageFilter(extension)
                     
                     # search out imports, function names, variable names
                     scanned_file = {}
                     scanned_file["names"] = []
                     for line in lines:
-                        filter_results = _filter_words(line, languageRegexSets[extension])
-                        for result in filter_results:
-                            if _passes_tests(result, scanned_file):
-                                scanned_file["names"].append(result)
+                        ''' to do: handle long comments '''
+                        if line.strip().startswith(languageFilters[extension].short_comment):
+                            continue
+                        filter_results = filters.SYMBOL_PATTERN.findall(line)  # _filter_words(line, languageFilters[extension])
+                        for symbol in filter_results:
+                            if _passes_tests(symbol, scanned_file, languageFilters[extension]):
+                                scanned_file["names"].append(symbol)
                     
                     scanned_file["names"].sort()
                     scanned_directory[base.replace("\\", "/") + "/" + fname] = scanned_file
@@ -66,44 +68,15 @@ def _scan_directory(data):
     
     settings.save_json_file(DATA, settings.SETTINGS["paths"]["ELEMENT_JSON_PATH"])
 
-def _filter_words(line, lrs):
-    '''
-    Scans a single line fed to it by another function
-    
-    '''
-    #  handle the case that a regular expression hasn't been made  for this language yet
-    if lrs.unmatched:
-        results = []
-        generic_match_object = regex.GENERIC_PATTERN.findall(line)  # for languages without specific regular expressions made yet
-        if len(generic_match_object) > 0:
-            results = _process_match(generic_match_object, [0], results)
-        return results
-    
-    results = []
-    for match_object, indices in [(lrs.import_regex.findall(line), lrs.import_indices),
-                                  (lrs.function_regex.findall(line), lrs.function_indices),
-                                  (lrs.variable_regex.findall(line), lrs.variable_indices), ]:
-        results = _process_match(match_object, indices, results)
-    return results
-
-def _process_match(match_object, indices, results):
-    for m in match_object:
-        if isinstance(m, tuple):
-            for index in indices:
-                match = m[index]
-                if not (match == "" or match.isdigit() or match in results):
-                    results.append(match)
-        elif isinstance(m, str):
-            results.append(m)
-    return results
-
-def _passes_tests(word, scanned_file):
+def _passes_tests(symbol, scanned_file, language_filter):
     global NATLINK_AVAILABLE
     # short words can be gotten faster by just spelling them
-    too_short = len(word) < 4
-    already_in_names = word in scanned_file["names"]
-    typeable = (settings.SETTINGS["element"]["filter_strict"] and NATLINK_AVAILABLE and not _difficult_to_type(word))
-    return not (already_in_names or too_short or typeable)
+    too_short = len(symbol) < 4
+    already_in_names = symbol in scanned_file["names"]
+    is_digit = symbol.isdigit()
+    is_keyword = symbol in language_filter.keywords
+    typeable = (settings.SETTINGS["element"]["filter_strict"] and NATLINK_AVAILABLE and not _difficult_to_type(symbol))
+    return not (is_keyword or already_in_names or too_short or is_digit or typeable)
 
 
 
