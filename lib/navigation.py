@@ -9,7 +9,7 @@ from asynch.mouse.legion import LegionScanner
 from lib import control
 from lib import utilities
 from lib.dragonfree import launch
-from lib.pita import scanner, selector, strings
+from lib.pita import scanner, selector
 import settings
 
 
@@ -47,7 +47,7 @@ def pita(textnv):
             ACTIVE_FILE_PATH = selector.guess_file_based_on_window_title(filename, path_folders)
          
         if ACTIVE_FILE_PATH[0] != None:
-            result=strings.get_similar_symbol_name(str(textnv), scanner.DATA["directories"][ACTIVE_FILE_PATH[0]]["files"][ACTIVE_FILE_PATH[1]]["names"])
+            result=selector.get_similar_symbol_name(str(textnv), scanner.DATA["directories"][ACTIVE_FILE_PATH[0]]["files"][ACTIVE_FILE_PATH[1]]["names"])
             print "fuzzy match: ", str(textnv), "->", result
             Text(result)._execute()
         else:

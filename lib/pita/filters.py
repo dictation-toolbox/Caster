@@ -5,8 +5,6 @@ Created on Feb 21, 2015
 '''
 import re
 
-
-GENERIC_PATTERN = re.compile("([A-Za-z0-9._]+\s*=)|(import [A-Za-z0-9._]+)")
 SYMBOL_PATTERN = re.compile("([A-Za-z0-9_]+)")
 
 # python language
