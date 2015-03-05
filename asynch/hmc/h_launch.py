@@ -1,18 +1,17 @@
 import sys
 
 try:
-    # this section only necessary if called externally to Dragon
-    BASE_PATH = r"C:/NatLink/NatLink/MacroSystem"
+    # this file may be executed externally to Dragon
+    BASE_PATH = "C:/NatLink/NatLink/MacroSystem"
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
-except Exception:
-    pass
-from asynch.hmc.hmc_ask_directory import Homunculus_Directory
-from asynch.hmc.hmc_recording import Homunculus_Recording
-from asynch.hmc.hmc_vocabulary import Homunculus_Vocabulary
-from asynch.hmc.homunculus import Homunculus
-from lib import settings
-from lib.dragonfree import launch as ll
+finally:
+    from asynch.hmc.hmc_ask_directory import Homunculus_Directory
+    from asynch.hmc.hmc_recording import Homunculus_Recording
+    from asynch.hmc.hmc_vocabulary import Homunculus_Vocabulary
+    from asynch.hmc.homunculus import Homunculus
+    from lib import settings
+    from lib.dragonfree import launch as ll
 
 '''
 To add a new homunculus type:

@@ -13,13 +13,12 @@ import win32api
 
 import Tkinter as tk
 
-
 try:
+    # this file may be executed externally to Dragon
     BASE_PATH = "C:/NatLink/NatLink/MacroSystem"
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
-    from lib import  settings
-except Exception:
+finally:
     from lib import  settings
 
 def communicate():

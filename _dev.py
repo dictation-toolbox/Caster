@@ -23,7 +23,7 @@ class DevRule(MappingRule):
     "open natlink folder":          BringApp("explorer", settings.SETTINGS["paths"]["BASE_PATH"].replace("/", "\\")),
     "reserved word <text>":         Key("dquote,dquote,left") + Text("%(text)s") + Key("right, colon, tab/5:5") + Text("Text(\"%(text)s\"),"),
     "experiment <text>":            Function(experiment, extra="text"),
-    "printing test <n>":            Function(printD, nn=12, p=1)* Repeat(extra="n"), 
+    "printing _test <n>":            Function(printD, nn=12, p=1)* Repeat(extra="n"), 
     }
     extras = [
               Dictation("text"),

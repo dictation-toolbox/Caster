@@ -3,15 +3,15 @@ import os
 import sys
 
 SETTINGS = None
-
+BAD_LOAD=False
 INISETPATH = 'C:/NatLink/NatLink/MacroSystem/bin/data/settings.json'
 
 # titles
-SOFTWARE_VERSION_NUMBER="0.3.3"
-SOFTWARE_NAME="Caster v "+SOFTWARE_VERSION_NUMBER
-ELEMENT_VERSION = "Element v "+SOFTWARE_VERSION_NUMBER
-DISPEL_VERSION = "Dispel v "+SOFTWARE_VERSION_NUMBER
-HOMUNCULUS_VERSION = "HMC v "+SOFTWARE_VERSION_NUMBER
+SOFTWARE_VERSION_NUMBER = "0.3.3"
+SOFTWARE_NAME = "Caster v " + SOFTWARE_VERSION_NUMBER
+ELEMENT_VERSION = "Element v " + SOFTWARE_VERSION_NUMBER
+DISPEL_VERSION = "Dispel v " + SOFTWARE_VERSION_NUMBER
+HOMUNCULUS_VERSION = "HMC v " + SOFTWARE_VERSION_NUMBER
 HMC_TITLE_VOCABULARY = " :: Vocabulary Manager"
 HMC_TITLE_RECORDING = " :: Recording Manager"
 HMC_TITLE_DIRECTORY = " :: Directory Selector"
@@ -44,7 +44,8 @@ def get_ccr_config_file_pronunciation(config_file_name):
         return SETTINGS["pronunciations"][config_file_name]
     return config_file_name
 
-def save_json_file(data, path):
+def _save(data, path):
+    '''only to be used for settings file'''
     try:
         formatted_data = json.dumps(data, sort_keys=True, indent=4,
             ensure_ascii=False)
@@ -57,17 +58,20 @@ def save_json_file(data, path):
     except Exception:
         print "error saving json file: " + path
 
-def load_json_file(path):
+def _load(path):
+    '''only to be used for settings file'''
     result = {}
     try:
-        if os.path.isfile(path):  # If the file exists.
-            f = open(path, "r")
-            result = json.loads(f.read())
-            f.close()
-        else:
-            save_json_file(result, path)
-    except Exception:
-        print "error loading json file: " + path
+        f = open(path, "r")
+        result = json.loads(f.read())
+        f.close()
+    except ValueError:
+        global BAD_LOAD 
+        BAD_LOAD=True
+        print "\n\nValueError while loading settings file: " + path + "\n\n"
+        print sys.exc_info()
+    except IOError:
+        print "\n\nIOError while loading settings file: " + path + "\n\n"
         print sys.exc_info()
     return result
 
@@ -75,13 +79,13 @@ def save_config():
     global SETTINGS
     global SETTINGS_PATH
     global INISETPATH
-    save_json_file(SETTINGS, INISETPATH if SETTINGS == None or not "SETTINGS" in SETTINGS.keys() else SETTINGS["SETTINGS_PATH"])
+    _save(SETTINGS, INISETPATH if SETTINGS == None or not "SETTINGS" in SETTINGS.keys() else SETTINGS["SETTINGS_PATH"])
 
 def load_config():
     global SETTINGS
     global SETTINGS_PATH
     global INISETPATH
-    SETTINGS = load_json_file(INISETPATH if SETTINGS == None else SETTINGS["SETTINGS_PATH"])
+    SETTINGS = _load(INISETPATH if SETTINGS == None else SETTINGS["SETTINGS_PATH"])
     init_default_values()
 
 def init_default_values():
@@ -100,7 +104,7 @@ def init_default_values():
         # DATA
         ("DLL_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/lib/dll/"),
         ("SETTINGS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/settings.json"),
-        ("ELEMENT_JSON_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/element.json"),
+        ("PITA_JSON_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/pita.json"),
         ("DISPEL_JSON_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/dispel.json"),
         ("SAVED_CLIPBOARD_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/clipboard.json"),
         ("RECORDED_MACROS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/recorded_macros.json"),
@@ -194,7 +198,8 @@ def init_default_values():
             SETTINGS["pronunciations"][word] = pronunciation
             values_change_count += 1
     
-    if values_change_count > 0:
+    global BAD_LOAD
+    if values_change_count > 0 and not BAD_LOAD:
         print "settings values changed: ", values_change_count
         save_config()
 

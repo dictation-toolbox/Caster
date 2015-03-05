@@ -6,12 +6,13 @@ from threading import Timer
 import tkFont
 import Tkinter as tk
 
-BASE_PATH = sys.argv[0].split("MacroSystem")[0] + "MacroSystem"
-if BASE_PATH not in sys.path:
-    sys.path.append(BASE_PATH)
-    from lib import  settings, utilities
-else:
-    from lib import  settings, utilities
+try:
+    # this file may be executed externally to Dragon
+    BASE_PATH = "C:/NatLink/NatLink/MacroSystem"
+    if BASE_PATH not in sys.path:
+        sys.path.append(BASE_PATH)
+finally:
+    from lib import  settings
 
 class StickyList:
     def __init__(self):

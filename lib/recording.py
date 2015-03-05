@@ -1,7 +1,7 @@
 from dragonfly import (Playback, CompoundRule, IntegerRef)
 
 from asynch.hmc import h_launch
-from lib import settings, control
+from lib import settings, control, utilities
 
 
 class RecordedRule(CompoundRule):
@@ -61,9 +61,9 @@ def add_recorded_macro(data):
             extras=[IntegerRef("n", 1, 50)]
             defaults={"n":1}
         
-        recorded_macros = settings.load_json_file(settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
+        recorded_macros = utilities.load_json_file(settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
         recorded_macros[spec] = commands
-        settings.save_json_file(recorded_macros, settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
+        utilities.save_json_file(recorded_macros, settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
         
         # immediately make a new compound rule  and add to a set grammar
         control.RECORDED_MACROS_GRAMMAR.unload()
@@ -76,7 +76,7 @@ def add_recorded_macro(data):
 
 
 def load_recorded_rules():
-    recorded_macros = settings.load_json_file(settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
+    recorded_macros = utilities.load_json_file(settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
     for spec in recorded_macros:
         commands = recorded_macros[spec]
         rule = RecordedRule(commands=commands, spec=spec, name="recorded_rule_" + spec, extras=[IntegerRef("n", 1, 50)], defaults={"n":1})
@@ -85,7 +85,7 @@ def load_recorded_rules():
         control.RECORDED_MACROS_GRAMMAR.load()
 
 def delete_recorded_rules():
-    settings.save_json_file({}, settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
+    utilities.save_json_file({}, settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
     control.RECORDED_MACROS_GRAMMAR.unload()
     while len(control.RECORDED_MACROS_GRAMMAR.rules) > 0:
         rule = control.RECORDED_MACROS_GRAMMAR.rules[0]

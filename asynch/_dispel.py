@@ -39,7 +39,7 @@ class Dispel:  # this needs an entry in the settings file, needs to retain infor
     def save_settings(self):
         self.settings["remaining"] = self.remaining
         self.settings["active"] = self.active
-        settings.save_json_file(self.settings, settings.SETTINGS["paths"]["DISPEL_JSON_PATH"])
+        utilities.save_json_file(self.settings, settings.SETTINGS["paths"]["DISPEL_JSON_PATH"])
     def load(self):
         if "remaining" in self.settings and "active" in self.settings:
             self.remaining = int(self.settings["remaining"])

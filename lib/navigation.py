@@ -133,7 +133,7 @@ def clipboard_to_file(nnavi500):
             win32clipboard.OpenClipboard()
             control.MULTI_CLIPBOARD[key] = win32clipboard.GetClipboardData()
             win32clipboard.CloseClipboard()
-            settings.save_json_file(control.MULTI_CLIPBOARD, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
+            utilities.save_json_file(control.MULTI_CLIPBOARD, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
         except Exception:
             failure = True
         if not failure:

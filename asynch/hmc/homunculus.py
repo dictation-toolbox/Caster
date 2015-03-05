@@ -5,12 +5,13 @@ import signal
 from threading import Timer
 
 import Tkinter as tk
-if __name__ == "__main__":
+
+try:
+    # this file may be executed externally to Dragon
     BASE_PATH = "C:/NatLink/NatLink/MacroSystem"
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
-    from lib import  settings
-else:
+finally:
     from lib import  settings
 
 def communicate():

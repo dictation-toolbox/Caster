@@ -5,11 +5,14 @@ from datetime import datetime
 import multiprocessing
 import win32gui, win32process, win32api, win32ui
 
-BASE_PATH = r"C:\NatLink\NatLink\MacroSystem"
-if BASE_PATH not in sys.path:
-    sys.path.append(BASE_PATH)
-from lib.dragonfree import launch
-from lib import  settings
+try:
+    # this file may be executed externally to Dragon
+    BASE_PATH = "C:/NatLink/NatLink/MacroSystem"
+    if BASE_PATH not in sys.path:
+        sys.path.append(BASE_PATH)
+finally:
+    from lib.dragonfree import launch
+    from lib import  settings
 
 
 
@@ -159,19 +162,6 @@ def run_in_separate_thread(func, timeout_in_seconds=300):
     if p.is_alive():
         p.terminate()
         p.join()
-
-
-def py2exe_compile(choice):
-    # the contents of this function have been replaced by instructions to do it manually
-    #
-    # copy generic dependencies: something_run.py, ["utilities.py", "paths.py", "settings.py"], ["compile.bat", "icon.ico", "msvcp90.dll", "msvcr90.dll"]
-    # rename something_run.py to run.py
-    # copy the python file
-    # copy specific dependencies 
-    # (dptools requires ["argparse.py", "_keyCodes.py", "_myclickLocations.py", "_mycommon.py"])
-    # (element requires "tk85.dll", "tcl85.dll")
-    # run the batch file compile.bat
-    print "this function has been removed "
 
 def reboot():
     launch.run('python C:/NatLink/NatLink/MacroSystem/lib/dragonfree/launch.py -r'.split())

@@ -13,7 +13,7 @@ try:
 except Exception:
     NATLINK_AVAILABLE = False
 
-_d = settings.load_json_file(settings.SETTINGS["paths"]["ELEMENT_JSON_PATH"])
+_d = utilities.load_json_file(settings.SETTINGS["paths"]["PITA_JSON_PATH"])
 DATA = _d if _d != {} else {"directories":{}}
 
 # filename_pattern was used to determine when to update the list in the element window, checked to see when a new file name had appeared
@@ -66,7 +66,7 @@ def _scan_directory(data):
     meta_information["files"] = scanned_directory
     DATA["directories"][directory] = meta_information
     
-    settings.save_json_file(DATA, settings.SETTINGS["paths"]["ELEMENT_JSON_PATH"])
+    utilities.save_json_file(DATA, settings.SETTINGS["paths"]["PITA_JSON_PATH"])
 
 def _passes_tests(symbol, scanned_file, language_filter):
     global NATLINK_AVAILABLE
