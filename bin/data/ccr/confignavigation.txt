@@ -3,6 +3,8 @@ from lib import navigation, context
 
 navigation.initialize_clipboard()
 
+stopWord = " [(Dolly | Dali)]"
+
 cmd.map = {
 	'kick':                         Function(navigation.kick),
 	'kick mid': 				    Function(navigation.kick_middle),
@@ -21,7 +23,7 @@ cmd.map = {
     "jump out":						Playback([(["gopher", "next", "closers", "right"], 0.0)]),
     "jump back":					Playback([(["gopher", "previous", "openers", "left"], 0.0)]),
     "fill <target>":				Function(context.fill_blanks, extra="target"),
-    "(pita | Peter | PETA) <textnv>":Function(navigation.pita, extra="textnv"), 
+    "(pita | Peter | PETA) <textnv>"+stopWord:Function(navigation.pita, extra="textnv"), 
     
     
     #keyboard shortcuts
@@ -39,17 +41,17 @@ cmd.map = {
     "shin [<color_mode>] [<nnavi500>]":  Function(navigation.shin, extra={"color_mode", "nnavi500"}),
     "copy [<nnavi500>]":                 Key("c-c")+Function(navigation.clipboard_to_file, extra="nnavi500"),
     "cut [<nnavi500>]":                  Key("c-x")+Function(navigation.clipboard_to_file, extra="nnavi500"),
-    "all select":                   Key("c-a"),
     "drop [<nnavi500>]":  Function(navigation.drop, extra={"nnavi500"}),
     "delete [<nnavi500>]":               Key("del/5") * Repeat(extra="nnavi500"),
     "clear [<nnavi500>]":                Key("backspace") * Repeat(extra="nnavi500"),
-    "(cancel | escape)":            Key("escape"),
-     
+    "(cancel | escape)":            	Key("escape"),
+    "(tell | tau) (dock | doc)":		Key("escape, end, enter"),
+	"dupe [<nnavi500>]":				Key("escape, home, s-end, c-c, end, enter, c-v") * Repeat(extra="nnavi500"),
+	     
     # miscellaneous
-    "(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel) <textnv>":  Function(navigation.master_format_text, extra={"capitalization", "spacing", "textnv"}), 
-    #'auto <mode> <textnv> [escaping word]':    Function(navigation.auto_spell, extra={"mode","textnv"}),
-
-          }
+    "(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel) <textnv>"+stopWord:  Function(navigation.master_format_text, extra={"capitalization", "spacing", "textnv"}), 
+	
+	}
 
 cmd.extras = [
           IntegerRef("nnavi500", 1, 500),

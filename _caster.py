@@ -79,7 +79,7 @@ class MainRule(MappingRule):
     "douglas":                      Function(navigation.mouse_alternates, mode="douglas"),
     
     # element
-    "element scan directory":       Function(scanner.scan_directory),
+    "scan directory":               Function(scanner.scan_directory),
     
     # miscellaneous
     "<enable_disable> <ccr_mode>":  Function(ccr.set_active, extra={"enable_disable", "ccr_mode"}),

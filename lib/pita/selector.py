@@ -10,7 +10,7 @@ def guess_file_based_on_window_title(title_file, title_path_folders):
     for d in scanner.DATA["directories"]:
         d_candidate = [d, 0]
         for folder in title_path_folders:
-            d_candidate[1] +=1*(folder in d_candidate[0])
+            d_candidate[1] += 1 * (folder in d_candidate[0])
                 
         if d_candidate[1] > d_candidate_best[1]:
             d_candidate_best = d_candidate
@@ -18,10 +18,10 @@ def guess_file_based_on_window_title(title_file, title_path_folders):
     
     f_candidate_best = ["", 0]
     for f in scanner.DATA["directories"][d_candidate_best[0]]["files"]:
-        f_candidate=[f, 0]
+        f_candidate = [f, 0]
         for folder in title_path_folders:
-            f_candidate[1] += 1*(folder in f_candidate[0])
-        f_candidate[1] += 1*(title_file in f_candidate[0])
+            f_candidate[1] += 1 * (folder in f_candidate[0])
+        f_candidate[1] += 1 * (title_file in f_candidate[0])
         if f_candidate[1] > f_candidate_best[1]:
             f_candidate_best = f_candidate
             
@@ -32,16 +32,24 @@ def guess_file_based_on_window_title(title_file, title_path_folders):
 ####################################################################################
 
 def get_similar_symbol_name(spoken_phrase, list_of_symbols):
-
+    
     best = (0, "")
     without_homonyms = _abbreviated_string(spoken_phrase)
     with_homonyms = _abbreviated_string(_homonym_replaced_string(spoken_phrase))
     
     for w in list_of_symbols:
-        score = _phrase_to_symbol_similarity_score(without_homonyms.lower(), w.lower())
+        # make copies because _phrase_to_symbol_similarity_score is destructive (of spoken phrase)
+        without_homonyms_lower = without_homonyms.lower()
+        with_homonyms_lower = with_homonyms.lower()
+        w_lower = w.lower()
+        
+        penalty = _length_penalty(spoken_phrase, w_lower)
+        bonus = _whole_word_bonus(spoken_phrase, w_lower)
+        
+        score = _phrase_to_symbol_similarity_score(without_homonyms_lower, w_lower) - penalty + bonus
         if score > best[0]:
             best = (score, w)
-        score = _phrase_to_symbol_similarity_score(with_homonyms.lower(), w.lower())
+        score = _phrase_to_symbol_similarity_score(with_homonyms_lower, w_lower) - penalty + bonus
         if score > best[0]:
             best = (score, w)
      
@@ -57,9 +65,9 @@ def _homonym_replaced_string(s):
             s = s.replace(homonym, " " + str(homonym_replacements[homonym]) + " ")
     return s.replace("  ", " ").rstrip()
 
-def _abbreviated_string(s):
+def _abbreviated_string(spoken_phrase):
     # get power characters from spoken phrase
-    words_in_phrase = s.split(" ")
+    words_in_phrase = spoken_phrase.split(" ")
     abbrev = ""
     for w in words_in_phrase:
         abbrev += w[0]
@@ -85,8 +93,8 @@ def _phrase_to_symbol_similarity_score(abbrev, symbol):
             # reduce the abbreviation, remeasure the abbreviation
             # and reset the index on the abbreviation, break the while
             if abbrev[index_abbrev] == symbol[i]:
-                if index_abbrev+1<len_abbrev:
-                    abbrev = abbrev[index_abbrev+1:]
+                if index_abbrev + 1 < len_abbrev:
+                    abbrev = abbrev[index_abbrev + 1:]
                     index_abbrev = 0
                 len_abbrev = len(abbrev)
                 score += 1
@@ -96,6 +104,21 @@ def _phrase_to_symbol_similarity_score(abbrev, symbol):
             else:
                 index_abbrev += 1
     return score
+
+def _length_penalty(spoken_phrase, symbol):
+    # penalize when symbol is much longer than spoken phrase
+    penalty = len(symbol) - len(spoken_phrase)
+    if penalty < 0:
+        penalty = 0
+    return penalty
+
+def _whole_word_bonus(spoken_phrase, symbol):
+    bonus = 0
+    words = spoken_phrase.split(" ")
+    for w in words:
+        if w in symbol:
+            bonus += 1
+    return bonus
 
 ####################################################################################
 ####################################################################################

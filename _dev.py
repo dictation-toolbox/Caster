@@ -1,4 +1,4 @@
-from dragonfly import (Function, Key, BringApp, Text, WaitWindow, IntegerRef, Dictation, Choice, Grammar, MappingRule)
+from dragonfly import (Function, Key, BringApp, Text, WaitWindow, IntegerRef, Dictation, Repeat, Grammar, MappingRule)
 
 from lib import utilities, settings
 
@@ -11,7 +11,8 @@ def experiment(text):
     except Exception:
         utilities.simple_log(False)
 
-
+def printD(p, nn):
+    print p, nn
 
 class DevRule(MappingRule):
     
@@ -22,11 +23,12 @@ class DevRule(MappingRule):
     "open natlink folder":          BringApp("explorer", settings.SETTINGS["paths"]["BASE_PATH"].replace("/", "\\")),
     "reserved word <text>":         Key("dquote,dquote,left") + Text("%(text)s") + Key("right, colon, tab/5:5") + Text("Text(\"%(text)s\"),"),
     "experiment <text>":            Function(experiment, extra="text"),
+    "printing test <n>":            Function(printD, nn=12, p=1)* Repeat(extra="n"), 
     }
     extras = [
               Dictation("text"),
               Dictation("textnv"),
-              
+              IntegerRef("n", 1, 100),
              ]
     defaults = {
                "text": ""
