@@ -7,7 +7,8 @@ def experiment(text):
     '''this function is for tests'''
     try:
         ''''''
-        
+        print utilities.get_window_by_title("donkey")
+        print utilities.get_window_by_title(settings.S_LIST_VERSION)
     except Exception:
         utilities.simple_log(False)
 
@@ -23,7 +24,7 @@ class DevRule(MappingRule):
     "open natlink folder":          BringApp("explorer", settings.SETTINGS["paths"]["BASE_PATH"].replace("/", "\\")),
     "reserved word <text>":         Key("dquote,dquote,left") + Text("%(text)s") + Key("right, colon, tab/5:5") + Text("Text(\"%(text)s\"),"),
     "experiment <text>":            Function(experiment, extra="text"),
-    "printing _test <n>":            Function(printD, nn=12, p=1)* Repeat(extra="n"), 
+    "printing test <n>":            Function(printD, nn=12, p=1)* Repeat(extra="n"), 
     }
     extras = [
               Dictation("text"),

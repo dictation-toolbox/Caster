@@ -5,6 +5,7 @@ from lib import settings
 
 
 MULTI_CLIPBOARD={}
+STICKY_LIST=[]
 
 DICTATION_CACHE=RecognitionHistory(10)
 DICTATION_CACHE.register()

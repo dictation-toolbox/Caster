@@ -58,15 +58,15 @@ cmd.map = {
         "with":						Text("with "),
         "open file":				Text("open('filename','r') as f:"),
         "read lines":				Text("content = f.readlines()"),
-        "L if":                  Key("e,l,i,f,space,colon,left"),
+        "L if":                  	Key("e,l,i,f,space,colon,left"),
         "convert to character": 	Text("chr()")+ Key("left"),
         "length":					Text("len()")+ Key("left"),
  		
 	 	"global":					Text("global "),
-						
+		"try catch":				Text("try:")+Key("enter:2/10, backspace")+Text("except Exception:")+Key("enter"),				
 		
 	   
-       	 "[dot] (pie | pi)":			Text(".py"),
+       	 "[dot] (pie | pi)":		Text(".py"),
 		 "jason":					Text("json"),
 		 
           }

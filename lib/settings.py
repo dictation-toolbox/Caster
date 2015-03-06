@@ -3,13 +3,13 @@ import os
 import sys
 
 SETTINGS = None
-BAD_LOAD=False
+BAD_LOAD = False
 INISETPATH = 'C:/NatLink/NatLink/MacroSystem/bin/data/settings.json'
 
 # titles
-SOFTWARE_VERSION_NUMBER = "0.3.3"
+SOFTWARE_VERSION_NUMBER = "0.3.5"
 SOFTWARE_NAME = "Caster v " + SOFTWARE_VERSION_NUMBER
-ELEMENT_VERSION = "Element v " + SOFTWARE_VERSION_NUMBER
+S_LIST_VERSION = "Sticky List v " + SOFTWARE_VERSION_NUMBER
 DISPEL_VERSION = "Dispel v " + SOFTWARE_VERSION_NUMBER
 HOMUNCULUS_VERSION = "HMC v " + SOFTWARE_VERSION_NUMBER
 HMC_TITLE_VOCABULARY = " :: Vocabulary Manager"
@@ -25,7 +25,7 @@ QTYPE_RECORDING = "rec"
 QTYPE_DIRECTORY = "dir"
 
 # listening ports
-ELEMENT_LISTENING_PORT = 1337
+S_LIST_LISTENING_PORT = 1337
 HMC_LISTENING_PORT = 1338
 GRIDS_LISTENING_PORT = 1339
 SIKULI_LISTENING_PORT = 8000
@@ -67,11 +67,11 @@ def _load(path):
         f.close()
     except ValueError:
         global BAD_LOAD 
-        BAD_LOAD=True
+        BAD_LOAD = True
         print "\n\nValueError while loading settings file: " + path + "\n\n"
         print sys.exc_info()
     except IOError:
-        print "\n\nIOError while loading settings file: " + path + "\n\n"
+        print "\n\nIOError: Could not find settings file: " + path + "\nInitializing file...\n\n"
         print sys.exc_info()
     return result
 
@@ -105,6 +105,7 @@ def init_default_values():
         ("DLL_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/lib/dll/"),
         ("SETTINGS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/settings.json"),
         ("PITA_JSON_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/pita.json"),
+        ("S_LIST_JSON_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/s_list.json"),
         ("DISPEL_JSON_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/dispel.json"),
         ("SAVED_CLIPBOARD_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/clipboard.json"),
         ("RECORDED_MACROS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/recorded_macros.json"),
@@ -116,7 +117,7 @@ def init_default_values():
         
         # EXECUTABLES
         ("WSR_PATH", "C:/Windows/Speech/Common/sapisvr.exe"),
-        ("ELEMENT_PATH", SETTINGS["paths"]["BASE_PATH"] + "/asynch/element.py"),
+        ("STICKY_LIST_PATH", SETTINGS["paths"]["BASE_PATH"] + "/asynch/stickylist.py"),
         ("LEGION_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/asynch/mouse/legion.py"),
         ("RAINBOW_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/asynch/mouse/grids.py"),
         ("DOUGLAS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/asynch/mouse/grids.py"),

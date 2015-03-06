@@ -1,72 +1,68 @@
+import time
 import xmlrpclib
 
-from dragonfly import (Function, Text, Grammar, BringApp, WaitWindow, Key,
-                       IntegerRef, Dictation, Mimic, MappingRule, FocusWindow)
-from lib import  settings
+from dragonfly import (Function, Text, Grammar, Choice,
+                       IntegerRef, Dictation, Mimic, MappingRule)
+
+from lib import  settings, utilities
 from lib import control
-from lib import utilities
 from lib.dragonfree import launch
 
 
 def communicate():
-    return xmlrpclib.ServerProxy("http://127.0.0.1:" + str(settings.ELEMENT_LISTENING_PORT))
+    return xmlrpclib.ServerProxy("http://127.0.0.1:" + str(settings.S_LIST_LISTENING_PORT))
+
 def kill():
     communicate().kill()
-def add_word():
+
+def add_symbol():
     Mimic("copy", "one")._execute()
-    communicate().add_name(control.MULTI_CLIPBOARD["1"])
-def retrieve(n):
-    n = int(n) - 1
-    Text(communicate().retrieve(n))._execute()
+    communicate().add_symbol(control.MULTI_CLIPBOARD["1"])
+    control.STICKY_LIST.append(control.MULTI_CLIPBOARD["1"])
+    utilities.save_json_file(control.STICKY_LIST, settings.SETTINGS["paths"]["S_LIST_JSON_PATH"])
+
+def get_symbol(n):
+    n = int(n)
+    Text(communicate().get_symbol(n))._execute()
+
 def remove_word(n):
-    n = int(n) - 1
-    communicate().remove(n)
-def scroll(n):  # n is the index of the list item to scroll to
-    communicate().scroll(int(n)-1)
-def focus_element():
-    FocusWindow(title=settings.ELEMENT_VERSION)._execute()
-    WaitWindow(title=settings.ELEMENT_VERSION)._execute()
-    
+    n = int(n)
+    communicate().remove_symbol(n)
+    del control.STICKY_LIST[n - 1]
+    utilities.save_json_file(control.STICKY_LIST, settings.SETTINGS["paths"]["S_LIST_JSON_PATH"])
 
-
-def enable_element():
-    launch.run(["pythonw", settings.SETTINGS["paths"]["ELEMENT_PATH"]])
-    
-#SSticky copy threeky copy toage
-class ElementUsageRule(MappingRule):
+def enable_sticky_list(sticky):
+    if utilities.get_window_by_title(settings.S_LIST_VERSION) == 0 and sticky == 1:
+        control.STICKY_LIST = utilities.load_json_file(settings.SETTINGS["paths"]["S_LIST_JSON_PATH"])
+        launch.run(["pythonw", settings.SETTINGS["paths"]["STICKY_LIST_PATH"]])
+        time.sleep(1)
+# pita examples on this file: "three key", "3G"
+# SSticky copy threeky copy toage
+class SListUsageRule(MappingRule):
     mapping = {
-    "L scroll to <n>":              Function(scroll, extra="n"),
-    "L get <n>":                    Function(retrieve, extra="n"),
-    "L add word":                   Function(add_word),
-    "L remove word <n>":            Function(remove_word, extra="n"),
+    "L add [<sticky>]":             Function(enable_sticky_list) + Function(add_symbol),
+    "L get <n> [<sticky>]":         Function(enable_sticky_list) + Function(get_symbol),
+    "L remove <n> [<sticky>]":      Function(enable_sticky_list) + Function(remove_word),
     
+    "L run":                        Function(enable_sticky_list, sticky=1),
+    "L kill":                       Function(kill),
     }   
     extras = [
               IntegerRef("n", 1, 200),
-              IntegerRef("n2", 1, 100),
               Dictation("text"),
+              Choice("sticky", {"run": 1}),
              ]
-    defaults = {"n": 1, "n2": 1,
+    defaults = {"n": 1,
                "text": "",
+               "sticky": 0
                }
 
-eur=ElementUsageRule()
-
-class ElementLaunchRule(MappingRule):
-    mapping = {
-    "run element":                  Function(enable_element)+Function(eur.enable),
-    "kill element":                 Function(kill)+Function(eur.disable),
-    }   
-    extras = []
-    defaults = {}
-
-
-elr=ElementLaunchRule()
-
-grammar = Grammar('elementview')
-grammar.add_rule(elr)
-grammar.add_rule(eur)
+r = SListUsageRule()
+grammar = Grammar('SListUsageRule')
+grammar.add_rule(r)
 grammar.load()
 
-if not utilities.window_exists(classname= None, windowname=settings.ELEMENT_VERSION):
-    eur.disable()
+def unload():
+    global grammar
+    if grammar: grammar.unload()
+    grammar = None

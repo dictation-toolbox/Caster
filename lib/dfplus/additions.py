@@ -1,10 +1,3 @@
-'''
-Created on Feb 16, 2015
-
-@author: dave
-
-
-'''
 from dragonfly.actions.action_base import ActionBase
 
 from lib import utilities
