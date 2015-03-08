@@ -2,15 +2,19 @@
 Created on Jun 29, 2014
 
 @author: dave
+
+Instructions for adding new:
+- homunculus windows in h_launch.py
+- scanned languages (for "pita") in scanner.py
 '''
 
 
 try:
     from apps import *
     from asynch import *
-    from lib import utilities, ccr, control, settings, context, recording
+    from lib import control, utilities, ccr, settings, context, recording
+    from asynch import auto_com
     
-    control.print_startup_message()
     ccr.initialize_ccr()
     utilities.clean_temporary_files()
     recording.load_recorded_rules()

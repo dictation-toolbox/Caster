@@ -6,8 +6,8 @@ SETTINGS = None
 BAD_LOAD = False
 INISETPATH = 'C:/NatLink/NatLink/MacroSystem/bin/data/settings.json'
 
-# titles
-SOFTWARE_VERSION_NUMBER = "0.3.5"
+# title
+SOFTWARE_VERSION_NUMBER = "0.3.6"
 SOFTWARE_NAME = "Caster v " + SOFTWARE_VERSION_NUMBER
 S_LIST_VERSION = "Sticky List v " + SOFTWARE_VERSION_NUMBER
 DISPEL_VERSION = "Dispel v " + SOFTWARE_VERSION_NUMBER
@@ -179,12 +179,22 @@ def init_default_values():
         values_change_count += 1
     
     # element section
-    if not "element" in SETTINGS.keys():
-        SETTINGS["element"] = {}
-        SETTINGS["element"]["recent_files"] = 10
-        SETTINGS["element"]["extensions"] = [".py", ".java", ".cpp", ".h", ".js"]
-        SETTINGS["element"]["executables"] = ["eclipse", "WDExpress", "notepad++"]
-        SETTINGS["element"]["filter_strict"] = False
+    if not "pita" in SETTINGS.keys():
+        SETTINGS["pita"] = {}
+        SETTINGS["pita"]["recent_files"] = 10
+        SETTINGS["pita"]["extensions"] = [".py", ".java", ".cpp", ".h", ".js"]
+        SETTINGS["pita"]["filter_strict"] = False
+        SETTINGS["pita"]["executables"] = ["AptanaStudio3.exe", "WDExpress.exe", "notepad++.exe"]
+        values_change_count += 1
+        
+    # auto_com section
+    if not "auto_com" in SETTINGS.keys():
+        SETTINGS["auto_com"] = {}
+        SETTINGS["auto_com"]["active"] = False
+        SETTINGS["auto_com"]["interval"] = 3
+        SETTINGS["auto_com"]["run_internal"] = True
+        SETTINGS["auto_com"]["pyHook_KeyID"] = 163
+        SETTINGS["auto_com"]["executables"] = ["AptanaStudio3.exe", "WDExpress.exe", "notepad++.exe"]
         values_change_count += 1
     
     # pronunciations section

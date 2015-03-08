@@ -4,7 +4,6 @@ from ctypes import *
 import getopt
 import re
 import sys
-from threading import Timer
 import threading
 
 from PIL import ImageGrab

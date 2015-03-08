@@ -12,7 +12,6 @@ section.
 
 import time, pythoncom
 
-
 if __name__ == "__main__":
     print "WSR Speech Recognition is garbage; it is recommended that you not run Caster this way."
     import __init__
@@ -48,9 +47,7 @@ else:
         extras = []
         defaults = {}
 
-                
-                    
-            
+              
     wsra_rule = WSR_Rule()
     grammar = Grammar('wsr hijack rule')
     grammar.add_rule(wsra_rule)

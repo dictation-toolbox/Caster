@@ -51,6 +51,5 @@ def add(self, x, y):
 try:
     while not quit:
         server.handle_request()
-#     server.serve_forever()
 except KeyboardInterrupt:
     print 'Exiting'

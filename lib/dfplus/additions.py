@@ -1,8 +1,10 @@
 from dragonfly.actions.action_base import ActionBase
 
-from lib import utilities
+from lib import utilities, control
 
 
+if control.DEP.NATLINK:
+    import natlink
     
 class SelectiveAction(ActionBase):
     def __init__(self, action, executables, negate=True):
@@ -17,7 +19,11 @@ class SelectiveAction(ActionBase):
         self.negate = negate
         
     def _execute(self, data=None):
-        executable = utilities.get_active_window_path().split("\\")[-1]
-        is_executable = executable in self.executables
-        if (is_executable and not self.negate) or (self.negate and not is_executable):
+        if control.DEP.NATLINK:
+            executable = utilities.get_active_window_path(natlink).split("\\")[-1]
+            is_executable = executable in self.executables
+            if (is_executable and not self.negate) or (self.negate and not is_executable):
+                self.action._execute()
+        else:
+            utilities.report("SelectiveAction feature not available with WSR")
             self.action._execute()

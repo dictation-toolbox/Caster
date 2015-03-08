@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-import os, json, sys
+
 from datetime import datetime
 import multiprocessing
-import win32gui, win32process, win32api, win32ui
+import os, json, sys
+
+import win32gui, win32ui
+
 
 try:
     # this file may be executed externally to Dragon
@@ -31,12 +34,13 @@ def get_active_window_hwnd():
 
 def get_active_window_title():
     return win32gui.GetWindowText(win32gui.GetForegroundWindow())
-
-def get_active_window_path():
-    name = win32gui.GetForegroundWindow()
-    t, p = win32process.GetWindowThreadProcessId(name)
-    handle = win32api.OpenProcess(0x0410, False, p)
-    return win32process.GetModuleFileNameEx(handle, 0)
+# defunct
+def get_active_window_path(natlink):
+    return natlink.getCurrentModule()[0]
+#     name = win32gui.GetForegroundWindow()
+#     t, p = win32process.GetWindowThreadProcessId(name)
+#     handle = win32api.OpenProcess(0x0410, False, p)
+#     return win32process.GetModuleFileNameEx(handle, 0)
 
 def get_window_by_title(title):
     # returns 0 if nothing found

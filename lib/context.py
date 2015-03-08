@@ -6,22 +6,6 @@ from dragonfly import *
 from lib import utilities, settings
 
 
-# def poll_window():
-#     mimic=False
-#     p=re.compile(r"[/\\]([\w]+)\.[\w]+")
-#     
-#     while True:
-#         executable = p.findall(utilities.get_active_window_path())[0]
-#         old_mimic=mimic
-#         mimic=executable in settings.SETTINGS["element"]["executables"]
-#         print executable, " : ", mimic
-#         if old_mimic!=mimic:
-#             if mimic:
-#                 Mimic("command", "mode", "on")._execute()
-#             else:
-#                 Mimic("command", "mode", "off")._execute()
-#             
-#         time.sleep(0.5)
 def get_filter():
     from natlinkutils import GrammarBase
     class Filter(GrammarBase):

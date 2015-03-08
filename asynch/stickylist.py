@@ -38,7 +38,6 @@ class StickyList:
         self.server = SimpleXMLRPCServer(("127.0.0.1", settings.S_LIST_LISTENING_PORT), allow_none=True)
         self.server.register_function(self.xmlrpc_kill, "kill")
         self.server.register_function(self.xmlrpc_add_symbol, "add_symbol")
-        self.server.register_function(self.xmlrpc_get_symbol, "get_symbol")
         self.server.register_function(self.xmlrpc_remove_symbol, "remove_symbol")
     
     def xmlrpc_kill(self):  #
@@ -61,12 +60,6 @@ class StickyList:
                 self._refresh_lists()
             except Exception:
                 utilities.simple_log(False)
-    
-    def xmlrpc_get_symbol(self, index):
-        if index<1 or index>len(self.data):
-            return ""
-        else:
-            return self.data[index-1]
     
     def _refresh_lists(self):
         self.listbox_numbering.delete(0, tk.END)

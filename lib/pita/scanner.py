@@ -2,16 +2,18 @@ import os
 import re
 
 from asynch.hmc import h_launch
-from lib import utilities, settings
+from lib import utilities, settings, control
 from lib.pita import filters
 from lib.pita.filters import LanguageFilter
 
+'''
+To add a new scanned language:
+    (1) add its filetype extension to SETTINGS["pita"]["extensions"] in lib/settings.py
+    (2) add its keywords, long comment and short comment syntax in lib/pita/filters.py
+'''
 
-NATLINK_AVAILABLE = True
-try:
+if control.DEP.NATLINK:
     import natlink
-except Exception:
-    NATLINK_AVAILABLE = False
 
 _d = utilities.load_json_file(settings.SETTINGS["paths"]["PITA_JSON_PATH"])
 DATA = _d if _d != {} else {"directories":{}}
@@ -69,13 +71,12 @@ def _scan_directory(data):
     utilities.save_json_file(DATA, settings.SETTINGS["paths"]["PITA_JSON_PATH"])
 
 def _passes_tests(symbol, scanned_file, language_filter):
-    global NATLINK_AVAILABLE
     # short words can be gotten faster by just spelling them
     too_short = len(symbol) < 4
     already_in_names = symbol in scanned_file["names"]
     is_digit = symbol.isdigit()
     is_keyword = symbol in language_filter.keywords
-    typeable = (settings.SETTINGS["element"]["filter_strict"] and NATLINK_AVAILABLE and not _difficult_to_type(symbol))
+    typeable = (settings.SETTINGS["element"]["filter_strict"] and control.DEP.NATLINK and not _difficult_to_type(symbol))
     return not (is_keyword or already_in_names or too_short or is_digit or typeable)
 
 

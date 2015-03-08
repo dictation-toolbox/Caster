@@ -1,4 +1,5 @@
 from dragonfly import (Function, Key, BringApp, Text, WaitWindow, IntegerRef, Dictation, Repeat, Grammar, MappingRule)
+from dragonfly.actions.action_focuswindow import FocusWindow
 
 from lib import utilities, settings
 
@@ -7,8 +8,10 @@ def experiment(text):
     '''this function is for tests'''
     try:
         ''''''
-        print utilities.get_window_by_title("donkey")
-        print utilities.get_window_by_title(settings.S_LIST_VERSION)
+        import natlink
+        print natlink.getCurrentModule()
+        
+            
     except Exception:
         utilities.simple_log(False)
 
