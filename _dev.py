@@ -1,9 +1,6 @@
 from dragonfly import (Function, Key, BringApp, Text, WaitWindow, IntegerRef, Dictation, Repeat, Grammar, MappingRule)
-from dragonfly.actions.action_focuswindow import FocusWindow
 
-from asynch.mouse.legion import LegionScanner
 from lib import utilities, settings
-from lib.dragonfree import launch
 
 
 def experiment(text):
@@ -12,22 +9,9 @@ def experiment(text):
         ''''''
         import natlink
         print natlink.getCurrentModule()
-        
             
     except Exception:
         utilities.simple_log(False)
-
-def rainbow():
-    launch.run(["pythonw", settings.SETTINGS["paths"]["RAINBOW_PATH"], "-m", "r"])
-
-def legion():
-    ls = LegionScanner()
-    ls.scan()
-    tscan = ls.get_update()
-    launch.run(["pythonw", settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0]])
-
-def douglas():
-    launch.run(["pythonw", settings.SETTINGS["paths"]["DOUGLAS_PATH"], "-m", "d"])
 
 class DevRule(MappingRule):
     
@@ -38,11 +22,6 @@ class DevRule(MappingRule):
     "open natlink folder":          BringApp("explorer", settings.SETTINGS["paths"]["BASE_PATH"].replace("/", "\\")),
     "reserved word <text>":         Key("dquote,dquote,left") + Text("%(text)s") + Key("right, colon, tab/5:5") + Text("Text(\"%(text)s\"),"),
     "experiment <text>":            Function(experiment, extra="text"),
-    
-    "rainbow demo":                 Function(rainbow),
-    "Legion demo":                  Function(legion),
-    "Douglas demo":                 Function(douglas),
-    
     
     }
     extras = [

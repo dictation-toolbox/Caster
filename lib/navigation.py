@@ -20,7 +20,6 @@ def pita(textnv):
     global OLD_ACTIVE_WINDOW_TITLE, ACTIVE_FILE_PATH
     '''this function is for tests'''
     try:
-        print 1, 2
         '''check to see if the active file has changed;
         if not, skip this step
         '''

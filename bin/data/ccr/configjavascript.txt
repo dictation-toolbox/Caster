@@ -21,7 +21,7 @@ cmd.map = {
 		"default":					Text("default: "),
 		#
 		"do loop":					Text("do {}")+Key("left, enter:2"),
-        "while":					Text("while ()")+Key("left"),
+        "while loop":				Text("while ()")+Key("left"),
         "for loop":					Text("for (var i=0; i<VALUE; i++)"),
 		"for each":					Text("for (VARIABLE in OBJECT)"),
         #
@@ -29,9 +29,9 @@ cmd.map = {
 		"convert to integer":		Text("parseInt()")+Key("left"),
 		"convert to floating point":Text("parseFloat()")+Key("left"),
 		#
-		"and":                      Text(" && "),
-        "or":                       Text(" || "),
-        "not":                      Text("!"),
+		"lodge and":                Text(" && "),
+        "lodge or":                 Text(" || "),
+        "lodge not":                Text("!"),
         #
 		"print":					Text("console.log()")+Key("left"),
 		#
@@ -43,12 +43,12 @@ cmd.map = {
 		"add comment":				Text("//"),
 		"long comment":				Text("/**/")+Key("left,left"),
 		#
-		"null":						Text("null"),
+		"Val null":					Text("null"),
 		#
 		"return":					Text("return "),
 		#
-		"true":						Text("true"),
-		"false":					Text("false"),
+		"Val true":					Text("true"),
+		"Val false":				Text("false"),
 		
 		
 		# JavaScript specific
@@ -68,7 +68,6 @@ cmd.map = {
 
         "this":						Text("this"),
         "try":						Text("try {}")+Key("left, enter:2, up"),
-        
         "catch":					Text("catch(e) {}")+Key("left, enter:2, up"),
 		
 		"throw":					Text("throw "),

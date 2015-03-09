@@ -20,16 +20,16 @@ cmd.map = {
 		#
 		"for each":					Text("for  in :")+ Key("left:5"),
         "for loop":					Text("for i in range(0, ):")+ Key("left:2"),
-		"while":					Text("while :")+ Key("left"),
+		"while loop":				Text("while :")+ Key("left"),
 		# (no do-while in Python)
 		#
 		"convert to string":		Text("str()")+ Key("left"),
         "convert to integer":		Text("int()")+ Key("left"),
         "convert to floating point":Text("float()")+ Key("left"),
         #
-        "and":                      Text(" and "),
-        "or":                       Text(" or "),
-        "not":                      Text("!"),
+        "lodge and":                Text(" and "),
+        "lodge or":                 Text(" or "),
+        "lodge not":                Text("!"),
         #
         "print":					Text("print "),
         #
@@ -41,12 +41,12 @@ cmd.map = {
 		"add comment":				Text( "#" ),
 		"long comment":				Text("''''''") + Key("left:3"),
 		#				
-		"null":						Text("None"),
+		"Val null":					Text("None"),
 		#
 		"return":					Text("return "),
 		#
-		"true":						Text("True"),
-		"false":					Text("False"),
+		"Val true":					Text("True"),
+		"Val false":				Text("False"),
 				
 		
 	    # Python specific           
@@ -54,7 +54,7 @@ cmd.map = {
  	    "from":						Text( "from " ),
  	    "self":						Text("self"),
  	    "long not":					Text(" not "),
-		"in":                       Text(" in "),
+ 	    "it are in":                Text(" in "), #supposed to sound like "iter in"
         "with":						Text("with "),
         "open file":				Text("open('filename','r') as f:"),
         "read lines":				Text("content = f.readlines()"),

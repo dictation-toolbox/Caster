@@ -17,7 +17,7 @@ cmd.map = {
 		"default":						Text("default: "),
 		#
 		"do loop":						Text("do {}")+Key("left, enter:2"),
-        "while":						Text("while ()")+Key("left"),
+        "while loop":						Text("while ()")+Key("left"),
         "for loop":						Text("for (int i=0; i<VALUE; i++)"),
         "for each":						Text("for_each (VALUE, VALUE, FUNCTION);"),
         #
@@ -25,9 +25,9 @@ cmd.map = {
 		"convert to floating point":	Text("(double)"),
 		"convert to string":			Text("std::to_string()")+Key("left"),
 		#
-		"and":                          Text("&&"),
-        "or":                           Text("||"),
-        "not":							Text("!"),
+		"lodge and":                    Text("&&"),
+        "lodge or":                     Text("||"),
+        "lodge not":					Text("!"),
         #
         "print":						Text("cout <<"),
         #
@@ -39,12 +39,12 @@ cmd.map = {
 		"add comment":					Text( "//" ),
 		"long comment":					Text("/**/")+Key("left, left"),
 		#
-		"null":							Text("null"),
+		"Val null":						Text("null"),
 		#
 		"return":						Text("return"),
 		#
-		"true":							Text("true"),
-		"false":						Text("false"),
+		"Val true":						Text("true"),
+		"Val false":					Text("false"),
 		
 		
 		# C++ specific

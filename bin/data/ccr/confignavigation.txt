@@ -57,7 +57,7 @@ cmd.extras = [
           IntegerRef("nnavi500", 1, 500),
           Dictation("textnv"),
           Choice("capitalization",
-                    {"yell": 1, "tie": 2,"camel": 3,"sing":4, "low":5
+                    {"yell": 1, "tie": 2,"camel": 3,"sing":4, "laws":5
                     }),
           Choice("spacing",
                     {"gum": 1, "gun": 1, "spine": 2, "snake":3
