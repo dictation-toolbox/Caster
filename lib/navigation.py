@@ -1,7 +1,7 @@
 from ctypes import windll
 import sys, win32api, time, win32clipboard
 
-from dragonfly import (Key, Text , Playback, BringApp, Mouse)
+from dragonfly import (Key, Text , Playback, Choice, Mouse)
 import dragonfly
 from win32con import MOUSEEVENTF_WHEEL
 
@@ -13,6 +13,20 @@ from lib.pita import scanner, selector
 import settings
 
 
+TARGET_CHOICE = Choice("target",
+                {"comma": ",", "(period | dot)": ".", "(pair | parentheses)": "(~)",
+                "[square] (bracket | brackets)": "[~]", "curly [brace]": "{~}",
+                "loop": "for~while", "L paren": "(", "are paren": ")", "openers": "(~[~{",
+                "closers": "}~]~)",
+                "parameter": "PARAMETER", "variable": "VARIABLE", "type": "TYPE",
+                "name": "NAME", "object": "OBJECT", "list": "LIST", "scope": "SCOPE",
+                "value": "VALUE", "class": "CLASS", "function": "FUNCTION",
+                })
+
+def initialize_clipboard():
+    if len(control.MULTI_CLIPBOARD)==0:
+        control.MULTI_CLIPBOARD = utilities.load_json_file(settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
+    
 OLD_ACTIVE_WINDOW_TITLE = None
 ACTIVE_FILE_PATH = [None, None]
 
@@ -46,7 +60,7 @@ def pita(textnv):
             ACTIVE_FILE_PATH = selector.guess_file_based_on_window_title(filename, path_folders)
          
         if ACTIVE_FILE_PATH[0] != None:
-            result=selector.get_similar_symbol_name(str(textnv), scanner.DATA["directories"][ACTIVE_FILE_PATH[0]]["files"][ACTIVE_FILE_PATH[1]]["names"])
+            result = selector.get_similar_symbol_name(str(textnv), scanner.DATA["directories"][ACTIVE_FILE_PATH[0]]["files"][ACTIVE_FILE_PATH[1]]["names"])
             print "fuzzy match: ", str(textnv), "->", result
             Text(result)._execute()
         else:
@@ -75,14 +89,8 @@ def word_number(wn):
     }
     Text(numbers_to_words[int(wn)])._execute()
 
-def numbers(n10a, n10b, n10c):
-    n10b_str = ""
-    n10c_str = ""
-    if n10b != -1:
-        n10b_str = str(n10b)
-    if n10c != -1:
-        n10c_str = str(n10c)
-    Text(str(n10a) + n10b_str + n10c_str)._execute()
+def numbers2(wnKK):
+    Text(str(wnKK))._execute()
 
 def letters(big, dict1, dict2, letter):
     '''used with alphabet.txt'''
@@ -98,8 +106,7 @@ def letters(big, dict1, dict2, letter):
     if d2 != "":
         Text(d2)._execute()
     
-def numbers2(wnKK):
-    Text(str(wnKK))._execute()
+
 
 def mouse_alternates(mode):
     try:
@@ -119,9 +126,6 @@ def mouse_alternates(mode):
     except Exception:
         utilities.simple_log(False)
     
-
-def initialize_clipboard():
-    control.MULTI_CLIPBOARD = utilities.load_json_file(settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
 
 def clipboard_to_file(nnavi500):
     key = str(nnavi500)
@@ -168,7 +172,7 @@ def master_format_text(capitalization, spacing, textnv):
     2 tie  - TitleCase
     3 k    - camelCase
     4 sing - Sentencecase
-    5 low  - alllower
+    5 laws - alllower
     Commands for word spacing: 
     1 gum  - wordstogether
     2 spine- words-with-hyphens
@@ -203,7 +207,7 @@ def master_format_text(capitalization, spacing, textnv):
         elif spacing == 3:
             t = "_".join(t.split(" "))
     Text(t)._execute()
-    
+
         
 def scroll(direction, nnavi500):
     updown = -100
@@ -296,4 +300,13 @@ def fly(fly_mode, nnavi500):
     elif f == "end":
         Key("end").execute()
     time.sleep(0.05)
+
+
+
+
+
+
+
+
+
 
