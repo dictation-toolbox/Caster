@@ -175,5 +175,5 @@ Below is a list of all the non-original code used in this work, and the licenses
 - pywin32: Python Software Foundation License
 - Pillow: PIL Software License
 - PSUtil: New BSD License
-- pyHook: MIT
+- pyHook: MIT License
 - TiRG by trg787: Public Domain License, see (github.com/synkarius/tirg-dll)
