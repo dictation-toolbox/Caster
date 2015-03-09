@@ -10,6 +10,7 @@ from dragonfly import (Grammar, AppContext, Function,
                        Key, Choice, MappingRule)
 
 from asynch.mouse import grids
+from lib import settings
 
 
 def kill():
@@ -19,7 +20,7 @@ def send_input(n, n2, action):
     s = grids.communicate()
     s.move_mouse(int(n), int(n2))
     s.kill()
-    time.sleep(0.1)
+    grids.wait_for_death(settings.DOUGLAS_TITLE)
     int_a = int(action)
     if int_a == 0:
         Playback([(["mouse", "left", "click"], 0.0)])._execute()

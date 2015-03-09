@@ -13,15 +13,17 @@ try:
 finally:
     from lib import  settings, utilities
 
-last=0
+print "Caster Auto-Command Mode External Window Checker"
+
+last = 0
 
 while True:
-    current=utilities.get_active_window_hwnd()
-    if last!=current:
-        last=current
+    current = utilities.get_active_window_hwnd()
+    if last != current:
+        last = current
         win32api.keybd_event(int(settings.SETTINGS["auto_com"]["pyHook_KeyID"]), 0, 0, 0)
         time.sleep(.05)
-        win32api.keybd_event(int(settings.SETTINGS["auto_com"]["pyHook_KeyID"]),0 ,win32con.KEYEVENTF_KEYUP ,0)
-        print current
+        win32api.keybd_event(int(settings.SETTINGS["auto_com"]["pyHook_KeyID"]), 0 , win32con.KEYEVENTF_KEYUP , 0)
+        print "window hwnd: ", current
       
     time.sleep(settings.SETTINGS["auto_com"]["interval"])

@@ -31,7 +31,7 @@ def communicate():
 class LegionGrid(TkTransparent):
     def __init__(self, grid_size=None, tirg=None, auto_quit=False):
         self.setup_XMLRPC_server()
-        TkTransparent.__init__(self, "legiongrid", grid_size)
+        TkTransparent.__init__(self, settings.LEGION_TITLE, grid_size)
         self.attributes("-alpha", 0.7)
         
         self.tirg_positions = {}
@@ -141,8 +141,9 @@ class LegionScanner:
         result = re.sub("[^0-9,]", "", bbstring)
         return result
         
-    def scan(self):
-        img = ImageGrab.grab()
+    def scan(self, bbox=None):
+        #bbox=(10,10,500,500)
+        img = ImageGrab.grab(bbox)
         result = self.tirg_scan(img)
         if result != self.last_signature:
             with self.lock:

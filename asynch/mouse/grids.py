@@ -19,7 +19,18 @@ try:
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:
-    from lib import  settings
+    from lib import settings, utilities
+
+def wait_for_death(title, timeout=5):
+    t = 0.0
+    inc = 0.1
+    while t < timeout:
+        if not utilities.window_exists(None, title):
+            break
+        t += inc
+        time.sleep(inc)
+    if t >= timeout:
+        utilities.report("wait_for_death()" + " timed out (" + title + ")")
 
 def communicate():
     return xmlrpclib.ServerProxy("http://127.0.0.1:" + str(settings.GRIDS_LISTENING_PORT))
@@ -116,7 +127,7 @@ class TkTransparent(tk.Tk):
 class RainbowGrid(TkTransparent):
     def __init__(self, grid_size=None, square_size=None, square_alpha=None):
         '''square_size is an integer'''
-        TkTransparent.__init__(self, "rainbowgrid", grid_size)
+        TkTransparent.__init__(self, settings.RAINBOW_TITLE, grid_size)
         self.attributes("-alpha", 0.5)
         self.square_size = square_size if square_size else 37
         self.square_alpha = square_alpha if square_alpha else 125
@@ -238,7 +249,7 @@ class RainbowGrid(TkTransparent):
 class DouglasGrid(TkTransparent):
     
     def __init__(self, grid_size=None, square_size=None):
-        TkTransparent.__init__(self, "douglasgrid", grid_size)
+        TkTransparent.__init__(self, settings.DOUGLAS_TITLE, grid_size)
         self.square_size = square_size if square_size else 25
                 
         self.draw()
@@ -249,7 +260,7 @@ class DouglasGrid(TkTransparent):
         self.server.register_function(self.xmlrpc_move_mouse, "move_mouse")
     
     def xmlrpc_move_mouse(self, x, y):
-        self.move_mouse(x* self.square_size + int(self.square_size / 2), y* self.square_size + int(self.square_size / 2))
+        self.move_mouse(x * self.square_size + int(self.square_size / 2), y * self.square_size + int(self.square_size / 2))
     
     def draw(self):
         self.pre_redraw()
@@ -339,8 +350,8 @@ def main(argv):
             print help_message
             sys.exit()
         elif opt == '-m':
-            if arg=="r":
-                rg=RainbowGrid()
+            if arg == "r":
+                rg = RainbowGrid()
             elif arg == 'd':
                 dg = DouglasGrid()  # grid_size=Dimensions(400, 300, 0, 0)  
             

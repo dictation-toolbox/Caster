@@ -15,6 +15,9 @@ HOMUNCULUS_VERSION = "HMC v " + SOFTWARE_VERSION_NUMBER
 HMC_TITLE_VOCABULARY = " :: Vocabulary Manager"
 HMC_TITLE_RECORDING = " :: Recording Manager"
 HMC_TITLE_DIRECTORY = " :: Directory Selector"
+LEGION_TITLE="legiongrid"
+RAINBOW_TITLE="rainbowgrid"
+DOUGLAS_TITLE="douglasgrid"
 
 # enums
 QTYPE_DEFAULT = "def"
