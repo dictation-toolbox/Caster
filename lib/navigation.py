@@ -111,13 +111,16 @@ def letters(big, dict1, dict2, letter):
 def mouse_alternates(mode):
     try:
         if mode == "legion":
-            if utilities.window_exists(None, "legiongrid"):
-                pass
+            if control.DEP.PIL:
+                if utilities.window_exists(None, "legiongrid"):
+                    pass
+                else:
+                    ls = LegionScanner()
+                    ls.scan()
+                    tscan = ls.get_update()
+                    launch.run(["pythonw", settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0]])
             else:
-                ls = LegionScanner()
-                ls.scan()
-                tscan = ls.get_update()
-                launch.run(["pythonw", settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0]])
+                utilities.availability_message("Legion", "PIL")
             
         elif mode == "rainbow":
             launch.run(["pythonw", settings.SETTINGS["paths"]["RAINBOW_PATH"], "-m", "r"])

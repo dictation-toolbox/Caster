@@ -25,5 +25,5 @@ class SelectiveAction(ActionBase):
             if (is_executable and not self.negate) or (self.negate and not is_executable):
                 self.action._execute()
         else:
-            utilities.report("SelectiveAction feature not available with WSR")
+            utilities.availability_message("SelectiveAction", "natlink")
             self.action._execute()

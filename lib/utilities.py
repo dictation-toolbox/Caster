@@ -135,8 +135,8 @@ def report(message, speak=False, console=True, log=False):
     if log:
         settings.report_to_file(message)
 
-
-
+def availability_message(feature, dependency):
+    report(feature+" feature not available without "+dependency)
 
 
 
@@ -168,6 +168,10 @@ def run_in_separate_thread(func, timeout_in_seconds=300):
         p.join()
 
 def reboot():
-    launch.run('python C:/NatLink/NatLink/MacroSystem/lib/dragonfree/launch.py -r'.split())
+    import control
+    if control.DEP.PSUTIL:
+        launch.run('python C:/NatLink/NatLink/MacroSystem/lib/dragonfree/launch.py -r'.split())
+    else:
+        availability_message("reboot", "psutil")
 
 

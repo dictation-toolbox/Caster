@@ -1,5 +1,8 @@
 import sys
 
+from lib import control
+
+
 try:
     # this file may be executed externally to Dragon
     BASE_PATH = "C:/NatLink/NatLink/MacroSystem"
@@ -48,15 +51,18 @@ def _get_title(hmc_type):
         return default+settings.HMC_TITLE_DIRECTORY
 
 def clean_homunculi():
-    from lib import utilities
-    while utilities.window_exists(None, settings.HOMUNCULUS_VERSION):
-        ll.kill_process("pythonw.exe")
-    while utilities.window_exists(None, settings.HOMUNCULUS_VERSION+settings.HMC_TITLE_VOCABULARY):
-        ll.kill_process("pythonw.exe")
-    while utilities.window_exists(None, settings.HOMUNCULUS_VERSION+settings.HMC_TITLE_RECORDING):
-        ll.kill_process("pythonw.exe")
-    while utilities.window_exists(None, settings.HOMUNCULUS_VERSION+settings.HMC_TITLE_DIRECTORY):
-        ll.kill_process("pythonw.exe")
+    if control.DEP.PSUTIL:
+        from lib import utilities
+        while utilities.window_exists(None, settings.HOMUNCULUS_VERSION):
+            ll.kill_process("pythonw.exe")
+        while utilities.window_exists(None, settings.HOMUNCULUS_VERSION+settings.HMC_TITLE_VOCABULARY):
+            ll.kill_process("pythonw.exe")
+        while utilities.window_exists(None, settings.HOMUNCULUS_VERSION+settings.HMC_TITLE_RECORDING):
+            ll.kill_process("pythonw.exe")
+        while utilities.window_exists(None, settings.HOMUNCULUS_VERSION+settings.HMC_TITLE_DIRECTORY):
+            ll.kill_process("pythonw.exe")
+    else:
+        utilities.availability_message("HMC Cleanup", "psutil")
 
 if __name__ == '__main__':
     found_word=None

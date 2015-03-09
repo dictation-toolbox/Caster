@@ -19,7 +19,7 @@ cmd.map = {
      	"[is] equal to":		    	Key("equals,equals"),
         "equals":              			Key("equals"),
         "prekris":                     	Text("()")+ Key("left"),
-        "[square] (bracket | brackets)":Text("[]")+ Key("left"),
+        "brax":							Text("[]")+ Key("left"),
         "curly":                    	Text("{}")+ Key("left"),
         "angle":                    	Text("<>")+ Key("left"),
         "plus":							Text("+"),

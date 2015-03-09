@@ -6,6 +6,9 @@ if settings.SETTINGS["auto_com"]["active"]:
         if settings.SETTINGS["auto_com"]["run_internal"]:
             toggler.initialize_auto_com_internal()
         else:
-            toggler.initialize_auto_com_external()
+            if control.DEP.PYHOOK:
+                toggler.initialize_auto_com_external()
+            else:
+                utilities.availability_message("Auto-Command-Mode (external mode)", "pyHook")
     else:
-        utilities.report("Auto-Command-Mode feature not available with WSR")
+        utilities.availability_message("Auto-Command-Mode", "natlink")
