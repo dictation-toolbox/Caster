@@ -30,10 +30,10 @@ cmd.map = {
     'scratch':                      Playback([(["scratch", "that"], 0.0)]),
     'shock [<nnavi500>]':          	Key("enter")* Repeat(extra="nnavi500"),
     
-    "dune [<nnavi500>]":                 Key("down") * Repeat(extra="nnavi500"),
+    "down [<nnavi500>]":                 Key("down") * Repeat(extra="nnavi500"),
     "up [<nnavi500>]":                   Key("up") * Repeat(extra="nnavi500"),
     "left [<nnavi500>]":                 Key("left") * Repeat(extra="nnavi500"),
-    "ricky [<nnavi500>]":                Key("right") * Repeat(extra="nnavi500"),
+    "right [<nnavi500>]":                Key("right") * Repeat(extra="nnavi500"),
     
     "fly [<fly_mode>] [<nnavi500>]":     Function(navigation.fly, extra={"fly_mode", "nnavi500"}),
     "queue [<color_mode>] [<nnavi500>]": Function(navigation.color, extra={"color_mode", "nnavi500"}),

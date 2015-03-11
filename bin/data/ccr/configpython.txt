@@ -41,12 +41,12 @@ cmd.map = {
 		"add comment":				Text( "#" ),
 		"long comment":				Text("''''''") + Key("left:3"),
 		#				
-		"Val null":					Text("None"),
+		"value null":				Text("None"),
 		#
 		"return":					Text("return "),
 		#
-		"Val true":					Text("True"),
-		"Val false":				Text("False"),
+		"value true":				Text("True"),
+		"value false":				Text("False"),
 				
 		
 	    # Python specific           

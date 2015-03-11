@@ -3,39 +3,10 @@ Created on Feb 26, 2015
 
 @author: dave
 '''
-from lib import utilities
-from lib.pita import scanner
+from lib import settings
 
-
-def guess_file_based_on_window_title(title_file, title_path_folders):
-        
-    d_candidate_best = ["", 0]
-    for d in scanner.DATA["directories"]:
-        d_candidate = [d, 0]
-        for folder in title_path_folders:
-            d_candidate[1] += 1 * (folder in d_candidate[0])
-                
-        if d_candidate[1] > d_candidate_best[1]:
-            d_candidate_best = d_candidate
-    
-    
-    f_candidate_best = ["", 0]
-    for f in scanner.DATA["directories"][d_candidate_best[0]]["files"]:
-        f_candidate = [f, 0]
-        for folder in title_path_folders:
-            f_candidate[1] += 1 * (folder in f_candidate[0])
-        f_candidate[1] += 1 * (title_file in f_candidate[0])
-        if f_candidate[1] > f_candidate_best[1]:
-            f_candidate_best = f_candidate
-            
-    return (d_candidate_best[0], f_candidate_best[0])
-        
-####################################################################################
-####################################################################################
-####################################################################################
 
 def get_similar_symbol_name(spoken_phrase, list_of_symbols):
-#     utilities.remote_debug("get_similar_symbol_nam")
     best = (0, "")
     without_homonyms = _abbreviated_string(spoken_phrase)
     with_homonyms = _abbreviated_string(_homonym_replaced_string(spoken_phrase))
@@ -46,8 +17,12 @@ def get_similar_symbol_name(spoken_phrase, list_of_symbols):
         with_homonyms_lower = with_homonyms.lower()
         w_lower = w.lower()
         
-        penalty = _length_penalty(spoken_phrase, w_lower)
-        bonus = _whole_word_bonus(spoken_phrase, w_lower)
+        penalty = 0
+        bonus = 0
+        if settings.SETTINGS["pita"]["use_penalty"]:
+            penalty = _length_penalty(spoken_phrase, w_lower)
+        if settings.SETTINGS["pita"]["use_bonus"]:
+            bonus = _whole_word_bonus(spoken_phrase, w_lower)
         
         score = _phrase_to_symbol_similarity_score(without_homonyms_lower, w_lower) - penalty + bonus
         if score > best[0]:

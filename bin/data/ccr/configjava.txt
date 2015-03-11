@@ -39,12 +39,12 @@ cmd.map = {
 		"add comment":					Text( "//" ),
 		"long comment":					Text("/**/")+Key("left,left"),
 		#
-		"Val null":						Text("null"),
+		"value null":					Text("null"),
 		#
 		"return":						Text("return "),
 		#
-		"Val true":						Text("true"),
-		"Val false":					Text("false"),
+		"value true":					Text("true"),
+		"value false":					Text("false"),
 		
 		
 		# Java specific

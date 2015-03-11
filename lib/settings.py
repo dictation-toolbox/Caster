@@ -5,6 +5,7 @@ import sys
 SETTINGS = None
 BAD_LOAD = False
 INISETPATH = 'C:/NatLink/NatLink/MacroSystem/bin/data/settings.json'
+ARBITRARY_CONSTANT = None
 
 # title
 SOFTWARE_VERSION_NUMBER = "0.3.8"
@@ -15,9 +16,9 @@ HOMUNCULUS_VERSION = "HMC v " + SOFTWARE_VERSION_NUMBER
 HMC_TITLE_VOCABULARY = " :: Vocabulary Manager"
 HMC_TITLE_RECORDING = " :: Recording Manager"
 HMC_TITLE_DIRECTORY = " :: Directory Selector"
-LEGION_TITLE="legiongrid"
-RAINBOW_TITLE="rainbowgrid"
-DOUGLAS_TITLE="douglasgrid"
+LEGION_TITLE = "legiongrid"
+RAINBOW_TITLE = "rainbowgrid"
+DOUGLAS_TITLE = "douglasgrid"
 
 # enums
 QTYPE_DEFAULT = "def"
@@ -187,13 +188,15 @@ def init_default_values():
         SETTINGS["pita"]["recent_files"] = 10
         SETTINGS["pita"]["extensions"] = [".py", ".java", ".cpp", ".h", ".js"]
         SETTINGS["pita"]["filter_strict"] = False
-        SETTINGS["pita"]["executables"] = ["AptanaStudio3.exe", "WDExpress.exe", "notepad++.exe"]
+        SETTINGS["pita"]["use_bonus"] = True
+        SETTINGS["pita"]["use_penalty"] = True
         values_change_count += 1
         
     # auto_com section
     if not "auto_com" in SETTINGS.keys():
         SETTINGS["auto_com"] = {}
         SETTINGS["auto_com"]["active"] = False
+        SETTINGS["auto_com"]["change_language"] = False
         SETTINGS["auto_com"]["interval"] = 3
         SETTINGS["auto_com"]["run_internal"] = True
         SETTINGS["auto_com"]["pyHook_KeyID"] = 163

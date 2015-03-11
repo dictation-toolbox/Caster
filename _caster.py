@@ -78,8 +78,9 @@ class MainRule(MappingRule):
     "rainbow":                      Function(navigation.mouse_alternates, mode="rainbow"),
     "douglas":                      Function(navigation.mouse_alternates, mode="douglas"),
     
-    # element
+    # pita
     "scan directory":               Function(scanner.scan_directory),
+    "rescan current":               Function(scanner.rescan_current_file),
     
     # miscellaneous
     "<enable_disable> <ccr_mode>":  Function(ccr.set_active, extra={"enable_disable", "ccr_mode"}),

@@ -29,16 +29,13 @@ def launch(hmc_type, callback, data=None):
         instructions.append(data)
     ll.run(instructions)
     
-    print "instructions: ", instructions
     hmc_title=_get_title(hmc_type)
     WaitWindow(title=hmc_title, timeout=5)._execute()
     FocusWindow(title=hmc_title)._execute()
     Key("tab")._execute()
     
-    print 2
     from asynch.hmc import squeue
     squeue.add_query(callback)
-    print 3
 
 def _get_title(hmc_type):
     default=settings.HOMUNCULUS_VERSION

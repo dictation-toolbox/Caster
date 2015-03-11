@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from datetime import datetime
 import multiprocessing
 import os, json, sys
+import re
 
 import win32gui, win32ui
 
@@ -17,7 +18,8 @@ finally:
     from lib.dragonfree import launch
     from lib import  settings
 
-
+# filename_pattern was used to determine when to update the list in the element window, checked to see when a new file name had appeared
+FILENAME_PATTERN = re.compile(r"[/\\]([\w_]+\.[\w]+)")
 
 def window_exists(classname, windowname):
     try:
@@ -34,20 +36,28 @@ def get_active_window_hwnd():
 
 def get_active_window_title():
     return win32gui.GetWindowText(win32gui.GetForegroundWindow())
-# defunct
+
 def get_active_window_path(natlink):
     return natlink.getCurrentModule()[0]
-#     name = win32gui.GetForegroundWindow()
-#     t, p = win32process.GetWindowThreadProcessId(name)
-#     handle = win32api.OpenProcess(0x0410, False, p)
-#     return win32process.GetModuleFileNameEx(handle, 0)
 
 def get_window_by_title(title):
     # returns 0 if nothing found
     hwnd = win32gui.FindWindowEx(0, 0, 0, title)
     return hwnd
 
-
+def get_window_title_info():
+    '''get name of active file and folders in path;
+        will be needed to look up collection of symbols
+        in scanner data'''
+    global FILENAME_PATTERN
+    title = get_active_window_title().replace("\\", "/")
+    match_object = FILENAME_PATTERN.findall(title)
+    filename = None
+    if len(match_object) > 0:  
+        filename = match_object[0]
+    path_folders = title.split("/")[:-1]
+    return [filename, path_folders, title]
+    
 
 
 # begin stuff that was moved
@@ -116,7 +126,7 @@ def list_to_string(l):
     return "\n".join([str(x) for x in l])
             
 def simple_log(to_file=False):
-    msg= list_to_string(sys.exc_info())
+    msg = list_to_string(sys.exc_info())
     print msg
     if to_file:
         f = open(settings.SETTINGS["paths"]["LOG_PATH"], 'a') 
@@ -136,7 +146,7 @@ def report(message, speak=False, console=True, log=False):
         settings.report_to_file(message)
 
 def availability_message(feature, dependency):
-    report(feature+" feature not available without "+dependency)
+    report(feature + " feature not available without " + dependency)
 
 
 

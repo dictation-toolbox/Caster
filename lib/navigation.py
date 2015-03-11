@@ -24,7 +24,7 @@ TARGET_CHOICE = Choice("target",
                 })
 
 def initialize_clipboard():
-    if len(control.MULTI_CLIPBOARD)==0:
+    if len(control.MULTI_CLIPBOARD) == 0:
         control.MULTI_CLIPBOARD = utilities.load_json_file(settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
     
 OLD_ACTIVE_WINDOW_TITLE = None
@@ -32,47 +32,23 @@ ACTIVE_FILE_PATH = [None, None]
 
 def pita(textnv):
     global OLD_ACTIVE_WINDOW_TITLE, ACTIVE_FILE_PATH
-    '''this function is for tests'''
-    try:
-        '''check to see if the active file has changed;
-        if not, skip this step
-        '''
-        active_window_title = utilities.get_active_window_title().replace("\\", "/")
-        active_has_changed = OLD_ACTIVE_WINDOW_TITLE != active_window_title
-        filename = None
-        path_folders = None
-         
-        
-        if active_has_changed:
-            OLD_ACTIVE_WINDOW_TITLE = active_window_title
-            '''get name of active file and folders in path;
-            will be needed to look up collection of symbols
-            in scanner data'''
-            # active file
-            match_object = scanner.FILENAME_PATTERN.findall(active_window_title)
-            if len(match_object) > 0:  
-                filename = match_object[0]
-            else:
-                nothing_found()
-                return
-            # path folders
-            path_folders = active_window_title.split("/")[:-1]
-            ACTIVE_FILE_PATH = selector.guess_file_based_on_window_title(filename, path_folders)
-         
-        if ACTIVE_FILE_PATH[0] != None:
-            result = selector.get_similar_symbol_name(str(textnv), scanner.DATA["directories"][ACTIVE_FILE_PATH[0]]["files"][ACTIVE_FILE_PATH[1]]["names"])
-            print "fuzzy match: ", str(textnv), "->", result
-            Text(result)._execute()
-        else:
-            print "ACTIVE_FILE_PATH: ", ACTIVE_FILE_PATH
-            print "filename: ", filename
-            print "path_folders: ", path_folders
-        
-    except Exception:
-        utilities.simple_log(False)
-
-def nothing_found():
-    utilities.report("pita: nothing found")
+    
+    filename, folders, title = utilities.get_window_title_info()
+    active_has_changed = OLD_ACTIVE_WINDOW_TITLE != title
+    
+    # check to see if the active file has changed; if not, skip this step
+    if active_has_changed:
+        OLD_ACTIVE_WINDOW_TITLE = title
+        ACTIVE_FILE_PATH = scanner.guess_file_based_on_window_title(filename, folders)
+    
+    if filename == None:
+        utilities.report("pita: filename pattern not found in window title")
+        return
+     
+    if ACTIVE_FILE_PATH[0] != None:
+        result = selector.get_similar_symbol_name(str(textnv), scanner.DATA["directories"][ACTIVE_FILE_PATH[0]][ACTIVE_FILE_PATH[1]]["names"])
+        # print "fuzzy match: ", str(textnv), "->", result
+        Text(result)._execute()
 
 def word_number(wn):
     numbers_to_words = {
