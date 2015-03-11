@@ -3,6 +3,7 @@ Created on Feb 26, 2015
 
 @author: dave
 '''
+from lib import utilities
 from lib.pita import scanner
 
 
@@ -34,6 +35,7 @@ def guess_file_based_on_window_title(title_file, title_path_folders):
 ####################################################################################
 
 def get_similar_symbol_name(spoken_phrase, list_of_symbols):
+#     utilities.remote_debug("get_similar_symbol_nam")
     best = (0, "")
     without_homonyms = _abbreviated_string(spoken_phrase)
     with_homonyms = _abbreviated_string(_homonym_replaced_string(spoken_phrase))
@@ -64,7 +66,7 @@ def _homonym_replaced_string(s):
     for homonym in homonym_replacements:
         if homonym in s:
             s = s.replace(homonym, " " + str(homonym_replacements[homonym]) + " ")
-    return s.replace("  ", " ").rstrip()
+    return s.replace("  ", " ").strip()
 
 def _abbreviated_string(spoken_phrase):
     # get power characters from spoken phrase

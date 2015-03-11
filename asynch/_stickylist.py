@@ -49,8 +49,6 @@ def enable_sticky_list(sticky):
 def do_enable():
     enable_sticky_list(1)
 
-# pita examples on this file: "three key", "3G"
-# SSticky copy threeky copy toage[<sticky>]gNatLinkNatLinkNatLinkNatLink
 class SListUsageRule(MappingRule):
     mapping = {
     "L add [<sticky>]":             Function(add_symbol),

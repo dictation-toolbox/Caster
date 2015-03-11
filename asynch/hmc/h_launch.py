@@ -1,8 +1,5 @@
 import sys
 
-from lib import control
-
-
 try:
     # this file may be executed externally to Dragon
     BASE_PATH = "C:/NatLink/NatLink/MacroSystem"
@@ -15,6 +12,7 @@ finally:
     from asynch.hmc.homunculus import Homunculus
     from lib import settings
     from lib.dragonfree import launch as ll
+    
 
 '''
 To add a new homunculus type:
@@ -31,13 +29,16 @@ def launch(hmc_type, callback, data=None):
         instructions.append(data)
     ll.run(instructions)
     
+    print "instructions: ", instructions
     hmc_title=_get_title(hmc_type)
     WaitWindow(title=hmc_title, timeout=5)._execute()
     FocusWindow(title=hmc_title)._execute()
     Key("tab")._execute()
     
+    print 2
     from asynch.hmc import squeue
     squeue.add_query(callback)
+    print 3
 
 def _get_title(hmc_type):
     default=settings.HOMUNCULUS_VERSION
@@ -51,6 +52,7 @@ def _get_title(hmc_type):
         return default+settings.HMC_TITLE_DIRECTORY
 
 def clean_homunculi():
+    from lib import control
     if control.DEP.PSUTIL:
         from lib import utilities
         while utilities.window_exists(None, settings.HOMUNCULUS_VERSION):
