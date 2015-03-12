@@ -5,10 +5,9 @@ import sys
 SETTINGS = None
 BAD_LOAD = False
 INISETPATH = 'C:/NatLink/NatLink/MacroSystem/bin/data/settings.json'
-ARBITRARY_CONSTANT = None
 
 # title
-SOFTWARE_VERSION_NUMBER = "0.3.8"
+SOFTWARE_VERSION_NUMBER = "0.3.8.1"
 SOFTWARE_NAME = "Caster v " + SOFTWARE_VERSION_NUMBER
 S_LIST_VERSION = "Sticky List v " + SOFTWARE_VERSION_NUMBER
 DISPEL_VERSION = "Dispel v " + SOFTWARE_VERSION_NUMBER
@@ -117,7 +116,7 @@ def init_default_values():
         ("SIKULI_SCRIPTS_FOLDER_PATH", SETTINGS["paths"]["BASE_PATH"] + "/asynch/sikuli/scripts"),
         
         # REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
-        ("REMOTE_DEBUGGER_PATH" , "D:/PROGRAMS/NON_install/eclipse/plugins/org.python.pydev_3.4.1.201403181715/pysrc"),
+        ("REMOTE_DEBUGGER_PATH" , "D:/PROGRAMS/NON_install/eclipse/plugins/org.python.pydev_3.9.2.201502050007/pysrc"),
         
         # EXECUTABLES
         ("WSR_PATH", "C:/Windows/Speech/Common/sapisvr.exe"),
