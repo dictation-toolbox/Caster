@@ -22,14 +22,11 @@ DATA = _d if _d != {} else {"directories":{}}
 def scan_directory():
     h_launch.launch(settings.QTYPE_DIRECTORY, _scan_directory, None)
 
-
-    
 def rescan_current_file():
     global DATA
     try:
         filename, folders, title = utilities.get_window_title_info()
         current_file_path = guess_file_based_on_window_title(filename, folders)
-#         utilities.remote_debug("scanner")
         scanned_file = _scan_single_file(current_file_path[1], LanguageFilter("." + filename.split(".")[-1]))
         # find out exact match in DATA
         break_outer = False
