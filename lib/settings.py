@@ -7,7 +7,7 @@ BAD_LOAD = False
 INISETPATH = 'C:/NatLink/NatLink/MacroSystem/bin/data/settings.json'
 
 # title
-SOFTWARE_VERSION_NUMBER = "0.3.8.2"
+SOFTWARE_VERSION_NUMBER = "0.3.8.1"
 SOFTWARE_NAME = "Caster v " + SOFTWARE_VERSION_NUMBER
 S_LIST_VERSION = "Sticky List v " + SOFTWARE_VERSION_NUMBER
 DISPEL_VERSION = "Dispel v " + SOFTWARE_VERSION_NUMBER
@@ -38,7 +38,7 @@ def get_list_of_ccr_config_files():
     results = []
     for f in os.listdir(SETTINGS["paths"]["GENERIC_CONFIG_PATH"]):
         if f.endswith(".txt"):
-            results.append(f.replace("config", "").replace(".txt", "").lower())
+            results.append(f.replace("config", "").replace(".txt", ""))
     return results
 
 def get_ccr_config_file_pronunciation(config_file_name):
@@ -74,8 +74,8 @@ def _load(path):
         print "\n\nValueError while loading settings file: " + path + "\n\n"
         print sys.exc_info()
     except IOError:
-        print "\n\nCould not find settings file: " + path + "\nInitializing file...\n\n"
-#         print sys.exc_info()
+        print "\n\nIOError: Could not find settings file: " + path + "\nInitializing file...\n\n"
+        print sys.exc_info()
     return result
 
 def save_config():
@@ -213,6 +213,10 @@ def init_default_values():
         if not word in SETTINGS["pronunciations"]:  # .keys()
             SETTINGS["pronunciations"][word] = pronunciation
             values_change_count += 1
+    
+    if not "one time warnings" in SETTINGS.keys():
+        SETTINGS["one time warnings"] = {}
+        values_change_count += 1
     
     global BAD_LOAD
     if values_change_count > 0 and not BAD_LOAD:
