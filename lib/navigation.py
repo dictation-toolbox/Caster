@@ -5,6 +5,7 @@ from dragonfly import (Key, Text , Playback, Choice, Mouse)
 import dragonfly
 from win32con import MOUSEEVENTF_WHEEL
 
+from asynch.mouse import grids
 from asynch.mouse.legion import LegionScanner
 from lib import control
 from lib import utilities
@@ -141,7 +142,7 @@ def drop(nnavi500):
             break
 
 def erase_multi_clipboard():
-    control.MULTI_CLIPBOARD={}
+    control.MULTI_CLIPBOARD = {}
     utilities.save_json_file(control.MULTI_CLIPBOARD, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
 
 def volume_control(n, volume_mode):
@@ -191,45 +192,58 @@ def master_format_text(capitalization, spacing, textnv):
             t = "_".join(t.split(" "))
     Text(t)._execute()
 
-        
-def scroll(direction, nnavi500):
-    updown = -100
-    if str(direction) == "up":
-        updown = 100
-    (x, y) = win32api.GetCursorPos()
-    win32api.mouse_event(MOUSEEVENTF_WHEEL, x, y, updown * nnavi500, 0)
-    
-def kick():
-    window_title = utilities.get_active_window_title()
-    if window_title == "Custom Grid":
-        Playback([(["I", "left"], 0.0)])._execute()
-    elif window_title == "rainbowgrid" or window_title == "douglasgrid" or window_title == "legiongrid":
-        for i in range(0, 2):
-            Key("x")._execute()
-        time.sleep(0.1)
-        Playback([(["mouse", "left", "click"], 0.0)])._execute()
+def master_text_nav(mtn_mode, mtn_dir, nnavi500, extreme):
+    '''
+    (<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]
+    mtn_mode: "shin" s, "queue" cs, "fly" c, (default None)
+    mtn_dir: up, down, left, right, (default right)
+    nnavi500: number of keypresses (default 1)
+    extreme: home/end (default None)
+    '''
+    k = None
+    if mtn_mode == None:
+        if extreme != None:
+            if mtn_dir == "left":
+                k = "home"
+            elif mtn_dir == "right":
+                k = "end"
+            elif mtn_dir == "up":
+                k = "c-home"
+            elif mtn_dir == "down":
+                k = "c-end"
+        else:
+            k = str(mtn_dir) + "/5:" + str(nnavi500)
+    elif extreme == None:
+        k = str(mtn_mode) + "-" + str(mtn_dir) + "/5:" + str(nnavi500)
     else:
-        Playback([(["mouse", "left", "click"], 0.0)])._execute()
+        mtn_dir = str(mtn_dir)
+        way = "end" if mtn_dir in ["right", "down"] else "home"
+        k = str(mtn_mode) + "-" + str(way)
+    Key(k).execute()
+    time.sleep(0.05)
+
+def kill_grids_and_wait():
+    window_title = utilities.get_active_window_title()
+    if window_title == settings.RAINBOW_TITLE or window_title == settings.DOUGLAS_TITLE or window_title == settings.LEGION_TITLE:
+        grids.communicate().kill()
+        time.sleep(0.1)
+
+def kick():
+    kill_grids_and_wait()
+    Playback([(["mouse", "left", "click"], 0.0)])._execute()
 
 def kick_right():
-    window_title = utilities.get_active_window_title()
-    if window_title == "Custom Grid":
-        Playback([(["I", "right"], 0.0)])._execute()
-    elif window_title == "rainbowgrid" or window_title == "douglasgrid" or window_title == "legiongrid":
-        for i in range(0, 2):
-            Key("x")._execute()
-        time.sleep(0.1)
-        Playback([(["mouse", "right", "click"], 0.0)])._execute()
-    else:
-        Playback([(["mouse", "right", "click"], 0.0)])._execute()
+    kill_grids_and_wait()
+    Playback([(["mouse", "right", "click"], 0.0)])._execute()
 
 def kick_middle():
+    kill_grids_and_wait()
     windll.user32.mouse_event(0x00000020, 0, 0, 0, 0)
     windll.user32.mouse_event(0x00000040, 0, 0, 0, 0)
 
 
     
-def pixel_jump(direction, direction2, nnavi500):
+def curse(direction, direction2, nnavi500):
     x, y = 0, 0
     d = str(direction)
     d2 = str(direction2)
@@ -243,46 +257,8 @@ def pixel_jump(direction, direction2, nnavi500):
         x = nnavi500
     
     Mouse("<" + str(x) + ", " + str(y) + ">").execute()
-    
-def shin(color_mode, nnavi500):
-    c = str(color_mode)
-    if c == "left" or c == "back":
-        Key("s-left/5:" + str(nnavi500)).execute()
-    elif c == "right":
-        Key("s-right/5:" + str(nnavi500)).execute()
-    time.sleep(0.05)
 
-def color(color_mode, nnavi500):
-    c = str(color_mode)
-    if c == "up":
-        Key("shift:down, up/5:" + str(nnavi500) + ", shift:up").execute()
-    elif c == "down":
-        Key("shift:down, down/5:" + str(nnavi500) + ", shift:up").execute()
-    elif c == "left" or c == "back":
-        Key("cs-left/5:" + str(nnavi500)).execute()
-    elif c == "right":
-        Key("cs-right/5:" + str(nnavi500)).execute()
-    elif c == "home":
-        Key("s-home").execute()
-    elif c == "end":
-        Key("s-end").execute()
-    time.sleep(0.05)
 
-def fly(fly_mode, nnavi500):
-    f = str(fly_mode)
-    if f == "top":
-        Key("c-home").execute()
-    elif f == "bottom":
-        Key("c-end").execute()
-    elif f == "left" or f == "back":
-        Key("c-left/5:" + str(nnavi500)).execute()
-    elif f == "right":
-        Key("c-right/5:" + str(nnavi500)).execute()
-    elif f == "home":
-        Key("home").execute()
-    elif f == "end":
-        Key("end").execute()
-    time.sleep(0.05)
 
 
 

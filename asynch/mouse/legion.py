@@ -25,9 +25,6 @@ class Rectangle:
     left = None
     right = None
 
-def communicate():
-    return xmlrpclib.ServerProxy("http://127.0.0.1:" + str(settings.GRIDS_LISTENING_PORT))
-
 class LegionGrid(TkTransparent):
     def __init__(self, grid_size=None, tirg=None, auto_quit=False):
         self.setup_XMLRPC_server()

@@ -12,15 +12,15 @@ from dragonfly import (Grammar, AppContext, Function,
 import win32api
 import win32con
 
-from asynch.mouse import legion, grids
+from asynch.mouse import grids
 from lib import navigation, settings
 
 
 def kill():
-    legion.communicate().kill()
+    grids.communicate().kill()
 
 def send_input(n, action):
-    s = legion.communicate()
+    s = grids.communicate()
     
     int_a = int(action)
     response = None
