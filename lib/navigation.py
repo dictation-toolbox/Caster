@@ -140,6 +140,10 @@ def drop(nnavi500):
         if not failure:
             break
 
+def erase_multi_clipboard():
+    control.MULTI_CLIPBOARD={}
+    utilities.save_json_file(control.MULTI_CLIPBOARD, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
+
 def volume_control(n, volume_mode):
     for i in range(0, int(n)):
         Key("volume" + str(volume_mode))._execute()

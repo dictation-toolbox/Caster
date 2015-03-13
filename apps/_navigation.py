@@ -13,6 +13,7 @@ class CommandRule(MappingRule):
 
     mapping = {
         "gopher <direction3> <target>":     Function(context.navigate_to_character, extra={"direction3","target"}),    
+        "erase multi clipboard":            Function(navigation.erase_multi_clipboard),
         "(F to | F2)":                      Key("f2"),
         "(F six | F6)":                     Key("f6"),
 
