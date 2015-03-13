@@ -41,6 +41,14 @@ def remove_word(n, sticky):
     else:
         enable_sticky_list(sticky)
 
+def clear():
+    control.STICKY_LIST=[]
+    utilities.save_json_file(control.STICKY_LIST, settings.SETTINGS["paths"]["S_LIST_JSON_PATH"])
+    if utilities.window_exists(None, settings.S_LIST_VERSION):
+        print 22
+        communicate().clear()
+        print 23
+
 def enable_sticky_list(sticky):
     if utilities.get_window_by_title(settings.S_LIST_VERSION) == 0 and sticky == 1:
         launch.run(["pythonw", settings.SETTINGS["paths"]["STICKY_LIST_PATH"]])
@@ -54,6 +62,7 @@ class SListUsageRule(MappingRule):
     "L add [<sticky>]":             Function(add_symbol),
     "L get <n> [<sticky>]":         Function(get_symbol),
     "L remove <n> [<sticky>]":      Function(remove_word),
+    "L clear":                      Function(clear),
     
     "L run":                        Function(do_enable),
     "L kill":                       Function(kill),

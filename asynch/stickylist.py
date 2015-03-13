@@ -39,6 +39,7 @@ class StickyList:
         self.server.register_function(self.xmlrpc_kill, "kill")
         self.server.register_function(self.xmlrpc_add_symbol, "add_symbol")
         self.server.register_function(self.xmlrpc_remove_symbol, "remove_symbol")
+        self.server.register_function(self.xmlrpc_clear, "clear")
     
     def xmlrpc_kill(self):  #
         self.server_quit = 1
@@ -52,23 +53,24 @@ class StickyList:
         return index
     
     def xmlrpc_remove_symbol(self, index):
-        if index<1 or index>len(self.data):
+        if index < 1 or index > len(self.data):
             return -1
         else:
-            try:
-                del self.data[index-1]
-                self._refresh_lists()
-            except Exception:
-                utilities.simple_log(False)
+            del self.data[index - 1]
+            self._refresh_lists()
+    
+    def xmlrpc_clear(self):
+        self.data = []
+        self._refresh_lists()
     
     def _refresh_lists(self):
         self.listbox_numbering.delete(0, tk.END)
         self.listbox_content.delete(0, tk.END)
         for i in range(0, len(self.data)):
-            self.add_to_list(i+1, self.data[i])
+            self.add_to_list(i + 1, self.data[i])
     
     def _get_next_available_index(self):
-        return len(self.data)+1
+        return len(self.data) + 1
     
     def scroll_to(self, index):
         self._scroll_lists(index)
@@ -80,7 +82,7 @@ class StickyList:
     def add_to_list(self, index, item):
         self.listbox_numbering.insert(tk.END, str(index))
         self.listbox_content.insert(tk.END, item)
-        
+#         self.data.append(item)
     
     def load_from_file(self):
         self.data = []
