@@ -19,7 +19,7 @@ finally:
     from lib import  settings
 
 # filename_pattern was used to determine when to update the list in the element window, checked to see when a new file name had appeared
-FILENAME_PATTERN = re.compile(r"[/\\]([\w_]+\.[\w]+)")
+FILENAME_PATTERN = re.compile(r"[/\\]([\w_ ]+\.[\w]+)")
 
 def window_exists(classname, windowname):
     try:
