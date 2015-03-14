@@ -7,7 +7,7 @@ BAD_LOAD = False
 INISETPATH = 'C:/NatLink/NatLink/MacroSystem/bin/data/settings.json'
 
 # title
-SOFTWARE_VERSION_NUMBER = "0.3.8.6"
+SOFTWARE_VERSION_NUMBER = "0.4.0"
 SOFTWARE_NAME = "Caster v " + SOFTWARE_VERSION_NUMBER
 S_LIST_VERSION = "Sticky List v " + SOFTWARE_VERSION_NUMBER
 DISPEL_VERSION = "Dispel v " + SOFTWARE_VERSION_NUMBER
@@ -203,6 +203,7 @@ def init_default_values():
         SETTINGS["auto_com"] = {}
         SETTINGS["auto_com"]["active"] = False
         SETTINGS["auto_com"]["change_language"] = False
+        SETTINGS["auto_com"]["change_language_only"] = False
         SETTINGS["auto_com"]["interval"] = 3
         SETTINGS["auto_com"]["run_internal"] = True
         SETTINGS["auto_com"]["pyHook_KeyID"] = 163

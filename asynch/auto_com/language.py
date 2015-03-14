@@ -10,17 +10,16 @@ def toggle_language():
     extension = None
     if filename != None:
         extension = "." + filename.split(".")[-1]
-        if LAST_EXTENSION == extension:
-            return
-        else:
-            LAST_EXTENSION = extension
     
-    if extension != None and extension in settings.SETTINGS["ccr"]["registered_extensions"]:
-        words_to_mimic = ["enable"] + settings.SETTINGS["ccr"]["registered_extensions"][extension].split(" ")
-        Mimic(*words_to_mimic).execute()
-        AUTO_ENABLED_LANGUAGE = settings.SETTINGS["ccr"]["registered_extensions"][extension]
-    elif AUTO_ENABLED_LANGUAGE != None:
-        words_to_mimic = ["disable"] + AUTO_ENABLED_LANGUAGE.split(" ")
-        Mimic(*words_to_mimic).execute()
-        AUTO_ENABLED_LANGUAGE = None
-        
+    if LAST_EXTENSION != extension:
+        if extension != None and extension in settings.SETTINGS["ccr"]["registered_extensions"]:
+            words_to_mimic = ["enable"] + settings.SETTINGS["ccr"]["registered_extensions"][extension].split(" ")
+            Mimic(*words_to_mimic).execute()
+            AUTO_ENABLED_LANGUAGE = settings.SETTINGS["ccr"]["registered_extensions"][extension]
+            LAST_EXTENSION = extension
+        elif AUTO_ENABLED_LANGUAGE != None:
+            words_to_mimic = ["disable"] + AUTO_ENABLED_LANGUAGE.split(" ")
+            Mimic(*words_to_mimic).execute()
+            AUTO_ENABLED_LANGUAGE = None
+    
+    LAST_EXTENSION = extension
