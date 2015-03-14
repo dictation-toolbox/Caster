@@ -33,6 +33,13 @@ HMC_LISTENING_PORT = 1338
 GRIDS_LISTENING_PORT = 1339
 SIKULI_LISTENING_PORT = 8000
 
+def register_language(extension, language):
+    global SETTINGS
+    if extension not in SETTINGS["ccr"]["registered_extensions"]:
+        
+        SETTINGS["ccr"]["registered_extensions"][extension] = get_ccr_config_file_pronunciation(language.lower())
+        save_config()
+
 def get_list_of_ccr_config_files():
     global SETTINGS
     results = []
@@ -156,7 +163,7 @@ def init_default_values():
         SETTINGS["ccr"]["modes"] = {}
         SETTINGS["ccr"]["common"] = []
         SETTINGS["ccr"]["standard"] = ["alphabet", "navigation", "punctuation", "numbers"]
-        SETTINGS["ccr"]["nonglobal_sets"] = []
+        SETTINGS["ccr"]["registered_extensions"] = {}
         SETTINGS["ccr"]["default_lower"] = True
         values_change_count += 1
     for (name, value) in ccrNamesFromFiles:

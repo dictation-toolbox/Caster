@@ -3,9 +3,9 @@
 #  meant to enable python  syntax with CCR
 
 from dragonfly import *
+from lib import settings
 
-release = Key("shift:up, ctrl:up")
-noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added on the right side
+settings.register_language(".py", "python")
 
 cmd.map = {
         # Spoken-form    ->    ->    ->     Action object

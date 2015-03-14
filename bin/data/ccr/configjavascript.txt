@@ -3,10 +3,9 @@
 
 from dragonfly import *
 from lib.dfplus.additions import SelectiveAction
+from lib import settings
 
-release = Key("shift:up, ctrl:up")
-noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added on the right side
-noCaps = Mimic("\\no-caps-on")
+settings.register_language(".js", "javascript")
 
 cmd.map = {
        # Spoken-form    ->    ->    ->     Action object

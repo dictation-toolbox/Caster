@@ -1,8 +1,7 @@
 from dragonfly import *
+from lib import settings
 
-release = Key("shift:up, ctrl:up")
-noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on")
-
+settings.register_language(".java", "java")
 
 cmd.map = {
            # Spoken-form    ->    ->    ->     Action object	
