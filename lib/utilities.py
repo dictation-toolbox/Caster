@@ -8,6 +8,7 @@ import random
 import re
 
 import win32gui, win32ui
+import win32com.client
 
 
 try:
@@ -30,13 +31,18 @@ def window_exists(classname, windowname):
     else:
         return True
 
-
+def focus_window(pid=None, title=None):
+    if pid == None and title == None:
+        return
+    shell = win32com.client.Dispatch("WScript.Shell")
+    shell.AppActivate(pid if pid != None else title)
 
 def get_active_window_hwnd():
     return str(win32gui.GetForegroundWindow())
 
-def get_active_window_title():
-    return unicode(win32gui.GetWindowText(win32gui.GetForegroundWindow()), errors='ignore')
+def get_active_window_title(p=None):
+    pid=win32gui.GetForegroundWindow() if p==None else p
+    return unicode(win32gui.GetWindowText(pid), errors='ignore')
 
 def get_active_window_path(natlink):
     return natlink.getCurrentModule()[0]

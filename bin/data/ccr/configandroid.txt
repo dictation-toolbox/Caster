@@ -1,0 +1,25 @@
+#
+# This is a heavily modified version of Dragonfly's _multiedit.py command-module
+#  meant to enable android syntax with CCR
+
+from dragonfly import *
+
+cmd.map = {
+           # Spoken-form    ->    ->    ->     Action object
+			
+                      
+			# "Mel" short for XML
+     	    "Mel droid":				Text("android:"),
+     	    "Mel lay high":				Text("layout_height"),
+     	    "Mel lay we":				Text("layout_width"),
+
+     	   
+          }
+
+
+cmd.extras   = [
+           ]
+cmd.defaults = {
+           }
+
+

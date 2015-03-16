@@ -1,17 +1,100 @@
-from dragonfly import (Function, Key, BringApp, Text, WaitWindow, IntegerRef, Dictation, Repeat, Grammar, MappingRule)
+from dragonfly import (Function, Key, BringApp, Text, WaitWindow, IntegerRef, Dictation, Repeat, Grammar, MappingRule, Choice, Mimic, FocusWindow)
 
-from lib import utilities, settings
+from lib import utilities, settings, control
+from lib.pita import selector
+
+
+if control.DEP.PSUTIL:
+    import psutil
 
 
 def experiment(text):
     '''this function is for tests'''
     try:
         ''''''
-        import natlink
-        print natlink.getCurrentModule()
+        import ctypes
+ 
+        EnumWindows = ctypes.windll.user32.EnumWindows
+        EnumWindowsProc = ctypes.WINFUNCTYPE(ctypes.c_bool, ctypes.POINTER(ctypes.c_int), ctypes.POINTER(ctypes.c_int))
+        GetWindowText = ctypes.windll.user32.GetWindowTextW
+        GetWindowTextLength = ctypes.windll.user32.GetWindowTextLengthW
+        IsWindowVisible = ctypes.windll.user32.IsWindowVisible
+         
+        titles = []
+        def foreach_window(hwnd, lParam):
+            if IsWindowVisible(hwnd):
+                length = GetWindowTextLength(hwnd)
+                buff = ctypes.create_unicode_buffer(length + 1)
+                GetWindowText(hwnd, buff, length + 1)
+                titles.append(buff.value)
+            return True
+        EnumWindows(EnumWindowsProc(foreach_window), 0)
+         
+        print titles
             
     except Exception:
         utilities.simple_log(False)
+
+def get_top_parent(psutil_process):
+    parent=psutil_process.parent()
+    if parent==None:
+        return psutil_process
+    else:
+        return get_top_parent(parent)
+
+def get_similar_process_name(spoken_phrase, list_of_processes):
+    best = (0, "")
+    process = selector._abbreviated_string(spoken_phrase)
+    
+    unwanted_processes=["wininit", "csrss", "System Idle Process", "winlogon",  \
+                        "SearchFilterHost", "conhost"]
+    wanted_processes=[x for x in list_of_processes if x not in unwanted_processes]
+#     print wanted_processes
+    
+    for w in wanted_processes:
+        # make copies because _phrase_to_symbol_similarity_score is destructive (of spoken phrase)
+        process_lower = process.lower()
+        w_lower = w.lower()
+        
+        score = selector._phrase_to_symbol_similarity_score(process_lower, w_lower)
+        if score > best[0]:
+            best = (score, w)
+     
+    return best[1]
+
+def dredge(id, text):
+    if id==None:
+        Mimic("press", "alt", "tab").execute()
+    elif id==1:
+        # proc
+        if control.DEP.PSUTIL:
+            l=[]
+            d={}
+            
+            for proc in psutil.process_iter():
+                try:
+                    name=proc.name().split(".")[0]
+#                     if name not in unwanted_processes:
+                    l.append(name)
+                    d[name]=proc.pid
+                except Exception:
+                    pass
+            best=get_similar_process_name(str(text), l)
+            p = d[best]
+#             print d
+            print text, "->", best, p#, utilities.get_active_window_title(p)
+            try:
+                utilities.focus_window(pid=p)
+            except Exception:
+                utilities.simple_log()
+            
+        else:
+            utilities.availability_message("'dredge' command", "psutil")        
+    elif id==2:
+        # title
+        ''''''
+        utilities.get_active_window_title()
+    
 
 class DevRule(MappingRule):
     
@@ -23,14 +106,19 @@ class DevRule(MappingRule):
     "reserved word <text>":         Key("dquote,dquote,left") + Text("%(text)s") + Key("right, colon, tab/5:5") + Text("Text(\"%(text)s\"),"),
     "experiment <text>":            Function(experiment, extra="text"),
     
+    "dredge [<id> <text>]":         Function(dredge), 
+    
     }
     extras = [
               Dictation("text"),
               Dictation("textnv"),
               IntegerRef("n", 1, 100),
+              Choice("id",
+                    {"R": 1, "M":2,
+                     }),
              ]
     defaults = {
-               "text": ""
+               "text": "", "id":None
                }
 
 

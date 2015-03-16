@@ -40,7 +40,9 @@ class CommandRule(MappingRule):
         "select ex down":           Key("cs-w"),
         "search everywhere":        Key("shift, shift"), 
         "pop":                      Key("c-space"), 
-        "find in current":          Key("cs-f"), 
+        "find in current":          Key("cs-f"),
+        
+        "close tag":                Key("langle, slash"),
         
         }
     extras = []
