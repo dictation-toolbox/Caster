@@ -39,10 +39,11 @@ cmd.map = {
     "(cancel | escape)":            	Key("escape"),
     
     "(tell | tau) (dock | doc)":		Key("escape, end, enter"),
-	"dupe [<nnavi500>]":				Key("escape, home, s-end, c-c, end, enter, c-v") * Repeat(extra="nnavi500"),
+	"duple [<nnavi500>]":				Key("escape, home, s-end, c-c, end, enter, c-v") * Repeat(extra="nnavi500"),
+	"Kraken":							Key("c-space"),
 	     
     # text formatting
-    "(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel) <textnv>":  Function(navigation.master_format_text, extra={"capitalization", "spacing", "textnv"}), 
+    "(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel) <textnv> [brunt]":  Function(navigation.master_format_text, extra={"capitalization", "spacing", "textnv"}), 
 	
 	}
 
@@ -51,7 +52,7 @@ cmd.extras = [
           Dictation("textnv"),
           
           Choice("capitalization",
-                    {"yell": 1, "tie": 2,"camel": 3,"sing":4, "laws":5
+                    {"yell": 1, "tie": 2,"Gerrish": 3,"sing":4, "laws":5
                     }),
           Choice("spacing",
                     {"gum": 1, "gun": 1, "spine": 2, "snake":3

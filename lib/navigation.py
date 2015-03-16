@@ -154,7 +154,7 @@ def master_format_text(capitalization, spacing, textnv):
     Commands for capitalization: 
     1 yell - ALLCAPS
     2 tie  - TitleCase
-    3 k    - camelCase
+    3 Gerrish- camelCase
     4 sing - Sentencecase
     5 laws - alllower
     Commands for word spacing: 
@@ -167,6 +167,9 @@ def master_format_text(capitalization, spacing, textnv):
     
     if capitalization == 0 and settings.SETTINGS["ccr"]["default_lower"]:
         capitalization = 5
+    
+    if spacing == 0 and capitalization==3:
+        spacing = 1
     
     if capitalization != 0:
         if capitalization == 1:

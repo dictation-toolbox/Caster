@@ -20,12 +20,12 @@ cmd.map = {
         "for loop":						Text("for (int i=0; i<VALUE; i++)"),
 		"for each":						Text("for (CLASS TYPE : LIST)"),
 		#
-		"convert to integer":			Text("int()")+ Key("left"),
+		"convert to integer":			Text("Integer.getInteger()")+ Key("left"),
 		"convert to floating point":	Text("Double.parseDouble()")+ Key("left"),
 		"convert to string":			Key("dquote, dquote, plus"),
 		#
-		"lodge and":                    Text("&&"),
-        "lodge or":                     Text("||"),
+		"lodge and":                    Text(" && "),
+        "lodge or":                     Text(" || "),
         "lodge not":                    Text("!"),
         #
         "print":						Text("System.out.println()")+Key("left"),
@@ -56,10 +56,10 @@ cmd.map = {
 				
 		"new":							Text("new "),
 		"integer":						Text("int "),
-		"big integer":					Text("Integer"),
+		"big integer":					Text("Integer "),
 		
 		"string":						Text("String "),
-		
+		"substring":					Text("substring"),
      	
         "ternary":                      Text("()?;") + (Key("left") * 3),
 			
