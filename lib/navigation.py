@@ -203,6 +203,7 @@ def master_text_nav(mtn_mode, mtn_dir, nnavi500, extreme):
     nnavi500: number of keypresses (default 1)
     extreme: home/end (default None)
     '''
+    
     k = None
     if mtn_mode == None:
         if extreme != None:

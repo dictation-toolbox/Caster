@@ -38,6 +38,7 @@ cmd.map = {
 		"underscore":					Text("_"),		
 		"backslash":					Text("\\"),
 		"slash":						Text("/"),
+		"Dolly":						Text("$"),
 	    'tabby [<npunc>]':                Key("tab")* Repeat(extra="npunc"),
 	    "boom":							Text(", "),				     	   
           }
