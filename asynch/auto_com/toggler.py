@@ -19,6 +19,7 @@ if control.DEP.NATLINK:
 def toggle():
     if natlink.getMicState()!="on":
         return
+    
     '''determines whether to toggle and then if so toggles appropriately'''
     global _LAST, _HAS_RUN_FIRST_TIME, _ON, _OFF
     should_toggle = False
@@ -39,7 +40,7 @@ def toggle():
     # language switching section
     if settings.SETTINGS["auto_com"]["change_language"]:
         language.toggle_language()
-        
+    
 
 def on_keyboard_event(event):
     if int(event.KeyID) == int(settings.SETTINGS["auto_com"]["pyHook_KeyID"]):

@@ -5,7 +5,7 @@
 #
 
 """
-Command-module for but android studio
+Command-module for but pycharm
 
 """
 
@@ -49,8 +49,8 @@ class CommandRule(MappingRule):
 
 #---------------------------------------------------------------------------
 
-context = AppContext(executable="pycharm")
-grammar = Grammar("pycharm", context=context)
+context = AppContext(executable="studio64")
+grammar = Grammar("android studio", context=context)
 grammar.add_rule(CommandRule())
 grammar.load()
 

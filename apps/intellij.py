@@ -1,24 +1,13 @@
-#
-# This file is a command-module for Dragonfly.
-# (c) Copyright 2008 by Christo Butcher
-# Licensed under the LGPL, see <http://www.gnu.org/licenses/>
-#
-
-"""
-Command-module for but android studio
-
-"""
-
-
-#---------------------------------------------------------------------------
-
 from dragonfly import (Grammar, AppContext, MappingRule,
-                       Key, Text)
+                       Dictation, IntegerRef,
+                       Key, Text, Repeat, Pause)
+from dragonfly.actions.action_mimic import Mimic
 
-
+ 
 class CommandRule(MappingRule):
 
     mapping = {
+                    
         "quickfix":                 Key("a-enter"),
         "duplicate":                Key("c-d"),
         "auto complete":            Key("cs-a"),
@@ -42,15 +31,21 @@ class CommandRule(MappingRule):
         "pop":                      Key("c-space"), 
         "find in current":          Key("cs-f"), 
         
-        }
-    extras = []
-    defaults = {}
+        
 
+        }
+    extras = [
+              Dictation("text"),
+              Dictation("mim"),
+              IntegerRef("n", 1, 1000),
+              
+             ]
+    defaults = {"n": 1, "mim":""}
 
 #---------------------------------------------------------------------------
 
-context = AppContext(executable="pycharm")
-grammar = Grammar("pycharm", context=context)
+context = AppContext(executable="idea", title="IntelliJ") | AppContext(executable="idea64", title="IntelliJ")
+grammar = Grammar("IntelliJ", context=context)
 grammar.add_rule(CommandRule())
 grammar.load()
 

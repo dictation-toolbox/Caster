@@ -5,28 +5,16 @@
 #
 
 """
-Command-module for Chrome
+Command-module for Chrome and Firefox
 
 """
 
 #---------------------------------------------------------------------------
 
 from dragonfly import (Grammar, AppContext, MappingRule,
-                       Dictation, Playback, IntegerRef, Function,
-                       Key, Text, Repeat, WaitWindow, Mouse, Pause)
+                       Dictation, IntegerRef, Function,
+                       Key, Text, Repeat)
 
-def save_image(dict, n):
-    s=str(dict)
-    Mouse("right")._execute()
-    Pause("40")._execute()
-    Key("up/10:5")._execute()
-    Key("enter")._execute()
-    Key("c-tab")._execute()
-    Key("c-s")._execute()
-    if not s=="nothing":
-        n=str(int(n))
-        Pause("40")._execute()
-        Text((s[0]+n+"_"))._execute()
     
 
 class CommandRule(MappingRule):
@@ -42,7 +30,6 @@ class CommandRule(MappingRule):
         "zoom in <n>":                  Key("c-plus/20") * Repeat(extra="n"),
         "zoom out <n>":                 Key("c-minus/20") * Repeat(extra="n"),
         "refresh":                      Key("c-r"),
-        "save image [<dict> <n>]":      Function(save_image, extra={"dict", "n"}),
         "[add] bookmark":               Key("c-d"),
         
         "developer tools":              Key("f12"),

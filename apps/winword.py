@@ -5,7 +5,7 @@
 #
 
 """
-Command-module for Chrome
+Command-module for word
 
 """
 

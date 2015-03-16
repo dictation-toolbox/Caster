@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from datetime import datetime
 import multiprocessing
 import os, json, sys
+import random
 import re
 
 import win32gui, win32ui
@@ -35,7 +36,7 @@ def get_active_window_hwnd():
     return str(win32gui.GetForegroundWindow())
 
 def get_active_window_title():
-    return win32gui.GetWindowText(win32gui.GetForegroundWindow())
+    return unicode(win32gui.GetWindowText(win32gui.GetForegroundWindow()), errors='ignore')
 
 def get_active_window_path(natlink):
     return natlink.getCurrentModule()[0]

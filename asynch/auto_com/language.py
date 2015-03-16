@@ -1,5 +1,9 @@
-from lib import utilities, settings
+
+
 from dragonfly import Mimic
+
+from lib import utilities, settings
+
 
 AUTO_ENABLED_LANGUAGE = None
 LAST_EXTENSION = None

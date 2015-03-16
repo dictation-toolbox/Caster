@@ -3,7 +3,7 @@ from dragonfly import (Grammar, AppContext, MappingRule,
                        Key, Text, Repeat, Pause)
 from dragonfly.actions.action_mimic import Mimic
 
-
+# next tab
 class CommandRule(MappingRule):
 
     mapping = {
@@ -15,7 +15,7 @@ class CommandRule(MappingRule):
             "open type":                                Key("cs-t"),
 
             "[go to] line <n> [<mim>]":                 Key("c-l") + Pause("50") + Text("%(n)d") + Key("enter")+ Pause("50")+Mimic(extra="mim"),
-            "go to declaration":                        Key("f3"),
+            "jump to source":                           Key("f3"),
             "editor select":                            Key("c-e"),
             "pop":                                      Key("c-space, down, up"),
             
@@ -25,9 +25,9 @@ class CommandRule(MappingRule):
             "resume":                                   Key("f8"),
             "(debug | run) last":                       Key("f11"),
             
-            "show (java | coffee) perspective":         Key("cas-j"),
-            "show debug perspective":                   Key("cas-d"),
-            "show python perspective":                  Key("cas-p"),
+#             "show java perspective":                    Key("cas-j"),
+#             "show debug perspective":                   Key("cas-d"),
+#             "show python perspective":                  Key("cas-p"),
             
             
             "format code":                              Key("cs-f"),
@@ -35,8 +35,8 @@ class CommandRule(MappingRule):
             "comment line":                             Key("c-slash"),
             
             # requires quick bookmarks plug-in:
-            "set mark [<n>]":                           Key("a-%(n)d"),
-            "go mark [<n>]":                            Key("as-%(n)d"),
+#             "set mark [<n>]":                           Key("a-%(n)d"),
+#             "go mark [<n>]":                            Key("as-%(n)d"),
         }
     extras = [
               Dictation("text"),
@@ -48,7 +48,7 @@ class CommandRule(MappingRule):
 
 #---------------------------------------------------------------------------
 
-context = AppContext(executable="javaw", title="Eclipse") | AppContext(executable="AptanaStudio3")
+context = AppContext(executable="javaw", title="Eclipse") | AppContext(executable="eclipse", title="Eclipse") | AppContext(executable="AptanaStudio3")
 grammar = Grammar("Eclipse", context=context)
 grammar.add_rule(CommandRule())
 grammar.load()

@@ -22,17 +22,17 @@ class CommandRule(MappingRule):
     mapping = {
         
            
-            "previous (editor | tab) [<n>]":            Key("cs-f6") * Repeat(extra="n"),  # these two must be set up in the eclipse preferences
-            "next (editor | tab) [<n>]":                Key("c-f6") * Repeat(extra="n"),
-            "close (editor | tab) [<n>]":               Key("c-w") * Repeat(extra="n"),
-            "open resource":                            Key("cs-r"),
-            "open type":                                Key("cs-t"),
-
-            "[go to] line <n>":                         Key("c-l") + Pause("50") + Text("%(n)d") + Key("enter"),
-            "go to declaration":                        Key("f3"),
-            "editor select":                            Key("c-e"),
-            "pop":                                      Key("c-space, down, up"),
-            
+#             "previous (editor | tab) [<n>]":            Key("cs-f6") * Repeat(extra="n"),  # these two must be set up in the eclipse preferences
+#             "next (editor | tab) [<n>]":                Key("c-f6") * Repeat(extra="n"),
+#             "close (editor | tab) [<n>]":               Key("c-w") * Repeat(extra="n"),
+#             "open resource":                            Key("cs-r"),
+#             "open type":                                Key("cs-t"),
+#  
+#             "[go to] line <n>":                         Key("c-l") + Pause("50") + Text("%(n)d") + Key("enter"),
+#             "go to declaration":                        Key("f3"),
+#             "editor select":                            Key("c-e"),
+#             "pop":                                      Key("c-space, down, up"),
+             
             "step over [<n>]":                          Key("f10/50") * Repeat(extra="n"),
             "step into":                                Key("f11"),
             "step out [of]":                            Key("s-f11"),
