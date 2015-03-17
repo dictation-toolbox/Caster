@@ -12,7 +12,7 @@ cmd.map = {
 		#
 		"switch":						Text("switch(){\ncase : break;\ndefault: break;")+Key("up,up,left,left"),
 		"case":							Text("case :")+Key("left"),
-		"break":						Text("break;"),
+		"breaker":						Text("break;"),
 		"default":						Text("default: "),
 		#
 		"do loop":						Text("do {}")+Key("left, enter:2"),
@@ -28,7 +28,7 @@ cmd.map = {
         "lodge or":                     Text(" || "),
         "lodge not":                    Text("!"),
         #
-        "print":						Text("System.out.println()")+Key("left"),
+        "print to console":				Text("System.out.println()")+Key("left"),
         #
         "import":						Text( "import " ),
         #
@@ -53,12 +53,16 @@ cmd.map = {
 		"static":						Text("static "),
 		"final":						Text("final "),
 		
+		"cast to double":				Text("(double)()")+Key("left"),
+		"cast to integer":				Text("(int)()")+Key("left"),
 				
-		"new":							Text("new "),
+		"new new":						Text("new "),
 		"integer":						Text("int "),
 		"big integer":					Text("Integer "),
+		"double":						Text("double "),
 		
 		"string":						Text("String "),
+		"boolean":						Text("boolean "),
 		"substring":					Text("substring"),
      	
         "ternary":                      Text("()?;") + (Key("left") * 3),

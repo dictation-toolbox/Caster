@@ -16,7 +16,7 @@ cmd.map = {
 		"else":                     Text("else:")+Key("enter"),		
 		#
 		# (no switch in Python)
-		"break":					Text("break"),
+		"breaker":					Text("break"),
 		#
 		"for each":					Text("for  in :")+ Key("left:5"),
         "for loop":					Text("for i in range(0, ):")+ Key("left:2"),
@@ -31,7 +31,7 @@ cmd.map = {
         "lodge or":                 Text(" or "),
         "lodge not":                Text("!"),
         #
-        "print":					Text("print "),
+        "print to console":			Text("print "),
         #
 		"import":					Text( "import " ),
 		#

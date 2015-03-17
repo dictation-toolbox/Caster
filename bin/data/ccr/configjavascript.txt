@@ -16,7 +16,7 @@ cmd.map = {
 		#
 		"switch":					Text("switch(){}")+Key("left, enter:2, up"),
 		"case":						Text("case :")+Key("left"),
-		"break":					Text("break;"),
+		"breaker":					Text("break;"),
 		"default":					Text("default: "),
 		#
 		"do loop":					Text("do {}")+Key("left, enter:2"),
@@ -32,7 +32,7 @@ cmd.map = {
         "lodge or":                 Text(" || "),
         "lodge not":                Text("!"),
         #
-		"print":					Text("console.log()")+Key("left"),
+		"print to console":			Text("console.log()")+Key("left"),
 		#
 		# (no imports in javascript)
 		# 
@@ -62,7 +62,7 @@ cmd.map = {
 		"self":						Text("self"),
 		"push":						Text("push"),
 		"inner HTML":				Text("innerHTML"),
-		"new":					    Text("new "),
+		"new new":					Text("new "),
         "continue":					Text("continue"),
 
         "this":						Text("this"),

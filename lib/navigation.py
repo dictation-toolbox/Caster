@@ -45,7 +45,7 @@ def pita(textnv):
     if filename == None:
         utilities.report("pita: filename pattern not found in window title")
         return
-     
+    
     if ACTIVE_FILE_PATH[0] != None:
         result = selector.get_similar_symbol_name(str(textnv), scanner.DATA["directories"][ACTIVE_FILE_PATH[0]][ACTIVE_FILE_PATH[1]]["names"])
         # print "fuzzy match: ", str(textnv), "->", result
@@ -168,7 +168,7 @@ def master_format_text(capitalization, spacing, textnv):
     if capitalization == 0 and settings.SETTINGS["ccr"]["default_lower"]:
         capitalization = 5
     
-    if spacing == 0 and capitalization==3:
+    if spacing == 0 and capitalization == 3:
         spacing = 1
     
     if capitalization != 0:
@@ -203,6 +203,7 @@ def master_text_nav(mtn_mode, mtn_dir, nnavi500, extreme):
     nnavi500: number of keypresses (default 1)
     extreme: home/end (default None)
     '''
+    
     k = None
     if mtn_mode == None:
         if extreme != None:

@@ -29,6 +29,7 @@ def rescan_current_file():
         current_file_path = guess_file_based_on_window_title(filename, folders)
         scanned_file = _scan_single_file(current_file_path[1], LanguageFilter("." + filename.split(".")[-1]))
         # find out exact match in DATA
+        file_was_found=False
         break_outer = False
         for d in DATA["directories"]:
             for f in DATA["directories"][d]:
@@ -36,9 +37,15 @@ def rescan_current_file():
                     DATA["directories"][d][f] = scanned_file
                     utilities.save_json_file(DATA, settings.SETTINGS["paths"]["PITA_JSON_PATH"])
                     break_outer = True
+                    file_was_found=True
                     break
             if break_outer:
                 break
+        if not file_was_found:
+            if not "uncategorized" in DATA["directories"]:
+                DATA["directories"]["uncategorized"]={}
+            DATA["directories"]["uncategorized"][current_file_path[1]]=scanned_file
+            utilities.save_json_file(DATA, settings.SETTINGS["paths"]["PITA_JSON_PATH"])
     except Exception:
         utilities.simple_log()
     
