@@ -20,7 +20,7 @@ cmd.map = {
     "jump out":						Playback([(["gopher", "next", "closers"], 0.0)])+Key("right"),
     "jump back":					Playback([(["gopher", "previous", "openers"], 0.0)])+Key("left"),
     "fill <target>":				Function(context.fill_blanks, extra="target"),
-    "(pita | Peter | PETA) <textnv>":Function(navigation.pita, extra="textnv"), 
+    "(pita | Peter | PETA) <textnv> [brunt]":Function(navigation.pita, extra="textnv"), 
     
     
     #keyboard shortcuts
