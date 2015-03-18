@@ -87,6 +87,9 @@ class MainRule(MappingRule):
     "again <n> [(times|time)]":     Function(repeat_that, extra={"n"}),
     "record from history":          Function(recording.record_from_history),
     "delete recorded macros":       Function(recording.delete_recorded_rules),
+    "alias <text>":                 Function(recording.add_alias),
+    "delete aliases":               Function(recording.delete_alias_rules),
+    
     "find":                         Key("c-f"),
     "replace":                      Key("c-h"),
     }

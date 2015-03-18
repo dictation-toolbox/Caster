@@ -17,6 +17,7 @@ try:
     
     ccr.initialize_ccr()
     utilities.clean_temporary_files()
+    recording.load_alias_rules()
     recording.load_recorded_rules()
     
     from asynch.hmc import h_launch

@@ -1,4 +1,6 @@
-from dragonfly import (Playback, CompoundRule, IntegerRef)
+import time
+
+from dragonfly import (Playback, CompoundRule, IntegerRef, Mimic, Text)
 
 from asynch.hmc import h_launch
 from lib import settings, control, utilities
@@ -18,6 +20,45 @@ class RecordedRule(CompoundRule):
                 Playback(self.playback_array)._execute()
         else:
             Playback(self.playback_array)._execute()
+
+class AliasRule(CompoundRule):
+    def __init__(self, symbol, name=None, spec=None, extras=None,
+        defaults=None, exported=None, context=None):
+        CompoundRule.__init__(self, name=name, spec=spec, extras=extras, defaults=defaults, exported=exported, context=context)
+        self._symbol=symbol
+            
+    def _process_recognition(self, node, extras):
+        Text(self._symbol).execute()
+
+def add_alias(text):
+    if text=="":
+        return
+    Mimic("copy", "one")._execute()
+    time.sleep(0.1)
+    symbol=control.MULTI_CLIPBOARD["1"]
+    control.ALIASES_GRAMMAR.unload()
+    rule = AliasRule(symbol=symbol, spec=str(text), name="alias_rule_" + symbol)
+    control.ALIASES_GRAMMAR.add_rule(rule)
+    control.ALIASES_GRAMMAR.load()
+    aliases = utilities.load_json_file(settings.SETTINGS["paths"]["ALIASES_PATH"])
+    aliases[str(text)]=symbol
+    utilities.save_json_file(aliases, settings.SETTINGS["paths"]["ALIASES_PATH"])
+
+def load_alias_rules():
+    aliases = utilities.load_json_file(settings.SETTINGS["paths"]["ALIASES_PATH"])
+    control.ALIASES_GRAMMAR.unload()
+    for text in aliases:
+        symbol=aliases[text]
+        rule = AliasRule(symbol=symbol, spec=str(text), name="alias_rule_" + symbol)
+        control.ALIASES_GRAMMAR.add_rule(rule)
+    control.ALIASES_GRAMMAR.load()
+
+def delete_alias_rules():
+    utilities.save_json_file({}, settings.SETTINGS["paths"]["ALIASES_PATH"])
+    control.ALIASES_GRAMMAR.unload()
+    while len(control.ALIASES_GRAMMAR.rules) > 0:
+        rule = control.ALIASES_GRAMMAR.rules[0]
+        control.ALIASES_GRAMMAR.remove_rule(rule)
 
 def get_macro_spec(): 
     h_launch.launch(settings.QTYPE_DEFAULT, add_recorded_macro, None)
@@ -39,9 +80,9 @@ def record_from_history():
 def add_recorded_macro(data):
     # use a response window to get a spec for the new macro: handled by calling function
     commands = []
-    print control.PRESERVED_CACHE
+#     print control.PRESERVED_CACHE
     for i in data["selected_indices"]:
-        print i, ":", control.PRESERVED_CACHE[i]
+#         print i, ":", control.PRESERVED_CACHE[i]
         commands.append(control.PRESERVED_CACHE[i])
     
     
@@ -73,7 +114,6 @@ def add_recorded_macro(data):
     
     # clear the dictation cache
     control.PRESERVED_CACHE = None
-
 
 def load_recorded_rules():
     recorded_macros = utilities.load_json_file(settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
