@@ -1,0 +1,35 @@
+from dragonfly import *
+from lib import settings
+
+#settings.register_language(".java", "java")
+
+cmd.map = {
+           # Spoken-form    ->    ->    ->     Action object	
+		#http://www.w3schools.com/sql/sql_quickref.asp
+		"quell and ":				Text(" and "),
+		"quell or":					Text(" or "),
+		"quell as":					Text(" as "),  
+ 		"quell between":			Text(" between "),
+		"quell delete":				Text(" delete "),
+		"quell exists":				Text(" exists "),  
+  	  	"quell group by":			Text(" group by "),
+		"quell having":				Text(" having "),
+		"quell in":					Text(" in "),
+		"quell insert into": 		Text(" insert into "),
+		"quell inner join":			Text(" inner join "),
+		"quell left join":			Text(" left join "),
+		"quell right join":			Text(" right join "),
+		"quell full join":			Text(" full join "),
+		"quell like":				Text(" like "),
+		"quell select":				Text(" select "),
+		"quell union":				Text(" union "),
+		"quell where":				Text(" where "),
+	   
+     	   
+          }
+
+cmd.extras   = [
+           ]
+cmd.defaults = {
+           }
+    

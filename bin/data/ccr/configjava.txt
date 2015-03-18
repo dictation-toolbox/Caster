@@ -66,8 +66,8 @@ cmd.map = {
 		"substring":					Text("substring"),
      	
         "ternary":                      Text("()?;") + (Key("left") * 3),
-			
-         
+		"this":							Text("this"),
+        "array list":					Text("ArrayList"),
 	   
      	   
           }

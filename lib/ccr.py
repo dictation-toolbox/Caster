@@ -118,7 +118,7 @@ def create_repeat_rule(ks_rule):
     return RepeatRule()
 # Create and load this module's grammar.
 def refresh():
-    global grammar
+    global grammar, current_combined_rule
     unload()
     grammar = Grammar("multi edit")
     if current_combined_rule!=None:
