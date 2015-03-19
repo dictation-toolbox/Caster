@@ -3,7 +3,7 @@ import time
 from dragonfly import (Playback, CompoundRule, IntegerRef, Mimic, Text)
 
 from asynch.hmc import h_launch
-from lib import settings, control, utilities
+from lib import settings, control, utilities, navigation
 
 
 class RecordedRule(CompoundRule):
@@ -33,9 +33,10 @@ class AliasRule(CompoundRule):
 def add_alias(text):
     if text=="":
         return
-    Mimic("copy", "one")._execute()
+    alias_key="alias_key"
+    navigation.clipboard_to_file(alias_key, True)
     time.sleep(0.1)
-    symbol=control.MULTI_CLIPBOARD["1"]
+    symbol=control.MULTI_CLIPBOARD[alias_key]
     control.ALIASES_GRAMMAR.unload()
     rule = AliasRule(symbol=symbol, spec=str(text), name="alias_rule_" + symbol)
     control.ALIASES_GRAMMAR.add_rule(rule)
@@ -46,12 +47,13 @@ def add_alias(text):
 
 def load_alias_rules():
     aliases = utilities.load_json_file(settings.SETTINGS["paths"]["ALIASES_PATH"])
-    control.ALIASES_GRAMMAR.unload()
-    for text in aliases:
-        symbol=aliases[text]
-        rule = AliasRule(symbol=symbol, spec=str(text), name="alias_rule_" + symbol)
-        control.ALIASES_GRAMMAR.add_rule(rule)
-    control.ALIASES_GRAMMAR.load()
+    if len(aliases)>0:
+        control.ALIASES_GRAMMAR.unload()
+        for text in aliases:
+            symbol=aliases[text]
+            rule = AliasRule(symbol=symbol, spec=str(text), name="alias_rule_" + symbol)
+            control.ALIASES_GRAMMAR.add_rule(rule)
+        control.ALIASES_GRAMMAR.load()
 
 def delete_alias_rules():
     utilities.save_json_file({}, settings.SETTINGS["paths"]["ALIASES_PATH"])

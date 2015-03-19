@@ -151,7 +151,7 @@ def init_default_values():
         if not name in SETTINGS["paths"]:  # .keys()
             SETTINGS["paths"][name] = value
             values_change_count += 1
-    if not SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"] in sys.path:
+    if not SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"] in sys.path and os.path.isdir(SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"]):
         sys.path.append(SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"])
     
     

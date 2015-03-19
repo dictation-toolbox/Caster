@@ -1,9 +1,9 @@
 from ctypes import windll
-import sys, win32api, time, win32clipboard
+import time
 
 from dragonfly import (Key, Text , Playback, Choice, Mouse)
 import dragonfly
-from win32con import MOUSEEVENTF_WHEEL
+import win32clipboard
 
 from asynch.mouse import grids
 from asynch.mouse.legion import LegionScanner
@@ -107,7 +107,10 @@ def mouse_alternates(mode):
         utilities.simple_log(False)
     
 
-def clipboard_to_file(nnavi500):
+def clipboard_to_file(nnavi500, do_copy=False):
+    if do_copy:
+        Key("c-c").execute()
+    
     key = str(nnavi500)
     while True:
         failure = False

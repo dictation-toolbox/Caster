@@ -4,7 +4,7 @@ import xmlrpclib
 from dragonfly import (Function, Text, Grammar, Choice,
                        IntegerRef, Dictation, Mimic, MappingRule)
 
-from lib import  settings, utilities
+from lib import  settings, utilities, navigation
 from lib import control
 from lib.dragonfree import launch
 
@@ -16,11 +16,13 @@ def kill():
     communicate().kill()
 
 def add_symbol(sticky):
-    Mimic("copy", "one")._execute()
-    control.STICKY_LIST.append(control.MULTI_CLIPBOARD["1"])
+    sticky_key="sticky_key"
+    navigation.clipboard_to_file(sticky_key, True)
+    time.sleep(0.1)
+    control.STICKY_LIST.append(control.MULTI_CLIPBOARD[sticky_key])
     utilities.save_json_file(control.STICKY_LIST, settings.SETTINGS["paths"]["S_LIST_JSON_PATH"])
     if utilities.window_exists(None, settings.S_LIST_VERSION):
-        communicate().add_symbol(control.MULTI_CLIPBOARD["1"])
+        communicate().add_symbol(control.MULTI_CLIPBOARD[sticky_key])
     else:
         enable_sticky_list(sticky)
 
