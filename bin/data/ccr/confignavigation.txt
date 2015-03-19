@@ -31,16 +31,18 @@ cmd.map = {
     "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]": Function(navigation.master_text_nav, extra={"mtn_mode", "mtn_dir", "nnavi500", "extreme"}),
     
     
-    "stoosh [<nnavi500>]":                 Key("c-c")+Function(navigation.clipboard_to_file, extra="nnavi500"),
-    "cut [<nnavi500>]":                  Key("c-x")+Function(navigation.clipboard_to_file, extra="nnavi500"),
-    "drop [<nnavi500>]":  Function(navigation.drop, extra={"nnavi500"}),
-    "delete [<nnavi500>]":               Key("del/5") * Repeat(extra="nnavi500"),
-    "clear [<nnavi500>]":                Key("backspace") * Repeat(extra="nnavi500"),
-    "(cancel | escape)":            	Key("escape"),
+    "stoosh [<nnavi500>]":          Key("c-c")+Function(navigation.clipboard_to_file, extra="nnavi500"),
+    "cut [<nnavi500>]":             Key("c-x")+Function(navigation.clipboard_to_file, extra="nnavi500"),
+    "spark [<nnavi500>]":  			Function(navigation.drop, extra={"nnavi500"}),
+    "delete [<nnavi500>]":          Key("del/5") * Repeat(extra="nnavi500"),
+    "clear [<nnavi500>]":           Key("backspace") * Repeat(extra="nnavi500"),
+    "(cancel | escape)":            Key("escape"),
     
-    "(tell | tau) (dock | doc)":		Key("escape, end, enter"),
-	"duple [<nnavi500>]":				Key("escape, home, s-end, c-c, end, enter, c-v") * Repeat(extra="nnavi500"),
-	"Kraken":							Key("c-space"),
+    
+    "shackle":						Key("home/5, s-end"),
+    "(tell | tau) (dock | doc)":	Key("escape, end, enter"),
+	"duple [<nnavi500>]":			Key("escape, home, s-end, c-c, end, enter, c-v") * Repeat(extra="nnavi500"),
+	"Kraken":						Key("c-space"),
 	     
     # text formatting
     "(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel) <textnv> [brunt]":  Function(navigation.master_format_text, extra={"capitalization", "spacing", "textnv"}), 

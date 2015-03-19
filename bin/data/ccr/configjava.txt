@@ -69,7 +69,8 @@ cmd.map = {
 		"this":							Text("this"),
         "array list":					Text("ArrayList"),
 	   
-     	   
+     	"continue":						Text("continue"),
+     	"short form if":				Text("if ()")+Key("left"),
           }
 
 cmd.extras   = [
