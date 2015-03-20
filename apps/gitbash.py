@@ -23,15 +23,25 @@ class CommandRule(MappingRule):
         "add":              Text( "git add ." )+Key("enter"),
         "status":           Text( "git status" )+Key("enter"),
         "commit":           Text( "git commit -am ''" )+Key("left"),
+        "merge":            Text( "git merge " ),
+        "merge tool":       Text( "git mergetool")+Key("enter"),
+        "fetch":            Text( "git fetch" ),
+        
         "(get push | push)":Text( "git push" )+Key("enter"),
         "pull":             Text( "git pull" )+Key("enter"),
         "CD up":            Text( "cd .." )+Key("enter"),
         "CD":               Text( "cd " ),
         "list":             Text( "ls" )+Key("enter"),
         "make directory":   Text( "mkdir " ),
+        
         "undo [last] commit": Text("git reset --soft HEAD~1")+Key("enter"),
-        "visualize":        Text("gitk")+Key("enter"),
+        "undo changes":     Text("git reset --hard")+Key("enter"),
         "stop tracking [file]": Text("git rm --cached FILENAME"),
+        "preview remove untracked": Text("git clean -nd")+Key("enter"),
+        "remove untracked": Text("git clean -fd")+Key("enter"),
+        
+        "visualize":        Text("gitk")+Key("enter"),
+        
         "exit":             Text( "exit" )+Key("enter"),
         
         # navigation to specific project paths
