@@ -1,6 +1,6 @@
 from dragonfly import (Grammar, AppContext, MappingRule,
                        Dictation, IntegerRef,
-                       Key, Choice, Function, Pause)
+                       Key, Choice, Function, Repeat)
 
 from lib import context, navigation
 
@@ -16,12 +16,15 @@ class CommandRule(MappingRule):
         "erase multi clipboard":            Function(navigation.erase_multi_clipboard),
         "(F to | F2)":                      Key("f2"),
         "(F six | F6)":                     Key("f6"),
+        "(F nine | F9)":                    Key("f9"),
+        "de Gaulle [<n>]":                  Key("c-z") * Repeat(extra="n"),
+
 
         }
     extras = [
               Dictation("text"),
               Dictation("mim"),
-              IntegerRef("n", 1, 1000),
+              IntegerRef("n", 1, 50),
               Choice("direction3",
                 {"out": "right", "back out": "left", "next": "right", "previous": "left"
                 }),

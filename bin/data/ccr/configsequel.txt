@@ -24,6 +24,8 @@ cmd.map = {
 		"quell select":				Text(" select "),
 		"quell union":				Text(" union "),
 		"quell where":				Text(" where "),
+		"quell from":				Text(" from "),
+		"quell join":				Text(" join "),
 	   
      	   
           }
