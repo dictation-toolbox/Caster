@@ -42,7 +42,7 @@ cmd.map = {
 		"add comment":				Text("//"),
 		"long comment":				Text("/**/")+Key("left,left"),
 		#
-		"value null":				Text("null"),
+		"value nil":				Text("null"),
 		#
 		"return":					Text("return "),
 		#

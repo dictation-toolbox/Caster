@@ -38,7 +38,7 @@ cmd.map = {
 		"add comment":					Text( "//" ),
 		"long comment":					Text("/**/")+Key("left,left"),
 		#
-		"value null":					Text("null"),
+		"value nil":					Text("null"),
 		#
 		"return":						Text("return "),
 		#
@@ -52,6 +52,7 @@ cmd.map = {
 		"private":						Text("private "),
 		"static":						Text("static "),
 		"final":						Text("final "),
+		"void":							Text("void "),
 		
 		"cast to double":				Text("(double)()")+Key("left"),
 		"cast to integer":				Text("(int)()")+Key("left"),
@@ -71,6 +72,8 @@ cmd.map = {
 	   
      	"continue":						Text("continue"),
      	"short form if":				Text("if ()")+Key("left"),
+     	
+     	"L if":							Text("else if ()")+Key("left"),
           }
 
 cmd.extras   = [
