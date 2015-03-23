@@ -33,7 +33,8 @@ cmd.map = {
         "import":						Text( "import " ),
         #
         "function":						Text("SCOPE TYPE NAME(){}")+Key("left"),
-        "class":    					Key( "as-n, down, down, down, down, enter"),
+        "class":						Text("class {}")+Key("left/5:2"),
+        
 		#
 		"add comment":					Text( "//" ),
 		"long comment":					Text("/**/")+Key("left,left"),
@@ -47,6 +48,8 @@ cmd.map = {
 		
 		
 		# Java specific
+		
+		"anno override":				Text("@Override"),
 		
 		"public":						Text("public "),
 		"private":						Text("private "),

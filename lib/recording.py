@@ -25,33 +25,38 @@ class AliasRule(CompoundRule):
     def __init__(self, symbol, name=None, spec=None, extras=None,
         defaults=None, exported=None, context=None):
         CompoundRule.__init__(self, name=name, spec=spec, extras=extras, defaults=defaults, exported=exported, context=context)
-        self._symbol=symbol
+        self._symbol = symbol
             
     def _process_recognition(self, node, extras):
         Text(self._symbol).execute()
 
 def add_alias(text):
-    if text=="":
+    text = str(text)
+    if text == "":
         return
-    alias_key="alias_key"
+    alias_key = "alias_key"
+    utilities.report(1)
+    
     navigation.clipboard_to_file(alias_key, True)
     time.sleep(0.1)
-    symbol=control.MULTI_CLIPBOARD[alias_key]
+    symbol = control.MULTI_CLIPBOARD[alias_key]
     control.ALIASES_GRAMMAR.unload()
-    rule = AliasRule(symbol=symbol, spec=str(text), name="alias_rule_" + symbol)
+    rule = AliasRule(symbol=symbol, spec=str(text), name="alias_rule_" + text)
+    if len(control.ALIASES_GRAMMAR._rules)>0:
+        control.ALIASES_GRAMMAR._rules = [x for x in control.ALIASES_GRAMMAR._rules if x._name != rule._name]
     control.ALIASES_GRAMMAR.add_rule(rule)
     control.ALIASES_GRAMMAR.load()
     aliases = utilities.load_json_file(settings.SETTINGS["paths"]["ALIASES_PATH"])
-    aliases[str(text)]=symbol
+    aliases[str(text)] = symbol
     utilities.save_json_file(aliases, settings.SETTINGS["paths"]["ALIASES_PATH"])
 
 def load_alias_rules():
     aliases = utilities.load_json_file(settings.SETTINGS["paths"]["ALIASES_PATH"])
-    if len(aliases)>0:
+    if len(aliases) > 0:
         control.ALIASES_GRAMMAR.unload()
         for text in aliases:
-            symbol=aliases[text]
-            rule = AliasRule(symbol=symbol, spec=str(text), name="alias_rule_" + symbol)
+            symbol = aliases[text]
+            rule = AliasRule(symbol=symbol, spec=str(text), name="alias_rule_" + str(text))
             control.ALIASES_GRAMMAR.add_rule(rule)
         control.ALIASES_GRAMMAR.load()
 
@@ -97,12 +102,12 @@ def add_recorded_macro(data):
     
     recorded_macros = None
     if spec != "" and len(commands) > 0:
-        extras=None
-        defaults=None
+        extras = None
+        defaults = None
         if data["repeatable"]:
-            spec+=" [times <n>]"
-            extras=[IntegerRef("n", 1, 50)]
-            defaults={"n":1}
+            spec += " [times <n>]"
+            extras = [IntegerRef("n", 1, 50)]
+            defaults = {"n":1}
         
         recorded_macros = utilities.load_json_file(settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
         recorded_macros[spec] = commands

@@ -1,7 +1,7 @@
 from dragonfly import *
 from lib import settings
 
-#settings.register_language(".java", "java")
+#settings.register_language(".sql", "sql")
 
 cmd.map = {
            # Spoken-form    ->    ->    ->     Action object	
@@ -9,8 +9,7 @@ cmd.map = {
 		"quell and ":				Text(" and "),
 		"quell or":					Text(" or "),
 		"quell as":					Text(" as "),  
- 		"quell between":			Text(" between "),
-		"quell delete":				Text(" delete "),
+ 		"quell delete":				Text(" delete "),
 		"quell exists":				Text(" exists "),  
   	  	"quell group by":			Text(" group by "),
 		"quell having":				Text(" having "),
@@ -22,10 +21,12 @@ cmd.map = {
 		"quell full join":			Text(" full join "),
 		"quell like":				Text(" like "),
 		"quell select":				Text(" select "),
+		"quell select all":			Text(" select * "),
 		"quell union":				Text(" union "),
 		"quell where":				Text(" where "),
 		"quell from":				Text(" from "),
 		"quell join":				Text(" join "),
+		"quell using":				Text(" using () ")+Key("left/5:2"),
 	   
      	   
           }
