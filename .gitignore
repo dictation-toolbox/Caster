@@ -1,6 +1,6 @@
 # Ignore work files
 _w.py
-_tsp.py
+*tsp*
 flypoint_private.iss
 
 # Ignore junk
@@ -35,5 +35,6 @@ bin/nircmd/
 bin/PSTools/
 bin/MultiMonitorTool/
 bin/media/
+*.wav
 
 

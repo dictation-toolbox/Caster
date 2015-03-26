@@ -24,6 +24,14 @@ class CommandRule(MappingRule):
             "step out [of]":                            Key("f7"),
             "resume":                                   Key("f8"),
             "(debug | run) last":                       Key("f11"),
+            # "terminate" changes to the settings for this hotkey: (when: in dialogs and windows)
+            "terminate":                                Key("c-f2"),
+            
+            "search for this everywhere":               Key("ca-g"),
+            "refractor symbol":                         Key("sa-r"),
+            
+            "symbol next":                              Key("c-k"),
+            "symbol prior":                             Key("cs-k"),
             
 #             "show java perspective":                    Key("cas-j"),
 #             "show debug perspective":                   Key("cas-d"),

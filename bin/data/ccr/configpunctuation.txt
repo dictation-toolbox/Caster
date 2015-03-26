@@ -39,8 +39,9 @@ cmd.map = {
 		"backslash":					Text("\\"),
 		"slash":						Text("/"),
 		"Dolly":						Text("$"),
-	    'tabby [<npunc>]':                Key("tab")* Repeat(extra="npunc"),
-	    "boom":							Text(", "),				     	   
+	    'tabby [<npunc>]':              Key("tab")* Repeat(extra="npunc"),
+	    "boom":							Text(", "),
+	    "bank":							Key("end/10, semicolon, enter"),
           }
  
 

@@ -28,7 +28,7 @@ cmd.map = {
         "lodge or":                     Text(" || "),
         "lodge not":                    Text("!"),
         #
-        "print to console":				Text("System.out.println()")+Key("left"),
+        "print to console":				Text("java.lang.System.out.println()")+Key("left"),
         #
         "import":						Text( "import " ),
         #
@@ -49,7 +49,9 @@ cmd.map = {
 		
 		# Java specific
 		
-		"anno override":				Text("@Override"),
+		"it are in":					Text("Arrays.asList(NAME).contains(VALUE)"),
+		"deco override":				Text("@Override"),
+		"arrow":						Text("->"),
 		
 		"public":						Text("public "),
 		"private":						Text("private "),
@@ -69,7 +71,7 @@ cmd.map = {
 		"boolean":						Text("boolean "),
 		"substring":					Text("substring"),
      	
-        "ternary":                      Text("()?;") + (Key("left") * 3),
+        "ternary":                      Text("()?:") + (Key("left") * 3),
 		"this":							Text("this"),
         "array list":					Text("ArrayList"),
 	   
@@ -77,6 +79,7 @@ cmd.map = {
      	"short form if":				Text("if ()")+Key("left"),
      	
      	"L if":							Text("else if ()")+Key("left"),
+     	"iterate and remove":			Paste("for (Iterator<TYPE> iterator = NAME.iterator(); iterator.hasNext();) {\nString string = iterator.next();\nif (CONDITION) {\niterator.remove();\n}\n}"), 
           }
 
 cmd.extras   = [

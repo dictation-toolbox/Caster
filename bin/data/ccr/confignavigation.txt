@@ -4,17 +4,7 @@ from lib import navigation, context
 navigation.initialize_clipboard()
 
 cmd.map = {
-	# mouse
-	'kick':                         Function(navigation.kick),
-	'kick mid': 				    Function(navigation.kick_middle),
-	'psychic':	 	                Function(navigation.kick_right),
-    '(kick double|double kick)':    Playback([(["mouse", "double", "click"], 0.0)]),
-    "shift right click":            Key("shift:down")+ Mouse("right")+ Key("shift:up"),
-	"curse <direction> [<direction2>] [<nnavi500>]":Function(navigation.curse, extra={"direction","direction2","nnavi500"}),
-    "left point":                   Playback([(["MouseGrid"], 0.1),(["four", "four"], 0.1),(["click"], 0.0)]),
-    "right point":                  Playback([(["MouseGrid"], 0.1),(["six", "six"], 0.1),(["click"], 0.0)]),
-    "center point":                 Playback([(["MouseGrid"], 0.1),(["click"], 0.0)]),
-    
+	
     #Voicecode-inspired
     "jump in":						Playback([(["gopher", "next", "openers"], 0.0)])+Key("right"),
     "jump out":						Playback([(["gopher", "next", "closers"], 0.0)])+Key("right"),
@@ -34,7 +24,7 @@ cmd.map = {
     "stoosh [<nnavi500>]":          Key("c-c")+Function(navigation.clipboard_to_file, extra="nnavi500"),
     "cut [<nnavi500>]":             Key("c-x")+Function(navigation.clipboard_to_file, extra="nnavi500"),
     "spark [<nnavi500>]":  			Function(navigation.drop, extra={"nnavi500"}),
-    "delete [<nnavi500>]":          Key("del/5") * Repeat(extra="nnavi500"),
+    "dell [<nnavi500>]":          	Key("del/5") * Repeat(extra="nnavi500"),
     "clear [<nnavi500>]":           Key("backspace") * Repeat(extra="nnavi500"),
     "(cancel | escape)":            Key("escape"),
     
@@ -60,12 +50,7 @@ cmd.extras = [
                     {"gum": 1, "gun": 1, "spine": 2, "snake":3
                     }),
           
-          Choice("direction",
-                {"up": "up", "down": "down", "left": "left", "right": "right",
-                }),
-          Choice("direction2",
-                {"right": "right", "up": "up", "down": "down", "left": "left", 
-                }),
+          
           
           navigation.TARGET_CHOICE,
 
@@ -77,12 +62,12 @@ cmd.extras = [
                 {"shin": "s", "queue": "cs", "fly": "c",
                 }),
           Choice("extreme",
-                {"way": "way",
+                {"Wally": "way",
                 }),
           
 
          ]
 cmd.defaults ={
-			"nnavi500": 1, "textnv": "", "capitalization": 0, "spacing":0, "direction2":"",
+			"nnavi500": 1, "textnv": "", "capitalization": 0, "spacing":0, 
 			"mtn_mode": None, "mtn_dir": "right", "extreme": None 
            }
