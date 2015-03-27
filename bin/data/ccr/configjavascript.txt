@@ -15,7 +15,7 @@ cmd.map = {
 		"else":						Text("else {}")+Key("left, enter:2, up"),
 		#
 		"switch":					Text("switch(){}")+Key("left, enter:2, up"),
-		"case":						Text("case :")+Key("left"),
+		"k state":						Text("case :")+Key("left"),
 		"breaker":					Text("break;"),
 		"default":					Text("default: "),
 		#
@@ -42,7 +42,7 @@ cmd.map = {
 		"add comment":				Text("//"),
 		"long comment":				Text("/**/")+Key("left,left"),
 		#
-		"value nil":				Text("null"),
+		"value not":				Text("null"),
 		#
 		"return":					Text("return "),
 		#

@@ -18,6 +18,7 @@ class CommandRule(MappingRule):
         "(F six | F6)":                     Key("f6"),
         "(F nine | F9)":                    Key("f9"),
         "de Gaulle [<n>]":                  Key("c-z") * Repeat(extra="n"),
+        "red Gaulle [<n>]":                 Key("c-y") * Repeat(extra="n"),
         
         'kick':                         Function(navigation.kick),
         'kick mid':                     Function(navigation.kick_middle),
@@ -31,6 +32,8 @@ class CommandRule(MappingRule):
     
         "colic":                            Key("control:down") + Mouse("left") + Key("control:up"),
         "garb [<nnavi500>]":                Mouse("left")+Mouse("left")+Key("c-c")+Function(navigation.clipboard_to_file, extra="nnavi500"),
+        
+        "elite translation <text>":     Function(navigation.elite_text), 
         }
     extras = [
               Dictation("text"),

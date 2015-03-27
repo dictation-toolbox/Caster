@@ -21,6 +21,7 @@ class CommandRule(MappingRule):
 
     mapping = {
             "run this query":                       Key("f9"),
+            "add comment":                          Text("--"), 
             
         }
     extras = [
