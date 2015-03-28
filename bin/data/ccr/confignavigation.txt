@@ -24,7 +24,7 @@ cmd.map = {
     "stoosh [<nnavi500>]":          Key("c-c")+Function(navigation.clipboard_to_file, extra="nnavi500"),
     "cut [<nnavi500>]":             Key("c-x")+Function(navigation.clipboard_to_file, extra="nnavi500"),
     "spark [<nnavi500>]":  			Function(navigation.drop, extra={"nnavi500"}),
-    "dell [<nnavi500>]":          	Key("del/5") * Repeat(extra="nnavi500"),
+    "deli [<nnavi500>]":          	Key("del/5") * Repeat(extra="nnavi500"),
     "clear [<nnavi500>]":           Key("backspace") * Repeat(extra="nnavi500"),
     "(cancel | escape)":            Key("escape"),
     

@@ -13,8 +13,12 @@ Command-module for git
 #---------------------------------------------------------------------------
 
 from dragonfly import (Grammar, AppContext, MappingRule,
-                       Key, Text)
+                       Key, Text, Function, IntegerRef)
 
+
+def apply(n):
+    if n!=0:
+        Text("stash@{"+str(int(n))+"}").execute()
 
 class CommandRule(MappingRule):
 
@@ -25,7 +29,7 @@ class CommandRule(MappingRule):
         "commit":           Text( "git commit -am ''" )+Key("left"),
         "merge":            Text( "git merge " ),
         "merge tool":       Text( "git mergetool")+Key("enter"),
-        "fetch":            Text( "git fetch" ),
+        "fetch":            Text( "git fetch" )+Key("enter"),
         
         "(get push | push)":Text( "git push" )+Key("enter"),
         "pull":             Text( "git pull" )+Key("enter"),
@@ -46,11 +50,16 @@ class CommandRule(MappingRule):
         
         "blame":            Text("git blame PATHTOFILE -L FIRSTLINE,LASTLINE"),
         
+        "stash":            Text("git stash")+Key("enter"),
+        "stash apply [<n>]":Text("git stash apply")+Function(apply),
+        "stash list":       Text("git stash list")+Key("enter"),
+        "stash branch":     Text("git stash branch NAME"), 
+        
         }
     extras = [
-              
+              IntegerRef("n", 1, 50),
              ]
-    defaults ={}
+    defaults ={"n": 0}
 
 
 #---------------------------------------------------------------------------

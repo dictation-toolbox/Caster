@@ -15,7 +15,7 @@ cmd.map = {
 		"else":						Text("else {}")+Key("left, enter:2, up"),
 		#
 		"switch":					Text("switch(){}")+Key("left, enter:2, up"),
-		"k state":						Text("case :")+Key("left"),
+		"K states":						Text("case :")+Key("left"),
 		"breaker":					Text("break;"),
 		"default":					Text("default: "),
 		#

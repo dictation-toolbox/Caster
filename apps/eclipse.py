@@ -42,6 +42,9 @@ class CommandRule(MappingRule):
             "do imports":                               Key("cs-o"),
             "comment line":                             Key("c-slash"),
             
+            "open resource":                            Key("cs-r"),
+            
+            
             # requires quick bookmarks plug-in:
 #             "set mark [<n>]":                           Key("a-%(n)d"),
 #             "go mark [<n>]":                            Key("as-%(n)d"),
