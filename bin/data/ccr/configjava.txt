@@ -87,3 +87,17 @@ cmd.extras   = [
 cmd.defaults = {
            }
     
+
+cmd.ncactive=True
+
+
+cmd.ncmap = {
+		"java test":					Text("java test"), 
+          }
+
+cmd.ncextras   = [
+           
+           ]
+cmd.ncdefaults = {
+           }
+    

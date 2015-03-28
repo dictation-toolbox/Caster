@@ -83,7 +83,7 @@ class MainRule(MappingRule):
     "rescan current":               Function(scanner.rescan_current_file),
     
     # miscellaneous
-    "<enable_disable> <ccr_mode>":  Function(ccr.set_active, extra={"enable_disable", "ccr_mode"}),
+    "<enable_disable> <ccr_mode>":  Function(ccr.set_active_command, extra={"enable_disable", "ccr_mode"}),
     "again <n> [(times|time)]":     Function(repeat_that, extra={"n"}),
     "record from history":          Function(recording.record_from_history),
     "delete recorded macros":       Function(recording.delete_recorded_rules),

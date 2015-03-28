@@ -77,3 +77,16 @@ cmd.extras   = [
            ]
 cmd.defaults = {
            }
+
+
+cmd.ncactive=True
+
+cmd.ncmap = {
+		"python test":				Text("python test"), 
+          }
+
+cmd.ncextras   = [
+           
+           ]
+cmd.ncdefaults = {
+           }

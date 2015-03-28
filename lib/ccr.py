@@ -11,6 +11,8 @@ Thanks Christo Butcher, davitenio, poppe1219, ccowan
 
 
 """
+import time
+
 from dragonfly import *
 
 from lib import settings, utilities
@@ -23,10 +25,12 @@ except ImportError:
     pass
 
 grammar = None
-current_combined_rule = None
-rules = {}
+current_combined_rule_ccr = None
+current_combined_rule_nonccr = None
+rule_pairs = {}
 
 def merge_copy(rule1, rule2, context):
+    
     if rule1 == None:
         raise Exception("first parameter can't be null")
     if rule2 != None:
@@ -42,52 +46,60 @@ def merge_copy(rule1, rule2, context):
         return MappingRule(rule1._name, rule1._mapping, rule1._extras.values(), rule1._defaults, rule1._exported, context)
 
 def merge_copy_compatible(rule1, rule2):
-    '''
-    ccrc: another CCR_Container
-    '''
-    if rule1 == None:
-        raise Exception("first parameter can't be null")
-    if rule2 == None:
+    if rule1 == None or rule2 == None:
         return True
+    
+    result = True
+    
     for key in rule1._mapping:
         if key in rule2._mapping:
-            return False
-    return True
+            result = False
+    return result
 
-def generate_language_rule(path):
-    ''' Turns the original _multiedit.py into a rule factory '''
+class ConfigCCR(Config):
+    def __init__(self, name):
+        Config.__init__(self, name)
+        self.cmd = Section("Language section")
+        self.cmd.map = Item(
+            {"mimic <text>": Mimic(extra="text"), },
+            namespace={"Key": Key, "Text":  Text, }
+        )
+        self.cmd.extras = Item([Dictation("text")])
+        self.cmd.defaults = Item({})
+        self.cmd.ncmap = Item(
+            {"mimic <text>": Mimic(extra="text"), },
+            namespace={"Key": Key, "Text":  Text, }
+        )
+        self.cmd.ncextras = Item([Dictation("text")])
+        self.cmd.ncdefaults = Item({})
+        self.cmd.ncactive = Item(False)   
 
+def generate_language_rule_pair(path):
+    ''' creates a CCR subsection from a text file, also optionally a non-CCR subsection '''
     #---------------------------------------------------------------------------
     language = path.split("/")[-1].split(".")[-2]
     
-    configuration = Config("CCR " + language)
-    configuration.cmd = Section("Language section")
-    configuration.cmd.map = Item(
-        {
-         "mimic <text>":                     Mimic(extra="text"),
-        },
-        namespace={
-         "Key":   Key,
-         "Text":  Text,
-        }
-    )
-    configuration.cmd.extras = Item([Dictation("text")])
-    configuration.cmd.defaults = Item({})
+    configuration = ConfigCCR("CCR " + language)
     configuration.load(path)
     #---------------------------------------------------------------------------
-    
-    class KeystrokeRule(MappingRule):
-        exported = False
-        mapping = configuration.cmd.map
-        extras = configuration.cmd.extras
-        defaults = configuration.cmd.defaults
+    ccr = MappingRule(exported=False,
+        mapping=configuration.cmd.map,
+        extras=configuration.cmd.extras,
+        defaults=configuration.cmd.defaults)
+    nonccr = None
+    if configuration.cmd.ncactive:#.get_value():
+        nonccr = MappingRule(exported=False,
+            mapping=configuration.cmd.ncmap,
+            extras=configuration.cmd.ncextras,
+            defaults=configuration.cmd.ncdefaults)
     #---------------------------------------------------------------------------
-    return KeystrokeRule()
+    return (ccr, nonccr)
+#     return ccr
 
-def create_repeat_rule(ks_rule):
+def create_repeat_rule(language_rule):
 
     alternatives = []
-    alternatives.append(RuleRef(rule=ks_rule))
+    alternatives.append(RuleRef(rule=language_rule))
     single_action = Alternative(alternatives)
     
     sequence_name = "sequence_" + "language"
@@ -116,76 +128,88 @@ def create_repeat_rule(ks_rule):
     #---------------------------------------------------------------------------
     
     return RepeatRule()
+
 # Create and load this module's grammar.
 def refresh():
-    global grammar, current_combined_rule
+    global grammar, current_combined_rule_ccr, current_combined_rule_nonccr
     unload()
-    grammar = Grammar("multi edit")
-    if current_combined_rule!=None:
-        grammar.add_rule(create_repeat_rule(current_combined_rule))
+    grammar = Grammar("multi edit ccr")
+    if current_combined_rule_ccr != None:
+        grammar.add_rule(create_repeat_rule(current_combined_rule_ccr))
+#         if current_combined_rule_nonccr != None:
+#             grammar.add_rule(current_combined_rule_nonccr)
         grammar.load()
 
 def initialize_ccr():
-    global current_combined_rule
-    
-    # read from file if active, standard or common
-    for r in settings.SETTINGS["ccr"]["modes"]:
-        if settings.SETTINGS["ccr"]["modes"][r] or r in settings.SETTINGS["ccr"]["common"] or r in settings.SETTINGS["ccr"]["standard"]:
-            rules[r] = generate_language_rule(settings.SETTINGS["paths"]["GENERIC_CONFIG_PATH"] + "/config" + r + ".txt")
-    
-    # activate if marked as active
-    for r in settings.SETTINGS["ccr"]["modes"]:
-        if settings.SETTINGS["ccr"]["modes"][r]:
-            current_combined_rule = merge_copy(rules[r], current_combined_rule, None)
+    #utilities.remote_debug('seta')#selfif ( should format self.)
+    try:
+        for r in settings.SETTINGS["ccr"]["modes"]:
+            if settings.SETTINGS["ccr"]["modes"][r]:
+                set_active(r)
+    except Exception:
+        utilities.simple_log()
     refresh()
     
+def set_active(ccr_mode=None):
+    global rule_pairs, current_combined_rule_ccr, current_combined_rule_nonccr
+    new_rule_ccr = None
+    incompatibility_found=False
     
-
-def set_active(enable_disable, ccr_mode):
-    ccr_mode = str(ccr_mode)
-    enable_disable = int(enable_disable)
-    global rules
-    global current_combined_rule
-    new_rule = None
-    if enable_disable == -1:
-        return
-    elif enable_disable == 0:
-        settings.SETTINGS["ccr"]["modes"][ccr_mode] = False
-    elif enable_disable == 1:
+    
+    if ccr_mode!=None:
+        # add mode
+        ccr_mode = str(ccr_mode)
+#     new_rule_nonccr = None
         # obtain rule: either retrieve it or generate it
         
-        target_rule = None
-        for rule_name in rules:
+        target_rule_pair = None
+        for rule_name in rule_pairs:
+            '''here for forced reload'''
             if rule_name == ccr_mode:
-                target_rule = rules[rule_name]
-        if target_rule == None:
-            target_rule = generate_language_rule(settings.SETTINGS["paths"]["GENERIC_CONFIG_PATH"] + "/config" + ccr_mode + ".txt")
-            rules[ccr_mode] = target_rule
-        
+                target_rule_pair = rule_pairs[rule_name]
+        if target_rule_pair == None:
+            target_rule_pair = generate_language_rule_pair(settings.SETTINGS["paths"]["GENERIC_CONFIG_PATH"] + "/config" + ccr_mode + ".txt")
+            rule_pairs[ccr_mode] = target_rule_pair
+         
         # determine compatibility
-        if merge_copy_compatible(target_rule,current_combined_rule):
-            new_rule = merge_copy(target_rule,current_combined_rule, None)
+        if merge_copy_compatible(target_rule_pair[0], current_combined_rule_ccr):
+            new_rule_ccr = merge_copy(target_rule_pair[0], current_combined_rule_ccr, None)
+#             if target_rule_pair[1]!=None and merge_copy_compatible(target_rule_pair[01], current_combined_rule_nonccr):
+#                 print 'enabling '+ccr_mode+' nccr'
+#                 new_rule_nonccr = merge_copy(target_rule_pair[1], current_combined_rule_ccr, None)
         else:
+            # handling incompatibility
             for r in settings.SETTINGS["ccr"]["modes"]:
-                if settings.SETTINGS["ccr"]["modes"][r] and not merge_copy_compatible(target_rule, rules[r]):
+                if settings.SETTINGS["ccr"]["modes"][r] and not merge_copy_compatible(target_rule_pair[0], rule_pairs[r][0]):
                     settings.SETTINGS["ccr"]["modes"][r] = False
-#                     utilities.report("setting "+r+" to False")
+                    incompatibility_found=True
                     # add disabled rule to common section of settings
                     
         settings.SETTINGS["ccr"]["modes"][ccr_mode] = True
-#         utilities.report("setting "+ccr_mode+" to True")
     
-    # rebuild if necessary
-    if new_rule == None:
+    if ccr_mode==None or incompatibility_found:
+        # delete mode or incompatibility_found
         for r in settings.SETTINGS["ccr"]["modes"]:
             if settings.SETTINGS["ccr"]["modes"][r]:
-                new_rule = merge_copy(rules[r], new_rule, None)
-        
+                new_rule_ccr = merge_copy(rule_pairs[r][0], new_rule_ccr, None)
+#                 if rule_pairs[r][1]!=None:
+#                     new_rule_nonccr = merge_copy(rule_pairs[r][1], new_rule_nonccr, None)    
     
+    current_combined_rule_ccr = new_rule_ccr
+#     current_combined_rule_nonccr = new_rule_nonccr
+    
+def set_active_command(enable_disable, ccr_mode):
+    ccr_mode=str(ccr_mode)
+    if int(enable_disable)==1:
+        set_active(ccr_mode)
+    else:
+
+        settings.SETTINGS["ccr"]["modes"][ccr_mode]=False
+        set_active()
+        
     # activate and save
     settings.save_config()
-    current_combined_rule = new_rule
-    refresh()  
+    refresh()
 
 # Unload function which will be called at unload time.
 def unload():
