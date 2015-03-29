@@ -50,7 +50,7 @@ cmd.map = {
 		# Java specific
 		
 		"it are in":					Text("Arrays.asList(NAME).contains(VALUE)"),
-		"deco override":				Text("@Override"),
+		
 		"arrow":						Text("->"),
 		
 		"public":						Text("public "),
@@ -79,7 +79,7 @@ cmd.map = {
      	"short form if":				Text("if ()")+Key("left"),
      	
      	"L if":							Text("else if ()")+Key("left"),
-     	"iterate and remove":			Paste("for (Iterator<TYPE> iterator = NAME.iterator(); iterator.hasNext();) {\nString string = iterator.next();\nif (CONDITION) {\niterator.remove();\n}\n}"), 
+     	 
           }
 
 cmd.extras   = [
@@ -92,7 +92,9 @@ cmd.ncactive=True
 
 
 cmd.ncmap = {
-		"java test":					Text("java test"), 
+		 
+		"deco override":				Text("@Override"),
+		"iterate and remove":			Paste("for (Iterator<TYPE> iterator = NAME.iterator(); iterator.hasNext();) {\nString string = iterator.next();\nif (CONDITION) {\niterator.remove();\n}\n}"),
           }
 
 cmd.ncextras   = [

@@ -25,6 +25,7 @@ except ImportError:
     pass
 
 grammar = None
+grammarN = None
 current_combined_rule_ccr = None
 current_combined_rule_nonccr = None
 rule_pairs = {}
@@ -87,11 +88,12 @@ def generate_language_rule_pair(path):
         extras=configuration.cmd.extras,
         defaults=configuration.cmd.defaults)
     nonccr = None
-    if configuration.cmd.ncactive:#.get_value():
-        nonccr = MappingRule(exported=False,
+    if configuration.cmd.ncactive:  # .get_value():
+        nonccr = MappingRule(exported=True,
             mapping=configuration.cmd.ncmap,
             extras=configuration.cmd.ncextras,
-            defaults=configuration.cmd.ncdefaults)
+            defaults=configuration.cmd.ncdefaults,
+            name="nonccr")
     #---------------------------------------------------------------------------
     return (ccr, nonccr)
 #     return ccr
@@ -131,35 +133,40 @@ def create_repeat_rule(language_rule):
 
 # Create and load this module's grammar.
 def refresh():
-    global grammar, current_combined_rule_ccr, current_combined_rule_nonccr
+    global grammar, grammarN, current_combined_rule_ccr, current_combined_rule_nonccr
     unload()
     grammar = Grammar("multi edit ccr")
+    grammarN = Grammar("nccr")
     if current_combined_rule_ccr != None:
         grammar.add_rule(create_repeat_rule(current_combined_rule_ccr))
-#         if current_combined_rule_nonccr != None:
-#             grammar.add_rule(current_combined_rule_nonccr)
         grammar.load()
+    if current_combined_rule_nonccr != None:
+#         utilities.remote_debug('who_called_it')
+        ccrn = merge_copy(current_combined_rule_nonccr, None, None)
+        grammarN.add_rule(ccrn)
+        grammarN.load()
 
 def initialize_ccr():
-    #utilities.remote_debug('seta')#selfif ( should format self.)
     try:
         for r in settings.SETTINGS["ccr"]["modes"]:
             if settings.SETTINGS["ccr"]["modes"][r]:
                 set_active(r)
+        refresh()
     except Exception:
         utilities.simple_log()
-    refresh()
+    
     
 def set_active(ccr_mode=None):
     global rule_pairs, current_combined_rule_ccr, current_combined_rule_nonccr
     new_rule_ccr = None
-    incompatibility_found=False
+    new_rule_nonccr = None
+    incompatibility_found = False
     
     
-    if ccr_mode!=None:
+    
+    if ccr_mode != None:
         # add mode
         ccr_mode = str(ccr_mode)
-#     new_rule_nonccr = None
         # obtain rule: either retrieve it or generate it
         
         target_rule_pair = None
@@ -174,37 +181,39 @@ def set_active(ccr_mode=None):
         # determine compatibility
         if merge_copy_compatible(target_rule_pair[0], current_combined_rule_ccr):
             new_rule_ccr = merge_copy(target_rule_pair[0], current_combined_rule_ccr, None)
-#             if target_rule_pair[1]!=None and merge_copy_compatible(target_rule_pair[01], current_combined_rule_nonccr):
-#                 print 'enabling '+ccr_mode+' nccr'
-#                 new_rule_nonccr = merge_copy(target_rule_pair[1], current_combined_rule_ccr, None)
+            if target_rule_pair[1] != None and merge_copy_compatible(target_rule_pair[01], current_combined_rule_nonccr):
+                print 'enabling ' + ccr_mode + ' nccr'
+                new_rule_nonccr = merge_copy(target_rule_pair[1], current_combined_rule_nonccr, None)
         else:
             # handling incompatibility
             for r in settings.SETTINGS["ccr"]["modes"]:
                 if settings.SETTINGS["ccr"]["modes"][r] and not merge_copy_compatible(target_rule_pair[0], rule_pairs[r][0]):
                     settings.SETTINGS["ccr"]["modes"][r] = False
-                    incompatibility_found=True
+                    incompatibility_found = True
                     # add disabled rule to common section of settings
                     
         settings.SETTINGS["ccr"]["modes"][ccr_mode] = True
     
-    if ccr_mode==None or incompatibility_found:
+    if ccr_mode == None or incompatibility_found:
         # delete mode or incompatibility_found
+        current_combined_rule_nonccr = None
         for r in settings.SETTINGS["ccr"]["modes"]:
             if settings.SETTINGS["ccr"]["modes"][r]:
                 new_rule_ccr = merge_copy(rule_pairs[r][0], new_rule_ccr, None)
-#                 if rule_pairs[r][1]!=None:
-#                     new_rule_nonccr = merge_copy(rule_pairs[r][1], new_rule_nonccr, None)    
-    
+                if rule_pairs[r][1] != None:
+                    new_rule_nonccr = merge_copy(rule_pairs[r][1], new_rule_nonccr, None)    
     current_combined_rule_ccr = new_rule_ccr
-#     current_combined_rule_nonccr = new_rule_nonccr
-    
+    # self.
+    if new_rule_nonccr != None:
+#         utilities.remote_debug("ccr")
+        current_combined_rule_nonccr = new_rule_nonccr
+    # self.
 def set_active_command(enable_disable, ccr_mode):
-    ccr_mode=str(ccr_mode)
-    if int(enable_disable)==1:
+    ccr_mode = str(ccr_mode)
+    if int(enable_disable) == 1:
         set_active(ccr_mode)
     else:
-
-        settings.SETTINGS["ccr"]["modes"][ccr_mode]=False
+        settings.SETTINGS["ccr"]["modes"][ccr_mode] = False
         set_active()
         
     # activate and save
@@ -216,3 +225,6 @@ def unload():
     global grammar
     if grammar: grammar.unload()
     grammar = None
+    global grammarN
+    if grammarN: grammarN.unload()
+    grammarN = None

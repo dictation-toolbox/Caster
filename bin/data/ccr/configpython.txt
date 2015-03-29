@@ -63,12 +63,12 @@ cmd.map = {
         "length":					Text("len()")+ Key("left"),
  		
 	 	"global":					Text("global "),
-		"try catch":				Text("try:")+Key("enter:2/10, backspace")+Text("except Exception:")+Key("enter"),				
+						
 		
 		"list comprehension":		Text("[x for x in LIST if CONDITION]"),
 	   
        	 "[dot] (pie | pi)":		Text(".py"),
-		 "jason":					Text("json"),
+ 		 "jason":					Text("json"),
 		 
           }
 
@@ -82,7 +82,8 @@ cmd.defaults = {
 cmd.ncactive=True
 
 cmd.ncmap = {
-		"python test":				Text("python test"), 
+		
+		"try catch":				Text("try:")+Key("enter:2/10, backspace")+Text("except Exception:")+Key("enter"),
           }
 
 cmd.ncextras   = [
