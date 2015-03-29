@@ -250,7 +250,7 @@ def kick_middle():
 
 
     
-def curse(direction, direction2, nnavi500):
+def curse(direction, direction2, nnavi500, dokick):
     x, y = 0, 0
     d = str(direction)
     d2 = str(direction2)
@@ -264,6 +264,12 @@ def curse(direction, direction2, nnavi500):
         x = nnavi500
     
     Mouse("<" + str(x) + ", " + str(y) + ">").execute()
+    if int(dokick)!=0:
+        if int(dokick)==1:
+            kick()
+        elif int(dokick)==2:
+            kick_right()
+        
 
 def elite_text(text):
     elite_map={"a": "@", "b":"|3", "c": "(", "d": "|)", "e": "3", 
@@ -281,7 +287,14 @@ def elite_text(text):
     Text(result).execute()
 
 
-
+def next_line(semi):
+    semi=str(semi)
+    Key("escape").execute()
+    time.sleep(0.25)
+    Key("end").execute()
+    time.sleep(0.25)
+    Text(semi).execute()
+    Key("enter").execute()
 
 
 

@@ -7,7 +7,7 @@ BAD_LOAD = False
 INISETPATH = 'C:/NatLink/NatLink/MacroSystem/bin/data/settings.json'
 
 # title
-SOFTWARE_VERSION_NUMBER = "0.4.2"
+SOFTWARE_VERSION_NUMBER = "0.4.2.1"
 SOFTWARE_NAME = "Caster v " + SOFTWARE_VERSION_NUMBER
 S_LIST_VERSION = "Sticky List v " + SOFTWARE_VERSION_NUMBER
 DISPEL_VERSION = "Dispel v " + SOFTWARE_VERSION_NUMBER
@@ -197,6 +197,7 @@ def init_default_values():
         SETTINGS["pita"]["filter_strict"] = False
         SETTINGS["pita"]["use_bonus"] = True
         SETTINGS["pita"]["use_penalty"] = True
+        SETTINGS["pita"]["automatic_lowercase"] = True
         values_change_count += 1
         
     # auto_com section

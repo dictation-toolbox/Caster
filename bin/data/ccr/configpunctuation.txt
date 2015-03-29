@@ -34,6 +34,7 @@ cmd.map = {
 		"carrot":						Text("^"),					 
 		"(period | dot)":				Text("."),
 		"at sign":						Text("@"),
+		"hash tag":						Text("#"),
 		"apostrophe":					Text("'"),
 		"underscore":					Text("_"),		
 		"backslash":					Text("\\"),
@@ -41,7 +42,7 @@ cmd.map = {
 		"Dolly":						Text("$"),
 	    'tabby [<npunc>]':              Key("tab")* Repeat(extra="npunc"),
 	    "boom":							Text(", "),
-	    "bank":							Key("end/10, semicolon, enter"),
+	    
           }
  
 

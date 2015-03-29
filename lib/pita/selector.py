@@ -7,6 +7,8 @@ from lib import settings
 
 
 def get_similar_symbol_name(spoken_phrase, list_of_symbols):
+    if settings.SETTINGS["pita"]["automatic_lowercase"]:
+        spoken_phrase = spoken_phrase.lower()
     best = (0, "")
     without_homonyms = _abbreviated_string(spoken_phrase)
     with_homonyms = _abbreviated_string(_homonym_replaced_string(spoken_phrase))

@@ -171,10 +171,9 @@ def set_active(ccr_mode=None):
         
         target_rule_pair = None
         for rule_name in rule_pairs:
-            '''here for forced reload'''
             if rule_name == ccr_mode:
                 target_rule_pair = rule_pairs[rule_name]
-        if target_rule_pair == None:
+        if target_rule_pair == None or settings.SETTINGS["ccr"]:
             target_rule_pair = generate_language_rule_pair(settings.SETTINGS["paths"]["GENERIC_CONFIG_PATH"] + "/config" + ccr_mode + ".txt")
             rule_pairs[ccr_mode] = target_rule_pair
          
@@ -182,7 +181,6 @@ def set_active(ccr_mode=None):
         if merge_copy_compatible(target_rule_pair[0], current_combined_rule_ccr):
             new_rule_ccr = merge_copy(target_rule_pair[0], current_combined_rule_ccr, None)
             if target_rule_pair[1] != None and merge_copy_compatible(target_rule_pair[01], current_combined_rule_nonccr):
-                print 'enabling ' + ccr_mode + ' nccr'
                 new_rule_nonccr = merge_copy(target_rule_pair[1], current_combined_rule_nonccr, None)
         else:
             # handling incompatibility
@@ -219,6 +217,13 @@ def set_active_command(enable_disable, ccr_mode):
     # activate and save
     settings.save_config()
     refresh()
+
+def _refresh_from_files():
+    '''for developer use'''
+    global rule_pairs
+    for r in settings.SETTINGS["ccr"]["modes"]:
+        if settings.SETTINGS["ccr"]["modes"][r]:
+            rule_pairs[r] = generate_language_rule_pair(settings.SETTINGS["paths"]["GENERIC_CONFIG_PATH"] + "/config" + r + ".txt")
 
 # Unload function which will be called at unload time.
 def unload():

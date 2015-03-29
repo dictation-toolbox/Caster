@@ -1,6 +1,6 @@
 from dragonfly import (Function, Key, BringApp, Text, WaitWindow, IntegerRef, Dictation, Repeat, Grammar, MappingRule, Choice, Mimic, FocusWindow)
 
-from lib import utilities, settings, control
+from lib import utilities, settings, control, ccr
 from lib.pita import selector
 
 
@@ -107,6 +107,9 @@ class DevRule(MappingRule):
     "experiment <text>":            Function(experiment, extra="text"),
     
     "dredge [<id> <text>]":         Function(dredge), 
+    
+    # will need to disable and reenable language
+    "refresh ccr directory":        Function(ccr._refresh_from_files), 
     
     }
     extras = [

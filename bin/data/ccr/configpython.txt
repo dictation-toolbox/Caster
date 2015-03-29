@@ -69,6 +69,7 @@ cmd.map = {
 	   
        	 "[dot] (pie | pi)":		Text(".py"),
  		 "jason":					Text("json"),
+ 		 
 		 
           }
 
