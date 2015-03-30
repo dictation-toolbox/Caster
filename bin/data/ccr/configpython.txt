@@ -55,12 +55,10 @@ cmd.map = {
  	    "self":						Text("self"),
  	    "long not":					Text(" not "),
  	    "it are in":                Text(" in "), #supposed to sound like "iter in"
-        "with":						Text("with "),
-        "open file":				Text("open('filename','r') as f:"),
-        "read lines":				Text("content = f.readlines()"),
+        
         "L if":                  	Key("e,l,i,f,space,colon,left"),
         "convert to character": 	Text("chr()")+ Key("left"),
-        "length":					Text("len()")+ Key("left"),
+        "length of":				Text("len()")+ Key("left"),
  		
 	 	"global":					Text("global "),
 						
@@ -83,7 +81,9 @@ cmd.defaults = {
 cmd.ncactive=True
 
 cmd.ncmap = {
-		
+		"with":						Text("with "),
+        "open file":				Text("open('filename','r') as f:"),
+        "read lines":				Text("content = f.readlines()"),
 		"try catch":				Text("try:")+Key("enter:2/10, backspace")+Text("except Exception:")+Key("enter"),
           }
 

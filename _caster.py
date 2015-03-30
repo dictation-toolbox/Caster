@@ -94,7 +94,7 @@ class MainRule(MappingRule):
     "replace":                      Key("c-h"),
     }
     extras = [
-              IntegerRef("n", 1, 100),
+              IntegerRef("n", 1, 50),
               Dictation("text"),
               Dictation("text2"),
               Dictation("text3"),
