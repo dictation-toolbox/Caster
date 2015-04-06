@@ -27,9 +27,11 @@ class CommandRule(MappingRule):
         "add":              Text( "git add ." )+Key("enter"),
         "status":           Text( "git status" )+Key("enter"),
         "commit":           Text( "git commit -am ''" )+Key("left"),
+        "checkout":         Text( "git checkout " ),
         "merge":            Text( "git merge " ),
         "merge tool":       Text( "git mergetool")+Key("enter"),
         "fetch":            Text( "git fetch" )+Key("enter"),
+        
         
         "(get push | push)":Text( "git push" )+Key("enter"),
         "pull":             Text( "git pull" )+Key("enter"),

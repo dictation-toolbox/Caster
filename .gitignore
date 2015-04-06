@@ -1,6 +1,7 @@
 # Ignore work files
 _w.py
 *tsp*
+configstar.txt
 flypoint_private.iss
 
 # Ignore junk

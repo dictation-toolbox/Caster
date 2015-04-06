@@ -33,7 +33,7 @@ class CommandRule(MappingRule):
 
 #---------------------------------------------------------------------------
 
-context = AppContext(executable="pcc.exe", title="Pervasive Control Center") | AppContext(executable="javaw.exe", title="Pervasive Control Center")
+context = AppContext(executable="pcc.exe", title="Pervasive Control Center") | AppContext(executable="javaw.exe", title="Pervasive Control Center") | AppContext(executable="java.exe", title="Pervasive Control Center")
 grammar = Grammar("Pervasive Control Center", context=context)
 grammar.add_rule(CommandRule())
 grammar.load()
