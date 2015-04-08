@@ -3,6 +3,7 @@ _w.py
 *tsp*
 configstar.txt
 flypoint_private.iss
+_navigation.py
 
 # Ignore junk
 bin/misc

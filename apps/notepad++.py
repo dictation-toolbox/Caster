@@ -25,6 +25,8 @@ class CommandRule(MappingRule):
             "close tab [<n>]":                      Key("c-w") * Repeat(extra="n"),
             
             "preview in chrome":                    Key("cas-r"),
+            # requires function list plug-in:
+            "function list":                        Key("cas-l"),
         }
     extras = [
               Dictation("text"),

@@ -24,6 +24,8 @@ class CommandRule(MappingRule):
             "step out [of]":                            Key("f7"),
             "resume":                                   Key("f8"),
             "(debug | run) last":                       Key("f11"),
+            "mark occurrences":                         Key("as-o"),
+
             # "terminate" changes to the settings for this hotkey: (when: in dialogs and windows)
             "terminate":                                Key("c-f2"),
             
