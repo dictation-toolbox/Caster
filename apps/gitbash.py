@@ -47,6 +47,8 @@ class CommandRule(MappingRule):
         "remove untracked": Text("git clean -fd")+Key("enter"),
         
         "visualize":        Text("gitk")+Key("enter"),
+        "visualize file":   Text("gitk "),
+        "visualize all":    Text("gitk --all")+Key("enter"),
         
         "exit":             Text( "exit" )+Key("enter"),
         
@@ -55,7 +57,10 @@ class CommandRule(MappingRule):
         "stash":            Text("git stash")+Key("enter"),
         "stash apply [<n>]":Text("git stash apply")+Function(apply),
         "stash list":       Text("git stash list")+Key("enter"),
-        "stash branch":     Text("git stash branch NAME"), 
+        "stash branch":     Text("git stash branch NAME"),
+
+        "cherry pick":      Text("git cherry-pick "),
+        "abort cherry pick":Text("git cherry-pick --abort"),
         
         }
     extras = [

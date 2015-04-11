@@ -77,8 +77,10 @@ cmd.map = {
 	   
      	"continue":						Text("continue"),
      	"short form if":				Text("if ()")+Key("left"),
+     	"short form else":				Text("else")+Key("enter"),
      	
      	"L if":							Text("else if ()")+Key("left"),
+     	"throw exception":              Text("throw new Exception()")+Key("left"),
      	 
           }
 

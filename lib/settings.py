@@ -124,7 +124,7 @@ def init_default_values():
         ("SIKULI_SCRIPTS_FOLDER_PATH", SETTINGS["paths"]["BASE_PATH"] + "/asynch/sikuli/scripts"),
         
         # REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
-        ("REMOTE_DEBUGGER_PATH" , "D:/PROGRAMS/NON_install/eclipse/plugins/org.python.pydev_3.9.2.201502050007/pysrc"),
+        ("REMOTE_DEBUGGER_PATH" , "C:/PROG/alt ec/eclipse/plugins/org.python.pydev_3.9.2.201502050007/pysrc"),
         
         # EXECUTABLES
         ("WSR_PATH", "C:/Windows/Speech/Common/sapisvr.exe"),
