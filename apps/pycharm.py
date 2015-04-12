@@ -19,7 +19,7 @@ from dragonfly import (Grammar, AppContext, MappingRule,
 class CommandRule(MappingRule):
 
     mapping = {
-        "quickfix":                 Key("a-enter"),
+        "fix this":                 Key("a-enter"),
         "duplicate":                Key("c-d"),
         "auto complete":            Key("cs-a"),
         "format code":              Key("ca-l"),
@@ -40,7 +40,7 @@ class CommandRule(MappingRule):
         "select ex down":           Key("cs-w"),
         "search everywhere":        Key("shift, shift"), 
         "pop":                      Key("c-space"), 
-        "find in current":          Key("cs-f"), 
+        "find in current":          Key("cs-f"),
         
         }
     extras = []

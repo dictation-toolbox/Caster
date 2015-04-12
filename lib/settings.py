@@ -31,6 +31,7 @@ QTYPE_DIRECTORY = "dir"
 S_LIST_LISTENING_PORT = 1337
 HMC_LISTENING_PORT = 1338
 GRIDS_LISTENING_PORT = 1339
+STATUS_LISTENING_PORT = 1340
 SIKULI_LISTENING_PORT = 8000
 
 def register_language(extension, language):
@@ -207,9 +208,7 @@ def init_default_values():
         SETTINGS["auto_com"]["change_language"] = False
         SETTINGS["auto_com"]["change_language_only"] = False
         SETTINGS["auto_com"]["interval"] = 3
-        SETTINGS["auto_com"]["run_internal"] = True
-        SETTINGS["auto_com"]["pyHook_KeyID"] = 163
-        SETTINGS["auto_com"]["executables"] = ["AptanaStudio3.exe", "WDExpress.exe", "notepad++.exe"]
+        SETTINGS["auto_com"]["executables"] = ["pycharm.exe", "WDExpress.exe", "notepad++.exe"]
         values_change_count += 1
     
     # pronunciations section

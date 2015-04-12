@@ -15,15 +15,13 @@ TIMER_MANAGER = _Timer(1)
 
 RECORDED_MACROS_GRAMMAR = Grammar("recorded_macros")
 ALIASES_GRAMMAR = Grammar("aliases")
-HOOK_MANAGER = None
 
 def print_startup_message():
     print "*- Starting " + settings.SOFTWARE_NAME + " -*"
 
 class DependencyMan():
     def __init__(self):
-        self.list = [("pyHook", None, ["Auto-Command (external mode)"], "http://sourceforge.net/projects/pyhook"),
-                   ("natlink", None, ["Auto-Command", "SelectiveAction"], "http://sourceforge.net/projects/natlink"),
+        self.list = [("natlink", None, ["Auto-Command", "SelectiveAction"], "http://sourceforge.net/projects/natlink"),
                    ("PIL", None, ["Legion"], "https://pypi.python.org/pypi/Pillow"),
                    ("win32ui", "pywin32", ["very many essential"], "http://sourceforge.net/projects/pywin32"),
                    ("psutil", None, ["Reboot", "HMC Cleanup"], "http://pythonhosted.org/psutil")]
@@ -43,8 +41,7 @@ class DependencyMan():
                 exec("self." + name.upper() + "=True")
         if warnings > 0:
             settings.save_config()
-    
-    PYHOOK = False
+
     NATLINK = False
     PIL = False
     PYWIN32 = False

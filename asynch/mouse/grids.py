@@ -59,10 +59,7 @@ class TkTransparent(tk.Tk):
     
     def get_dimensions_string(self):
         return "%dx%d+%d+%d" % (self.dimensions.width, self.dimensions.height, self.dimensions.x, self.dimensions.y)
-    
-    def key(self, e):
-        '''virtual method'''  # e.char
-    
+
     def __init__(self, name, dimensions=None):
         tk.Tk.__init__(self, baseName="")
         self.setup_XMLRPC_server()

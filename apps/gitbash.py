@@ -62,6 +62,8 @@ class CommandRule(MappingRule):
         "cherry pick":      Text("git cherry-pick "),
         "abort cherry pick":Text("git cherry-pick --abort"),
         
+        "GUI":              Text("git gui")+Key("enter"),
+        
         }
     extras = [
               IntegerRef("n", 1, 50),
