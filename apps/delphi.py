@@ -23,6 +23,11 @@ class CommandRule(MappingRule):
          "step into":                Key("f7"),
          "run last":                 Key("f9"),
          "terminate":                Key("c-f2"),
+         "add watch":                Key("c-f5"),
+         "evaluate":                 Key("c-f7"),
+         "symbol next":              Key("f3"),
+         "go to line":               Key("a-g"),
+
          
         
         }

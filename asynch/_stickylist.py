@@ -47,9 +47,7 @@ def clear():
     control.STICKY_LIST=[]
     utilities.save_json_file(control.STICKY_LIST, settings.SETTINGS["paths"]["S_LIST_JSON_PATH"])
     if utilities.window_exists(None, settings.S_LIST_VERSION):
-        print 22
         communicate().clear()
-        print 23
 
 def enable_sticky_list(sticky):
     if utilities.get_window_by_title(settings.S_LIST_VERSION) == 0 and sticky == 1:

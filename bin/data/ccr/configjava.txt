@@ -96,7 +96,8 @@ cmd.ncactive=True
 cmd.ncmap = {
 		 
 		"deco override":				Text("@Override"),
-		"iterate and remove":			Paste("for (Iterator<TYPE> iterator = NAME.iterator(); iterator.hasNext();) {\nString string = iterator.next();\nif (CONDITION) {\niterator.remove();\n}\n}"),
+		"iterate and remove":			Paste("for (Iterator<TYPE> iterator = NAME.iterator(); iterator.hasNext();) {\n\tString string = iterator.next();\nif (CONDITION) {\niterator.remove();\n}\n}"),
+		"string builder":               Paste("StringBuilder builder = new StringBuilder(); builder.append(orgStr); builder.deleteCharAt(orgStr.length()-1);"),
           }
 
 cmd.ncextras   = [

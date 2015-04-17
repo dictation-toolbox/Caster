@@ -71,7 +71,7 @@ class MainRule(MappingRule):
     "resume dispel":                Function(ALARM.resume),
 #
     "delay dispel":                 Function(ALARM.delay),
-    "I am (sitting | standing) [now]":Function(ALARM.reset),
+    "reset dispel":                 Function(ALARM.reset),
     }
     extras = [
               IntegerRef("n", 1, 500),

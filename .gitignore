@@ -3,10 +3,10 @@ _w.py
 *tsp*
 configstar.txt
 flypoint_private.iss
-_navigation.py
 
 # Ignore junk
 bin/misc
+.idea/
 *.pyc
 *.json
 *.bak
@@ -24,6 +24,7 @@ bin/data/ccr/unified/config.txt
 bin/data/element.json
 bin/data/log.txt
 bin/data/settings.json
+_navigation.py
 
 # Ignore natlink files
 core/
