@@ -11,7 +11,32 @@ cmd.map = {
            	# Spoken-form    ->    ->    ->     Action object
            	
            	"([<big>] <letter> [<dict2>] | [<dict1>] [<big>] <letter>)": Function(navigation.letters, extra ={"big", "dict1", "dict2", "letter"}), 
-     	   
+#a: arch
+#b: brov
+#c: char
+#d: dell
+#e: etch
+#f: fomp
+#g: goof
+#h: hark
+#i: ice
+#j: jinks
+#k: koop
+#l: lug
+#m: mowsh
+#n: nerb
+#o: ork
+#p: pooch
+#q: quash
+#r: rosh
+#s: souk
+#t: teek
+#u: unks
+#v: verge
+#w: womp
+#x: trex
+#y: yang
+#z: zooch
           }
 
 
@@ -20,11 +45,11 @@ cmd.extras = [
         Dictation("dict2"),
         Choice("letter",
               {
-            "ashy": Key("a"),
-		    "bravo": Key("b"),
-		    "charlie": Key("c"),
-		    "delta": Key("d"),
-		    "echo": Key("e"),
+            "arch": Key("a"),
+		    "brov": Key("b"),
+		    "char": Key("c"),
+		    "dell": Key("d"),
+		    "etch": Key("e"),
 		    "foxtrot": Key("f"),
 		    "golf": Key("g"),
 		    "hotel": Key("h"),
