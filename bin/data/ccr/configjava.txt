@@ -66,6 +66,7 @@ cmd.map = {
 		"integer":						Text("int "),
 		"big integer":					Text("Integer "),
 		"double":						Text("double "),
+		"big double":					Text("Double "),
 		
 		"string":						Text("String "),
 		"boolean":						Text("boolean "),

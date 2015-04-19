@@ -83,7 +83,12 @@ def letters(big, dict1, dict2, letter):
     if d2 != "":
         Text(d2)._execute()
     
-
+def letters2(big, letter):
+    if str(big) != "":
+        Key("shift:down")._execute()
+    letter._execute()
+    if str(big) != "":
+        Key("shift:up")._execute()
 
 def mouse_alternates(mode):
     try:
