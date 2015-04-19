@@ -8,8 +8,8 @@ cmd.map = {
            # Spoken-form    ->    ->    ->     Action object
 		
 		# CCR PROGRAMMING STANDARD
-		"if":                           Text("if() {")+Key("enter,up,left"),
-        "else":        		            Text("else {")+Key("enter"),
+		"if A":                         Text("if() {")+Key("enter,up,left"),
+        "else A":        		        Text("else {")+Key("enter"),
         #
         "switch":						Text("switch(){\ncase : break;\ndefault: break;")+Key("up,up,left,left"),
         "K states":						Text("case :")+Key("left"),
@@ -33,8 +33,8 @@ cmd.map = {
         #
         "import":						Text("#include"),
         #
-        "function":						Text("TYPE NAME(){}")+Key("left"),
-        "class":						Text("class NAME{}")+Key("left"),
+        "funk A":						Text("TYPE NAME(){}")+Key("left"),
+        "class A":						Text("class NAME{}")+Key("left"),
 		#
 		"add comment":					Text( "//" ),
 		"long comment":					Text("/**/")+Key("left, left"),

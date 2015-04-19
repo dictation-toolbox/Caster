@@ -78,20 +78,23 @@ class MainRule(MappingRule):
     "rainbow":                      Function(navigation.mouse_alternates, mode="rainbow"),
     "douglas":                      Function(navigation.mouse_alternates, mode="douglas"),
     
-    # pita
+    # pita (fuzzy string matching)
     "scan directory":               Function(scanner.scan_directory),
     "rescan current":               Function(scanner.rescan_current_file),
     
-    # miscellaneous
-    "<enable_disable> <ccr_mode>":  Function(ccr.set_active_command, extra={"enable_disable", "ccr_mode"}),
-    "again <n> [(times|time)]":     Function(repeat_that, extra={"n"}),
+    # macro recording and automation
     "record from history":          Function(recording.record_from_history),
     "delete recorded macros":       Function(recording.delete_recorded_rules),
+    "wait sec [<n>]":               Pause("%(n)d00"), 
+    
+    # aliasing
     "alias <text>":                 Function(recording.add_alias),
     "delete aliases":               Function(recording.delete_alias_rules),
     
-    "find":                         Key("c-f"),
-    "replace":                      Key("c-h"),
+    # miscellaneous
+    "<enable_disable> <ccr_mode>":  Function(ccr.set_active_command, extra={"enable_disable", "ccr_mode"}),
+    "again (<n> [(times|time)] | do)":Function(repeat_that, extra={"n"}),
+    
     }
     extras = [
               IntegerRef("n", 1, 50),

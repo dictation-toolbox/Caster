@@ -32,13 +32,8 @@ class CommandRule(MappingRule):
             "search for this everywhere":               Key("ca-g"),
             "refractor symbol":                         Key("sa-r"),
             
-            "symbol next":                              Key("c-k"),
-            "symbol prior":                             Key("cs-k"),
-            
-#             "show java perspective":                    Key("cas-j"),
-#             "show debug perspective":                   Key("cas-d"),
-#             "show python perspective":                  Key("cas-p"),
-            
+            "symbol next [<n>]":                        Key("c-k") * Repeat(extra="n"),
+            "symbol prior [<n>]":                       Key("cs-k") * Repeat(extra="n"),            
             
             "format code":                              Key("cs-f"),
             "do imports":                               Key("cs-o"),

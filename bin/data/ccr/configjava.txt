@@ -7,8 +7,8 @@ cmd.map = {
            # Spoken-form    ->    ->    ->     Action object	
 		
 		# CCR PROGRAMMING STANDARD
-		"if":                           Text("if() {")+Key("enter,up,left"),
-        "else":		                    Text("else {")+Key("enter"),		
+		"if A":                         Text("if() {")+Key("enter,up,left"),
+        "else A":		                Text("else {")+Key("enter"),		
 		#
 		"switch":						Text("switch(){\ncase : break;\ndefault: break;")+Key("up,up,left,left"),
 		"K states":						Text("case :")+Key("left"),
@@ -32,8 +32,8 @@ cmd.map = {
         #
         "import":						Text( "import " ),
         #
-        "function":						Text("SCOPE TYPE NAME(){}")+Key("left"),
-        "class":						Text("class {}")+Key("left/5:2"),
+        "funk A":						Text("SCOPE TYPE NAME(){}")+Key("left"),
+        "class A":						Text("class {}")+Key("left/5:2"),
         
 		#
 		"add comment":					Text( "//" ),
@@ -77,10 +77,10 @@ cmd.map = {
         "array list":					Text("ArrayList"),
 	   
      	"continue":						Text("continue"),
-     	"short form if":				Text("if ()")+Key("left"),
-     	"short form else":				Text("else")+Key("enter"),
+     	"short if A":					Text("if ()")+Key("left"),
+     	"short else A":					Text("else")+Key("enter"),
      	
-     	"L if":							Text("else if ()")+Key("left"),
+     	"L if A":						Text("else if ()")+Key("left"),
      	"throw exception":              Text("throw new Exception()")+Key("left"),
      	 
           }

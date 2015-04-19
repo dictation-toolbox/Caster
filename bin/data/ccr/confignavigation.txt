@@ -16,7 +16,7 @@ cmd.map = {
     #keyboard shortcuts
 	'save':                         Key("c-s"),
     'scratch':                      Playback([(["scratch", "that"], 0.0)]),
-    'shock [<nnavi500>]':          	Key("enter")* Repeat(extra="nnavi500"),
+    'shock [<nnavi50>]':          	Key("enter")* Repeat(extra="nnavi50"),
     
     "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]": Function(navigation.master_text_nav, extra={"mtn_mode", "mtn_dir", "nnavi500", "extreme"}),
     
@@ -24,14 +24,15 @@ cmd.map = {
     "stoosh [<nnavi500>]":          Key("c-c")+Function(navigation.clipboard_to_file, extra="nnavi500"),
     "cut [<nnavi500>]":             Key("c-x")+Function(navigation.clipboard_to_file, extra="nnavi500"),
     "spark [<nnavi500>]":  			Function(navigation.drop, extra={"nnavi500"}),
-    "deli [<nnavi500>]":          	Key("del/5") * Repeat(extra="nnavi500"),
-    "clear [<nnavi500>]":           Key("backspace") * Repeat(extra="nnavi500"),
+    
+    "deli [<nnavi50>]":          	Key("del/5") * Repeat(extra="nnavi50"),
+    "clear [<nnavi50>]":           	Key("backspace") * Repeat(extra="nnavi50"),
     "(cancel | escape)":            Key("escape"),
     
     
     "shackle":						Key("home/5, s-end"),
     "(tell | tau) <semi>":			Function(navigation.next_line), 
-	"duple [<nnavi500>]":			Key("escape, home, s-end, c-c, end, enter, c-v") * Repeat(extra="nnavi500"),
+	"duple [<nnavi50>]":			Key("escape, home, s-end, c-c, end, enter, c-v") * Repeat(extra="nnavi50"),
 	"Kraken":						Key("c-space"),
 	     
     # text formatting
@@ -40,6 +41,7 @@ cmd.map = {
 	}
 
 cmd.extras = [
+          IntegerRef("nnavi50", 1, 50),
           IntegerRef("nnavi500", 1, 500),
           Dictation("textnv"),
           
@@ -71,7 +73,7 @@ cmd.extras = [
 
          ]
 cmd.defaults ={
-			"nnavi500": 1, "textnv": "", "capitalization": 0, "spacing":0, 
+			"nnavi500": 1, "nnavi50": 1, "textnv": "", "capitalization": 0, "spacing":0, 
 			"mtn_mode": None, "mtn_dir": "right", "extreme": None 
            }
            
@@ -83,6 +85,8 @@ cmd.ncactive=True
 cmd.ncmap = {
         "gopher <direction3> <target>":     Function(context.navigate_to_character, extra={"direction3","target"}),    
         "erase multi clipboard":            Function(navigation.erase_multi_clipboard),
+        "find":                         Key("c-f"),
+    	"replace":                      Key("c-h"),
         "(F to | F2)":                      Key("f2"),
         "(F six | F6)":                     Key("f6"),
         "(F nine | F9)":                    Key("f9"),
@@ -101,10 +105,13 @@ cmd.ncmap = {
     
         "colic":                            Key("control:down") + Mouse("left") + Key("control:up"),
         "garb [<nnavi500>]":                Mouse("left")+Mouse("left")+Key("c-c")+Function(navigation.clipboard_to_file, extra="nnavi500"),
+        "drop [<nnavi500>]":                Mouse("left")+Mouse("left")+Function(navigation.drop, extra="nnavi500"),
         
         "elite translation <text>":     Function(navigation.elite_text), 
 		
-		
+		"sure stoosh":          Key("c-c"),
+    	"sure cut":             Key("c-x"),
+    	"sure spark":  			Key("c-v"),
           }
 
 cmd.ncextras   = [
