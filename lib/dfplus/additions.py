@@ -1,4 +1,4 @@
-from dragonfly import (ActionBase, Text, Key, Function, Mimic, MappingRule)
+from dragonfly import (ActionBase)
 
 from lib import utilities, control
 
@@ -28,5 +28,3 @@ class SelectiveAction(ActionBase):
             utilities.availability_message("SelectiveAction", "natlink")
             self.action._execute()
 
-class RText(Text):
-    ''''''

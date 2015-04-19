@@ -16,6 +16,8 @@ TIMER_MANAGER = _Timer(1)
 RECORDED_MACROS_GRAMMAR = Grammar("recorded_macros")
 ALIASES_GRAMMAR = Grammar("aliases")
 
+
+
 def print_startup_message():
     print "*- Starting " + settings.SOFTWARE_NAME + " -*"
 
