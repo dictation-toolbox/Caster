@@ -16,16 +16,15 @@ class ContextDeck:
             if action.back!=None:
                 deck_size=len(self.list)
                 seekback_size=len(action.back)
-                all_satisfied=False
                 for i in range(0, seekback_size):
                     index=deck_size-1-i
-                    this_level_satisfied=index>=0
-                    all_satisfied=this_level_satisfied
-                    if this_level_satisfied:
+                    # back looking seekers have nothing else to wait for
+                    if index>=0:
                         action.satisfy_level(i, True, self.list[index])
                     else:
-                        # back looking seekers have nothing else to wait for
                         action.satisfy_level(i, True, None)
+                if action.forward==None:
+                    action.execute_later()
                     
         
         # the other cases that need to be handled here:
@@ -80,11 +79,14 @@ class CL:#ContextLevel
         self.result=None
         self.parameters=None
 
+# ContextSeeker([CL(CS(["ashes"], Text, "ashes to ashes"), CS(["bravery"], Mimic, ["you", "can", "take", "our", "lives"]))], None)
+
 class ContextSeeker(ActionBase):
     def __init__(self, back, forward):
         ActionBase.__init__(self)
         self.back=back
         self.forward=forward
+        self.finished=False
         if self.back==None and self.forward==None:
             raise Exception("Cannot create ContextSeeker with no levels")
     
@@ -109,18 +111,22 @@ class ContextSeeker(ActionBase):
         DECK.add(self)
         
     def execute_later(self):
-        for cl in self.back+self.forward:
-            action=cl.f
-            if not isinstance(action, ActionBase):
-                # it's a function object
-                if cl.parameters==None:
-                    action()
+        if not self.finished:
+            c=[]
+            if self.back!=None:c+=self.back
+            if self.forward!=None:c+=self.forward
+            for cl in c:
+                action=cl.result
+                if not action in [Text, Key]:
+                    # it's a function object
+                    if cl.parameters==None:
+                        action()
+                    else:
+                        action(cl.parameters)
                 else:
-                    action(cl.parameters)
-            else:
-                # 
-                action(cl.parameters).execute()
-                    
+                    print "got to the expected section, parameters: "+cl.parameters
+                    action(cl.parameters).execute()
+            self.finished=True
         
         
         

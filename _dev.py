@@ -1,6 +1,7 @@
 from dragonfly import (Function, Key, BringApp, Text, WaitWindow, IntegerRef, Dictation, Repeat, Grammar, MappingRule, Choice, Mimic, FocusWindow)
 
 from lib import utilities, settings, control, ccr
+from lib.dfplus.state import ContextSeeker, CL, CS
 from lib.pita import selector
 
 
@@ -92,6 +93,10 @@ class DevRule(MappingRule):
     
     # will need to disable and reenable language
     "refresh ccr directory":        Function(ccr._refresh_from_files), 
+    
+    "context seeker test":          ContextSeeker([CL(CS(["ashes"], Text, "ashes to ashes"), 
+                                                      CS(["bravery"], Mimic, ["you", "can", "take", "our", "lives"]))
+                                                   ], None), 
     
     }
     extras = [

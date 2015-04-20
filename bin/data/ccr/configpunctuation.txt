@@ -32,7 +32,7 @@ cmd.map = {
 		"questo":						Text("?"),
 		"comma":						Text(","),
 		"carrot":						Text("^"),					 
-		"(period | dot)":				Text("."),
+		"(period | dalton)":			Text("."),
 		"at sign":						Text("@"),
 		"hash tag":						Text("#"),
 		"apostrophe":					Text("'"),
