@@ -8,7 +8,7 @@ cmd.map = {
 		
 		# CCR PROGRAMMING STANDARD
 		"if A":                         Text("if() {")+Key("enter,up,left"),
-        "else A":		                Text("else {")+Key("enter"),		
+        "else tay":		                Text("else {")+Key("enter"),		
 		#
 		"switch":						Text("switch(){\ncase : break;\ndefault: break;")+Key("up,up,left,left"),
 		"K states":						Text("case :")+Key("left"),
@@ -78,7 +78,7 @@ cmd.map = {
 	   
      	"continue":						Text("continue"),
      	"short if A":					Text("if ()")+Key("left"),
-     	"short else A":					Text("else")+Key("enter"),
+     	"short else tay":				Text("else")+Key("enter"),
      	
      	"L if A":						Text("else if ()")+Key("left"),
      	"throw exception":              Text("throw new Exception()")+Key("left"),

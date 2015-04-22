@@ -10,7 +10,7 @@ noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added 
 cmd.map = {
            	# Spoken-form    ->    ->    ->     Action object
            	
-           	"[<big>] <letter> [ling]": Function(navigation.letters2, extra ={"big", "letter"}), 
+           	"[<big>] <letter>": Function(navigation.letters2, extra ={"big", "letter"}), 
 #a: arch
 #b: brov
 #c: char
@@ -46,17 +46,17 @@ cmd.extras = [
             "arch": Key("a"),
 		    "brov": Key("b"),
 		    "char": Key("c"),
-		    "dell": Key("d"),
-		    "etch": Key("e"),
-		    "fomp": Key("f"),
+		    "delta": Key("d"),
+		    "echo": Key("e"),
+		    "foxy": Key("f"),
 		    "goof": Key("g"),
-		    "hark": Key("h"),
-		    "ice": Key("i"),
-		    "jinks": Key("j"),
+		    "hotel": Key("h"),
+		    "India": Key("i"),
+		    "julia": Key("j"),
 		    "kilo": Key("k"),
 		    "Lima": Key("l"),
 		    "Mike": Key("m"),
-		    "November": Key("n"),
+		    "Novakeen": Key("n"),
 		    "oscar": Key("o"),
 		    "prime": Key("p"),
 		    "Quebec": Key("q"),

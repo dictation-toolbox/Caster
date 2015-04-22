@@ -1,3 +1,5 @@
+from random import randint
+
 from dragonfly import (ActionBase, Text, Key, Function, Mimic, MappingRule)
 
 from lib import utilities
@@ -7,32 +9,36 @@ class CasterState:
     def __init__(self):
         ''''''
 
-
+#aashes fall from the sky : ashes to ashes
 class ContextDeck:
     def __init__(self):
         self.list=[]
     
     def add(self, action):
+        self.list.append(action)
         clazz = type(action).__name__
         print clazz
 #         is_seeker=isinstance(action, ContextSeeker)
 #         is_continuer=isinstance(action, Continuer)
         if clazz in ["RText", "RKey"]:
-            self.list.append(action)
+            
             ''' handle forward-looking commands '''
             action.execute_later()
         if clazz=="ContextSeeker":
             if action.back!=None:
                 deck_size=len(self.list)
                 seekback_size=len(action.back)
+                utilities.remote_debug("context decke")
                 for i in range(0, seekback_size):
                     index=deck_size-1-i
                     # back looking seekers have nothing else to wait for
-                    if index>=0:
-                        action.satisfy_level(i, True, self.list[index])
+                    if index >= 0:
+                        clazz = type(self.list[index]).__name__
+                        prev = self.list[index] if clazz not in ["ContextSeeker", "Continuer"] else None
+                        action.satisfy_level(i, True, prev)
                     else:
                         action.satisfy_level(i, True, None)
-                if action.forward==None:
+                if action.forward == None:
                     action.execute_later()
                     
         
@@ -91,6 +97,7 @@ class CL:#ContextLevel
         self.satisfied=False
         self.result=None
         self.parameters=None
+        self.id=randint(2,900)
 
 # ContextSeeker([CL(CS(["ashes"], Text, "ashes to ashes"), CS(["bravery"], Mimic, ["you", "can", "take", "our", "lives"]))], None)
 
@@ -118,6 +125,7 @@ class ContextSeeker(ActionBase):
                     cl.satisfied=True
                     cl.result=cs.f
                     cl.parameters=cs.parameters
+                    break
     
     def _execute(self, data=None):
         global DECK
