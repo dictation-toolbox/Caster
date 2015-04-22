@@ -1,5 +1,8 @@
 from dragonfly import (ActionBase, Text, Key, Function, Mimic, MappingRule)
 
+from lib import utilities
+
+
 class CasterState:
     def __init__(self):
         ''''''
@@ -10,9 +13,15 @@ class ContextDeck:
         self.list=[]
     
     def add(self, action):
-        is_seeker=isinstance(action, ContextSeeker)
-        is_continuer=isinstance(action, Continuer)
-        if is_seeker and not is_continuer:
+        clazz = type(action).__name__
+        print clazz
+#         is_seeker=isinstance(action, ContextSeeker)
+#         is_continuer=isinstance(action, Continuer)
+        if clazz in ["RText", "RKey"]:
+            self.list.append(action)
+            ''' handle forward-looking commands '''
+            action.execute_later()
+        if clazz=="ContextSeeker":
             if action.back!=None:
                 deck_size=len(self.list)
                 seekback_size=len(action.back)
@@ -38,6 +47,7 @@ class RText(Text):
     def __init__(self, spec=None, static=False, pause=0.02,
                  autofmt=False, rspec="default", rdescript=None,
                  rbreakable=False):
+        Text.__init__(self, spec, static, pause, autofmt)
         self.rspec = rspec
         self.rdescript = rdescript
         self.breakable = rbreakable
@@ -45,6 +55,9 @@ class RText(Text):
     def _execute(self, data=None):
         global DECK
         DECK.add(self)# should take care of execution if it's supposed to be executed
+    
+    def execute_later(self):
+        Text._execute(self, None)
 
 class RKey(Key):
     ''''''
@@ -101,7 +114,7 @@ class ContextSeeker(ActionBase):
                 return
             for cs in cl.sets:
                 #action must have a spec
-                if action.spec in cs.specTriggers:
+                if action.rspec in cs.specTriggers:
                     cl.satisfied=True
                     cl.result=cs.f
                     cl.parameters=cs.parameters
@@ -117,15 +130,14 @@ class ContextSeeker(ActionBase):
             if self.forward!=None:c+=self.forward
             for cl in c:
                 action=cl.result
-                if not action in [Text, Key]:
+                if not action in [Text, Key, Mimic]:
                     # it's a function object
                     if cl.parameters==None:
                         action()
                     else:
                         action(cl.parameters)
                 else:
-                    print "got to the expected section, parameters: "+cl.parameters
-                    action(cl.parameters).execute()
+                    action(cl.parameters)._execute()
             self.finished=True
         
         

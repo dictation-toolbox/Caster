@@ -1,7 +1,7 @@
 from dragonfly import (Function, Key, BringApp, Text, WaitWindow, IntegerRef, Dictation, Repeat, Grammar, MappingRule, Choice, Mimic, FocusWindow)
 
 from lib import utilities, settings, control, ccr
-from lib.dfplus.state import ContextSeeker, CL, CS
+from lib.dfplus.state import ContextSeeker, CL, CS, RText
 from lib.pita import selector
 
 
@@ -13,7 +13,8 @@ def experiment(text):
     '''this function is for tests'''
     try:
         ''''''
-        
+        Mimic(["does", "this", "work"])._execute()
+        Mimic(["does", "this one", "work2"]).execute()
             
     except Exception:
         utilities.simple_log(False)
@@ -95,8 +96,10 @@ class DevRule(MappingRule):
     "refresh ccr directory":        Function(ccr._refresh_from_files), 
     
     "context seeker test":          ContextSeeker([CL(CS(["ashes"], Text, "ashes to ashes"), 
-                                                      CS(["bravery"], Mimic, ["you", "can", "take", "our", "lives"]))
+                                                      CS(["bravery"], Key, "space, s-d"))
                                                    ], None), 
+    "ashes":                        RText(spec="ashes fall from the sky : ", rspec="ashes"),
+    "bravery":                      RText(spec="bravery is for the weak", rspec="bravery"),
     
     }
     extras = [
