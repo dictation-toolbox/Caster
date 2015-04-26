@@ -1,7 +1,7 @@
 from dragonfly import (Function, Key, BringApp, Text, WaitWindow, IntegerRef, Dictation, Repeat, Grammar, MappingRule, Choice, Mimic, FocusWindow)
 
 from lib import utilities, settings, control, ccr
-from lib.dfplus.state import ContextSeeker, CL, CS, RText
+from lib.dfplus.state import ContextSeeker, CL, CS, RegisteredAction
 from lib.pita import selector
 
 
@@ -98,8 +98,8 @@ class DevRule(MappingRule):
     "context seeker test":          ContextSeeker([CL(CS(["ashes"], Text, "ashes to ashes"), 
                                                       CS(["bravery"], Key, "space, s-d"))
                                                    ], None), 
-    "ashes":                        RText(spec="ashes fall from the sky : ", rspec="ashes"),
-    "bravery":                      RText(spec="bravery is for the weak", rspec="bravery"),
+    "ashes":                        RegisteredAction(Text("ashes fall "), rspec="ashes"),
+    "bravery":                      RegisteredAction(Text("bravery is weak "), rspec="bravery"),
     
     }
     extras = [

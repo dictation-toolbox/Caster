@@ -62,7 +62,7 @@ cmd.map = {
  		
 	 	"global":					Text("global "),
 						
-		
+		"make assertion":			Text("assert "),
 		"list comprehension":		Text("[x for x in LIST if CONDITION]"),
 	   
        	 "[dot] (pie | pi)":		Text(".py"),
