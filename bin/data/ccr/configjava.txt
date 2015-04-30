@@ -65,7 +65,7 @@ cmd.map = {
 		"new new":						Text("new "),
 		"integer":						Text("int "),
 		"big integer":					Text("Integer "),
-		"double":						Text("double "),
+		"lil double":					Text("double "),
 		"big double":					Text("Double "),
 		
 		"string":						Text("String "),
@@ -82,6 +82,13 @@ cmd.map = {
      	
      	"L if A":						Text("else if ()")+Key("left"),
      	"throw exception":              Text("throw new Exception()")+Key("left"),
+     	"substring":					Text("substring"),
+     	"character at":					Text("charAt"),
+     	"is instance of":				Text(" instanceof "),
+     	
+     	
+     	
+     	
      	 
           }
 
@@ -95,7 +102,7 @@ cmd.ncactive=True
 
 
 cmd.ncmap = {
-		 
+		"try catch":					Text("try{}catch(Exception e){}"),
 		"deco override":				Text("@Override"),
 		"iterate and remove":			Paste("for (Iterator<TYPE> iterator = NAME.iterator(); iterator.hasNext();) {\n\tString string = iterator.next();\nif (CONDITION) {\niterator.remove();\n}\n}"),
 		"string builder":               Paste("StringBuilder builder = new StringBuilder(); builder.append(orgStr); builder.deleteCharAt(orgStr.length()-1);"),

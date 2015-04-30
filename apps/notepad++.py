@@ -13,7 +13,7 @@ Command-module for Notepad++
 #---------------------------------------------------------------------------
 
 from dragonfly import (Grammar, AppContext, MappingRule,
-                       Dictation, IntegerRef,
+                       Dictation, IntegerRef, Mouse,
                        Key, Text, Repeat, Pause)
 
 
@@ -24,13 +24,17 @@ class CommandRule(MappingRule):
             "previous tab [<n>]":                   Key("c-pgup") * Repeat(extra="n"),
             "close tab [<n>]":                      Key("c-w") * Repeat(extra="n"),
             
+            "stylize <n2>":                         Mouse("right")+Key("down:6/5, right")+(Key("down") * Repeat(extra="n2"))+Key("enter"),
+            "remove style":                         Mouse("right")+Key("down:6/5, right/5, down:5/5, enter"),
+            
             "preview in chrome":                    Key("cas-r"),
             # requires function list plug-in:
             "function list":                        Key("cas-l"),
         }
     extras = [
               Dictation("text"),
-              IntegerRef("n", 1, 1000),
+              IntegerRef("n", 1, 100),
+              IntegerRef("n2", 1, 10),
               
              ]
     defaults = {"n": 1}
