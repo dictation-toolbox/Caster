@@ -95,11 +95,16 @@ class DevRule(MappingRule):
     # will need to disable and reenable language
     "refresh ccr directory":        Function(ccr._refresh_from_files), 
     
-    "context seeker test":          ContextSeeker([CL(CS(["ashes"], Text, "ashes to ashes"), 
+    "backward seeker":              ContextSeeker([CL(CS(["ashes"], Text, "ashes to ashes"), 
                                                       CS(["bravery"], Key, "space, s-d"))
-                                                   ], None), 
+                                                   ], None),
+    "forward seeker":               ContextSeeker(None, 
+                                                  [CL(CS(["ashes", "charcoal"], Text, "ashes have been consumed"), 
+                                                      CS(["bravery"], Text, "bravery has been consumed"))
+                                                   ]),
     "ashes":                        RegisteredAction(Text("ashes fall "), rspec="ashes"),
     "bravery":                      RegisteredAction(Text("bravery is weak "), rspec="bravery"),
+    "charcoal":                     RegisteredAction(Text("charcoal is dirty "), rspec="charcoal"),
     
     }
     extras = [

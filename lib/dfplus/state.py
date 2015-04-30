@@ -82,7 +82,7 @@ class ContextDeck:
         
 
         if deck_item.type =="raction":
-            
+            # check to see if there is a non-completed a forward seeker in the deck
             ''' handle forward-looking commands '''
             deck_item.execute()
         elif deck_item.type=="seeker":
