@@ -51,6 +51,10 @@ cmd.map = {
 		
 	    # Python specific           
  	    
+ 	    "short if A":				Text("if "), 
+ 	    "short else tay":			Text("else "),
+ 	    
+ 	    
  	    "from":						Text( "from " ),
  	    "self":						Text("self"),
  	    "long not":					Text(" not "),
