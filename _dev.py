@@ -124,7 +124,7 @@ class DevRule(MappingRule):
                                                    ], time_in_seconds=0.2, repetitions=20 ),
     "ashes":                        RegisteredAction(Text("ashes fall "), rspec="ashes"),
     "bravery":                      RegisteredAction(Text("bravery is weak "), rspec="bravery"),
-    "charcoal":                     RegisteredAction(Text("charcoal is dirty "), rspec="charcoal"),
+    "charcoal boy <text> [<n>]":        RegisteredAction(Text("charcoal is dirty "), rspec="charcoal"),
     
     }
     extras = [

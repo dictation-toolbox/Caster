@@ -23,17 +23,17 @@ class DeckItem:
 class DeckItemRegisteredAction(DeckItem):
     def __init__(self, registered_action, type="raction"):
         DeckItem.__init__(self, type)
-        has = registered_action != None
-        self.base = registered_action.base if has else None  # Dragonfly action
-        self.rspec = registered_action.rspec if has else "seeker spec"
-        self.rdescript = registered_action.rdescript if has else "seeker descript"
-        self.breakable = registered_action.rbreakable if has else False
+        self.dragonfly_data = registered_action.dragonfly_data
+        self.base = registered_action.base
+        self.rspec = registered_action.rspec
+        self.rdescript = registered_action.rdescript
+        self.rundo = registered_action.rundo
     def execute(self):
         self.complete = True
         self.base._execute()
 class DeckItemSeeker(DeckItemRegisteredAction):
     def __init__(self, seeker):
-        DeckItemRegisteredAction.__init__(self, None, "seeker")
+        DeckItemRegisteredAction.__init__(self, seeker, "seeker")
         self.back = self.copy_direction(seeker.back)
         self.forward = self.copy_direction(seeker.forward)
     @staticmethod
@@ -46,7 +46,6 @@ class DeckItemSeeker(DeckItemRegisteredAction):
         return result
     def executeCL(self, cl):
         action = cl.result
-#         try:
         if not action in [Text, Key, Mimic]:
             # it's a function object
             if cl.parameters == None:
@@ -54,9 +53,10 @@ class DeckItemSeeker(DeckItemRegisteredAction):
             else:
                 return action(cl.parameters)
         else:
+            # it's a dragonfly action, and the parameters are the spec
+            data = None
             action(cl.parameters)._execute()
             return False
-#         except Exception:
             
         
     def execute(self):
@@ -90,7 +90,7 @@ class DeckItemSeeker(DeckItemRegisteredAction):
         return -1
 class DeckItemContinuer(DeckItemSeeker):
     def __init__(self, continuer):
-        DeckItemRegisteredAction.__init__(self, None, "continuer")
+        DeckItemRegisteredAction.__init__(self, continuer, "continuer")
         self.back = None
         self.forward = self.copy_direction(continuer.forward)
         self.repetitions = continuer.repetitions
@@ -98,12 +98,12 @@ class DeckItemContinuer(DeckItemSeeker):
         self.forward[0].parameters = self.forward[0].sets[0].parameters
         self.closure = None
         self.time_in_seconds = continuer.time_in_seconds
-    def satisfy_level(self, level_index, is_back, deck_item): # level_index and is_back are unused here, but left in for compatibility
+    def satisfy_level(self, level_index, is_back, deck_item):  # level_index and is_back are unused here, but left in for compatibility
         cl = self.forward[0]
         if not cl.satisfied:
             if deck_item != None:
                 cs = cl.sets[0]
-                if deck_item.rspec in cs.specTriggers:# deck_item must have a spec
+                if deck_item.rspec in cs.specTriggers:  # deck_item must have a spec
                     cl.satisfied = True
     def execute(self):  # this method should be what deactivates the continuer
         self.complete = True
@@ -142,7 +142,7 @@ class ContextDeck:
             if deck_item.back != None:
                 deck_size = len(self.list)
                 seekback_size = len(deck_item.back)
-                #print "deck size: ", deck_size, "seekback_size: ", seekback_size
+                # print "deck size: ", deck_size, "seekback_size: ", seekback_size
                 for i in range(0, seekback_size):
                     index = deck_size - 1 - i
                     # back looking seekers have nothing else to wait for
@@ -162,7 +162,6 @@ class ContextDeck:
                and if they are complete, execute them in FIFO order'''
         incomplete = self.get_incomplete_seekers()
         number_incomplete = len(incomplete)
-#         utilities.remote_debug("deck at her")
         if number_incomplete > 0:
             for i in range(0, number_incomplete):
                 seeker = incomplete[i]
@@ -185,10 +184,7 @@ class ContextDeck:
             deck_item.begin()
                     
         self.list.append(deck_item)
-         
-        
-        # the other cases that need to be handled here:
-        # an unsatisfied continuer exists -- satisfy_level will need to be modified
+    
     def generate_registered_action_deck_item(self, raction):
         return DeckItemRegisteredAction(raction)
     def generate_context_seeker_deck_item(self, seeker):
@@ -206,17 +202,27 @@ class ContextDeck:
 DECK = ContextDeck()
 
 class RegisteredAction(ActionBase):
-    def __init__(self, base, rspec="default", rdescript=None, rbreakable=False):
+    def __init__(self, base, rspec="default", rdescript=None, rundo=None):
         ActionBase.__init__(self)
         global DECK
         self.deck = DECK
         self.base = base
         self.rspec = rspec
         self.rdescript = rdescript
-        self.rbreakable = rbreakable
+        self.rundo = rundo
     
     def _execute(self, data=None):  # copies everything relevant and places it in the deck
+        self.dragonfly_data = data
+        #
+#         utilities.remote_debug("registered action")
         self.deck.add(self.deck.generate_registered_action_deck_item(self))
+#     def extract_extras(self, data):
+#         extras={}
+#         if data!=None:
+#             for key in data.keys():
+#                 if not key.startswith("_") and not key=="id":
+#                     extras[key]=data[key]
+#         return extras
 
 
 class CS:  # ContextSet
@@ -234,7 +240,7 @@ class CS:  # ContextSet
 
 class CL:  # ContextLevel
     '''
-    A ContextLevel is composed of two or more ContextSets.
+    A ContextLevel is composed of one or more ContextSets.
     Once one of the ContextSets is chosen, the ContextLevel is marked as satisfied
     and the result, either an ActionBase or a function object is
     determined and parameters set.
@@ -249,15 +255,16 @@ class CL:  # ContextLevel
 
 # ContextSeeker([CL(CS(["ashes"], Text, "ashes to ashes"), CS(["bravery"], Mimic, ["you", "can", "take", "our", "lives"]))], None)
 
-class ContextSeeker(ActionBase):
+class ContextSeeker(RegisteredAction):
     def __init__(self, back, forward):
-        ActionBase.__init__(self)
+        RegisteredAction.__init__(self, None)
         self.back = back
         self.forward = forward
         global DECK
         self.deck = DECK
         assert self.back != None or self.forward != None, "Cannot create ContextSeeker with no levels"
     def _execute(self, data=None):
+        self.dragonfly_data = data
         self.deck.add(self.deck.generate_context_seeker_deck_item(self))
         
         
@@ -274,8 +281,8 @@ class Continuer(ContextSeeker):
     how often the associated function should run.
     '''
     def __init__(self, forward, time_in_seconds=1, repetitions=0):
-        ActionBase.__init__(self)
-        self.forward = forward
+        ContextSeeker.__init__(self, None, forward)
+#         self.forward = forward
         self.repetitions = repetitions
         self.time_in_seconds = time_in_seconds
         global DECK
@@ -283,5 +290,6 @@ class Continuer(ContextSeeker):
         assert self.forward != None, "Cannot create Continuer with no termination commands"
         assert len(self.forward) == 1, "Cannot create Continuer with > or < one purpose"
     def _execute(self, data=None):
+        self.dragonfly_data = data
         self.deck.add(self.deck.generate_continuer_deck_item(self))
 
