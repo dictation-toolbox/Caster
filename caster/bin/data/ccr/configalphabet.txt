@@ -1,0 +1,79 @@
+#
+# This is a heavily modified version of Dragonfly's _multiedit.py command-module
+
+from dragonfly import *
+from caster.lib import navigation
+
+release = Key("shift:up, ctrl:up")
+noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added on the right side
+
+cmd.map = {
+           	# Spoken-form    ->    ->    ->     Action object
+           	
+           	"[<big>] <letter>": Function(navigation.letters2, extra ={"big", "letter"}), 
+#a: arch
+#b: brov
+#c: char
+#d: dell
+#e: etch
+#f: fomp
+#g: goof
+#h: hark
+#i: ice
+#j: jinks
+#k: koop
+#l: lug
+#m: mowsh
+#n: nerb
+#o: ork
+#p: pooch
+#q: quash
+#r: rosh
+#s: souk
+#t: teek
+#u: unks
+#v: verge
+#w: womp
+#x: trex
+#y: yang
+#z: zooch
+          }
+
+
+cmd.extras = [
+        Choice("letter",
+              {
+            "arch": Key("a"),
+		    "brov": Key("b"),
+		    "char": Key("c"),
+		    "delta": Key("d"),
+		    "echo": Key("e"),
+		    "foxy": Key("f"),
+		    "goof": Key("g"),
+		    "hotel": Key("h"),
+		    "India": Key("i"),
+		    "julia": Key("j"),
+		    "kilo": Key("k"),
+		    "Lima": Key("l"),
+		    "Mike": Key("m"),
+		    "Novakeen": Key("n"),
+		    "oscar": Key("o"),
+		    "prime": Key("p"),
+		    "Quebec": Key("q"),
+		    "Romeo": Key("r"),
+		    "Sierra": Key("s"),
+		    "tango": Key("t"),
+		    "uniform": Key("u"),
+		    "victor": Key("v"),
+		    "whiskey": Key("w"),
+		    "x-ray": Key("x"),
+		    "yankee": Key("y"),
+		    "Zulu": Key("z"),
+               }),
+        Choice("big",
+              {"big": "big",
+               }),
+	]
+cmd.defaults = {
+	"big": "", 
+	}

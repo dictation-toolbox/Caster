@@ -5,12 +5,12 @@ main Caster module
 from dragonfly import (Key, Function, Grammar, Playback,
                        IntegerRef, Dictation, Choice, Pause, MappingRule)
 
-from asynch.hmc import vocabulary_processing
-from asynch.sikuli import sikuli
-from lib import ccr, recording
-from lib import control, settings, navigation, password
-from lib import utilities
-from lib.pita import scanner
+from caster.asynch.hmc import vocabulary_processing
+from caster.asynch.sikuli import sikuli
+from caster.lib import ccr, recording
+from caster.lib import control, settings, navigation, password
+from caster.lib import utilities
+from caster.lib.pita import scanner
 
 
 def fix_Dragon_double():
@@ -85,7 +85,7 @@ class MainRule(MappingRule):
     # macro recording and automation
     "record from history":          Function(recording.record_from_history),
     "delete recorded macros":       Function(recording.delete_recorded_rules),
-    "wait sec [<n>]":               Pause("%(n)d00"), 
+    "wait sec [<n>]":               Pause("%(n)d00"),
     
     # aliasing
     "alias <text>":                 Function(recording.add_alias),

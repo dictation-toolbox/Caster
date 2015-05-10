@@ -1,0 +1,28 @@
+#
+# This is a heavily modified version of Dragonfly's _multiedit.py command-module
+
+from dragonfly import *
+from caster.lib import navigation, context
+
+release = Key("shift:up, ctrl:up")
+noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added on the right side
+
+cmd.map = {
+           	# Spoken-form    ->    ->    ->     Action object
+			
+     	    #numbers
+		    "word number <wn>":	Function(navigation.word_number, extra="wn"),
+			"numb <wnKK>":		Function(navigation.numbers2, extra="wnKK"),
+					 
+     	   
+          }
+
+
+cmd.extras = [
+	IntegerRef("wn", 0, 10),
+	IntegerRef("wnKK", 0, 1000000),
+	]
+cmd.defaults = {
+	}
+
+

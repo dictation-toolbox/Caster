@@ -1,0 +1,98 @@
+#
+# This is a heavily modified version of Dragonfly's _multiedit.py command-module
+#  meant to enable python  syntax with CCR
+
+from dragonfly import *
+from caster.lib import settings
+
+settings.register_language(".py", "python")
+
+cmd.map = {
+        # Spoken-form    ->    ->    ->     Action object
+		
+		# CCR PROGRAMMING STANDARD
+		#
+		"if A":                     Key("i,f,space,colon,left"),
+		"else A":                   Text("else:")+Key("enter"),		
+		#
+		# (no switch in Python)
+		"breaker":					Text("break"),
+		#
+		"for each":					Text("for  in :")+ Key("left:5"),
+        "for loop":					Text("for i in range(0, ):")+ Key("left:2"),
+		"while loop":				Text("while :")+ Key("left"),
+		# (no do-while in Python)
+		#
+		"convert to string":		Text("str()")+ Key("left"),
+        "convert to integer":		Text("int()")+ Key("left"),
+        "convert to floating point":Text("float()")+ Key("left"),
+        #
+        "lodge and":                Text(" and "),
+        "lodge or":                 Text(" or "),
+        "lodge not":                Text("!"),
+        #
+        "print to console":			Text("print "),
+        #
+		"import":					Text( "import " ),
+		#
+		"funk A":					Text("def "),        
+		"class A":					Text("class "),
+		#
+		"add comment":				Text( "#" ),
+		"long comment":				Text("''''''") + Key("left:3"),
+		#				
+		"value not":				Text("None"),
+		#
+		"return":					Text("return "),
+		#
+		"value true":				Text("True"),
+		"value false":				Text("False"),
+				
+		
+	    # Python specific           
+ 	    
+ 	    "short if A":				Text("if "), 
+ 	    "short else tay":			Text("else "),
+ 	    
+ 	    
+ 	    "from":						Text( "from " ),
+ 	    "self":						Text("self"),
+ 	    "long not":					Text(" not "),
+ 	    "it are in":                Text(" in "), #supposed to sound like "iter in"
+        
+        "L if A":                  	Key("e,l,i,f,space,colon,left"),
+        "convert to character": 	Text("chr()")+ Key("left"),
+        "length of":				Text("len()")+ Key("left"),
+ 		
+	 	"global":					Text("global "),
+						
+		"make assertion":			Text("assert "),
+		"list comprehension":		Text("[x for x in LIST if CONDITION]"),
+	   
+       	 "[dot] (pie | pi)":		Text(".py"),
+ 		 "jason":					Text("json"),
+ 		 
+		 
+          }
+
+cmd.extras   = [
+            Dictation("text"),
+           ]
+cmd.defaults = {
+           }
+
+
+cmd.ncactive=True
+
+cmd.ncmap = {
+		"with":						Text("with "),
+        "open file":				Text("open('filename','r') as f:"),
+        "read lines":				Text("content = f.readlines()"),
+		"try catch":				Text("try:")+Key("enter:2/10, backspace")+Text("except Exception:")+Key("enter"),
+          }
+
+cmd.ncextras   = [
+           
+           ]
+cmd.ncdefaults = {
+           }

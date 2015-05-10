@@ -1,0 +1,83 @@
+#
+# This is a heavily modified version of Dragonfly's _multiedit.py command-module
+
+from dragonfly import *
+from caster.lib.dfplus.additions import SelectiveAction
+from caster.lib import settings
+
+settings.register_language(".js", "javascript")
+
+cmd.map = {
+       # Spoken-form    ->    ->    ->     Action object
+		
+		# CCR PROGRAMMING STANDARD
+		"if A":						Text("if()")+Key("left"),
+		"else A":					Text("else {}")+Key("left, enter:2, up"),
+		#
+		"switch":					Text("switch(){}")+Key("left, enter:2, up"),
+		"K states":						Text("case :")+Key("left"),
+		"breaker":					Text("break;"),
+		"default":					Text("default: "),
+		#
+		"do loop":					Text("do {}")+Key("left, enter:2"),
+        "while loop":				Text("while ()")+Key("left"),
+        "for loop":					Text("for (var i=0; i<VALUE; i++)"),
+		"for each":					Text("for (VARIABLE in OBJECT)"),
+        #
+        "convert to string":		Key("dquote, dquote, plus"),
+		"convert to integer":		Text("parseInt()")+Key("left"),
+		"convert to floating point":Text("parseFloat()")+Key("left"),
+		#
+		"lodge and":                Text(" && "),
+        "lodge or":                 Text(" || "),
+        "lodge not":                Text("!"),
+        #
+		"print to console":			Text("console.log()")+Key("left"),
+		#
+		# (no imports in javascript)
+		# 
+		"funk A":					Text("function NAME(){};")+Key("left:2, enter")+SelectiveAction(Key("enter, up"), ["AptanaStudio3.exe"]),
+		# (no classes in javascript)
+		#
+		"add comment":				Text("//"),
+		"long comment":				Text("/**/")+Key("left,left"),
+		#
+		"value not":				Text("null"),
+		#
+		"return":					Text("return "),
+		#
+		"value true":				Text("true"),
+		"value false":				Text("false"),
+		
+		
+		# JavaScript specific
+		
+		"timer":					Text("setInterval()")+Key("left"),
+		"timeout":					Text("setTimeout()")+Key("left"),
+		"long if A":				Text("if (){}")+Key("left, enter:2, up"),
+		"document":					Text("document"),
+		"index of":					Text("indexOf()")+Key("left"),
+		"has own property":			Text("hasOwnProperty()")+Key("left"),
+		"length":					Text("length"),
+		"self":						Text("self"),
+		"push":						Text("push"),
+		"inner HTML":				Text("innerHTML"),
+		"new new":					Text("new "),
+        "continue":					Text("continue"),
+
+        "this":						Text("this"),
+        "try":						Text("try {}")+Key("left, enter:2, up"),
+        "catch":					Text("catch(e) {}")+Key("left, enter:2, up"),
+		
+		"throw":					Text("throw "),
+		"instance of":				Text("instanceof "), 
+        "throws":					Text("throws "),
+        "(far | variable)":			Text("var "),
+	   
+          }
+
+cmd.extras   = [
+            
+           ]
+cmd.defaults = {
+           }

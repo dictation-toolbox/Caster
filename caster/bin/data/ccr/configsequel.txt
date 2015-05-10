@@ -1,0 +1,41 @@
+from dragonfly import *
+from caster.lib import settings
+
+#settings.register_language(".sql", "sql")
+
+cmd.map = {
+           # Spoken-form    ->    ->    ->     Action object	
+		#http://www.w3schools.com/sql/sql_quickref.asp
+		"quell and ":				Text(" and "),
+		"quell or":					Text(" or "),
+		"quell as":					Text(" as "),  
+ 		"quell delete":				Text(" delete "),
+		"quell exists":				Text(" exists "),  
+  	  	"quell group by":			Text(" group by "),
+		"quell having":				Text(" having "),
+		"quell in":					Text(" in "),
+		"quell on":					Text(" on "),
+		"quell insert into": 		Text(" insert into "),
+		"quell inner join":			Text(" inner join "),
+		"quell left join":			Text(" left join "),
+		"quell right join":			Text(" right join "),
+		"quell full join":			Text(" full join "),
+		"quell like":				Text(" like "),
+		"quell select":				Text(" select "),
+		"quell select all":			Text(" select * "),
+		"quell union":				Text(" union "),
+		"quell where":				Text(" where "),
+		"quell from":				Text(" from "),
+		"quell join":				Text(" join "),
+		"quell is null":			Text(" is null "),
+		"quell is not null":		Text(" is not null "),
+		"quell using":				Text(" using () ")+Key("left/5:2"),
+	   
+     	   
+          }
+
+cmd.extras   = [
+           ]
+cmd.defaults = {
+           }
+    
