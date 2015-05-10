@@ -6,15 +6,13 @@ from threading import Timer
 
 import Tkinter as tk
 
-try: # Style A -- may be imported into Caster, or externally
-    BASE_PATH = "C:/NatLink/NatLink/MacroSystem/caster"
+
+try: # Style C -- may be imported into Caster, or externally
+    BASE_PATH = "C:/NatLink/NatLink/MacroSystem/"
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
-        from lib import settings  # @UnresolvedImport
-    else: 
-        from caster.lib import settings
 finally:
-    pass  
+    from caster.lib import settings  
 
 def communicate():
     return xmlrpclib.ServerProxy("http://127.0.0.1:" + str(settings.HMC_LISTENING_PORT))

@@ -7,10 +7,42 @@ from dragonfly import (Key, Function, Grammar, Playback,
 
 from caster.asynch.hmc import vocabulary_processing
 from caster.asynch.sikuli import sikuli
-from caster.lib import ccr, recording
-from caster.lib import control, settings, navigation, password
-from caster.lib import utilities
+from caster.lib import navigation, password
 from caster.lib.pita import scanner
+
+'''
+Created on Jun 29, 2014
+
+@author: dave
+
+Instructions for adding new:
+- homunculus windows in h_launch.py
+- scanned languages (for "pita") in scanner.py
+'''
+
+
+try:
+    from caster.apps import *
+    from caster.asynch import *
+    from caster.lib import control, utilities, ccr, settings, context, recording
+    from caster.asynch import auto_com
+    import caster.dev, caster.wsr
+    try:
+        import caster.w
+    except Exception:
+        pass;
+    ccr.initialize_ccr()
+    utilities.clean_temporary_files()
+    recording.load_alias_rules()
+    recording.load_recorded_rules()
+    from caster.asynch.hmc import h_launch
+    h_launch.clean_homunculi()
+except:
+    import sys
+    print sys.exc_info(), "\nAttempting to load CCR anyway..."
+    from caster.lib import ccr
+    ccr.initialize_ccr()
+
 
 
 def fix_Dragon_double():

@@ -4,24 +4,19 @@ from __future__ import unicode_literals
 from datetime import datetime
 import multiprocessing
 import os, json, sys
-import random
 import re
 
 import win32gui, win32ui
 import win32com.client
 
 
-try: # Style A -- may be imported into Caster, or externally
-    BASE_PATH = "C:/NatLink/NatLink/MacroSystem/caster"
+try: # Style C -- may be imported into Caster, or externally
+    BASE_PATH = "C:/NatLink/NatLink/MacroSystem/"
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
-        from lib.dragonfree import launch# @UnresolvedImport
-        from lib import settings# @UnresolvedImport
-    else: 
-        from caster.lib.dragonfree import launch
-        from caster.lib import settings
 finally:
-    pass
+    from caster.lib.dragonfree import launch
+    from caster.lib import settings
 
 # filename_pattern was used to determine when to update the list in the element window, checked to see when a new file name had appeared
 FILENAME_PATTERN = re.compile(r"[/\\]([\w_ ]+\.[\w]+)")

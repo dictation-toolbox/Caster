@@ -4,15 +4,14 @@ from threading import Timer
 
 import Tkinter as tk
 
-try: # Style B -- should never be imported into Caster
-    BASE_PATH = "C:/NatLink/NatLink/MacroSystem/caster"
+
+try: # Style C -- may be imported into Caster, or externally
+    BASE_PATH = "C:/NatLink/NatLink/MacroSystem/"
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:
-    from lib import settings# @UnresolvedImport
-    from asynch.hmc.homunculus import Homunculus# @UnresolvedImport
-
-
+    from caster.lib import settings
+    from caster.asynch.hmc.homunculus import Homunculus
 
 
 class Homunculus_Recording(Homunculus):

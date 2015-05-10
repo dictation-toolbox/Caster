@@ -8,14 +8,15 @@ import tkFont
 import Tkinter as tk
 
 
-try: # Style B -- should never be imported into Caster
-    BASE_PATH = "C:/NatLink/NatLink/MacroSystem/caster"
+    
+try: # Style C -- may be imported into Caster, or externally
+    BASE_PATH = "C:/NatLink/NatLink/MacroSystem/"
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:
-    from lib import settings# @UnresolvedImport
     import SimpleXMLRPCServer
     from SimpleXMLRPCServer import *
+    from caster.lib import settings
 
 class StickyList:
     def __init__(self):
