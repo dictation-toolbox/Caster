@@ -8,13 +8,12 @@ import tkFont
 import Tkinter as tk
 
 
-try:
-    # this file may be executed externally to Dragon
-    BASE_PATH = "C:/NatLink/NatLink/MacroSystem"
+try: # Style B -- should never be imported into Caster
+    BASE_PATH = "C:/NatLink/NatLink/MacroSystem/caster"
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:
-    from caster.lib import settings, utilities
+    from lib import settings# @UnresolvedImport
     import SimpleXMLRPCServer
     from SimpleXMLRPCServer import *
 

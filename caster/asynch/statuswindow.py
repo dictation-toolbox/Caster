@@ -2,8 +2,6 @@ from SimpleXMLRPCServer import SimpleXMLRPCServer
 from caster.asynch.mouse.grids import TkTransparent
 from caster.lib import settings
 
-__author__ = 'dave'
-
 class StatusWindow(TkTransparent):
     def __init__(self):
         ''' do imports '''

@@ -14,6 +14,11 @@ try:
     from asynch import *
     from lib import control, utilities, ccr, settings, context, recording
     from asynch import auto_com
+    import dev, wsr
+    try:
+        import w
+    except Exception:
+        pass;
     ccr.initialize_ccr()
     utilities.clean_temporary_files()
     recording.load_alias_rules()

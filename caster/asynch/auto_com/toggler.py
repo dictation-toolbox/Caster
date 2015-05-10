@@ -2,7 +2,6 @@ from dragonfly import Mimic
 
 from caster.asynch.auto_com import language
 from caster.lib import control, utilities, settings
-from caster.lib.dragonfree import launch
 
 
 _LAST = False

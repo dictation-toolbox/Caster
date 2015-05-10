@@ -1,5 +1,5 @@
 from caster.lib import settings, utilities, control
-
+ 
 if settings.SETTINGS["auto_com"]["active"]:
     if control.DEP.NATLINK:
         from caster.asynch.auto_com import toggler

@@ -4,14 +4,13 @@ from threading import Timer
 
 import Tkinter as tk
 
-try:
-    # this file may be executed externally to Dragon
-    BASE_PATH = "C:/NatLink/NatLink/MacroSystem"
+try: # Style B -- should never be imported into Caster
+    BASE_PATH = "C:/NatLink/NatLink/MacroSystem/caster"
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:
-    from caster.lib import  settings
-    from caster.asynch.hmc.homunculus import Homunculus
+    from lib import settings# @UnresolvedImport
+    from asynch.hmc.homunculus import Homunculus# @UnresolvedImport
 
 class Homunculus_Vocabulary(Homunculus):
     

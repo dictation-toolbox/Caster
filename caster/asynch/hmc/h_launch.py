@@ -1,18 +1,24 @@
 import sys
 
-try:
-    # this file may be executed externally to Dragon
-    BASE_PATH = "C:/NatLink/NatLink/MacroSystem"
+try: # Style A -- may be imported into Caster, or externally
+    BASE_PATH = "C:/NatLink/NatLink/MacroSystem/caster"
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
+        from asynch.hmc.hmc_ask_directory import Homunculus_Directory  # @UnresolvedImport
+        from asynch.hmc.hmc_recording import Homunculus_Recording  # @UnresolvedImport
+        from asynch.hmc.hmc_vocabulary import Homunculus_Vocabulary  # @UnresolvedImport
+        from asynch.hmc.homunculus import Homunculus  # @UnresolvedImport
+        from lib import settings  # @UnresolvedImport
+        from lib.dragonfree import launch as ll  # @UnresolvedImport
+    else: 
+        from caster.asynch.hmc.hmc_ask_directory import Homunculus_Directory
+        from caster.asynch.hmc.hmc_recording import Homunculus_Recording
+        from caster.asynch.hmc.hmc_vocabulary import Homunculus_Vocabulary
+        from caster.asynch.hmc.homunculus import Homunculus
+        from caster.lib import settings
+        from caster.lib.dragonfree import launch as ll
 finally:
-    from caster.asynch.hmc.hmc_ask_directory import Homunculus_Directory
-    from caster.asynch.hmc.hmc_recording import Homunculus_Recording
-    from caster.asynch.hmc.hmc_vocabulary import Homunculus_Vocabulary
-    from caster.asynch.hmc.homunculus import Homunculus
-    from caster.lib import settings
-    from caster.lib.dragonfree import launch as ll
-    
+    pass    
 
 '''
 To add a new homunculus type:

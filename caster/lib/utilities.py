@@ -11,14 +11,17 @@ import win32gui, win32ui
 import win32com.client
 
 
-try:
-    # this file may be executed externally to Dragon
-    BASE_PATH = "C:/NatLink/NatLink/MacroSystem"
+try: # Style A -- may be imported into Caster, or externally
+    BASE_PATH = "C:/NatLink/NatLink/MacroSystem/caster"
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
+        from lib.dragonfree import launch# @UnresolvedImport
+        from lib import settings# @UnresolvedImport
+    else: 
+        from caster.lib.dragonfree import launch
+        from caster.lib import settings
 finally:
-    from caster.lib.dragonfree import launch
-    from caster.lib import settings
+    pass
 
 # filename_pattern was used to determine when to update the list in the element window, checked to see when a new file name had appeared
 FILENAME_PATTERN = re.compile(r"[/\\]([\w_ ]+\.[\w]+)")
@@ -187,7 +190,7 @@ def run_in_separate_thread(func, timeout_in_seconds=300):
 def reboot():
     import control
     if control.DEP.PSUTIL:
-        launch.run('python C:/NatLink/NatLink/MacroSystem/lib/dragonfree/launch.py -r'.split())
+        launch.run('python C:/NatLink/NatLink/MacroSystem/caster/lib/dragonfree/launch.py -r'.split())
     else:
         availability_message("reboot", "psutil")
 
