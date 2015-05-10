@@ -1,8 +1,9 @@
 from dragonfly import (Function, Key, BringApp, Text, WaitWindow, IntegerRef, Dictation, Repeat, Grammar, MappingRule, Choice, Mimic, FocusWindow)
 
 from lib import utilities, settings, control, ccr
-from lib.dfplus.state import ContextSeeker, CL, CS, RegisteredAction
+from lib.dfplus.state import ContextSeeker, CL, CS, RegisteredAction, Continuer
 from lib.pita import selector
+import time
 
 
 if control.DEP.PSUTIL:
@@ -78,7 +79,19 @@ def dredge(id, text):
         # title
         ''''''
         utilities.get_active_window_title()
-    
+
+LAST_TIME=0
+def print_time():
+    global LAST_TIME
+    print time.time()-LAST_TIME
+    LAST_TIME=time.time()
+
+COUNT=5
+def countdown():
+    global COUNT
+    print COUNT
+    COUNT-=1
+    return COUNT==0
 
 class DevRule(MappingRule):
     
@@ -106,6 +119,9 @@ class DevRule(MappingRule):
                                                    CL(CS(["ashes", "charcoal"], Text, "ashes2"), 
                                                       CS(["bravery"], Text, "bravery2"))
                                                    ]),
+    "never-ending":                 Continuer([CL(CS(["ashes", "charcoal"], print_time, None), 
+                                                      CS(["bravery"], Text, "bravery1"))
+                                                   ], time_in_seconds=0.2, repetitions=20 ),
     "ashes":                        RegisteredAction(Text("ashes fall "), rspec="ashes"),
     "bravery":                      RegisteredAction(Text("bravery is weak "), rspec="bravery"),
     "charcoal":                     RegisteredAction(Text("charcoal is dirty "), rspec="charcoal"),

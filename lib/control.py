@@ -11,7 +11,8 @@ DICTATION_CACHE = RecognitionHistory(20)
 DICTATION_CACHE.register()
 PRESERVED_CACHE = None
 
-TIMER_MANAGER = _Timer(1)
+# TIMER_MANAGER = _Timer(1)
+TIMER_MANAGER = _Timer(0.025)
 
 RECORDED_MACROS_GRAMMAR = Grammar("recorded_macros")
 ALIASES_GRAMMAR = Grammar("aliases")
