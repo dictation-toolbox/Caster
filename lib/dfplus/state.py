@@ -1,6 +1,6 @@
 from random import randint
 
-from dragonfly import (ActionBase, Text, Key, Function, Mimic, MappingRule)
+from dragonfly import (ActionBase, Text, Key, Function, Mimic)
 
 from lib import control, utilities
 
@@ -30,7 +30,7 @@ class DeckItemRegisteredAction(DeckItem):
         self.rundo = registered_action.rundo
     def execute(self):
         self.complete = True
-        self.base._execute()
+        self.base._execute(self.dragonfly_data)
 class DeckItemSeeker(DeckItemRegisteredAction):
     def __init__(self, seeker):
         DeckItemRegisteredAction.__init__(self, seeker, "seeker")
@@ -46,7 +46,7 @@ class DeckItemSeeker(DeckItemRegisteredAction):
         return result
     def executeCL(self, cl):
         action = cl.result
-        if not action in [Text, Key, Mimic]:
+        if not action in [Text, Key, Mimic, Function]:
             # it's a function object
             if cl.parameters == None:
                 return action()
@@ -54,11 +54,13 @@ class DeckItemSeeker(DeckItemRegisteredAction):
                 return action(cl.parameters)
         else:
             # it's a dragonfly action, and the parameters are the spec
-            data = None
-            action(cl.parameters)._execute()
+            action(cl.parameters)._execute(cl.dragonfly_data)
             return False
-            
-        
+    def fillCL(self, cl, cs):
+        cl.result = cs.f
+        cl.parameters = cs.parameters
+        cl.dragonfly_data = self.dragonfly_data
+#         self.dragonfly_data = None # no need to be hanging onto this in more places than one
     def execute(self):
         self.complete = True
         c = []
@@ -75,13 +77,11 @@ class DeckItemSeeker(DeckItemRegisteredAction):
                     # deck_item must have a spec
                     if deck_item.rspec in cs.specTriggers:
                         cl.satisfied = True
-                        cl.result = cs.f
-                        cl.parameters = cs.parameters
+                        self.fillCL(cl, cs)
                         break
             if not cl.satisfied:  # if still not satisfied, do default
                 cl.satisfied = True
-                cl.result = cl.sets[0].f
-                cl.parameters = cl.sets[0].parameters
+                self.fillCL(cl, cl.sets[0])
     def get_index_of_next_unsatisfied_level(self):
         for i in range(0, len(self.forward)):
             cl = self.forward[i]
@@ -94,8 +94,7 @@ class DeckItemContinuer(DeckItemSeeker):
         self.back = None
         self.forward = self.copy_direction(continuer.forward)
         self.repetitions = continuer.repetitions
-        self.forward[0].result = self.forward[0].sets[0].f
-        self.forward[0].parameters = self.forward[0].sets[0].parameters
+        self.fillCL(self.forward[0], self.forward[0].sets[0])
         self.closure = None
         self.time_in_seconds = continuer.time_in_seconds
     def satisfy_level(self, level_index, is_back, deck_item):  # level_index and is_back are unused here, but left in for compatibility
@@ -213,19 +212,10 @@ class RegisteredAction(ActionBase):
     
     def _execute(self, data=None):  # copies everything relevant and places it in the deck
         self.dragonfly_data = data
-        #
-#         utilities.remote_debug("registered action")
         self.deck.add(self.deck.generate_registered_action_deck_item(self))
-#     def extract_extras(self, data):
-#         extras={}
-#         if data!=None:
-#             for key in data.keys():
-#                 if not key.startswith("_") and not key=="id":
-#                     extras[key]=data[key]
-#         return extras
 
 
-class CS:  # ContextSet
+class ContextSet:  # ContextSet
     '''
     The context has composed one or more trigger words. These trigger words
     will be the spec of another command. That other command will be consumed
@@ -238,7 +228,7 @@ class CS:  # ContextSet
         self.f = f
         self.parameters = parameters
 
-class CL:  # ContextLevel
+class ContextLevel:  # ContextLevel
     '''
     A ContextLevel is composed of one or more ContextSets.
     Once one of the ContextSets is chosen, the ContextLevel is marked as satisfied
@@ -250,10 +240,11 @@ class CL:  # ContextLevel
         self.satisfied = False
         self.result = None
         self.parameters = None
+        self.dragonfly_data = None
     def copy(self):
-        return CL(*self.sets)
+        return ContextLevel(*self.sets)
 
-# ContextSeeker([CL(CS(["ashes"], Text, "ashes to ashes"), CS(["bravery"], Mimic, ["you", "can", "take", "our", "lives"]))], None)
+# ContextSeeker([ContextLevel(ContextSet(["ashes"], Text, "ashes to ashes"), ContextSet(["bravery"], Mimic, ["you", "can", "take", "our", "lives"]))], None)
 
 class ContextSeeker(RegisteredAction):
     def __init__(self, back, forward):
@@ -293,3 +284,7 @@ class Continuer(ContextSeeker):
         self.dragonfly_data = data
         self.deck.add(self.deck.generate_continuer_deck_item(self))
 
+# shorter names for classes
+R = RegisteredAction
+L = ContextLevel
+S = ContextSet

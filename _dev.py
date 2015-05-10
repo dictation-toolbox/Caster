@@ -1,7 +1,7 @@
 from dragonfly import (Function, Key, BringApp, Text, WaitWindow, IntegerRef, Dictation, Repeat, Grammar, MappingRule, Choice, Mimic, FocusWindow)
 
 from lib import utilities, settings, control, ccr
-from lib.dfplus.state import ContextSeeker, CL, CS, RegisteredAction, Continuer
+from lib.dfplus.state import ContextSeeker, ContextLevel, ContextSet, RegisteredAction, Continuer, R, L, S
 from lib.pita import selector
 import time
 
@@ -108,23 +108,23 @@ class DevRule(MappingRule):
     # will need to disable and reenable language
     "refresh ccr directory":        Function(ccr._refresh_from_files), 
     
-    "backward seeker":              ContextSeeker([CL(CS(["ashes", "charcoal"], Text, "ashes1"), 
-                                                      CS(["bravery"], Text, "bravery1")), 
-                                                   CL(CS(["ashes", "charcoal"], Text, "ashes2"), 
-                                                      CS(["bravery"], Text, "bravery2"))
+    "backward seeker":              ContextSeeker([L(S(["ashes", "charcoal"], Text, "ashes1"), 
+                                                      S(["bravery"], Text, "bravery1")), 
+                                                   L(S(["ashes", "charcoal"], Text, "ashes2"), 
+                                                      S(["bravery"], Text, "bravery2"))
                                                    ], None),
-    "forward seeker":               ContextSeeker(None, 
-                                                  [CL(CS(["ashes", "charcoal"], Text, "ashes1"), 
-                                                      CS(["bravery"], Text, "bravery1")), 
-                                                   CL(CS(["ashes", "charcoal"], Text, "ashes2"), 
-                                                      CS(["bravery"], Text, "bravery2"))
+    "forward seeker [<text>]":      ContextSeeker(None, 
+                                                  [L(S(["ashes", "charcoal"], Text, "ashes1 [%(text)s] "), 
+                                                      S(["bravery"], Text, "bravery1 [%(text)s] ")), 
+                                                   L(S(["ashes", "charcoal"], Text, "ashes2 [%(text)s] "), 
+                                                      S(["bravery"], Text, "bravery2 [%(text)s] "))
                                                    ]),
-    "never-ending":                 Continuer([CL(CS(["ashes", "charcoal"], print_time, None), 
-                                                      CS(["bravery"], Text, "bravery1"))
+    "never-ending":                 Continuer([L(S(["ashes", "charcoal"], print_time, None), 
+                                                      S(["bravery"], Text, "bravery1"))
                                                    ], time_in_seconds=0.2, repetitions=20 ),
     "ashes":                        RegisteredAction(Text("ashes fall "), rspec="ashes"),
     "bravery":                      RegisteredAction(Text("bravery is weak "), rspec="bravery"),
-    "charcoal boy <text> [<n>]":        RegisteredAction(Text("charcoal is dirty "), rspec="charcoal"),
+    "charcoal boy <text> [<n>]":    R(Text("charcoal is dirty %(text)s"), rspec="charcoal"),
     
     }
     extras = [
