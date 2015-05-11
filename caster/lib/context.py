@@ -37,31 +37,28 @@ def navigate_to_character(direction3, target):
         
         # make sure nothing is highlighted to boot
         Key("right, left" if look_left else "left, right")._execute()
-        
-        max_highlights = 100
+        if look_left:
+            Key("cs-left")._execute()
+        else:
+            Key("cs-right")._execute()
+#         max_highlights = 100
         index = -1
-        last_copy_was_successful = True
+#         last_copy_was_successful = True
         context = None
-        for i in range(0, max_highlights):
-            if last_copy_was_successful:
-                if look_left:
-                    Key("cs-left")._execute()
-                else:
-                    Key("cs-right")._execute()
-                # reset success indicator
-                last_copy_was_successful = True
+        tries=0
+        while context==None:
+            tries+=1
             results = read_selected_without_altering_clipboard()
-            error_code = results[0] 
-            if error_code == 1:
-                continue
-            if error_code == 2:
-                last_copy_was_successful = False
-                continue
-            context = results[1]
-            
-            index = find_index_in_context(target, context, look_left)
-            if index != -1:
+            error_code = results[0]
+            if error_code==0:
+                context = results[1]
                 break
+            if tries>5:
+                return False
+        
+        # if we got to this point, we have a copy result, 
+#         print "have copy result: "+context
+        index = find_index_in_context(target, context, look_left)
         
         # highlight only the target
         if index != -1:
@@ -73,9 +70,12 @@ def navigate_to_character(direction3, target):
                 Key("s-right" if look_left else "s-left")._execute()
             else:
                 Key("cs-right" if look_left else "cs-left")._execute()
+#             print "success"
+            return True
         else:
             # reset cursor
-            Key("left" if not look_left else "right")._execute()
+            Key("left" if look_left else "right")._execute()
+            return False
             
     except Exception:
         utilities.simple_log(False)
@@ -123,15 +123,14 @@ def read_selected_without_altering_clipboard(same_is_okay=False):
     except Exception:
         utilities.simple_log(False)
         return (2, None)
-#     if temporary:
+    
     if prior_content == temporary and not same_is_okay:
         return (1, None)
     return (0, temporary)
 
-    
-def fill_blanks(target):
-    sequence = ["gopher", "previous", str(target).lower()]
-    Playback([(sequence, 0.0)])._execute()
 
-
+def fill_within_line(target):
+    result = navigate_to_character("left", str(target))
+    if result:
+        Mimic("cancel")._execute()
         
