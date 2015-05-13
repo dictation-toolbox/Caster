@@ -30,8 +30,8 @@ cmd.map = {
     "spark [<nnavi500>]":  			Function(navigation.drop, extra={"nnavi500"}),
     
     "deli [<nnavi50>]":          	Key("del/5") * Repeat(extra="nnavi50"),
-    "clear [<nnavi50>]":           	Key("backspace") * Repeat(extra="nnavi50"),
-    "(cancel | escape)":            R(Key("escape"), rspec="cancel"),
+    "clear [<nnavi50>]":           	R(Key("backspace/5:%(nnavi50)d"), rspec="clear", rdescript="Backspace"),
+    "(cancel | escape)":            R(Key("escape"), rspec="cancel", rdescript="Cancel Action"),
     
     
     "shackle":						Key("home/5, s-end"),

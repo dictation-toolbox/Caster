@@ -1,9 +1,11 @@
+import time
+
 from dragonfly import (Function, Key, BringApp, Text, WaitWindow, IntegerRef, Dictation, Repeat, Grammar, MappingRule, Choice, Mimic, FocusWindow)
 
-from lib import utilities, settings, control, ccr
-from lib.dfplus.state import ContextSeeker, ContextLevel, ContextSet, RegisteredAction, Continuer, R, L, S
-from lib.pita import selector
-import time
+from caster.lib.dragonfree import launch
+from caster.lib import utilities, settings, control, ccr, context
+from caster.lib.dfplus.state import ContextSeeker, ContextLevel, ContextSet, RegisteredAction, Continuer, R, L, S
+from caster.lib.pita import selector
 
 
 if control.DEP.PSUTIL:
@@ -93,20 +95,38 @@ def countdown():
     COUNT-=1
     return COUNT==0
 
+def grep_this(path, filetype):
+    c = None
+    tries=0
+    while c==None:
+        tries+=1
+        results = context.read_selected_without_altering_clipboard()
+        error_code = results[0]
+        if error_code==0:
+            c = results[1]
+            break
+        if tries>5:
+            return False
+    grep="H:/PROGRAMS/NON_install/AstroGrep/AstroGrep.exe"
+    launch.run([grep, "/spath=\""+str(path) +"\"", "/stypes=\""+str(filetype)+"\"", "/stext=\""+str(c)+"\"", "/s"])
+
 class DevRule(MappingRule):
     
     mapping = {
+    # development tools
     'refresh directory':            Function(utilities.clear_pyc),
     "(show | open) documentation":  BringApp(settings.SETTINGS["paths"]["DEFAULT_BROWSER_PATH"]) + WaitWindow(executable=settings.get_default_browser_executable()) + Key('c-t') + WaitWindow(title="New Tab") + Text('http://dragonfly.readthedocs.org/en/latest') + Key('enter'),
 
     "open natlink folder":          BringApp("explorer", settings.SETTINGS["paths"]["BASE_PATH"].replace("/", "\\")),
     "reserved word <text>":         Key("dquote,dquote,left") + Text("%(text)s") + Key("right, colon, tab/5:5") + Text("Text(\"%(text)s\"),"),
+    "refresh ccr directory":        Function(ccr._refresh_from_files),# will need to disable and reenable language
+    "Agrippa <filetype> <path>":  Function(grep_this),
+    
+    # experimental/incomplete commands
+     
     "experiment <text>":            Function(experiment, extra="text"),
     
     "dredge [<id> <text>]":         Function(dredge), 
-    
-    # will need to disable and reenable language
-    "refresh ccr directory":        Function(ccr._refresh_from_files), 
     
     "backward seeker":              ContextSeeker([L(S(["ashes", "charcoal"], Text, "ashes1"), 
                                                       S(["bravery"], Text, "bravery1")), 
@@ -133,6 +153,12 @@ class DevRule(MappingRule):
               IntegerRef("n", 1, 100),
               Choice("id",
                     {"R": 1, "M":2,
+                     }),
+              Choice("path",
+                    {"natlink": "c:/natlink/natlink", "sea":"C:/",
+                     }),
+              Choice("filetype",
+                    {"java": "*.java", "python":"*.py",
                      }),
              ]
     defaults = {

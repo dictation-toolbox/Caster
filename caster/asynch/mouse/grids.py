@@ -60,22 +60,23 @@ class TkTransparent(tk.Tk):
     def get_dimensions_string(self):
         return "%dx%d+%d+%d" % (self.dimensions.width, self.dimensions.height, self.dimensions.x, self.dimensions.y)
 
-    def __init__(self, name, dimensions=None):
+    def __init__(self, name, dimensions=None, canvas=True):
         tk.Tk.__init__(self, baseName="")
         self.setup_XMLRPC_server()
         if not dimensions:
             dimensions = self.get_dimensions_fullscreen()
         self.dimensions = dimensions
         self.reset_xs_ys()
-        self.overrideredirect(True)  
+        self.overrideredirect(True)
         self.resizable(False, False)
         self.wm_attributes("-topmost", True)
         self.wait_visibility(self)
         self.attributes("-alpha", 0.5)
         self.wm_title(name)
         self.wm_geometry(self.get_dimensions_string())
-        self._canvas = tk.Canvas(master=self, width=dimensions.width, height=dimensions.height, bg='white', bd=-2)
-        self._canvas.pack()
+        if canvas:
+            self._canvas = tk.Canvas(master=self, width=dimensions.width, height=dimensions.height, bg='white', bd=-2)
+            self._canvas.pack()
         self.protocol("WM_DELETE_WINDOW", self.xmlrpc_kill)
 #        self.bind("<Key>", self.key)
         # self.mainloop()#do this in the child classes
@@ -117,9 +118,7 @@ class TkTransparent(tk.Tk):
         
     def move_mouse(self, mx, my):
         win32api.SetCursorPos((mx, my))
-
-            
-            
+        
 
 class RainbowGrid(TkTransparent):
     def __init__(self, grid_size=None, square_size=None, square_alpha=None):

@@ -1,8 +1,9 @@
 from random import randint
+import xmlrpclib
 
 from dragonfly import (ActionBase, Text, Key, Function, Mimic)
 
-from caster.lib import control, utilities
+from caster.lib import control, utilities, settings
 
 
 class CasterState:
@@ -31,6 +32,12 @@ class DeckItemRegisteredAction(DeckItem):
     def execute(self):
         self.complete = True
         self.base._execute(self.dragonfly_data)
+    def put_time_action(self):
+        try:
+            com = xmlrpclib.ServerProxy("http://127.0.0.1:" + str(settings.STATUS_LISTENING_PORT))
+            com.text(self.rdescript)
+        except Exception:
+            utilities.simple_log(False)# leave the try catch but remove the log 
 class DeckItemSeeker(DeckItemRegisteredAction):
     def __init__(self, seeker):
         DeckItemRegisteredAction.__init__(self, seeker, "seeker")
@@ -176,11 +183,11 @@ class ContextDeck:
         is_forward_seeker = deck_item.type == "seeker" and deck_item.forward != None
         is_continuer = deck_item.type == "continuer"
         if not deck_item.consumed and not is_forward_seeker and not is_continuer:
-            deck_item.put_time_action()  # this is where display window information will happen
             deck_item.execute()
+            deck_item.put_time_action()  # this is where display window information will happen
         elif is_continuer:
-            deck_item.put_time_action()
             deck_item.begin()
+            deck_item.put_time_action()
                     
         self.list.append(deck_item)
     
