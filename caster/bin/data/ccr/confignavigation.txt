@@ -5,7 +5,7 @@ navigation.initialize_clipboard()
 
 cmd.map = {
 	
-    #VoiceCoder-inspired
+    # VoiceCoder-inspired
     "jump in":						Continuer([L(S(["cancel"], context.nav, ["right", "(~[~{~<"]))
                                                    ], time_in_seconds=0.1, repetitions=50 ),
     "jump out":						Continuer([L(S(["cancel"], context.nav, ["right", ")~]~}~>"]))
@@ -16,10 +16,11 @@ cmd.map = {
     								Continuer([L(S(["cancel"], Function, context.fill_within_line))
                                                    ], time_in_seconds=0.2, repetitions=50 ),
     
+    # fuzzy string matching command
     "(pita | Peter | PETA) <textnv> [brunt]":Function(navigation.pita, extra="textnv"), 
     
     
-    #keyboard shortcuts
+    # keyboard shortcuts
 	'save':                         R(Key("c-s"), rspec="save", rdescript="Save"),
     'scratch':                      Playback([(["scratch", "that"], 0.0)]),
     'shock [<nnavi50>]':          	R(Key("enter"), rspec="shock", rdescript="Enter")* Repeat(extra="nnavi50"),
