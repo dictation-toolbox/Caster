@@ -5,11 +5,13 @@ navigation.initialize_clipboard()
 
 cmd.map = {
 	
-    #Voicecode-inspired
-    "jump in":						Playback([(["gopher", "next", "openers"], 0.0)])+Key("right"),
-    "jump out":						Playback([(["gopher", "next", "closers"], 0.0)])+Key("right"),
-    "jump back":					Playback([(["gopher", "previous", "openers"], 0.0)])+Key("left"),
-#    "fill <target>":				Function(context.fill_blanks, extra="target"),
+    #VoiceCoder-inspired
+    "jump in":						Continuer([L(S(["cancel"], context.nav, ["right", "(~[~{~<"]))
+                                                   ], time_in_seconds=0.1, repetitions=50 ),
+    "jump out":						Continuer([L(S(["cancel"], context.nav, ["right", ")~]~}~>"]))
+                                                   ], time_in_seconds=0.1, repetitions=50 ),
+    "jump back":					Continuer([L(S(["cancel"], context.nav, ["left", "(~[~{~<"]))
+                                                   ], time_in_seconds=0.1, repetitions=50 ),
     "fill <target>":				Key("escape, escape, end") +
     								Continuer([L(S(["cancel"], Function, context.fill_within_line))
                                                    ], time_in_seconds=0.2, repetitions=50 ),
@@ -18,26 +20,26 @@ cmd.map = {
     
     
     #keyboard shortcuts
-	'save':                         Key("c-s"),
+	'save':                         R(Key("c-s"), rspec="save", rdescript="Save"),
     'scratch':                      Playback([(["scratch", "that"], 0.0)]),
-    'shock [<nnavi50>]':          	Key("enter")* Repeat(extra="nnavi50"),
+    'shock [<nnavi50>]':          	R(Key("enter"), rspec="shock", rdescript="Enter")* Repeat(extra="nnavi50"),
     
     "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]": Function(navigation.master_text_nav, extra={"mtn_mode", "mtn_dir", "nnavi500", "extreme"}),
     
     
-    "stoosh [<nnavi500>]":          Key("c-c")+Function(navigation.clipboard_to_file, extra="nnavi500"),
-    "cut [<nnavi500>]":             Key("c-x")+Function(navigation.clipboard_to_file, extra="nnavi500"),
-    "spark [<nnavi500>]":  			Function(navigation.drop, extra={"nnavi500"}),
+    "stoosh [<nnavi500>]":          Key("c-c")+R((Function(navigation.clipboard_to_file, extra="nnavi500")), rspec="stoosh", rdescript="Copy"),
+    "cut [<nnavi500>]":             Key("c-x")+R(Function(navigation.clipboard_to_file, extra="nnavi500"), rspec="cut", rdescript="Cut"),
+    "spark [<nnavi500>]":  			R(Function(navigation.drop, extra={"nnavi500"}), rspec="spark", rdescript="Paste"),
     
-    "deli [<nnavi50>]":          	Key("del/5") * Repeat(extra="nnavi50"),
+    "deli [<nnavi50>]":          	R(Key("del/5"), rspec="deli", rdescript="Delete") * Repeat(extra="nnavi50"),
     "clear [<nnavi50>]":           	R(Key("backspace/5:%(nnavi50)d"), rspec="clear", rdescript="Backspace"),
     "(cancel | escape)":            R(Key("escape"), rspec="cancel", rdescript="Cancel Action"),
     
     
-    "shackle":						Key("home/5, s-end"),
-    "(tell | tau) <semi>":			Function(navigation.next_line), 
-	"duple [<nnavi50>]":			Key("escape, home, s-end, c-c, end, enter, c-v") * Repeat(extra="nnavi50"),
-	"Kraken":						Key("c-space"),
+    "shackle":						R(Key("home/5, s-end"), rspec="shackle", rdescript="Select Line"),
+    "(tell | tau) <semi>":			R(Function(navigation.next_line), rspec="tell dock", rdescript="Complete Line"), 
+	"duple [<nnavi50>]":			R(Key("escape, home, s-end, c-c, end, enter, c-v"), rspec="duple", rdescript="Duplicate Line") * Repeat(extra="nnavi50"),
+	"Kraken":						R(Key("c-space"), rspec="Kraken", rdescript="Control Space"),
 	     
     # text formatting
     "(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel) <textnv> [brunt]":  Function(navigation.master_format_text, extra={"capitalization", "spacing", "textnv"}), 

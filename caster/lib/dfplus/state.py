@@ -32,12 +32,15 @@ class DeckItemRegisteredAction(DeckItem):
     def execute(self):
         self.complete = True
         self.base._execute(self.dragonfly_data)
+        self.clean()
+    def clean(self):
+        self.dragonfly_data = None
     def put_time_action(self):
         try:
             com = xmlrpclib.ServerProxy("http://127.0.0.1:" + str(settings.STATUS_LISTENING_PORT))
             com.text(self.rdescript)
         except Exception:
-            utilities.simple_log(False)# leave the try catch but remove the log 
+            utilities.simple_log(False)  # leave the try catch but remove the log 
 class DeckItemSeeker(DeckItemRegisteredAction):
     def __init__(self, seeker):
         DeckItemRegisteredAction.__init__(self, seeker, "seeker")
@@ -63,6 +66,15 @@ class DeckItemSeeker(DeckItemRegisteredAction):
             # it's a dragonfly action, and the parameters are the spec
             action(cl.parameters)._execute(cl.dragonfly_data)
             return False
+    def clean(self):
+        # save whatever data you need here
+        DeckItemRegisteredAction.clean(self)
+        if self.back != None: 
+            for cl in self.back:
+                cl.dragonfly_data = None
+        if self.forward != None: 
+            for cl in self.forward:
+                cl.dragonfly_data = None
     def fillCL(self, cl, cs):
         cl.result = cs.f
         cl.parameters = cs.parameters
@@ -75,6 +87,7 @@ class DeckItemSeeker(DeckItemRegisteredAction):
         if self.forward != None:c += self.forward
         for cl in c:
             self.executeCL(cl)
+        self.clean()
     def satisfy_level(self, level_index, is_back, deck_item):
         direction = self.back if is_back else self.forward
         cl = direction[level_index]
@@ -114,6 +127,7 @@ class DeckItemContinuer(DeckItemSeeker):
     def execute(self):  # this method should be what deactivates the continuer
         self.complete = True
         control.TIMER_MANAGER.remove_callback(self.closure)
+        DeckItemSeeker.clean(self)
     def begin(self):
         '''here pass along a closure to the timer multiplexer'''
         eCL = self.executeCL
@@ -179,15 +193,16 @@ class ContextDeck:
                 or (seeker.type == "continuer" and seeker.get_index_of_next_unsatisfied_level() == -1)):
                     deck_item.complete = True
                     deck_item.consumed = True
+                    deck_item.clean()
         
         is_forward_seeker = deck_item.type == "seeker" and deck_item.forward != None
         is_continuer = deck_item.type == "continuer"
         if not deck_item.consumed and not is_forward_seeker and not is_continuer:
             deck_item.execute()
-            deck_item.put_time_action()  # this is where display window information will happen
+            # deck_item.put_time_action()  # this is where display window information will happen
         elif is_continuer:
             deck_item.begin()
-            deck_item.put_time_action()
+            # deck_item.put_time_action()
                     
         self.list.append(deck_item)
     

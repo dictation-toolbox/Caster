@@ -11,8 +11,8 @@ cmd.map = {
        # Spoken-form    ->    ->    ->     Action object
 		
 		# CCR PROGRAMMING STANDARD
-		"if A":						Text("if()")+Key("left"),
-		"else A":					Text("else {}")+Key("left, enter:2, up"),
+		"iffae":					Text("if (){}")+Key("left, enter:2, up"),
+		"el say":					Text("else {}")+Key("left, enter:2, up"),
 		#
 		"switch":					Text("switch(){}")+Key("left, enter:2, up"),
 		"K states":						Text("case :")+Key("left"),
@@ -36,7 +36,7 @@ cmd.map = {
 		#
 		# (no imports in javascript)
 		# 
-		"funk A":					Text("function NAME(){};")+Key("left:2, enter")+SelectiveAction(Key("enter, up"), ["AptanaStudio3.exe"]),
+		"function":					Text("function NAME(){};")+Key("left:2, enter")+SelectiveAction(Key("enter, up"), ["AptanaStudio3.exe"]),
 		# (no classes in javascript)
 		#
 		"add comment":				Text("//"),
@@ -54,7 +54,7 @@ cmd.map = {
 		
 		"timer":					Text("setInterval()")+Key("left"),
 		"timeout":					Text("setTimeout()")+Key("left"),
-		"long if A":				Text("if (){}")+Key("left, enter:2, up"),
+		"sue iffae":				Text("if()")+Key("left"),
 		"document":					Text("document"),
 		"index of":					Text("indexOf()")+Key("left"),
 		"has own property":			Text("hasOwnProperty()")+Key("left"),

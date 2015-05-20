@@ -33,7 +33,11 @@ def navigate_to_character(direction3, target):
     try:
         left_or_right = str(direction3)
         look_left = left_or_right == "left"
-        is_character = str(target) in [".", ",", "(~)", "[~]", "{~}", "(", ")", "(~[~{", "}~]~)"]
+        is_character = False
+        for s in target.split("~"):
+            if s in ".,()[]{}<>":
+                is_character=True
+                break
         
         # make sure nothing is highlighted to boot
         Key("right, left" if look_left else "left, right")._execute()
@@ -57,7 +61,7 @@ def navigate_to_character(direction3, target):
                 return False
         
         # if we got to this point, we have a copy result, 
-#         print "have copy result: "+context
+        print "have copy result: "+context
         index = find_index_in_context(target, context, look_left)
         
         # highlight only the target
@@ -70,7 +74,7 @@ def navigate_to_character(direction3, target):
                 Key("s-right" if look_left else "s-left")._execute()
             else:
                 Key("cs-right" if look_left else "cs-left")._execute()
-#             print "success"
+            print "success"
             return True
         else:
             # reset cursor
@@ -134,3 +138,7 @@ def fill_within_line(target):
     if result:
         Mimic("cancel")._execute()
         
+def nav(parameters):
+    result = navigate_to_character(str(parameters[0]), str(parameters[1]))
+    if result:
+        Mimic("cancel")._execute()

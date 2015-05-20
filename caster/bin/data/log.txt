@@ -19,3 +19,6 @@
 <type 'exceptions.UnicodeDecodeError'>
 'ascii' codec can't decode byte 0xa3 in position 1: ordinal not in range(128)
 <traceback object at 0x10725648>
+<type 'exceptions.UnicodeDecodeError'>
+'ascii' codec can't decode byte 0xa0 in position 82: ordinal not in range(128)
+<traceback object at 0x0D04EA80>
