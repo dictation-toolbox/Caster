@@ -83,7 +83,7 @@ def _load(path):
         print sys.exc_info()
     except IOError:
         print "\n\nIOError: Could not find settings file: " + path + "\nInitializing file...\n\n"
-        print sys.exc_info()
+#         print sys.exc_info()
     return result
 
 def save_config():
@@ -110,7 +110,7 @@ def init_default_values():
         SETTINGS["paths"] = {}
         values_change_count += 1
     if not "BASE_PATH" in SETTINGS["paths"]:
-        SETTINGS["paths"]["BASE_PATH"] = "C:/NatLink/NatLink/MacroSystem"
+        SETTINGS["paths"]["BASE_PATH"] = "C:/NatLink/NatLink/MacroSystem/caster"
     for (name, value) in [
         # DATA
         ("DLL_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/lib/dll/"),
