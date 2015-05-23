@@ -4,6 +4,5 @@ taskkill /IM dnsspserver.exe /f /s localhost
 taskkill /IM dragonbar.exe /f /s localhost
 sleep 1
 start "" %1
-sleep 10000
 
 
