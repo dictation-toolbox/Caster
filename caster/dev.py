@@ -1,15 +1,12 @@
 import time
-
+from subprocess import Popen
 from dragonfly import (Function, Key, BringApp, Text, WaitWindow, IntegerRef, Dictation, Repeat, Grammar, MappingRule, Choice, Mimic, FocusWindow)
 
-from caster.lib.dragonfree import launch
+
 from caster.lib import utilities, settings, control, ccr, context
-from caster.lib.dfplus.state import ContextSeeker, ContextLevel, ContextSet, RegisteredAction, Continuer, R, L, S
+from caster.lib.dfplus.state import ContextSeeker, RegisteredAction, Continuer, R, L, S
 from caster.lib.pita import selector
 
-
-if control.DEP.PSUTIL:
-    import psutil
 
 
 def experiment(text):
@@ -22,12 +19,12 @@ def experiment(text):
     except Exception:
         utilities.simple_log(False)
 
-def get_top_parent(psutil_process):
-    parent=psutil_process.parent()
-    if parent==None:
-        return psutil_process
-    else:
-        return get_top_parent(parent)
+# def get_top_parent(psutil_process):
+#     parent=psutil_process.parent()
+#     if parent==None:
+#         return psutil_process
+#     else:
+#         return get_top_parent(parent)
 
 def get_similar_process_name(spoken_phrase, list_of_processes):
     best = (0, "")
@@ -50,37 +47,38 @@ def get_similar_process_name(spoken_phrase, list_of_processes):
     return best[1]
 
 def dredge(id, text):
-    if id==None:
-        Mimic("press", "alt", "tab").execute()
-    elif id==1:
-        # proc
-        if control.DEP.PSUTIL:
-            l=[]
-            d={}
-            
-            for proc in psutil.process_iter():
-                try:
-                    name=proc.name().split(".")[0]
-#                     if name not in unwanted_processes:
-                    l.append(name)
-                    d[name]=proc.pid
-                except Exception:
-                    pass
-            best=get_similar_process_name(str(text), l)
-            p = d[best]
-#             print d
-            print text, "->", best, p#, utilities.get_active_window_title(p)
-            try:
-                utilities.focus_window(pid=p)
-            except Exception:
-                utilities.simple_log()
-            
-        else:
-            utilities.availability_message("'dredge' command", "psutil")        
-    elif id==2:
-        # title
-        ''''''
-        utilities.get_active_window_title()
+    ''''''
+#     if id==None:
+#         Mimic("press", "alt", "tab").execute()
+#     elif id==1:
+#         # proc
+#         if control.DEP.PSUTIL:
+#             l=[]
+#             d={}
+#             
+#             for proc in psutil.process_iter():
+#                 try:
+#                     name=proc.name().split(".")[0]
+# #                     if name not in unwanted_processes:
+#                     l.append(name)
+#                     d[name]=proc.pid
+#                 except Exception:
+#                     pass
+#             best=get_similar_process_name(str(text), l)
+#             p = d[best]
+# #             print d
+#             print text, "->", best, p#, utilities.get_active_window_title(p)
+#             try:
+#                 utilities.focus_window(pid=p)
+#             except Exception:
+#                 utilities.simple_log()
+#             
+#         else:
+#             utilities.availability_message("'dredge' command", "psutil")        
+#     elif id==2:
+#         # title
+#         ''''''
+#         utilities.get_active_window_title()
 
 LAST_TIME=0
 def print_time():
@@ -108,7 +106,7 @@ def grep_this(path, filetype):
         if tries>5:
             return False
     grep="H:/PROGRAMS/NON_install/AstroGrep/AstroGrep.exe"
-    launch.run([grep, "/spath=\""+str(path) +"\"", "/stypes=\""+str(filetype)+"\"", "/stext=\""+str(c)+"\"", "/s"])
+    Popen([grep, "/spath=\""+str(path) +"\"", "/stypes=\""+str(filetype)+"\"", "/stext=\""+str(c)+"\"", "/s"])
 
 class DevRule(MappingRule):
     

@@ -4,11 +4,11 @@ import time
 from dragonfly import (Key, Text , Playback, Choice, Mouse)
 import dragonfly
 import win32clipboard
+from subprocess import Popen
 
 from caster.asynch.mouse import grids
 from caster.asynch.mouse.legion import LegionScanner
 from caster.lib import control, utilities, settings
-from caster.lib.dragonfree import launch
 from caster.lib.pita import scanner, selector
 
 
@@ -98,14 +98,14 @@ def mouse_alternates(mode):
                     ls = LegionScanner()
                     ls.scan()
                     tscan = ls.get_update()
-                    launch.run(["pythonw", settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0]])
+                    Popen(["pythonw", settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0]])
             else:
                 utilities.availability_message("Legion", "PIL")
             
         elif mode == "rainbow":
-            launch.run(["pythonw", settings.SETTINGS["paths"]["RAINBOW_PATH"], "-m", "r"])
+            Popen(["pythonw", settings.SETTINGS["paths"]["RAINBOW_PATH"], "-m", "r"])
         elif mode == "douglas":
-            launch.run(["pythonw", settings.SETTINGS["paths"]["DOUGLAS_PATH"], "-m", "d"])
+            Popen(["pythonw", settings.SETTINGS["paths"]["DOUGLAS_PATH"], "-m", "d"])
     except Exception:
         utilities.simple_log(False)
     

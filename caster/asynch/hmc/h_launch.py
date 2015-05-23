@@ -1,4 +1,5 @@
 import sys
+from subprocess import Popen
 
 try: # Style C -- may be imported into Caster, or externally
     BASE_PATH = "C:/NatLink/NatLink/MacroSystem/"
@@ -10,7 +11,6 @@ finally:
     from caster.asynch.hmc.hmc_vocabulary import Homunculus_Vocabulary
     from caster.asynch.hmc.homunculus import Homunculus
     from caster.lib import settings
-    from caster.lib.dragonfree import launch as ll
 
     
 
@@ -27,7 +27,7 @@ def launch(hmc_type, callback, data=None):
     instructions=["pythonw", settings.SETTINGS["paths"]["HOMUNCULUS_PATH"], hmc_type]
     if data!=None:
         instructions.append(data)
-    ll.run(instructions)
+    Popen(instructions)
     
     hmc_title=_get_title(hmc_type)
     WaitWindow(title=hmc_title, timeout=5)._execute()
@@ -50,18 +50,19 @@ def _get_title(hmc_type):
 
 def clean_homunculi():
     from caster.lib import control
-    if control.DEP.PSUTIL:
-        from caster.lib import utilities
-        while utilities.window_exists(None, settings.HOMUNCULUS_VERSION):
-            ll.kill_process("pythonw.exe")
-        while utilities.window_exists(None, settings.HOMUNCULUS_VERSION+settings.HMC_TITLE_VOCABULARY):
-            ll.kill_process("pythonw.exe")
-        while utilities.window_exists(None, settings.HOMUNCULUS_VERSION+settings.HMC_TITLE_RECORDING):
-            ll.kill_process("pythonw.exe")
-        while utilities.window_exists(None, settings.HOMUNCULUS_VERSION+settings.HMC_TITLE_DIRECTORY):
-            ll.kill_process("pythonw.exe")
-    else:
-        utilities.availability_message("HMC Cleanup", "psutil")
+    # TODO this
+#     if control.DEP.PSUTIL:
+#         from caster.lib import utilities
+#         while utilities.window_exists(None, settings.HOMUNCULUS_VERSION):
+#             ll.kill_process("pythonw.exe")
+#         while utilities.window_exists(None, settings.HOMUNCULUS_VERSION+settings.HMC_TITLE_VOCABULARY):
+#             ll.kill_process("pythonw.exe")
+#         while utilities.window_exists(None, settings.HOMUNCULUS_VERSION+settings.HMC_TITLE_RECORDING):
+#             ll.kill_process("pythonw.exe")
+#         while utilities.window_exists(None, settings.HOMUNCULUS_VERSION+settings.HMC_TITLE_DIRECTORY):
+#             ll.kill_process("pythonw.exe")
+#     else:
+#         utilities.availability_message("HMC Cleanup", "psutil")
 
 if __name__ == '__main__':
     found_word=None

@@ -6,8 +6,7 @@ from dragonfly import (Function, Text, Grammar, Choice,
 
 from caster.lib import  settings, utilities, navigation
 from caster.lib import control
-from caster.lib.dragonfree import launch
-
+from subprocess import Popen
 
 def communicate():
     return xmlrpclib.ServerProxy("http://127.0.0.1:" + str(settings.S_LIST_LISTENING_PORT))
@@ -51,7 +50,7 @@ def clear():
 
 def enable_sticky_list(sticky):
     if utilities.get_window_by_title(settings.S_LIST_VERSION) == 0 and sticky == 1:
-        launch.run(["pythonw", settings.SETTINGS["paths"]["STICKY_LIST_PATH"]])
+        Popen(["pythonw", settings.SETTINGS["paths"]["STICKY_LIST_PATH"]])
         time.sleep(2)
 
 def do_enable():

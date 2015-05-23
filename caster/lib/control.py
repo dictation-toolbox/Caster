@@ -26,8 +26,7 @@ class DependencyMan():
     def __init__(self):
         self.list = [("natlink", None, ["Auto-Command", "SelectiveAction"], "http://sourceforge.net/projects/natlink"),
                    ("PIL", None, ["Legion"], "https://pypi.python.org/pypi/Pillow"),
-                   ("win32ui", "pywin32", ["very many essential"], "http://sourceforge.net/projects/pywin32"),
-                   ("psutil", None, ["Reboot", "HMC Cleanup"], "http://pythonhosted.org/psutil")]
+                   ("win32ui", "pywin32", ["very many essential"], "http://sourceforge.net/projects/pywin32")]
         warnings = 0
         for dep in self.list:
             is_win32ui = dep[0] == "win32ui"
@@ -48,7 +47,6 @@ class DependencyMan():
     NATLINK = False
     PIL = False
     PYWIN32 = False
-    PSUTIL = False
     
 print_startup_message()
 DEP = DependencyMan()

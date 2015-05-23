@@ -1,20 +1,19 @@
 import xmlrpclib
 
 from dragonfly import (Grammar, MappingRule, Function, Key)
-
+from subprocess import Popen
 from caster.lib import settings, control, utilities
-from caster.lib.dragonfree import launch
 
 
 grammar = None
 server_proxy = None
 
 def launch_IDE():
-    launch.run([settings.SETTINGS["paths"]["SIKULI_COMPATIBLE_JAVA_EXE_PATH"],
+    Popen([settings.SETTINGS["paths"]["SIKULI_COMPATIBLE_JAVA_EXE_PATH"],
                 "-jar", settings.SETTINGS["paths"]["SIKULI_IDE_JAR_PATH"]])
     
 def launch_server():
-    launch.run([settings.SETTINGS["paths"]["SIKULI_COMPATIBLE_JAVA_EXE_PATH"],
+    Popen([settings.SETTINGS["paths"]["SIKULI_COMPATIBLE_JAVA_EXE_PATH"],
                 "-jar", settings.SETTINGS["paths"]["SIKULI_SCRIPTS_JAR_PATH"],
                 "-r", settings.SETTINGS["paths"]["SIKULI_SERVER_PATH"]
                 ])

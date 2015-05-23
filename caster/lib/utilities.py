@@ -5,9 +5,10 @@ from datetime import datetime
 import multiprocessing
 import os, json, sys
 import re
+from subprocess import Popen
 
-import win32gui, win32ui
 import win32com.client
+import win32gui, win32ui
 
 
 try: # Style C -- may be imported into Caster, or externally
@@ -15,7 +16,6 @@ try: # Style C -- may be imported into Caster, or externally
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:
-    from caster.lib.dragonfree import launch
     from caster.lib import settings
 
 # filename_pattern was used to determine when to update the list in the element window, checked to see when a new file name had appeared
@@ -183,10 +183,7 @@ def run_in_separate_thread(func, timeout_in_seconds=300):
         p.join()
 
 def reboot():
-    import control
-    if control.DEP.PSUTIL:
-        launch.run('python C:/NatLink/NatLink/MacroSystem/caster/lib/dragonfree/launch.py -r'.split())
-    else:
-        availability_message("reboot", "psutil")
+    print [settings.SETTINGS["paths"]["REBOOT_PATH"], "\""+settings.SETTINGS["paths"]["ENGINE_PATH"]+"\""]
+    Popen([settings.SETTINGS["paths"]["REBOOT_PATH"], settings.SETTINGS["paths"]["ENGINE_PATH"]])
 
 

@@ -11,6 +11,8 @@ section.
 '''
 
 import time, pythoncom
+from subprocess import Popen
+
 
 if __name__ == "__main__":
     print "WSR Speech Recognition is garbage; it is recommended that you not run Caster this way."
@@ -24,13 +26,12 @@ else:
     from dragonfly import Choice, MappingRule, Grammar, Function
     import natlink
     from lib import settings
-    from lib.dragonfree import launch
     
     def deactivate_natlink():
         natlink.setMicState("sleeping")
         
     def activate_wsr():
-        launch.run([settings.SETTINGS["paths"]["WSR_PATH"], "-SpeechUX"])
+        Popen([settings.SETTINGS["paths"]["WSR_PATH"], "-SpeechUX"])
     
     def kill_wsr():
         launch.kill_process("sapisvr.exe")

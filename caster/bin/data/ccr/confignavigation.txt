@@ -67,8 +67,7 @@ cmd.extras = [
           navigation.TARGET_CHOICE,
 
           Choice("mtn_dir",
-                #{"zap": "up", "dunce": "down", "lurk": "left", "ricky": "right", "back": "left"
-                {"up": "up", "dunce": "down", "left": "left", "right": "right", "back": "left"
+                {"sauce": "up", "dunce": "down", "left": "left", "right": "right", "back": "left"
                 }),
           Choice("mtn_mode",
                 {"shin": "s", "queue": "cs", "fly": "c",
