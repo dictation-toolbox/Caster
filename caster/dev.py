@@ -117,7 +117,7 @@ class DevRule(MappingRule):
 
     "open natlink folder":          BringApp("explorer", settings.SETTINGS["paths"]["BASE_PATH"].replace("/", "\\")),
     "reserved word <text>":         Key("dquote,dquote,left") + Text("%(text)s") + Key("right, colon, tab/5:5") + Text("Text(\"%(text)s\"),"),
-    "refresh ccr directory":        Function(ccr._refresh_from_files),# will need to disable and reenable language
+    "refresh ccr directory":        Function(ccr.refresh_from_files),# will need to disable and reenable language
     "Agrippa <filetype> <path>":  Function(grep_this),
     
     # experimental/incomplete commands

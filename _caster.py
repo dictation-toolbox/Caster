@@ -122,10 +122,12 @@ class MainRule(MappingRule):
     # aliasing
     "alias <text>":                 Function(recording.add_alias),
     "delete aliases":               Function(recording.delete_alias_rules),
+    "chain alias":                  Function(recording.get_chain_alias_spec), 
     
     # miscellaneous
-    "<enable_disable> <ccr_mode>":  Function(ccr.set_active_command, extra={"enable_disable", "ccr_mode"}),
-    "again (<n> [(times|time)] | do)":Function(repeat_that, extra={"n"}),
+    "<enable_disable> <ccr_mode>":  Function(ccr.set_active_command),
+    "refresh <ccr_mode>":           Function(ccr.refresh_from_files), 
+    "again (<n> [(times|time)] | do)":Function(repeat_that),
     
     }
     extras = [

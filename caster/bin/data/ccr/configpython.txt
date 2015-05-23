@@ -60,7 +60,7 @@ cmd.map = {
  	    "long not":					Text(" not "),
  	    "it are in":                Text(" in "), #supposed to sound like "iter in"
         
-        "el iffae":                 Key("e,l,i,f,space,colon,left"),
+        "el iffae | LFA":           Key("e,l,i,f,space,colon,left"),
         "convert to character": 	Text("chr()")+ Key("left"),
         "length of":				Text("len()")+ Key("left"),
  		

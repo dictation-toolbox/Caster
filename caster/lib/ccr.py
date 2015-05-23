@@ -30,6 +30,16 @@ current_combined_rule_ccr = None
 current_combined_rule_nonccr = None
 rule_pairs = {}
 
+MODULE_MARKERS=["#<ccr>","#</ccr>","#<non>","#</non>",]
+MODULE_SHELL=["from dragonfly import *", 
+              "cmd.map = {", MODULE_MARKERS[0],  "'default command text A':Text('')", MODULE_MARKERS[1], "}", 
+              "cmd.extras = [", "]", "cmd.defaults = {", "}", 
+              "cmd.ncactive=True", 
+              "cmd.ncmap = {", MODULE_MARKERS[2], "'default command text B':Text('')", MODULE_MARKERS[3], "}", 
+              "cmd.ncextras = [", "]", "cmd.ncdefaults = {", "}"
+              ]
+
+
 def merge_copy(rule1, rule2, context):
     
     if rule1 == None:
@@ -218,12 +228,14 @@ def set_active_command(enable_disable, ccr_mode):
     settings.save_config()
     refresh()
 
-def _refresh_from_files():
-    '''for developer use'''
+def refresh_from_files(ccr_mode=None):
     global rule_pairs
     for r in settings.SETTINGS["ccr"]["modes"]:
         if settings.SETTINGS["ccr"]["modes"][r]:
             rule_pairs[r] = generate_language_rule_pair(settings.SETTINGS["paths"]["GENERIC_CONFIG_PATH"] + "/config" + r + ".txt")
+    if ccr_mode!=None:
+        set_active_command(0, ccr_mode)
+        set_active_command(1, ccr_mode)
 
 # Unload function which will be called at unload time.
 def unload():

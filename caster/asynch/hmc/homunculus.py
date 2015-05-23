@@ -37,7 +37,8 @@ class Homunculus(tk.Tk):
             self.ext_box = Text(self, name="ext_box")
             self.ext_box.pack(side=tk.LEFT)
         elif self.htype == settings.QTYPE_INSTRUCTIONS:
-            Label(self, text=" ".join(data.split("_")), name="pathlabel").pack()
+            self.data=data.split("|")
+            Label(self, text=" ".join(self.data[0].split("_")), name="pathlabel").pack()
             self.ext_box = Text(self, name="ext_box")
             self.ext_box.pack(side=tk.LEFT)
         
@@ -76,7 +77,7 @@ class Homunculus(tk.Tk):
         '''override this for every new child class'''
         if self.completed:
             Timer(1, self.xmlrpc_kill).start()
-            return self.ext_box.get("1.0", tk.END)
+            return [self.ext_box.get("1.0", tk.END), self.data[1]]
         else:
             return None
     

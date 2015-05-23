@@ -25,6 +25,8 @@ bin/data/element.json
 bin/data/log.txt
 bin/data/settings.json
 _navigation.py
+configaliases.txt
+log.txt
 
 # Ignore natlink files
 core/

@@ -7,7 +7,7 @@ BAD_LOAD = False
 INISETPATH = 'C:/NatLink/NatLink/MacroSystem/caster/bin/data/settings.json'
 
 # title
-SOFTWARE_VERSION_NUMBER = "0.4.3"
+SOFTWARE_VERSION_NUMBER = "0.4.4"
 SOFTWARE_NAME = "Caster v " + SOFTWARE_VERSION_NUMBER
 S_LIST_VERSION = "Sticky List v " + SOFTWARE_VERSION_NUMBER
 DISPEL_VERSION = "Dispel v " + SOFTWARE_VERSION_NUMBER
@@ -120,7 +120,7 @@ def init_default_values():
         ("DISPEL_JSON_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/dispel.json"),
         ("SAVED_CLIPBOARD_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/clipboard.json"),
         ("RECORDED_MACROS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/recorded_macros.json"),
-        ("ALIASES_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/aliases.json"),
+        ("ALIASES_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/ccr/configaliases.txt"),
         ("LOG_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/log.txt"),
         ("SIKULI_SCRIPTS_FOLDER_PATH", SETTINGS["paths"]["BASE_PATH"] + "/asynch/sikuli/scripts"),
         
