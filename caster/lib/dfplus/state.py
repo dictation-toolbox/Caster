@@ -303,6 +303,9 @@ class Continuer(ContextSeeker):
         assert self.forward != None, "Cannot create Continuer with no termination commands"
         assert len(self.forward) == 1, "Cannot create Continuer with > or < one purpose"
     def _execute(self, data=None):
+        if "speed" in data:
+            self.time_in_seconds=float(data["speed"])
+          
         self.dragonfly_data = data
         self.deck.add(self.deck.generate_continuer_deck_item(self))
 

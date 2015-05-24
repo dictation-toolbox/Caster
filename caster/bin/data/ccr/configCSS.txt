@@ -1,0 +1,99 @@
+#
+# This is a heavily modified version of Dragonfly's _multiedit.py command-module
+#  meant to enable python  syntax with CCR
+
+from dragonfly import *
+from caster.lib import settings, navigation
+
+settings.register_language(".css", "CSS")
+
+cmd.map = {
+        # Spoken-form    ->    ->    ->     Action object
+		
+		# # #      Selectors     # # # # 
+		#
+ 		# ID
+ 		"lady <letter_1> <letter_2>": 			Text("#%(letter_1)s%(letter_2)s"),
+ 		# class
+ 		"lacrosse <letter_1> <letter_2>": 		Text(".%(letter_1)s%(letter_2)s"),
+ 		# attribute
+ 		"at her <letter_1> <letter_2>": 		Text("[%(letter_1)s%(letter_2)s=] ")+Key("left/5:3"),
+		# other odd selectors like first child
+		
+		# html elements
+		
+		
+		
+		# # #      Properties     # # # # 
+		#
+		# margin border padding
+		"<box_part> [<side> <values>]":			Text("%(box_part)s%(side)s%(values)s"),
+		
+		# div properties
+		"<div_prop> <values>":					Text("%(div_prop)s:%(values)s"), 
+		
+		# transitions
+		
+		# gradients
+		
+		# media queries
+
+		# font
+		
+		# pseudo- classes
+		
+		
+		
+		# # #      Values     # # # # 
+		#
+		# measurements px em %
+		"<ncss> <measurement>":					Text("%(ncss)d%(measurement)s "),	
+ 		
+ 		
+		
+		
+		
+		
+		
+		
+		
+}
+
+cmd.extras   = [
+	navigation.get_alphabet_choice("letter_1"), 
+	navigation.get_alphabet_choice("letter_2"),
+    Choice("measurement",
+            {"pixel | pixels": "px", "EM":"em", "percent":"%"
+             }),
+    Choice("box_part",
+            {"margin": "margin", "padding":"padding", "border":"border"
+             }),
+    Choice("div_prop",
+            {"flute | float": "float", "clear side":"clear", 
+             }),
+    Choice("values",
+            {"value not | none": "none", "visible":"visible", "hidden":"hidden", "left":"left", "right":"right",
+             "both": "both"
+             }),
+    Choice("side",
+            {"top": "-top:", "bottom":"-bottom:", "left":"-left:", "right":"-right:"
+             }),
+    IntegerRef("ncss", 1, 1000),
+           ]
+cmd.defaults = {
+	"side": ":", "values": ""
+           }
+
+
+cmd.ncactive=True
+
+cmd.ncmap = {
+		"allergies":						Text("with "),
+
+          }
+
+cmd.ncextras   = [
+           
+           ]
+cmd.ncdefaults = {
+           }

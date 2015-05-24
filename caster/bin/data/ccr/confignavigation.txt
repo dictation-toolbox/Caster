@@ -89,7 +89,8 @@ cmd.defaults ={
 cmd.ncactive=True
 
 cmd.ncmap = {
-#        "gopher <direction3> <target>":     Function(context.navigate_to_character, extra={"direction3","target"}),    
+        "<direction> <speed>":			Continuer([L(S(["cancel"], Key, "%(direction)s"))], repetitions=1000 ),
+        #Continuer([L(S(["cancel"], context.nav, ["right", "(~[~{~<"]))], time_in_seconds=0.1, repetitions=50 ),
         "erase multi clipboard":            Function(navigation.erase_multi_clipboard),
         "find":                         Key("c-f"),
     	"replace":                      Key("c-h"),
@@ -125,6 +126,9 @@ cmd.ncextras   = [
               Dictation("mim"),
               IntegerRef("n", 1, 50),
               IntegerRef("nnavi500", 1, 500),
+              Choice("speed",
+                {"slow": 1, "normal": 0.6, "fast": 0.1, 
+                }),
               Choice("direction3",
                 {"out": "right", "back out": "left", "next": "right", "previous": "left"
                 }),

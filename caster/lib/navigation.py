@@ -22,6 +22,37 @@ TARGET_CHOICE = Choice("target",
                 "value": "VALUE", "class": "CLASS", "function": "FUNCTION",
                 })
 
+def get_alphabet_choice(spec):
+    return Choice(spec,
+              {
+            "arch": "a", 
+            "brov": "b", 
+            "char": "c", 
+            "delta": "d", 
+            "echo": "e", 
+            "foxy": "f", 
+            "goof": "g", 
+            "hotel": "h", 
+            "India": "i", 
+            "julia": "j", 
+            "kilo": "k", 
+            "Lima": "l", 
+            "Mike": "m", 
+            "Novakeen": "n", 
+            "oscar": "o", 
+            "prime": "p", 
+            "Quebec": "q", 
+            "Romeo": "r", 
+            "Sierra": "s", 
+            "tango": "t", 
+            "uniform": "u", 
+            "victor": "v", 
+            "whiskey": "w", 
+            "x-ray": "x", 
+            "yankee": "y", 
+            "Zulu": "z", 
+               })
+
 def initialize_clipboard():
     if len(control.MULTI_CLIPBOARD) == 0:
         control.MULTI_CLIPBOARD = utilities.load_json_file(settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
@@ -84,7 +115,7 @@ def letters(big, dict1, dict2, letter):
 def letters2(big, letter):
     if str(big) != "":
         Key("shift:down")._execute()
-    letter._execute()
+    Key(letter)._execute()
     if str(big) != "":
         Key("shift:up")._execute()
 
