@@ -53,6 +53,9 @@ def get_alphabet_choice(spec):
             "Zulu": "z", 
                })
 
+def get_direction_choice(spec):
+    return Choice(spec, {"sauce": "up", "dunce": "down", "left": "left", "right": "right", "back": "left" })
+
 def initialize_clipboard():
     if len(control.MULTI_CLIPBOARD) == 0:
         control.MULTI_CLIPBOARD = utilities.load_json_file(settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])

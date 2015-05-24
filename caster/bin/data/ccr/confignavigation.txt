@@ -65,10 +65,7 @@ cmd.extras = [
           
           
           navigation.TARGET_CHOICE,
-
-          Choice("mtn_dir",
-                {"sauce": "up", "dunce": "down", "left": "left", "right": "right", "back": "left"
-                }),
+          navigation.get_direction_choice("mtn_dir"),
           Choice("mtn_mode",
                 {"shin": "s", "queue": "cs", "fly": "c",
                 }),
@@ -89,11 +86,10 @@ cmd.defaults ={
 cmd.ncactive=True
 
 cmd.ncmap = {
-        "<direction> <speed>":			Continuer([L(S(["cancel"], Key, "%(direction)s"))], repetitions=1000 ),
-        #Continuer([L(S(["cancel"], context.nav, ["right", "(~[~{~<"]))], time_in_seconds=0.1, repetitions=50 ),
+        "<direction> <time_in_seconds>":	Continuer([L(S(["cancel"], Key, "%(direction)s"))], repetitions=1000 ),
         "erase multi clipboard":            Function(navigation.erase_multi_clipboard),
-        "find":                         Key("c-f"),
-    	"replace":                      Key("c-h"),
+        "find":                         	Key("c-f"),
+    	"replace":                      	Key("c-h"),
         "(F to | F2)":                      Key("f2"),
         "(F six | F6)":                     Key("f6"),
         "(F nine | F9)":                    Key("f9"),
@@ -126,18 +122,11 @@ cmd.ncextras   = [
               Dictation("mim"),
               IntegerRef("n", 1, 50),
               IntegerRef("nnavi500", 1, 500),
-              Choice("speed",
-                {"slow": 1, "normal": 0.6, "fast": 0.1, 
+              Choice("time_in_seconds",
+                {"super slow": 5, "slow": 2, "normal": 0.6, "fast": 0.1, "superfast": 0.05
                 }),
-              Choice("direction3",
-                {"out": "right", "back out": "left", "next": "right", "previous": "left"
-                }),
-              Choice("direction",
-                {"up": "up", "down": "down", "left": "left", "right": "right",
-                }),
-              Choice("direction2",
-                {"right": "right", "up": "up", "down": "down", "left": "left", 
-                }),
+              navigation.get_direction_choice("direction"),
+              navigation.get_direction_choice("direction2"),
               navigation.TARGET_CHOICE, 
               Choice("dokick",
                 {"kick": 1, "psychic": 2
