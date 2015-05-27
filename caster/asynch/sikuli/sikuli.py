@@ -42,10 +42,10 @@ def start_server_proxy():
     global server_proxy
     server_proxy = xmlrpclib.ServerProxy("http://127.0.0.1:" + str(settings.SIKULI_LISTENING_PORT))
     generate_commands(server_proxy.list_functions())
-    utilities.report("sikuli server proxy started successfully")
+    utilities.report("Caster-Sikuli server started successfully.")
     
 def server_proxy_timer_fn():
-    utilities.report("attempting server proxy [still loading]")
+    utilities.report("Attempting Caster-Sikuli connection [...]")
     try:
         start_server_proxy()
         control.TIMER_MANAGER.remove_callback(server_proxy_timer_fn)

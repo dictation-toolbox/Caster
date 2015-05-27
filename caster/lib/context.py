@@ -4,6 +4,7 @@ import time
 from dragonfly import *
 
 from caster.lib import utilities
+from caster.lib.dfplus import state
 
 
 def get_filter():
@@ -61,7 +62,7 @@ def navigate_to_character(direction3, target):
                 return False
         
         # if we got to this point, we have a copy result, 
-        print "have copy result: "+context
+#         print "have copy result: "+context
         index = find_index_in_context(target, context, look_left)
         
         # highlight only the target
@@ -74,7 +75,7 @@ def navigate_to_character(direction3, target):
                 Key("s-right" if look_left else "s-left")._execute()
             else:
                 Key("cs-right" if look_left else "cs-left")._execute()
-            print "success"
+#             print "success"
             return True
         else:
             # reset cursor
@@ -136,9 +137,11 @@ def read_selected_without_altering_clipboard(same_is_okay=False):
 def fill_within_line(target):
     result = navigate_to_character("left", str(target))
     if result:
-        Mimic("cancel")._execute()
+        state.STATE.halt_asynchronous(True)
+    return result
         
 def nav(parameters):
     result = navigate_to_character(str(parameters[0]), str(parameters[1]))
     if result:
-        Mimic("cancel")._execute()
+        Key(str(parameters[0]))._execute()
+    return result

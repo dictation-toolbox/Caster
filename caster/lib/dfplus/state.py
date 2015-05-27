@@ -1,16 +1,53 @@
-from random import randint
+import Queue
 import xmlrpclib
 
-from dragonfly import (ActionBase, Text, Key, Function, Mimic)
+from dragonfly import (ActionBase, Text, Key, Function, Mimic, Paste)
 
 from caster.lib import control, utilities, settings
 
 
 class CasterState:
     def __init__(self):
-        
-        ''''''
-
+        self.deck = ContextDeck(self)
+        self.blocker = None
+        self.waiting = Queue.Queue()
+    def add(self, deck_item):
+        if self.blocker == None:
+            ''' important to block before adding because the add might unblock '''
+            if deck_item.type == "continuer":
+                self.blocker = deck_item
+            self.deck.add(deck_item)
+        else:
+            if deck_item.rspec in self.blocker.get_triggers():  # let cancels go through
+                self.unblock()
+                while not self.waiting.empty():
+                    self.waiting.get_nowait() # discard the Queue if cancelled
+                self.add(deck_item)
+            else:
+                self.waiting.put_nowait(deck_item)
+    def unblock(self):
+        self.blocker = None
+    def run_waiting_commands(self):
+        self.unblock()
+        while not self.waiting.empty():
+            task = self.waiting.get(True, 2)
+            task.execute()
+            if task.type == "continuer":
+                self.blocker=task
+                break
+    def halt_asynchronous(self, success):
+        ''' only for use with Dragonfly Function actions which can't return true or false but need spoken parameters'''
+        self.blocker.execute(success)
+#         if success:
+#             self.run_waiting_commands()
+#         else:
+#             self.unblock()
+    def generate_registered_action_deck_item(self, raction):
+        return DeckItemRegisteredAction(raction)
+    def generate_context_seeker_deck_item(self, seeker):
+        return DeckItemSeeker(seeker)
+    def generate_continuer_deck_item(self, continuer):
+        return DeckItemContinuer(continuer)
 
 class DeckItem:
     def __init__(self, type):
@@ -56,7 +93,7 @@ class DeckItemSeeker(DeckItemRegisteredAction):
         return result
     def executeCL(self, cl):
         action = cl.result
-        if not action in [Text, Key, Mimic, Function]:
+        if not action in [Text, Key, Mimic, Function, Paste]:
             # it's a function object
             if cl.parameters == None:
                 return action()
@@ -80,7 +117,7 @@ class DeckItemSeeker(DeckItemRegisteredAction):
         cl.parameters = cs.parameters
         cl.dragonfly_data = self.dragonfly_data
 #         self.dragonfly_data = None # no need to be hanging onto this in more places than one
-    def execute(self):
+    def execute(self, unused):
         self.complete = True
         c = []
         if self.back != None:c += self.back
@@ -124,10 +161,23 @@ class DeckItemContinuer(DeckItemSeeker):
                 cs = cl.sets[0]
                 if deck_item.rspec in cs.specTriggers:  # deck_item must have a spec
                     cl.satisfied = True
-    def execute(self):  # this method should be what deactivates the continuer
+    def get_triggers(self):
+        return self.forward[0].sets[0].specTriggers
+    def execute(self, success):  # this method should be what deactivates the continuer
+        '''
+        There are three ways this can be triggered: success, timeout, and cancel.
+        Success and timeout are in the closure. Cancels are handled in the deck.
+        Waiting commands should only be run on success.
+        '''
         self.complete = True
         control.TIMER_MANAGER.remove_callback(self.closure)
         DeckItemSeeker.clean(self)
+        self.closure = None
+        global STATE
+        if success:
+            STATE.run_waiting_commands()
+        else:
+            STATE.unblock()
     def begin(self):
         '''here pass along a closure to the timer multiplexer'''
         eCL = self.executeCL
@@ -135,14 +185,19 @@ class DeckItemContinuer(DeckItemSeeker):
         r = self.repetitions
         c = {"value":0}  # count
         e = self.execute
+        s = self
         def closure():
             terminate = eCL(cl)
             if terminate:
-                e()
+                try:
+                    e(terminate)
+                except Exception:
+                    utilities.simple_log(False) 
+                
             elif r != 0:  # if not run forever
                 c["value"] += 1
                 if c["value"] == r:
-                    e()
+                    e(False)
         self.closure = closure
         control.TIMER_MANAGER.add_callback(self.closure, self.time_in_seconds)
         self.closure()
@@ -150,8 +205,9 @@ class DeckItemContinuer(DeckItemSeeker):
         
 
 class ContextDeck:
-    def __init__(self):
+    def __init__(self, state):
         self.list = []
+        self.state = state
     
     def add(self, deck_item):  # deck_item is an instance of DeckItem 
         
@@ -187,7 +243,7 @@ class ContextDeck:
                 seeker = incomplete[i]
                 seeker.satisfy_level(seeker.get_index_of_next_unsatisfied_level(), False, deck_item)
                 if seeker.get_index_of_next_unsatisfied_level() == -1:
-                    seeker.execute()
+                    seeker.execute(False)
                 # consume deck_item
                 if ((seeker.type != "continuer" and deck_item.type == "raction")  # do not consume seekers, it would disable chaining
                 or (seeker.type == "continuer" and seeker.get_index_of_next_unsatisfied_level() == -1)):
@@ -206,12 +262,6 @@ class ContextDeck:
                     
         self.list.append(deck_item)
     
-    def generate_registered_action_deck_item(self, raction):
-        return DeckItemRegisteredAction(raction)
-    def generate_context_seeker_deck_item(self, seeker):
-        return DeckItemSeeker(seeker)
-    def generate_continuer_deck_item(self, continuer):
-        return DeckItemContinuer(continuer)
     def get_incomplete_seekers(self):
         incomplete = []
         for i in range(0, len(self.list)):
@@ -220,13 +270,11 @@ class ContextDeck:
         return incomplete
                 
 
-DECK = ContextDeck()
-
 class RegisteredAction(ActionBase):
     def __init__(self, base, rspec="default", rdescript=None, rundo=None):
         ActionBase.__init__(self)
-        global DECK
-        self.deck = DECK
+        global STATE
+        self.state = STATE
         self.base = base
         self.rspec = rspec
         self.rdescript = rdescript
@@ -234,7 +282,7 @@ class RegisteredAction(ActionBase):
     
     def _execute(self, data=None):  # copies everything relevant and places it in the deck
         self.dragonfly_data = data
-        self.deck.add(self.deck.generate_registered_action_deck_item(self))
+        self.state.add(self.state.generate_registered_action_deck_item(self))
 
 
 class ContextSet:  # ContextSet
@@ -266,19 +314,17 @@ class ContextLevel:  # ContextLevel
     def copy(self):
         return ContextLevel(*self.sets)
 
-# ContextSeeker([ContextLevel(ContextSet(["ashes"], Text, "ashes to ashes"), ContextSet(["bravery"], Mimic, ["you", "can", "take", "our", "lives"]))], None)
-
 class ContextSeeker(RegisteredAction):
     def __init__(self, back, forward):
         RegisteredAction.__init__(self, None)
         self.back = back
         self.forward = forward
-        global DECK
-        self.deck = DECK
+        global STATE
+        self.state = STATE
         assert self.back != None or self.forward != None, "Cannot create ContextSeeker with no levels"
     def _execute(self, data=None):
         self.dragonfly_data = data
-        self.deck.add(self.deck.generate_context_seeker_deck_item(self))
+        self.state.add(self.state.generate_context_seeker_deck_item(self))
         
         
         
@@ -298,8 +344,8 @@ class Continuer(ContextSeeker):
 #         self.forward = forward
         self.repetitions = repetitions
         self.time_in_seconds = time_in_seconds
-        global DECK
-        self.deck = DECK
+        global STATE
+        self.state = STATE
         assert self.forward != None, "Cannot create Continuer with no termination commands"
         assert len(self.forward) == 1, "Cannot create Continuer with > or < one purpose"
     def _execute(self, data=None):
@@ -307,9 +353,10 @@ class Continuer(ContextSeeker):
         if "repetitions" in data: self.time_in_seconds=int(data["repetitions"])
           
         self.dragonfly_data = data
-        self.deck.add(self.deck.generate_continuer_deck_item(self))
+        self.state.add(self.state.generate_continuer_deck_item(self))
 
 # shorter names for classes
 R = RegisteredAction
 L = ContextLevel
 S = ContextSet
+STATE = CasterState()

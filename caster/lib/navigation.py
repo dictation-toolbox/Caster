@@ -11,7 +11,7 @@ from caster.asynch.mouse.legion import LegionScanner
 from caster.lib import control, utilities, settings
 from caster.lib.pita import scanner, selector
 
-
+DIRECTION_STANDARD={"sauce": "up", "dunce": "down", "left": "left", "right": "right", "back": "left" }
 TARGET_CHOICE = Choice("target",
                 {"comma": ",", "(period | dot)": ".", "(pair | parentheses)": "(~)",
                 "[square] (bracket | brackets)": "[~]", "curly [brace]": "{~}",
@@ -54,7 +54,8 @@ def get_alphabet_choice(spec):
                })
 
 def get_direction_choice(spec):
-    return Choice(spec, {"sauce": "up", "dunce": "down", "left": "left", "right": "right", "back": "left" })
+    global DIRECTION_STANDARD
+    return Choice(spec, DIRECTION_STANDARD)
 
 def initialize_clipboard():
     if len(control.MULTI_CLIPBOARD) == 0:
