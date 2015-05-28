@@ -1,38 +1,33 @@
-import xmlrpclib
-
 from dragonfly import (Function, Grammar, IntegerRef, Dictation, MappingRule, AppContext, Choice)
 
-from caster.lib import  settings
+from caster.lib import  settings, control
 
-
-def communicate():
-    return xmlrpclib.ServerProxy("http://127.0.0.1:" + str(settings.HMC_LISTENING_PORT))
 
 def kill():
-    communicate().kill()
+    control.COMM.get_com("hmc").kill()
 
 def complete():
-    communicate().complete()
+    control.COMM.get_com("hmc").complete()
 
 def hmc_checkbox(n):
     # can easily check multiple boxes, use a comma-separated list of numbers instead of str(n)
-    communicate().do_action("check", [int(n)])
+    control.COMM.get_com("hmc").do_action("check", [int(n)])
 
 def hmc_focus(field):
     # can easily check multiple boxes, use a comma-separated list of numbers instead of str(n)
-    communicate().do_action("focus", str(field))
+    control.COMM.get_com("hmc").do_action("focus", str(field))
 
 def hmc_recording_check_range(n, n2):
-    communicate().do_action("check_range", [int(n), int(n2)])
+    control.COMM.get_com("hmc").do_action("check_range", [int(n), int(n2)])
 
 def hmc_recording_exclude(n):
-    communicate().do_action("exclude", int(n))
+    control.COMM.get_com("hmc").do_action("exclude", int(n))
     
 def hmc_recording_repeatable():
-    communicate().do_action("repeatable")
+    control.COMM.get_com("hmc").do_action("repeatable")
 
 def hmc_directory_browse():
-    communicate().do_action("dir")
+    control.COMM.get_com("hmc").do_action("dir")
 
 class HMCRule(MappingRule):
     mapping = {

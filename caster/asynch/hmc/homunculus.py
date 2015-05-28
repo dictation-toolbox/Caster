@@ -13,9 +13,7 @@ try: # Style C -- may be imported into Caster, or externally
         sys.path.append(BASE_PATH)
 finally:
     from caster.lib import settings  
-
-def communicate():
-    return xmlrpclib.ServerProxy("http://127.0.0.1:" + str(settings.HMC_LISTENING_PORT))
+    from caster.lib.dfplus.communication import Communicator
 
 class Homunculus(tk.Tk):
     def __init__(self, htype, data=None):
@@ -57,7 +55,8 @@ class Homunculus(tk.Tk):
     
     def setup_XMLRPC_server(self): 
         self.server_quit = 0
-        self.server = SimpleXMLRPCServer(("127.0.0.1", settings.HMC_LISTENING_PORT), allow_none=True)
+        comm = Communicator()
+        self.server = SimpleXMLRPCServer(("127.0.0.1", comm.com_registry["hmc"]), allow_none=True)
         self.server.register_function(self.xmlrpc_do_action, "do_action")
         self.server.register_function(self.xmlrpc_complete, "complete")
         self.server.register_function(self.xmlrpc_get_message, "get_message")

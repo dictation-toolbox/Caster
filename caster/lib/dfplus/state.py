@@ -3,6 +3,7 @@ import xmlrpclib
 
 from dragonfly import (ActionBase, Text, Key, Function, Mimic, Paste)
 
+from caster.asynch import statuswindow
 from caster.lib import control, utilities, settings
 
 
@@ -73,11 +74,8 @@ class DeckItemRegisteredAction(DeckItem):
     def clean(self):
         self.dragonfly_data = None
     def put_time_action(self):
-        try:
-            com = xmlrpclib.ServerProxy("http://127.0.0.1:" + str(settings.STATUS_LISTENING_PORT))
-            com.text(self.rdescript)
-        except Exception:
-            utilities.simple_log(False)  # leave the try catch but remove the log 
+        if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
+            control.COMM.get_com("status").text(self.rdescript)
 class DeckItemSeeker(DeckItemRegisteredAction):
     def __init__(self, seeker):
         DeckItemRegisteredAction.__init__(self, seeker, "seeker")
@@ -185,7 +183,6 @@ class DeckItemContinuer(DeckItemSeeker):
         r = self.repetitions
         c = {"value":0}  # count
         e = self.execute
-        s = self
         def closure():
             terminate = eCL(cl)
             if terminate:
@@ -255,10 +252,10 @@ class ContextDeck:
         is_continuer = deck_item.type == "continuer"
         if not deck_item.consumed and not is_forward_seeker and not is_continuer:
             deck_item.execute()
-            # deck_item.put_time_action()  # this is where display window information will happen
+            deck_item.put_time_action()  # this is where display window information will happen
         elif is_continuer:
             deck_item.begin()
-            # deck_item.put_time_action()
+            deck_item.put_time_action()
                     
         self.list.append(deck_item)
     

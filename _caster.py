@@ -2,14 +2,6 @@
 main Caster module
 '''
 
-from dragonfly import (Key, Function, Grammar, Playback,
-                       IntegerRef, Dictation, Choice, Pause, MappingRule)
-
-from caster.asynch.hmc import vocabulary_processing
-from caster.asynch.sikuli import sikuli
-from caster.lib import navigation, password
-from caster.lib.pita import scanner
-
 '''
 Created on Jun 29, 2014
 
@@ -19,6 +11,16 @@ Instructions for adding new:
 - homunculus windows in h_launch.py
 - scanned languages (for "pita") in scanner.py
 '''
+
+from subprocess import Popen
+
+from dragonfly import (Key, Function, Grammar, Playback,
+                       IntegerRef, Dictation, Choice, Pause, MappingRule)
+
+from caster.asynch.hmc import vocabulary_processing
+from caster.asynch.sikuli import sikuli
+from caster.lib import navigation, password
+from caster.lib.pita import scanner
 
 
 try:
@@ -37,6 +39,8 @@ try:
     recording.load_recorded_rules()
     from caster.asynch.hmc import h_launch
     h_launch.clean_homunculi()
+    if settings.SETTINGS["miscellaneous"]["status_window_enabled"] and not utilities.window_exists(None, statuswindow.TITLE):
+        Popen(["pythonw", settings.SETTINGS["paths"]["STATUS_WINDOW_PATH"]])
 except:
     import sys
     print sys.exc_info(), "\nAttempting to load CCR anyway..."

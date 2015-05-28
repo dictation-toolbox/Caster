@@ -14,12 +14,14 @@ import win32api
 import Tkinter as tk
 
 
+
 try: # Style C -- may be imported into Caster, or externally
     BASE_PATH = "C:/NatLink/NatLink/MacroSystem/"
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:
     from caster.lib import settings, utilities
+    from caster.lib.dfplus.communication import Communicator
 
 def wait_for_death(title, timeout=5):
     t = 0.0
@@ -31,9 +33,6 @@ def wait_for_death(title, timeout=5):
         time.sleep(inc)
     if t >= timeout:
         utilities.report("wait_for_death()" + " timed out (" + title + ")")
-
-def communicate():
-    return xmlrpclib.ServerProxy("http://127.0.0.1:" + str(settings.GRIDS_LISTENING_PORT))
 
 class Dimensions:
     def __init__(self, w, h, x, y):
@@ -87,7 +86,8 @@ class TkTransparent(tk.Tk):
     
     def setup_XMLRPC_server(self): 
         self.server_quit = 0
-        self.server = SimpleXMLRPCServer(("127.0.0.1", settings.GRIDS_LISTENING_PORT), allow_none=True)
+        comm = Communicator()
+        self.server = SimpleXMLRPCServer(("127.0.0.1", comm.com_registry["grids"]), allow_none=True)
         self.server.register_function(self.xmlrpc_kill, "kill")
     
     def pre_redraw(self):

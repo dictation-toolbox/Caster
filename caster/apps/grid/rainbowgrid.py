@@ -3,21 +3,20 @@ Command-module for RainbowGrid
 
 """
 
-import time
 
 from dragonfly import (Grammar, AppContext, Function,
                        IntegerRef, Repeat, Playback,
                        Key, Choice, MappingRule)
 
 from caster.asynch.mouse import grids
-from caster.lib import settings
+from caster.lib import settings, control
 
 
 def kill():
-    grids.communicate().kill()
+    control.COMM.get_com("grids").kill()
 
 def send_input(pre, color, n, action):
-    s=grids.communicate()
+    s=control.COMM.get_com("grids")
     s.move_mouse(int(pre), int(color), int(n))
     s.kill()
     grids.wait_for_death(settings.RAINBOW_TITLE)

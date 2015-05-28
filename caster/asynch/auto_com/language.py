@@ -1,8 +1,4 @@
-
-
-from dragonfly import Mimic
-
-from caster.lib import utilities, settings
+from caster.lib import utilities, settings, ccr, control
 
 
 AUTO_ENABLED_LANGUAGE = None
@@ -16,14 +12,19 @@ def toggle_language():
         extension = "." + filename.split(".")[-1]
     
     if LAST_EXTENSION != extension:
+        message=None
         if extension != None and extension in settings.SETTINGS["ccr"]["registered_extensions"]:
-            words_to_mimic = ["enable"] + settings.SETTINGS["ccr"]["registered_extensions"][extension].split(" ")
-            Mimic(*words_to_mimic).execute()
-            AUTO_ENABLED_LANGUAGE = settings.SETTINGS["ccr"]["registered_extensions"][extension]
+            chosen_extension=settings.SETTINGS["ccr"]["registered_extensions"][extension]
+            ccr.set_active_command(1, chosen_extension)
+            AUTO_ENABLED_LANGUAGE = chosen_extension
             LAST_EXTENSION = extension
+            message="Enabled '"+chosen_extension+"'"
         elif AUTO_ENABLED_LANGUAGE != None:
-            words_to_mimic = ["disable"] + AUTO_ENABLED_LANGUAGE.split(" ")
-            Mimic(*words_to_mimic).execute()
+            message="Disabled '"+AUTO_ENABLED_LANGUAGE+"'"
+            ccr.set_active_command(0, AUTO_ENABLED_LANGUAGE)
             AUTO_ENABLED_LANGUAGE = None
+        if message!=None:
+            if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
+                control.COMM.get_com("status").text(message)
     
     LAST_EXTENSION = extension

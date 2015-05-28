@@ -13,14 +13,14 @@ import win32api
 import win32con
 
 from caster.asynch.mouse import grids
-from caster.lib import navigation, settings
+from caster.lib import navigation, settings, control
 
 
 def kill():
-    grids.communicate().kill()
+    control.COMM.get_com("grids").kill()
 
 def send_input(n, action):
-    s = grids.communicate()
+    s = control.COMM.get_com("grids")
     
     int_a = int(action)
     response = None

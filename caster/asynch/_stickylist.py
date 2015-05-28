@@ -1,5 +1,4 @@
 import time
-import xmlrpclib
 
 from dragonfly import (Function, Text, Grammar, Choice,
                        IntegerRef, Dictation, Mimic, MappingRule)
@@ -8,11 +7,8 @@ from caster.lib import  settings, utilities, navigation
 from caster.lib import control
 from subprocess import Popen
 
-def communicate():
-    return xmlrpclib.ServerProxy("http://127.0.0.1:" + str(settings.S_LIST_LISTENING_PORT))
-
 def kill():
-    communicate().kill()
+    control.COMM.get_com("sticky_list").kill()
 
 def add_symbol(sticky):
     sticky_key="sticky_key"
@@ -21,7 +17,7 @@ def add_symbol(sticky):
     control.STICKY_LIST.append(control.MULTI_CLIPBOARD[sticky_key])
     utilities.save_json_file(control.STICKY_LIST, settings.SETTINGS["paths"]["S_LIST_JSON_PATH"])
     if utilities.window_exists(None, settings.S_LIST_VERSION):
-        communicate().add_symbol(control.MULTI_CLIPBOARD[sticky_key])
+        control.COMM.get_com("sticky_list").add_symbol(control.MULTI_CLIPBOARD[sticky_key])
     else:
         enable_sticky_list(sticky)
 
@@ -38,7 +34,7 @@ def remove_word(n, sticky):
     del control.STICKY_LIST[n - 1]
     utilities.save_json_file(control.STICKY_LIST, settings.SETTINGS["paths"]["S_LIST_JSON_PATH"])
     if utilities.window_exists(None, settings.S_LIST_VERSION):
-        communicate().remove_symbol(n)
+        control.COMM.get_com("sticky_list").remove_symbol(n)
     else:
         enable_sticky_list(sticky)
 
@@ -46,7 +42,7 @@ def clear():
     control.STICKY_LIST=[]
     utilities.save_json_file(control.STICKY_LIST, settings.SETTINGS["paths"]["S_LIST_JSON_PATH"])
     if utilities.window_exists(None, settings.S_LIST_VERSION):
-        communicate().clear()
+        control.COMM.get_com("sticky_list").clear()
 
 def enable_sticky_list(sticky):
     if utilities.get_window_by_title(settings.S_LIST_VERSION) == 0 and sticky == 1:

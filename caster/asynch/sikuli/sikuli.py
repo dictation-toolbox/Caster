@@ -40,7 +40,7 @@ def generate_commands(list_of_functions):
 
 def start_server_proxy():
     global server_proxy
-    server_proxy = xmlrpclib.ServerProxy("http://127.0.0.1:" + str(settings.SIKULI_LISTENING_PORT))
+    server_proxy = control.COMM.get_com("sikuli")
     generate_commands(server_proxy.list_functions())
     utilities.report("Caster-Sikuli server started successfully.")
     

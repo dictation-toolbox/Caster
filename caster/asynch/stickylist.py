@@ -8,7 +8,7 @@ import tkFont
 import Tkinter as tk
 
 
-    
+
 try: # Style C -- may be imported into Caster, or externally
     BASE_PATH = "C:/NatLink/NatLink/MacroSystem/"
     if BASE_PATH not in sys.path:
@@ -17,6 +17,7 @@ finally:
     import SimpleXMLRPCServer
     from SimpleXMLRPCServer import *
     from caster.lib import settings
+    from caster.lib.dfplus.communication import Communicator
 
 class StickyList:
     def __init__(self):
@@ -35,7 +36,8 @@ class StickyList:
     
     def setup_XMLRPC_server(self): 
         self.server_quit = 0
-        self.server = SimpleXMLRPCServer(("127.0.0.1", settings.S_LIST_LISTENING_PORT), allow_none=True)
+        comm = Communicator()
+        self.server = SimpleXMLRPCServer(("127.0.0.1", comm.com_registry["sticky_list"]), allow_none=True)
         self.server.register_function(self.xmlrpc_kill, "kill")
         self.server.register_function(self.xmlrpc_add_symbol, "add_symbol")
         self.server.register_function(self.xmlrpc_remove_symbol, "remove_symbol")

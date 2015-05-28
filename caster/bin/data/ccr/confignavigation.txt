@@ -18,8 +18,7 @@ cmd.map = {
     
     # fuzzy string matching command
     "(pita | Peter | PETA) <textnv> [brunt]":Function(navigation.pita, extra="textnv"), 
-    
-    
+        
     # keyboard shortcuts
 	'save':                         R(Key("c-s"), rspec="save", rdescript="Save"),
     'scratch':                      Playback([(["scratch", "that"], 0.0)]),

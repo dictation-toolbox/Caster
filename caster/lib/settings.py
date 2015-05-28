@@ -7,7 +7,7 @@ BAD_LOAD = False
 INISETPATH = 'C:/NatLink/NatLink/MacroSystem/caster/bin/data/settings.json'
 
 # title
-SOFTWARE_VERSION_NUMBER = "0.4.5"
+SOFTWARE_VERSION_NUMBER = "0.4.6"
 SOFTWARE_NAME = "Caster v " + SOFTWARE_VERSION_NUMBER
 S_LIST_VERSION = "Sticky List v " + SOFTWARE_VERSION_NUMBER
 DISPEL_VERSION = "Dispel v " + SOFTWARE_VERSION_NUMBER
@@ -27,14 +27,10 @@ QTYPE_INSTRUCTIONS = "ins"
 QTYPE_RECORDING = "rec"
 QTYPE_DIRECTORY = "dir"
 
-# listening ports
-S_LIST_LISTENING_PORT = 1337
-HMC_LISTENING_PORT = 1338
-GRIDS_LISTENING_PORT = 1339
-STATUS_LISTENING_PORT = 1340
-SIKULI_LISTENING_PORT = 8000
-
 def register_language(extension, language):
+    '''
+    This is for automatic language switching
+    '''
     global SETTINGS
     if extension not in SETTINGS["ccr"]["registered_extensions"]:
         
@@ -129,6 +125,7 @@ def init_default_values():
         
         # EXECUTABLES
         ("WSR_PATH", "C:/Windows/Speech/Common/sapisvr.exe"),
+        ("STATUS_WINDOW_PATH", SETTINGS["paths"]["BASE_PATH"] + "/asynch/statuswindow.py"),
         ("STICKY_LIST_PATH", SETTINGS["paths"]["BASE_PATH"] + "/asynch/stickylist.py"),
         ("LEGION_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/asynch/mouse/legion.py"),
         ("RAINBOW_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/asynch/mouse/grids.py"),
@@ -189,6 +186,7 @@ def init_default_values():
         SETTINGS["miscellaneous"]["debug_speak"] = False
         SETTINGS["miscellaneous"]["dev_commands"] = False
         SETTINGS["miscellaneous"]["sikuli_enabled"] = False
+        SETTINGS["miscellaneous"]["status_window_enabled"] = True
         values_change_count += 1
     
     # element section

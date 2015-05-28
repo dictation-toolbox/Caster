@@ -2,6 +2,7 @@ from dragonfly import RecognitionHistory, Grammar
 from dragonfly.timer import _Timer
 
 from caster.lib import settings
+from caster.lib.dfplus.communication import Communicator
 
 
 MULTI_CLIPBOARD = {}
@@ -11,7 +12,7 @@ DICTATION_CACHE = RecognitionHistory(20)
 DICTATION_CACHE.register()
 PRESERVED_CACHE = None
 
-# TIMER_MANAGER = _Timer(1)
+COMM = Communicator()
 TIMER_MANAGER = _Timer(0.025)
 
 RECORDED_MACROS_GRAMMAR = Grammar("recorded_macros")

@@ -1,7 +1,8 @@
 import time
 from subprocess import Popen
 from dragonfly import (Function, Key, BringApp, Text, WaitWindow, IntegerRef, Dictation, Repeat, Grammar, MappingRule, Choice, Mimic, FocusWindow)
-
+# from Tkinter import *
+# from tkColorChooser import askcolor 
 
 from caster.lib import utilities, settings, control, ccr, context
 from caster.lib.dfplus.state import ContextSeeker, RegisteredAction, Continuer, R, L, S
@@ -25,6 +26,10 @@ def experiment(text):
 #         return psutil_process
 #     else:
 #         return get_top_parent(parent)
+
+def get_color():
+    '''do asynchronously'''
+#     print askcolor()
 
 def get_similar_process_name(spoken_phrase, list_of_processes):
     best = (0, "")
