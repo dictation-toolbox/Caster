@@ -2,13 +2,14 @@ from dragonfly import Mimic
 
 from caster.asynch.auto_com import language
 from caster.lib import control, utilities, settings
+from caster.lib.dfplus.state import R
 
 
 _LAST = False
 _HAS_RUN_FIRST_TIME = False
 
-_ON = Mimic("command", "mode", "on")
-_OFF = Mimic("command", "mode", "off")
+_ON = R(Mimic("command", "mode", "on"), rdescript="Command Mode On")
+_OFF = R(Mimic("command", "mode", "off"), rdescript="Command Mode Off")
 
 if control.DEP.NATLINK:
     import natlink
@@ -33,6 +34,7 @@ def toggle():
         if should_toggle:
             e = _ON if _LAST else _OFF
             e.execute()
+            
     
     # language switching section
     if settings.SETTINGS["auto_com"]["change_language"]:

@@ -3,6 +3,7 @@
 
 from dragonfly import *
 from caster.lib import navigation
+from caster.lib.dfplus.state import R
 
 release = Key("shift:up, ctrl:up")
 noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added on the right side
@@ -10,7 +11,7 @@ noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added 
 cmd.map = {
            	# Spoken-form    ->    ->    ->     Action object
            	
-           	"[<big>] <letter>": Function(navigation.letters2, extra ={"big", "letter"}), 
+           	"[<big>] <letter>": R(Function(navigation.letters2, extra ={"big", "letter"}), rdescript="Spell"), 
 
           }
 

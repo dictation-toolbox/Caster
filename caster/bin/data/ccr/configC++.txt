@@ -1,5 +1,6 @@
 from dragonfly import *
 from caster.lib import settings
+from caster.lib.dfplus.state import R
 
 settings.register_language(".cpp", "c++")
 settings.register_language(".h", "c++")
@@ -8,8 +9,8 @@ cmd.map = {
            # Spoken-form    ->    ->    ->     Action object
 		
 		# CCR PROGRAMMING STANDARD
-		"iffae":                        Text("if() {")+Key("enter,up,left"),
-        "el say":        		        Text("else {")+Key("enter"),
+		"iffae":                        R(Key("i, f, lparen, rparen, leftbrace, enter,up,left"), rdescript="If"),
+        "el say":        		        R(Key("e, l, s, e, leftbrace, enter"), rdescript="Else"),
         #
         "switch":						Text("switch(){\ncase : break;\ndefault: break;")+Key("up,up,left,left"),
         "K states":						Text("case :")+Key("left"),

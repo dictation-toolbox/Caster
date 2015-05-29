@@ -61,8 +61,8 @@ class SListUsageRule(MappingRule):
     "L remove <n> [<sticky>]":      R(Function(remove_word), rdescript="Remove From Sticky List"),
     "L clear":                      Function(clear),
     
-    "L run":                        Function(do_enable),
-    "L kill":                       Function(kill),
+    "L run":                        R(Function(do_enable), rdescript="Run Sticky List"),
+    "L kill":                       R(Function(kill), rdescript="Shutdown Sticky List"),
     }   
     extras = [
               IntegerRef("n", 1, 200),

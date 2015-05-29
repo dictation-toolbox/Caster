@@ -3,13 +3,12 @@ import xmlrpclib
 
 from dragonfly import (ActionBase, Text, Key, Function, Mimic, Paste)
 
-from caster.asynch import statuswindow
 from caster.lib import control, utilities, settings
 
 
 class CasterState:
     def __init__(self):
-        self.deck = ContextDeck(self)
+        self.deck = ContextStack(self)
         self.blocker = None
         self.waiting = Queue.Queue()
     def add(self, deck_item):
@@ -201,7 +200,7 @@ class DeckItemContinuer(DeckItemSeeker):
  
         
 
-class ContextDeck:
+class ContextStack:
     def __init__(self, state):
         self.list = []
         self.state = state
@@ -312,10 +311,11 @@ class ContextLevel:  # ContextLevel
         return ContextLevel(*self.sets)
 
 class ContextSeeker(RegisteredAction):
-    def __init__(self, back, forward):
+    def __init__(self, back, forward, rdescript="unnamed command (CS)"):
         RegisteredAction.__init__(self, None)
         self.back = back
         self.forward = forward
+        self.rdescript = rdescript
         global STATE
         self.state = STATE
         assert self.back != None or self.forward != None, "Cannot create ContextSeeker with no levels"
@@ -336,11 +336,12 @@ class Continuer(ContextSeeker):
     termination word is spoken). The time_in_seconds parameter indicates
     how often the associated function should run.
     '''
-    def __init__(self, forward, time_in_seconds=1, repetitions=0):
+    def __init__(self, forward, time_in_seconds=1, repetitions=0, rdescript="unnamed command (A)"):
         ContextSeeker.__init__(self, None, forward)
 #         self.forward = forward
         self.repetitions = repetitions
         self.time_in_seconds = time_in_seconds
+        self.rdescript = rdescript
         global STATE
         self.state = STATE
         assert self.forward != None, "Cannot create Continuer with no termination commands"

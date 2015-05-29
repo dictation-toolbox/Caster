@@ -1,6 +1,7 @@
 from dragonfly import (Function, Grammar, IntegerRef, Dictation, MappingRule, AppContext, Choice)
 
 from caster.lib import  settings, control
+from caster.lib.dfplus.state import R
 
 
 def kill():
@@ -31,16 +32,16 @@ def hmc_directory_browse():
 
 class HMCRule(MappingRule):
     mapping = {
-        "kill homunculus":              Function(kill),
-        "complete":                     Function(complete),
-        "check <n>":                    Function(hmc_checkbox, extra="n"),
-        "focus <field> [box]":          Function(hmc_focus, extra="field"),
+        "kill homunculus":              R(Function(kill), rdescript="Kill Helper Window"),
+        "complete":                     R(Function(complete), rdescript="Complete Input"),
+        "check <n>":                    R(Function(hmc_checkbox, extra="n"), rdescript="Check Checkbox"),
+        "focus <field> [box]":          R(Function(hmc_focus, extra="field"), rdescript="Focus Field"),
         # specific to macro recorder
-        "check from <n> to <n2>":       Function(hmc_recording_check_range, extra={"n", "n2"}),
-        "exclude <n>":                  Function(hmc_recording_exclude, extra="n"),
-        "[make] repeatable":            Function(hmc_recording_repeatable),
+        "check from <n> to <n2>":       R(Function(hmc_recording_check_range, extra={"n", "n2"}), rdescript="Check Range"),
+        "exclude <n>":                  R(Function(hmc_recording_exclude, extra="n"), rdescript="Uncheck Checkbox"),
+        "[make] repeatable":            R(Function(hmc_recording_repeatable), rdescript="Make Macro Repeatable"),
         # specific to your directory browser
-        "browse":                       Function(hmc_directory_browse),
+        "browse":                       R(Function(hmc_directory_browse), rdescript="Browse Computer"),
     }   
     extras = [
               IntegerRef("n", 1, 25),
