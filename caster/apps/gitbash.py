@@ -14,7 +14,7 @@ Command-module for git
 
 from dragonfly import (Grammar, AppContext, MappingRule,
                        Key, Text, Function, IntegerRef)
-
+from caster.lib.dfplus.state import R
 
 def apply(n):
     if n!=0:
@@ -23,8 +23,8 @@ def apply(n):
 class CommandRule(MappingRule):
 
     mapping = {
-        "initialize":       Text( "git init" )+Key("enter"),
-        "add":              Text( "git add ." )+Key("enter"),
+        "initialize repository":       Text( "git init" )+Key("enter"),
+        "add":              R(Key("g, i, t, space, a, d, d, space, dot, enter"), rdescript="GIT: Add All"),
         "status":           Text( "git status" )+Key("enter"),
         "commit":           Text( "git commit -am ''" )+Key("left"),
         "checkout":         Text( "git checkout " ),

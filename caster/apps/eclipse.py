@@ -2,7 +2,7 @@ from dragonfly import (Grammar, AppContext, MappingRule,
                        Dictation, IntegerRef,
                        Key, Text, Repeat, Pause)
 from dragonfly.actions.action_mimic import Mimic
-
+from caster.lib.dfplus.state import R
 # next tab
 class CommandRule(MappingRule):
 
@@ -11,13 +11,12 @@ class CommandRule(MappingRule):
             "previous (editor | tab) [<n>]":            Key("cs-f6") * Repeat(extra="n"),  # these two must be set up in the eclipse preferences
             "next (editor | tab) [<n>]":                Key("c-f6") * Repeat(extra="n"),
             "close (editor | tab) [<n>]":               Key("c-w") * Repeat(extra="n"),
-            "open resource":                            Key("cs-r"),
+            "open resource":                            R(Key("cs-r"), rdescript="Eclipse: Open Resource"),
             "open type":                                Key("cs-t"),
 
             "[go to] line <n> [<mim>]":                 Key("c-l") + Pause("50") + Text("%(n)d") + Key("enter")+ Pause("50")+Mimic(extra="mim"),
             "jump to source":                           Key("f3"),
             "editor select":                            Key("c-e"),
-            "pop":                                      Key("c-space, down, up"),
             
             "step over [<n>]":                          Key("f6/50") * Repeat(extra="n"),
             "step into":                                Key("f5"),
@@ -27,19 +26,17 @@ class CommandRule(MappingRule):
             "mark occurrences":                         Key("as-o"),
 
             # "terminate" changes to the settings for this hotkey: (when: in dialogs and windows)
-            "terminate":                                Key("c-f2"),
+            "terminate":                                R(Key("c-f2"), rdescript="Eclipse: Terminate Running Program"),
             
-            "search for this everywhere":               Key("ca-g"),
-            "refractor symbol":                         Key("sa-r"),
+            "search for this everywhere":               R(Key("ca-g"), rdescript="Eclipse: Search Project"),
+            "refractor symbol":                         R(Key("sa-r"), rdescript="Eclipse: Re-Factor Symbol"),
             
-            "symbol next [<n>]":                        Key("c-k") * Repeat(extra="n"),
-            "symbol prior [<n>]":                       Key("cs-k") * Repeat(extra="n"),            
+            "symbol next [<n>]":                        R(Key("c-k"), rdescript="Eclipse: Symbol Next") * Repeat(extra="n"),
+            "symbol prior [<n>]":                       R(Key("cs-k"), rdescript="Eclipse: Symbol Prior") * Repeat(extra="n"),            
             
-            "format code":                              Key("cs-f"),
-            "do imports":                               Key("cs-o"),
-            "comment line":                             Key("c-slash"),
-            
-            "open resource":                            Key("cs-r"),
+            "format code":                              R(Key("cs-f"), rdescript="Eclipse: Format Code"),
+            "do imports":                               R(Key("cs-o"), rdescript="Eclipse: Do Imports"),
+            "comment line":                             R(Key("c-slash"), rdescript="Eclipse: Comment Line"),
             
             
             # requires quick bookmarks plug-in:
