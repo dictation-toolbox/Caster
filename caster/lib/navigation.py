@@ -270,7 +270,7 @@ def master_text_nav(mtn_mode, mtn_dir, nnavi500, extreme):
 def kill_grids_and_wait():
     window_title = utilities.get_active_window_title()
     if window_title == settings.RAINBOW_TITLE or window_title == settings.DOUGLAS_TITLE or window_title == settings.LEGION_TITLE:
-        grids.communicate().kill()
+        control.COMM.get_com("grids").kill()
         time.sleep(0.1)
 
 def kick():

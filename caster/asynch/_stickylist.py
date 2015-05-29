@@ -1,3 +1,4 @@
+from subprocess import Popen
 import time
 
 from dragonfly import (Function, Text, Grammar, Choice,
@@ -5,7 +6,8 @@ from dragonfly import (Function, Text, Grammar, Choice,
 
 from caster.lib import  settings, utilities, navigation
 from caster.lib import control
-from subprocess import Popen
+from caster.lib.dfplus.state import R
+
 
 def kill():
     control.COMM.get_com("sticky_list").kill()
@@ -54,9 +56,9 @@ def do_enable():
 
 class SListUsageRule(MappingRule):
     mapping = {
-    "L add [<sticky>]":             Function(add_symbol),
-    "L get <n> [<sticky>]":         Function(get_symbol),
-    "L remove <n> [<sticky>]":      Function(remove_word),
+    "L add [<sticky>]":             R(Function(add_symbol), rdescript="Add Selected To Sticky List"),
+    "L get <n> [<sticky>]":         R(Function(get_symbol), rdescript="Retrieve From Sticky List"),
+    "L remove <n> [<sticky>]":      R(Function(remove_word), rdescript="Remove From Sticky List"),
     "L clear":                      Function(clear),
     
     "L run":                        Function(do_enable),

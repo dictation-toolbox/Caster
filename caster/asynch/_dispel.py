@@ -4,6 +4,7 @@ from dragonfly import (Function, Text, Grammar, BringApp, WaitWindow, Key,
                        IntegerRef, Dictation, Mimic, MappingRule)
 
 from caster.lib import control, settings, utilities
+from caster.lib.dfplus.state import R
 
 
 class Dispel:  # this needs an entry in the settings file, needs to retain information when Dragon is reset
@@ -64,12 +65,12 @@ ALARM = Dispel()
 
 class MainRule(MappingRule):
     mapping = {
-    "run dispel":                   Function(ALARM.start),
-    "kill dispel":                  Function(ALARM.stop),
-    "resume dispel":                Function(ALARM.resume),
+    "run dispel":                   R(Function(ALARM.start), rdescript="Turn On Ergonomic Alarm"),
+    "kill dispel":                  R(Function(ALARM.stop), rdescript="Turn Off Ergonomic Alarm"),
+    "resume dispel":                R(Function(ALARM.resume), rdescript="Resume Ergonomic Alarm"),
 #
-    "delay dispel":                 Function(ALARM.delay),
-    "reset dispel":                 Function(ALARM.reset),
+    "delay dispel":                 R(Function(ALARM.delay), rdescript="Delay Ergonomic Alarm"),
+    "reset dispel":                 R(Function(ALARM.reset), rdescript="Reset Ergonomic Alarm"),
     }
     extras = [
               IntegerRef("n", 1, 500),

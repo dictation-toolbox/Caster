@@ -128,6 +128,7 @@ def record_from_history():
 def add_recorded_macro(data):
     # use a response window to get a spec for the new macro: handled by calling function
     commands = []
+    print data
 #     print control.PRESERVED_CACHE
     for i in data["selected_indices"]:
 #         print i, ":", control.PRESERVED_CACHE[i]

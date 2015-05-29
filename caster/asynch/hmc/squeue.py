@@ -1,7 +1,6 @@
 '''
 Message queue
 '''
-from caster.asynch.hmc import homunculus
 from caster.lib import control, utilities
 
 
@@ -19,7 +18,7 @@ def check_for_response():
     if LAST_QUERY != None:
         data = None
         try: 
-            data = homunculus.communicate().get_message()
+            data = control.COMM.get_com("hmc").get_message()
         except Exception:
             TRIES+=1
             if TRIES>9:
