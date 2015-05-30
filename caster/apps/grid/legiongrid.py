@@ -14,7 +14,7 @@ import win32con
 
 from caster.asynch.mouse import grids
 from caster.lib import navigation, settings, control
-
+from caster.lib.dfplus.state import R
 
 def kill():
     control.COMM.get_com("grids").kill()
@@ -52,9 +52,9 @@ def send_input(n, action):
 class GridControlRule(MappingRule):
 
     mapping = {
-        "<n> [<action>]":                   Function(send_input, extra={"n", "action"}),
-        "refresh":                          Function(navigation.mouse_alternates, mode="legion"),
-        "exit":                             Function(kill),
+        "<n> [<action>]":                   R(Function(send_input), rdescript="Legion: Action"),
+        "refresh":                          R(Function(navigation.mouse_alternates, mode="legion"), rdescript="Legion: Refresh"),
+        "exit":                             R(Function(kill), rdescript="Exit Legion"),
 
 
         }

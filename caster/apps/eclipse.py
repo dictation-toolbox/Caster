@@ -8,22 +8,22 @@ class CommandRule(MappingRule):
 
     mapping = {
                     
-            "previous (editor | tab) [<n>]":            Key("cs-f6") * Repeat(extra="n"),  # these two must be set up in the eclipse preferences
-            "next (editor | tab) [<n>]":                Key("c-f6") * Repeat(extra="n"),
-            "close (editor | tab) [<n>]":               Key("c-w") * Repeat(extra="n"),
+            "previous (editor | tab) [<n>]":            R(Key("cs-f6"), rdescript="Eclipse: Previous Tab") * Repeat(extra="n"),  # these two must be set up in the eclipse preferences
+            "next (editor | tab) [<n>]":                R(Key("c-f6"), rdescript="Eclipse: Next Tab") * Repeat(extra="n"),
+            "close (editor | tab) [<n>]":               R(Key("c-w"), rdescript="Eclipse: Close Tab") * Repeat(extra="n"),
             "open resource":                            R(Key("cs-r"), rdescript="Eclipse: Open Resource"),
-            "open type":                                Key("cs-t"),
+            "open type":                                R(Key("cs-t"), rdescript="Eclipse: Open Type"),
 
             "[go to] line <n> [<mim>]":                 Key("c-l") + Pause("50") + Text("%(n)d") + Key("enter")+ Pause("50")+Mimic(extra="mim"),
-            "jump to source":                           Key("f3"),
-            "editor select":                            Key("c-e"),
+            "jump to source":                           R(Key("f3"), rdescript="Eclipse: Jump To Source"),
+            "editor select":                            R(Key("c-e"), rdescript="Eclipse: Editor Select"),
             
-            "step over [<n>]":                          Key("f6/50") * Repeat(extra="n"),
-            "step into":                                Key("f5"),
-            "step out [of]":                            Key("f7"),
-            "resume":                                   Key("f8"),
-            "(debug | run) last":                       Key("f11"),
-            "mark occurrences":                         Key("as-o"),
+            "step over [<n>]":                          R(Key("f6/50") * Repeat(extra="n"), rdescript="Eclipse: Step Over"),
+            "step into":                                R(Key("f5"), rdescript="Eclipse: Step Into"),
+            "step out [of]":                            R(Key("f7"), rdescript="Eclipse: Step Out"),
+            "resume":                                   R(Key("f8"), rdescript="Eclipse: Resume"),
+            "(debug | run) last":                       R(Key("f11"), rdescript="Eclipse: Run Last"),
+            "mark occurrences":                         R(Key("as-o"), rdescript="Eclipse: Mark Occurrences"),
 
             # "terminate" changes to the settings for this hotkey: (when: in dialogs and windows)
             "terminate":                                R(Key("c-f2"), rdescript="Eclipse: Terminate Running Program"),

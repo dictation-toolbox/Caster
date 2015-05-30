@@ -10,7 +10,7 @@ from dragonfly import (Grammar, AppContext, Function,
 
 from caster.asynch.mouse import grids
 from caster.lib import settings, control
-
+from caster.lib.dfplus.state import R
 
 def kill():
     control.COMM.get_com("grids").kill()
@@ -30,8 +30,8 @@ def send_input(pre, color, n, action):
 class GridControlRule(MappingRule):
 
     mapping = {
-        "[<pre>] <color> <n> [<action>]":   Function(send_input, extra={"pre", "color", "n", "action"}),
-        "exit":                             Function(kill),
+        "[<pre>] <color> <n> [<action>]":   R(Function(send_input), rdescript="Rainbow Grid: Action"),
+        "exit":                             R(Function(kill), rdescript="Exit Rainbow Grid"),
 
 
         }

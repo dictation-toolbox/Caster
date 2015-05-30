@@ -24,7 +24,7 @@ cmd.map = {
     'scratch':                      Playback([(["scratch", "that"], 0.0)]),
     'shock [<nnavi50>]':          	R(Key("enter"), rspec="shock", rdescript="Enter")* Repeat(extra="nnavi50"),
     
-    "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]": Function(navigation.master_text_nav, extra={"mtn_mode", "mtn_dir", "nnavi500", "extreme"}),
+    "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]": R(Function(navigation.master_text_nav), rdescript="Keyboard Text Navigation"),
     
     
     "stoosh [<nnavi500>]":          Key("c-c")+R((Function(navigation.clipboard_to_file, extra="nnavi500")), rspec="stoosh", rdescript="Copy"),
@@ -42,7 +42,7 @@ cmd.map = {
 	"Kraken":						R(Key("c-space"), rspec="Kraken", rdescript="Control Space"),
 	     
     # text formatting
-    "(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel) <textnv> [brunt]":  Function(navigation.master_format_text, extra={"capitalization", "spacing", "textnv"}), 
+    "(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel) <textnv> [brunt]":  R(Function(navigation.master_format_text), rdescript="Text Format"), 
 	
 	}
 

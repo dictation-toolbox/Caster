@@ -25,8 +25,8 @@ class CommandRule(MappingRule):
     mapping = {
         "initialize repository":       Text( "git init" )+Key("enter"),
         "add":              R(Key("g, i, t, space, a, d, d, space, dot, enter"), rdescript="GIT: Add All"),
-        "status":           Text( "git status" )+Key("enter"),
-        "commit":           Text( "git commit -am ''" )+Key("left"),
+        "status":           R(Key( "g, i, t, space, s, t, a, t, u, s, enter" ), rdescript="GIT: Status"),
+        "commit":           R(Key( "g, i, t, space, c, o, m, m, i, t, space, minus, a, m, space, apostrophe, apostrophe, left"), rdescript="GIT: Commit"),
         "checkout":         Text( "git checkout " ),
         "merge":            Text( "git merge " ),
         "merge tool":       Text( "git mergetool")+Key("enter"),

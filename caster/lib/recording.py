@@ -167,7 +167,7 @@ def add_recorded_macro(data):
 def load_recorded_rules():
     recorded_macros = utilities.load_json_file(settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
     for spec in recorded_macros:
-        commands = recorded_macros[spec]
+        commands = recorded_macros[spec]# this is a list of lists
         rule = RecordedRule(commands=commands, spec=spec, name="recorded_rule_" + spec, extras=[IntegerRef("n", 1, 50)], defaults={"n":1})
         control.RECORDED_MACROS_GRAMMAR.add_rule(rule)
     if len(control.RECORDED_MACROS_GRAMMAR.rules) > 0:

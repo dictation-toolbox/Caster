@@ -21,7 +21,7 @@ from caster.asynch.hmc import vocabulary_processing
 from caster.asynch.sikuli import sikuli
 from caster.lib import navigation, password
 from caster.lib.pita import scanner
-
+from caster.lib.dfplus.state import R
 
 try:
     from caster.apps import *
@@ -89,10 +89,10 @@ class MainRule(MappingRule):
     'normal mode':                  Playback([(["normal", "mode", "on"], 0.0)]),
     'com on':                       Playback([(["command", "mode", "on"], 0.0)]),
     'com off':                      Playback([(["command", "mode", "off"], 0.0)]),
-    "reboot dragon":                Function(utilities.reboot),
-    "fix dragon double":            Function(fix_Dragon_double),
-    "add word to vocabulary":       Function(vocabulary_processing.add_vocab),
-    "delete word from vocabulary":  Function(vocabulary_processing.del_vocab),
+    "reboot dragon":                R(Function(utilities.reboot), rdescript="Reboot Dragon Naturallyspeaking"),
+    "fix dragon double":            R(Function(fix_Dragon_double), rdescript="Fix Dragon Double Letter"),
+    "add word to vocabulary":       R(Function(vocabulary_processing.add_vocab), rdescript="Vocabulary Management: Add"),
+    "delete word from vocabulary":  R(Function(vocabulary_processing.del_vocab), rdescript="Vocabulary Management: Delete"),
     
     # hardware management
     "volume <volume_mode> [<n>]":   Function(navigation.volume_control, extra={'n', 'volume_mode'}),
@@ -101,37 +101,37 @@ class MainRule(MappingRule):
     # window management
     'minimize':                     Playback([(["minimize", "window"], 0.0)]),
     'maximize':                     Playback([(["maximize", "window"], 0.0)]),
-    "remax":                        Key("a-space/10,r/10,a-space/10,x"),
+    "remax":                        R(Key("a-space/10,r/10,a-space/10,x"), rdescript="Force Maximize"),
         
     # passwords
-    'hash password <text> <text2> <text3>':                    Function(password.hash_password, extra={'text', 'text2', 'text3'}),
-    'get password <text> <text2> <text3>':                     Function(password.get_password, extra={'text', 'text2', 'text3'}),
-    'get restricted password <text> <text2> <text3>':          Function(password.get_restricted_password, extra={'text', 'text2', 'text3'}),
-    'quick pass <text> <text2> <text3>':                       Function(password.get_simple_password, extra={'text', 'text2', 'text3'}),
+    'hash password <text> <text2> <text3>':                    R(Function(password.hash_password), rdescript="Get Hash Password"),
+    'get password <text> <text2> <text3>':                     R(Function(password.get_password), rdescript="Get Seed Password"),
+    'get restricted password <text> <text2> <text3>':          R(Function(password.get_restricted_password), rdescript="Get Char-Restricted Password"),
+    'quick pass <text> <text2> <text3>':                       R(Function(password.get_simple_password), rdescript="Get Crappy Password"),
     
     # mouse alternatives
-    "legion":                       Function(navigation.mouse_alternates, mode="legion"),
-    "rainbow":                      Function(navigation.mouse_alternates, mode="rainbow"),
-    "douglas":                      Function(navigation.mouse_alternates, mode="douglas"),
+    "legion":                       R(Function(navigation.mouse_alternates, mode="legion"), rdescript="Activate Legion"),
+    "rainbow":                      R(Function(navigation.mouse_alternates, mode="rainbow"), rdescript="Activate Rainbow Grid"),
+    "douglas":                      R(Function(navigation.mouse_alternates, mode="douglas"), rdescript="Activate Douglas Grid"),
     
     # pita (fuzzy string matching)
-    "scan directory":               Function(scanner.scan_directory),
-    "rescan current":               Function(scanner.rescan_current_file),
+    "scan directory":               R(Function(scanner.scan_directory), rdescript="Scan Directory For PITA"),
+    "rescan current":               R(Function(scanner.rescan_current_file), rdescript="Rescan Current File For PITA"),
     
     # macro recording and automation
-    "record from history":          Function(recording.record_from_history),
-    "delete recorded macros":       Function(recording.delete_recorded_rules),
-    "wait sec [<n>]":               Pause("%(n)d00"),
+    "record from history":          R(Function(recording.record_from_history), rdescript="Create Macro From Spoken"),
+    "delete recorded macros":       R(Function(recording.delete_recorded_rules), rdescript="Delete Recorded Macros"),
+    "wait sec [<n>]":               R(Pause("%(n)d00"), rdescript="Wait (Macro Recording)"),
     
     # aliasing
-    "alias <text>":                 Function(recording.add_alias),
-    "delete aliases":               Function(recording.delete_alias_rules),
-    "chain alias":                  Function(recording.get_chain_alias_spec), 
+    "alias <text>":                 R(Function(recording.add_alias), rdescript="Create Alias Command"),
+    "delete aliases":               R(Function(recording.delete_alias_rules), rdescript="Delete All Alias Commands"),
+    "chain alias":                  R(Function(recording.get_chain_alias_spec), rdescript="Create CCR Alias Command"), 
     
     # miscellaneous
-    "<enable_disable> <ccr_mode>":  Function(ccr.set_active_command),
-    "refresh <ccr_mode>":           Function(ccr.refresh_from_files), 
-    "again (<n> [(times|time)] | do)":Function(repeat_that),
+    "<enable_disable> <ccr_mode>":  R(Function(ccr.set_active_command), rdescript="Enable CCR Module"),
+    "refresh <ccr_mode>":           R(Function(ccr.refresh_from_files), rdescript="Refresh CCR Module"), 
+    "again (<n> [(times|time)] | do)":R(Function(repeat_that), rdescript="Repeat Last Action"),
     
     }
     extras = [

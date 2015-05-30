@@ -8,6 +8,7 @@ import time
 from dragonfly import (Grammar, AppContext, Function,
                        IntegerRef, Repeat, Playback,
                        Key, Choice, MappingRule)
+from caster.lib.dfplus.state import R
 
 from caster.asynch.mouse import grids
 from caster.lib import settings, control
@@ -30,8 +31,8 @@ def send_input(n, n2, action):
 class GridControlRule(MappingRule):
 
     mapping = {
-        "<n> [by] <n2> [<action>]":         Function(send_input, extra={"n", "n2", "action"}),
-        "exit":                             Function(kill),
+        "<n> [by] <n2> [<action>]":         R(Function(send_input), rdescript="Douglas Grid: Action"),
+        "exit":                             R(Function(kill), rdescript="Exit Douglas Grid"),
                 }
     extras = [
               IntegerRef("n", 0, 300),
