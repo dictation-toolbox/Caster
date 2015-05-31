@@ -9,6 +9,7 @@ from caster.lib.dfplus.hint.nodes import css
 from caster.lib.dfplus.state import ContextSeeker, RegisteredAction, Continuer, R, L, S
 from caster.lib.pita import selector
 
+grammar = Grammar('development')
 
 # from Tkinter import *
 # from tkColorChooser import askcolor 
@@ -120,8 +121,19 @@ class TestRule(CompoundRule):
         CompoundRule.__init__(self, name=name, spec=spec, extras=extras, defaults=defaults, exported=exported, context=context)
     def _process_recognition(self, node, extras):
         print "hello world"
+    extras = [
+              Dictation("text"),
+              IntegerRef("n", 1, 100),
+             ]
+class TestAction(ActionBase):
+    def __init__(self, test_rule):
+        ActionBase.__init__(self)
+        self.test_rule = test_rule
+    def _execute(self, data):
+        
+        self.test_rule._process_recognition(None, None)
 
-my_test_rule=TestRule("my test", "do the test rule")
+my_test_rule=NodeRule(css.getCSSNode(), grammar)#TestRule("my test", "do the test rule <n> now")
        
 class DevRule(MappingRule):
     
@@ -158,7 +170,8 @@ class DevRule(MappingRule):
     "ashes":                        RegisteredAction(Text("ashes fall "), rspec="ashes"),
     "bravery":                      RegisteredAction(Text("bravery is weak "), rspec="bravery"),
     "charcoal boy <text> [<n>]":    R(Text("charcoal is dirty %(text)s"), rspec="charcoal"),
-    
+                            
+    "<frogs>":                      TestAction(my_test_rule), 
     }
     extras = [
               Dictation("text"),
@@ -173,19 +186,21 @@ class DevRule(MappingRule):
               Choice("filetype",
                     {"java": "*.java", "python":"*.py",
                      }),
-              RuleRef(my_test_rule, "frogs like to jump"), 
+              RuleRef(my_test_rule, "frogs"), 
              ]
     defaults = {
                "text": "", "id":None
                }
 
 
-grammar = None
+# grammar = None
 
 def load():
-    grammar = Grammar('development')
+    global grammar
+#     grammar = Grammar('development')
     grammar.add_rule(DevRule())
-    grammar.add_rule(NodeRule(css.getCSSNode(), grammar))
+#     grammar.add_rule(ccr.create_repeat_rule(NodeRule(css.getCSSNode(), grammar)))
+#     grammar.add_rule(NodeRule(css.getCSSNode(), grammar))
     grammar.load()
 
 if settings.SETTINGS["miscellaneous"]["dev_commands"]:

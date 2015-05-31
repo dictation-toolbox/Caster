@@ -7,6 +7,8 @@ import re
 
 from dragonfly import IntegerRef, Dictation, Text, MappingRule
 
+from caster.lib import utilities
+
 
 # for creating extras and defaults
 NUMBER_PATTERN_PUNC = re.compile('(%\([0-9A-Za-z_]+\)d)')
@@ -116,7 +118,7 @@ class NodeRule(MappingRule):
         NodeRule.__init__(self, self.master_node, self.grammar)
     
     def _process_recognition(self, node, extras):
-        
+        utilities.remote_debug("test action")
         node._action.execute(node._data)
 
         new_node = self.node.get_child_node_from_speech_results(extras["_node"].results)

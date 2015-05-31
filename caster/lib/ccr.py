@@ -122,20 +122,14 @@ def create_repeat_rule(language_rule):
     # Here we define the top-level rule which the user can say.
     class RepeatRule(CompoundRule):
         # Here we define this rule's spoken-form and special elements.
-        spec = "<" + sequence_name + "> [[[and] repeat [that]] <n> times]"
+        spec = "<" + sequence_name + ">"
         extras = [
                     sequence,  # Sequence of actions defined above.
-                    IntegerRef("n", 1, 100),  # Times to repeat the sequence.
                    ]
-        defaults = {
-                    "n": 1,  # Default repeat count.
-                   }
         def _process_recognition(self, node, extras):
             sequence = extras[sequence_name]  # A sequence of actions.
-            count = extras["n"]  # An integer repeat count.
-            for i in range(count):
-                for action in sequence:
-                    action.execute()
+            for action in sequence:
+                action.execute()
 
     #---------------------------------------------------------------------------
     
