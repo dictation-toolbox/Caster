@@ -1,21 +1,22 @@
-import time
 from subprocess import Popen
-from dragonfly import (Function, Key, BringApp, Text, WaitWindow, IntegerRef, Dictation, Repeat, Grammar, MappingRule, Choice, Mimic, FocusWindow)
-# from Tkinter import *
-# from tkColorChooser import askcolor 
+import time
+
+from dragonfly import *
 
 from caster.lib import utilities, settings, control, ccr, context
+from caster.lib.dfplus.hint.hintnode import NodeRule
+from caster.lib.dfplus.hint.nodes import css
 from caster.lib.dfplus.state import ContextSeeker, RegisteredAction, Continuer, R, L, S
 from caster.lib.pita import selector
 
 
-
+# from Tkinter import *
+# from tkColorChooser import askcolor 
 def experiment(text):
     '''this function is for tests'''
     try:
         ''''''
-        Mimic(["does", "this", "work"])._execute()
-        Mimic(["does", "this one", "work2"]).execute()
+        print str(text)
             
     except Exception:
         utilities.simple_log(False)
@@ -113,6 +114,15 @@ def grep_this(path, filetype):
     grep="H:/PROGRAMS/NON_install/AstroGrep/AstroGrep.exe"
     Popen([grep, "/spath=\""+str(path) +"\"", "/stypes=\""+str(filetype)+"\"", "/stext=\""+str(c)+"\"", "/s"])
 
+class TestRule(CompoundRule):
+    def __init__(self, text=None, spec=None, extras=None, 
+        defaults=None, exported=None, context=None):
+        CompoundRule.__init__(self, text=text, spec=spec, extras=extras, defaults=defaults, exported=exported, context=context)
+    def _process_recognition(self, node, extras):
+        print "hello world"
+
+my_test_rule=TestRule("my test", "do the test rule")
+       
 class DevRule(MappingRule):
     
     mapping = {
@@ -123,10 +133,10 @@ class DevRule(MappingRule):
     "open natlink folder":          BringApp("explorer", settings.SETTINGS["paths"]["BASE_PATH"].replace("/", "\\")),
     "reserved word <text>":         Key("dquote,dquote,left") + Text("%(text)s") + Key("right, colon, tab/5:5") + Text("Text(\"%(text)s\"),"),
     "refresh ccr directory":        Function(ccr.refresh_from_files),# will need to disable and reenable language
-    "Agrippa <filetype> <path>":  Function(grep_this),
+    "Agrippa <filetype> <path>":    Function(grep_this),
     
     # experimental/incomplete commands
-     
+    
     "experiment <text>":            Function(experiment, extra="text"),
     
     "dredge [<id> <text>]":         Function(dredge), 
@@ -148,6 +158,7 @@ class DevRule(MappingRule):
     "ashes":                        RegisteredAction(Text("ashes fall "), rspec="ashes"),
     "bravery":                      RegisteredAction(Text("bravery is weak "), rspec="bravery"),
     "charcoal boy <text> [<n>]":    R(Text("charcoal is dirty %(text)s"), rspec="charcoal"),
+    
     }
     extras = [
               Dictation("text"),
@@ -162,6 +173,7 @@ class DevRule(MappingRule):
               Choice("filetype",
                     {"java": "*.java", "python":"*.py",
                      }),
+              RuleRef(my_test_rule, "frogs like to jump"), 
              ]
     defaults = {
                "text": "", "id":None
@@ -173,6 +185,7 @@ grammar = None
 def load():
     grammar = Grammar('development')
     grammar.add_rule(DevRule())
+    grammar.add_rule(NodeRule(css.getCSSNode(), grammar))
     grammar.load()
 
 if settings.SETTINGS["miscellaneous"]["dev_commands"]:
