@@ -24,6 +24,28 @@ class HintNode:
             child.set_parent(self)
     def set_parent(self, parent):
         self.parent = parent
+    def get_child_node_from_speech_results(self, results):
+        '''results is a tuple of tuples, (word, code)'''
+        '''only returns null if there are no children'''
+        best_child = (None, 0)
+        for child in self.children:
+            score=0
+            for result in results:
+                if result[1]==4:# code 4 is spoken literal
+                    if child.text==result[0]:
+                        return child
+                    else:
+                        text_to_check=child.text
+                        if self.spec!=None:
+                            for pronunciation in self.spec:
+                                text_to_check += " "+pronunciation
+                        if result[0] in text_to_check:
+                            score += 1
+            if score>best_child[1]:
+                best_child=(child, score)
+        return best_child[0]
+                    
+            
     def fill_out_rule(self, mapping, extras, defaults):
         spec = self.text
         if self.spec!=None and len(self.spec) > 0:
@@ -43,12 +65,12 @@ class HintNode:
         strings = STRING_PATTERN_PUNC.findall(self.text)
         for n in numbers:
             word = NUMBER_PATTERN.findall(n)[0]
-            spec = spec.replace(n, "<" + word + ">")
+#             spec = spec.replace(n, "<" + word + ">")
             extras.append(IntegerRef(word, 0, 10000))
             defaults[word] = 1
         for s in strings:
             word = STRING_PATTERN.findall(s)[0]
-            spec = spec.replace(s, "<" + word + ">")
+#             spec = spec.replace(s, "<" + word + ">")
             extras.append(Dictation(word))
             defaults[word] = ""
         
@@ -65,7 +87,7 @@ class NodeRule(MappingRule):
         self.grammar = grammar
     
     def __init__(self, node, grammar):
-        self.grammar = grammar # for self modification
+        # for self modification
         self.node = node
         if self.master_node==None:
             self.master_node=self.node
@@ -84,30 +106,31 @@ class NodeRule(MappingRule):
         defaults["next_nodes"] = ""
         
         MappingRule.__init__(self, "node_" + str(self.master_node.text), mapping, extras, defaults)
-        
+        self.grammar = grammar
         
     
     def change_node(self, node):
-        self.__init__(node, self.grammar)
+        NodeRule.__init__(self, node, self.grammar)
     
     def reset_node(self):
-        self.__init__(self.master_node, self.grammar)
+        NodeRule.__init__(self, self.master_node, self.grammar)
     
     def _process_recognition(self, node, extras):
         
         node._action.execute(node._data)
-#         MappingRule._process_recognition(self, value, extras)
-        new_node = None
-        results = extras["_node"].results
-        print results
-        # background 100background bar
-#         Text(self.node.text).execute(node._data)
+
+        new_node = self.node.get_child_node_from_speech_results(extras["_node"].results)
+        
+        
+        
         if extras["next_nodes"]!="":
             '''attempt to parse out further nodes-- print them, then set new_node to last'''
         
-#         self.grammar.unload()
-#         self.change_node(new_node)
-#         self.grammar.load()
+        
+        
+        self.grammar.unload()
+        self.change_node(new_node)
+        self.grammar.load()
     
 
 def node_into_rule(node):

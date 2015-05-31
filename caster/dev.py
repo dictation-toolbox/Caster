@@ -3,7 +3,7 @@ import time
 
 from dragonfly import *
 
-from caster.lib import utilities, settings, control, ccr, context
+from caster.lib import utilities, settings, ccr, context
 from caster.lib.dfplus.hint.hintnode import NodeRule
 from caster.lib.dfplus.hint.nodes import css
 from caster.lib.dfplus.state import ContextSeeker, RegisteredAction, Continuer, R, L, S
@@ -115,9 +115,9 @@ def grep_this(path, filetype):
     Popen([grep, "/spath=\""+str(path) +"\"", "/stypes=\""+str(filetype)+"\"", "/stext=\""+str(c)+"\"", "/s"])
 
 class TestRule(CompoundRule):
-    def __init__(self, text=None, spec=None, extras=None, 
+    def __init__(self, name=None, spec=None, extras=None, 
         defaults=None, exported=None, context=None):
-        CompoundRule.__init__(self, text=text, spec=spec, extras=extras, defaults=defaults, exported=exported, context=context)
+        CompoundRule.__init__(self, name=name, spec=spec, extras=extras, defaults=defaults, exported=exported, context=context)
     def _process_recognition(self, node, extras):
         print "hello world"
 
