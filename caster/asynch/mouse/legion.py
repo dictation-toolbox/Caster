@@ -79,7 +79,7 @@ class LegionGrid(TkTransparent):
     def draw_tirg_squares(self):
         ''''''
         font = "Arial 12 bold"
-        fill_inner = "Red"
+        fill_inner = "Orange"
         fill_outer = "Black"
         rect_num = 0
         for rect in self.tirg_rectangles:

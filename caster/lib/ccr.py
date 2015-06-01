@@ -110,22 +110,17 @@ def generate_language_rule_pair(path):
 
 def create_repeat_rule(language_rule):
 
-    alternatives = []
-    alternatives.append(RuleRef(rule=language_rule))
-    single_action = Alternative(alternatives)
-    
+    single_action = Alternative([RuleRef(rule=language_rule)])
     sequence_name = "sequence_" + "language"
     sequence = Repetition(single_action, min=1, max=16, name=sequence_name)
-    
     
     #---------------------------------------------------------------------------
     # Here we define the top-level rule which the user can say.
     class RepeatRule(CompoundRule):
         # Here we define this rule's spoken-form and special elements.
         spec = "<" + sequence_name + ">"
-        extras = [
-                    sequence,  # Sequence of actions defined above.
-                   ]
+        extras = [ sequence ] # Sequence of actions defined above.
+                   
         def _process_recognition(self, node, extras):
             sequence = extras[sequence_name]  # A sequence of actions.
             for action in sequence:
@@ -203,9 +198,10 @@ def set_active(ccr_mode=None):
             if settings.SETTINGS["ccr"]["modes"][r]:
                 new_rule_ccr = merge_copy(rule_pairs[r][0], new_rule_ccr, None)
                 if rule_pairs[r][1] != None:
-                    new_rule_nonccr = merge_copy(rule_pairs[r][1], new_rule_nonccr, None)    
+                    new_rule_nonccr = merge_copy(rule_pairs[r][1], new_rule_nonccr, None)
+    
     current_combined_rule_ccr = new_rule_ccr
-    # self.
+    # 
     if new_rule_nonccr != None:
 #         utilities.remote_debug("ccr")
         current_combined_rule_nonccr = new_rule_nonccr

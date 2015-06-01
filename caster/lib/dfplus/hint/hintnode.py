@@ -5,7 +5,7 @@ Created on May 27, 2015
 '''
 import re
 
-from dragonfly import IntegerRef, Dictation, Text, MappingRule
+from dragonfly import IntegerRef, Dictation, Text, MappingRule, ActionBase
 
 from caster.lib import utilities
 
@@ -33,7 +33,7 @@ class HintNode:
         for child in self.children:
             score=0
             for result in results:
-                if result[1]==4:# code 4 is spoken literal
+                if result[1]==1:# code 1 is spoken literal, 5=number parameter, 1mil=string parameter
                     if child.text==result[0]:
                         return child
                     else:
@@ -118,15 +118,17 @@ class NodeRule(MappingRule):
         NodeRule.__init__(self, self.master_node, self.grammar)
     
     def _process_recognition(self, node, extras):
-        utilities.remote_debug("test action")
+#         utilities.remote_debug("test action")
+        node=node[self.master_node.text]
+        # 
         node._action.execute(node._data)
-
-        new_node = self.node.get_child_node_from_speech_results(extras["_node"].results)
+        
+        new_node = self.node.get_child_node_from_speech_results(node._data["_node"].results)
         
         
         
-        if extras["next_nodes"]!="":
-            '''attempt to parse out further nodes-- print them, then set new_node to last'''
+#         if extras["next_nodes"]!="":
+#             '''attempt to parse out further nodes-- print them, then set new_node to last'''
         
         
         
@@ -134,6 +136,10 @@ class NodeRule(MappingRule):
         self.change_node(new_node)
         self.grammar.load()
     
+class NodeAction(ActionBase):
+    def __init__(self, node_rule):
+        ActionBase.__init__(self)
+        self.node_rule = node_rule
+    def _execute(self, data):
+        self.node_rule._process_recognition(data, None)
 
-def node_into_rule(node):
-    ''''''

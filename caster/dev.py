@@ -4,10 +4,11 @@ import time
 from dragonfly import *
 
 from caster.lib import utilities, settings, ccr, context
-from caster.lib.dfplus.hint.hintnode import NodeRule
+from caster.lib.dfplus.hint.hintnode import NodeRule, NodeAction
 from caster.lib.dfplus.hint.nodes import css
 from caster.lib.dfplus.state import ContextSeeker, RegisteredAction, Continuer, R, L, S
 from caster.lib.pita import selector
+
 
 grammar = Grammar('development')
 
@@ -115,25 +116,9 @@ def grep_this(path, filetype):
     grep="H:/PROGRAMS/NON_install/AstroGrep/AstroGrep.exe"
     Popen([grep, "/spath=\""+str(path) +"\"", "/stypes=\""+str(filetype)+"\"", "/stext=\""+str(c)+"\"", "/s"])
 
-class TestRule(CompoundRule):
-    def __init__(self, name=None, spec=None, extras=None, 
-        defaults=None, exported=None, context=None):
-        CompoundRule.__init__(self, name=name, spec=spec, extras=extras, defaults=defaults, exported=exported, context=context)
-    def _process_recognition(self, node, extras):
-        print "hello world"
-    extras = [
-              Dictation("text"),
-              IntegerRef("n", 1, 100),
-             ]
-class TestAction(ActionBase):
-    def __init__(self, test_rule):
-        ActionBase.__init__(self)
-        self.test_rule = test_rule
-    def _execute(self, data):
-        
-        self.test_rule._process_recognition(None, None)
 
-my_test_rule=NodeRule(css.getCSSNode(), grammar)#TestRule("my test", "do the test rule <n> now")
+
+css_rule = NodeRule(css.getCSSNode(), grammar)  # TestRule("my test", "do the test rule <n> now")
        
 class DevRule(MappingRule):
     
@@ -144,34 +129,34 @@ class DevRule(MappingRule):
 
     "open natlink folder":          BringApp("explorer", settings.SETTINGS["paths"]["BASE_PATH"].replace("/", "\\")),
     "reserved word <text>":         Key("dquote,dquote,left") + Text("%(text)s") + Key("right, colon, tab/5:5") + Text("Text(\"%(text)s\"),"),
-    "refresh ccr directory":        Function(ccr.refresh_from_files),# will need to disable and reenable language
+    "refresh ccr directory":        Function(ccr.refresh_from_files),  # will need to disable and reenable language
     "Agrippa <filetype> <path>":    Function(grep_this),
     
     # experimental/incomplete commands
     
     "experiment <text>":            Function(experiment, extra="text"),
     
-    "dredge [<id> <text>]":         Function(dredge), 
+    "dredge [<id> <text>]":         Function(dredge),
     
-    "backward seeker":              ContextSeeker([L(S(["ashes", "charcoal"], Text, "ashes1"), 
-                                                      S(["bravery"], Text, "bravery1")), 
-                                                   L(S(["ashes", "charcoal"], Text, "ashes2"), 
+    "backward seeker":              ContextSeeker([L(S(["ashes", "charcoal"], Text, "ashes1"),
+                                                      S(["bravery"], Text, "bravery1")),
+                                                   L(S(["ashes", "charcoal"], Text, "ashes2"),
                                                       S(["bravery"], Text, "bravery2"))
                                                    ], None),
-    "forward seeker [<text>]":      ContextSeeker(None, 
-                                                  [L(S(["ashes", "charcoal"], Text, "ashes1 [%(text)s] "), 
-                                                      S(["bravery"], Text, "bravery1 [%(text)s] ")), 
-                                                   L(S(["ashes", "charcoal"], Text, "ashes2 [%(text)s] "), 
+    "forward seeker [<text>]":      ContextSeeker(None,
+                                                  [L(S(["ashes", "charcoal"], Text, "ashes1 [%(text)s] "),
+                                                      S(["bravery"], Text, "bravery1 [%(text)s] ")),
+                                                   L(S(["ashes", "charcoal"], Text, "ashes2 [%(text)s] "),
                                                       S(["bravery"], Text, "bravery2 [%(text)s] "))
                                                    ]),
-    "never-ending":                 Continuer([L(S(["ashes", "charcoal"], print_time, None), 
+    "never-ending":                 Continuer([L(S(["ashes", "charcoal"], print_time, None),
                                                       S(["bravery"], Text, "bravery1"))
-                                                   ], time_in_seconds=0.2, repetitions=20 ),
+                                                   ], time_in_seconds=0.2, repetitions=20),
     "ashes":                        RegisteredAction(Text("ashes fall "), rspec="ashes"),
     "bravery":                      RegisteredAction(Text("bravery is weak "), rspec="bravery"),
     "charcoal boy <text> [<n>]":    R(Text("charcoal is dirty %(text)s"), rspec="charcoal"),
                             
-    "<frogs>":                      TestAction(my_test_rule), 
+    "<" + css_rule.master_node.text + ">":  NodeAction(css_rule),
     }
     extras = [
               Dictation("text"),
@@ -186,7 +171,7 @@ class DevRule(MappingRule):
               Choice("filetype",
                     {"java": "*.java", "python":"*.py",
                      }),
-              RuleRef(my_test_rule, "frogs"), 
+              RuleRef(css_rule, css_rule.master_node.text), 
              ]
     defaults = {
                "text": "", "id":None
@@ -199,8 +184,6 @@ def load():
     global grammar
 #     grammar = Grammar('development')
     grammar.add_rule(DevRule())
-#     grammar.add_rule(ccr.create_repeat_rule(NodeRule(css.getCSSNode(), grammar)))
-#     grammar.add_rule(NodeRule(css.getCSSNode(), grammar))
     grammar.load()
 
 if settings.SETTINGS["miscellaneous"]["dev_commands"]:

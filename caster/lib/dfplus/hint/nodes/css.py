@@ -33,7 +33,7 @@ def _get_background():
             H("padding-box", [], ["padding box"]),
             H("border-box", [], ["border box"]),
                      ]
-    return H("background %(t)s", [
+    return H("background %(t)s %(tt)d", [
         H("image", [
             H("url", [], ["Earl", "URL"]),        
             H("none"),                    
@@ -65,7 +65,7 @@ def _get_background():
             H("each-box", [], ["each box"]),
             H("continuous"),  
                     ]),
-                                ], ["background [<t>]"])
+                                ], ["background [<t>] [<tt>] [toilet] Smith"])
 
 
 
