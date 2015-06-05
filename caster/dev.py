@@ -134,7 +134,7 @@ class DevRule(MappingRule):
     
     # experimental/incomplete commands
     
-    "experiment <text>":            Function(experiment, extra="text"),
+    "experiment <text>":            Function(experiment),
     
     "dredge [<id> <text>]":         Function(dredge),
     

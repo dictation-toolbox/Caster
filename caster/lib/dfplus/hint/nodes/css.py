@@ -6,13 +6,13 @@ Created on May 30, 2015
 from caster.lib.dfplus.hint import hintnode
 
 class MN(hintnode.HintNode):# Measurement Node
-    def __init__(self, text, extras=[]):
+    def __init__(self, text, extras=[], spec=None):
         children = [
              hintnode.HintNode("px", [], ["pixels"]),# %(n)d 
              hintnode.HintNode("em", [], ["EM"]),
              hintnode.HintNode("%", [], ["percent"]),
              ] + extras
-        hintnode.HintNode.__init__(self, text, children)
+        hintnode.HintNode.__init__(self, text, children, spec)
     
 
 def getCSSNode():
@@ -27,13 +27,14 @@ def _get_background():
     H = hintnode.HintNode
     halign = [MN("left"), MN("center"), MN("right")]
     background_position = halign+[
-        MN("xpos"), MN("ypos"), H("initial"), H("inherit")]
+        MN("xpos", [], ["X position"]), MN("ypos", [], ["Y position"]), H("initial"), H("inherit")]
     background_box = [
             H("border-box", [], ["border box"]), 
             H("padding-box", [], ["padding box"]),
             H("border-box", [], ["border box"]),
                      ]
-    return H("background %(t)s %(tt)d", [
+    return H("background", [
+#     return H("background %(t)s%(tt)d", [
         H("image", [
             H("url", [], ["Earl", "URL"]),        
             H("none"),                    
@@ -65,7 +66,7 @@ def _get_background():
             H("each-box", [], ["each box"]),
             H("continuous"),  
                     ]),
-                                ], ["background [<t>] [<tt>] [toilet] Smith"])
+                                ], ["background"])
 
 
 
