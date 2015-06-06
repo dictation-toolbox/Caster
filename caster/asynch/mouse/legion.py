@@ -1,5 +1,5 @@
-import SimpleXMLRPCServer
 from SimpleXMLRPCServer import *
+import SimpleXMLRPCServer
 from ctypes import *
 import getopt
 import re
@@ -8,13 +8,16 @@ import threading
 
 from PIL import ImageGrab
 
+
+
+
 try: # Style C -- may be imported into Caster, or externally
     BASE_PATH = "C:/NatLink/NatLink/MacroSystem/"
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:
-    from caster.asynch.mouse.grids import TkTransparent
-    from caster.lib import settings
+    from caster.asynch.mouse.grids import TkTransparent, Dimensions
+    from caster.lib import settings, utilities
 
 class Rectangle:
     top = None
@@ -41,12 +44,15 @@ class LegionGrid(TkTransparent):
         self.server.register_function(self.xmlrpc_go, "go")
     
     def xmlrpc_go(self, index):
-        self.move_mouse(int(self.tirg_positions[index][0]), int(self.tirg_positions[index][1]))
+        self.move_mouse(int(self.tirg_positions[index][0]+self.dimensions.x), 
+                        int(self.tirg_positions[index][1]+self.dimensions.y))
     
     def xmlrpc_retrieve_data_for_highlight(self, strindex):
         if strindex in self.tirg_positions:
             position_data = self.tirg_positions[strindex]
-            return {"l": position_data[2], "r": position_data[3], "y": position_data[1]}
+            return {"l": position_data[2]+self.dimensions.x, 
+                    "r": position_data[3]+self.dimensions.x, 
+                    "y": position_data[1]+self.dimensions.y}
         else:
             return {"err": strindex + " not in map"}
     
@@ -60,13 +66,13 @@ class LegionGrid(TkTransparent):
             ii = i % 4
             if ii == 0:
                 curr_rect = Rectangle()
-                curr_rect.left = int(tirg_list[i])
+                curr_rect.left = int(tirg_list[i])#-self.dimensions.x
             elif ii == 1:
-                curr_rect.top = int(tirg_list[i])
+                curr_rect.top = int(tirg_list[i])#-self.dimensions.y
             elif ii == 2:
-                curr_rect.right = int(tirg_list[i])
+                curr_rect.right = int(tirg_list[i])#-self.dimensions.x
             elif ii == 3:
-                curr_rect.bottom = int(tirg_list[i])
+                curr_rect.bottom = int(tirg_list[i])#-self.dimensions.y
                 self.tirg_rectangles.append(curr_rect) 
     
     
@@ -164,18 +170,24 @@ def main(argv):
     except getopt.GetoptError:
         print help_message
         sys.exit(2)
-    for opt, arg in opts:
-        if opt == '-h':
-            print help_message
-            sys.exit()
-        elif opt in ("-t", "--tirg"):
-            tirg = arg
-        elif opt in ("-d", "--dimensions"):
-            dimensions = arg
-        elif opt in ("-a", "--autoquit"):
-            auto_quit = arg in ("1", "t")    
-            
-    lg = LegionGrid(grid_size=dimensions, tirg=tirg, auto_quit=auto_quit)
+    try:
+        for opt, arg in opts:
+            if opt == '-h':
+                print help_message
+                sys.exit()
+            elif opt in ("-t", "--tirg"):
+                tirg = arg
+            elif opt in ("-d", "--dimensions"):
+                # wxh+x+y
+                dimensions = Dimensions(*[int(n) for n in arg.split("_")])
+            elif opt in ("-a", "--autoquit"):
+                auto_quit = arg in ("1", "t")    
+        
+        lg = LegionGrid(grid_size=dimensions, tirg=tirg, auto_quit=auto_quit)
+    except Exception:
+        utilities.simple_log(True)
+        
+        
 
 if __name__ == "__main__":
     main(sys.argv[1:])

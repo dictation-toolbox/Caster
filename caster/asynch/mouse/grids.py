@@ -160,25 +160,7 @@ class RainbowGrid(TkTransparent):
         if pre > 0:
             pre -= 1
         selected_index = self.position_index[color + pre * len(self.colors)][num]
-        self.move_mouse(selected_index[0], selected_index[1])
-    
-    def process(self):
-        ''''''
-        if self.mode == "p":
-            self.info_pre = int(self.digits)
-            if self.info_pre > 0:
-                self.info_pre -= 1
-        elif self.mode == "c":
-            self.info_color = int(self.digits)
-        elif self.mode == "n":
-            self.info_num = int(self.digits)
-            
-            # have all required info, proceed to do action
-            selected_index = self.position_index[self.info_color + self.info_pre * len(self.colors)][self.info_num]
-#             self.hide()
-            self.move_mouse(selected_index[0], selected_index[1])
-            self.mode = ""
-                
+        self.move_mouse(selected_index[0]+self.dimensions.x, selected_index[1]+self.dimensions.y)
     
     def fill_xs_ys(self):
         # only figure out the coordinates of the lines once
@@ -193,7 +175,10 @@ class RainbowGrid(TkTransparent):
         
     def draw(self):
         self.pre_redraw()
-        self.img = ImageGrab.grab()  # .filter(ImageFilter.BLUR)
+        self.img = ImageGrab.grab([self.dimensions.x, 
+                                  self.dimensions.y, 
+                                  self.dimensions.x+self.dimensions.width, 
+                                  self.dimensions.y+self.dimensions.height])  # .filter(ImageFilter.BLUR)
         self.draw_squares()
         self.finalize()
         self.unhide()
@@ -335,7 +320,7 @@ class DouglasGrid(TkTransparent):
 
     
 def main(argv):
-    help_message = 'mouse.py -m <mode>\nr\trainbow grid\nd\tdouglas grid'
+    help_message = 'grids.py -m <mode>\nr\trainbow grid\nd\tdouglas grid'
     try:
         opts, args = getopt.getopt(argv, "hm:")
     except getopt.GetoptError:

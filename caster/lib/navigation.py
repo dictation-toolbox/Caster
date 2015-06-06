@@ -131,9 +131,9 @@ def mouse_alternates(mode):
                     pass
                 else:
                     ls = LegionScanner()
-                    ls.scan()
+                    ls.scan()#[500, 500, 1000, 1000]
                     tscan = ls.get_update()
-                    Popen(["pythonw", settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0]])
+                    Popen(["pythonw", settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0]])#, "-d", "500_500_500_500"
             else:
                 utilities.availability_message("Legion", "PIL")
             
@@ -142,7 +142,7 @@ def mouse_alternates(mode):
         elif mode == "douglas":
             Popen(["pythonw", settings.SETTINGS["paths"]["DOUGLAS_PATH"], "-m", "d"])
     except Exception:
-        utilities.simple_log(False)
+        utilities.simple_log(True)
     
 
 def clipboard_to_file(nnavi500, do_copy=False):
