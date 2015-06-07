@@ -3,7 +3,7 @@ import time
 
 from dragonfly import *
 
-from caster.lib import utilities, settings, ccr, context
+from caster.lib import utilities, settings, ccr, context, control
 from caster.lib.dfplus.hint.hintnode import NodeRule, NodeAction
 from caster.lib.dfplus.hint.nodes import css
 from caster.lib.dfplus.state import ContextSeeker, RegisteredAction, Continuer, R, L, S
@@ -118,7 +118,7 @@ def grep_this(path, filetype):
 
 
 
-css_rule = NodeRule(css.getCSSNode(), grammar)  # TestRule("my test", "do the test rule <n> now")
+css_rule = NodeRule(css.getCSSNode(), grammar, control.STAT)  # TestRule("my test", "do the test rule <n> now")
        
 class DevRule(MappingRule):
     

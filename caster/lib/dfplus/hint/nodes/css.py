@@ -35,37 +35,37 @@ def _get_background():
                      ]
     return H("background", [
 #     return H("background %(t)s%(tt)d", [
-        H("image", [
+        H("-image: ", [
             H("url", [], ["Earl", "URL"]),        
             H("none"),                    
-                    ]),                                         
-        H("position", [
-            H("top", background_position),          
-            H("center", background_position),
-            H("bottom", background_position),
-                       ]),
-        MN("size", [H("auto"), H("cover"), H("contain")]),
-        H("repeat", [
+                    ], ["image"]),                                         
+        H("-position: ", [
+            H("top ", background_position),          
+            H("center ", background_position),
+            H("bottom ", background_position),
+                       ], ["position"]),
+        MN("-size: ", [H("auto"), H("cover"), H("contain")], ["size"]),
+        H("-repeat: ", [
             H("repeat"), 
             H("repeat-x", [], ["repeat X"]),
             H("repeat-y", [], ["repeat Y"]),
             H("no-repeat", [], ["no repeat"]),
-                     ]),
-        H("attachment", [
+                     ], ["repeat"]),
+        H("-attachment: ", [
             H("scroll"),
             H("fixed")            
-                         ]),
-        H("origin", background_box),
-        MN("clip", background_box + [ H("no-clip", [], ["no clip"])]),
-        H("color", [
+                         ], ["attachment"]),
+        H("-origin: ", background_box, ["origin"]),
+        MN("-clip: ", background_box + [ H("no-clip", [], ["no clip"])], ["clip"]),
+        H("-color: ", [
             H("COLOR", [], ["color"]), 
             H("transparent"), 
-                    ]),
-        H("break", [
+                    ], ["color"]),
+        H("-break: ", [
             H("bounding-box", [], ["bounding box"]), 
             H("each-box", [], ["each box"]),
             H("continuous"),  
-                    ]),
+                    ], ["break"]),
                                 ], ["background"])
 
 

@@ -7,7 +7,7 @@ import re
 
 from dragonfly import IntegerRef, Dictation, Text, MappingRule, ActionBase
 
-from caster.lib import utilities
+from caster.lib import control
 
 
 # for creating extras and defaults
@@ -29,31 +29,6 @@ class HintNode:
         
     def set_parent(self, parent):
         self.parent = parent
-    def get_node_from_speech_results(self, results):
-        '''results is a tuple of tuples, (word, code)'''
-        '''only returns null if there are no children'''
-        nodes = self.children
-        best_node = (None, 0)
-        for node in nodes:
-            score=0
-            points=len(results)
-            for result in results:
-                if result[1]==1:# code 1 is spoken literal, 5=number parameter, 1mil=string parameter
-                    if node.text==result[0]:
-                        return node
-                    else:
-                        text_to_check=node.text
-                        if node.spec!=None:
-                            for pronunciation in node.spec:
-                                text_to_check += " "+pronunciation
-                        if result[0] in text_to_check:
-                            score += points 
-                        points -= 1 # penalize words that are later on in the results, in case words appear more than once
-                        
-            print node.text, " :: ", score                
-            if score>best_node[1]:
-                best_node=(node, score)
-        return best_node[0]
     
     def explode_children(self, depth):
         results = [self.get_spec_and_text_and_node()]
@@ -62,8 +37,7 @@ class HintNode:
             for child in self.children:
                 e = child.explode_children(depth)
                 for t in e:
-#                     results.append(results[0] + " " + s)
-                    results.append((results[0][0] + " " + t[0], results[0][1] + " " + t[1], t[2]))
+                    results.append((results[0][0] + " " + t[0], results[0][1] + t[1], t[2]))
         return results
     
     def get_spec_and_text_and_node(self):
@@ -81,12 +55,9 @@ class HintNode:
         return (spec, text, self)
             
     def fill_out_rule(self, mapping, extras, defaults, node_rule):
-#         utilities.remote_debug("fill_out_rule")
         specs = self.explode_children(self.explode_depth)
         if len(specs)>1:
             specs.append(self.get_spec_and_text_and_node())
-        
-        
         
         # generate extras, defaults, and spec based on node text
         global NUMBER_PATTERN_PUNC, STRING_PATTERN_PUNC, NUMBER_PATTERN, STRING_PATTERN
@@ -108,16 +79,21 @@ class HintNode:
 
 class NodeRule(MappingRule):
     master_node = None
+    stat_msg = None
     
     def set_grammar(self, grammar):
         '''for when the grammar is not known in advance'''
         self.grammar = grammar
     
-    def __init__(self, node, grammar):
+    def __init__(self, node, grammar, stat_msg=None, is_reset=False):
         # for self modification
         self.node = node
-        if self.master_node==None:
-            self.master_node=self.node
+        first = False
+        if self.master_node == None:
+            self.master_node = self.node
+            first = True
+        if self.stat_msg == None:
+            self.stat_msg = stat_msg
         
         if grammar:
             grammar.unload()
@@ -129,19 +105,29 @@ class NodeRule(MappingRule):
         # each child node gets turned into a mapping key/value
         for child in self.node.children:
             child.fill_out_rule(mapping, extras, defaults, self)
-        print [x for x in mapping]
+        
+        if len(mapping)==0:
+            if self.stat_msg!=None and not first:
+                self.stat_msg.text("Node Reset")# status window messaging
+            self.reset_node()
+            for child in self.node.children:
+                child.fill_out_rule(mapping, extras, defaults, self)
+        else:
+            if self.stat_msg!=None and not first and not is_reset:# status window messaging
+                self.stat_msg.hint("\n".join([x.get_spec_and_text_and_node()[0] for x in self.node.children]))
         
         MappingRule.__init__(self, "node_" + str(self.master_node.text), mapping, extras, defaults)
         self.grammar = grammar
         
     
-    def change_node(self, node):
+    def change_node(self, node, reset=False):
         self.grammar.unload()
-        NodeRule.__init__(self, node, self.grammar)
+#         NodeRule.__init__(self, node, self.grammar)
+        NodeRule.__init__(self, node, self.grammar, None, reset)
         self.grammar.load()
     
     def reset_node(self):
-        self.change_node(self.master_node)
+        self.change_node(self.master_node, True)
     
     def _process_recognition(self, node, extras):
         '''

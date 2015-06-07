@@ -23,7 +23,7 @@ ALIASES_GRAMMAR = Grammar("aliases")
 def print_startup_message():
     print "*- Starting " + settings.SOFTWARE_NAME + " -*"
 
-class DependencyMan():
+class DependencyMan:
     def __init__(self):
         self.list = [("natlink", None, ["Auto-Command", "SelectiveAction"], "http://sourceforge.net/projects/natlink"),
                    ("PIL", None, ["Legion"], "https://pypi.python.org/pypi/Pillow"),
@@ -52,5 +52,15 @@ class DependencyMan():
 print_startup_message()
 DEP = DependencyMan()
 
+class StatusIntermediary:
+    def __init__(self):
+        global COMM
+        self.communicator = COMM
+    def hint(self, message):
+        if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
+            self.communicator.get_com("status").hint(message)
+    def text(self, message):
+        if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
+            self.communicator.get_com("status").text(message)
 
-
+STAT = StatusIntermediary()

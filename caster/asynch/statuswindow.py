@@ -46,6 +46,7 @@ class StatusWindow(TkTransparent):
         comm = Communicator()
         self.server = SimpleXMLRPCServer(("127.0.0.1", comm.com_registry["status"]), allow_none=True)
         self.server.register_function(self.xmlrpc_kill, "kill")
+        self.server.register_function(self.xmlrpc_hint, "hint")
         self.server.register_function(self.xmlrpc_text, "text")
      
     def xmlrpc_text(self, text):
@@ -66,6 +67,9 @@ class StatusWindow(TkTransparent):
                 with_lines+="\n"
         self.v.set(with_lines)
     
+    def xmlrpc_hint(self, text):
+        self.after(10, lambda: self.v.set(text))
+    
     def start_move(self, event):
         self.x = event.x
         self.y = event.y
@@ -80,7 +84,6 @@ class StatusWindow(TkTransparent):
         x = self.winfo_x() + deltax
         y = self.winfo_y() + deltay
         self.geometry("+%s+%s" % (x, y))
-
 
 if __name__ == '__main__':
     app = StatusWindow()
