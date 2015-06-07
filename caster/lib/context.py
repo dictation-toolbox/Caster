@@ -3,7 +3,7 @@ import time
 
 from dragonfly import *
 
-from caster.lib import utilities
+from caster.lib import utilities, control
 from caster.lib.dfplus import state
 
 
@@ -137,7 +137,7 @@ def read_selected_without_altering_clipboard(same_is_okay=False):
 def fill_within_line(target):
     result = navigate_to_character("left", str(target))
     if result:
-        state.STATE.halt_asynchronous(True)
+        control.NEXUS.get("state").halt_asynchronous(True)
     return result
         
 def nav(parameters):
