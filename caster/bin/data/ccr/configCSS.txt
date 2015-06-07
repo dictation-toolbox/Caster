@@ -3,97 +3,35 @@
 #  meant to enable python  syntax with CCR
 
 from dragonfly import *
-from caster.lib import settings, navigation
+from caster.lib import control, settings
+from caster.lib.dfplus.hint.nodes import css
+from caster.lib.dfplus.hint.hintnode import NodeRule, NodeAction
+from caster.lib.dfplus.state import ContextSeeker, RegisteredAction, Continuer, R, L, S
 
 settings.register_language(".css", "CSS")
 
+
+css_rule = NodeRule(css.getCSSNode(), control.STAT)
+
 cmd.map = {
         # Spoken-form    ->    ->    ->     Action object
-		
-		# # #      Selectors     # # # # 
-		#
- 		# ID
- 		"lady <letter_1> <letter_2>": 			Text("#%(letter_1)s%(letter_2)s"),
- 		# class
- 		"lacrosse <letter_1> <letter_2>": 		Text(".%(letter_1)s%(letter_2)s"),
- 		# attribute
- 		"at her <letter_1> <letter_2>": 		Text("[%(letter_1)s%(letter_2)s=] ")+Key("left/5:3"),
-		# other odd selectors like first child
-		
-		# html elements
-		
-		
-		
-		# # #      Properties     # # # # 
-		#
-		# margin border padding
-		"<box_part> [<side> <values>]":			Text("%(box_part)s%(side)s%(values)s"),
-		
-		# div properties
-		"<div_prop> <values>":					Text("%(div_prop)s:%(values)s"), 
-		
-		# transitions
-		
-		# gradients
-		
-		# media queries
-
-		# font
-		
-		# pseudo- classes
-		
-		
-		
-		# # #      Values     # # # # 
-		#
-		# measurements px em %
-		"<ncss> <measurement>":					Text("%(ncss)d%(measurement)s "),	
- 		
- 		
-		
-		
-		
-		
+	"<" + css_rule.master_node.text + ">":  NodeAction(css_rule)+ContextSeeker(None,
+                                                  [L(
+                                                      S(["cancel"], css_rule.reset_node, None), 
+                                                      S(["CSS"]+[x[0] for x in css_rule.master_node.explode_children(0, True)], lambda: False, None)
+                                                      )
+                                                   ], rspec="CSS", consume=False),
 		
 		
 		
 }
 
 cmd.extras   = [
-	navigation.get_alphabet_choice("letter_1"), 
-	navigation.get_alphabet_choice("letter_2"),
-    Choice("measurement",
-            {"pixel | pixels": "px", "EM":"em", "percent":"%"
-             }),
-    Choice("box_part",
-            {"margin": "margin", "padding":"padding", "border":"border"
-             }),
-    Choice("div_prop",
-            {"flute | float": "float", "clear side":"clear", 
-             }),
-    Choice("values",
-            {"value not | none": "none", "visible":"visible", "hidden":"hidden", "left":"left", "right":"right",
-             "both": "both"
-             }),
-    Choice("side",
-            {"top": "-top:", "bottom":"-bottom:", "left":"-left:", "right":"-right:"
-             }),
-    IntegerRef("ncss", 1, 1000),
+	RuleRef(css_rule, css_rule.master_node.text), 
            ]
 cmd.defaults = {
-	"side": ":", "values": ""
+
            }
 
 
-cmd.ncactive=True
 
-cmd.ncmap = {
-		"allergies":						Text("with "),
-
-          }
-
-cmd.ncextras   = [
-           
-           ]
-cmd.ncdefaults = {
-           }

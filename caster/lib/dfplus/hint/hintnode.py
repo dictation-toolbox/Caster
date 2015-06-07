@@ -92,9 +92,6 @@ class NodeRule(MappingRule):
         if self.stat_msg == None:
             self.stat_msg = stat_msg
         
-        if grammar:
-            grammar.unload()
-        
 #         print len(self.node.explode_children(0, True))
         
         mapping = {}
@@ -123,6 +120,7 @@ class NodeRule(MappingRule):
     
     def change_node(self, node, reset=False):
         self.grammar.unload()
+#         print "grammar: ", self.grammar
         NodeRule.__init__(self, node, self.grammar, None, reset)
         self.grammar.load()
     
