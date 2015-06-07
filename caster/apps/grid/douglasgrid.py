@@ -8,7 +8,7 @@ import time
 from dragonfly import (Grammar, AppContext, Function,
                        IntegerRef, Repeat, Playback,
                        Key, Choice, MappingRule)
-from caster.lib.dfplus.state import R
+from caster.lib.dfplus.state.short import R
 
 from caster.asynch.mouse import grids
 from caster.lib import settings, control

@@ -21,7 +21,7 @@ from caster.asynch.hmc import vocabulary_processing
 from caster.asynch.sikuli import sikuli
 from caster.lib import navigation, password
 from caster.lib.pita import scanner
-from caster.lib.dfplus.state import R
+from caster.lib.dfplus.state.short import R
 
 try:
     from caster.apps import *

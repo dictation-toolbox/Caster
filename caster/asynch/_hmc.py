@@ -1,7 +1,7 @@
 from dragonfly import (Function, Grammar, IntegerRef, Dictation, MappingRule, AppContext, Choice)
 
 from caster.lib import  settings, control
-from caster.lib.dfplus.state import R
+from caster.lib.dfplus.state.short import R
 
 
 def kill():

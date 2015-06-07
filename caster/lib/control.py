@@ -1,8 +1,27 @@
+class Nexus:
+    def __init__(self):
+        self.map = {}
+    def get(self, obj):
+        if obj not in self.map:
+            self._create(obj)
+        return self.map[obj]
+    def _create(self, obj):
+        if obj=="state":
+            from caster.lib.dfplus.state.stack import CasterState
+            self.map[obj] = CasterState()
+        
+
+
+
+
+
+
 from dragonfly import RecognitionHistory, Grammar
 from dragonfly.timer import _Timer
 
 from caster.lib import settings
 from caster.lib.dfplus.communication import Communicator
+
 
 
 MULTI_CLIPBOARD = {}
@@ -18,7 +37,12 @@ TIMER_MANAGER = _Timer(0.025)
 RECORDED_MACROS_GRAMMAR = Grammar("recorded_macros")
 ALIASES_GRAMMAR = Grammar("aliases")
 
+NEXUS = Nexus()
 
+def get(obj):
+    if obj=="state":
+        global STATE
+        return STATE
 
 def print_startup_message():
     print "*- Starting " + settings.SOFTWARE_NAME + " -*"

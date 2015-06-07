@@ -14,7 +14,7 @@ Command-module for git
 
 from dragonfly import (Grammar, AppContext, MappingRule,
                        Key, Text, Function, IntegerRef)
-from caster.lib.dfplus.state import R
+from caster.lib.dfplus.state.short import R
 
 def apply(n):
     if n!=0:

@@ -6,7 +6,9 @@ from dragonfly import *
 from caster.lib import utilities, settings, ccr, context, control
 from caster.lib.dfplus.hint.hintnode import NodeRule, NodeAction
 from caster.lib.dfplus.hint.nodes import css
-from caster.lib.dfplus.state import ContextSeeker, RegisteredAction, Continuer, R, L, S
+from caster.lib.dfplus.state.actions import ContextSeeker, Continuer, \
+    RegisteredAction
+from caster.lib.dfplus.state.short import L, S, R
 from caster.lib.pita import selector
 
 

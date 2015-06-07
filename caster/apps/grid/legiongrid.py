@@ -14,7 +14,7 @@ import win32con
 
 from caster.asynch.mouse import grids
 from caster.lib import navigation, settings, control
-from caster.lib.dfplus.state import R
+from caster.lib.dfplus.state.short import R
 
 def kill():
     control.COMM.get_com("grids").kill()

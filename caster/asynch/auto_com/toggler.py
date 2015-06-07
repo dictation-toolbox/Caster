@@ -2,7 +2,7 @@ from dragonfly import Mimic
 
 from caster.asynch.auto_com import language
 from caster.lib import control, utilities, settings
-from caster.lib.dfplus.state import R
+from caster.lib.dfplus.state.short import R
 
 
 _LAST = False

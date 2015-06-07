@@ -14,7 +14,7 @@ Command-module for Chrome and Firefox
 from dragonfly import (Grammar, AppContext, MappingRule,
                        Dictation, IntegerRef, Function,
                        Key, Text, Repeat)
-from caster.lib.dfplus.state import R
+from caster.lib.dfplus.state.short import R
     
 
 class CommandRule(MappingRule):

@@ -2,7 +2,10 @@ from dragonfly import (Grammar, AppContext, MappingRule,
                        Dictation, IntegerRef,
                        Key, Text, Repeat, Pause)
 from dragonfly.actions.action_mimic import Mimic
-from caster.lib.dfplus.state import R
+
+from caster.lib.dfplus.state.short import R
+
+
 # next tab
 class CommandRule(MappingRule):
 

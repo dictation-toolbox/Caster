@@ -10,7 +10,7 @@ from dragonfly import (Grammar, AppContext, Function,
 
 from caster.asynch.mouse import grids
 from caster.lib import settings, control
-from caster.lib.dfplus.state import R
+from caster.lib.dfplus.state.short import R
 
 def kill():
     control.COMM.get_com("grids").kill()

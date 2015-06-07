@@ -1,6 +1,7 @@
 from dragonfly import *
 from caster.lib import navigation, context, utilities
-from caster.lib.dfplus.state import *
+from caster.lib.dfplus.state.actions import ContextSeeker, Continuer, RegisteredAction
+from caster.lib.dfplus.state.short import L, S, R
 navigation.initialize_clipboard()
 
 cmd.map = {

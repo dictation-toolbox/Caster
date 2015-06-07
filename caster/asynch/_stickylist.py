@@ -6,7 +6,7 @@ from dragonfly import (Function, Text, Grammar, Choice,
 
 from caster.lib import  settings, utilities, navigation
 from caster.lib import control
-from caster.lib.dfplus.state import R
+from caster.lib.dfplus.state.short import R
 
 
 def kill():
