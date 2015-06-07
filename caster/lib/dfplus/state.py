@@ -4,6 +4,7 @@ import xmlrpclib
 from dragonfly import (ActionBase, Text, Key, Function, Mimic, Paste)
 
 from caster.lib import control, utilities, settings
+from caster.lib.dfplus.hint.hintnode import NodeAction
 
 
 class CasterState:
@@ -38,10 +39,6 @@ class CasterState:
     def halt_asynchronous(self, success):
         ''' only for use with Dragonfly Function actions which can't return true or false but need spoken parameters'''
         self.blocker.execute(success)
-#         if success:
-#             self.run_waiting_commands()
-#         else:
-#             self.unblock()
     def generate_registered_action_deck_item(self, raction):
         return DeckItemRegisteredAction(raction)
     def generate_context_seeker_deck_item(self, seeker):
@@ -80,6 +77,9 @@ class DeckItemSeeker(DeckItemRegisteredAction):
         DeckItemRegisteredAction.__init__(self, seeker, "seeker")
         self.back = self.copy_direction(seeker.back)
         self.forward = self.copy_direction(seeker.forward)
+        self.consume = seeker.consume
+        self.rspec = seeker.rspec
+        
     @staticmethod
     def copy_direction(cls):
         result = None
@@ -90,7 +90,7 @@ class DeckItemSeeker(DeckItemRegisteredAction):
         return result
     def executeCL(self, cl):
         action = cl.result
-        if not action in [Text, Key, Mimic, Function, Paste]:
+        if not action in [Text, Key, Mimic, Function, Paste, NodeAction]:
             # it's a function object
             if cl.parameters == None:
                 return action()
@@ -131,11 +131,13 @@ class DeckItemSeeker(DeckItemRegisteredAction):
                     # deck_item must have a spec
                     if deck_item.rspec in cs.specTriggers:
                         cl.satisfied = True
+#                         print deck_item.rspec
                         self.fillCL(cl, cs)
                         break
             if not cl.satisfied:  # if still not satisfied, do default
                 cl.satisfied = True
                 self.fillCL(cl, cl.sets[0])
+#                 print "defaulted", deck_item.rspec
     def get_index_of_next_unsatisfied_level(self):
         for i in range(0, len(self.forward)):
             cl = self.forward[i]
@@ -151,6 +153,7 @@ class DeckItemContinuer(DeckItemSeeker):
         self.fillCL(self.forward[0], self.forward[0].sets[0])
         self.closure = None
         self.time_in_seconds = continuer.time_in_seconds
+        self.consume = continuer.consume
     def satisfy_level(self, level_index, is_back, deck_item):  # level_index and is_back are unused here, but left in for compatibility
         cl = self.forward[0]
         if not cl.satisfied:
@@ -243,9 +246,10 @@ class ContextStack:
                 # consume deck_item
                 if ((seeker.type != "continuer" and deck_item.type == "raction")  # do not consume seekers, it would disable chaining
                 or (seeker.type == "continuer" and seeker.get_index_of_next_unsatisfied_level() == -1)):
-                    deck_item.complete = True
-                    deck_item.consumed = True
-                    deck_item.clean()
+                    if seeker.consume:
+                        deck_item.complete = True
+                        deck_item.consumed = True
+                        deck_item.clean()
         
         is_forward_seeker = deck_item.type == "seeker" and deck_item.forward != None
         is_continuer = deck_item.type == "continuer"
@@ -311,11 +315,13 @@ class ContextLevel:  # ContextLevel
         return ContextLevel(*self.sets)
 
 class ContextSeeker(RegisteredAction):
-    def __init__(self, back, forward, rdescript="unnamed command (CS)"):
+    def __init__(self, back, forward, rspec="default", rdescript="unnamed command (CS)", consume=True):
         RegisteredAction.__init__(self, None)
         self.back = back
         self.forward = forward
+        self.rspec = rspec
         self.rdescript = rdescript
+        self.consume = consume
         global STATE
         self.state = STATE
         assert self.back != None or self.forward != None, "Cannot create ContextSeeker with no levels"

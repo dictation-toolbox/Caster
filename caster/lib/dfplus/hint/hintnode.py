@@ -7,9 +7,6 @@ import re
 
 from dragonfly import IntegerRef, Dictation, Text, MappingRule, ActionBase
 
-from caster.lib import control
-
-
 # for creating extras and defaults
 NUMBER_PATTERN_PUNC = re.compile('(%\([0-9A-Za-z_]+\)d)')
 STRING_PATTERN_PUNC = re.compile('(%\([0-9A-Za-z_]+\)s)')
@@ -30,12 +27,12 @@ class HintNode:
     def set_parent(self, parent):
         self.parent = parent
     
-    def explode_children(self, depth):
+    def explode_children(self, depth, max=False):
         results = [self.get_spec_and_text_and_node()]
         depth -= 1
-        if depth>=0:
+        if depth>=0 or max:
             for child in self.children:
-                e = child.explode_children(depth)
+                e = child.explode_children(depth, max)
                 for t in e:
                     results.append((results[0][0] + " " + t[0], results[0][1] + t[1], t[2]))
         return results
@@ -98,6 +95,8 @@ class NodeRule(MappingRule):
         if grammar:
             grammar.unload()
         
+#         print len(self.node.explode_children(0, True))
+        
         mapping = {}
         extras = []
         defaults = {}
@@ -116,13 +115,14 @@ class NodeRule(MappingRule):
             if self.stat_msg!=None and not first and not is_reset:# status window messaging
                 self.stat_msg.hint("\n".join([x.get_spec_and_text_and_node()[0] for x in self.node.children]))
         
+#         print [x for x in mapping]
+        
         MappingRule.__init__(self, "node_" + str(self.master_node.text), mapping, extras, defaults)
         self.grammar = grammar
         
     
     def change_node(self, node, reset=False):
         self.grammar.unload()
-#         NodeRule.__init__(self, node, self.grammar)
         NodeRule.__init__(self, node, self.grammar, None, reset)
         self.grammar.load()
     
