@@ -21,7 +21,23 @@ def getCSSNode():
     background = _get_background()
     
     return H("css", [background])
+
+def _get_border():
+    H = hintnode.HintNode
+    _width = H("-width: ", [H("thin"), H("medium"), H("thick")], ["width"]), 
     
+    _style = H("-style: ", [H("none"),H("hidden"),H("dotted"),H("dashed"),   
+                    H("solid"),H("double"),H("groove"),H("ridge"),
+                    H("inset"),H("outset"),      
+                    ], ["style"])
+    
+    _color = H("-color: ", [H("COLOR", [], ["color"])], ["color"]), 
+    return H("border", [
+                        H("-top", [_width, _style, _color], ["top"]), 
+                        H("-bottom", [_width, _style, _color], ["bottom"]),
+                        H("-left", [_width, _style, _color], ["left"]),
+                        H("-right", [_width, _style, _color], ["right"]),
+                        ])
     
 def _get_background():
     H = hintnode.HintNode

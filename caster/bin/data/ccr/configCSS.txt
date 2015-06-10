@@ -22,7 +22,9 @@ cmd.map = {
                                                       S(["CSS"]+[x[0] for x in css_rule.master_node.explode_children(0, True)], lambda: False, None)
                                                       )
                                                    ], rspec="CSS", consume=False),
-		
+	"EM":		Text("NUMBER em"), 
+	"pixels":	Text("NUMBER px"), 
+	"percent":	Text("NUMBER %"), 
 		
 		
 }
