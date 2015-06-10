@@ -241,7 +241,8 @@ class DouglasGrid(TkTransparent):
         self.server.register_function(self.xmlrpc_move_mouse, "move_mouse")
     
     def xmlrpc_move_mouse(self, x, y):
-        self.move_mouse(x * self.square_size + int(self.square_size / 2), y * self.square_size + int(self.square_size / 2))
+        self.move_mouse(x * self.square_size + int(self.square_size / 2)+ self.dimensions.x, 
+                        y * self.square_size + int(self.square_size / 2)+ self.dimensions.y)
     
     def draw(self):
         self.pre_redraw()
@@ -266,7 +267,7 @@ class DouglasGrid(TkTransparent):
             fill = "black"
             if lx % 3:
                 fill = "gray"
-            self._canvas.create_line(self.xs[lx], 0, self.xs[lx], self.dimensions.height - self.dimensions.y, fill=fill)
+            self._canvas.create_line(self.xs[lx], 0, self.xs[lx], self.dimensions.height , fill=fill)
             if lx + 1 < xs_size:
                 self._canvas.create_rectangle(
                                               self.xs[lx] + text_background_buffer,
@@ -292,7 +293,7 @@ class DouglasGrid(TkTransparent):
             fill = "black"
             if ly % 3:
                 fill = "gray"
-            self._canvas.create_line(0, self.ys[ly], self.dimensions.width - self.dimensions.x, self.ys[ly], fill=fill)
+            self._canvas.create_line(0, self.ys[ly], self.dimensions.width , self.ys[ly], fill=fill)
             if ly + 1 < ys_size and ly != 0:
                 self._canvas.create_rectangle(
                                               0 + text_background_buffer,
