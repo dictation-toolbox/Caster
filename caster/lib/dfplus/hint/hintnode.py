@@ -7,6 +7,10 @@ import re
 
 from dragonfly import IntegerRef, Dictation, Text, MappingRule, ActionBase
 
+from caster.lib.dfplus.state.actions import ContextSeeker
+from caster.lib.dfplus.state.short import L, S
+
+
 # for creating extras and defaults
 NUMBER_PATTERN_PUNC = re.compile('(%\([0-9A-Za-z_]+\)d)')
 STRING_PATTERN_PUNC = re.compile('(%\([0-9A-Za-z_]+\)s)')
@@ -22,7 +26,7 @@ class HintNode:
         for child in self.children:
             child.set_parent(self)
         # 0 is the first set of children
-        self.explode_depth = 1 # the level at which to turn all children into rules
+        self.explode_depth = 1  # the level at which to turn all children into rules
         
     def set_parent(self, parent):
         self.parent = parent
@@ -71,8 +75,13 @@ class HintNode:
                 spec = spec.replace(s, "<" + word + ">")
                 extras.append(Dictation(word))
                 defaults[word] = ""
-        
-            mapping[spec] = Text(text)+NodeChange(node_rule, node)
+            
+            action = None
+            if node_rule.post!=None:
+                action = Text(text)+NodeChange(node_rule, node)+node_rule.post
+            else:
+                action = Text(text)+NodeChange(node_rule, node)
+            mapping[spec] = action
 
 class NodeRule(MappingRule):
     master_node = None
@@ -89,6 +98,11 @@ class NodeRule(MappingRule):
         if self.master_node == None:
             self.master_node = self.node
             first = True
+            self.post = ContextSeeker(None,
+                [L(
+                S(["cancel"], self.reset_node, None),
+                S([self.master_node.text] + [x[0] for x in self.master_node.explode_children(0, True)], lambda: False, None)
+                )     ], rspec=self.master_node.text, consume=False)
         if self.stat_msg == None:
             self.stat_msg = stat_msg
         

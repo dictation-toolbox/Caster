@@ -11,17 +11,12 @@ from caster.lib.dfplus.state.short import L, S, R
 
 settings.register_language(".css", "CSS")
 
-
-css_rule = NodeRule(css.getCSSNode(), None, control.STAT)
+css_node = css.getCSSNode()
+css_rule = NodeRule(css_node, None, control.STAT, False)
 
 cmd.map = {
         # Spoken-form    ->    ->    ->     Action object
-	"<" + css_rule.master_node.text + ">":  NodeAction(css_rule)+ContextSeeker(None,
-                                                  [L(
-                                                      S(["cancel"], css_rule.reset_node, None), 
-                                                      S(["CSS"]+[x[0] for x in css_rule.master_node.explode_children(0, True)], lambda: False, None)
-                                                      )
-                                                   ], rspec="CSS", consume=False),
+	"<" + css_rule.master_node.text + ">":  NodeAction(css_rule),
 	"EM":		Text("NUMBER em"), 
 	"pixels":	Text("NUMBER px"), 
 	"percent":	Text("NUMBER %"), 
