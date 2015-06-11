@@ -1,26 +1,38 @@
-class Nexus:
-    def __init__(self):
-        self.map = {}
-    def get(self, obj):
-        if obj not in self.map:
-            self._create(obj)
-        return self.map[obj]
-    def _create(self, obj):
-        if obj=="state":
-            from caster.lib.dfplus.state.stack import CasterState
-            self.map[obj] = CasterState()
-        
-
-
-
-
-
-
 from dragonfly import RecognitionHistory, Grammar
 from dragonfly.timer import _Timer
 
 from caster.lib import settings
 from caster.lib.dfplus.communication import Communicator
+
+
+
+
+class Nexus:
+    def __init__(self):
+        self._map = {}
+        self._nodes_map = {"CSS": False}
+    def get(self, obj):
+        if obj not in self._map:
+            self._create(obj)
+        return self._map[obj]
+    def _create(self, obj):
+        if obj=="state":
+            from caster.lib.dfplus.state.stack import CasterState
+            self._map[obj] = CasterState()
+#     def nodes(self):
+#         result = []
+#         
+#         if self._nodes_map["CSS"]:
+#             from caster.lib.dfplus.hint.hintnode import NodeRule
+#             from caster.lib.dfplus.hint.nodes import css
+#             result.append(NodeRule(css.getCSSNode(), None, STAT, False))
+
+
+
+
+
+
+
 
 
 

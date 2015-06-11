@@ -11,11 +11,13 @@ Thanks Christo Butcher, davitenio, poppe1219, ccowan
 
 
 """
-import time
 
 from dragonfly import *
 
-from caster.lib import settings, utilities
+from caster.lib import control
+from caster.lib import settings, utilities  # , control
+from caster.lib.dfplus.hint.hintnode import NodeRule
+from caster.lib.dfplus.hint.nodes import css
 
 
 try:
@@ -109,8 +111,9 @@ def generate_language_rule_pair(path):
 #     return ccr
 
 def create_repeat_rule(language_rule):
-
-    single_action = Alternative([RuleRef(rule=language_rule)])
+#     nodes = control.NEXUS.nodes()
+    css_rule = NodeRule(css.getCSSNode(), None, control.STAT, False)
+    single_action = Alternative([RuleRef(rule=language_rule)])#, RuleRef(rule=css_rule)
     sequence_name = "sequence_" + "language"
     sequence = Repetition(single_action, min=1, max=16, name=sequence_name)
     
