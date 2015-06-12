@@ -35,13 +35,16 @@ def generate_commands(list_of_functions):
         spec = " ".join(fname.split("_"))
         mapping[spec] = Function(execute, fname=fname)
     grammar.unload()
-    grammar.add_rule(MappingRule(mapping=mapping))
+    grammar = Grammar("sikuli")
+    grammar.add_rule(MappingRule(mapping=mapping, name="sikuli server"))
     grammar.load()
 
 def start_server_proxy():
     global server_proxy
     server_proxy = control.COMM.get_com("sikuli")
-    generate_commands(server_proxy.list_functions())
+    fns = server_proxy.list_functions()
+    if len(fns)>0:
+        generate_commands(fns)
     utilities.report("Caster-Sikuli server started successfully.")
     
 def server_proxy_timer_fn():
@@ -51,6 +54,7 @@ def server_proxy_timer_fn():
         control.TIMER_MANAGER.remove_callback(server_proxy_timer_fn)
     except Exception:
         pass
+#         utilities.simple_log(False)
     
 def unload():
     global grammar
@@ -61,7 +65,7 @@ def refresh():
     ''' should be able to add new scripts on the fly and then call this '''
     unload()
     global grammar
-    grammar = Grammar("sikuli")
+    grammar = Grammar("si/kuli")
     def refresh_sick_command():
         server_proxy.terminate()
         refresh()

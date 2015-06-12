@@ -7,7 +7,7 @@ BAD_LOAD = False
 INISETPATH = 'C:/NatLink/NatLink/MacroSystem/caster/bin/data/settings.json'
 
 # title
-SOFTWARE_VERSION_NUMBER = "0.4.6.1"
+SOFTWARE_VERSION_NUMBER = "0.4.6.2"
 SOFTWARE_NAME = "Caster v " + SOFTWARE_VERSION_NUMBER
 S_LIST_VERSION = "Sticky List v " + SOFTWARE_VERSION_NUMBER
 DISPEL_VERSION = "Dispel v " + SOFTWARE_VERSION_NUMBER
