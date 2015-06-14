@@ -23,19 +23,15 @@ class HintNode:
         self.children = children
         self.spec = spec
         self.parent = None
-        for child in self.children:
-            child.set_parent(self)
         # 0 is the first set of children
         self.explode_depth = 1  # the level at which to turn all children into rules
-        
-    def set_parent(self, parent):
-        self.parent = parent
     
     def explode_children(self, depth, max=False):
         results = [self.get_spec_and_text_and_node()]
         depth -= 1
         if depth>=0 or max:
             for child in self.children:
+#                 print depth, [x[0] for x in results]
                 e = child.explode_children(depth, max)
                 for t in e:
                     results.append((results[0][0] + " " + t[0], results[0][1] + t[1], t[2]))
