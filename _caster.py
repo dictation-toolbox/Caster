@@ -17,16 +17,16 @@ from subprocess import Popen
 from dragonfly import (Key, Function, Grammar, Playback,
                        IntegerRef, Dictation, Choice, Pause, MappingRule)
 
-from caster.asynch.hmc import vocabulary_processing
-from caster.asynch.sikuli import sikuli
-from caster.lib import navigation, password
-from caster.lib.pita import scanner
-from caster.lib.dfplus.state.short import R
+
 
 try:
+    from caster.lib import settings# requires nothing
+    from caster.lib import control# requires settings
+    from caster.lib.dfplus.state import stack# requires control
+    
     from caster.apps import *
     from caster.asynch import *
-    from caster.lib import control, utilities, ccr, settings, context, recording
+    from caster.lib import utilities, ccr, context, recording
     from caster.asynch import auto_com
     import caster.dev, caster.wsr
     try:
@@ -41,6 +41,11 @@ try:
     h_launch.clean_homunculi()
     if settings.SETTINGS["miscellaneous"]["status_window_enabled"] and not utilities.window_exists(None, statuswindow.TITLE):
         Popen(["pythonw", settings.SETTINGS["paths"]["STATUS_WINDOW_PATH"]])
+    from caster.asynch.hmc import vocabulary_processing
+    from caster.asynch.sikuli import sikuli
+    from caster.lib import navigation, password
+    from caster.lib.pita import scanner
+    from caster.lib.dfplus.state.short import R
 except:
     import sys
     print sys.exc_info(), "\nAttempting to load CCR anyway..."

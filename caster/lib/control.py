@@ -4,32 +4,43 @@ from dragonfly.timer import _Timer
 from caster.lib import settings
 from caster.lib.dfplus.communication import Communicator
 
-
+NEXUS = None
 
 
 class Nexus:
     def __init__(self):
         self._map = {}
         self._nodes_map = {"CSS": False}
-    def get(self, obj):
-        if obj not in self._map:
-            self._create(obj)
-        return self._map[obj]
-    def _create(self, obj):
-        if obj=="state":
-            from caster.lib.dfplus.state.stack import CasterState
-            self._map[obj] = CasterState()
-#     def nodes(self):
-#         result = []
-#         
-#         if self._nodes_map["CSS"]:
-#             from caster.lib.dfplus.hint.hintnode import NodeRule
-#             from caster.lib.dfplus.hint.nodes import css
-#             result.append(NodeRule(css.getCSSNode(), None, STAT, False))
+        
+        self.state = None
+        self.clip = {}
+        self.sticky = []
+        self.history = RecognitionHistory(20)
+        self.history.register()
+        self.preserved = None
+        
+        self._comm = Communicator()
+        self.timer = _Timer(0.025)
+        
+        self.dep = None
+        self.intermediary = None
+        
+        self.macros_grammar = Grammar("recorded_macros")
+        self.aliases_grammar = Grammar("aliases")
+    
+    def inform_state(self, state):
+        self.state = state
+    def inform_dep(self, dep):
+        self.dep = dep
+    def inform_intermediary(self, intermediary):
+        self.intermediary = intermediary
 
 
-
-
+def nexus():
+    global NEXUS
+    if NEXUS==None:
+        NEXUS = Nexus()
+    return NEXUS
 
 
 
@@ -49,12 +60,7 @@ TIMER_MANAGER = _Timer(0.025)
 RECORDED_MACROS_GRAMMAR = Grammar("recorded_macros")
 ALIASES_GRAMMAR = Grammar("aliases")
 
-NEXUS = Nexus()
 
-def get(obj):
-    if obj=="state":
-        global STATE
-        return STATE
 
 def print_startup_message():
     print "*- Starting " + settings.SOFTWARE_NAME + " -*"
@@ -99,4 +105,6 @@ class StatusIntermediary:
         if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
             self.communicator.get_com("status").text(message)
 
+nexus().inform_dep(DependencyMan())
+nexus().inform_intermediary(StatusIntermediary())
 STAT = StatusIntermediary()

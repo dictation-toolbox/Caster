@@ -137,9 +137,9 @@ class DeckItemContinuer(DeckItemSeeker):
         DeckItemSeeker.clean(self)
         self.closure = None
         if success:
-            control.NEXUS.get("state").run_waiting_commands()
+            control.nexus().state.run_waiting_commands()  # @UndefinedVariable
         else:
-            control.NEXUS.get("state").unblock()
+            control.nexus().state.unblock()  # @UndefinedVariable
     def begin(self):
         '''here pass along a closure to the timer multiplexer'''
         eCL = self.executeCL

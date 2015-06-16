@@ -5,8 +5,11 @@ Created on Jun 7, 2015
 '''
 import Queue
 
+from caster.lib import control
 from caster.lib.dfplus.state.stackitems import DeckItemRegisteredAction, \
     DeckItemSeeker, DeckItemContinuer
+
+
 
 
 class CasterState:
@@ -113,3 +116,6 @@ class ContextStack:
             if not self.list[i].complete:  # no need to check type because only forward seekers will be incomplete
                 incomplete.append(self.list[i])
         return incomplete
+
+
+control.nexus().inform_state(CasterState())

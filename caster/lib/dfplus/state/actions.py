@@ -10,7 +10,7 @@ from caster.lib import control
 class RegisteredAction(ActionBase):
     def __init__(self, base, rspec="default", rdescript=None, rundo=None):
         ActionBase.__init__(self)
-        self.state = control.NEXUS.get("state")
+        self.state = control.nexus().state
         self.base = base
         self.rspec = rspec
         self.rdescript = rdescript
@@ -31,7 +31,7 @@ class ContextSeeker(RegisteredAction):
         self.rspec = rspec
         self.rdescript = rdescript
         self.consume = consume
-        self.state = control.NEXUS.get("state")
+        self.state = control.nexus().state
         assert self.back != None or self.forward != None, "Cannot create ContextSeeker with no levels"
     def _execute(self, data=None):
         self.dragonfly_data = data
@@ -56,7 +56,7 @@ class Continuer(ContextSeeker):
         self.repetitions = repetitions
         self.time_in_seconds = time_in_seconds
         self.rdescript = rdescript
-        self.state = control.NEXUS.get("state")
+        self.state = control.nexus().state
         assert self.forward != None, "Cannot create Continuer with no termination commands"
         assert len(self.forward) == 1, "Cannot create Continuer with > or < one purpose"
     def _execute(self, data=None):
