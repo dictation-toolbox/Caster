@@ -61,7 +61,7 @@ class Nexus:
         
         self.macros_grammar = Grammar("recorded_macros")
     
-    def inform_state(self, state):
+    def inform_state(self, state):# resolves circular import 
         self.state = state
 
 
