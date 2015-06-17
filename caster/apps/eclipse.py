@@ -41,7 +41,7 @@ class CommandRule(MappingRule):
             "do imports":                               R(Key("cs-o"), rdescript="Eclipse: Do Imports"),
             "comment line":                             R(Key("c-slash"), rdescript="Eclipse: Comment Line"),
             
-            
+            "build it":                                 R(Key("c-b"), rdescript="Eclipse: Build"), 
             # requires quick bookmarks plug-in:
 #             "set mark [<n>]":                           Key("a-%(n)d"),
 #             "go mark [<n>]":                            Key("as-%(n)d"),

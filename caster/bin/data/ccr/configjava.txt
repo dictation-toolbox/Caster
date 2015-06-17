@@ -7,8 +7,8 @@ cmd.map = {
            # Spoken-form    ->    ->    ->     Action object	
 		
 		# CCR PROGRAMMING STANDARD
-		"iffae":                        Text("if() {")+Key("enter,up,left"),
-        "el say":		                Text("else {")+Key("enter"),		
+		"iffae":                       Text("if() {")+Key("enter,up,left"),
+        "shells":		                Text("else {")+Key("enter"),		
 		#
 		"switch":						Text("switch(){\ncase : break;\ndefault: break;")+Key("up,up,left,left"),
 		"K states":						Text("case :")+Key("left"),
@@ -65,7 +65,7 @@ cmd.map = {
 		"new new":						Text("new "),
 		"integer":						Text("int "),
 		"big integer":					Text("Integer "),
-		"lil double":					Text("double "),
+		"double tie":					Text("double "),
 		"big double":					Text("Double "),
 		
 		"string":						Text("String "),
@@ -78,9 +78,9 @@ cmd.map = {
 	   
      	"continue":						Text("continue"),
      	"sue iffae":					Text("if ()")+Key("left"),
-     	"sue el say":					Text("else")+Key("enter"),
+     	"sue shells":					Text("else")+Key("enter"),
      	
-     	"el iffae":						Text("else if ()")+Key("left"),
+     	"shell iffae":					Text("else if ()")+Key("left"),
      	"throw exception":              Text("throw new Exception()")+Key("left"),
      	"substring":					Text("substring"),
      	"character at":					Text("charAt"),

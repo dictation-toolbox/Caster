@@ -12,7 +12,7 @@ cmd.map = {
 		
 		# CCR PROGRAMMING STANDARD
 		"iffae":					Text("if (){}")+Key("left, enter:2, up"),
-		"el say":					Text("else {}")+Key("left, enter:2, up"),
+		"shells":					Text("else {}")+Key("left, enter:2, up"),
 		#
 		"switch":					Text("switch(){}")+Key("left, enter:2, up"),
 		"K states":						Text("case :")+Key("left"),

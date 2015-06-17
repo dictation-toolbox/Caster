@@ -10,7 +10,7 @@ cmd.map = {
 		
 		# CCR PROGRAMMING STANDARD
 		"iffae":                        R(Key("i, f, lparen, rparen, leftbrace, enter,up,left"), rdescript="If"),
-        "el say":        		        R(Key("e, l, s, e, leftbrace, enter"), rdescript="Else"),
+        "shells":        		        R(Key("e, l, s, e, leftbrace, enter"), rdescript="Else"),
         #
         "switch":						Text("switch(){\ncase : break;\ndefault: break;")+Key("up,up,left,left"),
         "K states":						Text("case :")+Key("left"),

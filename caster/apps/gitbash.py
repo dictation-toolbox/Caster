@@ -40,6 +40,8 @@ class CommandRule(MappingRule):
         "list":             Text( "ls" )+Key("enter"),
         "make directory":   Text( "mkdir " ),
         
+        
+        
         "undo [last] commit": Text("git reset --soft HEAD~1")+Key("enter"),
         "undo changes":     Text("git reset --hard")+Key("enter"),
         "stop tracking [file]": Text("git rm --cached FILENAME"),
@@ -52,7 +54,7 @@ class CommandRule(MappingRule):
         
         "exit":             Text( "exit" )+Key("enter"),
         
-        "blame":            Text("git blame PATHTOFILE -L FIRSTLINE,LASTLINE"),
+        
         
         "stash":            Text("git stash")+Key("enter"),
         "stash apply [<n>]":Text("git stash apply")+Function(apply),
@@ -63,7 +65,13 @@ class CommandRule(MappingRule):
         "abort cherry pick":Text("git cherry-pick --abort"),
         
         "GUI":              Text("git gui")+Key("enter"),
+        "blame":            Text("git blame PATH -L FIRSTLINE,LASTLINE"),
+        "gooey blame":      Text("git gui blame PATH"),
         
+        "search recursive": Text("grep -r -i \"PATTERN\" *"),
+        "search recursive count": Text("grep -r -i \"PATTERN\" * | wc -l"),
+        "search recursive filetype": Text("find . -name \"*.java\" -exec grep -r -i \"PATTERN\" {} \\;"),
+        "to file":          Text(" > FILENAME"),
         }
     extras = [
               IntegerRef("n", 1, 50),
