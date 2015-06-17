@@ -10,8 +10,8 @@ section.
 
 '''
 
-import time, pythoncom
 from subprocess import Popen
+import time, pythoncom
 
 
 if __name__ == "__main__":
@@ -19,7 +19,7 @@ if __name__ == "__main__":
     import __init__
     import _caster
     while True:
-        pythoncom.PumpWaitingMessages()
+        pythoncom.PumpWaitingMessages()  # @UndefinedVariable
         time.sleep(.1)
 else:
     
@@ -34,15 +34,15 @@ else:
         Popen([settings.SETTINGS["paths"]["WSR_PATH"], "-SpeechUX"])
     
     def kill_wsr():
-        launch.kill_process("sapisvr.exe")
+        ''''''
+#         launch.kill_process("sapisvr.exe")
         
     class WSR_Rule(MappingRule):
     
         
         mapping = {
             "start listening":                      Function(deactivate_natlink),
-            "(W S R | W S are)":                    Function(activate_wsr),
-            "kill speech":                          Function(kill_wsr)
+            "(W S R | W S are)":                    Function(activate_wsr)
         
         }
         extras = []

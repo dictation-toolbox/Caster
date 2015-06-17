@@ -13,7 +13,7 @@ from caster.lib.pita import filters
 from caster.lib.pita.filters import LanguageFilter
 
 
-if control.DEP.NATLINK:
+if control.nexus().dep.NATLINK:
     import natlink
 
 _d = utilities.load_json_file(settings.SETTINGS["paths"]["PITA_JSON_PATH"])
@@ -94,7 +94,7 @@ def _scan_single_file(path, languageFilter):
         ''' to do: handle long comments '''
         if line.strip().startswith(languageFilter.short_comment):
             continue
-        filter_results = filters.SYMBOL_PATTERN.findall(line)  # _filter_words(line, languageFilters[extension])
+        filter_results = filters.SYMBOL_PATTERN.findall(line)  # @UndefinedVariable
         for symbol in filter_results:
             if _passes_tests(symbol, scanned_file, languageFilter):
                 scanned_file["names"].append(symbol)
@@ -108,7 +108,7 @@ def _passes_tests(symbol, scanned_file, language_filter):
     already_in_names = symbol in scanned_file["names"]
     is_digit = symbol.isdigit()
     is_keyword = symbol in language_filter.keywords
-    typeable = (settings.SETTINGS["pita"]["filter_strict"] and control.DEP.NATLINK and not _difficult_to_type(symbol))
+    typeable = (settings.SETTINGS["pita"]["filter_strict"] and control.nexus().dep.NATLINK and not _difficult_to_type(symbol))
     return not (is_keyword or already_in_names or too_short or is_digit or typeable)
 
 

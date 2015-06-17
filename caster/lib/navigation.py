@@ -58,8 +58,8 @@ def get_direction_choice(spec):
     return Choice(spec, DIRECTION_STANDARD)
 
 def initialize_clipboard():
-    if len(control.MULTI_CLIPBOARD) == 0:
-        control.MULTI_CLIPBOARD = utilities.load_json_file(settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
+    if len(control.nexus().clip) == 0:
+        control.nexus().clip = utilities.load_json_file(settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
     
 OLD_ACTIVE_WINDOW_TITLE = None
 ACTIVE_FILE_PATH = [None, None]
@@ -126,7 +126,7 @@ def letters2(big, letter):
 def mouse_alternates(mode):
     try:
         if mode == "legion":
-            if control.DEP.PIL:
+            if control.nexus().dep.PIL:
                 if utilities.window_exists(None, "legiongrid"):
                     pass
                 else:
@@ -155,9 +155,9 @@ def clipboard_to_file(nnavi500, do_copy=False):
         try:
             time.sleep(0.05)  # time for keypress to execute
             win32clipboard.OpenClipboard()
-            control.MULTI_CLIPBOARD[key] = win32clipboard.GetClipboardData()
+            control.nexus().clip[key] = win32clipboard.GetClipboardData()
             win32clipboard.CloseClipboard()
-            utilities.save_json_file(control.MULTI_CLIPBOARD, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
+            utilities.save_json_file(control.nexus().clip, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
         except Exception:
             failure = True
         if not failure:
@@ -168,10 +168,10 @@ def drop(nnavi500):
     while True:
         failure = False
         try:
-            if key in control.MULTI_CLIPBOARD:
+            if key in control.nexus().clip:
                 win32clipboard.OpenClipboard()
                 win32clipboard.EmptyClipboard()
-                win32clipboard.SetClipboardText(control.MULTI_CLIPBOARD[key])
+                win32clipboard.SetClipboardText(control.nexus().clip[key])
                 win32clipboard.CloseClipboard()
                 Key("c-v")._execute()
             else:
@@ -183,8 +183,8 @@ def drop(nnavi500):
             break
 
 def erase_multi_clipboard():
-    control.MULTI_CLIPBOARD = {}
-    utilities.save_json_file(control.MULTI_CLIPBOARD, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
+    control.nexus().clip = {}
+    utilities.save_json_file(control.nexus().clip, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
 
 def volume_control(n, volume_mode):
     for i in range(0, int(n)):
@@ -270,7 +270,7 @@ def master_text_nav(mtn_mode, mtn_dir, nnavi500, extreme):
 def kill_grids_and_wait():
     window_title = utilities.get_active_window_title()
     if window_title == settings.RAINBOW_TITLE or window_title == settings.DOUGLAS_TITLE or window_title == settings.LEGION_TITLE:
-        control.COMM.get_com("grids").kill()
+        control.nexus().comm.get_com("grids").kill()
         time.sleep(0.1)
 
 def kick():

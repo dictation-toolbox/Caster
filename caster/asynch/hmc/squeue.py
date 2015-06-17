@@ -18,12 +18,12 @@ def check_for_response():
     if LAST_QUERY != None:
         data = None
         try: 
-            data = control.COMM.get_com("hmc").get_message()
+            data = control.nexus().comm.get_com("hmc").get_message()
         except Exception:
             TRIES+=1
             if TRIES>9:
                 TRIES=0
-                control.TIMER_MANAGER.remove_callback(check_for_response)
+                control.nexus().timer.remove_callback(check_for_response)
                 return
         
         if data == None:
@@ -37,13 +37,13 @@ def check_for_response():
                 
                 
     if LAST_QUERY == None:
-        control.TIMER_MANAGER.remove_callback(check_for_response)
+        control.nexus().timer.remove_callback(check_for_response)
 
 def add_query(callback, data=None):
     global LAST_QUERY
     second = 1
     LAST_QUERY = Query({}, callback)
-    control.TIMER_MANAGER.add_callback(check_for_response, second)
+    control.nexus().timer.add_callback(check_for_response, second)
     
     
     

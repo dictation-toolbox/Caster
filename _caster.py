@@ -32,7 +32,7 @@ try:
     try:
         import caster.w
     except Exception:
-        pass;
+        pass
     ccr.initialize_ccr()
     utilities.clean_temporary_files()
     recording.load_alias_rules()
@@ -56,7 +56,7 @@ except:
 
 def fix_Dragon_double():
     try:
-        lr = control.DICTATION_CACHE[len(control.DICTATION_CACHE) - 1]
+        lr = control.nexus().history[len(control.nexus().history) - 1]
         lu = " ".join(lr)
         Key("left/5:" + str(len(lu)) + ", del")._execute()
     except Exception:
@@ -64,9 +64,9 @@ def fix_Dragon_double():
         
 def repeat_that(n):
     try:
-        if len(control.DICTATION_CACHE) > 0:
+        if len(control.nexus().history) > 0:
             for i in range(int(n)):
-                Playback([([str(x) for x in " ".join(control.DICTATION_CACHE[len(control.DICTATION_CACHE) - 1]).split()], 0.0)])._execute()
+                Playback([([str(x) for x in " ".join(control.nexus().history[len(control.nexus().history) - 1]).split()], 0.0)])._execute()
     except Exception:
         utilities.simple_log(False)
 

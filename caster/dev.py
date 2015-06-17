@@ -120,7 +120,6 @@ def grep_this(path, filetype):
 
 
 
-css_rule = NodeRule(css.getCSSNode(), grammar, control.STAT)  
        
 class DevRule(MappingRule):
     
@@ -158,13 +157,7 @@ class DevRule(MappingRule):
     "bravery":                      RegisteredAction(Text("bravery is weak "), rspec="bravery"),
     "charcoal boy <text> [<n>]":    R(Text("charcoal is dirty %(text)s"), rspec="charcoal"),
                             
-#     "<" + css_rule.master_node.text + ">":  NodeAction(css_rule),
-#     "<" + css_rule.master_node.text + ">":  NodeAction(css_rule)+ContextSeeker(None,
-#                                                   [L(
-#                                                       S(["cancel"], css_rule.reset_node, None), 
-#                                                       S(["CSS"]+[x[0] for x in css_rule.master_node.explode_children(0, True)], lambda: False, None)
-#                                                       )
-#                                                    ], rspec="CSS", consume=False),
+
     }
     extras = [
               Dictation("text"),
@@ -179,7 +172,7 @@ class DevRule(MappingRule):
               Choice("filetype",
                     {"java": "*.java", "python":"*.py",
                      }),
-              RuleRef(css_rule, css_rule.master_node.text), 
+#               RuleRef(css_rule, css_rule.master_node.text), 
              ]
     defaults = {
                "text": "", "id":None

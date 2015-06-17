@@ -31,7 +31,7 @@ def add_alias(text):
     alias_key = "alias_key"    
     navigation.clipboard_to_file(alias_key, True)
     time.sleep(0.1)
-    symbol = control.MULTI_CLIPBOARD[alias_key]
+    symbol = control.nexus().clip[alias_key]
     rewrite_alias_module(None, (str(text), symbol))
     ccr.refresh_from_files("aliases")
 
@@ -113,11 +113,11 @@ def get_macro_spec():
 
 def record_from_history():
     # save the list as it was when the command was spoken
-    control.PRESERVED_CACHE = control.DICTATION_CACHE[:]
+    control.nexus().preserved = control.nexus().history[:]
     
     # format for display
     formatted = ""
-    for t in control.PRESERVED_CACHE:
+    for t in control.nexus().preserved:
         for w in t:
             formatted += w.split("\\")[0] + "[w]"
         formatted += "[s]"
@@ -128,11 +128,8 @@ def record_from_history():
 def add_recorded_macro(data):
     # use a response window to get a spec for the new macro: handled by calling function
     commands = []
-    print data
-#     print control.PRESERVED_CACHE
     for i in data["selected_indices"]:
-#         print i, ":", control.PRESERVED_CACHE[i]
-        commands.append(control.PRESERVED_CACHE[i])
+        commands.append(control.nexus().preserved[i])
     
     
     spec = data["word"]
@@ -156,26 +153,26 @@ def add_recorded_macro(data):
         utilities.save_json_file(recorded_macros, settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
         
         # immediately make a new compound rule  and add to a set grammar
-        control.RECORDED_MACROS_GRAMMAR.unload()
+        control.nexus().macros_grammar.unload()
         rule = RecordedRule(commands=commands, spec=spec, name="recorded_rule_" + spec, extras=extras, defaults=defaults)
-        control.RECORDED_MACROS_GRAMMAR.add_rule(rule)
-        control.RECORDED_MACROS_GRAMMAR.load()
+        control.nexus().macros_grammar.add_rule(rule)
+        control.nexus().macros_grammar.load()
     
     # clear the dictation cache
-    control.PRESERVED_CACHE = None
+    control.nexus().preserved = None
 
 def load_recorded_rules():
     recorded_macros = utilities.load_json_file(settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
     for spec in recorded_macros:
         commands = recorded_macros[spec]# this is a list of lists
         rule = RecordedRule(commands=commands, spec=spec, name="recorded_rule_" + spec, extras=[IntegerRef("n", 1, 50)], defaults={"n":1})
-        control.RECORDED_MACROS_GRAMMAR.add_rule(rule)
-    if len(control.RECORDED_MACROS_GRAMMAR.rules) > 0:
-        control.RECORDED_MACROS_GRAMMAR.load()
+        control.nexus().macros_grammar.add_rule(rule)
+    if len(control.nexus().macros_grammar.rules) > 0:
+        control.nexus().macros_grammar.load()
 
 def delete_recorded_rules():
     utilities.save_json_file({}, settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
-    control.RECORDED_MACROS_GRAMMAR.unload()
-    while len(control.RECORDED_MACROS_GRAMMAR.rules) > 0:
-        rule = control.RECORDED_MACROS_GRAMMAR.rules[0]
-        control.RECORDED_MACROS_GRAMMAR.remove_rule(rule)
+    control.nexus().macros_grammar.unload()
+    while len(control.nexus().macros_grammar.rules) > 0:
+        rule = control.nexus().macros_grammar.rules[0]
+        control.nexus().macros_grammar.remove_rule(rule)

@@ -3,7 +3,7 @@ from dragonfly import (ActionBase)
 from caster.lib import utilities, control
 
 
-if control.DEP.NATLINK:
+if control.nexus().dep.NATLINK:
     import natlink
     
 class SelectiveAction(ActionBase):
@@ -19,7 +19,7 @@ class SelectiveAction(ActionBase):
         self.negate = negate
         
     def _execute(self, data=None):
-        if control.DEP.NATLINK:
+        if control.nexus().dep.NATLINK:
             executable = utilities.get_active_window_path(natlink).split("\\")[-1]
             is_executable = executable in self.executables
             if (is_executable and not self.negate) or (self.negate and not is_executable):

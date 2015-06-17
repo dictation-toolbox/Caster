@@ -41,7 +41,7 @@ def generate_commands(list_of_functions):
 
 def start_server_proxy():
     global server_proxy
-    server_proxy = control.COMM.get_com("sikuli")
+    server_proxy = control.nexus().comm.get_com("sikuli")
     fns = server_proxy.list_functions()
     if len(fns)>0:
         generate_commands(fns)
@@ -51,7 +51,7 @@ def server_proxy_timer_fn():
     utilities.report("Attempting Caster-Sikuli connection [...]")
     try:
         start_server_proxy()
-        control.TIMER_MANAGER.remove_callback(server_proxy_timer_fn)
+        control.nexus().timer.remove_callback(server_proxy_timer_fn)
     except Exception:
         pass
 #         utilities.simple_log(False)
@@ -85,7 +85,7 @@ def refresh():
     except Exception:
         launch_server()
         seconds5 = 5
-        control.TIMER_MANAGER.add_callback(server_proxy_timer_fn, seconds5)
+        control.nexus().timer.add_callback(server_proxy_timer_fn, seconds5)
 
 
 if settings.SETTINGS["miscellaneous"]["sikuli_enabled"]:

@@ -11,7 +11,7 @@ _HAS_RUN_FIRST_TIME = False
 _ON = R(Mimic("command", "mode", "on"), rdescript="Command Mode On")
 _OFF = R(Mimic("command", "mode", "off"), rdescript="Command Mode Off")
 
-if control.DEP.NATLINK:
+if control.nexus().dep.NATLINK:
     import natlink
 
 def toggle():
@@ -41,5 +41,5 @@ def toggle():
         language.toggle_language()
 
 def initialize_auto_com_internal():
-    control.TIMER_MANAGER.add_callback(toggle, settings.SETTINGS["auto_com"]["interval"])
+    control.nexus().timer.add_callback(toggle, settings.SETTINGS["auto_com"]["interval"])
     

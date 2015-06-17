@@ -34,7 +34,7 @@ class DeckItemRegisteredAction(DeckItem):
         self.dragonfly_data = None
     def put_time_action(self):
         if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
-            control.COMM.get_com("status").text(self.rdescript)
+            control.nexus().comm.get_com("status").text(self.rdescript)
 class DeckItemSeeker(DeckItemRegisteredAction):
     def __init__(self, seeker):
         DeckItemRegisteredAction.__init__(self, seeker, "seeker")
@@ -133,7 +133,7 @@ class DeckItemContinuer(DeckItemSeeker):
         Waiting commands should only be run on success.
         '''
         self.complete = True
-        control.TIMER_MANAGER.remove_callback(self.closure)
+        control.nexus().timer.remove_callback(self.closure)
         DeckItemSeeker.clean(self)
         self.closure = None
         if success:
@@ -157,5 +157,5 @@ class DeckItemContinuer(DeckItemSeeker):
                 if c["value"] == r:
                     e(False)
         self.closure = closure
-        control.TIMER_MANAGER.add_callback(self.closure, self.time_in_seconds)
+        control.nexus().timer.add_callback(self.closure, self.time_in_seconds)
         self.closure()

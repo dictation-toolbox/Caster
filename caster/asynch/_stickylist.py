@@ -10,41 +10,41 @@ from caster.lib.dfplus.state.short import R
 
 
 def kill():
-    control.COMM.get_com("sticky_list").kill()
+    control.nexus().comm.get_com("sticky_list").kill()
 
 def add_symbol(sticky):
     sticky_key="sticky_key"
     navigation.clipboard_to_file(sticky_key, True)
     time.sleep(0.1)
-    control.STICKY_LIST.append(control.MULTI_CLIPBOARD[sticky_key])
-    utilities.save_json_file(control.STICKY_LIST, settings.SETTINGS["paths"]["S_LIST_JSON_PATH"])
+    control.nexus().sticky.append(control.nexus().clip[sticky_key])
+    utilities.save_json_file(control.nexus().sticky, settings.SETTINGS["paths"]["S_LIST_JSON_PATH"])
     if utilities.window_exists(None, settings.S_LIST_VERSION):
-        control.COMM.get_com("sticky_list").add_symbol(control.MULTI_CLIPBOARD[sticky_key])
+        control.nexus().comm.get_com("sticky_list").add_symbol(control.nexus().clip[sticky_key])
     else:
         enable_sticky_list(sticky)
 
 def get_symbol(n, sticky):
     n = int(n) - 1
-    if n < 0 or n > len(control.STICKY_LIST) - 1:
+    if n < 0 or n > len(control.nexus().sticky) - 1:
         return
-    Text(control.STICKY_LIST[n])._execute()
+    Text(control.nexus().sticky[n])._execute()
     if not utilities.window_exists(None, settings.S_LIST_VERSION):
         enable_sticky_list(sticky)
 
 def remove_word(n, sticky):
     n = int(n)
-    del control.STICKY_LIST[n - 1]
-    utilities.save_json_file(control.STICKY_LIST, settings.SETTINGS["paths"]["S_LIST_JSON_PATH"])
+    del control.nexus().sticky[n - 1]
+    utilities.save_json_file(control.nexus().sticky, settings.SETTINGS["paths"]["S_LIST_JSON_PATH"])
     if utilities.window_exists(None, settings.S_LIST_VERSION):
-        control.COMM.get_com("sticky_list").remove_symbol(n)
+        control.nexus().comm.get_com("sticky_list").remove_symbol(n)
     else:
         enable_sticky_list(sticky)
 
 def clear():
-    control.STICKY_LIST=[]
-    utilities.save_json_file(control.STICKY_LIST, settings.SETTINGS["paths"]["S_LIST_JSON_PATH"])
+    control.nexus().sticky=[]
+    utilities.save_json_file(control.nexus().sticky, settings.SETTINGS["paths"]["S_LIST_JSON_PATH"])
     if utilities.window_exists(None, settings.S_LIST_VERSION):
-        control.COMM.get_com("sticky_list").clear()
+        control.nexus().comm.get_com("sticky_list").clear()
 
 def enable_sticky_list(sticky):
     if utilities.get_window_by_title(settings.S_LIST_VERSION) == 0 and sticky == 1:
@@ -74,7 +74,7 @@ class SListUsageRule(MappingRule):
                "sticky": 0
                }
 
-control.STICKY_LIST = utilities.load_json_file(settings.SETTINGS["paths"]["S_LIST_JSON_PATH"])
+control.nexus().sticky = utilities.load_json_file(settings.SETTINGS["paths"]["S_LIST_JSON_PATH"])
 r = SListUsageRule()
 grammar = Grammar('SListUsageRule')
 grammar.add_rule(r)

@@ -5,30 +5,30 @@ from caster.lib.dfplus.state.short import R
 
 
 def kill():
-    control.COMM.get_com("hmc").kill()
+    control.nexus().comm.get_com("hmc").kill()
 
 def complete():
-    control.COMM.get_com("hmc").complete()
+    control.nexus().comm.get_com("hmc").complete()
 
 def hmc_checkbox(n):
     # can easily check multiple boxes, use a comma-separated list of numbers instead of str(n)
-    control.COMM.get_com("hmc").do_action("check", [int(n)])
+    control.nexus().comm.get_com("hmc").do_action("check", [int(n)])
 
 def hmc_focus(field):
     # can easily check multiple boxes, use a comma-separated list of numbers instead of str(n)
-    control.COMM.get_com("hmc").do_action("focus", str(field))
+    control.nexus().comm.get_com("hmc").do_action("focus", str(field))
 
 def hmc_recording_check_range(n, n2):
-    control.COMM.get_com("hmc").do_action("check_range", [int(n), int(n2)])
+    control.nexus().comm.get_com("hmc").do_action("check_range", [int(n), int(n2)])
 
 def hmc_recording_exclude(n):
-    control.COMM.get_com("hmc").do_action("exclude", int(n))
+    control.nexus().comm.get_com("hmc").do_action("exclude", int(n))
     
 def hmc_recording_repeatable():
-    control.COMM.get_com("hmc").do_action("repeatable")
+    control.nexus().comm.get_com("hmc").do_action("repeatable")
 
 def hmc_directory_browse():
-    control.COMM.get_com("hmc").do_action("dir")
+    control.nexus().comm.get_com("hmc").do_action("dir")
 
 class HMCRule(MappingRule):
     mapping = {

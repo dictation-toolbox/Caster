@@ -4,66 +4,17 @@ from dragonfly.timer import _Timer
 from caster.lib import settings
 from caster.lib.dfplus.communication import Communicator
 
-NEXUS = None
+_NEXUS = None
 
-
-class Nexus:
-    def __init__(self):
-        self._map = {}
-        self._nodes_map = {"CSS": False}
-        
-        self.state = None
-        self.clip = {}
-        self.sticky = []
-        self.history = RecognitionHistory(20)
-        self.history.register()
-        self.preserved = None
-        
-        self._comm = Communicator()
-        self.timer = _Timer(0.025)
-        
-        self.dep = None
-        self.intermediary = None
-        
-        self.macros_grammar = Grammar("recorded_macros")
-        self.aliases_grammar = Grammar("aliases")
-    
-    def inform_state(self, state):
-        self.state = state
-    def inform_dep(self, dep):
-        self.dep = dep
-    def inform_intermediary(self, intermediary):
-        self.intermediary = intermediary
-
-
-def nexus():
-    global NEXUS
-    if NEXUS==None:
-        NEXUS = Nexus()
-    return NEXUS
-
-
-
-
-
-
-MULTI_CLIPBOARD = {}
-STICKY_LIST = []
-
-DICTATION_CACHE = RecognitionHistory(20)
-DICTATION_CACHE.register()
-PRESERVED_CACHE = None
-
-COMM = Communicator()
-TIMER_MANAGER = _Timer(0.025)
-
-RECORDED_MACROS_GRAMMAR = Grammar("recorded_macros")
-ALIASES_GRAMMAR = Grammar("aliases")
-
-
-
-def print_startup_message():
-    print "*- Starting " + settings.SOFTWARE_NAME + " -*"
+class StatusIntermediary:
+    def __init__(self, c):
+        self.communicator = c
+    def hint(self, message):
+        if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
+            self.communicator.get_com("status").hint(message)
+    def text(self, message):
+        if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
+            self.communicator.get_com("status").text(message)
 
 class DependencyMan:
     def __init__(self):
@@ -90,21 +41,45 @@ class DependencyMan:
     NATLINK = False
     PIL = False
     PYWIN32 = False
-    
-print_startup_message()
-DEP = DependencyMan()
 
-class StatusIntermediary:
+class Nexus:
     def __init__(self):
-        global COMM
-        self.communicator = COMM
-    def hint(self, message):
-        if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
-            self.communicator.get_com("status").hint(message)
-    def text(self, message):
-        if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
-            self.communicator.get_com("status").text(message)
+        
+        self.state = None
+        self.clip = {}
+        self.sticky = []
+        self.history = RecognitionHistory(20)
+        self.history.register()
+        self.preserved = None
+        
+        self.comm = Communicator()
+        self.intermediary = StatusIntermediary(self.comm)
+        self.timer = _Timer(0.025)
+        
+        self.dep = DependencyMan()
+        self.intermediary = None
+        
+        self.macros_grammar = Grammar("recorded_macros")
+    
+    def inform_state(self, state):
+        self.state = state
 
-nexus().inform_dep(DependencyMan())
-nexus().inform_intermediary(StatusIntermediary())
-STAT = StatusIntermediary()
+
+def nexus():
+    global _NEXUS
+    if _NEXUS==None:
+        _NEXUS = Nexus()
+    return _NEXUS
+
+
+
+print "*- Starting " + settings.SOFTWARE_NAME + " -*"
+
+
+
+
+
+
+
+
+

@@ -25,15 +25,15 @@ class Dispel:  # this needs an entry in the settings file, needs to retain infor
     def start(self):
         self.reset()
         utilities.report("T: " + str(self.remaining) + " m")
-        control.TIMER_MANAGER.add_callback(self.tick, self.minute)
+        control.nexus().timer.add_callback(self.tick, self.minute)
     def resume(self):
         utilities.report("T: " + str(self.remaining) + " m")
-        control.TIMER_MANAGER.add_callback(self.tick, self.minute)
+        control.nexus().timer.add_callback(self.tick, self.minute)
     def stop(self):
         self.active = False
         self.save_settings()
         utilities.report("ending dispel")
-        control.TIMER_MANAGER.remove_callback(self.tick)
+        control.nexus().timer.remove_callback(self.tick)
     
     def save_settings(self):
         self.settings["remaining"] = self.remaining

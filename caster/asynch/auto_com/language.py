@@ -25,6 +25,6 @@ def toggle_language():
             AUTO_ENABLED_LANGUAGE = None
         if message!=None:
             if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
-                control.COMM.get_com("status").text(message)
+                control.nexus().comm.get_com("status").text(message)
     
     LAST_EXTENSION = extension
