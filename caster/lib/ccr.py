@@ -113,7 +113,12 @@ def generate_language_rule_pair(path):
 def create_repeat_rule(language_rule):
 #     nodes = control.NEXUS.nodes()
 #     css_rule = NodeRule(css.getCSSNode(), None, control.nexus().intermediary, False)
-    single_action = Alternative([RuleRef(rule=language_rule)])#, RuleRef(rule=css_rule)
+    
+    alts = [RuleRef(rule=language_rule)]
+    for noderule in control.nexus().noderules:
+        if noderule.node.active:
+            alts.append(RuleRef(rule=noderule))
+    single_action = Alternative(alts)
     sequence_name = "sequence_" + "language"
     sequence = Repetition(single_action, min=1, max=16, name=sequence_name)
     

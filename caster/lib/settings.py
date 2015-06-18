@@ -173,6 +173,7 @@ def init_default_values():
         if not name in SETTINGS["ccr"]["modes"]:
             SETTINGS["ccr"]["modes"][name] = value
             values_change_count += 1
+    SETTINGS["nodes"] = {}
     
     # passwords section
     if not "password" in SETTINGS.keys():

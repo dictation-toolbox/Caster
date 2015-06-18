@@ -22,7 +22,7 @@ class HintNode:
         self.text = text
         self.children = children
         self.spec = spec
-        self.parent = None
+        self.active = False
         # 0 is the first set of children
         self.explode_depth = 1  # the level at which to turn all children into rules
     

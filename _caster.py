@@ -21,12 +21,13 @@ from dragonfly import (Key, Function, Grammar, Playback,
 
 try:
     from caster.lib import settings# requires nothing
+    from caster.lib import utilities# requires settings
     from caster.lib import control# requires settings
     from caster.lib.dfplus.state import stack# requires control
     
     from caster.apps import *
     from caster.asynch import *
-    from caster.lib import utilities, ccr, context, recording
+    from caster.lib import ccr, context, recording
     from caster.asynch import auto_com
     import caster.dev, caster.wsr
     try:
@@ -46,6 +47,7 @@ try:
     from caster.lib import navigation, password
     from caster.lib.pita import scanner
     from caster.lib.dfplus.state.short import R
+    from caster.lib.dfplus.hint import _nodes
 except:
     import sys
     print sys.exc_info(), "\nAttempting to load CCR anyway..."

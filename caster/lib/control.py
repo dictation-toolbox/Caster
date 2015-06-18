@@ -4,6 +4,7 @@ from dragonfly.timer import _Timer
 from caster.lib import settings
 from caster.lib.dfplus.communication import Communicator
 
+
 _NEXUS = None
 
 class StatusIntermediary:
@@ -42,6 +43,8 @@ class DependencyMan:
     PIL = False
     PYWIN32 = False
 
+        
+
 class Nexus:
     def __init__(self):
         
@@ -60,10 +63,28 @@ class Nexus:
         self.intermediary = None
         
         self.macros_grammar = Grammar("recorded_macros")
+        self.noderules = []
     
     def inform_state(self, state):# resolves circular import 
         self.state = state
-
+        
+    def add_node_rule(self, n):
+        self.noderules.append(n)
+    
+    def get_node_rule(self, name):
+        for n in self.noderules:
+            if n.node.text == name:
+                return n
+    
+    def node_rule_active(self, name, value):
+        print self.get_node_rule(name).node, value
+        
+        self.get_node_rule(name).node.active = value
+        
+        print 5
+        settings.SETTINGS["nodes"][name] = value
+        settings.save_config()
+        
 
 def nexus():
     global _NEXUS
