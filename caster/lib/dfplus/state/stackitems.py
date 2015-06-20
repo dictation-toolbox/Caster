@@ -94,13 +94,11 @@ class DeckItemSeeker(DeckItemRegisteredAction):
                     # deck_item must have a spec
                     if deck_item.rspec in cs.specTriggers:
                         cl.satisfied = True
-#                         print deck_item.rspec
                         self.fillCL(cl, cs)
                         break
             if not cl.satisfied:  # if still not satisfied, do default
                 cl.satisfied = True
                 self.fillCL(cl, cl.sets[0])
-#                 print "defaulted", deck_item.rspec
     def get_index_of_next_unsatisfied_level(self):
         for i in range(0, len(self.forward)):
             cl = self.forward[i]

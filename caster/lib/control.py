@@ -58,9 +58,7 @@ class Nexus:
         self.comm = Communicator()
         self.intermediary = StatusIntermediary(self.comm)
         self.timer = _Timer(0.025)
-        
         self.dep = DependencyMan()
-        self.intermediary = None
         
         self.macros_grammar = Grammar("recorded_macros")
         self.noderules = []
@@ -76,12 +74,9 @@ class Nexus:
             if n.node.text == name:
                 return n
     
-    def node_rule_active(self, name, value):
-        print self.get_node_rule(name).node, value
+    def node_rule_active(self, name, value):        
+        self.get_node_rule(name).master_node.active = value
         
-        self.get_node_rule(name).node.active = value
-        
-        print 5
         settings.SETTINGS["nodes"][name] = value
         settings.save_config()
         

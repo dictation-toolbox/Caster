@@ -26,12 +26,17 @@ class HintNode:
         # 0 is the first set of children
         self.explode_depth = 1  # the level at which to turn all children into rules
     
+    def all_possibilities(self):
+        p = []
+        for child in self.children:
+            p += [x[0] for x in child.explode_children(0, True)]
+        return p
+    
     def explode_children(self, depth, max=False):
         results = [self.get_spec_and_text_and_node()]
         depth -= 1
         if depth>=0 or max:
             for child in self.children:
-#                 print depth, [x[0] for x in results]
                 e = child.explode_children(depth, max)
                 for t in e:
                     results.append((results[0][0] + " " + t[0], results[0][1] + t[1], t[2]))
@@ -96,13 +101,11 @@ class NodeRule(MappingRule):
             first = True
             self.post = ContextSeeker(None,
                 [L(
-                S(["cancel"], self.reset_node, None),
-                S([self.master_node.text] + [x[0] for x in self.master_node.explode_children(0, True)], lambda: False, None)
+                S(["cancel"], self.reset_node, None)#,
+#                 S([self.master_node.text] + [x[0] for x in self.master_node.explode_children(0, True)], lambda: False, None)
                 )     ], rspec=self.master_node.text, consume=False)
         if self.stat_msg == None:
-            self.stat_msg = stat_msg
-        
-#         print len(self.node.explode_children(0, True))
+            self.stat_msg = stat_msg        
         
         mapping = {}
         extras = []
@@ -122,7 +125,6 @@ class NodeRule(MappingRule):
             if self.stat_msg!=None and not first and not is_reset:# status window messaging
                 self.stat_msg.hint("\n".join([x.get_spec_and_text_and_node()[0] for x in self.node.children]))
         
-#         print [x for x in mapping]
         
         MappingRule.__init__(self, "node_" + str(self.master_node.text), mapping, extras, defaults)
         self.grammar = grammar
@@ -130,7 +132,6 @@ class NodeRule(MappingRule):
     
     def change_node(self, node, reset=False):
         self.grammar.unload()
-#         print "grammar: ", self.grammar
         NodeRule.__init__(self, node, self.grammar, None, reset)
         self.grammar.load()
     

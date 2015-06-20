@@ -62,7 +62,6 @@ def navigate_to_character(direction3, target):
                 return False
         
         # if we got to this point, we have a copy result, 
-#         print "have copy result: "+context
         index = find_index_in_context(target, context, look_left)
         
         # highlight only the target
@@ -75,7 +74,6 @@ def navigate_to_character(direction3, target):
                 Key("s-right" if look_left else "s-left")._execute()
             else:
                 Key("cs-right" if look_left else "cs-left")._execute()
-#             print "success"
             return True
         else:
             # reset cursor

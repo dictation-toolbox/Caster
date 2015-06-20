@@ -10,7 +10,6 @@ def update(name, value):
     control.nexus().node_rule_active(name, value)
     ccr.set_active()
     ccr.refresh()
-    print 4
 
 _mapping={}
 for node in [# register nodes here in order to get them into ccr
@@ -22,10 +21,13 @@ for node in [# register nodes here in order to get them into ccr
                          +" (Please delete config"+node.text+".txt) and remove "+node.text \
                          +" from the settings.json file to change this.")
         continue
+    if settings.SETTINGS["nodes"][node.text]:
+        node.active = True
+    print "should have intermediary: ", control.nexus().intermediary
     control.nexus().add_node_rule(NodeRule(node, None, control.nexus().intermediary, False))
     _mapping["enable "+node.text]=Function(update, name=node.text, value=True)
     _mapping["disable "+node.text]=Function(update, name=node.text, value=False)
-    # settings
+    
 
 if len(_mapping)>0:
     grammar = Grammar("NodeActivation")

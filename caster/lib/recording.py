@@ -66,7 +66,6 @@ def rewrite_alias_module(ccr_, non_):
                 elif ccr.MODULE_MARKERS[2] in line: non_open = True
                 elif ccr.MODULE_MARKERS[3] in line: non_open = False
                 
-#                 print str(add), str(ccr_open), str(non_open), str(written) 
                 
                 f.write(line + "\n")
                 if add:

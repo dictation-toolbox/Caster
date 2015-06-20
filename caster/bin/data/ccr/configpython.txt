@@ -48,12 +48,12 @@ cmd.map = {
 		"value true":				Text("True"),
 		"value false":				Text("False"),
 				
-		
+		 
 	    # Python specific           
  	    
  	    "sue iffae":				Text("if "), 
  	    "sue shells":				Text("else "),
- 	    
+ 	     
  	    
  	    "from":						Text( "from " ),
  	    "self":						Text("self"),

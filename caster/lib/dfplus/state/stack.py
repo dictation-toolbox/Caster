@@ -65,7 +65,6 @@ class ContextStack:
             if deck_item.back != None:
                 deck_size = len(self.list)
                 seekback_size = len(deck_item.back)
-                # print "deck size: ", deck_size, "seekback_size: ", seekback_size
                 for i in range(0, seekback_size):
                     index = deck_size - 1 - i
                     # back looking seekers have nothing else to wait for

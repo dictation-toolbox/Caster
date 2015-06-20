@@ -30,24 +30,25 @@ try:
     from caster.lib import ccr, context, recording
     from caster.asynch import auto_com
     import caster.dev, caster.wsr
+    from caster.lib.dfplus.hint import _nodes
     try:
         import caster.w
     except Exception:
         pass
-    ccr.initialize_ccr()
-    utilities.clean_temporary_files()
-    recording.load_alias_rules()
-    recording.load_recorded_rules()
     from caster.asynch.hmc import h_launch
-    h_launch.clean_homunculi()
-    if settings.SETTINGS["miscellaneous"]["status_window_enabled"] and not utilities.window_exists(None, statuswindow.TITLE):
-        Popen(["pythonw", settings.SETTINGS["paths"]["STATUS_WINDOW_PATH"]])
     from caster.asynch.hmc import vocabulary_processing
     from caster.asynch.sikuli import sikuli
     from caster.lib import navigation, password
     from caster.lib.pita import scanner
     from caster.lib.dfplus.state.short import R
-    from caster.lib.dfplus.hint import _nodes
+    
+    ccr.initialize_ccr()
+    utilities.clean_temporary_files()
+    recording.load_alias_rules()
+    recording.load_recorded_rules()
+    h_launch.clean_homunculi()
+    if settings.SETTINGS["miscellaneous"]["status_window_enabled"] and not utilities.window_exists(None, statuswindow.TITLE):
+        Popen(["pythonw", settings.SETTINGS["paths"]["STATUS_WINDOW_PATH"]])
 except:
     import sys
     print sys.exc_info(), "\nAttempting to load CCR anyway..."

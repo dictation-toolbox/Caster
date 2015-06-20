@@ -15,9 +15,7 @@ Thanks Christo Butcher, davitenio, poppe1219, ccowan
 from dragonfly import *
 
 from caster.lib import control
-from caster.lib import settings, utilities  # , control
-from caster.lib.dfplus.hint.hintnode import NodeRule
-from caster.lib.dfplus.hint.nodes import css
+from caster.lib import settings, utilities
 
 
 try:
@@ -69,6 +67,26 @@ def merge_copy_compatible(rule1, rule2):
             result = False
     return result
 
+def _merge_node_compatible_check(node_rule):
+    global current_combined_rule_ccr
+    for spec in node_rule.master_node.all_possibilities():
+        if spec in current_combined_rule_ccr._mapping.keys():
+            utilities.report("The spec '"+spec+"' from the "+node_rule.master_node.text \
+                             + " node is incompatible with one of the following CCR modules: " \
+                             + ", ".join([x for x in settings.SETTINGS["ccr"]["modes"] if settings.SETTINGS["ccr"]["modes"][x]]) \
+                             + " --disabling "+node_rule.master_node.text +" node")
+            node_rule.master_node.active = False
+            return
+
+def _merge_node_compatibility():
+    global current_combined_rule_ccr
+    if current_combined_rule_ccr==None:
+        return
+    for node_rule in control.nexus().noderules:
+        if node_rule.master_node.active:
+            _merge_node_compatible_check(node_rule)
+                
+
 class ConfigCCR(Config):
     def __init__(self, name):
         Config.__init__(self, name)
@@ -111,12 +129,10 @@ def generate_language_rule_pair(path):
 #     return ccr
 
 def create_repeat_rule(language_rule):
-#     nodes = control.NEXUS.nodes()
-#     css_rule = NodeRule(css.getCSSNode(), None, control.nexus().intermediary, False)
     
     alts = [RuleRef(rule=language_rule)]
     for noderule in control.nexus().noderules:
-        if noderule.node.active:
+        if noderule.master_node.active:
             alts.append(RuleRef(rule=noderule))
     single_action = Alternative(alts)
     sequence_name = "sequence_" + "language"
@@ -145,10 +161,10 @@ def refresh():
     grammar = Grammar("multi edit ccr")
     grammarN = Grammar("nccr")
     if current_combined_rule_ccr != None:
+        _merge_node_compatibility()
         grammar.add_rule(create_repeat_rule(current_combined_rule_ccr))
         grammar.load()
     if current_combined_rule_nonccr != None:
-#         utilities.remote_debug('who_called_it')
         ccrn = merge_copy(current_combined_rule_nonccr, None, None)
         grammarN.add_rule(ccrn)
         grammarN.load()

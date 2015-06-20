@@ -81,7 +81,6 @@ def pita(textnv):
     
     if ACTIVE_FILE_PATH[0] != None:
         result = selector.get_similar_symbol_name(str(textnv), scanner.DATA["directories"][ACTIVE_FILE_PATH[0]][ACTIVE_FILE_PATH[1]]["names"])
-        # print "fuzzy match: ", str(textnv), "->", result
         Text(result)._execute()
 
 def word_number(wn):
