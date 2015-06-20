@@ -95,19 +95,22 @@ def load_config():
     SETTINGS = _load(INISETPATH if SETTINGS == None else SETTINGS["SETTINGS_PATH"])
     init_default_values()
 
+def update_values(d, key_values):
+    values_change_count = 0
+    for key, value in key_values:
+        if not key in d:
+            d[key] = value
+            values_change_count += 1
+    return values_change_count
+
 def init_default_values():
     global SETTINGS
     values_change_count = 0
     
-    
-    
     # paths section
-    if not "paths" in SETTINGS.keys():
-        SETTINGS["paths"] = {}
-        values_change_count += 1
-    if not "BASE_PATH" in SETTINGS["paths"]:
-        SETTINGS["paths"]["BASE_PATH"] = "C:/NatLink/NatLink/MacroSystem/caster"
-    for (name, value) in [
+    values_change_count += update_values(SETTINGS, [("paths", {})])
+    values_change_count += update_values(SETTINGS["paths"], [("BASE_PATH", "C:/NatLink/NatLink/MacroSystem/caster")])
+    values_change_count += update_values(SETTINGS["paths"], [
         # DATA
         ("DLL_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/lib/dll/"),
         ("SETTINGS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/settings.json"),
@@ -146,89 +149,71 @@ def init_default_values():
         ("ALARM_SOUND_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/media/49685__ejfortin__nano-blade-loop.wav"),
         ("MEDIA_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/media"),
                                   
-        ]:
-        if not name in SETTINGS["paths"]:  # .keys()
-            SETTINGS["paths"][name] = value
-            values_change_count += 1
+        ])
     if not SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"] in sys.path and os.path.isdir(SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"]):
         sys.path.append(SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"])
     
     
     # CCR section
-    ccrNamesFromFiles = []
-    for ccrn in get_list_of_ccr_config_files():
-        if ccrn in ["navigation", "alphabet", "numbers", "punctuation"]:
-            ccrNamesFromFiles.append((ccrn, True))
-        else:
-            ccrNamesFromFiles.append((ccrn, False))
-    if not "ccr" in SETTINGS.keys():
-        SETTINGS["ccr"] = {}
-        SETTINGS["ccr"]["modes"] = {}
-        SETTINGS["ccr"]["common"] = []
-        SETTINGS["ccr"]["standard"] = ["alphabet", "navigation", "punctuation", "numbers"]
-        SETTINGS["ccr"]["registered_extensions"] = {}
-        SETTINGS["ccr"]["default_lower"] = True
-        values_change_count += 1
-    for (name, value) in ccrNamesFromFiles:
-        if not name in SETTINGS["ccr"]["modes"]:
-            SETTINGS["ccr"]["modes"][name] = value
-            values_change_count += 1
-    SETTINGS["nodes"] = {}
+    values_change_count += update_values(SETTINGS, [("ccr", {})])
+    values_change_count += update_values(SETTINGS["ccr"], [
+                       ("modes", {}), 
+                       ("common", []), 
+                       ("standard", ["alphabet", "navigation", "punctuation", "numbers"]), 
+                       ("registered_extensions", {}), 
+                       ("default_lower", True)
+                       ])
+    values_change_count += update_values(SETTINGS["ccr"]["modes"], 
+        [(x, x in SETTINGS["ccr"]["standard"]) for x in get_list_of_ccr_config_files()])
+    
+    # node rules
+    values_change_count += update_values(SETTINGS, [("nodes", {})])
     
     # passwords section
-    if not "password" in SETTINGS.keys():
-        SETTINGS["password"] = {}
-        SETTINGS["password"]["seed1"] = "abc123"
-        SETTINGS["password"]["seed2"] = "abd124"
-        SETTINGS["password"]["seed3"] = "abe125"
-        SETTINGS["password"]["seed4"] = "abf126"
-        values_change_count += 1
+    values_change_count += update_values(SETTINGS, [("password", {})])
+    values_change_count += update_values(SETTINGS["password"], [
+                       ("seed1", "change these"), 
+                       ("seed2", "if you use"),
+                       ("seed3", "password"),
+                       ("seed4", "generation")
+                       ])
     
     # miscellaneous section
-    if not "miscellaneous" in SETTINGS.keys():
-        SETTINGS["miscellaneous"] = {}
-        SETTINGS["miscellaneous"]["debug_speak"] = False
-        SETTINGS["miscellaneous"]["dev_commands"] = False
-        SETTINGS["miscellaneous"]["sikuli_enabled"] = False
-        SETTINGS["miscellaneous"]["status_window_enabled"] = True
-        values_change_count += 1
+    values_change_count += update_values(SETTINGS, [("miscellaneous", {})])
+    values_change_count += update_values(SETTINGS["miscellaneous"], [
+                       ("debug_speak", False), 
+                       ("dev_commands", False),
+                       ("sikuli_enabled", False),
+                       ("status_window_enabled", False)
+                       ])
     
-    # element section
-    if not "pita" in SETTINGS.keys():
-        SETTINGS["pita"] = {}
-        SETTINGS["pita"]["recent_files"] = 10
-        SETTINGS["pita"]["extensions"] = [".py", ".java", ".cpp", ".h", ".js"]
-        SETTINGS["pita"]["filter_strict"] = False
-        SETTINGS["pita"]["use_bonus"] = True
-        SETTINGS["pita"]["use_penalty"] = True
-        SETTINGS["pita"]["automatic_lowercase"] = True
-        values_change_count += 1
+    # fuzzy string matching section
+    values_change_count += update_values(SETTINGS, [("pita", {})])
+    values_change_count += update_values(SETTINGS["pita"], [
+        ("recent_files", 10), 
+        ("extensions", [".py", ".java", ".cpp", ".h", ".js"]), 
+        ("filter_strict", False), 
+        ("use_bonus", True), 
+        ("use_penalty", True), 
+        ("automatic_lowercase", True)     ])
         
     # auto_com section
-    if not "auto_com" in SETTINGS.keys():
-        SETTINGS["auto_com"] = {}
-        SETTINGS["auto_com"]["active"] = False
-        SETTINGS["auto_com"]["change_language"] = False
-        SETTINGS["auto_com"]["change_language_only"] = False
-        SETTINGS["auto_com"]["interval"] = 3
-        SETTINGS["auto_com"]["executables"] = ["pycharm.exe", "WDExpress.exe", "notepad++.exe"]
-        values_change_count += 1
+    values_change_count += update_values(SETTINGS, [("auto_com", {})])
+    values_change_count += update_values(SETTINGS["auto_com"], [
+        ("active", False), 
+        ("change_language", False), 
+        ("change_language_only", False), 
+        ("interval", 3), 
+        ("executables", ["pycharm.exe", "WDExpress.exe", "notepad++.exe"])     ])
     
     # pronunciations section
-    if not "pronunciations" in SETTINGS.keys():
-        SETTINGS["pronunciations"] = {}
-        values_change_count += 1
-    for (word, pronunciation) in [
+    values_change_count += update_values(SETTINGS, [("pronunciations", {})])
+    values_change_count += update_values(SETTINGS["pronunciations"], [
         ("c++", "C plus plus"),
         ("jquery", "J query"),
-        ]:
-        if not word in SETTINGS["pronunciations"]:  # .keys()
-            SETTINGS["pronunciations"][word] = pronunciation
-            values_change_count += 1
+        ])
     
-    if not "one time warnings" in SETTINGS.keys():
-        SETTINGS["one time warnings"] = {}
-        values_change_count += 1
+    values_change_count += update_values(SETTINGS, [("one time warnings", {})])
     
     global BAD_LOAD
     if values_change_count > 0 and not BAD_LOAD:
