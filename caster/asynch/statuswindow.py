@@ -66,9 +66,14 @@ class StatusWindow(TkTransparent):
             if i!=indices[len(indices)-1]:
                 with_lines+="\n"
         self.v.set(with_lines)
+        self.lift()
     
     def xmlrpc_hint(self, text):
-        self.after(10, lambda: self.v.set(text))
+        self.after(10, lambda: self.hint(text))
+    
+    def hint(self, text):
+        self.v.set(text)
+        self.lift()
     
     def start_move(self, event):
         self.x = event.x
@@ -84,6 +89,6 @@ class StatusWindow(TkTransparent):
         x = self.winfo_x() + deltax
         y = self.winfo_y() + deltay
         self.geometry("+%s+%s" % (x, y))
-
+    
 if __name__ == '__main__':
     app = StatusWindow()

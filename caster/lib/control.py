@@ -28,18 +28,14 @@ class DependencyMan:
                 try:
                     exec("import " + dep[0])
                 except Exception:
-                    print "unable to import "+dep[0]
                     if not dep[0] in settings.SETTINGS["one time warnings"]:
                         warnings += 1
                         settings.SETTINGS["one time warnings"][dep[0]] = True
                         urgency = "You can get it at " if is_win32ui else "If you wish to use those features, you can get it at "
                         print "\n" + dep[0] + " is required for ", dep[2], " features. " + urgency + dep[3] + "\n"
                 else:
-                    
-                    print "able to import "+dep[0]
                     name = dep[0] if not is_win32ui else dep[1]
                     exec("self." + name.upper() + "=True")
-            print self.NATLINK
             if warnings > 0:
                 settings.save_config()
 
