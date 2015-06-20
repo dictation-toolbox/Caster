@@ -4,7 +4,8 @@ import sys
 
 SETTINGS = None
 BAD_LOAD = False
-INISETPATH = 'C:/NatLink/NatLink/MacroSystem/caster/bin/data/settings.json'
+INISETPATH = os.path.realpath(__file__).split("lib")[0]+"bin\\data\\settings.json"
+
 
 # title
 SOFTWARE_VERSION_NUMBER = "0.4.7"

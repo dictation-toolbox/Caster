@@ -227,9 +227,8 @@ def set_active(ccr_mode=None):
     current_combined_rule_ccr = new_rule_ccr
     # 
     if new_rule_nonccr != None:
-#         utilities.remote_debug("ccr")
         current_combined_rule_nonccr = new_rule_nonccr
-    # self.
+        
 def set_active_command(enable_disable, ccr_mode):
     ccr_mode = str(ccr_mode)
     if int(enable_disable) == 1:

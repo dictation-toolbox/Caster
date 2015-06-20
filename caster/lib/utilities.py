@@ -6,6 +6,7 @@ import multiprocessing
 import os, json, sys
 import re
 from subprocess import Popen
+import traceback
 
 import win32com.client
 import win32gui, win32ui
@@ -133,6 +134,8 @@ def list_to_string(l):
 def simple_log(to_file=False):
     msg = list_to_string(sys.exc_info())
     print msg
+    for tb in traceback.format_tb(sys.exc_info()[2]):
+        print tb
     if to_file:
         f = open(settings.SETTINGS["paths"]["LOG_PATH"], 'a') 
         f.write(msg + "\n")

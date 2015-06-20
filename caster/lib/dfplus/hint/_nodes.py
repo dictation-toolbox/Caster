@@ -7,9 +7,13 @@ from caster.lib.dfplus.hint.nodes import css
 
 def update(name, value):
     # settings
-    control.nexus().node_rule_active(name, value)
-    ccr.set_active()
-    ccr.refresh()
+    try:
+        control.nexus().node_rule_active(name, value)
+        ccr.set_active()
+        ccr.refresh()
+    except Exception:
+        utilities.simple_log()
+    
 
 _mapping={}
 for node in [# register nodes here in order to get them into ccr

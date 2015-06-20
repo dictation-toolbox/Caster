@@ -72,6 +72,16 @@ def rewrite_alias_module(ccr_, non_):
                     if not written: 
                         if (ccr_open and ccr_ != None) or (non_open and non_ != None):
                             a = ccr_ if ccr_open else non_
+                            
+                            
+                            # need to escape text
+                            
+                            
+                            # use regular expression to read comma delimited line
+                            
+                            
+                            
+                            
                             f.write("'" + a[0] + "': Text('" + a[1] + "'),")
                             written = True
     except Exception:
