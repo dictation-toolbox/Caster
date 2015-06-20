@@ -27,6 +27,8 @@ QTYPE_INSTRUCTIONS = "ins"
 QTYPE_RECORDING = "rec"
 QTYPE_DIRECTORY = "dir"
 
+WSR = False
+
 def register_language(extension, language):
     '''
     This is for automatic language switching

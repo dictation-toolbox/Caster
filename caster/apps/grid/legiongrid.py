@@ -17,10 +17,10 @@ from caster.lib import navigation, settings, control
 from caster.lib.dfplus.state.short import R
 
 def kill():
-    control.COMM.get_com("grids").kill()
+    control.nexus().get_com("grids").kill()
 
 def send_input(n, action):
-    s = control.COMM.get_com("grids")
+    s = control.nexus().get_com("grids")
     
     int_a = int(action)
     response = None

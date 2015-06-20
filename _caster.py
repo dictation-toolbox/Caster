@@ -1,7 +1,6 @@
 '''
 main Caster module
 '''
-
 '''
 Created on Jun 29, 2014
 
@@ -13,14 +12,15 @@ Instructions for adding new:
 '''
 
 from subprocess import Popen
+import time
 
 from dragonfly import (Key, Function, Grammar, Playback,
                        IntegerRef, Dictation, Choice, Pause, MappingRule)
 
 
-
 try:
     from caster.lib import settings# requires nothing
+    settings.WSR = __name__ == "__main__"
     from caster.lib import utilities# requires settings
     from caster.lib import control# requires settings
     from caster.lib.dfplus.state import stack# requires control
@@ -171,3 +171,12 @@ def unload():
     grammar = None
     ccr.unload()
     sikuli.unload()
+
+if __name__ == "__main__":
+    import pythoncom
+    print "Windows Speech Recognition is garbage; it is " \
+        +"recommended that you not run Caster this way. " \
+        + "";
+    while True:
+        pythoncom.PumpWaitingMessages()  # @UndefinedVariable
+        time.sleep(.1)
