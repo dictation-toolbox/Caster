@@ -80,8 +80,21 @@ def pita(textnv):
         return
     
     if ACTIVE_FILE_PATH[0] != None:
-        result = selector.get_similar_symbol_name(str(textnv), scanner.DATA["directories"][ACTIVE_FILE_PATH[0]][ACTIVE_FILE_PATH[1]]["names"])
-        Text(result)._execute()
+        results = selector.get_similar_symbol_name(str(textnv), scanner.DATA["directories"][ACTIVE_FILE_PATH[0]][ACTIVE_FILE_PATH[1]]["names"])
+        try:
+            if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
+                display = ""
+                counter = 1
+                for result in results:
+                    if counter>1: display+="\n"
+                    display+=str(counter)+" "+result[1]
+                    counter+=1
+                control.nexus().intermediary.hint(display)
+        except Exception:
+            utilities.simple_log()
+        
+                
+#         Text(result)._execute()
 
 def word_number(wn):
     numbers_to_words = {

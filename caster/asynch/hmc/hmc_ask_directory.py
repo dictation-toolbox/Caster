@@ -39,7 +39,7 @@ class Homunculus_Directory(Homunculus):
     
     def _ask_directory(self):
         dir_opt = {}
-        dir_opt['initialdir'] = os.environ["HOME"] + '\\'
+        dir_opt['initialdir'] = os.path.expanduser('~')#os.environ["HOME"]
         dir_opt['mustexist'] = False
         dir_opt['parent'] = self
         dir_opt['title'] = 'Please select directory'
@@ -49,6 +49,3 @@ class Homunculus_Directory(Homunculus):
     def xmlrpc_do_action(self, action, details=None):
         if action == "dir":
             self.after(10, self._ask_directory)
-
-
-

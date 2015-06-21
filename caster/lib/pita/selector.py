@@ -3,13 +3,15 @@ Created on Feb 26, 2015
 
 @author: dave
 '''
+from operator import itemgetter
+
 from caster.lib import settings
 
 
 def get_similar_symbol_name(spoken_phrase, list_of_symbols):
     if settings.SETTINGS["pita"]["automatic_lowercase"]:
         spoken_phrase = spoken_phrase.lower()
-    best = (0, "")
+    results = []
     without_homonyms = _abbreviated_string(spoken_phrase)
     with_homonyms = _abbreviated_string(_homonym_replaced_string(spoken_phrase))
     
@@ -27,13 +29,13 @@ def get_similar_symbol_name(spoken_phrase, list_of_symbols):
             bonus = _whole_word_bonus(spoken_phrase, w_lower)
         
         score = _phrase_to_symbol_similarity_score(without_homonyms_lower, w_lower) - penalty + bonus
-        if score > best[0]:
-            best = (score, w)
-        score = _phrase_to_symbol_similarity_score(with_homonyms_lower, w_lower) - penalty + bonus
-        if score > best[0]:
-            best = (score, w)
-     
-    return best[1]
+        score_homonyms = _phrase_to_symbol_similarity_score(with_homonyms_lower, w_lower) - penalty + bonus
+        score = score if score>score_homonyms else score_homonyms
+        results.append((score, w))
+        
+    length = 10 if len(results)>10 else len(results)
+    results = sorted(results, key=itemgetter(0), reverse=True)[:length]
+    return results
 
 def _homonym_replaced_string(s):
     # if there are numbers or things which sound like numbers in the symbol, replace those things in the spoken phrase before breaking it
