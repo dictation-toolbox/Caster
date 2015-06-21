@@ -67,7 +67,7 @@ def rewrite_alias_module(ccr_, non_):
                 elif ccr.MODULE_MARKERS[3] in line: non_open = False
                 
                 
-                f.write(line + "\n")
+                f.write(line)
                 if add:
                     if not written: 
                         if (ccr_open and ccr_ != None) or (non_open and non_ != None):
@@ -82,7 +82,7 @@ def rewrite_alias_module(ccr_, non_):
                             
                             
                             
-                            f.write("'" + a[0] + "': Text('" + a[1] + "'),")
+                            f.write("\n'" + a[0] + "': Text('" + a[1] + "'),")
                             written = True
     except Exception:
         utilities.simple_log(True)

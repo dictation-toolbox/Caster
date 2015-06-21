@@ -1,5 +1,5 @@
 from dragonfly import RecognitionHistory, Grammar
-from dragonfly.timer import _Timer
+
 
 from caster.lib import settings
 from caster.lib.dfplus.communication import Communicator
@@ -43,7 +43,16 @@ class DependencyMan:
     PIL = False
     PYWIN32 = False
 
-        
+class TimerForWSR:
+    def __init__(self, interval):
+        self.interval = interval
+        self.callbacks = []
+    def add_callback(self, function, interval):
+        ''''''
+    def remove_callback(self, function):
+        ''''''
+    def callback(self):
+        ''''''
 
 class Nexus:
     def __init__(self):
@@ -57,7 +66,12 @@ class Nexus:
         
         self.comm = Communicator()
         self.intermediary = StatusIntermediary(self.comm)
-        self.timer = _Timer(0.025)
+        self.timer = None
+        if not settings.WSR:
+            from dragonfly.timer import _Timer
+            self.timer = _Timer(0.025)
+        else:
+            self.timer = TimerForWSR(0.025)
         self.dep = DependencyMan()
         
         self.macros_grammar = Grammar("recorded_macros")
