@@ -60,18 +60,18 @@ class Nexus:
         self.state = None
         self.clip = {}
         self.sticky = []
-        self.history = RecognitionHistory(20)
-        self.history.register()
+        self.history = []
+        if not settings.WSR:
+            self.history = RecognitionHistory(20)
+            self.history.register()
         self.preserved = None
         
         self.comm = Communicator()
         self.intermediary = StatusIntermediary(self.comm)
-        self.timer = None
+        self.timer = TimerForWSR(0.025)
         if not settings.WSR:
             from dragonfly.timer import _Timer
             self.timer = _Timer(0.025)
-        else:
-            self.timer = TimerForWSR(0.025)
         self.dep = DependencyMan()
         
         self.macros_grammar = Grammar("recorded_macros")
