@@ -50,9 +50,9 @@ try:
     if settings.SETTINGS["miscellaneous"]["status_window_enabled"] and not utilities.window_exists(None, statuswindow.TITLE):
         Popen(["pythonw", settings.SETTINGS["paths"]["STATUS_WINDOW_PATH"]])
 except:
-    import sys
-    print sys.exc_info(), "\nAttempting to load CCR anyway..."
-    from caster.lib import ccr
+    print "\nAttempting to load CCR anyway..."
+    from caster.lib import ccr, utilities
+    utilities.simple_log()
     ccr.initialize_ccr()
 
 

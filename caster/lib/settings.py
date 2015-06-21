@@ -5,7 +5,7 @@ import sys
 SETTINGS = None
 BAD_LOAD = False
 INISETPATH = os.path.realpath(__file__).split("lib")[0]+"bin\\data\\settings.json"
-
+BASE_PATH = os.path.realpath(__file__).split("\\lib")[0].replace("\\", "/")
 
 # title
 SOFTWARE_VERSION_NUMBER = "0.4.7"
@@ -107,12 +107,12 @@ def update_values(d, key_values):
     return values_change_count
 
 def init_default_values():
-    global SETTINGS
+    global SETTINGS, BASE_PATH
     values_change_count = 0
     
     # paths section
     values_change_count += update_values(SETTINGS, [("paths", {})])
-    values_change_count += update_values(SETTINGS["paths"], [("BASE_PATH", "C:/NatLink/NatLink/MacroSystem/caster")])
+    values_change_count += update_values(SETTINGS["paths"], [("BASE_PATH", BASE_PATH)])
     values_change_count += update_values(SETTINGS["paths"], [
         # DATA
         ("DLL_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/lib/dll/"),
