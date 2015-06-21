@@ -1,4 +1,5 @@
 import os
+import re
 import time
 
 from dragonfly import (Playback, CompoundRule, IntegerRef, Mimic, Text)
@@ -8,6 +9,7 @@ from caster.lib import settings, control, utilities, navigation, context, ccr
 
 
 MESSAGE_SPLITTER = "<chain_alias>"
+LINE_PATTERN = re.compile(r"'([\w ]+)':[ ]{0,1}Text\('(.*)'\)")
 
 class RecordedRule(CompoundRule):
     def __init__(self, commands, name=None, spec=None, extras=None,
@@ -39,7 +41,9 @@ def rewrite_alias_module(ccr_, non_):
     '''
     ccr_, non_ are tuples in the form (spec, text), and are nullable
     '''
+    global LINE_PATTERN
     add = ccr_ != None or non_ != None
+    a = ccr_ if ccr_!=None else non_
     ccr_open = False
     non_open = False
     written = False
@@ -47,7 +51,7 @@ def rewrite_alias_module(ccr_, non_):
     lines = []
     
     if not add or not exists:
-        lines = ccr.MODULE_SHELL
+        lines = [x+"\n" for x in ccr.MODULE_SHELL]
     else:
         # read in the file
         try:
@@ -55,6 +59,13 @@ def rewrite_alias_module(ccr_, non_):
                 lines = f.readlines()
         except Exception:
             utilities.simple_log(True)
+    
+    for line in lines:# do overwrite if same words are chosen
+        match_object = LINE_PATTERN.findall(line)
+        if len(match_object) > 0:  
+            if match_object[0][0]==a[0]:
+                lines.remove(line)
+                break
     
     try:
         with open(settings.SETTINGS["paths"]["ALIASES_PATH"], "w+") as f:
@@ -66,23 +77,14 @@ def rewrite_alias_module(ccr_, non_):
                 elif ccr.MODULE_MARKERS[2] in line: non_open = True
                 elif ccr.MODULE_MARKERS[3] in line: non_open = False
                 
-                
                 f.write(line)
                 if add:
                     if not written: 
                         if (ccr_open and ccr_ != None) or (non_open and non_ != None):
-                            a = ccr_ if ccr_open else non_
-                            
-                            
-                            # need to escape text
-                            
-                            
-                            # use regular expression to read comma delimited line
-                            
-                            
-                            
-                            
-                            f.write("\n'" + a[0] + "': Text('" + a[1] + "'),")
+                            # need to escape for reading back in
+                            spec=a[0].replace("'", "\\'").replace("\\", "\\\\")
+                            text=a[1].replace("'", "\\'").replace("\\", "\\\\").replace("\r", "").replace("\n", "\\n")
+                            f.write("'"+ spec + "': Text('" + text + "'),\n")
                             written = True
     except Exception:
         utilities.simple_log(True)
