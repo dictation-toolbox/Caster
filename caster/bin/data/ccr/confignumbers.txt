@@ -13,7 +13,7 @@ cmd.map = {
 			
      	    #numbers
 		    "word number <wn>":	R(Function(navigation.word_number, extra="wn"), rdescript="Number As Word"),
-			"numb <wnKK>":		R(Function(navigation.numbers2, extra="wnKK"), rdescript="Number"),
+			"numb <wnKK>":		R(Function(navigation.numbers2, extra="wnKK"), rspec="number", rdescript="Number"),
 					 
      	   
           }

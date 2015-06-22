@@ -8,13 +8,16 @@ from dragonfly import ActionBase
 from caster.lib import control
 
 class RegisteredAction(ActionBase):
-    def __init__(self, base, rspec="default", rdescript=None, rundo=None):
+    def __init__(self, base, rspec="default", rdescript="unnamed command (RA)", 
+                 rundo=None, show=True, preserve_results=False):
         ActionBase.__init__(self)
         self.state = control.nexus().state
         self.base = base
         self.rspec = rspec
         self.rdescript = rdescript
         self.rundo = rundo
+        self.show = show
+        self.preserve_results = preserve_results
     
     def _execute(self, data=None):  # copies everything relevant and places it in the deck
         self.dragonfly_data = data
@@ -24,13 +27,13 @@ class RegisteredAction(ActionBase):
 
 
 class ContextSeeker(RegisteredAction):
-    def __init__(self, back, forward, rspec="default", rdescript="unnamed command (CS)", consume=True):
+    def __init__(self, back, forward, rspec="default", rdescript="unnamed command (CS)", consume=None):
         RegisteredAction.__init__(self, None)
         self.back = back
         self.forward = forward
         self.rspec = rspec
         self.rdescript = rdescript
-        self.consume = consume
+        self.consume = consume # an array of booleans corresponding to the number of forward seekers
         self.state = control.nexus().state
         assert self.back != None or self.forward != None, "Cannot create ContextSeeker with no levels"
     def _execute(self, data=None):

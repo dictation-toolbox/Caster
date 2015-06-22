@@ -103,7 +103,7 @@ class NodeRule(MappingRule):
                 [L(
                 S(["cancel"], self.reset_node, None)#,
 #                 S([self.master_node.text] + [x[0] for x in self.master_node.explode_children(0, True)], lambda: False, None)
-                )     ], rspec=self.master_node.text, consume=False)
+                )     ], rspec=self.master_node.text, consume=[False])
         if self.stat_msg == None:
             self.stat_msg = stat_msg        
         

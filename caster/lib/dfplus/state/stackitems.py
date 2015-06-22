@@ -5,9 +5,10 @@ Created on Jun 7, 2015
 '''
 from dragonfly import Function, Key, Mimic, Paste, Text
 
-from caster.lib import settings
-from caster.lib.dfplus.hint.hintnode import NodeAction
 from caster.lib import control
+from caster.lib import settings, utilities
+from caster.lib.dfplus.hint.hintnode import NodeAction
+
 
 class DeckItem:
     def __init__(self, type):
@@ -26,15 +27,20 @@ class DeckItemRegisteredAction(DeckItem):
         self.rspec = registered_action.rspec
         self.rdescript = registered_action.rdescript
         self.rundo = registered_action.rundo
+        self.show = registered_action.show
+        self.preserve_results = registered_action.preserve_results # for commands that actually use the last thing spoken
+        self.preserved = None
     def execute(self):
         self.complete = True
+#         utilities.remote_debug("stack items")
         self.base._execute(self.dragonfly_data)
+        # do presentation here
         self.clean()
     def clean(self):
         self.dragonfly_data = None
     def put_time_action(self):
-        if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
-            control.nexus().comm.get_com("status").text(self.rdescript)
+        if settings.SETTINGS["miscellaneous"]["status_window_enabled"] and self.show:
+            control.nexus().intermediary.text(self.rdescript)
 class DeckItemSeeker(DeckItemRegisteredAction):
     def __init__(self, seeker):
         DeckItemRegisteredAction.__init__(self, seeker, "seeker")
@@ -77,7 +83,7 @@ class DeckItemSeeker(DeckItemRegisteredAction):
         cl.parameters = cs.parameters
         cl.dragonfly_data = self.dragonfly_data
 #         self.dragonfly_data = None # no need to be hanging onto this in more places than one
-    def execute(self, unused):
+    def execute(self, unused=None):
         self.complete = True
         c = []
         if self.back != None:c += self.back

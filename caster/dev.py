@@ -9,7 +9,7 @@ from caster.lib.dfplus.hint.nodes import css
 from caster.lib.dfplus.state.actions import ContextSeeker, Continuer, \
     RegisteredAction
 from caster.lib.dfplus.state.short import L, S, R
-from caster.lib.pita import selector
+from caster.lib.pita import selector, fn
 
 
 grammar = Grammar('development')
@@ -134,9 +134,16 @@ class DevRule(MappingRule):
     "Agrippa <filetype> <path>":    Function(grep_this),
     
     # experimental/incomplete commands
+    "(pita | Peter | PETA) <textnv> [brunt]":R(Function(fn.pita), show=False)
+                                            +ContextSeeker(None,
+                                                  [L(S(["default"], fn.make_selection,  1),
+                                                     S(fn.TEN, fn.make_selection, -1), 
+                                                     S(["cancel"], fn.empty, None)
+                                                      )
+                                                   ], rdescript="Fuzzy String Match", consume=[False, True, True]),
     
     "experiment <text>":            Function(experiment),
-    
+    # 
     "dredge [<id> <text>]":         Function(dredge),
     
     "backward seeker":              ContextSeeker([L(S(["ashes", "charcoal"], Text, "ashes1"),

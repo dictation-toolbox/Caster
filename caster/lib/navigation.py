@@ -60,41 +60,6 @@ def get_direction_choice(spec):
 def initialize_clipboard():
     if len(control.nexus().clip) == 0:
         control.nexus().clip = utilities.load_json_file(settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
-    
-OLD_ACTIVE_WINDOW_TITLE = None
-ACTIVE_FILE_PATH = [None, None]
-
-def pita(textnv):
-    global OLD_ACTIVE_WINDOW_TITLE, ACTIVE_FILE_PATH
-    
-    filename, folders, title = utilities.get_window_title_info()
-    active_has_changed = OLD_ACTIVE_WINDOW_TITLE != title
-    
-    # check to see if the active file has changed; if not, skip this step
-    if active_has_changed:
-        OLD_ACTIVE_WINDOW_TITLE = title
-        ACTIVE_FILE_PATH = scanner.guess_file_based_on_window_title(filename, folders)
-    
-    if filename == None:
-        utilities.report("pita: filename pattern not found in window title")
-        return
-    
-    if ACTIVE_FILE_PATH[0] != None:
-        results = selector.get_similar_symbol_name(str(textnv), scanner.DATA["directories"][ACTIVE_FILE_PATH[0]][ACTIVE_FILE_PATH[1]]["names"])
-        try:
-            if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
-                display = ""
-                counter = 1
-                for result in results:
-                    if counter>1: display+="\n"
-                    display+=str(counter)+" "+result[1]
-                    counter+=1
-                control.nexus().intermediary.hint(display)
-        except Exception:
-            utilities.simple_log()
-        
-                
-#         Text(result)._execute()
 
 def word_number(wn):
     numbers_to_words = {

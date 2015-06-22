@@ -87,13 +87,14 @@ class ContextStack:
         if number_incomplete > 0:
             for i in range(0, number_incomplete):
                 seeker = incomplete[i]
-                seeker.satisfy_level(seeker.get_index_of_next_unsatisfied_level(), False, deck_item)
+                unsatisfied = seeker.get_index_of_next_unsatisfied_level()
+                seeker.satisfy_level(unsatisfied, False, deck_item)
                 if seeker.get_index_of_next_unsatisfied_level() == -1:
                     seeker.execute(False)
                 # consume deck_item
                 if ((seeker.type != "continuer" and deck_item.type == "raction")  # do not consume seekers, it would disable chaining
                 or (seeker.type == "continuer" and seeker.get_index_of_next_unsatisfied_level() == -1)):
-                    if seeker.consume:
+                    if seeker.consume == None or seeker.consume[unsatisfied]==True:
                         deck_item.complete = True
                         deck_item.consumed = True
                         deck_item.clean()
@@ -115,6 +116,8 @@ class ContextStack:
             if not self.list[i].complete:  # no need to check type because only forward seekers will be incomplete
                 incomplete.append(self.list[i])
         return incomplete
-
+    
+    def get_last_spec(self):
+        return self.list[-1]
 
 control.nexus().inform_state(CasterState())

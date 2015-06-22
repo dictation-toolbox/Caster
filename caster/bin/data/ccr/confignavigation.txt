@@ -1,5 +1,6 @@
 from dragonfly import *
 from caster.lib import navigation, context, utilities
+from caster.lib.pita import fn
 from caster.lib.dfplus.state.actions import ContextSeeker, Continuer, RegisteredAction
 from caster.lib.dfplus.state.short import L, S, R
 navigation.initialize_clipboard()
@@ -18,7 +19,7 @@ cmd.map = {
                                                    ], time_in_seconds=0.2, repetitions=50 ),
     
     # fuzzy string matching command
-    "(pita | Peter | PETA) <textnv> [brunt]":Function(navigation.pita, extra="textnv"), 
+    
         
     # keyboard shortcuts
 	'save':                         R(Key("c-s"), rspec="save", rdescript="Save"),
