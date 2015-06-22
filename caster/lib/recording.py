@@ -60,12 +60,13 @@ def rewrite_alias_module(ccr_, non_):
         except Exception:
             utilities.simple_log(True)
     
-    for line in lines:# do overwrite if same words are chosen
-        match_object = LINE_PATTERN.findall(line)
-        if len(match_object) > 0:  
-            if match_object[0][0]==a[0]:
-                lines.remove(line)
-                break
+    if a != None:
+        for line in lines:# do overwrite if same words are chosen
+            match_object = LINE_PATTERN.findall(line)
+            if len(match_object) > 0:  
+                if match_object[0][0]==a[0]:
+                    lines.remove(line)
+                    break
     
     try:
         with open(settings.SETTINGS["paths"]["ALIASES_PATH"], "w+") as f:
