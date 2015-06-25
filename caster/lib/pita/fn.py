@@ -9,19 +9,20 @@ TEN = ["numb one", "numb two", "numb three", "numb four", "numb five"
        "numb six", "numb seven", "numb eight", "numb nine", "numb ten"]
 
 
- 
+# make_selection. 
 
 def empty():
     global CHOICES
     CHOICES = []
 # 
-def make_selection(nnavi50, stack):
+def make_selection(nnavi50):
     global CHOICES
     n = int(nnavi50)
     if n>len(CHOICES):
         return
     if n==-1:
-        ''''''
+        last_spoken = None# it's not on the stack yet
+        
     Text(CHOICES[n-1][1]).execute()
 
 def pita(textnv):

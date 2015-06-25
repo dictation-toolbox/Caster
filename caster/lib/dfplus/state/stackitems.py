@@ -5,11 +5,10 @@ Created on Jun 7, 2015
 '''
 from dragonfly import Function, Key, Mimic, Paste, Text
 
-from caster.lib import control
-from caster.lib import settings, utilities
+from caster.lib import control, settings
 from caster.lib.dfplus.hint.hintnode import NodeAction
 
-class DeckItem:
+class StackItem:
     def __init__(self, type):
         assert type in ["raction", "seeker", "continuer"]
         self.type = type
@@ -17,10 +16,10 @@ class DeckItem:
         self.consumed = False  # indicates that an undo is unnecessary
         self.rspec = "default"
     def put_time_action(self):
-        ''' this always happens at the time that the deck item is placed in the deck '''
-class DeckItemRegisteredAction(DeckItem):
+        ''' this always happens at the time that the Stack item is placed in the Stack '''
+class StackItemRegisteredAction(StackItem):
     def __init__(self, registered_action, type="raction"):
-        DeckItem.__init__(self, type)
+        StackItem.__init__(self, type)
         self.dragonfly_data = registered_action.dragonfly_data
         self.base = registered_action.base
         self.rspec = registered_action.rspec
@@ -41,9 +40,9 @@ class DeckItemRegisteredAction(DeckItem):
     def put_time_action(self):
         if settings.SETTINGS["miscellaneous"]["status_window_enabled"] and self.show:
             control.nexus().intermediary.text(self.rdescript)
-class DeckItemSeeker(DeckItemRegisteredAction):
+class StackItemSeeker(StackItemRegisteredAction):
     def __init__(self, seeker):
-        DeckItemRegisteredAction.__init__(self, seeker, "seeker")
+        StackItemRegisteredAction.__init__(self, seeker, "seeker")
         self.back = self.copy_direction(seeker.back)
         self.forward = self.copy_direction(seeker.forward)
         self.consume = seeker.consume
@@ -71,7 +70,7 @@ class DeckItemSeeker(DeckItemRegisteredAction):
             return False
     def clean(self):
         # save whatever data you need here
-        DeckItemRegisteredAction.clean(self)
+        StackItemRegisteredAction.clean(self)
         if self.back != None: 
             for cl in self.back:
                 cl.dragonfly_data = None
@@ -91,14 +90,14 @@ class DeckItemSeeker(DeckItemRegisteredAction):
         for cl in c:
             self.executeCL(cl)
         self.clean()
-    def satisfy_level(self, level_index, is_back, deck_item):
+    def satisfy_level(self, level_index, is_back, Stack_item):
         direction = self.back if is_back else self.forward
         cl = direction[level_index]
         if not cl.satisfied:
-            if deck_item != None:
+            if Stack_item != None:
                 for cs in cl.sets:
-                    # deck_item must have a spec
-                    if deck_item.rspec in cs.specTriggers:
+                    # Stack_item must have a spec
+                    if Stack_item.rspec in cs.specTriggers:
                         cl.satisfied = True
                         self.fillCL(cl, cs)
                         break
@@ -111,9 +110,9 @@ class DeckItemSeeker(DeckItemRegisteredAction):
             if not cl.satisfied:
                 return i
         return -1
-class DeckItemContinuer(DeckItemSeeker):
+class StackItemContinuer(StackItemSeeker):
     def __init__(self, continuer):
-        DeckItemRegisteredAction.__init__(self, continuer, "continuer")
+        StackItemRegisteredAction.__init__(self, continuer, "continuer")
         self.back = None
         self.forward = self.copy_direction(continuer.forward)
         self.repetitions = continuer.repetitions
@@ -121,24 +120,24 @@ class DeckItemContinuer(DeckItemSeeker):
         self.closure = None
         self.time_in_seconds = continuer.time_in_seconds
         self.consume = continuer.consume
-    def satisfy_level(self, level_index, is_back, deck_item):  # level_index and is_back are unused here, but left in for compatibility
+    def satisfy_level(self, level_index, is_back, Stack_item):  # level_index and is_back are unused here, but left in for compatibility
         cl = self.forward[0]
         if not cl.satisfied:
-            if deck_item != None:
+            if Stack_item != None:
                 cs = cl.sets[0]
-                if deck_item.rspec in cs.specTriggers:  # deck_item must have a spec
+                if Stack_item.rspec in cs.specTriggers:  # Stack_item must have a spec
                     cl.satisfied = True
     def get_triggers(self):
         return self.forward[0].sets[0].specTriggers
     def execute(self, success):  # this method should be what deactivates the continuer
         '''
         There are three ways this can be triggered: success, timeout, and cancel.
-        Success and timeout are in the closure. Cancels are handled in the deck.
+        Success and timeout are in the closure. Cancels are handled in the Stack.
         Waiting commands should only be run on success.
         '''
         self.complete = True
         control.nexus().timer.remove_callback(self.closure)
-        DeckItemSeeker.clean(self)
+        StackItemSeeker.clean(self)
         self.closure = None
         if success:
             control.nexus().state.run_waiting_commands()  # @UndefinedVariable

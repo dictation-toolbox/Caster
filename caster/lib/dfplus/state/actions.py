@@ -19,9 +19,9 @@ class RegisteredAction(ActionBase):
         self.show = show
         self.preserve_results = preserve_results
     
-    def _execute(self, data=None):  # copies everything relevant and places it in the deck
+    def _execute(self, data=None):  # copies everything relevant and places it in the stack
         self.dragonfly_data = data
-        self.state.add(self.state.generate_registered_action_deck_item(self))
+        self.state.add(self.state.generate_registered_action_stack_item(self))
 
 
 
@@ -38,7 +38,7 @@ class ContextSeeker(RegisteredAction):
         assert self.back != None or self.forward != None, "Cannot create ContextSeeker with no levels"
     def _execute(self, data=None):
         self.dragonfly_data = data
-        self.state.add(self.state.generate_context_seeker_deck_item(self))
+        self.state.add(self.state.generate_context_seeker_stack_item(self))
         
         
         
@@ -67,4 +67,4 @@ class Continuer(ContextSeeker):
         if "repetitions" in data: self.time_in_seconds=int(data["repetitions"])
           
         self.dragonfly_data = data
-        self.state.add(self.state.generate_continuer_deck_item(self))
+        self.state.add(self.state.generate_continuer_stack_item(self))

@@ -6,31 +6,31 @@ Created on Jun 7, 2015
 import Queue
 
 from caster.lib import control
-from caster.lib.dfplus.state.stackitems import DeckItemRegisteredAction, \
-    DeckItemSeeker, DeckItemContinuer
+from caster.lib.dfplus.state.stackitems import StackItemRegisteredAction, \
+    StackItemSeeker, StackItemContinuer
 
 
 
 
 class CasterState:
     def __init__(self):
-        self.deck = ContextStack(self)
+        self.stack = ContextStack(self)
         self.blocker = None
         self.waiting = Queue.Queue()
-    def add(self, deck_item):
+    def add(self, stack_item):
         if self.blocker == None:
             ''' important to block before adding because the add might unblock '''
-            if deck_item.type == "continuer":
-                self.blocker = deck_item
-            self.deck.add(deck_item)
+            if stack_item.type == "continuer":
+                self.blocker = stack_item
+            self.stack.add(stack_item)
         else:
-            if deck_item.rspec in self.blocker.get_triggers():  # let cancels go through
+            if stack_item.rspec in self.blocker.get_triggers():  # let cancels go through
                 self.unblock()
                 while not self.waiting.empty():
                     self.waiting.get_nowait() # discard the Queue if cancelled
-                self.add(deck_item)
+                self.add(stack_item)
             else:
-                self.waiting.put_nowait(deck_item)
+                self.waiting.put_nowait(stack_item)
     def unblock(self):
         self.blocker = None
     def run_waiting_commands(self):
@@ -44,42 +44,42 @@ class CasterState:
     def halt_asynchronous(self, success):
         ''' only for use with Dragonfly Function actions which can't return true or false but need spoken parameters'''
         self.blocker.execute(success)
-    def generate_registered_action_deck_item(self, raction):
-        return DeckItemRegisteredAction(raction)
-    def generate_context_seeker_deck_item(self, seeker):
-        return DeckItemSeeker(seeker)
-    def generate_continuer_deck_item(self, continuer):
-        return DeckItemContinuer(continuer)
+    def generate_registered_action_stack_item(self, raction):
+        return StackItemRegisteredAction(raction)
+    def generate_context_seeker_stack_item(self, seeker):
+        return StackItemSeeker(seeker)
+    def generate_continuer_stack_item(self, continuer):
+        return StackItemContinuer(continuer)
 
 class ContextStack:
     def __init__(self, state):
         self.list = []
         self.state = state
     
-    def add(self, deck_item):  # deck_item is an instance of DeckItem 
+    def add(self, stack_item):  # stack_item is an instance of stackItem 
         
         
         ''' case: the new item is has backward seeking --
             -- satisfy levels, then move on to other logic'''
-        if deck_item.type == "seeker":
-            if deck_item.back != None:
-                deck_size = len(self.list)
-                seekback_size = len(deck_item.back)
+        if stack_item.type == "seeker":
+            if stack_item.back != None:
+                stack_size = len(self.list)
+                seekback_size = len(stack_item.back)
                 for i in range(0, seekback_size):
-                    index = deck_size - 1 - i
+                    index = stack_size - 1 - i
                     # back looking seekers have nothing else to wait for
                     if index >= 0 and self.list[index].base != None:
                         # what's the purpose in blocking seeker chaining?
                         prev = self.list[index]  # if self.list[index].type not in ["seeker", "continuer"] else None
-                        deck_item.satisfy_level(i, True, prev)
+                        stack_item.satisfy_level(i, True, prev)
                     else:
-                        deck_item.satisfy_level(i, True, None)
+                        stack_item.satisfy_level(i, True, None)
         
-        ''' case: there are forward seekers in the deck --
+        ''' case: there are forward seekers in the stack --
             -- every incomplete seeker has the reach to 
-               get a level from this deck item, so make
+               get a level from this stack item, so make
                a list of incomplete forward seekers, feed 
-               the new deck item to each of them in order, 
+               the new stack item to each of them in order, 
                then check them each for completeness in order 
                and if they are complete, execute them in FIFO order'''
         incomplete = self.get_incomplete_seekers()
@@ -88,27 +88,28 @@ class ContextStack:
             for i in range(0, number_incomplete):
                 seeker = incomplete[i]
                 unsatisfied = seeker.get_index_of_next_unsatisfied_level()
-                seeker.satisfy_level(unsatisfied, False, deck_item)
+                seeker.satisfy_level(unsatisfied, False, stack_item)
                 if seeker.get_index_of_next_unsatisfied_level() == -1:
                     seeker.execute(False)
-                # consume deck_item
-                if ((seeker.type != "continuer" and deck_item.type == "raction")  # do not consume seekers, it would disable chaining
+                # consume stack_item
+                if ((seeker.type != "continuer" and stack_item.type == "raction")  # do not consume seekers, it would disable chaining
                 or (seeker.type == "continuer" and seeker.get_index_of_next_unsatisfied_level() == -1)):
                     if seeker.consume == None or seeker.consume[unsatisfied]==True:
-                        deck_item.complete = True
-                        deck_item.consumed = True
-                        deck_item.clean()
+                        stack_item.complete = True
+                        stack_item.consumed = True
+                        stack_item.clean()
+                        # right here, feed the stack item to the forward seeker, or perhaps just the preserved words
         
-        is_forward_seeker = deck_item.type == "seeker" and deck_item.forward != None
-        is_continuer = deck_item.type == "continuer"
-        if not deck_item.consumed and not is_forward_seeker and not is_continuer:
-            deck_item.execute()
-            deck_item.put_time_action()  # this is where display window information will happen
+        is_forward_seeker = stack_item.type == "seeker" and stack_item.forward != None
+        is_continuer = stack_item.type == "continuer"
+        if not stack_item.consumed and not is_forward_seeker and not is_continuer:
+            stack_item.execute()
+            stack_item.put_time_action()  # this is where display window information will happen
         elif is_continuer:
-            deck_item.begin()
-            deck_item.put_time_action()
+            stack_item.begin()
+            stack_item.put_time_action()
                     
-        self.list.append(deck_item)
+        self.list.append(stack_item)
         if len(self.list)>100:# make this number configurable
             self.list.remove(self.list[0])
     
@@ -119,7 +120,7 @@ class ContextStack:
                 incomplete.append(self.list[i])
         return incomplete
     
-    def get_last_spec(self):
-        return self.list[-1]
+    def get_prior_spoken(self, back=-1):
+        return self.list[back].preserved
 
 control.nexus().inform_state(CasterState())
