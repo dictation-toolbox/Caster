@@ -9,7 +9,6 @@ from caster.lib import control
 from caster.lib import settings, utilities
 from caster.lib.dfplus.hint.hintnode import NodeAction
 
-
 class DeckItem:
     def __init__(self, type):
         assert type in ["raction", "seeker", "continuer"]
@@ -29,14 +28,15 @@ class DeckItemRegisteredAction(DeckItem):
         self.rundo = registered_action.rundo
         self.show = registered_action.show
         self.preserve_results = registered_action.preserve_results # for commands that actually use the last thing spoken
-        self.preserved = None
+        self.preserved = []
     def execute(self):
         self.complete = True
-#         utilities.remote_debug("stack items")
         self.base._execute(self.dragonfly_data)
         # do presentation here
         self.clean()
     def clean(self):
+        if self.dragonfly_data!=None:
+            self.preserved = [x[0] for x  in self.dragonfly_data["_node"].results]
         self.dragonfly_data = None
     def put_time_action(self):
         if settings.SETTINGS["miscellaneous"]["status_window_enabled"] and self.show:

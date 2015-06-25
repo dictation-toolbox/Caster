@@ -109,6 +109,8 @@ class ContextStack:
             deck_item.put_time_action()
                     
         self.list.append(deck_item)
+        if len(self.list)>100:# make this number configurable
+            self.list.remove(self.list[0])
     
     def get_incomplete_seekers(self):
         incomplete = []
