@@ -15,15 +15,14 @@ def empty():
     global CHOICES
     CHOICES = []
 # 
-def make_selection(nnavi50):
-    global CHOICES
-    n = int(nnavi50)
-    if n>len(CHOICES):
-        return
-    if n==-1:
-        last_spoken = None# it's not on the stack yet
-        
-    Text(CHOICES[n-1][1]).execute()
+def make_selection(nw):
+    global CHOICES, TEN
+    n = -1
+    j = " ".join(nw)
+    if j in TEN:
+        n = TEN.index(j)
+    if n == -1: n = 0
+    Text(CHOICES[n][1]).execute()
 
 def pita(textnv):
     global OLD_ACTIVE_WINDOW_TITLE, ACTIVE_FILE_PATH

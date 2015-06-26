@@ -34,10 +34,12 @@ class StackItemRegisteredAction(StackItem):
         # do presentation here
         self.clean()
     def clean(self):
+        self.dragonfly_data = None
+    def preserve(self):# save spoken words
         if self.dragonfly_data!=None:
             self.preserved = [x[0] for x  in self.dragonfly_data["_node"].results]
-        self.dragonfly_data = None
     def put_time_action(self):
+        self.preserve()
         if settings.SETTINGS["miscellaneous"]["status_window_enabled"] and self.show:
             control.nexus().intermediary.text(self.rdescript)
 class StackItemSeeker(StackItemRegisteredAction):
@@ -47,27 +49,37 @@ class StackItemSeeker(StackItemRegisteredAction):
         self.forward = self.copy_direction(seeker.forward)
         self.consume = seeker.consume
         self.rspec = seeker.rspec
-        
+        self.use_spoken = seeker.use_spoken
+        self.spoken = {}
+    
     @staticmethod
     def copy_direction(cls):
         result = None
         if cls != None:
             result = []
-            for cl in cls:
-                result.append(cl.copy())
+            for i in range(0, len(cls)):
+                cl = cls[i].copy()
+                cl.number(i)
+                result.append(cl)
         return result
-    def executeCL(self, cl):
+    def executeCL(self, cl):# the return value is whether to terminate a continuer
         action = cl.result
+        level = cl.index
+        fnparams = cl.parameters
+        if self.use_spoken:
+            fnparams = self.spoken[level]
         if not action in [Text, Key, Mimic, Function, Paste, NodeAction]:
             # it's a function object
-            if cl.parameters == None:
+            if fnparams == None:
                 return action()
             else:
-                return action(cl.parameters)
+                return action(fnparams)
         else:
             # it's a dragonfly action, and the parameters are the spec
             action(cl.parameters)._execute(cl.dragonfly_data)
             return False
+    def eat(self, level, stack_item):
+        self.spoken[level] = stack_item.preserved
     def clean(self):
         # save whatever data you need here
         StackItemRegisteredAction.clean(self)

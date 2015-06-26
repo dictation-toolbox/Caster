@@ -29,5 +29,8 @@ class ContextLevel:  # ContextLevel
         self.result = None
         self.parameters = None
         self.dragonfly_data = None
+        self.index = -1
     def copy(self):
         return ContextLevel(*self.sets)
+    def number(self, index):
+        self.index = index

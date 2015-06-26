@@ -119,7 +119,7 @@ def grep_this(path, filetype):
     Popen([grep, "/spath=\""+str(path) +"\"", "/stypes=\""+str(filetype)+"\"", "/stext=\""+str(c)+"\"", "/s"])
 
 
-
+# NodeRule2
        
 class DevRule(MappingRule):
     
@@ -136,11 +136,13 @@ class DevRule(MappingRule):
     # experimental/incomplete commands
     "(pita | Peter | PETA) <textnv> [brunt]":R(Function(fn.pita), show=False)
                                             +ContextSeeker(None,
-                                                  [L(S(["default"], fn.make_selection,  1),
+                                                  [L(S([""], fn.make_selection,  1),
                                                      S(["number"], fn.make_selection, -1), 
-                                                     S(["cancel"], fn.empty, None)
+                                                     S(["cancel", "clear"], fn.empty, None)
                                                       )
-                                                   ], rdescript="Fuzzy String Match", consume=[False, True, True]),
+                                                   ], rdescript="Fuzzy String Match", 
+                                                      consume=[False, True, True], 
+                                                      use_spoken=True),
     
     "experiment <text>":            Function(experiment),
     # 

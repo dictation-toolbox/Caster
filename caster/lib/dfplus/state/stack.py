@@ -57,7 +57,7 @@ class ContextStack:
         self.state = state
     
     def add(self, stack_item):  # stack_item is an instance of stackItem 
-        
+        stack_item.preserve()
         
         ''' case: the new item is has backward seeking --
             -- satisfy levels, then move on to other logic'''
@@ -89,17 +89,20 @@ class ContextStack:
                 seeker = incomplete[i]
                 unsatisfied = seeker.get_index_of_next_unsatisfied_level()
                 seeker.satisfy_level(unsatisfied, False, stack_item)
-                if seeker.get_index_of_next_unsatisfied_level() == -1:
-                    seeker.execute(False)
+                
                 # consume stack_item
                 if ((seeker.type != "continuer" and stack_item.type == "raction")  # do not consume seekers, it would disable chaining
                 or (seeker.type == "continuer" and seeker.get_index_of_next_unsatisfied_level() == -1)):
+                    print seeker.consume[unsatisfied], unsatisfied
                     if seeker.consume == None or seeker.consume[unsatisfied]==True:
                         stack_item.complete = True
                         stack_item.consumed = True
                         stack_item.clean()
-                        # right here, feed the stack item to the forward seeker, or perhaps just the preserved words
-        
+                    seeker.eat(unsatisfied, stack_item)
+                
+                if seeker.get_index_of_next_unsatisfied_level() == -1:
+                    seeker.execute(False)
+                
         is_forward_seeker = stack_item.type == "seeker" and stack_item.forward != None
         is_continuer = stack_item.type == "continuer"
         if not stack_item.consumed and not is_forward_seeker and not is_continuer:
