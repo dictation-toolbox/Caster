@@ -85,7 +85,7 @@ class Nexus:
     
     def get_node_rule(self, name):
         for n in self.noderules:
-            if n.node.text == name:
+            if n.master_node.text == name:
                 return n
     
     def node_rule_active(self, name, value):        
