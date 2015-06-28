@@ -28,13 +28,12 @@ class RegisteredAction(ActionBase):
 
 class ContextSeeker(RegisteredAction):
     def __init__(self, back, forward, rspec="default", rdescript="unnamed command (CS)", 
-                 consume=None, use_spoken=False):
+                 use_spoken=False):
         RegisteredAction.__init__(self, None)
         self.back = back
         self.forward = forward
         self.rspec = rspec
         self.rdescript = rdescript
-        self.consume = consume # an array of booleans corresponding to the number of forward seekers
         self.state = control.nexus().state
         self.use_spoken = use_spoken
         assert self.back != None or self.forward != None, "Cannot create ContextSeeker with no levels"

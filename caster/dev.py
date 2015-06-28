@@ -118,8 +118,6 @@ def grep_this(path, filetype):
     grep="H:/PROGRAMS/NON_install/AstroGrep/AstroGrep.exe"
     Popen([grep, "/spath=\""+str(path) +"\"", "/stypes=\""+str(filetype)+"\"", "/stext=\""+str(c)+"\"", "/s"])
 
-
-# NodeRule2
        
 class DevRule(MappingRule):
     
@@ -134,15 +132,7 @@ class DevRule(MappingRule):
     "Agrippa <filetype> <path>":    Function(grep_this),
     
     # experimental/incomplete commands
-    "(pita | Peter | PETA) <textnv> [brunt]":R(Function(fn.pita), show=False)
-                                            +ContextSeeker(None,
-                                                  [L(S([""], fn.make_selection,  1),
-                                                     S(["number"], fn.make_selection, -1), 
-                                                     S(["cancel", "clear"], fn.empty, None)
-                                                      )
-                                                   ], rdescript="Fuzzy String Match", 
-                                                      consume=[False, True, True], 
-                                                      use_spoken=True),
+    
     
     "experiment <text>":            Function(experiment),
     # 

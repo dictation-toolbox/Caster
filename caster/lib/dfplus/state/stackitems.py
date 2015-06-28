@@ -47,7 +47,6 @@ class StackItemSeeker(StackItemRegisteredAction):
         StackItemRegisteredAction.__init__(self, seeker, "seeker")
         self.back = self.copy_direction(seeker.back)
         self.forward = self.copy_direction(seeker.forward)
-        self.consume = seeker.consume
         self.rspec = seeker.rspec
         self.use_spoken = seeker.use_spoken
         self.spoken = {}
@@ -93,6 +92,7 @@ class StackItemSeeker(StackItemRegisteredAction):
         cl.result = cs.f
         cl.parameters = cs.parameters
         cl.dragonfly_data = self.dragonfly_data
+        cl.consume = cs.consume
 #         self.dragonfly_data = None # no need to be hanging onto this in more places than one
     def execute(self, unused=None):
         self.complete = True
@@ -102,14 +102,14 @@ class StackItemSeeker(StackItemRegisteredAction):
         for cl in c:
             self.executeCL(cl)
         self.clean()
-    def satisfy_level(self, level_index, is_back, Stack_item):
+    def satisfy_level(self, level_index, is_back, stack_item):
         direction = self.back if is_back else self.forward
         cl = direction[level_index]
         if not cl.satisfied:
-            if Stack_item != None:
+            if stack_item != None:
                 for cs in cl.sets:
-                    # Stack_item must have a spec
-                    if Stack_item.rspec in cs.specTriggers:
+                    # stack_item must have a spec
+                    if stack_item.rspec in cs.specTriggers:
                         cl.satisfied = True
                         self.fillCL(cl, cs)
                         break
@@ -131,7 +131,6 @@ class StackItemContinuer(StackItemSeeker):
         self.fillCL(self.forward[0], self.forward[0].sets[0])
         self.closure = None
         self.time_in_seconds = continuer.time_in_seconds
-        self.consume = continuer.consume
     def satisfy_level(self, level_index, is_back, Stack_item):  # level_index and is_back are unused here, but left in for compatibility
         cl = self.forward[0]
         if not cl.satisfied:

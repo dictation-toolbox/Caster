@@ -19,7 +19,14 @@ cmd.map = {
                                                    ], time_in_seconds=0.2, repetitions=50 ),
     
     # fuzzy string matching command
-    
+    "(pita | Peter | PETA) <textnv> [brunt]":R(Function(fn.pita), show=False)
+                                            +ContextSeeker(None,
+                                                  [L(S([""], fn.make_selection,  consume=False),
+                                                     S(["number"], fn.make_selection), 
+                                                     S(["cancel", "clear"], fn.empty)
+                                                      )
+                                                   ], rdescript="Fuzzy String Match", 
+                                                      use_spoken=True),
         
     # keyboard shortcuts
 	'save':                         R(Key("c-s"), rspec="save", rdescript="Save"),

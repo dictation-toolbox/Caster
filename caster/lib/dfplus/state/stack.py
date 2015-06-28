@@ -93,8 +93,7 @@ class ContextStack:
                 # consume stack_item
                 if ((seeker.type != "continuer" and stack_item.type == "raction")  # do not consume seekers, it would disable chaining
                 or (seeker.type == "continuer" and seeker.get_index_of_next_unsatisfied_level() == -1)):
-                    print seeker.consume[unsatisfied], unsatisfied
-                    if seeker.consume == None or seeker.consume[unsatisfied]==True:
+                    if seeker.forward[unsatisfied].consume:
                         stack_item.complete = True
                         stack_item.consumed = True
                         stack_item.clean()
@@ -122,8 +121,5 @@ class ContextStack:
             if not self.list[i].complete:  # no need to check type because only forward seekers will be incomplete
                 incomplete.append(self.list[i])
         return incomplete
-    
-    def get_prior_spoken(self, back=-1):
-        return self.list[back].preserved
 
 control.nexus().inform_state(CasterState())

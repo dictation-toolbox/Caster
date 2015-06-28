@@ -5,24 +5,25 @@ from caster.lib.pita import scanner, selector
 OLD_ACTIVE_WINDOW_TITLE = None
 ACTIVE_FILE_PATH = [None, None]
 CHOICES = []
-TEN = ["numb one", "numb two", "numb three", "numb four", "numb five"
+TEN = ["numb one", "numb two", "numb three", "numb four", "numb five", 
        "numb six", "numb seven", "numb eight", "numb nine", "numb ten"]
 
-
-# make_selection. 
-
-def empty():
+def empty(a):
     global CHOICES
     CHOICES = []
+    control.nexus().intermediary.text("PITA Cancel")
 # 
 def make_selection(nw):
     global CHOICES, TEN
     n = -1
+    while len(nw)>2:# in the event the last words spoken were a command chain,
+        nw.pop()    # get only the number trigger
     j = " ".join(nw)
     if j in TEN:
         n = TEN.index(j)
     if n == -1: n = 0
     Text(CHOICES[n][1]).execute()
+    control.nexus().intermediary.text("PITA Completion")
 
 def pita(textnv):
     global OLD_ACTIVE_WINDOW_TITLE, ACTIVE_FILE_PATH
