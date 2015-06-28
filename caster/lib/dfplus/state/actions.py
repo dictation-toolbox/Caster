@@ -9,7 +9,7 @@ from caster.lib import control
 
 class RegisteredAction(ActionBase):
     def __init__(self, base, rspec="default", rdescript="unnamed command (RA)", 
-                 rundo=None, show=True, preserve_results=False):
+                 rundo=None, show=True):
         ActionBase.__init__(self)
         self.state = control.nexus().state
         self.base = base
@@ -17,7 +17,6 @@ class RegisteredAction(ActionBase):
         self.rdescript = rdescript
         self.rundo = rundo
         self.show = show
-        self.preserve_results = preserve_results
     
     def _execute(self, data=None):  # copies everything relevant and places it in the stack
         self.dragonfly_data = data

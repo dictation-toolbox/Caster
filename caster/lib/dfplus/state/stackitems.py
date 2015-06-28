@@ -26,7 +26,6 @@ class StackItemRegisteredAction(StackItem):
         self.rdescript = registered_action.rdescript
         self.rundo = registered_action.rundo
         self.show = registered_action.show
-        self.preserve_results = registered_action.preserve_results # for commands that actually use the last thing spoken
         self.preserved = []
     def execute(self):
         self.complete = True
