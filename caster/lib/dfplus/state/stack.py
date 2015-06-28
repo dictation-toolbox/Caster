@@ -7,7 +7,7 @@ import Queue
 
 from caster.lib import control
 from caster.lib.dfplus.state.stackitems import StackItemRegisteredAction, \
-    StackItemSeeker, StackItemContinuer
+    StackItemSeeker, StackItemAsynchronous
 
 
 
@@ -49,7 +49,7 @@ class CasterState:
     def generate_context_seeker_stack_item(self, seeker):
         return StackItemSeeker(seeker)
     def generate_continuer_stack_item(self, continuer):
-        return StackItemContinuer(continuer)
+        return StackItemAsynchronous(continuer)
 
 class ContextStack:
     def __init__(self, state):

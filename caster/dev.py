@@ -6,7 +6,7 @@ from dragonfly import *
 from caster.lib import utilities, settings, ccr, context, control
 from caster.lib.dfplus.hint.hintnode import NodeRule, NodeAction
 from caster.lib.dfplus.hint.nodes import css
-from caster.lib.dfplus.state.actions import ContextSeeker, Continuer, \
+from caster.lib.dfplus.state.actions import ContextSeeker, AsynchronousAction, \
     RegisteredAction
 from caster.lib.dfplus.state.short import L, S, R
 from caster.lib.pita import selector, fn
@@ -149,7 +149,7 @@ class DevRule(MappingRule):
                                                    L(S(["ashes", "charcoal"], Text, "ashes2 [%(text)s] "),
                                                       S(["bravery"], Text, "bravery2 [%(text)s] "))
                                                    ]),
-    "never-ending":                 Continuer([L(S(["ashes", "charcoal"], print_time, None),
+    "never-ending":                 AsynchronousAction([L(S(["ashes", "charcoal"], print_time, None),
                                                       S(["bravery"], Text, "bravery1"))
                                                    ], time_in_seconds=0.2, repetitions=20),
     "ashes":                        RegisteredAction(Text("ashes fall "), rspec="ashes"),

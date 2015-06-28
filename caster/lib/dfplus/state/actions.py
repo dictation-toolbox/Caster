@@ -45,10 +45,10 @@ class ContextSeeker(RegisteredAction):
         
         
 
-class Continuer(ContextSeeker):
+class AsynchronousAction(ContextSeeker):
     '''
-    A Continuer should have exactly one ContextLevel with one ContextSet.
-    Any triggers in the 0th ContextSet will terminate the Continuer.
+    AsynchronousAction should have exactly one ContextLevel with one ContextSet.
+    Any triggers in the 0th ContextSet will terminate the AsynchronousAction.
     The repetitions parameter indicates the maximum times the function provided
     in the 0th ContextSet should run. 0 indicates forever (or until the 
     termination word is spoken). The time_in_seconds parameter indicates
@@ -61,8 +61,8 @@ class Continuer(ContextSeeker):
         self.time_in_seconds = time_in_seconds
         self.rdescript = rdescript
         self.state = control.nexus().state
-        assert self.forward != None, "Cannot create Continuer with no termination commands"
-        assert len(self.forward) == 1, "Cannot create Continuer with > or < one purpose"
+        assert self.forward != None, "Cannot create AsynchronousAction with no termination commands"
+        assert len(self.forward) == 1, "Cannot create AsynchronousAction with > or < one purpose"
     def _execute(self, data=None):
         if "time_in_seconds" in data: self.time_in_seconds=float(data["time_in_seconds"])
         if "repetitions" in data: self.time_in_seconds=int(data["repetitions"])
