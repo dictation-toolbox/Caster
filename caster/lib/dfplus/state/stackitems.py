@@ -130,6 +130,7 @@ class StackItemAsynchronous(StackItemSeeker):
         self.fillCL(self.forward[0], self.forward[0].sets[0])
         self.closure = None
         self.time_in_seconds = continuer.time_in_seconds
+        self.blocking = continuer.blocking
         self.use_spoken = False
         self.spoken = {}
     def satisfy_level(self, level_index, is_back, Stack_item):  # level_index and is_back are unused here, but left in for compatibility

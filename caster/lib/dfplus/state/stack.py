@@ -20,7 +20,7 @@ class CasterState:
     def add(self, stack_item):
         if self.blocker == None:
             ''' important to block before adding because the add might unblock '''
-            if stack_item.type == "continuer":
+            if stack_item.type == "continuer" and stack_item.blocking:
                 self.blocker = stack_item
             self.stack.add(stack_item)
         else:

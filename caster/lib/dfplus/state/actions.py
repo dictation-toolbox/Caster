@@ -53,12 +53,14 @@ class AsynchronousAction(ContextSeeker):
     termination word is spoken). The time_in_seconds parameter indicates
     how often the associated function should run.
     '''
-    def __init__(self, forward, time_in_seconds=1, repetitions=0, rdescript="unnamed command (A)"):
+    def __init__(self, forward, time_in_seconds=1, repetitions=0, 
+                 rdescript="unnamed command (A)", blocking=True):
         ContextSeeker.__init__(self, None, forward)
 #         self.forward = forward
         self.repetitions = repetitions
         self.time_in_seconds = time_in_seconds
         self.rdescript = rdescript
+        self.blocking = blocking
         self.state = control.nexus().state
         assert self.forward != None, "Cannot create AsynchronousAction with no termination commands"
         assert len(self.forward) == 1, "Cannot create AsynchronousAction with > or < one purpose"
