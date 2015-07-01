@@ -22,16 +22,13 @@ class CommandRule(MappingRule):
     mapping = {
         
            
-#             "previous (editor | tab) [<n>]":            Key("cs-f6") * Repeat(extra="n"),  # these two must be set up in the eclipse preferences
-#             "next (editor | tab) [<n>]":                Key("c-f6") * Repeat(extra="n"),
-#             "close (editor | tab) [<n>]":               Key("c-w") * Repeat(extra="n"),
-#             "open resource":                            Key("cs-r"),
-#             "open type":                                Key("cs-t"),
-#  
-#             "[go to] line <n>":                         Key("c-l") + Pause("50") + Text("%(n)d") + Key("enter"),
-#             "go to declaration":                        Key("f3"),
-#             "editor select":                            Key("c-e"),
-#             "pop":                                      Key("c-space, down, up"),
+            "cursor prior":                             Key("c-minus"), 
+            "cursor next":                              Key("cs-minus"), 
+            "toggle fullscreen":                        Key("sa-enter"), 
+            "resolve":                                  Key("c-dot"), 
+            "jump to source":                           Key("f12"), 
+            "snippet":                                  Key("tab"), 
+            "search for this everywhere":               Key("cs-f"), 
              
             "step over [<n>]":                          Key("f10/50") * Repeat(extra="n"),
             "step into":                                Key("f11"),
@@ -42,6 +39,8 @@ class CommandRule(MappingRule):
             "comment out":                              Key("c-k/50, c-c"),
             "on comment out":                           Key("c-k/50, c-u"),
             
+            "set bookmark":                             Key("c-k, c-k"), 
+            "next bookmark":                            Key("c-k, c-n"), 
             "breakpoint":                               Key("f9"),
             
             "format code":                              Key("cs-f"),
@@ -57,7 +56,7 @@ class CommandRule(MappingRule):
 
 #---------------------------------------------------------------------------
 
-context = AppContext(executable="WDExpress")# | AppContext(executable="AptanaStudio3")
+context = AppContext(executable="WDExpress")
 grammar = Grammar("WDExpress", context=context)
 grammar.add_rule(CommandRule())
 grammar.load()
