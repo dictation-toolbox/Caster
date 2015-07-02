@@ -15,9 +15,18 @@ class CommandRule(MappingRule):
 
     mapping = {
 
-# Menu UI---Spoken Command/Action-----------------> Shortcut keys-------------> #Displayed Text
+# ---------Spoken Command/Action-----------------> Shortcut keys-------------> #Displayed Text
 # Spoken commands that are commented out do not have assigned default shortcut keys or are incompatible.
 # Legend: '#' For not assigned '##' for duplicates or '###' not supported by dragonfly.
+    #Basic Navigation
+            "up [<n>]":                              R(Key("up"), rdescript="Atom: Move Cursor Up #") * Repeat(extra="n"),
+            "down [<n>]":                            R(Key("down"), rdescript="Atom: Move Cursor Down #") * Repeat(extra="n"),
+            "right [<n>]":                           R(Key("right"), rdescript="Atom: Move Cursor Right #") * Repeat(extra="n"),
+            "left [<n>]":                            R(Key("left"), rdescript="Atom: Move Cursor Left #") * Repeat(extra="n"),
+    #White Text Manipulation
+            "tab [<n>]":                             R(Key("tab"), rdescript="Atom: Press Tab Key # ") * Repeat(extra="n"),
+            "space [<n>]":                           R(Key("space"), rdescript="Atom: Press Tab Key #") * Repeat(extra="n"),
+# Menu UI-------------------------------------------------------------------------------------------
     #File Menu
             "[open] new window":                     R(Key("cs-n"), rdescript="Atom: New Window"),
             "new file":                              R(Key("c-n"), rdescript="Atom: New File"),
@@ -54,10 +63,10 @@ class CommandRule(MappingRule):
             "indent":                                R(Key("c-lbrace"), rdescript="Atom: Indent"), # Rework Dragonfly Keymapping
             "outdent":                               R(Key("c-rightbrace"), rdescript="Atom: Outdent"), # Rework Dragonfly Keymapping
             #"auto indent":                          R(Key(""), rdescript="Atom: Auto Indent"),
-            "[move] line up <n>":                    R(Key("c-up"), rdescript="Atom: Move Line Up #") * Repeat(extra="n"),  # * Repeat(extra="n"),
-            "[move] line down <n>":                  R(Key("c-down"), rdescript="Atom: Move Line Down #") * Repeat(extra="n"),
+            "[move] line up [<n>]":                  R(Key("c-up"), rdescript="Atom: Move Line Up #") * Repeat(extra="n"),
+            "[move] line down [<n>]":                R(Key("c-down"), rdescript="Atom: Move Line Down #") * Repeat(extra="n"),
             "duplicate line":                        R(Key("cs-d"), rdescript="Atom: Duplicate Line"), #Unless remapped the command triggers Dragon NaturallySpeaking dictation box
-            "delete line":                           R(Key("cs-k"), rdescript="Atom: Delete Line"),
+            "delete line [<n>]":                     R(Key("cs-k"), rdescript="Atom: Delete Line or # Lines Below") * Repeat(extra="n"),
             "join line":                             R(Key("c-j"), rdescript="Atom: Join Line"),
         #Text Submenu
             #"uppercase":                            R(Key(""), rdescript="Atom: Convert Uppercase"),
@@ -90,8 +99,8 @@ class CommandRule(MappingRule):
             "reload file":                           R(Key("ac-r"), rdescript="Atom: Reload"),
             "fullscreen":                            R(Key("f11"), rdescript="Atom: Toggle Fullscreen"),
             #"toggle menubar":                       R(Key(""), rdescript="Atom: Toggle Menubar"),
-            "increase font [size]":                  R(Key("cs-equals"), rdescript="Atom: Increase Font Size"),
-            "decrease font [size]":                  R(Key("cs-minus"), rdescript="Atom: Decrease Font size"),
+            "increase font [size] [<n>]":            R(Key("cs-equals"), rdescript="Atom: Increase Font Size") * Repeat(extra="n"),
+            "decrease font [size] [<n>]":            R(Key("cs-minus"), rdescript="Atom: Decrease Font size") * Repeat(extra="n"),
             "reset font [size]":                     R(Key("c-0"), rdescript="Atom: Reset Font Size"),
             #"toggle soft wrap":                     R(Key(""), rdescript="Atom: Toggle Soft Wrap"),
             ##"toggle command palette":              R(Key(""), rdescript="Atom: Toggle Command Palette"),
@@ -114,18 +123,18 @@ class CommandRule(MappingRule):
             "run package specs":                     R(Key("ac-p"), rdescript="Atom: Run Package Specs "),
             "[toggle] developer tools":              R(Key("ac-i"), rdescript="Atom: Toggle Developer Tools"),
     #Selection Menu
-            "[add] selection above":                 R(Key("ac-up"), rdescript="Atom: Add Selection Above"),
-            "[add] selection below":                 R(Key("ac-down"), rdescript="Atom: Add Selection Below"),
+            "[add] selection above [<n>]":           R(Key("ac-up"), rdescript="Atom: Add Selection Above #") * Repeat(extra="n"),
+            "[add] selection below [<n>]":           R(Key("ac-down"), rdescript="Atom: Add Selection Below #") * Repeat(extra="n"),
             #"split into lines":                     R(Key(""), rdescript="Atom: Split Into lines"),
             "single section":                        R(Key("escape"), rdescript="Atom: Single Section"),
             "select [to] top":                       R(Key("as-home"), rdescript="Atom: Select to Top"),
             "select [to] bottom":                    R(Key("as-end"), rdescript="Atom: Select to Bottom"),
             "select line":                           R(Key("c-l"), rdescript="Atom: Select Line"),
             #"select word":                          R(Key(""), rdescript="Atom: Select Word"),
-            "select [to] beginning [of] word":       R(Key("cs-left"), rdescript="Atom: Select to Beginning of Word"),
+            "select [to] beginning [of] word [<n>]": R(Key("cs-left"), rdescript="Atom: Select to Beginning of Word #") * Repeat(extra="n"),
+            "select [to] end of word [<n>]":         R(Key("cs-right"), rdescript="Atom: Select to End of Word #") * Repeat(extra="n"),
             #"select to beginning of line":          R(Key(""), rdescript="Atom: Select to Beginning of line"),
             "select [to] first character of line":   R(Key("s-home"), rdescript="Atom: Select to First character of Line"),
-            "select [to] end of word":               R(Key("cs-right"), rdescript="Atom: Select to End of Word"),
             "select [to] end of line":               R(Key("s-end"), rdescript="Atom: Select to End of line"),
             "[select] inside brackets":              R(Key("ac-m"), rdescript="Atom: Select Inside Brackets"),
     #Find Menu
