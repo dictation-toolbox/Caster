@@ -19,7 +19,7 @@ class CommandRule(MappingRule):
 # Spoken commands that are commented out do not have assigned default shortcut keys or are incompatible.
 # Legend: '#' For not assigned '##' for duplicates or '###' not supported by dragonfly.
     #File Menu
-            "new window":                            R(Key("cs-n"), rdescript="Atom: New Window"),
+            "[open] new window":                     R(Key("cs-n"), rdescript="Atom: New Window"),
             "new file":                              R(Key("c-n"), rdescript="Atom: New File"),
             "open file":                             R(Key("c-o"), rdescript="Atom: Open File"),
             "open folder":                           R(Key("cs-o"), rdescript="Atom: Open Folder"),
@@ -42,20 +42,20 @@ class CommandRule(MappingRule):
             "redo":                                  R(Key("c-y"), rdescript="Atom: Redo"),
             "cut":                                   R(Key("s-delete"), rdescript="Atom: Cut"),
             "copy":                                  R(Key("c-insert"), rdescript="Atom: Copy"),
-            "copy path":                             R(Key("cs-c"), rdescript="Atom: Copy Path"),
             "paste":                                 R(Key("s-insert"), rdescript="Atom: Paste"),
+            "copy path":                             R(Key("cs-c"), rdescript="Atom: Copy Path"),
             "select all":                            R(Key("c-a"), rdescript="Atom: Select All"),
             "[toggle] comments":                     R(Key("c-slash"), rdescript="Atom: Toggle Comments"),
             "reflow section":                        R(Key("ac-q"), rdescript="Atom: Reflow Section"),
             "select encoding":                       R(Key("cs-u"), rdescript="Atom: Select Encoding"),
-            "[go to] line <n> [<mim>]":              R(Key("c-g") + Pause("50") + Text("%(n)d") + Key("enter")+ Pause("50") + Mimic(extra="mim"), rdescript="Atom: Go to Line #"), # Rework Dragonfly Keymapping
+            "[go to] line <n>":                      R(Key("c-g") + Pause("10") + Text("%(n)s") + Key("enter"), rdescript="Atom: Go to Line #"),
             "select grammar":                        R(Key("cs-l"), rdescript="Atom: Select Grammar"),
         #Lines Submenu
             "indent":                                R(Key("c-lbrace"), rdescript="Atom: Indent"), # Rework Dragonfly Keymapping
             "outdent":                               R(Key("c-rightbrace"), rdescript="Atom: Outdent"), # Rework Dragonfly Keymapping
             #"auto indent":                          R(Key(""), rdescript="Atom: Auto Indent"),
-            "[move] line up":                        R(Key("c-up"), rdescript="Atom: Move Line Up"),
-            "[move] line down":                      R(Key("c-down"), rdescript="Atom: Move Line Down"),
+            "[move] line up <n>":                    R(Key("c-up"), rdescript="Atom: Move Line Up #") * Repeat(extra="n"),  # * Repeat(extra="n"),
+            "[move] line down <n>":                  R(Key("c-down"), rdescript="Atom: Move Line Down #") * Repeat(extra="n"),
             "duplicate line":                        R(Key("cs-d"), rdescript="Atom: Duplicate Line"), #Unless remapped the command triggers Dragon NaturallySpeaking dictation box
             "delete line":                           R(Key("cs-k"), rdescript="Atom: Delete Line"),
             "join line":                             R(Key("c-j"), rdescript="Atom: Join Line"),
@@ -68,6 +68,7 @@ class CommandRule(MappingRule):
             ##"delete line":                         R(Key("cs-k"), rdescript="Atom: Delete Line"),
             #"transpose":                            R(Key(""), rdescript="Atom: Transpose"),
         #Folding Submenu
+            "make fold":                             R(Key("acw-f"), rdescript="Atom: Make Fold"),
             "fold":                                  R(Key("ac-lbrace"), rdescript="Atom: Fold"),
             "unfold":                                R(Key("ac-rightbrace"), rdescript="Atom: Unfold"),
             "unfold all":                            R(Key("acs-rightbrace"), rdescript="Atom: Unfold All"),
@@ -82,9 +83,9 @@ class CommandRule(MappingRule):
             #"fold level 9":                         R(Key(""), rdescript="Atom: Fold Level 9"),
         #Bookmarks Submenu
             "view all":                              R(Key("c-f2"), rdescript="Atom: Reflow Section"),
-            "bookmark | mark":                       R(Key("ca-f2"), rdescript="Atom: Toggle Bookmark"),
-            "next bookmark | mark":                  R(Key("f2"), rdescript="Atom: Jump to Next Bookmark"),
-            "previous bookmark | mark":              R(Key("s-f2"), rdescript="Atom: Jump to Previous Bookwork"),
+            "bookmark | book":                       R(Key("ca-f2"), rdescript="Atom: Toggle Bookmark"),
+            "next bookmark | next book":             R(Key("f2"), rdescript="Atom: Jump to Next Bookmark"),
+            "previous bookmark | previous book":     R(Key("s-f2"), rdescript="Atom: Jump to Previous Bookwork"),
     #View Menu
             "reload file":                           R(Key("ac-r"), rdescript="Atom: Reload"),
             "fullscreen":                            R(Key("f11"), rdescript="Atom: Toggle Fullscreen"),
@@ -126,7 +127,7 @@ class CommandRule(MappingRule):
             "select [to] first character of line":   R(Key("s-home"), rdescript="Atom: Select to First character of Line"),
             "select [to] end of word":               R(Key("cs-right"), rdescript="Atom: Select to End of Word"),
             "select [to] end of line":               R(Key("s-end"), rdescript="Atom: Select to End of line"),
-            "select inside brackets":                R(Key("ac-m"), rdescript="Atom: Select Inside Brackets"),
+            "[select] inside brackets":              R(Key("ac-m"), rdescript="Atom: Select Inside Brackets"),
     #Find Menu
             "find in buffer":                        R(Key("c-f"), rdescript="Atom: Find in Buffer"),
             "replacing in buffer":                   R(Key("ac-f"), rdescript="Atom: Replacing in Buffer"),
