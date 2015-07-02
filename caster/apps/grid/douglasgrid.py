@@ -15,10 +15,10 @@ from caster.lib import settings, control
 
 
 def kill():
-    control.nexus().get_com("grids").kill()
+    control.nexus().comm.get_com("grids").kill()
 
 def send_input(n, n2, action):
-    s = control.nexus().get_com("grids")
+    s = control.nexus().comm.get_com("grids")
     s.move_mouse(int(n), int(n2))
     s.kill()
     grids.wait_for_death(settings.DOUGLAS_TITLE)

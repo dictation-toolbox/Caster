@@ -13,10 +13,10 @@ from caster.lib import settings, control
 from caster.lib.dfplus.state.short import R
 
 def kill():
-    control.nexus().get_com("grids").kill()
+    control.nexus().comm.get_com("grids").kill()
 
 def send_input(pre, color, n, action):
-    s=control.nexus().get_com("grids")
+    s=control.nexus().comm.get_com("grids")
     s.move_mouse(int(pre), int(color), int(n))
     s.kill()
     grids.wait_for_death(settings.RAINBOW_TITLE)
