@@ -8,6 +8,7 @@ noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added 
 
 cmd.map = {
             # Spoken-form    ->    ->    ->     Action object
+    # A macro with ## is depreciated HTML.
 #Macros
             "make link":        Text("<a href=''></a>")+  Key("left/10:6"),
             "table macro":      Text("<table>")+ Key("enter")+Text("<tr>")+ Key("enter")+Text("<td></td>")+Key("enter")+Text("</tr>")+Key("enter")+Text("</table>"),
@@ -74,7 +75,8 @@ cmd.map = {
             "fall-back parenthesis | RP":   Text("<rp></rp>")+  Key("left/10:5"),
             "embraces pronunciation | RT":  Text("<rt></rt>")+  Key("left/10:5"),
             "ruby | pronounce asian":       Text("<ruby></ruby>")+  Key("left/10:5"),
-            "strike through | strike":      Text("<s></s>")+  Key("left/10:4"),
+            ##"strike through | strike":    Text("<s></s>")+  Key("left/10:4"),
+            "deleted | replaced":           Text("<del></del>")+  Key("left/10:4"),
             "sample output":                Text("<samp></samp>")+  Key("left/10:7"),
             "small":                        Text("<small></small>")+  Key("left/10:8"),
             "span":                         Text("<span></span>")+  Key("left/10:7"),
