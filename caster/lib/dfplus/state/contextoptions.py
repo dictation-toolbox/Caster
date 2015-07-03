@@ -9,13 +9,15 @@ class ContextSet:  # ContextSet
     will be the spec of another command. That other command will be consumed
     by the ContextSeeker and will not be executed.
     '''
-    def __init__(self, specTriggers, f, parameters=None, consume=True):
+    def __init__(self, specTriggers, f, parameters=None, 
+                 consume=True, use_spoken=False, use_rspec=False):
         assert len(specTriggers) > 0, "ContextSet must have at least one spec trigger"
-        assert f != None, "Function parameter can't be null"
         self.specTriggers = specTriggers
         self.f = f
         self.parameters = parameters
         self.consume = consume
+        self.use_spoken = use_spoken
+        self.use_rspec = use_rspec
 
 class ContextLevel:  # ContextLevel
     '''
@@ -27,12 +29,10 @@ class ContextLevel:  # ContextLevel
     def __init__(self, *args):
         self.sets = args
         self.satisfied = False
-        self.result = None
-        self.parameters = None
+        self.result = None # selected ContextSet
         self.dragonfly_data = None
-        self.index = -1
-        self.consume = True
+        self.index = -1 # used to determine which eat() results to use
     def copy(self):
         return ContextLevel(*self.sets)
-    def number(self, index):
+    def number(self, index): # used for assigning indices
         self.index = index

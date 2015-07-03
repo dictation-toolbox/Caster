@@ -42,13 +42,12 @@ class StackItemRegisteredAction(StackItem):
         if settings.SETTINGS["miscellaneous"]["status_window_enabled"] and self.show:
             control.nexus().intermediary.text(self.rdescript)
 class StackItemSeeker(StackItemRegisteredAction):
-    def __init__(self, seeker):
-        StackItemRegisteredAction.__init__(self, seeker, "seeker")
-        self.back = self.copy_direction(seeker.back)
+    def __init__(self, seeker, type="seeker"):
+        StackItemRegisteredAction.__init__(self, seeker, type)
+        if self.type=="seeker": self.back = self.copy_direction(seeker.back)
         self.forward = self.copy_direction(seeker.forward)
-        self.rspec = seeker.rspec
-        self.use_spoken = seeker.use_spoken
         self.spoken = {}
+        self.eaten_rspec = {}
     
     @staticmethod
     def copy_direction(cls):
@@ -60,12 +59,16 @@ class StackItemSeeker(StackItemRegisteredAction):
                 cl.number(i)
                 result.append(cl)
         return result
-    def executeCL(self, cl):# the return value is whether to terminate a continuer
-        action = cl.result
+    def executeCL(self, cl):# the return value is whether to terminate an AsynchronousAction
+        action = cl.result.f
+        if action==None:
+            return False
         level = cl.index
-        fnparams = cl.parameters
-        if self.use_spoken:
+        fnparams = cl.result.parameters
+        if cl.result.use_spoken:
             fnparams = self.spoken[level]
+        if cl.result.use_rspec:
+            fnparams = self.eaten_rspec[level]
         if not action in [Text, Key, Mimic, Function, Paste, NodeAction]:
             # it's a function object
             if fnparams == None:
@@ -74,10 +77,11 @@ class StackItemSeeker(StackItemRegisteredAction):
                 return action(fnparams)
         else:
             # it's a dragonfly action, and the parameters are the spec
-            action(cl.parameters).execute(cl.dragonfly_data)
+            action(fnparams).execute(cl.dragonfly_data)
             return False
     def eat(self, level, stack_item):
         self.spoken[level] = stack_item.preserved
+        self.eaten_rspec[level] = stack_item.rspec
     def clean(self):
         # save whatever data you need here
         StackItemRegisteredAction.clean(self)
@@ -88,10 +92,11 @@ class StackItemSeeker(StackItemRegisteredAction):
             for cl in self.forward:
                 cl.dragonfly_data = None
     def fillCL(self, cl, cs):
-        cl.result = cs.f
-        cl.parameters = cs.parameters
+        cl.result = cs
+#         cl.result = cs.f
+#         cl.parameters = cs.parameters
         cl.dragonfly_data = self.dragonfly_data
-        cl.consume = cs.consume
+#         cl.consume = cs.consume
 #         self.dragonfly_data = None # no need to be hanging onto this in more places than one
     def execute(self, unused=None):
         self.complete = True
@@ -122,23 +127,20 @@ class StackItemSeeker(StackItemRegisteredAction):
                 return i
         return -1
 class StackItemAsynchronous(StackItemSeeker):
-    def __init__(self, continuer):
-        StackItemRegisteredAction.__init__(self, continuer, "continuer")
+    def __init__(self, continuer, type="continuer"):
+        StackItemSeeker.__init__(self, continuer, type)
         self.back = None
-        self.forward = self.copy_direction(continuer.forward)
         self.repetitions = continuer.repetitions
         self.fillCL(self.forward[0], self.forward[0].sets[0])
         self.closure = None
         self.time_in_seconds = continuer.time_in_seconds
         self.blocking = continuer.blocking
-        self.use_spoken = False
-        self.spoken = {}
-    def satisfy_level(self, level_index, is_back, Stack_item):  # level_index and is_back are unused here, but left in for compatibility
+    def satisfy_level(self, level_index, is_back, stack_item):  # level_index and is_back are unused here, but left in for compatibility
         cl = self.forward[0]
         if not cl.satisfied:
-            if Stack_item != None:
+            if stack_item != None:
                 cs = cl.sets[0]
-                if Stack_item.rspec in cs.specTriggers:  # Stack_item must have a spec
+                if stack_item.rspec in cs.specTriggers:  # stack_item must have a spec
                     cl.satisfied = True
     def get_triggers(self):
         return self.forward[0].sets[0].specTriggers
