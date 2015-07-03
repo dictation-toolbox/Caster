@@ -132,7 +132,7 @@ class DevRule(MappingRule):
     "Agrippa <filetype> <path>":    Function(grep_this),
     
     # experimental/incomplete commands
-    
+    "zone test":                    R(Text("a")+Text("b")), 
     
     "experiment <text>":            Function(experiment),
     # 

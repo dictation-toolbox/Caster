@@ -23,8 +23,8 @@ class SelectiveAction(ActionBase):
             executable = utilities.get_active_window_path(natlink).split("\\")[-1]
             is_executable = executable in self.executables
             if (is_executable and not self.negate) or (self.negate and not is_executable):
-                self.action._execute()
+                self.action.execute()
         else:
             utilities.availability_message("SelectiveAction", "natlink")
-            self.action._execute()
+            self.action.execute()
 

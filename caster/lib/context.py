@@ -41,11 +41,11 @@ def navigate_to_character(direction3, target):
                 break
         
         # make sure nothing is highlighted to boot
-        Key("right, left" if look_left else "left, right")._execute()
+        Key("right, left" if look_left else "left, right").execute()
         if look_left:
-            Key("cs-left")._execute()
+            Key("cs-left").execute()
         else:
-            Key("cs-right")._execute()
+            Key("cs-right").execute()
 #         max_highlights = 100
         index = -1
 #         last_copy_was_successful = True
@@ -66,18 +66,18 @@ def navigate_to_character(direction3, target):
         
         # highlight only the target
         if index != -1:
-            Key("left" if look_left else "right")._execute()
+            Key("left" if look_left else "right").execute()
             nt = index if look_left else len(context) - index - 1  # number of times to press left or right before the highlight
             if nt != 0:
-                Key("right/5:" + str(nt) if look_left else "left/5:" + str(nt))._execute()
+                Key("right/5:" + str(nt) if look_left else "left/5:" + str(nt)).execute()
             if is_character:
-                Key("s-right" if look_left else "s-left")._execute()
+                Key("s-right" if look_left else "s-left").execute()
             else:
-                Key("cs-right" if look_left else "cs-left")._execute()
+                Key("cs-right" if look_left else "cs-left").execute()
             return True
         else:
             # reset cursor
-            Key("left" if look_left else "right")._execute()
+            Key("left" if look_left else "right").execute()
             return False
             
     except Exception:
@@ -117,7 +117,7 @@ def read_selected_without_altering_clipboard(same_is_okay=False):
         prior_content = Clipboard.get_system_text()
         Clipboard.set_system_text("")
     
-        Key("c-c")._execute()
+        Key("c-c").execute()
         time.sleep(0.05)  # time for keypress to execute
         temporary = Clipboard.get_system_text()
         cb.copy_to_system()
@@ -141,5 +141,5 @@ def fill_within_line(target):
 def nav(parameters):
     result = navigate_to_character(str(parameters[0]), str(parameters[1]))
     if result:
-        Key(str(parameters[0]))._execute()
+        Key(str(parameters[0])).execute()
     return result

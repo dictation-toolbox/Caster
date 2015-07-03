@@ -29,7 +29,7 @@ class StackItemRegisteredAction(StackItem):
         self.preserved = []
     def execute(self):
         self.complete = True
-        self.base._execute(self.dragonfly_data)
+        self.base.execute(self.dragonfly_data)
         # do presentation here
         self.clean()
     def clean(self):
@@ -74,7 +74,7 @@ class StackItemSeeker(StackItemRegisteredAction):
                 return action(fnparams)
         else:
             # it's a dragonfly action, and the parameters are the spec
-            action(cl.parameters)._execute(cl.dragonfly_data)
+            action(cl.parameters).execute(cl.dragonfly_data)
             return False
     def eat(self, level, stack_item):
         self.spoken[level] = stack_item.preserved
