@@ -21,12 +21,11 @@ cmd.map = {
     # fuzzy string matching command
     "(pita | Peter | PETA) <textnv> [brunt]":R(Function(fn.pita), show=False)
                                             +ContextSeeker(None,
-                                                  [L(S([""], fn.make_selection,  consume=False),
-                                                     S(["number"], fn.make_selection), 
+                                                  [L(S([""], fn.make_selection, consume=False),
+                                                     S(["number"], fn.make_selection, use_spoken=True), 
                                                      S(["cancel", "clear"], fn.empty)
-                                                      )
-                                                   ], rdescript="Fuzzy String Match", 
-                                                      use_spoken=True),
+                                                    )
+                                                  ], rdescript="Fuzzy String Match"),
         
     # keyboard shortcuts
 	'save':                         R(Key("c-s"), rspec="save", rdescript="Save"),

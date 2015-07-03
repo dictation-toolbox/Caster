@@ -8,17 +8,19 @@ CHOICES = []
 TEN = ["numb one", "numb two", "numb three", "numb four", "numb five", 
        "numb six", "numb seven", "numb eight", "numb nine", "numb ten"]
 
-def empty(a):
+def empty():
     global CHOICES
     CHOICES = []
     control.nexus().intermediary.text("PITA Cancel")
 # 
-def make_selection(nw):
+def make_selection(nw=[]):
     global CHOICES, TEN
     n = -1
     while len(nw)>2:# in the event the last words spoken were a command chain,
         nw.pop()    # get only the number trigger
-    j = " ".join(nw)
+    j = ""
+    if len(nw)>0:
+        j = " ".join(nw)
     if j in TEN:
         n = TEN.index(j)
     if n == -1: n = 0

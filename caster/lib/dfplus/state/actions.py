@@ -26,15 +26,13 @@ class RegisteredAction(ActionBase):
 
 
 class ContextSeeker(RegisteredAction):
-    def __init__(self, back, forward, rspec="default", rdescript="unnamed command (CS)", 
-                 use_spoken=False):
+    def __init__(self, back=None, forward=None, rspec="default", rdescript="unnamed command (CS)"):
         RegisteredAction.__init__(self, None)
         self.back = back
         self.forward = forward
         self.rspec = rspec
         self.rdescript = rdescript
         self.state = control.nexus().state
-        self.use_spoken = use_spoken
         assert self.back != None or self.forward != None, "Cannot create ContextSeeker with no levels"
     def _execute(self, data=None):
         self.dragonfly_data = data

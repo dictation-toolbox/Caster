@@ -25,12 +25,7 @@ def experiment(text):
     except Exception:
         utilities.simple_log(False)
 
-# def get_top_parent(psutil_process):
-#     parent=psutil_process.parent()
-#     if parent==None:
-#         return psutil_process
-#     else:
-#         return get_top_parent(parent)
+# 
 
 def get_color():
     '''do asynchronously'''
@@ -118,7 +113,13 @@ def grep_this(path, filetype):
     grep="H:/PROGRAMS/NON_install/AstroGrep/AstroGrep.exe"
     Popen([grep, "/spath=\""+str(path) +"\"", "/stypes=\""+str(filetype)+"\"", "/stext=\""+str(c)+"\"", "/s"])
 
-       
+
+def close_last_spoken(spoken):
+    first = spoken[0]
+    Text("</"+first+">").execute()
+def close_last_rspec(rspec):
+    Text("</"+rspec+">").execute()
+
 class DevRule(MappingRule):
     
     mapping = {
@@ -138,15 +139,22 @@ class DevRule(MappingRule):
     # 
     "dredge [<id> <text>]":         Function(dredge),
     
-    "backward seeker":              ContextSeeker([L(S(["ashes", "charcoal"], Text, "ashes1"),
-                                                      S(["bravery"], Text, "bravery1")),
-                                                   L(S(["ashes", "charcoal"], Text, "ashes2"),
-                                                      S(["bravery"], Text, "bravery2"))
-                                                   ], None),
-    "forward seeker [<text>]":      ContextSeeker(None,
-                                                  [L(S(["ashes", "charcoal"], Text, "ashes1 [%(text)s] "),
-                                                      S(["bravery"], Text, "bravery1 [%(text)s] ")),
-                                                   L(S(["ashes", "charcoal"], Text, "ashes2 [%(text)s] "),
+    "close last tag":               ContextSeeker([L(S(["cancel"], None),
+                                                     S(["html spoken"], close_last_spoken, use_spoken=True), 
+                                                     S(["span", "div"], close_last_rspec, use_rspec=True))
+                                                   ]),
+    "html":                         R(Text("<html>"), rspec="html spoken"), 
+    "divider":                      R(Text("<div>"), rspec="div"),
+    "span":                         R(Text("<span>"), rspec="span"),
+    "backward seeker [<text>]":     ContextSeeker([L(S(["ashes"], Text, "ashes1 [%(text)s] "),
+                                                      S(["bravery"], Text, "bravery1 [%(text)s] ")), 
+                                                   L(S(["ashes"], Text, "ashes2 [%(text)s] "),
+                                                      S(["bravery"], Text, "bravery2 [%(text)s] "))
+                                                   ]), 
+    "forward seeker [<text>]":      ContextSeeker(forward=
+                                                  [L(S(["ashes"], Text, "ashes1 [%(text)s] "),
+                                                      S(["bravery"], Text, "bravery1 [%(text)s] ")), 
+                                                   L(S(["ashes"], Text, "ashes2 [%(text)s] "),
                                                       S(["bravery"], Text, "bravery2 [%(text)s] "))
                                                    ]),
     "never-ending":                 AsynchronousAction([L(S(["ashes", "charcoal"], print_time, None),

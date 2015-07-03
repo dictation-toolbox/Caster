@@ -72,6 +72,7 @@ class ContextStack:
                         # what's the purpose in blocking seeker chaining?
                         prev = self.list[index]  # if self.list[index].type not in ["seeker", "continuer"] else None
                         stack_item.satisfy_level(i, True, prev)
+                        stack_item.eat(i, prev)
                     else:
                         stack_item.satisfy_level(i, True, None)
         
@@ -93,7 +94,7 @@ class ContextStack:
                 # consume stack_item
                 if ((seeker.type != "continuer" and stack_item.type == "raction")  # do not consume seekers, it would disable chaining
                 or (seeker.type == "continuer" and seeker.get_index_of_next_unsatisfied_level() == -1)):
-                    if seeker.forward[unsatisfied].consume:
+                    if seeker.forward[unsatisfied].result.consume:
                         stack_item.complete = True
                         stack_item.consumed = True
                         stack_item.clean()
