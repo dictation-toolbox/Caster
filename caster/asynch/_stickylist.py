@@ -27,7 +27,7 @@ def get_symbol(n, sticky):
     n = int(n) - 1
     if n < 0 or n > len(control.nexus().sticky) - 1:
         return
-    Text(control.nexus().sticky[n])._execute()
+    Text(control.nexus().sticky[n]).execute()
     if not utilities.window_exists(None, settings.S_LIST_VERSION):
         enable_sticky_list(sticky)
 

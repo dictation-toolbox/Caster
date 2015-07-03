@@ -74,31 +74,31 @@ def word_number(wn):
                       8: "eight",
                       9: "nine"
     }
-    Text(numbers_to_words[int(wn)])._execute()
+    Text(numbers_to_words[int(wn)]).execute()
 
 def numbers2(wnKK):
-    Text(str(wnKK))._execute()
+    Text(str(wnKK)).execute()
 
 def letters(big, dict1, dict2, letter):
     '''used with alphabet.txt'''
     d1 = str(dict1)
     if d1 != "":
-        Text(d1)._execute()
+        Text(d1).execute()
     if str(big) != "":
-        Key("shift:down")._execute()
-    letter._execute()
+        Key("shift:down").execute()
+    letter.execute()
     if str(big) != "":
-        Key("shift:up")._execute()
+        Key("shift:up").execute()
     d2 = str(dict2)
     if d2 != "":
-        Text(d2)._execute()
+        Text(d2).execute()
     
 def letters2(big, letter):
     if str(big) != "":
-        Key("shift:down")._execute()
-    Key(letter)._execute()
+        Key("shift:down").execute()
+    Key(letter).execute()
     if str(big) != "":
-        Key("shift:up")._execute()
+        Key("shift:up").execute()
 
 def mouse_alternates(mode):
     try:
@@ -150,7 +150,7 @@ def drop(nnavi500):
                 win32clipboard.EmptyClipboard()
                 win32clipboard.SetClipboardText(control.nexus().clip[key])
                 win32clipboard.CloseClipboard()
-                Key("c-v")._execute()
+                Key("c-v").execute()
             else:
                 dragonfly.get_engine().speak("slot empty")
             time.sleep(0.05)
@@ -165,7 +165,7 @@ def erase_multi_clipboard():
 
 def volume_control(n, volume_mode):
     for i in range(0, int(n)):
-        Key("volume" + str(volume_mode))._execute()
+        Key("volume" + str(volume_mode)).execute()
     
 def master_format_text(capitalization, spacing, textnv):
     '''
@@ -211,7 +211,7 @@ def master_format_text(capitalization, spacing, textnv):
             t = "-".join(t.split(" "))
         elif spacing == 3:
             t = "_".join(t.split(" "))
-    Text(t)._execute()
+    Text(t).execute()
 
 def master_text_nav(mtn_mode, mtn_dir, nnavi500, extreme):
     '''
@@ -252,11 +252,11 @@ def kill_grids_and_wait():
 
 def kick():
     kill_grids_and_wait()
-    Playback([(["mouse", "left", "click"], 0.0)])._execute()
+    Playback([(["mouse", "left", "click"], 0.0)]).execute()
 
 def kick_right():
     kill_grids_and_wait()
-    Playback([(["mouse", "right", "click"], 0.0)])._execute()
+    Playback([(["mouse", "right", "click"], 0.0)]).execute()
 
 def kick_middle():
     kill_grids_and_wait()

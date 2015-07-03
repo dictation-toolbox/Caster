@@ -61,7 +61,7 @@ def fix_Dragon_double():
     try:
         lr = control.nexus().history[len(control.nexus().history) - 1]
         lu = " ".join(lr)
-        Key("left/5:" + str(len(lu)) + ", del")._execute()
+        Key("left/5:" + str(len(lu)) + ", del").execute()
     except Exception:
         utilities.simple_log(False)
         
@@ -69,13 +69,13 @@ def repeat_that(n):
     try:
         if len(control.nexus().history) > 0:
             for i in range(int(n)):
-                Playback([([str(x) for x in " ".join(control.nexus().history[len(control.nexus().history) - 1]).split()], 0.0)])._execute()
+                Playback([([str(x) for x in " ".join(control.nexus().history[len(control.nexus().history) - 1]).split()], 0.0)]).execute()
     except Exception:
         utilities.simple_log(False)
 
 def change_monitor():
     if settings.SETTINGS["miscellaneous"]["sikuli_enabled"]:
-        Playback([(["monitor", "select"], 0.0)])._execute()
+        Playback([(["monitor", "select"], 0.0)]).execute()
     else:
         utilities.report("This command requires SikuliX to be enabled in the settings file")
        

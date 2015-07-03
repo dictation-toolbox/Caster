@@ -22,9 +22,9 @@ class RecordedRule(CompoundRule):
     def _process_recognition(self, node, extras):
         if "n" in extras:
             for i in range(0, int(extras["n"])):
-                Playback(self.playback_array)._execute()
+                Playback(self.playback_array).execute()
         else:
-            Playback(self.playback_array)._execute()
+            Playback(self.playback_array).execute()
 
 def add_alias(text):
     text = str(text)

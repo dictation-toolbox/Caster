@@ -43,17 +43,11 @@ def pita(textnv):
     if ACTIVE_FILE_PATH[0] != None:
         global CHOICES
         CHOICES = selector.get_similar_symbol_name(str(textnv), scanner.DATA["directories"][ACTIVE_FILE_PATH[0]][ACTIVE_FILE_PATH[1]]["names"])
-        try:
-            if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
-                display = ""
-                counter = 1
-                for result in CHOICES:
-                    if counter>1: display+="\n"
-                    display+=str(counter)+" "+result[1]
-                    counter+=1
-                control.nexus().intermediary.hint(display)
-        except Exception:
-            utilities.simple_log()
-
-
-#         Text(result)._execute()
+        if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
+            display = ""
+            counter = 1
+            for result in CHOICES:
+                if counter>1: display+="\n"
+                display+=str(counter)+" "+result[1]
+                counter+=1
+            control.nexus().intermediary.hint(display)

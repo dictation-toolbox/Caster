@@ -24,9 +24,9 @@ def send_input(n, n2, action):
     grids.wait_for_death(settings.DOUGLAS_TITLE)
     int_a = int(action)
     if int_a == 0:
-        Playback([(["mouse", "left", "click"], 0.0)])._execute()
+        Playback([(["mouse", "left", "click"], 0.0)]).execute()
     elif int_a == 1:
-        Playback([(["mouse", "right", "click"], 0.0)])._execute()
+        Playback([(["mouse", "right", "click"], 0.0)]).execute()
 
 class GridControlRule(MappingRule):
 

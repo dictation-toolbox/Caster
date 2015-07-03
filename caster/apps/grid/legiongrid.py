@@ -34,9 +34,9 @@ def send_input(n, action):
     grids.wait_for_death(settings.LEGION_TITLE)
     
     if int_a == 0:
-        Playback([(["mouse", "left", "click"], 0.0)])._execute()
+        Playback([(["mouse", "left", "click"], 0.0)]).execute()
     elif int_a == 1:
-        Playback([(["mouse", "right", "click"], 0.0)])._execute()
+        Playback([(["mouse", "right", "click"], 0.0)]).execute()
     elif int_a == 2:
         x1 = response["l"]+2
         x2 = response["r"]

@@ -30,9 +30,9 @@ def launch(hmc_type, callback, data=None):
     Popen(instructions)
     
     hmc_title=_get_title(hmc_type)
-    WaitWindow(title=hmc_title, timeout=5)._execute()
-    FocusWindow(title=hmc_title)._execute()
-    Key("tab")._execute()
+    WaitWindow(title=hmc_title, timeout=5).execute()
+    FocusWindow(title=hmc_title).execute()
+    Key("tab").execute()
     
     from caster.asynch.hmc import squeue
     squeue.add_query(callback)
