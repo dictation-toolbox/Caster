@@ -1,104 +1,173 @@
-import os
 import sys
+import threading
 
-import wx
-from wx.lib.scrolledpanel import ScrolledPanel
-
-
-try: # Style C -- may be imported into Caster, or externally
-    BASE_PATH = "C:/NatLink/NatLink/MacroSystem/"
-    if BASE_PATH not in sys.path:
-        sys.path.append(BASE_PATH)
-finally:
-    import SimpleXMLRPCServer
-    from SimpleXMLRPCServer import *
-    from caster.lib import settings
-    from caster.lib.dfplus.communication import Communicator
-
-class SettingsFrame(wx.Frame):
-
-    def __init__(self, parent, title):
-        wx.Frame.__init__(self, parent, title=title, size=(500,400))
-        self.CenterOnScreen()
-        
-        # Create the notebook 
-        self.notebook = wx.Notebook(self, style=wx.NB_MULTILINE)
-
-        # Setting up the menu
-        file_menu = wx.Menu()
-        save_item = file_menu.Append(wx.ID_SAVE, '&Save...', 'Save Settings')
-        exit_item = file_menu.Append(wx.ID_EXIT, '&Exit...', 'Exit Settings Window')
-#         self.Bind(wx.EVT_MENU, self.OnOpen, menu_item)
-        menu_bar = wx.MenuBar()
-        menu_bar.Append(file_menu, '&File')
-        self.SetMenuBar(menu_bar)
-        
-        alpha = settings.SETTINGS.keys()
-        alpha.sort()
-        for top in alpha:
-            self.make_page(top)
-        
-        self.Show()
-        
-    def make_page(self, title): 
-        page = ScrolledPanel(parent = self.notebook, id = -1)
-        vbox = wx.BoxSizer(wx.VERTICAL)
-        self.get_fields(page, vbox, title)
-        
-        page.SetupScrolling()
-        page.SetSizer(vbox)
-        self.notebook.AddPage(page, title)
-    
-    def get_fields(self, page, vbox, title):
-        keys = settings.SETTINGS[title].keys()
-        keys.sort()
-        
-        for label in keys:
-            hbox = wx.BoxSizer(wx.HORIZONTAL)
-            value = settings.SETTINGS[title][label]
-            
-            lbl = wx.StaticText(page, label=label)
-            hbox.Add(lbl, flag=wx.RIGHT, border=8)
-            
-            item = self.field_from_value(page, value)
-            
-            if item!=None:
-                hbox.Add(item, proportion=1)
-            vbox.Add(hbox, flag=wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, border=5)
-            vbox.Add((-1, 5))
-    
-    def field_from_value(self, panel, value):
-        if isinstance(value, basestring):
-            return wx.TextCtrl(panel, value=value)
-        elif isinstance(value, list):
-            return wx.TextCtrl(panel, value=", ".join(value))
-        elif isinstance(value, bool):
-            item = wx.CheckBox(panel, -1, '', (120, 75))
-            item.SetValue(value)
-            return item
-        elif isinstance(value, int):
-            return wx.TextCtrl(panel, value=str(value))
-        elif isinstance(value, dict):
-            subpage = wx.Panel(panel)
-            vbox = wx.BoxSizer(wx.VERTICAL)
-            alpha = value.keys()
-            alpha.sort()
-            for lbl in alpha:
-                hbox = wx.BoxSizer(wx.HORIZONTAL)
-                value2 = value[lbl]
-                label = wx.StaticText(subpage, label=lbl)
-                hbox.Add(label, flag=wx.RIGHT, border=8)
-                item = self.field_from_value(subpage, value2)
-                if item!=None:
-                    hbox.Add(item, proportion=1)
-                vbox.Add(hbox, flag=wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, border=5)
-                vbox.Add((-1, 5))
-            subpage.SetSizer(vbox)
-            subpage.Show()
-            return subpage
-        return None
 
 if __name__ == '__main__':
-    app = wx.App(False)
+    from wx import Notebook, NB_MULTILINE, Menu, ID_SAVE, ID_EXIT, EVT_MENU, MenuBar, \
+        BoxSizer, VERTICAL, HORIZONTAL, StaticText, RIGHT, EXPAND, LEFT, TOP, \
+        TextCtrl, Panel, App, Frame, CheckBox
+    
+    from wx.lib.scrolledpanel import ScrolledPanel
+
+
+    try: # Style C -- may be imported into Caster, or externally
+        BASE_PATH = "C:/NatLink/NatLink/MacroSystem/"
+        if BASE_PATH not in sys.path:
+            sys.path.append(BASE_PATH)
+    finally:
+        import SimpleXMLRPCServer
+        from SimpleXMLRPCServer import *
+        from caster.lib import settings
+        from caster.lib.dfplus.communication import Communicator
+    
+    class Field:
+        def __init__(self, wx_field, original, text_type=None):
+            self.children = []
+            self.wx_field = wx_field
+            self.original = original
+            self.text_type = text_type
+        def add_child(self, field):
+            self.children.append(field)
+    
+    class SettingsFrame(Frame):
+    
+        def __init__(self, parent, title):
+            Frame.__init__(self, parent, title=title, size=(500,400))
+            self.CenterOnScreen()
+            
+            # Create the notebook 
+            self.notebook = Notebook(self, style=NB_MULTILINE)
+    
+            # Setting up the menu
+            file_menu = Menu()
+            save_item = file_menu.Append(ID_SAVE, '&Save...', 'Save Settings')
+            exit_item = file_menu.Append(ID_EXIT, '&Exit...', 'Exit Settings Window')
+            self.Bind(EVT_MENU, self.save_it, save_item)
+            self.Bind(EVT_MENU, self.prepare_for_exit, exit_item)
+            menu_bar = MenuBar()
+            menu_bar.Append(file_menu, '&File')
+            self.SetMenuBar(menu_bar)
+            
+            alpha = settings.SETTINGS.keys()
+            alpha.sort()
+            self.fields = []
+            for top in alpha:
+                self.make_page(top)
+            
+            self.Show()
+        
+        def save_it(self, e):
+            config = self.tree_to_dictionary()
+            settings._save(config, r"C:\Users\dave\Desktop\test.txt")
+        
+        def prepare_for_exit(self, e):
+            self.Hide()
+            threading.Timer(10, self.Close).start()
+        
+        def tree_to_dictionary(self, t=None):
+            d = {}
+            
+            children = None
+            if t == None: children = self.fields
+            else: children = t.children
+            
+            for field in children:
+                value = None
+                if isinstance(field.wx_field, TextCtrl):
+                    value = field.wx_field.GetValue()
+                    if field.text_type == list:
+                        d[field.original] = [x for x in value.replace(", ", ",").split(",") if x] # don't count empty strings
+                    elif field.text_type == int:
+                        d[field.original] = int(value)
+                    else:
+                        d[field.original] = value.replace("\\", "/")
+                elif isinstance(field.wx_field, (Panel, ScrolledPanel)):
+                    d[field.original] = self.tree_to_dictionary(field)
+                elif isinstance(field.wx_field, CheckBox):
+                    d[field.original] = field.wx_field.GetValue()
+            
+            return d
+        
+#         def dictionary_to_tree(self, d=None):
+#             children = None
+#             if d == None: children = settings.SETTINGS
+#             else: children = d
+#             
+#             for childkey in children:
+#                 item = None
+#                 if d==None:
+#                     item = ScrolledPanel(parent = self.notebook, id = -1)
+                    
+        
+        def make_page(self, title): 
+            page = ScrolledPanel(parent = self.notebook, id = -1)
+            vbox = BoxSizer(VERTICAL)
+            field = Field(page, title)
+            self.get_fields(page, vbox, field)
+            self.fields.append(field)
+            
+            page.SetupScrolling()
+            page.SetSizer(vbox)
+            self.notebook.AddPage(page, title)
+        
+        def get_fields(self, page, vbox, field):
+            keys = settings.SETTINGS[field.original].keys()
+            keys.sort()
+            
+            for label in keys:
+                hbox = BoxSizer(HORIZONTAL)
+                value = settings.SETTINGS[field.original][label]
+                
+                lbl = StaticText(page, label=label)
+                hbox.Add(lbl, flag=RIGHT, border=8)
+                
+                subfield = Field(None, label)
+                item = self.field_from_value(page, value, subfield)
+                field.add_child(subfield)
+                
+                if item!=None:
+                    hbox.Add(item, proportion=1)
+                vbox.Add(hbox, flag=EXPAND|LEFT|RIGHT|TOP, border=5)
+                vbox.Add((-1, 5))
+        
+        def field_from_value(self, window, value, field):
+            item = None
+            if isinstance(value, basestring):
+                item = TextCtrl(window, value=value)
+                field.text_type = basestring
+            elif isinstance(value, list):
+                item = TextCtrl(window, value=", ".join(value))
+                field.text_type = list
+            elif isinstance(value, bool):
+                item = CheckBox(window, -1, '', (120, 75))
+                item.SetValue(value)
+            elif isinstance(value, int):
+                item = TextCtrl(window, value=str(value))
+                field.text_type = int
+            elif isinstance(value, dict):
+                subpage = Panel(window)
+                vbox = BoxSizer(VERTICAL)
+                alpha = value.keys()
+                alpha.sort()
+                for lbl in alpha:
+                    hbox = BoxSizer(HORIZONTAL)
+                    value2 = value[lbl]
+                    label = StaticText(subpage, label=lbl)
+                    hbox.Add(label, flag=RIGHT, border=8)
+                    subfield = Field(None, lbl)
+                    item = self.field_from_value(subpage, value2, subfield)
+                    field.add_child(subfield)
+                    if item!=None:
+                        hbox.Add(item, proportion=1)
+                    vbox.Add(hbox, flag=EXPAND|LEFT|RIGHT|TOP, border=5)
+                    vbox.Add((-1, 5))
+                subpage.SetSizer(vbox)
+                subpage.Show()
+                item = subpage
+            field.wx_field = item
+            return item
+
+# if __name__ == '__main__':
+    app = App(False)
     frame = SettingsFrame(None, "Caster Settings Window v " +settings.SOFTWARE_VERSION_NUMBER)
     app.MainLoop()
