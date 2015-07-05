@@ -1,12 +1,12 @@
 from Tkinter import Label, Entry, Checkbutton
-import sys
+import sys, os
 from threading import Timer
 
 import Tkinter as tk
 
 
 try: # Style C -- may be imported into Caster, or externally
-    BASE_PATH = "C:/NatLink/NatLink/MacroSystem/"
+    BASE_PATH = os.path.realpath(__file__).split("\\caster")[0].replace("\\", "/")
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:
