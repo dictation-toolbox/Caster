@@ -177,7 +177,7 @@ if __name__ == "__main__":
     import pythoncom
     print "Windows Speech Recognition is garbage; it is " \
         +"recommended that you not run Caster this way. " \
-        + "";
+        + ""
     while True:
         pythoncom.PumpWaitingMessages()  # @UndefinedVariable
         time.sleep(.1)
