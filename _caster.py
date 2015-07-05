@@ -140,6 +140,7 @@ class MainRule(MappingRule):
     "<enable_disable> <ccr_mode>":  R(Function(ccr.set_active_command), rdescript="Enable CCR Module"),
     "refresh <ccr_mode>":           R(Function(ccr.refresh_from_files), rdescript="Refresh CCR Module"), 
     "again (<n> [(times|time)] | do)":R(Function(repeat_that), rdescript="Repeat Last Action"),
+#     "edit settings":                R(Function(), rdescript="Edit Caster Settings"), 
     
     }
     extras = [

@@ -1,4 +1,6 @@
+import signal
 import sys
+from threading import Timer
 import threading
 
 
@@ -33,11 +35,11 @@ if __name__ == '__main__':
     
         def __init__(self, parent, title):
             Frame.__init__(self, parent, title=title, size=(500,400))
-            self.CenterOnScreen()
+#             self.setup_XMLRPC_server()
+            
             
             # Create the notebook 
             self.notebook = Notebook(self, style=NB_MULTILINE)
-    
             # Setting up the menu
             file_menu = Menu()
             save_item = file_menu.Append(ID_SAVE, '&Save...', 'Save Settings')
@@ -54,11 +56,17 @@ if __name__ == '__main__':
             for top in alpha:
                 self.make_page(top)
             
+            self.CenterOnScreen()
             self.Show()
+            
+            def start_server():
+                while not self.server_quit:
+                    self.server.handle_request()  
+            Timer(300, self.xmlrpc_kill).start()
         
         def save_it(self, e):
-            config = self.tree_to_dictionary()
-            settings._save(config, r"C:\Users\dave\Desktop\test.txt")
+            settings.SETTINGS = self.tree_to_dictionary()
+            settings.save_config()
         
         def prepare_for_exit(self, e):
             self.Hide()
@@ -88,6 +96,29 @@ if __name__ == '__main__':
             
             return d
         
+        def setup_XMLRPC_server(self): 
+            self.server_quit = 0
+            comm = Communicator()
+            self.server = SimpleXMLRPCServer(("127.0.0.1", comm.com_registry["settings"]), allow_none=True)
+            self.server.register_function(self.xmlrpc_get_message, "get_message")
+            self.server.register_function(self.xmlrpc_kill, "kill")
+        
+        def xmlrpc_kill(self):
+            self.server_quit = 1
+            self.Close()
+            os.kill(os.getpid(), signal.SIGTERM)
+            
+        def xmlrpc_complete(self):
+            self.completed = True
+            Timer(self.max_after_completed, self.xmlrpc_kill).start()
+            
+        def xmlrpc_get_message(self):
+            '''override this for every new child class'''
+            if self.completed:
+                Timer(1, self.xmlrpc_kill).start()
+                return True
+            else:
+                return None
 #         def dictionary_to_tree(self, d=None):
 #             children = None
 #             if d == None: children = settings.SETTINGS

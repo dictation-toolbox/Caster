@@ -144,6 +144,7 @@ def init_default_values():
         ("SIKULI_COMPATIBLE_JAVA_EXE_PATH", ""),
         ("ENGINE_PATH", "C:/Program Files (x86)/Nuance/NaturallySpeaking12/Program/natspeak.exe"),
         ("REBOOT_PATH", SETTINGS["paths"]["BASE_PATH"] + "/bin/reboot.bat"),
+        ("SETTINGS_WINDOW_PATH", SETTINGS["paths"]["BASE_PATH"] + "/asynch/settingswindow.py"), 
         
         # CCR
         ("GENERIC_CONFIG_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/ccr"),
