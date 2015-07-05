@@ -75,7 +75,7 @@ grammar.add_rule(MainRule())
 grammar.load()
 
 if __name__ == "__main__":
-    import pythoncom
+    import pythoncom, time
     # Ignore this if you're using Dragon
     print "Windows Speech Recognition / Dragonfly Test Running..."
     while True:
