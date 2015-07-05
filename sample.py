@@ -73,3 +73,11 @@ class MainRule(MappingRule):
 grammar = Grammar('sample')
 grammar.add_rule(MainRule())
 grammar.load()
+
+if __name__ == "__main__":
+    import pythoncom
+    # Ignore this if you're using Dragon
+    print "Windows Speech Recognition / Dragonfly Test Running..."
+    while True:
+        pythoncom.PumpWaitingMessages()  # @UndefinedVariable
+        time.sleep(.1)
