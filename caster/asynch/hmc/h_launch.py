@@ -1,8 +1,8 @@
-import sys
+import sys, os
 from subprocess import Popen
 
 try: # Style C -- may be imported into Caster, or externally
-    BASE_PATH = "C:/NatLink/NatLink/MacroSystem/"
+    BASE_PATH = os.path.realpath(__file__).split("\\caster")[0].replace("\\", "/")
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:
