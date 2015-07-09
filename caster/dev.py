@@ -52,38 +52,8 @@ def get_similar_process_name(spoken_phrase, list_of_processes):
     return best[1]
 
 def dredge(id, text):
-    ''''''
-#     if id==None:
-#         Mimic("press", "alt", "tab").execute()
-#     elif id==1:
-#         # proc
-#         if control.DEP.PSUTIL:
-#             l=[]
-#             d={}
-#             
-#             for proc in psutil.process_iter():
-#                 try:
-#                     name=proc.name().split(".")[0]
-# #                     if name not in unwanted_processes:
-#                     l.append(name)
-#                     d[name]=proc.pid
-#                 except Exception:
-#                     pass
-#             best=get_similar_process_name(str(text), l)
-#             p = d[best]
-# #             print d
-#             print text, "->", best, p#, utilities.get_active_window_title(p)
-#             try:
-#                 utilities.focus_window(pid=p)
-#             except Exception:
-#                 utilities.simple_log()
-#             
-#         else:
-#             utilities.availability_message("'dredge' command", "psutil")        
-#     elif id==2:
-#         # title
-#         ''''''
-#         utilities.get_active_window_title()
+    print Window.get_foreground().executable
+#     print Window.get_all_windows()
 
 LAST_TIME=0
 def print_time():

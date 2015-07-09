@@ -7,7 +7,7 @@ import threading
 if __name__ == '__main__':
     from wx import Notebook, NB_MULTILINE, Menu, ID_SAVE, ID_EXIT, EVT_MENU, MenuBar, \
         BoxSizer, VERTICAL, HORIZONTAL, StaticText, RIGHT, EXPAND, LEFT, TOP, \
-        TextCtrl, Panel, App, Frame, CheckBox
+        TextCtrl, Panel, App, Frame, CheckBox, EVT_CLOSE
     
     from wx.lib.scrolledpanel import ScrolledPanel
 
@@ -35,7 +35,7 @@ if __name__ == '__main__':
     
         def __init__(self, parent, title):
             Frame.__init__(self, parent, title=title, size=(500,400))
-#             self.setup_XMLRPC_server()
+            self.setup_XMLRPC_server()
             
             
             # Create the notebook 
@@ -59,9 +59,11 @@ if __name__ == '__main__':
             self.CenterOnScreen()
             self.Show()
             
+            self.Bind(EVT_CLOSE, self.xmlrpc_kill)
             def start_server():
                 while not self.server_quit:
-                    self.server.handle_request()  
+                    self.server.handle_request()
+            Timer(0.5, start_server).start()
             Timer(300, self.xmlrpc_kill).start()
         
         def save_it(self, e):
@@ -70,7 +72,7 @@ if __name__ == '__main__':
         
         def prepare_for_exit(self, e):
             self.Hide()
-            threading.Timer(10, self.Close).start()
+            threading.Timer(10, self.xmlrpc_kill).start()
         
         def tree_to_dictionary(self, t=None):
             d = {}
@@ -103,20 +105,17 @@ if __name__ == '__main__':
             self.server.register_function(self.xmlrpc_get_message, "get_message")
             self.server.register_function(self.xmlrpc_kill, "kill")
         
-        def xmlrpc_kill(self):
+        def xmlrpc_kill(self, e=None):
             self.server_quit = 1
-            self.Close()
             os.kill(os.getpid(), signal.SIGTERM)
-            
-        def xmlrpc_complete(self):
-            self.completed = True
-            Timer(self.max_after_completed, self.xmlrpc_kill).start()
+            self.Close()
             
         def xmlrpc_get_message(self):
             '''override this for every new child class'''
             if self.completed:
+#                 self.completed = False
                 Timer(1, self.xmlrpc_kill).start()
-                return True
+                return self.tree_to_dictionary()
             else:
                 return None
 #         def dictionary_to_tree(self, d=None):
@@ -200,5 +199,5 @@ if __name__ == '__main__':
 
 # if __name__ == '__main__':
     app = App(False)
-    frame = SettingsFrame(None, "Caster Settings Window v " +settings.SOFTWARE_VERSION_NUMBER)
+    frame = SettingsFrame(None, settings.SETTINGS_WINDOW_TITLE + settings.SOFTWARE_VERSION_NUMBER)
     app.MainLoop()
