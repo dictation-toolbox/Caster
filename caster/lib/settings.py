@@ -19,6 +19,7 @@ HMC_TITLE_DIRECTORY = " :: Directory Selector"
 LEGION_TITLE = "legiongrid"
 RAINBOW_TITLE = "rainbowgrid"
 DOUGLAS_TITLE = "douglasgrid"
+SETTINGS_WINDOW_TITLE = "Caster Settings Window v "
 
 # enums
 QTYPE_DEFAULT = "def"

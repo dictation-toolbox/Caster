@@ -21,6 +21,7 @@ from dragonfly import (Key, Function, Grammar, Playback,
 try:
     from caster.lib import settings# requires nothing
     settings.WSR = __name__ == "__main__"
+    from caster.lib.dfplus import monkeypatch
     from caster.lib import utilities# requires settings
     from caster.lib import control# requires settings
     from caster.lib.dfplus.state import stack# requires control
@@ -41,6 +42,7 @@ try:
     from caster.lib import navigation, password
     from caster.lib.pita import scanner
     from caster.lib.dfplus.state.short import R
+    
     
     ccr.initialize_ccr()
     utilities.clean_temporary_files()
