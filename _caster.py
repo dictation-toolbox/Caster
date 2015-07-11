@@ -1,27 +1,15 @@
 '''
 main Caster module
-'''
-'''
 Created on Jun 29, 2014
-
-@author: dave
-
-Instructions for adding new:
-- homunculus windows in h_launch.py
-- scanned languages (for "pita") in scanner.py
 '''
 
 from subprocess import Popen
 import time
 
-from dragonfly import (Key, Function, Grammar, Playback,
-                       IntegerRef, Dictation, Choice, Pause, MappingRule)
-
-
 try:
     from caster.lib import settings# requires nothing
     settings.WSR = __name__ == "__main__"
-    from caster.lib.dfplus import monkeypatch
+#     from caster.lib.dfplus import monkeypatch
     from caster.lib import utilities# requires settings
     from caster.lib import control# requires settings
     from caster.lib.dfplus.state import stack# requires control
@@ -57,9 +45,9 @@ except:
     utilities.simple_log()
     ccr.initialize_ccr()
 
+from dragonfly import (Key, Function, Grammar, Playback, IntegerRef, Dictation, Choice, Pause, MappingRule)
 
-
-def fix_Dragon_double():
+def fix_dragon_double():
     try:
         lr = control.nexus().history[len(control.nexus().history) - 1]
         lu = " ".join(lr)
@@ -100,7 +88,7 @@ class MainRule(MappingRule):
     'com on':                       Playback([(["command", "mode", "on"], 0.0)]),
     'com off':                      Playback([(["command", "mode", "off"], 0.0)]),
     "reboot dragon":                R(Function(utilities.reboot), rdescript="Reboot Dragon Naturallyspeaking"),
-    "fix dragon double":            R(Function(fix_Dragon_double), rdescript="Fix Dragon Double Letter"),
+    "fix dragon double":            R(Function(fix_dragon_double), rdescript="Fix Dragon Double Letter"),
     "add word to vocabulary":       R(Function(vocabulary_processing.add_vocab), rdescript="Vocabulary Management: Add"),
     "delete word from vocabulary":  R(Function(vocabulary_processing.del_vocab), rdescript="Vocabulary Management: Delete"),
     
