@@ -36,3 +36,43 @@ def _get_window_module(self):
 from dragonfly import Window
 Window._get_window_module = _get_window_module
 Window.executable = property(fget=_get_window_module)
+
+import win32con
+from dragonfly         import ActionBase, ActionError
+
+def _execute(self, data=None):
+    executable = self.executable
+    title = self.title
+    if data and isinstance(data, dict):
+        if executable:  executable = (executable % data).lower()
+        if title:       title = (title % data).lower()
+
+    windows = Window.get_all_windows()
+    for window in windows:
+        if not window.is_visible:
+            continue
+        if (window.executable.endswith("natspeak.exe")
+            and window.classname == "#32770"
+            and window.get_position().dy < 50):
+            # If a window matches the above, it is very probably
+            #  the results-box of DNS.  We ignore this because
+            #  its title is the words of the last recognition,
+            #  which will often interfere with a search for
+            #  a window with a spoken title.
+            continue
+
+        if executable:
+            if window.executable.lower().find(executable) == -1:
+                continue
+        if title:
+            if window.title.lower().find(title) == -1:
+                continue
+        try:
+            window.set_foreground()
+            return
+        except Exception:
+            pass
+    raise ActionError("Failed to find window (%s)."  % self._str)
+
+from dragonfly import FocusWindow
+FocusWindow._execute = _execute
