@@ -19,8 +19,7 @@ class RegisteredAction(ActionBase):
         self.show = show
     
     def _execute(self, data=None):  # copies everything relevant and places it in the stack
-        self.dragonfly_data = data
-        self.state.add(self.state.generate_registered_action_stack_item(self))
+        self.state.add(self.state.generate_registered_action_stack_item(self, data))
 
 
 
@@ -35,8 +34,7 @@ class ContextSeeker(RegisteredAction):
         self.state = control.nexus().state
         assert self.back != None or self.forward != None, "Cannot create ContextSeeker with no levels"
     def _execute(self, data=None):
-        self.dragonfly_data = data
-        self.state.add(self.state.generate_context_seeker_stack_item(self))
+        self.state.add(self.state.generate_context_seeker_stack_item(self, data))
         
         
         
@@ -65,6 +63,5 @@ class AsynchronousAction(ContextSeeker):
     def _execute(self, data=None):
         if "time_in_seconds" in data: self.time_in_seconds=float(data["time_in_seconds"])
         if "repetitions" in data: self.time_in_seconds=int(data["repetitions"])
-          
-        self.dragonfly_data = data
-        self.state.add(self.state.generate_continuer_stack_item(self))
+        
+        self.state.add(self.state.generate_continuer_stack_item(self, data))

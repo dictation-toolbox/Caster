@@ -15,21 +15,21 @@ Command-module for Notepad++
 from dragonfly import (Grammar, AppContext, MappingRule,
                        Dictation, IntegerRef, Mouse,
                        Key, Text, Repeat, Pause)
-
+from caster.lib.dfplus.state.short import R
 
 class CommandRule(MappingRule):
 
     mapping = {
-            "next tab [<n>]":                       Key("c-pgdown") * Repeat(extra="n"),
-            "previous tab [<n>]":                   Key("c-pgup") * Repeat(extra="n"),
-            "close tab [<n>]":                      Key("c-w") * Repeat(extra="n"),
+            "next tab [<n>]":                       R(Key("c-pgdown") * Repeat(extra="n"), rdescript="Notepad++: Next Tab"),
+            "prior tab [<n>]":                      R(Key("c-pgup") * Repeat(extra="n"), rdescript="Notepad++: Prior Tab"),
+            "close tab [<n>]":                      R(Key("c-w") * Repeat(extra="n"), rdescript="Notepad++: Close Tab"),
             
-            "stylize <n2>":                         Mouse("right")+Key("down:6/5, right")+(Key("down") * Repeat(extra="n2"))+Key("enter"),
-            "remove style":                         Mouse("right")+Key("down:6/5, right/5, down:5/5, enter"),
+            "stylize <n2>":                         R(Mouse("right")+Key("down:6/5, right")+(Key("down") * Repeat(extra="n2"))+Key("enter"), rdescript="Notepad++: Stylize"),
+            "remove style":                         R(Mouse("right")+Key("down:6/5, right/5, down:5/5, enter"), rdescript="Notepad++: Remove Style"),
             
-            "preview in chrome":                    Key("cas-r"),
+            "preview in browser":                   R(Key("cas-r"), rdescript="Notepad++: Preview In Browser"),
             # requires function list plug-in:
-            "function list":                        Key("cas-l"),
+            "function list":                        R(Key("cas-l"), rdescript="Notepad++: Function List"),
         }
     extras = [
               Dictation("text"),

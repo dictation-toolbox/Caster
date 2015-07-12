@@ -15,14 +15,14 @@ Command-module for Sql Developer
 from dragonfly import (Grammar, AppContext, MappingRule,
                        Dictation, IntegerRef,
                        Key, Text, Repeat, Pause)
-
+from caster.lib.dfplus.state.short import R
 
 class CommandRule(MappingRule):
 
     mapping = {
-            "run this query":                       Key("f9"),
-            "format code":                          Key("c-f7"),
-            "comment line":                         Key("c-slash"),
+            "run this query":                       R(Key("f9"), rdescript="SQL Dev: Run Query"),
+            "format code":                          R(Key("c-f7"), rdescript="SQL Dev: Format Code"),
+            "comment line":                         R(Key("c-slash"), rdescript="SQL Dev: Comment Line"),
             
         }
     extras = [

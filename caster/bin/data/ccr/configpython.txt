@@ -4,6 +4,7 @@
 
 from dragonfly import *
 from caster.lib import settings
+from caster.lib.dfplus.state.short import R
 
 settings.register_language(".py", "python")
 
@@ -12,65 +13,65 @@ cmd.map = {
 		
 		# CCR PROGRAMMING STANDARD
 		#
-		"iffae":                   Key("i,f,space,colon,left"),
-		"shells":                   Text("else:")+Key("enter"),		
+		"iffae":                    R(Key("i,f,space,colon,left"), rdescript="Python: If"),
+		"shells":                   R(Text("else:")+Key("enter"), rdescript="Python: Else"),		
 		#
 		# (no switch in Python)
-		"breaker":					Text("break"),
+		"breaker":					R(Text("break"), rdescript="Python: Break"),
 		#
-		"for each":					Text("for  in :")+ Key("left:5"),
-        "for loop":					Text("for i in range(0, ):")+ Key("left:2"),
-		"while loop":				Text("while :")+ Key("left"),
+		"for each":					R(Text("for  in :")+ Key("left:5"), rdescript="Python: For Each Loop"),
+        "for loop":					R(Text("for i in range(0, ):")+ Key("left:2"), rdescript="Python: For i Loop"),
+		"while loop":				R(Text("while :")+ Key("left"), rdescript="Python: While"),
 		# (no do-while in Python)
 		#
-		"convert to string":		Text("str()")+ Key("left"),
-        "convert to integer":		Text("int()")+ Key("left"),
-        "convert to floating point":Text("float()")+ Key("left"),
+		"convert to string":		R(Text("str()")+ Key("left"), rdescript="Python: Convert To String"),
+        "convert to integer":		R(Text("int()")+ Key("left"), rdescript="Python: Convert To Integer"),
+        "convert to floating point":R(Text("float()")+ Key("left"), rdescript="Python: Convert To Floating-Point"),
         #
-        "lodge and":                Text(" and "),
-        "lodge or":                 Text(" or "),
-        "lodge not":                Text("!"),
+        "lodge and":                R(Text(" and "), rdescript="Python: And"),
+        "lodge or":                 R(Text(" or "), rdescript="Python: Or"),
+        "lodge not":                R(Text("!"), rdescript="Python: Not"),
         #
-        "print to console":			Text("print "),
+        "print to console":			R(Text("print "), rdescript="Python: Print"),
         #
-		"import":					Text( "import " ),
+		"import":					R(Text( "import " ), rdescript="Python: Import"),
 		#
-		"function":					Text("def "),        
-		"class":					Text("class "),
+		"function":					R(Text("def "), rdescript="Python: Function"),        
+		"class":					R(Text("class "), rdescript="Python: Class"),
 		#
-		"add comment":				Text( "#" ),
-		"long comment":				Text("''''''") + Key("left:3"),
+		"add comment":				R(Text( "#" ), rdescript="Python: Add Comment"),
+		"long comment":				R(Text("''''''") + Key("left:3"), rdescript="Python: Long Comment"),
 		#				
-		"value not":				Text("None"),
+		"value not":				R(Text("None"), rdescript="Python: Null"),
 		#
-		"return":					Text("return "),
+		"return":					R(Text("return "), rdescript="Python: Return"),
 		#
-		"value true":				Text("True"),
-		"value false":				Text("False"),
+		"value true":				R(Text("True"), rdescript="Python: True"),
+		"value false":				R(Text("False"), rdescript="Python: False"),
 				
 		 
 	    # Python specific           
  	    
- 	    "sue iffae":				Text("if "), 
- 	    "sue shells":				Text("else "),
+ 	    "sue iffae":				R(Text("if "), rdescript="Python: Short If"), 
+ 	    "sue shells":				R(Text("else "), rdescript="Python: Short Else"),
  	     
  	    
- 	    "from":						Text( "from " ),
- 	    "self":						Text("self"),
- 	    "long not":					Text(" not "),
- 	    "it are in":                Text(" in "), #supposed to sound like "iter in"
+ 	    "from":						R(Text( "from " ), rdescript="Python: From"),
+ 	    "self":						R(Text("self"), rdescript="Python: Self"),
+ 	    "long not":					R(Text(" not "), rdescript="Python: Long Not"),
+ 	    "it are in":                R(Text(" in "), rdescript="Python: In"),  	    #supposed to sound like "iter in"
         
-        "shell Eiffel | LFA":       Key("e,l,i,f,space,colon,left"),
-        "convert to character": 	Text("chr()")+ Key("left"),
-        "length of":				Text("len()")+ Key("left"),
+        "shell iffae | LFA":       	R(Key("e,l,i,f,space,colon,left"), rdescript="Python: Else If"),
+        "convert to character": 	R(Text("chr()")+ Key("left"), rdescript="Python: Convert To Character"),
+        "length of":				R(Text("len()")+ Key("left"), rdescript="Python: Length"),
  		
-	 	"global":					Text("global "),
+	 	"global":					R(Text("global "), rdescript="Python: Global"),
 						
-		"make assertion":			Text("assert "),
-		"list comprehension":		Text("[x for x in LIST if CONDITION]"),
+		"make assertion":			R(Text("assert "), rdescript="Python: Assert"),
+		"list comprehension":		R(Text("[x for x in LIST if CONDITION]"), rdescript="Python: List Comprehension"),
 	   
-       	 "[dot] (pie | pi)":		Text(".py"),
- 		 "jason":					Text("json"),
+       	 "[dot] (pie | pi)":		R(Text(".py"), rdescript="Python: .py"),
+ 		 "jason":					R(Text("json"), rdescript="Python: json"),
  		 
 		 
           }
@@ -85,10 +86,10 @@ cmd.defaults = {
 cmd.ncactive=True
 
 cmd.ncmap = {
-		"with":						Text("with "),
-        "open file":				Text("open('filename','r') as f:"),
-        "read lines":				Text("content = f.readlines()"),
-		"try catch":				Text("try:")+Key("enter:2/10, backspace")+Text("except Exception:")+Key("enter"),
+		"with":						R(Text("with "), rdescript="Python: With"),
+        "open file":				R(Text("open('filename','r') as f:"), rdescript="Python: Open File"),
+        "read lines":				R(Text("content = f.readlines()"), rdescript="Python: Read Lines"),
+		"try catch":				R(Text("try:")+Key("enter:2/10, backspace")+Text("except Exception:")+Key("enter"), rdescript="Python: Try Catch"),
           }
 
 cmd.ncextras   = [

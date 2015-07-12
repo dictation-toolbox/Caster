@@ -80,21 +80,25 @@ class MainRule(MappingRule):
     
     mapping = {
     # Dragon NaturallySpeaking management
-    '(lock Dragon | deactivate)':   Playback([(["go", "to", "sleep"], 0.0)]),
-    '(number|numbers) mode':        Playback([(["numbers", "mode", "on"], 0.0)]),
-    'spell mode':                   Playback([(["spell", "mode", "on"], 0.0)]),
-    'dictation mode':               Playback([(["dictation", "mode", "on"], 0.0)]),
-    'normal mode':                  Playback([(["normal", "mode", "on"], 0.0)]),
-    'com on':                       Playback([(["command", "mode", "on"], 0.0)]),
-    'com off':                      Playback([(["command", "mode", "off"], 0.0)]),
+    '(lock Dragon | deactivate)':   R(Playback([(["go", "to", "sleep"], 0.0)]), rdescript="Dragon: Go To Sleep"),
+    '(number|numbers) mode':        R(Playback([(["numbers", "mode", "on"], 0.0)]), rdescript="Dragon: Number Mode"),
+    'spell mode':                   R(Playback([(["spell", "mode", "on"], 0.0)]), rdescript="Dragon: Spell Mode"),
+    'dictation mode':               R(Playback([(["dictation", "mode", "on"], 0.0)]), rdescript="Dragon: Dictation Mode"),
+    'normal mode':                  R(Playback([(["normal", "mode", "on"], 0.0)]), rdescript="Dragon: Normal Mode"),
+    'com on':                       R(Playback([(["command", "mode", "on"], 0.0)]), rdescript="Dragon: Command Mode (On)"),
+    'com off':                      R(Playback([(["command", "mode", "off"], 0.0)]), rdescript="Dragon: Command Mode (Off)"),
+    'scratch':                      R(Playback([(["scratch", "that"], 0.0)]), rdescript="Dragon: 'Scratch That'"),
     "reboot dragon":                R(Function(utilities.reboot), rdescript="Reboot Dragon Naturallyspeaking"),
     "fix dragon double":            R(Function(fix_dragon_double), rdescript="Fix Dragon Double Letter"),
     "add word to vocabulary":       R(Function(vocabulary_processing.add_vocab), rdescript="Vocabulary Management: Add"),
     "delete word from vocabulary":  R(Function(vocabulary_processing.del_vocab), rdescript="Vocabulary Management: Delete"),
+    "left point":                   R(Playback([(["MouseGrid"], 0.1), (["four", "four"], 0.1), (["click"], 0.0)]), rdescript="Mouse: Left Point"),
+    "right point":                  R(Playback([(["MouseGrid"], 0.1), (["six", "six"], 0.1), (["click"], 0.0)]), rdescript="Mouse: Right Point"),
+    "center point":                 R(Playback([(["MouseGrid"], 0.1), (["click"], 0.0)]), rdescript="Mouse: Center Point"),
     
     # hardware management
-    "volume <volume_mode> [<n>]":   Function(navigation.volume_control, extra={'n', 'volume_mode'}),
-    "change monitor":               Key("w-p") + Pause("100") + Function(change_monitor),
+    "volume <volume_mode> [<n>]":   R(Function(navigation.volume_control, extra={'n', 'volume_mode'}), rdescript="Volume Control"),
+    "change monitor":               R(Key("w-p") + Pause("100") + Function(change_monitor), rdescript="Change Monitor"),
     
     # window management
     'minimize':                     Playback([(["minimize", "window"], 0.0)]),
@@ -162,6 +166,9 @@ def unload():
     grammar = None
     ccr.unload()
     sikuli.unload()
+
+if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
+    utilities.report("\nWARNING: Status Window is an experimental feature, and there is a known freezing glitch with it.\n")
 
 if __name__ == "__main__":
     import pythoncom

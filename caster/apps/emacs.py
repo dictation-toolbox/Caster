@@ -1,49 +1,49 @@
 from dragonfly import (Grammar, AppContext, MappingRule,
                        Dictation, IntegerRef,
                        Key)
-
+from caster.lib.dfplus.state.short import R
 
 # next tab
 class CommandRule(MappingRule):
 
     mapping = {
-        "open file":            Key("c-x, c-f"), 
-        "save file":            Key("c-x, c-s"),
-        "save as":              Key("c-x, c-w"),
-        "save all":             Key("c-x, s"),
-        "revert to file":       Key("c-x, c-v"), 
-        "revert buffer":        Key("a-x"), 
-        "close buffer":         Key("c-x, c-c"), 
+        "open file":            R(Key("c-x, c-f"), rdescript="Emacs: Open File"), 
+        "save file":            R(Key("c-x, c-s"), rdescript="Emacs: Save File"),
+        "save as":              R(Key("c-x, c-w"), rdescript="Emacs: Save As"),
+        "save all":             R(Key("c-x, s"), rdescript="Emacs: Save All"),
+        "revert to file":       R(Key("c-x, c-v"), rdescript="Emacs: Revert To File"), 
+        "revert buffer":        R(Key("a-x"), rdescript="Revert Buffer"), 
+        "close buffer":         R(Key("c-x, c-c"), rdescript="Close Buffer"), 
         
-        "undo":                 Key("c-underscore"), 
-        "begin selection":      Key("c-space"), 
-        "cancel selection":     Key("c-g"),
-        "cut selection":        Key("c-w"), 
-        "paste":                Key("c-y"), 
-        "copy number <n>":      Key("c-x, r, s, %(n)d"), 
-        "paste number <n>":     Key("c-x, r, i, %(n)d"), 
+        "undo":                 R(Key("c-underscore"), rdescript="Emacs: Undo"), 
+        "begin selection":      R(Key("c-space"), rdescript="Emacs: Begin Selection"), 
+        "cancel selection":     R(Key("c-g"), rdescript="Emacs: Cancel Selection"),
+        "cut selection":        R(Key("c-w"), rdescript="Emacs: Cut Selection"), 
+        "paste":                R(Key("c-y"), rdescript="Emacs: Paste"), 
+        "copy number <n>":      R(Key("c-x, r, s, %(n)d"), rdescript="Emacs: Copy Number"), 
+        "paste number <n>":     R(Key("c-x, r, i, %(n)d"), rdescript="Emacs: Paste Number"), 
         # delete
-        "forward delete":       Key("c-delete"), 
-        "delete word":          Key("a-delete"), 
-        "forward delete word":  Key("a-d"), 
+        "forward delete":       R(Key("c-delete"), rdescript="Emacs: Forward Delete"), 
+        "delete word":          R(Key("a-delete"), rdescript="Emacs: Delete Word"), 
+        "forward delete word":  R(Key("a-d"), rdescript="Emacs: Forward Delete Word"), 
         
-        "word forward":         Key("a-f"), 
-        "word backward":        Key("a-b"), 
-        "line forward":         Key("c-a"), 
-        "line backward":        Key("c-e"), 
-        "paragraph forward":    Key("a-lbrace"), 
-        "paragraph backward":   Key("a-rbrace"), 
-        "document forward":     Key("a-langle"), 
-        "document backward":    Key("a-rangle"),
-        "C function forward":   Key("ac-a"), 
-        "C function backward":  Key("ac-e"),
+        "word forward":         R(Key("a-f"), rdescript="Emacs: Word Forward"), 
+        "word backward":        R(Key("a-b"), rdescript="Emacs: Word Backward"), 
+        "line forward":         R(Key("c-a"), rdescript="Emacs: Line Forward"), 
+        "line backward":        R(Key("c-e"), rdescript="Emacs: Line Backward"), 
+        "paragraph forward":    R(Key("a-lbrace"), rdescript="Emacs: Paragraph Forward"), 
+        "paragraph backward":   R(Key("a-rbrace"), rdescript="Emacs: Paragraph Backward"), 
+        "document forward":     R(Key("a-langle"), rdescript="Emacs: Document Forward"), 
+        "document backward":    R(Key("a-rangle"), rdescript="Emacs: Document Backward"),
+        "C function forward":   R(Key("ac-a"), rdescript="Emacs: C Function Forward"), 
+        "C function backward":  R(Key("ac-e"), rdescript="Emacs: C Function Forward"),
         
-        "incremental search":   Key("c-s"), 
-        "incremental reverse":  Key("c-r"), 
-        "interactive search":   Key("a-percent"), 
-        "go to line <n>":       Key("a-x, %(n)d"), 
-        "prior bracket":        Key("escape:down, c-b, escape:up"), 
-        "next bracket":         Key("escape:down, c-f, escape:up"),
+        "incremental search":   R(Key("c-s"), rdescript="Emacs: Incremental Search"), 
+        "incremental reverse":  R(Key("c-r"), rdescript="Emacs: Incremental Reverse"), 
+        "interactive search":   R(Key("a-percent"), rdescript="Emacs: Interactive Search"), 
+        "go to line <n>":       R(Key("a-x, %(n)d"), rdescript="Emacs: Go To Line"), 
+        "prior bracket":        R(Key("escape:down, c-b, escape:up"), rdescript="Emacs: Prior Bracket"), 
+        "next bracket":         R(Key("escape:down, c-f, escape:up"), rdescript="Emacs: Next Bracket"),
         
         
         }
@@ -57,7 +57,7 @@ class CommandRule(MappingRule):
 
 #---------------------------------------------------------------------------
 
-context = AppContext(executable="emacs", title="emacs") | AppContext(executable="eclipse", title="Eclipse") | AppContext(executable="AptanaStudio3")
+context = AppContext(executable="emacs", title="emacs")
 grammar = Grammar("emacs", context=context)
 grammar.add_rule(CommandRule())
 grammar.load()

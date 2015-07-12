@@ -17,7 +17,7 @@ class CommandRule(MappingRule):
             "open resource":                            R(Key("cs-r"), rdescript="Eclipse: Open Resource"),
             "open type":                                R(Key("cs-t"), rdescript="Eclipse: Open Type"),
 
-            "[go to] line <n> [<mim>]":                 Key("c-l") + Pause("50") + Text("%(n)d") + Key("enter")+ Pause("50")+Mimic(extra="mim"),
+            "[go to] line <n> [<mim>]":                 R(Key("c-l") + Pause("50") + Text("%(n)d") + Key("enter")+ Pause("50")+Mimic(extra="mim"), rdescript="Eclipse: Go To Line"),
             "jump to source":                           R(Key("f3"), rdescript="Eclipse: Jump To Source"),
             "editor select":                            R(Key("c-e"), rdescript="Eclipse: Editor Select"),
             

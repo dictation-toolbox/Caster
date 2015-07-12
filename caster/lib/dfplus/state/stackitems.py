@@ -18,9 +18,9 @@ class StackItem:
     def put_time_action(self):
         ''' this always happens at the time that the Stack item is placed in the Stack '''
 class StackItemRegisteredAction(StackItem):
-    def __init__(self, registered_action, type="raction"):
+    def __init__(self, registered_action, data, type="raction"):
         StackItem.__init__(self, type)
-        self.dragonfly_data = registered_action.dragonfly_data
+        self.dragonfly_data = data
         self.base = registered_action.base
         self.rspec = registered_action.rspec
         self.rdescript = registered_action.rdescript
@@ -42,8 +42,8 @@ class StackItemRegisteredAction(StackItem):
         if settings.SETTINGS["miscellaneous"]["status_window_enabled"] and self.show:
             control.nexus().intermediary.text(self.rdescript)
 class StackItemSeeker(StackItemRegisteredAction):
-    def __init__(self, seeker, type="seeker"):
-        StackItemRegisteredAction.__init__(self, seeker, type)
+    def __init__(self, seeker, data, type="seeker"):
+        StackItemRegisteredAction.__init__(self, seeker, data, type)
         if self.type=="seeker": self.back = self.copy_direction(seeker.back)
         self.forward = self.copy_direction(seeker.forward)
         self.spoken = {}
@@ -127,8 +127,8 @@ class StackItemSeeker(StackItemRegisteredAction):
                 return i
         return -1
 class StackItemAsynchronous(StackItemSeeker):
-    def __init__(self, continuer, type="continuer"):
-        StackItemSeeker.__init__(self, continuer, type)
+    def __init__(self, continuer, data, type="continuer"):
+        StackItemSeeker.__init__(self, continuer, data, type)
         self.back = None
         self.repetitions = continuer.repetitions
         self.fillCL(self.forward[0], self.forward[0].sets[0])

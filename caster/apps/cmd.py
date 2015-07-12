@@ -14,20 +14,20 @@ Command-module for git
 
 from dragonfly import (Grammar, AppContext, MappingRule,
                        Key, Text)
-
+from caster.lib.dfplus.state.short import R
 
 class CommandRule(MappingRule):
 
     mapping = {
-        "C drive":          Text("cd C:\\")+Key("enter"),
-        "CD up":            Text( "cd .." )+Key("enter"),
-        "CD":               Text( "cd " ),
-        "list":             Text( "dir" )+Key("enter"),
-        "make directory":   Text( "mkdir " ),
+        "C drive":          R(Text(r"cd C:/")+Key("enter"), rdescript="CMD: Go To C:"),
+        "CD up":            R(Text( "cd .." )+Key("enter"), rdescript="CMD: Up Directory"),
+        "CD":               R(Text( "cd " ), rdescript="CMD: Navigate Directory"),
+        "list":             R(Text( "dir" )+Key("enter"), rdescript="CMD: List Files"),
+        "make directory":   R(Text( "mkdir " ), rdescript="CMD: Make directory"),
         
         
         
-        "exit":             Text( "exit" )+Key("enter"),
+        "exit":             R(Text( "exit" )+Key("enter"), rdescript="CMD: Exit"),
         }
     extras = [
               

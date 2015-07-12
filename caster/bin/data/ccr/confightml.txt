@@ -2,6 +2,7 @@
 # Meant to enable HTML syntax with CCR
 
 from dragonfly import *
+from caster.lib.dfplus.state.short import R
 
 release = Key("shift:up, ctrl:up")
 noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added on the right side

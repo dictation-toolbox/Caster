@@ -3,6 +3,7 @@
 #  meant to enable android syntax with CCR
 
 from dragonfly import *
+from caster.lib.dfplus.state.short import R
 
 cmd.map = {
            # Spoken-form    ->    ->    ->     Action object

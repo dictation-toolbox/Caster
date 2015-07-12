@@ -15,14 +15,14 @@ Command-module for word
 from dragonfly import (Grammar, AppContext, MappingRule,
                        Dictation, Playback, IntegerRef, Function,
                        Key, Text, Repeat, WaitWindow, Mouse, Pause)
-
+from caster.lib.dfplus.state.short import R
 
     
 
 class CommandRule(MappingRule):
 
     mapping = {
-        "insert image":              Key("alt, n, p"),
+        "insert image":              R(Key("alt, n, p"), rdescript="Word: Insert Image"),
         
         
         }

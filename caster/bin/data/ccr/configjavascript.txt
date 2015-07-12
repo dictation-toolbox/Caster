@@ -4,6 +4,7 @@
 from dragonfly import *
 from caster.lib.dfplus.additions import SelectiveAction
 from caster.lib import settings
+from caster.lib.dfplus.state.short import R
 
 settings.register_language(".js", "javascript")
 
@@ -11,68 +12,70 @@ cmd.map = {
        # Spoken-form    ->    ->    ->     Action object
 		
 		# CCR PROGRAMMING STANDARD
-		"iffae":					Text("if (){}")+Key("left, enter:2, up"),
-		"shells":					Text("else {}")+Key("left, enter:2, up"),
+		"iffae":					R(Text("if (){}")+Key("left, enter:2, up"), rdescript="Javascript: If"),
+		"shells":					R(Text("else {}")+Key("left, enter:2, up"), rdescript="Javascript: Else"),
 		#
-		"switch":					Text("switch(){}")+Key("left, enter:2, up"),
-		"K states":						Text("case :")+Key("left"),
-		"breaker":					Text("break;"),
-		"default":					Text("default: "),
+		"switch":					R(Text("switch(){}")+Key("left, enter:2, up"), rdescript="Javascript: Switch"),
+		"K states":					R(Text("case :")+Key("left"), rdescript="Javascript: Case"),
+		"breaker":					R(Text("break;"), rdescript="Break"),
+		"default":					R(Text("default: "), rdescript="Javascript: Default"),
 		#
-		"do loop":					Text("do {}")+Key("left, enter:2"),
-        "while loop":				Text("while ()")+Key("left"),
-        "for loop":					Text("for (var i=0; i<VALUE; i++)"),
-		"for each":					Text("for (VARIABLE in OBJECT)"),
+		"do loop":					R(Text("do {}")+Key("left, enter:2"), rdescript="Javascript: Do Loop"),
+        "while loop":				R(Text("while ()")+Key("left"), rdescript="Javascript: While"),
+        "for loop":					R(Text("for (var i=0; i<VALUE; i++)"), rdescript="Javascript: For i Loop"),
+		"for each":					R(Text("for (VARIABLE in OBJECT)"), rdescript="Javascript: For Each Loop"), 
         #
-        "convert to string":		Key("dquote, dquote, plus"),
-		"convert to integer":		Text("parseInt()")+Key("left"),
-		"convert to floating point":Text("parseFloat()")+Key("left"),
+        "convert to string":		R(Key("dquote, dquote, plus"), rdescript="Javascript: Convert To String"),
+		"convert to integer":		R(Text("parseInt()")+Key("left"), rdescript="Javascript: Convert To Integer"),
+		"convert to floating point":R(Text("parseFloat()")+Key("left"), rdescript="Javascript: Convert To Floating-Point"),
 		#
-		"lodge and":                Text(" && "),
-        "lodge or":                 Text(" || "),
-        "lodge not":                Text("!"),
+		"lodge and":                R(Text(" && "), rdescript="Javascript: And"),
+        "lodge or":                 R(Text(" || "), rdescript="Javascript: Or"),
+        "lodge not":                R(Text("!"), rdescript="Javascript: Not"),
         #
-		"print to console":			Text("console.log()")+Key("left"),
+		"print to console":			R(Text("console.log()")+Key("left"), rdescript="Javascript: Print"),
 		#
 		# (no imports in javascript)
 		# 
-		"function":					Text("function NAME(){};")+Key("left:2, enter")+SelectiveAction(Key("enter, up"), ["AptanaStudio3.exe"]),
+		"function":					R(Text("function NAME(){};")+Key("left:2, enter")
+									 +SelectiveAction(Key("enter, up"), ["AptanaStudio3.exe"]), 
+									 rdescript="Javascript: Function"),
 		# (no classes in javascript)
 		#
-		"add comment":				Text("//"),
-		"long comment":				Text("/**/")+Key("left,left"),
+		"add comment":				R(Text("//"), rdescript="Javascript: Add Comment"),
+		"long comment":				R(Text("/**/")+Key("left,left"), rdescript="Javascript: Long Comment"),
 		#
-		"value not":				Text("null"),
+		"value not":				R(Text("null"), rdescript="Javascript: Null"),
 		#
-		"return":					Text("return "),
+		"return":					R(Text("return "), rdescript="Javascript: Return"),
 		#
-		"value true":				Text("true"),
-		"value false":				Text("false"),
+		"value true":				R(Text("true"), rdescript="Javascript: True"),
+		"value false":				R(Text("false"), rdescript="Javascript: False"),
 		
 		
 		# JavaScript specific
 		
-		"timer":					Text("setInterval()")+Key("left"),
-		"timeout":					Text("setTimeout()")+Key("left"),
-		"sue iffae":				Text("if()")+Key("left"),
-		"document":					Text("document"),
-		"index of":					Text("indexOf()")+Key("left"),
-		"has own property":			Text("hasOwnProperty()")+Key("left"),
-		"length":					Text("length"),
-		"self":						Text("self"),
-		"push":						Text("push"),
-		"inner HTML":				Text("innerHTML"),
-		"new new":					Text("new "),
-        "continue":					Text("continue"),
+		"timer":					R(Text("setInterval()")+Key("left"), rdescript="Javascript: Timer"),
+		"timeout":					R(Text("setTimeout()")+Key("left"), rdescript="Javascript: Timeout"),
+		"sue iffae":				R(Text("if()")+Key("left"), rdescript="Javascript: Short If"),
+		"document":					R(Text("document"), rdescript="Javascript: Document"),
+		"index of":					R(Text("indexOf()")+Key("left"), rdescript="Javascript: Index Of"),
+		"has own property":			R(Text("hasOwnProperty()")+Key("left"), rdescript="Javascript: Has Own Property"),
+		"length":					R(Text("length"), rdescript="Javascript: Length"),
+		"self":						R(Text("self"), rdescript="Javascript: Self"),
+		"push":						R(Text("push"), rdescript="Javascript: Push"),
+		"inner HTML":				R(Text("innerHTML"), rdescript="Javascript: InnerHTML"),
+		"new new":					R(Text("new "), rdescript="Javascript: New"),
+        "continue":					R(Text("continue"), rdescript="Javascript: Continue"),
 
-        "this":						Text("this"),
-        "try":						Text("try {}")+Key("left, enter:2, up"),
-        "catch":					Text("catch(e) {}")+Key("left, enter:2, up"),
+        "this":						R(Text("this"), rdescript="Javascript: This"),
+        "try":						R(Text("try {}")+Key("left, enter:2, up"), rdescript="Javascript: Try"),
+        "catch":					R(Text("catch(e) {}")+Key("left, enter:2, up"), rdescript="Javascript: Catch"),
 		
-		"throw":					Text("throw "),
-		"instance of":				Text("instanceof "), 
-        "throws":					Text("throws "),
-        "(far | variable)":			Text("var "),
+		"throw":					R(Text("throw "), rdescript="Javascript: Throw"),
+		"instance of":				R(Text("instanceof "), rdescript="Javascript: Instance Of"), 
+        
+        "(far | variable)":			R(Text("var "), rdescript="Javascript: Variable"),
 	   
           }
 
