@@ -21,7 +21,7 @@ cmd.map = {
         "for loop":						R(Text("for (int i=0; i<VALUE; i++)"), rdescript="Java: For i Loop"),
 		"for each":						R(Text("for (CLASS TYPE : LIST)"), rdescript="Java: For Each Loop"),
 		#
-		"convert to integer":			R(Text("Integer.getInteger()")+ Key("left"), rdescript="Java: Convert To Integer"),
+		"convert to integer":			R(Text("Integer.parseInt()")+ Key("left"), rdescript="Java: Convert To Integer"),
 		"convert to floating point":	R(Text("Double.parseDouble()")+ Key("left"), rdescript="Java: Convert To Floating-Point"),
 		"convert to string":			R(Key("dquote, dquote, plus"), rdescript="Java: Convert To String"),
 		#

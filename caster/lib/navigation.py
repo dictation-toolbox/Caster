@@ -11,7 +11,7 @@ from caster.asynch.mouse.legion import LegionScanner
 from caster.lib import control, utilities, settings
 from caster.lib.pita import scanner, selector
 
-DIRECTION_STANDARD={"sauce": "up", "dunce": "down", "lease": "left", "Ross": "right", "back": "left" }
+DIRECTION_STANDARD={"sauce [E]": "up", "dunce [E]": "down", "lease [E]": "left", "Ross [E]": "right", "back": "left" }
 TARGET_CHOICE = Choice("target",
                 {"comma": ",", "(period | dot)": ".", "(pair | parentheses)": "(~)",
                 "[square] (bracket | brackets)": "[~]", "curly [brace]": "{~}",

@@ -24,15 +24,15 @@ class Dispel:  # this needs an entry in the settings file, needs to retain infor
         
     def start(self):
         self.reset()
-        utilities.report("T: " + str(self.remaining) + " m")
+        self.send_message("T: " + str(self.remaining) + " m")
         control.nexus().timer.add_callback(self.tick, self.minute)
     def resume(self):
-        utilities.report("T: " + str(self.remaining) + " m")
+        self.send_message("T: " + str(self.remaining) + " m")
         control.nexus().timer.add_callback(self.tick, self.minute)
     def stop(self):
         self.active = False
         self.save_settings()
-        utilities.report("ending dispel")
+        self.send_message("Dispel: Terminate")
         control.nexus().timer.remove_callback(self.tick)
     
     def save_settings(self):
@@ -52,7 +52,7 @@ class Dispel:  # this needs an entry in the settings file, needs to retain infor
         self.save_settings()
         if self.remaining <= 0:
             winsound.PlaySound(settings.SETTINGS["paths"]["ALARM_SOUND_PATH"], winsound.SND_FILENAME)
-        utilities.report("T: " + str(self.remaining) + " m")
+        self.send_message("T: " + str(self.remaining) + " m")
         
     def delay(self):
         self.remaining += self.DELAY_AMOUNT
@@ -60,6 +60,12 @@ class Dispel:  # this needs an entry in the settings file, needs to retain infor
     def reset(self):
         self.active = True
         self.remaining = self.PERIOD
+    
+    def send_message(self, msg):
+        if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
+            control.nexus().intermediary.text(msg)
+        else:
+            utilities.report(msg)
 
 ALARM = Dispel()
 

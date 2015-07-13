@@ -42,6 +42,9 @@ class CommandRule(MappingRule):
             "comment line":                             R(Key("c-slash"), rdescript="Eclipse: Comment Line"),
             
             "build it":                                 R(Key("c-b"), rdescript="Eclipse: Build"), 
+            
+            "split view horizontal":                    R(Key("cs-underscore"), rdescript="Eclipse: Split View (H)"), 
+            "split view vertical":                      R(Key("cs-lbrace"), rdescript="Eclipse: Split View (V)"),
             # requires quick bookmarks plug-in:
 #             "set mark [<n>]":                           Key("a-%(n)d"),
 #             "go mark [<n>]":                            Key("as-%(n)d"),

@@ -92,7 +92,7 @@ cmd.defaults ={
 cmd.ncactive=True
 
 cmd.ncmap = {
-        "<direction> <time_in_seconds>":	AsynchronousAction([L(S(["cancel"], Key, "%(direction)s"))], repetitions=1000 ),
+        "<direction> <time_in_seconds>":	AsynchronousAction([L(S(["cancel"], Key, "%(direction)s"))], repetitions=1000, blocking=False ),
         "erase multi clipboard":            R(Function(navigation.erase_multi_clipboard), rdescript="Erase Multi Clipboard"),
         "find":                         	R(Key("c-f"), rdescript="Find"),
     	"replace":                      	R(Key("c-h"), rdescript="Replace"),

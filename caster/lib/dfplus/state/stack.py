@@ -123,4 +123,3 @@ class ContextStack:
                 incomplete.append(self.list[i])
         return incomplete
 
-control.nexus().inform_state(CasterState())

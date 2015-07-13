@@ -12,7 +12,8 @@ try:
 #     from caster.lib.dfplus import monkeypatch
     from caster.lib import utilities# requires settings
     from caster.lib import control# requires settings
-    from caster.lib.dfplus.state import stack# requires control
+    from caster.lib.dfplus.state.stack import CasterState# requires control
+    control.nexus().inform_state(CasterState())
     
     from caster.apps import *
     from caster.asynch import *
@@ -46,22 +47,8 @@ except:
     ccr.initialize_ccr()
 
 from dragonfly import (Key, Function, Grammar, Playback, IntegerRef, Dictation, Choice, Pause, MappingRule)
-
-def fix_dragon_double():
-    try:
-        lr = control.nexus().history[len(control.nexus().history) - 1]
-        lu = " ".join(lr)
-        Key("left/5:" + str(len(lu)) + ", del").execute()
-    except Exception:
-        utilities.simple_log(False)
         
-def repeat_that(n):
-    try:
-        if len(control.nexus().history) > 0:
-            for i in range(int(n)):
-                Playback([([str(x) for x in " ".join(control.nexus().history[len(control.nexus().history) - 1]).split()], 0.0)]).execute()
-    except Exception:
-        utilities.simple_log(False)
+
 
 def change_monitor():
     if settings.SETTINGS["miscellaneous"]["sikuli_enabled"]:
@@ -79,22 +66,7 @@ class MainRule(MappingRule):
         return Choice("ccr_mode", choices)
     
     mapping = {
-    # Dragon NaturallySpeaking management
-    '(lock Dragon | deactivate)':   R(Playback([(["go", "to", "sleep"], 0.0)]), rdescript="Dragon: Go To Sleep"),
-    '(number|numbers) mode':        R(Playback([(["numbers", "mode", "on"], 0.0)]), rdescript="Dragon: Number Mode"),
-    'spell mode':                   R(Playback([(["spell", "mode", "on"], 0.0)]), rdescript="Dragon: Spell Mode"),
-    'dictation mode':               R(Playback([(["dictation", "mode", "on"], 0.0)]), rdescript="Dragon: Dictation Mode"),
-    'normal mode':                  R(Playback([(["normal", "mode", "on"], 0.0)]), rdescript="Dragon: Normal Mode"),
-    'com on':                       R(Playback([(["command", "mode", "on"], 0.0)]), rdescript="Dragon: Command Mode (On)"),
-    'com off':                      R(Playback([(["command", "mode", "off"], 0.0)]), rdescript="Dragon: Command Mode (Off)"),
-    'scratch':                      R(Playback([(["scratch", "that"], 0.0)]), rdescript="Dragon: 'Scratch That'"),
-    "reboot dragon":                R(Function(utilities.reboot), rdescript="Reboot Dragon Naturallyspeaking"),
-    "fix dragon double":            R(Function(fix_dragon_double), rdescript="Fix Dragon Double Letter"),
-    "add word to vocabulary":       R(Function(vocabulary_processing.add_vocab), rdescript="Vocabulary Management: Add"),
-    "delete word from vocabulary":  R(Function(vocabulary_processing.del_vocab), rdescript="Vocabulary Management: Delete"),
-    "left point":                   R(Playback([(["MouseGrid"], 0.1), (["four", "four"], 0.1), (["click"], 0.0)]), rdescript="Mouse: Left Point"),
-    "right point":                  R(Playback([(["MouseGrid"], 0.1), (["six", "six"], 0.1), (["click"], 0.0)]), rdescript="Mouse: Right Point"),
-    "center point":                 R(Playback([(["MouseGrid"], 0.1), (["click"], 0.0)]), rdescript="Mouse: Center Point"),
+    # Dragon NaturallySpeaking commands moved to dragon.py
     
     # hardware management
     "volume <volume_mode> [<n>]":   R(Function(navigation.volume_control, extra={'n', 'volume_mode'}), rdescript="Volume Control"),
@@ -133,7 +105,7 @@ class MainRule(MappingRule):
     # miscellaneous
     "<enable_disable> <ccr_mode>":  R(Function(ccr.set_active_command), rdescript="Enable CCR Module"),
     "refresh <ccr_mode>":           R(Function(ccr.refresh_from_files), rdescript="Refresh CCR Module"), 
-    "again (<n> [(times|time)] | do)":R(Function(repeat_that), rdescript="Repeat Last Action"),
+    "again (<n> [(times|time)] | do)":R(Function(recording.repeat_that), rdescript="Repeat Last Action"),
 #     "edit settings":                R(Function(), rdescript="Edit Caster Settings"), 
     
     }
