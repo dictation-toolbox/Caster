@@ -1,0 +1,72 @@
+#
+# This is a heavily modified version of Dragonfly's _multiedit.py command-module
+
+from dragonfly import *
+from caster.lib import settings
+from caster.lib.dfplus.state.short import R
+
+settings.register_language(".sh", "bash")
+
+cmd.map = {
+       # Spoken-form    ->    ->    ->     Action object
+		
+		# CCR PROGRAMMING STANDARD
+		"iffae":					R(Text("if [[  ]]; ")+Key("left/5:5"), rdescript="Bash: If"),
+		"shells":					R(Text("else"), rdescript="Bash: Else"),
+		#
+		"switch":					R(Text("case VALUE in"), rdescript="Bash: Switch"),
+		"K states":					R(Text("VALUE)  ;;")+Key("left/5:2"), rdescript="Bash: Case"),
+		"breaker":					R(Text("break"), rdescript="Bash: Break"),
+		"default":					R(Text("*)  ;;"), rdescript="Bash: Default"),
+		#
+		"do loop":					R(Text("until [  ]; do")+Key("left/5:7"), rdescript="Bash: Do Loop"),
+        "while loop":				R(Text("while [  ]; do")+Key("left/5:7"), rdescript="Bash: While"),
+        "for loop":					R(Text("for (( i=0; i<=VALUE; i++ )); do"), rdescript="Bash: For i Loop"),
+		"for each":					R(Text("for NAME in VALUE; do"), rdescript="Bash: For Each Loop"), 
+        #
+        # integers?
+        # strings?
+		# floats?
+		#
+		"lodge and":                R(Text(" && "), rdescript="Bash: And"),
+        "lodge or":                 R(Text(" || "), rdescript="Bash: Or"),
+        "lodge not":                R(Text("!"), rdescript="Bash: Not"),
+        #
+		"print to console":			R(Text("echo "), rdescript="Bash: Print"),
+		#
+		"import":					R(Text(". /path/to/functions"), rdescript="Bash: Import"), # (top of file, under #!/bin/bash)
+		# 
+		"function":					R(Text("NAME(){}")+Key("left, enter/5:2"), rdescript="Bash: Function"),
+		# (no classes in javascript)
+		#
+		"add comment":				R(Text("# "), rdescript="Bash: Add Comment"),
+		# no multiline comment in bash
+		#
+		"value not":				R(Text('-z "$var"')+Key("left/5:1"), rdescript="Bash: Null"),
+		#
+		"return":					R(Text("return "), rdescript="Bash: Return"),
+		#
+		"value true":				R(Text("true"), rdescript="Bash: True"),
+		"value false":				R(Text("false"), rdescript="Bash: False"),
+		
+		
+		# Bash specific
+		
+		"key do":					R(Text("do"), rdescript="Bash: Do"), 
+		"key done":					R(Text("done"), rdescript="Bash: Done"),
+		"key fee":					R(Text("fi"), rdescript="Bash: End If"),
+		"shell iffae":				R(Text("elif [[  ]]; ")+Key("left/5:5"), rdescript="Bash: Else If"),
+		"sue iffae":				R(Text("[[  ]]")+Key("left/5:3"), rdescript="Bash: Short If"),
+		"length of":				R(Text("${#NAME[@]}"), rdescript="Bash: Length"),
+		"push":						R(Text("NAME+=()"), rdescript="Bash: Push"),
+		"continue":					R(Text("continue"), rdescript="Bash: Continue"),
+		"she bang":					R(Text("#!/bin/bash"), rdescript="Bash: Shebang"),
+		"end switch":				R(Text("esac"), rdescript="Bash: End Switch"), 
+	   
+          }
+
+cmd.extras   = [
+            
+           ]
+cmd.defaults = {
+           }
