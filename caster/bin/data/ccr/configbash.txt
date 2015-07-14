@@ -5,8 +5,6 @@ from dragonfly import *
 from caster.lib import settings
 from caster.lib.dfplus.state.short import R
 
-settings.register_language(".sh", "bash")
-
 cmd.map = {
        # Spoken-form    ->    ->    ->     Action object
 		
@@ -37,7 +35,7 @@ cmd.map = {
 		"import":					R(Text(". /path/to/functions"), rdescript="Bash: Import"), # (top of file, under #!/bin/bash)
 		# 
 		"function":					R(Text("NAME(){}")+Key("left, enter/5:2"), rdescript="Bash: Function"),
-		# (no classes in javascript)
+		# classes?
 		#
 		"add comment":				R(Text("# "), rdescript="Bash: Add Comment"),
 		# no multiline comment in bash
