@@ -33,7 +33,6 @@ cmd.map = {
     
     "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]": R(Function(navigation.master_text_nav), rdescript="Keyboard Text Navigation"),
     
-    
     "stoosh [<nnavi500>]":          R(Key("c-c")+Function(navigation.clipboard_to_file), rspec="stoosh", rdescript="Copy"),
     "cut [<nnavi500>]":             R(Key("c-x")+Function(navigation.clipboard_to_file), rspec="cut", rdescript="Cut"),
     "spark [<nnavi500>]":  			R(Function(navigation.drop), rspec="spark", rdescript="Paste"),
@@ -50,6 +49,7 @@ cmd.map = {
 	     
     # text formatting
     "(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel) <textnv> [brunt]":  R(Function(navigation.master_format_text), rdescript="Text Format"), 
+	"format [<textnv>]":			R(Function(navigation.prior_text_format), rdescript="Last Text Format"),
 	
 	}
 

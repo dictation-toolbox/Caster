@@ -6,10 +6,8 @@ import dragonfly
 import win32clipboard
 from subprocess import Popen
 
-from caster.asynch.mouse import grids
 from caster.asynch.mouse.legion import LegionScanner
 from caster.lib import control, utilities, settings
-from caster.lib.pita import scanner, selector
 
 DIRECTION_STANDARD={"sauce [E]": "up", "dunce [E]": "down", "lease [E]": "left", "Ross [E]": "right", "back": "left" }
 TARGET_CHOICE = Choice("target",
@@ -21,6 +19,7 @@ TARGET_CHOICE = Choice("target",
                 "name": "NAME", "object": "OBJECT", "list": "LIST", "scope": "SCOPE",
                 "value": "VALUE", "class": "CLASS", "function": "FUNCTION",
                 })
+CAPITALIZATION, SPACING = 0, 0
 
 def get_alphabet_choice(spec):
     return Choice(spec,
@@ -178,15 +177,17 @@ def master_format_text(capitalization, spacing, textnv):
     2 spine- words-with-hyphens
     3 snake- words_with_underscores
     '''
-    t = str(textnv)
-    tlen = len(t)
-    
     if capitalization == 0 and settings.SETTINGS["ccr"]["default_lower"]:
         capitalization = 5
-    
     if spacing == 0 and capitalization == 3:
         spacing = 1
-    
+    Text(get_formatted_text(capitalization, spacing, str(textnv))).execute()
+    global CAPITALIZATION, SPACING
+    CAPITALIZATION = capitalization
+    SPACING = spacing
+
+def get_formatted_text(capitalization, spacing, t):
+    tlen = len(t)
     if capitalization != 0:
         if capitalization == 1:
             t = t.upper()
@@ -209,7 +210,11 @@ def master_format_text(capitalization, spacing, textnv):
             t = "-".join(t.split(" "))
         elif spacing == 3:
             t = "_".join(t.split(" "))
-    Text(t).execute()
+    return t
+
+def prior_text_format(textnv):
+    global CAPITALIZATION, SPACING
+    Text(get_formatted_text(CAPITALIZATION, SPACING, str(textnv))).execute()
 
 def master_text_nav(mtn_mode, mtn_dir, nnavi500, extreme):
     '''
