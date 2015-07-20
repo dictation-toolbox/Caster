@@ -103,7 +103,7 @@ def nexus():
 
 
 
-print "*- Starting " + settings.SOFTWARE_NAME + " -*"
+
 
 
 

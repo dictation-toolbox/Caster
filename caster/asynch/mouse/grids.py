@@ -1,7 +1,8 @@
 from __future__ import division
 
-from SimpleXMLRPCServer import *
-import SimpleXMLRPCServer
+from SimpleXMLRPCServer import SimpleXMLRPCServer
+
+
 import getopt
 import signal
 import sys, os
@@ -18,12 +19,12 @@ try: # Style C -- may be imported into Caster, or externally
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:
-    from caster.lib import settings, utilities, control
+    from caster.lib import settings, utilities
     from caster.lib.dfplus.communication import Communicator
 
-if control.nexus().dep.PIL:
+try:
     from PIL import ImageGrab, ImageTk, ImageDraw, ImageFont
-else:
+except ImportError:
     utilities.availability_message("Douglas Grid / Rainbow Grid", "PIL")
     
 
@@ -85,7 +86,7 @@ class TkTransparent(tk.Tk):
         # self.mainloop()#do this in the child classes
         def start_server():
             while not self.server_quit:
-                self.server.handle_request()  
+                self.server._handle_request_noblock()
         Timer(1, start_server).start()
     
     def setup_XMLRPC_server(self): 

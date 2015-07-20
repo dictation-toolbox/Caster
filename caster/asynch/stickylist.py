@@ -6,7 +6,7 @@ from threading import Timer
 import tkFont
 
 import Tkinter as tk
-
+from SimpleXMLRPCServer import SimpleXMLRPCServer
 
 
 try: # Style C -- may be imported into Caster, or externally
@@ -14,8 +14,6 @@ try: # Style C -- may be imported into Caster, or externally
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:
-    import SimpleXMLRPCServer
-    from SimpleXMLRPCServer import *
     from caster.lib import settings
     from caster.lib.dfplus.communication import Communicator
 

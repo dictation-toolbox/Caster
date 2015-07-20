@@ -2,7 +2,7 @@ import signal
 import sys, os
 from threading import Timer
 import threading
-
+from SimpleXMLRPCServer import SimpleXMLRPCServer
 
 if __name__ == '__main__':
     from wx import Notebook, NB_MULTILINE, Menu, ID_SAVE, ID_EXIT, EVT_MENU, MenuBar, \
@@ -17,8 +17,6 @@ if __name__ == '__main__':
         if BASE_PATH not in sys.path:
             sys.path.append(BASE_PATH)
     finally:
-        import SimpleXMLRPCServer
-        from SimpleXMLRPCServer import *
         from caster.lib import settings
         from caster.lib.dfplus.communication import Communicator
     

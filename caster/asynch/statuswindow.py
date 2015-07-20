@@ -3,15 +3,13 @@ from Tkinter import StringVar
 import sys, os
 
 import Tkinter as tk
-
+from SimpleXMLRPCServer import SimpleXMLRPCServer
 
 try: # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).split("\\caster")[0].replace("\\", "/")
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:
-    import SimpleXMLRPCServer
-    from SimpleXMLRPCServer import *
     from caster.asynch.mouse.grids import TkTransparent, Dimensions
     from caster.lib import settings, utilities
     from caster.lib.dfplus.communication import Communicator

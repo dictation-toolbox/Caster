@@ -141,6 +141,7 @@ def unload():
 
 if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
     utilities.report("\nWARNING: Status Window is an experimental feature, and there is a known freezing glitch with it.\n")
+utilities.report("*- Starting " + settings.SOFTWARE_NAME + " -*")
 
 if __name__ == "__main__":
     import pythoncom

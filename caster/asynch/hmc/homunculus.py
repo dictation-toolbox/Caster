@@ -1,5 +1,5 @@
-import SimpleXMLRPCServer
-from SimpleXMLRPCServer import *
+from SimpleXMLRPCServer import SimpleXMLRPCServer
+import sys
 from Tkinter import (Label, Text)
 import signal, os
 from threading import Timer

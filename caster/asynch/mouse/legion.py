@@ -1,18 +1,9 @@
-from SimpleXMLRPCServer import *
-import SimpleXMLRPCServer
+from SimpleXMLRPCServer import SimpleXMLRPCServer
 from ctypes import *
 import getopt
 import re
 import sys, os
 import threading
-
-from caster.lib import control, utilities
-
-
-if control.nexus().dep.PIL:
-    from PIL import ImageGrab
-else:
-    utilities.availability_message("Legion", "PIL")
 
 
 
@@ -23,6 +14,11 @@ try: # Style C -- may be imported into Caster, or externally
 finally:
     from caster.asynch.mouse.grids import TkTransparent, Dimensions
     from caster.lib import settings, utilities
+
+try:
+    from PIL import ImageGrab
+except ImportError:
+    utilities.availability_message("Legion", "PIL")
 
 class Rectangle:
     top = None
