@@ -1,27 +1,31 @@
 from __future__ import division
 
-import SimpleXMLRPCServer
 from SimpleXMLRPCServer import *
+import SimpleXMLRPCServer
 import getopt
 import signal
 import sys, os
 from threading import Timer
 import time
 
-from PIL import ImageGrab, ImageTk, ImageDraw, ImageFont
 import win32api
 
+
 import Tkinter as tk
-
-
 
 try: # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).split("\\caster")[0].replace("\\", "/")
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:
-    from caster.lib import settings, utilities
+    from caster.lib import settings, utilities, control
     from caster.lib.dfplus.communication import Communicator
+
+if control.nexus().dep.PIL:
+    from PIL import ImageGrab, ImageTk, ImageDraw, ImageFont
+else:
+    utilities.availability_message("Douglas Grid / Rainbow Grid", "PIL")
+    
 
 def wait_for_death(title, timeout=5):
     t = 0.0

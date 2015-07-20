@@ -101,9 +101,9 @@ def letters2(big, letter):
         Key("shift:up").execute()
 
 def mouse_alternates(mode):
-    try:
-        if mode == "legion":
-            if control.nexus().dep.PIL:
+    if control.nexus().dep.PIL:
+        try:
+            if mode == "legion":
                 if utilities.window_exists(None, "legiongrid"):
                     pass
                 else:
@@ -111,16 +111,14 @@ def mouse_alternates(mode):
                     ls.scan()#[500, 500, 1000, 1000]
                     tscan = ls.get_update()
                     Popen(["pythonw", settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0]])#, "-d", "500_500_500_500"
-            else:
-                utilities.availability_message("Legion", "PIL")
-            
-        elif mode == "rainbow":
-            Popen(["pythonw", settings.SETTINGS["paths"]["RAINBOW_PATH"], "-m", "r"])
-        elif mode == "douglas":
-            Popen(["pythonw", settings.SETTINGS["paths"]["DOUGLAS_PATH"], "-m", "d"])
-    except Exception:
-        utilities.simple_log(True)
-    
+            elif mode == "rainbow":
+                Popen(["pythonw", settings.SETTINGS["paths"]["RAINBOW_PATH"], "-m", "r"])
+            elif mode == "douglas":
+                Popen(["pythonw", settings.SETTINGS["paths"]["DOUGLAS_PATH"], "-m", "d"])
+        except Exception:
+            utilities.simple_log(True)
+    else:
+        utilities.availability_message(mode.title(), "PIL")    
 
 def clipboard_to_file(nnavi500, do_copy=False):
     if do_copy:

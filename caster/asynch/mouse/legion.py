@@ -6,8 +6,13 @@ import re
 import sys, os
 import threading
 
-from PIL import ImageGrab
+from caster.lib import control, utilities
 
+
+if control.nexus().dep.PIL:
+    from PIL import ImageGrab
+else:
+    utilities.availability_message("Legion", "PIL")
 
 
 
