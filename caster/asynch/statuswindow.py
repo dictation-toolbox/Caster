@@ -14,12 +14,11 @@ finally:
     from caster.lib import settings, utilities
     from caster.lib.dfplus.communication import Communicator
 
-TITLE="caster_status_window"
+
 
 class StatusWindow(TkTransparent):
     def __init__(self):
-        global TITLE
-        TkTransparent.__init__(self, TITLE, None, False)
+        TkTransparent.__init__(self, settings.STATUS_WINDOW_TITLE, None, False)
         self.dimensions=Dimensions(300, 200, self.winfo_screenwidth()-300, self.winfo_screenheight()-200)
         self.wm_geometry(self.get_dimensions_string())
 #         self._canvas.destroy()

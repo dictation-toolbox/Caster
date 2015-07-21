@@ -8,7 +8,7 @@ INISETPATH = os.path.realpath(__file__).split("lib")[0]+"bin\\data\\settings.jso
 BASE_PATH = os.path.realpath(__file__).split("\\lib")[0].replace("\\", "/")
 
 # title
-SOFTWARE_VERSION_NUMBER = "0.4.10"
+SOFTWARE_VERSION_NUMBER = "0.4.11"
 SOFTWARE_NAME = "Caster v " + SOFTWARE_VERSION_NUMBER
 S_LIST_VERSION = "Sticky List v " + SOFTWARE_VERSION_NUMBER
 DISPEL_VERSION = "Dispel v " + SOFTWARE_VERSION_NUMBER
@@ -20,6 +20,7 @@ LEGION_TITLE = "legiongrid"
 RAINBOW_TITLE = "rainbowgrid"
 DOUGLAS_TITLE = "douglasgrid"
 SETTINGS_WINDOW_TITLE = "Caster Settings Window v "
+STATUS_WINDOW_TITLE="caster_status_window"
 
 # enums
 QTYPE_DEFAULT = "def"

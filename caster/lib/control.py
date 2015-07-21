@@ -1,8 +1,8 @@
 from dragonfly import RecognitionHistory, Grammar
 
-
-from caster.lib import settings
+from caster.lib import settings, utilities
 from caster.lib.dfplus.communication import Communicator
+
 
 _NEXUS = None
 
@@ -15,6 +15,9 @@ class StatusIntermediary:
     def text(self, message):
         if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
             self.communicator.get_com("status").text(message)
+    def kill(self):
+        if utilities.window_exists(None, settings.STATUS_WINDOW_TITLE):
+            self.communicator.get_com("status").kill()
 
 class DependencyMan:
     def __init__(self):

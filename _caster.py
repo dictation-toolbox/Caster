@@ -38,8 +38,6 @@ try:
     recording.load_alias_rules()
     recording.load_recorded_rules()
     h_launch.clean_homunculi()
-    if settings.SETTINGS["miscellaneous"]["status_window_enabled"] and not utilities.window_exists(None, statuswindow.TITLE):
-        Popen(["pythonw", settings.SETTINGS["paths"]["STATUS_WINDOW_PATH"]])
 except:
     print "\nAttempting to load CCR anyway..."
     from caster.lib import ccr, utilities
