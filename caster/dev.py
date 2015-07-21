@@ -1,11 +1,12 @@
 from subprocess import Popen
 import time
 
-from dragonfly import *
+from dragonfly import (FocusWindow, Function, Key, BringApp, Text, WaitWindow, Dictation, Choice, Grammar, MappingRule, IntegerRef)
 
 from caster.lib import utilities, settings, ccr, context, control
 from caster.lib.dfplus.hint.hintnode import NodeRule, NodeAction
 from caster.lib.dfplus.hint.nodes import css
+from caster.lib.dfplus.monkeypatch import Window
 from caster.lib.dfplus.state.actions import ContextSeeker, AsynchronousAction, \
     RegisteredAction
 from caster.lib.dfplus.state.short import L, S, R
@@ -53,7 +54,8 @@ def get_similar_process_name(spoken_phrase, list_of_processes):
 
 def dredge(id, text):
     print Window.get_foreground().executable
-#     print Window.get_all_windows()
+    print [x.executable.split("\\")[-1][:-4] for x  in Window.get_all_windows()]
+    print get_similar_process_name(text, [x.executable.split("\\")[-1][:-4] for x  in Window.get_all_windows()])
 
 LAST_TIME=0
 def print_time():
@@ -80,7 +82,7 @@ def grep_this(path, filetype):
             break
         if tries>5:
             return False
-    grep="H:/PROGRAMS/NON_install/AstroGrep/AstroGrep.exe"
+    grep="D:/PROGRAMS/NON_install/AstroGrep/AstroGrep.exe"
     Popen([grep, "/spath=\""+str(path) +"\"", "/stypes=\""+str(filetype)+"\"", "/stext=\""+str(c)+"\"", "/s"])
 
 
@@ -104,7 +106,7 @@ class DevRule(MappingRule):
     'refresh directory':            Function(utilities.clear_pyc),
     "(show | open) documentation":  BringApp(settings.SETTINGS["paths"]["DEFAULT_BROWSER_PATH"]) + WaitWindow(executable=settings.get_default_browser_executable()) + Key('c-t') + WaitWindow(title="New Tab") + Text('http://dragonfly.readthedocs.org/en/latest') + Key('enter'),
 
-    "open natlink folder":          Function(bring_test),
+    "open natlink folder":          Function(bring_test)+FocusWindow("explorer"),
     "reserved word <text>":         Key("dquote,dquote,left") + Text("%(text)s") + Key("right, colon, tab/5:5") + Text("Text(\"%(text)s\"),"),
     "refresh ccr directory":        Function(ccr.refresh_from_files),  # will need to disable and reenable language
     "Agrippa <filetype> <path>":    Function(grep_this),
@@ -156,18 +158,14 @@ class DevRule(MappingRule):
               Choice("filetype",
                     {"java": "*.java", "python":"*.py",
                      }),
-#               RuleRef(css_rule, css_rule.master_node.text), 
              ]
     defaults = {
                "text": "", "id":None
                }
 
 
-# grammar = None
-
 def load():
     global grammar
-#     grammar = Grammar('development')
     grammar.add_rule(DevRule())
     grammar.load()
 
