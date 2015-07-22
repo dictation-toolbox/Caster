@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from datetime import datetime
-import multiprocessing
 import os, json, sys
 import re
 from subprocess import Popen
 import traceback
 
-import win32com.client
 import win32gui, win32ui
+
+from caster.lib.dfplus.monkeypatch import Window
 
 
 try: # Style C -- may be imported into Caster, or externally
@@ -30,21 +29,13 @@ def window_exists(classname, windowname):
     else:
         return True
 
-def focus_window(pid=None, title=None):
-    if pid == None and title == None:
-        return
-    shell = win32com.client.Dispatch("WScript.Shell")
-    shell.AppActivate(pid if pid != None else title)
-
-def get_active_window_hwnd():
-    return str(win32gui.GetForegroundWindow())
-
 def get_active_window_title(p=None):
     pid=win32gui.GetForegroundWindow() if p==None else p
     return unicode(win32gui.GetWindowText(pid), errors='ignore')
 
-def get_active_window_path(natlink):
-    return natlink.getCurrentModule()[0]
+def get_active_window_path():
+    #return natlink.getCurrentModule()[0]
+    return Window.get_foreground().executable
 
 def get_window_by_title(title):
     # returns 0 if nothing found
@@ -93,40 +84,6 @@ def load_json_file(path):
         simple_log(True)
     return result
 
-def clear_pyc():
-    try:
-        for dirpath, dirnames, files in os.walk(settings.SETTINGS["paths"]["BASE_PATH"]):  # os.walk produces a list of 3-tuples
-            if r"MacroSystem\.git" in dirpath or r"MacroSystem\core" in dirpath:
-                continue
-            for f in files:
-                if f.endswith(".pyc"):
-                    f = os.path.join(dirpath, f)
-                    os.remove(f)
-    except Exception:
-        simple_log(True)
-
-def get_most_recent(path, extension):
-    recent = 0
-    for f in os.listdir(path):
-        if f.endswith(extension):
-            cur = int(f)
-            if cur > recent:
-                recent = cur
-    if recent == 0:
-        return None
-    return str(recent) + extension
-
-def clean_temporary_files():
-    temp_folders = []
-    for p in temp_folders:
-        if os.path.exists(p):
-            for f in os.listdir(p):
-                os.remove(p + f)
-                
-
-
-
-
 
 def list_to_string(l):
     return "\n".join([str(x) for x in l])
@@ -171,19 +128,6 @@ def remote_debug(who_called_it=None):
     
 
 
-def current_time_to_string():
-    return datetime.now().strftime("%Y%m%d%H%M%S")
-
-
-
-def run_in_separate_thread(func, timeout_in_seconds=300):
-    p = multiprocessing.Process(target=func)
-    p.start()
-    p.join(timeout_in_seconds)
-
-    if p.is_alive():
-        p.terminate()
-        p.join()
 
 def reboot():
     print [settings.SETTINGS["paths"]["REBOOT_PATH"], "\""+settings.SETTINGS["paths"]["ENGINE_PATH"]+"\""]

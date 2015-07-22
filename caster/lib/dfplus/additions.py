@@ -1,11 +1,7 @@
 from dragonfly import (ActionBase)
 
-from caster.lib import utilities, control
+from caster.lib import utilities
 
-
-if control.nexus().dep.NATLINK:
-    import natlink
-    
 class SelectiveAction(ActionBase):
     def __init__(self, action, executables, negate=True):
         '''
@@ -19,12 +15,8 @@ class SelectiveAction(ActionBase):
         self.negate = negate
         
     def _execute(self, data=None):
-        if control.nexus().dep.NATLINK:
-            executable = utilities.get_active_window_path(natlink).split("\\")[-1]
-            is_executable = executable in self.executables
-            if (is_executable and not self.negate) or (self.negate and not is_executable):
-                self.action.execute()
-        else:
-            utilities.availability_message("SelectiveAction", "natlink")
+        executable = utilities.get_active_window_path().split("\\")[-1]
+        is_executable = executable in self.executables
+        if (is_executable and not self.negate) or (self.negate and not is_executable):
             self.action.execute()
 

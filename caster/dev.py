@@ -103,7 +103,6 @@ class DevRule(MappingRule):
     
     mapping = {
     # development tools
-    'refresh directory':            Function(utilities.clear_pyc),
     "(show | open) documentation":  BringApp(settings.SETTINGS["paths"]["DEFAULT_BROWSER_PATH"]) + WaitWindow(executable=settings.get_default_browser_executable()) + Key('c-t') + WaitWindow(title="New Tab") + Text('http://dragonfly.readthedocs.org/en/latest') + Key('enter'),
 
     "open natlink folder":          Function(bring_test)+FocusWindow("explorer"),

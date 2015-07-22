@@ -68,9 +68,9 @@ class CommandRule(MappingRule):
         "blame":            R(Text("git blame PATH -L FIRSTLINE,LASTLINE"), rdescript="GIT: Blame"),
         "gooey blame":      R(Text("git gui blame PATH"), rdescript="GIT: GUI Blame"),
         
-        "search recursive": R(Text("grep -r -i \"PATTERN\" *"), rdescript="GREP: Search Recursive"),
-        "search recursive count": R(Text("grep -r -i \"PATTERN\" * | wc -l"), rdescript="GREP: Search Recursive Count"),
-        "search recursive filetype": R(Text("find . -name \"*.java\" -exec grep -r -i \"PATTERN\" {} \\;"), rdescript="GREP: Search Recursive Filetype"),
+        "search recursive": R(Text("grep -rinH \"PATTERN\" *"), rdescript="GREP: Search Recursive"),
+        "search recursive count": R(Text("grep -rinH \"PATTERN\" * | wc -l"), rdescript="GREP: Search Recursive Count"),
+        "search recursive filetype": R(Text("find . -name \"*.java\" -exec grep -rinH \"PATTERN\" {} \\;"), rdescript="GREP: Search Recursive Filetype"),
         "to file":          R(Text(" > FILENAME"), rdescript="Bash: To File"),
         }
     extras = [

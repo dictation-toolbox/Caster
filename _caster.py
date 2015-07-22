@@ -33,7 +33,6 @@ try:
     
     
     ccr.initialize_ccr()
-    utilities.clean_temporary_files()
     recording.load_alias_rules()
     recording.load_recorded_rules()
     h_launch.clean_homunculi()
