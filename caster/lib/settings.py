@@ -8,7 +8,7 @@ INISETPATH = os.path.realpath(__file__).split("lib")[0]+"bin\\data\\settings.jso
 BASE_PATH = os.path.realpath(__file__).split("\\lib")[0].replace("\\", "/")
 
 # title
-SOFTWARE_VERSION_NUMBER = "0.4.12"
+SOFTWARE_VERSION_NUMBER = "0.4.13"
 SOFTWARE_NAME = "Caster v " + SOFTWARE_VERSION_NUMBER
 S_LIST_VERSION = "Sticky List v " + SOFTWARE_VERSION_NUMBER
 DISPEL_VERSION = "Dispel v " + SOFTWARE_VERSION_NUMBER
@@ -16,6 +16,7 @@ HOMUNCULUS_VERSION = "HMC v " + SOFTWARE_VERSION_NUMBER
 HMC_TITLE_VOCABULARY = " :: Vocabulary Manager"
 HMC_TITLE_RECORDING = " :: Recording Manager"
 HMC_TITLE_DIRECTORY = " :: Directory Selector"
+HMC_TITLE_CONFIRM = " :: Confirm"
 LEGION_TITLE = "legiongrid"
 RAINBOW_TITLE = "rainbowgrid"
 DOUGLAS_TITLE = "douglasgrid"
@@ -29,6 +30,7 @@ QTYPE_REM = "rem"
 QTYPE_INSTRUCTIONS = "ins"
 QTYPE_RECORDING = "rec"
 QTYPE_DIRECTORY = "dir"
+QTYPE_CONFIRM = "con"
 
 WSR = False
 

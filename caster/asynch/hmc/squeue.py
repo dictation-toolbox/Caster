@@ -20,16 +20,16 @@ def check_for_response():
         try: 
             data = control.nexus().comm.get_com("hmc").get_message()
         except Exception:
+            utilities.simple_log()
             TRIES+=1
-            if TRIES>9:
+            if TRIES>9: # try 10 times max if there's no Homonculus
                 TRIES=0
                 control.nexus().timer.remove_callback(check_for_response)
                 return
-        
         if data == None:
             return
         
-        try: 
+        try:
             LAST_QUERY.callback(data)
         except Exception:
             utilities.simple_log(False)

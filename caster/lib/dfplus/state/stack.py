@@ -17,7 +17,7 @@ class CasterState:
     def add(self, stack_item):
         if self.blocker == None:
             ''' important to block before adding because the add might unblock '''
-            if ContextStack.is_asynchronous(stack_item.type):
+            if ContextStack.is_asynchronous(stack_item.type) and stack_item.blocking:
                 self.blocker = stack_item
             self.stack.add(stack_item)
         else:

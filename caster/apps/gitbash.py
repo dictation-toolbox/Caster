@@ -12,7 +12,7 @@ Command-module for git
 
 #---------------------------------------------------------------------------
 
-from dragonfly import (Grammar, AppContext, MappingRule,
+from dragonfly import (Grammar, AppContext, MappingRule, Mimic, 
                        Key, Text, Function, IntegerRef)
 from caster.lib.dfplus.state.short import R
 
@@ -27,6 +27,8 @@ class CommandRule(MappingRule):
         "add":              R(Key("g, i, t, space, a, d, d, space, dot, enter"), rdescript="GIT: Add All"),
         "status":           R(Key( "g, i, t, space, s, t, a, t, u, s, enter" ), rdescript="GIT: Status"),
         "commit":           R(Key( "g, i, t, space, c, o, m, m, i, t, space, minus, a, m, space, apostrophe, apostrophe, left"), rdescript="GIT: Commit"),
+        "bug fix commit <n>":    Mimic("commit")+Text("fixes #%(n)d ")+Key("backspace"),
+        "reference commit <n>":    Mimic("commit")+Text("refs #%(n)d ")+Key("backspace"),
         "checkout":         R(Text( "git checkout " ), rdescript="GIT: Check Out"),
         "merge":            R(Text( "git merge " ), rdescript="GIT: Merge"),
         "merge tool":       R(Text( "git mergetool")+Key("enter"), rdescript="GIT: Merge Tool"),
@@ -74,7 +76,7 @@ class CommandRule(MappingRule):
         "to file":          R(Text(" > FILENAME"), rdescript="Bash: To File"),
         }
     extras = [
-              IntegerRef("n", 1, 50),
+              IntegerRef("n", 1, 10000),
              ]
     defaults ={"n": 0}
 

@@ -30,6 +30,9 @@ def hmc_recording_repeatable():
 def hmc_directory_browse():
     control.nexus().comm.get_com("hmc").do_action("dir")
 
+def hmc_confirm(value):
+    control.nexus().comm.get_com("hmc").do_action(value)
+    
 class HMCRule(MappingRule):
     mapping = {
         "kill homunculus":              R(Function(kill), rdescript="Kill Helper Window"),
@@ -40,8 +43,11 @@ class HMCRule(MappingRule):
         "check from <n> to <n2>":       R(Function(hmc_recording_check_range, extra={"n", "n2"}), rdescript="Check Range"),
         "exclude <n>":                  R(Function(hmc_recording_exclude, extra="n"), rdescript="Uncheck Checkbox"),
         "[make] repeatable":            R(Function(hmc_recording_repeatable), rdescript="Make Macro Repeatable"),
-        # specific to your directory browser
+        # specific to directory browser
         "browse":                       R(Function(hmc_directory_browse), rdescript="Browse Computer"),
+        # specific to confirm
+        "confirm":                      R(Function(hmc_confirm, value=True), rdescript="HMC: Confirm Action"),
+        "cancel":                       R(Function(hmc_confirm, value=False), rdescript="HMC: Cancel Action"),
     }   
     extras = [
               IntegerRef("n", 1, 25),

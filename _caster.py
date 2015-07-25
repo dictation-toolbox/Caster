@@ -35,7 +35,6 @@ try:
     ccr.initialize_ccr()
     recording.load_alias_rules()
     recording.load_recorded_rules()
-    h_launch.clean_homunculi()
 except:
     print "\nAttempting to load CCR anyway..."
     from caster.lib import ccr, utilities

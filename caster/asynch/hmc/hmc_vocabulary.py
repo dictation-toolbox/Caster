@@ -23,7 +23,7 @@ class Homunculus_Vocabulary(Homunculus):
         self.grid_row = 0
         Homunculus.__init__(self, params[0])
         self.title(settings.HOMUNCULUS_VERSION + settings.HMC_TITLE_VOCABULARY)
-            
+        
         self.mode = params[0]
         clipboard_text = params[1]
         

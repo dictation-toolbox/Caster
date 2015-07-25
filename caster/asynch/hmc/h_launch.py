@@ -1,5 +1,6 @@
-import sys, os
 from subprocess import Popen
+import sys, os
+
 
 try: # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).split("\\caster")[0].replace("\\", "/")
@@ -9,16 +10,17 @@ finally:
     from caster.asynch.hmc.hmc_ask_directory import Homunculus_Directory
     from caster.asynch.hmc.hmc_recording import Homunculus_Recording
     from caster.asynch.hmc.hmc_vocabulary import Homunculus_Vocabulary
+    from caster.asynch.hmc.hmc_confirm import Homunculus_Confirm
     from caster.asynch.hmc.homunculus import Homunculus
     from caster.lib import settings
 
     
 
 '''
-To add a new homunculus type:
+To add a new homunculus (pop-up ui window) type:
     (1) create the module
     (2) and its type and title constants to settings.py
-    (3) add it to clean_homunculi(), _get_title(), and "if __name__ == '__main__':" in this module
+    (3) add it to  _get_title(), and "if __name__ == '__main__':" in this module
     (4) call launch() from this module with its type and any data it needs (data as a single string with no spaces)
 '''
 
@@ -47,22 +49,9 @@ def _get_title(hmc_type):
         return default+settings.HMC_TITLE_RECORDING
     elif hmc_type==settings.QTYPE_DIRECTORY:
         return default+settings.HMC_TITLE_DIRECTORY
-
-def clean_homunculi():
-    from caster.lib import control
-    # TODO this
-#     if control.DEP.PSUTIL:
-#         from caster.lib import utilities
-#         while utilities.window_exists(None, settings.HOMUNCULUS_VERSION):
-#             ll.kill_process("pythonw.exe")
-#         while utilities.window_exists(None, settings.HOMUNCULUS_VERSION+settings.HMC_TITLE_VOCABULARY):
-#             ll.kill_process("pythonw.exe")
-#         while utilities.window_exists(None, settings.HOMUNCULUS_VERSION+settings.HMC_TITLE_RECORDING):
-#             ll.kill_process("pythonw.exe")
-#         while utilities.window_exists(None, settings.HOMUNCULUS_VERSION+settings.HMC_TITLE_DIRECTORY):
-#             ll.kill_process("pythonw.exe")
-#     else:
-#         utilities.availability_message("HMC Cleanup", "psutil")
+    elif hmc_type==settings.QTYPE_CONFIRM:
+        return default+settings.HMC_TITLE_CONFIRM
+    return default
 
 if __name__ == '__main__':
     found_word=None
@@ -80,4 +69,6 @@ if __name__ == '__main__':
         app = Homunculus(sys.argv[1], sys.argv[2])
     elif sys.argv[1]==settings.QTYPE_DIRECTORY:
         app = Homunculus_Directory(sys.argv[1])
+    elif sys.argv[1]==settings.QTYPE_CONFIRM:
+        app = Homunculus_Confirm([sys.argv[1], sys.argv[2]])
             

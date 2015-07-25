@@ -3,10 +3,11 @@ Created on Jun 7, 2015
 
 @author: dave
 '''
-from dragonfly import Function, Key, Mimic, Paste, Text
+from dragonfly import Function, Key, Mimic, Paste, Text, Pause
 
 from caster.lib import control, settings
 from caster.lib.dfplus.hint.hintnode import NodeAction
+
 
 class StackItem:
     def __init__(self, type):
@@ -188,12 +189,18 @@ class StackItemConfirm(StackItemAsynchronous):
     TYPE = "confirm"
     def __init__(self, confirm, data, type=TYPE):
         StackItemAsynchronous.__init__(self, confirm, data, type)
+        self.base = Pause("50") + confirm.base # TODO: fix this race condition
+        self.rspec = confirm.rspec
+        self.hmc_response = 0
         
     def execute(self, success):
+        if self.hmc_response==1:
+            self.base.execute(self.dragonfly_data)
+        self.base = None
         StackItemAsynchronous.execute(self, success)
-        if success:
-            self.base.execute()
         
+    def receive_hmc_response(self, data):
+        self.hmc_response = data
         
         
         
