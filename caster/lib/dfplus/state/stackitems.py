@@ -10,7 +10,10 @@ from caster.lib.dfplus.hint.hintnode import NodeAction
 
 class StackItem:
     def __init__(self, type):
-        assert type in ["raction", "seeker", "continuer"]
+        assert type in [StackItemRegisteredAction.TYPE, 
+                        StackItemSeeker.TYPE, 
+                        StackItemAsynchronous.TYPE, 
+                        StackItemConfirm.TYPE]
         self.type = type
         self.complete = False  # indicates whether it has been run already
         self.consumed = False  # indicates that an undo is unnecessary
@@ -18,7 +21,8 @@ class StackItem:
     def put_time_action(self):
         ''' this always happens at the time that the Stack item is placed in the Stack '''
 class StackItemRegisteredAction(StackItem):
-    def __init__(self, registered_action, data, type="raction"):
+    TYPE = "raction"
+    def __init__(self, registered_action, data, type=TYPE):
         StackItem.__init__(self, type)
         self.dragonfly_data = data
         self.base = registered_action.base
@@ -42,9 +46,10 @@ class StackItemRegisteredAction(StackItem):
         if settings.SETTINGS["miscellaneous"]["status_window_enabled"] and self.show:
             control.nexus().intermediary.text(self.rdescript)
 class StackItemSeeker(StackItemRegisteredAction):
-    def __init__(self, seeker, data, type="seeker"):
+    TYPE = "seeker"
+    def __init__(self, seeker, data, type=TYPE):
         StackItemRegisteredAction.__init__(self, seeker, data, type)
-        if self.type=="seeker": self.back = self.copy_direction(seeker.back)
+        if self.type==StackItemSeeker.TYPE: self.back = self.copy_direction(seeker.back)
         self.forward = self.copy_direction(seeker.forward)
         self.spoken = {}
         self.eaten_rspec = {}
@@ -127,7 +132,8 @@ class StackItemSeeker(StackItemRegisteredAction):
                 return i
         return -1
 class StackItemAsynchronous(StackItemSeeker):
-    def __init__(self, continuer, data, type="continuer"):
+    TYPE = "continuer"
+    def __init__(self, continuer, data, type=TYPE):
         StackItemSeeker.__init__(self, continuer, data, type)
         self.back = None
         self.repetitions = continuer.repetitions
@@ -177,3 +183,17 @@ class StackItemAsynchronous(StackItemSeeker):
         self.closure = closure
         control.nexus().timer.add_callback(self.closure, self.time_in_seconds)
         self.closure()
+
+class StackItemConfirm(StackItemAsynchronous):
+    TYPE = "confirm"
+    def __init__(self, confirm, data, type=TYPE):
+        StackItemAsynchronous.__init__(self, confirm, data, type)
+        
+    def execute(self, success):
+        StackItemAsynchronous.execute(self, success)
+        if success:
+            self.base.execute()
+        
+        
+        
+        

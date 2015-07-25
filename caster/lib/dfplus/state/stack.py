@@ -5,11 +5,8 @@ Created on Jun 7, 2015
 '''
 import Queue
 
-from caster.lib import control
 from caster.lib.dfplus.state.stackitems import StackItemRegisteredAction, \
-    StackItemSeeker, StackItemAsynchronous
-
-
+    StackItemSeeker, StackItemAsynchronous, StackItemConfirm
 
 
 class CasterState:
@@ -20,7 +17,7 @@ class CasterState:
     def add(self, stack_item):
         if self.blocker == None:
             ''' important to block before adding because the add might unblock '''
-            if stack_item.type == "continuer" and stack_item.blocking:
+            if ContextStack.is_asynchronous(stack_item.type):
                 self.blocker = stack_item
             self.stack.add(stack_item)
         else:
@@ -38,7 +35,7 @@ class CasterState:
         while not self.waiting.empty():
             task = self.waiting.get(True, 2)
             task.execute()
-            if task.type == "continuer":
+            if ContextStack.is_asynchronous(task.type):
                 self.blocker=task
                 break
     def halt_asynchronous(self, success):
@@ -50,6 +47,8 @@ class CasterState:
         return StackItemSeeker(seeker, data)
     def generate_continuer_stack_item(self, continuer, data):
         return StackItemAsynchronous(continuer, data)
+    def generate_confirm_stack_item(self, confirm, data):
+        return StackItemConfirm(confirm, data)
 
 class ContextStack:
     def __init__(self, state):
@@ -92,8 +91,9 @@ class ContextStack:
                 seeker.satisfy_level(unsatisfied, False, stack_item)
                 
                 # consume stack_item
-                if ((seeker.type != "continuer" and stack_item.type == "raction")  # do not consume seekers, it would disable chaining
-                or (seeker.type == "continuer" and seeker.get_index_of_next_unsatisfied_level() == -1)):
+                seeker_is_continuer = ContextStack.is_asynchronous(seeker.type)
+                if ((stack_item.type == StackItemRegisteredAction.TYPE and not seeker_is_continuer)  # do not consume seekers, it would disable chaining
+                or (seeker_is_continuer and seeker.get_index_of_next_unsatisfied_level() == -1)):
                     if seeker.forward[unsatisfied].result.consume:
                         stack_item.complete = True
                         stack_item.consumed = True
@@ -103,12 +103,12 @@ class ContextStack:
                 if seeker.get_index_of_next_unsatisfied_level() == -1:
                     seeker.execute(False)
                 
-        is_forward_seeker = stack_item.type == "seeker" and stack_item.forward != None
-        is_continuer = stack_item.type == "continuer"
-        if not stack_item.consumed and not is_forward_seeker and not is_continuer:
+        stack_item_is_forward_seeker = stack_item.type == StackItemSeeker.TYPE and stack_item.forward != None
+        stack_item_is_continuer = ContextStack.is_asynchronous(stack_item.type)
+        if not stack_item.consumed and not stack_item_is_forward_seeker and not stack_item_is_continuer:
             stack_item.execute()
             stack_item.put_time_action()  # this is where display window information will happen
-        elif is_continuer:
+        elif stack_item_is_continuer:
             stack_item.begin()
             stack_item.put_time_action()
                     
@@ -122,4 +122,8 @@ class ContextStack:
             if not self.list[i].complete:  # no need to check type because only forward seekers will be incomplete
                 incomplete.append(self.list[i])
         return incomplete
+    
+    @staticmethod
+    def is_asynchronous(action_type):
+        return action_type in [StackItemAsynchronous.TYPE, StackItemConfirm.TYPE]
 
