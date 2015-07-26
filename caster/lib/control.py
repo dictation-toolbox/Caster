@@ -22,9 +22,12 @@ class StatusIntermediary:
 class DependencyMan:
     def __init__(self):
         if not settings.WSR:
-            self.list = [("natlink", None, ["Auto-Command", "SelectiveAction"], "http://sourceforge.net/projects/natlink"),
+            self.list = [
+                       ("natlink", None, ["Auto-Command full capabilities"], "http://sourceforge.net/projects/natlink"),
                        ("PIL", None, ["Legion"], "https://pypi.python.org/pypi/Pillow"),
-                       ("win32ui", "pywin32", ["very many essential"], "http://sourceforge.net/projects/pywin32")]
+                       ("wx", None, ["Settings Window"], "http://www.wxpython.org"),
+                       ("win32ui", "pywin32", ["very many essential"], "http://sourceforge.net/projects/pywin32")
+                        ]
             warnings = 0
             for dep in self.list:
                 is_win32ui = dep[0] == "win32ui"
@@ -45,6 +48,7 @@ class DependencyMan:
     NATLINK = False
     PIL = False
     PYWIN32 = False
+    WX = False
 
 class TimerForWSR:
     def __init__(self, interval):

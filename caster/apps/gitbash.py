@@ -27,8 +27,8 @@ class CommandRule(MappingRule):
         "add":              R(Key("g, i, t, space, a, d, d, space, dot, enter"), rdescript="GIT: Add All"),
         "status":           R(Key( "g, i, t, space, s, t, a, t, u, s, enter" ), rdescript="GIT: Status"),
         "commit":           R(Key( "g, i, t, space, c, o, m, m, i, t, space, minus, a, m, space, apostrophe, apostrophe, left"), rdescript="GIT: Commit"),
-        "bug fix commit <n>":    Mimic("commit")+Text("fixes #%(n)d ")+Key("backspace"),
-        "reference commit <n>":    Mimic("commit")+Text("refs #%(n)d ")+Key("backspace"),
+        "bug fix commit <n>":    R(Mimic("commit")+Text("fixes #%(n)d ")+Key("backspace"), rdescript="GIT: Bug Fix Commit"),
+        "reference commit <n>":  R(Mimic("commit")+Text("refs #%(n)d ")+Key("backspace"), rdescript="GIT: Reference Commit"),
         "checkout":         R(Text( "git checkout " ), rdescript="GIT: Check Out"),
         "merge":            R(Text( "git merge " ), rdescript="GIT: Merge"),
         "merge tool":       R(Text( "git mergetool")+Key("enter"), rdescript="GIT: Merge Tool"),
@@ -44,11 +44,11 @@ class CommandRule(MappingRule):
         
         
         
-        "undo [last] commit": R(Text("git reset --soft HEAD~1")+Key("enter"), rdescript="GIT: Undo Commit"),
-        "undo changes":     R(Text("git reset --hard")+Key("enter"), rdescript="GIT: Undo Since Last Commit"),
-        "stop tracking [file]": R(Text("git rm --cached FILENAME"), rdescript="GIT: Stop Tracking"),
+        "undo [last] commit":       R(Text("git reset --soft HEAD~1")+Key("enter"), rdescript="GIT: Undo Commit"),
+        "undo changes":             R(Text("git reset --hard")+Key("enter"), rdescript="GIT: Undo Since Last Commit"),
+        "stop tracking [file]":     R(Text("git rm --cached FILENAME"), rdescript="GIT: Stop Tracking"),
         "preview remove untracked": R(Text("git clean -nd")+Key("enter"), rdescript="GIT: Preview Remove Untracked"),
-        "remove untracked": R(Text("git clean -fd")+Key("enter"), rdescript="GIT: Remove Untracked"),
+        "remove untracked":         R(Text("git clean -fd")+Key("enter"), rdescript="GIT: Remove Untracked"),
         
         "visualize":        R(Text("gitk")+Key("enter"), rdescript="GIT: gitk"),
         "visualize file":   R(Text("gitk -- PATH"), rdescript="GIT: gitk Single File"),

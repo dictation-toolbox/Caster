@@ -12,7 +12,9 @@ finally:
     from caster.asynch.hmc.hmc_vocabulary import Homunculus_Vocabulary
     from caster.asynch.hmc.hmc_confirm import Homunculus_Confirm
     from caster.asynch.hmc.homunculus import Homunculus
-    from caster.lib import settings
+    from caster.lib import settings, control
+    if control.nexus().dep.WX:
+        import wx
 
     
 
@@ -26,7 +28,7 @@ To add a new homunculus (pop-up ui window) type:
 
 def launch(hmc_type, callback, data=None):
     from dragonfly import (WaitWindow, FocusWindow, Key)
-    instructions=["pythonw", settings.SETTINGS["paths"]["HOMUNCULUS_PATH"], hmc_type]
+    instructions=_get_instructions(hmc_type)
     if data!=None:
         instructions.append(data)
     Popen(instructions)
@@ -38,6 +40,12 @@ def launch(hmc_type, callback, data=None):
     
     from caster.asynch.hmc import squeue
     squeue.add_query(callback)
+
+def _get_instructions(hmc_type):
+    if hmc_type==settings.WXTYPE_SETTINGS:
+        return ["pythonw", settings.SETTINGS["paths"]["SETTINGS_WINDOW_PATH"]]
+    else:
+        return ["pythonw", settings.SETTINGS["paths"]["HOMUNCULUS_PATH"], hmc_type]
 
 def _get_title(hmc_type):
     default=settings.HOMUNCULUS_VERSION
@@ -51,6 +59,8 @@ def _get_title(hmc_type):
         return default+settings.HMC_TITLE_DIRECTORY
     elif hmc_type==settings.QTYPE_CONFIRM:
         return default+settings.HMC_TITLE_CONFIRM
+    elif hmc_type==settings.WXTYPE_SETTINGS:
+        return settings.SETTINGS_WINDOW_TITLE+settings.SOFTWARE_VERSION_NUMBER
     return default
 
 if __name__ == '__main__':
@@ -71,4 +81,3 @@ if __name__ == '__main__':
         app = Homunculus_Directory(sys.argv[1])
     elif sys.argv[1]==settings.QTYPE_CONFIRM:
         app = Homunculus_Confirm([sys.argv[1], sys.argv[2]])
-            

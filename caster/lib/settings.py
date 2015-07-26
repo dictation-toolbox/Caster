@@ -21,26 +21,26 @@ LEGION_TITLE = "legiongrid"
 RAINBOW_TITLE = "rainbowgrid"
 DOUGLAS_TITLE = "douglasgrid"
 SETTINGS_WINDOW_TITLE = "Caster Settings Window v "
-STATUS_WINDOW_TITLE="caster_status_window"
+STATUS_WINDOW_TITLE="Caster Status Window v "
 
 # enums
-QTYPE_DEFAULT = "def"
-QTYPE_SET = "set"
-QTYPE_REM = "rem"
-QTYPE_INSTRUCTIONS = "ins"
-QTYPE_RECORDING = "rec"
-QTYPE_DIRECTORY = "dir"
-QTYPE_CONFIRM = "con"
+QTYPE_DEFAULT = 0
+QTYPE_SET = 1
+QTYPE_REM = 2
+QTYPE_INSTRUCTIONS = 3
+QTYPE_RECORDING = 4
+QTYPE_DIRECTORY = 5
+QTYPE_CONFIRM = 6
+WXTYPE_SETTINGS = 7
 
 WSR = False
 
 def register_language(extension, language):
     '''
-    This is for automatic language switching
+    This is for automatic language switching ("auto_com")
     '''
     global SETTINGS
     if extension not in SETTINGS["ccr"]["registered_extensions"]:
-        
         SETTINGS["ccr"]["registered_extensions"][extension] = get_ccr_config_file_pronunciation(language.lower())
         save_config()
 
@@ -86,7 +86,6 @@ def _load(path):
         print sys.exc_info()
     except IOError:
         print "\n\nIOError: Could not find settings file: " + path + "\nInitializing file...\n\n"
-#         print sys.exc_info()
     return result
 
 def save_config():
