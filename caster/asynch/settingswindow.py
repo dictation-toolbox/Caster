@@ -34,15 +34,13 @@ class SettingsFrame(Frame):
     def __init__(self, parent, title):
         Frame.__init__(self, parent, title=title, size=(500,400))
         self.setup_XMLRPC_server()
-        
+        self.completed = False
         
         # Create the notebook 
         self.notebook = Notebook(self, style=NB_MULTILINE)
         # Setting up the menu
         file_menu = Menu()
-        save_item = file_menu.Append(ID_SAVE, '&Save...', 'Save Settings')
         exit_item = file_menu.Append(ID_EXIT, '&Exit...', 'Exit Settings Window')
-        self.Bind(EVT_MENU, self.save_it, save_item)
         self.Bind(EVT_MENU, self.prepare_for_exit, exit_item)
         menu_bar = MenuBar()
         menu_bar.Append(file_menu, '&File')
@@ -63,10 +61,6 @@ class SettingsFrame(Frame):
                 self.server.handle_request()
         Timer(0.5, start_server).start()
         Timer(300, self.xmlrpc_kill).start()
-    
-    def save_it(self, e):
-        settings.SETTINGS = self.tree_to_dictionary()
-        settings.save_config()
     
     def prepare_for_exit(self, e):
         self.Hide()
@@ -100,8 +94,9 @@ class SettingsFrame(Frame):
     def setup_XMLRPC_server(self): 
         self.server_quit = 0
         comm = Communicator()
-        self.server = SimpleXMLRPCServer(("127.0.0.1", comm.com_registry["settings"]), allow_none=True)
+        self.server = SimpleXMLRPCServer(("127.0.0.1", comm.com_registry["hmc"]), allow_none=True)
         self.server.register_function(self.xmlrpc_get_message, "get_message")
+        self.server.register_function(self.xmlrpc_complete, "complete")
         self.server.register_function(self.xmlrpc_kill, "kill")
     
     def xmlrpc_kill(self, e=None):
@@ -110,23 +105,16 @@ class SettingsFrame(Frame):
         self.Close()
         
     def xmlrpc_get_message(self):
-        '''override this for every new child class'''
         if self.completed:
 #                 self.completed = False
             Timer(1, self.xmlrpc_kill).start()
             return self.tree_to_dictionary()
         else:
             return None
-#         def dictionary_to_tree(self, d=None):
-#             children = None
-#             if d == None: children = settings.SETTINGS
-#             else: children = d
-#             
-#             for childkey in children:
-#                 item = None
-#                 if d==None:
-#                     item = ScrolledPanel(parent = self.notebook, id = -1)
-                
+        
+    def xmlrpc_complete(self):
+        self.completed = True
+        self.Hide()
     
     def make_page(self, title): 
         page = ScrolledPanel(parent = self.notebook, id = -1)

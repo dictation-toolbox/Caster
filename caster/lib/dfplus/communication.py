@@ -7,8 +7,7 @@ class Communicator:
         self.com_registry = {"sticky_list":     1337, 
                              "hmc":             1338, 
                              "grids":           1339, 
-                             "status":          1340, 
-                             "settings":        1341,
+                             "status":          1340,
                              "sikuli":          8000
                              }
     def get_com(self, name):

@@ -8,7 +8,7 @@ INISETPATH = os.path.realpath(__file__).split("lib")[0]+"bin\\data\\settings.jso
 BASE_PATH = os.path.realpath(__file__).split("\\lib")[0].replace("\\", "/")
 
 # title
-SOFTWARE_VERSION_NUMBER = "0.4.13"
+SOFTWARE_VERSION_NUMBER = "0.4.14"
 SOFTWARE_NAME = "Caster v " + SOFTWARE_VERSION_NUMBER
 S_LIST_VERSION = "Sticky List v " + SOFTWARE_VERSION_NUMBER
 DISPEL_VERSION = "Dispel v " + SOFTWARE_VERSION_NUMBER
@@ -155,11 +155,15 @@ def init_default_values():
         # MISC
         ("ALARM_SOUND_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/media/49685__ejfortin__nano-blade-loop.wav"),
         ("MEDIA_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/media"),
+        
+        # PYTHON
+        ("WXPYTHON_PATH" , "C:/Python27/Lib/site-packages/wx-3.0-msw"),
                                   
         ])
     if not SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"] in sys.path and os.path.isdir(SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"]):
         sys.path.append(SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"])
-    
+    if not SETTINGS["paths"]["WXPYTHON_PATH"] in sys.path and os.path.isdir(SETTINGS["paths"]["WXPYTHON_PATH"]):
+        sys.path.append(SETTINGS["paths"]["WXPYTHON_PATH"])
     
     # CCR section
     values_change_count += update_values(SETTINGS, [("ccr", {})])

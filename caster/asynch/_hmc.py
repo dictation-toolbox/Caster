@@ -1,6 +1,9 @@
-from dragonfly import (Function, Grammar, IntegerRef, Dictation, MappingRule, AppContext, Choice)
+from subprocess import Popen
 
-from caster.lib import  settings, control
+from dragonfly import (Function, Grammar, IntegerRef, MappingRule, AppContext, Choice)
+
+from caster.asynch.hmc import h_launch
+from caster.lib import  settings, control, utilities
 from caster.lib.dfplus.state.short import R
 
 
@@ -32,6 +35,9 @@ def hmc_directory_browse():
 
 def hmc_confirm(value):
     control.nexus().comm.get_com("hmc").do_action(value)
+    
+def hmc_settings_complete():
+    control.nexus().comm.get_com("hmc").complete()
     
 class HMCRule(MappingRule):
     mapping = {
@@ -66,7 +72,69 @@ grammar = Grammar("hmc", context=c)
 grammar.add_rule(HMCRule())
 grammar.load()
 
+class HMCRuleSettings(MappingRule):
+    mapping = {
+        "kill homunculus":              R(Function(kill), rdescript="Kill Settings Window"),
+        "complete":                     R(Function(hmc_settings_complete), rdescript="Complete Input"),
+    }
+
+
+sc = AppContext(title=settings.SETTINGS_WINDOW_TITLE+settings.SOFTWARE_VERSION_NUMBER)
+grammar_settings = Grammar("hmc2", context=sc)
+grammar_settings.add_rule(HMCRuleSettings())
+grammar_settings.load()
+
+
+
+def get_settings_from_settings_window(data):
+    settings.SETTINGS = data
+    settings.save_config()
+    # TODO: apply new settings
+
+def launch_status():
+    if not utilities.window_exists(None, settings.STATUS_WINDOW_TITLE):
+        Popen(["pythonw", settings.SETTINGS["paths"]["STATUS_WINDOW_PATH"]])
+    
+def toggle_status():
+    enabled = settings.SETTINGS["miscellaneous"]["status_window_enabled"]
+    if enabled:
+        control.nexus().intermediary.kill()
+    else:
+        launch_status()
+    settings.SETTINGS["miscellaneous"]["status_window_enabled"] = not enabled
+    settings.save_config()
+
+def settings_window():
+#     if control.nexus().dep.WX:
+    if not utilities.window_exists(None, settings.STATUS_WINDOW_TITLE + settings.SOFTWARE_VERSION_NUMBER):
+        h_launch.launch(settings.WXTYPE_SETTINGS, get_settings_from_settings_window)
+#     else:
+#         utilities.availability_message("Settings Window", "wxPython")
+
+class LaunchRule(MappingRule):
+
+    mapping = {
+        "toggle status window":     R(Function(toggle_status), rdescript="Toggle Status Window"), 
+        "launch settings window":   R(Function(settings_window), rdescript="Launch Settings Window"), 
+        }
+    extras = []
+    defaults = {}
+
+#---------------------------------------------------------------------------
+
+
+grammarw = Grammar("Caster Windows")
+grammarw.add_rule(LaunchRule())
+grammarw.load()
+
+if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
+    launch_status()
+
 def unload():
-    global grammar
+    global grammar, grammar_settings, grammarw
     if grammar: grammar.unload()
+    if grammar_settings: grammar_settings.unload()
+    if grammarw: grammarw.unload()
     grammar = None
+    grammar_settings = None
+    grammarw = None
