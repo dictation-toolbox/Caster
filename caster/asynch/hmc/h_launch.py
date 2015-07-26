@@ -12,11 +12,7 @@ finally:
     from caster.asynch.hmc.hmc_vocabulary import Homunculus_Vocabulary
     from caster.asynch.hmc.hmc_confirm import Homunculus_Confirm
     from caster.asynch.hmc.homunculus import Homunculus
-    from caster.lib import settings, control
-    if control.nexus().dep.WX:
-        import wx
-
-    
+    from caster.lib import settings
 
 '''
 To add a new homunculus (pop-up ui window) type:
