@@ -9,14 +9,14 @@ cmd.map = {
 	
     # VoiceCoder-inspired
     "jump in":						AsynchronousAction([L(S(["cancel"], context.nav, ["right", "(~[~{~<"]))
-                                                   ], time_in_seconds=0.1, repetitions=50 ),
+                                                   ], time_in_seconds=0.1, repetitions=50, rdescript="Jump: In" ),
     "jump out":						AsynchronousAction([L(S(["cancel"], context.nav, ["right", ")~]~}~>"]))
-                                                   ], time_in_seconds=0.1, repetitions=50 ),
+                                                   ], time_in_seconds=0.1, repetitions=50, rdescript="Jump: Out" ),
     "jump back":					AsynchronousAction([L(S(["cancel"], context.nav, ["left", "(~[~{~<"]))
-                                                   ], time_in_seconds=0.1, repetitions=50 ),
+                                                   ], time_in_seconds=0.1, repetitions=50, rdescript="Jump: Back" ),
     "fill <target>":				R(Key("escape, escape, end"), show=False) +
     								AsynchronousAction([L(S(["cancel"], Function, context.fill_within_line))
-                                                   ], time_in_seconds=0.2, repetitions=50 ),
+                                                   ], time_in_seconds=0.2, repetitions=50, rdescript="Fill" ),
     
     # fuzzy string matching command
     "(pita | Peter | PETA) <textnv> [brunt]":R(Function(fn.pita), show=False)
@@ -116,6 +116,14 @@ cmd.ncmap = {
 		"sure stoosh":          		R(Key("c-c"), rdescript="Simple Copy"),
     	"sure cut":             		R(Key("c-x"), rdescript="Simple Cut"),
     	"sure spark":  					R(Key("c-v"), rdescript="Simple Paste"),
+    	
+    	"dredge [(<n>|<text>)]":R(Function(navigation.dredge), show=False)
+                                            +ContextSeeker(None,
+                                                  [L(S([""], navigation.make_selection, consume=False),
+                                                     S(["number"], navigation.make_selection, use_spoken=True), 
+                                                     S(["cancel", "clear"], navigation.empty)
+                                                    )
+                                                  ], rdescript="Fuzzy Window Match"),
           }
 
 cmd.ncextras   = [
@@ -134,5 +142,5 @@ cmd.ncextras   = [
                 }),
            ]
 cmd.ncdefaults = {
-			"n": 1, "mim":"", "nnavi500": 1, "direction2":"", "dokick": 0
+			"n": 1, "mim":"", "nnavi500": 1, "direction2":"", "dokick": 0, "text": ""
            }

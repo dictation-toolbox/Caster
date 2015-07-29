@@ -104,6 +104,25 @@ def _whole_word_bonus(spoken_phrase, symbol):
 
 ####################################################################################
 ####################################################################################
+
+def get_similar_process_name(spoken_phrase, list_of_processes):
+    best = (0, "")
+    process = _abbreviated_string(str(spoken_phrase))
+    unwanted_processes=["wininit", "csrss", "System Idle Process", "winlogon",  \
+                        "SearchFilterHost", "conhost"]
+    wanted_processes=[x for x in list_of_processes if x not in unwanted_processes]
+#     print wanted_processes
+    for w in wanted_processes:
+        # make copies because _phrase_to_symbol_similarity_score is destructive (of spoken phrase)
+        process_lower = process.lower()
+        w_lower = w.lower()
+        
+        score = _phrase_to_symbol_similarity_score(process_lower, w_lower)
+        if score > best[0]:
+            best = (score, w)
+    
+    return best[1]
+####################################################################################
 ####################################################################################
 
 def _search(all_symbols, word):

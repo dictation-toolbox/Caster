@@ -3,9 +3,7 @@ import time
 
 from dragonfly import (FocusWindow, Function, Key, BringApp, Text, WaitWindow, Dictation, Choice, Grammar, MappingRule, IntegerRef)
 
-from caster.lib import utilities, settings, ccr, context, control
-from caster.lib.dfplus.hint.hintnode import NodeRule, NodeAction
-from caster.lib.dfplus.hint.nodes import css
+from caster.lib import utilities, settings, ccr, context
 from caster.lib.dfplus.monkeypatch import Window
 from caster.lib.dfplus.state.actions import ContextSeeker, AsynchronousAction, \
     RegisteredAction
@@ -22,7 +20,10 @@ def experiment(text):
     '''this function is for tests'''
     try:
         ''''''
-        print str(text)
+        exes = set([x.executable.split("\\")[-1][:-4] for x  in Window.get_all_windows()])
+        titles = set([x.title for x  in Window.get_all_windows()])
+#         print get_similar_process_name(exes)
+        print titles
             
     except Exception:
         utilities.simple_log(False)
@@ -33,30 +34,9 @@ def get_color():
     '''do asynchronously'''
 #     print askcolor()
 
-def get_similar_process_name(spoken_phrase, list_of_processes):
-    best = (0, "")
-    process = selector._abbreviated_string(spoken_phrase)
-    
-    unwanted_processes=["wininit", "csrss", "System Idle Process", "winlogon",  \
-                        "SearchFilterHost", "conhost"]
-    wanted_processes=[x for x in list_of_processes if x not in unwanted_processes]
-#     print wanted_processes
-    
-    for w in wanted_processes:
-        # make copies because _phrase_to_symbol_similarity_score is destructive (of spoken phrase)
-        process_lower = process.lower()
-        w_lower = w.lower()
-        
-        score = selector._phrase_to_symbol_similarity_score(process_lower, w_lower)
-        if score > best[0]:
-            best = (score, w)
-     
-    return best[1]
 
-def dredge(id, text):
-    print Window.get_foreground().executable
-    print [x.executable.split("\\")[-1][:-4] for x  in Window.get_all_windows()]
-    print get_similar_process_name(text, [x.executable.split("\\")[-1][:-4] for x  in Window.get_all_windows()])
+
+
 
 LAST_TIME=0
 def print_time():
@@ -118,7 +98,7 @@ class DevRule(MappingRule):
     
     "experiment <text>":            Function(experiment),
     # 
-    "dredge [<id> <text>]":         Function(dredge),
+#     "dredge [<id> <text>]":         Function(dredge),
     
     "close last tag":               ContextSeeker([L(S(["cancel"], None),
                                                      S(["html spoken"], close_last_spoken, use_spoken=True), 

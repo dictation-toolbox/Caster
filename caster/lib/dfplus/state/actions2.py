@@ -4,8 +4,6 @@ from caster.lib.dfplus.state.actions import AsynchronousAction
 from caster.lib.dfplus.state.short import L, S
 
 
-
-
 class ConfirmAction(AsynchronousAction):
     '''
     Similar to AsynchronousAction, but the repeated action is always

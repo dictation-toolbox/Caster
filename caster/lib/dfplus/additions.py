@@ -20,3 +20,21 @@ class SelectiveAction(ActionBase):
         if (is_executable and not self.negate) or (self.negate and not is_executable):
             self.action.execute()
 
+class FuzzyMatch(ActionBase):
+    '''
+    list_function: provides a list of strings to filter
+    filter_function: reduces the size of the list from list_function
+    selection_function: what to do with the result that the user chooses
+    '''
+    def __init__(self, list_function, filter_function, selection_function):
+        ''''''
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
