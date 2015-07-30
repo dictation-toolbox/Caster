@@ -7,7 +7,7 @@ ACTIVE_FILE_PATH = [None, None]
 CHOICES = []
 TEN = ["numb one", "numb two", "numb three", "numb four", "numb five", 
        "numb six", "numb seven", "numb eight", "numb nine", "numb ten"]
-
+ 
 def empty():
     global CHOICES
     CHOICES = []
@@ -26,6 +26,8 @@ def make_selection(nw=[]):
     if n == -1: n = 0
     Text(CHOICES[n][1]).execute()
     control.nexus().intermediary.text("PITA Completion")
+
+
 
 def pita(textnv):
     global OLD_ACTIVE_WINDOW_TITLE, ACTIVE_FILE_PATH
@@ -53,3 +55,41 @@ def pita(textnv):
                 display+=str(counter)+" "+result[1]
                 counter+=1
             control.nexus().intermediary.hint(display)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def pita_list_provider():
+    filename, folders, title = utilities.get_window_title_info()
+    active_file_path = scanner.guess_file_based_on_window_title(filename, folders)
+    if filename == None:
+        utilities.report("pita: filename pattern not found in window title")
+        return []
+    if active_file_path[0] != None:
+        return scanner.DATA["directories"][active_file_path[0]][active_file_path[1]]["names"]
+    else:
+        return []
+
+def pita_filter(spoken, choices):
+    return selector.get_similar_symbol_name(spoken, choices)
+
+def pita_selection(choice):
+    Text(choice).execute()
+    control.nexus().intermediary.text("PITA Completion")
