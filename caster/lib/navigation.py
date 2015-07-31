@@ -8,8 +8,6 @@ import win32clipboard
 
 from caster.asynch.mouse.legion import LegionScanner
 from caster.lib import control, utilities, settings
-from caster.lib.dfplus.monkeypatch import Window
-from caster.lib.pita import selector
 
 
 DIRECTION_STANDARD={"sauce [E]": "up", "dunce [E]": "down", "lease [E]": "left", "Ross [E]": "right", "back": "left" }
@@ -317,16 +315,5 @@ def next_line(semi):
     Text(semi).execute()
     Key("enter").execute()
 
-
-
-def dredge(id, text):
-#     print Window.get_foreground().executable
-#     print [x.executable.split("\\")[-1][:-4] for x  in Window.get_all_windows()]
-    print selector.get_similar_process_name(text, [x.executable.split("\\")[-1][:-4] for x  in Window.get_all_windows()])
-def empty():
-    '''this should all be moved into abject'''
-# 
-def make_selection(nw=[]):
-    '''this should all be moved into abject'''
 
 

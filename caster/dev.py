@@ -9,7 +9,6 @@ from caster.lib.dfplus.state.actions import ContextSeeker, AsynchronousAction, \
     RegisteredAction
 from caster.lib.dfplus.state.actions2 import ConfirmAction, FuzzyMatchAction
 from caster.lib.dfplus.state.short import L, S, R
-from caster.lib.pita import selector, fn
 
 
 grammar = Grammar('development')

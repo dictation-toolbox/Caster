@@ -1,6 +1,6 @@
 from dragonfly import *
 from caster.lib import navigation, context, utilities
-from caster.lib.pita import fn
+from caster.lib.pita import fnfz
 from caster.lib.dfplus.state.actions import ContextSeeker, AsynchronousAction, RegisteredAction
 from caster.lib.dfplus.state.short import L, S, R
 from caster.lib.dfplus.state.actions2 import FuzzyMatchAction
@@ -109,14 +109,15 @@ cmd.ncmap = {
     	"sure cut":             		R(Key("c-x"), rdescript="Simple Cut"),
     	"sure spark":  					R(Key("c-v"), rdescript="Simple Paste"),
     	
-    	"symbol match <text>":          FuzzyMatchAction(fn.pita_list_provider, fn.pita_filter, fn.pita_selection, rdescript="Fuzzy Symbol Matcher"),
-    	"dredge [(<n>|<text>)]":R(Function(navigation.dredge), show=False)
-                                            +ContextSeeker(None,
-                                                  [L(S([""], navigation.make_selection, consume=False),
-                                                     S(["number"], navigation.make_selection, use_spoken=True), 
-                                                     S(["cancel", "clear"], navigation.empty)
-                                                    )
-                                                  ], rdescript="Fuzzy Window Match"),
+    	"symbol match <text>":          FuzzyMatchAction(fnfz.pita_list_provider, fnfz.pita_filter, fnfz.pita_selection, rdescript="Fuzzy Symbol Matcher"),
+    	#"dredge [(<n>|<text>)]":R(Function(navigation.dredge), show=False)
+        #                                    +ContextSeeker(None,
+        #                                          [L(S([""], navigation.make_selection, consume=False),
+        #                                             S(["number"], navigation.make_selection, use_spoken=True), 
+        #                                             S(["cancel", "clear"], navigation.empty)
+        #                                            )
+        #                                          ], rdescript="Fuzzy Window Match"),
+        #"[<wm>] window match <text>":	FuzzyMatchAction(), 
           }
 
 cmd.ncextras   = [
@@ -133,7 +134,10 @@ cmd.ncextras   = [
               Choice("dokick",
                 {"kick": 1, "psychic": 2
                 }),
+              Choice("wm",
+                {"ex": 1, "tie": 2
+                }),
            ]
 cmd.ncdefaults = {
-			"n": 1, "mim":"", "nnavi500": 1, "direction2":"", "dokick": 0, "text": ""
+			"n": 1, "mim":"", "nnavi500": 1, "direction2":"", "dokick": 0, "text": "", "wm": 2
            }
