@@ -40,7 +40,7 @@ class ConfirmAction(AsynchronousAction):
         h_launch.launch(settings.QTYPE_CONFIRM, hmc_closure, "_".join(self.rdescript.split(" ")))
         self.state.add(confirm_stack_item)
 
-class FuzzyMatch(ContextSeeker):
+class FuzzyMatchAction(ContextSeeker):
     '''
     list_function: provides a list of strings to filter
         ; takes no parameters, returns a list
@@ -58,7 +58,7 @@ class FuzzyMatch(ContextSeeker):
             choices = list_function()
             if filter_function:
                 choices = filter_function(data, choices) # the filter function is responsible for using the data to filter the choices
-            while len(choices)<len(FuzzyMatch.TEN):
+            while len(choices)<len(FuzzyMatchAction.TEN):
                 choices.append("") # this is questionable
             return choices
         self.choice_generator = get_choices
@@ -73,8 +73,8 @@ class FuzzyMatch(ContextSeeker):
             j = ""
             if len(spoken_words)>0:
                 j = " ".join(spoken_words)
-            if j in FuzzyMatch.TEN:
-                n = FuzzyMatch.TEN.index(j)
+            if j in FuzzyMatchAction.TEN:
+                n = FuzzyMatchAction.TEN.index(j)
             if n == -1: n = 0
             selection_function(mutable_list["value"][n])
         def cancel_message(_):
@@ -95,9 +95,9 @@ class FuzzyMatch(ContextSeeker):
         choices = self.choice_generator(data)
         display_string = ""
         for i in range(0, 10):
-            display_string += str(i+1)+choices[i]
+            display_string += str(i+1)+" - "+choices[i]
             if i+1<10: display_string += "\n"
-        control.nexus().intermediary.text(display_string)
+        control.nexus().intermediary.hint(display_string)
         self.mutable_list["value"] = choices
         self.state.add(self.state.generate_context_seeker_stack_item(self, data))
         

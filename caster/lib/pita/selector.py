@@ -9,8 +9,13 @@ from caster.lib import settings
 
 
 def get_similar_symbol_name(spoken_phrase, list_of_symbols):
+    '''
+    spoken_phrase: list of strings
+    list_of_symbols: list of strings
+    '''
+    
     if settings.SETTINGS["pita"]["automatic_lowercase"]:
-        spoken_phrase = spoken_phrase.lower()
+        spoken_phrase = [x.lower() for x in spoken_phrase] 
     results = []
     without_homonyms = _abbreviated_string(spoken_phrase)
     with_homonyms = _abbreviated_string(_homonym_replaced_string(spoken_phrase))
@@ -35,23 +40,32 @@ def get_similar_symbol_name(spoken_phrase, list_of_symbols):
         
     length = 10 if len(results)>10 else len(results)
     results = sorted(results, key=itemgetter(0), reverse=True)[:length]
-    return results
+    return [x[1] for x in results]
 
-def _homonym_replaced_string(s):
-    # if there are numbers or things which sound like numbers in the symbol, replace those things in the spoken phrase before breaking it
-    homonym_replacements = {"one":1, "won":1, "two":2, "to":2, "too":2, "three":3, "for":4, "four":4, "five":5, "six":6, "sex":6,
+_HOMONYM_REPLACEMENTS= {"one":1, "won":1, "two":2, "to":2, "too":2, "three":3, "for":4, "four":4, "five":5, "six":6, "sex":6,
                           "seven":7, "eight":8, "ate":8, "nine":9, "zero":0
                           }
-    for homonym in homonym_replacements:
-        if homonym in s:
-            s = s.replace(homonym, " " + str(homonym_replacements[homonym]) + " ")
-    return s.replace("  ", " ").strip()
+def _clean_homonyms(word):
+    global _HOMONYM_REPLACEMENTS
+    for homonym in _HOMONYM_REPLACEMENTS:
+        if homonym in word:
+            word = word.replace(homonym, " " + str(_HOMONYM_REPLACEMENTS[homonym]) + " ")
+    return word
+        
+def _homonym_replaced_string(spoken_list):
+    # if there are numbers or things which sound like numbers in the symbol, replace those things in the spoken phrase before breaking it
+    return [_clean_homonyms(x) for x in spoken_list]
 
 def _abbreviated_string(spoken_phrase):
-    # get power characters from spoken phrase
-    words_in_phrase = spoken_phrase.split(" ")
+    '''
+    get power characters from spoken phrase
+    --
+    spoken_phrase: an array of strings
+    '''
+#     words_in_phrase = spoken_phrase.split(" ")
     abbrev = ""
-    for w in words_in_phrase:
+#     for w in words_in_phrase:
+    for w in spoken_phrase:
         abbrev += w[0]
         
         wlen = len(w)
@@ -71,9 +85,11 @@ def _phrase_to_symbol_similarity_score(abbrev, symbol):
     for i in range(0, len_symbol):
         index_abbrev = 0
         while index_abbrev < len_abbrev:
-            # if the symbol character is found in the abbreviation,
-            # reduce the abbreviation, remeasure the abbreviation
-            # and reset the index on the abbreviation, break the while
+            '''
+             if the symbol character is found in the abbreviation,
+             reduce the abbreviation, remeasure the abbreviation
+             and reset the index on the abbreviation, break the while
+            '''
             if abbrev[index_abbrev] == symbol[i]:
                 if index_abbrev + 1 < len_abbrev:
                     abbrev = abbrev[index_abbrev + 1:]
@@ -81,24 +97,22 @@ def _phrase_to_symbol_similarity_score(abbrev, symbol):
                 len_abbrev = len(abbrev)
                 score += 1
                 break
-            
-            # else bump up the abbreviation index
             else:
+                '''else bump up the abbreviation index'''
                 index_abbrev += 1
     return score
 
 def _length_penalty(spoken_phrase, symbol):
-    # penalize when symbol is much longer than spoken phrase
-    penalty = len(symbol) - len(spoken_phrase)
+    '''penalize when symbol is much longer than spoken phrase'''
+    penalty = len(symbol) - len(" ".join(spoken_phrase))
     if penalty < 0:
         penalty = 0
     return penalty
 
 def _whole_word_bonus(spoken_phrase, symbol):
     bonus = 0
-    words = spoken_phrase.split(" ")
-    for w in words:
-        if w in symbol:
+    for word in spoken_phrase:
+        if word in symbol:
             bonus += 1
     return bonus
 

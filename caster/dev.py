@@ -7,7 +7,7 @@ from caster.lib import utilities, settings, ccr, context
 from caster.lib.dfplus.monkeypatch import Window
 from caster.lib.dfplus.state.actions import ContextSeeker, AsynchronousAction, \
     RegisteredAction
-from caster.lib.dfplus.state.actions2 import ConfirmAction
+from caster.lib.dfplus.state.actions2 import ConfirmAction, FuzzyMatchAction
 from caster.lib.dfplus.state.short import L, S, R
 from caster.lib.pita import selector, fn
 
@@ -125,7 +125,8 @@ class DevRule(MappingRule):
     "bravery":                      RegisteredAction(Text("bravery is weak "), rspec="bravery"),
     "charcoal boy <text> [<n>]":    R(Text("charcoal is dirty %(text)s"), rspec="charcoal"),
                             
-    "test confirm action":          ConfirmAction(Key("a"), rdescript="Confirm Action Test"), 
+    "test confirm action":          ConfirmAction(Key("a"), rdescript="Confirm Action Test"),
+     
     }
     extras = [
               Dictation("text"),
@@ -145,7 +146,7 @@ class DevRule(MappingRule):
                "text": "", "id":None
                }
 
-
+# .ending
 def load():
     global grammar
     grammar.add_rule(DevRule())

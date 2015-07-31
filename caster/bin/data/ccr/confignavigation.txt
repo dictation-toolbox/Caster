@@ -3,6 +3,7 @@ from caster.lib import navigation, context, utilities
 from caster.lib.pita import fn
 from caster.lib.dfplus.state.actions import ContextSeeker, AsynchronousAction, RegisteredAction
 from caster.lib.dfplus.state.short import L, S, R
+from caster.lib.dfplus.state.actions2 import FuzzyMatchAction
 navigation.initialize_clipboard()
 
 cmd.map = {
@@ -18,15 +19,6 @@ cmd.map = {
     								AsynchronousAction([L(S(["cancel"], Function, context.fill_within_line))
                                                    ], time_in_seconds=0.2, repetitions=50, rdescript="Fill" ),
     
-    # fuzzy string matching command
-    "(pita | Peter | PETA) <textnv> [brunt]":R(Function(fn.pita), show=False)
-                                            +ContextSeeker(None,
-                                                  [L(S([""], fn.make_selection, consume=False),
-                                                     S(["number"], fn.make_selection, use_spoken=True), 
-                                                     S(["cancel", "clear"], fn.empty)
-                                                    )
-                                                  ], rdescript="Fuzzy String Match"),
-        
     # keyboard shortcuts
 	'save':                         R(Key("c-s"), rspec="save", rdescript="Save"),
     'shock [<nnavi50>]':          	R(Key("enter"), rspec="shock", rdescript="Enter")* Repeat(extra="nnavi50"),
@@ -117,6 +109,7 @@ cmd.ncmap = {
     	"sure cut":             		R(Key("c-x"), rdescript="Simple Cut"),
     	"sure spark":  					R(Key("c-v"), rdescript="Simple Paste"),
     	
+    	"symbol match <text>":          FuzzyMatchAction(fn.pita_list_provider, fn.pita_filter, fn.pita_selection, rdescript="Fuzzy Symbol Matcher"),
     	"dredge [(<n>|<text>)]":R(Function(navigation.dredge), show=False)
                                             +ContextSeeker(None,
                                                   [L(S([""], navigation.make_selection, consume=False),
