@@ -119,7 +119,8 @@ class DevRule(MappingRule):
                                                    ]),
     "never-ending":                 AsynchronousAction([L(S(["ashes", "charcoal"], print_time, None),
                                                       S(["bravery"], Text, "bravery1"))
-                                                   ], time_in_seconds=0.2, repetitions=20),
+                                                   ], time_in_seconds=0.2, repetitions=20, 
+                                                       finisher=Text("finisher successful")),
     "ashes":                        RegisteredAction(Text("ashes fall "), rspec="ashes"),
     "bravery":                      RegisteredAction(Text("bravery is weak "), rspec="bravery"),
     "charcoal boy <text> [<n>]":    R(Text("charcoal is dirty %(text)s"), rspec="charcoal"),

@@ -1,4 +1,4 @@
-from dragonfly import FocusWindow
+from dragonfly import FocusWindow, Function
 
 from caster.asynch.hmc import h_launch
 from caster.lib import settings, control, utilities
@@ -133,7 +133,8 @@ class SuperFocusWindow(AsynchronousAction):
             return False
             
         forward=[L(S(["cancel"], attempt_focus))]
-        AsynchronousAction.__init__(self, forward, time_in_seconds=time_in_seconds, 
-                                    repetitions=repetitions, rdescript=rdescript, blocking=blocking)
+        AsynchronousAction.__init__(self, forward, time_in_seconds=time_in_seconds, repetitions=repetitions, 
+                                    rdescript=rdescript, blocking=blocking, 
+                                    finisher=Function(control.nexus().intermediary.text, message="SuperFocus Complete"))
         self.show = False
         

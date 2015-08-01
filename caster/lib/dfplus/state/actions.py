@@ -50,7 +50,7 @@ class AsynchronousAction(ContextSeeker):
     how often the associated function should run.
     '''
     def __init__(self, forward, time_in_seconds=1, repetitions=0, 
-                 rdescript="unnamed command (A)", blocking=True):
+                 rdescript="unnamed command (A)", blocking=True, finisher=None):
         ContextSeeker.__init__(self, None, forward)
 #         self.forward = forward
         self.repetitions = repetitions
@@ -58,6 +58,7 @@ class AsynchronousAction(ContextSeeker):
         self.rdescript = rdescript
         self.blocking = blocking
         self.state = control.nexus().state
+        self.base = finisher
         assert self.forward != None, "Cannot create AsynchronousAction with no termination commands"
         assert len(self.forward) == 1, "Cannot create AsynchronousAction with > or < one purpose"
     def _execute(self, data=None):

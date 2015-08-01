@@ -39,6 +39,7 @@ class StackItemRegisteredAction(StackItem):
         self.clean()
     def clean(self):
         self.dragonfly_data = None
+        self.base = None
     def preserve(self):# save spoken words
         if self.dragonfly_data!=None:
             self.preserved = [x[0] for x  in self.dragonfly_data["_node"].results]
@@ -159,6 +160,8 @@ class StackItemAsynchronous(StackItemSeeker):
         '''
         self.complete = True
         control.nexus().timer.remove_callback(self.closure)
+        if self.base!=None:# finisher
+            self.base.execute()
         StackItemSeeker.clean(self)
         self.closure = None
         if success:
