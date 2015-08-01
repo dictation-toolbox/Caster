@@ -90,7 +90,7 @@ def _phrase_to_symbol_similarity_score(abbrev, symbol):
              reduce the abbreviation, remeasure the abbreviation
              and reset the index on the abbreviation, break the while
             '''
-            if abbrev[index_abbrev] == symbol[i]:
+            if str(abbrev[index_abbrev]) == str(symbol[i]):
                 if index_abbrev + 1 < len_abbrev:
                     abbrev = abbrev[index_abbrev + 1:]
                     index_abbrev = 0
@@ -119,23 +119,49 @@ def _whole_word_bonus(spoken_phrase, symbol):
 ####################################################################################
 ####################################################################################
 
-def get_similar_process_name(spoken_phrase, list_of_processes):
-    best = (0, "")
-    process = _abbreviated_string(str(spoken_phrase))
+def get_similar_process_names(spoken_phrase, list_of_processes):
+    '''
+    spoken_phrase: list of strings
+    list_of_symbols: list of strings
+    '''
+    results = []
+    process = _abbreviated_string(spoken_phrase)
     unwanted_processes=["wininit", "csrss", "System Idle Process", "winlogon",  \
                         "SearchFilterHost", "conhost"]
     wanted_processes=[x for x in list_of_processes if x not in unwanted_processes]
-#     print wanted_processes
     for w in wanted_processes:
         # make copies because _phrase_to_symbol_similarity_score is destructive (of spoken phrase)
         process_lower = process.lower()
         w_lower = w.lower()
         
         score = _phrase_to_symbol_similarity_score(process_lower, w_lower)
-        if score > best[0]:
-            best = (score, w)
+        results.append((score, w))
     
-    return best[1]
+    length = 10 if len(results)>10 else len(results)
+    results = sorted(results, key=itemgetter(0), reverse=True)[:length]
+    return [x[1] for x in results]
+
+def get_similar_window_names(spoken_phrase, list_of_titles):
+    '''
+    spoken_phrase: list of strings
+    list_of_symbols: list of strings
+    '''
+    results = []
+    title = " ".join(spoken_phrase)
+    unwanted_titles=[]
+    wanted_processes=[x for x in list(set(list_of_titles)) if x not in unwanted_titles]
+    for w in wanted_processes:
+        # make copies because _phrase_to_symbol_similarity_score is destructive (of spoken phrase)
+        title_lower = title.lower()
+        w_lower = w.lower()
+        
+        score = _phrase_to_symbol_similarity_score(title_lower, w_lower)
+        results.append((score, w))
+    
+    length = 10 if len(results)>10 else len(results)
+    results = sorted(results, key=itemgetter(0), reverse=True)[:length]
+    return [x[1] for x in results]
+    
 ####################################################################################
 ####################################################################################
 

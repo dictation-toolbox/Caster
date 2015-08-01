@@ -110,14 +110,9 @@ cmd.ncmap = {
     	"sure spark":  					R(Key("c-v"), rdescript="Simple Paste"),
     	
     	"symbol match <text>":          FuzzyMatchAction(fnfz.pita_list_provider, fnfz.pita_filter, fnfz.pita_selection, rdescript="Fuzzy Symbol Matcher"),
-    	#"dredge [(<n>|<text>)]":R(Function(navigation.dredge), show=False)
-        #                                    +ContextSeeker(None,
-        #                                          [L(S([""], navigation.make_selection, consume=False),
-        #                                             S(["number"], navigation.make_selection, use_spoken=True), 
-        #                                             S(["cancel", "clear"], navigation.empty)
-        #                                            )
-        #                                          ], rdescript="Fuzzy Window Match"),
-        #"[<wm>] window match <text>":	FuzzyMatchAction(), 
+    	"ex match <text>":          	FuzzyMatchAction(fnfz.dredge_ex_list_provider, fnfz.dredge_ex_filter, fnfz.dredge_ex_selection, rdescript="Fuzzy Executable Matcher"),
+    	"tie match <text>":          	FuzzyMatchAction(fnfz.dredge_tie_list_provider, fnfz.dredge_tie_filter, fnfz.dredge_tie_selection, rdescript="Fuzzy Window Matcher"),
+    	
           }
 
 cmd.ncextras   = [

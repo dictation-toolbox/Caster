@@ -61,7 +61,8 @@ class AsynchronousAction(ContextSeeker):
         assert self.forward != None, "Cannot create AsynchronousAction with no termination commands"
         assert len(self.forward) == 1, "Cannot create AsynchronousAction with > or < one purpose"
     def _execute(self, data=None):
-        if "time_in_seconds" in data: self.time_in_seconds=float(data["time_in_seconds"])
-        if "repetitions" in data: self.time_in_seconds=int(data["repetitions"])
+        if data!=None:
+            if "time_in_seconds" in data: self.time_in_seconds=float(data["time_in_seconds"])
+            if "repetitions" in data: self.time_in_seconds=int(data["repetitions"])
         
         self.state.add(self.state.generate_continuer_stack_item(self, data))

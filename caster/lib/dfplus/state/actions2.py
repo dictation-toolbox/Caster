@@ -1,5 +1,8 @@
+from dragonfly import FocusWindow
+
 from caster.asynch.hmc import h_launch
-from caster.lib import settings, control
+from caster.lib import settings, control, utilities
+from caster.lib.dfplus.monkeypatch import Window
 from caster.lib.dfplus.state.actions import AsynchronousAction, ContextSeeker
 from caster.lib.dfplus.state.short import L, S
 
@@ -77,7 +80,7 @@ class FuzzyMatchAction(ContextSeeker):
                 n = FuzzyMatchAction.TEN.index(j)
             if n == -1: n = 0
             selection_function(mutable_list["value"][n])
-        def cancel_message(_):
+        def cancel_message():
             control.nexus().intermediary.text("Cancel ("+rdescript+")")
         forward = [L(S([""], execute_choice, consume=False),
                      S(["number"], execute_choice, use_spoken=True), 
@@ -100,4 +103,37 @@ class FuzzyMatchAction(ContextSeeker):
         control.nexus().intermediary.hint(display_string)
         self.mutable_list["value"] = choices
         self.state.add(self.state.generate_context_seeker_stack_item(self, data))
+
+class SuperFocusWindow(AsynchronousAction):
+    '''
+    Workaround class for Dragonfly's FocusWindow, which only works on titles and 
+    32-bit executables, and sometimes fails to work at all. 
+    '''
+    def __init__(self, executable=None, title=None, time_in_seconds=1, repetitions=15, 
+        rdescript="unnamed command (SFW)", blocking=False):
+        assert executable!=None or title!=None, "SuperFocusWindow needs executable or title"
+        def attempt_focus():
+            utilities.report("SFW: Attempting Focus")
+            FocusWindow(title=title).execute()
+            w=Window.get_foreground()
+            if title and title in w.title:
+                return True
+            
+            for win in Window.get_all_windows():
+                w=win
+                print w.title, w.executable
+                if executable in w.executable:
+                    w.set_foreground()
+                    print "stopping on ", w.executable
+                    break
+            
+            if executable and executable in w.executable:
+                return True
+            
+            return False
+            
+        forward=[L(S(["cancel"], attempt_focus))]
+        AsynchronousAction.__init__(self, forward, time_in_seconds=time_in_seconds, 
+                                    repetitions=repetitions, rdescript=rdescript, blocking=blocking)
+        self.show = False
         

@@ -2,6 +2,7 @@ from dragonfly import Text
 
 from caster.lib import utilities, control, settings
 from caster.lib.dfplus.monkeypatch import Window
+from caster.lib.dfplus.state.actions2 import SuperFocusWindow
 from caster.lib.pita import scanner, selector
 
 
@@ -27,16 +28,25 @@ def pita_selection(choice):
 #==================================================#==================================================
 #==================================================#==================================================
 
-def dredge_list_provider():
-    return [x.executable.split("\\")[-1][:-4] for x  in Window.get_all_windows()]
+# executable match
+def dredge_ex_list_provider():
+    return list(set([x.executable.split("\\")[-1][:-4] for x  in Window.get_all_windows()]))
 
-def dredge_filter(data, choices):
-    ''''''
+def dredge_ex_filter(data, choices):
+    return selector.get_similar_process_names(list(data["text"].words), choices)
 
-def dredge_selection(choice):
-    ''''''
+def dredge_ex_selection(choice):
+    SuperFocusWindow(executable=choice+".exe").execute()
 
+#==================================================
 
+# title match
+def dredge_tie_list_provider():
+    return list(set([x.title for x  in Window.get_all_windows()]))
 
+def dredge_tie_filter(data, choices):
+    return selector.get_similar_window_names(list(data["text"].words), choices)
 
+def dredge_tie_selection(choice):
+    SuperFocusWindow(title=choice, rdescript="Focus: "+choice).execute()
 
