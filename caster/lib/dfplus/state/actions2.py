@@ -1,4 +1,7 @@
-from dragonfly import FocusWindow, Function
+import time
+
+from dragonfly import Function, Key
+import win32gui, win32con
 
 from caster.asynch.hmc import h_launch
 from caster.lib import settings, control, utilities
@@ -6,6 +9,8 @@ from caster.lib.dfplus.monkeypatch import Window
 from caster.lib.dfplus.state.actions import AsynchronousAction, ContextSeeker
 from caster.lib.dfplus.state.short import L, S
 
+'''CB's solution for focus window failure'''
+win32gui.SystemParametersInfo(win32con.SPI_SETFOREGROUNDLOCKTIMEOUT, 0, 1)
 
 class ConfirmAction(AsynchronousAction):
     '''
@@ -104,37 +109,65 @@ class FuzzyMatchAction(ContextSeeker):
         self.mutable_list["value"] = choices
         self.state.add(self.state.generate_context_seeker_stack_item(self, data))
 
+
 class SuperFocusWindow(AsynchronousAction):
     '''
     Workaround class for Dragonfly's FocusWindow, which only works on titles and 
     32-bit executables, and sometimes fails to work at all. 
     '''
+    @staticmethod
+    def focus_was_success(title, executable):
+        w=Window.get_foreground()
+        success=True
+        if title!=None:
+            success=title in w.title
+        if success and executable!=None:
+            success=executable in w.executable
+        return success
+    
+    @staticmethod
+    def path_from_executable(executable):
+        for win in Window.get_all_windows():
+            if executable in win.executable:
+                return win.executable
+    
     def __init__(self, executable=None, title=None, time_in_seconds=1, repetitions=15, 
         rdescript="unnamed command (SFW)", blocking=False):
         assert executable!=None or title!=None, "SuperFocusWindow needs executable or title"
         def attempt_focus():
-            utilities.report("SFW: Attempting Focus")
-            FocusWindow(title=title).execute()
-            w=Window.get_foreground()
-            if title and title in w.title:
-                return True
-            
             for win in Window.get_all_windows():
                 w=win
-                print w.title, w.executable
-                if executable in w.executable:
-                    w.set_foreground()
-                    print "stopping on ", w.executable
+                found_match=True
+                if title!=None:
+                    found_match=title in w.title
+                if found_match and executable!=None:
+                    found_match=executable in w.executable
+                if found_match:
+                    try:
+                        
+                        win32gui.SetWindowPos(w.handle,win32con.HWND_NOTOPMOST, 0, 0, 0, 0, win32con.SWP_NOMOVE + win32con.SWP_NOSIZE)  
+                        win32gui.SetWindowPos(w.handle,win32con.HWND_TOPMOST, 0, 0, 0, 0, win32con.SWP_NOMOVE + win32con.SWP_NOSIZE)  
+                        win32gui.SetWindowPos(w.handle,win32con.HWND_NOTOPMOST, 0, 0, 0, 0, win32con.SWP_SHOWWINDOW + win32con.SWP_NOMOVE + win32con.SWP_NOSIZE)
+                        Key("alt").execute()
+                        time.sleep(0.5)
+                        win32gui.SetForegroundWindow(w.handle)
+                        w.set_foreground()
+                    except Exception:
+                        utilities.report("Unable to set focus:\ntitle: "+w.title+"\nexe: "+w.executable)
                     break
-            
-            if executable and executable in w.executable:
-                return True
-            
-            return False
+             
+            # do not assume that it worked
+            success = SuperFocusWindow.focus_was_success(title, executable)
+            if not success:
+                if title!=None:
+                    print "title failure: ", title, w.title
+                if executable!=None:
+                    print "executable failure: ", executable, w.executable, executable in w.executable
+            return success
             
         forward=[L(S(["cancel"], attempt_focus))]
         AsynchronousAction.__init__(self, forward, time_in_seconds=time_in_seconds, repetitions=repetitions, 
                                     rdescript=rdescript, blocking=blocking, 
-                                    finisher=Function(control.nexus().intermediary.text, message="SuperFocus Complete"))
+                                    finisher=Function(control.nexus().intermediary.text, message="SuperFocus Complete")+Key("escape"))
         self.show = False
         
