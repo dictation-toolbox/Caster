@@ -16,19 +16,19 @@ def update(name, value):
 
 _mapping={}
 for node in [# register nodes here in order to get them into ccr
-                 css.getCSSNode()
+                css.getCSSNode()
                  ]:
-    if node.text in settings.SETTINGS["ccr"]["modes"]:
-        utilities.report("CCR naming conflict found between: config"+node.text+".txt and " \
-                         +node.text+".py, favoring CCR module, ignoring "+node.text+".py" \
-                         +" (Please delete config"+node.text+".txt) and remove "+node.text \
+    if node.spec in settings.SETTINGS["ccr"]["modes"]:
+        utilities.report("CCR naming conflict found between: config"+node.spec+".txt and " \
+                         +node.spec+".py, favoring CCR module, ignoring "+node.spec+".py" \
+                         +" (Please delete config"+node.spec+".txt) and remove "+node.spec \
                          +" from the settings.json file to change this.")
         continue
-    if node.text in settings.SETTINGS["nodes"] and settings.SETTINGS["nodes"][node.text]:
+    if node.spec in settings.SETTINGS["nodes"] and settings.SETTINGS["nodes"][node.spec]:
         node.active = True
     control.nexus().add_node_rule(NodeRule(node, None, control.nexus().intermediary, False))
-    _mapping["enable "+node.text]=Function(update, name=node.text, value=True)
-    _mapping["disable "+node.text]=Function(update, name=node.text, value=False)
+    _mapping["enable "+node.spec]=Function(update, name=node.spec, value=True)
+    _mapping["disable "+node.spec]=Function(update, name=node.spec, value=False)
      
 
 if len(_mapping)>0:

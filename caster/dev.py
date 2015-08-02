@@ -126,12 +126,18 @@ class DevRule(MappingRule):
     "charcoal boy <text> [<n>]":    R(Text("charcoal is dirty %(text)s"), rspec="charcoal"),
                             
     "test confirm action":          ConfirmAction(Key("a"), rdescript="Confirm Action Test"),
+    
+    "convert node <n>":             R(Key("cs-right, cs-right/5:%(n)d, cs-right, c-x, c-v, comma")
+                                      +Text("Text()")+Key("left, c-v"), 
+                                      rdescript="Convert Node"),
+    "text action":                  R(Text("Text()")+Key("left"), rdescript="Node 2"), 
+    "long conversion <text>":       R(Key("c-x")+Text("\"%(text)s\", Text(")+Key("c-v, rparen"), rdescript="Node 3"), 
      
     }
     extras = [
               Dictation("text"),
               Dictation("textnv"),
-              IntegerRef("n", 1, 100),
+              IntegerRef("n", 1, 5),
               Choice("id",
                     {"R": 1, "M":2,
                      }),
