@@ -106,16 +106,16 @@ class DevRule(MappingRule):
     "html":                         R(Text("<html>"), rspec="html spoken"), 
     "divider":                      R(Text("<div>"), rspec="div"),
     "span":                         R(Text("<span>"), rspec="span"),
-    "backward seeker [<text>]":     ContextSeeker([L(S(["ashes"], Text, "ashes1 [%(text)s] "),
-                                                      S(["bravery"], Text, "bravery1 [%(text)s] ")), 
-                                                   L(S(["ashes"], Text, "ashes2 [%(text)s] "),
-                                                      S(["bravery"], Text, "bravery2 [%(text)s] "))
+    "backward seeker [<text>]":     ContextSeeker([L(S(["ashes"], Text("ashes1 [%(text)s] ")),
+                                                      S(["bravery"], Text("bravery1 [%(text)s] "))), 
+                                                   L(S(["ashes"], Text("ashes2 [%(text)s] ")),
+                                                      S(["bravery"], Text("bravery2 [%(text)s] ")))
                                                    ]), 
     "forward seeker [<text>]":      ContextSeeker(forward=
-                                                  [L(S(["ashes"], Text, "ashes1 [%(text)s] "),
-                                                      S(["bravery"], Text, "bravery1 [%(text)s] ")), 
-                                                   L(S(["ashes"], Text, "ashes2 [%(text)s] "),
-                                                      S(["bravery"], Text, "bravery2 [%(text)s] "))
+                                                  [L(S(["ashes"], Text("ashes1 [%(text)s] ")),
+                                                      S(["bravery"], Text("bravery1 [%(text)s] "))), 
+                                                   L(S(["ashes"], Text("ashes2 [%(text)s] ")),
+                                                      S(["bravery"], Text("bravery2 [%(text)s] ")))
                                                    ]),
     "never-ending":                 AsynchronousAction([L(S(["ashes", "charcoal"], print_time, None),
                                                       S(["bravery"], Text, "bravery1"))

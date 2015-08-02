@@ -3,7 +3,7 @@ Created on Jun 7, 2015
 
 @author: dave
 '''
-from dragonfly import Function, Key, Mimic, Paste, Text, Pause
+from dragonfly import Function, Key, Mimic, Paste, Text, Pause, ActionBase
 
 from caster.lib import control, settings
 from caster.lib.dfplus.hint.hintnode import NodeAction
@@ -70,22 +70,23 @@ class StackItemSeeker(StackItemRegisteredAction):
         action = cl.result.f
         if action==None:
             return False
-        level = cl.index
-        fnparams = cl.result.parameters
-        if cl.result.use_spoken:
-            fnparams = self.spoken[level]
-        if cl.result.use_rspec:
-            fnparams = self.eaten_rspec[level]
-        if not action in [Text, Key, Mimic, Function, Paste, NodeAction]:
-            # it's a function object
+        elif isinstance(action, ActionBase):
+            action.execute(cl.dragonfly_data)
+            return False
+        else:
+            # it's a function object, so get the parameters, if any
+            level = cl.index
+            fnparams = cl.result.parameters
+            if cl.result.use_spoken:
+                fnparams = self.spoken[level]
+            if cl.result.use_rspec:
+                fnparams = self.eaten_rspec[level]
             if fnparams == None:
                 return action()
             else:
                 return action(fnparams)
-        else:
-            # it's a dragonfly action, and the parameters are the spec
-            action(fnparams).execute(cl.dragonfly_data)
-            return False
+            
+            
     def eat(self, level, stack_item):
         self.spoken[level] = stack_item.preserved
         self.eaten_rspec[level] = stack_item.rspec

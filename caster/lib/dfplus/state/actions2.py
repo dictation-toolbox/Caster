@@ -144,7 +144,7 @@ class SuperFocusWindow(AsynchronousAction):
                     found_match=executable in w.executable
                 if found_match:
                     try:
-                        
+                        # this is still broken
                         win32gui.SetWindowPos(w.handle,win32con.HWND_NOTOPMOST, 0, 0, 0, 0, win32con.SWP_NOMOVE + win32con.SWP_NOSIZE)  
                         win32gui.SetWindowPos(w.handle,win32con.HWND_TOPMOST, 0, 0, 0, 0, win32con.SWP_NOMOVE + win32con.SWP_NOSIZE)  
                         win32gui.SetWindowPos(w.handle,win32con.HWND_NOTOPMOST, 0, 0, 0, 0, win32con.SWP_SHOWWINDOW + win32con.SWP_NOMOVE + win32con.SWP_NOSIZE)
