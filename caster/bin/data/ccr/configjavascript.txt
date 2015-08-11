@@ -76,6 +76,10 @@ cmd.map = {
 		"instance of":				R(Text("instanceof "), rdescript="Javascript: Instance Of"), 
         
         "(far | variable)":			R(Text("var "), rdescript="Javascript: Variable"),
+        "sue iffae":				R(Text("if ()")+Key("left"), rdescript="Javascript: Short If"),
+     	"sue shells":				R(Text("else")+Key("enter"), rdescript="Javascript: Short Else"),
+     	
+     	"shell iffae":				R(Text("else if ()")+Key("left"), rdescript="Javascript: Else If"),
 	   
           }
 
