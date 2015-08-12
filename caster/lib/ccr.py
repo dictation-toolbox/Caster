@@ -137,18 +137,35 @@ def create_repeat_rule(language_rule):
     single_action = Alternative(alts)
     sequence_name = "sequence_" + "language"
     sequence = Repetition(single_action, min=1, max=16, name=sequence_name)
+    original = Alternative(alts, name="original")
+    terminal = Alternative(alts, name="terminal")
     
     #---------------------------------------------------------------------------
     # Here we define the top-level rule which the user can say.
     class RepeatRule(CompoundRule):
         # Here we define this rule's spoken-form and special elements.
-        spec = "<" + sequence_name + ">"
-        extras = [ sequence ] # Sequence of actions defined above.
+        spec = "[<original> original] [<" + sequence_name + ">] [terminal <terminal>]"# 
+        extras = [ sequence, original, terminal ] # Sequence of actions defined above.
                    
         def _process_recognition(self, node, extras):
-            sequence = extras[sequence_name]  # A sequence of actions.
-            for action in sequence:
-                action.execute()
+            original = None
+            terminal = None
+            sequence = None
+            if "original" in extras:
+                original = extras["original"]
+            if sequence_name in extras:
+                sequence = extras[sequence_name]
+            if "terminal" in extras:
+                terminal = extras["terminal"]
+            print original, "\n\n", sequence, "\n\n", terminal
+            if original!=None:
+                original.execute()
+#             sequence = extras[sequence_name]  # A sequence of actions.
+            if sequence!=None:
+                for action in sequence:
+                    action.execute()
+            if terminal!=None:
+                terminal.execute()
 
     #---------------------------------------------------------------------------
     
