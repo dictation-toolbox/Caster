@@ -157,10 +157,8 @@ def create_repeat_rule(language_rule):
                 sequence = extras[sequence_name]
             if "terminal" in extras:
                 terminal = extras["terminal"]
-            print original, "\n\n", sequence, "\n\n", terminal
             if original!=None:
                 original.execute()
-#             sequence = extras[sequence_name]  # A sequence of actions.
             if sequence!=None:
                 for action in sequence:
                     action.execute()

@@ -34,6 +34,7 @@ class Homunculus(tk.Tk):
             Label(self, text="Enter response then say 'complete'", name="pathlabel").pack()
             self.ext_box = Text(self, name="ext_box")
             self.ext_box.pack(side=tk.LEFT)
+            self.data=[0, 0]
         elif self.htype == settings.QTYPE_INSTRUCTIONS:
             self.data=data.split("|")
             Label(self, text=" ".join(self.data[0].split("_")), name="pathlabel").pack()

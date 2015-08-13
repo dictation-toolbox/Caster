@@ -22,10 +22,10 @@ To add a new homunculus (pop-up ui window) type:
     (4) call launch() from this module with its type and any data it needs (data as a single string with no spaces)
 '''
 
-def launch(hmc_type, callback, data=None):
+def launch(hmc_type, callback=None, data=None):
     from dragonfly import (WaitWindow, FocusWindow, Key)
     instructions=_get_instructions(hmc_type)
-    if data!=None:
+    if data!=None and callback!=None:
         instructions.append(data)
     Popen(instructions)
     
@@ -35,7 +35,8 @@ def launch(hmc_type, callback, data=None):
     Key("tab").execute()
     
     from caster.asynch.hmc import squeue
-    squeue.add_query(callback)
+    if callback:
+        squeue.add_query(callback)
 
 def _get_instructions(hmc_type):
     if hmc_type==settings.WXTYPE_SETTINGS:

@@ -7,7 +7,7 @@ from caster.lib import utilities, settings, ccr, context
 from caster.lib.dfplus.monkeypatch import Window
 from caster.lib.dfplus.state.actions import ContextSeeker, AsynchronousAction, \
     RegisteredAction
-from caster.lib.dfplus.state.actions2 import ConfirmAction, FuzzyMatchAction
+from caster.lib.dfplus.state.actions2 import ConfirmAction, BoxAction
 from caster.lib.dfplus.state.short import L, S, R
 
 
@@ -81,6 +81,9 @@ def bring_test():
 def abc():
     print "success 100"
 
+def xyz(data):
+    print data
+
 class DevRule(MappingRule):
     
     mapping = {
@@ -127,11 +130,8 @@ class DevRule(MappingRule):
                             
     "test confirm action":          ConfirmAction(Key("a"), rdescript="Confirm Action Test"),
     
-    "convert node <n>":             R(Key("cs-right, cs-right/5:%(n)d, cs-right, c-x, c-v, comma")
-                                      +Text("Text()")+Key("left, c-v"), 
-                                      rdescript="Convert Node"),
-    "text action":                  R(Text("Text()")+Key("left"), rdescript="Node 2"), 
-    "long conversion <text>":       R(Key("c-x")+Text("\"%(text)s\", Text(")+Key("c-v, rparen"), rdescript="Node 3"), 
+    "test box action":              BoxAction(xyz, rdescript="Test Box Action", box_type=settings.QTYPE_DEFAULT, 
+                                              log_failure=True),
      
     }
     extras = [

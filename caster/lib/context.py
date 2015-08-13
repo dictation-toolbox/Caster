@@ -106,7 +106,7 @@ def read_selected_without_altering_clipboard(same_is_okay=False):
     '''Returns a tuple:
     (0, "text from system") - indicates success
     (1, None) - indicates no change
-    (2, None) - indicates clipboard error, should not advance cursor before trying again
+    (2, None) - indicates clipboard error
     '''
     time.sleep(0.05)  # time for previous keypress to execute
     cb = Clipboard(from_system=True)

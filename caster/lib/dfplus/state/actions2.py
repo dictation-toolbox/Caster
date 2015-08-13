@@ -12,6 +12,44 @@ from caster.lib.dfplus.state.short import L, S
 '''CB's solution for focus window failure'''
 win32gui.SystemParametersInfo(win32con.SPI_SETFOREGROUNDLOCKTIMEOUT, 0, 1)
 
+class BoxAction(AsynchronousAction):
+    '''
+    Similar to AsynchronousAction, but the repeated action is always
+    checking on the Homunculus response.
+    '''
+    def __init__(self, receiver, rspec="default", rdescript="unnamed command (BA)", repetitions=60,
+                 box_type=settings.QTYPE_DEFAULT, box_title=None, box_instructions=None, log_failure=False):
+        _ = {"tries": 0}
+        self._ = _ # signals to the stack to cease waiting, return True terminates
+        def check_for_response():
+            try:
+                _data = control.nexus().comm.get_com("hmc").get_message()
+            except Exception:
+                if log_failure: utilities.simple_log()
+                _["tries"]+=1
+                if _["tries"]>9: return True # try 10 times max if there's no Homonculus response
+                else: return False
+            if _data == None: return False
+            try:
+                receiver(_data)
+            except Exception:
+                if log_failure: utilities.simple_log()
+            return True
+            
+        AsynchronousAction.__init__(self, # cannot block, if it does, it'll block its own confirm command
+                                    [L(S(["cancel"], check_for_response, None))], 
+                                    1, repetitions, rdescript, False)
+        self.rspec = rspec
+        self.box_type = box_type
+        self.box_title = box_title
+        self.box_instructions = box_instructions
+        self.log_failure = log_failure
+    def _execute(self, data=None):
+        self._["tries"] = 0       # reset
+        h_launch.launch(self.box_type, data = {"title": self.box_title, "instructions": self.box_instructions})
+        self.state.add(self.state.generate_continuer_stack_item(self, data))
+    
+
 class ConfirmAction(AsynchronousAction):
     '''
     Similar to AsynchronousAction, but the repeated action is always
@@ -22,7 +60,7 @@ class ConfirmAction(AsynchronousAction):
     1: True
     2: False
     '''
-    def __init__(self, base, rspec="default", rdescript="unnamed command (RA)"):
+    def __init__(self, base, rspec="default", rdescript="unnamed command (CA)"):
         mutable_integer = {"value": 0}
         def check_response(): # signals to the stack to cease waiting, return True terminates
             return mutable_integer["value"]!=0
