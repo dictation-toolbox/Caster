@@ -18,7 +18,7 @@ class BoxAction(AsynchronousAction):
     checking on the Homunculus response.
     '''
     def __init__(self, receiver, rspec="default", rdescript="unnamed command (BA)", repetitions=60,
-                 box_type=settings.QTYPE_DEFAULT, box_title=None, box_instructions=None, log_failure=False):
+                 box_type=settings.QTYPE_DEFAULT, box_settings={}, log_failure=False):
         _ = {"tries": 0}
         self._ = _ # signals to the stack to cease waiting, return True terminates
         def check_for_response():
@@ -31,6 +31,8 @@ class BoxAction(AsynchronousAction):
                 else: return False
             if _data == None: return False
             try:
+                _data.append(_["dragonfly_data"]) # pass dragonfly data into receiver function
+                _["dragonfly_data"] = None
                 receiver(_data)
             except Exception:
                 if log_failure: utilities.simple_log()
@@ -41,12 +43,12 @@ class BoxAction(AsynchronousAction):
                                     1, repetitions, rdescript, False)
         self.rspec = rspec
         self.box_type = box_type
-        self.box_title = box_title
-        self.box_instructions = box_instructions
+        self.box_settings = box_settings # custom instructions for setting up the tk window ("Homunculus")
         self.log_failure = log_failure
     def _execute(self, data=None):
         self._["tries"] = 0       # reset
-        h_launch.launch(self.box_type, data = {"title": self.box_title, "instructions": self.box_instructions})
+        self._["dragonfly_data"] = data
+        h_launch.launch(self.box_type, data = self.box_settings)
         self.state.add(self.state.generate_continuer_stack_item(self, data))
     
 
