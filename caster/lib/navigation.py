@@ -165,7 +165,7 @@ def volume_control(n, volume_mode):
     for i in range(0, int(n)):
         Key("volume" + str(volume_mode)).execute()
     
-def set_text_format(capitalization, spacing):
+def master_format_text(capitalization, spacing, textnv):
     '''
     Commands for capitalization: 
     1 yell - ALLCAPS
@@ -182,14 +182,10 @@ def set_text_format(capitalization, spacing):
         capitalization = 5
     if spacing == 0 and capitalization == 3:
         spacing = 1
+    Text(get_formatted_text(capitalization, spacing, str(textnv))).execute()
     global CAPITALIZATION, SPACING
     CAPITALIZATION = capitalization
     SPACING = spacing
-    return (capitalization, spacing)
-
-def master_format_text(capitalization, spacing, textnv):
-    (capitalization, spacing) = set_text_format(capitalization, spacing)
-    Text(get_formatted_text(capitalization, spacing, str(textnv))).execute()
 
 def get_formatted_text(capitalization, spacing, t):
     tlen = len(t)
