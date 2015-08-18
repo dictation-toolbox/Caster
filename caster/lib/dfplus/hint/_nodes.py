@@ -18,7 +18,7 @@ _mapping={}
 for node in [# register nodes here in order to get them into ccr
                 css.getCSSNode()
                  ]:
-    if node.spec in settings.SETTINGS["ccr"]["modes"]:
+    if node.spec.lower() in settings.SETTINGS["ccr"]["modes"]:
         utilities.report("CCR naming conflict found between: config"+node.spec+".txt and " \
                          +node.spec+".py, favoring CCR module, ignoring "+node.spec+".py" \
                          +" (Please delete config"+node.spec+".txt) and remove "+node.spec \
