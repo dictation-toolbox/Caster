@@ -26,6 +26,7 @@ class CommandRule(MappingRule):
         "select ex down":           R(Key("cs-w"), rdescript="JetBrains: entitled command"),
         "search everywhere":        R(Key("shift, shift"), rdescript="JetBrains: Search Everywhere"),
         "find in current":          R(Key("cs-f"), rdescript="JetBrains: Find In Current"),
+        "go to line":               R(Key("c-g"), rdescript="JetBrains: Go To Line"), 
         }
     extras = [
               Dictation("text"),

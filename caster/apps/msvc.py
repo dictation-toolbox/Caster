@@ -46,6 +46,8 @@ class CommandRule(MappingRule):
             "format code":                              R(Key("cs-f"), rdescript="MSVC: Format Code"),
             "(do imports | import all)":                R(Key("cs-o"), rdescript="MSVC: Do Imports"),
             "comment line":                             R(Key("c-slash"), rdescript="MSVC: Comment Line"),
+            
+            "go to line":                               R(Key("c-g"), rdescript="MSVC: Go To Line"), 
         }
     extras = [
               Dictation("text"),
