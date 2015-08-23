@@ -5,7 +5,6 @@ from dragonfly import (FocusWindow, Function, Key, BringApp, Text, WaitWindow, D
 
 from caster.lib import utilities, settings, ccr, context, navigation
 from caster.lib.dfplus.additions import IntegerRefST
-from caster.lib.dfplus.monkeypatch import Window
 from caster.lib.dfplus.state.actions import ContextSeeker, AsynchronousAction, \
     RegisteredAction
 from caster.lib.dfplus.state.actions2 import ConfirmAction, BoxAction
@@ -66,8 +65,9 @@ def close_last_rspec(rspec):
     Text("</"+rspec+">").execute()
     
 def bring_test():
+    print settings.SETTINGS["paths"]["BASE_PATH"].replace("/", "\\")
     try:
-        BringApp("explorer", settings.SETTINGS["paths"]["BASE_PATH"].replace("/", "\\")).execute()
+        BringApp("explorer", settings.SETTINGS["paths"]["BASE_PATH"]).execute()
     except Exception:
         utilities.simple_log()
         
@@ -83,7 +83,7 @@ class DevRule(MappingRule):
     # development tools
     "(show | open) documentation":  BringApp(settings.SETTINGS["paths"]["DEFAULT_BROWSER_PATH"]) + WaitWindow(executable=settings.get_default_browser_executable()) + Key('c-t') + WaitWindow(title="New Tab") + Text('http://dragonfly.readthedocs.org/en/latest') + Key('enter'),
 
-    "open natlink folder":          Function(bring_test)+FocusWindow("explorer"),
+    "open natlink folder":          R(BringApp("C:/Windows/explorer.exe", settings.SETTINGS["paths"]["BASE_PATH"].replace("/", "\\")), rdescript="Open Natlink Folder"),
     "reserved word <text>":         Key("dquote,dquote,left") + Text("%(text)s") + Key("right, colon, tab/5:5") + Text("Text(\"%(text)s\"),"),
     "refresh ccr directory":        Function(ccr.refresh_from_files),  # will need to disable and reenable language
     "Agrippa <filetype> <path>":    Function(grep_this),

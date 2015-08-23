@@ -1,15 +1,18 @@
+'''CB's solution for focus window failure'''
+
 import time
 
 from dragonfly import Function, Key
+from dragonfly.actions.action_startapp import BringApp
+from dragonfly.windows.window import Window
 import win32gui, win32con
 
 from caster.asynch.hmc import h_launch
-from caster.lib import settings, control, utilities
-from caster.lib.dfplus.monkeypatch import Window
+from caster.lib import settings, control, utilities, navigation
 from caster.lib.dfplus.state.actions import AsynchronousAction, ContextSeeker
 from caster.lib.dfplus.state.short import L, S
 
-'''CB's solution for focus window failure'''
+
 win32gui.SystemParametersInfo(win32con.SPI_SETFOREGROUNDLOCKTIMEOUT, 0, 1)
 
 class BoxAction(AsynchronousAction):
@@ -99,8 +102,7 @@ class FuzzyMatchAction(ContextSeeker):
     default_1: speaking a next command other than a number or cancel activates the first choice in the list
         ; 
     '''
-    TEN = ["numb one", "numb two", "numb three", "numb four", "numb five", 
-       "numb six", "numb seven", "numb eight", "numb nine", "numb ten"]
+    TEN = ["numb "+x for x in navigation.strange_numbers_list()+["ten"]]
     def __init__(self, list_function, filter_function, selection_function, default_1=True, rspec="default", rdescript="unnamed command (FM)"):
         def get_choices(data):
             choices = list_function()
@@ -110,7 +112,7 @@ class FuzzyMatchAction(ContextSeeker):
                 choices.append("") # this is questionable
             return choices
         self.choice_generator = get_choices
-        
+        print FuzzyMatchAction.TEN
         mutable_list = {"value": None} # only generate the choices once, and show them between the action and the stack item
         self.mutable_list = mutable_list
         
@@ -184,14 +186,7 @@ class SuperFocusWindow(AsynchronousAction):
                     found_match=executable in w.executable
                 if found_match:
                     try:
-                        # this is still broken
-                        win32gui.SetWindowPos(w.handle,win32con.HWND_NOTOPMOST, 0, 0, 0, 0, win32con.SWP_NOMOVE + win32con.SWP_NOSIZE)  
-                        win32gui.SetWindowPos(w.handle,win32con.HWND_TOPMOST, 0, 0, 0, 0, win32con.SWP_NOMOVE + win32con.SWP_NOSIZE)  
-                        win32gui.SetWindowPos(w.handle,win32con.HWND_NOTOPMOST, 0, 0, 0, 0, win32con.SWP_SHOWWINDOW + win32con.SWP_NOMOVE + win32con.SWP_NOSIZE)
-                        Key("alt").execute()
-                        time.sleep(0.5)
-                        win32gui.SetForegroundWindow(w.handle)
-                        w.set_foreground()
+                        BringApp(w.executable).execute()
                     except Exception:
                         utilities.report("Unable to set focus:\ntitle: "+w.title+"\nexe: "+w.executable)
                     break

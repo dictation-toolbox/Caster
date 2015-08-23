@@ -1,15 +1,12 @@
-import copy
-
-from dragonfly import (ActionBase, IntegerRef, Compound, Integer, Alternative)
+from dragonfly import (ActionBase, IntegerRef, Integer)
 from dragonfly.grammar.elements import RuleWrap
-from dragonfly.language import en
 from dragonfly.language.base.integer_internal import MapIntBuilder, \
     IntegerContentBase
 from dragonfly.language.en.number import int_0, int_1_9, int_10_19, int_20_99, \
     int_100s, int_100big, int_1000s, int_1000000s
 from dragonfly.language.loader import language
 
-from caster.lib import utilities, settings
+from caster.lib import utilities, settings, navigation
 
 
 class SelectiveAction(ActionBase):
@@ -36,17 +33,7 @@ class IntegerContentST(IntegerContentBase):
     builders = [int_0, int_1_9, int_10_19, int_20_99,
                 int_100s, int_100big, int_1000s, int_1000000s]
 if "en" in language.language_map and settings.SETTINGS["miscellaneous"]["integer_remap_opt_in"]:
-    mapping = {
-                 "one":        1,
-                 "twain":      2,
-                 "traio":      3,
-                 "fairn":      4,
-                 "faif":       5,
-                 "six":        6,
-                 "seven":      7,
-                 "eigen":      8,
-                 "nine":       9,
-                   }
+    mapping = navigation.strange_numbers_map()
     IntegerContentST.builders[1] = MapIntBuilder(mapping)
     INTEGER_CONTENT = IntegerContentST
 

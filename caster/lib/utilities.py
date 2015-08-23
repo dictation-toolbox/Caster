@@ -6,9 +6,8 @@ import re
 from subprocess import Popen
 import traceback
 
+from dragonfly.windows.window import Window
 import win32gui, win32ui
-
-from caster.lib.dfplus.monkeypatch import Window
 
 
 try: # Style C -- may be imported into Caster, or externally

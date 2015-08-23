@@ -78,6 +78,29 @@ def word_number(wn):
     }
     Text(numbers_to_words[int(wn)]).execute()
 
+def strange_numbers_map():
+    return {
+                 "one":        1,
+                 "twain":      2,
+                 "traio":      3,
+                 "fairn":      4,
+                 "faif":       5,
+                 "six":        6,
+                 "seven":      7,
+                 "eigen":      8,
+                 "nine":       9,
+                   }
+def strange_numbers_list():
+    return ["one",
+                 "twain",
+                 "traio",
+                 "fairn",
+                 "faif",
+                 "six",
+                 "seven",
+                 "eigen",
+                 "nine"]
+
 def numbers2(wnKK):
     Text(str(wnKK)).execute()
 
