@@ -196,7 +196,7 @@ def init_default_values():
                        ("dev_commands", False),
                        ("sikuli_enabled", False),
                        ("status_window_enabled", False), 
-                       ("short_talk_opt_out", True)
+                       ("integer_remap_opt_in", False)
                        ])
     
     # fuzzy string matching section

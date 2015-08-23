@@ -35,7 +35,7 @@ INTEGER_CONTENT = language.IntegerContent
 class IntegerContentST(IntegerContentBase):
     builders = [int_0, int_1_9, int_10_19, int_20_99,
                 int_100s, int_100big, int_1000s, int_1000000s]
-if "en" in language.language_map and not settings.SETTINGS["miscellaneous"]["short_talk_opt_out"]:
+if "en" in language.language_map and settings.SETTINGS["miscellaneous"]["integer_remap_opt_in"]:
     mapping = {
                  "one":        1,
                  "twain":      2,
