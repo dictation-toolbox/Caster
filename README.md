@@ -8,4 +8,5 @@ Caster is a collection of tools aimed at enabling programming entirely by voice.
 - [instructions for installing dragonfly](http://explosionduck.com/caster/install/dragonfly.html)
 - [caster wiki](https://github.com/synkarius/caster/wiki)
 - [tutorial videos](https://www.youtube.com/channel/UC2qZzmCj_5ZKkTa3i9X1LCg)
+- [contributing / how can I help?](https://github.com/synkarius/caster/blob/master/caster/doc/CONTRIBUTING.md)
 - [github.io page](http://synkarius.github.io/caster/)
