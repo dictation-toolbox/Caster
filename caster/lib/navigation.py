@@ -4,6 +4,8 @@ import time
 
 from dragonfly import (Key, Text , Playback, Choice, Mouse)
 import dragonfly
+from dragonfly.actions.action_base import ActionError
+from dragonfly.actions.keyboard import Keyboard
 import win32clipboard
 
 from caster.asynch.mouse.legion import LegionScanner
@@ -18,7 +20,7 @@ TARGET_CHOICE = Choice("target",
                 "closers": "}~]~)",
                 "parameter": "PARAMETER", "variable": "VARIABLE", "type": "TYPE",
                 "name": "NAME", "object": "OBJECT", "list": "LIST", "scope": "SCOPE",
-                "value": "VALUE", "class": "CLASS", "function": "FUNCTION",
+                "value": "VALUE", "class": "CLASS", "function": "FUNCTION", "expression": "EXPRESSION"
                 })
 CAPITALIZATION, SPACING = 0, 0
 
@@ -119,6 +121,7 @@ def mouse_alternates(mode):
             utilities.simple_log(True)
     else:
         utilities.availability_message(mode.title(), "PIL")    
+
 
 def clipboard_to_file(nnavi500, do_copy=False):
     if do_copy:

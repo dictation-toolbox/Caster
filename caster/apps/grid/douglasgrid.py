@@ -12,7 +12,7 @@ from caster.lib.dfplus.state.short import R
 
 from caster.asynch.mouse import grids
 from caster.lib import settings, control
-
+from caster.lib.dfplus.additions import IntegerRefST
 
 def kill():
     control.nexus().comm.get_com("grids").kill()
@@ -35,8 +35,8 @@ class GridControlRule(MappingRule):
         "exit":                             R(Function(kill), rdescript="Exit Douglas Grid"),
                 }
     extras = [
-              IntegerRef("n", 0, 300),
-              IntegerRef("n2", 0, 300),
+              IntegerRefST("n", 0, 300),
+              IntegerRefST("n2", 0, 300),
               Choice("action", {
                               "kick": 0,
                               "psychic": 1,

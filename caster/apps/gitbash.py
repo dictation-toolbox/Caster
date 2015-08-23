@@ -15,6 +15,7 @@ Command-module for git
 from dragonfly import (Grammar, AppContext, MappingRule, Mimic, 
                        Key, Text, Function, IntegerRef)
 from caster.lib.dfplus.state.short import R
+from caster.lib.dfplus.additions import IntegerRefST
 
 def apply(n):
     if n!=0:
@@ -76,7 +77,7 @@ class CommandRule(MappingRule):
         "to file":          R(Text(" > FILENAME"), rdescript="Bash: To File"),
         }
     extras = [
-              IntegerRef("n", 1, 10000),
+              IntegerRefST("n", 1, 10000),
              ]
     defaults ={"n": 0}
 

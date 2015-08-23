@@ -7,7 +7,7 @@ from dragonfly import (Function, Text, Grammar, Choice,
 from caster.lib import  settings, utilities, navigation
 from caster.lib import control
 from caster.lib.dfplus.state.short import R
-
+from caster.lib.dfplus.additions import IntegerRefST
 
 def kill():
     control.nexus().comm.get_com("sticky_list").kill()
@@ -65,7 +65,7 @@ class SListUsageRule(MappingRule):
     "L kill":                       R(Function(kill), rdescript="Shutdown Sticky List"),
     }   
     extras = [
-              IntegerRef("n", 1, 200),
+              IntegerRefST("n", 1, 200),
               Dictation("text"),
               Choice("sticky", {"run": 1}),
              ]

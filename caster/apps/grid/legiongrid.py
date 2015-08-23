@@ -15,6 +15,7 @@ import win32con
 from caster.asynch.mouse import grids
 from caster.lib import navigation, settings, control
 from caster.lib.dfplus.state.short import R
+from caster.lib.dfplus.additions import IntegerRefST
 
 def kill():
     control.nexus().comm.get_com("grids").kill()
@@ -65,7 +66,7 @@ class GridControlRule(MappingRule):
                               "light": 2,
                              }
                     ),
-              IntegerRef("n", 0, 1000),
+              IntegerRefST("n", 0, 1000),
               
              ]
     defaults = {

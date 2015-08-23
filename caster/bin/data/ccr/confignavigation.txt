@@ -4,6 +4,7 @@ from caster.lib.pita import fnfz
 from caster.lib.dfplus.state.actions import ContextSeeker, AsynchronousAction, RegisteredAction
 from caster.lib.dfplus.state.short import L, S, R
 from caster.lib.dfplus.state.actions2 import FuzzyMatchAction
+from caster.lib.dfplus.additions import IntegerRefST
 navigation.initialize_clipboard()
 
 cmd.map = {
@@ -47,8 +48,8 @@ cmd.map = {
 	}
 
 cmd.extras = [
-          IntegerRef("nnavi50", 1, 50),
-          IntegerRef("nnavi500", 1, 500),
+          IntegerRefST("nnavi50", 1, 50),
+          IntegerRefST("nnavi500", 1, 500),
           Dictation("textnv"),
           
           Choice("capitalization",
@@ -119,8 +120,8 @@ cmd.ncmap = {
 cmd.ncextras   = [
               Dictation("text"),
               Dictation("mim"),
-              IntegerRef("n", 1, 50),
-              IntegerRef("nnavi500", 1, 500),
+              IntegerRefST("n", 1, 50),
+              IntegerRefST("nnavi500", 1, 500),
               Choice("time_in_seconds",
                 {"super slow": 5, "slow": 2, "normal": 0.6, "fast": 0.1, "superfast": 0.05
                 }),

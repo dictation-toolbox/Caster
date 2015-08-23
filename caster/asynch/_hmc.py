@@ -5,7 +5,7 @@ from dragonfly import (Function, Grammar, IntegerRef, MappingRule, AppContext, C
 from caster.asynch.hmc import h_launch
 from caster.lib import  settings, control, utilities
 from caster.lib.dfplus.state.short import R
-
+from caster.lib.dfplus.additions import IntegerRefST
 
 def kill():
     control.nexus().comm.get_com("hmc").kill()
@@ -56,8 +56,8 @@ class HMCRule(MappingRule):
         "cancel":                       R(Function(hmc_confirm, value=False), rdescript="HMC: Cancel Action"),
     }   
     extras = [
-              IntegerRef("n", 1, 25),
-              IntegerRef("n2", 1, 25),
+              IntegerRefST("n", 1, 25),
+              IntegerRefST("n2", 1, 25),
               Choice("field",
                     {"vocabulary": "vocabulary", "word": "word"
                     }),

@@ -13,7 +13,7 @@ cmd.map = {
         "shells":        		        R(Key("e, l, s, e, leftbrace, enter"), rdescript="C++: Else"),
         #
         "switch":						R(Text("switch(){\ncase : break;\ndefault: break;")+Key("up,up,left,left"), rdescript="C++: Switch"),
-        "K states":						R(Text("case :")+Key("left"), rdescript="C++: Case"),
+        "case of":						R(Text("case :")+Key("left"), rdescript="C++: Case"),
 		"breaker":						R(Text("break;"), rdescript="C++: Break"),
 		"default":						R(Text("default: "), rdescript="C++: Default"),
 		#

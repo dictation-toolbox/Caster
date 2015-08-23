@@ -3,7 +3,7 @@ import re
 import time
 
 from dragonfly import (Playback, CompoundRule, IntegerRef, Mimic, Text)
-
+from caster.lib.dfplus.additions import IntegerRefST
 from caster.asynch.hmc import h_launch
 from caster.lib import settings, control, utilities, navigation, context, ccr
 
@@ -177,7 +177,7 @@ def load_recorded_rules():
     recorded_macros = utilities.load_json_file(settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
     for spec in recorded_macros:
         commands = recorded_macros[spec]# this is a list of lists
-        rule = RecordedRule(commands=commands, spec=spec, name="recorded_rule_" + spec, extras=[IntegerRef("n", 1, 50)], defaults={"n":1})
+        rule = RecordedRule(commands=commands, spec=spec, name="recorded_rule_" + spec, extras=[IntegerRefST("n", 1, 50)], defaults={"n":1})
         control.nexus().macros_grammar.add_rule(rule)
     if len(control.nexus().macros_grammar.rules) > 0:
         control.nexus().macros_grammar.load()

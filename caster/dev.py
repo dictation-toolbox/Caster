@@ -1,9 +1,10 @@
 from subprocess import Popen
 import time
 
-from dragonfly import (FocusWindow, Function, Key, BringApp, Text, WaitWindow, Dictation, Choice, Grammar, MappingRule, IntegerRef)
+from dragonfly import (FocusWindow, Function, Key, BringApp, Text, WaitWindow, Dictation, Choice, Grammar, MappingRule, IntegerRef, Paste)
 
-from caster.lib import utilities, settings, ccr, context
+from caster.lib import utilities, settings, ccr, context, navigation
+from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.monkeypatch import Window
 from caster.lib.dfplus.state.actions import ContextSeeker, AsynchronousAction, \
     RegisteredAction
@@ -17,15 +18,7 @@ grammar = Grammar('development')
 # from tkColorChooser import askcolor 
 def experiment(text):
     '''this function is for tests'''
-    try:
-        ''''''
-        exes = set([x.executable.split("\\")[-1][:-4] for x  in Window.get_all_windows()])
-        titles = set([x.title for x  in Window.get_all_windows()])
-#         print get_similar_process_name(exes)
-        print titles
-            
-    except Exception:
-        utilities.simple_log(False)
+    
 
 # 
 
@@ -96,10 +89,9 @@ class DevRule(MappingRule):
     "Agrippa <filetype> <path>":    Function(grep_this),
     
     # experimental/incomplete commands
-    "zone test":                    R(Text("a")+Text("b")), 
     
     "experiment <text>":            Function(experiment),
-    # 
+    "short talk number <n2>":       Text("%(n2)d"), 
 #     "dredge [<id> <text>]":         Function(dredge),
     
     "close last tag":               ContextSeeker([L(S(["cancel"], None),
@@ -132,12 +124,14 @@ class DevRule(MappingRule):
     
     "test box action":              BoxAction(xyz, rdescript="Test Box Action", box_type=settings.QTYPE_DEFAULT, 
                                               log_failure=True),
+    
+    "test dragonfly paste":         Paste("some text"),
      
     }
     extras = [
               Dictation("text"),
               Dictation("textnv"),
-              IntegerRef("n", 1, 5),
+              IntegerRefST("n", 1, 5),
               Choice("id",
                     {"R": 1, "M":2,
                      }),
@@ -147,6 +141,7 @@ class DevRule(MappingRule):
               Choice("filetype",
                     {"java": "*.java", "python":"*.py",
                      }),
+              IntegerRefST("n2", 1, 100)
              ]
     defaults = {
                "text": "", "id":None

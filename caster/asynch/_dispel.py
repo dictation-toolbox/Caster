@@ -5,7 +5,7 @@ from dragonfly import (Function, Text, Grammar, BringApp, WaitWindow, Key,
 
 from caster.lib import control, settings, utilities
 from caster.lib.dfplus.state.short import R
-
+from caster.lib.dfplus.additions import IntegerRefST
 
 class Dispel:  # this needs an entry in the settings file, needs to retain information when Dragon is reset
     def __init__(self):
@@ -79,8 +79,8 @@ class MainRule(MappingRule):
     "reset dispel":                 R(Function(ALARM.reset), rdescript="Reset Ergonomic Alarm"),
     }
     extras = [
-              IntegerRef("n", 1, 500),
-              IntegerRef("n2", 1, 500),
+              IntegerRefST("n", 1, 500),
+              IntegerRefST("n2", 1, 500),
               Dictation("text"),
              ]
     defaults = {"n": 1, "n2": 1,

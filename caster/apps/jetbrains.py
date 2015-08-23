@@ -1,6 +1,7 @@
 from dragonfly import (Grammar, AppContext, MappingRule,
                        Dictation, IntegerRef, Key)
 from caster.lib.dfplus.state.short import R
+from caster.lib.dfplus.additions import IntegerRefST
  
 class CommandRule(MappingRule):
 
@@ -31,7 +32,7 @@ class CommandRule(MappingRule):
     extras = [
               Dictation("text"),
               Dictation("mim"),
-              IntegerRef("n", 1, 1000),
+              IntegerRefST("n", 1, 1000),
               
              ]
     defaults = {"n": 1, "mim":""}

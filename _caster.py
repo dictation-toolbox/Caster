@@ -30,7 +30,7 @@ try:
     from caster.lib import navigation, password
     from caster.lib.pita import scanner
     from caster.lib.dfplus.state.short import R
-    
+    from caster.lib.dfplus.additions import IntegerRefST
     
     ccr.initialize_ccr()
     recording.load_alias_rules()
@@ -50,7 +50,7 @@ def change_monitor():
         Playback([(["monitor", "select"], 0.0)]).execute()
     else:
         utilities.report("This command requires SikuliX to be enabled in the settings file")
-       
+
 class MainRule(MappingRule):
     
     @staticmethod
@@ -105,7 +105,7 @@ class MainRule(MappingRule):
     
     }
     extras = [
-              IntegerRef("n", 1, 50),
+              IntegerRefST("n", 1, 50),
               Dictation("text"),
               Dictation("text2"),
               Dictation("text3"),

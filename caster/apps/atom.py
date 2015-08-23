@@ -10,6 +10,7 @@ from dragonfly import (Grammar, AppContext, MappingRule,
 from dragonfly.actions.action_mimic import Mimic
 
 from caster.lib.dfplus.state.short import R
+from caster.lib.dfplus.additions import IntegerRefST
 
 class CommandRule(MappingRule):
 
@@ -317,8 +318,8 @@ class CommandRule(MappingRule):
     extras = [
             Dictation("text"),
             Dictation("mim"),
-            IntegerRef("n", 1, 10000),
-            IntegerRef("n2", 1, 9),
+            IntegerRefST("n", 1, 10000),
+            IntegerRefST("n2", 1, 9),
 
              ]
     defaults = {"n": 1, "mim":""}

@@ -8,7 +8,7 @@ INISETPATH = os.path.realpath(__file__).split("lib")[0]+"bin\\data\\settings.jso
 BASE_PATH = os.path.realpath(__file__).split("\\lib")[0].replace("\\", "/")
 
 # title
-SOFTWARE_VERSION_NUMBER = "0.5.2"
+SOFTWARE_VERSION_NUMBER = "0.5.3"
 SOFTWARE_NAME = "Caster v " + SOFTWARE_VERSION_NUMBER
 S_LIST_VERSION = "Sticky List v " + SOFTWARE_VERSION_NUMBER
 DISPEL_VERSION = "Dispel v " + SOFTWARE_VERSION_NUMBER
@@ -195,7 +195,8 @@ def init_default_values():
                        ("debug_speak", False), 
                        ("dev_commands", False),
                        ("sikuli_enabled", False),
-                       ("status_window_enabled", False)
+                       ("status_window_enabled", False), 
+                       ("short_talk_opt_out", True)
                        ])
     
     # fuzzy string matching section

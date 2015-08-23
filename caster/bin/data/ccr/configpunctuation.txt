@@ -3,6 +3,7 @@
 
 from dragonfly import *
 from caster.lib.dfplus.state.short import R
+from caster.lib.dfplus.additions import IntegerRefST
 
 release = Key("shift:up, ctrl:up")
 noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added on the right side
@@ -49,7 +50,7 @@ cmd.map = {
  
 
 cmd.extras = [
-			IntegerRef("npunc", 0, 10),
+			IntegerRefST("npunc", 0, 10),
 	]
 cmd.defaults = {
 			"npunc": 1,

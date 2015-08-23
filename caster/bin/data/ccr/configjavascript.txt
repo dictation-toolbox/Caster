@@ -16,7 +16,7 @@ cmd.map = {
 		"shells":					R(Text("else {}")+Key("left, enter:2, up"), rdescript="Javascript: Else"),
 		#
 		"switch":					R(Text("switch(){}")+Key("left, enter:2, up"), rdescript="Javascript: Switch"),
-		"K states":					R(Text("case :")+Key("left"), rdescript="Javascript: Case"),
+		"case of":					R(Text("case :")+Key("left"), rdescript="Javascript: Case"),
 		"breaker":					R(Text("break;"), rdescript="Break"),
 		"default":					R(Text("default: "), rdescript="Javascript: Default"),
 		#

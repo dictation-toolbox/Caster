@@ -13,7 +13,7 @@ cmd.map = {
 		"shells":					R(Text("else"), rdescript="Bash: Else"),
 		#
 		"switch":					R(Text("case VALUE in"), rdescript="Bash: Switch"),
-		"K states":					R(Text("VALUE)  ;;")+Key("left/5:2"), rdescript="Bash: Case"),
+		"case of":					R(Text("VALUE)  ;;")+Key("left/5:2"), rdescript="Bash: Case"),
 		"breaker":					R(Text("break"), rdescript="Bash: Break"),
 		"default":					R(Text("*)  ;;"), rdescript="Bash: Default"),
 		#

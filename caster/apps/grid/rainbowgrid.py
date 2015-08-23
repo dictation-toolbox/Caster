@@ -11,6 +11,7 @@ from dragonfly import (Grammar, AppContext, Function,
 from caster.asynch.mouse import grids
 from caster.lib import settings, control
 from caster.lib.dfplus.state.short import R
+from caster.lib.dfplus.additions import IntegerRefST
 
 def kill():
     control.nexus().comm.get_com("grids").kill()
@@ -36,7 +37,7 @@ class GridControlRule(MappingRule):
 
         }
     extras = [
-              IntegerRef("pre", 0, 9),
+              IntegerRefST("pre", 0, 9),
               Choice("color", {
                               "red": 0,
                               "(orange | tan | brown)": 1,
@@ -51,7 +52,7 @@ class GridControlRule(MappingRule):
                               "psychic": 1,
                              }
                     ),
-              IntegerRef("n", 0, 100),
+              IntegerRefST("n", 0, 100),
               
              ]
     defaults = {
