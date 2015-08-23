@@ -1,2 +1,0 @@
-files for Inno Installer
-==================
