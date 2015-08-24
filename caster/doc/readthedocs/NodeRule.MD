@@ -21,7 +21,7 @@ So, let's say for example that I want to be able to speak any of the following c
 
 That's sixteen specs getting added. Since a lot of them will only be spoken after others, this command set fits well into a tree structure. (Not all command sets will.) The number of specs in the active CCR grammar from this command set can be reduced by only keeping a certain number of levels of the tree structure open (speakable) at a given time.
 
-![](https://github.com/synkarius/caster/blob/master/caster/doc/img/noderule1.png) 
+<img src="https://github.com/synkarius/caster/blob/master/caster/doc/img/noderule1.png">
 
 In the above diagram, the first two levels of the tree are active. This means I can speak these specs:
 
@@ -34,22 +34,23 @@ In the above diagram, the first two levels of the tree are active. This means I 
 
 If I then speak spec (a), it's effect occurs, and the NodeRule updates itself so that the active nodes look like the diagram below.
 
-![](https://github.com/synkarius/caster/blob/master/caster/doc/img/noderule2.png) 
+<img src="https://github.com/synkarius/caster/blob/master/caster/doc/img/noderule2.png">
 
 If I had spoken (a d) instead, only (m) would have been available next.
 
-The NodeRule will reset itself to its initial state if either any of the final nodes are spoken or, if any unrelated [[Context Stack|contextstack]] action is spoken.
+The NodeRule will reset itself to its initial state if either any of the final nodes are spoken or, if any unrelated **Context Stack** action is spoken.
 
 ## Integration With the Status Window
-If the [[status window|console]] is active, the NodeRule will use it to display hints about what the next available nodes are.
+If the **status window** is active, the NodeRule will use it to display hints about what the next available nodes are.
 
 ## How to Create and Register a Node
-### Making Your Own `HintNode`
+### Making Your Own HintNode
 To create a NodeRule, you first have to create a [HintNode](https://github.com/synkarius/caster/blob/master/caster/lib/dfplus/hint/hintnode.py) which will be passed into the NodeRule constructor. For examples, look at the [nodes directory](https://github.com/synkarius/caster/tree/master/caster/lib/dfplus/hint/nodes). A HintNode basically looks like this:
 
     HintNode("spec", SomeDragonflyAction(), [<child nodes>], [<extras>], {<defaults>})
 
 Some further explanation:
+
 * `spec` - the same sort of spec you would use in a Dragonfly MappingRule
 * `SomeDragonflyAction` - Text, Mimic, Key, etc.
 * `<child nodes>` - a list of HintNodes, which may themselves have child nodes, etc.
@@ -65,6 +66,7 @@ A few examples:
 
 ### Registering Your NodeRule with CCR (optional)
 The topmost node will be treated a little differently than the rest.
+
 * Its text/spec will not be used to create any commands. They will be ignored in this regard. Instead, its text will be used to create the enable/disable commands if you register it with CCR.
 * Its immediate children will be treated as top-level nodes, and it is to them that the NodeRule will reset, when it resets.
 

@@ -1,6 +1,7 @@
 # Continuous Command Recognition
 
 **Contents**
+
 * [Introduction](#introduction)
 * [Rationale](#rationale)
 * [How It Works](#how-it-works)
@@ -21,7 +22,7 @@ Compatibility is handled by checking the mode(s) being enabled against the alrea
 
 ## Adding and Editing CCR Modules
 Adding a new CCR mode is simple: add a new text file to the data/ccr folder which follows the _multiedit.py text format and the following naming convention:
-* The file must be named **config\<something\>.txt**. \<something\> will be the word that you speak to enable that mode in the enable and disable commands. For example, to enable the commands in confightml.txt, you would say "enable html".
+* The file must be named **config<something>.txt**. <something> will be the word that you speak to enable that mode in the enable and disable commands. For example, to enable the commands in confightml.txt, you would say "enable html".
 
 ## Non-CCR Sections in CCR Modules
 Some modules have non-CCR sections in them which are activated when the CCR parts are. This functionality is intended for cases where those extra commands should only be available at the same time as the CCR commands in that module, but there's no need for them to be chainable, and for accuracy's sake it's actually undesirable for them to be chainable. The navigation module, for instance, has many non-CCR commands in it. See everything under "cmd.ncactive=True".
