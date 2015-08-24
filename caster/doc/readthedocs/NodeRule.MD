@@ -1,6 +1,7 @@
 # NodeRule
 
 **Contents**
+
 * [What and Why](#what-and-why)
 * [Integration With the Status Window](#integration-with-the-status-window)
 * [How to Create and Register a Node](#how-to-create-and-register-a-node)
@@ -25,12 +26,15 @@ That's sixteen specs getting added. Since a lot of them will only be spoken afte
 
 In the above diagram, the first two levels of the tree are active. This means I can speak these specs:
 
-    a         | c
-    a d       | c h
-    a e       | c i
-    a f       | 
-    b         | 
-    b g       | 
+    a   
+    a d 
+    a e 
+    a f 
+    b   
+    b g 
+	c
+	c h
+	c i
 
 If I then speak spec (a), it's effect occurs, and the NodeRule updates itself so that the active nodes look like the diagram below.
 
