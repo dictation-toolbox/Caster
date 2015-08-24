@@ -171,7 +171,8 @@ Library.
 
 ##Licenses for Non-Original Code
 Below is a list of all the non-original code used in this work, and the licenses each respective piece uses.
-- Dragonfly: LGPL3
-- pywin32: Python Software Foundation License
-- Pillow: PIL Software License
-- TiRG by trg787: Public Domain License, see (github.com/synkarius/tirg-dll)
+
+* Dragonfly: LGPL3
+* pywin32: Python Software Foundation License
+* Pillow: PIL Software License
+* TiRG by trg787: Public Domain License, see (github.com/synkarius/tirg-dll)
