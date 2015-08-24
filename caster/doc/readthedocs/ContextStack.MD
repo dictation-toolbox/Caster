@@ -17,6 +17,7 @@ A RegisteredAction wraps a Dragonfly action. When Dragonfly executes the Registe
     "some spec":        RegisteredAction(Key("c-f"), rdescript="Find")
 
 RegisteredAction has a number of optional parameters which affect its processing in the context stack.
+
 * `rspec` - registers this command as a key which is able to trigger specific behavior in ContextSeekers and AsynchronousActions
 * `rdescript` - the description of this command which will appear in the status window if it is active
 * `rundo` - another Dragonfly action which is used to undo the base action (not implemented yet)
@@ -39,6 +40,7 @@ A ContextLevel is a set of possible outcomes which can be triggered by a Registe
     ContextSet(["apple"], otherfunction)
 
 A few points about the ContextSet:
+
 * `specTriggers` - The trigger words in the first parameter will be matched against the RegisteredActions' `rspec`. So if you have a RegisteredAction with `rspec="banana"`, it will trigger the second of the three ContextSets above. You could use either `rspec="hello"` or `rspec="goodbye"` to trigger the first.
 * `f` - The second parameter, the outcome, can be a Python function or any of the following Dragonfly actions: Text, Key, Mimic, Function, Paste. It can also be `None` if you want outcome function to do nothing. (This is often useful as a default.)
 * `parameters` - The first optional parameter, `parameters`, is a parameter or list of parameters which will be passed to the outcome function (the second parameter).
@@ -63,6 +65,7 @@ ContextLevel can be shortened to `L`. ContextSet can be shortened to `S`.
 If a RegisteredAction command is spoken which selects none of the ContextSets for a given ContextLevel, that ContextLevel will default to the first ContextSet.
 
 ContextSeeker optional parameters:
+
 * `rspec` - same as RegisteredAction
 * `rdescript` - same as RegisteredAction
 
@@ -95,6 +98,7 @@ AsynchronousAction is a specialized kind of ContextSeeker. It only has one Conte
 3. it runs a predetermined number of times (set in the parameters)
 
 AsynchronousAction optional parameters:
+
 * `time_in_seconds` - time between repetitions of repeating function
 * `repetitions` - max repetitions
 * `rdescript` - same as RegisteredAction
