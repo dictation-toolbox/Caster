@@ -139,7 +139,7 @@ if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
 utilities.report("*- Starting " + settings.SOFTWARE_NAME + " -*")
 
 
-if __name__ == "__main__":
+if settings.WSR:
     import pythoncom
     print "Windows Speech Recognition is garbage; it is " \
         +"recommended that you not run Caster this way. " \

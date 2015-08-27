@@ -112,7 +112,6 @@ class FuzzyMatchAction(ContextSeeker):
                 choices.append("") # this is questionable
             return choices
         self.choice_generator = get_choices
-        print FuzzyMatchAction.TEN
         mutable_list = {"value": None} # only generate the choices once, and show them between the action and the stack item
         self.mutable_list = mutable_list
         

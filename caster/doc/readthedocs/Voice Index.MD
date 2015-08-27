@@ -53,6 +53,8 @@ If you're just getting started with voice programming, I suggest reading [this a
 
 # other dragonfly repositories
 
+* https://github.com/jgarvin/mandimus
+* https://github.com/j127/coding-by-voice
 * https://github.com/dictation-toolbox
 * https://github.com/russell/damselfly
 * https://github.com/chajadan/DragonflyRules
