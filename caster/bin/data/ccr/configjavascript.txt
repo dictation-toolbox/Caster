@@ -40,6 +40,9 @@ cmd.map = {
 		"function":					R(Text("function NAME() {};")+Key("left:2, enter")
 									 +SelectiveAction(Key("enter, up"), ["AptanaStudio3.exe"]), 
 									 rdescript="Javascript: Function"),
+		"anon funk":				R(Text("function () {}")+Key("left:1, enter")
+									 +SelectiveAction(Key("enter, up"), ["AptanaStudio3.exe"]), 
+									 rdescript="Javascript: Anonymous Function"),
 		# (no classes in javascript)
 		#
 		"add comment":				R(Text("//"), rdescript="Javascript: Add Comment"),
