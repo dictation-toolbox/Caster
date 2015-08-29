@@ -124,18 +124,22 @@ def clipboard_to_file(nnavi500, do_copy=False):
     if do_copy:
         Key("c-c").execute()
     
+    max_tries = 20
+    try_count = 0
+    
     key = str(nnavi500)
     while True:
         failure = False
         try:
+            try_count += 1
             time.sleep(0.05)  # time for keypress to execute
             win32clipboard.OpenClipboard()
             control.nexus().clip[key] = win32clipboard.GetClipboardData()
             win32clipboard.CloseClipboard()
-            utilities.save_json_file(control.nexus().clip, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
+            utilities.save_json_file(control.nexus().clip, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])            
         except Exception:
             failure = True
-        if not failure:
+        if not failure or try_count > max_tries:
             break
 
 def drop(nnavi500):
