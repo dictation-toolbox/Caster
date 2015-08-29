@@ -151,21 +151,19 @@ def clipboard_to_file(nnavi500, do_copy=False):
         Key("c-c").execute()
     
     max_tries = 20
-    try_count = 0
     
     key = str(nnavi500)
-    while True:
+    for i in range(0, max_tries):
         failure = False
         try:
-            try_count += 1
-            time.sleep(0.05)  # time for keypress to execute
+            time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)   # time for keypress to execute
             win32clipboard.OpenClipboard()
             control.nexus().clip[key] = win32clipboard.GetClipboardData()
             win32clipboard.CloseClipboard()
             utilities.save_json_file(control.nexus().clip, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])            
         except Exception:
             failure = True
-        if not failure or try_count > max_tries:
+        if not failure:
             break
 
 def drop(nnavi500):
@@ -181,7 +179,7 @@ def drop(nnavi500):
                 Key("c-v").execute()
             else:
                 dragonfly.get_engine().speak("slot empty")
-            time.sleep(0.05)
+            time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.) 
         except Exception:
             failure = True
         if not failure:
@@ -280,7 +278,7 @@ def master_text_nav(mtn_mode, mtn_dir, nnavi500, extreme):
         way = "end" if mtn_dir in ["right", "down"] else "home"
         k = str(mtn_mode) + "-" + str(way)
     Key(k).execute()
-    time.sleep(0.05)
+    time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.) 
 
 def kill_grids_and_wait():
     window_title = utilities.get_active_window_title()

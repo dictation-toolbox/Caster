@@ -196,7 +196,8 @@ def init_default_values():
                        ("dev_commands", False),
                        ("sikuli_enabled", False),
                        ("status_window_enabled", False), 
-                       ("integer_remap_opt_in", False)
+                       ("integer_remap_opt_in", False), 
+                       ("keypress_wait", 50)# milliseconds
                        ])
     
     # fuzzy string matching section

@@ -3,7 +3,7 @@ import time
 
 from dragonfly import *
 
-from caster.lib import utilities, control
+from caster.lib import utilities, control, settings
 from caster.lib.dfplus import state
 
 
@@ -108,7 +108,7 @@ def read_selected_without_altering_clipboard(same_is_okay=False):
     (1, None) - indicates no change
     (2, None) - indicates clipboard error
     '''
-    time.sleep(0.05)  # time for previous keypress to execute
+    time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)  # time for previous keypress to execute
     cb = Clipboard(from_system=True)
     temporary = None
     prior_content = None
@@ -118,7 +118,7 @@ def read_selected_without_altering_clipboard(same_is_okay=False):
         Clipboard.set_system_text("")
     
         Key("c-c").execute()
-        time.sleep(0.05)  # time for keypress to execute
+        time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)  # time for keypress to execute
         temporary = Clipboard.get_system_text()
         cb.copy_to_system()
 
