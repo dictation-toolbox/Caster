@@ -3,9 +3,8 @@ from dragonfly import Key, Text
 from caster.lib.dfplus.mergerule import MergeRule
 
 
-class HTMLCCR(MergeRule):
+class HTML(MergeRule):
     mapping = {
-            # Spoken-form    ->    ->    ->     Action object
     # A macro with ## is depreciated HTML.
 #Macros
             "make link":        Text("<a href=''></a>")+  Key("left/10:6"),

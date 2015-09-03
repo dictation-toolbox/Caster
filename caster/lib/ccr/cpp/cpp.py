@@ -5,15 +5,32 @@ Created on Sep 1, 2015
 '''
 from dragonfly import Key, Mimic, Text
 
-from caster.lib import settings
-from caster.lib.dfplus.mergerule import MergeRule
+from caster.lib.dfplus.mergerule import MergeRule, TokenSet
 from caster.lib.dfplus.state.short import R
 
 
-settings.register_language(".cpp", "c++")
-settings.register_language(".h", "c++")
-
-class CPPCCR(MergeRule):
+class CPP(MergeRule):
+    auto = [(".h", "c++"), (".cpp", "c++")]
+    pronunciation = "C plus plus"
+    TOKEN_SET = TokenSet(["alignas", "alignof", "and", "and_eq", "asm", "auto", 
+                "bitand", "bitor", "bool", "break", "case", "catch", 
+                "char", "char16_t", "char32_t", "class", "compl", 
+                "concept", "const", "constexpr", "const_cast", "continue", 
+                "decltype", "default", "delete", "do", "double", 
+                "dynamic_cast", "else", "enum", "explicit", "export", 
+                "extern", "false", "float", "for", "friend", "goto", "if", 
+                "inline", "int", "long", "mutable", "namespace", "new", 
+                "noexcept", "not", "not_eq", "nullptr", "operator", "or", 
+                "or_eq", "private", "protected", "public", "register", 
+                "reinterpret_cast", "requires", "return", "short", "signed", 
+                "sizeof", "static", "static_assert", "static_cast", "struct", 
+                "switch", "template", "this", "thread_local", "throw", "true", 
+                "try", "typedef", "typeid", "typename", "union", "unsigned", 
+                "using", "virtual", "void", "volatile", "wchar_t", "while", 
+                "xor", "xor_eq"   ], 
+                         "//", 
+                         ["/*", "*/"])
+    
     mapping = {
         # CCR PROGRAMMING STANDARD
         "iffae":                            R(Key("i, f, lparen, rparen, leftbrace, enter,up,left"), rdescript="C++: If"),

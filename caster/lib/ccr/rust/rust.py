@@ -1,12 +1,31 @@
-from dragonfly import Key, Text, Choice
+from dragonfly import Key, Text, Choice, MappingRule
 
 from caster.lib import navigation
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 
+class RustNon(MappingRule):
+    mapping = {
+        "macro format string":        R(Text("format!()")+Key("left"), rdescript="Rust: Format String"), 
+        "macro panic":                R(Text("panic!()")+Key("left"), rdescript="Rust: Panic"),
+        "macro assertion":            R(Text("assert_eq!()")+Key("left"), rdescript="Rust: Assertion"),
+        "ternary":                    R(Text("if NAME == VALUE { VALUE } else { VALUE }"), rdescript="Rust: Ternary"),
+        "function [<return>]":        R(Text("fn NAME(VALUE)%(return)s{}"),  rdescript="Rust: Function"),
+        "infinite loop":              R(Text("loop {}")+Key("left"), rdescript="Rust: Infinite Loop"), 
+         
+        }
+    extras   = [
+           Choice("return", {"return": " -> TYPE "}),
+        ]
+    defaults = {
+             "return": " "
+        }
 
-class RustCCR(MergeRule):
+class Rust(MergeRule):
+    auto = [(".rs", "rust")]
+    non = RustNon
+    
     mapping = {
         # CCR PROGRAMMING STANDARD
         "iffae":                        R(Text("if  {}")+Key("left/5:3"), rdescript="Rust: If"),
@@ -85,21 +104,3 @@ class RustCCR(MergeRule):
             "bits": "32", "signed": "i", "mutability": "", "a": "i", "b": "j", "n": 1
            }
 
-class Rust(MergeRule):
-    mapping = {
-        "macro format string":        R(Text("format!()")+Key("left"), rdescript="Rust: Format String"), 
-        "macro panic":                R(Text("panic!()")+Key("left"), rdescript="Rust: Panic"),
-        "macro assertion":            R(Text("assert_eq!()")+Key("left"), rdescript="Rust: Assertion"),
-        "ternary":                    R(Text("if NAME == VALUE { VALUE } else { VALUE }"), rdescript="Rust: Ternary"),
-        "function [<return>]":        R(Text("fn NAME(VALUE)%(return)s{}"),  rdescript="Rust: Function"),
-        "infinite loop":              R(Text("loop {}")+Key("left"), rdescript="Rust: Infinite Loop"), 
-         
-        
-          }
-
-    extras   = [
-           Choice("return", {"return": " -> TYPE "}),
-           ]
-    defaults = {
-             "return": " "
-           }

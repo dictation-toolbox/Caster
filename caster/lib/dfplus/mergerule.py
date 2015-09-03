@@ -3,8 +3,17 @@ Created on Sep 1, 2015
 
 @author: synkarius
 '''
-from dragonfly.grammar.rule_mapping import MappingRule
+import re
 
+from dragonfly import MappingRule
+
+
+class TokenSet(object):
+    SYMBOL_PATTERN = re.compile("([A-Za-z0-9_]+)")
+    def __init__(self, keywords, line_comment, long_comment):
+        self.keywords = keywords
+        self.line_comment = line_comment
+        self.long_comment = long_comment
 
 class MergeRule(MappingRule):
     @staticmethod
@@ -13,6 +22,28 @@ class MergeRule(MappingRule):
             MergeRule._get_next_id.id = 0  
         MergeRule._get_next_id.id += 1
         return MergeRule._get_next_id.id
+    
+    '''MergeRules which define `auto` (array of tuples, 
+    first value file extension to recognize, second value 
+    programming language) will work with auto command 
+    and language mode'''
+    auto = None
+    
+    '''MergeRules which define `pronunciation` will use
+    the pronunciation string rather than their class name
+    for their respective enable/disable commands'''
+    pronunciation = None
+    
+    '''MergeRules which define `non` will instantiate
+    their paired non-CCR MergeRule and activate it 
+    alongside themselves'''
+    non = None
+    
+    '''MergeRules which define `tokenset` will enable
+    scanning of directories for use with the 
+    "symbol match" command in their language'''
+    TOKEN_SET = None
+    
     def __init__(self, name=None, mapping=None, extras=None, defaults=None,
                  exported=None, context=None):
         self.ID = MergeRule._get_next_id()
@@ -40,3 +71,4 @@ class MergeRule(MappingRule):
             self.incompatible.append(other.ID)
             other.incompatible.append(self.ID)
         return compatible
+    

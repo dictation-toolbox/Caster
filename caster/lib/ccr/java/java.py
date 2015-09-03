@@ -1,13 +1,35 @@
-from dragonfly import Key, Text, Paste
+from dragonfly import Key, Text, Paste, MappingRule
 
-from caster.lib import settings
-from caster.lib.dfplus.mergerule import MergeRule
+from caster.lib.dfplus.mergerule import MergeRule, TokenSet
 from caster.lib.dfplus.state.short import R
 
 
-settings.register_language(".java", "java")
+class JavaNon(MappingRule):
+    mapping = {
+        "try catch":                        R(Text("try{}catch(Exception e){}"), rdescript="Java: Try Catch"),
+        "deco override":                    R(Text("@Override"), rdescript="Java: Override Decorator"),
+        "iterate and remove":               R(Paste("for (Iterator<TYPE> iterator = NAME.iterator(); iterator.hasNext();) {\n\tString string = iterator.next();\nif (CONDITION) {\niterator.remove();\n}\n}"), rdescript="Java: Iterate And Remove"),
+        "string builder":                   R(Paste("StringBuilder builder = new StringBuilder(); builder.append(orgStr); builder.deleteCharAt(orgStr.length()-1);"), rdescript="Java: String Builder"),
+          }
 
-class JavaCCR(MergeRule):
+    ncextras   = []
+    ncdefaults = {}
+
+class Java(MergeRule):
+    auto = [(".java", "java")]
+    non = JavaNon
+    TOKEN_SET = TokenSet(["abstract", "continue", "for", "new", "switch", "assert",
+                 "default", "goto", "package", "synchronized", "boolean",
+                 "do", "if", "private", "this", "break", "double",
+                 "implements", "protected", "throw", "byte", "else",
+                 "import", "public", "throws", "case", "enum",
+                 "instanceof", "return", "transient", "catch", "extends",
+                 "int", "short", "try", "char", "final", "interface",
+                 "static", "void", "class", "finally", "long", "strictfp",
+                 "volatile", "const", "float", "native", "super", "while"], 
+                         "//", 
+                         ["/*", "*/"])
+    
     mapping = {
         # CCR PROGRAMMING STANDARD
         "iffae":                            R(Text("if() {")+Key("enter,up,left"), rdescript="Java: If"),
@@ -94,16 +116,6 @@ class JavaCCR(MergeRule):
     extras   = []
     defaults = {}
 
-class Java(MergeRule):
-    mapping = {
-        "try catch":                        R(Text("try{}catch(Exception e){}"), rdescript="Java: Try Catch"),
-        "deco override":                    R(Text("@Override"), rdescript="Java: Override Decorator"),
-        "iterate and remove":               R(Paste("for (Iterator<TYPE> iterator = NAME.iterator(); iterator.hasNext();) {\n\tString string = iterator.next();\nif (CONDITION) {\niterator.remove();\n}\n}"), rdescript="Java: Iterate And Remove"),
-        "string builder":                   R(Paste("StringBuilder builder = new StringBuilder(); builder.append(orgStr); builder.deleteCharAt(orgStr.length()-1);"), rdescript="Java: String Builder"),
-          }
-
-    ncextras   = []
-    ncdefaults = {}
 
 
 

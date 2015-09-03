@@ -9,7 +9,7 @@ from caster.lib.dfplus.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 
 
-class BashRule(MergeRule):
+class Bash(MergeRule):
     mapping = {
         # CCR PROGRAMMING STANDARD
         "iffae":                        R(Text("if [[  ]]; ")+Key("left/5:5"), rdescript="Bash: If"),

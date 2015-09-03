@@ -3,16 +3,31 @@ Created on Sep 1, 2015
 
 @author: synkarius
 '''
-from dragonfly import Key, Text, Dictation
+from dragonfly import Key, Text, Dictation, MappingRule
 
-from caster.lib import settings
-from caster.lib.dfplus.mergerule import MergeRule
+from caster.lib.dfplus.mergerule import MergeRule, TokenSet
 from caster.lib.dfplus.state.short import R
 
+class PythonNon(MappingRule):
+    mapping = {
+        "with":                         R(Text("with "), rdescript="Python: With"),
+        "open file":                    R(Text("open('filename','r') as f:"), rdescript="Python: Open File"),
+        "read lines":                   R(Text("content = f.readlines()"), rdescript="Python: Read Lines"),
+        "try catch":                    R(Text("try:")+Key("enter:2/10, backspace")+Text("except Exception:")
+                                          +Key("enter"), rdescript="Python: Try Catch"),
+        }
 
-settings.register_language(".py", "python")
-
-class PythonCCR(MergeRule):
+class Python(MergeRule):
+    auto = [(".py", "python")]
+    non = PythonNon
+    TOKEN_SET = TokenSet(["and", "del", "from", "not", "while", "as", "elif",
+                 "global", "or", "with", "assert", "else", "if", "pass",
+                 "yield", "break", "except", "import", "print", "class",
+                 "exec", "in", "raise", "continue", "finally", "is",
+                 "return", "def", "for", "lambda", "try"], 
+                         "#", 
+                         ["'''", '"""'])
+    
     mapping = {        
         # CCR PROGRAMMING STANDARD
         #
@@ -82,11 +97,3 @@ class PythonCCR(MergeRule):
     extras   = [Dictation("text"),]
     defaults = {}
 
-class Python(MergeRule):
-    mapping = {
-        "with":                         R(Text("with "), rdescript="Python: With"),
-        "open file":                    R(Text("open('filename','r') as f:"), rdescript="Python: Open File"),
-        "read lines":                   R(Text("content = f.readlines()"), rdescript="Python: Read Lines"),
-        "try catch":                    R(Text("try:")+Key("enter:2/10, backspace")+Text("except Exception:")
-                                          +Key("enter"), rdescript="Python: Try Catch"),
-        }
