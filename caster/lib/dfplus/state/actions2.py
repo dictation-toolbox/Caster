@@ -13,7 +13,7 @@ from caster.lib.dfplus.state.actions import AsynchronousAction, ContextSeeker
 from caster.lib.dfplus.state.short import L, S
 
 
-win32gui.SystemParametersInfo(win32con.SPI_SETFOREGROUNDLOCKTIMEOUT, 0, 1)
+#win32gui.SystemParametersInfo(win32con.SPI_SETFOREGROUNDLOCKTIMEOUT, 0, 1)
 
 class BoxAction(AsynchronousAction):
     '''
