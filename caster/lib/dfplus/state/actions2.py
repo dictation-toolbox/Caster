@@ -1,20 +1,16 @@
-'''CB's solution for focus window failure'''
-
-import time
-
 from dragonfly import Function, Key
+from dragonfly.actions.action_pause import Pause
 from dragonfly.actions.action_startapp import BringApp
 from dragonfly.windows.window import Window
-import win32gui, win32con
 
 from caster.asynch.hmc import h_launch
 from caster.lib import settings, control, utilities, navigation
-from caster.lib.dfplus.state.actions import AsynchronousAction, ContextSeeker
+from caster.lib.dfplus.state.actions import AsynchronousAction, ContextSeeker, \
+    RegisteredAction
 from caster.lib.dfplus.state.short import L, S
 
 
 #win32gui.SystemParametersInfo(win32con.SPI_SETFOREGROUNDLOCKTIMEOUT, 0, 1)
-
 class BoxAction(AsynchronousAction):
     '''
     Similar to AsynchronousAction, but the repeated action is always
@@ -150,6 +146,9 @@ class FuzzyMatchAction(ContextSeeker):
         self.mutable_list["value"] = choices
         self.state.add(self.state.generate_context_seeker_stack_item(self, data))
 
+class NullAction(RegisteredAction):
+    def __init__(self, rspec="default", rdescript="unnamed command (RA)", show=False):
+        RegisteredAction.__init__(self, Pause("10"), rspec=rspec, rdescript=rdescript, rundo=None, show=show)
 
 class SuperFocusWindow(AsynchronousAction):
     '''

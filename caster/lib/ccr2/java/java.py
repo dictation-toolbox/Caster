@@ -18,18 +18,7 @@ class JavaNon(MappingRule):
 class Java(MergeRule):
     auto = [(".java", "java")]
     non = JavaNon
-    TOKEN_SET = TokenSet(["abstract", "continue", "for", "new", "switch", "assert",
-                 "default", "goto", "package", "synchronized", "boolean",
-                 "do", "if", "private", "this", "break", "double",
-                 "implements", "protected", "throw", "byte", "else",
-                 "import", "public", "throws", "case", "enum",
-                 "instanceof", "return", "transient", "catch", "extends",
-                 "int", "short", "try", "char", "final", "interface",
-                 "static", "void", "class", "finally", "long", "strictfp",
-                 "volatile", "const", "float", "native", "super", "while"], 
-                         "//", 
-                         ["/*", "*/"])
-    
+        
     mapping = {
         # CCR PROGRAMMING STANDARD
         "iffae":                            R(Text("if() {")+Key("enter,up,left"), rdescript="Java: If"),
@@ -115,7 +104,18 @@ class Java(MergeRule):
 
     extras   = []
     defaults = {}
-
+    
+    token_set = TokenSet(["abstract", "continue", "for", "new", "switch", "assert",
+                 "default", "goto", "package", "synchronized", "boolean",
+                 "do", "if", "private", "this", "break", "double",
+                 "implements", "protected", "throw", "byte", "else",
+                 "import", "public", "throws", "case", "enum",
+                 "instanceof", "return", "transient", "catch", "extends",
+                 "int", "short", "try", "char", "final", "interface",
+                 "static", "void", "class", "finally", "long", "strictfp",
+                 "volatile", "const", "float", "native", "super", "while"], 
+                         "//", 
+                         ["/*", "*/"])
 
 
 

@@ -20,13 +20,6 @@ class PythonNon(MappingRule):
 class Python(MergeRule):
     auto = [(".py", "python")]
     non = PythonNon
-    TOKEN_SET = TokenSet(["and", "del", "from", "not", "while", "as", "elif",
-                 "global", "or", "with", "assert", "else", "if", "pass",
-                 "yield", "break", "except", "import", "print", "class",
-                 "exec", "in", "raise", "continue", "finally", "is",
-                 "return", "def", "for", "lambda", "try"], 
-                         "#", 
-                         ["'''", '"""'])
     
     mapping = {        
         # CCR PROGRAMMING STANDARD
@@ -96,4 +89,11 @@ class Python(MergeRule):
 
     extras   = [Dictation("text"),]
     defaults = {}
-
+    
+    token_set = TokenSet(["and", "del", "from", "not", "while", "as", "elif",
+                 "global", "or", "with", "assert", "else", "if", "pass",
+                 "yield", "break", "except", "import", "print", "class",
+                 "exec", "in", "raise", "continue", "finally", "is",
+                 "return", "def", "for", "lambda", "try"], 
+                         "#", 
+                         ["'''", '"""'])

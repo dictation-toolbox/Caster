@@ -39,10 +39,10 @@ class MergeRule(MappingRule):
     alongside themselves'''
     non = None
     
-    '''MergeRules which define `tokenset` will enable
+    '''MergeRules which define `token_set` will enable
     scanning of directories for use with the 
     "symbol match" command in their language'''
-    TOKEN_SET = None
+    token_set = None
     
     def __init__(self, name=None, mapping=None, extras=None, defaults=None,
                  exported=None, context=None):
