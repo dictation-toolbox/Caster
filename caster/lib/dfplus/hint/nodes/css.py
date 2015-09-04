@@ -6,6 +6,7 @@ Created on May 30, 2015
 from dragonfly import Text, Pause, ActionBase
 
 from caster.lib.dfplus.hint import hintnode
+from caster.lib.dfplus.state.actions2 import NullAction
 
 
 H = hintnode.HintNode
@@ -251,7 +252,7 @@ def _get_box_model():# display can be optimized by doing more nesting, this whol
                  H("auto",Text("auto")),H("no display", Text("no-display")),
                  H("no content", Text("no-content")),
                  ]
-    return H("box model", Pause("10"), [
+    return H("box model", NullAction(), [
                   H("clear", Text("clear: "), [
                                 H("left",Text("left")), 
                                 H("right",Text("right")), 
