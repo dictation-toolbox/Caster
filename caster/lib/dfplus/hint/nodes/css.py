@@ -45,7 +45,7 @@ def _get_speech():
               H("medium",Text("medium")),H("high",Text("high")),
               H("extra high", Text("x-high")),H("inherit",Text("inherit"))
               ]
-    return H("speech",Pause("20"), [
+    return H("speech",NullAction(), [
             H("cue",Text("cue"), [
                       H("before", Text("-before: "), _volume),
                       H("after", Text("-after: "), _volume)

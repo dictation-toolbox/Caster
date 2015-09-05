@@ -5,6 +5,7 @@ from dragonfly import (FocusWindow, Function, Key, BringApp, Text, WaitWindow, D
 
 from caster.lib import utilities, settings, ccr, context, navigation
 from caster.lib.dfplus.additions import IntegerRefST
+from caster.lib.dfplus.communication import Communicator
 from caster.lib.dfplus.state.actions import ContextSeeker, AsynchronousAction, \
     RegisteredAction
 from caster.lib.dfplus.state.actions2 import ConfirmAction, BoxAction
@@ -13,11 +14,12 @@ from caster.lib.dfplus.state.short import L, S, R
 
 grammar = Grammar('development')
 
-# from Tkinter import *
+# from Tkinter import * 
 # from tkColorChooser import askcolor 
 def experiment(text):
     '''this function is for tests'''
-    
+    comm = Communicator()
+    comm.get_com("status").error(0)
 
 # 
 
