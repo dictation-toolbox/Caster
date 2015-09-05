@@ -39,7 +39,7 @@ class CommandRule(MappingRule):
 
 context = AppContext(executable="cmd")
 grammar = Grammar("cmd", context=context)
-grammar.add_rule(CommandRule())
+grammar.add_rule(CommandRule(name="command prompt"))
 grammar.load()
 
 def unload():

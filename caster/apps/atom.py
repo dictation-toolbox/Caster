@@ -328,7 +328,7 @@ class CommandRule(MappingRule):
 
 context = AppContext(executable="atom", title="Atom")
 grammar = Grammar("Atom", context=context)
-grammar.add_rule(CommandRule())
+grammar.add_rule(CommandRule(name="atom"))
 grammar.load()
 
 def unload():

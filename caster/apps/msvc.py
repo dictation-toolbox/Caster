@@ -61,7 +61,7 @@ class CommandRule(MappingRule):
 
 context = AppContext(executable="WDExpress")
 grammar = Grammar("WDExpress", context=context)
-grammar.add_rule(CommandRule())
+grammar.add_rule(CommandRule(name="M S V C"))
 grammar.load()
 
 def unload():

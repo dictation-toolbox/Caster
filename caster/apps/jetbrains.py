@@ -44,7 +44,7 @@ context = AppContext(executable="idea", title="IntelliJ") \
           | AppContext(executable="studio64") \
           | AppContext(executable="pycharm")
 grammar = Grammar("IntelliJ + Android Studio + PyCharm", context=context)
-grammar.add_rule(CommandRule())
+grammar.add_rule(CommandRule(name="jet brains"))
 grammar.load()
 
 def unload():

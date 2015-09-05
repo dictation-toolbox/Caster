@@ -5,7 +5,7 @@
 #
 
 """
-Command-module for Chrome and Firefox
+Command-module for Firefox
 
 """
 
@@ -50,9 +50,9 @@ class CommandRule(MappingRule):
 
 #---------------------------------------------------------------------------
 
-context = AppContext(executable="chrome") | AppContext(executable="firefox")
-grammar = Grammar("browsers", context=context)
-grammar.add_rule(CommandRule())
+context = AppContext(executable="firefox")
+grammar = Grammar("firefox", context=context)
+grammar.add_rule(CommandRule(name="firefox"))
 grammar.load()
 
 def unload():

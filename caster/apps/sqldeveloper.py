@@ -37,7 +37,7 @@ class CommandRule(MappingRule):
 
 context = AppContext(executable="sqldeveloper64W", title="SQL Developer") 
 grammar = Grammar("Sql Developer", context=context)
-grammar.add_rule(CommandRule())
+grammar.add_rule(CommandRule(name="sql developer"))
 grammar.load()
 
 def unload():

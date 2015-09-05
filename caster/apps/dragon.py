@@ -48,7 +48,7 @@ grammar = None
 
 if not settings.WSR:
     grammar = Grammar("Dragon Naturallyspeaking")
-    grammar.add_rule(CommandRule())
+    grammar.add_rule(CommandRule(name="dragon"))
     grammar.load()
 
 def unload():

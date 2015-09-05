@@ -86,7 +86,7 @@ class CommandRule(MappingRule):
 
 context = AppContext(executable="sh")
 grammar = Grammar("MINGW32", context=context)
-grammar.add_rule(CommandRule())
+grammar.add_rule(CommandRule(name="git bash"))
 grammar.load()
 
 def unload():

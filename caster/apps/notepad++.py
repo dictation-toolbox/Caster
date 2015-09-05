@@ -44,7 +44,7 @@ class CommandRule(MappingRule):
 
 context = AppContext(executable="notepad++")
 grammar = Grammar("Notepad++", context=context)
-grammar.add_rule(CommandRule())
+grammar.add_rule(CommandRule(name="notepad plus plus"))
 grammar.load()
 
 def unload():

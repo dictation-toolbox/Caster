@@ -60,7 +60,7 @@ class CommandRule(MappingRule):
 
 context = AppContext(executable="emacs", title="emacs")
 grammar = Grammar("emacs", context=context)
-grammar.add_rule(CommandRule())
+grammar.add_rule(CommandRule(name="emacs"))
 grammar.load()
 
 def unload():

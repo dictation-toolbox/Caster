@@ -37,7 +37,7 @@ class CommandRule(MappingRule):
 
 context = AppContext(executable="winword")
 grammar = Grammar("Microsoft Word", context=context)
-grammar.add_rule(CommandRule())
+grammar.add_rule(CommandRule(name="microsoft word"))
 grammar.load()
 
 def unload():

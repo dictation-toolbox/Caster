@@ -61,7 +61,7 @@ class CommandRule(MappingRule):
 
 context = AppContext(executable="javaw", title="Eclipse") | AppContext(executable="eclipse", title="Eclipse") | AppContext(executable="AptanaStudio3")
 grammar = Grammar("Eclipse", context=context)
-grammar.add_rule(CommandRule())
+grammar.add_rule(CommandRule(name="eclipse"))
 grammar.load()
 
 def unload():
