@@ -19,7 +19,7 @@ try:
     from caster.asynch import *
     from caster.lib import ccr, context, recording
     from caster.asynch import auto_com
-    import caster.dev#, caster.wsr
+    import caster.dev
     from caster.lib.dfplus.hint import _nodes
     try:
         import caster.w
