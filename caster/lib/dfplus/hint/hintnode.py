@@ -5,8 +5,10 @@ Created on May 27, 2015
 '''
 from dragonfly import MappingRule, ActionBase
 
+ 
 from caster.lib.dfplus.state.actions import ContextSeeker
 from caster.lib.dfplus.state.short import L, S
+
 
 class HintNode:
     def __init__(self, spec, base, children=[], extras=[], defaults={}):
@@ -71,7 +73,9 @@ class NodeRule(MappingRule):
         if self.master_node == None:
             self.master_node = self.node
             first = True
-            self.post = ContextSeeker(forward=[L(S(["cancel"], self.reset_node, consume=False))], rspec=self.master_node.spec)
+            self.post = ContextSeeker(forward=[L(S(["cancel"], self.reset_node, consume=False), 
+                                                 S([self.master_node.spec], lambda: None, consume=False))], 
+                                      rspec=self.master_node.spec)
         if self.stat_msg == None:
             self.stat_msg = stat_msg        
         
@@ -82,7 +86,6 @@ class NodeRule(MappingRule):
         # each child node gets turned into a mapping key/value
         for child in self.node.children:
             child.fill_out_rule(mapping, extras, defaults, self)
-        
         if len(mapping)==0:
             if self.stat_msg!=None and not first:
                 self.stat_msg.text("Node Reset")# status window messaging
