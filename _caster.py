@@ -34,8 +34,8 @@ try:
     from caster.lib.dfplus.additions import IntegerRefST
     
     ccr.initialize_ccr()
-    recording.load_alias_rules()
-    recording.load_recorded_rules()
+#     recording.load_alias_rules()
+#     recording.load_recorded_rules()
 except:
     print "\nAttempting to load CCR anyway..."
     from caster.lib import ccr, utilities
@@ -84,13 +84,13 @@ class MainRule(MappingRule):
     "rainbow":                      R(Function(navigation.mouse_alternates, mode="rainbow"), rdescript="Activate Rainbow Grid"),
     "douglas":                      R(Function(navigation.mouse_alternates, mode="douglas"), rdescript="Activate Douglas Grid"),
     
-    # pita (fuzzy string matching)
+    # symbol match
     "scan directory":               R(Function(scanner.scan_directory), rdescript="Scan Directory For PITA"),
     "rescan current":               R(Function(scanner.rescan_current_file), rdescript="Rescan Current File For PITA"),
     
     # macro recording and automation
-    "record from history":          R(Function(recording.record_from_history), rdescript="Create Macro From Spoken"),
-    "delete recorded macros":       R(Function(recording.delete_recorded_rules), rdescript="Delete Recorded Macros"),
+#     "record from history":          R(Function(recording.record_from_history), rdescript="Create Macro From Spoken"),
+#     "delete recorded macros":       R(Function(recording.delete_recorded_rules), rdescript="Delete Recorded Macros"),
     "wait sec [<n>]":               R(Pause("%(n)d00"), rdescript="Wait (Macro Recording)"),
     
     # aliasing
@@ -102,7 +102,6 @@ class MainRule(MappingRule):
     "<enable_disable> <ccr_mode>":  R(Function(ccr.set_active_command), rdescript="Enable CCR Module"),
     "refresh <ccr_mode>":           R(Function(ccr.refresh_from_files), rdescript="Refresh CCR Module"), 
     "again (<n> [(times|time)] | do)":R(Function(recording.repeat_that), rdescript="Repeat Last Action"),
-#     "edit settings":                R(Function(), rdescript="Edit Caster Settings"), 
     
     }
     extras = [

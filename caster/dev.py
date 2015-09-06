@@ -3,7 +3,8 @@ import time
 
 from dragonfly import (FocusWindow, Function, Key, BringApp, Text, WaitWindow, Dictation, Choice, Grammar, MappingRule, IntegerRef, Paste)
 
-from caster.lib import utilities, settings, ccr, context, navigation
+from caster.lib import utilities, settings, ccr, context, navigation, control
+from caster.lib.ccr2.recording.playback import PlaybackRule
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.communication import Communicator
 from caster.lib.dfplus.state.actions import ContextSeeker, AsynchronousAction, \
@@ -78,6 +79,20 @@ def abc():
 
 def xyz(data):
     print data
+
+
+
+
+control.nexus().macros_grammar.unload()
+a = PlaybackRule()
+
+control.nexus().macros_grammar.add_rule(a)
+
+control.nexus().macros_grammar.load()
+
+a.refresh()
+
+
 
 class DevRule(MappingRule):
     

@@ -50,6 +50,8 @@ class MergeRule(MappingRule):
         self.incompatible = []
         MappingRule.__init__(self, name, mapping, extras, defaults, exported, context)
     def __eq__(self, other):
+        if not isinstance(other, MergeRule):
+            return False
         return self.ID == other.ID
     def merge(self, other, context=None):
         mapping = other.mapping.copy()
@@ -60,6 +62,8 @@ class MergeRule(MappingRule):
         defaults = other.defaults.copy()
         defaults.update(self.defaults)
         return MergeRule(self.name + "+" + other.name, mapping, extras, defaults, self.exported and other.exported, context)
+    def copy(self):
+        return MergeRule(self.name, self.mapping, self.extras.values(), self.defaults, self.exported)
     def compatibility_check(self, other):
         if self.ID in other.incompatible:
             return False

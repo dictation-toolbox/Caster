@@ -5,6 +5,8 @@ Created on Sep 3, 2015
 '''
 import re
 
+from dragonfly.actions.action_base import Repeat
+from dragonfly.actions.action_function import Function
 from dragonfly.actions.action_playback import Playback
 from dragonfly.language.base.integer import IntegerRef
 
@@ -17,11 +19,7 @@ from caster.lib.dfplus.state.short import R
 
 
 class PlaybackRule(MergeRule):
-    
-    mapping = {
-        "default sequence":       NullAction(), 
-        }
-    
+    mapping = {"default sequence":  NullAction()}
     
     def record_from_history(self):
         # save the list as it was when the command was spoken
@@ -58,8 +56,6 @@ class PlaybackRule(MergeRule):
             if data["repeatable"]:
                 spec += " [times <n>]"
             self.refresh((spec, word_sequences))
-            
-        
         
     
     def refresh(self, new_entry=None):
@@ -71,15 +67,18 @@ class PlaybackRule(MergeRule):
             recorded_macros[new_entry[0]] = new_entry[1]
             utilities.save_json_file(recorded_macros, settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
         mapping = {}
-        for spec, sequences in recorded_macros:
-            mapping[spec] = R(Playback([(sequence, 0.0) for sequence in sequences]), rdescript="Recorded Macro: "+spec)
-        if len(mapping)==0: mapping = PlaybackRule.mapping
-        
+        for spec in recorded_macros:
+            sequences = recorded_macros[spec]
+            mapping[spec] = R(Playback([(sequence, 0.0) for sequence in sequences])*Repeat(extra="n"), rdescript="Recorded Macro: "+spec)
+        mapping["record from history"] = R(Function(self.record_from_history), rdescript="Record From History")
+        mapping["delete recorded macros"] = R(Function(self.delete_recorded_macros), rdescript="Delete Recorded Macros")
         # reload with new mapping
-        control.nexus().ccr_grammar.unload()
+        control.nexus().macros_grammar.unload() 
+        control.nexus().macros_grammar.remove_rule(self)
         MergeRule.__init__(self, self.name, mapping, extras=[IntegerRefST("n", 1, 50)], defaults={"n":1})
         # TODO: compatibility checking here?
-        control.nexus().ccr_grammar.load()
+        control.nexus().macros_grammar.add_rule(self)
+        control.nexus().macros_grammar.load()
     
     def load_recorded_macros(self):
         self.refresh()
