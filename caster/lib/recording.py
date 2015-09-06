@@ -189,12 +189,3 @@ def delete_recorded_rules():
         rule = control.nexus().macros_grammar.rules[0]
         control.nexus().macros_grammar.remove_rule(rule)
 
-def repeat_that(n):
-    try:
-        if len(control.nexus().history) > 0:
-            p = [str(x) for x in " ".join(control.nexus().history[len(control.nexus().history) - 1]).split()]
-#             print p
-            for i in range(int(n)):
-                Playback([(p, 0.0)]).execute()
-    except Exception:
-        utilities.simple_log(False)

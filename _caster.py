@@ -7,6 +7,11 @@ Created on Jun 29, 2014
 from subprocess import Popen
 import time
 
+from dragonfly import (Key, Function, Grammar, Playback, Dictation, Choice, Pause, MappingRule)
+
+
+
+
 try:
     from caster.lib import settings# requires nothing
     settings.WSR = __name__ == "__main__"
@@ -32,6 +37,7 @@ try:
     from caster.lib.pita import scanner
     from caster.lib.dfplus.state.short import R
     from caster.lib.dfplus.additions import IntegerRefST
+    from caster.lib.ccr2.recording.again import Again
     
     ccr.initialize_ccr()
 #     recording.load_alias_rules()
@@ -42,7 +48,6 @@ except:
     utilities.simple_log()
     ccr.initialize_ccr()
 
-from dragonfly import (Key, Function, Grammar, Playback, IntegerRef, Dictation, Choice, Pause, MappingRule)
         
 
 
@@ -101,7 +106,7 @@ class MainRule(MappingRule):
     # miscellaneous
     "<enable_disable> <ccr_mode>":  R(Function(ccr.set_active_command), rdescript="Enable CCR Module"),
     "refresh <ccr_mode>":           R(Function(ccr.refresh_from_files), rdescript="Refresh CCR Module"), 
-    "again (<n> [(times|time)] | do)":R(Function(recording.repeat_that), rdescript="Repeat Last Action"),
+    
     
     }
     extras = [
@@ -125,6 +130,7 @@ class MainRule(MappingRule):
 
 grammar = Grammar('general')
 grammar.add_rule(MainRule())
+grammar.add_rule(Again())
 grammar.load()
 
 def unload():

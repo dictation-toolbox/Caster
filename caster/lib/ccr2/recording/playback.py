@@ -3,12 +3,9 @@ Created on Sep 3, 2015
 
 @author: synkarius
 '''
-import re
-
 from dragonfly.actions.action_base import Repeat
 from dragonfly.actions.action_function import Function
 from dragonfly.actions.action_playback import Playback
-from dragonfly.language.base.integer import IntegerRef
 
 from caster.asynch.hmc import h_launch
 from caster.lib import control, settings, utilities
