@@ -9,7 +9,7 @@ import time
 
 from dragonfly import (Key, Function, Grammar, Playback, Dictation, Choice, Pause, MappingRule)
 
-
+from caster.lib.ccr2.recording.alias import Aliases, AliasesNon
 
 
 try:
@@ -22,7 +22,7 @@ try:
     
     from caster.apps import *
     from caster.asynch import *
-    from caster.lib import ccr, context, recording
+    from caster.lib import ccr, context
     from caster.asynch import auto_com
     import caster.dev
     from caster.lib.dfplus.hint import _nodes
@@ -38,10 +38,9 @@ try:
     from caster.lib.dfplus.state.short import R
     from caster.lib.dfplus.additions import IntegerRefST
     from caster.lib.ccr2.recording.again import Again
+    from caster.lib.ccr2.recording.history import HistoryRule
     
     ccr.initialize_ccr()
-#     recording.load_alias_rules()
-#     recording.load_recorded_rules()
 except:
     print "\nAttempting to load CCR anyway..."
     from caster.lib import ccr, utilities
@@ -99,9 +98,9 @@ class MainRule(MappingRule):
     "wait sec [<n>]":               R(Pause("%(n)d00"), rdescript="Wait (Macro Recording)"),
     
     # aliasing
-    "alias <text>":                 R(Function(recording.add_alias), rdescript="Create Alias Command"),
-    "delete aliases":               R(Function(recording.delete_alias_rules), rdescript="Delete All Alias Commands"),
-    "chain alias":                  R(Function(recording.get_chain_alias_spec), rdescript="Create CCR Alias Command"), 
+#     "alias <text>":                 R(Function(recording.add_alias), rdescript="Create Alias Command"),
+#     "delete aliases":               R(Function(recording.delete_alias_rules), rdescript="Delete All Alias Commands"),
+#     "chain alias":                  R(Function(recording.get_chain_alias_spec), rdescript="Create CCR Alias Command"),
     
     # miscellaneous
     "<enable_disable> <ccr_mode>":  R(Function(ccr.set_active_command), rdescript="Enable CCR Module"),
@@ -131,7 +130,22 @@ class MainRule(MappingRule):
 grammar = Grammar('general')
 grammar.add_rule(MainRule())
 grammar.add_rule(Again())
+
+history = HistoryRule()
+a = Aliases()
+ca = AliasesNon()
+ca.set_chain(a)
+
+grammar.add_rule(history)
+grammar.add_rule(ca)
+grammar.add_rule(a)
+
+
 grammar.load()
+history.refresh()
+ca.refresh()
+a.refresh()
+
 
 def unload():
     global grammar

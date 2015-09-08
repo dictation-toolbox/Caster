@@ -14,7 +14,7 @@ from caster.lib.dfplus.state.actions import AsynchronousAction
 from caster.lib.dfplus.state.short import L, S, R
 
 
-def _f(n):
+def _repeat(n):
     if len(control.nexus().history) > 0:
         utterance = [str(x) for x in " ".join(control.nexus().history[len(control.nexus().history) - 1]).split()]
         if utterance[0] == "again": return
@@ -29,7 +29,7 @@ def _f(n):
 
 class Again(MergeRule):  
     
-    mapping = { "again (<n> [(times|time)] | do)":  R(Function(_f), show=False) }
+    mapping = { "again (<n> [(times|time)] | do)":  R(Function(_repeat), show=False) }
     extras = [ IntegerRefST("n", 1, 50) ]
     defaults = { "n": 1 }
 

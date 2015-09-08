@@ -1,10 +1,9 @@
 from subprocess import Popen
 import time
 
-from dragonfly import (FocusWindow, Function, Key, BringApp, Text, WaitWindow, Dictation, Choice, Grammar, MappingRule, IntegerRef, Paste)
+from dragonfly import (Function, Key, BringApp, Text, WaitWindow, Dictation, Choice, Grammar, MappingRule, Paste)
 
-from caster.lib import utilities, settings, ccr, context, navigation, control
-from caster.lib.ccr2.recording.playback import PlaybackRule
+from caster.lib import utilities, settings, ccr, context
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.communication import Communicator
 from caster.lib.dfplus.state.actions import ContextSeeker, AsynchronousAction, \
@@ -22,15 +21,9 @@ def experiment(text):
     comm = Communicator()
     comm.get_com("status").error(0)
 
-# 
-
 def get_color():
     '''do asynchronously'''
 #     print askcolor()
-
-
-
-
 
 LAST_TIME=0
 def print_time():
@@ -74,25 +67,6 @@ def bring_test():
     except Exception:
         utilities.simple_log()
         
-def abc():
-    print "success 100"
-
-def xyz(data):
-    print data
-
-
-
-
-control.nexus().macros_grammar.unload()
-a = PlaybackRule()
-
-control.nexus().macros_grammar.add_rule(a)
-
-control.nexus().macros_grammar.load()
-
-a.refresh()
-
-
 
 class DevRule(MappingRule):
     
@@ -139,7 +113,7 @@ class DevRule(MappingRule):
                             
     "test confirm action":          ConfirmAction(Key("a"), rdescript="Confirm Action Test"),
     
-    "test box action":              BoxAction(xyz, rdescript="Test Box Action", box_type=settings.QTYPE_DEFAULT, 
+    "test box action":              BoxAction(lambda data: None, rdescript="Test Box Action", box_type=settings.QTYPE_DEFAULT, 
                                               log_failure=True),
     
     "test dragonfly paste":         Paste("some text"),

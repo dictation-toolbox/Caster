@@ -125,7 +125,7 @@ def init_default_values():
         ("DISPEL_JSON_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/dispel.json"),
         ("SAVED_CLIPBOARD_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/clipboard.json"),
         ("RECORDED_MACROS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/recorded_macros.json"),
-        ("ALIASES_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/ccr/configaliases.txt"),
+        ("ALIAS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/aliases.json."),
         ("LOG_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/log.txt"),
         ("SIKULI_SCRIPTS_FOLDER_PATH", SETTINGS["paths"]["BASE_PATH"] + "/asynch/sikuli/scripts"),
         
