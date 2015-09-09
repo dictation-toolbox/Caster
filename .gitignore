@@ -28,7 +28,7 @@ configaliases.txt
 log.txt
 
 # Ignore natlink files
-core/
+/core/
 _vocola_main.py
 
 # Ignore anything with a potential licensing problem
