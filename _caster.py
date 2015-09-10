@@ -84,9 +84,9 @@ class MainRule(MappingRule):
     'quick pass <text> <text2> <text3>':                       R(Function(password.get_simple_password), rdescript="Get Crappy Password"),
     
     # mouse alternatives
-    "legion":                       R(Function(navigation.mouse_alternates, mode="legion"), rdescript="Activate Legion"),
-    "rainbow":                      R(Function(navigation.mouse_alternates, mode="rainbow"), rdescript="Activate Rainbow Grid"),
-    "douglas":                      R(Function(navigation.mouse_alternates, mode="douglas"), rdescript="Activate Douglas Grid"),
+    "legion [<monitor>]":           R(Function(navigation.mouse_alternates, mode="legion"), rdescript="Activate Legion"),
+    "rainbow [<monitor>]":          R(Function(navigation.mouse_alternates, mode="rainbow"), rdescript="Activate Rainbow Grid"),
+    "douglas [<monitor>]":          R(Function(navigation.mouse_alternates, mode="douglas"), rdescript="Activate Douglas Grid"),
     
     # symbol match
     "scan directory":               R(Function(scanner.scan_directory), rdescript="Scan Directory For PITA"),
@@ -119,7 +119,8 @@ class MainRule(MappingRule):
               Choice("volume_mode",
                     {"mute": "mute", "up":"up", "down":"down"
                      }),
-              generate_CCR_choices.__func__()
+              generate_CCR_choices.__func__(),
+              IntegerRefST("monitor", 1, 10)
              ]
     defaults = {"n": 1, "nnv": 1,
                "text": "", "volume_mode": "setsysvolume",

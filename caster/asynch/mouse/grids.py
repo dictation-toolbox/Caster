@@ -14,6 +14,8 @@ import win32api
 
 import Tkinter as tk
 
+from dragonfly import monitors
+
 try: # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).split("\\caster")[0].replace("\\", "/")
     if BASE_PATH not in sys.path:
@@ -326,22 +328,30 @@ class DouglasGrid(TkTransparent):
 
     
 def main(argv):
-    help_message = 'grids.py -m <mode>\nr\trainbow grid\nd\tdouglas grid'
+    help_message = 'Usage: grids.py -g <GRID_TYPE> [-m <MONITOR>]\n where <GRID_TYPE> is one of:\n  r\trainbow grid\n  d\tdouglas grid'
     try:
-        opts, args = getopt.getopt(argv, "hm:")
+        opts, args = getopt.getopt(argv, "hg:m:")
     except getopt.GetoptError:
         print help_message
         sys.exit(2)
+    g = None
+    m = 1
     for opt, arg in opts:
         if opt == '-h':
             print help_message
             sys.exit()
-        elif opt == '-m':
+        elif opt == '-g':
             if arg == "r":
-                rg = RainbowGrid()
+                g = RainbowGrid
             elif arg == 'd':
-                dg = DouglasGrid()  # grid_size=Dimensions(400, 300, 0, 0)  
-            
+                g = DouglasGrid  # grid_size=Dimensions(400, 300, 0, 0)
+        elif opt == '-m':
+            m = arg
+    if g == None:
+        raise ValueError("Grid mode not specified.")
+    r = monitors[int(m)-1].rectangle
+    grid_size = Dimensions(int(r.dx), int(r.dy), int(r.x), int(r.y))
+    g(grid_size=grid_size)
 
 if __name__ == '__main__':
     main(sys.argv[1:])

@@ -5,6 +5,7 @@ import re
 import sys, os
 import threading
 
+from dragonfly import monitors
 
 
 try: # Style C -- may be imported into Caster, or externally
@@ -162,12 +163,13 @@ class LegionScanner:
 
 
 def main(argv):
-    help_message = 'legion.py -t <tirg> -d <dimensions> -a <autoquit>'
+    help_message = 'legion.py -t <tirg> [-m <monitor>] [-d <dimensions>] [-a <autoquit>]'
     tirg = None
+    monitor = 1
     dimensions = None
     auto_quit = False
     try:
-        opts, args = getopt.getopt(argv, "ht:a:d:", ["tirg=", "dimensions=", "autoquit="])
+        opts, args = getopt.getopt(argv, "ht:a:d:m:", ["tirg=", "dimensions=", "autoquit="])
     except getopt.GetoptError:
         print help_message
         sys.exit(2)
@@ -178,12 +180,17 @@ def main(argv):
                 sys.exit()
             elif opt in ("-t", "--tirg"):
                 tirg = arg
+            elif opt == '-m':
+                monitor = arg
             elif opt in ("-d", "--dimensions"):
                 # wxh+x+y
                 dimensions = Dimensions(*[int(n) for n in arg.split("_")])
             elif opt in ("-a", "--autoquit"):
                 auto_quit = arg in ("1", "t")    
         
+        if dimensions == None:
+            r = monitors[int(monitor)-1].rectangle
+            dimensions = Dimensions(int(r.dx), int(r.dy), int(r.x), int(r.y))
         lg = LegionGrid(grid_size=dimensions, tirg=tirg, auto_quit=auto_quit)
     except Exception:
         utilities.simple_log(True)

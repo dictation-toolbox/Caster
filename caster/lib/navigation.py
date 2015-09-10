@@ -125,7 +125,7 @@ def letters2(big, letter):
     if str(big) != "":
         Key("shift:up").execute()
 
-def mouse_alternates(mode):
+def mouse_alternates(mode, monitor=1):
     if control.nexus().dep.PIL:
         try:
             if mode == "legion":
@@ -135,11 +135,11 @@ def mouse_alternates(mode):
                     ls = LegionScanner()
                     ls.scan()#[500, 500, 1000, 1000]
                     tscan = ls.get_update()
-                    Popen(["pythonw", settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0]])#, "-d", "500_500_500_500"
+                    Popen(["pythonw", settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0], "-m", str(monitor)])#, "-d", "500_500_500_500"
             elif mode == "rainbow":
-                Popen(["pythonw", settings.SETTINGS["paths"]["RAINBOW_PATH"], "-m", "r"])
+                Popen(["pythonw", settings.SETTINGS["paths"]["RAINBOW_PATH"], "-g", "r", "-m", str(monitor)])
             elif mode == "douglas":
-                Popen(["pythonw", settings.SETTINGS["paths"]["DOUGLAS_PATH"], "-m", "d"])
+                Popen(["pythonw", settings.SETTINGS["paths"]["DOUGLAS_PATH"], "-g", "d", "-m", str(monitor)])
         except Exception:
             utilities.simple_log(True)
     else:
