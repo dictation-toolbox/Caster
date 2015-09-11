@@ -32,7 +32,7 @@ class GridControlRule(MappingRule):
 
     mapping = {
         "<n> [by] <n2> [<action>]":         R(Function(send_input), rdescript="Douglas Grid: Action"),
-        "exit":                             R(Function(kill), rdescript="Exit Douglas Grid"),
+        "exit | escape | cancel":           R(Function(kill), rdescript="Exit Douglas Grid"),
                 }
     extras = [
               IntegerRefST("n", 0, 300),

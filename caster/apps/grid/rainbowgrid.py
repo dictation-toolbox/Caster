@@ -32,7 +32,7 @@ class GridControlRule(MappingRule):
 
     mapping = {
         "[<pre>] <color> <n> [<action>]":   R(Function(send_input), rdescript="Rainbow Grid: Action"),
-        "exit":                             R(Function(kill), rdescript="Exit Rainbow Grid"),
+        "exit | escape | cancel":           R(Function(kill), rdescript="Exit Rainbow Grid"),
 
 
         }

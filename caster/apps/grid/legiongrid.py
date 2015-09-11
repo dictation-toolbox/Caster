@@ -55,7 +55,7 @@ class GridControlRule(MappingRule):
     mapping = {
         "<n> [<action>]":                   R(Function(send_input), rdescript="Legion: Action"),
         "refresh":                          R(Function(navigation.mouse_alternates, mode="legion"), rdescript="Legion: Refresh"),
-        "exit":                             R(Function(kill), rdescript="Exit Legion"),
+        "exit | escape | cancel":           R(Function(kill), rdescript="Exit Legion"),
 
 
         }
