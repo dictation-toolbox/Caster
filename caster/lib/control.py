@@ -6,6 +6,7 @@ from dragonfly import RecognitionHistory, Grammar
 
 from caster.lib import settings, utilities
 from caster.lib.dfplus.communication import Communicator
+from caster.lib.dfplus.merge.rulemerger import CCRMerger
 
 
 _NEXUS = None
@@ -133,6 +134,8 @@ class Nexus:
         
         self.macros_grammar = Grammar("recorded_macros")
         self.noderules = []
+        
+        self.merger = CCRMerger()
     
     def inform_state(self, state):# resolves circular import 
         self.state = state

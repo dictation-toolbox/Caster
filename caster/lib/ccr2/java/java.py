@@ -1,6 +1,7 @@
 from dragonfly import Key, Text, Paste, MappingRule
 
-from caster.lib.dfplus.mergerule import MergeRule, TokenSet
+from caster.lib import control
+from caster.lib.dfplus.merge.mergerule import MergeRule, TokenSet
 from caster.lib.dfplus.state.short import R
 
 
@@ -121,3 +122,4 @@ class Java(MergeRule):
 
 
 
+control.nexus().merger.add_global_rule(Java())

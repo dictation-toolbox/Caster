@@ -5,8 +5,9 @@ Created on Sep 2, 2015
 '''
 from dragonfly import Key, Text
 
+from caster.lib import control
 from caster.lib.dfplus.additions import SelectiveAction
-from caster.lib.dfplus.mergerule import MergeRule, TokenSet
+from caster.lib.dfplus.merge.mergerule import MergeRule, TokenSet
 from caster.lib.dfplus.state.short import R
 
 
@@ -114,4 +115,4 @@ class Javascript(MergeRule):
     
     
     
-    
+control.nexus().merger.add_global_rule(Javascript())

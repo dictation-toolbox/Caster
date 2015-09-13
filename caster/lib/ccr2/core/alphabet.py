@@ -1,7 +1,7 @@
 from dragonfly import Function, Choice
 
-from caster.lib import navigation
-from caster.lib.dfplus.mergerule import MergeRule
+from caster.lib import navigation, control
+from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 
 
@@ -18,3 +18,5 @@ class Alphabet(MergeRule):
     defaults = {
     "big": "", 
     }
+    
+control.nexus().merger.add_global_rule(Alphabet())

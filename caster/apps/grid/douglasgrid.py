@@ -51,7 +51,7 @@ class GridControlRule(MappingRule):
 
 context = AppContext(title="douglasgrid")
 grammar = Grammar("douglasgrid", context=context)
-grammar.add_rule(GridControlRule())
+grammar.add_rule(GridControlRule(name="Douglas"))
 grammar.load()
 
 def unload():

@@ -1,6 +1,7 @@
 from dragonfly import Key, Text
 
-from caster.lib.dfplus.mergerule import MergeRule
+from caster.lib import control
+from caster.lib.dfplus.merge.mergerule import MergeRule
 
 
 class HTML(MergeRule):
@@ -155,3 +156,5 @@ class HTML(MergeRule):
     }
     extras   = []
     defaults = {}
+
+control.nexus().merger.add_global_rule(HTML())

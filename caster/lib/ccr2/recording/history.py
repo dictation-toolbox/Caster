@@ -10,12 +10,13 @@ from dragonfly.actions.action_playback import Playback
 from caster.asynch.hmc import h_launch
 from caster.lib import control, settings, utilities
 from caster.lib.dfplus.additions import IntegerRefST
-from caster.lib.dfplus.recordrule import RecordRule
+from caster.lib.dfplus.merge.recordrule import RecordRule
 from caster.lib.dfplus.state.actions2 import NullAction
 from caster.lib.dfplus.state.short import R
 
 
 class HistoryRule(RecordRule):
+    pronunciation = "history"
     mapping = {"default sequence":  NullAction()}
     
     def record_from_history(self):
@@ -77,4 +78,4 @@ class HistoryRule(RecordRule):
         utilities.save_json_file({}, settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
         self.refresh()
     
-    
+control.nexus().merger.add_global_rule(HistoryRule())

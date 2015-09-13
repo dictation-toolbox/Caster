@@ -9,10 +9,11 @@ from dragonfly.actions.action_function import Function
 from dragonfly.actions.action_paste import Paste
 
 from caster.asynch.hmc import h_launch
-from caster.lib import context, utilities, settings
-from caster.lib.dfplus.recordrule import RecordRule
+from caster.lib import context, utilities, settings, control
+from caster.lib.dfplus.merge.recordrule import RecordRule
 from caster.lib.dfplus.state.actions2 import NullAction
 from caster.lib.dfplus.state.short import R
+
 
 def read_highlighted(max_tries):
     for i in range(0, max_tries):
@@ -85,4 +86,6 @@ class Aliases(RecordRule):
             mapping[spec] = R(Paste(str(aliases[Aliases.json_path][spec])),rdescript="Chain Alias: "+spec)
         if len(mapping)<1: mapping = Aliases.mapping
         self.reset(mapping)
+
+control.nexus().merger.add_global_rule(Aliases())
     

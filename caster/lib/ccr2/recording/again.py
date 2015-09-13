@@ -9,7 +9,7 @@ from dragonfly.actions.action_playback import Playback
 
 from caster.lib import control
 from caster.lib.dfplus.additions import IntegerRefST
-from caster.lib.dfplus.mergerule import MergeRule
+from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.actions import AsynchronousAction
 from caster.lib.dfplus.state.short import L, S, R
 
@@ -33,3 +33,4 @@ class Again(MergeRule):
     extras = [ IntegerRefST("n", 1, 50) ]
     defaults = { "n": 1 }
 
+control.nexus().merger.add_global_rule(Again())

@@ -1,9 +1,10 @@
 from dragonfly import Key, Text, Choice, MappingRule
 
-from caster.lib import navigation
+from caster.lib import navigation, control
 from caster.lib.dfplus.additions import IntegerRefST
-from caster.lib.dfplus.mergerule import MergeRule
+from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
+
 
 class RustNon(MappingRule):
     mapping = {
@@ -104,3 +105,4 @@ class Rust(MergeRule):
             "bits": "32", "signed": "i", "mutability": "", "a": "i", "b": "j", "n": 1
            }
 
+control.nexus().merger.add_global_rule(Rust())

@@ -4,7 +4,7 @@ Created on Sep 6, 2015
 @author: synkarius
 '''
 from caster.lib.dfplus.additions import IntegerRefST
-from caster.lib.dfplus.mergerule import MergeRule
+from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.actions2 import NullAction
 from dragonfly.grammar.elements import Dictation
 

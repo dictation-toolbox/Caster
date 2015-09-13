@@ -44,6 +44,11 @@ class MergeRule(MappingRule):
     "symbol match" command in their language'''
     token_set = None
     
+    '''MergeRules which define `context` with a 
+    Dragonfly AppContext become non-global; this
+    is the same as adding a context to a Grammar'''
+    context = None
+    
     def __init__(self, name=None, mapping=None, extras=None, defaults=None,
                  exported=None, context=None):
         self.ID = MergeRule._get_next_id()
@@ -62,6 +67,8 @@ class MergeRule(MappingRule):
         defaults = other.defaults.copy()
         defaults.update(self.defaults)
         return MergeRule(self.name + "+" + other.name, mapping, extras, defaults, self.exported and other.exported, context)
+    def get_name(self):
+        return self.name if self.pronunciation==None else self.pronunciation
     def copy(self):
         return MergeRule(self.name, self.mapping, self.extras.values(), self.defaults, self.exported)
     def compatibility_check(self, other):

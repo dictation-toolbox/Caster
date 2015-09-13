@@ -5,9 +5,9 @@ Created on Sep 1, 2015
 '''
 from dragonfly import Repeat, Function, Key, Dictation, Choice, Mouse, MappingRule
 
-from caster.lib import context, navigation
+from caster.lib import context, navigation, control
 from caster.lib.dfplus.additions import IntegerRefST
-from caster.lib.dfplus.mergerule import MergeRule
+from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.actions import AsynchronousAction
 from caster.lib.dfplus.state.actions2 import FuzzyMatchAction
 from caster.lib.dfplus.state.short import L, S, R
@@ -149,3 +149,4 @@ class Navigation(MergeRule):
             "mtn_mode": None, "mtn_dir": "right", "extreme": None 
            }
 
+control.nexus().merger.add_global_rule(Navigation())

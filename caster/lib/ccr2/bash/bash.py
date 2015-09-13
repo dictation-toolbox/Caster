@@ -5,7 +5,8 @@ Created on Sep 1, 2015
 '''
 from dragonfly import Key, Text
 
-from caster.lib.dfplus.mergerule import MergeRule
+from caster.lib import control
+from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 
 
@@ -68,3 +69,5 @@ class Bash(MergeRule):
 
     extras   = []
     defaults = {}
+
+control.nexus().merger.add_global_rule(Bash())

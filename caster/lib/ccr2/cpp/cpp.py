@@ -5,7 +5,8 @@ Created on Sep 1, 2015
 '''
 from dragonfly import Key, Mimic, Text
 
-from caster.lib.dfplus.mergerule import MergeRule, TokenSet
+from caster.lib import control
+from caster.lib.dfplus.merge.mergerule import MergeRule, TokenSet
 from caster.lib.dfplus.state.short import R
 
 
@@ -109,3 +110,5 @@ class CPP(MergeRule):
                 "xor", "xor_eq"   ], 
                          "//", 
                          ["/*", "*/"])
+
+control.nexus().merger.add_global_rule(CPP())

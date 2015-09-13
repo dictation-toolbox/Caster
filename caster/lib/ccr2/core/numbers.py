@@ -1,8 +1,8 @@
 from dragonfly import Function
 
-from caster.lib import navigation
+from caster.lib import navigation, control
 from caster.lib.dfplus.additions import IntegerRefST
-from caster.lib.dfplus.mergerule import MergeRule
+from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 
 
@@ -20,3 +20,5 @@ class Numbers(MergeRule):
         IntegerRefST("wnKK", 0, 1000000),
     ]
     defaults = {}
+    
+control.nexus().merger.add_global_rule(Numbers())
