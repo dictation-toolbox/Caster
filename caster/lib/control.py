@@ -6,7 +6,7 @@ from dragonfly import RecognitionHistory, Grammar
 
 from caster.lib import settings, utilities
 from caster.lib.dfplus.communication import Communicator
-from caster.lib.dfplus.merge.rulemerger import CCRMerger
+from caster.lib.dfplus.merge.ccrmerger import CCRMerger
 
 
 _NEXUS = None
