@@ -4,8 +4,9 @@ from caster.lib import navigation, control
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 
-
 class Alphabet(MergeRule):
+    pronunciation = control.CCRMerger.CORE[0]
+    
     mapping = {
         "[<big>] <letter>": R(Function(navigation.letters2, extra ={"big", "letter"}), rdescript="Spell"),
         }

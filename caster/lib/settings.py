@@ -120,6 +120,7 @@ def init_default_values():
         # DATA
         ("DLL_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/lib/dll/"),
         ("SETTINGS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/settings.json"),
+        ("CCR_CONFIG_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/ccr.json"),
         ("PITA_JSON_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/pita.json"),
         ("S_LIST_JSON_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/s_list.json"),
         ("DISPEL_JSON_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/dispel.json"),

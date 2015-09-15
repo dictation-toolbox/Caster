@@ -5,8 +5,8 @@ from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 
-
 class Numbers(MergeRule):
+    pronunciation = control.CCRMerger.CORE[2]
     mapping = {
             "word number <wn>":     R(Function(navigation.word_number, extra="wn"), rdescript="Number As Word"),
             "numb <wnKK>":          R(Function(navigation.numbers2, extra="wnKK"), rspec="number", rdescript="Number"),

@@ -4,7 +4,10 @@ Created on Sep 12, 2015
 @author: synkarius
 '''
 import inspect
+
+from caster.lib import utilities, settings
 from caster.lib.dfplus.merge.mergerule import MergeRule
+
 
 class Inf(object):
     TYPE = "type"
@@ -16,21 +19,55 @@ class Inf(object):
     RUN = 3
 
 class MergePair(object):
-    def __init__(self, info, rule1, rule2, check_compatibility):
-        self.info = info
+    def __init__(self, type, time,  rule1, rule2, check_compatibility):
+        self.type = type
+        self.time = time
         self.rule1 = rule1
         self.rule2 = rule2
         self.changed = False
         self.check_compatibility = check_compatibility
 
 class CCRMerger(object):
+    CORE = ["alphabet", "navigation", "numbers", "punctuation"]
+    _GLOBAL = "global"
+    _APP = "app"    
+    
     def __init__(self):
+        # original copies of rules
         self._global_rules = {}
         self._app_rules = {}
-#         self._user_rules = {}
+        # filter functions
         self._filters = []
+        # active rules
         self._base_global = None
         self._global_with_apps = []
+        # config
+        self.load_config()
+    
+    '''config file stuff'''
+    def save_config(self):
+        utilities.save_json_file(self._config, settings.SETTINGS["paths"]["CCR_CONFIG_PATH"])
+    def load_config(self):
+        self._config = utilities.load_json_file(settings.SETTINGS["paths"]["CCR_CONFIG_PATH"])
+    def update_config(self, merge=False):
+        '''call this after all rules have been added'''
+        changed = False
+        if not CCRMerger._GLOBAL in self._config:
+            self._config[CCRMerger._GLOBAL] = {}
+        for name in self.global_rule_names():
+            if not name in self._config[CCRMerger._GLOBAL]:
+                self._config[CCRMerger._GLOBAL][name] = name in CCRMerger.CORE
+                utilities.report(name+" global CCR module added")
+                changed = True
+        if not CCRMerger._APP in self._config:
+            self._config[CCRMerger._APP] = {}
+        for name in self.global_rule_names():
+            if not name in self._config[CCRMerger._APP]:
+                self._config[CCRMerger._APP][name] = name in CCRMerger.CORE
+                utilities.report(name+" app CCR module added")
+                changed = True
+        if changed: self.save_config()
+        if merge: self.merge()
     
     '''setup: adding rules and filters'''
     def add_global_rule(self, rule):
@@ -53,50 +90,59 @@ class CCRMerger(object):
         return self._global_rules.keys()
     def app_rule_names(self):
         return self._app_rules.keys()
-    def get_merge_function(self):
-        def fn(name=None):
-            self.merge(name)
-        return fn
     
     '''merging'''
     def _get_rules_by_composite(self, composite):
-        return [rule for name, rule in self._global_rules if rule.ID in composite]
+        return [rule.copy() for name, rule in self._global_rules if rule.ID in composite]
+    def _compatibility_checks(self, merge_pair, base, rule):
+        if merge_pair.check_compatibility==False or \
+        base.check_compatibility(rule):
+            base = base.merge(rule)
+        else:
+            # figure out which MergeRules aren't compatible
+            composite = base.composite.copy() # composite is a set of the ids of the rules which make up this rule
+            for ID in rule.compatible:
+                if not rule.compatible[ID]: composite.discard(ID)
+            # rebuild a base from remaining MergeRules
+            base = None
+            for rule in self._get_rules_by_composite(composite): 
+                base = rule if base is None else base.merge(rule)
+            # merge in the new rule
+            base = base.merge(rule)
+        return base
     
-    def merge(self, name=None, enable=True):
+    def merge(self, name=None, enable=True, save=False):
         base = self._base_global
         named_rule = self._global_rules[name].copy() if name is not None else None
         _time = Inf.BOOT if base is None else Inf.RUN # Inf.RUN = not the first time
         
         if enable:
             if _time == Inf.BOOT:
-                '''base is None here'''
-                #for k, v in self._global_rules:
+                for name, rule in self._global_rules:
+                    if self._config[CCRMerger._GLOBAL][name]:
+                        mp = MergePair(_time, Inf.GLOBAL, base, rule, False)
+                        self._run_filters(mp)
+                        if mp.check_compatibility and base is not None: 
+                            base = self._compatibility_checks(mp, base, rule)
+                        base = rule if base is None else base.merge(rule)
             else:
-                mp = MergePair({Inf.TIME: _time, 
-                                Inf.TYPE: Inf.GLOBAL}, 
-                                base, named_rule, True)
+                mp = MergePair(_time, Inf.GLOBAL, base, named_rule, True)
                 self._run_filters(mp)
-                
-                # compatibility checking
-                if mp.check_compatibility==False or \
-                base.check_compatibility(named_rule):
-                    base = base.merge(named_rule)
-                else:
-                    # figure out which MergeRules aren't compatible
-                    composite = base.composite.copy() # composite is a set of the ids of the rules which make up this rule
-                    for ID in named_rule.compatible:
-                        if not named_rule.compatible[ID]: composite.discard(ID)
-                    # rebuild a base from remaining MergeRules
-                    base = MergeRule()
-                    for rule in self._get_rules_by_composite(composite): base = base.merge(rule)
-                    # merge in the new rule
-                    base = base.merge(named_rule) 
-        else:
-            composite = base.composite.copy()
+                base = self._compatibility_checks(mp, base, rule)
+        else:#disable
+            composite = base.composite.copy()# IDs of all rules that the composite rule is made of
             composite.discard(named_rule.ID)
-            base = MergeRule()
-            for rule in self._get_rules_by_composite(composite): base = base.merge(rule)
-                
+            base = None
+            for rule in self._get_rules_by_composite(composite): 
+                mp = MergePair(_time, Inf.GLOBAL, base, rule, False)
+                self._run_filters(mp)
+                if mp.check_compatibility and base is not None: 
+                    base = self._compatibility_checks(mp, base, rule)
+                base = rule if base is None else base.merge(rule)
+        
+        # save if necessary
+        if _time != Inf.BOOT and save: self.save_config()
+        
         # instantiate or remove non- ccr rule
         
         
