@@ -10,12 +10,12 @@ from dragonfly.actions.action_playback import Playback
 from caster.asynch.hmc import h_launch
 from caster.lib import control, settings, utilities
 from caster.lib.dfplus.additions import IntegerRefST
-from caster.lib.dfplus.merge.recordrule import RecordRule
+from caster.lib.dfplus.merge.selfmodrule import SelfModifyingRule
 from caster.lib.dfplus.state.actions2 import NullAction
 from caster.lib.dfplus.state.short import R
 
 
-class HistoryRule(RecordRule):
+class HistoryRule(SelfModifyingRule):
     pronunciation = "history"
     mapping = {"default sequence":  NullAction()}
     

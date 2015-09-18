@@ -9,14 +9,15 @@ from caster.lib.dfplus.state.actions2 import NullAction
 from dragonfly.grammar.elements import Dictation
 
 
-class RecordRule(MergeRule):
+class SelfModifyingRule(MergeRule):
     '''
-    RecordRule is a kind of rule which gets its command set changed
+    SelfModifyingRule is a kind of rule which gets its command set changed
     on-the-fly based on some kind of user interaction. Child classes
     must implement their own version of the `refresh` method.
     '''
     
     def refresh(self, *args):
+        '''Does stuff to get mapping, then calls self.reset()'''
         self.reset({ "default record rule spec": NullAction() })
     
     def reset(self, mapping):
@@ -26,6 +27,5 @@ class RecordRule(MergeRule):
         MergeRule.__init__(self, self.name, mapping, 
                            extras=[IntegerRefST("n", 1, 50), Dictation("s")], 
                            defaults={"n":1})
-        # TODO: compatibility checking here?
         grammar.add_rule(self)
         grammar.load()

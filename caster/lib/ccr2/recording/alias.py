@@ -10,7 +10,7 @@ from dragonfly.actions.action_paste import Paste
 
 from caster.asynch.hmc import h_launch
 from caster.lib import context, utilities, settings, control
-from caster.lib.dfplus.merge.recordrule import RecordRule
+from caster.lib.dfplus.merge.selfmodrule import SelfModifyingRule
 from caster.lib.dfplus.state.actions2 import NullAction
 from caster.lib.dfplus.state.short import R
 
@@ -26,7 +26,7 @@ def delete_all(alias):
     alias.refresh()
     if hasattr(alias, "chain"): alias.chain.refresh()
 
-class AliasesNon(RecordRule):
+class AliasesNon(SelfModifyingRule):
     mapping = {
         "default command":       NullAction(), 
         }
@@ -58,8 +58,7 @@ class AliasesNon(RecordRule):
     def set_chain(self, chain):
         self.chain = chain
 
-class Aliases(RecordRule):
-    non = AliasesNon
+class Aliases(SelfModifyingRule):
     json_path = "chain_aliases"
     
     mapping = {
@@ -87,5 +86,6 @@ class Aliases(RecordRule):
         if len(mapping)<1: mapping = Aliases.mapping
         self.reset(mapping)
 
-control.nexus().merger.add_global_rule(Aliases())
+control.nexus().merger.add_selfmodrule(Aliases(), "chain alias")
+control.nexus().merger.add_selfmodrule(AliasesNon(), "vanilla alias")
     

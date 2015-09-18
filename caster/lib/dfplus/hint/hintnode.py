@@ -5,7 +5,7 @@ Created on May 27, 2015
 '''
 from dragonfly import MappingRule, ActionBase
 
- 
+from caster.lib.dfplus.merge.selfmodrule import SelfModifyingRule
 from caster.lib.dfplus.state.actions import ContextSeeker
 from caster.lib.dfplus.state.short import L, S
 
@@ -58,9 +58,11 @@ class HintNode:
         extras.extend(self.extras)
         defaults.update(self.defaults)
 
-class NodeRule(MappingRule):
+class NodeRule(SelfModifyingRule):
     master_node = None
     stat_msg = None
+    
+    
     
     def set_grammar(self, grammar):
         '''for when the grammar is not known in advance'''

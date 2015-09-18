@@ -26,6 +26,7 @@ for node in [# register nodes here in order to get them into ccr
         continue
     if node.spec in settings.SETTINGS["nodes"] and settings.SETTINGS["nodes"][node.spec]:
         node.active = True
+    control.nexus().merger.add_selfmodrule(NodeRule(node, None, control.nexus().intermediary, False), node.spec)
     control.nexus().add_node_rule(NodeRule(node, None, control.nexus().intermediary, False))
     _mapping["enable "+node.spec]=Function(update, name=node.spec, value=True)
     _mapping["disable "+node.spec]=Function(update, name=node.spec, value=False)
