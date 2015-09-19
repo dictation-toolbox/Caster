@@ -4,6 +4,10 @@ As these features get documented, they can be removed from this page.
 
 **Needs Docs**
 
+* MergeRule
+* SelfModifyingRule
+* CCRMerger
+
 * FuzzyMatchAction
 * ConfirmAction
 * BoxAction
@@ -17,6 +21,7 @@ As these features get documented, they can be removed from this page.
 
 **Needs Update**
 
+* CCR
 * ContextSeeker
 * AsynchronousAction
 
