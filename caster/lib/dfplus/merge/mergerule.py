@@ -74,12 +74,12 @@ class MergeRule(MappingRule):
         return MergeRule(self.name + "+" + other.name, mapping, extras, defaults, 
                          self.exported and other.exported, context, # no ID
                          composite=self.composite.union(other.composite))
-            
+                
     def get_name(self):
         return self.name if self.pronunciation==None else self.pronunciation
     def copy(self):
-        return MergeRule(self.name, self.mapping, self.extras.values(), 
-                         self.defaults, self.exported, self.ID, self.composite)
+        return MergeRule(self.name, self.mapping, self.extras.values(), self.defaults, 
+                         self.exported, self.context, self.ID, self.composite)
     def compatibility_check(self, other):
         if other.ID in self.compatible:
             return self.compatible[other.ID]

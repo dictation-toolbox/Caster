@@ -6,6 +6,7 @@ Created on Sep 12, 2015
 import inspect
 
 from dragonfly.grammar.elements import RuleRef, Alternative, Repetition
+from dragonfly.grammar.grammar_base import Grammar
 from dragonfly.grammar.rule_compound import CompoundRule
 
 from caster.lib import utilities, settings
@@ -39,6 +40,7 @@ class CCRMerger(object):
     _SELFMOD = "selfmod"
     
     def __init__(self):
+        self._grammar = Grammar("CCR Master")
         # original copies of rules
         self._global_rules = {}
         self._app_rules = {}
@@ -114,10 +116,10 @@ class CCRMerger(object):
     '''merging'''
     def _get_rules_by_composite(self, composite):
         return [rule.copy() for name, rule in self._global_rules if rule.ID in composite]
-    def _compatibility_checks(self, merge_pair, base, rule):
+    def _compatibility_merge(self, merge_pair, base, rule):
         if merge_pair.check_compatibility==False or \
         base.check_compatibility(rule):
-            base = base.merge(rule)
+            base = base.merge(rule, rule.context)
         else:
             # figure out which MergeRules aren't compatible
             composite = base.composite.copy() # composite is a set of the ids of the rules which make up this rule
@@ -125,31 +127,39 @@ class CCRMerger(object):
                 if not rule.compatible[ID]: composite.discard(ID)
             # rebuild a base from remaining MergeRules
             base = None
-            for rule in self._get_rules_by_composite(composite): 
-                base = rule if base is None else base.merge(rule)
+            for _rule in self._get_rules_by_composite(composite): 
+                base = _rule if base is None else base.merge(_rule, _rule.context)
             # merge in the new rule
-            base = base.merge(rule)
+            base = base.merge(rule, rule.context)
         return base
     
     def merge(self, time, name=None, enable=True, save=False):
-        base = self._base_global
-        named_rule = self._global_rules[name].copy() if name is not None else None
-#         _time = Inf.BOOT if base is None else Inf.RUN # Inf.RUN = not the first time
+        '''combines MergeRules, SelfModifyingRules;
+        handles CCR for apps;
+        instantiates affiliated rules;
+        adds everything to its grammar
+        ;
+        assumptions made: 
+        * SelfModifyingRules have already made changes to themselves
+        * the appropriate activation boolean(s) in the appropriate map has already been set'''
         
-        if time != Inf.NODE: # NodeRule node changes needn't alter the base rule
+        base = self._base_global
+        
+        '''get base CCR rule'''
+        if time != Inf.SELFMOD: # SelfModifyingRule changes don't alter the base rule
+            named_rule = self._global_rules[name].copy() if name is not None else None
             if enable:
                 if time == Inf.BOOT:
                     for name, rule in self._global_rules:
                         if self._config[CCRMerger._GLOBAL][name]:
                             mp = MergePair(time, Inf.GLOBAL, base, rule, False)
                             self._run_filters(mp)
-                            if mp.check_compatibility and base is not None: 
-                                base = self._compatibility_checks(mp, base, rule)
-                            base = rule if base is None else base.merge(rule)
+                            if base is None: base = rule
+                            else: base = self._compatibility_merge(mp, base, rule)
                 else:
                     mp = MergePair(time, Inf.GLOBAL, base, named_rule, True)
                     self._run_filters(mp)
-                    base = self._compatibility_checks(mp, base, rule)
+                    base = self._compatibility_merge(mp, base, rule)
             else:#disable
                 composite = base.composite.copy()# IDs of all rules that the composite rule is made of
                 composite.discard(named_rule.ID)
@@ -157,45 +167,59 @@ class CCRMerger(object):
                 for rule in self._get_rules_by_composite(composite): 
                     mp = MergePair(time, Inf.GLOBAL, base, rule, False)
                     self._run_filters(mp)
-                    if mp.check_compatibility and base is not None: 
-                        base = self._compatibility_checks(mp, base, rule)
-                    base = rule if base is None else base.merge(rule)
+                    if base is None: base = rule
+                    else: base = self._compatibility_merge(mp, base, rule)
         
-        # compatibility check and filter function active noderules, but do not merge them in
-        # this will require a new "time", Inf._SELFMOD 
-        # if the filter functions don't wipe them, let them be added as alternatives in _create_repeat_rule()
+        
+        '''instantiate non-ccr rules affiliated with rules in the base CCR rule'''
+        active_global  = self._get_rules_by_composite(base.composite)
+        global_non_ccr = [rule.non() for rule in active_global \
+                         if rule.non is not None]
+        
+        
+        '''compatibility check and filter function active 
+        selfmodrules, but do not merge them in'''
         selfmod = []
         for name, rule in self._self_modifying_rules:
             '''no need to make copies of selfmod rules because even if
             filter functions trash their mapping, they'll just regenerate
             it next time they modify themselves'''
             if self._config[CCRMerger._SELFMOD][name]:
-                self._run_filters(MergePair(time, Inf.SELFMOD, base, rule, False))
-                for smrule in selfmod: # also have to check against other active noderules
-                    self._run_filters(MergePair(time, Inf.SELFMOD, smrule, rule, False))
-                # do we want the option to shut them off if they're incompatible??
+                use_rule = True
+                mp = MergePair(time, Inf.SELFMOD, base, rule, False)
+                self._run_filters(mp)
+                if mp.check_compatibility: use_rule &= base.compatibility_check(rule)
+                if use_rule:
+                    for smrule in selfmod: # also have to check against other active selfmodrules
+                        mp_ = MergePair(time, Inf.SELFMOD, smrule, rule, False)
+                        self._run_filters(mp_)
+                        if mp_.check_compatibility: use_rule &= rule.compatibility_check(smrule)
+                    if use_rule: selfmod.append(rule)
         
         
-        # instantiate non-ccr rules
-        active_global  = self._get_rules_by_composite(base.composite)
-        global_non_ccr = [rule.non() for rule in active_global \
-                         if rule.non is not None]
+        '''have base, make copies, merge in apps'''
+        active_apps = []
+        for rule in [rule.copy() for rule in self._app_rules]:
+            mp = MergePair(time, Inf.APP, base, rule, False)
+            self._run_filters(mp)
+            rule = self._compatibility_merge(mp, base, rule)
+            active_apps.append(rule)        
         
+        '''negation context for appless version of base rule'''
+        contexts = [rule.context for rule in active_apps \
+                    if rule.context is not None]# get all contexts
+        master_context = None
+        for context in contexts:
+            if master_context is None: master_context = not context
+            else: master_context += not context
+        base = base.merge(base, master_context)
         
+        '''modify grammar'''
+        while len(self._grammar.rules) > 0: self._grammar.remove_rule(self._grammar.rules[0])
+        for rule in [base]+active_apps: self._grammar.add_rule(self._create_repeat_rule(rule, selfmod))
+        for rule in global_non_ccr: self._grammar.add_rule(rule)
         
-        # have base, make copies, merge in apps
-        
-        
-        # get all contexts
-        
-        
-        
-        
-        
-        
-        repeat_rule = self._create_repeat_rule(base)
-        
-        # save if necessary
+        '''save if necessary'''
         if time == Inf.RUN and save: 
             # everything in base composite is active, everything in selfmod is active, update the config as such
             active_global_names = [rule.get_name() for rule in active_global]
@@ -208,9 +232,9 @@ class CCRMerger(object):
         
     def _run_filters(self, merge_pair):
         for filter_fn in self._filters: filter_fn(merge_pair)
-    def _create_repeat_rule(self, base):
+    def _create_repeat_rule(self, base, selfmod):
         ORIGINAL, SEQ, TERMINAL = "original", "caster base sequence", "terminal"
-        alts = [RuleRef(rule=base)]
+        alts = [RuleRef(rule=base)]+[RuleRef(rule=sm) for sm in selfmod]
         single_action = Alternative(alts)
         sequence = Repetition(single_action, min=1, max=16, name=SEQ)
         original = Alternative(alts, name=ORIGINAL)
