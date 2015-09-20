@@ -62,29 +62,23 @@ class NodeRule(SelfModifyingRule):
     master_node = None
     stat_msg = None
     
-    
-    
-    def set_grammar(self, grammar):
-        '''for when the grammar is not known in advance'''
-        self.grammar = grammar
-    
     def __init__(self, node, stat_msg=None, is_reset=False):
         first = False
         if self.master_node is None:
             self.master_node = node
             self.stat_msg = stat_msg
-            self.post = ContextSeeker(forward=[L(S(["cancel"], self.reset_node, consume=False), 
+            self.post = ContextSeeker(forward=[L(S(["cancel"], lambda: self.reset_node(), consume=False), 
                                                  S([self.master_node.spec], lambda: None, consume=False))], 
                                       rspec=self.master_node.spec)
             first = True
             MappingRule.__init__(self, self.master_node.spec)
         
-        self.node = node
-        self.refresh(first, is_reset)
+        self.refresh(node, first, is_reset)
     
     def refresh(self, *args):
-        first = args[0]
-        is_reset = args[1]
+        self.node = args[0]
+        first = args[1]
+        is_reset = args[2]
         
         mapping = {}
         extras = []
@@ -109,15 +103,16 @@ class NodeRule(SelfModifyingRule):
         
     
     def change_node(self, node, reset=False):
-        self.grammar.unload()
-        NodeRule.__init__(self, node, self.grammar, None, reset)
-        self.grammar.load()
+        self.refresh(node, False, reset)
+#         self.grammar.unload()
+#         NodeRule.__init__(self, node, is_reset=reset)
+#         self.grammar.load()
     
     def reset_node(self):
         self.change_node(self.master_node, True)
     
     def _process_recognition(self, node, extras):
-        node=node[self.master_node.spec]
+        node = node[self.master_node.spec]
         node._action.execute(node._data)
         
     

@@ -30,7 +30,6 @@ for node in [# register nodes here in order to get them into ccr
     control.nexus().add_node_rule(NodeRule(node, control.nexus().intermediary))
     _mapping["enable "+node.spec]=Function(update, name=node.spec, value=True)
     _mapping["disable "+node.spec]=Function(update, name=node.spec, value=False)
-     
 
 if len(_mapping)>0:
     grammar = Grammar("NodeActivation")
