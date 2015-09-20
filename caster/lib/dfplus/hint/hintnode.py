@@ -104,9 +104,6 @@ class NodeRule(SelfModifyingRule):
     
     def change_node(self, node, reset=False):
         self.refresh(node, False, reset)
-#         self.grammar.unload()
-#         NodeRule.__init__(self, node, is_reset=reset)
-#         self.grammar.load()
     
     def reset_node(self):
         self.change_node(self.master_node, True)

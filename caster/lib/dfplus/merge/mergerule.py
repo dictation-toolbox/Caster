@@ -63,11 +63,13 @@ class MergeRule(MappingRule):
         if not isinstance(other, MergeRule):
             return False
         return self.ID == other.ID
+    def extras_copy(self):
+        return self._extras.copy()
     def merge(self, other, context=None):
         mapping = self.mapping.copy()
         mapping.update(other.mapping)
-        extras_dict = self.extras.copy()
-        extras_dict.update(other.extras) # not just combining lists avoids duplicates
+        extras_dict = self.extras_copy()
+        extras_dict.update(other.extras_copy()) # not just combining lists avoids duplicates
         extras = extras_dict.values()
         defaults = self.defaults.copy()
         defaults.update(other.defaults)
@@ -78,7 +80,7 @@ class MergeRule(MappingRule):
     def get_name(self):
         return self.name if self.pronunciation==None else self.pronunciation
     def copy(self):
-        return MergeRule(self.name, self.mapping, self.extras.values(), self.defaults, 
+        return MergeRule(self.name, self.mapping, self._extras.values(), self.defaults, 
                          self.exported, self.context, self.ID, self.composite)
     def compatibility_check(self, other):
         if other.ID in self.compatible:

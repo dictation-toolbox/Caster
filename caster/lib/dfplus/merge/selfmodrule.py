@@ -15,6 +15,9 @@ class SelfModifyingRule(MergeRule):
     on-the-fly based on some kind of user interaction. Child classes
     must implement their own version of the `refresh` method.
     '''
+    
+    merger = None # only set for CCR SelfModifyingRules
+    
     def __init__(self, name=None, mapping=None, extras=None, defaults=None, 
         exported=None, context=None):
         MergeRule.__init__(self, name, mapping, extras, defaults, exported, context)
@@ -26,7 +29,9 @@ class SelfModifyingRule(MergeRule):
     
     def reset(self, mapping):
         grammar = self._grammar # save reference because Grammar.remove_rule nullifies it
-        if grammar is not None:
+        ccr = self.merger is not None
+        
+        if grammar is not None and not ccr:
             grammar.unload() 
             grammar.remove_rule(self)
             
@@ -34,6 +39,8 @@ class SelfModifyingRule(MergeRule):
         defaults = self.defaults if self.defaults is not None and len(self.defaults)>0 else {"n":1}
         MergeRule.__init__(self, self.name, mapping, extras, defaults, self.exported, self.context)
         
-        if grammar is not None:
+        if ccr: self.merger.merge(2) # 2 is Inf.SELFMOD 
+        
+        if grammar is not None and not ccr:
             grammar.add_rule(self)
             grammar.load()

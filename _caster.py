@@ -8,6 +8,7 @@ import time
 
 from dragonfly import (Key, Function, Grammar, Playback, Dictation, Choice, Pause, MappingRule)
 
+
 try:
     from caster.lib import settings# requires nothing
     settings.WSR = __name__ == "__main__"
@@ -33,9 +34,13 @@ try:
     from caster.lib.pita import scanner
     from caster.lib.dfplus.state.short import R
     from caster.lib.dfplus.additions import IntegerRefST
+    
     from caster.lib.ccr2.recording.again import Again
     from caster.lib.ccr2.recording.history import HistoryRule
     from caster.lib.ccr2.recording.alias import VanillaAlias
+    from caster.lib.dfplus.merge.ccrmerger import Inf
+    from caster.lib.ccr2 import *
+    
     
     ccr.initialize_ccr()
 except:
@@ -92,7 +97,6 @@ class MainRule(MappingRule):
     # macro recording and automation
 #     "record from history":          R(Function(recording.record_from_history), rdescript="Create Macro From Spoken"),
 #     "delete recorded macros":       R(Function(recording.delete_recorded_rules), rdescript="Delete Recorded Macros"),
-    "wait sec [<n>]":               R(Pause("%(n)d00"), rdescript="Wait (Macro Recording)"),
     
     # aliasing
 #     "alias <text>":                 R(Function(recording.add_alias), rdescript="Create Alias Command"),
@@ -132,6 +136,8 @@ grammar.add_rule(HistoryRule(name="history rule"))
 grammar.add_rule(VanillaAlias(name="vanilla alias"))
 grammar.load()
 
+control.nexus().merger.update_config()
+control.nexus().merger.merge(Inf.BOOT)
 
 def unload():
     global grammar

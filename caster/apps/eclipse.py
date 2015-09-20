@@ -3,9 +3,11 @@ from dragonfly import (Grammar, AppContext, MappingRule,
                        Key, Text, Repeat, Pause)
 from dragonfly.actions.action_mimic import Mimic
 
-from caster.lib import settings
+from caster.lib import settings, control
 from caster.lib.dfplus.additions import IntegerRefST
+from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
+
 
 class CommandRule(MappingRule):
 
@@ -17,7 +19,6 @@ class CommandRule(MappingRule):
             "open resource":                            R(Key("cs-r"), rdescript="Eclipse: Open Resource"),
             "open type":                                R(Key("cs-t"), rdescript="Eclipse: Open Type"),
 
-            "[go to] line <n> [<mim>]":                 R(Key("c-l") + Pause("50") + Text("%(n)d") + Key("enter")+ Pause("50")+Mimic(extra="mim"), rdescript="Eclipse: Go To Line"),
             "jump to source":                           R(Key("f3"), rdescript="Eclipse: Jump To Source"),
             "editor select":                            R(Key("c-e"), rdescript="Eclipse: Editor Select"),
             
@@ -54,6 +55,18 @@ class CommandRule(MappingRule):
              ]
     defaults = {"n": 1, "mim":""}
 
+class EclipseCCR(MergeRule):
+    pronunciation = "eclipse"
+    
+    mapping = {
+            "[go to] line <n>":                         R(Key("c-l") + Pause("50") + Text("%(n)d") + Key("enter")+ Pause("50")+
+                                                          Mimic(extra="mim"), rdescript="Eclipse: Go To Line"),
+        }
+    extras = [
+              Dictation("text"),
+              IntegerRefST("n", 1, 1000),
+             ]
+    defaults = {"n": 1}
 #---------------------------------------------------------------------------
 
 context = AppContext(executable="javaw", title="Eclipse") | AppContext(executable="eclipse", title="Eclipse") | AppContext(executable="AptanaStudio3")
@@ -61,6 +74,7 @@ grammar = Grammar("Eclipse", context=context)
 grammar.add_rule(CommandRule(name="eclipse"))
 if settings.SETTINGS["apps"]["eclipse"]:
     grammar.load()
+    control.nexus().merger.add_app_rule(EclipseCCR(), context)
 
 def unload():
     global grammar

@@ -53,6 +53,7 @@ class CCRMerger(object):
         self._global_with_apps = []
         # config
         self.load_config()
+        self.update_config() # this call prepares the config to receive new modules
     
     '''config file stuff'''
     def save_config(self):
@@ -67,21 +68,18 @@ class CCRMerger(object):
         for name in self.global_rule_names():
             if not name in self._config[CCRMerger._GLOBAL]:
                 self._config[CCRMerger._GLOBAL][name] = name in CCRMerger.CORE
-                utilities.report(name+" global CCR module added")
                 changed = True
         if not CCRMerger._APP in self._config:
             self._config[CCRMerger._APP] = {}
-        for name in self.global_rule_names():
+        for name in self.app_rule_names():
             if not name in self._config[CCRMerger._APP]:
-                self._config[CCRMerger._APP][name] = name in CCRMerger.CORE
-                utilities.report(name+" app CCR module added")
+                self._config[CCRMerger._APP][name] = True
                 changed = True
         if not CCRMerger._SELFMOD in self._config:
             self._config[CCRMerger._SELFMOD] = {}
         for name in self.selfmod_rule_names():
             if not name in self._config[CCRMerger._SELFMOD]:
-                self._config[CCRMerger._SELFMOD][name] = name in CCRMerger.CORE
-                utilities.report(name+" selfmod CCR module added")
+                self._config[CCRMerger._SELFMOD][name] = False
                 changed = True
         if changed: self.save_config()
         if merge: self.merge()
@@ -96,6 +94,7 @@ class CCRMerger(object):
         self._add_to(rule, self._app_rules)
     def add_selfmodrule(self, rule, name, context=None):
         rule.context = context
+        rule.merger = self
         self._self_modifying_rules[name] = rule        
     def add_filter(self, filter):
         if not filter in self._filters:
@@ -120,7 +119,7 @@ class CCRMerger(object):
     
     '''merging'''
     def _get_rules_by_composite(self, composite):
-        return [rule.copy() for name, rule in self._global_rules if rule.ID in composite]
+        return [rule.copy() for name, rule in self._global_rules.iteritems() if rule.ID in composite]
     def _compatibility_merge(self, merge_pair, base, rule):
         '''MergeRule.merge always returns a copy, so there's
         no need to worry about the originals getting modified'''
@@ -157,7 +156,7 @@ class CCRMerger(object):
             named_rule = self._global_rules[name] if name is not None else None
             if enable:
                 if time == Inf.BOOT:
-                    for name, rule in self._global_rules:
+                    for name, rule in self._global_rules.iteritems():
                         if self._config[CCRMerger._GLOBAL][name]:
                             mp = MergePair(time, Inf.GLOBAL, base, rule, False) # copies not made at boot time, allows user to make permanent changes
                             self._run_filters(mp)
@@ -188,7 +187,7 @@ class CCRMerger(object):
         selfmodrules, but do not merge them in; they will
         become parts of the Alternative in _create_repeat_rule()'''
         selfmod = []
-        for name, rule in self._self_modifying_rules:
+        for name, rule in self._self_modifying_rules.iteritems():
             '''no need to make copies of selfmod rules because even if
             filter functions trash their mapping, they'll just regenerate
             it next time they modify themselves; 
@@ -209,7 +208,7 @@ class CCRMerger(object):
         
         '''have base, make copies, merge in apps'''
         active_apps = []
-        for rule in self._app_rules:
+        for rule in self._app_rules.values():
             mp = MergePair(time, Inf.APP, base, rule.copy(), False)
             self._run_filters(mp)
             rule = self._compatibility_merge(mp, base, mp.rule2) # mp.rule2 because named_rule got copied
@@ -242,9 +241,9 @@ class CCRMerger(object):
         
     def _run_filters(self, merge_pair):
         for filter_fn in self._filters: filter_fn(merge_pair)
-    def _create_repeat_rule(self, base, selfmod):
-        ORIGINAL, SEQ, TERMINAL = "original", "caster base sequence", "terminal"
-        alts = [RuleRef(rule=base)]+[RuleRef(rule=sm) for sm in selfmod]
+    def _create_repeat_rule(self, rule, selfmod):
+        ORIGINAL, SEQ, TERMINAL = "original", "caster_base_sequence", "terminal"
+        alts = [RuleRef(rule=rule)]+[RuleRef(rule=sm) for sm in selfmod]
         single_action = Alternative(alts)
         sequence = Repetition(single_action, min=1, max=16, name=SEQ)
         original = Alternative(alts, name=ORIGINAL)
@@ -261,16 +260,4 @@ class CCRMerger(object):
                     for action in sequence:
                         action.execute()
                 if terminal!=None: terminal.execute()
-        return RepeatRule()
-    
-    '''unused code to get ccr modules automatically like they were in the previous system'''
-    def _extends(self, member, rule_type):
-        return inspect.isclass(member) and member!=rule_type and issubclass(member, rule_type)
-    def _get_caster_objects(self, module):
-        '''gets instances of all MergeRules in a module'''
-        _map = {}
-        for name, obj in inspect.getmembers(module):
-            if self._extends(obj, MergeRule):
-                rule = obj()
-                _map[rule.get_name()] = rule
-        return _map
+        return RepeatRule(name=rule.get_name())
