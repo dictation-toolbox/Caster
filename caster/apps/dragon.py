@@ -49,7 +49,8 @@ grammar = None
 if not settings.WSR:
     grammar = Grammar("Dragon Naturallyspeaking")
     grammar.add_rule(CommandRule(name="dragon"))
-    grammar.load()
+    if settings.SETTINGS["apps"]["dragon"]:
+        grammar.load()
 
 def unload():
     global grammar

@@ -3,10 +3,10 @@ from dragonfly import (Grammar, AppContext, MappingRule,
                        Key, Text, Repeat, Pause)
 from dragonfly.actions.action_mimic import Mimic
 
-from caster.lib.dfplus.state.short import R
+from caster.lib import settings
 from caster.lib.dfplus.additions import IntegerRefST
+from caster.lib.dfplus.state.short import R
 
-# next tab
 class CommandRule(MappingRule):
 
     mapping = {
@@ -45,9 +45,6 @@ class CommandRule(MappingRule):
             
             "split view horizontal":                    R(Key("cs-underscore"), rdescript="Eclipse: Split View (H)"), 
             "split view vertical":                      R(Key("cs-lbrace"), rdescript="Eclipse: Split View (V)"),
-            # requires quick bookmarks plug-in:
-#             "set mark [<n>]":                           Key("a-%(n)d"),
-#             "go mark [<n>]":                            Key("as-%(n)d"),
         }
     extras = [
               Dictation("text"),
@@ -62,7 +59,8 @@ class CommandRule(MappingRule):
 context = AppContext(executable="javaw", title="Eclipse") | AppContext(executable="eclipse", title="Eclipse") | AppContext(executable="AptanaStudio3")
 grammar = Grammar("Eclipse", context=context)
 grammar.add_rule(CommandRule(name="eclipse"))
-grammar.load()
+if settings.SETTINGS["apps"]["eclipse"]:
+    grammar.load()
 
 def unload():
     global grammar

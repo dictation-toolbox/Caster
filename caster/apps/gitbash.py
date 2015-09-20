@@ -3,19 +3,19 @@
 # (c) Copyright 2008 by Christo Butcher
 # Licensed under the LGPL, see <http://www.gnu.org/licenses/>
 #
-
 """
 Command-module for git
 
 """
-
-
 #---------------------------------------------------------------------------
 
-from dragonfly import (Grammar, AppContext, MappingRule, Mimic, 
+from dragonfly import (Grammar, AppContext, MappingRule, Mimic,
                        Key, Text, Function, IntegerRef)
-from caster.lib.dfplus.state.short import R
+
+from caster.lib import settings
 from caster.lib.dfplus.additions import IntegerRefST
+from caster.lib.dfplus.state.short import R
+
 
 def apply(n):
     if n!=0:
@@ -87,7 +87,8 @@ class CommandRule(MappingRule):
 context = AppContext(executable="sh")
 grammar = Grammar("MINGW32", context=context)
 grammar.add_rule(CommandRule(name="git bash"))
-grammar.load()
+if settings.SETTINGS["apps"]["gitbash"]:
+    grammar.load()
 
 def unload():
     global grammar

@@ -3,21 +3,19 @@
 # (c) Copyright 2008 by Christo Butcher
 # Licensed under the LGPL, see <http://www.gnu.org/licenses/>
 #
-
 """
 Command-module for word
 
 """
-
-
 #---------------------------------------------------------------------------
 
 from dragonfly import (Grammar, AppContext, MappingRule,
-                       Dictation, Playback, IntegerRef, Function,
-                       Key, Text, Repeat, WaitWindow, Mouse, Pause)
-from caster.lib.dfplus.state.short import R
+                       Dictation, Key)
+
+from caster.lib import settings
 from caster.lib.dfplus.additions import IntegerRefST
-    
+from caster.lib.dfplus.state.short import R
+
 
 class CommandRule(MappingRule):
 
@@ -38,7 +36,8 @@ class CommandRule(MappingRule):
 context = AppContext(executable="winword")
 grammar = Grammar("Microsoft Word", context=context)
 grammar.add_rule(CommandRule(name="microsoft word"))
-grammar.load()
+if settings.SETTINGS["apps"]["winword"]:
+    grammar.load()
 
 def unload():
     global grammar

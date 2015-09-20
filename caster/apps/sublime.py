@@ -1,8 +1,11 @@
 from dragonfly import (Grammar, AppContext, MappingRule,
                        Dictation, IntegerRef,
                        Key, Text, Repeat, Pause)
-from caster.lib.dfplus.state.short import R
+
+from caster.lib import settings
 from caster.lib.dfplus.additions import IntegerRefST
+from caster.lib.dfplus.state.short import R
+
 
 # next tab
 class CommandRule(MappingRule):
@@ -46,7 +49,8 @@ class CommandRule(MappingRule):
 context = AppContext(executable="sublime_text", title="Sublime Text 2") | AppContext(executable="eclipse", title="Eclipse") | AppContext(executable="AptanaStudio3")
 grammar = Grammar("Sublime", context=context)
 grammar.add_rule(CommandRule(name="sublime"))
-grammar.load()
+if settings.SETTINGS["apps"]["sublime"]:
+    grammar.load()
 
 def unload():
     global grammar

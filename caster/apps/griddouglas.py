@@ -2,17 +2,13 @@
 Command-module for DouglasGrid
 
 """
-
-import time
-
-from dragonfly import (Grammar, AppContext, Function,
-                       IntegerRef, Repeat, Playback,
-                       Key, Choice, MappingRule)
-from caster.lib.dfplus.state.short import R
+from dragonfly import (Grammar, AppContext, Function, Playback, Choice, MappingRule)
 
 from caster.asynch.mouse import grids
 from caster.lib import settings, control
 from caster.lib.dfplus.additions import IntegerRefST
+from caster.lib.dfplus.state.short import R
+
 
 def kill():
     control.nexus().comm.get_com("grids").kill()
@@ -52,7 +48,10 @@ class GridControlRule(MappingRule):
 context = AppContext(title="douglasgrid")
 grammar = Grammar("douglasgrid", context=context)
 grammar.add_rule(GridControlRule(name="Douglas"))
-grammar.load()
+if settings.SETTINGS["apps"]["douglas"]:
+    grammar.load()
+
+
 
 def unload():
     global grammar

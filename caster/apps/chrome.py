@@ -3,19 +3,20 @@
 # (c) Copyright 2008 by Christo Butcher
 # Licensed under the LGPL, see <http://www.gnu.org/licenses/>
 #
-
 """
 Command-module for Chrome and Firefox
 
 """
-
 #---------------------------------------------------------------------------
 
 from dragonfly import (Grammar, AppContext, MappingRule,
                        Dictation, IntegerRef, Function,
                        Key, Text, Repeat)
-from caster.lib.dfplus.state.short import R
+
+from caster.lib import settings
 from caster.lib.dfplus.additions import IntegerRefST
+from caster.lib.dfplus.state.short import R
+
 
 class CommandRule(MappingRule):
 
@@ -53,7 +54,8 @@ class CommandRule(MappingRule):
 context = AppContext(executable="chrome") 
 grammar = Grammar("chrome", context=context)
 grammar.add_rule(CommandRule(name="chrome"))
-grammar.load()
+if settings.SETTINGS["apps"]["chrome"]:
+    grammar.load()
 
 def unload():
     global grammar

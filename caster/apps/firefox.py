@@ -3,19 +3,20 @@
 # (c) Copyright 2008 by Christo Butcher
 # Licensed under the LGPL, see <http://www.gnu.org/licenses/>
 #
-
 """
 Command-module for Firefox
 
 """
-
 #---------------------------------------------------------------------------
 
 from dragonfly import (Grammar, AppContext, MappingRule,
                        Dictation, IntegerRef, Function,
                        Key, Text, Repeat)
-from caster.lib.dfplus.state.short import R
+
+from caster.lib import settings
 from caster.lib.dfplus.additions import IntegerRefST
+from caster.lib.dfplus.state.short import R
+
 
 class CommandRule(MappingRule):
 
@@ -53,7 +54,8 @@ class CommandRule(MappingRule):
 context = AppContext(executable="firefox")
 grammar = Grammar("firefox", context=context)
 grammar.add_rule(CommandRule(name="firefox"))
-grammar.load()
+if settings.SETTINGS["apps"]["firefox"]:
+    grammar.load()
 
 def unload():
     global grammar

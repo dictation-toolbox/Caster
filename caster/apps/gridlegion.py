@@ -78,7 +78,8 @@ class GridControlRule(MappingRule):
 context = AppContext(title="legiongrid")
 grammar = Grammar("legiongrid", context=context)
 grammar.add_rule(GridControlRule(name="legion"))
-grammar.load()
+if settings.SETTINGS["apps"]["legion"]:
+    grammar.load()
 
 def unload():
     global grammar

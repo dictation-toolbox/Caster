@@ -166,6 +166,28 @@ def init_default_values():
     if not SETTINGS["paths"]["WXPYTHON_PATH"] in sys.path and os.path.isdir(SETTINGS["paths"]["WXPYTHON_PATH"]):
         sys.path.append(SETTINGS["paths"]["WXPYTHON_PATH"])
     
+    # apps section
+    values_change_count += update_values(SETTINGS, [("apps", {})])
+    values_change_count += update_values(SETTINGS["apps"], [
+                       ("atom", True), 
+                       ("chrome", True),
+                       ("cmd", True),
+                       ("dragon", True),
+                       ("eclipse", True),
+                       ("emacs", True),
+                       ("firefox", True),
+                       ("gitbash", True),
+                       ("douglas", True),
+                       ("legion", True),
+                       ("rainbow", True),
+                       ("jetbrains", True),
+                       ("msvc", True),
+                       ("notepadplusplus", True),
+                       ("sqldeveloper", True),
+                       ("sublime", True),
+                       ("winword", True),
+                       ])
+    
     # CCR section
     values_change_count += update_values(SETTINGS, [("ccr", {})])
     values_change_count += update_values(SETTINGS["ccr"], [
