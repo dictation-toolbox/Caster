@@ -68,24 +68,29 @@ class NodeRule(SelfModifyingRule):
         '''for when the grammar is not known in advance'''
         self.grammar = grammar
     
-    def __init__(self, node, grammar, stat_msg=None, is_reset=False):
-        # for self modification
-        self.node = node
+    def __init__(self, node, stat_msg=None, is_reset=False):
         first = False
-        if self.master_node == None:
-            self.master_node = self.node
-            first = True
+        if self.master_node is None:
+            self.master_node = node
+            self.stat_msg = stat_msg
             self.post = ContextSeeker(forward=[L(S(["cancel"], self.reset_node, consume=False), 
                                                  S([self.master_node.spec], lambda: None, consume=False))], 
                                       rspec=self.master_node.spec)
-        if self.stat_msg == None:
-            self.stat_msg = stat_msg        
+            first = True
+            MappingRule.__init__(self, self.master_node.spec)
+        
+        self.node = node
+        self.refresh(first, is_reset)
+    
+    def refresh(self, *args):
+        first = args[0]
+        is_reset = args[1]
         
         mapping = {}
         extras = []
         defaults = {}
         
-        # each child node gets turned into a mapping key/value
+        '''each child node gets turned into a mapping key/value'''
         for child in self.node.children:
             child.fill_out_rule(mapping, extras, defaults, self)
         if len(mapping)==0:
@@ -98,9 +103,9 @@ class NodeRule(SelfModifyingRule):
             if self.stat_msg!=None and not first and not is_reset:# status window messaging
                 self.stat_msg.hint("\n".join([x.get_spec_and_base_and_node()[0] for x in self.node.children]))
         
-        
-        MappingRule.__init__(self, "node_" + str(self.master_node.spec), mapping, extras, defaults)
-        self.grammar = grammar
+        self.extras = extras
+        self.defaults = defaults
+        self.reset(mapping)
         
     
     def change_node(self, node, reset=False):
@@ -112,10 +117,6 @@ class NodeRule(SelfModifyingRule):
         self.change_node(self.master_node, True)
     
     def _process_recognition(self, node, extras):
-        '''
-        There are two kinds of nodes being referred to in here: Dragonfly _processor_recognition nodes, 
-        and Caster hintnode.HintNode(s). "node" is the former, "self.node" is the latter.
-        '''
         node=node[self.master_node.spec]
         node._action.execute(node._data)
         

@@ -4,13 +4,9 @@ main Caster module
 Created on Jun 29, 2014
 '''
 
-from subprocess import Popen
 import time
 
 from dragonfly import (Key, Function, Grammar, Playback, Dictation, Choice, Pause, MappingRule)
-
-from caster.lib.ccr2.recording.alias import Aliases, AliasesNon
-
 
 try:
     from caster.lib import settings# requires nothing
@@ -39,6 +35,7 @@ try:
     from caster.lib.dfplus.additions import IntegerRefST
     from caster.lib.ccr2.recording.again import Again
     from caster.lib.ccr2.recording.history import HistoryRule
+    from caster.lib.ccr2.recording.alias import VanillaAlias
     
     ccr.initialize_ccr()
 except:
@@ -130,22 +127,10 @@ class MainRule(MappingRule):
 
 grammar = Grammar('general')
 grammar.add_rule(MainRule())
-grammar.add_rule(Again())
-
-history = HistoryRule()
-a = Aliases()
-ca = AliasesNon()
-ca.set_chain(a)
-
-grammar.add_rule(history)
-grammar.add_rule(ca)
-grammar.add_rule(a)
-
-
+grammar.add_rule(Again(name="repetition rule"))
+grammar.add_rule(HistoryRule(name="history rule"))
+grammar.add_rule(VanillaAlias(name="vanilla alias"))
 grammar.load()
-history.refresh()
-ca.refresh()
-a.refresh()
 
 
 def unload():

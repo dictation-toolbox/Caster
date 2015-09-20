@@ -3,10 +3,9 @@ Created on Sep 3, 2015
 
 @author: synkarius
 '''
-import re
 
 from dragonfly.actions.action_function import Function
-from dragonfly.actions.action_paste import Paste
+from dragonfly.actions.action_text import Text
 
 from caster.asynch.hmc import h_launch
 from caster.lib import context, utilities, settings, control
@@ -21,18 +20,17 @@ def read_highlighted(max_tries):
         if result[0]==0: return result[1]
     return None
 
-def delete_all(alias):
-    utilities.save_json_file({}, settings.SETTINGS["paths"]["ALIAS_PATH"])
+def delete_all(alias, path):
+    aliases = utilities.load_json_file(settings.SETTINGS["paths"]["ALIAS_PATH"])
+    aliases[path] = {}
+    utilities.save_json_file(aliases, settings.SETTINGS["paths"]["ALIAS_PATH"])
     alias.refresh()
-    if hasattr(alias, "chain"): alias.chain.refresh()
 
-class AliasesNon(SelfModifyingRule):
-    mapping = {
-        "default command":       NullAction(), 
-        }
+class VanillaAlias(SelfModifyingRule):
+    mapping = { "default vanilla command":       NullAction() }
     json_path = "single_aliases"
     
-    def alias(self, spec):
+    def vanilla_alias(self, spec):
         spec = str(spec)
         if spec!="":
             text = read_highlighted(10)
@@ -41,29 +39,22 @@ class AliasesNon(SelfModifyingRule):
     def refresh(self, *args):
         '''args: spec, text'''
         aliases = utilities.load_json_file(settings.SETTINGS["paths"]["ALIAS_PATH"])
-        if not AliasesNon.json_path in aliases:
-            aliases[AliasesNon.json_path] = {}
+        if not VanillaAlias.json_path in aliases:
+            aliases[VanillaAlias.json_path] = {}
         if len(args)>0:
-            aliases[AliasesNon.json_path][args[0]] = args[1]
+            aliases[VanillaAlias.json_path][args[0]] = args[1]
             utilities.save_json_file(aliases, settings.SETTINGS["paths"]["ALIAS_PATH"])
         mapping = {}
-        for spec in aliases[AliasesNon.json_path]:
-            mapping[spec] = R(Paste(str(aliases[AliasesNon.json_path][spec])),rdescript="Alias: "+spec)
-        mapping["alias <s>"] = R(Function(lambda s: self.alias(s)), rdescript="Create Alias")
-        mapping["delete aliases"] = R(Function(lambda: delete_all(self)), rdescript="Delete Aliases")
-        # 
-        if hasattr(self, "chain"): mapping["chain alias"] = R(Function(self.chain.chain_alias), rdescript="Create Chainable Alias")
+        for spec in aliases[VanillaAlias.json_path]:
+            mapping[spec] = R(Text(str(aliases[VanillaAlias.json_path][spec])),rdescript="Alias: "+spec)
+        mapping["vanilla alias <s>"] = R(Function(lambda s: self.vanilla_alias(s)), rdescript="Create Vanilla Alias")
+        mapping["delete vanilla aliases"] = R(Function(lambda: delete_all(self, VanillaAlias.json_path)), rdescript="Delete Vanilla Aliases")
         self.reset(mapping)
-    
-    def set_chain(self, chain):
-        self.chain = chain
 
-class Aliases(SelfModifyingRule):
-    json_path = "chain_aliases"
-    
-    mapping = {
-        "default chain command":       NullAction(), 
-        }
+
+class ChainAlias(SelfModifyingRule):
+    json_path = "chain_aliases"    
+    mapping = { "default chain command":       NullAction() }
     
     def chain_alias(self):
         text = read_highlighted(10)
@@ -75,17 +66,18 @@ class Aliases(SelfModifyingRule):
 
     def refresh(self, *args):
         aliases = utilities.load_json_file(settings.SETTINGS["paths"]["ALIAS_PATH"])
-        if not Aliases.json_path in aliases:
-            aliases[Aliases.json_path] = {}
+        if not ChainAlias.json_path in aliases:
+            aliases[ChainAlias.json_path] = {}
         if len(args)>0 and args[0]!="":
-            aliases[Aliases.json_path][args[0]] = args[1]
+            aliases[ChainAlias.json_path][args[0]] = args[1]
             utilities.save_json_file(aliases, settings.SETTINGS["paths"]["ALIAS_PATH"])
         mapping = {}
-        for spec in aliases[Aliases.json_path]:
-            mapping[spec] = R(Paste(str(aliases[Aliases.json_path][spec])),rdescript="Chain Alias: "+spec)
-        if len(mapping)<1: mapping = Aliases.mapping
+        for spec in aliases[ChainAlias.json_path]:
+            mapping[spec] = R(Text(str(aliases[ChainAlias.json_path][spec])),rdescript="Chain Alias: "+spec)
+        mapping["chain alias"] = R(Function(self.chain_alias), rdescript="Create Chainable Alias")
+        mapping["delete chain aliases"] = R(Function(lambda: delete_all(self, ChainAlias.json_path)), rdescript="Delete Vanilla Aliases")
         self.reset(mapping)
 
-control.nexus().merger.add_selfmodrule(Aliases(), "chain alias")
-control.nexus().merger.add_selfmodrule(AliasesNon(), "vanilla alias")
+control.nexus().merger.add_selfmodrule(ChainAlias(), "chain alias")
+
     
