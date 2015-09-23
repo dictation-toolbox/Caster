@@ -3,8 +3,6 @@ Created on Sep 12, 2015
 
 @author: synkarius
 '''
-import inspect
-
 from dragonfly.grammar.elements import RuleRef, Alternative, Repetition
 from dragonfly.grammar.grammar_base import Grammar
 from dragonfly.grammar.rule_compound import CompoundRule
@@ -106,7 +104,8 @@ class CCRMerger(object):
         self.selfmod_rule_names():
             raise "Rule Naming Conflict: "+rule.get_name()
         if isinstance(rule, MergeRule):
-            for name in group: group[name].compatibility_check(rule) # calculate compatibility for uncombined rules at boot time
+            for name in group: 
+                group[name].compatibility_check(rule) # calculate compatibility for uncombined rules at boot time
             group[rule.get_name()] = rule
     
     '''getters'''
@@ -117,14 +116,23 @@ class CCRMerger(object):
     def selfmod_rule_names(self):
         return self._self_modifying_rules.keys()
     
+    '''rule change functions'''
+    def global_rule_changer(self):
+        def _(name, enable, save):
+            self._config[CCRMerger._GLOBAL][name] = enable
+            self.merge(Inf.RUN, name, enable, save)
+        return _
+    
     '''merging'''
-    def _get_rules_by_composite(self, composite):
-        return [rule.copy() for name, rule in self._global_rules.iteritems() if rule.ID in composite]
+    def _get_rules_by_composite(self, composite, original=False):
+        return [rule if original else rule.copy()  \
+                for name, rule in self._global_rules.iteritems() \
+                if rule.ID in composite]
     def _compatibility_merge(self, merge_pair, base, rule):
         '''MergeRule.merge always returns a copy, so there's
         no need to worry about the originals getting modified'''
         if merge_pair.check_compatibility==False or \
-        base.check_compatibility(rule):
+        base.compatibility_check(rule, True):
             base = base.merge(rule, rule.context)
         else:
             # figure out which MergeRules aren't compatible
@@ -148,7 +156,7 @@ class CCRMerger(object):
         assumptions made: 
         * SelfModifyingRules have already made changes to themselves
         * the appropriate activation boolean(s) in the appropriate map has already been set'''
-        
+        self._grammar.unload()
         base = self._base_global
         
         '''get base CCR rule'''
@@ -162,7 +170,7 @@ class CCRMerger(object):
                             self._run_filters(mp)
                             if base is None: base = rule
                             else: base = self._compatibility_merge(mp, base, rule)
-                else:
+                else:#runtime-enable
                     mp = MergePair(time, Inf.GLOBAL, base, named_rule.copy(), True)
                     self._run_filters(mp)
                     base = self._compatibility_merge(mp, base, mp.rule2) # mp.rule2 because named_rule got copied
@@ -175,14 +183,7 @@ class CCRMerger(object):
                     self._run_filters(mp)
                     if base is None: base = rule
                     else: base = self._compatibility_merge(mp, base, mp.rule2) # mp.rule2 because named_rule got copied
-        
-        
-        '''instantiate non-ccr rules affiliated with rules in the base CCR rule'''
-        active_global  = self._get_rules_by_composite(base.composite)
-        global_non_ccr = [rule.non() for rule in active_global \
-                         if rule.non is not None]
-        
-        
+                
         '''compatibility check and filter function active 
         selfmodrules, but do not merge them in; they will
         become parts of the Alternative in _create_repeat_rule()'''
@@ -212,7 +213,8 @@ class CCRMerger(object):
             mp = MergePair(time, Inf.APP, base, rule.copy(), False)
             self._run_filters(mp)
             rule = self._compatibility_merge(mp, base, mp.rule2) # mp.rule2 because named_rule got copied
-            active_apps.append(rule)        
+            active_apps.append(rule)
+           
         
         '''negation context for appless version of base rule'''
         contexts = [rule.context for rule in active_apps \
@@ -222,6 +224,11 @@ class CCRMerger(object):
             if master_context is None: master_context = not context
             else: master_context += not context
         base = base.merge(base, master_context) # sets context through constructor
+        
+        '''instantiate non-ccr rules affiliated with rules in the base CCR rule'''
+        active_global  = self._get_rules_by_composite(base.composite, True)
+        global_non_ccr = [rule.non() for rule in active_global \
+                         if rule.non is not None]
         
         '''modify grammar'''
         while len(self._grammar.rules) > 0: self._grammar.remove_rule(self._grammar.rules[0])
@@ -239,6 +246,9 @@ class CCRMerger(object):
                 self._config[CCRMerger._SELFMOD][rule_name] = rule_name in active_selfmod_names
             self.save_config()
         
+        self._base_global = base
+        self._grammar.load()
+        
     def _run_filters(self, merge_pair):
         for filter_fn in self._filters: filter_fn(merge_pair)
     def _create_repeat_rule(self, rule, selfmod):
@@ -253,11 +263,11 @@ class CCRMerger(object):
             extras = [ sequence, original, terminal ] 
             def _process_recognition(self, node, extras):
                 original = extras[ORIGINAL] if ORIGINAL in extras else None
-                terminal = extras[SEQ] if SEQ in extras else None
-                sequence = extras[TERMINAL] if TERMINAL in extras else None
+                sequence = extras[SEQ] if SEQ in extras else None
+                terminal = extras[TERMINAL] if TERMINAL in extras else None
                 if original!=None: original.execute()
                 if sequence!=None:
                     for action in sequence:
                         action.execute()
                 if terminal!=None: terminal.execute()
-        return RepeatRule(name=rule.get_name())
+        return RepeatRule(name=rule.get_name()+str(rule.context))

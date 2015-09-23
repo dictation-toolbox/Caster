@@ -42,7 +42,7 @@ try:
     from caster.lib.ccr2 import *
     
     
-    ccr.initialize_ccr()
+#     ccr.initialize_ccr()
 except:
     print "\nAttempting to load CCR anyway..."
     from caster.lib import ccr, utilities
@@ -63,9 +63,9 @@ class MainRule(MappingRule):
     @staticmethod
     def generate_CCR_choices():
         choices = {}
-        for ccr_choice in settings.get_list_of_ccr_config_files():
-            choices[settings.get_ccr_config_file_pronunciation(ccr_choice)] = ccr_choice
-        return Choice("ccr_mode", choices)
+        for ccr_choice in control.nexus().merger.global_rule_names():
+            choices[ccr_choice] = ccr_choice
+        return Choice("name", choices)
     
     mapping = {
     # Dragon NaturallySpeaking commands moved to dragon.py
@@ -104,8 +104,8 @@ class MainRule(MappingRule):
 #     "chain alias":                  R(Function(recording.get_chain_alias_spec), rdescript="Create CCR Alias Command"),
     
     # miscellaneous
-    "<enable_disable> <ccr_mode>":  R(Function(ccr.set_active_command), rdescript="Enable CCR Module"),
-    "refresh <ccr_mode>":           R(Function(ccr.refresh_from_files), rdescript="Refresh CCR Module"), 
+    "<enable> <name>":              R(Function(control.nexus().merger.global_rule_changer(), save=True), rdescript="Enable CCR Module"),
+#     "refresh <ccr_mode>":           R(Function(ccr.refresh_from_files), rdescript="Refresh CCR Module"), 
     
     
     }
@@ -114,8 +114,8 @@ class MainRule(MappingRule):
               Dictation("text"),
               Dictation("text2"),
               Dictation("text3"),
-              Choice("enable_disable",
-                    {"enable": 1, "disable": 0
+              Choice("enable",
+                    {"enable": True, "disable": False
                     }),
               Choice("volume_mode",
                     {"mute": "mute", "up":"up", "down":"down"

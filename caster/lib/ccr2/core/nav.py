@@ -14,8 +14,6 @@ from caster.lib.dfplus.state.short import L, S, R
 from caster.lib.pita import fnfz
 
 class NavigationNon(MappingRule):
-    pronunciation = control.CCRMerger.CORE[1]
-    
     mapping = {
         "<direction> <time_in_seconds>":    AsynchronousAction([L(S(["cancel"], Key("%(direction)s")))], 
                                                                repetitions=1000, blocking=False ),
@@ -77,6 +75,7 @@ class NavigationNon(MappingRule):
 
 class Navigation(MergeRule):
     non = NavigationNon
+    pronunciation = control.CCRMerger.CORE[1]
     
     mapping = {
     

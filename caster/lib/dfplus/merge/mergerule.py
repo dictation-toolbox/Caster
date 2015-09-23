@@ -7,6 +7,8 @@ import re
 
 from dragonfly import MappingRule, Pause
 
+from caster.lib import utilities
+
 
 class TokenSet(object):
     SYMBOL_PATTERN = re.compile("([A-Za-z0-9_]+)")
@@ -52,9 +54,9 @@ class MergeRule(MappingRule):
     context = None
     
     def __init__(self, name=None, mapping=None, extras=None, defaults=None,
-                 exported=None, context=None, ID=None, composite=None):
+                 exported=None, context=None, ID=None, composite=None, compatible=None):
         self.ID = ID if ID is not None else MergeRule._get_next_id()
-        self.compatible = {}
+        self.compatible = {} if compatible is None else compatible
         if composite is not None: self.composite = composite # the IDs of the rules which this MergeRule is composed of
         else: self.composite = set([self.ID])
         MappingRule.__init__(self, name, mapping, extras, 
@@ -63,16 +65,21 @@ class MergeRule(MappingRule):
         if not isinstance(other, MergeRule):
             return False
         return self.ID == other.ID
+    
+    def mapping_copy(self):
+        return self._mapping.copy()
     def extras_copy(self):
         return self._extras.copy()
+    def defaults_copy(self):
+        return self._defaults
     def merge(self, other, context=None):
-        mapping = self.mapping.copy()
-        mapping.update(other.mapping)
+        mapping = self.mapping_copy()
+        mapping.update(other.mapping_copy())
         extras_dict = self.extras_copy()
         extras_dict.update(other.extras_copy()) # not just combining lists avoids duplicates
         extras = extras_dict.values()
-        defaults = self.defaults.copy()
-        defaults.update(other.defaults)
+        defaults = self.defaults_copy()
+        defaults.update(other.defaults_copy())
         return MergeRule(self.name + "+" + other.name, mapping, extras, defaults, 
                          self.exported and other.exported, context, # no ID
                          composite=self.composite.union(other.composite))
@@ -80,14 +87,14 @@ class MergeRule(MappingRule):
     def get_name(self):
         return self.name if self.pronunciation==None else self.pronunciation
     def copy(self):
-        return MergeRule(self.name, self.mapping, self._extras.values(), self.defaults, 
-                         self.exported, self.context, self.ID, self.composite)
-    def compatibility_check(self, other):
+        return MergeRule(self.name, self._mapping, self._extras.values(), self._defaults, 
+                         self._exported, self._context, self.ID, self.composite, self.compatible)
+    def compatibility_check(self, other, debug=False):
         if other.ID in self.compatible:
-            return self.compatible[other.ID]
+            return self.compatible[other.ID] # lazily
         compatible = True
-        for key in self.mapping:
-            if key in other.mapping:
+        for key in self._mapping.keys():
+            if key in other._mapping.keys():
                 compatible = False
                 break
         self.compatible[other.ID] = compatible

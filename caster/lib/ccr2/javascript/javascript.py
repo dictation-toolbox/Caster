@@ -115,4 +115,4 @@ class Javascript(MergeRule):
     
     
     
-control.nexus().merger.add_global_rule(Javascript())
+control.nexus().merger.add_global_rule(Javascript(ID=200))

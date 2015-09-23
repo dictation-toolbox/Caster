@@ -100,4 +100,4 @@ class Python(MergeRule):
                          "#", 
                          ["'''", '"""'])
 
-control.nexus().merger.add_global_rule(Python())
+control.nexus().merger.add_global_rule(Python(ID=100))
