@@ -217,12 +217,13 @@ class CCRMerger(object):
            
         
         '''negation context for appless version of base rule'''
-        contexts = [rule.context for rule in active_apps \
+        contexts = [rule.context for rule in self._app_rules.values() \
                     if rule.context is not None]# get all contexts
         master_context = None
         for context in contexts:
-            if master_context is None: master_context = not context
-            else: master_context += not context
+            negate = ~context
+            if master_context is None: master_context = negate
+            else: master_context | negate
         base = base.merge(base, master_context) # sets context through constructor
         
         '''instantiate non-ccr rules affiliated with rules in the base CCR rule'''

@@ -5,7 +5,7 @@ Created on Sep 1, 2015
 '''
 import re
 
-from dragonfly import MappingRule, Pause
+from dragonfly import MappingRule, Pause, Context
 
 from caster.lib import utilities
 

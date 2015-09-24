@@ -132,7 +132,6 @@ class MainRule(MappingRule):
 grammar = Grammar('general')
 grammar.add_rule(MainRule())
 grammar.add_rule(Again(name="repetition rule"))
-grammar.add_rule(HistoryRule(name="history rule"))
 grammar.add_rule(VanillaAlias(name="vanilla alias"))
 grammar.load()
 
