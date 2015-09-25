@@ -3,6 +3,7 @@ Created on Sep 1, 2015
 
 @author: synkarius
 '''
+import random
 import re
 
 from dragonfly import MappingRule, Pause, Context
@@ -24,6 +25,9 @@ class MergeRule(MappingRule):
             MergeRule._get_next_id.id = 0  
         MergeRule._get_next_id.id += 1
         return MergeRule._get_next_id.id
+    @staticmethod
+    def get_merge_name(): # returns unique str(int) for procedural rule names 
+        return str(MergeRule._get_next_id())
     
     mapping = {"hello world default macro": Pause("10")}
     
@@ -80,8 +84,8 @@ class MergeRule(MappingRule):
         extras = extras_dict.values()
         defaults = self.defaults_copy()
         defaults.update(other.defaults_copy())
-        return MergeRule(self.name + "+" + other.name, mapping, extras, defaults, 
-                         self.exported and other.exported, context, # no ID
+        return MergeRule("Merged"+MergeRule.get_merge_name()+self.get_name()[0]+other.get_name()[0], 
+                         mapping, extras, defaults, self.exported and other.exported, context, # no ID
                          composite=self.composite.union(other.composite))
                 
     def get_name(self):

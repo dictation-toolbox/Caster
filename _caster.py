@@ -66,6 +66,12 @@ class MainRule(MappingRule):
         for ccr_choice in control.nexus().merger.global_rule_names():
             choices[ccr_choice] = ccr_choice
         return Choice("name", choices)
+    @staticmethod
+    def generate_SM_CCR_choices():
+        choices = {}
+        for ccr_choice in control.nexus().merger.selfmod_rule_names():
+            choices[ccr_choice] = ccr_choice
+        return Choice("name2", choices)
     
     mapping = {
     # Dragon NaturallySpeaking commands moved to dragon.py
@@ -94,17 +100,9 @@ class MainRule(MappingRule):
     "scan directory":               R(Function(scanner.scan_directory), rdescript="Scan Directory For PITA"),
     "rescan current":               R(Function(scanner.rescan_current_file), rdescript="Rescan Current File For PITA"),
     
-    # macro recording and automation
-#     "record from history":          R(Function(recording.record_from_history), rdescript="Create Macro From Spoken"),
-#     "delete recorded macros":       R(Function(recording.delete_recorded_rules), rdescript="Delete Recorded Macros"),
-    
-    # aliasing
-#     "alias <text>":                 R(Function(recording.add_alias), rdescript="Create Alias Command"),
-#     "delete aliases":               R(Function(recording.delete_alias_rules), rdescript="Delete All Alias Commands"),
-#     "chain alias":                  R(Function(recording.get_chain_alias_spec), rdescript="Create CCR Alias Command"),
-    
-    # miscellaneous
-    "<enable> <name>":              R(Function(control.nexus().merger.global_rule_changer(), save=True), rdescript="Enable CCR Module"),
+    # ccr de/activation
+    "<enable> <name>":              R(Function(control.nexus().merger.global_rule_changer(), save=True), rdescript="Toggle CCR Module"),
+    "<enable> <name2>":             R(Function(control.nexus().merger.node_rule_changer(), save=True), rdescript="Toggle sm-CCR Module"),
 #     "refresh <ccr_mode>":           R(Function(ccr.refresh_from_files), rdescript="Refresh CCR Module"), 
     
     
@@ -121,6 +119,7 @@ class MainRule(MappingRule):
                     {"mute": "mute", "up":"up", "down":"down"
                      }),
               generate_CCR_choices.__func__(),
+              generate_SM_CCR_choices.__func__(),
               IntegerRefST("monitor", 1, 10)
              ]
     defaults = {"n": 1, "nnv": 1,
