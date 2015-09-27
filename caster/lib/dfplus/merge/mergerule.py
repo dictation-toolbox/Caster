@@ -3,13 +3,9 @@ Created on Sep 1, 2015
 
 @author: synkarius
 '''
-import random
 import re
 
 from dragonfly import MappingRule, Pause, Context
-
-from caster.lib import utilities
-
 
 class TokenSet(object):
     SYMBOL_PATTERN = re.compile("([A-Za-z0-9_]+)")
@@ -51,31 +47,41 @@ class MergeRule(MappingRule):
     "symbol match" command in their language'''
     token_set = None
     
-    '''MergeRules which define `context` with a 
+    '''MergeRules which define `mcontext` with a 
     Dragonfly AppContext become non-global; this
     is the same as adding a context to a Grammar'''
-    context = None
+    mcontext = None
     
     def __init__(self, name=None, mapping=None, extras=None, defaults=None,
-                 exported=None, context=None, ID=None, composite=None, compatible=None):
-        self.ID = ID if ID is not None else MergeRule._get_next_id()
-        self.compatible = {} if compatible is None else compatible
-        if composite is not None: self.composite = composite # the IDs of the rules which this MergeRule is composed of
-        else: self.composite = set([self.ID])
-        MappingRule.__init__(self, name, mapping, extras, 
-                             defaults, exported, context)
+                 exported=None, ID=None, composite=None, compatible=None):
+        
+        self.ID =           ID if ID is not None                else MergeRule._get_next_id()
+        self.compatible =   {} if compatible is None            else compatible
+        '''composite is the IDs of the rules which this MergeRule is composed of: '''
+        self.composite =    composite if composite is not None  else set([self.ID])
+        
+        MappingRule.__init__(self, name, mapping, extras, defaults, exported)
     def __eq__(self, other):
         if not isinstance(other, MergeRule):
             return False
         return self.ID == other.ID
     
+    ''' "copy" getters used for safe merging;
+    "actual" versions used for filter functions'''
     def mapping_copy(self):
         return self._mapping.copy()
+    def mapping_actual(self):
+        return self._mapping
     def extras_copy(self):
         return self._extras.copy()
+    def extras_actual(self):
+        return self._extras
     def defaults_copy(self):
+        return self._defaults.copy()
+    def defaults_actual(self):
         return self._defaults
-    def merge(self, other, context=None):
+    
+    def merge(self, other):
         mapping = self.mapping_copy()
         mapping.update(other.mapping_copy())
         extras_dict = self.extras_copy()
@@ -84,20 +90,20 @@ class MergeRule(MappingRule):
         defaults = self.defaults_copy()
         defaults.update(other.defaults_copy())
         return MergeRule("Merged"+MergeRule.get_merge_name()+self.get_name()[0]+other.get_name()[0], 
-                         mapping, extras, defaults, self.exported and other.exported, context, # no ID
+                         mapping, extras, defaults, self._exported and other._exported, # no ID
                          composite=self.composite.union(other.composite))
                 
     def get_name(self):
-        return self.name if self.pronunciation==None else self.pronunciation
+        return self.name if self.pronunciation is None else self.pronunciation
     def copy(self):
         return MergeRule(self.name, self._mapping, self._extras.values(), self._defaults, 
-                         self._exported, self._context, self.ID, self.composite, self.compatible)
+                         self._exported, self.ID, self.composite, self.compatible)
     def compatibility_check(self, other, debug=False):
         if other.ID in self.compatible:
             return self.compatible[other.ID] # lazily
         compatible = True
         for key in self._mapping.keys():
-            if key in other._mapping.keys():
+            if key in other.mapping_actual().keys():
                 compatible = False
                 break
         self.compatible[other.ID] = compatible

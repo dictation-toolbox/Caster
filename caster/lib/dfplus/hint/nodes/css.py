@@ -501,8 +501,7 @@ def _get_background():
 
 
 
-node = getCSSNode()
-control.nexus().merger.add_selfmodrule(NodeRule(node, control.nexus().intermediary), node.spec)
+control.nexus().merger.add_selfmodrule(NodeRule(getCSSNode(), control.nexus().intermediary))
 
     
     

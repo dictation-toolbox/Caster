@@ -78,4 +78,4 @@ class HistoryRule(SelfModifyingRule):
         utilities.save_json_file({}, settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
         self.refresh()
     
-control.nexus().merger.add_selfmodrule(HistoryRule(), "history")
+control.nexus().merger.add_selfmodrule(HistoryRule())

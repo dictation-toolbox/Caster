@@ -61,6 +61,8 @@ class EclipseCCR(MergeRule):
     mapping = {
             "[go to] line <n>":                         R(Key("c-l") + Pause("50") + Text("%(n)d") + Key("enter")+ Pause("50")+
                                                           Mimic(extra="mim"), rdescript="Eclipse: Go To Line"),
+            "shells":                                   R(Text("Eclipse priority"), rdescript="Test Conflict Command"),
+            "garlic and onions":                        R(Text("garlic")),
         }
     extras = [
               Dictation("text"),

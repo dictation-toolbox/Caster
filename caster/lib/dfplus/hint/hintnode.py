@@ -71,15 +71,18 @@ class NodeRule(SelfModifyingRule):
                                                  S([self.master_node.spec], lambda: None, consume=False))], 
                                       rspec=self.master_node.spec)
             first = True
-            MappingRule.__init__(self, self.master_node.spec)
+            SelfModifyingRule.__init__(self, self.master_node.spec, refresh=False)
         
         self.refresh(node, first, is_reset)
+    
+    def get_name(self):
+        return self.master_node.spec
     
     def refresh(self, *args):
         self.node = args[0]
         first = args[1]
         is_reset = args[2]
-        
+            
         mapping = {}
         extras = []
         defaults = {}

@@ -23,12 +23,12 @@ class Inf(object):
     
 
 class MergePair(object):
-    def __init__(self, type, time,  rule1, rule2, check_compatibility):
-        self.type = type
+    def __init__(self, time, type, rule1, rule2, check_compatibility):
         self.time = time
+        self.type = type
         self.rule1 = rule1
         self.rule2 = rule2
-        self.changed = False
+        self.changed = False # presently unused
         self.check_compatibility = check_compatibility
 
 class CCRMerger(object):
@@ -61,41 +61,45 @@ class CCRMerger(object):
     def update_config(self, merge=False):
         '''call this after all rules have been added'''
         changed = False
+        '''global rules'''
         if not CCRMerger._GLOBAL in self._config:
             self._config[CCRMerger._GLOBAL] = {}
         for name in self.global_rule_names():
             if not name in self._config[CCRMerger._GLOBAL]:
                 self._config[CCRMerger._GLOBAL][name] = name in CCRMerger.CORE
                 changed = True
+        '''app rules'''
         if not CCRMerger._APP in self._config:
             self._config[CCRMerger._APP] = {}
         for name in self.app_rule_names():
             if not name in self._config[CCRMerger._APP]:
                 self._config[CCRMerger._APP][name] = True
                 changed = True
+        '''self modifying rules'''
         if not CCRMerger._SELFMOD in self._config:
             self._config[CCRMerger._SELFMOD] = {}
         for name in self.selfmod_rule_names():
             if not name in self._config[CCRMerger._SELFMOD]:
                 self._config[CCRMerger._SELFMOD][name] = False
                 changed = True
+        
         if changed: self.save_config()
         if merge: self.merge()
     
     '''setup: adding rules and filters'''
     def add_global_rule(self, rule):
-        assert rule.context is None, "global rules may not have contexts, "+rule.get_name()+" has a context"
-        assert isinstance(rule, MergeRule) and not hasattr(rule, "merger"), \
+        assert rule.__class__.mcontext is None, "global rules may not have contexts, "+rule.get_name()+" has a context"
+        assert isinstance(rule, MergeRule) and not hasattr(rule, "set_merger"), \
             "only MergeRules may be added as global rules; use add_selfmodrule() or add_app_rule()"
         self._add_to(rule, self._global_rules)
     def add_app_rule(self, rule, context=None):
-        if context is not None and rule.context is None: rule.context=context
-        assert rule.context!=None, "app rules must have contexts, "+rule.get_name()+" has no context"
+        if context is not None and rule.__class__.mcontext is None: rule.__class__.mcontext = context
+        assert rule.__class__.mcontext is not None, "app rules must have contexts, "+rule.get_name()+" has no context"
         self._add_to(rule, self._app_rules)
-    def add_selfmodrule(self, rule, name, context=None):
-        rule.context = context
-        rule.merger = self
-        self._self_modifying_rules[name] = rule        
+    def add_selfmodrule(self, rule):
+        assert hasattr(rule, "set_merger"), "only SelfModifyingRules may be added by add_selfmodrule()"
+        rule.set_merger(self)
+        self._add_to(rule, self._self_modifying_rules)
     def add_filter(self, filter):
         if not filter in self._filters:
             self._filters.append(filter)
@@ -106,7 +110,7 @@ class CCRMerger(object):
         self.selfmod_rule_names():
             raise "Rule Naming Conflict: "+rule.get_name()
         if isinstance(rule, MergeRule):
-            for name in group: 
+            for name in group.keys(): 
                 group[name].compatibility_check(rule) # calculate compatibility for uncombined rules at boot time
             group[rule.get_name()] = rule
     
@@ -134,26 +138,21 @@ class CCRMerger(object):
         return _
     def node_rule_changer(self):
         def _(name2, enable, save):
-            print "activate node"
-            try:
-                self._config[CCRMerger._SELFMOD][name2] = enable
-                self.merge(Inf.SELFMOD, name2, enable, save)
-            except Exception:
-                utilities.simple_log()
-            
+            self._config[CCRMerger._SELFMOD][name2] = enable
+            self.merge(Inf.SELFMOD, name2, enable, save)
         return _
     
     '''merging'''
     def _get_rules_by_composite(self, composite, original=False):
         return [rule if original else rule.copy()  \
-                for name, rule in self._global_rules.iteritems() \
+                for rule in self._global_rules.values() \
                 if rule.ID in composite]
     def _compatibility_merge(self, merge_pair, base, rule):
         '''MergeRule.merge always returns a copy, so there's
         no need to worry about the originals getting modified'''
         if merge_pair.check_compatibility==False or \
         base.compatibility_check(rule, True):
-            base = base.merge(rule, rule.context)
+            base = base.merge(rule)
         else:
             # figure out which MergeRules aren't compatible
             composite = base.composite.copy() # composite is a set of the ids of the rules which make up this rule
@@ -164,20 +163,19 @@ class CCRMerger(object):
             for _rule in self._get_rules_by_composite(composite): 
                 base = _rule if base is None else base.merge(_rule, _rule.context)
             # merge in the new rule
-            base = base.merge(rule, rule.context)
+            base = base.merge(rule)
         return base
     def _grammar_wipe(self):
         for grammar in self._grammars:
             grammar.unload()
             while len(grammar.rules) > 0: grammar.remove_rule(grammar.rules[0])
             self._grammars.remove(grammar)
-    def _add_grammar(self, rule, selfmod=None):
+    def _add_grammar(self, rule, selfmod=None, context=None):
         ccr = selfmod is not None
         name = str(rule)
-        grammar = Grammar(name)
+        grammar = Grammar(name, context=context)
         self._grammars.append(grammar)
         if ccr:
-            print "making ccr rule: " + name
             repeater = self._create_repeat_rule(rule, selfmod)
             grammar.add_rule(repeater)
         else:
@@ -194,7 +192,6 @@ class CCRMerger(object):
         * the appropriate activation boolean(s) in the appropriate map has already been set'''
         self._grammar_wipe()
         base = self._base_global
-        print "beginning merge"
         
         '''get base CCR rule'''
         if time != Inf.SELFMOD: # SelfModifyingRule changes don't alter the base rule
@@ -250,27 +247,27 @@ class CCRMerger(object):
                     rule.reset_node()
             except AttributeError: pass
         
-        
-        
-        
         '''have base, make copies, merge in apps'''
         active_apps = []
         for rule in self._app_rules.values():
+            context = rule.__class__.mcontext
             mp = MergePair(time, Inf.APP, base, rule.copy(), False)
             self._run_filters(mp)
             rule = self._compatibility_merge(mp, base, mp.rule2) # mp.rule2 because named_rule got copied
+            rule.__class__.mcontext = context
             active_apps.append(rule)
-           
+            
         
         '''negation context for appless version of base rule'''
-        contexts = [rule.context for rule in self._app_rules.values() \
-                    if rule.context is not None]# get all contexts
-        master_context = None
+        contexts = [rule.__class__.mcontext for rule in self._app_rules.values() \
+                    if rule.__class__.mcontext is not None]# get all contexts
+        negation_context = None
         for context in contexts:
             negate = ~context
-            if master_context is None: master_context = negate
-            else: master_context | negate
-        base = base.merge(base, master_context) # sets context through constructor
+            if negation_context is None: negation_context = negate
+            else: negation_context | negate
+        
+#         base = base.merge(base, negation_context) # sets context through constructor
         self._base_global = base
         
         '''instantiate non-ccr rules affiliated with rules in the base CCR rule'''
@@ -279,8 +276,9 @@ class CCRMerger(object):
                          if rule.non is not None]
         
         '''update grammars'''
-        for rule in [base]+active_apps: self._add_grammar(rule, selfmod)
+        self._add_grammar(base, selfmod, negation_context)
         for rule in global_non_ccr: self._add_grammar(rule)
+        for rule in active_apps: self._add_grammar(rule, selfmod, rule.__class__.mcontext)
         for grammar in self._grammars: grammar.load()
         
         '''save if necessary'''

@@ -29,6 +29,7 @@ def delete_all(alias, path):
 class VanillaAlias(SelfModifyingRule):
     mapping = { "default vanilla command":       NullAction() }
     json_path = "single_aliases"
+    pronunciation = "vanilla alias"
     
     def vanilla_alias(self, spec):
         spec = str(spec)
@@ -55,6 +56,7 @@ class VanillaAlias(SelfModifyingRule):
 class ChainAlias(SelfModifyingRule):
     json_path = "chain_aliases"    
     mapping = { "default chain command":       NullAction() }
+    pronunciation = "chain alias"
     
     def chain_alias(self):
         text = read_highlighted(10)
@@ -78,6 +80,6 @@ class ChainAlias(SelfModifyingRule):
         mapping["delete chain aliases"] = R(Function(lambda: delete_all(self, ChainAlias.json_path)), rdescript="Delete Vanilla Aliases")
         self.reset(mapping)
 
-control.nexus().merger.add_selfmodrule(ChainAlias(), "chain alias")
+control.nexus().merger.add_selfmodrule(ChainAlias())
 
     
