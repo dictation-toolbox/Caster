@@ -19,10 +19,9 @@ try:
     
     from caster.apps import *
     from caster.asynch import *
-    from caster.lib import ccr, context
+    from caster.lib import context
     from caster.asynch import auto_com
-    import caster.dev
-    from caster.lib.dfplus.hint import _nodes
+    import caster.lib.dev.dev
     try:
         import caster.w
     except Exception:
@@ -40,14 +39,16 @@ try:
     from caster.lib.ccr2.recording.alias import VanillaAlias
     from caster.lib.dfplus.merge.ccrmerger import Inf
     from caster.lib.ccr2 import *
+    from caster.lib.dev import dev
     
-    
-#     ccr.initialize_ccr()
 except:
     print "\nAttempting to load CCR anyway..."
-    from caster.lib import ccr, utilities
+    from caster.lib import utilities
+    from caster.lib import control# requires settings
+    from caster.lib.dfplus.state.stack import CasterState# requires control
+    control.nexus().inform_state(CasterState())
+    
     utilities.simple_log()
-    ccr.initialize_ccr()
 
         
 
@@ -136,13 +137,6 @@ grammar.load()
 
 control.nexus().merger.update_config()
 control.nexus().merger.merge(Inf.BOOT)
-
-def unload():
-    global grammar
-    if grammar: grammar.unload()
-    grammar = None
-    ccr.unload()
-    sikuli.unload()
 
 if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
     utilities.report("\nWARNING: Status Window is an experimental feature, and there is a known freezing glitch with it.\n")

@@ -140,20 +140,6 @@ class Nexus:
     def inform_state(self, state):# resolves circular import 
         self.state = state
         
-    def add_node_rule(self, n):
-        self.noderules.append(n)
-    
-    def get_node_rule(self, name):
-        for n in self.noderules:
-            if n.master_node.spec == name:
-                return n
-    
-    def node_rule_active(self, name, value):        
-        self.get_node_rule(name).master_node.active = value
-        
-        settings.SETTINGS["nodes"][name] = value
-        settings.save_config()
-        
 
 def nexus():
     global _NEXUS

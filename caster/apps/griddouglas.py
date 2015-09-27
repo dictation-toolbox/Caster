@@ -50,10 +50,3 @@ grammar = Grammar("douglasgrid", context=context)
 grammar.add_rule(GridControlRule(name="Douglas"))
 if settings.SETTINGS["apps"]["douglas"]:
     grammar.load()
-
-
-
-def unload():
-    global grammar
-    if grammar: grammar.unload()
-    grammar = None

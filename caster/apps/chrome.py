@@ -56,8 +56,3 @@ grammar = Grammar("chrome", context=context)
 grammar.add_rule(CommandRule(name="chrome"))
 if settings.SETTINGS["apps"]["chrome"]:
     grammar.load()
-
-def unload():
-    global grammar
-    if grammar: grammar.unload()
-    grammar = None

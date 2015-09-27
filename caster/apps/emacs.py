@@ -66,8 +66,3 @@ grammar = Grammar("emacs", context=context)
 grammar.add_rule(CommandRule(name="emacs"))
 if settings.SETTINGS["apps"]["emacs"]:
     grammar.load()
-
-def unload():
-    global grammar
-    if grammar: grammar.unload()
-    grammar = None

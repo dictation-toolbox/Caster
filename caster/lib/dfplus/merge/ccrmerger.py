@@ -38,7 +38,7 @@ class CCRMerger(object):
     _SELFMOD = "selfmod"
     
     def __init__(self):
-        self._grammar = Grammar("CCR Master")
+        self._grammars = [] # cannot put multiple large rules in a single grammar despite context separation
         # original copies of rules
         self._global_rules = {}
         self._app_rules = {}
@@ -124,8 +124,13 @@ class CCRMerger(object):
         return _
     def node_rule_changer(self):
         def _(name2, enable, save):
-            self._config[CCRMerger._SELFMOD][name2] = enable
-            self.merge(Inf.SELFMOD, name2, enable, save)
+            print "activate node"
+            try:
+                self._config[CCRMerger._SELFMOD][name2] = enable
+                self.merge(Inf.SELFMOD, name2, enable, save)
+            except Exception:
+                utilities.simple_log()
+            
         return _
     
     '''merging'''
@@ -151,6 +156,22 @@ class CCRMerger(object):
             # merge in the new rule
             base = base.merge(rule, rule.context)
         return base
+    def _grammar_wipe(self):
+        for grammar in self._grammars:
+            grammar.unload()
+            while len(grammar.rules) > 0: grammar.remove_rule(grammar.rules[0])
+            self._grammars.remove(grammar)
+    def _add_grammar(self, rule, selfmod=None):
+        ccr = selfmod is not None
+        name = str(rule)
+        grammar = Grammar(name)
+        self._grammars.append(grammar)
+        if ccr:
+            print "making ccr rule: " + name
+            repeater = self._create_repeat_rule(rule, selfmod)
+            grammar.add_rule(repeater)
+        else:
+            grammar.add_rule(rule)
     
     def merge(self, time, name=None, enable=True, save=False):
         '''combines MergeRules, SelfModifyingRules;
@@ -161,50 +182,49 @@ class CCRMerger(object):
         assumptions made: 
         * SelfModifyingRules have already made changes to themselves
         * the appropriate activation boolean(s) in the appropriate map has already been set'''
-        self._grammar.unload()
+        self._grammar_wipe()
         base = self._base_global
+        print "beginning merge"
         
         '''get base CCR rule'''
-#         if time != Inf.SELFMOD: # SelfModifyingRule changes don't alter the base rule
-        named_rule = self._global_rules[name] if time != Inf.SELFMOD and name is not None else None
-        rebuild = time in [Inf.BOOT, Inf.SELFMOD]
-        
-        if enable or rebuild:
-            if rebuild:
-                print "rebuilding"
-                for _name, rule in self._global_rules.iteritems():
-                    if self._config[CCRMerger._GLOBAL][_name]:
-                        mp = MergePair(time, Inf.GLOBAL, base, rule, False) # copies not made at boot time, allows user to make permanent changes
-                        self._run_filters(mp)
-                        if base is None: base = rule
-                        else: base = self._compatibility_merge(mp, base, rule)
-            else:#runtime-enable
-                mp = MergePair(time, Inf.GLOBAL, base, named_rule.copy(), True)
-                self._run_filters(mp)
-                base = self._compatibility_merge(mp, base, mp.rule2) # mp.rule2 because named_rule got copied
-        else:#disable
-            composite = base.composite.copy()# IDs of all rules that the composite rule is made of
-            composite.discard(named_rule.ID)
-            base = None
-            for rule in self._get_rules_by_composite(composite): 
-                mp = MergePair(time, Inf.GLOBAL, base, rule.copy(), False)
-                self._run_filters(mp)
-                if base is None: base = rule
-                else: base = self._compatibility_merge(mp, base, mp.rule2) # mp.rule2 because named_rule got copied
+        if time != Inf.SELFMOD: # SelfModifyingRule changes don't alter the base rule
+            named_rule = self._global_rules[name] if name is not None else None
+            if enable:
+                if time == Inf.BOOT:
+                    for name, rule in self._global_rules.iteritems():
+                        if self._config[CCRMerger._GLOBAL][name]:
+                            mp = MergePair(time, Inf.GLOBAL, base, rule, False) # copies not made at boot time, allows user to make permanent changes
+                            self._run_filters(mp)
+                            if base is None: base = rule
+                            else: base = self._compatibility_merge(mp, base, rule)
+                else:#runtime-enable
+                    mp = MergePair(time, Inf.GLOBAL, base, named_rule.copy(), True)
+                    self._run_filters(mp)
+                    base = self._compatibility_merge(mp, base, mp.rule2) # mp.rule2 because named_rule got copied
+            else:#disable
+                composite = base.composite.copy()# IDs of all rules that the composite rule is made of
+                composite.discard(named_rule.ID)
+                base = None
+                for rule in self._get_rules_by_composite(composite): 
+                    mp = MergePair(time, Inf.GLOBAL, base, rule.copy(), False)
+                    self._run_filters(mp)
+                    if base is None: base = rule
+                    else: base = self._compatibility_merge(mp, base, mp.rule2) # mp.rule2 because named_rule got copied
                 
-        '''compatibility check and filter function active selfmodrules'''
+        '''compatibility check and filter function active 
+        selfmodrules, but do not merge them in; they will
+        become parts of the Alternative in _create_repeat_rule()'''
         selfmod = []
-        for name, rule in self._self_modifying_rules.iteritems():
+        for name2, rule in self._self_modifying_rules.iteritems():
             '''no need to make copies of selfmod rules because even if
             filter functions trash their mapping, they'll just regenerate
             it next time they modify themselves; 
             furthermore, they need to preserve state'''
-            if self._config[CCRMerger._SELFMOD][name]:
-                print "enabling "+name
+            if self._config[CCRMerger._SELFMOD][name2]:
                 use_rule = True
                 mp = MergePair(time, Inf.SELFMOD, base, rule, False)
                 self._run_filters(mp)
-                if mp.check_compatibility: use_rule &= base.compatibility_check(rule)# shouldn't show false compatibility for NodeRule unless master_node spec in base rule cmd set
+                if mp.check_compatibility: use_rule &= base.compatibility_check(rule)
                 if use_rule:
                     for smrule in selfmod: # also have to check against other active selfmodrules
                         mp_ = MergePair(time, Inf.SELFMOD, smrule, rule, False)
@@ -213,13 +233,14 @@ class CCRMerger(object):
                         if not use_rule: break
                     if use_rule: 
                         selfmod.append(rule)
-                        base = base.merge(rule)
-        if time==Inf.SELFMOD and not self._config[CCRMerger._SELFMOD][name]:
+        if time == Inf.SELFMOD and name is not None \
+        and not self._config[CCRMerger._SELFMOD][name]:
             try: # reset deactivated NodeRule
                 if rule.master_node.spec != rule.node.spec:
                     rule.reset_node()
             except AttributeError: pass
-                
+        
+        
         
         
         '''have base, make copies, merge in apps'''
@@ -240,19 +261,20 @@ class CCRMerger(object):
             if master_context is None: master_context = negate
             else: master_context | negate
         base = base.merge(base, master_context) # sets context through constructor
+        self._base_global = base
         
         '''instantiate non-ccr rules affiliated with rules in the base CCR rule'''
         active_global  = self._get_rules_by_composite(base.composite, True)
         global_non_ccr = [rule.non() for rule in active_global \
                          if rule.non is not None]
         
-        '''modify grammar'''
-        while len(self._grammar.rules) > 0: self._grammar.remove_rule(self._grammar.rules[0])
-        for rule in [base]+active_apps: self._grammar.add_rule(self._create_repeat_rule(rule))
-        for rule in global_non_ccr: self._grammar.add_rule(rule)
+        '''update grammars'''
+        for rule in [base]+active_apps: self._add_grammar(rule, selfmod)
+        for rule in global_non_ccr: self._add_grammar(rule)
+        for grammar in self._grammars: grammar.load()
         
         '''save if necessary'''
-        if time == Inf.RUN and save: 
+        if time in [Inf.RUN, Inf.SELFMOD] and save:
             # everything in base composite is active, everything in selfmod is active, update the config as such
             active_global_names = [rule.get_name() for rule in active_global]
             for rule_name in self._global_rules:
@@ -262,15 +284,11 @@ class CCRMerger(object):
                 self._config[CCRMerger._SELFMOD][rule_name] = rule_name in active_selfmod_names
             self.save_config()
         
-        self._base_global = base
-        self._grammar.load()
-        
     def _run_filters(self, merge_pair):
         for filter_fn in self._filters: filter_fn(merge_pair)
-    def _create_repeat_rule(self, rule):
-        print rule.get_name()
+    def _create_repeat_rule(self, rule, selfmod):
         ORIGINAL, SEQ, TERMINAL = "original", "caster_base_sequence", "terminal"
-        alts = [RuleRef(rule=rule)]
+        alts = [RuleRef(rule=rule)]+[RuleRef(rule=sm) for sm in selfmod]
         single_action = Alternative(alts)
         sequence = Repetition(single_action, min=1, max=16, name=SEQ)
         original = Alternative(alts, name=ORIGINAL)
@@ -282,9 +300,9 @@ class CCRMerger(object):
                 original = extras[ORIGINAL] if ORIGINAL in extras else None
                 sequence = extras[SEQ] if SEQ in extras else None
                 terminal = extras[TERMINAL] if TERMINAL in extras else None
-                if original!=None: original.execute()
-                if sequence!=None:
+                if original is not None: original.execute()
+                if sequence is not None:
                     for action in sequence:
                         action.execute()
-                if terminal!=None: terminal.execute()
+                if terminal is not None: terminal.execute()
         return RepeatRule(name="Repeater"+MergeRule.get_merge_name())

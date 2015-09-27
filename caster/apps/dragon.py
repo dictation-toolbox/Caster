@@ -51,8 +51,3 @@ if not settings.WSR:
     grammar.add_rule(CommandRule(name="dragon"))
     if settings.SETTINGS["apps"]["dragon"]:
         grammar.load()
-
-def unload():
-    global grammar
-    if grammar: grammar.unload()
-    grammar = None

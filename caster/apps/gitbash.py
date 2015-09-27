@@ -89,8 +89,3 @@ grammar = Grammar("MINGW32", context=context)
 grammar.add_rule(CommandRule(name="git bash"))
 if settings.SETTINGS["apps"]["gitbash"]:
     grammar.load()
-
-def unload():
-    global grammar
-    if grammar: grammar.unload()
-    grammar = None

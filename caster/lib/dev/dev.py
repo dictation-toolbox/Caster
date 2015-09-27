@@ -1,9 +1,21 @@
 from subprocess import Popen
 import time
+'''
+
+This file is for experimentation. Everything in here should be considered
+unstable and not ready for production.
+
+
+
+
+
+
+'''
 
 from dragonfly import (Function, Key, BringApp, Text, WaitWindow, Dictation, Choice, Grammar, MappingRule, Paste)
 
-from caster.lib import utilities, settings, ccr, context
+from caster.lib import utilities, settings, context
+from caster.lib.dev import devgen
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.communication import Communicator
 from caster.lib.dfplus.state.actions import ContextSeeker, AsynchronousAction, \
@@ -77,7 +89,7 @@ class DevRule(MappingRule):
 
     "open natlink folder":          R(BringApp("C:/Windows/explorer.exe", settings.SETTINGS["paths"]["BASE_PATH"].replace("/", "\\")), rdescript="Open Natlink Folder"),
     "reserved word <text>":         Key("dquote,dquote,left") + Text("%(text)s") + Key("right, colon, tab/5:5") + Text("Text(\"%(text)s\"),"),
-    "refresh ccr directory":        Function(ccr.refresh_from_files),  # will need to disable and reenable language
+    "refresh debug file":           Function(devgen.refresh),  
     "Agrippa <filetype> <path>":    Function(grep_this),
     
     # experimental/incomplete commands
@@ -147,8 +159,3 @@ def load():
 
 if settings.SETTINGS["miscellaneous"]["dev_commands"]:
     load()
-
-def unload():
-    global grammar
-    if grammar: grammar.unload()
-    grammar = None

@@ -47,8 +47,3 @@ grammar = Grammar("Notepad++", context=context)
 grammar.add_rule(CommandRule(name="notepad plus plus"))
 if settings.SETTINGS["apps"]["notepadplusplus"]:
     grammar.load()
-
-def unload():
-    global grammar
-    if grammar: grammar.unload()
-    grammar = None

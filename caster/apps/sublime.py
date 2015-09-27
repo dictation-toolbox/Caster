@@ -51,8 +51,3 @@ grammar = Grammar("Sublime", context=context)
 grammar.add_rule(CommandRule(name="sublime"))
 if settings.SETTINGS["apps"]["sublime"]:
     grammar.load()
-
-def unload():
-    global grammar
-    if grammar: grammar.unload()
-    grammar = None

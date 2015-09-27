@@ -35,29 +35,6 @@ WXTYPE_SETTINGS = "7"
 
 WSR = False
 
-def register_language(extension, language):
-    '''
-    This is for automatic language switching ("auto_com")
-    '''
-    global SETTINGS
-    if extension not in SETTINGS["ccr"]["registered_extensions"]:
-        SETTINGS["ccr"]["registered_extensions"][extension] = get_ccr_config_file_pronunciation(language.lower())
-        save_config()
-
-def get_list_of_ccr_config_files():
-    global SETTINGS
-    results = []
-    for f in os.listdir(SETTINGS["paths"]["GENERIC_CONFIG_PATH"]):
-        if f.endswith(".txt"):
-            results.append(f.replace("config", "").replace(".txt", "").lower())
-    return results
-
-def get_ccr_config_file_pronunciation(config_file_name):
-    global SETTINGS
-    if config_file_name in SETTINGS["pronunciations"]:
-        return SETTINGS["pronunciations"][config_file_name]
-    return config_file_name
-
 def _save(data, path):
     '''only to be used for settings file'''
     try:
@@ -151,7 +128,7 @@ def init_default_values():
         ("SETTINGS_WINDOW_PATH", SETTINGS["paths"]["BASE_PATH"] + "/asynch/settingswindow.py"), 
         
         # CCR
-        ("GENERIC_CONFIG_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/ccr"),
+        ("CONFIGDEBUGTXT_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/configdebug.txt"),
                 
         # MISC
         ("ALARM_SOUND_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/media/49685__ejfortin__nano-blade-loop.wav"),
@@ -189,16 +166,16 @@ def init_default_values():
                        ])
     
     # CCR section
-    values_change_count += update_values(SETTINGS, [("ccr", {})])
-    values_change_count += update_values(SETTINGS["ccr"], [
-                       ("modes", {}), 
-                       ("common", []), 
-                       ("standard", ["alphabet", "navigation", "punctuation", "numbers"]), 
-                       ("registered_extensions", {}), 
-                       ("default_lower", True)
-                       ])
-    values_change_count += update_values(SETTINGS["ccr"]["modes"], 
-        [(x, x in SETTINGS["ccr"]["standard"]) for x in get_list_of_ccr_config_files()])
+#     values_change_count += update_values(SETTINGS, [("ccr", {})])
+#     values_change_count += update_values(SETTINGS["ccr"], [
+#                        ("modes", {}), 
+#                        ("common", []), 
+#                        ("standard", ["alphabet", "navigation", "punctuation", "numbers"]), 
+#                        ("registered_extensions", {}), 
+#                        ("default_lower", True)
+#                        ])
+#     values_change_count += update_values(SETTINGS["ccr"]["modes"], 
+#         [(x, x in SETTINGS["ccr"]["standard"]) for x in get_list_of_ccr_config_files()])
     
     # node rules
     values_change_count += update_values(SETTINGS, [("nodes", {})])

@@ -333,8 +333,3 @@ grammar = Grammar("Atom", context=context)
 grammar.add_rule(CommandRule(name="atom"))
 if settings.SETTINGS["apps"]["atom"]:
     grammar.load()
-
-def unload():
-    global grammar
-    if grammar: grammar.unload()
-    grammar = None

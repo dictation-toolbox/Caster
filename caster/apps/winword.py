@@ -38,8 +38,3 @@ grammar = Grammar("Microsoft Word", context=context)
 grammar.add_rule(CommandRule(name="microsoft word"))
 if settings.SETTINGS["apps"]["winword"]:
     grammar.load()
-
-def unload():
-    global grammar
-    if grammar: grammar.unload()
-    grammar = None

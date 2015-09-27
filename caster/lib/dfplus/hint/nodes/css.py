@@ -5,7 +5,9 @@ Created on May 30, 2015
 '''
 from dragonfly import Text, Pause, ActionBase
 
+from caster.lib import control
 from caster.lib.dfplus.hint import hintnode
+from caster.lib.dfplus.hint.hintnode import NodeRule
 from caster.lib.dfplus.state.actions2 import NullAction
 
 
@@ -499,8 +501,8 @@ def _get_background():
 
 
 
-
-
+node = getCSSNode()
+control.nexus().merger.add_selfmodrule(NodeRule(node, control.nexus().intermediary), node.spec)
 
     
     

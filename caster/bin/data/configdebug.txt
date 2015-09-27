@@ -1,6 +1,3 @@
-#
-# This is a heavily modified version of Dragonfly's _multiedit.py command-module
-
 from dragonfly import *
 from caster.lib import navigation
 from caster.lib.dfplus.state.short import R
@@ -11,17 +8,12 @@ noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") #this gets added 
 cmd.map = {
            	# Spoken-form    ->    ->    ->     Action object
            	
-           	"[<big>] <letter>": R(Function(navigation.letters2, extra ={"big", "letter"}), rdescript="Spell"), 
-
+           	"some command goes here": R(Pause("100"), rdescript="test command"), 
+			# more...
           }
 
 
 cmd.extras = [
-        navigation.get_alphabet_choice("letter"),
-        Choice("big",
-              {"big": "big",
-               }),
 	]
 cmd.defaults = {
-	"big": "", 
 	}

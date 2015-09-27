@@ -129,12 +129,3 @@ grammarw.load()
 
 if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
     launch_status()
-
-def unload():
-    global grammar, grammar_settings, grammarw
-    if grammar: grammar.unload()
-    if grammar_settings: grammar_settings.unload()
-    if grammarw: grammarw.unload()
-    grammar = None
-    grammar_settings = None
-    grammarw = None

@@ -1,4 +1,4 @@
-from caster.lib import utilities, settings, ccr, control
+from caster.lib import utilities, settings, control
 
 
 AUTO_ENABLED_LANGUAGE = None
@@ -13,18 +13,18 @@ def toggle_language():
     
     if LAST_EXTENSION != extension:
         message=None
-        if extension != None and extension in settings.SETTINGS["ccr"]["registered_extensions"]:
-            chosen_extension=settings.SETTINGS["ccr"]["registered_extensions"][extension]
-            ccr.set_active_command(1, chosen_extension)
-            AUTO_ENABLED_LANGUAGE = chosen_extension
-            LAST_EXTENSION = extension
-            message="Enabled '"+chosen_extension+"'"
-        elif AUTO_ENABLED_LANGUAGE != None:
-            message="Disabled '"+AUTO_ENABLED_LANGUAGE+"'"
-            ccr.set_active_command(0, AUTO_ENABLED_LANGUAGE)
-            AUTO_ENABLED_LANGUAGE = None
-        if message!=None:
-            if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
-                control.nexus().comm.get_com("status").text(message)
+#         if extension != None and extension in settings.SETTINGS["devccr"]["registered_extensions"]:
+#             chosen_extension=settings.SETTINGS["devccr"]["registered_extensions"][extension]
+#             devccr.set_active_command(1, chosen_extension)
+#             AUTO_ENABLED_LANGUAGE = chosen_extension
+#             LAST_EXTENSION = extension
+#             message="Enabled '"+chosen_extension+"'"
+#         elif AUTO_ENABLED_LANGUAGE != None:
+#             message="Disabled '"+AUTO_ENABLED_LANGUAGE+"'"
+#             devccr.set_active_command(0, AUTO_ENABLED_LANGUAGE)
+#             AUTO_ENABLED_LANGUAGE = None
+#         if message!=None:
+#             if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
+#                 control.nexus().comm.get_com("status").text(message)
     
     LAST_EXTENSION = extension

@@ -80,8 +80,3 @@ grammar = Grammar("legiongrid", context=context)
 grammar.add_rule(GridControlRule(name="legion"))
 if settings.SETTINGS["apps"]["legion"]:
     grammar.load()
-
-def unload():
-    global grammar
-    if grammar: grammar.unload()
-    grammar = None

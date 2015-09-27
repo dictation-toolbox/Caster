@@ -40,8 +40,3 @@ grammar = Grammar("Sql Developer", context=context)
 grammar.add_rule(CommandRule(name="sql developer"))
 if settings.SETTINGS["apps"]["sqldeveloper"]:
     grammar.load()
-
-def unload():
-    global grammar
-    if grammar: grammar.unload()
-    grammar = None

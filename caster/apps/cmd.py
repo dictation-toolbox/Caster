@@ -42,8 +42,3 @@ grammar = Grammar("cmd", context=context)
 grammar.add_rule(CommandRule(name="command prompt"))
 if settings.SETTINGS["apps"]["cmd"]:
     grammar.load()
-
-def unload():
-    global grammar
-    if grammar: grammar.unload()
-    grammar = None

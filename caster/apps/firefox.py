@@ -56,8 +56,3 @@ grammar = Grammar("firefox", context=context)
 grammar.add_rule(CommandRule(name="firefox"))
 if settings.SETTINGS["apps"]["firefox"]:
     grammar.load()
-
-def unload():
-    global grammar
-    if grammar: grammar.unload()
-    grammar = None

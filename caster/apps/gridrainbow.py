@@ -67,8 +67,3 @@ grammar = Grammar("rainbowgrid", context=context)
 grammar.add_rule(GridControlRule(name="rainbow"))
 if settings.SETTINGS["apps"]["rainbow"]:
     grammar.load()
-
-def unload():
-    global grammar
-    if grammar: grammar.unload()
-    grammar = None

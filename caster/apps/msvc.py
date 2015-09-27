@@ -64,8 +64,3 @@ grammar = Grammar("WDExpress", context=context)
 grammar.add_rule(CommandRule(name="M S V C"))
 if settings.SETTINGS["apps"]["msvc"]:
     grammar.load()
-
-def unload():
-    global grammar
-    if grammar: grammar.unload()
-    grammar = None

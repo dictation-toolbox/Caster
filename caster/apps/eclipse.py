@@ -48,9 +48,9 @@ class CommandRule(MappingRule):
             "split view vertical":                      R(Key("cs-lbrace"), rdescript="Eclipse: Split View (V)"),
         }
     extras = [
-              Dictation("text"),
-              Dictation("mim"),
-              IntegerRefST("n", 1, 1000),
+            Dictation("text"),
+            Dictation("mim"),
+            IntegerRefST("n", 1, 1000),
               
              ]
     defaults = {"n": 1, "mim":""}
@@ -75,8 +75,3 @@ grammar.add_rule(CommandRule(name="eclipse"))
 if settings.SETTINGS["apps"]["eclipse"]:
     grammar.load()
     control.nexus().merger.add_app_rule(EclipseCCR(), context)
-
-def unload():
-    global grammar
-    if grammar: grammar.unload()
-    grammar = None

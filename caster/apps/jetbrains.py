@@ -50,8 +50,3 @@ grammar = Grammar("IntelliJ + Android Studio + PyCharm", context=context)
 grammar.add_rule(CommandRule(name="jet brains"))
 if settings.SETTINGS["apps"]["jetbrains"]:
     grammar.load()
-
-def unload():
-    global grammar
-    if grammar: grammar.unload()
-    grammar = None
