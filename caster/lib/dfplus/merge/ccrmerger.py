@@ -161,7 +161,7 @@ class CCRMerger(object):
             # rebuild a base from remaining MergeRules
             base = None
             for _rule in self._get_rules_by_composite(composite): 
-                base = _rule if base is None else base.merge(_rule, _rule.context)
+                base = _rule if base is None else base.merge(_rule)
             # merge in the new rule
             base = base.merge(rule)
         return base
@@ -265,10 +265,10 @@ class CCRMerger(object):
         for context in contexts:
             negate = ~context
             if negation_context is None: negation_context = negate
-            else: negation_context | negate
-        
-#         base = base.merge(base, negation_context) # sets context through constructor
-        self._base_global = base
+            else: negation_context & negate
+         
+        ''' save results for next merge '''
+        self._base_global = base.copy()
         
         '''instantiate non-ccr rules affiliated with rules in the base CCR rule'''
         active_global  = self._get_rules_by_composite(base.composite, True)

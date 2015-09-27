@@ -40,7 +40,7 @@ try:
     from caster.lib.ccr.recording import history
     from caster.lib.dev import dev
     from caster.lib.dfplus.hint.nodes import css
-    from caster.user.filters.examples import scen4
+    from caster.user.filters.examples import scen4, modkeysup
     
 except:
     print "\nAttempting to load CCR anyway..."
