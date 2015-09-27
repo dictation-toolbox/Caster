@@ -4,6 +4,9 @@ w.py
 configstar.txt
 flypoint_private.iss
 
+# Ignore User Rules and Filters
+/caster/user
+
 # Ignore junk
 bin/misc
 .idea/
