@@ -11,7 +11,7 @@ from caster.lib.dfplus.state.short import R
 
 
 class CPP(MergeRule):
-    auto = [(".h", "c++"), (".cpp", "c++")]
+    auto = [".h",".cpp"]
     pronunciation = "C plus plus"
         
     mapping = {

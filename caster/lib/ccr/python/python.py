@@ -20,7 +20,7 @@ class PythonNon(MappingRule):
         }
 
 class Python(MergeRule):
-    auto = [(".py", "python")]
+    auto = [".py"]
     non = PythonNon
     
     mapping = {        

@@ -11,7 +11,7 @@ from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 
 class CSharp(MergeRule):
-    auto = [(".cs", "c#"), (".cshtml", "c#")]
+    auto = [".cs", ".cshtml"]
     pronunciation = "C sharp"
         
     mapping = {

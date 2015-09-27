@@ -12,7 +12,7 @@ from caster.lib.dfplus.state.short import R
 
 
 class Javascript(MergeRule):
-    auto = [(".js", "javascript")]
+    auto = [".js"]
         
     mapping = {
         

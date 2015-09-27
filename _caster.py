@@ -8,7 +8,6 @@ import time
 
 from dragonfly import (Key, Function, Grammar, Playback, Dictation, Choice, Pause, MappingRule)
 
-
 try:
     from caster.lib import settings# requires nothing
     settings.WSR = __name__ == "__main__"
@@ -20,7 +19,6 @@ try:
     from caster.apps import *
     from caster.asynch import *
     from caster.lib import context
-    from caster.asynch import auto_com
     import caster.lib.dev.dev
     try:
         import caster.w
@@ -34,12 +32,13 @@ try:
     from caster.lib.dfplus.state.short import R
     from caster.lib.dfplus.additions import IntegerRefST
     
-    from caster.lib.ccr2.recording.again import Again
-    from caster.lib.ccr2.recording.history import HistoryRule
-    from caster.lib.ccr2.recording.alias import VanillaAlias
     from caster.lib.dfplus.merge.ccrmerger import Inf
-    from caster.lib.ccr2 import *
+    from caster.lib.ccr import *
+    from caster.lib.ccr.recording.again import Again
+    from caster.lib.ccr.recording.alias import VanillaAlias
     from caster.lib.dev import dev
+    from caster.lib.dfplus.hint.nodes import css
+    
     
 except:
     print "\nAttempting to load CCR anyway..."

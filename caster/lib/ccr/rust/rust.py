@@ -24,7 +24,7 @@ class RustNon(MappingRule):
         }
 
 class Rust(MergeRule):
-    auto = [(".rs", "rust")]
+    auto = [".rs"]
     non = RustNon
     
     mapping = {

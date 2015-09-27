@@ -84,10 +84,12 @@ class CCRMerger(object):
     
     '''setup: adding rules and filters'''
     def add_global_rule(self, rule):
-        assert rule.context==None, "global rules may not have contexts, "+rule.get_name()+" has a context"
+        assert rule.context is None, "global rules may not have contexts, "+rule.get_name()+" has a context"
+        assert isinstance(rule, MergeRule) and not hasattr(rule, "merger"), \
+            "only MergeRules may be added as global rules; use add_selfmodrule() or add_app_rule()"
         self._add_to(rule, self._global_rules)
     def add_app_rule(self, rule, context=None):
-        if context!=None and rule.context==None: rule.context=context
+        if context is not None and rule.context is None: rule.context=context
         assert rule.context!=None, "app rules must have contexts, "+rule.get_name()+" has no context"
         self._add_to(rule, self._app_rules)
     def add_selfmodrule(self, rule, name, context=None):
@@ -115,6 +117,14 @@ class CCRMerger(object):
         return self._app_rules.keys()
     def selfmod_rule_names(self):
         return self._self_modifying_rules.keys()
+    def language_autos(self):
+        autos = {}
+        for rule in self._global_rules.values():
+            if rule.__class__.auto is not None:
+                for extension in rule.__class__.auto:
+                    autos[extension] = [rule.get_name()]
+                # right here check for language groups, add them into autos
+        return autos
     
     '''rule change functions'''
     def global_rule_changer(self):

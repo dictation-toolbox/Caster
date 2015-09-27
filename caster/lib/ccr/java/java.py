@@ -17,7 +17,7 @@ class JavaNon(MappingRule):
     ncdefaults = {}
 
 class Java(MergeRule):
-    auto = [(".java", "java")]
+    auto = [".java"]
     non = JavaNon
         
     mapping = {

@@ -31,10 +31,9 @@ class MergeRule(MappingRule):
     
     mapping = {"hello world default macro": Pause("10")}
     
-    '''MergeRules which define `auto` (array of tuples, 
-    first value file extension to recognize, second value 
-    programming language) will work with auto command 
-    and language mode'''
+    '''MergeRules which define `auto` (array of strings, 
+    each string a file extension for a language) will work
+    with auto command and language mode'''
     auto = None
     
     '''MergeRules which define `pronunciation` will use

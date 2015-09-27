@@ -17,7 +17,6 @@ class ConfigDev(Config):
 def generate_rule(path):
     configuration = ConfigDev("dev")
     configuration.load(path)
-    print path
     return MappingRule(exported=True,
         mapping=configuration.cmd.map,
         extras=configuration.cmd.extras,
@@ -31,7 +30,6 @@ def refresh():
     while len(_grammar.rules)>0: _grammar.remove_rule(_grammar.rules[0])
     try:
         rule = generate_rule(settings.SETTINGS["paths"]["CONFIGDEBUGTXT_PATH"])
-        print rule._mapping
         _grammar.add_rule(rule)
         _grammar.load()
     except Exception:
