@@ -41,6 +41,7 @@ try:
     from caster.lib.dev import dev
     from caster.lib.dfplus.hint.nodes import css
     from caster.user.filters.examples import scen4, modkeysup
+    from caster import user
     
 except:
     print "\nAttempting to load CCR anyway..."
