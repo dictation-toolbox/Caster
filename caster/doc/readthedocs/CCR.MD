@@ -73,3 +73,4 @@ control.nexus().merger.add_app_rule(my_app_rule, context)
 my_selfmod_rule = YetAnotherRuleThisOneAnSMR()
 control.nexus().merger.add_selfmod_rule(my_selfmod_rule)
 ```
+Both MergeRules and SelfModifyingRules may also be added to Dragonfly Grammars if there is no need for CCR. MergeRules added as such will operate no differently than MappingRules.
