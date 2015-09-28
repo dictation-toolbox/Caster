@@ -3,9 +3,7 @@
 **Contents**
 
 * [Introduction](#introduction)
-* [How It Works](#how-it-works)
-* [Adding and Editing CCR Modules](#adding-and-editing-ccr-modes)
-* [Non-CCR Sections in CCR Modules](#non-ccr-sections-in-ccr-modules)
+* TODO link other sections
 
 ***
 ## Introduction
@@ -49,3 +47,29 @@ Let's go through these.
 
 **SelfModifyingRule Change Time**: If a SelfModifyingRule ("SMR") changes its command set, the base rule will remain untouched, but it will still be checked against the new SMR command set, and the new SMR command set will be checked against other active SMR command sets.
 
+What filter functions do is expose pairs of rules to the user, allowing the user to change the rules' mapping as they see fit, and/or enable/disable compatibility checking which follows the filter functions. For examples of filter functions, please check out the `user/filters/examples` folder.
+
+### Other Features of MergeRule
+
+MergeRule has a handful of class-level properties which can be defined to enable certain behavior.
+
+* `pronunciation`: This property allows me to change which word I can use in the `enable`/`disable` commands. For example, if my MergeRule-extending class is called `NYCCommands`, I can set `pronunciation="new york city"` in order to be able to say `enable new york city`.
+* `non`: Suppose you want a non-CCR rule activated alongside your CCR rule. For instance, let's say there are some Python commands you want available while you're coding in Python, but which you know you'll never use as part of a command sequence and which you don't want in the CCR command set for performance / phonetic distinctness reasons. You can define `non` as the class of that rule and it will be instantiated and activated alongside the MergeRule you define it on.
+ 
+### How to Register Caster CCR Rules
+
+In order to make any new rules you might create available to the CCRMerger, you must register them as follows:
+```
+# Global Rules
+my_global_rule = SomeRule()
+control.nexus().merger.add_global_rule(my_global_rule)
+
+# App Rules:
+my_app_rule = SomeOtherRule()
+context = AppContext(executable="javaw", title="Eclipse")
+control.nexus().merger.add_app_rule(my_app_rule, context)
+
+# Self Modifying Rules
+my_selfmod_rule = YetAnotherRuleThisOneAnSMR()
+control.nexus().merger.add_selfmod_rule(my_selfmod_rule)
+```
