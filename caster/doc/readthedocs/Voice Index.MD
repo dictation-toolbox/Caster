@@ -127,7 +127,6 @@ If you're just getting started with voice programming, I suggest reading [this a
 * http://pydev.org/manual_adv_remote_debugger.html
 * http://nuancedev.github.io/samples/http/python/
 * http://ergoemacs.org/emacs/emacs_hand_pain_celebrity.html
-* https://github.com/TalAter/annyang (in browser voice recognition JS library)
 * http://zenorocha.github.io/voice-elements/
 * https://gist.github.com/tavisrudd/5226505
 * https://github.com/dictation-toolbox/aenea-grammars/issues/1
