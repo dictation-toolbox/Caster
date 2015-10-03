@@ -109,7 +109,8 @@ class NodeRule(SelfModifyingRule):
         self.refresh(node, False, reset)
     
     def reset_node(self):
-        self.change_node(self.master_node, True)
+        if self.node is not self.master_node:
+            self.change_node(self.master_node, True)
     
     def _process_recognition(self, node, extras):
         node = node[self.master_node.spec]
