@@ -167,7 +167,6 @@ class TimerForWSR(object):
 
     def add_callback(self, function, interval):
         self.callbacks.append(self.Callback(function, interval))
-        print len(self.callbacks)
         if len(self.callbacks) == 1:
             self.setTimerCallback(self.callback)
 
@@ -181,7 +180,7 @@ class TimerForWSR(object):
         now = time.clock()
         for c in self.callbacks:
             if c.next_time < now: c.call()
-    
+        
     def setTimerCallback(self, callback):
         _continue = self._continue
         if callback==None:

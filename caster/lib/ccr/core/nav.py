@@ -101,7 +101,7 @@ class Navigation(MergeRule):
     "spark [<nnavi500>]":           R(Function(navigation.drop), rspec="spark", rdescript="Paste"),
     
     "deli [<nnavi50>]":             R(Key("del/5"), rspec="deli", rdescript="Delete") * Repeat(extra="nnavi50"),
-    "clear [<nnavi50>]":            R(Key("backspace/5:%(nnavi50)d"), rspec="clear", rdescript="Backspace"),
+    "clear [<nnavi50>]":            R(Key("backspace/5:%(nnavi50)d"), rspec="cancel", rdescript="Backspace"),
     "(cancel | escape)":            R(Key("escape"), rspec="cancel", rdescript="Cancel Action"),
     
     

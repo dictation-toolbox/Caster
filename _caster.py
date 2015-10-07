@@ -153,3 +153,4 @@ if settings.WSR:
     while True:
         pythoncom.PumpWaitingMessages()  # @UndefinedVariable
         time.sleep(.1)
+#         control.nexus().timer.callback() # alternate method for triggering WSR Timer callbacks
