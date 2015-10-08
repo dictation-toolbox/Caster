@@ -284,7 +284,12 @@ class CCRMerger(object):
             self.save_config()
         
     def _run_filters(self, merge_pair):
-        for filter_fn in self._filters: filter_fn(merge_pair)
+        for filter_fn in self._filters:
+            try: filter_fn(merge_pair)
+            except Exception: 
+                utilities.simple_log()
+                utilities.report("Filter function '"+filter_fn.__name__+"' failed.")
+        
     def _create_repeat_rule(self, rule):
         ORIGINAL, SEQ, TERMINAL = "original", "caster_base_sequence", "terminal"
         alts = [RuleRef(rule=rule)]#+[RuleRef(rule=sm) for sm in selfmod]

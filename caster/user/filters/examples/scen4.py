@@ -13,7 +13,7 @@ from caster.lib.dfplus.state.short import R
 
 def scenario_1(mp):
     '''manually handle a conflicting spec'''
-    if mp.type == Inf.APP:
+    if mp.type == Inf.APP and mp.rule1 is not None:
         print "doing merge for apps"
         for spec in mp.rule1.mapping_actual().keys():
             if spec in mp.rule2.mapping_actual().keys():
@@ -34,7 +34,6 @@ def scenario_2(mp):
     '''replacing a spec'''
     if mp.time == Inf.BOOT:
         # at merge time, the base rule can be None, so make sure to check
-        # for that if your filter function runs at Inf.BOOT
         target = "[go to] line <n>"
         replacement = "travel to line <n>"
         
@@ -53,7 +52,7 @@ def scenario_3(mp):
     if mp.time == Inf.RUN and mp.type == Inf.GLOBAL:
         # Inf.RUN means any time except boot or SelfModifyingRule updates
         # Ing.GLOBAL means during global rule de/activation
-        if mp.rule1.get_name() == "Python":
+        if mp.rule1 is not None and mp.rule1.get_name() == "Python":
             update_python(mp.rule1)
         if mp.rule2.get_name() == "Python":
             update_python(mp.rule2)
