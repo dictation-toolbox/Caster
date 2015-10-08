@@ -11,4 +11,4 @@ log.txt
 /core/
 
 # Ignore User Rules and Filters
-#/caster/user
+/caster/user
