@@ -13,7 +13,8 @@ import win32api
 import win32con
 
 from caster.asynch.mouse import grids
-from caster.lib import navigation, settings, control
+from caster.lib import navigation, settings
+from caster.lib import control
 from caster.lib.dfplus.state.short import R
 from caster.lib.dfplus.additions import IntegerRefST
 

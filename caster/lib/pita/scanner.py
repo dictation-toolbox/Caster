@@ -8,7 +8,8 @@ import os
 import re
 
 from caster.asynch.hmc import h_launch
-from caster.lib import utilities, settings, control
+from caster.lib import utilities, settings
+from caster.lib import control
 from caster.lib.pita import filters
 from caster.lib.pita.filters import LanguageFilter
 

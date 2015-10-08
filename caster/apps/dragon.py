@@ -3,7 +3,8 @@ from dragonfly import (Grammar, Playback, MappingRule, Key,
                        Dictation, IntegerRef, Function)
 
 from caster.asynch.hmc import vocabulary_processing
-from caster.lib import utilities, control, settings
+from caster.lib import utilities, settings
+from caster.lib import control
 from caster.lib.dfplus.state.short import R
 from caster.lib.dfplus.additions import IntegerRefST
 

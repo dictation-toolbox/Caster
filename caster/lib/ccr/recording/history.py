@@ -8,7 +8,8 @@ from dragonfly.actions.action_function import Function
 from dragonfly.actions.action_playback import Playback
 
 from caster.asynch.hmc import h_launch
-from caster.lib import control, settings, utilities
+from caster.lib import settings, utilities
+from caster.lib import control
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge.selfmodrule import SelfModifyingRule
 from caster.lib.dfplus.state.actions2 import NullAction

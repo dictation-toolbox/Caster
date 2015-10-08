@@ -1,6 +1,7 @@
 from dragonfly import Key, Text, Choice, MappingRule
 
-from caster.lib import navigation, control
+from caster.lib import navigation
+from caster.lib import control
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R

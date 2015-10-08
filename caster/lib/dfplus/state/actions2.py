@@ -4,7 +4,8 @@ from dragonfly.actions.action_startapp import BringApp
 from dragonfly.windows.window import Window
 
 from caster.asynch.hmc import h_launch
-from caster.lib import settings, control, utilities, navigation
+from caster.lib import settings, utilities, navigation
+from caster.lib import control
 from caster.lib.dfplus.state.actions import AsynchronousAction, ContextSeeker, \
     RegisteredAction
 from caster.lib.dfplus.state.short import L, S

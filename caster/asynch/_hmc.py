@@ -3,7 +3,8 @@ from subprocess import Popen
 from dragonfly import (Function, Grammar, IntegerRef, MappingRule, AppContext, Choice)
 
 from caster.asynch.hmc import h_launch
-from caster.lib import  settings, control, utilities
+from caster.lib import settings, utilities
+from caster.lib import control
 from caster.lib.dfplus.state.short import R
 from caster.lib.dfplus.additions import IntegerRefST
 

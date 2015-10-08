@@ -9,7 +9,8 @@ from dragonfly.actions.keyboard import Keyboard
 import win32clipboard
 
 from caster.asynch.mouse.legion import LegionScanner
-from caster.lib import control, utilities, settings
+from caster.lib import utilities, settings
+from caster.lib import control
 
 
 DIRECTION_STANDARD={"sauce [E]": "up", "dunce [E]": "down", "lease [E]": "left", "Ross [E]": "right", "back": "left" }

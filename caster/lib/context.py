@@ -3,7 +3,8 @@ import time
 
 from dragonfly import *
 
-from caster.lib import utilities, control, settings
+from caster.lib import utilities, settings
+from caster.lib import control
 from caster.lib.dfplus import state
 
 

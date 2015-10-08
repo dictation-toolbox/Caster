@@ -4,11 +4,13 @@ from dragonfly.actions.action_text import Text
 
 from caster.lib import control
 from caster.lib.dfplus.additions import IntegerRefST
+from caster.lib.dfplus.merge.ccrmerger import CCRMerger
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 
+
 class Punctuation(MergeRule):
-    pronunciation = control.CCRMerger.CORE[3]
+    pronunciation = CCRMerger.CORE[3]
     
     mapping = {
         "semper":                           R(Key("semicolon"), rdescript="Semicolon"),        

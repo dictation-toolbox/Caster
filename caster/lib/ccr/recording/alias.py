@@ -8,7 +8,8 @@ from dragonfly.actions.action_function import Function
 from dragonfly.actions.action_text import Text
 
 from caster.asynch.hmc import h_launch
-from caster.lib import context, utilities, settings, control
+from caster.lib import context, utilities, settings
+from caster.lib import control
 from caster.lib.dfplus.merge.selfmodrule import SelfModifyingRule
 from caster.lib.dfplus.state.actions2 import NullAction
 from caster.lib.dfplus.state.short import R

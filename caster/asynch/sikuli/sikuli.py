@@ -2,7 +2,8 @@ import xmlrpclib
 
 from dragonfly import (Grammar, MappingRule, Function, Key)
 from subprocess import Popen
-from caster.lib import settings, control, utilities
+from caster.lib import settings, utilities
+from caster.lib import control
 
 
 grammar = None

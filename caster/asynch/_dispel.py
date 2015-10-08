@@ -3,7 +3,8 @@ import winsound
 from dragonfly import (Function, Text, Grammar, BringApp, WaitWindow, Key,
                        IntegerRef, Dictation, Mimic, MappingRule)
 
-from caster.lib import control, settings, utilities
+from caster.lib import settings, utilities
+from caster.lib import control
 from caster.lib.dfplus.state.short import R
 from caster.lib.dfplus.additions import IntegerRefST
 

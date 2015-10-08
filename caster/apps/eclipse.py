@@ -3,7 +3,8 @@ from dragonfly import (Grammar, AppContext, MappingRule,
                        Key, Text, Repeat, Pause)
 from dragonfly.actions.action_mimic import Mimic
 
-from caster.lib import settings, control
+from caster.lib import settings
+from caster.lib import control
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R

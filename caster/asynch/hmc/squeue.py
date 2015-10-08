@@ -1,7 +1,8 @@
 '''
 Message queue
 '''
-from caster.lib import control, utilities
+from caster.lib import utilities
+from caster.lib import control
 
 
 LAST_QUERY = None

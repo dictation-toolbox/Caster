@@ -5,7 +5,8 @@ Command-module for DouglasGrid
 from dragonfly import (Grammar, AppContext, Function, Playback, Choice, MappingRule)
 
 from caster.asynch.mouse import grids
-from caster.lib import settings, control
+from caster.lib import settings
+from caster.lib import control
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.state.short import R
 

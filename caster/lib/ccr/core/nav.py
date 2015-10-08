@@ -5,13 +5,16 @@ Created on Sep 1, 2015
 '''
 from dragonfly import Repeat, Function, Key, Dictation, Choice, Mouse, MappingRule
 
-from caster.lib import context, navigation, control
+from caster.lib import context, navigation
+from caster.lib import control
 from caster.lib.dfplus.additions import IntegerRefST
+from caster.lib.dfplus.merge.ccrmerger import CCRMerger
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.actions import AsynchronousAction
 from caster.lib.dfplus.state.actions2 import FuzzyMatchAction
 from caster.lib.dfplus.state.short import L, S, R
 from caster.lib.pita import fnfz
+
 
 class NavigationNon(MappingRule):
     mapping = {
@@ -75,7 +78,7 @@ class NavigationNon(MappingRule):
 
 class Navigation(MergeRule):
     non = NavigationNon
-    pronunciation = control.CCRMerger.CORE[1]
+    pronunciation = CCRMerger.CORE[1]
     
     mapping = {
     
