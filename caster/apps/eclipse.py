@@ -8,6 +8,7 @@ from caster.lib import control
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
+from caster.lib.dfplus.hint.hintnode import HintNode, NodeRule
 
 
 class CommandRule(MappingRule):
@@ -62,8 +63,6 @@ class EclipseCCR(MergeRule):
     mapping = {
             "[go to] line <n>":                         R(Key("c-l") + Pause("50") + Text("%(n)d") + Key("enter")+ Pause("50")+
                                                           Mimic(extra="mim"), rdescript="Eclipse: Go To Line"),
-            "shells":                                   R(Text("Eclipse priority"), rdescript="Test Conflict Command"),
-            "garlic and onions":                        R(Text("garlic")),
         }
     extras = [
               Dictation("text"),
