@@ -44,7 +44,10 @@ class StackItemRegisteredAction(StackItem):
     def preserve(self):# save spoken words
         if self.dragonfly_data!=None:
             self.preserved = [x[0] for x  in self.dragonfly_data["_node"].results]
-            #print self.preserved
+            return True
+        return False
+    def get_preserved(self):
+        return self.preserved
     def put_time_action(self):
         self.preserve()
         if settings.SETTINGS["miscellaneous"]["status_window_enabled"] and self.show:

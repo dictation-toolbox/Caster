@@ -1,5 +1,3 @@
-from subprocess import Popen
-import time
 '''
 
 This file is for experimentation. Everything in here should be considered
@@ -12,9 +10,12 @@ unstable and not ready for production.
 
 '''
 
+from subprocess import Popen
+import time
+
 from dragonfly import (Function, Key, BringApp, Text, WaitWindow, Dictation, Choice, Grammar, MappingRule, Paste)
 
-from caster.lib import utilities, settings, context
+from caster.lib import utilities, settings, context, control
 from caster.lib.dev import devgen
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.communication import Communicator
@@ -31,8 +32,9 @@ grammar = Grammar('development')
 # from tkColorChooser import askcolor 
 def experiment(text):
     '''this function is for tests'''
-    comm = Communicator()
-    comm.get_com("status").error(0)
+    print control.nexus().history
+#     comm = Communicator()
+#     comm.get_com("status").error(0)
 
 def get_color():
     '''do asynchronously'''

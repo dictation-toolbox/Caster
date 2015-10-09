@@ -5,15 +5,17 @@ Created on Jun 7, 2015
 '''
 import Queue
 
+from caster.lib import settings
 from caster.lib.dfplus.state.stackitems import StackItemRegisteredAction, \
     StackItemSeeker, StackItemAsynchronous, StackItemConfirm
 
 
 class CasterState:
-    def __init__(self):
+    def __init__(self, nexus):
         self.stack = ContextStack(self)
         self.blocker = None
         self.waiting = Queue.Queue()
+        self.nexus = nexus
     def add(self, stack_item):
         if self.blocker == None:
             ''' important to block before adding because the add might unblock '''
@@ -57,6 +59,8 @@ class ContextStack:
     
     def add(self, stack_item):  # stack_item is an instance of stackItem 
         stack_item.preserve()
+        if settings.WSR:
+            self.state.nexus.history.on_recognition(stack_item.get_preserved())            
         
         ''' case: the new item is has backward seeking --
             -- satisfy levels, then move on to other logic'''

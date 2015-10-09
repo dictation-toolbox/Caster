@@ -15,16 +15,12 @@ try:
     from caster.lib import utilities# requires settings
     from caster.lib import control
     from caster.lib.dfplus.state.stack import CasterState# requires control
-    control.nexus().inform_state(CasterState())
+    control.nexus().inform_state(CasterState(control.nexus()))
     
     from caster.apps import *
     from caster.asynch import *
     from caster.lib import context
     import caster.lib.dev.dev
-    try:
-        import caster.w
-    except Exception:
-        pass
     from caster.asynch.hmc import h_launch
     from caster.asynch.hmc import vocabulary_processing
     from caster.asynch.sikuli import sikuli
@@ -48,7 +44,7 @@ except:
     from caster.lib import utilities
     from caster.lib import control
     from caster.lib.dfplus.state.stack import CasterState# requires control
-    control.nexus().inform_state(CasterState())
+    control.nexus().inform_state(CasterState(control.nexus()))
     
     utilities.simple_log()
 
