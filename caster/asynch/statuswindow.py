@@ -39,7 +39,7 @@ class StatusWindow(TkTransparent):
         
         self.mainloop()
 
-    def setup_XMLRPC_server(self):
+    def setup_xmlrpc_server(self):
         self.server_quit = 0
         comm = Communicator()
         self.server = SimpleXMLRPCServer(("127.0.0.1", comm.com_registry["status"]), allow_none=True)

@@ -2,7 +2,6 @@
 from dragonfly import (Grammar, Playback, MappingRule, Key,
                        Dictation, IntegerRef, Function)
 
-from caster.asynch.hmc import vocabulary_processing
 from caster.lib import utilities, settings
 from caster.lib import control
 from caster.lib.dfplus.state.short import R
@@ -29,8 +28,6 @@ class CommandRule(MappingRule):
         'scratch':                      R(Playback([(["scratch", "that"], 0.0)]), rdescript="Dragon: 'Scratch That'"),
         "reboot dragon":                R(Function(utilities.reboot), rdescript="Reboot Dragon Naturallyspeaking"),
         "fix dragon double":            R(Function(fix_dragon_double), rdescript="Fix Dragon Double Letter"),
-        "add word to vocabulary":       R(Function(vocabulary_processing.add_vocab), rdescript="Vocabulary Management: Add"),
-        "delete word from vocabulary":  R(Function(vocabulary_processing.del_vocab), rdescript="Vocabulary Management: Delete"),
         "left point":                   R(Playback([(["MouseGrid"], 0.1), (["four", "four"], 0.1), (["click"], 0.0)]), rdescript="Mouse: Left Point"),
         "right point":                  R(Playback([(["MouseGrid"], 0.1), (["six", "six"], 0.1), (["click"], 0.0)]), rdescript="Mouse: Right Point"),
         "center point":                 R(Playback([(["MouseGrid"], 0.1), (["click"], 0.0)]), rdescript="Mouse: Center Point"),

@@ -218,7 +218,7 @@ class CommandRule(MappingRule):
             "convert tabs [to] spaces":                R(Key("cs-p") + Text("Whitespace: Convert Tabs to Spaces") + Pause("4") + Key("enter"), rdescript="Atom: Convert Tabs to Spaces"),
             "convert spaces [to] tabs":                R(Key("cs-p") + Text("Whitespace: Convert Spaces to Tabs") + Pause("4") + Key("enter"), rdescript="Atom: Convert Spaces to Tabs"),
         #Merge Conflicts Submenu
-            "git [detect] [merge] conflicts":          R(Key("cs-p") + Text("Merge Conflicts") + Pause("4") + Key("enter"),(""), rdescript="Atom: Detect"),
+            "git [detect] [merge] conflicts":          R(Key("cs-p") + Text("Merge Conflicts") + Pause("4") + Key("enter"), rdescript="Atom: Detect"),
 
 # ----Atom Optional Third-Party Packages and Dependencies-----------------------------------------------------------------------------
  #Install through command prompt, Atom install manager or a .bat file at http://tinyurl.com/Atom-Dependencies

@@ -12,3 +12,7 @@ log.txt
 
 # Ignore User Rules and Filters
 /caster/user
+
+# Ignore SonarQube
+.sonar
+sonar-project.properties

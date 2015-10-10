@@ -20,7 +20,7 @@ finally:
 class StickyList:
     def __init__(self):
         self.setup_UI()
-        self.setup_XMLRPC_server()
+        self.setup_xmlrpc_server()
         
         
         # start server, tk main loop
@@ -32,7 +32,7 @@ class StickyList:
         
         self.root.mainloop()
     
-    def setup_XMLRPC_server(self): 
+    def setup_xmlrpc_server(self): 
         self.server_quit = 0
         comm = Communicator()
         self.server = SimpleXMLRPCServer(("127.0.0.1", comm.com_registry["sticky_list"]), allow_none=True)

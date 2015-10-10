@@ -68,7 +68,7 @@ class TkTransparent(tk.Tk):
 
     def __init__(self, name, dimensions=None, canvas=True):
         tk.Tk.__init__(self, baseName="")
-        self.setup_XMLRPC_server()
+        self.setup_xmlrpc_server()
         if not dimensions:
             dimensions = self.get_dimensions_fullscreen()
         self.dimensions = dimensions
@@ -91,7 +91,7 @@ class TkTransparent(tk.Tk):
                 self.server._handle_request_noblock()
         Timer(1, start_server).start()
     
-    def setup_XMLRPC_server(self): 
+    def setup_xmlrpc_server(self): 
         self.server_quit = 0
         comm = Communicator()
         self.server = SimpleXMLRPCServer(("127.0.0.1", comm.com_registry["grids"]), allow_none=True)
@@ -122,8 +122,9 @@ class TkTransparent(tk.Tk):
         self.server_quit = 1
         self.destroy()
         os.kill(os.getpid(), signal.SIGTERM)
-        
-    def move_mouse(self, mx, my):
+    
+    @staticmethod
+    def move_mouse(mx, my):
         win32api.SetCursorPos((mx, my))
         
 
@@ -159,8 +160,8 @@ class RainbowGrid(TkTransparent):
         self.imgtk = ImageTk.PhotoImage(self.img)
         self._canvas.create_image(self.dimensions.width / 2, self.dimensions.height / 2, image=self.imgtk)
     
-    def setup_XMLRPC_server(self):
-        TkTransparent.setup_XMLRPC_server(self)
+    def setup_xmlrpc_server(self):
+        TkTransparent.setup_xmlrpc_server(self)
         self.server.register_function(self.xmlrpc_move_mouse, "move_mouse")
     
     def xmlrpc_move_mouse(self, pre, color, num):
@@ -243,13 +244,13 @@ class DouglasGrid(TkTransparent):
         self.draw()
         self.mainloop()
     
-    def setup_XMLRPC_server(self):
-        TkTransparent.setup_XMLRPC_server(self)
+    def setup_xmlrpc_server(self):
+        TkTransparent.setup_xmlrpc_server(self)
         self.server.register_function(self.xmlrpc_move_mouse, "move_mouse")
     
     def xmlrpc_move_mouse(self, x, y):
-        self.move_mouse(x * self.square_size + int(self.square_size / 2)+ self.dimensions.x, 
-                        y * self.square_size + int(self.square_size / 2)+ self.dimensions.y)
+        DouglasGrid.move_mouse(x * self.square_size + int(self.square_size / 2)+ self.dimensions.x, 
+                               y * self.square_size + int(self.square_size / 2)+ self.dimensions.y)
     
     def draw(self):
         self.pre_redraw()
@@ -344,7 +345,7 @@ def main(argv):
             if arg == "r":
                 g = RainbowGrid
             elif arg == 'd':
-                g = DouglasGrid  # grid_size=Dimensions(400, 300, 0, 0)
+                g = DouglasGrid
         elif opt == '-m':
             m = arg
     if g == None:

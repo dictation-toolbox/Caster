@@ -18,7 +18,7 @@ finally:
 class Homunculus(tk.Tk):
     def __init__(self, htype, data=None):
         tk.Tk.__init__(self, baseName="")
-        self.setup_XMLRPC_server()
+        self.setup_xmlrpc_server()
         self.htype = htype
         self.completed = False
         self.max_after_completed=10
@@ -54,7 +54,7 @@ class Homunculus(tk.Tk):
     def start_tk(self):
         self.mainloop()
     
-    def setup_XMLRPC_server(self): 
+    def setup_xmlrpc_server(self): 
         self.server_quit = 0
         comm = Communicator()
         self.server = SimpleXMLRPCServer(("127.0.0.1", comm.com_registry["hmc"]), allow_none=True)

@@ -29,7 +29,7 @@ class Rectangle:
 
 class LegionGrid(TkTransparent):
     def __init__(self, grid_size=None, tirg=None, auto_quit=False):
-        self.setup_XMLRPC_server()
+        self.setup_xmlrpc_server()
         TkTransparent.__init__(self, settings.LEGION_TITLE, grid_size)
         self.attributes("-alpha", 0.7)
         
@@ -40,8 +40,8 @@ class LegionGrid(TkTransparent):
         
         self.mainloop()
     
-    def setup_XMLRPC_server(self): 
-        TkTransparent.setup_XMLRPC_server(self)
+    def setup_xmlrpc_server(self): 
+        TkTransparent.setup_xmlrpc_server(self)
         self.server.register_function(self.xmlrpc_retrieve_data_for_highlight, "retrieve_data_for_highlight")
         self.server.register_function(self.xmlrpc_go, "go")
     

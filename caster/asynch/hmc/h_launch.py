@@ -9,7 +9,6 @@ try: # Style C -- may be imported into Caster, or externally
 finally:
     from caster.asynch.hmc.hmc_ask_directory import Homunculus_Directory
     from caster.asynch.hmc.hmc_recording import Homunculus_Recording
-    from caster.asynch.hmc.hmc_vocabulary import Homunculus_Vocabulary
     from caster.asynch.hmc.hmc_confirm import Homunculus_Confirm
     from caster.asynch.hmc.homunculus import Homunculus
     from caster.lib import settings
@@ -48,8 +47,6 @@ def _get_title(hmc_type):
     default=settings.HOMUNCULUS_VERSION
     if hmc_type==settings.QTYPE_DEFAULT or hmc_type==settings.QTYPE_INSTRUCTIONS:
         return default
-    elif hmc_type==settings.QTYPE_SET or hmc_type==settings.QTYPE_REM:
-        return default+settings.HMC_TITLE_VOCABULARY
     elif hmc_type==settings.QTYPE_RECORDING:
         return default+settings.HMC_TITLE_RECORDING
     elif hmc_type==settings.QTYPE_DIRECTORY:
@@ -66,10 +63,6 @@ if __name__ == '__main__':
         found_word=sys.argv[2]
     if sys.argv[1]==settings.QTYPE_DEFAULT:
         app = Homunculus(sys.argv[1])
-    elif sys.argv[1]==settings.QTYPE_SET:
-        app = Homunculus_Vocabulary([settings.QTYPE_SET, found_word])
-    elif sys.argv[1]==settings.QTYPE_REM:
-        app = Homunculus_Vocabulary([settings.QTYPE_REM, found_word])
     elif sys.argv[1]==settings.QTYPE_RECORDING:
         app = Homunculus_Recording([settings.QTYPE_RECORDING, found_word])
     elif sys.argv[1]==settings.QTYPE_INSTRUCTIONS:

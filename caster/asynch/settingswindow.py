@@ -33,7 +33,7 @@ class SettingsFrame(Frame):
 
     def __init__(self, parent, title):
         Frame.__init__(self, parent, title=title, size=(500,400))
-        self.setup_XMLRPC_server()
+        self.setup_xmlrpc_server()
         self.completed = False
         
         # Create the notebook 
@@ -91,7 +91,7 @@ class SettingsFrame(Frame):
         
         return d
         
-    def setup_XMLRPC_server(self): 
+    def setup_xmlrpc_server(self): 
         self.server_quit = 0
         comm = Communicator()
         self.server = SimpleXMLRPCServer(("127.0.0.1", comm.com_registry["hmc"]), allow_none=True)
