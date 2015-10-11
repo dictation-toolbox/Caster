@@ -91,13 +91,13 @@ class NodeRule(SelfModifyingRule):
         for child in self.node.children:
             child.fill_out_rule(mapping, extras, defaults, self)
         if len(mapping)==0:
-            if self.stat_msg!=None and not first:
+            if self.stat_msg is not None and not first:
                 self.stat_msg.text("Node Reset")# status window messaging
             self.reset_node()
             for child in self.node.children:
                 child.fill_out_rule(mapping, extras, defaults, self)
         else:
-            if self.stat_msg!=None and not first and not is_reset:# status window messaging
+            if self.stat_msg is not None and not first and not is_reset:# status window messaging
                 self.stat_msg.hint("\n".join([x.get_spec_and_base_and_node()[0] for x in self.node.children]))
         
         self.extras = extras

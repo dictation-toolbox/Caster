@@ -53,12 +53,14 @@ class MergeRule(MappingRule):
     mcontext = None
     
     def __init__(self, name=None, mapping=None, extras=None, defaults=None,
-                 exported=None, ID=None, composite=None, compatible=None):
+                 exported=None, ID=None, composite=None, compatible=None, mcontext=None):
         
         self.ID =           ID if ID is not None                else MergeRule._get_next_id()
         self.compatible =   {} if compatible is None            else compatible
         '''composite is the IDs of the rules which this MergeRule is composed of: '''
         self.composite =    composite if composite is not None  else set([self.ID])
+        self._mcontext = self.__class__.mcontext
+        if self._mcontext is None: self._mcontext = mcontext
         
         MappingRule.__init__(self, name, mapping, extras, defaults, exported)
     def __eq__(self, other):
@@ -89,15 +91,16 @@ class MergeRule(MappingRule):
         extras = extras_dict.values()
         defaults = self.defaults_copy()
         defaults.update(other.defaults_copy())
+        context = self._mcontext if self._mcontext is not None else other.get_context() # one of these should always be None; contexts don't mix here
         return MergeRule("Merged"+MergeRule.get_merge_name()+self.get_name()[0]+other.get_name()[0], 
                          mapping, extras, defaults, self._exported and other._exported, # no ID
-                         composite=self.composite.union(other.composite))
+                         composite=self.composite.union(other.composite), mcontext=context)
                 
     def get_name(self):
         return self.name if self.pronunciation is None else self.pronunciation
     def copy(self):
         return MergeRule(self.name, self._mapping, self._extras.values(), self._defaults, 
-                         self._exported, self.ID, self.composite, self.compatible)
+                         self._exported, self.ID, self.composite, self.compatible, self._mcontext)
     def compatibility_check(self, other, debug=False):
         if other.ID in self.compatible:
             return self.compatible[other.ID] # lazily
@@ -111,5 +114,10 @@ class MergeRule(MappingRule):
         return compatible
     def incompatible_IDs(self):
         return [ID for ID in self.compatible if not self.compatible[ID]]
+    
+    def get_context(self):
+        return self._mcontext
+    def set_context(self, context):
+        self._mcontext = context
             
         

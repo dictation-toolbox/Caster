@@ -6,6 +6,7 @@
 *.class
 test.py
 log.txt
+complexity_report*
 
 # Ignore Natlink
 /core/

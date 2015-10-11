@@ -163,18 +163,6 @@ def init_default_values():
                        ("winword", True),
                        ])
     
-    # CCR section
-#     values_change_count += update_values(SETTINGS, [("ccr", {})])
-#     values_change_count += update_values(SETTINGS["ccr"], [
-#                        ("modes", {}), 
-#                        ("common", []), 
-#                        ("standard", ["alphabet", "navigation", "punctuation", "numbers"]), 
-#                        ("registered_extensions", {}), 
-#                        ("default_lower", True)
-#                        ])
-#     values_change_count += update_values(SETTINGS["ccr"]["modes"], 
-#         [(x, x in SETTINGS["ccr"]["standard"]) for x in get_list_of_ccr_config_files()])
-    
     # node rules
     values_change_count += update_values(SETTINGS, [("nodes", {})])
     
@@ -195,13 +183,14 @@ def init_default_values():
                        ("sikuli_enabled", False),
                        ("status_window_enabled", False), 
                        ("integer_remap_opt_in", False), 
-                       ("keypress_wait", 50)# milliseconds
+                       ("keypress_wait", 50), # milliseconds
+                       ("max_ccr_repetitions", 16)
                        ])
     
     # fuzzy string matching section
     values_change_count += update_values(SETTINGS, [("pita", {})])
     values_change_count += update_values(SETTINGS["pita"], [
-        ("recent_files", 10), 
+         ("recent_files", 10),
         ("extensions", [".py", ".java", ".cpp", ".h", ".js"]), 
         ("filter_strict", False), 
         ("use_bonus", True), 
@@ -239,9 +228,11 @@ def get_default_browser_executable():
     global SETTINGS
     return SETTINGS["paths"]["DEFAULT_BROWSER_PATH"].split("/")[-1]
 
-def report_to_file(message):
+def report_to_file(message, path=None):
     global SETTINGS
-    f = open(SETTINGS["paths"]["LOG_PATH"], 'a') 
+    _path = SETTINGS["paths"]["LOG_PATH"]
+    if path is not None: _path = path
+    f = open(_path, 'a') 
     f.write(str(message) + "\n")
     f.close()
 

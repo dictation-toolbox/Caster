@@ -23,6 +23,7 @@ from caster.lib.dfplus.state.actions import ContextSeeker, AsynchronousAction, \
     RegisteredAction
 from caster.lib.dfplus.state.actions2 import ConfirmAction, BoxAction
 from caster.lib.dfplus.state.short import L, S, R
+from caster.lib.tests.complexity import run_tests
 
 
 grammar = Grammar('development')
@@ -32,9 +33,8 @@ grammar = Grammar('development')
 # from tkColorChooser import askcolor 
 def experiment(text):
     '''this function is for tests'''
-    print control.nexus().history
-#     comm = Communicator()
-#     comm.get_com("status").error(0)
+    comm = Communicator()
+    comm.get_com("status").error(0)
 
 def get_color():
     '''do asynchronously'''
@@ -129,7 +129,8 @@ class DevelopmentHelp(MappingRule):
         "(show | open) documentation":  BringApp(settings.SETTINGS["paths"]["DEFAULT_BROWSER_PATH"]) + WaitWindow(executable=settings.get_default_browser_executable()) + Key('c-t') + WaitWindow(title="New Tab") + Text('http://dragonfly.readthedocs.org/en/latest') + Key('enter'),
         "open natlink folder":          R(BringApp("C:/Windows/explorer.exe", settings.SETTINGS["paths"]["BASE_PATH"].replace("/", "\\")), rdescript="Open Natlink Folder"),
         "refresh debug file":           Function(devgen.refresh),  
-        "Agrippa <filetype> <path>":    Function(grep_this)
+        "Agrippa <filetype> <path>":    Function(grep_this),
+        "run rule complexity test":     Function(lambda: run_tests())
     }
     extras = [
               Dictation("text"),
