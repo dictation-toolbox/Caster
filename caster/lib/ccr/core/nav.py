@@ -23,34 +23,46 @@ class NavigationNon(MappingRule):
         "erase multi clipboard":            R(Function(navigation.erase_multi_clipboard), 
                                               rdescript="Erase Multi Clipboard"),
         "find":                             R(Key("c-f"), rdescript="Find"),
+        "find next [<n>]":                  R(Key("f3"), rdescript="Find Next") * Repeat(extra="n"),
+        "find prior [<n>]":                 R(Key("s-f3"), rdescript="Find Prior") * Repeat(extra="n"),
+        "find everywhere":                  R(Key("cs-f"), rdescript="Find Everywhere"),
         "replace":                          R(Key("c-h"), rdescript="Replace"),
         "(F to | F2)":                      R(Key("f2"), rdescript="Key: F2"),
         "(F six | F6)":                     R(Key("f6"), rdescript="Key: F6"),
         "(F nine | F9)":                    R(Key("f9"), rdescript="Key: F9"),
         
-        'kick':                         R(Function(navigation.kick), rdescript="Mouse: Left Click"),
-        'kick mid':                     R(Function(navigation.kick_middle), rdescript="Mouse: Middle Click"),
-        'psychic':                      R(Function(navigation.kick_right), rdescript="Mouse: Right Click"),
-        '(kick double|double kick)':    R(Function(navigation.kick) * Repeat(2), rdescript="Mouse: Double Click"),
-        "shift right click":            R(Key("shift:down") + Mouse("right") + Key("shift:up"), rdescript="Mouse: Shift + Right Click"),
+        'kick':                             R(Function(navigation.kick), rdescript="Mouse: Left Click"),
+        'kick mid':                         R(Function(navigation.kick_middle), rdescript="Mouse: Middle Click"),
+        'psychic':                          R(Function(navigation.kick_right), rdescript="Mouse: Right Click"),
+        '(kick double|double kick)':        R(Function(navigation.kick) * Repeat(2), rdescript="Mouse: Double Click"),
+        "shift right click":                R(Key("shift:down") + Mouse("right") + Key("shift:up"), rdescript="Mouse: Shift + Right Click"),
         "curse <direction> [<direction2>] [<nnavi500>] [<dokick>]": R(Function(navigation.curse), rdescript="Curse"),
-    
-        "colic":                        R(Key("control:down") + Mouse("left") + Key("control:up"), rdescript="Mouse: Ctrl + Left Click"),
-        "garb [<nnavi500>]":            R(Mouse("left")+Mouse("left")+Key("c-c")+Function(navigation.clipboard_to_file), rdescript="Highlight @ Mouse + Copy"),
-        "drop [<nnavi500>]":            R(Mouse("left")+Mouse("left")+Function(navigation.drop), rdescript="Highlight @ Mouse + Paste"),
+      
+        "colic":                            R(Key("control:down") + Mouse("left") + Key("control:up"), rdescript="Mouse: Ctrl + Left Click"),
+        "garb [<nnavi500>]":                R(Mouse("left")+Mouse("left")+Key("c-c")+Function(navigation.clipboard_to_file), rdescript="Highlight @ Mouse + Copy"),
+        "drop [<nnavi500>]":                R(Mouse("left")+Mouse("left")+Function(navigation.drop), rdescript="Highlight @ Mouse + Paste"),
         
-        "elite translation <text>":     R(Function(navigation.elite_text), rdescript="1337 Text"), 
+        "sure stoosh":                      R(Key("c-c"), rdescript="Simple Copy"),
+        "sure cut":                         R(Key("c-x"), rdescript="Simple Cut"),
+        "sure spark":                       R(Key("c-v"), rdescript="Simple Paste"),
         
-        "sure stoosh":                  R(Key("c-c"), rdescript="Simple Copy"),
-        "sure cut":                     R(Key("c-x"), rdescript="Simple Cut"),
-        "sure spark":                      R(Key("c-v"), rdescript="Simple Paste"),
+        "undo [<n>]":                       R(Key("c-z"), rdescript="Undo") * Repeat(extra="n"),
+        "redo [<n>]":                       R(Key("c-y"), rdescript="Redo") * Repeat(extra="n"),
+
+        "refresh":                          R(Key("c-r"), rdescript="Refresh"),
         
-        "symbol match <text>":          FuzzyMatchAction(fnfz.pita_list_provider, fnfz.pita_filter, 
+        "next tab [<n>]":                   R(Key("c-pgdown"), rdescript="Next Tab") * Repeat(extra="n"),
+        "prior tab [<n>]":                  R(Key("c-pgup"), rdescript="Previous Tab") * Repeat(extra="n"),
+        "close tab [<n>]":                  R(Key("c-w/20"), rdescript="Close Tab") * Repeat(extra="n"),
+        
+        "symbol match <text>":              FuzzyMatchAction(fnfz.pita_list_provider, fnfz.pita_filter, 
                                                          fnfz.pita_selection, rdescript="Fuzzy Symbol Matcher"),
-        "ex match <text>":              FuzzyMatchAction(fnfz.dredge_ex_list_provider, fnfz.dredge_ex_filter, 
+        "ex match <text>":                  FuzzyMatchAction(fnfz.dredge_ex_list_provider, fnfz.dredge_ex_filter, 
                                                          fnfz.dredge_ex_selection, rdescript="Fuzzy Executable Matcher"),
-        "tie match <text>":             FuzzyMatchAction(fnfz.dredge_tie_list_provider, fnfz.dredge_tie_filter, 
+        "tie match <text>":                 FuzzyMatchAction(fnfz.dredge_tie_list_provider, fnfz.dredge_tie_filter, 
                                                          fnfz.dredge_tie_selection, rdescript="Fuzzy Window Matcher"),
+        
+        "elite translation <text>":         R(Function(navigation.elite_text), rdescript="1337 Text"),
         
           }
 
