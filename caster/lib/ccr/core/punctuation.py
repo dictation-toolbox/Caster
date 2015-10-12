@@ -28,7 +28,7 @@ class Punctuation(MergeRule):
         "angle":                            R(Key("langle, rangle, left"), rdescript="Angle Brackets"),
         "plus":                             R(Text("+"), rdescript="Plus Sign"),
         "minus":                            R(Text("-"), rdescript="Dash"),
-        "pipe sim":                         R(Text("|"), rdescript="Pipe Symbol"),
+        "pipe (sim | symbol)":              R(Text("|"), rdescript="Pipe Symbol"),
         'ace [<npunc>]':                    R(Key("space"), rdescript="Space") * Repeat(extra="npunc"),
         "clamor":                           R(Text("!"), rdescript="Exclamation Mark"),
         "deckle":                           R(Text(":"), rdescript="Colon"),
