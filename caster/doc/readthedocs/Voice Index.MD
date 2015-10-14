@@ -44,7 +44,7 @@ If you're just getting started with voice programming, I suggest reading [this a
 
 * [http://dragonfly.readthedocs.org/en/latest/](http://dragonfly.readthedocs.org/en/latest/)
 * [http://pythonhosted.org/dragonfly/py-modindex.html (old)](http://pythonhosted.org/dragonfly/py-modindex.html)
-* [http://pythonhosted.org/dragonfly/index.html (old)](http://pythonhosted.org/dragonfly/index.html (old))
+* [http://pythonhosted.org/dragonfly/index.html (old)](http://pythonhosted.org/dragonfly/index.html)
 * [http://qh.antenna.nl/unimacro/index.html](http://qh.antenna.nl/unimacro/index.html)
 * [http://qh.antenna.nl/unimacro/implementation_and_acceptance_of_natlink.pdf](http://qh.antenna.nl/unimacro/implementation_and_acceptance_of_natlink.pdf)
 * [http://www.synapseadaptive.com/joel/welcomeapage.htm](http://www.synapseadaptive.com/joel/welcomeapage.htm)
