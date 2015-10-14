@@ -152,6 +152,7 @@ def init_default_values():
                        ("emacs", True),
                        ("firefox", True),
                        ("gitbash", True),
+                       ("kdiff3", True),
                        ("douglas", True),
                        ("legion", True),
                        ("rainbow", True),
@@ -160,6 +161,7 @@ def init_default_values():
                        ("notepadplusplus", True),
                        ("sqldeveloper", True),
                        ("sublime", True),
+                       ("visualstudio", True),
                        ("winword", True),
                        ])
     
