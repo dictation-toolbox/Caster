@@ -21,14 +21,11 @@ from caster.lib.dfplus.state.short import R
 class CommandRule(MappingRule):
 
     mapping = {
-            "next tab [<n>]":                       R(Key("c-pgdown") * Repeat(extra="n"), rdescript="Notepad++: Next Tab"),
-            "prior tab [<n>]":                      R(Key("c-pgup") * Repeat(extra="n"), rdescript="Notepad++: Prior Tab"),
-            "close tab [<n>]":                      R(Key("c-w") * Repeat(extra="n"), rdescript="Notepad++: Close Tab"),
-            
             "stylize <n2>":                         R(Mouse("right")+Key("down:6/5, right")+(Key("down") * Repeat(extra="n2"))+Key("enter"), rdescript="Notepad++: Stylize"),
             "remove style":                         R(Mouse("right")+Key("down:6/5, right/5, down:5/5, enter"), rdescript="Notepad++: Remove Style"),
             
             "preview in browser":                   R(Key("cas-r"), rdescript="Notepad++: Preview In Browser"),
+            
             # requires function list plug-in:
             "function list":                        R(Key("cas-l"), rdescript="Notepad++: Function List"),
         }

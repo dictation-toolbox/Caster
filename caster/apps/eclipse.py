@@ -15,9 +15,8 @@ class CommandRule(MappingRule):
 
     mapping = {
                     
-            "previous (editor | tab) [<n>]":            R(Key("cs-f6"), rdescript="Eclipse: Previous Tab") * Repeat(extra="n"),  # these two must be set up in the eclipse preferences
-            "next (editor | tab) [<n>]":                R(Key("c-f6"), rdescript="Eclipse: Next Tab") * Repeat(extra="n"),
-            "close (editor | tab) [<n>]":               R(Key("c-w"), rdescript="Eclipse: Close Tab") * Repeat(extra="n"),
+            "prior tab [<n>]":                          R(Key("cs-f6"), rdescript="Eclipse: Previous Tab") * Repeat(extra="n"),  # these two must be set up in the eclipse preferences
+            "next tab [<n>]":                           R(Key("c-f6"), rdescript="Eclipse: Next Tab") * Repeat(extra="n"),
             "open resource":                            R(Key("cs-r"), rdescript="Eclipse: Open Resource"),
             "open type":                                R(Key("cs-t"), rdescript="Eclipse: Open Type"),
 
@@ -34,7 +33,7 @@ class CommandRule(MappingRule):
             # "terminate" changes to the settings for this hotkey: (when: in dialogs and windows)
             "terminate":                                R(Key("c-f2"), rdescript="Eclipse: Terminate Running Program"),
             
-            "search for this everywhere":               R(Key("ca-g"), rdescript="Eclipse: Search Project"),
+            "find everywhere":                          R(Key("ca-g"), rdescript="Eclipse: Search Project"),
             "refractor symbol":                         R(Key("sa-r"), rdescript="Eclipse: Re-Factor Symbol"),
             
             "symbol next [<n>]":                        R(Key("c-k"), rdescript="Eclipse: Symbol Next") * Repeat(extra="n"),

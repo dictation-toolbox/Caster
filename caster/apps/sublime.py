@@ -7,7 +7,6 @@ from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.state.short import R
 
 
-# next tab
 class CommandRule(MappingRule):
 
     mapping = {
@@ -15,12 +14,8 @@ class CommandRule(MappingRule):
         "go to symbol":             R(Key("c-r"), rdescript="Sublime: Go To Symbol"), 
         "go to word":               R(Key("c-semicolon"), rdescript="Sublime: Go To Word"), 
         
-        "next tab":                 R(Key("c-pageup"), rdescript="Sublime: Next Tab"), 
-        "prior tab":                R(Key("c-pagedown"), rdescript="Sublime: Prior Tab"),
-        
         "transform upper":          R(Key("control:down, k, u, control:up"), rdescript="Sublime: Transform Upper"), 
         "transform lower":          R(Key("control:down, k, l, control:up"), rdescript="Sublime: Transform Lower"),
-        
         
         "comment line":             R(Key("c-slash"), rdescript="Sublime: Comment Line"), 
         "comment block":            R(Key("cs-slash"), rdescript="Sublime: Comment Block"), 
@@ -29,11 +24,6 @@ class CommandRule(MappingRule):
         "next bookmark":            R(Key("f2"), rdescript="Sublime: Next Bookmark"), 
         
         "open file":                R(Key("c-p"), rdescript="Sublime: Open File"), 
-        "find next":                R(Key("f3"), rdescript="Sublime: Find Next"), 
-        "find prior":               R(Key("c-f3"), rdescript="Sublime: Find Prior"), 
-        
-        
-        "search for this everywhere": R(Key("cs-f"), rdescript="Sublime: Search Everywhere"), 
 
         }
     extras = [
