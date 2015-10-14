@@ -29,7 +29,6 @@ class CommandRule(MappingRule):
             "resolve":                                  R(Key("c-dot"), rdescript="MSVC: Resolve"), 
             "jump to source":                           R(Key("f12"), rdescript="MSVC: Jump To Source"), 
             "snippet":                                  R(Key("tab"), rdescript="MSVC: Snippet"), 
-            "search for this everywhere":               R(Key("cs-f"), rdescript="MSVC: Search Everywhere"), 
              
             "step over [<n>]":                          R(Key("f10/50") * Repeat(extra="n"), rdescript="MSVC: Step Over"),
             "step into":                                R(Key("f11"), rdescript="MSVC: Step Into"),

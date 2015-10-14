@@ -22,7 +22,7 @@ class CommandRule(MappingRule):
         "build":                    R(Key("c-f9"), rdescript="JetBrains: Build"),
         "build and run":            R(Key("s-f10"), rdescript="JetBrains: Build And Run"),
         "next tab":                 R(Key("a-right"), rdescript="JetBrains: Next Tab"),
-        "previous tab":             R(Key("a-left"), rdescript="JetBrains: Previous Tab"),
+        "prior tab":                R(Key("a-left"), rdescript="JetBrains: Previous Tab"),
         
         "comment line":             R(Key("c-slash"), rdescript="JetBrains: Comment Line"), 
         "uncomment line":           R(Key("cs-slash"), rdescript="JetBrains: Uncomment Line"), 

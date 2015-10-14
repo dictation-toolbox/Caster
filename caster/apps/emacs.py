@@ -7,7 +7,6 @@ from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.state.short import R
 
 
-# next tab
 class CommandRule(MappingRule):
 
     mapping = {
