@@ -164,7 +164,7 @@ def run_tests():
             if broke: break
     
     avg_kcus = (kCUs[0]+kCUs[1]+kCUs[2])/3
-    reports.append("\nAverage kCUs for BadGrammar: "+str(avg_kcus)+"\n")
+    reports.append("\nCCR Max Reps: "+str(original_ccr_max)+"\n")
     reports.append("Total time for test: "+str(int(time.time()-start_time))+" sec\n\n")
     result = "".join(reports)
     report_path = settings.SETTINGS["paths"]["BASE_PATH"] + "/bin/data/complexity_report_"+str(time.time())+".txt"
