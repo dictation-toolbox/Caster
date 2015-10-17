@@ -125,7 +125,9 @@ def remote_debug(who_called_it=None):
         print("ERROR: " + who_called_it + " called utilities.remote_debug() but the debug server wasn't running.")
     
 
-
+def launch_status():
+    if not window_exists(None, settings.STATUS_WINDOW_TITLE):
+        Popen(["pythonw", settings.SETTINGS["paths"]["STATUS_WINDOW_PATH"]])
 
 def reboot():
     print([settings.SETTINGS["paths"]["REBOOT_PATH"], "\""+settings.SETTINGS["paths"]["ENGINE_PATH"]+"\""])

@@ -12,8 +12,7 @@ class Communicator:
                              "sikuli":          8000
                              }
     def get_com(self, name):
-        try:
-            # try a ping
+        try:# try a ping
             return self.coms[name]
         except Exception:
             com = xmlrpclib.ServerProxy("http://"+Communicator.LOCALHOST+":" + str(self.com_registry[name]))

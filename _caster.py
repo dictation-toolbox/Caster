@@ -137,6 +137,8 @@ control.nexus().merger.merge(Inf.BOOT)
 
 if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
     utilities.report("\nWARNING: Status Window is an experimental feature, and there is a known freezing glitch with it.\n")
+    utilities.launch_status()
+
 utilities.report("*- Starting " + settings.SOFTWARE_NAME + " -*")
 
 

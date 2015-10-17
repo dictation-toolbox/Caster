@@ -92,16 +92,14 @@ def receive_settings(data):
     settings.save_config()
     # TODO: apply new settings
 
-def launch_status():
-    if not utilities.window_exists(None, settings.STATUS_WINDOW_TITLE):
-        Popen(["pythonw", settings.SETTINGS["paths"]["STATUS_WINDOW_PATH"]])
+
     
 def toggle_status():
     enabled = settings.SETTINGS["miscellaneous"]["status_window_enabled"]
     if enabled:
         control.nexus().intermediary.kill()
     else:
-        launch_status()
+        utilities.launch_status()
     settings.SETTINGS["miscellaneous"]["status_window_enabled"] = not enabled
     settings.save_config()
 
@@ -127,6 +125,3 @@ class LaunchRule(MappingRule):
 grammarw = Grammar("Caster Windows")
 grammarw.add_rule(LaunchRule())
 grammarw.load()
-
-if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
-    launch_status()
