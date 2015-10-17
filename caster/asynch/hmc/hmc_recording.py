@@ -95,6 +95,8 @@ class Homunculus_Recording(Homunculus):
             return None
 
     
+    
+    
     def xmlrpc_do_action(self, action, details=None):
         '''acceptable keys are numbers and w and p'''
         if action == "check":

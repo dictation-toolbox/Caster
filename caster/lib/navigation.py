@@ -207,9 +207,9 @@ def set_text_format(capitalization, spacing):
     2 spine- words-with-hyphens
     3 snake- words_with_underscores
     '''
-    if capitalization == 0 and settings.SETTINGS["ccr"]["default_lower"]:
+    if capitalization == 0: 
         capitalization = 5
-    if spacing == 0 and capitalization == 3:
+    if spacing == 0 and capitalization == 3: 
         spacing = 1
     global CAPITALIZATION, SPACING
     CAPITALIZATION = capitalization
@@ -217,8 +217,8 @@ def set_text_format(capitalization, spacing):
     return (capitalization, spacing)
 
 def master_format_text(capitalization, spacing, textnv):
-    (capitalization, spacing) = set_text_format(capitalization, spacing)
-    Text(get_formatted_text(capitalization, spacing, str(textnv))).execute()
+    capitalization, spacing = set_text_format(capitalization, spacing)
+    Text(get_formatted_text(capitalization, spacing, str(textnv))).execute()    
 
 def get_formatted_text(capitalization, spacing, t):
     tlen = len(t)
