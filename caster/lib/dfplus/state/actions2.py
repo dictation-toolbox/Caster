@@ -194,9 +194,9 @@ class SuperFocusWindow(AsynchronousAction):
             success = SuperFocusWindow.focus_was_success(title, executable)
             if not success:
                 if title!=None:
-                    print "title failure: ", title, w.title
+                    print("title failure: ", title, w.title)
                 if executable!=None:
-                    print "executable failure: ", executable, w.executable, executable in w.executable
+                    print("executable failure: ", executable, w.executable, executable in w.executable)
             return success
             
         forward=[L(S(["cancel"], attempt_focus))]

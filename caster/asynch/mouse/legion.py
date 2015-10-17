@@ -171,12 +171,12 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv, "ht:a:d:m:", ["tirg=", "dimensions=", "autoquit="])
     except getopt.GetoptError:
-        print help_message
+        print(help_message)
         sys.exit(2)
     try:
         for opt, arg in opts:
             if opt == '-h':
-                print help_message
+                print(help_message)
                 sys.exit()
             elif opt in ("-t", "--tirg"):
                 tirg = arg

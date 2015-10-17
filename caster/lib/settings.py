@@ -45,7 +45,7 @@ def _save(data, path):
         f.write(formatted_data)
         f.close()
     except Exception:
-        print "error saving json file: " + path
+        print("error saving json file: " + path)
 
 def _load(path):
     '''only to be used for settings file'''
@@ -57,10 +57,10 @@ def _load(path):
     except ValueError:
         global BAD_LOAD 
         BAD_LOAD = True
-        print "\n\nValueError while loading settings file: " + path + "\n\n"
-        print sys.exc_info()
+        print("\n\nValueError while loading settings file: " + path + "\n\n")
+        print(sys.exc_info())
     except IOError:
-        print "\n\nIOError: Could not find settings file: " + path + "\nInitializing file...\n\n"
+        print("\n\nIOError: Could not find settings file: " + path + "\nInitializing file...\n\n")
     return result
 
 def save_config():
@@ -219,7 +219,7 @@ def init_default_values():
     
     global BAD_LOAD
     if values_change_count > 0 and not BAD_LOAD:
-        print "settings values changed: ", values_change_count
+        print("settings values changed: "+ values_change_count)
         save_config()
 
 def get_settings():

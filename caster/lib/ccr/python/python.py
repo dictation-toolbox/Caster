@@ -45,7 +45,7 @@ class Python(MergeRule):
         "lodge or":                     R(Text(" or "), rdescript="Python: Or"),
         "lodge not":                    R(Text("!"), rdescript="Python: Not"),
         #
-        "print to console":             R(Text("print "), rdescript="Python: Print"),
+        "print to console":             R(Text("print()")+Key("left"), rdescript="Python: Print"),
         #
         "import":                       R(Text( "import " ), rdescript="Python: Import"),
         #

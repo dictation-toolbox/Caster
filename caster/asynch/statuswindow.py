@@ -53,7 +53,7 @@ class StatusWindow(TkTransparent):
         self.prevent_hang()
         i=0
         while True:
-            print i
+            print(i)
             i+=1
         self.cancel_crash()
         

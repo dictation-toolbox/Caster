@@ -39,7 +39,7 @@ try:
     from caster import user
     
 except:
-    print "\nAttempting to load CCR anyway..."
+    print("\nAttempting to load CCR anyway...")
     from caster.lib import utilities
     from caster.lib import control
     from caster.lib.dfplus.state.stack import CasterState# requires control
@@ -142,9 +142,8 @@ utilities.report("*- Starting " + settings.SOFTWARE_NAME + " -*")
 
 if settings.WSR:
     import pythoncom
-    print "Windows Speech Recognition is garbage; it is " \
-        +"recommended that you not run Caster this way. " \
-        + ""
+    print("Windows Speech Recognition is garbage; it is " \
+        +"recommended that you not run Caster this way. ")
     while True:
         pythoncom.PumpWaitingMessages()  # @UndefinedVariable
         time.sleep(.1)
