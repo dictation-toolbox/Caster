@@ -19,7 +19,7 @@ _style = H("style",Text("-style: "), [H("none",Text("none")),H("hidden",Text("hi
                                          H("inset",Text("inset")),H("outset",Text("outset")),      
                                         ])
 
-def getCSSNode():
+def get_css_node():
     H = hintnode.HintNode
     css_sections = []
     css_sections.append(_get_background())
@@ -501,7 +501,7 @@ def _get_background():
 
 
 
-control.nexus().merger.add_selfmodrule(NodeRule(getCSSNode(), control.nexus().intermediary))
+control.nexus().merger.add_selfmodrule(NodeRule(get_css_node(), control.nexus().intermediary))
 
     
     

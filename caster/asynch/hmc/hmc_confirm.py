@@ -12,7 +12,7 @@ finally:
     from caster.asynch.hmc.homunculus import Homunculus
 
 
-class Homunculus_Confirm(Homunculus):
+class HomunculusConfirm(Homunculus):
     
     def __init__(self, params):
         Homunculus.__init__(self, params[0])

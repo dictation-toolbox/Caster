@@ -7,7 +7,6 @@ from dragonfly import Pause, ActionBase
 
 from caster.lib import settings
 from caster.lib import control
-from caster.lib.dfplus.hint.hintnode import NodeAction
 
 
 class StackItem:

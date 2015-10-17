@@ -35,7 +35,7 @@ class StickyList:
     def setup_xmlrpc_server(self): 
         self.server_quit = 0
         comm = Communicator()
-        self.server = SimpleXMLRPCServer(("127.0.0.1", comm.com_registry["sticky_list"]), allow_none=True)
+        self.server = SimpleXMLRPCServer((Communicator.LOCALHOST, comm.com_registry["sticky_list"]), allow_none=True)
         self.server.register_function(self.xmlrpc_kill, "kill")
         self.server.register_function(self.xmlrpc_add_symbol, "add_symbol")
         self.server.register_function(self.xmlrpc_remove_symbol, "remove_symbol")
@@ -91,7 +91,7 @@ class StickyList:
             self.data = json.loads(f.read())
             f.close()
         except IOError:
-            print sys.exc_info()
+            print(sys.exc_info())
         self._refresh_lists()
             
             

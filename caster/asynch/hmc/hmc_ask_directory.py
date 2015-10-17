@@ -13,7 +13,7 @@ finally:
     from caster.asynch.hmc.homunculus import Homunculus
 
 
-class Homunculus_Directory(Homunculus):
+class HomunculusDirectory(Homunculus):
     
     def __init__(self, params):
         Homunculus.__init__(self, params[0])

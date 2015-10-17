@@ -42,14 +42,14 @@ class LegionGrid(TkTransparent):
     
     def setup_xmlrpc_server(self): 
         TkTransparent.setup_xmlrpc_server(self)
-        self.server.register_function(self.xmlrpc_retrieve_data_for_highlight, "retrieve_data_for_highlight")
+        self.server.register_function(self.xmlrpc_retrieve_data_hlight, "retrieve_data_for_highlight")
         self.server.register_function(self.xmlrpc_go, "go")
     
     def xmlrpc_go(self, index):
         self.move_mouse(int(self.tirg_positions[index][0]+self.dimensions.x), 
                         int(self.tirg_positions[index][1]+self.dimensions.y))
     
-    def xmlrpc_retrieve_data_for_highlight(self, strindex):
+    def xmlrpc_retrieve_data_hlight(self, strindex):
         if strindex in self.tirg_positions:
             position_data = self.tirg_positions[strindex]
             return {"l": position_data[2]+self.dimensions.x, 
@@ -107,7 +107,7 @@ class LegionGrid(TkTransparent):
             self._canvas.create_text(center_x - 1, center_y - 1, text=label, font=font, fill=fill_outer)
             self._canvas.create_text(center_x, center_y, text=label, font=font, fill=fill_inner)
             
-            # rect.left, rect.right are now being saved below for the highlight function
+            '''rect.left, rect.right are now being saved below for the highlight function'''
             self.tirg_positions[label] = (center_x, center_y, rect.left, rect.right)
             rect_num += 1
 
@@ -144,7 +144,6 @@ class LegionScanner:
         return result
         
     def scan(self, bbox=None):
-        #bbox=(10,10,500,500)
         img = ImageGrab.grab(bbox)
         result = self.tirg_scan(img)
         if result != self.last_signature:
@@ -157,7 +156,7 @@ class LegionScanner:
         with self.lock:
             if self.screen_has_changed:
                 self.screen_has_changed = False
-                return (self.last_signature, None)  # None should be replaced with rectangle scan results
+                return self.last_signature, None  # None should be replaced with rectangle scan results
             else:
                 return None
 

@@ -101,7 +101,7 @@ def core_and_python():
 
 def prep_merger(merger, nc, ns):
     ctr = ComplexityTestRule(nc, ns)
-    css_ = NodeRule(css.getCSSNode(), None)
+    css_ = NodeRule(css.get_css_node(), None)
     for rule in core_and_python()+[ctr]:
         merger.add_global_rule(rule)
     merger.add_selfmodrule(css_)
@@ -110,7 +110,7 @@ def prep_merger(merger, nc, ns):
 
 def prep_grammar(grammar, nc, ns):
     ctr = ComplexityTestRule(nc, ns)
-    css_ = NodeRule(css.getCSSNode(), None)
+    css_ = NodeRule(css.get_css_node(), None)
     for rule in core_and_python()+[ctr]:
         grammar.add_rule(rule)
     grammar.add_rule(css_)

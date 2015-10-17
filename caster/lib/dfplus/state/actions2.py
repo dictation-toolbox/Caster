@@ -4,11 +4,12 @@ from dragonfly.actions.action_startapp import BringApp
 from dragonfly.windows.window import Window
 
 from caster.asynch.hmc import h_launch
-from caster.lib import settings, utilities, navigation
 from caster.lib import control
+from caster.lib import settings, utilities, navigation
 from caster.lib.dfplus.state.actions import AsynchronousAction, ContextSeeker, \
     RegisteredAction
 from caster.lib.dfplus.state.short import L, S
+from caster.lib.dfplus.state.stackitems import StackItemConfirm
 
 
 #win32gui.SystemParametersInfo(win32con.SPI_SETFOREGROUNDLOCKTIMEOUT, 0, 1)
@@ -73,7 +74,7 @@ class ConfirmAction(AsynchronousAction):
         self.base = base
         self.rspec = rspec
     def _execute(self, data=None):
-        confirm_stack_item = self.state.generate_confirm_stack_item(self, data)
+        confirm_stack_item = StackItemConfirm(self, data)
         self.mutable_integer["value"] = 0
         mutable_integer = self.mutable_integer
         def hmc_closure(data):

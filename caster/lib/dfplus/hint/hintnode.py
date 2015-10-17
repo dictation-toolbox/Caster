@@ -43,7 +43,7 @@ class HintNode:
         return results
     
     def get_spec_and_base_and_node(self):
-        return (self.spec, self.base, self)
+        return self.spec, self.base, self
             
     def fill_out_rule(self, mapping, extras, defaults, node_rule):
         specs = self.explode_children(self.explode_depth)

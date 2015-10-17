@@ -1,34 +1,9 @@
-import re
 import time
 
 from dragonfly import *
 
 from caster.lib import utilities, settings
 from caster.lib import control
-from caster.lib.dfplus import state
-
-
-def get_filter():
-    from natlinkutils import GrammarBase
-    class Filter(GrammarBase):
-    
-        # this spec will catch everything
-        gramSpec = """
-            <start> exported = {emptyList};
-        """
-    
-        def initialize(self):
-            self.load(self.gramSpec, allResults=1)
-            self.activateAll()
-    
-        def gotResultsObject(self, recogType, resObj):
-            for x in range(0, 100):
-                try:
-                    possible_interpretation = resObj.getWords(x)
-                    # do whatever sort of filtering you want here
-                except Exception:
-                    break
-    return Filter()
 
 def navigate_to_character(direction3, target):
     # to do: possibly speed up the keypresses by figuring out how many lines up or down to go first
@@ -47,12 +22,10 @@ def navigate_to_character(direction3, target):
             Key("cs-left").execute()
         else:
             Key("cs-right").execute()
-#         max_highlights = 100
         index = -1
-#         last_copy_was_successful = True
         context = None
         tries=0
-        while context==None:
+        while context is None:
             tries+=1
             results = read_selected_without_altering_clipboard()
             error_code = results[0]
@@ -126,11 +99,11 @@ def read_selected_without_altering_clipboard(same_is_okay=False):
         
     except Exception:
         utilities.simple_log(False)
-        return (2, None)
+        return 2, None
     
     if prior_content == temporary and not same_is_okay:
-        return (1, None)
-    return (0, temporary)
+        return 1, None
+    return 0, temporary
 
 
 def fill_within_line(target):

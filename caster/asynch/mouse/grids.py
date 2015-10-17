@@ -94,7 +94,7 @@ class TkTransparent(tk.Tk):
     def setup_xmlrpc_server(self): 
         self.server_quit = 0
         comm = Communicator()
-        self.server = SimpleXMLRPCServer(("127.0.0.1", comm.com_registry["grids"]), allow_none=True)
+        self.server = SimpleXMLRPCServer((Communicator.LOCALHOST, comm.com_registry["grids"]), allow_none=True)
         self.server.register_function(self.xmlrpc_kill, "kill")
     
     def pre_redraw(self):

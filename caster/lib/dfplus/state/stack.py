@@ -43,14 +43,6 @@ class CasterState:
     def halt_asynchronous(self, success):
         ''' only for use with Dragonfly Function actions which can't return true or false but need spoken parameters'''
         self.blocker.execute(success)
-    def generate_registered_action_stack_item(self, raction, data):
-        return StackItemRegisteredAction(raction, data)
-    def generate_context_seeker_stack_item(self, seeker, data):
-        return StackItemSeeker(seeker, data)
-    def generate_continuer_stack_item(self, continuer, data):
-        return StackItemAsynchronous(continuer, data)
-    def generate_confirm_stack_item(self, confirm, data):
-        return StackItemConfirm(confirm, data)
 
 class ContextStack:
     def __init__(self, state):

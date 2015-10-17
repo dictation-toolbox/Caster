@@ -8,8 +8,9 @@ class RecognitionHistoryForWSR(list):
     '''
     def __init__(self, length=10):
         list.__init__(self)
-
-        if (length is None or (isinstance(length, int) and length >= 1)):
+        
+        usable_length = isinstance(length, int) and length >= 1
+        if length is None or usable_length:
             self._length = length
         else:
             raise ValueError("length must be a positive int or None,"

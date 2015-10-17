@@ -6,6 +6,9 @@ Created on Jun 7, 2015
 from dragonfly import ActionBase
 
 from caster.lib import control
+from caster.lib.dfplus.state.stackitems import StackItemRegisteredAction, \
+    StackItemSeeker, StackItemAsynchronous
+
 
 class RegisteredAction(ActionBase):
     def __init__(self, base, rspec="default", rdescript="unnamed command (RA)", 
@@ -19,7 +22,7 @@ class RegisteredAction(ActionBase):
         self.show = show
     
     def _execute(self, data=None):  # copies everything relevant and places it in the stack
-        self.state.add(self.state.generate_registered_action_stack_item(self, data))
+        self.state.add(StackItemRegisteredAction(self, data))
 
 
 
@@ -34,7 +37,7 @@ class ContextSeeker(RegisteredAction):
         self.state = control.nexus().state
         assert self.back != None or self.forward != None, "Cannot create ContextSeeker with no levels"
     def _execute(self, data=None):
-        self.state.add(self.state.generate_context_seeker_stack_item(self, data))
+        self.state.add(StackItemSeeker(self, data))
         
         
         
@@ -52,7 +55,6 @@ class AsynchronousAction(ContextSeeker):
     def __init__(self, forward, time_in_seconds=1, repetitions=0, 
                  rdescript="unnamed command (A)", blocking=True, finisher=None):
         ContextSeeker.__init__(self, None, forward)
-#         self.forward = forward
         self.repetitions = repetitions
         self.time_in_seconds = time_in_seconds
         self.rdescript = rdescript
@@ -66,4 +68,4 @@ class AsynchronousAction(ContextSeeker):
             if "time_in_seconds" in data: self.time_in_seconds=float(data["time_in_seconds"])
             if "repetitions" in data: self.time_in_seconds=int(data["repetitions"])
         
-        self.state.add(self.state.generate_continuer_stack_item(self, data))
+        self.state.add(StackItemAsynchronous(self, data))

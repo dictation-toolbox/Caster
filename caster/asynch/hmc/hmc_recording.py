@@ -14,7 +14,7 @@ finally:
     from caster.asynch.hmc.homunculus import Homunculus
 
 
-class Homunculus_Recording(Homunculus):
+class HomunculusRecording(Homunculus):
     
     def get_row(self, cut_off=0):
         result = self.grid_row - cut_off
@@ -95,34 +95,31 @@ class Homunculus_Recording(Homunculus):
             return None
 
     
+    def check_boxes(self, details):
+        for box_index in details:
+            if box_index >= 1 and box_index <= self.cb_max:
+                self.word_state[box_index - 1][0].set(self.word_state[box_index - 1][0].get() == 0)
     
+    def check_range_of_boxes(self, details):
+        box_index_from = details[0] - 1
+        box_index_to = details[1] - 1
+        for i in range(0, self.cb_max):
+            if i <= self.cb_max:
+                self.word_state[i][0].set(i >= box_index_from and i <= box_index_to)
     
     def xmlrpc_do_action(self, action, details=None):
         '''acceptable keys are numbers and w and p'''
         if action == "check":
-            for box_index in details:
-                if box_index >= 1 and box_index <= self.cb_max:
-                    if self.word_state[box_index - 1][0].get() == 0:
-                        self.word_state[box_index - 1][0].set(True)
-                    else:
-                        self.word_state[box_index - 1][0].set(False)
+            self.check_boxes(details)
         elif action == "focus":
             if details == "word":
                 self.word_box.focus_set()
         elif action == "check_range":
-            ''''''
-            box_index_from = details[0] - 1
-            box_index_to = details[1] - 1
-            for i in range(0, self.cb_max):
-                if i <= self.cb_max:
-                    if i >= box_index_from and i <= box_index_to:
-                        self.word_state[i][0].set(True)
-                    else:
-                        self.word_state[i][0].set(False)
+            self.check_range_of_boxes(details)            
         elif action == "exclude":
             box_index = details
             if box_index >= 1 and box_index <= self.cb_max:
                 self.word_state[box_index - 1][0].set(False)
         elif action == "repeatable":
             self.repeatable.set(not self.repeatable.get())
-# c=Homunculus_Recording(["", ""])
+

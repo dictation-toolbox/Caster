@@ -28,17 +28,10 @@ from caster.lib.tests.complexity import run_tests
 
 grammar = Grammar('development')
 
-
-# from Tkinter import * 
-# from tkColorChooser import askcolor 
 def experiment(text):
     '''this function is for tests'''
     comm = Communicator()
     comm.get_com("status").error(0)
-
-def get_color():
-    '''do asynchronously'''
-#     print(askcolor())
 
 LAST_TIME=0
 def print_time():
@@ -56,7 +49,7 @@ def countdown():
 def grep_this(path, filetype):
     c = None
     tries=0
-    while c==None:
+    while c is None:
         tries+=1
         results = context.read_selected_without_altering_clipboard()
         error_code = results[0]

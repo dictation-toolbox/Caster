@@ -7,9 +7,9 @@ try: # Style C -- may be imported into Caster, or externally
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:
-    from caster.asynch.hmc.hmc_ask_directory import Homunculus_Directory
-    from caster.asynch.hmc.hmc_recording import Homunculus_Recording
-    from caster.asynch.hmc.hmc_confirm import Homunculus_Confirm
+    from caster.asynch.hmc.hmc_ask_directory import HomunculusDirectory
+    from caster.asynch.hmc.hmc_recording import HomunculusRecording
+    from caster.asynch.hmc.hmc_confirm import HomunculusConfirm
     from caster.asynch.hmc.homunculus import Homunculus
     from caster.lib import settings
 
@@ -64,10 +64,10 @@ if __name__ == '__main__':
     if sys.argv[1]==settings.QTYPE_DEFAULT:
         app = Homunculus(sys.argv[1])
     elif sys.argv[1]==settings.QTYPE_RECORDING:
-        app = Homunculus_Recording([settings.QTYPE_RECORDING, found_word])
+        app = HomunculusRecording([settings.QTYPE_RECORDING, found_word])
     elif sys.argv[1]==settings.QTYPE_INSTRUCTIONS:
         app = Homunculus(sys.argv[1], sys.argv[2])
     elif sys.argv[1]==settings.QTYPE_DIRECTORY:
-        app = Homunculus_Directory(sys.argv[1])
+        app = HomunculusDirectory(sys.argv[1])
     elif sys.argv[1]==settings.QTYPE_CONFIRM:
-        app = Homunculus_Confirm([sys.argv[1], sys.argv[2]])
+        app = HomunculusConfirm([sys.argv[1], sys.argv[2]])
