@@ -126,7 +126,7 @@ class Navigation(MergeRule):
     "Kraken":                       R(Key("c-space"), rspec="Kraken", rdescript="Control Space"),
          
     # text formatting
-    "set format (<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)":  R(Function(navigation.set_text_format), rdescript="Text Format"), 
+    "set format (<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)":  R(Function(navigation.set_text_format), rdescript="Set Text Format"), 
     "(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel) <textnv> [brunt]":  R(Function(navigation.master_format_text), rdescript="Text Format"), 
     "format [<textnv>]":            R(Function(navigation.prior_text_format), rdescript="Last Text Format"),
 

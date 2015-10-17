@@ -35,6 +35,6 @@ class Homunculus_Confirm(Homunculus):
     def xmlrpc_do_action(self, action, details=None):
         if isinstance(action, bool):
             self.completed = True
-            self.value = 1 if action else 2 # 1 is True, 2 is False
+            '''1 is True, 2 is False'''
+            self.value = 1 if action else 2
 
-#app=Homunculus_Confirm([settings.HOMUNCULUS_VERSION + settings.HMC_TITLE_CONFIRM, "nothing"])

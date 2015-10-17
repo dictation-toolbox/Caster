@@ -87,7 +87,7 @@ grammar_settings.load()
 
 
 
-def get_settings_from_settings_window(data):
+def receive_settings(data):
     settings.SETTINGS = data
     settings.save_config()
     # TODO: apply new settings
@@ -108,7 +108,7 @@ def toggle_status():
 def settings_window():
 #     if control.nexus().dep.WX:
     if not utilities.window_exists(None, settings.STATUS_WINDOW_TITLE + settings.SOFTWARE_VERSION_NUMBER):
-        h_launch.launch(settings.WXTYPE_SETTINGS, get_settings_from_settings_window)
+        h_launch.launch(settings.WXTYPE_SETTINGS, receive_settings)
 #     else:
 #         utilities.availability_message("Settings Window", "wxPython")
 
