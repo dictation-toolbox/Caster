@@ -33,7 +33,6 @@ def get_active_window_title(p=None):
     return unicode(win32gui.GetWindowText(pid), errors='ignore')
 
 def get_active_window_path():
-    #return natlink.getCurrentModule()[0]
     return Window.get_foreground().executable
 
 def get_window_by_title(title):

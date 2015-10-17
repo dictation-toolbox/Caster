@@ -56,8 +56,7 @@ class ContextStack:
         
         ''' case: the new item is has backward seeking --
             -- satisfy levels, then move on to other logic'''
-        if stack_item.type == "seeker":
-            if stack_item.back != None:
+        if stack_item.type == StackItemSeeker.TYPE and stack_item.back is not None:
                 stack_size = len(self.list)
                 seekback_size = len(stack_item.back)
                 for i in range(0, seekback_size):

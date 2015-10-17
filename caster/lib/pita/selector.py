@@ -62,9 +62,8 @@ def _abbreviated_string(spoken_phrase):
     --
     spoken_phrase: an array of strings
     '''
-#     words_in_phrase = spoken_phrase.split(" ")
+    
     abbrev = ""
-#     for w in words_in_phrase:
     for w in spoken_phrase:
         abbrev += w[0]
         
@@ -169,7 +168,6 @@ def _search(all_symbols, word):
     '''old search code from element'''
     # get index
     high_score = [0, 0]
-    # high_score = index, score
     for i in range(0, len(all_symbols)):
         score = _word_similarity_score(all_symbols[i], word)
         if score > high_score[1]:

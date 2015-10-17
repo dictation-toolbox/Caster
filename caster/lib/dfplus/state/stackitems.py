@@ -122,7 +122,7 @@ class StackItemSeeker(StackItemRegisteredAction):
         direction = self.back if is_back else self.forward
         cl = direction[level_index]
         if not cl.satisfied:
-            if stack_item != None:
+            if stack_item is not None:
                 for cs in cl.sets:
                     # stack_item must have a spec
                     if stack_item.rspec in cs.specTriggers:

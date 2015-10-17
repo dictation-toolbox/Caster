@@ -59,13 +59,13 @@ def change_monitor():
 class MainRule(MappingRule):
     
     @staticmethod
-    def generate_CCR_choices():
+    def generate_ccr_choices():
         choices = {}
         for ccr_choice in control.nexus().merger.global_rule_names():
             choices[ccr_choice] = ccr_choice
         return Choice("name", choices)
     @staticmethod
-    def generate_SM_CCR_choices():
+    def generate_sm_ccr_choices():
         choices = {}
         for ccr_choice in control.nexus().merger.selfmod_rule_names():
             choices[ccr_choice] = ccr_choice
@@ -116,8 +116,8 @@ class MainRule(MappingRule):
               Choice("volume_mode",
                     {"mute": "mute", "up":"up", "down":"down"
                      }),
-              generate_CCR_choices.__func__(),
-              generate_SM_CCR_choices.__func__(),
+              generate_ccr_choices.__func__(),
+              generate_sm_ccr_choices.__func__(),
               IntegerRefST("monitor", 1, 10)
              ]
     defaults = {"n": 1, "nnv": 1,

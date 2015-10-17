@@ -130,9 +130,7 @@ def mouse_alternates(mode, monitor=1):
     if control.nexus().dep.PIL:
         try:
             if mode == "legion":
-                if utilities.window_exists(None, "legiongrid"):
-                    pass
-                else:
+                if not utilities.window_exists(None, "legiongrid"):
                     ls = LegionScanner()
                     ls.scan()#[500, 500, 1000, 1000]
                     tscan = ls.get_update()
@@ -214,7 +212,7 @@ def set_text_format(capitalization, spacing):
     global CAPITALIZATION, SPACING
     CAPITALIZATION = capitalization
     SPACING = spacing
-    return (capitalization, spacing)
+    return capitalization, spacing
 
 def master_format_text(capitalization, spacing, textnv):
     capitalization, spacing = set_text_format(capitalization, spacing)
@@ -326,9 +324,9 @@ def curse(direction, direction2, nnavi500, dokick):
 def elite_text(text):
     elite_map={"a": "@", "b":"|3", "c": "(", "d": "|)", "e": "3", 
                "f": "|=", "g":"6", "h": "]-[", "i": "|", "j": "_|", 
-               "k": "|{", "l": "|_", "m": "|\/|", "n": "|\|", "o": "()", 
+               "k": "|{", "l": "|_", "m": r"|\/|", "n": r"|\|", "o": "()", 
                "p": "|D", "q": "(,)", "r": "|2", "s": "$", "t": "']['", 
-               "u": "|_|", "v": "\/", "w": "\/\/", "x": "}{", "y": "`/", "z": "(\\)"}
+               "u": "|_|", "v": r"\/", "w": r"\/\/", "x": "}{", "y": "`/", "z": r"(\)"}
     text=str(text).lower()
     result=""
     for c in text:

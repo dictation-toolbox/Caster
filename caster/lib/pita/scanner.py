@@ -65,7 +65,7 @@ def _scan_directory(data):
         for base, dirs, files in os.walk(directory):  # traverse base directory, and list directories as dirs and files as files
             for fname in files:
                 extension = "." + fname.split(".")[-1]
-                if not (extension in languageFilters):
+                if not extension in languageFilters:
                     languageFilters[extension] = LanguageFilter(extension)
                 
                 if extension in settings.SETTINGS["pita"]["extensions"]:
@@ -109,8 +109,9 @@ def _passes_tests(symbol, scanned_file, language_filter):
     already_in_names = symbol in scanned_file["names"]
     is_digit = symbol.isdigit()
     is_keyword = symbol in language_filter.keywords
-    typeable = (settings.SETTINGS["pita"]["filter_strict"] and control.nexus().dep.NATLINK and not _difficult_to_type(symbol))
-    return not (is_keyword or already_in_names or too_short or is_digit or typeable)
+    typeable = settings.SETTINGS["pita"]["filter_strict"] and control.nexus().dep.NATLINK and not _difficult_to_type(symbol)
+    fails = is_keyword or already_in_names or too_short or is_digit or typeable
+    return not fails
 
 
 def guess_file_based_on_window_title(title_file, title_path_folders):
@@ -135,7 +136,7 @@ def guess_file_based_on_window_title(title_file, title_path_folders):
         if f_candidate[1] > f_candidate_best[1]:
             f_candidate_best = f_candidate
             
-    return (d_candidate_best[0], f_candidate_best[0])
+    return d_candidate_best[0], f_candidate_best[0]
 
 
 
