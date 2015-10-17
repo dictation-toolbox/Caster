@@ -38,18 +38,18 @@ def experiment(text):
 
 def get_color():
     '''do asynchronously'''
-#     print askcolor()
+#     print(askcolor())
 
 LAST_TIME=0
 def print_time():
     global LAST_TIME
-    print time.time()-LAST_TIME
+    print(time.time()-LAST_TIME)
     LAST_TIME=time.time()
 
 COUNT=5
 def countdown():
     global COUNT
-    print COUNT
+    print(COUNT)
     COUNT-=1
     return COUNT==0
 
@@ -76,7 +76,7 @@ def close_last_rspec(rspec):
     Text("</"+rspec+">").execute()
     
 def bring_test():
-    print settings.SETTINGS["paths"]["BASE_PATH"].replace("/", "\\")
+    print(settings.SETTINGS["paths"]["BASE_PATH"].replace("/", "\\"))
     try:
         BringApp("explorer", settings.SETTINGS["paths"]["BASE_PATH"]).execute()
     except Exception:

@@ -12,7 +12,7 @@ complexity_report*
 /core/
 
 # Ignore User Rules and Filters
-/caster/user
+#/caster/user
 
 # Ignore SonarQube
 .sonar

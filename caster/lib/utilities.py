@@ -89,9 +89,9 @@ def list_to_string(l):
             
 def simple_log(to_file=False):
     msg = list_to_string(sys.exc_info())
-    print msg
+    print(msg)
     for tb in traceback.format_tb(sys.exc_info()[2]):
-        print tb
+        print(tb)
     if to_file:
         f = open(settings.SETTINGS["paths"]["LOG_PATH"], 'a') 
         f.write(msg + "\n")
@@ -102,7 +102,7 @@ def simple_log(to_file=False):
 
 def report(message, speak=False, console=True, log=False):
     if console:
-        print message
+        print(message)
     if speak:
         dragonfly_speak(message)
     if log:
@@ -123,13 +123,13 @@ def remote_debug(who_called_it=None):
     try:
         pydevd.settrace()
     except Exception:
-        print "ERROR: " + who_called_it + " called utilities.remote_debug() but the debug server wasn't running."
+        print("ERROR: " + who_called_it + " called utilities.remote_debug() but the debug server wasn't running.")
     
 
 
 
 def reboot():
-    print [settings.SETTINGS["paths"]["REBOOT_PATH"], "\""+settings.SETTINGS["paths"]["ENGINE_PATH"]+"\""]
+    print([settings.SETTINGS["paths"]["REBOOT_PATH"], "\""+settings.SETTINGS["paths"]["ENGINE_PATH"]+"\""])
     Popen([settings.SETTINGS["paths"]["REBOOT_PATH"], settings.SETTINGS["paths"]["ENGINE_PATH"]])
 
 

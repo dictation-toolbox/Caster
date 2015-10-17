@@ -25,7 +25,7 @@ class DependencyMan:
                         warnings += 1
                         settings.SETTINGS["one time warnings"][dep[0]] = True
                         urgency = "You can get it at " if is_win32ui else "If you wish to use those features, you can get it at "
-                        print "\n" + dep[0] + " is required for ", dep[2], " features. " + urgency + dep[3] + "\n"
+                        print("\n" + dep[0] + " is required for ", dep[2], " features. " + urgency + dep[3] + "\n")
                 else:
                     name = dep[0] if not is_win32ui else dep[1]
                     exec("self." + name.upper() + "=True")

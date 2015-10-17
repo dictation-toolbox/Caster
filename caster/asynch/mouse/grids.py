@@ -333,13 +333,13 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv, "hg:m:")
     except getopt.GetoptError:
-        print help_message
+        print(help_message)
         sys.exit(2)
     g = None
     m = 1
     for opt, arg in opts:
         if opt == '-h':
-            print help_message
+            print(help_message)
             sys.exit()
         elif opt == '-g':
             if arg == "r":

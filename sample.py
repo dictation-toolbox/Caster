@@ -17,7 +17,7 @@ from dragonfly import (BringApp, Key, Function, Grammar, Playback,
                        IntegerRef, Dictation, Choice, WaitWindow, MappingRule, Text)
 
 def my_function(n, text):
-    print "put some Python logic here: "+str(text)
+    print("put some Python logic here: "+str(text))
     
 class MainRule(MappingRule):
 
@@ -77,7 +77,7 @@ grammar.load()
 if __name__ == "__main__":
     import pythoncom, time
     # Ignore this if you're using Dragon
-    print "Windows Speech Recognition / Dragonfly Test Running..."
+    print("Windows Speech Recognition / Dragonfly Test Running...")
     while True:
         pythoncom.PumpWaitingMessages()  # @UndefinedVariable
         time.sleep(.1)
