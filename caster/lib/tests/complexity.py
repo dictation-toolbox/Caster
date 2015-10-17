@@ -22,6 +22,7 @@ from caster.lib.dfplus.hint.nodes import css
 from caster.lib.dfplus.merge.ccrmerger import CCRMerger, Inf
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
+from caster.lib.utilities import report
 
 
 def get_500_words():
@@ -114,61 +115,103 @@ def prep_grammar(grammar, nc, ns):
         grammar.add_rule(rule)
     grammar.add_rule(css_)
 
+class Result(object):
+    def __init__(self, report, choices, specs, elements, ccr_max, broke):
+        self.report = report
+        self.choices = choices
+        self.specs = specs
+        self.elements = elements
+        self.ccr_max = ccr_max
+        self.broke = broke
 
+def test(specs, choices, ccr_max):
+    broke = False
+    elements = None
+    report = None
+    
+    utilities.report("creating complexity test: \n"\
+                     +str(specs)+" specs \n"\
+                     +str(choices)+" Choice-500s \n"\
+                     +str(ccr_max) + " ccr max" )
+    
+    grammar = Grammar("test "+str(int(time.time())))
+    utilities.report(grammar)
+    
+    '''set up realistic scenario'''
+    merger = CCRMerger(False)
+    prep_grammar(grammar, choices, specs)
+    prep_merger(merger, choices, specs)
+    
+    report = grammar.get_complexity_string()
+    utilities.report(".")
+    
+    '''activate everything except the heavy rule'''
+    merger_ccr_activator = merger.global_rule_changer()
+    for rule in core_and_python():
+        merger_ccr_activator(rule.get_name(), True, False)
+    utilities.report("..")
+    merger.node_rule_changer()("css", True, False)
+    utilities.report("...")
+    
+    '''activate the heavy rule'''
+    try: merger_ccr_activator(ComplexityTestRule.pronunciation, True, False)
+    except: broke = True
+#             reports.append("BadGrammar at "+str(i)+" Choice-500s ; "+str(i)+" specs\n"+report+"\n")
+#             kCUs.append(complexity * ccr_max / 1000)
+    m = re.search(r"rules, ([0-9]+) elements", report)
+    elements = m.group(1)
+    utilities.report("... .   e(" + elements+")")
+    
+    '''clean up'''
+    merger.wipe()
+    for rule in grammar.rules: rule.disable()
+    grammar.disable()
+    del grammar
+    utilities.report("... ..")
+    
+    return Result(report, choices, specs, elements, ccr_max, broke)
 
 def run_tests():
-    starting_level = 1
     original_ccr_max = settings.SETTINGS["miscellaneous"]["max_ccr_repetitions"]
-    kCUs = []
-    reports = ["Caster/Dragonfly Grammar Complexity Report\n===============================\n\n"]
+    reports = ["Caster/Dragonfly Grammar Complexity Report v2\n===============================\n\n"]
     start_time = time.time()
+    cycle_count = 1
     
-    for k in range(0, 3):
-        if k != 0:
-            settings.SETTINGS["miscellaneous"]["max_ccr_repetitions"] += 1
+    for i in range(0, 3):
+        if i != 0: settings.SETTINGS["miscellaneous"]["max_ccr_repetitions"] += 1
         ccr_max = settings.SETTINGS["miscellaneous"]["max_ccr_repetitions"] + 2
-        broke = False
+        utilities.report("Run "+str(i+1)+" /3")
         
-        print "Run "+str(k+1)+" /3"
-        for i in range(starting_level, 500):
-            print "creating complexity test: "+str(i)+" Choice-500s ; "+str(i)+" specs ; " +str(ccr_max) + " ccr max" 
-            grammar = Grammar("test "+str(int(time.time())))
-            print grammar
-            merger = CCRMerger(False)
-            prep_grammar(grammar, i, i)
-            report = grammar.get_complexity_string()
-            prep_merger(merger, i, i)
-            merger_ccr_activator = merger.global_rule_changer()
-            print "."
-            for rule in core_and_python():
-                merger_ccr_activator(rule.get_name(), True, False)
-                merger.node_rule_changer()("css", True, False)
-            print ".."
-            try:
-                merger_ccr_activator(ComplexityTestRule.pronunciation, True, False)
-            except:
-                broke = True
-                reports.append("BadGrammar at "+str(i)+" Choice-500s ; "+str(i)+" specs\n"+report+"\n")
-                m = re.search(r"rules, ([0-9]+) elements", report)
-                complexity = int(m.group(1))
-                kCUs.append(complexity * ccr_max / 1000)
-            print "..."
-            merger.wipe()
-            print "... ."
+        not_max_yet = True
+        nspecs = 2
+        nc_orig = 2 
+        while not_max_yet:
             
-            for rule in grammar.rules: rule.disable()
-            grammar.disable()
-            del grammar
-            
-            print "... .."
-            if broke: break
+            for nchoices in range(nc_orig, 500, 2):
+                
+                result = test(nspecs, nchoices, ccr_max)
+                reports.append("\ncycles: "+str(cycle_count)\
+                               +" | ccrm: "+str(result.ccr_max)\
+                               +" | specs: "+str(result.specs)\
+                               +" | choice-500s: "+str(result.choices)\
+                               +" | elements: "+str(result.elements)\
+                               +" | broke: "+str(result.broke)\
+                               +"\n")
+                cycle_count += 1
+                if result.broke: 
+                    nspecs += 2
+                    
+                    reports.append(result.report+"\n")
+                    
+                    '''if choices max out at 1, the test is over'''
+                    if result.choices == nc_orig: not_max_yet = False
+                    break
     
-    avg_kcus = (kCUs[0]+kCUs[1]+kCUs[2])/3
-    reports.append("\nCCR Max Reps: "+str(original_ccr_max)+"\n")
+    reports.append("\nSettings JSON CCR Max Reps: "+str(original_ccr_max)+"\n")
     reports.append("Total time for test: "+str(int(time.time()-start_time))+" sec\n\n")
     result = "".join(reports)
     report_path = settings.SETTINGS["paths"]["BASE_PATH"] + "/bin/data/complexity_report_"+str(time.time())+".txt"
-    print "Report saved to "+report_path
+    utilities.report("Report saved to "+report_path) 
     settings.report_to_file(result, report_path)
     
     
