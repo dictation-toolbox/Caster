@@ -1,7 +1,8 @@
 from dragonfly import Key, Text, Choice, MappingRule
 
-from caster.lib import navigation
 from caster.lib import control
+from caster.lib import navigation
+from caster.lib.ccr.standard import SymbolSpecs
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
@@ -29,44 +30,43 @@ class Rust(MergeRule):
     non = RustNon
     
     mapping = {
-        # CCR PROGRAMMING STANDARD
-        "iffae":                        R(Text("if  {}")+Key("left/5:3"), rdescript="Rust: If"),
-        "shells":                       R(Text("else {}")+Key("left/5:3"), rdescript="Rust: Else"),
+        SymbolSpecs.IF:                 R(Text("if  {}")+Key("left/5:3"), rdescript="Rust: If"),
+        SymbolSpecs.ELSE:               R(Text("else {}")+Key("left/5:3"), rdescript="Rust: Else"),
         #
-        "switch":                       R(Text("match"), rdescript="Rust: Switch (match)"),
-        "case of":                      R(Text(" => ")+Key("left"), rdescript="Rust: Case"),
-        "breaker":                      R(Text("break;"), rdescript="Rust: Break"),
-        "default":                      R(Text("_"), rdescript="Rust: Default"),
+        SymbolSpecs.SWITCH:             R(Text("match"), rdescript="Rust: Switch (match)"),
+        SymbolSpecs.CASE:               R(Text(" => ")+Key("left"), rdescript="Rust: Case"),
+        SymbolSpecs.BREAK:              R(Text("break;"), rdescript="Rust: Break"),
+        SymbolSpecs.DEFAULT:            R(Text("_"), rdescript="Rust: Default"),
         #
-        "do loop":                      R(Text("while {EXPRESSION;VALUE}{}"), rdescript="Rust: Do Loop"),
-        "while loop":                   R(Text("while VALUE {}")+Key("left"), rdescript="Rust: While"),
+        SymbolSpecs.DO_LOOP:            R(Text("while {EXPRESSION;VALUE}{}"), rdescript="Rust: Do Loop"),
+        SymbolSpecs.WHILE_LOOP:         R(Text("while VALUE {}")+Key("left"), rdescript="Rust: While"),
         "for loop [of <a> [in <n>]]":   R(Text("for %(a)s in 0..%(n)d {}")+Key("left"), rdescript="Rust: For i Loop"),
-        "for each":                     R(Text("for NAME in VALUE {}")+Key("left"), rdescript="Rust: For Each Loop"), 
+        SymbolSpecs.FOR_EACH_LOOP:      R(Text("for NAME in VALUE {}")+Key("left"), rdescript="Rust: For Each Loop"), 
         #
-        "convert to string":            R(Text("to_string()"), rdescript="Rust: Convert To String"),
-        "convert to integer":           R(Text("parse::<i32>().unwrap()"), rdescript="Rust: Convert To Integer"),
-        "convert to floating point":    R(Text("parse::<f64>().unwrap()"), rdescript="Rust: Convert To Floating-Point"),
+        SymbolSpecs.TO_INTEGER:         R(Text("parse::<i32>().unwrap()"), rdescript="Rust: Convert To Integer"),
+        SymbolSpecs.TO_FLOAT:           R(Text("parse::<f64>().unwrap()"), rdescript="Rust: Convert To Floating-Point"),
+        SymbolSpecs.TO_STRING:          R(Text("to_string()"), rdescript="Rust: Convert To String"),
         #
-        "lodge and":                    R(Text(" && "), rdescript="Rust: And"),
-        "lodge or":                     R(Text(" || "), rdescript="Rust: Or"),
-        "lodge not":                    R(Text("!"), rdescript="Rust: Not"),
+        SymbolSpecs.AND:                R(Text(" && "), rdescript="Rust: And"),
+        SymbolSpecs.OR:                 R(Text(" || "), rdescript="Rust: Or"),
+        SymbolSpecs.NOT:                R(Text("!"), rdescript="Rust: Not"),
         #
-        "print to console":             R(Text("println!()")+Key("left"), rdescript="Rust: Print"),
+        SymbolSpecs.SYSOUT:             R(Text("println!()")+Key("left"), rdescript="Rust: Print"),
         #
-        "import":                       R(Text("use "), rdescript="Rust: Import (use)"), 
+        SymbolSpecs.IMPORT:             R(Text("use "), rdescript="Rust: Import (use)"), 
         # 
         # function moved to ncmap
-        "class":                        R(Text("struct "), rdescript="Rust: Class (struct)"), 
+        SymbolSpecs.CLASS:              R(Text("struct "), rdescript="Rust: Class (struct)"), 
         #
-        "add comment":                  R(Text("//"), rdescript="Rust: Add Comment"),
-        "doc comment":                  R(Text("///"), rdescript="Rust: Doc Comment"),
+        SymbolSpecs.COMMENT:            R(Text("//"), rdescript="Rust: Add Comment"),
+        SymbolSpecs.LONG_COMMENT:       R(Text("///"), rdescript="Rust: Doc Comment"),
         #
-        "value not":                    R(Text("None"), rdescript="Rust: None"),
+        SymbolSpecs.NULL:               R(Text("None"), rdescript="Rust: None"),
         #
-        "return":                       R(Text("return "), rdescript="Rust: Early Return"),
+        SymbolSpecs.RETURN:             R(Text("return "), rdescript="Rust: Early Return"),
         #
-        "value true":                   R(Text("true"), rdescript="Rust: True"),
-        "value false":                  R(Text("false"), rdescript="Rust: False"),
+        SymbolSpecs.TRUE:               R(Text("true"), rdescript="Rust: True"),
+        SymbolSpecs.FALSE:              R(Text("false"), rdescript="Rust: False"),
         
         
         # Rust specific

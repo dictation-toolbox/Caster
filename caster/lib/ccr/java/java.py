@@ -1,6 +1,7 @@
 from dragonfly import Key, Text, Paste, MappingRule
 
 from caster.lib import control
+from caster.lib.ccr.standard import SymbolSpecs
 from caster.lib.dfplus.merge.mergerule import MergeRule, TokenSet
 from caster.lib.dfplus.state.short import R
 
@@ -21,45 +22,43 @@ class Java(MergeRule):
     non = JavaNon
         
     mapping = {
-        # CCR PROGRAMMING STANDARD
-        "iffae":                            R(Text("if() {")+Key("enter,up,left"), rdescript="Java: If"),
-        "shells":                           R(Text("else {")+Key("enter"), rdescript="Java: Else"),        
+        SymbolSpecs.IF:                     R(Text("if() {")+Key("enter,up,left"), rdescript="Java: If"),
+        SymbolSpecs.ELSE:                   R(Text("else {")+Key("enter"), rdescript="Java: Else"),        
         #
-        "switch":                           R(Text("switch(){\ncase : break;\ndefault: break;")+Key("up,up,left,left"), rdescript="Java: Switch"),
-        "case of":                          R(Text("case :")+Key("left"), rdescript="Java: Case"),
-        "breaker":                          R(Text("break;"), rdescript="Java: Break"),
-        "default":                          R(Text("default: "), rdescript="Java: Default"),
+        SymbolSpecs.SWITCH:                 R(Text("switch(){\ncase : break;\ndefault: break;")+Key("up,up,left,left"), rdescript="Java: Switch"),
+        SymbolSpecs.CASE:                   R(Text("case :")+Key("left"), rdescript="Java: Case"),
+        SymbolSpecs.BREAK:                  R(Text("break;"), rdescript="Java: Break"),
+        SymbolSpecs.DEFAULT:                R(Text("default: "), rdescript="Java: Default"),
         #
-        "do loop":                          R(Text("do {}")+Key("left, enter:2"), rdescript="Java: Do Loop"),
-        "while loop":                       R(Text("while ()")+Key("left"), rdescript="Java: While"),
-        "for loop":                         R(Text("for (int i=0; i<VALUE; i++)"), rdescript="Java: For i Loop"),
-        "for each":                         R(Text("for (CLASS TYPE : LIST)"), rdescript="Java: For Each Loop"),
+        SymbolSpecs.DO_LOOP:                R(Text("do {}")+Key("left, enter:2"), rdescript="Java: Do Loop"),
+        SymbolSpecs.WHILE_LOOP:             R(Text("while ()")+Key("left"), rdescript="Java: While"),
+        SymbolSpecs.FOR_LOOP:               R(Text("for (int i=0; i<VALUE; i++)"), rdescript="Java: For i Loop"),
+        SymbolSpecs.FOR_EACH_LOOP:          R(Text("for (CLASS TYPE : LIST)"), rdescript="Java: For Each Loop"),
         #
-        "convert to integer":               R(Text("Integer.parseInt()")+ Key("left"), rdescript="Java: Convert To Integer"),
-        "convert to floating point":        R(Text("Double.parseDouble()")+ Key("left"), rdescript="Java: Convert To Floating-Point"),
-        "convert to string":                R(Key("dquote, dquote, plus"), rdescript="Java: Convert To String"),
+        SymbolSpecs.TO_INTEGER:             R(Text("Integer.parseInt()")+ Key("left"), rdescript="Java: Convert To Integer"),
+        SymbolSpecs.TO_FLOAT:               R(Text("Double.parseDouble()")+ Key("left"), rdescript="Java: Convert To Floating-Point"),
+        SymbolSpecs.TO_STRING:              R(Key("dquote, dquote, plus"), rdescript="Java: Convert To String"),
         #
-        "lodge and":                        R(Text(" && "), rdescript="Java: And"),
-        "lodge or":                         R(Text(" || "), rdescript="Java: Or"),
-        "lodge not":                        R(Text("!"), rdescript="Java: Not"),
+        SymbolSpecs.AND:                    R(Text(" && "), rdescript="Java: And"),
+        SymbolSpecs.OR:                     R(Text(" || "), rdescript="Java: Or"),
+        SymbolSpecs.NOT:                    R(Text("!"), rdescript="Java: Not"),
         #
-        "print to console":                 R(Text("java.lang.System.out.println()")+Key("left"), rdescript="Java: Print"),
+        SymbolSpecs.SYSOUT:                 R(Text("java.lang.System.out.println()")+Key("left"), rdescript="Java: Print"),
         #
-        "import":                           R(Text( "import " ), rdescript="Java: Import"),
+        SymbolSpecs.IMPORT:                 R(Text( "import " ), rdescript="Java: Import"),
         #
-        "function":                         R(Text("SCOPE TYPE NAME(){}")+Key("left"), rdescript="Java: Function"),
-        "class":                            R(Text("class {}")+Key("left/5:2"), rdescript=""),
-        
+        SymbolSpecs.FUNCTION:               R(Text("SCOPE TYPE NAME(){}")+Key("left"), rdescript="Java: Function"),
+        SymbolSpecs.CLASS:                  R(Text("class {}")+Key("left/5:2"), rdescript=""),
         #
-        "add comment":                      R(Text( "//" ), rdescript="Java: Add Comment"),
-        "long comment":                     R(Text("/**/")+Key("left,left"), rdescript="Java: Long Comment"),
+        SymbolSpecs.COMMENT:                R(Text( "//" ), rdescript="Java: Add Comment"),
+        SymbolSpecs.LONG_COMMENT:           R(Text("/**/")+Key("left,left"), rdescript="Java: Long Comment"),
         #
-        "value not":                        R(Text("null"), rdescript="Java: Null"),
+        SymbolSpecs.NULL:                   R(Text("null"), rdescript="Java: Null"),
         #
-        "return":                           R(Text("return "), rdescript="Java: Return"),
+        SymbolSpecs.RETURN:                 R(Text("return "), rdescript="Java: Return"),
         #
-        "value true":                       R(Text("true"), rdescript="Java: True"),
-        "value false":                      R(Text("false"), rdescript="Java: False"),
+        SymbolSpecs.TRUE:                   R(Text("true"), rdescript="Java: True"),
+        SymbolSpecs.FALSE:                  R(Text("false"), rdescript="Java: False"),
         
         
         # Java specific

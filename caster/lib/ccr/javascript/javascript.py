@@ -6,6 +6,7 @@ Created on Sep 2, 2015
 from dragonfly import Key, Text
 
 from caster.lib import control
+from caster.lib.ccr.standard import SymbolSpecs
 from caster.lib.dfplus.additions import SelectiveAction
 from caster.lib.dfplus.merge.mergerule import MergeRule, TokenSet
 from caster.lib.dfplus.state.short import R
@@ -17,51 +18,51 @@ class Javascript(MergeRule):
     mapping = {
         
         # CCR PROGRAMMING STANDARD
-        "iffae":                        R(Text("if () {}")+Key("left, enter:2, up"), rdescript="Javascript: If"),
-        "shells":                       R(Text("else {}")+Key("left, enter:2, up"), rdescript="Javascript: Else"),
+        SymbolSpecs.IF:                 R(Text("if () {}")+Key("left, enter:2, up"), rdescript="Javascript: If"),
+        SymbolSpecs.ELSE:               R(Text("else {}")+Key("left, enter:2, up"), rdescript="Javascript: Else"),
         #
-        "switch":                       R(Text("switch() {}")+Key("left, enter:2, up"), rdescript="Javascript: Switch"),
-        "case of":                      R(Text("case :")+Key("left"), rdescript="Javascript: Case"),
-        "breaker":                      R(Text("break;"), rdescript="Break"),
-        "default":                      R(Text("default: "), rdescript="Javascript: Default"),
+        SymbolSpecs.SWITCH:             R(Text("switch() {}")+Key("left, enter:2, up"), rdescript="Javascript: Switch"),
+        SymbolSpecs.CASE:               R(Text("case :")+Key("left"), rdescript="Javascript: Case"),
+        SymbolSpecs.BREAK:              R(Text("break;"), rdescript="Break"),
+        SymbolSpecs.DEFAULT:            R(Text("default: "), rdescript="Javascript: Default"),
         #
-        "do loop":                      R(Text("do {}")+Key("left, enter:2"), rdescript="Javascript: Do Loop"),
-        "while loop":                   R(Text("while ()")+Key("left"), rdescript="Javascript: While"),
-        "for loop":                     R(Text("for (var i=0; i<VALUE; i++)"), rdescript="Javascript: For i Loop"),
-        "for each":                     R(Text("for (VARIABLE in OBJECT)"), rdescript="Javascript: For Each Loop"), 
+        SymbolSpecs.DO_LOOP:            R(Text("do {}")+Key("left, enter:2"), rdescript="Javascript: Do Loop"),
+        SymbolSpecs.WHILE_LOOP:         R(Text("while ()")+Key("left"), rdescript="Javascript: While"),
+        SymbolSpecs.FOR_LOOP:           R(Text("for (var i=0; i<VALUE; i++)"), rdescript="Javascript: For i Loop"),
+        SymbolSpecs.FOR_EACH_LOOP:      R(Text("for (VARIABLE in OBJECT)"), rdescript="Javascript: For Each Loop"), 
         #
-        "convert to string":            R(Key("dquote, dquote, plus"), rdescript="Javascript: Convert To String"),
-        "convert to integer":           R(Text("parseInt()")+Key("left"), rdescript="Javascript: Convert To Integer"),
-        "convert to floating point":    R(Text("parseFloat()")+Key("left"), rdescript="Javascript: Convert To Floating-Point"),
+        SymbolSpecs.TO_INTEGER:         R(Text("parseInt()")+Key("left"), rdescript="Javascript: Convert To Integer"),
+        SymbolSpecs.TO_FLOAT:           R(Text("parseFloat()")+Key("left"), rdescript="Javascript: Convert To Floating-Point"),
+        SymbolSpecs.TO_STRING:          R(Key("dquote, dquote, plus"), rdescript="Javascript: Convert To String"),
         #
-        "lodge and":                    R(Text(" && "), rdescript="Javascript: And"),
-        "lodge or":                     R(Text(" || "), rdescript="Javascript: Or"),
-        "lodge not":                    R(Text("!"), rdescript="Javascript: Not"),
+        SymbolSpecs.AND:                R(Text(" && "), rdescript="Javascript: And"),
+        SymbolSpecs.OR:                 R(Text(" || "), rdescript="Javascript: Or"),
+        SymbolSpecs.NOT:                R(Text("!"), rdescript="Javascript: Not"),
         #
-        "print to console":             R(Text("console.log()")+Key("left"), rdescript="Javascript: Print"),
+        SymbolSpecs.SYSOUT:             R(Text("console.log()")+Key("left"), rdescript="Javascript: Print"),
         #
         # (no imports in javascript)
         # 
-        "function":                     R(Text("function NAME() {};")+Key("left:2, enter")
-                                     +SelectiveAction(Key("enter, up"), ["AptanaStudio3.exe"]), 
-                                     rdescript="Javascript: Function"),
-        # (no classes in javascript)
+        SymbolSpecs.FUNCTION:           R(Text("function NAME() {};")+Key("left:2, enter")
+                                         +SelectiveAction(Key("enter, up"), ["AptanaStudio3.exe"]), 
+                                         rdescript="Javascript: Function"),
+        # (no classes in javascript yet)
         #
-        "add comment":                  R(Text("//"), rdescript="Javascript: Add Comment"),
-        "long comment":                 R(Text("/**/")+Key("left,left"), rdescript="Javascript: Long Comment"),
+        SymbolSpecs.COMMENT:            R(Text("//"), rdescript="Javascript: Add Comment"),
+        SymbolSpecs.LONG_COMMENT:       R(Text("/**/")+Key("left,left"), rdescript="Javascript: Long Comment"),
         #
-        "value not":                    R(Text("null"), rdescript="Javascript: Null"),
+        SymbolSpecs.NULL:               R(Text("null"), rdescript="Javascript: Null"),
         #
-        "return":                       R(Text("return "), rdescript="Javascript: Return"),
+        SymbolSpecs.RETURN:             R(Text("return "), rdescript="Javascript: Return"),
         #
-        "value true":                   R(Text("true"), rdescript="Javascript: True"),
-        "value false":                  R(Text("false"), rdescript="Javascript: False"),
+        SymbolSpecs.TRUE:               R(Text("true"), rdescript="Javascript: True"),
+        SymbolSpecs.FALSE:              R(Text("false"), rdescript="Javascript: False"),
         
         
         # JavaScript specific
         "anon funk":                    R(Text("function () {}")+Key("left:1, enter")
-                                     +SelectiveAction(Key("enter, up"), ["AptanaStudio3.exe"]), 
-                                     rdescript="Javascript: Anonymous Function"),
+                                         +SelectiveAction(Key("enter, up"), ["AptanaStudio3.exe"]), 
+                                         rdescript="Javascript: Anonymous Function"),
         "timer":                        R(Text("setInterval()")+Key("left"), rdescript="Javascript: Timer"),
         "timeout":                      R(Text("setTimeout()")+Key("left"), rdescript="Javascript: Timeout"),
         "sue iffae":                    R(Text("if()")+Key("left"), rdescript="Javascript: Short If"),

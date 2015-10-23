@@ -6,6 +6,7 @@ Created on Sep 1, 2015
 from dragonfly import Key, Text, Dictation, MappingRule
 
 from caster.lib import control
+from caster.lib.ccr.standard import SymbolSpecs
 from caster.lib.dfplus.merge.mergerule import MergeRule, TokenSet
 from caster.lib.dfplus.state.short import R
 
@@ -24,43 +25,41 @@ class Python(MergeRule):
     non = PythonNon
     
     mapping = {        
-        # CCR PROGRAMMING STANDARD
-        #
-        "iffae":                        R(Key("i,f,space,colon,left"), rdescript="Python: If"),
-        "shells":                       R(Text("else:")+Key("enter"), rdescript="Python: Else"),        
+        SymbolSpecs.IF:                 R(Key("i,f,space,colon,left"), rdescript="Python: If"),
+        SymbolSpecs.ELSE:               R(Text("else:")+Key("enter"), rdescript="Python: Else"),        
         #
         # (no switch in Python)
-        "breaker":                      R(Text("break"), rdescript="Python: Break"),
+        SymbolSpecs.BREAK:              R(Text("break"), rdescript="Python: Break"),
         #
-        "for each":                     R(Text("for  in :")+ Key("left:5"), rdescript="Python: For Each Loop"),
-        "for loop":                     R(Text("for i in range(0, ):")+ Key("left:2"), rdescript="Python: For i Loop"),
-        "while loop":                   R(Text("while :")+ Key("left"), rdescript="Python: While"),
+        SymbolSpecs.FOR_EACH_LOOP:      R(Text("for  in :")+ Key("left:5"), rdescript="Python: For Each Loop"),
+        SymbolSpecs.FOR_LOOP:           R(Text("for i in range(0, ):")+ Key("left:2"), rdescript="Python: For i Loop"),
+        SymbolSpecs.WHILE_LOOP:         R(Text("while :")+ Key("left"), rdescript="Python: While"),
         # (no do-while in Python)
         #
-        "convert to string":            R(Text("str()")+ Key("left"), rdescript="Python: Convert To String"),
-        "convert to integer":           R(Text("int()")+ Key("left"), rdescript="Python: Convert To Integer"),
-        "convert to floating point":    R(Text("float()")+ Key("left"), rdescript="Python: Convert To Floating-Point"),
+        SymbolSpecs.TO_INTEGER:         R(Text("int()")+ Key("left"), rdescript="Python: Convert To Integer"),
+        SymbolSpecs.TO_FLOAT:           R(Text("float()")+ Key("left"), rdescript="Python: Convert To Floating-Point"),
+        SymbolSpecs.TO_STRING:          R(Text("str()")+ Key("left"), rdescript="Python: Convert To String"),
         #
-        "lodge and":                    R(Text(" and "), rdescript="Python: And"),
-        "lodge or":                     R(Text(" or "), rdescript="Python: Or"),
-        "lodge not":                    R(Text("!"), rdescript="Python: Not"),
+        SymbolSpecs.AND:                R(Text(" and "), rdescript="Python: And"),
+        SymbolSpecs.OR:                 R(Text(" or "), rdescript="Python: Or"),
+        SymbolSpecs.NOT:                R(Text("!"), rdescript="Python: Not"),
         #
-        "print to console":             R(Text("print()")+Key("left"), rdescript="Python: Print"),
+        SymbolSpecs.SYSOUT:             R(Text("print()")+Key("left"), rdescript="Python: Print"),
         #
-        "import":                       R(Text( "import " ), rdescript="Python: Import"),
+        SymbolSpecs.IMPORT:             R(Text( "import " ), rdescript="Python: Import"),
         #
-        "function":                     R(Text("def "), rdescript="Python: Function"),        
-        "class":                        R(Text("class "), rdescript="Python: Class"),
+        SymbolSpecs.FUNCTION:           R(Text("def "), rdescript="Python: Function"),        
+        SymbolSpecs.CLASS:              R(Text("class "), rdescript="Python: Class"),
         #
-        "add comment":                  R(Text( "#" ), rdescript="Python: Add Comment"),
-        "long comment":                 R(Text("''''''") + Key("left:3"), rdescript="Python: Long Comment"),
+        SymbolSpecs.COMMENT:            R(Text( "#" ), rdescript="Python: Add Comment"),
+        SymbolSpecs.LONG_COMMENT:       R(Text("''''''") + Key("left:3"), rdescript="Python: Long Comment"),
         #                
-        "value not":                    R(Text("None"), rdescript="Python: Null"),
+        SymbolSpecs.NULL:               R(Text("None"), rdescript="Python: Null"),
         #
-        "return":                       R(Text("return "), rdescript="Python: Return"),
+        SymbolSpecs.RETURN:                       R(Text("return "), rdescript="Python: Return"),
         #
-        "value true":                   R(Text("True"), rdescript="Python: True"),
-        "value false":                  R(Text("False"), rdescript="Python: False"),
+        SymbolSpecs.TRUE:               R(Text("True"), rdescript="Python: True"),
+        SymbolSpecs.FALSE:              R(Text("False"), rdescript="Python: False"),
                 
          
         # Python specific           

@@ -7,52 +7,53 @@ Created on Sep 26, 2015
 from dragonfly import Key, Mimic, Text
 
 from caster.lib import control
+from caster.lib.ccr.standard import SymbolSpecs
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
+
 
 class CSharp(MergeRule):
     auto = [".cs", ".cshtml"]
     pronunciation = "C sharp"
         
     mapping = {
-        # CCR PROGRAMMING STANDARD
-        "iffae":                            R(Key("i, f, lparen, rparen, leftbrace, enter,up,left"), rdescript="C#: If"),
-        "shells":                           R(Key("e, l, s, e, leftbrace, enter"), rdescript="C#: Else"),
+        SymbolSpecs.IF:                     R(Key("i, f, lparen, rparen, leftbrace, enter,up,left"), rdescript="C#: If"),
+        SymbolSpecs.ELSE:                   R(Key("e, l, s, e, leftbrace, enter"), rdescript="C#: Else"),
         #
-        "switch":                           R(Text("switch(){\ncase : break;\ndefault: break;")+Key("up,up,left,left"), rdescript="C#: Switch"),
-        "K states":                         R(Text("case :")+Key("left"), rdescript="C#: Case"),
-        "breaker":                          R(Text("break;"), rdescript="C#: Break"),
-        "default":                          R(Text("default: "), rdescript="C#: Default"),
+        SymbolSpecs.SWITCH:                 R(Text("switch(){\ncase : break;\ndefault: break;")+Key("up,up,left,left"), rdescript="C#: Switch"),
+        SymbolSpecs.CASE:                   R(Text("case :")+Key("left"), rdescript="C#: Case"),
+        SymbolSpecs.BREAK:                  R(Text("break;"), rdescript="C#: Break"),
+        SymbolSpecs.DEFAULT:                R(Text("default: "), rdescript="C#: Default"),
         #
-        "do loop":                          R(Text("do {}")+Key("left, enter:2"), rdescript="C#: Do Loop"),
-        "while loop":                       R(Text("while ()")+Key("left"), rdescript="C#: While"),
-        "for loop":                         R(Text("for (int i=0; i<VALUE; i++)"), rdescript="C#: For i Loop"),
-        "for each":                         R(Text("foreach (VALUE in Collection)"), rdescript="C#: For Each Loop"),
+        SymbolSpecs.DO_LOOP:                R(Text("do {}")+Key("left, enter:2"), rdescript="C#: Do Loop"),
+        SymbolSpecs.WHILE_LOOP:             R(Text("while ()")+Key("left"), rdescript="C#: While"),
+        SymbolSpecs.FOR_LOOP:               R(Text("for (int i=0; i<VALUE; i++)"), rdescript="C#: For i Loop"),
+        SymbolSpecs.FOR_EACH_LOOP:          R(Text("foreach (VALUE in Collection)"), rdescript="C#: For Each Loop"),
         #
-        "convert to integer":               R(Text("Convert.ToInt32()")+Key("left"), rdescript="C#: Convert To Integer"),
-        "convert to floating point":        R(Text("Convert.ToDouble()")+Key("left"), rdescript="C#: Convert To Floating-Point"),
-        "convert to string":                R(Text("Convert.ToString()")+Key("left"), rdescript="C#: Convert To String"),
+        SymbolSpecs.TO_INTEGER:             R(Text("Convert.ToInt32()")+Key("left"), rdescript="C#: Convert To Integer"),
+        SymbolSpecs.TO_FLOAT:               R(Text("Convert.ToDouble()")+Key("left"), rdescript="C#: Convert To Floating-Point"),
+        SymbolSpecs.TO_STRING:              R(Text("Convert.ToString()")+Key("left"), rdescript="C#: Convert To String"),
         #
-        "lodge and":                        R(Text("&&"), rdescript="C#: And"),
-        "lodge or":                         R(Text("||"), rdescript="C#: Or"),
-        "lodge not":                        R(Text("!"), rdescript="C# Not"),
+        SymbolSpecs.AND:                    R(Text("&&"), rdescript="C#: And"),
+        SymbolSpecs.OR:                     R(Text("||"), rdescript="C#: Or"),
+        SymbolSpecs.NOT:                    R(Text("!"), rdescript="C# Not"),
         #
-        "print to console":                 R(Text("Console.WriteLine()")+ Key("left"), rdescript="C#: Print"),
+        SymbolSpecs.SYSOUT:                 R(Text("Console.WriteLine()")+ Key("left"), rdescript="C#: Print"),
         
         #
-        "function":                         R(Text("TYPE NAME(){}")+Key("left"), rdescript="C#: Function"),
-        "class":                            R(Text("class NAME{}")+Key("left"), rdescript="C#: Class"),
+        SymbolSpecs.FUNCTION:               R(Text("TYPE NAME(){}")+Key("left"), rdescript="C#: Function"),
+        SymbolSpecs.CLASS:                  R(Text("class NAME{}")+Key("left"), rdescript="C#: Class"),
        #
         
-        "add comment":                      R(Text( "//" ), rdescript="C#: Add Comment"),
-        "long comment":                     R(Text("/**/")+Key("left, left"), rdescript="C#: Long Comment"),
+        SymbolSpecs.COMMENT:                R(Text( "//" ), rdescript="C#: Add Comment"),
+        SymbolSpecs.LONG_COMMENT:           R(Text("/**/")+Key("left, left"), rdescript="C#: Long Comment"),
         #
-        "value not":                        R(Text("null"), rdescript="C#: Null Value"),
+        SymbolSpecs.NULL:                   R(Text("null"), rdescript="C#: Null Value"),
         #
-        "return":                           R(Text("return"), rdescript="C#: Return"),
+        SymbolSpecs.RETURN:                 R(Text("return"), rdescript="C#: Return"),
         #
-        "value true":                       R(Text("true"), rdescript="C#: True"),
-        "value false":                      R(Text("false"), rdescript="C#: False"),
+        SymbolSpecs.TRUE:                   R(Text("true"), rdescript="C#: True"),
+        SymbolSpecs.FALSE:                  R(Text("false"), rdescript="C#: False"),
         
         
         # C# specific
