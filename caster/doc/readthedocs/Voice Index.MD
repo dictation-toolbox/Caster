@@ -87,6 +87,7 @@ If you're just getting started with voice programming, I suggest reading [this a
 * [http://njr.sabi.net/2014/04/13/creating-a-dictation-buffer/](http://njr.sabi.net/2014/04/13/creating-a-dictation-buffer/)
 * [http://shorttalk-emacs.sourceforge.net/ShortTalk/quickref.pdf](http://shorttalk-emacs.sourceforge.net/ShortTalk/quickref.pdf)
 * [http://shorttalk-emacs.sourceforge.net/ShortTalk/quickref.pdf](http://shorttalk-emacs.sourceforge.net/ShortTalk/quickref.pdf)
+* [alexander15w's command language comparison spreadsheet](https://docs.google.com/spreadsheets/d/1pk2gwTFbMebgYSsrxIFsZ-QvpEPWCybF8ypdeBvfBsg/pubhtml)
 
 # open source and commercial Dragon add-ons
 
