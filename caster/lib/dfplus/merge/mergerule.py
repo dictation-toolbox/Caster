@@ -5,7 +5,8 @@ Created on Sep 1, 2015
 '''
 import re
 
-from dragonfly import MappingRule, Pause, Context
+from dragonfly import MappingRule, Pause, Function
+
 
 class TokenSet(object):
     SYMBOL_PATTERN = re.compile("([A-Za-z0-9_]+)")
@@ -61,6 +62,12 @@ class MergeRule(MappingRule):
         self.composite =    composite if composite is not None  else set([self.ID])
         self._mcontext = self.__class__.mcontext
         if self._mcontext is None: self._mcontext = mcontext
+        
+        def display_available_commands():
+            for spec in mapping.keys():
+                print(spec) # do something fancier when the ui is better
+        if mapping is not None:
+            mapping["display available commands"] = Function(display_available_commands)
         
         MappingRule.__init__(self, name, mapping, extras, defaults, exported)
     def __eq__(self, other):
