@@ -63,11 +63,9 @@ class MergeRule(MappingRule):
         self._mcontext = self.__class__.mcontext
         if self._mcontext is None: self._mcontext = mcontext
         
-        def display_available_commands():
-            for spec in mapping.keys():
-                print(spec) # do something fancier when the ui is better
+        
         if mapping is not None:
-            mapping["display available commands"] = Function(display_available_commands)
+            mapping["display available commands"] = Function(lambda: self._display_available_commands())
         
         MappingRule.__init__(self, name, mapping, extras, defaults, exported)
     def __eq__(self, other):
@@ -126,5 +124,9 @@ class MergeRule(MappingRule):
         return self._mcontext
     def set_context(self, context):
         self._mcontext = context
+    
+    def _display_available_commands(self):
+        for spec in self.mapping_actual().keys():
+            print(spec) # do something fancier when the ui is better
             
         
