@@ -164,27 +164,4 @@ def get_similar_window_names(spoken_phrase, list_of_titles):
 ####################################################################################
 ####################################################################################
 
-def _search(all_symbols, word):
-    '''old search code from element'''
-    # get index
-    high_score = [0, 0]
-    for i in range(0, len(all_symbols)):
-        score = _word_similarity_score(all_symbols[i], word)
-        if score > high_score[1]:
-            high_score = [i, score]
-            if score == len(word):
-                break
-    return high_score
 
-def _word_similarity_score(w1, w2):
-    smaller_len = len(w1)
-    w2_len = len(w2)
-    if w2_len < smaller_len:
-        smaller_len = w2_len
-    score = 0
-    for i in range(0, smaller_len):
-        if w1[i] == w2[i]:
-            score += 1
-        else:
-            return score
-    return score

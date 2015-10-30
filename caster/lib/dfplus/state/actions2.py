@@ -9,7 +9,8 @@ from caster.lib import settings, utilities, navigation
 from caster.lib.dfplus.state.actions import AsynchronousAction, ContextSeeker, \
     RegisteredAction
 from caster.lib.dfplus.state.short import L, S
-from caster.lib.dfplus.state.stackitems import StackItemConfirm
+from caster.lib.dfplus.state.stackitems import StackItemConfirm, StackItemSeeker,\
+    StackItemAsynchronous
 
 
 #win32gui.SystemParametersInfo(win32con.SPI_SETFOREGROUNDLOCKTIMEOUT, 0, 1)
@@ -50,7 +51,7 @@ class BoxAction(AsynchronousAction):
         self._["tries"] = 0       # reset
         self._["dragonfly_data"] = data
         h_launch.launch(self.box_type, data = self.box_settings)
-        self.state.add(self.state.generate_continuer_stack_item(self, data))
+        self.state.add(StackItemAsynchronous(self, data))
     
 
 class ConfirmAction(AsynchronousAction):
@@ -146,7 +147,7 @@ class FuzzyMatchAction(ContextSeeker):
             if i+1<10: display_string += "\n"
         control.nexus().intermediary.hint(display_string)
         self.mutable_list["value"] = choices
-        self.state.add(self.state.generate_context_seeker_stack_item(self, data))
+        self.state.add(StackItemSeeker(self, data))
 
 class NullAction(RegisteredAction):
     def __init__(self, rspec="default", rdescript="unnamed command (RA)", show=False):
