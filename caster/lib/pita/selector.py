@@ -164,4 +164,104 @@ def get_similar_window_names(spoken_phrase, list_of_titles):
 ####################################################################################
 ####################################################################################
 
+class OffsetArrayItem(object):
+    def __init__(self, c1, c2, trans):
+        self.c1=c1
+        self.c2=c2
+        self.trans=trans
 
+def sift4(s1, s2, max_offset, max_distance):
+    '''credit Siderite, and thanks'''
+    if s1 is None or len(s1)==0:
+        if s2 is None:
+            return 0
+        return len(s2)
+    
+    if s2 is None or len(s2)==0:
+        return len(s1)
+    
+    l1=len(s1)
+    l2=len(s2)
+    
+    c1=0 #cursor for string 1
+    c2=0 #cursor for string 2
+    lcss=0 #largest common subsequence
+    local_cs=0 #local common substring
+    trans=0 #number of transpositions ('ab' vs 'ba')
+    offset_array=[] #offset pair array, for computing the transpositions
+    
+    while c1<l1 and c2<l2:
+        if s1[c1]==s2[c2]:
+            local_cs+=1
+            is_trans=False
+            #see if current match is a transposition
+            i=0
+            while i<len(offset_array):
+                ofs=offset_array[i]
+                if c1<=ofs.c1 or c2<=ofs.c2:
+                    #when two matches cross, the one considered a transposition is the one with the largest difference in offsets
+                    is_trans=abs(c2-c1)>=abs(ofs.c2-ofs.c1)
+                    if is_trans:
+                        trans+=1
+                    elif not ofs.trans:
+                        ofs.trans=True
+                        trans+=1
+                    break
+                elif c1>ofs.c2 and c2>ofs.c1:
+                    del offset_array[i]
+                else:
+                    i+=1
+            offset_array.append(OffsetArrayItem(c1, c2, is_trans))
+        else:
+            lcss+=local_cs
+            local_cs=0
+            if c1!=c2:
+                c1=c2=min(c1, c2)# using min allows the computation of transpositions
+            
+            #if matching characters are found, remove 1 from both cursors (they get incremented at the end of the loop)
+            #so that we can have only one code block handling matches 
+            i=0
+            while i<max_offset and (c1+i<l1 or c2+i<l2):
+                if c1+i<l1 and s1[c1+i]==s2[c2]:
+                    c1+=i-1
+                    c2-=1
+                    break
+                if c2+i<l2 and s1[c1]==s2[c2+i]:
+                    c1-=1
+                    c2+=i-1
+                    break
+                i+=1
+        c1+=1
+        c2+=1
+        if max_distance:
+            temporary_distance=max(c1, c2)-lcss+trans
+            if temporary_distance>=max_distance:
+                return round(temporary_distance)
+        #this covers the case where the last match is on the last token in list, so that it can compute transpositions correctly
+        if c1>=l1 or c2>=l2:
+            lcss+=local_cs
+            local_cs=0
+            c1=c2=min(c1, c2)        
+    lcss+=local_cs
+    return round(max(l1, l2)-lcss+trans)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

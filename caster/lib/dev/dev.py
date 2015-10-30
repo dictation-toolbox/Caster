@@ -23,15 +23,29 @@ from caster.lib.dfplus.state.actions import ContextSeeker, AsynchronousAction, \
     RegisteredAction
 from caster.lib.dfplus.state.actions2 import ConfirmAction, BoxAction
 from caster.lib.dfplus.state.short import L, S, R
+from caster.lib.pita.selector import sift4
 from caster.lib.tests.complexity import run_tests
 
 
 grammar = Grammar('development')
 
-def experiment(text):
+def experiment(text, text2):
     '''this function is for tests'''
-    comm = Communicator()
-    comm.get_com("status").error(0)
+    try:
+        for item in ["issue certificate shares", # actual answer, rated worst with sift4
+                     "is cat shit",
+                     "ctqxr1",
+                     "321rsa",
+                     "i",
+                     "sh"
+                      ]:
+            print(item, sift4(item, "isctsh", None, None))
+        print(str(text), str(text2), sift4(str(text), str(text2), None, None))
+    except Exception:
+        utilities.simple_log()
+    
+#     comm = Communicator()
+#     comm.get_com("status").error(0)
 
 LAST_TIME=0
 def print_time():
@@ -112,9 +126,10 @@ class StackTest(MappingRule):
     }
     extras = [
               Dictation("text"),
+              Dictation("text2"),
               IntegerRefST("n", 1, 5)
              ]
-    defaults = {"text": ""}
+    defaults = {"text": "", "text2": ""}
 
 class DevelopmentHelp(MappingRule):
     mapping = {
@@ -141,7 +156,7 @@ class Experimental(MappingRule):
     mapping = {
         # experimental/incomplete commands
         
-        "experiment <text>":            Function(experiment),
+        "experiment <text> and <text2>":Function(experiment),
         "short talk number <n2>":       Text("%(n2)d"), 
     #     "dredge [<id> <text>]":         Function(dredge),
         "test dragonfly paste":         Paste("some text"),
@@ -149,11 +164,11 @@ class Experimental(MappingRule):
     }
     extras = [
               Dictation("text"),
+              Dictation("text2"),
               IntegerRefST("n2", 1, 100)
              ]
-    defaults = {"text": ""}
+    defaults = {"text": "", "text2": ""}
 
-# .ending
 def load():
     global grammar
     grammar.add_rule(StackTest())

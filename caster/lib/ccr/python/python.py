@@ -84,6 +84,7 @@ class Python(MergeRule):
        
         "[dot] (pie | pi)":             R(Text(".py"), rdescript="Python: .py"),
         "jason":                        R(Text("json"), rdescript="Python: json"),
+        "identity is":                  R(Text(" is "), rdescript="Python: is"),
           
          
         }

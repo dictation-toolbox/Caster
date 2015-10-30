@@ -82,7 +82,7 @@ def word_number(wn):
 def strange_numbers_map():
     return {
                  "one":        1,
-                 "twain":      2,
+                 "torque":     2,
                  "traio":      3,
                  "fairn":      4,
                  "faif":       5,
@@ -93,7 +93,7 @@ def strange_numbers_map():
                    }
 def strange_numbers_list():
     return ["one",
-                 "twain",
+                 "torque",
                  "traio",
                  "fairn",
                  "faif",
