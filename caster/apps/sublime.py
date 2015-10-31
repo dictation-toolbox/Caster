@@ -36,7 +36,7 @@ class CommandRule(MappingRule):
 
 #---------------------------------------------------------------------------
 
-context = AppContext(executable="sublime_text", title="Sublime Text 2")
+context = AppContext(executable="sublime_text")
 grammar = Grammar("Sublime", context=context)
 grammar.add_rule(CommandRule(name="sublime"))
 if settings.SETTINGS["apps"]["sublime"]:
