@@ -79,19 +79,7 @@ def word_number(wn):
     }
     Text(numbers_to_words[int(wn)]).execute()
 
-def strange_numbers_map():
-    return {
-                 "one":        1,
-                 "torque":     2,
-                 "traio":      3,
-                 "fairn":      4,
-                 "faif":       5,
-                 "six":        6,
-                 "seven":      7,
-                 "eigen":      8,
-                 "nine":       9,
-                   }
-def strange_numbers_list():
+def numbers_list_1_to_9():
     result=["one",
                  "torque",
                  "traio",
@@ -108,6 +96,14 @@ def strange_numbers_list():
         result[4]="five"
         result[7]="eight"
     return result
+
+def numbers_map_1_to_9():
+    result = {}
+    l = numbers_list_1_to_9()
+    for i in range(0, 9):
+        result[l[i]] = i+1
+    return result
+
 
 def numbers2(wnKK):
     Text(str(wnKK)).execute()

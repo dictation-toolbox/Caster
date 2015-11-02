@@ -101,7 +101,7 @@ class FuzzyMatchAction(ContextSeeker):
     default_1: speaking a next command other than a number or cancel activates the first choice in the list
         ; 
     '''
-    TEN = ["numb "+x for x in navigation.strange_numbers_list()+["ten"]]
+    TEN = ["numb "+x for x in navigation.numbers_list_1_to_9()+["ten"]]
     def __init__(self, list_function, filter_function, selection_function, default_1=True, rspec="default", rdescript="unnamed command (FM)"):
         def get_choices(data):
             choices = list_function()

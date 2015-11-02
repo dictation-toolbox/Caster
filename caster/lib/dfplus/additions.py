@@ -33,7 +33,7 @@ class IntegerContentST(IntegerContentBase):
     builders = [int_0, int_1_9, int_10_19, int_20_99,
                 int_100s, int_100big, int_1000s, int_1000000s]
 if "en" in language.language_map and settings.SETTINGS["miscellaneous"]["integer_remap_opt_in"]:
-    mapping = navigation.strange_numbers_map()
+    mapping = navigation.numbers_map_1_to_9()
     IntegerContentST.builders[1] = MapIntBuilder(mapping)
     INTEGER_CONTENT = IntegerContentST
 
