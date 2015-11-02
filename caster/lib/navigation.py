@@ -92,7 +92,7 @@ def strange_numbers_map():
                  "nine":       9,
                    }
 def strange_numbers_list():
-    return ["one",
+    result=["one",
                  "torque",
                  "traio",
                  "fairn",
@@ -101,6 +101,13 @@ def strange_numbers_list():
                  "seven",
                  "eigen",
                  "nine"]
+    if not settings.SETTINGS["miscellaneous"]["integer_remap_opt_in"]:
+        result[1]="two"
+        result[2]="three"
+        result[3]="four"
+        result[4]="five"
+        result[7]="eight"
+    return result
 
 def numbers2(wnKK):
     Text(str(wnKK)).execute()
