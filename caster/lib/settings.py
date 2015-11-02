@@ -97,6 +97,7 @@ def init_default_values():
         ("SETTINGS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/settings.json"),
         ("CCR_CONFIG_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/ccr.json"),
         ("PITA_JSON_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/pita.json"),
+        ("PITA_LOG_FOLDER" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/"),
         ("S_LIST_JSON_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/s_list.json"),
         ("DISPEL_JSON_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/dispel.json"),
         ("SAVED_CLIPBOARD_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/clipboard.json"),
@@ -197,7 +198,8 @@ def init_default_values():
         ("filter_strict", False), 
         ("use_bonus", True), 
         ("use_penalty", True), 
-        ("automatic_lowercase", True)     ])
+        ("automatic_lowercase", True), 
+        ("enable_logging", False)     ])
         
     # auto_com section
     values_change_count += update_values(SETTINGS, [("auto_com", {})])
