@@ -10,10 +10,17 @@ from caster.lib.dfplus.state.short import R
 class CommandRule(MappingRule):
 
     mapping = {
-        "next tab [<n>]":               R(Key("ca-pgdown"), rdescript="Next Tab") * Repeat(extra="n"),
-        "prior tab [<n>]":              R(Key("ca-pgup"), rdescript="Previous Tab") * Repeat(extra="n"),
-        "close tab [<n>]":              R(Key("c-f4/20"), rdescript="Close Tab") * Repeat(extra="n"),
+        "next tab [<n>]":               R(Key("ca-pgdown"), rdescript="Visual Studio: Next Tab") * Repeat(extra="n"),
+        "prior tab [<n>]":              R(Key("ca-pgup"), rdescript="Visual Studio: Previous Tab") * Repeat(extra="n"),
+        "close tab [<n>]":              R(Key("c-f4/20"), rdescript="Visual Studio: Close Tab") * Repeat(extra="n"),
         
+        "(list | show) documents":      R(Key("a-w, w"), rdescript="Visual Studio: List Documents"),
+        "[focus] document (window | pane)": R(Key("a-w, w, enter"), rdescript="Visual Studio: Focus Document Pane"),
+        "solution explorer":            R(Key("ca-l"), rdescript="Visual Studio: Solution Explorer"),
+        "team explorer":                R(Key("c-backslash, c-m"), rdescript="Visual Studio: Team Explorer"),
+        "source control explorer":      R(Key("c-q") + Text("Source Control Explorer") + Key("enter"), rdescript="Visual Studio: Source Control Explorer"),
+        
+        "quick launch":                 R(Key("c-q"), rdescript="Visual Studio: Quick Launch"),
         "go to line":                   R(Key("c-g"), rdescript="Visual Studio: Go To Line"),
         
         "comment line":                 R(Key("c-k, c-c"), rdescript="Visual Studio: Comment Selection"),
@@ -22,14 +29,21 @@ class CommandRule(MappingRule):
         "(un | on) comment block":      R(Key("c-k/50, c-u"), rdescript="Visual Studio: Uncomment Block"),
         "[toggle] full screen":         R(Key("sa-enter"), rdescript="Visual Studio: Fullscreen"),
         "(set | toggle) bookmark":      R(Key("c-k, c-k"), rdescript="Visual Studio: Toggle Bookmark"),
-        "next bookmark":                R(Key("c-k, c-k"), rdescript="Visual Studio: Next Bookmark"),
-        "prior bookmark":               R(Key("c-k, c-k"), rdescript="Visual Studio: Previous Bookmark"),
-        "[toggle] breakpoint":          R(Key("f9"), rdescript="Visual Studio: Breakpoint"),
+        "next bookmark":                R(Key("c-k, c-n"), rdescript="Visual Studio: Next Bookmark"),
+        "prior bookmark":               R(Key("c-k, c-p"), rdescript="Visual Studio: Previous Bookmark"),
         
+        "[toggle] breakpoint":          R(Key("f9"), rdescript="Visual Studio: Breakpoint"),
         "step over [<n>]":              R(Key("f10/50") * Repeat(extra="n"), rdescript="Visual Studio: Step Over"),
         "step into":                    R(Key("f11"), rdescript="Visual Studio: Step Into"),
         "step out [of]":                R(Key("s-f11"), rdescript="Visual Studio: Step Out"),
         "resume":                       R(Key("f5"), rdescript="Visual Studio: Resume"),
+        
+        "get latest [version]":         R(Key("a-f, r, l"), rdescript="Visual Studio: Get Latest"),
+        "(show | view) history":        R(Key("a-f, r, h"), rdescript="Visual Studio: Show History"),
+        "compare (files | versions)":   R(Key("a-f, r, h"), rdescript="Visual Studio: Compare..."),
+        
+        "[open] [go to] work item":     R(Key("a-m, g"), rdescript="Visual Studio: Open Work Item"),
+        "[add] [new] linked work item": R(Key("sa-l"), rdescript="Visual Studio: New Linked Work Item"),
         }
     extras = [
               Dictation("text"),
