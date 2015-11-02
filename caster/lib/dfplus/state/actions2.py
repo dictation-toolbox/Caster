@@ -102,7 +102,7 @@ class FuzzyMatchAction(ContextSeeker):
         ; 
     '''
     TEN = ["numb "+x for x in navigation.numbers_list_1_to_9()+["ten"]]
-    def __init__(self, list_function, filter_function, selection_function, default_1=True, rspec="default", rdescript="unnamed command (FM)"):
+    def __init__(self, list_function, filter_function, selection_function, default_1=True, rspec="default", rdescript="unnamed command (FM)", log_file_name=None):
         def get_choices(data):
             choices = list_function()
             if filter_function:
@@ -113,6 +113,7 @@ class FuzzyMatchAction(ContextSeeker):
         self.choice_generator = get_choices
         mutable_list = {"value": None} # only generate the choices once, and show them between the action and the stack item
         self.mutable_list = mutable_list
+        self.filter_text = ""
         
         def execute_choice(spoken_words=[]):
             n = -1
@@ -124,7 +125,12 @@ class FuzzyMatchAction(ContextSeeker):
             if j in FuzzyMatchAction.TEN:
                 n = FuzzyMatchAction.TEN.index(j)
             if n == -1: n = 0
-            selection_function(mutable_list["value"][n])
+            choices = mutable_list["value"]
+            selection_function(choices[n])
+            if log_file_name and settings.SETTINGS["pita"]["enable_logging"]:
+                log_entry = [self.filter_text] + [choices[n]] + [s for s,i in zip(choices, range(len(choices))) if i != n]
+                with open(settings.SETTINGS["paths"]["PITA_LOG_FOLDER"] + "/" + log_file_name, "a") as log_file:
+                    log_file.write(str(log_entry) + "\n")
         def cancel_message():
             control.nexus().intermediary.text("Cancel ("+rdescript+")")
         forward = [L(S([""], execute_choice, consume=False),
@@ -146,6 +152,8 @@ class FuzzyMatchAction(ContextSeeker):
             display_string += str(i+1)+" - "+choices[i]
             if i+1<10: display_string += "\n"
         control.nexus().intermediary.hint(display_string)
+        if data != None and "text" in data:
+            self.filter_text = data["text"].format()
         self.mutable_list["value"] = choices
         self.state.add(StackItemSeeker(self, data))
 

@@ -56,11 +56,11 @@ class NavigationNon(MappingRule):
         "close tab [<n>]":                  R(Key("c-w/20"), rdescript="Close Tab") * Repeat(extra="n"),
         
         "symbol match <text>":              FuzzyMatchAction(fnfz.pita_list_provider, fnfz.pita_filter, 
-                                                         fnfz.pita_selection, rdescript="Fuzzy Symbol Matcher"),
+                                                         fnfz.pita_selection, rdescript="Fuzzy Symbol Matcher", log_file_name="pita_matches.log"),
         "ex match <text>":                  FuzzyMatchAction(fnfz.dredge_ex_list_provider, fnfz.dredge_ex_filter, 
-                                                         fnfz.dredge_ex_selection, rdescript="Fuzzy Executable Matcher"),
+                                                         fnfz.dredge_ex_selection, rdescript="Fuzzy Executable Matcher", log_file_name="exe_matches.log"),
         "tie match <text>":                 FuzzyMatchAction(fnfz.dredge_tie_list_provider, fnfz.dredge_tie_filter, 
-                                                         fnfz.dredge_tie_selection, rdescript="Fuzzy Window Matcher"),
+                                                         fnfz.dredge_tie_selection, rdescript="Fuzzy Window Matcher", log_file_name="tie_matches.log"),
         
         "elite translation <text>":         R(Function(navigation.elite_text), rdescript="1337 Text"),
         
