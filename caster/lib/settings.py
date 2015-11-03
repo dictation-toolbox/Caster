@@ -221,7 +221,7 @@ def init_default_values():
     
     global BAD_LOAD
     if values_change_count > 0 and not BAD_LOAD:
-        print("settings values changed: "+ values_change_count)
+        print("settings values changed: "+ str(values_change_count))
         save_config()
 
 def get_settings():
