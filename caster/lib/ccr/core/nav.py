@@ -31,6 +31,8 @@ class NavigationNon(MappingRule):
         "(F six | F6)":                     R(Key("f6"), rdescript="Key: F6"),
         "(F nine | F9)":                    R(Key("f9"), rdescript="Key: F9"),
         
+        "[show] context menu":              R(Key("s-f10"), rdescript="Context Menu"),
+        
         'kick':                             R(Function(navigation.kick), rdescript="Mouse: Left Click"),
         'kick mid':                         R(Function(navigation.kick_middle), rdescript="Mouse: Middle Click"),
         'psychic':                          R(Function(navigation.kick_right), rdescript="Mouse: Right Click"),
@@ -50,6 +52,14 @@ class NavigationNon(MappingRule):
         "redo [<n>]":                       R(Key("c-y"), rdescript="Redo") * Repeat(extra="n"),
 
         "refresh":                          R(Key("c-r"), rdescript="Refresh"),
+        
+        "maxiwin":                          R(Key("w-up"), rdescript="Maximize Window"),
+        "move window":                      R(Key("a-space, r, a-space, m"), rdescript="Move Window"),
+        "window (left | lease) [<n>]":      R(Key("w-left"), rdescript="Window Left") * Repeat(extra="n"),
+        "window (right | ross) [<n>]":      R(Key("w-right"), rdescript="Window Right") * Repeat(extra="n"),
+        "monitor (left | lease) [<n>]":     R(Key("sw-left"), rdescript="Monitor Left") * Repeat(extra="n"),
+        "monitor (right | ross) [<n>]":     R(Key("sw-right"), rdescript="Monitor Right") * Repeat(extra="n"),
+        "switch (window | windows)":        R(Key("ca-tab"), rdescript="Switch Window") * Repeat(extra="n"),
         
         "next tab [<n>]":                   R(Key("c-pgdown"), rdescript="Next Tab") * Repeat(extra="n"),
         "prior tab [<n>]":                  R(Key("c-pgup"), rdescript="Previous Tab") * Repeat(extra="n"),

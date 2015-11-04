@@ -24,6 +24,7 @@ class CommandRule(MappingRule):
         "new tab [<n>]":                R(Key("c-t"), rdescript="Browser: New Tab") * Repeat(extra="n"),
         "reopen tab [<n>]":             R(Key("cs-t"), rdescript="Browser: Reopen Tab") * Repeat(extra="n"),
         "show history":                 R(Key("c-h"), rdescript="Browser: Show History"),
+        "address bar":                  R(Key("c-l"), rdescript="Browser: Address Bar"),
         "show downloads":               R(Key("c-j"), rdescript="Browser: Show Downloads"),
         "zoom in <n>":                  R(Key("c-plus/20"), rdescript="Browser: Zoom In") * Repeat(extra="n"),
         "zoom out <n>":                 R(Key("c-minus/20"), rdescript="Browser: Zoom") * Repeat(extra="n"),
