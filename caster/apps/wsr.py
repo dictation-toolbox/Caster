@@ -8,7 +8,7 @@ from caster.lib.dfplus.state.short import R
 class CommandRule(MappingRule):
 
     mapping = {
-        "reboot windows speech recognition":                R(Function(utilities.reboot), rdescript="Reboot Windows Speech Recognition"),
+        "reboot windows speech recognition":                R(Function(utilities.reboot, wsr=True), rdescript="Reboot Windows Speech Recognition"),
         }
     extras = [              
              ]

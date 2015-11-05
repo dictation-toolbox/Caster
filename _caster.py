@@ -5,7 +5,6 @@ Created on Jun 29, 2014
 '''
 
 import time
-
 from dragonfly import (Key, Function, Grammar, Playback, Dictation, Choice, Pause, MappingRule)
 
 try:
@@ -13,11 +12,15 @@ try:
     settings.WSR = __name__ == "__main__"
     from caster.lib import utilities# requires settings
     if settings.WSR:
+        count = 1
         while True:
             try: 
-                from dragonfly import *
+                from caster.apps import *
                 break
-            except: print(1)
+            except: 
+                print("(%d) Attempting to load Caster -- WSR not loaded and listening yet..." % count)
+                count += 1
+                time.sleep(1)
     
     from caster.lib import control
     from caster.lib.dfplus.state.stack import CasterState# requires control

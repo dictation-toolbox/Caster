@@ -134,7 +134,7 @@ def reboot(wsr=False):
     if wsr:
         popen_parameters.append(settings.SETTINGS["paths"]["REBOOT_PATH_WSR"])
         popen_parameters.append(settings.SETTINGS["paths"]["WSR_PATH"])
-        #castor path
+        #caster path inserted too if there's a way to wake up WSR
     else:
         popen_parameters.append(settings.SETTINGS["paths"]["REBOOT_PATH"])
         popen_parameters.append(settings.SETTINGS["paths"]["ENGINE_PATH"])
