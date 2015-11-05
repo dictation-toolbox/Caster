@@ -124,6 +124,7 @@ def init_default_values():
         ("SIKULI_COMPATIBLE_JAVA_EXE_PATH", ""),
         ("ENGINE_PATH", "C:/Program Files (x86)/Nuance/NaturallySpeaking12/Program/natspeak.exe"),
         ("REBOOT_PATH", SETTINGS["paths"]["BASE_PATH"] + "/bin/reboot.bat"),
+        ("REBOOT_PATH_WSR", SETTINGS["paths"]["BASE_PATH"] + "/bin/reboot_wsr.bat"),
         ("SETTINGS_WINDOW_PATH", SETTINGS["paths"]["BASE_PATH"] + "/asynch/settingswindow.py"), 
         
         # CCR
@@ -166,6 +167,7 @@ def init_default_values():
                        ("sublime", True),
                        ("visualstudio", True),
                        ("winword", True),
+                       ("wsr", True),
                        ])
     
     # node rules

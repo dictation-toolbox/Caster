@@ -129,8 +129,17 @@ def launch_status():
     if not window_exists(None, settings.STATUS_WINDOW_TITLE):
         Popen(["pythonw", settings.SETTINGS["paths"]["STATUS_WINDOW_PATH"]])
 
-def reboot():
-    print([settings.SETTINGS["paths"]["REBOOT_PATH"], "\""+settings.SETTINGS["paths"]["ENGINE_PATH"]+"\""])
-    Popen([settings.SETTINGS["paths"]["REBOOT_PATH"], settings.SETTINGS["paths"]["ENGINE_PATH"]])
+def reboot(wsr=False):
+    popen_parameters = []
+    if wsr:
+        popen_parameters.append(settings.SETTINGS["paths"]["REBOOT_PATH_WSR"])
+        popen_parameters.append(settings.SETTINGS["paths"]["WSR_PATH"])
+        #castor path
+    else:
+        popen_parameters.append(settings.SETTINGS["paths"]["REBOOT_PATH"])
+        popen_parameters.append(settings.SETTINGS["paths"]["ENGINE_PATH"])
+        
+    print(popen_parameters)
+    Popen(popen_parameters)
 
 

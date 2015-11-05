@@ -8,11 +8,17 @@ import time
 
 from dragonfly import (Key, Function, Grammar, Playback, Dictation, Choice, Pause, MappingRule)
 
-
 try:
     from caster.lib import settings# requires nothing
     settings.WSR = __name__ == "__main__"
     from caster.lib import utilities# requires settings
+    if settings.WSR:
+        while True:
+            try: 
+                from dragonfly import *
+                break
+            except: print(1)
+    
     from caster.lib import control
     from caster.lib.dfplus.state.stack import CasterState# requires control
     control.nexus().inform_state(CasterState(control.nexus()))
