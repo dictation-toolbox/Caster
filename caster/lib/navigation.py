@@ -100,7 +100,7 @@ def numbers_list_1_to_9():
 def numbers_map_1_to_9():
     result = {}
     l = numbers_list_1_to_9()
-    for i in range(0, 9):
+    for i in range(0, len(l)):
         result[l[i]] = i+1
     return result
 

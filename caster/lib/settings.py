@@ -123,6 +123,7 @@ def init_default_values():
         ("SIKULI_COMPATIBLE_JAVA_EXE_PATH", ""),
         ("ENGINE_PATH", "C:/Program Files (x86)/Nuance/NaturallySpeaking12/Program/natspeak.exe"),
         ("REBOOT_PATH", SETTINGS["paths"]["BASE_PATH"] + "/bin/reboot.bat"),
+        ("REBOOT_PATH_WSR", SETTINGS["paths"]["BASE_PATH"] + "/bin/reboot_wsr.bat"),
         ("SETTINGS_WINDOW_PATH", SETTINGS["paths"]["BASE_PATH"] + "/asynch/settingswindow.py"), 
         
         # CCR
@@ -163,6 +164,7 @@ def init_default_values():
                        ("sublime", True),
                        ("visualstudio", True),
                        ("winword", True),
+                       ("wsr", True),
                        ])
     
     # node rules
@@ -219,7 +221,7 @@ def init_default_values():
     
     global BAD_LOAD
     if values_change_count > 0 and not BAD_LOAD:
-        print("settings values changed: "+ values_change_count)
+        print("settings values changed: "+ str(values_change_count))
         save_config()
 
 def get_settings():
