@@ -72,7 +72,7 @@ class StackItemSeeker(StackItemRegisteredAction):
         return result
     def executeCL(self, cl):# the return value is whether to terminate an AsynchronousAction
         action = cl.result.f
-        if action==None:
+        if action is None:
             return False
         elif isinstance(action, ActionBase):
             action.execute(cl.dragonfly_data)
@@ -85,7 +85,7 @@ class StackItemSeeker(StackItemRegisteredAction):
                 fnparams = self.spoken[level]
             if cl.result.use_rspec:
                 fnparams = self.eaten_rspec[level]
-            if fnparams == None:
+            if fnparams is None:
                 return action()
             else:
                 return action(fnparams)
@@ -97,24 +97,20 @@ class StackItemSeeker(StackItemRegisteredAction):
     def clean(self):
         # save whatever data you need here
         StackItemRegisteredAction.clean(self)
-        if self.back != None: 
+        if self.back is not None: 
             for cl in self.back:
                 cl.dragonfly_data = None
-        if self.forward != None: 
+        if self.forward is not None: 
             for cl in self.forward:
                 cl.dragonfly_data = None
     def fillCL(self, cl, cs):
         cl.result = cs
-#         cl.result = cs.f
-#         cl.parameters = cs.parameters
         cl.dragonfly_data = self.dragonfly_data
-#         cl.consume = cs.consume
-#         self.dragonfly_data = None # no need to be hanging onto this in more places than one
     def execute(self, unused=None):
         self.complete = True
         c = []
-        if self.back != None:c += self.back
-        if self.forward != None:c += self.forward
+        if self.back is not None: c += self.back
+        if self.forward is not None: c += self.forward
         for cl in c:
             self.executeCL(cl)
         self.clean()
@@ -143,15 +139,15 @@ class StackItemAsynchronous(StackItemSeeker):
     def __init__(self, continuer, data, type=TYPE):
         StackItemSeeker.__init__(self, continuer, data, type)
         self.back = None
-        self.repetitions = continuer.repetitions
-        self.fillCL(self.forward[0], self.forward[0].sets[0])
         self.closure = None
+        self.fillCL(self.forward[0], self.forward[0].sets[0]) # set context set and dragonfly data
+        self.repetitions = continuer.repetitions
         self.time_in_seconds = continuer.time_in_seconds
         self.blocking = continuer.blocking
     def satisfy_level(self, level_index, is_back, stack_item):  # level_index and is_back are unused here, but left in for compatibility
         cl = self.forward[0]
         if not cl.satisfied:
-            if stack_item != None:
+            if stack_item is not None:
                 cs = cl.sets[0]
                 if stack_item.rspec in cs.specTriggers:  # stack_item must have a spec
                     cl.satisfied = True
@@ -165,7 +161,7 @@ class StackItemAsynchronous(StackItemSeeker):
         '''
         self.complete = True
         control.nexus().timer.remove_callback(self.closure)
-        if self.base!=None:# finisher
+        if self.base is not None:# finisher
             self.base.execute()
         StackItemSeeker.clean(self)
         self.closure = None
@@ -202,13 +198,16 @@ class StackItemConfirm(StackItemAsynchronous):
         self.hmc_response = 0
         
     def execute(self, success):
-        if self.hmc_response==1:
+        if self.mutable_integer["value"]==1:
             self.base.execute(self.dragonfly_data)
         self.base = None
         StackItemAsynchronous.execute(self, success)
         
-    def receive_hmc_response(self, data):
-        self.hmc_response = data
+#     def receive_hmc_response(self, data):
+#         self.hmc_response = data
+    
+    def shared_state(self, mutable_integer):
+        self.mutable_integer = mutable_integer
         
         
         

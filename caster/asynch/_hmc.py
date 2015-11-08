@@ -3,10 +3,12 @@ from subprocess import Popen
 from dragonfly import (Function, Grammar, IntegerRef, MappingRule, AppContext, Choice)
 
 from caster.asynch.hmc import h_launch
-from caster.lib import settings, utilities
 from caster.lib import control
-from caster.lib.dfplus.state.short import R
+from caster.lib import settings, utilities
 from caster.lib.dfplus.additions import IntegerRefST
+from caster.lib.dfplus.state.actions import AsynchronousAction
+from caster.lib.dfplus.state.short import R, L, S
+
 
 def kill():
     control.nexus().comm.get_com("hmc").kill()
@@ -104,11 +106,10 @@ def toggle_status():
     settings.save_config()
 
 def settings_window():
-#     if control.nexus().dep.WX:
     if not utilities.window_exists(None, settings.STATUS_WINDOW_TITLE + settings.SOFTWARE_VERSION_NUMBER):
-        h_launch.launch(settings.WXTYPE_SETTINGS, receive_settings)
-#     else:
-#         utilities.availability_message("Settings Window", "wxPython")
+        h_launch.launch(settings.WXTYPE_SETTINGS)
+        on_complete = AsynchronousAction.hmc_complete(lambda data: receive_settings(data))
+        AsynchronousAction([L(S(["cancel"], on_complete, None))], time_in_seconds=1, repetitions=300, blocking=False).execute()
 
 class LaunchRule(MappingRule):
 

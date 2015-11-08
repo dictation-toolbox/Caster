@@ -10,8 +10,10 @@ unstable and not ready for production.
 
 '''
 
+from difflib import SequenceMatcher
 from subprocess import Popen
 import time
+
 
 from dragonfly import (Function, Key, BringApp, Text, WaitWindow, Dictation, Choice, Grammar, MappingRule, Paste)
 
@@ -23,6 +25,7 @@ from caster.lib.dfplus.state.actions import ContextSeeker, AsynchronousAction, \
     RegisteredAction
 from caster.lib.dfplus.state.actions2 import ConfirmAction, BoxAction
 from caster.lib.dfplus.state.short import L, S, R
+from caster.lib.pita import selector
 from caster.lib.pita.selector import sift4
 from caster.lib.tests.complexity import run_tests
 
@@ -31,15 +34,34 @@ grammar = Grammar('development')
 
 def experiment(text, text2):
     '''this function is for tests'''
+    from Levenshtein.StringMatcher import StringMatcher
     try:
-        for item in ["issue certificate shares", # actual answer, rated worst with sift4
-                     "is cat shit",
-                     "ctqxr1",
-                     "321rsa",
-                     "i",
-                     "sh"
+        spoken = "issue certificate shares"
+        for item in ["isctsh", # actual answer, rated worst with sift4
+                     "Issue",
+                     "issue_list",
+                     "issues",
+                     "isbksh",
+                     "cert",
+                     "ctshrs",
+                     "certificate",
+                     "Certificate",
+                     spoken #for reference
                       ]:
-            print(item, sift4(item, "isctsh", None, None))
+            s = SequenceMatcher(None, item, spoken) # difflib
+            caster_abbrev = selector._abbreviated_string(spoken).lower() # caster
+            
+            l = StringMatcher()
+            l.set_seqs(spoken, item)
+            
+            
+            print("caster", item, selector._phrase_to_symbol_similarity_score(caster_abbrev, item))
+            print("difflib: ", item, s.ratio())
+            print("levenshtein: ", item, l.ratio())
+            print("sift4: ", item, sift4(item, spoken, None, None))
+            print("\n")
+            
+            
         print(str(text), str(text2), sift4(str(text), str(text2), None, None))
     except Exception:
         utilities.simple_log()
@@ -119,7 +141,7 @@ class StackTest(MappingRule):
         "bravery":                      RegisteredAction(Text("bravery is weak "), rspec="bravery"),
         "charcoal boy <text> [<n>]":    R(Text("charcoal is dirty %(text)s"), rspec="charcoal"),
                                 
-        "test confirm action":          ConfirmAction(Key("a"), rdescript="Confirm Action Test"),
+        "test confirm action":          ConfirmAction(Key("a"), rdescript="Confirm Action Test", instructions="some words here"),
         
         "test box action":              BoxAction(lambda data: None, rdescript="Test Box Action", box_type=settings.QTYPE_DEFAULT, 
                                                   log_failure=True),

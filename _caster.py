@@ -30,7 +30,6 @@ try:
     from caster.asynch import *
     from caster.lib import context
     import caster.lib.dev.dev
-    from caster.asynch.hmc import h_launch
     from caster.asynch.sikuli import sikuli
     from caster.lib import navigation, password
     from caster.lib.pita import scanner

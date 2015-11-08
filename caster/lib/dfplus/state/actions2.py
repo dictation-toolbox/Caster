@@ -31,7 +31,7 @@ class BoxAction(AsynchronousAction):
                 _["tries"]+=1
                 if _["tries"]>9: return True # try 10 times max if there's no Homonculus response
                 else: return False
-            if _data == None: return False
+            if _data is None: return False
             try:
                 _data.append(_["dragonfly_data"]) # pass dragonfly data into receiver function
                 _["dragonfly_data"] = None
@@ -64,30 +64,39 @@ class ConfirmAction(AsynchronousAction):
     1: True
     2: False
     '''
-    def __init__(self, base, rspec="default", rdescript="unnamed command (CA)"):
-        mutable_integer = {"value": 0}
-        def check_response(): # signals to the stack to cease waiting, return True terminates
-            return mutable_integer["value"]!=0
-        self.mutable_integer = mutable_integer
+    def __init__(self, base, rspec="default", rdescript="unnamed command (CA)", instructions="instructions missing"):
+        on_complete = AsynchronousAction.hmc_complete(lambda data: receive_response(data))
         AsynchronousAction.__init__(self, 
-                                    [L(S(["cancel"], check_response, None))], 
+                                    [L(S(["cancel"], on_complete, None))], 
                                     1, 60, rdescript, False)# cannot block, if it does, it'll block its own confirm command
+        
         self.base = base
         self.rspec = rspec
-    def _execute(self, data=None):
-        confirm_stack_item = StackItemConfirm(self, data)
-        self.mutable_integer["value"] = 0
-        mutable_integer = self.mutable_integer
-        def hmc_closure(data):
+        self.instructions = instructions
+        
+        
+        mutable_integer = {"value": 0}
+        def receive_response(data): # signals to the stack to cease waiting, return True terminates
             '''
             receives response from homunculus, uses it to
             stop the stack and tell the ConfirmAction how
             to execute
             '''
             mutable_integer["value"] = data["confirm"]
-            confirm_stack_item.receive_hmc_response(data["confirm"])
-                    
-        h_launch.launch(settings.QTYPE_CONFIRM, hmc_closure, "_".join(self.rdescript.split(" ")))
+        self.mutable_integer = mutable_integer
+        
+        
+        
+    def _execute(self, data=None):
+        '''the factory (ConfirmAction) sharing data with the objects 
+        it generates (StackItemConfirm) would be a problem if there 
+        could ever be more than one of these at a time, but there can't'''
+        self.mutable_integer["value"] = 0
+        
+        confirm_stack_item = StackItemConfirm(self, data)
+        confirm_stack_item.shared_state(self.mutable_integer)
+                            
+        h_launch.launch(settings.QTYPE_CONFIRM, data="_".join(self.instructions.split(" ")))
         self.state.add(confirm_stack_item)
 
 class FuzzyMatchAction(ContextSeeker):

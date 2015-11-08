@@ -8,8 +8,10 @@ import os
 import re
 
 from caster.asynch.hmc import h_launch
-from caster.lib import utilities, settings
 from caster.lib import control
+from caster.lib import utilities, settings
+from caster.lib.dfplus.state.actions import AsynchronousAction
+from caster.lib.dfplus.state.short import L, S
 from caster.lib.pita import filters
 from caster.lib.pita.filters import LanguageFilter
 
@@ -21,7 +23,12 @@ _d = utilities.load_json_file(settings.SETTINGS["paths"]["PITA_JSON_PATH"])
 DATA = _d if _d != {} else {"directories":{}}
 
 def scan_directory():
-    h_launch.launch(settings.QTYPE_DIRECTORY, _scan_directory, None)
+    on_complete = AsynchronousAction.hmc_complete(lambda data: _scan_directory(data))
+    h_launch.launch(settings.QTYPE_DIRECTORY)
+    AsynchronousAction([L(S(["cancel"], on_complete, None))], 
+                           time_in_seconds=0.5, 
+                           repetitions=300, 
+                           blocking=False).execute()
 
 def rescan_current_file():
     global DATA

@@ -64,8 +64,25 @@ class AsynchronousAction(ContextSeeker):
         assert self.forward != None, "Cannot create AsynchronousAction with no termination commands"
         assert len(self.forward) == 1, "Cannot create AsynchronousAction with > or < one purpose"
     def _execute(self, data=None):
-        if data!=None:
+        if data is not None:
             if "time_in_seconds" in data: self.time_in_seconds=float(data["time_in_seconds"])
             if "repetitions" in data: self.time_in_seconds=int(data["repetitions"])
         
         self.state.add(StackItemAsynchronous(self, data))
+    @staticmethod
+    def hmc_complete(data_function):
+        ''' returns a function which applies the passed in function to 
+        the data returned by the pop-up window - the returned function
+        will be called by AsynchronousAction's timer repeatedly, 
+        to see if the data is available yet'''
+        def check_complete():
+            data = None
+            try:
+                data = control.nexus().comm.get_com("hmc").get_message()
+                if data is None:
+                    return False
+            except Exception:
+                return False
+            data_function(data)
+            return True
+        return check_complete

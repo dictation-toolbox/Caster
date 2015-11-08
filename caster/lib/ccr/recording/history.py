@@ -8,12 +8,13 @@ from dragonfly.actions.action_function import Function
 from dragonfly.actions.action_playback import Playback
 
 from caster.asynch.hmc import h_launch
-from caster.lib import settings, utilities
 from caster.lib import control
+from caster.lib import settings, utilities
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge.selfmodrule import SelfModifyingRule
+from caster.lib.dfplus.state.actions import AsynchronousAction
 from caster.lib.dfplus.state.actions2 import NullAction
-from caster.lib.dfplus.state.short import R
+from caster.lib.dfplus.state.short import R, L, S
 
 
 class HistoryRule(SelfModifyingRule):
@@ -32,7 +33,13 @@ class HistoryRule(SelfModifyingRule):
             formatted += "[s]"
         
         # use a response window to get a spec and word sequences for the new macro
-        h_launch.launch(settings.QTYPE_RECORDING, lambda data: self.add_recorded_macro(data), formatted)
+        h_launch.launch(settings.QTYPE_RECORDING, data=formatted)
+        on_complete = AsynchronousAction.hmc_complete(lambda data: self.add_recorded_macro(data))
+        AsynchronousAction([L(S(["cancel"], on_complete, None))], 
+                           time_in_seconds=0.5, 
+                           repetitions=300, 
+                           blocking=False).execute()
+        
         
     def add_recorded_macro(self, data):
         spec = data["word"]

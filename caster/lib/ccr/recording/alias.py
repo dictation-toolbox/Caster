@@ -11,8 +11,9 @@ from caster.asynch.hmc import h_launch
 from caster.lib import context, utilities, settings
 from caster.lib import control
 from caster.lib.dfplus.merge.selfmodrule import SelfModifyingRule
+from caster.lib.dfplus.state.actions import AsynchronousAction
 from caster.lib.dfplus.state.actions2 import NullAction
-from caster.lib.dfplus.state.short import R
+from caster.lib.dfplus.state.short import R, L, S
 
 
 def read_highlighted(max_tries):
@@ -61,10 +62,14 @@ class ChainAlias(SelfModifyingRule):
     
     def chain_alias(self):
         text = read_highlighted(10)
-        if text!=None:
-            h_launch.launch(settings.QTYPE_INSTRUCTIONS, 
-                            lambda data: self.refresh(data[0].replace("\n", ""), text), 
-                            "Enter_spec_for_command|")
+        if text is not None:
+            h_launch.launch(settings.QTYPE_INSTRUCTIONS, data="Enter_spec_for_command|")
+            on_complete = AsynchronousAction.hmc_complete(lambda data: self.refresh(data[0].replace("\n", ""), text))
+            AsynchronousAction([L(S(["cancel"], on_complete, None))], 
+                               time_in_seconds=0.5, 
+                               repetitions=300, 
+                               blocking=False).execute()
+    
     
 
     def refresh(self, *args):
