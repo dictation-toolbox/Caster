@@ -31,6 +31,8 @@ QTYPE_DIRECTORY = "5"
 QTYPE_CONFIRM = "6"
 WXTYPE_SETTINGS = "7"
 
+HMC_SEPARATOR = "[hmc]"
+
 WSR = False
 
 def _save(data, path):
@@ -191,7 +193,8 @@ def init_default_values():
                        ("status_window_enabled", False), 
                        ("integer_remap_opt_in", False), 
                        ("keypress_wait", 50), # milliseconds
-                       ("max_ccr_repetitions", 16)
+                       ("max_ccr_repetitions", 16), 
+                       ("enable_match_logging", False)
                        ])
     
     # fuzzy string matching section
@@ -202,8 +205,7 @@ def init_default_values():
         ("filter_strict", False), 
         ("use_bonus", True), 
         ("use_penalty", True), 
-        ("automatic_lowercase", True), 
-        ("enable_logging", False)     ])
+        ("automatic_lowercase", True)  ])
         
     # auto_com section
     values_change_count += update_values(SETTINGS, [("auto_com", {})])

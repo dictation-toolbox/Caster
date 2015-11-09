@@ -50,9 +50,22 @@ class BoxAction(AsynchronousAction):
     def _execute(self, data=None):
         self._["tries"] = 0       # reset
         self._["dragonfly_data"] = data
-        h_launch.launch(self.box_type, data = self.box_settings)
+        h_launch.launch(self.box_type, data = self.encode_box_settings())
         self.state.add(StackItemAsynchronous(self, data))
     
+    def encode_box_settings(self):
+        result=""
+        instructions_first = False
+        if self.box_type==settings.QTYPE_INSTRUCTIONS and "instructions" in self.box_settings:
+            result+=settings.HMC_SEPARATOR.join(self.box_settings["instructions"].split(" "))+"|"
+            instructions_first = True
+        for key in self.box_settings.keys():
+            if instructions_first and key=="instructions":
+                continue
+            result += settings.HMC_SEPARATOR.join(self.box_settings[key].split(" ")) + "|"
+        return result
+            
+        
 
 class ConfirmAction(AsynchronousAction):
     '''
@@ -96,7 +109,7 @@ class ConfirmAction(AsynchronousAction):
         confirm_stack_item = StackItemConfirm(self, data)
         confirm_stack_item.shared_state(self.mutable_integer)
                             
-        h_launch.launch(settings.QTYPE_CONFIRM, data="_".join(self.instructions.split(" ")))
+        h_launch.launch(settings.QTYPE_CONFIRM, data=settings.HMC_SEPARATOR.join(self.instructions.split(" ")))
         self.state.add(confirm_stack_item)
 
 class FuzzyMatchAction(ContextSeeker):
@@ -111,7 +124,8 @@ class FuzzyMatchAction(ContextSeeker):
         ; 
     '''
     TEN = ["numb "+x for x in navigation.numbers_list_1_to_9()+["ten"]]
-    def __init__(self, list_function, filter_function, selection_function, default_1=True, rspec="default", rdescript="unnamed command (FM)", log_file_name=None):
+    def __init__(self, list_function, filter_function, selection_function, default_1=True, rspec="default", 
+                 rdescript="unnamed command (FM)", log_file_path=None):
         def get_choices(data):
             choices = list_function()
             if filter_function:
@@ -136,9 +150,9 @@ class FuzzyMatchAction(ContextSeeker):
             if n == -1: n = 0
             choices = mutable_list["value"]
             selection_function(choices[n])
-            if log_file_name and settings.SETTINGS["pita"]["enable_logging"]:
+            if log_file_path and settings.SETTINGS["miscellaneous"]["enable_match_logging"]:
                 log_entry = [self.filter_text] + [choices[n]] + [s for s,i in zip(choices, range(len(choices))) if i != n]
-                with open(settings.SETTINGS["paths"]["PITA_LOG_FOLDER"] + "/" + log_file_name, "a") as log_file:
+                with open(log_file_path, "a") as log_file:
                     log_file.write(str(log_entry) + "\n")
         def cancel_message():
             control.nexus().intermediary.text("Cancel ("+rdescript+")")
@@ -161,7 +175,7 @@ class FuzzyMatchAction(ContextSeeker):
             display_string += str(i+1)+" - "+choices[i]
             if i+1<10: display_string += "\n"
         control.nexus().intermediary.hint(display_string)
-        if data != None and "text" in data:
+        if data is not None and "text" in data:
             self.filter_text = data["text"].format()
         self.mutable_list["value"] = choices
         self.state.add(StackItemSeeker(self, data))

@@ -110,7 +110,9 @@ def bring_test():
         BringApp("explorer", settings.SETTINGS["paths"]["BASE_PATH"]).execute()
     except Exception:
         utilities.simple_log()
-        
+
+def _abc(data):
+    print(data)
 
 class StackTest(MappingRule):
     '''test battery for the ContextStack'''
@@ -143,7 +145,7 @@ class StackTest(MappingRule):
                                 
         "test confirm action":          ConfirmAction(Key("a"), rdescript="Confirm Action Test", instructions="some words here"),
         
-        "test box action":              BoxAction(lambda data: None, rdescript="Test Box Action", box_type=settings.QTYPE_DEFAULT, 
+        "test box action":              BoxAction(lambda data: _abc(data), rdescript="Test Box Action", box_type=settings.QTYPE_DEFAULT, 
                                                   log_failure=True),
     }
     extras = [

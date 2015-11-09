@@ -5,7 +5,7 @@ Created on Sep 1, 2015
 '''
 from dragonfly import Repeat, Function, Key, Dictation, Choice, Mouse, MappingRule
 
-from caster.lib import context, navigation
+from caster.lib import context, navigation, settings
 from caster.lib import control
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge.ccrmerger import CCRMerger
@@ -66,11 +66,14 @@ class NavigationNon(MappingRule):
         "close tab [<n>]":                  R(Key("c-w/20"), rdescript="Close Tab") * Repeat(extra="n"),
         
         "symbol match <text>":              FuzzyMatchAction(fnfz.pita_list_provider, fnfz.pita_filter, 
-                                                         fnfz.pita_selection, rdescript="Fuzzy Symbol Matcher", log_file_name="pita_matches.log"),
+                                                         fnfz.pita_selection, rdescript="Fuzzy Symbol Matcher", 
+                                                         log_file_path=settings.SETTINGS["paths"]["PITA_LOG_FOLDER"] + "/pita_matches.log"),
         "ex match <text>":                  FuzzyMatchAction(fnfz.dredge_ex_list_provider, fnfz.dredge_ex_filter, 
-                                                         fnfz.dredge_ex_selection, rdescript="Fuzzy Executable Matcher", log_file_name="exe_matches.log"),
+                                                         fnfz.dredge_ex_selection, rdescript="Fuzzy Executable Matcher", 
+                                                         log_file_path=settings.SETTINGS["paths"]["PITA_LOG_FOLDER"] + "/exe_matches.log"),
         "tie match <text>":                 FuzzyMatchAction(fnfz.dredge_tie_list_provider, fnfz.dredge_tie_filter, 
-                                                         fnfz.dredge_tie_selection, rdescript="Fuzzy Window Matcher", log_file_name="tie_matches.log"),
+                                                         fnfz.dredge_tie_selection, rdescript="Fuzzy Window Matcher", 
+                                                         log_file_path=settings.SETTINGS["paths"]["PITA_LOG_FOLDER"] + "/tie_matches.log"),
         
         "elite translation <text>":         R(Function(navigation.elite_text), rdescript="1337 Text"),
         

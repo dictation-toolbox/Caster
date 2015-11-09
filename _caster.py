@@ -7,6 +7,7 @@ Created on Jun 29, 2014
 import time
 from dragonfly import (Key, Function, Grammar, Playback, Dictation, Choice, Pause, MappingRule)
 
+
 try:
     from caster.lib import settings# requires nothing
     settings.WSR = __name__ == "__main__"
@@ -32,7 +33,7 @@ try:
     import caster.lib.dev.dev
     from caster.asynch.sikuli import sikuli
     from caster.lib import navigation, password
-    from caster.lib.pita import scanner
+    from caster.lib.pita import scanner, trainer
     from caster.lib.dfplus.state.short import R
     from caster.lib.dfplus.additions import IntegerRefST
     
@@ -105,11 +106,11 @@ class MainRule(MappingRule):
     # symbol match
     "scan directory":               R(Function(scanner.scan_directory), rdescript="Scan Directory For PITA"),
     "rescan current":               R(Function(scanner.rescan_current_file), rdescript="Rescan Current File For PITA"),
+    "begin symbol training":        R(Function(trainer.trainer_box), rdescript="Train From Scanned Directory") , 
     
     # ccr de/activation
     "<enable> <name>":              R(Function(control.nexus().merger.global_rule_changer(), save=True), rdescript="Toggle CCR Module"),
     "<enable> <name2>":             R(Function(control.nexus().merger.node_rule_changer(), save=True), rdescript="Toggle sm-CCR Module"),
-#     "refresh <ccr_mode>":           R(Function(ccr.refresh_from_files), rdescript="Refresh CCR Module"), 
     
     
     }
