@@ -290,11 +290,13 @@ def kill_grids_and_wait():
 
 def kick():
     kill_grids_and_wait()
-    Playback([(["mouse", "left", "click"], 0.0)]).execute()
+    windll.user32.mouse_event(0x00000002, 0, 0, 0, 0)
+    windll.user32.mouse_event(0x00000004, 0, 0, 0, 0)
 
 def kick_right():
     kill_grids_and_wait()
-    Playback([(["mouse", "right", "click"], 0.0)]).execute()
+    windll.user32.mouse_event(0x00000008, 0, 0, 0, 0)
+    windll.user32.mouse_event(0x00000010, 0, 0, 0, 0)
 
 def kick_middle():
     kill_grids_and_wait()
