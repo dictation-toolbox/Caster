@@ -39,6 +39,7 @@ class NavigationNon(MappingRule):
         '(kick double|double kick)':        R(Function(navigation.kick) * Repeat(2), rdescript="Mouse: Double Click"),
         "shift right click":                R(Key("shift:down") + Mouse("right") + Key("shift:up"), rdescript="Mouse: Shift + Right Click"),
         "curse <direction> [<direction2>] [<nnavi500>] [<dokick>]": R(Function(navigation.curse), rdescript="Curse"),
+        "scree <direction> [<nnavi500>]":   R(Function(navigation.wheel_scroll), rdescript="Wheel Scroll"),
       
         "colic":                            R(Key("control:down") + Mouse("left") + Key("control:up"), rdescript="Mouse: Ctrl + Left Click"),
         "garb [<nnavi500>]":                R(Mouse("left")+Mouse("left")+Key("c-c")+Function(navigation.clipboard_to_file), rdescript="Highlight @ Mouse + Copy"),
@@ -59,6 +60,7 @@ class NavigationNon(MappingRule):
         "window (right | ross) [<n>]":      R(Key("w-right"), rdescript="Window Right") * Repeat(extra="n"),
         "monitor (left | lease) [<n>]":     R(Key("sw-left"), rdescript="Monitor Left") * Repeat(extra="n"),
         "monitor (right | ross) [<n>]":     R(Key("sw-right"), rdescript="Monitor Right") * Repeat(extra="n"),
+        "(next | prior) window":            R(Key("ca-tab, enter"), rdescript="Next Window"),
         "switch (window | windows)":        R(Key("ca-tab"), rdescript="Switch Window") * Repeat(extra="n"),
         
         "next tab [<n>]":                   R(Key("c-pgdown"), rdescript="Next Tab") * Repeat(extra="n"),

@@ -154,6 +154,7 @@ def init_default_values():
                        ("dragon", True),
                        ("eclipse", True),
                        ("emacs", True),
+                       ("explorer", True),
                        ("firefox", True),
                        ("foxitreader", True),
                        ("gitbash", True),
