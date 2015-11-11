@@ -303,6 +303,13 @@ def kick_middle():
     windll.user32.mouse_event(0x00000020, 0, 0, 0, 0)
     windll.user32.mouse_event(0x00000040, 0, 0, 0, 0)
 
+def wheel_scroll(direction, nnavi500):
+    amount = 120
+    if direction != "up":
+        amount = amount * -1;
+    for i in xrange(1, abs(nnavi500)+1):
+        windll.user32.mouse_event(0x00000800, 0, 0, amount, 0)
+        time.sleep(0.1)
 
     
 def curse(direction, direction2, nnavi500, dokick):
