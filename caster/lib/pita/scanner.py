@@ -34,25 +34,21 @@ def rescan_current_file():
     global DATA
     try:
         filename, folders, title = utilities.get_window_title_info()
-        current_file_path = guess_file_based_on_window_title(filename, folders)
-        scanned_file = _scan_single_file(current_file_path[1], LanguageFilter("." + filename.split(".")[-1]))
+        current_file_path = guess_file_based_on_window_title(filename, folders)[1]
+        scanned_file = _scan_single_file(current_file_path, LanguageFilter("." + filename.split(".")[-1]))
         # find out exact match in DATA
         file_was_found=False
-        break_outer = False
+        
         for d in DATA["directories"]:
-            for f in DATA["directories"][d]:
-                if f == current_file_path[1]:
-                    DATA["directories"][d][f] = scanned_file
-                    utilities.save_json_file(DATA, settings.SETTINGS["paths"]["PITA_JSON_PATH"])
-                    break_outer = True
-                    file_was_found=True
-                    break
-            if break_outer:
+            if current_file_path in DATA["directories"][d]:
+                DATA["directories"][d][current_file_path] = scanned_file
+                utilities.save_json_file(DATA, settings.SETTINGS["paths"]["PITA_JSON_PATH"])
+                file_was_found=True
                 break
         if not file_was_found:
             if not "uncategorized" in DATA["directories"]:
                 DATA["directories"]["uncategorized"]={}
-            DATA["directories"]["uncategorized"][current_file_path[1]]=scanned_file
+            DATA["directories"]["uncategorized"][current_file_path]=scanned_file
             utilities.save_json_file(DATA, settings.SETTINGS["paths"]["PITA_JSON_PATH"])
     except Exception:
         utilities.simple_log()

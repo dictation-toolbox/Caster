@@ -203,36 +203,34 @@ class RainbowGrid(TkTransparent):
         font = ImageFont.truetype("arialbd.ttf", 15)
         draw = ImageDraw.Draw(self.img, 'RGBA')
         
-        for ly in range(0, ys_size):
-            if  ly + 1 < ys_size:
-                for lx in range(0, xs_size):
-                    if lx + 1 < xs_size:
-                        txt = str(box_number)
-                        tw, th = draw.textsize(txt, font)
-                        text_x = int((self.xs[lx] + self.xs[lx + 1] - tw) / 2) + 1
-                        text_y = int((self.ys[ly] + self.ys[ly + 1] - th) / 2) - 1
-                        draw.rectangle([self.xs[lx] + text_background_buffer,
-                                                       self.ys[ly] + text_background_buffer,
-                                                       self.xs[lx + 1] - text_background_buffer,
-                                                       self.ys[ly + 1] - text_background_buffer], fill=self.colors[colors_index], outline=False)
-                        
-                        draw.text((text_x + 1, text_y + 1), txt, (0, 0, 0), font=font)
-                        draw.text((text_x - 1, text_y + 1), txt, (0, 0, 0), font=font)
-                        draw.text((text_x + 1, text_y - 1), txt, (0, 0, 0), font=font)
-                        draw.text((text_x - 1, text_y - 1), txt, (0, 0, 0), font=font)
-                        draw.text((text_x, text_y), txt, (255, 255, 255), font=font)
-                        # index the position
-                        self.position_index[len(self.position_index) - 1].append((int((self.xs[lx] + self.xs[lx + 1]) / 2), int((self.ys[ly] + self.ys[ly + 1]) / 2)))
-                        
-                        # update for next iteration
-                        box_number += 1
-                        if box_number == 100:
-                            # next color
-                            box_number = 0
-                            colors_index += 1
-                            self.position_index.append([])
-                            if colors_index == len(self.colors):
-                                colors_index = 0
+        for ly in range(0, ys_size-1):
+            for lx in range(0, xs_size-1):
+                txt = str(box_number)
+                tw, th = draw.textsize(txt, font)
+                text_x = int((self.xs[lx] + self.xs[lx + 1] - tw) / 2) + 1
+                text_y = int((self.ys[ly] + self.ys[ly + 1] - th) / 2) - 1
+                draw.rectangle([self.xs[lx] + text_background_buffer,
+                                               self.ys[ly] + text_background_buffer,
+                                               self.xs[lx + 1] - text_background_buffer,
+                                               self.ys[ly + 1] - text_background_buffer], fill=self.colors[colors_index], outline=False)
+                
+                draw.text((text_x + 1, text_y + 1), txt, (0, 0, 0), font=font)
+                draw.text((text_x - 1, text_y + 1), txt, (0, 0, 0), font=font)
+                draw.text((text_x + 1, text_y - 1), txt, (0, 0, 0), font=font)
+                draw.text((text_x - 1, text_y - 1), txt, (0, 0, 0), font=font)
+                draw.text((text_x, text_y), txt, (255, 255, 255), font=font)
+                # index the position
+                self.position_index[len(self.position_index) - 1].append((int((self.xs[lx] + self.xs[lx + 1]) / 2), int((self.ys[ly] + self.ys[ly + 1]) / 2)))
+                
+                # update for next iteration
+                box_number += 1
+                if box_number == 100:
+                    # next color
+                    box_number = 0
+                    colors_index += 1
+                    colors_index %= len(self.colors) # cycle colors
+                    self.position_index.append([])
+                    
         del draw
 
 class DouglasGrid(TkTransparent):

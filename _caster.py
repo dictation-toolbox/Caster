@@ -7,22 +7,23 @@ Created on Jun 29, 2014
 import time
 from dragonfly import (Key, Function, Grammar, Playback, Dictation, Choice, Pause, MappingRule)
 
+def _wait_for_wsr_activation():
+    count = 1
+    while True:
+        try: 
+            from caster.apps import *
+            break
+        except: 
+            print("(%d) Attempting to load Caster -- WSR not loaded and listening yet..." % count)
+            count += 1
+            time.sleep(1)
 
 try:
     from caster.lib import settings# requires nothing
     settings.WSR = __name__ == "__main__"
     from caster.lib import utilities# requires settings
     if settings.WSR:
-        count = 1
-        while True:
-            try: 
-                from caster.apps import *
-                break
-            except: 
-                print("(%d) Attempting to load Caster -- WSR not loaded and listening yet..." % count)
-                count += 1
-                time.sleep(1)
-    
+        _wait_for_wsr_activation()
     from caster.lib import control
     from caster.lib.dfplus.state.stack import CasterState# requires control
     control.nexus().inform_state(CasterState(control.nexus()))

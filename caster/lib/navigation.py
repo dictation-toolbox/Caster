@@ -80,15 +80,15 @@ def word_number(wn):
     Text(numbers_to_words[int(wn)]).execute()
 
 def numbers_list_1_to_9():
-    result=["one",
-                 "torque",
-                 "traio",
-                 "fairn",
-                 "faif",
-                 "six",
-                 "seven",
-                 "eigen",
-                 "nine"]
+    result=[ "one",
+             "torque",
+             "traio",
+             "fairn",
+             "faif",
+             "six",
+             "seven",
+             "eigen",
+             "nine"]
     if not settings.SETTINGS["miscellaneous"]["integer_remap_opt_in"]:
         result[1]="two"
         result[2]="three"
@@ -131,19 +131,15 @@ def letters2(big, letter):
 
 def mouse_alternates(mode, monitor=1):
     if control.nexus().dep.PIL:
-        try:
-            if mode == "legion":
-                if not utilities.window_exists(None, "legiongrid"):
-                    ls = LegionScanner()
-                    ls.scan()#[500, 500, 1000, 1000]
-                    tscan = ls.get_update()
-                    Popen(["pythonw", settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0], "-m", str(monitor)])#, "-d", "500_500_500_500"
-            elif mode == "rainbow":
-                Popen(["pythonw", settings.SETTINGS["paths"]["RAINBOW_PATH"], "-g", "r", "-m", str(monitor)])
-            elif mode == "douglas":
-                Popen(["pythonw", settings.SETTINGS["paths"]["DOUGLAS_PATH"], "-g", "d", "-m", str(monitor)])
-        except Exception:
-            utilities.simple_log(True)
+        if mode == "legion" and not utilities.window_exists(None, "legiongrid"):
+            ls = LegionScanner()
+            ls.scan()
+            tscan = ls.get_update()
+            Popen(["pythonw", settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0], "-m", str(monitor)])#, "-d", "500_500_500_500"
+        elif mode == "rainbow" and not utilities.window_exists(None, "rainbowgrid"):
+            Popen(["pythonw", settings.SETTINGS["paths"]["RAINBOW_PATH"], "-g", "r", "-m", str(monitor)])
+        elif mode == "douglas" and not utilities.window_exists(None, "douglasgrid"):
+            Popen(["pythonw", settings.SETTINGS["paths"]["DOUGLAS_PATH"], "-g", "d", "-m", str(monitor)])
     else:
         utilities.availability_message(mode.title(), "PIL")    
 
