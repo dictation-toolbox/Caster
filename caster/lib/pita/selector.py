@@ -247,9 +247,82 @@ def sift4(s1, s2, max_offset, max_distance):
     
     
     
+####################################################################################
+####################################################################################
     
+def calculate_similarity(input_a, input_b):
     
+    # tokenize input
+    a = [t for t in input_a.lower()]
+    b = [t for t in input_b.lower()]
     
+    # get distinct tokens
+    ua = [t for t in set(a)]
+    ub = [t for t in set(a)]
+    
+    # count total hits and misses
+    total_hits = _hits(a, b) + _hits(b, a)
+    total_misses = _misses(a, b) + _misses(b, a)
+    
+    # This helps reduce the unfair advantage that can be caused by a match that has a token
+    # repeated multiple times, simply because it's longer. For example:
+    #     S P A N K
+    #     S P A N K S T E R (the extra S would normally give this one a higher score, even if we're looking for S P A N K)
+    unique_hits = _hits(ua, ub) + _hits(ub, ua)
+    unique_misses = _misses(ua, ub) + _misses(ub, ua)
+    
+    # Give extra points for match sequences of 2 or more tokens
+    # This solves the following:
+    #     S P R O U T
+    #     S U P P O R T
+    # Both have the exact same unique tokens, resuling in S U P P O R T being selected
+    # because of the extra hit on P. Sequence matches gives S P R O U T the edge.
+    sequence_matches = _sequence_hits(a, b) + _sequence_hits(b, a)
+    
+    # Very simple similarity algorithm, but it actually works surprisingly well:
+    return total_hits + unique_hits + sequence_matches - total_misses - unique_misses
+
+def _hits(source_tokens, in_tokens):
+    hits = [t for t in source_tokens if t in in_tokens]
+    return len(hits)
+
+def _misses(source_tokens, in_tokens):
+    misses = [t for t in source_tokens if t not in in_tokens]
+    return len(misses)
+
+def _sequence_hits(source_tokens, in_tokens):
+    # Input:
+    #       A B C D E F G H I
+    #   0 1 A B C X Y Z
+    # Sequence Hits:
+    #   A B C
+    #     B C
+    # Sequence Hit Score:
+    #   3 + 2 = 5
+    # TODO: possibly modify so that sequence hits don't need to be contiguous (as would be the case in abbreviations)
+    total_score = 0
+    for source_start in range(len(source_tokens)):
+        start_source_token = source_tokens[source_start]
+        for in_start in range(len(in_tokens)):
+            start_in_token = in_tokens[in_start]
+            if start_source_token == start_in_token:
+                    # found a token match, begin checking to see if we have a sequence of them
+                    source_cursor = source_start
+                    in_cursor = in_start
+                    sequence_length = 0
+                    while source_cursor < len(source_tokens) and in_cursor < len(in_tokens):
+                        current_source_token = source_tokens[source_cursor]
+                        current_in_token = in_tokens[in_cursor]
+                        if current_in_token == current_source_token:
+                            sequence_length += 1
+                        else:
+                            break
+                        source_cursor += 1
+                        in_cursor += 1
+                    if sequence_length >= 2:
+                        total_score += sequence_length
+    return total_score
+
     
     
     

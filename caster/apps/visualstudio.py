@@ -31,6 +31,9 @@ class CommandRule(MappingRule):
         "(set | toggle) bookmark":      R(Key("c-k, c-k"), rdescript="Visual Studio: Toggle Bookmark"),
         "next bookmark":                R(Key("c-k, c-n"), rdescript="Visual Studio: Next Bookmark"),
         "prior bookmark":               R(Key("c-k, c-p"), rdescript="Visual Studio: Previous Bookmark"),
+        "collapse to definitions":      R(Key("c-m, c-o"), rdescript="Visual Studio: Collapse To Definitions"),
+        "toggle [section] outlining":   R(Key("c-m, c-m"), rdescript="Visual Studio: Toggle Section Outlining"),
+        "toggle all outlining":         R(Key("c-m, c-l"), rdescript="Visual Studio: Toggle All Outlining"),
         
         "[toggle] breakpoint":          R(Key("f9"), rdescript="Visual Studio: Breakpoint"),
         "step over [<n>]":              R(Key("f10/50") * Repeat(extra="n"), rdescript="Visual Studio: Step Over"),
@@ -41,6 +44,7 @@ class CommandRule(MappingRule):
         "get latest [version]":         R(Key("a-f, r, l"), rdescript="Visual Studio: Get Latest"),
         "(show | view) history":        R(Key("a-f, r, h"), rdescript="Visual Studio: Show History"),
         "compare (files | versions)":   R(Key("a-f, r, h"), rdescript="Visual Studio: Compare..."),
+        "undo (checkout | pending changes)": R(Key("a-f, r, u"), rdescript="Visual Studio: Undo Pending Changes"),
         
         "[open] [go to] work item":     R(Key("a-m, g"), rdescript="Visual Studio: Open Work Item"),
         "[add] [new] linked work item": R(Key("sa-l"), rdescript="Visual Studio: New Linked Work Item"),
