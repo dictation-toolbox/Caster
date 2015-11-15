@@ -134,3 +134,4 @@ If you're just getting started with voice programming, I suggest reading [this a
 * [https://gist.github.com/tavisrudd/5226505](https://gist.github.com/tavisrudd/5226505)
 * [https://github.com/dictation-toolbox/aenea-grammars/issues/1](https://github.com/dictation-toolbox/aenea-grammars/issues/1)
 * [https://github.com/Uberi/speech_recognition](https://github.com/Uberi/speech_recognition)
+* [Microsoft Visual C++ Compiler for Python 2.7](https://www.microsoft.com/en-us/download/confirmation.aspx?id=44266)
