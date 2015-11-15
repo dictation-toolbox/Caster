@@ -11,7 +11,7 @@ from dragonfly.actions.action_text import Text
 from dragonfly.grammar.elements import Choice
 from dragonfly.grammar.grammar_base import Grammar
 
-from caster.lib import utilities, settings
+from caster.lib import settings
 from caster.lib.ccr.core.alphabet import Alphabet
 from caster.lib.ccr.core.nav import Navigation
 from caster.lib.ccr.core.numbers import Numbers
@@ -22,7 +22,6 @@ from caster.lib.dfplus.hint.nodes import css
 from caster.lib.dfplus.merge.ccrmerger import CCRMerger, Inf
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
-from caster.lib.utilities import report
 
 
 def get_500_words():
@@ -129,13 +128,13 @@ def test(specs, choices, ccr_max):
     elements = None
     report = None
     
-    utilities.report("creating complexity test: \n"\
+    print("creating complexity test: \n"\
                      +str(specs)+" specs \n"\
                      +str(choices)+" Choice-500s \n"\
                      +str(ccr_max) + " ccr max" )
     
     grammar = Grammar("test "+str(int(time.time())))
-    utilities.report(grammar)
+    print(grammar)
     
     '''set up realistic scenario'''
     merger = CCRMerger(False)
@@ -143,15 +142,15 @@ def test(specs, choices, ccr_max):
     prep_merger(merger, choices, specs)
     
     report = grammar.get_complexity_string()
-    utilities.report(".")
+    print(".")
     
     '''activate everything except the heavy rule'''
     merger_ccr_activator = merger.global_rule_changer()
     for rule in core_and_python():
         merger_ccr_activator(rule.get_name(), True, False)
-    utilities.report("..")
+    print("..")
     merger.node_rule_changer()("css", True, False)
-    utilities.report("...")
+    print("...")
     
     '''activate the heavy rule'''
     try: merger_ccr_activator(ComplexityTestRule.pronunciation, True, False)
@@ -160,14 +159,14 @@ def test(specs, choices, ccr_max):
 #             kCUs.append(complexity * ccr_max / 1000)
     m = re.search(r"rules, ([0-9]+) elements", report)
     elements = m.group(1)
-    utilities.report("... .   e(" + elements+")")
+    print("... .   e(" + elements+")")
     
     '''clean up'''
     merger.wipe()
     for rule in grammar.rules: rule.disable()
     grammar.disable()
     del grammar
-    utilities.report("... ..")
+    print("... ..")
     
     return Result(report, choices, specs, elements, ccr_max, broke)
 
@@ -180,7 +179,7 @@ def run_tests():
     for i in range(0, 3):
         if i != 0: settings.SETTINGS["miscellaneous"]["max_ccr_repetitions"] += 1
         ccr_max = settings.SETTINGS["miscellaneous"]["max_ccr_repetitions"] + 2
-        utilities.report("Run "+str(i+1)+" /3")
+        print("Run "+str(i+1)+" /3")
         
         not_max_yet = True
         nspecs = 2
@@ -211,7 +210,7 @@ def run_tests():
     reports.append("Total time for test: "+str(int(time.time()-start_time))+" sec\n\n")
     result = "".join(reports)
     report_path = settings.SETTINGS["paths"]["BASE_PATH"] + "/bin/data/complexity_report_"+str(time.time())+".txt"
-    utilities.report("Report saved to "+report_path) 
+    print("Report saved to "+report_path) 
     settings.report_to_file(result, report_path)
     
     

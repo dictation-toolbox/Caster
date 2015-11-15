@@ -294,7 +294,7 @@ class CCRMerger(object):
             try: filter_fn(merge_pair)
             except Exception: 
                 utilities.simple_log()
-                utilities.report("Filter function '"+filter_fn.__name__+"' failed.")
+                print("Filter function '"+filter_fn.__name__+"' failed.")
         
     def _create_repeat_rule(self, rule):
         ORIGINAL, SEQ, TERMINAL = "original", "caster_base_sequence", "terminal"

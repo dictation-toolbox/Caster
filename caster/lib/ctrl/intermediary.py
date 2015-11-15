@@ -20,18 +20,18 @@ class StatusIntermediary:
             sleep(2)
             try: f()
             except Exception:
-                utilities.report("problem communicating with status window:")
+                print("problem communicating with status window:")
                 utilities.simple_log()
     def hint(self, message):
         if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
             StatusIntermediary.attempt(lambda: self.communicator.get_com("status").hint(message))
         else:
-            utilities.report(message)
+            print(message)
     def text(self, message):
         if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
             StatusIntermediary.attempt(lambda: self.communicator.get_com("status").text(message))
         else:
-            utilities.report(message)
+            print(message)
     def kill(self):
         if utilities.window_exists(None, settings.STATUS_WINDOW_TITLE):
             self.communicator.get_com("status").kill()

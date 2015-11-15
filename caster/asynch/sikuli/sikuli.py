@@ -8,6 +8,7 @@ from caster.lib import control
 
 grammar = None
 server_proxy = None
+_NEXUS = control.nexus()
 
 def launch_IDE():
     Popen([settings.SETTINGS["paths"]["SIKULI_COMPATIBLE_JAVA_EXE_PATH"],
@@ -46,10 +47,10 @@ def start_server_proxy():
     fns = server_proxy.list_functions()
     if len(fns)>0:
         generate_commands(fns)
-    utilities.report("Caster-Sikuli server started successfully.")
+    print("Caster-Sikuli server started successfully.")
     
 def server_proxy_timer_fn():
-    utilities.report("Attempting Caster-Sikuli connection [...]")
+    print("Attempting Caster-Sikuli connection [...]")
     try:
         start_server_proxy()
         control.nexus().timer.remove_callback(server_proxy_timer_fn)
@@ -62,14 +63,14 @@ def unload():
     if grammar: grammar.unload()
     grammar = None
 
-def refresh():
+def refresh(_NEXUS):
     ''' should be able to add new scripts on the fly and then call this '''
     unload()
     global grammar
     grammar = Grammar("si/kuli")
     def refresh_sick_command():
         server_proxy.terminate()
-        refresh()
+        refresh(_NEXUS)
     
     mapping = {
     "launch sick IDE":           Function(launch_IDE),
@@ -90,6 +91,6 @@ def refresh():
 
 
 if settings.SETTINGS["miscellaneous"]["sikuli_enabled"]:
-    refresh()
+    refresh(_NEXUS)
         
 

@@ -43,7 +43,7 @@ def trainer_box():
     directories = data["directories"].keys()
     directory_count = len(directories)
     if directory_count == 0:
-        utilities.report("Must scan directory before training.")
+        print("Must scan directory before training.")
         return
     
     names = None

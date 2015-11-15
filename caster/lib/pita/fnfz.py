@@ -11,7 +11,7 @@ def pita_list_provider():
     filename, folders, title = utilities.get_window_title_info()
     active_file_path = scanner.guess_file_based_on_window_title(filename, folders)
     if filename == None:
-        utilities.report("pita: filename pattern not found in window title")
+        print("pita: filename pattern not found in window title")
         return []
     if active_file_path[0] != None:
         return scanner.DATA["directories"][active_file_path[0]][active_file_path[1]]["names"]

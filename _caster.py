@@ -11,7 +11,7 @@ def _wait_for_wsr_activation():
     count = 1
     while True:
         try: 
-            from caster.apps import *
+            from caster.apps import firefox
             break
         except: 
             print("(%d) Attempting to load Caster -- WSR not loaded and listening yet..." % count)
@@ -64,7 +64,7 @@ def change_monitor():
     if settings.SETTINGS["miscellaneous"]["sikuli_enabled"]:
         Playback([(["monitor", "select"], 0.0)]).execute()
     else:
-        utilities.report("This command requires SikuliX to be enabled in the settings file")
+        print("This command requires SikuliX to be enabled in the settings file")
 
 class MainRule(MappingRule):
     
@@ -138,7 +138,7 @@ class MainRule(MappingRule):
 
 grammar = Grammar('general')
 grammar.add_rule(MainRule())
-grammar.add_rule(Again(name="repetition rule"))
+grammar.add_rule(Again(control.nexus()))
 grammar.add_rule(VanillaAlias(name="vanilla alias"))
 grammar.load()
 
@@ -146,10 +146,10 @@ control.nexus().merger.update_config()
 control.nexus().merger.merge(Inf.BOOT)
 
 if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
-    utilities.report("\nWARNING: Status Window is an experimental feature, and there is a known freezing glitch with it.\n")
+    print("\nWARNING: Status Window is an experimental feature, and there is a known freezing glitch with it.\n")
     utilities.launch_status()
 
-utilities.report("*- Starting " + settings.SOFTWARE_NAME + " -*")
+print("*- Starting " + settings.SOFTWARE_NAME + " -*")
 
 
 if settings.WSR:

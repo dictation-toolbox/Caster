@@ -39,7 +39,7 @@ def wait_for_death(title, timeout=5):
         t += inc
         time.sleep(inc)
     if t >= timeout:
-        utilities.report("wait_for_death()" + " timed out (" + title + ")")
+        print("wait_for_death()" + " timed out (" + title + ")")
 
 class Dimensions:
     def __init__(self, w, h, x, y):

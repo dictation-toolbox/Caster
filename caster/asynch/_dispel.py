@@ -1,15 +1,16 @@
 import winsound
 
-from dragonfly import (Function, Text, Grammar, BringApp, WaitWindow, Key,
-                       IntegerRef, Dictation, Mimic, MappingRule)
+from dragonfly import (Function, Grammar, Dictation, MappingRule)
 
 from caster.lib import settings, utilities
 from caster.lib import control
 from caster.lib.dfplus.state.short import R
 from caster.lib.dfplus.additions import IntegerRefST
+_NEXUS = control.nexus()
 
 class Dispel:  # this needs an entry in the settings file, needs to retain information when Dragon is reset
-    def __init__(self):
+    def __init__(self, nexus):
+        self.nexus = nexus
         self.minute = 60
         self.hour = 3600
         #
@@ -25,16 +26,16 @@ class Dispel:  # this needs an entry in the settings file, needs to retain infor
         
     def start(self):
         self.reset()
-        Dispel.send_message("T: " + str(self.remaining) + " m")
-        control.nexus().timer.add_callback(self.tick, self.minute)
+        self.send_message("T: " + str(self.remaining) + " m")
+        self.nexus.timer.add_callback(self.tick, self.minute)
     def resume(self):
-        Dispel.send_message("T: " + str(self.remaining) + " m")
-        control.nexus().timer.add_callback(self.tick, self.minute)
+        self.send_message("T: " + str(self.remaining) + " m")
+        self.nexus.timer.add_callback(self.tick, self.minute)
     def stop(self):
         self.active = False
         self.save_settings()
-        Dispel.send_message("Dispel: Terminate")
-        control.nexus().timer.remove_callback(self.tick)
+        self.send_message("Dispel: Terminate")
+        self.nexus.timer.remove_callback(self.tick)
     
     def save_settings(self):
         self.settings["remaining"] = self.remaining
@@ -53,7 +54,7 @@ class Dispel:  # this needs an entry in the settings file, needs to retain infor
         self.save_settings()
         if self.remaining <= 0:
             winsound.PlaySound(settings.SETTINGS["paths"]["ALARM_SOUND_PATH"], winsound.SND_FILENAME)
-        Dispel.send_message("T: " + str(self.remaining) + " m")
+        self.send_message("T: " + str(self.remaining) + " m")
         
     def delay(self):
         self.remaining += self.DELAY_AMOUNT
@@ -62,14 +63,13 @@ class Dispel:  # this needs an entry in the settings file, needs to retain infor
         self.active = True
         self.remaining = self.PERIOD
     
-    @staticmethod
-    def send_message(msg):
+    def send_message(self, msg):
         if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
-            control.nexus().intermediary.text(msg)
+            self.nexus.intermediary.text(msg)
         else:
-            utilities.report(msg)
+            print(msg)
 
-ALARM = Dispel()
+ALARM = Dispel(_NEXUS)
 
 class MainRule(MappingRule):
     mapping = {

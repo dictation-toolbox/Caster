@@ -98,21 +98,8 @@ def simple_log(to_file=False):
 
 
 
-
-def report(message, speak=False, console=True, log=False):
-    if console:
-        print(message)
-    if speak:
-        dragonfly_speak(message)
-    if log:
-        settings.report_to_file(message)
-
 def availability_message(feature, dependency):
-    report(feature + " feature not available without " + dependency)
-
-def dragonfly_speak(message):
-    '''import dragonfly
-    dragonfly.get_engine().speak(message)'''
+    print(feature + " feature not available without " + dependency)
 
 # end stuff that was moved
 def remote_debug(who_called_it=None):

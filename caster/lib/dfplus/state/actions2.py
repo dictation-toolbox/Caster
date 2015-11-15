@@ -25,7 +25,7 @@ class BoxAction(AsynchronousAction):
         self._ = _ # signals to the stack to cease waiting, return True terminates
         def check_for_response():
             try:
-                _data = control.nexus().comm.get_com("hmc").get_message()
+                _data = self.nexus().comm.get_com("hmc").get_message()
             except Exception:
                 if log_failure: utilities.simple_log()
                 _["tries"]+=1
@@ -155,7 +155,7 @@ class FuzzyMatchAction(ContextSeeker):
                 with open(log_file_path, "a") as log_file:
                     log_file.write(str(log_entry) + "\n")
         def cancel_message():
-            control.nexus().intermediary.text("Cancel ("+rdescript+")")
+            self.nexus().intermediary.text("Cancel ("+rdescript+")")
         forward = [L(S([""], execute_choice, consume=False),
                      S(["number"], execute_choice, use_spoken=True), 
                      S(["cancel", "clear"], cancel_message)
@@ -174,7 +174,7 @@ class FuzzyMatchAction(ContextSeeker):
         for i in range(0, 10):
             display_string += str(i+1)+" - "+choices[i]
             if i+1<10: display_string += "\n"
-        control.nexus().intermediary.hint(display_string)
+        self.nexus().intermediary.hint(display_string)
         if data is not None and "text" in data:
             self.filter_text = data["text"].format()
         self.mutable_list["value"] = choices
@@ -220,7 +220,7 @@ class SuperFocusWindow(AsynchronousAction):
                     try:
                         BringApp(w.executable).execute()
                     except Exception:
-                        utilities.report("Unable to set focus:\ntitle: "+w.title+"\nexe: "+w.executable)
+                        print("Unable to set focus:\ntitle: "+w.title+"\nexe: "+w.executable)
                     break
              
             # do not assume that it worked
@@ -235,6 +235,6 @@ class SuperFocusWindow(AsynchronousAction):
         forward=[L(S(["cancel"], attempt_focus))]
         AsynchronousAction.__init__(self, forward, time_in_seconds=time_in_seconds, repetitions=repetitions, 
                                     rdescript=rdescript, blocking=blocking, 
-                                    finisher=Function(control.nexus().intermediary.text, message="SuperFocus Complete")+Key("escape"))
+                                    finisher=Function(lambda message: self.nexus().intermediary.text(message), message="SuperFocus Complete")+Key("escape"))
         self.show = False
         

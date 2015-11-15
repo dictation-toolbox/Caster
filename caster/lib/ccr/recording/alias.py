@@ -1,8 +1,4 @@
-'''
-Created on Sep 3, 2015
 
-@author: synkarius
-'''
 
 from dragonfly.actions.action_function import Function
 from dragonfly.actions.action_text import Text

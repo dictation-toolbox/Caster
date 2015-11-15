@@ -4,9 +4,7 @@ Command-module for RainbowGrid
 """
 
 
-from dragonfly import (Grammar, AppContext, Function,
-                       IntegerRef, Repeat, Playback,
-                       Key, Choice, MappingRule)
+from dragonfly import (Grammar, AppContext, Function, Playback, Choice, MappingRule)
 
 from caster.asynch.mouse import grids
 from caster.lib import settings

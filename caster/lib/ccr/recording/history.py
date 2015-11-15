@@ -1,8 +1,4 @@
-'''
-Created on Sep 3, 2015
 
-@author: synkarius
-'''
 from dragonfly.actions.action_base import Repeat
 from dragonfly.actions.action_function import Function
 from dragonfly.actions.action_playback import Playback
@@ -10,7 +6,6 @@ from dragonfly.actions.action_playback import Playback
 from caster.asynch.hmc import h_launch
 from caster.lib import control
 from caster.lib import settings, utilities
-from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge.selfmodrule import SelfModifyingRule
 from caster.lib.dfplus.state.actions import AsynchronousAction
 from caster.lib.dfplus.state.actions2 import NullAction

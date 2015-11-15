@@ -5,7 +5,7 @@ import threading
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 
 
-from wx import Notebook, NB_MULTILINE, Menu, ID_SAVE, ID_EXIT, EVT_MENU, MenuBar, \
+from wx import Notebook, NB_MULTILINE, Menu, ID_EXIT, EVT_MENU, MenuBar, \
     BoxSizer, VERTICAL, HORIZONTAL, StaticText, RIGHT, EXPAND, LEFT, TOP, \
     TextCtrl, Panel, App, Frame, CheckBox, EVT_CLOSE
 

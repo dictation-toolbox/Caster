@@ -1,6 +1,4 @@
-from dragonfly import (Grammar, AppContext, MappingRule,
-                       Dictation, IntegerRef,
-                       Key, Text, Repeat, Pause)
+from dragonfly import (Grammar, AppContext, MappingRule, Dictation, Key)
 
 from caster.lib import settings
 from caster.lib.dfplus.additions import IntegerRefST
