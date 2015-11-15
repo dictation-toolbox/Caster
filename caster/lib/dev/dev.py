@@ -13,7 +13,7 @@ unstable and not ready for production.
 from difflib import SequenceMatcher
 from subprocess import Popen
 import time
-
+import unittest
 
 from dragonfly import (Function, Key, BringApp, Text, WaitWindow, Dictation, Choice, Grammar, MappingRule, Paste)
 
@@ -25,55 +25,53 @@ from caster.lib.dfplus.state.actions import ContextSeeker, AsynchronousAction, \
     RegisteredAction
 from caster.lib.dfplus.state.actions2 import ConfirmAction, BoxAction
 from caster.lib.dfplus.state.short import L, S, R
-from caster.lib.pita import selector
-from caster.lib.pita.selector import sift4
 from caster.lib.tests.complexity import run_tests
+from caster.lib.tests.integration import stack
+from caster.lib.tests.integration import testrunner
+from caster.lib.tests.integration.testrunner import get_notepad, notepad_message
 
 
 grammar = Grammar('development')
 
 def experiment(text, text2):
     '''this function is for tests'''
-    from Levenshtein.StringMatcher import StringMatcher
-    try:
-        spoken = "issue certificate shares"
-        for item in ["isctsh", # actual answer, rated worst with sift4
-                     "Issue",
-                     "issue_list",
-                     "issues",
-                     "isbksh",
-                     "cert",
-                     "ctshrs",
-                     "certificate",
-                     "Certificate",
-                     spoken #for reference
-                      ]:
-            s = SequenceMatcher(None, item, spoken) # difflib
-            caster_abbrev = selector._abbreviated_string(spoken).lower() # caster
-            
-            l = StringMatcher()
-            l.set_seqs(spoken, item)
-            
-            
-            print("caster", item, selector._phrase_to_symbol_similarity_score(caster_abbrev, item))
-            print("difflib: ", item, s.ratio())
-            print("levenshtein: ", item, l.ratio())
-            print("sift4: ", item, sift4(item, spoken, None, None))
-            print("\n")
-            
-            
-        print(str(text), str(text2), sift4(str(text), str(text2), None, None))
-    except Exception:
-        utilities.simple_log()
+    
+#     from Levenshtein.StringMatcher import StringMatcher
+#     try:
+#         spoken = "issue certificate shares"
+#         for item in ["isctsh", # actual answer, rated worst with sift4
+#                      "Issue",
+#                      "issue_list",
+#                      "issues",
+#                      "isbksh",
+#                      "cert",
+#                      "ctshrs",
+#                      "certificate",
+#                      "Certificate",
+#                      spoken #for reference
+#                       ]:
+#             s = SequenceMatcher(None, item, spoken) # difflib
+#             caster_abbrev = selector._abbreviated_string(spoken).lower() # caster
+#             
+#             l = StringMatcher()
+#             l.set_seqs(spoken, item)
+#             
+#             
+#             print("caster", item, selector._phrase_to_symbol_similarity_score(caster_abbrev, item))
+#             print("difflib: ", item, s.ratio())
+#             print("levenshtein: ", item, l.ratio())
+#             print("sift4: ", item, sift4(item, spoken, None, None))
+#             print("\n")
+#             
+#             
+#         print(str(text), str(text2), sift4(str(text), str(text2), None, None))
+#     except Exception:
+#         utilities.simple_log()
     
 #     comm = Communicator()
 #     comm.get_com("status").error(0)
 
-LAST_TIME=0
-def print_time():
-    global LAST_TIME
-    print(time.time()-LAST_TIME)
-    LAST_TIME=time.time()
+
 
 COUNT=5
 def countdown():
@@ -98,11 +96,7 @@ def grep_this(path, filetype):
     Popen([grep, "/spath=\""+str(path) +"\"", "/stypes=\""+str(filetype)+"\"", "/stext=\""+str(c)+"\"", "/s"])
 
 
-def close_last_spoken(spoken):
-    first = spoken[0]
-    Text("</"+first+">").execute()
-def close_last_rspec(rspec):
-    Text("</"+rspec+">").execute()
+
     
 def bring_test():
     print(settings.SETTINGS["paths"]["BASE_PATH"].replace("/", "\\"))
@@ -111,49 +105,9 @@ def bring_test():
     except Exception:
         utilities.simple_log()
 
-def _abc(data):
-    print(data)
 
-class StackTest(MappingRule):
-    '''test battery for the ContextStack'''
-    mapping = {
-        "close last tag":               ContextSeeker([L(S(["cancel"], None),
-                                                         S(["html spoken"], close_last_spoken, use_spoken=True), 
-                                                         S(["span", "div"], close_last_rspec, use_rspec=True))
-                                                       ]),
-        "html":                         R(Text("<html>"), rspec="html spoken"), 
-        "divider":                      R(Text("<div>"), rspec="div"),
-        "span":                         R(Text("<span>"), rspec="span"),
-        "backward seeker [<text>]":     ContextSeeker([L(S(["ashes"], Text("ashes1 [%(text)s] ")),
-                                                          S(["bravery"], Text("bravery1 [%(text)s] "))), 
-                                                       L(S(["ashes"], Text("ashes2 [%(text)s] ")),
-                                                          S(["bravery"], Text("bravery2 [%(text)s] ")))
-                                                       ]), 
-        "forward seeker [<text>]":      ContextSeeker(forward=
-                                                      [L(S(["ashes"], Text("ashes1 [%(text)s] ")),
-                                                          S(["bravery"], Text("bravery1 [%(text)s] "))), 
-                                                       L(S(["ashes"], Text("ashes2 [%(text)s] ")),
-                                                          S(["bravery"], Text("bravery2 [%(text)s] ")))
-                                                       ]),
-        "never-ending":                 AsynchronousAction([L(S(["ashes", "charcoal"], print_time, None),
-                                                          S(["bravery"], Text, "bravery1"))
-                                                       ], time_in_seconds=0.2, repetitions=20, 
-                                                           finisher=Text("finisher successful")),
-        "ashes":                        RegisteredAction(Text("ashes fall "), rspec="ashes"),
-        "bravery":                      RegisteredAction(Text("bravery is weak "), rspec="bravery"),
-        "charcoal boy <text> [<n>]":    R(Text("charcoal is dirty %(text)s"), rspec="charcoal"),
-                                
-        "test confirm action":          ConfirmAction(Key("a"), rdescript="Confirm Action Test", instructions="some words here"),
-        
-        "test box action":              BoxAction(lambda data: _abc(data), rdescript="Test Box Action", box_type=settings.QTYPE_DEFAULT, 
-                                                  log_failure=True),
-    }
-    extras = [
-              Dictation("text"),
-              Dictation("text2"),
-              IntegerRefST("n", 1, 5)
-             ]
-    defaults = {"text": "", "text2": ""}
+
+
 
 class DevelopmentHelp(MappingRule):
     mapping = {
@@ -162,7 +116,8 @@ class DevelopmentHelp(MappingRule):
         "open natlink folder":          R(BringApp("C:/Windows/explorer.exe", settings.SETTINGS["paths"]["BASE_PATH"].replace("/", "\\")), rdescript="Open Natlink Folder"),
         "refresh debug file":           Function(devgen.refresh),  
         "Agrippa <filetype> <path>":    Function(grep_this),
-        "run rule complexity test":     Function(lambda: run_tests())
+        "run rule complexity test":     Function(lambda: run_tests()), 
+        "run unit tests":               Function(testrunner.run_tests)
     }
     extras = [
               Dictation("text"),
@@ -195,7 +150,7 @@ class Experimental(MappingRule):
 
 def load():
     global grammar
-    grammar.add_rule(StackTest())
+#     grammar.add_rule(StackTest())
     grammar.add_rule(DevelopmentHelp())
     grammar.add_rule(Experimental())
     grammar.load()

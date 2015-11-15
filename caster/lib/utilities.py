@@ -28,9 +28,9 @@ def window_exists(classname, windowname):
     else:
         return True
 
-def get_active_window_title(p=None):
-    pid=win32gui.GetForegroundWindow() if p==None else p
-    return unicode(win32gui.GetWindowText(pid), errors='ignore')
+def get_active_window_title(pid=None):
+    _pid=win32gui.GetForegroundWindow() if pid is None else pid
+    return unicode(win32gui.GetWindowText(_pid), errors='ignore')
 
 def get_active_window_path():
     return Window.get_foreground().executable

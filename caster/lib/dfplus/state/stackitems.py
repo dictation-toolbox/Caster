@@ -5,8 +5,8 @@ Created on Jun 7, 2015
 '''
 from dragonfly import Pause, ActionBase
 
-from caster.lib import settings
 from caster.lib import control
+from caster.lib import settings
 
 
 class StackItem:
@@ -41,7 +41,7 @@ class StackItemRegisteredAction(StackItem):
         self.dragonfly_data = None
         self.base = None
     def preserve(self):# save spoken words
-        if self.dragonfly_data!=None:
+        if self.dragonfly_data is not None:
             self.preserved = [x[0] for x  in self.dragonfly_data["_node"].results]
             return True
         return False
