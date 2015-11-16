@@ -11,6 +11,8 @@ from caster.lib.dfplus.state.actions import AsynchronousAction
 from caster.lib.dfplus.state.actions2 import NullAction
 from caster.lib.dfplus.state.short import R, L, S
 
+_NEXUS = control.nexus()
+
 
 def read_highlighted(max_tries):
     for i in range(0, max_tries):
@@ -52,6 +54,10 @@ class VanillaAlias(SelfModifyingRule):
 
 
 class ChainAlias(SelfModifyingRule):
+    def __init__(self, nexus):
+        SelfModifyingRule.__init__(self)
+        self.nexus = nexus
+    
     json_path = "chain_aliases"    
     mapping = { "default chain command":       NullAction() }
     pronunciation = "chain alias"
@@ -60,7 +66,7 @@ class ChainAlias(SelfModifyingRule):
         text = read_highlighted(10)
         if text is not None:
             h_launch.launch(settings.QTYPE_INSTRUCTIONS, data="Enter_spec_for_command|")
-            on_complete = AsynchronousAction.hmc_complete(lambda data: self.refresh(data[0].replace("\n", ""), text))
+            on_complete = AsynchronousAction.hmc_complete(lambda data: self.refresh(data[0].replace("\n", ""), text), self.nexus)
             AsynchronousAction([L(S(["cancel"], on_complete, None))], 
                                time_in_seconds=0.5, 
                                repetitions=300, 
@@ -82,6 +88,6 @@ class ChainAlias(SelfModifyingRule):
         mapping["delete chain aliases"] = R(Function(lambda: delete_all(self, ChainAlias.json_path)), rdescript="Delete Vanilla Aliases")
         self.reset(mapping)
 
-control.nexus().merger.add_selfmodrule(ChainAlias())
+control.nexus().merger.add_selfmodrule(ChainAlias(_NEXUS))
 
     

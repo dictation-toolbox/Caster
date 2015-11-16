@@ -76,9 +76,14 @@ class ConfirmAction(AsynchronousAction):
     0: no response yet
     1: True
     2: False
+    -
+    This is the only action which requires the nexus in the constructor;
+    the rest of them can use the setter. This is because on_complete
+    needs a nexus immediately.
     '''
-    def __init__(self, base, rspec="default", rdescript="unnamed command (CA)", instructions="instructions missing"):
-        on_complete = AsynchronousAction.hmc_complete(lambda data: receive_response(data))
+    def __init__(self, base, rspec="default", rdescript="unnamed command (CA)", instructions="instructions missing", nexus=None):
+        self.set_nexus(nexus)
+        on_complete = AsynchronousAction.hmc_complete(lambda data: receive_response(data), self.nexus())
         AsynchronousAction.__init__(self, 
                                     [L(S(["cancel"], on_complete, None))], 
                                     1, 60, rdescript, False)# cannot block, if it does, it'll block its own confirm command

@@ -110,9 +110,9 @@ class MainRule(MappingRule):
     "douglas [<monitor>]":          R(Function(navigation.mouse_alternates, mode="douglas", nexus=_NEXUS), rdescript="Activate Douglas Grid"),
     
     # symbol match
-    "scan directory":               R(Function(scanner.scan_directory), rdescript="Scan Directory For PITA"),
+    "scan directory":               R(Function(scanner.scan_directory, nexus=_NEXUS), rdescript="Scan Directory For PITA"),
     "rescan current":               R(Function(scanner.rescan_current_file), rdescript="Rescan Current File For PITA"),
-    "begin symbol training":        R(Function(trainer.trainer_box), rdescript="Train From Scanned Directory") , 
+    "begin symbol training":        R(Function(trainer.trainer_box, nexus=_NEXUS), rdescript="Train From Scanned Directory") , 
     
     # ccr de/activation
     "<enable> <name>":              R(Function(_NEXUS.merger.global_rule_changer(), save=True), rdescript="Toggle CCR Module"),

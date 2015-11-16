@@ -118,7 +118,7 @@ class Navigation(MergeRule):
     "jump back":                    AsynchronousAction([L(S(["cancel"], context.nav, ["left", "(~[~{~<"]))
                                                    ], time_in_seconds=0.1, repetitions=50, rdescript="Jump: Back" ),
     "fill <target>":                R(Key("escape, escape, end"), show=False) +
-                                    AsynchronousAction([L(S(["cancel"], Function(context.fill_within_line)))
+                                    AsynchronousAction([L(S(["cancel"], Function(context.fill_within_line, nexus=_NEXUS)))
                                                    ], time_in_seconds=0.2, repetitions=50, rdescript="Fill" ),
     
     # keyboard shortcuts

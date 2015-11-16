@@ -8,7 +8,6 @@ import os
 import re
 
 from caster.asynch.hmc import h_launch
-from caster.lib import control
 from caster.lib import utilities, settings
 from caster.lib.dfplus.state.actions import AsynchronousAction
 from caster.lib.dfplus.state.short import L, S
@@ -16,14 +15,14 @@ from caster.lib.pita import filters
 from caster.lib.pita.filters import LanguageFilter
 
 
-if control.nexus().dep.NATLINK:
+if not settings.WSR:
     import natlink
 
 _d = utilities.load_json_file(settings.SETTINGS["paths"]["PITA_JSON_PATH"])
 DATA = _d if _d != {} else {"directories":{}}
 
-def scan_directory():
-    on_complete = AsynchronousAction.hmc_complete(lambda data: _scan_directory(data))
+def scan_directory(nexus):
+    on_complete = AsynchronousAction.hmc_complete(lambda data: _scan_directory(data, nexus), nexus)
     h_launch.launch(settings.QTYPE_DIRECTORY)
     AsynchronousAction([L(S(["cancel"], on_complete, None))], 
                            time_in_seconds=0.5, 
@@ -55,7 +54,7 @@ def rescan_current_file():
     
                 
 
-def _scan_directory(data):
+def _scan_directory(data, nexus):
     '''
     Adds a scan of the directory to DATA
     '''
@@ -73,7 +72,7 @@ def _scan_directory(data):
                 
                 if extension in settings.SETTINGS["pita"]["extensions"]:
                     # scanned_file is a list
-                    scanned_file = _scan_single_file(base + "/" + fname, languageFilters[extension])
+                    scanned_file = _scan_single_file(base + "/" + fname, languageFilters[extension], nexus)
                     # scanned_directory["absolute path to file"] = that list
                     scanned_directory[base.replace("\\", "/") + "/" + fname] = scanned_file
                     
@@ -86,7 +85,7 @@ def _scan_directory(data):
     
     utilities.save_json_file(DATA, settings.SETTINGS["paths"]["PITA_JSON_PATH"])
 
-def _scan_single_file(path, languageFilter):
+def _scan_single_file(path, languageFilter, nexus):
     f = open(path, "r")
     lines = f.readlines()
     f.close()
@@ -100,19 +99,19 @@ def _scan_single_file(path, languageFilter):
             continue
         filter_results = filters.SYMBOL_PATTERN.findall(line)  # @UndefinedVariable
         for symbol in filter_results:
-            if _passes_tests(symbol, scanned_file, languageFilter):
+            if _passes_tests(symbol, scanned_file, languageFilter, nexus):
                 scanned_file["names"].append(symbol)
     
     scanned_file["names"].sort()
     return scanned_file
 
-def _passes_tests(symbol, scanned_file, language_filter):
+def _passes_tests(symbol, scanned_file, language_filter, nexus):
     # short words can be gotten faster by just spelling them
     too_short = len(symbol) < 4
     already_in_names = symbol in scanned_file["names"]
     is_digit = symbol.isdigit()
     is_keyword = symbol in language_filter.keywords
-    typeable = settings.SETTINGS["pita"]["filter_strict"] and control.nexus().dep.NATLINK and not _difficult_to_type(symbol)
+    typeable = settings.SETTINGS["pita"]["filter_strict"] and nexus.dep.NATLINK and not _difficult_to_type(symbol)
     fails = is_keyword or already_in_names or too_short or is_digit or typeable
     return not fails
 

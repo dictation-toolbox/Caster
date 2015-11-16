@@ -1,8 +1,7 @@
 from dragonfly import Text
 from dragonfly.windows.window import Window
 
-from caster.lib import utilities, settings
-from caster.lib import control
+from caster.lib import utilities
 from caster.lib.dfplus.state.actions2 import SuperFocusWindow
 from caster.lib.pita import scanner, selector
 
@@ -23,7 +22,6 @@ def pita_filter(data, choices):
 
 def pita_selection(choice):
     Text(choice).execute()
-    control.nexus().intermediary.text("PITA Completion")
 
 #==================================================#==================================================
 #==================================================#==================================================

@@ -118,10 +118,10 @@ def read_selected_without_altering_clipboard(same_is_okay=False):
     return 0, temporary
 
 
-def fill_within_line(target):
+def fill_within_line(target, nexus):
     result = navigate_to_character("left", str(target), True)
     if result:
-        control.nexus().state.halt_asynchronous(True)  
+        nexus.state.halt_asynchronous(True)  
     return result
         
 def nav(parameters):

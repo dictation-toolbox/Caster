@@ -11,25 +11,30 @@ from caster.lib.dfplus.state.actions import AsynchronousAction
 from caster.lib.dfplus.state.actions2 import NullAction
 from caster.lib.dfplus.state.short import R, L, S
 
+_NEXUS = control.nexus()
 
 class HistoryRule(SelfModifyingRule):
+    def __init__(self, nexus):
+        SelfModifyingRule.__init__(self)
+        self.nexus = nexus
+    
     pronunciation = "history"
     mapping = {"default sequence":  NullAction()}
     
     def record_from_history(self):
         # save the list as it was when the command was spoken
-        control.nexus().preserved = control.nexus().history[:]
+        self.nexus.preserved = self.nexus.history[:]
         
         # format for display
         formatted = ""
-        for t in control.nexus().preserved:
+        for t in self.nexus.preserved:
             for w in t:
                 formatted += w.split("\\")[0] + "[w]"
             formatted += "[s]"
         
         # use a response window to get a spec and word sequences for the new macro
         h_launch.launch(settings.QTYPE_RECORDING, data=formatted)
-        on_complete = AsynchronousAction.hmc_complete(lambda data: self.add_recorded_macro(data))
+        on_complete = AsynchronousAction.hmc_complete(lambda data: self.add_recorded_macro(data), self.nexus)
         AsynchronousAction([L(S(["cancel"], on_complete, None))], 
                            time_in_seconds=0.5, 
                            repetitions=300, 
@@ -41,7 +46,7 @@ class HistoryRule(SelfModifyingRule):
         
         word_sequences = [] # word_sequences is a list of lists of strings
         for i in data["selected_indices"]:
-            single_sequence = control.nexus().preserved[i]
+            single_sequence = self.nexus.preserved[i]
             # clean the results
             for k in range(0,len(single_sequence)):
                 if "\\" in single_sequence[k]:
@@ -49,7 +54,7 @@ class HistoryRule(SelfModifyingRule):
             word_sequences.append(single_sequence)
         
         # clear the dictation cache
-        control.nexus().preserved = None
+        self.nexus.preserved = None
         
         if spec != "" and len(word_sequences) > 0:
             if data["repeatable"]:
@@ -80,5 +85,5 @@ class HistoryRule(SelfModifyingRule):
     def delete_recorded_macros(self):
         utilities.save_json_file({}, settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
         self.refresh()
-    
-control.nexus().merger.add_selfmodrule(HistoryRule())
+
+_NEXUS.merger.add_selfmodrule(HistoryRule(_NEXUS))

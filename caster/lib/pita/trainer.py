@@ -1,8 +1,7 @@
 import random
 
-from dragonfly.actions.action_pause import Pause
 
-from caster.lib import utilities, settings, control
+from caster.lib import settings
 from caster.lib.dfplus.state.actions2 import BoxAction
 from caster.lib.pita import scanner
 from caster.lib.pita.selector import get_similar_symbol_name
@@ -37,7 +36,7 @@ def receive_pronunciation(data):
     trainer_box()
 
 
-def trainer_box():
+def trainer_box(nexus):
     data = scanner.DATA
     '''pick a random symbol from the scanned directory'''
     directories = data["directories"].keys()
@@ -64,7 +63,7 @@ def trainer_box():
     symbol = names[random.randint(0, len(names) - 1)]
     
     try: # make sure that the box action doesn't still exist
-        data = control.nexus().comm.get_com("hmc").kill()
+        data = nexus.comm.get_com("hmc").kill()
     except Exception:
         pass
     
