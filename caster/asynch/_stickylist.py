@@ -16,7 +16,7 @@ def kill(nexus):
 
 def add_symbol(sticky, nexus):
     sticky_key="sticky_key"
-    navigation.clipboard_to_file(sticky_key, True)
+    navigation.clipboard_to_file(sticky_key, nexus, True)
     time.sleep(0.1)
     nexus.sticky.append(nexus.clip[sticky_key])
     utilities.save_json_file(nexus.sticky, settings.SETTINGS["paths"]["S_LIST_JSON_PATH"])

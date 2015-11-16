@@ -18,11 +18,13 @@ from caster.lib import control
 from caster.lib.dfplus.state.short import R
 from caster.lib.dfplus.additions import IntegerRefST
 
-def kill():
-    control.nexus().comm.get_com("grids").kill()
+_NEXUS = control.nexus()
 
-def send_input(n, action):
-    s = control.nexus().comm.get_com("grids")
+def kill(nexus):
+    nexus.comm.get_com("grids").kill()
+
+def send_input(n, action, nexus):
+    s = nexus.comm.get_com("grids")
     
     int_a = int(action)
     response = None
@@ -54,9 +56,9 @@ def send_input(n, action):
 class GridControlRule(MappingRule):
 
     mapping = {
-        "<n> [<action>]":                   R(Function(send_input), rdescript="Legion: Action"),
-        "refresh":                          R(Function(navigation.mouse_alternates, mode="legion"), rdescript="Legion: Refresh"),
-        "exit | escape | cancel":           R(Function(kill), rdescript="Exit Legion"),
+        "<n> [<action>]":                   R(Function(send_input, nexus=_NEXUS), rdescript="Legion: Action"),
+        "refresh":                          R(Function(navigation.mouse_alternates, mode="legion", nexus=_NEXUS), rdescript="Legion: Refresh"),
+        "exit | escape | cancel":           R(Function(kill, nexus=_NEXUS), rdescript="Exit Legion"),
 
 
         }

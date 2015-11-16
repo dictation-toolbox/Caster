@@ -15,12 +15,13 @@ from caster.lib.dfplus.state.actions2 import FuzzyMatchAction
 from caster.lib.dfplus.state.short import L, S, R
 from caster.lib.pita import fnfz
 
+_NEXUS = control.nexus()
 
 class NavigationNon(MappingRule):
     mapping = {
         "<direction> <time_in_seconds>":    AsynchronousAction([L(S(["cancel"], Key("%(direction)s")))], 
                                                                repetitions=1000, blocking=False ),
-        "erase multi clipboard":            R(Function(navigation.erase_multi_clipboard), 
+        "erase multi clipboard":            R(Function(navigation.erase_multi_clipboard, nexus=_NEXUS), 
                                               rdescript="Erase Multi Clipboard"),
         "find":                             R(Key("c-f"), rdescript="Find"),
         "find next [<n>]":                  R(Key("f3"), rdescript="Find Next") * Repeat(extra="n"),
@@ -33,17 +34,17 @@ class NavigationNon(MappingRule):
         
         "[show] context menu":              R(Key("s-f10"), rdescript="Context Menu"),
         
-        'kick':                             R(Function(navigation.kick), rdescript="Mouse: Left Click"),
-        'kick mid':                         R(Function(navigation.kick_middle), rdescript="Mouse: Middle Click"),
-        'psychic':                          R(Function(navigation.kick_right), rdescript="Mouse: Right Click"),
-        '(kick double|double kick)':        R(Function(navigation.kick) * Repeat(2), rdescript="Mouse: Double Click"),
+        'kick':                             R(Function(navigation.kick, nexus=_NEXUS), rdescript="Mouse: Left Click"),
+        'kick mid':                         R(Function(navigation.kick_middle, nexus=_NEXUS), rdescript="Mouse: Middle Click"),
+        'psychic':                          R(Function(navigation.kick_right, nexus=_NEXUS), rdescript="Mouse: Right Click"),
+        '(kick double|double kick)':        R(Function(navigation.kick, nexus=_NEXUS) * Repeat(2), rdescript="Mouse: Double Click"),
         "shift right click":                R(Key("shift:down") + Mouse("right") + Key("shift:up"), rdescript="Mouse: Shift + Right Click"),
         "curse <direction> [<direction2>] [<nnavi500>] [<dokick>]": R(Function(navigation.curse), rdescript="Curse"),
         "scree <direction> [<nnavi500>]":   R(Function(navigation.wheel_scroll), rdescript="Wheel Scroll"),
       
         "colic":                            R(Key("control:down") + Mouse("left") + Key("control:up"), rdescript="Mouse: Ctrl + Left Click"),
-        "garb [<nnavi500>]":                R(Mouse("left")+Mouse("left")+Key("c-c")+Function(navigation.clipboard_to_file), rdescript="Highlight @ Mouse + Copy"),
-        "drop [<nnavi500>]":                R(Mouse("left")+Mouse("left")+Function(navigation.drop), rdescript="Highlight @ Mouse + Paste"),
+        "garb [<nnavi500>]":                R(Mouse("left")+Mouse("left")+Key("c-c")+Function(navigation.clipboard_to_file, nexus=_NEXUS), rdescript="Highlight @ Mouse + Copy"),
+        "drop [<nnavi500>]":                R(Mouse("left")+Mouse("left")+Function(navigation.drop, nexus=_NEXUS), rdescript="Highlight @ Mouse + Paste"),
         
         "sure stoosh":                      R(Key("c-c"), rdescript="Simple Copy"),
         "sure cut":                         R(Key("c-x"), rdescript="Simple Cut"),
@@ -126,9 +127,9 @@ class Navigation(MergeRule):
     
     "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]": R(Function(navigation.master_text_nav), rdescript="Keyboard Text Navigation"),
     
-    "stoosh [<nnavi500>]":          R(Key("c-c")+Function(navigation.clipboard_to_file), rspec="stoosh", rdescript="Copy"),
-    "cut [<nnavi500>]":             R(Key("c-x")+Function(navigation.clipboard_to_file), rspec="cut", rdescript="Cut"),
-    "spark [<nnavi500>]":           R(Function(navigation.drop), rspec="spark", rdescript="Paste"),
+    "stoosh [<nnavi500>]":          R(Key("c-c")+Function(navigation.clipboard_to_file, nexus=_NEXUS), rspec="stoosh", rdescript="Copy"),
+    "cut [<nnavi500>]":             R(Key("c-x")+Function(navigation.clipboard_to_file, nexus=_NEXUS), rspec="cut", rdescript="Cut"),
+    "spark [<nnavi500>]":           R(Function(navigation.drop, nexus=_NEXUS), rspec="spark", rdescript="Paste"),
     
     "deli [<nnavi50>]":             R(Key("del/5"), rspec="deli", rdescript="Delete") * Repeat(extra="nnavi50"),
     "clear [<nnavi50>]":            R(Key("backspace/5:%(nnavi50)d"), rspec="clear", rdescript="Backspace"),

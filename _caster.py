@@ -18,6 +18,8 @@ def _wait_for_wsr_activation():
             count += 1
             time.sleep(1)
 
+_NEXUS = None
+
 try:
     from caster.lib import settings# requires nothing
     settings.WSR = __name__ == "__main__"
@@ -26,7 +28,8 @@ try:
         _wait_for_wsr_activation()
     from caster.lib import control
     from caster.lib.dfplus.state.stack import CasterState# requires control
-    control.nexus().inform_state(CasterState(control.nexus()))
+    _NEXUS = control.nexus()
+    _NEXUS.inform_state(CasterState(_NEXUS))
     
     from caster.apps import *
     from caster.asynch import *
@@ -34,6 +37,7 @@ try:
     import caster.lib.dev.dev
     from caster.asynch.sikuli import sikuli
     from caster.lib import navigation, password
+    navigation.initialize_clipboard(_NEXUS)
     from caster.lib.pita import scanner, trainer
     from caster.lib.dfplus.state.short import R
     from caster.lib.dfplus.additions import IntegerRefST
@@ -53,7 +57,8 @@ except:
     from caster.lib import utilities
     from caster.lib import control
     from caster.lib.dfplus.state.stack import CasterState# requires control
-    control.nexus().inform_state(CasterState(control.nexus()))
+    _NEXUS = control.nexus()
+    _NEXUS.inform_state(CasterState(_NEXUS))
     
     utilities.simple_log()
 
@@ -69,15 +74,15 @@ def change_monitor():
 class MainRule(MappingRule):
     
     @staticmethod
-    def generate_ccr_choices():
+    def generate_ccr_choices(nexus):
         choices = {}
-        for ccr_choice in control.nexus().merger.global_rule_names():
+        for ccr_choice in nexus.merger.global_rule_names():
             choices[ccr_choice] = ccr_choice
         return Choice("name", choices)
     @staticmethod
-    def generate_sm_ccr_choices():
+    def generate_sm_ccr_choices(nexus):
         choices = {}
-        for ccr_choice in control.nexus().merger.selfmod_rule_names():
+        for ccr_choice in nexus.merger.selfmod_rule_names():
             choices[ccr_choice] = ccr_choice
         return Choice("name2", choices)
     
@@ -100,9 +105,9 @@ class MainRule(MappingRule):
     'quick pass <text> <text2> <text3>':                       R(Function(password.get_simple_password), rdescript="Get Crappy Password"),
     
     # mouse alternatives
-    "legion [<monitor>]":           R(Function(navigation.mouse_alternates, mode="legion"), rdescript="Activate Legion"),
-    "rainbow [<monitor>]":          R(Function(navigation.mouse_alternates, mode="rainbow"), rdescript="Activate Rainbow Grid"),
-    "douglas [<monitor>]":          R(Function(navigation.mouse_alternates, mode="douglas"), rdescript="Activate Douglas Grid"),
+    "legion [<monitor>]":           R(Function(navigation.mouse_alternates, mode="legion", nexus=_NEXUS), rdescript="Activate Legion"),
+    "rainbow [<monitor>]":          R(Function(navigation.mouse_alternates, mode="rainbow", nexus=_NEXUS), rdescript="Activate Rainbow Grid"),
+    "douglas [<monitor>]":          R(Function(navigation.mouse_alternates, mode="douglas", nexus=_NEXUS), rdescript="Activate Douglas Grid"),
     
     # symbol match
     "scan directory":               R(Function(scanner.scan_directory), rdescript="Scan Directory For PITA"),
@@ -110,8 +115,8 @@ class MainRule(MappingRule):
     "begin symbol training":        R(Function(trainer.trainer_box), rdescript="Train From Scanned Directory") , 
     
     # ccr de/activation
-    "<enable> <name>":              R(Function(control.nexus().merger.global_rule_changer(), save=True), rdescript="Toggle CCR Module"),
-    "<enable> <name2>":             R(Function(control.nexus().merger.node_rule_changer(), save=True), rdescript="Toggle sm-CCR Module"),
+    "<enable> <name>":              R(Function(_NEXUS.merger.global_rule_changer(), save=True), rdescript="Toggle CCR Module"),
+    "<enable> <name2>":             R(Function(_NEXUS.merger.node_rule_changer(), save=True), rdescript="Toggle sm-CCR Module"),
     
     
     }
@@ -126,8 +131,8 @@ class MainRule(MappingRule):
               Choice("volume_mode",
                     {"mute": "mute", "up":"up", "down":"down"
                      }),
-              generate_ccr_choices.__func__(),
-              generate_sm_ccr_choices.__func__(),
+              generate_ccr_choices.__func__(_NEXUS),
+              generate_sm_ccr_choices.__func__(_NEXUS),
               IntegerRefST("monitor", 1, 10)
              ]
     defaults = {"n": 1, "nnv": 1,
@@ -138,12 +143,12 @@ class MainRule(MappingRule):
 
 grammar = Grammar('general')
 grammar.add_rule(MainRule())
-grammar.add_rule(Again(control.nexus()))
+grammar.add_rule(Again(_NEXUS))
 grammar.add_rule(VanillaAlias(name="vanilla alias"))
 grammar.load()
 
-control.nexus().merger.update_config()
-control.nexus().merger.merge(Inf.BOOT)
+_NEXUS.merger.update_config()
+_NEXUS.merger.merge(Inf.BOOT)
 
 if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
     print("\nWARNING: Status Window is an experimental feature, and there is a known freezing glitch with it.\n")
@@ -159,4 +164,3 @@ if settings.WSR:
     while True:
         pythoncom.PumpWaitingMessages()  # @UndefinedVariable
         time.sleep(.1)
-#         control.nexus().timer.callback() # alternate method for triggering WSR Timer callbacks

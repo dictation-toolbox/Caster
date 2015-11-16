@@ -12,11 +12,13 @@ from caster.lib import control
 from caster.lib.dfplus.state.short import R
 from caster.lib.dfplus.additions import IntegerRefST
 
-def kill():
-    control.nexus().comm.get_com("grids").kill()
+_NEXUS = control.nexus()
 
-def send_input(pre, color, n, action):
-    s=control.nexus().comm.get_com("grids")
+def kill(nexus):
+    nexus.comm.get_com("grids").kill()
+
+def send_input(pre, color, n, action, nexus):
+    s=nexus.comm.get_com("grids")
     s.move_mouse(int(pre), int(color), int(n))
     s.kill()
     grids.wait_for_death(settings.RAINBOW_TITLE)
@@ -30,8 +32,8 @@ def send_input(pre, color, n, action):
 class GridControlRule(MappingRule):
 
     mapping = {
-        "[<pre>] <color> <n> [<action>]":   R(Function(send_input), rdescript="Rainbow Grid: Action"),
-        "exit | escape | cancel":           R(Function(kill), rdescript="Exit Rainbow Grid"),
+        "[<pre>] <color> <n> [<action>]":   R(Function(send_input, nexus=_NEXUS), rdescript="Rainbow Grid: Action"),
+        "exit | escape | cancel":           R(Function(kill, nexus=_NEXUS), rdescript="Exit Rainbow Grid"),
 
 
         }

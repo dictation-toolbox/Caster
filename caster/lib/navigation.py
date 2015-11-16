@@ -60,9 +60,9 @@ def get_direction_choice(spec):
     global DIRECTION_STANDARD
     return Choice(spec, DIRECTION_STANDARD)
 
-def initialize_clipboard():
-    if len(control.nexus().clip) == 0:
-        control.nexus().clip = utilities.load_json_file(settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
+def initialize_clipboard(nexus):
+    if len(nexus.clip) == 0:
+        nexus.clip = utilities.load_json_file(settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
 
 def word_number(wn):
     numbers_to_words = {
@@ -129,8 +129,8 @@ def letters2(big, letter):
     if str(big) != "":
         Key("shift:up").execute()
 
-def mouse_alternates(mode, monitor=1):
-    if control.nexus().dep.PIL:
+def mouse_alternates(mode, nexus, monitor=1):
+    if nexus.dep.PIL:
         if mode == "legion" and not utilities.window_exists(None, "legiongrid"):
             ls = LegionScanner()
             ls.scan()
@@ -144,7 +144,7 @@ def mouse_alternates(mode, monitor=1):
         utilities.availability_message(mode.title(), "PIL")    
 
 
-def clipboard_to_file(nnavi500, do_copy=False):
+def clipboard_to_file(nnavi500, nexus, do_copy=False):
     if do_copy:
         Key("c-c").execute()
     
@@ -156,23 +156,24 @@ def clipboard_to_file(nnavi500, do_copy=False):
         try:
             time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)   # time for keypress to execute
             win32clipboard.OpenClipboard()
-            control.nexus().clip[key] = win32clipboard.GetClipboardData()
+            nexus.clip[key] = win32clipboard.GetClipboardData()
             win32clipboard.CloseClipboard()
-            utilities.save_json_file(control.nexus().clip, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])            
+            utilities.save_json_file(nexus.clip, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])            
         except Exception:
             failure = True
+            utilities.simple_log()
         if not failure:
             break
 
-def drop(nnavi500):
+def drop(nnavi500, nexus):
     key = str(nnavi500)
     while True:
         failure = False
         try:
-            if key in control.nexus().clip:
+            if key in nexus.clip:
                 win32clipboard.OpenClipboard()
                 win32clipboard.EmptyClipboard()
-                win32clipboard.SetClipboardText(control.nexus().clip[key])
+                win32clipboard.SetClipboardText(nexus.clip[key])
                 win32clipboard.CloseClipboard()
                 Key("c-v").execute()
             else:
@@ -183,9 +184,9 @@ def drop(nnavi500):
         if not failure:
             break
 
-def erase_multi_clipboard():
-    control.nexus().clip = {}
-    utilities.save_json_file(control.nexus().clip, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
+def erase_multi_clipboard(nexus):
+    nexus.clip = {}
+    utilities.save_json_file(nexus.clip, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
 
 def volume_control(n, volume_mode):
     for i in range(0, int(n)):
@@ -278,24 +279,24 @@ def master_text_nav(mtn_mode, mtn_dir, nnavi500, extreme):
     Key(k).execute()
     time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.) 
 
-def kill_grids_and_wait():
+def kill_grids_and_wait(nexus):
     window_title = utilities.get_active_window_title()
     if window_title == settings.RAINBOW_TITLE or window_title == settings.DOUGLAS_TITLE or window_title == settings.LEGION_TITLE:
-        control.nexus().comm.get_com("grids").kill()
+        nexus.comm.get_com("grids").kill()
         time.sleep(0.1)
 
-def kick():
-    kill_grids_and_wait()
+def kick(nexus):
+    kill_grids_and_wait(nexus)
     windll.user32.mouse_event(0x00000002, 0, 0, 0, 0)
     windll.user32.mouse_event(0x00000004, 0, 0, 0, 0)
 
-def kick_right():
-    kill_grids_and_wait()
+def kick_right(nexus):
+    kill_grids_and_wait(nexus)
     windll.user32.mouse_event(0x00000008, 0, 0, 0, 0)
     windll.user32.mouse_event(0x00000010, 0, 0, 0, 0)
 
-def kick_middle():
-    kill_grids_and_wait()
+def kick_middle(nexus):
+    kill_grids_and_wait(nexus)
     windll.user32.mouse_event(0x00000020, 0, 0, 0, 0)
     windll.user32.mouse_event(0x00000040, 0, 0, 0, 0)
 
