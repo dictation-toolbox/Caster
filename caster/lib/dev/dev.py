@@ -28,7 +28,6 @@ from caster.lib.dfplus.state.short import L, S, R
 from caster.lib.tests.complexity import run_tests
 from caster.lib.tests.integration import stack
 from caster.lib.tests.integration import testrunner
-from caster.lib.tests.integration.testrunner import get_notepad, notepad_message
 
 
 grammar = Grammar('development')
