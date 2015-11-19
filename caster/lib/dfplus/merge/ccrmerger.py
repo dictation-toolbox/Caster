@@ -140,7 +140,7 @@ class CCRMerger(object):
             self._config[CCRMerger._GLOBAL][name] = enable
             self.merge(Inf.RUN, name, enable, save)
         return _
-    def node_rule_changer(self):
+    def selfmod_rule_changer(self):
         def _(name2, enable, save):
             self._config[CCRMerger._SELFMOD][name2] = enable
             self.merge(Inf.SELFMOD, name2, enable, save)
@@ -167,7 +167,10 @@ class CCRMerger(object):
             for _rule in self._get_rules_by_composite(composite): 
                 base = _rule if base is None else base.merge(_rule)
             # merge in the new rule
-            base = base.merge(rule)
+            if base is not None:
+                base = base.merge(rule)
+            else:
+                base = rule
         return base
         
     def _add_grammar(self, rule, ccr=False, context=None):

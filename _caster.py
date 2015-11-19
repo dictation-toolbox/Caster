@@ -116,7 +116,7 @@ class MainRule(MappingRule):
     
     # ccr de/activation
     "<enable> <name>":              R(Function(_NEXUS.merger.global_rule_changer(), save=True), rdescript="Toggle CCR Module"),
-    "<enable> <name2>":             R(Function(_NEXUS.merger.node_rule_changer(), save=True), rdescript="Toggle sm-CCR Module"),
+    "<enable> <name2>":             R(Function(_NEXUS.merger.selfmod_rule_changer(), save=True), rdescript="Toggle sm-CCR Module"),
     
     
     }

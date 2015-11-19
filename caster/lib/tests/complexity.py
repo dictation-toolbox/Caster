@@ -149,7 +149,7 @@ def test(specs, choices, ccr_max):
     for rule in core_and_python():
         merger_ccr_activator(rule.get_name(), True, False)
     print("..")
-    merger.node_rule_changer()("css", True, False)
+    merger.selfmod_rule_changer()("css", True, False)
     print("...")
     
     '''activate the heavy rule'''
@@ -186,7 +186,7 @@ def run_tests():
         nc_orig = 2 
         while not_max_yet:
             
-            for nchoices in range(nc_orig, 500, 2):
+            for nchoices in range(nc_orig, 500, 4):
                 
                 result = test(nspecs, nchoices, ccr_max)
                 reports.append("\ncycles: "+str(cycle_count)\

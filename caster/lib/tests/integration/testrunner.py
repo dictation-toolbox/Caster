@@ -15,7 +15,7 @@ def run_tests():
 #     for i in range(0, 3): notepad_message("\n.", 25)
 #     get_output()
     
-    test_cases = [merger.TestConfig]
+    test_cases = [merger.TestMerger]
     master_suite = unittest.TestSuite()
     
     for test_case in test_cases:
