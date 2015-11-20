@@ -14,7 +14,7 @@ try: # Style C -- may be imported into Caster, or externally
         sys.path.append(BASE_PATH)
 finally:
     from caster.asynch.mouse.grids import TkTransparent, Dimensions
-    from caster.lib import settings, utilities
+    from caster.lib import gdi, settings, utilities
 
 try:
     from PIL import ImageGrab
@@ -144,7 +144,9 @@ class LegionScanner:
         return result
         
     def scan(self, bbox=None):
-        img = ImageGrab.grab(bbox)
+        # ImageGrab.grab currently doesn't support multiple monitors.
+        # If PIL gets updated with multimon support, this can be switched back.
+        img = gdi.grab_screen(bbox) # ImageGrab.grab(bbox)
         result = self.tirg_scan(img)
         if result != self.last_signature:
             with self.lock:
