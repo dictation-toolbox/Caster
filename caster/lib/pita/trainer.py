@@ -7,7 +7,7 @@ from caster.lib.pita import scanner
 from caster.lib.pita.selector import get_similar_symbol_name
 
 
-def receive_pronunciation(data):
+def receive_pronunciation(data, nexus):
     '''get pronunciation'''
     pronunciation=data[0].split("\n")[0]
     if pronunciation=="" or pronunciation.isspace():
@@ -33,7 +33,7 @@ def receive_pronunciation(data):
         log_file.write(str(entry) + "\n")
     
     '''relaunch'''
-    trainer_box()
+    trainer_box(nexus)
 
 
 def trainer_box(nexus):
@@ -67,7 +67,8 @@ def trainer_box(nexus):
     except Exception:
         pass
     
-    BoxAction(receive_pronunciation, rdescript="Train Symbol Data",
+    BoxAction(lambda _data: receive_pronunciation(_data, nexus), 
+          rdescript="Train Symbol Data",
           box_settings={"instructions": "Please Pronounce: " + symbol,
                         "directory": str(directory_index),
                         "file": str(file_index) },

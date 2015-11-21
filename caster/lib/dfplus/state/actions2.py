@@ -4,7 +4,6 @@ from dragonfly.actions.action_startapp import BringApp
 from dragonfly.windows.window import Window
 
 from caster.asynch.hmc import h_launch
-from caster.lib import control
 from caster.lib import settings, utilities, navigation
 from caster.lib.dfplus.state.actions import AsynchronousAction, ContextSeeker, \
     RegisteredAction
@@ -51,7 +50,7 @@ class BoxAction(AsynchronousAction):
         self._["tries"] = 0       # reset
         self._["dragonfly_data"] = data
         h_launch.launch(self.box_type, data = self.encode_box_settings())
-        self.state.add(StackItemAsynchronous(self, data))
+        self.nexus().state.add(StackItemAsynchronous(self, data))
     
     def encode_box_settings(self):
         result=""
@@ -115,7 +114,7 @@ class ConfirmAction(AsynchronousAction):
         confirm_stack_item.shared_state(self.mutable_integer)
                             
         h_launch.launch(settings.QTYPE_CONFIRM, data=settings.HMC_SEPARATOR.join(self.instructions.split(" ")))
-        self.state.add(confirm_stack_item)
+        self.nexus().state.add(confirm_stack_item)
 
 class FuzzyMatchAction(ContextSeeker):
     '''
@@ -183,7 +182,7 @@ class FuzzyMatchAction(ContextSeeker):
         if data is not None and "text" in data:
             self.filter_text = data["text"].format()
         self.mutable_list["value"] = choices
-        self.state.add(StackItemSeeker(self, data))
+        self.nexus().state.add(StackItemSeeker(self, data))
 
 class NullAction(RegisteredAction):
     def __init__(self, rspec="default", rdescript="unnamed command (RA)", show=False):

@@ -61,8 +61,7 @@ class MergeRule(MappingRule):
         '''composite is the IDs of the rules which this MergeRule is composed of: '''
         self.composite =    composite if composite is not None  else set([self.ID])
         self._mcontext = self.__class__.mcontext
-        if self._mcontext is None: self._mcontext = mcontext
-        
+        if self._mcontext is None: self._mcontext = mcontext        
         
         if mapping is not None:
             mapping["display available commands"] = Function(lambda: self._display_available_commands())
@@ -106,7 +105,7 @@ class MergeRule(MappingRule):
     def copy(self):
         return MergeRule(self.name, self._mapping, self._extras.values(), self._defaults, 
                          self._exported, self.ID, self.composite, self.compatible, self._mcontext)
-    def compatibility_check(self, other, debug=False):
+    def compatibility_check(self, other):
         if other.ID in self.compatible:
             return self.compatible[other.ID] # lazily
         compatible = True

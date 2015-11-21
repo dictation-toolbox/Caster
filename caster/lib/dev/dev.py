@@ -1,33 +1,15 @@
-'''
-
-This file is for experimentation. Everything in here should be considered
-unstable and not ready for production.
-
-
-
-
-
-
-'''
-
 from difflib import SequenceMatcher
 from subprocess import Popen
 import time
-import unittest
 
 from dragonfly import (Function, Key, BringApp, Text, WaitWindow, Dictation, Choice, Grammar, MappingRule, Paste)
 
-from caster.lib import utilities, settings, context, control
+from caster.lib import utilities, settings, context
 from caster.lib.dev import devgen
 from caster.lib.dfplus.additions import IntegerRefST
-from caster.lib.dfplus.communication import Communicator
-from caster.lib.dfplus.state.actions import ContextSeeker, AsynchronousAction, \
-    RegisteredAction
-from caster.lib.dfplus.state.actions2 import ConfirmAction, BoxAction
 from caster.lib.dfplus.state.short import L, S, R
+from caster.lib.tests import testrunner
 from caster.lib.tests.complexity import run_tests
-from caster.lib.tests.integration import stack
-from caster.lib.tests.integration import testrunner
 
 
 grammar = Grammar('development')

@@ -155,7 +155,7 @@ class CCRMerger(object):
         '''MergeRule.merge always returns a copy, so there's
         no need to worry about the originals getting modified'''
         if merge_pair.check_compatibility==False or \
-        base.compatibility_check(rule, True):
+        base.compatibility_check(rule):
             base = base.merge(rule)
         else:
             # figure out which MergeRules aren't compatible
