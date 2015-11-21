@@ -2,7 +2,7 @@ from ctypes import windll
 from subprocess import Popen
 import time
 
-from dragonfly import (Key, Text , Playback, Choice, Mouse)
+from dragonfly import (Key, Text , Playback, Choice, Mouse, monitors)
 import dragonfly
 from dragonfly.actions.action_base import ActionError
 from dragonfly.actions.keyboard import Keyboard
@@ -132,8 +132,10 @@ def letters2(big, letter):
 def mouse_alternates(mode, nexus, monitor=1):
     if nexus.dep.PIL:
         if mode == "legion" and not utilities.window_exists(None, "legiongrid"):
+            r = monitors[int(monitor)-1].rectangle
+            bbox = [int(r.x), int(r.y), int(r.x) + int(r.dx) - 1, int(r.y) + int(r.dy) - 1]
             ls = LegionScanner()
-            ls.scan()
+            ls.scan(bbox)
             tscan = ls.get_update()
             Popen(["pythonw", settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0], "-m", str(monitor)])#, "-d", "500_500_500_500"
         elif mode == "rainbow" and not utilities.window_exists(None, "rainbowgrid"):
