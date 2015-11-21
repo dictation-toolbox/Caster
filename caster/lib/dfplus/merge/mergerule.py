@@ -103,7 +103,7 @@ class MergeRule(MappingRule):
     def get_name(self):
         return self.name if self.pronunciation is None else self.pronunciation
     def copy(self):
-        return MergeRule(self.name, self._mapping, self._extras.values(), self._defaults, 
+        return MergeRule(self.name, self._mapping.copy(), self._extras.values(), self._defaults.copy(), 
                          self._exported, self.ID, self.composite, self.compatible, self._mcontext)
     def compatibility_check(self, other):
         if other.ID in self.compatible:

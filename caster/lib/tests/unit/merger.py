@@ -49,6 +49,7 @@ class TestMerger(TestState):
         self.assertEqual(len(self.nexus.merger.global_rule_names()), 3)
         self.assertEqual(len(self.nexus.merger.selfmod_rule_names()), 1)
         self.assertEqual(len(self.nexus.merger.app_rule_names()), 1)
+        self.assertRaises(Exception, lambda: self.nexus.merger.add_global_rule(Java()))
     
     def test_rule_activation(self):
         bash = Bash()
@@ -74,7 +75,8 @@ class TestMerger(TestState):
         self.set_selfmod(ChainAlias.pronunciation, False, True)
         self.assertFalse("chain alias" in self.nexus.merger._base_global.mapping_actual())
         
-        
+    def test_reject_mapping_rules(self):
+        self.assertRaises(AttributeError, lambda: self.nexus.merger.add_global_rule(eclipse.CommandRule(name="eclipse")))
         
         
         

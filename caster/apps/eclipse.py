@@ -1,6 +1,5 @@
 from dragonfly import (Grammar, AppContext, MappingRule,
-                       Dictation, IntegerRef,
-                       Key, Text, Repeat, Pause)
+                       Dictation, Key, Text, Repeat, Pause)
 from dragonfly.actions.action_mimic import Mimic
 
 from caster.lib import settings
@@ -8,7 +7,6 @@ from caster.lib import control
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
-from caster.lib.dfplus.hint.hintnode import HintNode, NodeRule
 
 
 class CommandRule(MappingRule):

@@ -112,7 +112,7 @@ class CCRMerger(object):
         self.global_rule_names()+\
         self.app_rule_names()+\
         self.selfmod_rule_names():
-            raise "Rule Naming Conflict: "+rule.get_name()
+            raise Exception("Rule Naming Conflict: "+rule.get_name())
         if isinstance(rule, MergeRule):
             for name in group.keys(): 
                 group[name].compatibility_check(rule) # calculate compatibility for uncombined rules at boot time

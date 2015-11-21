@@ -1,6 +1,6 @@
 import unittest
 
-from caster.lib.tests.unit import merger, mergerule
+from caster.lib.tests.unit import merger, mergerule, filter
 
 
 # from caster.lib.tests.integration import output
@@ -15,7 +15,9 @@ def run_tests():
 #     for i in range(0, 3): notepad_message("\n.", 25)
 #     get_output()
     
-    test_cases = [merger.TestMerger, mergerule.TestMergeRule]
+    test_cases = [merger.TestMerger, 
+                  mergerule.TestMergeRule, 
+                  filter.TestFilterNonBootTime]
     master_suite = unittest.TestSuite()
     
     for test_case in test_cases:
