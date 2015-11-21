@@ -156,6 +156,7 @@ def init_default_values():
                        ("emacs", True),
                        ("explorer", True),
                        ("firefox", True),
+                       ("flashdevelop", True),
                        ("foxitreader", True),
                        ("gitbash", True),
                        ("kdiff3", True),
