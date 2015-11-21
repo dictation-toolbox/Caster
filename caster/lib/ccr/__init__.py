@@ -5,6 +5,7 @@ from core.numbers import Numbers
 from core.punctuation import Punctuation
 from cpp.cpp import CPP
 from csharp.csharp import CSharp
+from haxe.haxe import Haxe
 from html.html import HTML
 from java.java import Java
 from javascript.javascript import Javascript
