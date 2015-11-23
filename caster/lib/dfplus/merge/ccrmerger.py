@@ -155,8 +155,9 @@ class CCRMerger(object):
         '''MergeRule.merge always returns a copy, so there's
         no need to worry about the originals getting modified'''
         if merge_pair.check_compatibility==False or \
+        base is None or \
         base.compatibility_check(rule):
-            base = base.merge(rule)
+            base = rule if base is None else base.merge(rule)
         else:
             # figure out which MergeRules aren't compatible
             composite = base.composite.copy() # composite is a set of the ids of the rules which make up this rule
@@ -265,9 +266,14 @@ class CCRMerger(object):
             negate = ~context
             if negation_context is None: negation_context = negate
             else: negation_context & negate
-         
+        
+        
+        '''handle empty merge'''
+        if base is None:
+            base = MergeRule()
+        
         ''' save results for next merge '''
-        self._base_global = base.copy()
+        self._base_global = base.copy() 
         
         '''instantiate non-ccr rules affiliated with rules in the base CCR rule'''
         active_global  = self._get_rules_by_composite(base.composite, True)

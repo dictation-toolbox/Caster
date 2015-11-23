@@ -1,9 +1,12 @@
+from dragonfly.actions.action_text import Text
+
 from caster.apps import eclipse
 from caster.apps.eclipse import EclipseCCR
 from caster.lib.ccr.bash.bash import Bash
 from caster.lib.ccr.java.java import Java
 from caster.lib.ccr.python.python import Python
 from caster.lib.ccr.recording.alias import ChainAlias
+from caster.lib.ccr.standard import SymbolSpecs
 from caster.lib.dfplus.merge.ccrmerger import Inf, CCRMerger
 from caster.lib.dfplus.merge.filter import make_filter, there_is_spec_overlap, incoming_gets_priority
 from caster.lib.tests.unit.state import TestState
@@ -32,6 +35,7 @@ class TestFilterNonBootTime(TestFilterFunctions):
     def setUp(self):
         TestFilterFunctions.setUp(self)
         self.nexus.merger.merge(Inf.BOOT)
+        self.set_global("Python", True, True)
 
 
     def test_runtime_global_spec_replace(self):
@@ -53,7 +57,34 @@ class TestFilterNonBootTime(TestFilterFunctions):
         '''make sure were not deleting from the Python class mapping: '''
         self.assertNotEqual(python_specs, 0)
         
-        '''clear filters'''
+        '''clear filters, clean up'''
         self.nexus.merger._filters = []
+        self.set_global(self._python2, False, True)
+    
+    def test_runtime_global_action_replace(self):
+        def replace_if_action(mp):
+            if mp.rule1 is not None:
+                mp.rule1.mapping_actual()[SymbolSpecs.IF] = Text("test")
+            mp.rule2.mapping_actual()[SymbolSpecs.IF] = Text("test")
+        
+        ff = make_filter(lambda mp: replace_if_action(mp), 
+                         None, Inf.RUN, Inf.GLOBAL)
+        self.nexus.merger.add_filter(ff)
+        
+        self.set_global("Java", True, True)
+        self.set_global("Python", True, True)
+        
+        self.assertTrue(isinstance(self.nexus.merger._base_global.mapping_actual()[SymbolSpecs.IF], Text))
+                        
+        self.nexus.merger._filters = []
+        
+        self.set_global("Java", True, True)
+        self.set_global("Python", True, True)
+        
+        '''make sure originals weren't changed'''
+        self.assertFalse(isinstance(self.nexus.merger._base_global.mapping_actual()[SymbolSpecs.IF], Text))
+        
+        
+        
         
         

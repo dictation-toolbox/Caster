@@ -7,5 +7,4 @@ class TestNexus(unittest.TestCase):
     
     def setUp(self):
         unittest.TestCase.setUp(self)
-        self.nexus = Nexus()
-        self.nexus.merger.use_real_config = False
+        self.nexus = Nexus(False)

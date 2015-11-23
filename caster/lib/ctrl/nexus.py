@@ -11,7 +11,7 @@ from caster.lib.dfplus.merge.ccrmerger import CCRMerger
 
 
 class Nexus:
-    def __init__(self):
+    def __init__(self, real_merger_config=True):
         
         self.state = None
         
@@ -36,7 +36,7 @@ class Nexus:
         
         self.macros_grammar = Grammar("recorded_macros")
         
-        self.merger = CCRMerger()
+        self.merger = CCRMerger(real_merger_config)
         self.auto = AutoSwitcher(self)
     
     def inform_state(self, state):# resolves circular import 
