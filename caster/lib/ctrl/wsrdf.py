@@ -66,7 +66,7 @@ class TimerForWSR(object):
         
     def setTimerCallback(self, callback):
         _continue = self._continue
-        if callback==None:
+        if callback is None:
             _continue["_continue"] = False
         else:
             _continue["_continue"] = True

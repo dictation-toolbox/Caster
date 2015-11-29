@@ -5,6 +5,6 @@ _NEXUS = None
 
 def nexus():
     global _NEXUS
-    if _NEXUS==None:
+    if _NEXUS is None:
         _NEXUS = Nexus()
     return _NEXUS

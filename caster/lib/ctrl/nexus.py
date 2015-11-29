@@ -8,12 +8,13 @@ from caster.lib.ctrl.switcher import AutoSwitcher
 from caster.lib.ctrl.wsrdf import TimerForWSR, RecognitionHistoryForWSR
 from caster.lib.dfplus.communication import Communicator
 from caster.lib.dfplus.merge.ccrmerger import CCRMerger
+from caster.lib.dfplus.state.stack import CasterState
 
 
 class Nexus:
     def __init__(self, real_merger_config=True):
         
-        self.state = None
+        self.state = CasterState()
         
         self.clip = {}
         self.sticky = []
@@ -22,6 +23,7 @@ class Nexus:
         if not settings.WSR:
             self.history = RecognitionHistory(20)
             self.history.register()
+        self.state.set_stack_history(self.history)
         self.preserved = None
         
         self.comm = Communicator()
@@ -38,13 +40,10 @@ class Nexus:
         
         self.merger = CCRMerger(real_merger_config)
         self.auto = AutoSwitcher(self)
-    
-    def inform_state(self, state):# resolves circular import 
-        self.state = state
 
 _NEXUS = None
 def nexus():
     global _NEXUS
-    if _NEXUS==None:
+    if _NEXUS is None:
         _NEXUS = Nexus()
     return _NEXUS

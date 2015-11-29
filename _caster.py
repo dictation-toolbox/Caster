@@ -27,9 +27,7 @@ try:
     if settings.WSR:
         _wait_for_wsr_activation()
     from caster.lib import control
-    from caster.lib.dfplus.state.stack import CasterState# requires control
     _NEXUS = control.nexus()
-    _NEXUS.inform_state(CasterState(_NEXUS))
     
     from caster.apps import *
     from caster.asynch import *
@@ -56,9 +54,7 @@ except:
     print("\nAttempting to load CCR anyway...")
     from caster.lib import utilities
     from caster.lib import control
-    from caster.lib.dfplus.state.stack import CasterState# requires control
     _NEXUS = control.nexus()
-    _NEXUS.inform_state(CasterState(_NEXUS))
     
     utilities.simple_log()
 
