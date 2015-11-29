@@ -156,7 +156,7 @@ def _difficult_to_type(name):
     for name_piece in broken_by_underscores:
         if not name_piece == "" and len(name_piece) > 1:
             dragon_check = natlink.getWordInfo(name_piece, 7)
-            if dragon_check == None:  # only add letter combinations that Dragon doesn't recognize as words
+            if dragon_check is None:  # only add letter combinations that Dragon doesn't recognize as words
                 found_something_difficult_to_type = True
                 break
     return found_something_difficult_to_type

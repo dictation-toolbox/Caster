@@ -12,8 +12,8 @@ class Haxe(MergeRule):
     pronunciation = "hacks"
         
     mapping = {
-        SymbolSpecs.IF:                     R(Key("i, f, lparen, rparen, leftbrace, enter,up,left"), rdescript="Haxe: If"),
-        SymbolSpecs.ELSE:                   R(Key("e, l, s, e, leftbrace, enter"), rdescript="Haxe: Else"),
+        SymbolSpecs.IF:                     R(Key("i, f, lparen, rparen, left"), rdescript="Haxe: If"),
+        SymbolSpecs.ELSE:                   R(Key("e, l, s, e"), rdescript="Haxe: Else"),
         #
         SymbolSpecs.SWITCH:                 R(Text("switch(){\ncase : EXPRESSION;\ndefault: EXPRESSION;")+Key("up,up,left,left"), rdescript="Haxe: Switch"),
         SymbolSpecs.CASE:                   R(Text("case :")+Key("left"), rdescript="Haxe: Case"),
@@ -45,7 +45,7 @@ class Haxe(MergeRule):
         #
         SymbolSpecs.NULL:                   R(Text("null"), rdescript="Haxe: Null Value"),
         #
-        SymbolSpecs.RETURN:                 R(Text("return"), rdescript="Haxe: Return"),
+        SymbolSpecs.RETURN:                 R(Text("return "), rdescript="Haxe: Return"),
         #
         SymbolSpecs.TRUE:                   R(Text("true"), rdescript="Haxe: True"),
         SymbolSpecs.FALSE:                  R(Text("false"), rdescript="Haxe: False"),
@@ -72,6 +72,7 @@ class Haxe(MergeRule):
         "public":                           R(Text("public "), rdescript="Haxe: Public"),
         "private":                          R(Text("private "), rdescript="Haxe: Private"),
         "static":                           R(Text("static "), rdescript="Haxe: Static"),
+        "this":                             R(Text("this"), rdescript="Haxe: This"),
         
         "safe cast":                        R(Text("cast (NAME, CLASS)"), rdescript="Haxe: Safe Cast"), 
         "get class":                        R(Text("Type.getClass()")+Key("left"), rdescript="Haxe: Get Class"), 

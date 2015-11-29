@@ -71,7 +71,7 @@ class SettingsFrame(Frame):
         d = {}
         
         children = None
-        if t == None: children = self.fields
+        if t is None: children = self.fields
         else: children = t.children
         
         for field in children:

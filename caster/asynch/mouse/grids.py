@@ -346,7 +346,7 @@ def main(argv):
                 g = DouglasGrid
         elif opt == '-m':
             m = arg
-    if g == None:
+    if g is None:
         raise ValueError("Grid mode not specified.")
     r = monitors[int(m)-1].rectangle
     grid_size = Dimensions(int(r.dx), int(r.dy), int(r.x), int(r.y))

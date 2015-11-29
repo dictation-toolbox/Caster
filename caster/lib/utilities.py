@@ -104,7 +104,7 @@ def availability_message(feature, dependency):
 # end stuff that was moved
 def remote_debug(who_called_it=None):
     import pydevd;  # @UnresolvedImport
-    if who_called_it == None:
+    if who_called_it is None:
         who_called_it = "An unidentified process"
     try:
         pydevd.settrace()

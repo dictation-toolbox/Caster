@@ -40,7 +40,9 @@ class CommandRule(MappingRule):
             "build it":                                 R(Key("f8"), rdescript="FlashDevelop: Build"),
             "(debug | run) last":                       R(Key("f5"), rdescript="FlashDevelop: Run"),
             
-            "split view horizontal":                    R(Key("cs-enter"), rdescript="FlashDevelop: Split View (H)"), 
+            "split view horizontal":                    R(Key("cs-enter"), rdescript="FlashDevelop: Split View (H)"),
+            "auto complete":                            R(Key("cs-1"), rdescript="FlashDevelop: Auto Complete"),
+            
         }
     extras = [
             Dictation("text"),

@@ -69,13 +69,13 @@ def save_config():
     global SETTINGS
     global SETTINGS_PATH
     global INISETPATH
-    _save(SETTINGS, INISETPATH if SETTINGS == None or not "SETTINGS" in SETTINGS.keys() else SETTINGS["SETTINGS_PATH"])
+    _save(SETTINGS, INISETPATH if SETTINGS is None or not "SETTINGS" in SETTINGS.keys() else SETTINGS["SETTINGS_PATH"])
 
 def load_config():
     global SETTINGS
     global SETTINGS_PATH
     global INISETPATH
-    SETTINGS = _load(INISETPATH if SETTINGS == None else SETTINGS["SETTINGS_PATH"])
+    SETTINGS = _load(INISETPATH if SETTINGS is None else SETTINGS["SETTINGS_PATH"])
     init_default_values()
 
 def update_values(d, key_values):

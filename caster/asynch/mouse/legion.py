@@ -189,7 +189,7 @@ def main(argv):
             elif opt in ("-a", "--autoquit"):
                 auto_quit = arg in ("1", "t")    
         
-        if dimensions == None:
+        if dimensions is None:
             r = monitors[int(monitor)-1].rectangle
             dimensions = Dimensions(int(r.dx), int(r.dy), int(r.x), int(r.y))
         lg = LegionGrid(grid_size=dimensions, tirg=tirg, auto_quit=auto_quit)

@@ -17,7 +17,7 @@ class CasterState:
         self.waiting = Queue.Queue()
         self.nexus = nexus
     def add(self, stack_item):
-        if self.blocker == None:
+        if self.blocker is None:
             ''' important to block before adding because the add might unblock '''
             if ContextStack.is_asynchronous(stack_item.type) and stack_item.blocking:
                 self.blocker = stack_item
@@ -40,7 +40,7 @@ class CasterState:
             if ContextStack.is_asynchronous(task.type):
                 self.blocker=task
                 break
-    def halt_asynchronous(self, success):
+    def terminate_asynchronous(self, success):
         ''' only for use with Dragonfly Function actions which can't return true or false but need spoken parameters'''
         self.blocker.execute(success)
 
