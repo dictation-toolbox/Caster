@@ -6,7 +6,7 @@ from caster.lib.ccr.python.python import Python
 from caster.lib.ccr.recording.alias import ChainAlias
 from caster.lib.ccr.standard import SymbolSpecs
 from caster.lib.dfplus.merge.ccrmerger import CCRMerger, Inf
-from caster.lib.tests.unit.state import TestState
+from caster.lib.tests.unit.state import TestNexus
 
 
 def demo_filter(_):
@@ -18,10 +18,10 @@ def demo_filter(_):
                 del _.rule1.mapping_actual()[spec]
         _.check_compatibility = False
 
-class TestMerger(TestState):
+class TestMerger(TestNexus):
     
     def setUp(self):
-        TestState.setUp(self)
+        TestNexus.setUp(self)
         self.PYTHON_ID = 100
         self.nexus.merger.add_global_rule(Python(ID=self.PYTHON_ID))
         self.nexus.merger.add_global_rule(Java())
@@ -35,7 +35,7 @@ class TestMerger(TestState):
         self.set_selfmod = self.nexus.merger.selfmod_rule_changer()
     def tearDown(self):
         self.nexus.merger.wipe()
-        TestState.tearDown(self)
+        TestNexus.tearDown(self)
     
     def test_config_defaults(self):
         self.assertTrue(CCRMerger._GLOBAL in self.nexus.merger._config)

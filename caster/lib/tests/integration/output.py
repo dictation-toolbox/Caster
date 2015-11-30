@@ -1,6 +1,6 @@
 import unittest
 
-from caster.lib.tests.integration.testutils import get_playback, get_output
+from caster.lib.tests.testutils import get_playback, get_output
 
 
 class TestOutput(unittest.TestCase):

@@ -16,7 +16,7 @@ from caster.lib.dfplus.state.actions import ContextSeeker, AsynchronousAction, \
     RegisteredAction
 from caster.lib.dfplus.state.actions2 import ConfirmAction, BoxAction
 from caster.lib.dfplus.state.short import L, S, R
-from caster.lib.tests.integration.testutils import get_playback, get_output
+from caster.lib.tests.testutils import get_playback, get_output
 
 
 LAST_TIME=0

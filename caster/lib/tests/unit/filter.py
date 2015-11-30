@@ -9,13 +9,13 @@ from caster.lib.ccr.recording.alias import ChainAlias
 from caster.lib.ccr.standard import SymbolSpecs
 from caster.lib.dfplus.merge.ccrmerger import Inf, CCRMerger
 from caster.lib.dfplus.merge.filter import make_filter, there_is_spec_overlap, incoming_gets_priority
-from caster.lib.tests.unit.state import TestState
+from caster.lib.tests.unit.state import TestNexus
 
 
-class TestFilterFunctions(TestState):
+class TestFilterFunctions(TestNexus):
     
     def setUp(self):
-        TestState.setUp(self)
+        TestNexus.setUp(self)
         self.nexus.merger.add_global_rule(Python())
         self._python2="Python2"
         self.nexus.merger.add_global_rule(Python(name=self._python2))
@@ -27,7 +27,7 @@ class TestFilterFunctions(TestState):
         self.set_selfmod = self.nexus.merger.selfmod_rule_changer()
     def tearDown(self):
         self.nexus.merger.wipe()
-        TestState.tearDown(self)
+        TestNexus.tearDown(self)
 
 
 
