@@ -15,25 +15,30 @@ class TestState(TestNexus):
         TestNexus.setUp(self)
     
     def test_blocking(self):
-        '''make fake AsynchronousAction'''
-        context_set = S(["cancel", "words"], NullAction())
-        context_level = L(context_set)
-        aa1 = AsynchronousAction([context_level], 
-                                time_in_seconds=0.2, 
-                                repetitions=20,
-                                blocking=True) # turn blocking on
-        aa1.set_nexus(self.nexus)
-        '''make fake StackItemAsynchronous'''
-        alt = MockAlternative(u"run", u"blocker")
-        sia1 = StackItemAsynchronous(aa1, {"_node":alt})# the dictionary is fake Dragonfly data
-        '''add it'''
-        self.nexus.state.add(sia1)
+        '''tests:
+        1 - successful termination (queued actions execute immediately)
+        2 - unsuccessful termination (queued actions are dropped)
+        3 - cancellation (queued actions are dropped)
+        '''
         
-        '''blocked function'''
-        mutable_integer = {"value": 0}
-        def increment():
-            mutable_integer["value"]+=1
         for i in range(0, 3):
+            '''make fake AsynchronousAction'''
+            context_set = S(["cancel", "words"], NullAction())
+            context_level = L(context_set)
+            aa1 = AsynchronousAction([context_level],
+                                    blocking=True) # turn blocking on
+            aa1.set_nexus(self.nexus)
+            '''make fake StackItemAsynchronous'''
+            alt = MockAlternative(u"run", u"blocker")
+            sia1 = StackItemAsynchronous(aa1, {"_node":alt})# the dictionary is fake Dragonfly data
+            '''add it'''
+            self.nexus.state.add(sia1)
+            
+            '''blocked function'''
+            mutable_integer = {"value": 0}
+            def increment():
+                mutable_integer["value"]+=1
+            
             '''make fake incrementing RegisteredAction'''
             inc = R(Function(increment), rspec="inc")
             inc.set_nexus(self.nexus)
@@ -42,9 +47,26 @@ class TestState(TestNexus):
             sira1 = StackItemRegisteredAction(inc, {"_node":alt2})
             '''add it'''
             self.nexus.state.add(sira1)
-        '''incrementing should be blocked at this point'''
-        self.assertEqual(mutable_integer["value"], 0)
-        
-        '''incrementing should happen that moment of unblocking'''
-        self.nexus.state.terminate_asynchronous(True)
-        self.assertEqual(mutable_integer["value"], 3)
+            '''incrementing should be blocked at this point'''
+            self.assertEqual(mutable_integer["value"], 0)
+            
+            if i==0:
+                '''incrementing should happen that moment of unblocking'''
+                self.nexus.state.terminate_asynchronous(True)
+                self.assertEqual(mutable_integer["value"], 1)
+            elif i==1:
+                '''incrementing gets dropped'''
+                self.nexus.state.terminate_asynchronous(False)
+                self.assertEqual(mutable_integer["value"], 0)
+            elif i==2:
+                '''make fake canceling RegisteredAction'''
+                cancel = NullAction(rspec="cancel")
+                cancel.set_nexus(self.nexus)
+                '''make fake StackItemRegisteredAction'''
+                alt3 = MockAlternative(u"my", u"cancel", u"words")
+                sira2 = StackItemRegisteredAction(cancel, {"_node":alt3})
+                '''add it'''
+                self.nexus.state.add(sira2)
+                '''incrementing gets dropped'''
+                self.assertEqual(mutable_integer["value"], 0)
+    

@@ -37,7 +37,7 @@ class ContextSeeker(RegisteredAction):
         self.forward = forward
         self.rspec = rspec
         self.rdescript = rdescript
-        assert self.back != None or self.forward != None, "Cannot create ContextSeeker with no levels"
+        assert self.back is not None or self.forward is not None, "Cannot create ContextSeeker with no levels"
     def _execute(self, data=None):
         self.nexus().state.add(StackItemSeeker(self, data))
         
@@ -62,7 +62,7 @@ class AsynchronousAction(ContextSeeker):
         self.rdescript = rdescript
         self.blocking = blocking
         self.base = finisher
-        assert self.forward != None, "Cannot create AsynchronousAction with no termination commands"
+        assert self.forward is not None, "Cannot create AsynchronousAction with no termination commands"
         assert len(self.forward) == 1, "Cannot create AsynchronousAction with > or < one purpose"
     def _execute(self, data=None):
         if data is not None:

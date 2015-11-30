@@ -5,7 +5,7 @@ Created on Jun 7, 2015
 '''
 import Queue
 
-from caster.lib import settings
+from caster.lib import settings, utilities
 from caster.lib.dfplus.state.stackitems import StackItemSeeker, \
     StackItemRegisteredAction, StackItemAsynchronous, StackItemConfirm
 
@@ -66,7 +66,7 @@ class ContextStack:
                 for i in range(0, seekback_size):
                     index = stack_size - 1 - i
                     # back looking seekers have nothing else to wait for
-                    if index >= 0 and self.list[index].base != None:
+                    if index >= 0 and self.list[index].base is not None:
                         # what's the purpose in blocking seeker chaining?
                         prev = self.list[index]  # if self.list[index].type not in ["seeker", "continuer"] else None
                         stack_item.satisfy_level(i, True, prev)
@@ -102,7 +102,7 @@ class ContextStack:
                 if seeker.get_index_of_next_unsatisfied_level() == -1:
                     seeker.execute(False)
                 
-        stack_item_is_forward_seeker = stack_item.type == StackItemSeeker.TYPE and stack_item.forward != None
+        stack_item_is_forward_seeker = stack_item.type == StackItemSeeker.TYPE and stack_item.forward is not None
         stack_item_is_continuer = ContextStack.is_asynchronous(stack_item.type)
         if not stack_item.consumed and not stack_item_is_forward_seeker and not stack_item_is_continuer:
             stack_item.execute()

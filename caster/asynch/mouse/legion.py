@@ -34,7 +34,7 @@ class LegionGrid(TkTransparent):
         self.attributes("-alpha", 0.7)
         
         self.tirg_positions = {}
-        if tirg != None:
+        if tirg is not None:
             self.process_rectangles(tirg)
             self.draw_tirg_squares()
         

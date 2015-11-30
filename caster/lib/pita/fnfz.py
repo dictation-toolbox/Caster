@@ -12,7 +12,7 @@ def pita_list_provider():
     if filename is None:
         print("pita: filename pattern not found in window title")
         return []
-    if active_file_path[0] != None:
+    if active_file_path[0] is not None:
         return scanner.DATA["directories"][active_file_path[0]][active_file_path[1]]["names"]
     else:
         return []

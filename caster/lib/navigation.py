@@ -261,7 +261,7 @@ def master_text_nav(mtn_mode, mtn_dir, nnavi500, extreme):
     
     k = None
     if mtn_mode is None:
-        if extreme != None:
+        if extreme is not None:
             if mtn_dir == "left":
                 k = "home"
             elif mtn_dir == "right":
