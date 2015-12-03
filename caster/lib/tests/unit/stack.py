@@ -1,10 +1,10 @@
 from dragonfly.actions.action_text import Text
 
-from caster.lib.dfplus.state.actions import AsynchronousAction
+from caster.lib.dfplus.state.actions import AsynchronousAction, ContextSeeker
 from caster.lib.dfplus.state.actions2 import NullAction
 from caster.lib.dfplus.state.short import L, S, R
 from caster.lib.dfplus.state.stackitems import StackItemAsynchronous, \
-    StackItemRegisteredAction
+    StackItemRegisteredAction, StackItemSeeker
 from caster.lib.tests.testutils import MockAlternative
 from caster.lib.tests.unit.nexus import TestNexus
 
@@ -47,3 +47,91 @@ class TestStack(TestNexus):
         '''AsynchronousAction should have executed exactly once, 
         when it was added, then immediately gotten canceled'''
         self.assertEqual(mutable_integer["value"], 1)
+    
+    def test_list_pruning(self):
+        '''make fake RegisteredAction'''
+        action = R(NullAction(), rspec="test")
+        action.set_nexus(self.nexus)
+        
+        
+        for i in range(0, self.nexus.state.stack.max_list_size+5):
+            '''make fake StackItemRegisteredAction'''
+            alt = MockAlternative(u"my", u"spoken", u"words")
+            sira1 = StackItemRegisteredAction(action, {"_node":alt})
+            '''add it'''
+            self.nexus.state.add(sira1)
+        
+        self.assertEqual(len(self.nexus.state.stack.list), self.nexus.state.stack.max_list_size)
+        
+    def test_preserving_spoken_words(self):
+        '''make fake RegisteredAction'''
+        action = R(NullAction(), rspec="test")
+        action.set_nexus(self.nexus)
+        '''make fake StackItemRegisteredAction'''
+        spoken=[u"my", u"spoken", u"words"]
+        alt = MockAlternative(*spoken)
+        sira1 = StackItemRegisteredAction(action, {"_node":alt})
+        '''add it'''
+        self.nexus.state.add(sira1)
+        
+        last_item = self.nexus.state.stack.list[len(self.nexus.state.stack.list)-1]
+        self.assertEqual(spoken, last_item.get_preserved())
+    
+    def test_seeker_forward(self):
+        mutable_string = {"value": ""}
+        def append_a():
+            mutable_string["value"] += "a"
+        def append_b():
+            mutable_string["value"] += "b"
+        def append_c():
+            mutable_string["value"] += "c"
+        def append_d():
+            mutable_string["value"] += "d"
+        
+        '''create context levels'''
+        set_1_1 = S(["arch"], append_a)
+        set_1_2 = S(["bell"], append_b)
+        level_1 = L(set_1_1, set_1_2)
+        set_2_1 = S(["cellar"], append_c)
+        set_2_2 = S(["door"], append_d)
+        level_2 = L(set_2_1, set_2_2)
+        
+        '''create context seeker'''
+        levels = [level_1, level_2]
+        seeker = ContextSeeker(forward=levels)
+        seeker.set_nexus(self.nexus)
+        
+        '''create context seeker stack item'''
+        alt = MockAlternative(u"my", u"spoken", u"words")
+        stack_seeker = StackItemSeeker(seeker, {"_node":alt})
+        '''add it'''
+        self.nexus.state.add(stack_seeker)
+        
+        '''make 2 fake triggering RegisteredActions'''
+        trigger1 = R(NullAction(), rspec="bell")
+        trigger2 = R(NullAction(), rspec="cellar")
+        trigger1.set_nexus(self.nexus)
+        trigger2.set_nexus(self.nexus)
+        '''make fake StackItemRegisteredActions'''
+        alt2 = MockAlternative(u"my", u"spoken", u"words")
+        sira1 = StackItemRegisteredAction(trigger1, {"_node":alt2})
+        sira2 = StackItemRegisteredAction(trigger2, {"_node":alt2})
+        '''add them'''
+        self.nexus.state.add(sira1)
+        self.nexus.state.add(sira2)
+        
+        self.assertEqual(mutable_string["value"], "bc")
+#     def test_clean_items(self):
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
+        

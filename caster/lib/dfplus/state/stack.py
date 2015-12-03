@@ -49,6 +49,7 @@ class CasterState:
 class ContextStack:
     def __init__(self, state):
         self.list = []
+        self.max_list_size = 30
         self.state = state
     def set_history(self, history):
         self._history = history
@@ -88,18 +89,19 @@ class ContextStack:
                 seeker = incomplete[i]
                 unsatisfied = seeker.get_index_of_next_unsatisfied_level()
                 seeker.satisfy_level(unsatisfied, False, stack_item)
+                seeker_still_unsatisfied = seeker.get_index_of_next_unsatisfied_level() == -1
                 
-                # consume stack_item
-                seeker_is_continuer = ContextStack.is_asynchronous(seeker.type)
-                if ((stack_item.type == StackItemRegisteredAction.TYPE and not seeker_is_continuer)  # do not consume seekers, it would disable chaining
-                or (seeker_is_continuer and seeker.get_index_of_next_unsatisfied_level() == -1)):
+                
+                ''' consume stack_item, but do not consume seekers;he it would disable chaining'''
+                if (stack_item.type == StackItemRegisteredAction.TYPE  
+                or (ContextStack.is_asynchronous(seeker.type) and seeker_still_unsatisfied)):
                     if seeker.forward[unsatisfied].result.consume:
                         stack_item.complete = True
                         stack_item.consumed = True
                         stack_item.clean()
                     seeker.eat(unsatisfied, stack_item)
                 
-                if seeker.get_index_of_next_unsatisfied_level() == -1:
+                if seeker_still_unsatisfied:
                     seeker.execute(False)
                 
         stack_item_is_forward_seeker = stack_item.type == StackItemSeeker.TYPE and stack_item.forward is not None
@@ -112,7 +114,7 @@ class ContextStack:
             stack_item.put_time_action()
                     
         self.list.append(stack_item)
-        if len(self.list)>100:# make this number configurable
+        if len(self.list)>self.max_list_size:# make this number configurable
             self.list.remove(self.list[0])
     
     def get_incomplete_seekers(self):
