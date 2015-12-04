@@ -84,25 +84,26 @@ class ContextStack:
                and if they are complete, execute them in FIFO order'''
         incomplete = self.get_incomplete_seekers()
         number_incomplete = len(incomplete)
+        seeker_executions = []
         if number_incomplete > 0:
             for i in range(0, number_incomplete):
                 seeker = incomplete[i]
                 unsatisfied = seeker.get_index_of_next_unsatisfied_level()
                 seeker.satisfy_level(unsatisfied, False, stack_item)
-                seeker_still_unsatisfied = seeker.get_index_of_next_unsatisfied_level() == -1
+                seeker_is_satisfied = seeker.get_index_of_next_unsatisfied_level() == -1
                 
                 
                 ''' consume stack_item, but do not consume seekers;he it would disable chaining'''
                 if (stack_item.type == StackItemRegisteredAction.TYPE  
-                or (ContextStack.is_asynchronous(seeker.type) and seeker_still_unsatisfied)):
+                or (ContextStack.is_asynchronous(seeker.type) and seeker_is_satisfied)):
                     if seeker.forward[unsatisfied].result.consume:
                         stack_item.complete = True
                         stack_item.consumed = True
                         stack_item.clean()
                     seeker.eat(unsatisfied, stack_item)
                 
-                if seeker_still_unsatisfied:
-                    seeker.execute(False)
+                if seeker_is_satisfied:
+                    seeker_executions.append(lambda: seeker.execute(False))
                 
         stack_item_is_forward_seeker = stack_item.type == StackItemSeeker.TYPE and stack_item.forward is not None
         stack_item_is_continuer = ContextStack.is_asynchronous(stack_item.type)
@@ -112,6 +113,10 @@ class ContextStack:
         elif stack_item_is_continuer:
             stack_item.begin()
             stack_item.put_time_action()
+        
+        ''' forward seeker executions occur after unconsumed triggers -- moved here for more consistent behavior '''
+        for seeker_execution in seeker_executions:
+            seeker_execution() 
                     
         self.list.append(stack_item)
         if len(self.list)>self.max_list_size:# make this number configurable

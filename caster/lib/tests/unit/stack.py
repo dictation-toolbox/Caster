@@ -1,6 +1,9 @@
+from dragonfly.actions.action_function import Function
 from dragonfly.actions.action_text import Text
 
-from caster.lib.dfplus.state.actions import AsynchronousAction, ContextSeeker
+from caster.lib import utilities
+from caster.lib.dfplus.state.actions import AsynchronousAction, ContextSeeker, \
+    RegisteredAction
 from caster.lib.dfplus.state.actions2 import NullAction
 from caster.lib.dfplus.state.short import L, S, R
 from caster.lib.dfplus.state.stackitems import StackItemAsynchronous, \
@@ -108,8 +111,8 @@ class TestStack(TestNexus):
         self.nexus.state.add(stack_seeker)
         
         '''make 2 fake triggering RegisteredActions'''
-        trigger1 = R(NullAction(), rspec="bell")
-        trigger2 = R(NullAction(), rspec="cellar")
+        trigger1 = NullAction(rspec="bell")
+        trigger2 = NullAction(rspec="cellar")
         trigger1.set_nexus(self.nexus)
         trigger2.set_nexus(self.nexus)
         '''make fake StackItemRegisteredActions'''
@@ -122,7 +125,67 @@ class TestStack(TestNexus):
         
         self.assertEqual(mutable_string["value"], "bc")
 #     def test_clean_items(self):
+    def test_seeker_consume(self):
+        '''seeker actions have the option to not/consume their triggers;
+        that is, the trigger actions do not execute and only act as triggers'''
         
+        mutable_string = {"value": ""}
+        def append_a():
+            mutable_string["value"] += "a"
+        def append_b():
+            mutable_string["value"] += "b"
+        def append_c():
+            mutable_string["value"] += "c"
+        def append_d():
+            mutable_string["value"] += "d"
+        def append_e():
+            mutable_string["value"] += "e"
+        def append_f():
+            mutable_string["value"] += "f"
+        
+        '''create context levels'''
+        set_1_1 = S(["arch"], append_a)
+        set_1_2 = S(["bell"], append_b)
+        set_1_2.consume = False
+        level_1 = L(set_1_1, set_1_2)
+        set_2_1 = S(["cellar"], append_c)
+        set_2_2 = S(["door"], append_d)
+        level_2 = L(set_2_1, set_2_2)
+        set_3_1 = S(["echo"], append_e)
+        set_3_2 = S(["frame"], append_f)
+        set_3_2.consume = False
+        level_3 = L(set_3_1, set_3_2)
+        
+        '''create context seeker'''
+        levels = [level_1, level_2, level_3]
+        seeker = ContextSeeker(forward=levels)
+        seeker.set_nexus(self.nexus)
+        
+        '''create context seeker stack item'''
+        alt = MockAlternative(u"my", u"spoken", u"words")
+        stack_seeker = StackItemSeeker(seeker, {"_node":alt})
+        '''add it'''
+        self.nexus.state.add(stack_seeker)
+        
+        '''make 3 fake triggering RegisteredActions;
+        the first and third do not consume their triggers'''
+        trigger1 = RegisteredAction(Function(append_a), rspec="bell")
+        trigger2 = RegisteredAction(Function(append_c), rspec="door")
+        trigger3 = RegisteredAction(Function(append_e), rspec="frame")
+        trigger1.set_nexus(self.nexus)
+        trigger2.set_nexus(self.nexus)
+        trigger3.set_nexus(self.nexus)
+        '''make fake StackItemRegisteredActions'''
+        alt2 = MockAlternative(u"my", u"spoken", u"words")
+        sira1 = StackItemRegisteredAction(trigger1, {"_node":alt2})
+        sira2 = StackItemRegisteredAction(trigger2, {"_node":alt2})
+        sira3 = StackItemRegisteredAction(trigger3, {"_node":alt2})
+        '''add them'''
+        self.nexus.state.add(sira1)
+        self.nexus.state.add(sira2)
+        self.nexus.state.add(sira3)
+        
+        self.assertEqual(mutable_string["value"], "aebdf")
     
     
     

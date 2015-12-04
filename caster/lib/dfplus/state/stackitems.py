@@ -106,7 +106,7 @@ class StackItemSeeker(StackItemRegisteredAction):
     def fillCL(self, context_level, context_set):
         context_level.result = context_set
         context_level.dragonfly_data = self.dragonfly_data
-    def execute(self, unused=None):
+    def execute(self, unused=None): # "unused" is only for Async, but must also be here
         self.complete = True
         c = []
         if self.back is not None: c += self.back
