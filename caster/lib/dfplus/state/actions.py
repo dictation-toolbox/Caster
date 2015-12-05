@@ -1,8 +1,3 @@
-'''
-Created on Jun 7, 2015
-
-@author: dave
-'''
 from dragonfly import ActionBase
 
 from caster.lib import control
@@ -31,12 +26,13 @@ class RegisteredAction(ActionBase):
 
 
 class ContextSeeker(RegisteredAction):
-    def __init__(self, back=None, forward=None, rspec="default", rdescript="unnamed command (CS)"):
+    def __init__(self, back=None, forward=None, rspec="default", rdescript="unnamed command (CS)", reverse=False):
         RegisteredAction.__init__(self, None)
         self.back = back
         self.forward = forward
         self.rspec = rspec
         self.rdescript = rdescript
+        self.reverse = reverse # indicates that context levels on backward seekers should be satisfied in reverse order
         assert self.back is not None or self.forward is not None, "Cannot create ContextSeeker with no levels"
     def _execute(self, data=None):
         self.nexus().state.add(StackItemSeeker(self, data))

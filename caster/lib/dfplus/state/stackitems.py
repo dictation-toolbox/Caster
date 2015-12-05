@@ -57,6 +57,7 @@ class StackItemSeeker(StackItemRegisteredAction):
         StackItemRegisteredAction.__init__(self, seeker, data, type)
         if self.type==StackItemSeeker.TYPE: self.back = self.copy_direction(seeker.back)
         self.forward = self.copy_direction(seeker.forward)
+        self.reverse = seeker.reverse
         self.spoken = {}
         self.eaten_rspec = {}
     
@@ -109,6 +110,7 @@ class StackItemSeeker(StackItemRegisteredAction):
     def execute(self, unused=None): # "unused" is only for Async, but must also be here
         self.complete = True
         c = []
+        if self.reverse: self.back.reverse()
         if self.back is not None: c += self.back
         if self.forward is not None: c += self.forward
         for context_level in c:
@@ -116,7 +118,8 @@ class StackItemSeeker(StackItemRegisteredAction):
         self.clean()
     def satisfy_level(self, level_index, is_back, stack_item):
         direction = self.back if is_back else self.forward
-        context_level = direction[level_index]
+        reverse = -1 if self.reverse else 1
+        context_level = direction[level_index * reverse]
         if not context_level.satisfied:
             if stack_item is not None:
                 for context_set in context_level.sets:

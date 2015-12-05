@@ -187,7 +187,58 @@ class TestStack(TestNexus):
         
         self.assertEqual(mutable_string["value"], "aebdf")
     
-    
+    def test_seeker_backward(self):
+        for i in range(0, 2):
+            '''make 2 fake NullActions'''
+            trigger1 = NullAction(rspec="bell")
+            trigger2 = NullAction(rspec="door")
+            trigger1.set_nexus(self.nexus)
+            trigger2.set_nexus(self.nexus)
+            '''make fake StackItemRegisteredActions'''
+            alt2 = MockAlternative(u"my", u"spoken", u"words")
+            sira1 = StackItemRegisteredAction(trigger1, {"_node":alt2})
+            sira2 = StackItemRegisteredAction(trigger2, {"_node":alt2})
+            '''add them'''
+            self.nexus.state.add(sira1)
+            self.nexus.state.add(sira2)
+            
+            '''set up backward looking seeker'''
+            mutable_string = {"value": ""}
+            def append_a():
+                mutable_string["value"] += "a"
+            def append_b():
+                mutable_string["value"] += "b"
+            def append_c():
+                mutable_string["value"] += "c"
+            def append_d():
+                mutable_string["value"] += "d"
+            
+            '''create context levels'''
+            set_1_1 = S(["arch"], append_a)
+            set_1_2 = S(["bell"], append_b)
+            level_1 = L(set_1_1, set_1_2)
+            set_2_1 = S(["cellar"], append_c)
+            set_2_2 = S(["door"], append_d)
+            level_2 = L(set_2_1, set_2_2)
+            
+            '''create context seeker'''
+            levels = [level_1, level_2]
+            seeker = ContextSeeker(back=levels)
+            if i==0:
+                seeker.reverse = True
+            seeker.set_nexus(self.nexus)
+            
+            '''create context seeker stack item'''
+            alt = MockAlternative(u"my", u"spoken", u"words")
+            stack_seeker = StackItemSeeker(seeker, {"_node":alt})
+            '''add it'''
+#             utilities.remote_debug("unit tests")
+            self.nexus.state.add(stack_seeker)
+            
+            if i==0:
+                self.assertEqual(mutable_string["value"], "db")
+            else:
+                self.assertEqual(mutable_string["value"], "bd")
     
     
     

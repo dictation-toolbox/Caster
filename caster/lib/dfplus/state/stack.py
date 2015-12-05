@@ -64,16 +64,22 @@ class ContextStack:
         if stack_item.type == StackItemSeeker.TYPE and stack_item.back is not None:
                 stack_size = len(self.list)
                 seekback_size = len(stack_item.back)
+                
                 for i in range(0, seekback_size):
-                    index = stack_size - 1 - i
-                    # back looking seekers have nothing else to wait for
-                    if index >= 0 and self.list[index].base is not None:
-                        # what's the purpose in blocking seeker chaining?
-                        prev = self.list[index]  # if self.list[index].type not in ["seeker", "continuer"] else None
-                        stack_item.satisfy_level(i, True, prev)
-                        stack_item.eat(i, prev)
+                    no_default = True
+                    if not stack_item.reverse:
+                        index = i
+                        no_default = index <= stack_size-1
                     else:
-                        stack_item.satisfy_level(i, True, None)
+                        index = stack_size - 1 - i
+                        no_default=index >= 0
+                    if no_default:
+                        # what's the purpose in blocking seeker chaining?
+                        prev = self.list[index]
+                        stack_item.satisfy_level(index, True, prev)
+                        stack_item.eat(index, prev)
+                    else:
+                        stack_item.satisfy_level(index, True, None)
         
         ''' case: there are forward seekers in the stack --
             -- every incomplete seeker has the reach to 
