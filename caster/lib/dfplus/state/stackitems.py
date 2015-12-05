@@ -164,15 +164,20 @@ class StackItemAsynchronous(StackItemSeeker):
         Waiting commands should only be run on success.
         '''
         self.complete = True
-        self.nexus.timer.remove_callback(self.closure)
+        
         if self.base is not None:# finisher
             self.base.execute()
-        StackItemSeeker.clean(self)
-        self.closure = None
+        
+        self.clean()
+        
         if success:
             self.nexus.state.run_waiting_commands()
         else:
             self.nexus.state.unblock()
+    def clean(self):
+        StackItemSeeker.clean(self)
+        self.nexus.timer.remove_callback(self.closure)
+        self.closure = None
     def begin(self):
         '''here pass along a closure to the timer multiplexer'''
         execute_context_levels = self.executeCL

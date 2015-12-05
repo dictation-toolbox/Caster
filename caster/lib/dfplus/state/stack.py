@@ -105,7 +105,6 @@ class ContextStack:
                     if seeker.forward[unsatisfied].result.consume:
                         stack_item.complete = True
                         stack_item.consumed = True
-                        stack_item.clean()
                     seeker.eat(unsatisfied, stack_item)
                 
                 if seeker_is_satisfied:

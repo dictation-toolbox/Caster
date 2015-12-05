@@ -232,7 +232,6 @@ class TestStack(TestNexus):
             alt = MockAlternative(u"my", u"spoken", u"words")
             stack_seeker = StackItemSeeker(seeker, {"_node":alt})
             '''add it'''
-#             utilities.remote_debug("unit tests")
             self.nexus.state.add(stack_seeker)
             
             if i==0:
@@ -240,12 +239,116 @@ class TestStack(TestNexus):
             else:
                 self.assertEqual(mutable_string["value"], "bd")
     
+    def test_actions_cleaned(self):
+        '''these test functions should stay in sync with the clean methods for each stack action'''
+        def registered_is_clean(r):
+            return r.dragonfly_data is None and r.base is None
+        def seeker_is_clean(s):
+            result = True
+            levels = []
+            if s.back is not None: levels += s.back
+            if s.forward is not None: levels += s.forward
+            for context_level in levels:
+                result &= context_level.dragonfly_data is None
+            return result
+        def asynchronous_is_clean(a):
+            return a.closure is None
+        
+        '''mock words being the same doesn't matter for this test, or most tests'''
+        alt = MockAlternative(u"my", u"spoken", u"words")
+        
+        '''make fake NullActions'''
+        action1 = NullAction(rspec="barkley")
+        action2 = NullAction(rspec="gaiden")
+        action3 = NullAction(rspec="is")
+        action4 = NullAction(rspec="awesome")
+        action1.set_nexus(self.nexus)
+        action2.set_nexus(self.nexus)
+        action3.set_nexus(self.nexus)
+        action4.set_nexus(self.nexus)
+        '''make fake StackItemRegisteredActions'''
+        sira1 = StackItemRegisteredAction(action1, {"_node":alt})
+        sira2 = StackItemRegisteredAction(action2, {"_node":alt})
+        sira3 = StackItemRegisteredAction(action3, {"_node":alt})
+        sira4 = StackItemRegisteredAction(action4, {"_node":alt})
+        
+        '''should not be clean before it's executed'''
+        self.assertFalse(registered_is_clean(sira1))
+        
+        '''add first one for backward seeker'''
+        self.nexus.state.add(sira1)
+        
+        '''should be clean as soon as it's executed'''
+        self.assertTrue(registered_is_clean(sira1))
+        
+        '''make backward seeker'''
+        back_seeker = ContextSeeker(back=[L(S(["minecraft"], Function(lambda: None)))])
+        back_seeker.set_nexus(self.nexus)
+        '''create backward seeker stack item'''
+        stack_seeker = StackItemSeeker(back_seeker, {"_node":alt})
+        '''add it'''
+        self.nexus.state.add(stack_seeker)
+        
+        '''levels should be clean as soon as it's executed'''
+        self.assertTrue(registered_is_clean(stack_seeker) and seeker_is_clean(stack_seeker))
+        
+        #
+        
+        '''make forward seeker'''
+        forward_seeker = ContextSeeker(forward=[L(S(["cave"], Function(lambda: None))), 
+                                                L(S(["story"], Function(lambda: None)))])
+        forward_seeker.set_nexus(self.nexus)
+        '''create context seeker stack item'''
+        stack_seeker2 = StackItemSeeker(forward_seeker, {"_node":alt})
+        '''add it'''
+        self.nexus.state.add(stack_seeker2)
     
-    
-    
-    
-    
-    
-    
+        self.nexus.state.add(sira2)
+        '''levels should not be clean before seeker is executed'''
+        self.assertFalse(registered_is_clean(stack_seeker2) or seeker_is_clean(stack_seeker2))
+
+        self.nexus.state.add(sira3)
+        '''levels should be clean as soon as it's executed'''
+        self.assertTrue(registered_is_clean(stack_seeker2) and seeker_is_clean(stack_seeker2))
+        
+        #
+        
+        '''make asynchronous action'''
+        asynchronous = AsynchronousAction([L(S(["eternal", "daughter", "awesome"], lambda: None))], 
+                                          blocking=False)
+        asynchronous.set_nexus(self.nexus)
+        '''make StackItemAsynchronous'''
+        sia1 = StackItemAsynchronous(asynchronous, {"_node":alt})
+        '''add it'''
+        self.nexus.state.add(sia1)
+        
+        '''closure should not be clean before asynchronous is executed'''
+        self.assertFalse(registered_is_clean(sia1) or seeker_is_clean(sia1) or asynchronous_is_clean(sia1))
+        
+        self.nexus.state.add(sira4)
+        
+        '''closure should be clean after asynchronous is executed'''
+        self.assertTrue(registered_is_clean(sia1) and seeker_is_clean(sia1) and asynchronous_is_clean(sia1))
+
+
+
+
+
+
+
+
+
+
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
