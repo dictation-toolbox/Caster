@@ -391,13 +391,82 @@ class TestStack(TestNexus):
         '''finisher should be executed when asynchronous finishes'''
         self.assertEqual(mutable_integer["value"], 1)
         
+    def test_use_spoken_words_or_rspec(self):
+        '''seekers can take the spoken words or rspecs
+        of their trigger actions and feed them to the
+        function objects of their ContextSets'''
         
+        '''make triggers for context seekers
+        (2 forward, 2 backward / 2 spoken, 2 rspec)'''
+        action1 = NullAction(rspec="alpha")
+        action2 = NullAction(rspec="_")
+        action3 = NullAction(rspec="charlie")
+        action4 = NullAction(rspec="_")
+        action1.set_nexus(self.nexus)
+        action2.set_nexus(self.nexus)
+        action3.set_nexus(self.nexus)
+        action4.set_nexus(self.nexus)
+        alt = MockAlternative(u"_")
+        spec1 = [u"here", u"are", u"words"]
+        spec2 = [u"some", u"more", u"words"]
+        sira1 = StackItemRegisteredAction(action1, {"_node":alt})  
+        sira2 = StackItemRegisteredAction(action2, {"_node":MockAlternative(*spec1)})
+        sira3 = StackItemRegisteredAction(action3, {"_node":alt})
+        sira4 = StackItemRegisteredAction(action4, {"_node":MockAlternative(*spec2)})
         
-
-
-
-
-
+        #
+        
+        mutable_integer = {"value": 0}
+        def increment(): 
+            mutable_integer["value"] += 1
+        #
+        def _1(params):
+            if params == "alpha": increment()
+        def _2(params):
+            if params == spec1: increment()
+        def _3(params):
+            if params == "charlie": increment()
+        def _4(params):
+            if params == spec2: increment()
+            
+        
+        '''make seekers'''
+        back_seeker1 = ContextSeeker(back=[L(S(["alpha"], _1, parameters="_", use_rspec=True))], rspec="_")
+        back_seeker2 = ContextSeeker(back=[L(S(["_"], _2, parameters=["_"], use_spoken=True))], rspec="_")
+        forward_seeker1 = ContextSeeker(forward=[L(S(["_"], _3, parameters="_", use_rspec=True))], rspec="_")
+        forward_seeker2 = ContextSeeker(forward=[L(S(["delta"], _4, parameters=["_"], use_spoken=True))], rspec="_")
+        back_seeker1.set_nexus(self.nexus)
+        back_seeker2.set_nexus(self.nexus)
+        forward_seeker1.set_nexus(self.nexus)
+        forward_seeker2.set_nexus(self.nexus)
+        '''create seeker stack items'''
+        stack_seeker_b1 = StackItemSeeker(back_seeker1, {"_node":alt})
+        stack_seeker_b2 = StackItemSeeker(back_seeker2, {"_node":alt})
+        stack_seeker_f1 = StackItemSeeker(forward_seeker1, {"_node":alt})
+        stack_seeker_f2 = StackItemSeeker(forward_seeker2, {"_node":alt})
+        
+        #
+                
+        '''trigger the first backward seeker; uses rspec ("alpha") '''
+        self.nexus.state.add(sira1)
+        self.nexus.state.add(stack_seeker_b1)
+        self.assertEqual(mutable_integer["value"], 1)
+        
+        '''trigger the second backward seeker; uses spoken words (spec1) '''
+        self.nexus.state.add(sira2)
+        self.nexus.state.add(stack_seeker_b2)
+        self.assertEqual(mutable_integer["value"], 2)
+        
+        '''trigger the first forward seeker; uses rspec ("charlie") '''
+        self.nexus.state.add(stack_seeker_f1)
+        self.nexus.state.add(sira3)        
+        self.assertEqual(mutable_integer["value"], 3)
+        
+        '''trigger the first forward seeker; uses spoken words (spec2) '''
+        self.nexus.state.add(stack_seeker_f2)
+        self.nexus.state.add(sira4)        
+        self.assertEqual(mutable_integer["value"], 4)
+        
 
 
         

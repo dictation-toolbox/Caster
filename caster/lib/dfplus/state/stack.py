@@ -62,23 +62,26 @@ class ContextStack:
         ''' case: the new item is has backward seeking --
             -- satisfy levels, then move on to other logic'''
         if stack_item.type == StackItemSeeker.TYPE and stack_item.back is not None:
-                stack_size = len(self.list)
-                seekback_size = len(stack_item.back)
-                
-                for i in range(0, seekback_size):
-                    no_default = True
-                    if not stack_item.reverse:
-                        index = i
-                        no_default = index <= stack_size-1
-                    else:
-                        index = stack_size - 1 - i
-                        no_default=index >= 0
-                    if no_default:
-                        prev = self.list[-seekback_size:][index]
-                        stack_item.satisfy_level(index, True, prev)
-                        stack_item.eat(index, prev)
-                    else:
-                        stack_item.satisfy_level(index, True, None)
+            seeker = stack_item
+            stack_size = len(self.list)
+            seekback_size = len(seeker.back)
+            
+            for i in range(0, seekback_size):
+                '''determine whether the seeker should default'''
+                no_default = True
+                if not seeker.reverse:
+                    index = i
+                    no_default = index <= stack_size-1
+                else:
+                    index = stack_size - 1 - i
+                    no_default=index >= 0
+                '''satisfy the current level'''
+                prior_stack_item = None
+                if no_default:
+                    prior_stack_item = self.list[-seekback_size:][index]
+                seeker.satisfy_level(index, True, prior_stack_item)
+                seeker.get_parameters(index, prior_stack_item)
+                    
         
         ''' case: there are forward seekers in the stack --
             -- every incomplete seeker has the reach to 
@@ -104,7 +107,8 @@ class ContextStack:
                     if seeker.forward[unsatisfied].result.consume:
                         stack_item.complete = True
                         stack_item.consumed = True
-                    seeker.eat(unsatisfied, stack_item)
+                
+                    seeker.get_parameters(unsatisfied, stack_item)
                 
                 if seeker_is_satisfied:
                     seeker_executions.append(lambda: seeker.execute(False))
