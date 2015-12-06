@@ -330,9 +330,69 @@ class TestStack(TestNexus):
         '''closure should be clean after asynchronous is executed'''
         self.assertTrue(registered_is_clean(sia1) and seeker_is_clean(sia1) and asynchronous_is_clean(sia1))
 
+    def test_seeker_defaulting_and_chaining(self):
+        '''this action makes the first seeker default'''
+        action = NullAction(rspec="clean")
+        action.set_nexus(self.nexus)
+        alt = MockAlternative(u"my", u"spoken", u"words")
+        sira = StackItemRegisteredAction(action, {"_node":alt})
+        self.nexus.state.add(sira)
+        
+        #
+        
+        mutable_integer = {"value": 0}
+        def increment():
+            mutable_integer["value"] += 1
+        
+        '''make backward seekers'''
+        back_seeker = ContextSeeker(back=[L(S(["def"], Function(lambda: None)), 
+                                             S(["abc"], Function(increment)))], rspec="abc")
+        back_seeker.set_nexus(self.nexus)
+        '''create backward seeker stack items'''
+        stack_seeker1 = StackItemSeeker(back_seeker, {"_node":alt})
+        stack_seeker2 = StackItemSeeker(back_seeker, {"_node":alt})
+        '''add one'''
+        self.nexus.state.add(stack_seeker1)
+        
+        '''at this point, the first seeker should have defaulted and done nothing'''
+        self.assertEqual(mutable_integer["value"], 0)
+        
+        self.nexus.state.add(stack_seeker2)
+        '''the second context seeker should have been triggered by the first, incrementing the value'''
+        self.assertEqual(mutable_integer["value"], 1)
 
-
-
+    def test_asynchronous_finisher(self):
+        '''make termination action'''
+        termination = NullAction(rspec="kill")
+        termination.set_nexus(self.nexus)
+        alt = MockAlternative(u"my", u"spoken", u"words")
+        sira = StackItemRegisteredAction(termination, {"_node":alt})
+        
+        '''setup function for asynchronous finisher'''
+        mutable_integer = {"value": 0}
+        def increment():
+            mutable_integer["value"] += 1
+        
+        #
+        
+        '''make asynchronous action'''
+        asynchronous = AsynchronousAction([L(S(["kill"], lambda: None))], 
+                                          blocking=False, 
+                                          finisher=Function(increment))
+        asynchronous.set_nexus(self.nexus)
+        '''make StackItemAsynchronous'''
+        sia1 = StackItemAsynchronous(asynchronous, {"_node":alt})
+        '''add it'''
+        self.nexus.state.add(sia1)
+        
+        #
+        
+        self.nexus.state.add(sira)
+        '''finisher should be executed when asynchronous finishes'''
+        self.assertEqual(mutable_integer["value"], 1)
+        
+        
+        
 
 
 

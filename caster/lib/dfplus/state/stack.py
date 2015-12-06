@@ -54,7 +54,7 @@ class ContextStack:
     def set_history(self, history):
         self._history = history
     
-    def add(self, stack_item):  # stack_item is an instance of stackItem 
+    def add(self, stack_item):
         stack_item.preserve()
         if settings.WSR:
             self._history.on_recognition(stack_item.get_preserved())            
@@ -74,8 +74,7 @@ class ContextStack:
                         index = stack_size - 1 - i
                         no_default=index >= 0
                     if no_default:
-                        # what's the purpose in blocking seeker chaining?
-                        prev = self.list[index]
+                        prev = self.list[-seekback_size:][index]
                         stack_item.satisfy_level(index, True, prev)
                         stack_item.eat(index, prev)
                     else:
@@ -99,7 +98,7 @@ class ContextStack:
                 seeker_is_satisfied = seeker.get_index_of_next_unsatisfied_level() == -1
                 
                 
-                ''' consume stack_item, but do not consume seekers;he it would disable chaining'''
+                ''' consume stack_item, but do not consume seekers; it would disable chaining'''
                 if (stack_item.type == StackItemRegisteredAction.TYPE  
                 or (ContextStack.is_asynchronous(seeker.type) and seeker_is_satisfied)):
                     if seeker.forward[unsatisfied].result.consume:
