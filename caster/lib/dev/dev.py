@@ -4,18 +4,33 @@ import time
 
 from dragonfly import (Function, Key, BringApp, Text, WaitWindow, Dictation, Choice, Grammar, MappingRule, Paste)
 
-from caster.lib import utilities, settings, context
+from caster.lib import utilities, settings, context, control
 from caster.lib.dev import devgen
 from caster.lib.dfplus.additions import IntegerRefST
+from caster.lib.dfplus.state.actions2 import NullAction
 from caster.lib.dfplus.state.short import L, S, R
+from caster.lib.dfplus.state.stackitems import StackItemRegisteredAction
 from caster.lib.tests import testrunner
 from caster.lib.tests.complexity import run_tests
+from caster.lib.tests.testutils import MockAlternative
 
 
 grammar = Grammar('development')
 
-def experiment(text, text2):
+def experiment():
     '''this function is for tests'''
+    try:
+        for i in range(0, 10000):
+            action = NullAction(rdescript="test_"+str(i))
+            action.show = True
+            action.set_nexus(control.nexus())
+            alt = MockAlternative(u"my", u"spoken", u"words")
+            sia = StackItemRegisteredAction(action, {"_node":alt})
+            control.nexus().state.add(sia)
+    except Exception:
+        utilities.simple_log()
+        
+    
     
 #     from Levenshtein.StringMatcher import StringMatcher
 #     try:
@@ -116,7 +131,7 @@ class Experimental(MappingRule):
     mapping = {
         # experimental/incomplete commands
         
-        "experiment <text> and <text2>":Function(experiment),
+        "experiment":                   Function(experiment),
         "short talk number <n2>":       Text("%(n2)d"), 
     #     "dredge [<id> <text>]":         Function(dredge),
         "test dragonfly paste":         Paste("some text"),

@@ -26,13 +26,13 @@ class Nexus:
         self.state.set_stack_history(self.history)
         self.preserved = None
         
-        self.comm = Communicator()
-        self.intermediary = StatusIntermediary(self.comm)
-        
         self.timer = TimerForWSR(0.025)
         if not settings.WSR:
             from dragonfly.timer import _Timer
             self.timer = _Timer(0.025)
+        
+        self.comm = Communicator()
+        self.intermediary = StatusIntermediary(self.comm, self.timer)
         
         self.dep = DependencyMan()
         

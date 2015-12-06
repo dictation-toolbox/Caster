@@ -46,40 +46,59 @@ class StatusWindow(TkTransparent):
         self.server.register_function(self.xmlrpc_kill, "kill")
         self.server.register_function(self.xmlrpc_hint, "hint")
         self.server.register_function(self.xmlrpc_text, "text")
-        self.server.register_function(self.xmlrpc_error, "error")
+#         self.server.register_function(self.xmlrpc_error, "error")
+        '''
+        
+        
+        
+        
+        Note to self: if freeze still occurs, it's no longer due to massive window polling or
+        message sending. It must be due to errors which occur within the Status Window
+        application. If that's the case, try wrapping everything in a try-catch block with
+        logging to see what it might be.
+        
+        
+        
+        
+        '''
      
     
-    def xmlrpc_error(self, n):
-        self.prevent_hang()
-        i=0
-        while True:
-            print(i)
-            i+=1
-        self.cancel_crash()
-        
-    def check_for_hang(self):
-        if self.crash:
-            self.xmlrpc_kill()
-    def prevent_hang(self):
-        self.crash = True
-        Timer(8, self.check_for_hang).start()
-    def cancel_crash(self):
-        self.crash = False
+#     def xmlrpc_error(self, n):
+#         self.prevent_hang()
+#         i=0
+#         while True:
+#             print(i)
+#             i+=1
+#         self.cancel_crash()
+#     def check_for_hang(self):
+#         if self.crash:
+#             self.xmlrpc_kill()
+#     def prevent_hang(self):
+#         self.crash = True
+#         Timer(8, self.check_for_hang).start()
+#     def cancel_crash(self):
+#         self.crash = False
+    
+    
         
     def xmlrpc_text(self, text):
-        self.prevent_hang()
+#         self.prevent_hang()
         self.after(10, lambda: self.add_text(text))
-        self.cancel_crash()
+#         self.cancel_crash()
     
     def add_text(self, text):
-        self.prevent_hang()
+#         self.prevent_hang()
         
         number_of_lines = 5
         with_lines = ""
         
-        while len(self.visible_messages) + 1 > number_of_lines:
+        text_lines = text.split("\n")
+        text_lines.reverse()
+        self.visible_messages += text_lines
+        
+        while len(self.visible_messages) > number_of_lines:
             self.visible_messages.remove(self.visible_messages[0])
-        self.visible_messages.append(text)
+        
         indices=range(0, len(self.visible_messages))
         indices.reverse()
         for i in indices:
@@ -89,18 +108,18 @@ class StatusWindow(TkTransparent):
         self.v.set(with_lines)
         self.lift()
         
-        self.cancel_crash()
+#         self.cancel_crash()
     
     def xmlrpc_hint(self, text):
-        self.prevent_hang()
+#         self.prevent_hang()
         self.after(10, lambda: self.hint(text))
-        self.cancel_crash()
+#         self.cancel_crash()
     
     def hint(self, text):
-        self.prevent_hang()
+#         self.prevent_hang()
         self.v.set(text)
         self.lift()
-        self.cancel_crash()
+#         self.cancel_crash()
     
     def start_move(self, event):
         self.x = event.x

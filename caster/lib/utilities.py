@@ -8,6 +8,7 @@ import traceback
 
 from dragonfly.windows.window import Window
 import win32gui, win32ui
+from __builtin__ import True
 
 
 try: # Style C -- may be imported into Caster, or externally
@@ -113,8 +114,11 @@ def remote_debug(who_called_it=None):
     
 
 def launch_status():
+    '''returns whether the window was launched'''
     if not window_exists(None, settings.STATUS_WINDOW_TITLE):
         Popen(["pythonw", settings.SETTINGS["paths"]["STATUS_WINDOW_PATH"]])
+        return True
+    return False
 
 def reboot(wsr=False):
     popen_parameters = []
