@@ -9,7 +9,7 @@
 ***
 ## What and Why
 
-Dragon NaturallySpeaking has a limit of about 550 specs per active CCR grammar. After that, a BadGrammar error will occur. NodeRule is a way to sidestep that limit. By packing specs into nodes in a tree, and only activating part of the tree at a given time, it's possible to include thousands of specs in a single grammar.
+Dragon NaturallySpeaking has an upper complexity limit on Grammars. After the limit is reached, a BadGrammar error will occur. NodeRule is a way to sidestep that limit. By packing specs into nodes in a tree, and only activating part of the tree at a given time, it's possible to include thousands of specs in a single grammar.
 
 So, let's say for example that I want to be able to speak any of the following command chains, where the letters represent specs.
 

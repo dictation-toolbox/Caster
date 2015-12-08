@@ -19,16 +19,18 @@ grammar = Grammar('development')
 
 def experiment():
     '''this function is for tests'''
-    try:
-        for i in range(0, 10000):
-            action = NullAction(rdescript="test_"+str(i))
-            action.show = True
-            action.set_nexus(control.nexus())
-            alt = MockAlternative(u"my", u"spoken", u"words")
-            sia = StackItemRegisteredAction(action, {"_node":alt})
-            control.nexus().state.add(sia)
-    except Exception:
-        utilities.simple_log()
+    
+    
+#     try:
+#         for i in range(0, 10000):
+#             action = NullAction(rdescript="test_"+str(i))
+#             action.show = True
+#             action.set_nexus(control.nexus())
+#             alt = MockAlternative(u"my", u"spoken", u"words")
+#             sia = StackItemRegisteredAction(action, {"_node":alt})
+#             control.nexus().state.add(sia)
+#     except Exception:
+#         utilities.simple_log()
         
     
     

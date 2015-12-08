@@ -5,6 +5,7 @@ Created on May 27, 2015
 '''
 from dragonfly import MappingRule, ActionBase
 
+from caster.lib import utilities
 from caster.lib.dfplus.merge.selfmodrule import SelfModifyingRule
 from caster.lib.dfplus.state.actions import ContextSeeker
 from caster.lib.dfplus.state.short import L, S
@@ -98,7 +99,9 @@ class NodeRule(SelfModifyingRule):
                 child.fill_out_rule(mapping, extras, defaults, self)
         else:
             if self.stat_msg is not None and not first and not is_reset:# status window messaging
-                self.stat_msg.hint("\n".join([x.get_spec_and_base_and_node()[0] for x in self.node.children]))
+                choices = [x.get_spec_and_base_and_node()[0] for x in self.node.children]
+                for choice in choices:
+                    self.stat_msg.text(choice)
         
         self.extras = extras
         self.defaults = defaults
