@@ -3,7 +3,7 @@ Created on May 30, 2015
 
 @author: dave
 '''
-from dragonfly import Text, Pause, ActionBase
+from dragonfly import Text
 
 from caster.lib import control
 from caster.lib.dfplus.hint import hintnode
@@ -32,7 +32,7 @@ def get_css_node():
     css_sections.append(_get_speech())
     css_sections+=_get_miscellaneous()
     
-    return H("css", ActionBase(), css_sections)
+    return H("css", NullAction(), css_sections)
 
 def _get_speech():
     _volume = [H("uri",Text("uri")),H("silent",Text("silent")),H("extra soft", Text("x-soft") ),

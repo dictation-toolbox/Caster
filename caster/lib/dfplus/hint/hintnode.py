@@ -3,7 +3,7 @@ Created on May 27, 2015
 
 @author: dave
 '''
-from dragonfly import MappingRule, ActionBase
+from dragonfly import ActionBase
 
 from caster.lib import utilities
 from caster.lib.dfplus.merge.selfmodrule import SelfModifyingRule
@@ -11,7 +11,7 @@ from caster.lib.dfplus.state.actions import ContextSeeker
 from caster.lib.dfplus.state.short import L, S
 
 
-class HintNode:
+class HintNode(object):
     def __init__(self, spec, base, children=[], extras=[], defaults={}):
         err = str(spec)+", "+str(base)+", "+str(children)
         assert isinstance(spec, basestring), "Node spec must be string: "+err
@@ -26,6 +26,9 @@ class HintNode:
         self.active = False
         # 0 is the first set of children
         self.explode_depth = 1  # the level at which to turn all children into rules
+    
+    def __len__(self):
+        return len(self.all_possibilities())
     
     def all_possibilities(self):
         p = []
@@ -47,14 +50,17 @@ class HintNode:
         return self.spec, self.base, self
             
     def fill_out_rule(self, mapping, extras, defaults, node_rule):
+        ''' each child node up to the relevant depth gets a 
+        BaseAction + NodeChange + ContextSeeker (for cancels)
+        in the new mapping'''
         specs = self.explode_children(self.explode_depth)
         if len(specs)>1:
             specs.append(self.get_spec_and_base_and_node())
         
         for spec, base, node in specs:
-            action = base+NodeChange(node_rule, node)
-            if node_rule.post!=None:
-                action = action+node_rule.post
+            action = base + NodeChange(node_rule, node)
+            if node_rule.post is not None:
+                action = action + node_rule.post
             mapping[spec] = action
         extras.extend(self.extras)
         defaults.update(self.defaults)
@@ -68,6 +74,12 @@ class NodeRule(SelfModifyingRule):
         if self.master_node is None:
             self.master_node = node
             self.stat_msg = stat_msg
+            '''self.post is added to every entry in the mapping; 
+            its purpose is to handle cancels; if it detects another of itself, 
+            it does nothing; 
+            
+            but looking forward, won't it never find itself? 
+            how is it that the node isn't constantly getting reset? '''
             self.post = ContextSeeker(forward=[L(S(["cancel"], lambda: self.reset_node(), consume=False), 
                                                  S([self.master_node.spec], lambda: None, consume=False))], 
                                       rspec=self.master_node.spec)
@@ -114,18 +126,7 @@ class NodeRule(SelfModifyingRule):
     def reset_node(self):
         if self.node is not self.master_node:
             self.change_node(self.master_node, True)
-    
-    def _process_recognition(self, node, extras):
-        node = node[self.master_node.spec]
-        node._action.execute(node._data)
         
-    
-class NodeAction(ActionBase):
-    def __init__(self, node_rule):
-        ActionBase.__init__(self)
-        self.node_rule = node_rule
-    def _execute(self, data):
-        self.node_rule._process_recognition(data, None)
 
 class NodeChange(ActionBase):
     def __init__(self, node_rule, node):

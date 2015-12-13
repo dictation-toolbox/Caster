@@ -1,20 +1,23 @@
 import unittest
 
-from caster.lib.tests.unit import merger, mergerule, filter, state, stack
+from caster.lib.tests.unit import merger, mergerule, filter, state, stack, node
 
-
-def run_tests():
+def get_master_suite():
     test_cases = [merger.TestMerger,
                   mergerule.TestMergeRule,
                   filter.TestFilterNonBootTime, 
                   stack.TestStack, 
-                  state.TestState]
+                  state.TestState, 
+                  node.TestNode]
     master_suite = unittest.TestSuite()
     
     for test_case in test_cases:
         suite = unittest.TestLoader().loadTestsFromTestCase(test_case)
         master_suite.addTests(suite)
     
-    unittest.TextTestRunner(verbosity=2).run(master_suite)
+    return master_suite
+
+def run_tests():
+    unittest.TextTestRunner(verbosity=2).run(get_master_suite())
 
 

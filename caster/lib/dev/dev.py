@@ -7,7 +7,10 @@ from dragonfly import (Function, Key, BringApp, Text, WaitWindow, Dictation, Cho
 from caster.lib import utilities, settings, context, control
 from caster.lib.dev import devgen
 from caster.lib.dfplus.additions import IntegerRefST
-from caster.lib.dfplus.state.actions2 import NullAction
+from caster.lib.dfplus.state.actions import ContextSeeker, AsynchronousAction, \
+    RegisteredAction
+from caster.lib.dfplus.state.actions2 import NullAction, ConfirmAction, \
+    BoxAction
 from caster.lib.dfplus.state.short import L, S, R
 from caster.lib.dfplus.state.stackitems import StackItemRegisteredAction
 from caster.lib.tests import testrunner
@@ -145,7 +148,63 @@ class Experimental(MappingRule):
               IntegerRefST("n2", 1, 100)
              ]
     defaults = {"text": "", "text2": ""}
+LAST_TIME=0
+def print_time():
+    global LAST_TIME
+    print(str(time.time()-LAST_TIME)[0])
+    LAST_TIME=time.time()
+def close_last_spoken(spoken):
+    first = spoken[0]
+    Text("</"+first+">").execute()
+def close_last_rspec(rspec):
+    Text("</"+rspec+">").execute()
+def _abc(data):
+    print(data)
+FINISHER_TEXT="finisher successful"
 
+class StackTest(MappingRule):
+    '''test battery for the ContextStack'''
+    
+    
+    mapping = {
+        "close last tag":               ContextSeeker([L(S(["cancel"], None),
+                                                         S(["html spoken"], close_last_spoken, use_spoken=True), 
+                                                         S(["span", "div"], close_last_rspec, use_rspec=True))
+                                                       ]),
+        "html":                         R(Text("<html>"), rspec="html spoken"), 
+        "divider":                      R(Text("<div>"), rspec="div"),
+        "span":                         R(Text("<span>"), rspec="span"),
+        "backward seeker [<text>]":     ContextSeeker([L(S(["ashes"], Text("ashes1 [%(text)s] ")),
+                                                          S(["bravery"], Text("bravery1 [%(text)s] "))), 
+                                                       L(S(["ashes"], Text("ashes2 [%(text)s] ")),
+                                                          S(["bravery"], Text("bravery2 [%(text)s] ")))
+                                                       ]), 
+        "forward seeker [<text>]":      ContextSeeker(forward=
+                                                      [L(S(["ashes"], Text("ashes1 [%(text)s] ")),
+                                                          S(["bravery"], Text("bravery1 [%(text)s] "))), 
+                                                       L(S(["ashes"], Text("ashes2 [%(text)s] ")),
+                                                          S(["bravery"], Text("bravery2 [%(text)s] ")))
+                                                       ]),
+        "asynchronous test":            AsynchronousAction([L(S(["ashes", "charcoal"], print_time, None),
+                                                          S(["bravery"], Text, "bravery1"))
+                                                       ], time_in_seconds=0.2, repetitions=20, 
+                                                           finisher=Text(FINISHER_TEXT), 
+                                                           blocking=False),
+        "ashes":                        RegisteredAction(Text("ashes _ "), rspec="ashes"),
+        "bravery":                      RegisteredAction(Text("bravery _ "), rspec="bravery"),
+        "charcoal <text> [<n>]":        R(Text("charcoal _ %(text)s"), rspec="charcoal"),
+                                
+        "test confirm action":          ConfirmAction(Key("a"), rdescript="Confirm Action Test", instructions="some words here"),
+        
+        "test box action":              BoxAction(lambda data: _abc(data), rdescript="Test Box Action", box_type=settings.QTYPE_DEFAULT, 
+                                                  log_failure=True),
+    }
+    extras = [
+              Dictation("text"),
+              Dictation("text2"),
+              IntegerRefST("n", 1, 5)
+             ]
+    defaults = {"text": "", "text2": ""}
 def load():
     global grammar
 #     grammar.add_rule(StackTest())
