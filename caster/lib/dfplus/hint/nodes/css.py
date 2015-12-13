@@ -4,6 +4,7 @@ Created on May 30, 2015
 @author: dave
 '''
 from dragonfly import Text
+from dragonfly.grammar.grammar_base import Grammar
 
 from caster.lib import control
 from caster.lib.dfplus.hint import hintnode
@@ -498,10 +499,10 @@ def _get_background():
 
 
 
-
-
-
-control.nexus().merger.add_selfmodrule(NodeRule(get_css_node(), control.nexus().intermediary))
+css = NodeRule(get_css_node(), control.nexus().intermediary)
+grammar = Grammar("node css")
+grammar.add_rule(css)
+# nothing to activate this right now, it's not even done
 
     
     

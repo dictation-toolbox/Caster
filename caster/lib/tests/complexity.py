@@ -100,20 +100,16 @@ def core_and_python():
 
 def prep_merger(merger, nc, ns):
     ctr = ComplexityTestRule(nc, ns)
-    css_ = NodeRule(css.get_css_node(), None)
     for rule in core_and_python()+[ctr]:
         merger.add_global_rule(rule)
-    merger.add_selfmodrule(css_)
     merger.update_config()
     merger.merge(Inf.BOOT)
 
 def prep_grammar(grammar, nc, ns):
     ctr = ComplexityTestRule(nc, ns)
-    css_ = NodeRule(css.get_css_node(), None)
     for rule in core_and_python()+[ctr]:
         grammar.add_rule(rule)
-    grammar.add_rule(css_)
-
+    
 class Result(object):
     def __init__(self, report, choices, specs, elements, ccr_max, broke):
         self.report = report

@@ -102,6 +102,7 @@ class CCRMerger(object):
         self._add_to(rule, self._app_rules)
     def add_selfmodrule(self, rule):
         assert hasattr(rule, "set_merger"), "only SelfModifyingRules may be added by add_selfmodrule()"
+        assert not hasattr(rule, "master_node"), "NodeRules are not permitted in the merger"
         rule.set_merger(self)
         self._add_to(rule, self._self_modifying_rules)
     def add_filter(self, filter):
