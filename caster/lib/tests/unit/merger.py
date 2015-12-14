@@ -38,11 +38,13 @@ class TestMerger(TestNexus):
         TestNexus.tearDown(self)
     
     def test_config_defaults(self):
+        '''make sure the config is set up correctly'''
         self.assertTrue(CCRMerger._GLOBAL in self.nexus.merger._config)
         self.assertTrue(CCRMerger._SELFMOD in self.nexus.merger._config)
         self.assertTrue(CCRMerger._APP in self.nexus.merger._config)
     
     def test_config_placement(self):
+        '''make sure the config is set up correctly'''
         self.assertTrue("Python" in self.nexus.merger._config[CCRMerger._GLOBAL])
         self.assertTrue(ChainAlias.pronunciation in self.nexus.merger._config[CCRMerger._SELFMOD])
         self.assertTrue(EclipseCCR.pronunciation in self.nexus.merger._config[CCRMerger._APP])

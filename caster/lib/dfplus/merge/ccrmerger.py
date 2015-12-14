@@ -241,12 +241,6 @@ class CCRMerger(object):
                 mp = MergePair(time, Inf.SELFMOD, base, rule, False)
                 self._run_filters(mp)
                 base = self._compatibility_merge(mp, base, rule)
-        if time == Inf.SELFMOD and name is not None \
-        and not self._config[CCRMerger._SELFMOD][name]:
-            try: # reset deactivated NodeRule
-                if rule.master_node.spec != rule.node.spec:
-                    rule.reset_node()
-            except AttributeError: pass
         
         '''have base, make copies, merge in apps'''
         active_apps = []

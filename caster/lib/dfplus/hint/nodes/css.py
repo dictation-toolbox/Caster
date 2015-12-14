@@ -499,7 +499,7 @@ def _get_background():
 
 
 
-css = NodeRule(get_css_node(), control.nexus().intermediary)
+css = NodeRule(get_css_node(), control.nexus())
 grammar = Grammar("node css")
 grammar.add_rule(css)
 # nothing to activate this right now, it's not even done

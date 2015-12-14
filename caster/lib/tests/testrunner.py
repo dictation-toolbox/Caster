@@ -8,7 +8,8 @@ def get_master_suite():
                   filter.TestFilterNonBootTime, 
                   stack.TestStack, 
                   state.TestState, 
-                  node.TestNode]
+                  node.TestNode, 
+                  node.TestNodeRule]
     master_suite = unittest.TestSuite()
     
     for test_case in test_cases:

@@ -58,6 +58,9 @@ class HintNode(object):
             specs.append(self.get_spec_and_base_and_node())
         
         for spec, base, node in specs:
+            try: base.set_nexus(node_rule.nexus)
+            except AttributeError: pass
+                
             action = base + NodeChange(node_rule, node)
             if node_rule.post is not None:
                 action = action + node_rule.post
@@ -67,13 +70,12 @@ class HintNode(object):
 
 class NodeRule(SelfModifyingRule):
     master_node = None
-    stat_msg = None
     
-    def __init__(self, node, stat_msg=None, is_reset=False):
+    def __init__(self, node, nexus, is_reset=False):
         first = False
         if self.master_node is None:
             self.master_node = node
-            self.stat_msg = stat_msg
+            self.nexus = nexus
             '''self.post is added to every entry in the mapping; 
             its purpose is to handle cancels; if it detects another of itself, 
             it does nothing; 
@@ -83,6 +85,7 @@ class NodeRule(SelfModifyingRule):
             self.post = ContextSeeker(forward=[L(S(["cancel"], lambda: self.reset_node(), consume=False), 
                                                  S([self.master_node.spec], lambda: None, consume=False))], 
                                       rspec=self.master_node.spec)
+            self.post.set_nexus(nexus)
             first = True
             SelfModifyingRule.__init__(self, self.master_node.spec, refresh=False)
         
@@ -104,16 +107,16 @@ class NodeRule(SelfModifyingRule):
         for child in self.node.children:
             child.fill_out_rule(mapping, extras, defaults, self)
         if len(mapping)==0:
-            if self.stat_msg is not None and not first:
-                self.stat_msg.text("Node Reset")# status window messaging
+            if not first:
+                self.nexus.intermediary.text("Node Reset")# status window messaging
             self.reset_node()
             for child in self.node.children:
                 child.fill_out_rule(mapping, extras, defaults, self)
         else:
-            if self.stat_msg is not None and not first and not is_reset:# status window messaging
+            if not first and not is_reset:# status window messaging
                 choices = [x.get_spec_and_base_and_node()[0] for x in self.node.children]
                 for choice in choices:
-                    self.stat_msg.text(choice)
+                    self.nexus.intermediary.text(choice)
         
         self.extras = extras
         self.defaults = defaults
