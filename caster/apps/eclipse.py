@@ -1,12 +1,51 @@
+''' line ops functions '''
+
 from dragonfly import (Grammar, AppContext, MappingRule,
                        Dictation, Key, Text, Repeat, Pause)
+from dragonfly.actions.action_function import Function
 from dragonfly.actions.action_mimic import Mimic
+from dragonfly.grammar.elements import Choice
 
+from caster.lib import control, utilities
 from caster.lib import settings
-from caster.lib import control
+from caster.lib.ccr.core.nav import Navigation
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge.mergerule import MergeRule
-from caster.lib.dfplus.state.short import R
+from caster.lib.dfplus.state.actions import AsynchronousAction
+from caster.lib.dfplus.state.short import R, L, S
+from caster.lib import context as CONTEXT
+
+def process_text_for_search(text, regex, rtog):
+    text = str(text)
+    if int(regex) == 1:
+        text = text[0] + "?".join(list(text[1:])) + "?"
+    if int(rtog) == 1:
+        Key("a-x").execute() # turn on regex
+    Text(text).execute()
+def set_direction(direction):
+    key = "o" # forward
+    if int(direction) == 0:
+        key = "b" #backward
+    Key("a-"+key).execute()
+def lines_relative(direction, n):
+    if int(direction) == 0: #backward
+        try:
+            num = CONTEXT.read_selected_without_altering_clipboard(True)[1]
+            txt = str(int(num)-int(n))
+            Text(txt).execute()
+        except ValueError:
+            utilities.simple_log()
+            return
+        Key("enter").execute()
+    else: #forward
+        Key("escape").execute()
+    
+    # forward or backward
+    Pause("50").execute()
+    Key("s-down:"+str(int(n))+"/5").execute()
+    
+        
+    
 
 
 class CommandRule(MappingRule):
@@ -45,17 +84,32 @@ class CommandRule(MappingRule):
             
             "split view horizontal":                    R(Key("cs-underscore"), rdescript="Eclipse: Split View (H)"), 
             "split view vertical":                      R(Key("cs-lbrace"), rdescript="Eclipse: Split View (V)"),
+            
+            #Line Ops
+            "search [<regex>] [<rtog>] [<direction>] <text>": R(Key("c-f") + Pause("50") + \
+                                                          Function(process_text_for_search) + \
+                                                          Function(set_direction), rdescript="Eclipse: Search")  + \
+                                                        AsynchronousAction([L(S(["cancel"], Key("enter")))], 1, 50, "...", False),
+            "lines <n> [<direction>]":                  R(Key("c-l")+Pause("50")+Key("right, cs-left")+Pause("50")+Function(lines_relative), \
+                                                          rdescript="Eclipse: Select Relative Lines"),
         }
     extras = [
             Dictation("text"),
             Dictation("mim"),
-            IntegerRefST("n", 1, 1000),
-              
+            IntegerRefST("n", 1, 3000),
+            
+            # line ops
+            Choice("direction", {"back" : 0}),
+            Choice("regex", {"reg" : 1}),
+            Choice("rtog", {"toggle" : 1}),
+            
              ]
-    defaults = {"n": 1, "mim":""}
+    defaults = {"n": 1, "mim":"", "direction": 1, "regex": 0, "rtog":0}
 
 class EclipseCCR(MergeRule):
     pronunciation = "eclipse"
+    
+    mwith = [Navigation().get_name()]
     
     mapping = {
             "[go to] line <n>":                         R(Key("c-l") + Pause("50") + Text("%(n)d") + Key("enter")+ Pause("50")+

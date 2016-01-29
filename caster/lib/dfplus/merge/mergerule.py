@@ -53,6 +53,12 @@ class MergeRule(MappingRule):
     is the same as adding a context to a Grammar'''
     mcontext = None
     
+    '''app MergeRules MUST define `mwith` in order to
+    define what else they can merge with -- this is an
+    optimization to prevent pointlessly large global
+    CCR copies; mwith is a list of get_name()s'''
+    mwith = None
+    
     def __init__(self, name=None, mapping=None, extras=None, defaults=None,
                  exported=None, ID=None, composite=None, compatible=None, mcontext=None):
         

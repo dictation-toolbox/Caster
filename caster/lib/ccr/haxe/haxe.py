@@ -52,6 +52,7 @@ class Haxe(MergeRule):
         
         
         # Haxe specific
+        "import":                           R(Text("import "), rdescript="Haxe: Import"), 
         "new new":                          R(Text("new "), rdescript="Haxe: New"),
         "instance of":                      R(Text("Std.is()")+Key("left"), rdescript="Haxe: Infer Type"),
         "anon funk":                        R(Text("->"), rdescript="Haxe: Lambda"),
