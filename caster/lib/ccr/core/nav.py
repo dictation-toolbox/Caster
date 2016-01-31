@@ -15,6 +15,7 @@ from caster.lib.dfplus.state.actions2 import FuzzyMatchAction, UntilCancelled
 from caster.lib.dfplus.state.short import L, S, R
 from caster.lib.pita import fnfz
 from dragonfly.actions.action_mimic import Mimic
+from caster.lib.ccr.standard import SymbolSpecs
 
 _NEXUS = control.nexus()
 
@@ -139,7 +140,7 @@ class Navigation(MergeRule):
     
     "deli [<nnavi50>]":             R(Key("del/5"), rspec="deli", rdescript="Delete") * Repeat(extra="nnavi50"),
     "clear [<nnavi50>]":            R(Key("backspace/5:%(nnavi50)d"), rspec="clear", rdescript="Backspace"),
-    "(cancel | escape)":            R(Key("escape"), rspec="cancel", rdescript="Cancel Action"),
+    SymbolSpecs.CANCEL:             R(Key("escape"), rspec="cancel", rdescript="Cancel Action"),
     
     
     "shackle":                      R(Key("home/5, s-end"), rspec="shackle", rdescript="Select Line"),

@@ -6,6 +6,7 @@ Created on Jun 29, 2014
 
 import time
 from dragonfly import (Key, Function, Grammar, Playback, Dictation, Choice, Pause, MappingRule)
+from caster.lib.ccr.standard import SymbolSpecs
 
 def _wait_for_wsr_activation():
     count = 1
@@ -26,6 +27,7 @@ try:
     from caster.lib import utilities# requires settings
     if settings.WSR:
         _wait_for_wsr_activation()
+        SymbolSpecs.set_cancel_word("escape")
     from caster.lib import control
     _NEXUS = control.nexus()
     

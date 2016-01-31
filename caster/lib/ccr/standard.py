@@ -41,4 +41,10 @@ class SymbolSpecs(object):
     
     TRUE = "value true"
     FALSE = "value false"
+
+    # not part of the programming standard:
+    CANCEL = "(cancel | escape)"
     
+    @staticmethod
+    def set_cancel_word(spec):
+        SymbolSpecs.CANCEL = spec
