@@ -60,14 +60,16 @@ class MergeRule(MappingRule):
     mwith = None
     
     def __init__(self, name=None, mapping=None, extras=None, defaults=None,
-                 exported=None, ID=None, composite=None, compatible=None, mcontext=None):
+                 exported=None, ID=None, composite=None, compatible=None, mcontext=None, mwith=None):
         
         self.ID =           ID if ID is not None                else MergeRule._get_next_id()
         self.compatible =   {} if compatible is None            else compatible
         '''composite is the IDs of the rules which this MergeRule is composed of: '''
         self.composite =    composite if composite is not None  else set([self.ID])
         self._mcontext = self.__class__.mcontext
-        if self._mcontext is None: self._mcontext = mcontext        
+        if self._mcontext is None: self._mcontext = mcontext
+        self._mwith = self.__class__.mwith
+        if self._mwith is None: self._mwith = mwith        
         
         if mapping is not None:
             mapping["display available commands"] = Function(lambda: self._display_available_commands())
@@ -110,7 +112,7 @@ class MergeRule(MappingRule):
         return self.name if self.pronunciation is None else self.pronunciation
     def copy(self):
         return MergeRule(self.name, self._mapping.copy(), self._extras.values(), self._defaults.copy(), 
-                         self._exported, self.ID, self.composite, self.compatible, self._mcontext)
+                         self._exported, self.ID, self.composite, self.compatible, self._mcontext, self._mwith)
     def compatibility_check(self, other):
         if other.ID in self.compatible:
             return self.compatible[other.ID] # lazily
@@ -129,6 +131,9 @@ class MergeRule(MappingRule):
         return self._mcontext
     def set_context(self, context):
         self._mcontext = context
+        
+    def get_merge_with(self):
+        return self._mwith
     
     def _display_available_commands(self):
         for spec in self.mapping_actual().keys():

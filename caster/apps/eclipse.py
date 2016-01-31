@@ -117,36 +117,17 @@ class CommandRule(MappingRule):
             "split view vertical":                      R(Key("cs-lbrace"), rdescript="Eclipse: Split View (V)"),
             
             #Line Ops
-            "configure":                                R(Paste(ec_con.analysis_chars)+Key("left:2/5, c-f/20, backslash, rbracket, enter") + \
-                                                          Function(ec_con.analyze_for_configure), rdescript="Eclipse: Configure"),
-            "shackle <n> [<back>]":                     R(Key("c-l")+Key("right, cs-left")+ \
-                                                          Function(ec_con.lines_relative), rdescript="Eclipse: Select Relative Lines"),
-            "jump in [<n>]":                            R(Key("c-f, a-o")+Paste(r"[\(\[\{\<]")+Function(ec_con.regex_on)+ \
-                                                          Key("enter:%(n)d/5, escape, right") , rdescript="Eclipse: Jump In"),
-            "jump out [<n>]":                           R(Key("c-f, a-o")+Paste(r"[\)\] \}\>]")+Function(ec_con.regex_on)+ \
-                                                          Key("enter:%(n)d/5, escape, right") , rdescript="Eclipse: Jump Out"),
-            "jump back [<n>]":                          R(Key("c-f/5, a-b")+Paste(r"[\)\]\}\>]")+Function(ec_con.regex_on)+ \
-                                                          Key("enter:%(n)d/5, escape, left") , rdescript="Eclipse: Jump Back"),             
             
-#             "search [<regex>] [<rtog>] [<direction>] <text>": R(Key("c-f") + Pause("50") + \
-#                                                           Function(process_text_for_search) + \
-#                                                           Function(set_direction), rdescript="Eclipse: Search")  + \
-#                                                         AsynchronousAction([L(S(["cancel"], Key("enter")))], 1, 50, "...", False),
-
+            
         }
     extras = [
             Dictation("text"),
             Dictation("mim"),
             IntegerRefST("n", 1, 3000),
             
-            # line ops
-            Boolean("back"),
-#             Choice("direction", {"back" : 0}),
-#             Choice("regex", {"reg" : 1}),
-#             Choice("rtog", {"toggle" : 1}),
             
              ]
-    defaults = {"n": 1, "mim":"", "back": False}#, "regex": 0, "rtog":0s
+    defaults = {"n": 1, "mim":""}#, "regex": 0, "rtog":0s
 
 class EclipseCCR(MergeRule):
     pronunciation = "eclipse"
@@ -154,14 +135,27 @@ class EclipseCCR(MergeRule):
     mwith = [Navigation().get_name()]
     
     mapping = {
+            #Line Ops
+            "configure":                                R(Paste(ec_con.analysis_chars)+Key("left:2/5, c-f/20, backslash, rbracket, enter") + \
+                                                          Function(ec_con.analyze_for_configure), rdescript="Eclipse: Configure"),
+            "jump in [<n>]":                            R(Key("c-f, a-o")+Paste(r"[\(\[\{\<]")+Function(ec_con.regex_on)+ \
+                                                          Key("enter:%(n)d/5, escape, right") , rdescript="Eclipse: Jump In"),
+            "jump out [<n>]":                           R(Key("c-f, a-o")+Paste(r"[\)\] \}\>]")+Function(ec_con.regex_on)+ \
+                                                          Key("enter:%(n)d/5, escape, right") , rdescript="Eclipse: Jump Out"),
+            "jump back [<n>]":                          R(Key("c-f/5, a-b")+Paste(r"[\)\]\}\>]")+Function(ec_con.regex_on)+ \
+                                                          Key("enter:%(n)d/5, escape, left") , rdescript="Eclipse: Jump Back"),
             "[go to] line <n>":                         R(Key("c-l") + Pause("50") + Text("%(n)d") + Key("enter")+ Pause("50")+
                                                           Mimic(extra="mim"), rdescript="Eclipse: Go To Line"),
+            "shackle <n> [<back>]":                     R(Key("c-l")+Key("right, cs-left")+ \
+                                                          Function(ec_con.lines_relative), rdescript="Eclipse: Select Relative Lines"),
+            
         }
     extras = [
               Dictation("text"),
               IntegerRefST("n", 1, 1000),
+              Boolean("back"),
              ]
-    defaults = {"n": 1}
+    defaults = {"n": 1, "back": False}
 #---------------------------------------------------------------------------
 
 context = AppContext(executable="javaw", title="Eclipse") | AppContext(executable="eclipse", title="Eclipse") | AppContext(executable="AptanaStudio3")

@@ -1,8 +1,9 @@
 from dragonfly import (Grammar, AppContext, MappingRule,
                        Dictation, Key, Text, Repeat, Pause)
 
-from caster.lib import settings
 from caster.lib import control
+from caster.lib import settings
+from caster.lib.ccr.core.nav import Navigation
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
@@ -54,6 +55,7 @@ class CommandRule(MappingRule):
 
 class FlashDevelopCCR(MergeRule):
     pronunciation = "flash develop"
+    mwith = [Navigation().get_name()]
     
     mapping = {
             "[go to] line <n>":                         R(Key("c-g") + Pause("50") + Text("%(n)d") + Key("enter"), 

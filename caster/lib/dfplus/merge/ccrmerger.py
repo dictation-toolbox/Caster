@@ -10,7 +10,6 @@ from dragonfly.grammar.rule_compound import CompoundRule
 from caster.lib import utilities, settings
 from caster.lib.dfplus.merge.mergerule import MergeRule
 
-
 class Inf(object):
     TYPE = "type"
     GLOBAL = 0
@@ -23,13 +22,36 @@ class Inf(object):
     
 
 class MergePair(object):
-    def __init__(self, time, type, rule1, rule2, check_compatibility):
+    def __init__(self, time, type, rule1, rule2, check_compatibility, extras=None):
         self.time = time
         self.type = type
         self.rule1 = rule1
         self.rule2 = rule2
         self.changed = False # presently unused
         self.check_compatibility = check_compatibility
+        self.extras = extras
+
+'''Standard merge filter: app_merge'''
+def app_merge(mp):
+    '''forces app rules to define which parts of the base rule they will accept'''
+    if mp.type == Inf.APP:
+        base = mp.rule1 #base copy, actually
+        if base is None:
+            return
+        app = mp.rule2
+        mw = app.get_merge_with()
+        specs_per_rulename = mp.extras
+        
+        '''flatten acceptable specs into a list'''
+        acceptable_specs = []
+        for rulename in specs_per_rulename:
+            if rulename in mw:
+                acceptable_specs.extend(specs_per_rulename[rulename])
+        
+        '''remove anything the app rule hasn't defined as mergeable'''
+        for spec in base.mapping_actual().keys():
+            if not spec in acceptable_specs:
+                del base.mapping_actual()[spec]
 
 class CCRMerger(object):
     CORE = ["alphabet", "navigation", "numbers", "punctuation"]
@@ -53,6 +75,7 @@ class CCRMerger(object):
         self.use_real_config = use_real_config
         self.load_config()
         self.update_config() # this call prepares the config to receive new modules
+        self.add_filter(app_merge)
     
     '''config file stuff'''
     def save_config(self):
@@ -99,6 +122,7 @@ class CCRMerger(object):
     def add_app_rule(self, rule, context=None):
         if context is not None and rule.get_context() is None: rule.set_context(context)
         assert rule.get_context() is not None, "app rules must have contexts, "+rule.get_name()+" has no context"
+        assert rule.get_merge_with() is not None, "app rules must define mwith, "+rule.get_name()+" has no mwith"
         self._add_to(rule, self._app_rules)
     def add_selfmodrule(self, rule):
         assert hasattr(rule, "set_merger"), "only SelfModifyingRules may be added by add_selfmodrule()"
@@ -245,10 +269,11 @@ class CCRMerger(object):
         '''have base, make copies, merge in apps'''
         active_apps = []
         for rule in self._app_rules.values():
+            base_copy = base.copy() if base is not None else base # make a copy b/c commands will get stripped out
             context = rule.get_context()
-            mp = MergePair(time, Inf.APP, base, rule.copy(), False)
+            mp = MergePair(time, Inf.APP, base_copy, rule.copy(), False, CCRMerger.specs_per_rulename(self._global_rules))
             self._run_filters(mp)
-            rule = self._compatibility_merge(mp, base, mp.rule2) # mp.rule2 because named_rule got copied
+            rule = self._compatibility_merge(mp, base_copy, mp.rule2) # mp.rule2 because named_rule got copied
             rule.set_context(context)
             active_apps.append(rule)
             
@@ -292,7 +317,16 @@ class CCRMerger(object):
             for rule_name in self._self_modifying_rules:
                 self._config[CCRMerger._SELFMOD][rule_name] = rule_name in active_selfmod_names
             self.save_config()
-        
+    
+    @staticmethod
+    def specs_per_rulename(d):
+        result = {}
+        for rulename in d.keys():
+            rule = d[rulename]
+            specs = rule.mapping_actual().keys()
+            result[rulename] = specs
+        return result
+    
     def _run_filters(self, merge_pair):
         for filter_fn in self._filters:
             try: filter_fn(merge_pair)
