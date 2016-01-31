@@ -9,44 +9,75 @@ from dragonfly.grammar.elements import Choice
 from caster.lib import control, utilities
 from caster.lib import settings
 from caster.lib.ccr.core.nav import Navigation
-from caster.lib.dfplus.additions import IntegerRefST
+from caster.lib.dfplus.additions import IntegerRefST, Boolean
 from caster.lib.dfplus.merge.mergerule import MergeRule
-from caster.lib.dfplus.state.actions import AsynchronousAction
 from caster.lib.dfplus.state.short import R, L, S
 from caster.lib import context as CONTEXT
+from dragonfly.actions.action_paste import Paste
 
-def process_text_for_search(text, regex, rtog):
-    text = str(text)
-    if int(regex) == 1:
-        text = text[0] + "?".join(list(text[1:])) + "?"
-    if int(rtog) == 1:
-        Key("a-x").execute() # turn on regex
-    Text(text).execute()
-def set_direction(direction):
-    key = "o" # forward
-    if int(direction) == 0:
-        key = "b" #backward
-    Key("a-"+key).execute()
-def lines_relative(direction, n):
-    if int(direction) == 0: #backward
-        try:
-            num = CONTEXT.read_selected_without_altering_clipboard(True)[1]
-            txt = str(int(num)-int(n))
-            Text(txt).execute()
-        except ValueError:
-            utilities.simple_log()
-            return
-        Key("enter").execute()
-    else: #forward
-        Key("escape").execute()
+
+class EclipseController(object):
+    def __init__(self):
+        self.regex = False
+        self.analysis_chars = r"\]"
+    def regex_on(self):
+        if not self.regex:
+            Key("a-x").execute() # turn on regex
+        self.regex = True
+    def regex_off(self):
+        if self.regex:
+            Key("a-x").execute() # turn off regex
+        self.regex = False
+    def analyze_for_configure(self):
+        '''solves the problem of the editor not being smart about toggles by using text
+        to see which toggles are active'''
+        
+        '''regex toggle check'''
+        Key("escape").execute() # get out of Find
+        result = CONTEXT.read_nmax_tries(10)
+        if result == self.analysis_chars:
+            self.regex = False
+            Key("backspace").execute()
+        elif result == self.analysis_chars[1]:
+            self.regex = True
+            Key("delete, backspace").execute()
+        else:
+            control.nexus().intermediary.text("Eclipse configuration failed ("+result+")")
+        
+        
+    def lines_relative(self, back, n):
+        if back: #backward
+            try:
+                num = CONTEXT.read_nmax_tries(10)
+                txt = str(int(num)-int(n)+1) # +1 to include current line
+                Text(txt).execute()
+            except ValueError:
+                utilities.simple_log()
+                return
+            Key("enter").execute()
+        else: #forward
+            Key("escape, end, home, home").execute() # end-home-home to include all of current line
+        
+        # forward or backward
+        Key("s-down:"+str(int(n))+"/5, s-left").execute()
     
-    # forward or backward
-    Pause("50").execute()
-    Key("s-down:"+str(int(n))+"/5").execute()
+#     def process_text_for_search(self, text, regex, rtog):
+#         text = str(text)
+#         if int(regex) == 1:
+#             text = text[0] + "?".join(list(text[1:])) + "?"
+#         if int(rtog) == 1:
+#             Key("a-x").execute() # turn on regex
+#         Text(text).execute()
+#     def set_direction(self, direction):
+#         key = "o" # forward
+#         if int(direction) == 0:
+#             key = "b" #backward
+#         Key("a-"+key).execute()
+
     
         
     
-
+ec_con = EclipseController()
 
 class CommandRule(MappingRule):
 
@@ -86,12 +117,22 @@ class CommandRule(MappingRule):
             "split view vertical":                      R(Key("cs-lbrace"), rdescript="Eclipse: Split View (V)"),
             
             #Line Ops
-            "search [<regex>] [<rtog>] [<direction>] <text>": R(Key("c-f") + Pause("50") + \
-                                                          Function(process_text_for_search) + \
-                                                          Function(set_direction), rdescript="Eclipse: Search")  + \
-                                                        AsynchronousAction([L(S(["cancel"], Key("enter")))], 1, 50, "...", False),
-            "lines <n> [<direction>]":                  R(Key("c-l")+Pause("50")+Key("right, cs-left")+Pause("50")+Function(lines_relative), \
-                                                          rdescript="Eclipse: Select Relative Lines"),
+            "configure":                                R(Paste(ec_con.analysis_chars)+Key("left:2/5, c-f/20, backslash, rbracket, enter") + \
+                                                          Function(ec_con.analyze_for_configure), rdescript="Eclipse: Configure"),
+            "shackle <n> [<back>]":                     R(Key("c-l")+Key("right, cs-left")+ \
+                                                          Function(ec_con.lines_relative), rdescript="Eclipse: Select Relative Lines"),
+            "jump in [<n>]":                            R(Key("c-f, a-o")+Paste(r"[\(\[\{\<]")+Function(ec_con.regex_on)+ \
+                                                          Key("enter:%(n)d/5, escape, right") , rdescript="Eclipse: Jump In"),
+            "jump out [<n>]":                           R(Key("c-f, a-o")+Paste(r"[\)\] \}\>]")+Function(ec_con.regex_on)+ \
+                                                          Key("enter:%(n)d/5, escape, right") , rdescript="Eclipse: Jump Out"),
+            "jump back [<n>]":                          R(Key("c-f/5, a-b")+Paste(r"[\)\]\}\>]")+Function(ec_con.regex_on)+ \
+                                                          Key("enter:%(n)d/5, escape, left") , rdescript="Eclipse: Jump Back"),             
+            
+#             "search [<regex>] [<rtog>] [<direction>] <text>": R(Key("c-f") + Pause("50") + \
+#                                                           Function(process_text_for_search) + \
+#                                                           Function(set_direction), rdescript="Eclipse: Search")  + \
+#                                                         AsynchronousAction([L(S(["cancel"], Key("enter")))], 1, 50, "...", False),
+
         }
     extras = [
             Dictation("text"),
@@ -99,12 +140,13 @@ class CommandRule(MappingRule):
             IntegerRefST("n", 1, 3000),
             
             # line ops
-            Choice("direction", {"back" : 0}),
-            Choice("regex", {"reg" : 1}),
-            Choice("rtog", {"toggle" : 1}),
+            Boolean("back"),
+#             Choice("direction", {"back" : 0}),
+#             Choice("regex", {"reg" : 1}),
+#             Choice("rtog", {"toggle" : 1}),
             
              ]
-    defaults = {"n": 1, "mim":"", "direction": 1, "regex": 0, "rtog":0}
+    defaults = {"n": 1, "mim":"", "back": False}#, "regex": 0, "rtog":0s
 
 class EclipseCCR(MergeRule):
     pronunciation = "eclipse"

@@ -1,5 +1,5 @@
 from dragonfly import (ActionBase, IntegerRef, Integer)
-from dragonfly.grammar.elements import RuleWrap
+from dragonfly.grammar.elements import RuleWrap, Choice
 from dragonfly.language.base.integer_internal import MapIntBuilder, \
     IntegerContentBase
 from dragonfly.language.en.number import int_0, int_1_9, int_10_19, int_20_99, \
@@ -46,4 +46,6 @@ class IntegerRefST(IntegerRef):
         element = IntegerST(None, min, max)
         RuleWrap.__init__(self, name, element, default=default)
         
-    
+class Boolean(Choice):
+    def __init__(self, spec):
+        Choice.__init__(self, spec, {spec: True})

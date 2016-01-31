@@ -110,13 +110,13 @@ class Navigation(MergeRule):
     
     mapping = {
     
-    # VoiceCoder-inspired
-    "jump in":                      AsynchronousAction([L(S(["cancel"], context.nav, ["right", "(~[~{~<"]))
-                                                   ], time_in_seconds=0.1, repetitions=50, rdescript="Jump: In" ),
-    "jump out":                     AsynchronousAction([L(S(["cancel"], context.nav, ["right", ")~]~}~>"]))
-                                                   ], time_in_seconds=0.1, repetitions=50, rdescript="Jump: Out" ),
-    "jump back":                    AsynchronousAction([L(S(["cancel"], context.nav, ["left", "(~[~{~<"]))
-                                                   ], time_in_seconds=0.1, repetitions=50, rdescript="Jump: Back" ),
+    # VoiceCoder-inspired -- these should be done at the IDE level
+#     "jump in":                      AsynchronousAction([L(S(["cancel"], context.nav, ["right", "(~[~{~<"]))
+#                                                    ], time_in_seconds=0.1, repetitions=50, rdescript="Jump: In" ),
+#     "jump out":                     AsynchronousAction([L(S(["cancel"], context.nav, ["right", ")~]~}~>"]))
+#                                                    ], time_in_seconds=0.1, repetitions=50, rdescript="Jump: Out" ),
+#     "jump back":                    AsynchronousAction([L(S(["cancel"], context.nav, ["left", "(~[~{~<"]))
+#                                                    ], time_in_seconds=0.1, repetitions=50, rdescript="Jump: Back" ),
     "fill <target>":                R(Key("escape, escape, end"), show=False) +
                                     AsynchronousAction([L(S(["cancel"], Function(context.fill_within_line, nexus=_NEXUS)))
                                                    ], time_in_seconds=0.2, repetitions=50, rdescript="Fill" ),

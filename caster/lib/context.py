@@ -47,17 +47,9 @@ def navigate_to_character(direction3, target, fill=False):
         else:
             Key("cs-right").execute()
         
-        context = None
-        tries = 0
-        while context is None:
-            tries+=1
-            results = read_selected_without_altering_clipboard()
-            error_code = results[0]
-            if error_code==0:
-                context = results[1]
-                break
-            if tries > 5:
-                return False
+        context = read_nmax_tries(5, .01)
+        if context is None:
+            return False
         
         # if we got to this point, we have a copy result
         index = _find_index_in_context(target, context, look_left)
@@ -87,7 +79,17 @@ def navigate_to_character(direction3, target, fill=False):
     except Exception:
         utilities.simple_log()
 
-
+def read_nmax_tries(n, slp=0.1):
+    tries = 0
+    while True:
+        tries+=1
+        results = read_selected_without_altering_clipboard()
+        error_code = results[0]
+        if error_code==0:
+            return results[1]
+        if tries > n:
+            return None
+        time.sleep(slp)
 
 def read_selected_without_altering_clipboard(same_is_okay=False):
     '''Returns a tuple:
