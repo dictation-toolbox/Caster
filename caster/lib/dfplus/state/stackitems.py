@@ -130,7 +130,7 @@ class StackItemSeeker(StackItemRegisteredAction):
             if stack_item is not None:
                 for context_set in context_level.sets:
                     # stack_item must have a spec
-                    if stack_item.rspec in context_set.specTriggers:
+                    if stack_item.rspec in context_set.specTriggers or "*" in context_set.specTriggers:
                         context_level.satisfied = True
                         self.fillCL(context_level, context_set)
                         break
