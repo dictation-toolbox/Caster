@@ -5,15 +5,16 @@ Created on Sep 1, 2015
 '''
 from dragonfly import Repeat, Function, Key, Dictation, Choice, Mouse, MappingRule
 
-from caster.lib import context, navigation, settings
+from caster.lib import context, navigation, settings, utilities
 from caster.lib import control
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge.ccrmerger import CCRMerger
 from caster.lib.dfplus.merge.mergerule import MergeRule
-from caster.lib.dfplus.state.actions import AsynchronousAction
-from caster.lib.dfplus.state.actions2 import FuzzyMatchAction
+from caster.lib.dfplus.state.actions import AsynchronousAction, ContextSeeker
+from caster.lib.dfplus.state.actions2 import FuzzyMatchAction, UntilCancelled
 from caster.lib.dfplus.state.short import L, S, R
 from caster.lib.pita import fnfz
+from dragonfly.actions.action_mimic import Mimic
 
 _NEXUS = control.nexus()
 
@@ -104,12 +105,17 @@ class NavigationNon(MappingRule):
             "n": 1, "mim":"", "nnavi500": 1, "direction2":"", "dokick": 0, "text": "", "wm": 2
            }
 
+
 class Navigation(MergeRule):
     non = NavigationNon
     pronunciation = CCRMerger.CORE[1]
     
     mapping = {
-    
+    # "periodic" repeats whatever comes next at 1-second intervals until "cancel" is spoken or 100 tries occur
+    "periodic":                     ContextSeeker(forward=[L(S(["cancel"], lambda: None), \
+                                                             S(["shock"], \
+                                                               lambda fnparams: UntilCancelled(Mimic(*filter(lambda s: s != "periodic", fnparams)), 1).execute(), \
+                                                               use_spoken=True))]),
     # VoiceCoder-inspired -- these should be done at the IDE level
 #     "jump in":                      AsynchronousAction([L(S(["cancel"], context.nav, ["right", "(~[~{~<"]))
 #                                                    ], time_in_seconds=0.1, repetitions=50, rdescript="Jump: In" ),

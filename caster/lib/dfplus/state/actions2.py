@@ -241,3 +241,7 @@ class SuperFocusWindow(AsynchronousAction):
                                     finisher=Function(lambda message: self.nexus().intermediary.text(message), message="SuperFocus Complete")+Key("escape"))
         self.show = False
         
+class UntilCancelled(AsynchronousAction):
+    def __init__(self, action, t=3):
+        AsynchronousAction.__init__(self, [L(S(["cancel"], action, consume=False))], t, 100, "UC", False, None)
+        self.show = True
