@@ -1,19 +1,23 @@
 ''' line ops functions '''
 
+import re
+
 from dragonfly import (Grammar, AppContext, MappingRule,
                        Dictation, Key, Text, Repeat, Pause)
 from dragonfly.actions.action_function import Function
 from dragonfly.actions.action_mimic import Mimic
+from dragonfly.actions.action_paste import Paste
 from dragonfly.grammar.elements import Choice
 
+from caster.lib import context as CONTEXT, navigation
 from caster.lib import control, utilities
 from caster.lib import settings
 from caster.lib.ccr.core.nav import Navigation
 from caster.lib.dfplus.additions import IntegerRefST, Boolean
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R, L, S
-from caster.lib import context as CONTEXT
-from dragonfly.actions.action_paste import Paste
+from caster.lib.dfplus.state.actions2 import UntilCancelled
+
 
 
 class EclipseController(object):
@@ -61,20 +65,39 @@ class EclipseController(object):
         # forward or backward
         Key("s-down:"+str(int(n))+"/5, s-left").execute()
     
-#     def process_text_for_search(self, text, regex, rtog):
-#         text = str(text)
-#         if int(regex) == 1:
-#             text = text[0] + "?".join(list(text[1:])) + "?"
-#         if int(rtog) == 1:
-#             Key("a-x").execute() # turn on regex
-#         Text(text).execute()
-#     def set_direction(self, direction):
-#         key = "o" # forward
-#         if int(direction) == 0:
-#             key = "b" #backward
-#         Key("a-"+key).execute()
-
-    
+    def find(self, back, go, text=None, punctuation=None, a=None, b=None, c=None):
+        '''set direction'''
+            
+        key = "b" if back else "o"
+        Key("a-"+key).execute()
+        
+        '''figure out what to search for'''
+        if text is not None:
+            text = str(text)
+            '''simple vowel-removal regex'''
+            if self.regex:
+                text = re.sub("[aeiouAEIOU]+", r".*", text)
+                if text.endswith(r".*"):
+                    text = text[:-2]
+        elif punctuation is not None:
+            text = str(punctuation)
+            self.regex_off()
+        elif a is not None:
+            a = str(a)
+            b = str(b) if b is not None else ""
+            c = str(c) if c is not None else ""
+            text = a+b+c
+            self.regex_off()
+        Text(text).execute()
+        
+        '''"go" indicates that we should keep looking'''
+        if go:
+            u = UntilCancelled(Key("enter"), 2)
+            u.show = False
+            u.execute()
+        else:
+            Key("enter, escape").execute()
+        
         
     
 ec_con = EclipseController()
@@ -101,7 +124,6 @@ class CommandRule(MappingRule):
             # "terminate" changes to the settings for this hotkey: (when: in dialogs and windows)
             "terminate":                                R(Key("c-f2"), rdescript="Eclipse: Terminate Running Program"),
             
-            "find everywhere":                          R(Key("ca-g"), rdescript="Eclipse: Search Project"),
             "refractor symbol":                         R(Key("sa-r"), rdescript="Eclipse: Re-Factor Symbol"),
             
             "symbol next [<n>]":                        R(Key("c-k"), rdescript="Eclipse: Symbol Next") * Repeat(extra="n"),
@@ -117,6 +139,15 @@ class CommandRule(MappingRule):
             "split view vertical":                      R(Key("cs-lbrace"), rdescript="Eclipse: Split View (V)"),
             
             #Line Ops
+            "find everywhere":                          R(Key("ca-g"), rdescript="Eclipse: Search Project"),
+            "find word <text> [<back>] [<go>]":         R(Key("c-f")+Function(ec_con.regex_off)+Function(ec_con.find),\
+                                                          rdescript="Eclipse: Find Word"),
+            "find regex <text> [<back>] [<go>]":        R(Key("c-f")+Function(ec_con.regex_on)+Function(ec_con.find),\
+                                                          rdescript="Eclipse: Find Regex"),
+            "find <a> [<b> [<c>]] [<back>] [<go>]":     R(Key("c-f")+Function(ec_con.find),\
+                                                          rdescript="Eclipse: Find Alpha"),
+            "find <punctuation> [<back>] [<go>]":       R(Key("c-f")+Function(ec_con.find),\
+                                                          rdescript="Eclipse: Find Character(s)"),
             
             
         }
@@ -124,10 +155,14 @@ class CommandRule(MappingRule):
             Dictation("text"),
             Dictation("mim"),
             IntegerRefST("n", 1, 3000),
-            
-            
+            navigation.get_alphabet_choice("a"),
+            navigation.get_alphabet_choice("b"),
+            navigation.get_alphabet_choice("c"),
+            Choice("punctuation", {"hash tag": "#"}),
+            Boolean("back"),
+            Boolean("go"),
              ]
-    defaults = {"n": 1, "mim":""}#, "regex": 0, "rtog":0s
+    defaults = {"n": 1, "mim":"", "a": None, "b": None, "c": None, "punctuation": None, "back":False, "go":False}
 
 class EclipseCCR(MergeRule):
     pronunciation = "eclipse"
