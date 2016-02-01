@@ -39,8 +39,8 @@ class BoxAction(AsynchronousAction):
             return True
             
         AsynchronousAction.__init__(self, # cannot block, if it does, it'll block its own confirm command
-                                    [L(S(["cancel"], check_for_response, None))], 
-                                    1, repetitions, rdescript, False)
+                                    [L(S(["cancel"], check_for_response))], 
+                                    1, repetitions, rdescript, blocking=False)
         self.rspec = rspec
         self.box_type = box_type
         self.box_settings = box_settings # custom instructions for setting up the tk window ("Homunculus")
@@ -83,7 +83,7 @@ class ConfirmAction(AsynchronousAction):
         self.set_nexus(nexus)
         on_complete = AsynchronousAction.hmc_complete(lambda data: receive_response(data), self.nexus())
         AsynchronousAction.__init__(self, 
-                                    [L(S(["cancel"], on_complete, None))], 
+                                    [L(S(["cancel"], on_complete))], 
                                     1, 60, rdescript, False)# cannot block, if it does, it'll block its own confirm command
         
         self.base = base
@@ -243,5 +243,5 @@ class SuperFocusWindow(AsynchronousAction):
         
 class UntilCancelled(AsynchronousAction):
     def __init__(self, action, t=3):
-        AsynchronousAction.__init__(self, [L(S(["cancel"], action, consume=False))], t, 100, "UC", False, None)
+        AsynchronousAction.__init__(self, [L(S(["cancel"], action))], t, 100, "UC", False, None)
         self.show = True

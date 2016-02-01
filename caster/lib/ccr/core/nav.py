@@ -21,7 +21,7 @@ _NEXUS = control.nexus()
 
 class NavigationNon(MappingRule):
     mapping = {
-        "<direction> <time_in_seconds>":    AsynchronousAction([L(S(["cancel"], Key("%(direction)s")))], 
+        "<direction> <time_in_seconds>":    AsynchronousAction([L(S(["cancel"], Key("%(direction)s"), consume=False))], 
                                                                repetitions=1000, blocking=False ),
         "erase multi clipboard":            R(Function(navigation.erase_multi_clipboard, nexus=_NEXUS), 
                                               rdescript="Erase Multi Clipboard"),
@@ -118,12 +118,6 @@ class Navigation(MergeRule):
                                                                lambda fnparams: UntilCancelled(Mimic(*filter(lambda s: s != "periodic", fnparams)), 1).execute(), \
                                                                use_spoken=True))]),
     # VoiceCoder-inspired -- these should be done at the IDE level
-#     "jump in":                      AsynchronousAction([L(S(["cancel"], context.nav, ["right", "(~[~{~<"]))
-#                                                    ], time_in_seconds=0.1, repetitions=50, rdescript="Jump: In" ),
-#     "jump out":                     AsynchronousAction([L(S(["cancel"], context.nav, ["right", ")~]~}~>"]))
-#                                                    ], time_in_seconds=0.1, repetitions=50, rdescript="Jump: Out" ),
-#     "jump back":                    AsynchronousAction([L(S(["cancel"], context.nav, ["left", "(~[~{~<"]))
-#                                                    ], time_in_seconds=0.1, repetitions=50, rdescript="Jump: Back" ),
     "fill <target>":                R(Key("escape, escape, end"), show=False) +
                                     AsynchronousAction([L(S(["cancel"], Function(context.fill_within_line, nexus=_NEXUS)))
                                                    ], time_in_seconds=0.2, repetitions=50, rdescript="Fill" ),

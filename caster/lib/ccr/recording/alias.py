@@ -67,7 +67,7 @@ class ChainAlias(SelfModifyingRule):
         if text is not None:
             h_launch.launch(settings.QTYPE_INSTRUCTIONS, data="Enter_spec_for_command|")
             on_complete = AsynchronousAction.hmc_complete(lambda data: self.refresh(data[0].replace("\n", ""), text), self.nexus)
-            AsynchronousAction([L(S(["cancel"], on_complete, None))], 
+            AsynchronousAction([L(S(["cancel"], on_complete))], 
                                time_in_seconds=0.5, 
                                repetitions=300, 
                                blocking=False).execute()

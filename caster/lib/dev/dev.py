@@ -72,6 +72,8 @@ def experiment():
 #     comm = Communicator()
 #     comm.get_com("status").error(0)
 
+def run_remote_debugger():
+    utilities.remote_debug("dev.py")    
 
 
 COUNT=5
@@ -118,7 +120,8 @@ class DevelopmentHelp(MappingRule):
         "refresh debug file":           Function(devgen.refresh),  
         "Agrippa <filetype> <path>":    Function(grep_this),
         "run rule complexity test":     Function(lambda: run_tests()), 
-        "run unit tests":               Function(testrunner.run_tests)
+        "run unit tests":               Function(testrunner.run_tests),
+        "run remote debugger":          Function(run_remote_debugger),
     }
     extras = [
               Dictation("text"),

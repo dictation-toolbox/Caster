@@ -118,7 +118,7 @@ def settings_window(nexus):
     if not utilities.window_exists(None, settings.STATUS_WINDOW_TITLE + settings.SOFTWARE_VERSION_NUMBER):
         h_launch.launch(settings.WXTYPE_SETTINGS)
         on_complete = AsynchronousAction.hmc_complete(lambda data: receive_settings(data), nexus)
-        AsynchronousAction([L(S(["cancel"], on_complete, None))], time_in_seconds=1, repetitions=300, blocking=False).execute()
+        AsynchronousAction([L(S(["cancel"], on_complete))], time_in_seconds=1, repetitions=300, blocking=False).execute()
 
 class LaunchRule(MappingRule):
     mapping = {

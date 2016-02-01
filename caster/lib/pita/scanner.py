@@ -24,7 +24,7 @@ DATA = _d if _d != {} else {"directories":{}}
 def scan_directory(nexus):
     on_complete = AsynchronousAction.hmc_complete(lambda data: _scan_directory(data, nexus), nexus)
     h_launch.launch(settings.QTYPE_DIRECTORY)
-    AsynchronousAction([L(S(["cancel"], on_complete, None))], 
+    AsynchronousAction([L(S(["cancel"], on_complete))], 
                            time_in_seconds=0.5, 
                            repetitions=300, 
                            blocking=False).execute()

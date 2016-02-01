@@ -52,6 +52,7 @@ class AsynchronousAction(ContextSeeker):
     '''
     def __init__(self, forward, time_in_seconds=1, repetitions=0, 
                  rdescript="unnamed command (A)", blocking=True, finisher=None):
+        forward[0].sets[0].consume = False # consume is for ContextSeekers, not AsynchronousActions
         ContextSeeker.__init__(self, None, forward)
         self.repetitions = repetitions
         self.time_in_seconds = time_in_seconds
@@ -60,6 +61,7 @@ class AsynchronousAction(ContextSeeker):
         self.base = finisher
         assert self.forward is not None, "Cannot create AsynchronousAction with no termination commands"
         assert len(self.forward) == 1, "Cannot create AsynchronousAction with > or < one purpose"
+        
     def _execute(self, data=None):
         if data is not None:
             if "time_in_seconds" in data: self.time_in_seconds=float(data["time_in_seconds"])
