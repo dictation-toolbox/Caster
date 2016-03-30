@@ -12,5 +12,5 @@ Creates a grid on the screen and you can select a square by calling out the hori
 Finds text on the screen and gives each a number which you can call out.
 
 ## Clicking
-- "kick" produces a right click
-- "psychic" produces a left click
+- "kick" produces a left click
+- "psychic" produces a right click
