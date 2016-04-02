@@ -196,7 +196,8 @@ def init_default_values():
                        ("integer_remap_opt_in", False), 
                        ("keypress_wait", 50), # milliseconds
                        ("max_ccr_repetitions", 16), 
-                       ("enable_match_logging", False)
+                       ("enable_match_logging", False),
+                       ("atom_palette_wait", "30")
                        ])
     
     # fuzzy string matching section
