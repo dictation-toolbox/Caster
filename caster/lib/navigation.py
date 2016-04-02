@@ -13,7 +13,8 @@ from caster.lib import utilities, settings
 from caster.lib import control
 
 
-DIRECTION_STANDARD={"sauce [E]": "up", "dunce [E]": "down", "lease [E]": "left", "Ross [E]": "right", "back": "left" }
+#DIRECTION_STANDARD={"sauce [E]": "up", "dunce [E]": "down", "lease [E]": "left", "Ross [E]": "right", "back": "left" }
+DIRECTION_STANDARD={"up": "up", "down": "down", "left": "left", "right": "right", "back": "left" }
 TARGET_CHOICE = Choice("target",
                 {"comma": ",", "(period | dot)": ".", "(pair | parentheses)": "(~)",
                 "[square] (bracket | brackets)": "[~]", "curly [brace]": "{~}",
