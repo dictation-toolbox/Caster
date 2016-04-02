@@ -18,7 +18,7 @@ class CommandRule(MappingRule):
 
     # How long to wait for the Atom palette to load before hitting the enter key
     atom_palette_wait = "30"
-    if settings.SETTINGS["apps"]["atom"]:
+    if settings.SETTINGS["miscellaneous"]["atom_palette_wait"]:
         atom_palette_wait = settings.SETTINGS["miscellaneous"]["atom_palette_wait"]
 
     mapping = {
