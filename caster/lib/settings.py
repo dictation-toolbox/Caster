@@ -145,6 +145,14 @@ def init_default_values():
     if not SETTINGS["paths"]["WXPYTHON_PATH"] in sys.path and os.path.isdir(SETTINGS["paths"]["WXPYTHON_PATH"]):
         sys.path.append(SETTINGS["paths"]["WXPYTHON_PATH"])
     
+# detect dragon version 12 and 13
+if not os.path.isfile(SETTINGS["paths"]["ENGINE_PATH"]):
+    dragon13Path = "C:/Program Files (x86)/Nuance/NaturallySpeaking13/Program/natspeak.exe"
+    if os.path.isfile(dragon13Path):
+        SETTINGS["paths"]["ENGINE_PATH"] = dragon13Path
+    else:
+        print "Cannot find default dragon engine path"
+
     # apps section
     values_change_count += update_values(SETTINGS, [("apps", {})])
     values_change_count += update_values(SETTINGS["apps"], [
