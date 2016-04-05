@@ -31,6 +31,8 @@ class CommandRule(MappingRule):
         "bug fix commit <n>":    R(Mimic("commit")+Text("fixes #%(n)d ")+Key("backspace"), rdescript="GIT: Bug Fix Commit"),
         "reference commit <n>":  R(Mimic("commit")+Text("refs #%(n)d ")+Key("backspace"), rdescript="GIT: Reference Commit"),
         "checkout":         R(Text( "git checkout " ), rdescript="GIT: Check Out"),
+        "branch":         R(Text( "git branch" )+Key("enter"), rdescript="GIT: Branch"),
+        "remote":         R(Text( "git remote " ), rdescript="GIT: Remote"),
         "merge":            R(Text( "git merge " ), rdescript="GIT: Merge"),
         "merge tool":       R(Text( "git mergetool")+Key("enter"), rdescript="GIT: Merge Tool"),
         "fetch":            R(Text( "git fetch" )+Key("enter"), rdescript="GIT: Fetch"),
@@ -46,7 +48,7 @@ class CommandRule(MappingRule):
         
         
         "undo [last] commit":       R(Text("git reset --soft HEAD~1")+Key("enter"), rdescript="GIT: Undo Commit"),
-        "undo changes":             R(Text("git reset --hard")+Key("enter"), rdescript="GIT: Undo Since Last Commit"),
+        "(undo changes | reset hard)": R(Text("git reset --hard")+Key("enter"), rdescript="GIT: Undo or Reset Since Last Commit"),
         "stop tracking [file]":     R(Text("git rm --cached FILENAME"), rdescript="GIT: Stop Tracking"),
         "preview remove untracked": R(Text("git clean -nd")+Key("enter"), rdescript="GIT: Preview Remove Untracked"),
         "remove untracked":         R(Text("git clean -fd")+Key("enter"), rdescript="GIT: Remove Untracked"),
@@ -85,7 +87,8 @@ class CommandRule(MappingRule):
 #---------------------------------------------------------------------------
 
 context = AppContext(executable="sh")
-grammar = Grammar("MINGW32", context=context)
+context2 = AppContext(executable="cmd")
+grammar = Grammar("MINGW32", context=(context | context2))
 grammar.add_rule(CommandRule(name="git bash"))
 if settings.SETTINGS["apps"]["gitbash"]:
     grammar.load()
