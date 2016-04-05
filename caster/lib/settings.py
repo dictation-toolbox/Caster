@@ -124,7 +124,7 @@ def init_default_values():
         ("SIKULI_SCRIPTS_JAR_PATH", ""),
         ("SIKULI_SERVER_PATH", SETTINGS["paths"]["BASE_PATH"] + "/asynch/sikuli/scripts/xmlrpc_server.sikuli"),
         ("SIKULI_COMPATIBLE_JAVA_EXE_PATH", ""),
-        ("ENGINE_PATH", "C:/Program Files (x86)/Nuance/NaturallySpeaking12/Program/natspeak.exe"),
+        ("ENGINE_PATH", "C:/Program Files (x86)/Nuance/NaturallySpeaking14/Program/natspeak.exe"),
         ("REBOOT_PATH", SETTINGS["paths"]["BASE_PATH"] + "/bin/reboot.bat"),
         ("REBOOT_PATH_WSR", SETTINGS["paths"]["BASE_PATH"] + "/bin/reboot_wsr.bat"),
         ("SETTINGS_WINDOW_PATH", SETTINGS["paths"]["BASE_PATH"] + "/asynch/settingswindow.py"), 
@@ -144,6 +144,17 @@ def init_default_values():
         sys.path.append(SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"])
     if not SETTINGS["paths"]["WXPYTHON_PATH"] in sys.path and os.path.isdir(SETTINGS["paths"]["WXPYTHON_PATH"]):
         sys.path.append(SETTINGS["paths"]["WXPYTHON_PATH"])
+        
+    # detect the version of Dragon
+    if not os.path.isfile(SETTINGS["paths"]["ENGINE_PATH"]):
+        dragon13Path = "C:/Program Files (x86)/Nuance/NaturallySpeaking13/Program/natspeak.exe"
+        dragon12Path = "C:/Program Files (x86)/Nuance/NaturallySpeaking12/Program/natspeak.exe"
+        if os.path.isfile(dragon13Path):
+            SETTINGS["paths"]["ENGINE_PATH"] = dragon13Path
+        elif os.path.isfile(dragon12Path):
+            SETTINGS["paths"]["ENGINE_PATH"] = dragon12Path
+        else:
+            print "Cannot find default dragon engine path"
     
     # apps section
     values_change_count += update_values(SETTINGS, [("apps", {})])
