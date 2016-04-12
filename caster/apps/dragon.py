@@ -6,6 +6,8 @@ from caster.lib import utilities, settings
 from caster.lib import control
 from caster.lib.dfplus.state.short import R
 from caster.lib.dfplus.additions import IntegerRefST
+from caster.lib.dfplus.merge.mergerule import MergeRule
+from caster.lib import control
 
 _NEXUS = control.nexus()
 
@@ -17,7 +19,9 @@ def fix_dragon_double(nexus):
     except Exception:
         utilities.simple_log(False)
 
-class CommandRule(MappingRule):
+
+class CommandRule(MergeRule):
+    pronunciation = "dragon"
 
     mapping = {
         '(lock Dragon | deactivate)':   R(Playback([(["go", "to", "sleep"], 0.0)]), rdescript="Dragon: Go To Sleep"),

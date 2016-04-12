@@ -16,9 +16,12 @@ from dragonfly import (Grammar, AppContext, MappingRule,
 from caster.lib import settings
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.state.short import R
+from caster.lib.dfplus.merge.mergerule import MergeRule
+from caster.lib import control
 
 
-class CommandRule(MappingRule):
+class CommandRule(MergeRule):
+    pronunciation = "google chrome"
 
     mapping = {
         "new tab [<n>]":                R(Key("c-t"), rdescript="Browser: New Tab") * Repeat(extra="n"),
@@ -52,4 +55,7 @@ context = AppContext(executable="chrome")
 grammar = Grammar("chrome", context=context)
 grammar.add_rule(CommandRule(name="chrome"))
 if settings.SETTINGS["apps"]["chrome"]:
-    grammar.load()
+    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
+        control.nexus().merger.add_global_rule(CommandRule())
+    else:
+        grammar.load()

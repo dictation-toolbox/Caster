@@ -15,13 +15,18 @@ from dragonfly import (Grammar, AppContext, MappingRule, Mimic,
 from caster.lib import settings
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.state.short import R
-
+from caster.lib.dfplus.merge.mergerule import MergeRule
+from caster.lib import control
 
 def apply(n):
     if n!=0:
         Text("stash@{"+str(int(n))+"}").execute()
 
-class CommandRule(MappingRule):
+
+
+
+class CommandRule(MergeRule):
+    pronunciation = "git bash"
 
     mapping = {
         "initialize repository":       Text( "git init" )+Key("enter"),
@@ -91,4 +96,7 @@ context2 = AppContext(executable="cmd")
 grammar = Grammar("MINGW32", context=(context | context2))
 grammar.add_rule(CommandRule(name="git bash"))
 if settings.SETTINGS["apps"]["gitbash"]:
-    grammar.load()
+    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
+        control.nexus().merger.add_global_rule(CommandRule())
+    else:
+        grammar.load()

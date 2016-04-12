@@ -147,14 +147,14 @@ def init_default_values():
         
     # detect the version of Dragon
     if not os.path.isfile(SETTINGS["paths"]["ENGINE_PATH"]):
-        dragon13Path = "C:/Program Files (x86)/Nuance/NaturallySpeaking13/Program/natspeak.exe"
-        dragon12Path = "C:/Program Files (x86)/Nuance/NaturallySpeaking12/Program/natspeak.exe"
-        if os.path.isfile(dragon13Path):
-            SETTINGS["paths"]["ENGINE_PATH"] = dragon13Path
-        elif os.path.isfile(dragon12Path):
-            SETTINGS["paths"]["ENGINE_PATH"] = dragon12Path
+        dragon_13_path = "C:/Program Files (x86)/Nuance/NaturallySpeaking13/Program/natspeak.exe"
+        dragon_12_path = "C:/Program Files (x86)/Nuance/NaturallySpeaking12/Program/natspeak.exe"
+        if os.path.isfile(dragon_13_path):
+            SETTINGS["paths"]["ENGINE_PATH"] = dragon_13_path
+        elif os.path.isfile(dragon_12_path):
+            SETTINGS["paths"]["ENGINE_PATH"] = dragon_12_path
         else:
-            print "Cannot find default dragon engine path"
+            print("Cannot find default dragon engine path")
     
     # apps section
     values_change_count += update_values(SETTINGS, [("apps", {})])
@@ -208,7 +208,8 @@ def init_default_values():
                        ("keypress_wait", 50), # milliseconds
                        ("max_ccr_repetitions", 16), 
                        ("enable_match_logging", False),
-                       ("atom_palette_wait", "30")
+                       ("atom_palette_wait", "30"),
+                       ("rdp_mode", False)
                        ])
     
     # fuzzy string matching section

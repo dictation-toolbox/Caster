@@ -19,7 +19,6 @@ from caster.lib.dfplus.state.short import R, L, S
 from caster.lib.dfplus.state.actions2 import UntilCancelled
 
 
-
 class EclipseController(object):
     def __init__(self):
         self.regex = False
@@ -102,7 +101,11 @@ class EclipseController(object):
     
 ec_con = EclipseController()
 
-class CommandRule(MappingRule):
+
+
+
+class CommandRule(MergeRule):
+    pronunciation = "eclipse"
 
     mapping = {
                     
@@ -165,7 +168,7 @@ class CommandRule(MappingRule):
     defaults = {"n": 1, "mim":"", "a": None, "b": None, "c": None, "punctuation": None, "back":False, "go":False}
 
 class EclipseCCR(MergeRule):
-    pronunciation = "eclipse"
+    pronunciation = "eclipse jump"
     
     mwith = [Navigation().get_name()]
     
@@ -197,5 +200,9 @@ context = AppContext(executable="javaw", title="Eclipse") | AppContext(executabl
 grammar = Grammar("Eclipse", context=context)
 grammar.add_rule(CommandRule(name="eclipse"))
 if settings.SETTINGS["apps"]["eclipse"]:
-    grammar.load()
-    control.nexus().merger.add_app_rule(EclipseCCR(), context)
+    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
+        control.nexus().merger.add_global_rule(CommandRule())
+        control.nexus().merger.add_global_rule(EclipseCCR())
+    else:
+        control.nexus().merger.add_app_rule(EclipseCCR(), context)
+        grammar.load()

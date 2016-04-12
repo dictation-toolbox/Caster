@@ -18,7 +18,12 @@ from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.state.short import R
 
 
-class CommandRule(MappingRule):
+from caster.lib.dfplus.merge.mergerule import MergeRule
+from caster.lib import control
+
+
+class CommandRule(MergeRule):
+    pronunciation = "Microsoft visual studio"
 
     mapping = {
         
@@ -62,4 +67,7 @@ context = AppContext(executable="WDExpress")
 grammar = Grammar("WDExpress", context=context)
 grammar.add_rule(CommandRule(name="M S V C"))
 if settings.SETTINGS["apps"]["msvc"]:
-    grammar.load()
+    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
+        control.nexus().merger.add_global_rule(CommandRule())
+    else:
+        grammar.load()

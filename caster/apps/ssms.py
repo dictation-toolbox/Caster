@@ -7,7 +7,12 @@ from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.state.short import R
 
 
-class CommandRule(MappingRule):
+from caster.lib.dfplus.merge.mergerule import MergeRule
+from caster.lib import control
+
+
+class CommandRule(MergeRule):
+    pronunciation = "sequel server management studio"
 
     mapping = {
         # There doesn't seem to be a hotkey for sequential tab navigation in SSMS, but something is better than nothing...
@@ -45,4 +50,7 @@ context = AppContext(executable="ssms")
 grammar = Grammar("SQL Server Management Studio", context=context)
 grammar.add_rule(CommandRule(name="ssms"))
 if settings.SETTINGS["apps"]["ssms"]:
-    grammar.load()
+    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
+        control.nexus().merger.add_global_rule(CommandRule())
+    else:
+        grammar.load()

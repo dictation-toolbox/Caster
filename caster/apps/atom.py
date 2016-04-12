@@ -14,12 +14,16 @@ from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.state.short import R
 
 
-class CommandRule(MappingRule):
+from caster.lib.dfplus.merge.mergerule import MergeRule
+from caster.lib import control
 
-    # How long to wait for the Atom palette to load before hitting the enter key
-    atom_palette_wait = "30"
-    if settings.SETTINGS["miscellaneous"]["atom_palette_wait"]:
-        atom_palette_wait = settings.SETTINGS["miscellaneous"]["atom_palette_wait"]
+# How long to wait for the Atom palette to load before hitting the enter key
+atom_palette_wait = "30"
+if settings.SETTINGS["miscellaneous"]["atom_palette_wait"]:
+    atom_palette_wait = settings.SETTINGS["miscellaneous"]["atom_palette_wait"]
+
+class CommandRule(MergeRule):
+    pronunciation = "atom"
 
     mapping = {
 
@@ -330,4 +334,7 @@ context = AppContext(executable="atom", title="Atom")
 grammar = Grammar("Atom", context=context)
 grammar.add_rule(CommandRule(name="atom"))
 if settings.SETTINGS["apps"]["atom"]:
-    grammar.load()
+    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
+        control.nexus().merger.add_global_rule(CommandRule())
+    else:
+        grammar.load()

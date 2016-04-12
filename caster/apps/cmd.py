@@ -16,7 +16,12 @@ from caster.lib import settings
 from caster.lib.dfplus.state.short import R
 
 
-class CommandRule(MappingRule):
+from caster.lib.dfplus.merge.mergerule import MergeRule
+from caster.lib import control
+
+
+class CommandRule(MergeRule):
+    pronunciation = "command prompt"
 
     mapping = {
         "C drive":          R(Text(r"cd C:/")+Key("enter"), rdescript="CMD: Go To C:"),
@@ -41,4 +46,8 @@ context = AppContext(executable="cmd")
 grammar = Grammar("cmd", context=context)
 grammar.add_rule(CommandRule(name="command prompt"))
 if settings.SETTINGS["apps"]["cmd"]:
-    grammar.load()
+    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
+        control.nexus().merger.add_global_rule(CommandRule())
+        print("added CMD")
+    else:
+        grammar.load()

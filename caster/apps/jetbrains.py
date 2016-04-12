@@ -6,7 +6,12 @@ from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.state.short import R
 
 
-class CommandRule(MappingRule):
+from caster.lib.dfplus.merge.mergerule import MergeRule
+from caster.lib import control
+
+
+class CommandRule(MergeRule):
+    pronunciation = "jet brains"
 
     mapping = {
         "quickfix":                 R(Key("a-enter"), rdescript="JetBrains: Quick Fix"),
@@ -49,4 +54,7 @@ context = AppContext(executable="idea", title="IntelliJ") \
 grammar = Grammar("IntelliJ + Android Studio + PyCharm", context=context)
 grammar.add_rule(CommandRule(name="jet brains"))
 if settings.SETTINGS["apps"]["jetbrains"]:
-    grammar.load()
+    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
+        control.nexus().merger.add_global_rule(CommandRule())
+    else:
+        grammar.load()

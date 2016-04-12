@@ -18,7 +18,12 @@ from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.state.short import R
 
 
-class CommandRule(MappingRule):
+from caster.lib.dfplus.merge.mergerule import MergeRule
+from caster.lib import control
+
+
+class CommandRule(MergeRule):
+    pronunciation = "sequel developer"
 
     mapping = {
             "run this query":                       R(Key("f9"), rdescript="SQL Dev: Run Query"),
@@ -39,4 +44,7 @@ context = AppContext(executable="sqldeveloper64W", title="SQL Developer")
 grammar = Grammar("Sql Developer", context=context)
 grammar.add_rule(CommandRule(name="sql developer"))
 if settings.SETTINGS["apps"]["sqldeveloper"]:
-    grammar.load()
+    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
+        control.nexus().merger.add_global_rule(CommandRule())
+    else:
+        grammar.load()

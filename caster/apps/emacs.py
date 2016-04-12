@@ -7,7 +7,12 @@ from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.state.short import R
 
 
-class CommandRule(MappingRule):
+from caster.lib.dfplus.merge.mergerule import MergeRule
+from caster.lib import control
+
+
+class CommandRule(MergeRule):
+    pronunciation = "E max"
 
     mapping = {
         "open file":            R(Key("c-x, c-f"), rdescript="Emacs: Open File"), 
@@ -64,4 +69,7 @@ context = AppContext(executable="emacs", title="emacs")
 grammar = Grammar("emacs", context=context)
 grammar.add_rule(CommandRule(name="emacs"))
 if settings.SETTINGS["apps"]["emacs"]:
-    grammar.load()
+    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
+        control.nexus().merger.add_global_rule(CommandRule())
+    else:
+        grammar.load()

@@ -9,7 +9,12 @@ from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 
 
-class CommandRule(MappingRule):
+from caster.lib.dfplus.merge.mergerule import MergeRule
+from caster.lib import control
+
+
+class CommandRule(MergeRule):
+    pronunciation = "flash develop"
 
     mapping = {
                     
@@ -54,7 +59,7 @@ class CommandRule(MappingRule):
     defaults = {"n": 1, "mim":""}
 
 class FlashDevelopCCR(MergeRule):
-    pronunciation = "flash develop"
+    pronunciation = "flash develop test"
     mwith = [Navigation().get_name()]
     
     mapping = {
@@ -72,5 +77,9 @@ context = AppContext(executable="FlashDevelop", title="FlashDevelop")
 grammar = Grammar("FlashDevelop", context=context)
 grammar.add_rule(CommandRule())
 if settings.SETTINGS["apps"]["flashdevelop"]:
-    grammar.load()
-    control.nexus().merger.add_app_rule(FlashDevelopCCR(name="FlashDevelop"), context)
+    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
+        control.nexus().merger.add_global_rule(CommandRule())
+        control.nexus().merger.add_global_rule(FlashDevelopCCR())
+    else:
+        control.nexus().merger.add_app_rule(FlashDevelopCCR(name="FlashDevelop"), context)
+        grammar.load()

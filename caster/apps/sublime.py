@@ -5,7 +5,12 @@ from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.state.short import R
 
 
-class CommandRule(MappingRule):
+from caster.lib.dfplus.merge.mergerule import MergeRule
+from caster.lib import control
+
+
+class CommandRule(MergeRule):
+    pronunciation = "sublime"
 
     mapping = {
         "go to line":               R(Key("c-g"), rdescript="Sublime: Go To Line"),
@@ -38,4 +43,7 @@ context = AppContext(executable="sublime_text")
 grammar = Grammar("Sublime", context=context)
 grammar.add_rule(CommandRule(name="sublime"))
 if settings.SETTINGS["apps"]["sublime"]:
-    grammar.load()
+    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
+        control.nexus().merger.add_global_rule(CommandRule())
+    else:
+        grammar.load()

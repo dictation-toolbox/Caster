@@ -17,7 +17,12 @@ from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.state.short import R
 
 
-class CommandRule(MappingRule):
+from caster.lib.dfplus.merge.mergerule import MergeRule
+from caster.lib import control
+
+
+class CommandRule(MergeRule):
+    pronunciation = "Microsoft Word"
 
     mapping = {
         "insert image":              R(Key("alt, n, p"), rdescript="Word: Insert Image"),
@@ -37,4 +42,7 @@ context = AppContext(executable="winword")
 grammar = Grammar("Microsoft Word", context=context)
 grammar.add_rule(CommandRule(name="microsoft word"))
 if settings.SETTINGS["apps"]["winword"]:
-    grammar.load()
+    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
+        control.nexus().merger.add_global_rule(CommandRule())
+    else:
+        grammar.load()

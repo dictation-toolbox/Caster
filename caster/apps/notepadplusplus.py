@@ -18,7 +18,12 @@ from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.state.short import R
 
 
-class CommandRule(MappingRule):
+from caster.lib.dfplus.merge.mergerule import MergeRule
+from caster.lib import control
+
+
+class CommandRule(MergeRule):
+    pronunciation = "notepad plus plus"
 
     mapping = {
             "stylize <n2>":                         R(Mouse("right")+Key("down:6/5, right")+(Key("down") * Repeat(extra="n2"))+Key("enter"), rdescript="Notepad++: Stylize"),
@@ -43,4 +48,7 @@ context = AppContext(executable="notepad++")
 grammar = Grammar("Notepad++", context=context)
 grammar.add_rule(CommandRule(name="notepad plus plus"))
 if settings.SETTINGS["apps"]["notepadplusplus"]:
-    grammar.load()
+    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
+        control.nexus().merger.add_global_rule(CommandRule())
+    else:
+        grammar.load()

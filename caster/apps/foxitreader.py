@@ -7,7 +7,12 @@ from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.state.short import R
 
 
-class CommandRule(MappingRule):
+from caster.lib.dfplus.merge.mergerule import MergeRule
+from caster.lib import control
+
+
+class CommandRule(MergeRule):
+    pronunciation = "fox it reader"
 
     mapping = {
         "next tab [<n>]":               R(Key("c-tab"), rdescript="Foxit Reader: Next Tab") * Repeat(extra="n"),
@@ -27,4 +32,7 @@ context = AppContext(executable="Foxit Reader")
 grammar = Grammar("Foxit Reader", context=context)
 grammar.add_rule(CommandRule(name="Foxit Reader"))
 if settings.SETTINGS["apps"]["foxitreader"]:
-    grammar.load()
+    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
+        control.nexus().merger.add_global_rule(CommandRule())
+    else:
+        grammar.load()

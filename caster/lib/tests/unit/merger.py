@@ -1,4 +1,4 @@
-from caster.apps import eclipse
+from caster.apps import griddouglas, eclipse
 from caster.apps.eclipse import EclipseCCR
 from caster.lib.ccr.bash.bash import Bash
 from caster.lib.ccr.java.java import Java
@@ -78,7 +78,7 @@ class TestMerger(TestNexus):
         self.assertFalse("chain alias" in self.nexus.merger._base_global.mapping_actual())
         
     def test_reject_mapping_rules(self):
-        self.assertRaises(AttributeError, lambda: self.nexus.merger.add_global_rule(eclipse.CommandRule(name="eclipse")))
+        self.assertRaises(AttributeError, lambda: self.nexus.merger.add_global_rule(griddouglas.GridControlRule(name="douglas")))
         
         
         

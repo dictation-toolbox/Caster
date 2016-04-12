@@ -7,7 +7,12 @@ from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.state.short import R
 
 
-class CommandRule(MappingRule):
+from caster.lib.dfplus.merge.mergerule import MergeRule
+from caster.lib import control
+
+
+class CommandRule(MergeRule):
+    pronunciation = "explorer"
 
     mapping = {
         "address bar":                       R(Key("a-d"), rdescript="Explorer: Address Bar"),
@@ -28,4 +33,7 @@ context = AppContext(executable="explorer")
 grammar = Grammar("Windows Explorer", context=context)
 grammar.add_rule(CommandRule(name="explorer"))
 if settings.SETTINGS["apps"]["explorer"]:
-    grammar.load()
+    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
+        control.nexus().merger.add_global_rule(CommandRule())
+    else:
+        grammar.load()

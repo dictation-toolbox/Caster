@@ -18,7 +18,12 @@ from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.state.short import R
 
 
-class CommandRule(MappingRule):
+from caster.lib.dfplus.merge.mergerule import MergeRule
+from caster.lib import control
+
+
+class CommandRule(MergeRule):
+    pronunciation = "fire foxp"
 
     mapping = {
         "new tab [<n>]":                R(Key("c-t"), rdescript="Browser: New Tab") * Repeat(extra="n"),
@@ -51,4 +56,7 @@ context = AppContext(executable="firefox")
 grammar = Grammar("firefox", context=context)
 grammar.add_rule(CommandRule(name="firefox"))
 if settings.SETTINGS["apps"]["firefox"]:
-    grammar.load()
+    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
+        control.nexus().merger.add_global_rule(CommandRule())
+    else:
+        grammar.load()
