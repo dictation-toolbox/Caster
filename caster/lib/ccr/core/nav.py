@@ -121,6 +121,12 @@ class Navigation(MergeRule):
     "fill <target>":                R(Key("escape, escape, end"), show=False) +
                                     AsynchronousAction([L(S(["cancel"], Function(context.fill_within_line, nexus=_NEXUS)))
                                                    ], time_in_seconds=0.2, repetitions=50, rdescript="Fill" ),
+    "jump in":                      AsynchronousAction([L(S(["cancel"], context.nav, ["right", "(~[~{~<"]))
+                                                   ], time_in_seconds=0.1, repetitions=50, rdescript="Jump: In" ),
+    "jump out":                     AsynchronousAction([L(S(["cancel"], context.nav, ["right", ")~]~}~>"]))
+                                                   ], time_in_seconds=0.1, repetitions=50, rdescript="Jump: Out" ),
+    "jump back":                    AsynchronousAction([L(S(["cancel"], context.nav, ["left", "(~[~{~<"]))
+                                                   ], time_in_seconds=0.1, repetitions=50, rdescript="Jump: Back" ),
     
     # keyboard shortcuts
     'save':                         R(Key("c-s"), rspec="save", rdescript="Save"),
@@ -146,6 +152,8 @@ class Navigation(MergeRule):
     "set format (<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)":  R(Function(navigation.set_text_format), rdescript="Set Text Format"), 
     "(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel) <textnv> [brunt]":  R(Function(navigation.master_format_text), rdescript="Text Format"), 
     "format [<textnv>]":            R(Function(navigation.prior_text_format), rdescript="Last Text Format"),
+    
+    "dredge":                       R(Key("a-tab"), rdescript="Alt-Tab"),
 
     }
 
