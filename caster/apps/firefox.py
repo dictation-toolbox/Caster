@@ -23,7 +23,7 @@ from caster.lib import control
 
 
 class CommandRule(MergeRule):
-    pronunciation = "fire foxp"
+    pronunciation = "fire fox"
 
     mapping = {
         "new tab [<n>]":                R(Key("c-t"), rdescript="Browser: New Tab") * Repeat(extra="n"),

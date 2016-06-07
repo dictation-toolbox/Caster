@@ -204,12 +204,13 @@ def init_default_values():
                        ("dev_commands", False),
                        ("sikuli_enabled", False),
                        ("status_window_enabled", False), 
-                       ("integer_remap_opt_in", False), 
                        ("keypress_wait", 50), # milliseconds
                        ("max_ccr_repetitions", 16), 
                        ("enable_match_logging", False),
                        ("atom_palette_wait", "30"),
-                       ("rdp_mode", False)
+                       ("rdp_mode", False),
+                       ("integer_remap_opt_in", False), 
+                       ("integer_remap_crash_fix", False)
                        ])
     
     # fuzzy string matching section
