@@ -2,9 +2,13 @@ from dragonfly import (ActionBase, IntegerRef, Integer)
 from dragonfly.grammar.elements import RuleWrap, Choice
 from dragonfly.language.base.integer_internal import MapIntBuilder, \
     IntegerContentBase
-from dragonfly.language.en.number import int_0, int_1_9, int_10_19, int_20_99, \
-    int_100s, int_100big, int_1000s, int_1000000s
 from dragonfly.language.loader import language
+if (language =="en"):	
+	from dragonfly.language.en.number import int_0, int_1_9, int_10_19, int_20_99, \
+		int_100s, int_100big, int_1000s, int_1000000s
+else: # German language. Add more languages with if conditions here if needed.
+	from dragonfly.language.de.number import int_0, int_1_9, int_10_19, int_20_99, \
+		int_100s, int_100big, int_1000s, int_1000000s
 
 from caster.lib import utilities, settings, navigation
 
@@ -32,7 +36,7 @@ INTEGER_CONTENT = language.IntegerContent
 class IntegerContentST(IntegerContentBase):
     builders = [int_0, int_1_9, int_10_19, int_20_99,
                 int_100s, int_100big, int_1000s, int_1000000s]
-if "en" in language.language_map and settings.SETTINGS["miscellaneous"]["integer_remap_opt_in"]:
+if ("en" or "de" in language.language_map) and settings.SETTINGS["miscellaneous"]["integer_remap_opt_in"]:
     mapping = navigation.numbers_map_1_to_9()
     IntegerContentST.builders[1] = MapIntBuilder(mapping)
     INTEGER_CONTENT = IntegerContentST
