@@ -6,6 +6,7 @@ from dragonfly import (Key, Text , Playback, Choice, Mouse, monitors)
 import dragonfly
 from dragonfly.actions.action_base import ActionError
 from dragonfly.actions.keyboard import Keyboard
+from dragonfly.language.loader import language
 import win32clipboard
 
 from caster.asynch.mouse.legion import LegionScanner
@@ -80,23 +81,36 @@ def word_number(wn):
     Text(numbers_to_words[int(wn)]).execute()
 
 def numbers_list_1_to_9():
-    result=[ "one",
-             "torque",
-             "traio",
-             "fairn",
-             "faif",
-             "six",
-             "seven",
-             "eigen",
-             "nine"]
-    if not settings.SETTINGS["miscellaneous"]["integer_remap_opt_in"]:
-        result[1]="two"
-        result[2]="three"
-        result[3]="four"
-        result[4]="five"
-        result[7]="eight"
-    return result
-
+	if (language =="en"):	
+		result=[ "one",
+				 "torque",
+				 "traio",
+				 "fairn",
+				 "faif",
+				 "six",
+				 "seven",
+				 "eigen",
+				 "nine"]
+		if not settings.SETTINGS["miscellaneous"]["integer_remap_opt_in"]:
+			result[1]="two"
+			result[2]="three"
+			result[3]="four"
+			result[4]="five"
+			result[7]="eight"
+		return result
+	else: # German language. Add more languages with if conditions here if needed.
+	      # This probably won't be necessary with the new config file anymore.
+		result=[ "eins",
+				 "zwei",
+				 "drei",
+				 "vier",
+				 "fuenf",
+				 "sechs",
+				 "sieben",
+				 "acht",
+				 "neun"]
+		return result
+		
 def numbers_map_1_to_9():
     result = {}
     l = numbers_list_1_to_9()
