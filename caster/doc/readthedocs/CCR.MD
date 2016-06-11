@@ -9,7 +9,7 @@
   * [Types of Rules](types-of-rules)
   * [How to Add and Modify Rules](how-to-add-and-modify-rules)
   * [Rule Filters](rule-filters)
-    * Rule Filters Simplified 
+    * [Rule Filters Simplified ](rule-filters-simplified)
   * [Other Features of MergeRule](other-features-of-mergerule)
   * [How to Register Caster CCR Rules](how-to-register-caster-ccr-rules)
 
@@ -56,6 +56,21 @@ Let's go through these.
 **SelfModifyingRule Change Time**: If a SelfModifyingRule ("SMR") changes its command set, the base rule will remain untouched, but it will still be checked against the new SMR command set, and the new SMR command set will be checked against other active SMR command sets.
 
 What rule filters do is expose pairs of rules to the user, allowing the user to change the rules' mapping as they see fit, and/or enable/disable compatibility checking which follows the rule filters. For examples of rule filter, please check out the `user/filters/examples` folder.
+
+#### Rule Filters Simplified
+
+Though rule filters are very powerful, setting one up for the first time is not trivial. Therefore, a simplified method for common use cases has been created. Create the file `/caster/user/words.txt` and it will be read at boot time, and a rule filter created from it and added to Caster's list of rule filters. The following is an example `words.txt`:
+
+```
+<<<SPEC>>>
+shock -> earthquake
+<<<NOT_SPECS>>>
+sauce -> up
+dunce -> down
+lease -> left
+```
+
+This `words.txt` will create a rule filter which goes through **all** Caster rules at boot time and replaces the word "shock" in any spec with the word "earthquake". It will also replace "sauce", "dunce" and "lease" with "up", "down", and "left" in extras and defaults in any rule. The triple-angle-brackets indicate mode changes. Valid modes are `SPEC` (for specs only), `EXTRA`, `DEFAULT`, `NOT_SPECS` (for extras and defaults, but not specs), and `ANY` (for specs, extras, and defaults). The default mode is `ANY`.
 
 ### Other Features of MergeRule
 
