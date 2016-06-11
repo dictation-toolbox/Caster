@@ -15,6 +15,9 @@ complexity_report*
 # Ignore User Rules and Filters
 /caster/user
 
+# Ignore Custom Sikuli Scripts
+/caster/asynch/sikuli/scripts
+
 # Ignore SonarQube
 .sonar
 sonar-project.properties
