@@ -127,6 +127,11 @@ class Navigation(MergeRule):
                                                    ], time_in_seconds=0.1, repetitions=50, rdescript="Jump: Out" ),
     "jump back":                    AsynchronousAction([L(S(["cancel"], context.nav, ["left", "(~[~{~<"]))
                                                    ], time_in_seconds=0.1, repetitions=50, rdescript="Jump: Back" ),
+    "jump back in":                 AsynchronousAction([L(S(["cancel"], context.nav, ["left", "(~[~{~<"]))
+                                                   ], finisher=Key("right"),
+                                                      time_in_seconds=0.1, 
+                                                      repetitions=50, 
+                                                      rdescript="Jump: Back In" ),
     
     # keyboard shortcuts
     'save':                         R(Key("c-s"), rspec="save", rdescript="Save"),
