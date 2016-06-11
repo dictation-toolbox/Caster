@@ -3,15 +3,15 @@
 **Contents**
 
 * [Introduction](#introduction)
-* [CCR in Caster](ccr-in-caster)
-  * [Command Sets](command-sets)
-  * [Command Standards and Compatibility](command-standards-and-compatibility)
-  * [Types of Rules](types-of-rules)
-  * [How to Add and Modify Rules](how-to-add-and-modify-rules)
-  * [Rule Filters](rule-filters)
-    * [Rule Filters Simplified ](rule-filters-simplified)
-  * [Other Features of MergeRule](other-features-of-mergerule)
-  * [How to Register Caster CCR Rules](how-to-register-caster-ccr-rules)
+* [CCR in Caster](#ccr-in-caster)
+  * [Command Sets](#command-sets)
+  * [Command Standards and Compatibility](#command-standards-and-compatibility)
+  * [Types of Rules](#types-of-rules)
+  * [How to Add and Modify Rules](#how-to-add-and-modify-rules)
+  * [Rule Filters](#rule-filters)
+    * [Rule Filters Simplified ](#rule-filters-simplified)
+  * [Other Features of MergeRule](#other-features-of-mergerule)
+  * [How to Register Caster CCR Rules](#how-to-register-caster-ccr-rules)
 
 ***
 ## Introduction
