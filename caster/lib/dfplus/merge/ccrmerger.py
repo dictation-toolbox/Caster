@@ -8,7 +8,9 @@ from dragonfly.grammar.grammar_base import Grammar
 from dragonfly.grammar.rule_compound import CompoundRule
 
 from caster.lib import utilities, settings
+from caster.lib.dfplus.merge import gfilter
 from caster.lib.dfplus.merge.mergerule import MergeRule
+
 
 class Inf(object):
     TYPE = "type"
@@ -19,6 +21,7 @@ class Inf(object):
     TIME = "time"
     BOOT = 3
     RUN = 4
+    BOOT_NO_MERGE = 5
     
 
 class MergePair(object):
@@ -76,6 +79,8 @@ class CCRMerger(object):
         self.load_config()
         self.update_config() # this call prepares the config to receive new modules
         self.add_filter(app_merge)
+        if gfilter.DEFS is not None:
+            self.add_filter(gfilter.spec_override_from_config)
     
     '''config file stuff'''
     def save_config(self):
@@ -233,6 +238,12 @@ class CCRMerger(object):
         '''get base CCR rule'''
         if time == Inf.BOOT: # rebuild via config
             for name, rule in self._global_rules.iteritems():
+                '''we want to be able to make permanent changes at boot time, not just 
+                to activated rules, but to everything -- but we dont' want it to interfere
+                with normal merge logic-- hence the introduction of the BOOT_NO_MERGE time'''
+                mp = MergePair(Inf.BOOT_NO_MERGE, Inf.GLOBAL, None, rule, False) # copies not made at boot time, allows user to make permanent changes
+                self._run_filters(mp)
+                
                 if self._config[CCRMerger._GLOBAL][name]:
                     mp = MergePair(time, Inf.GLOBAL, base, rule, False) # copies not made at boot time, allows user to make permanent changes
                     self._run_filters(mp)

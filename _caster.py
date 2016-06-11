@@ -51,6 +51,7 @@ try:
     from caster.lib.dfplus.hint.nodes import css
     from caster.user.filters.examples import scen4, modkeysup
     from caster import user
+    from caster.lib.dfplus.merge import gfilter
     
 except:
     print("\nAttempting to load CCR anyway...")

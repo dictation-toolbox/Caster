@@ -107,6 +107,7 @@ def init_default_values():
         ("ALIAS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/aliases.json."),
         ("LOG_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/log.txt"),
         ("SIKULI_SCRIPTS_FOLDER_PATH", SETTINGS["paths"]["BASE_PATH"] + "/asynch/sikuli/scripts"),
+        ("FILTER_DEFS_PATH", SETTINGS["paths"]["BASE_PATH"] + "/user/words.txt"),
         
         # REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
         ("REMOTE_DEBUGGER_PATH" , "C:/PROG/alt ec/eclipse/plugins/org.python.pydev_3.9.2.201502050007/pysrc"),
