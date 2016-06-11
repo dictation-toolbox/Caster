@@ -182,8 +182,8 @@ class EclipseCCR(MergeRule):
                                                           Key("enter:%(n)d/5, escape, right") , rdescript="Eclipse: Jump Out"),
             "jump back [<n>]":                          R(Key("c-f/5, a-b")+Paste(r"[\)\]\}\>]")+Function(ec_con.regex_on)+ \
                                                           Key("enter:%(n)d/5, escape, left") , rdescript="Eclipse: Jump Back"),
-            "[go to] line <n>":                         R(Key("c-l") + Pause("50") + Text("%(n)d") + Key("enter")+ Pause("50")+
-                                                          Mimic(extra="mim"), rdescript="Eclipse: Go To Line"),
+            "[go to] line <n>":                         R(Key("c-l") + Pause("50") + Text("%(n)d") + Key("enter")+ Pause("50"),
+                                                          rdescript="Eclipse: Go To Line"),
             "shackle <n> [<back>]":                     R(Key("c-l")+Key("right, cs-left")+ \
                                                           Function(ec_con.lines_relative), rdescript="Eclipse: Select Relative Lines"),
             
