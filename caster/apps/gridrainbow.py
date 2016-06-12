@@ -7,10 +7,13 @@ Command-module for RainbowGrid
 from dragonfly import (Grammar, AppContext, Function, Playback, Choice, MappingRule)
 
 from caster.asynch.mouse import grids
-from caster.lib import settings
 from caster.lib import control
-from caster.lib.dfplus.state.short import R
+from caster.lib import settings
 from caster.lib.dfplus.additions import IntegerRefST
+from caster.lib.dfplus.merge import gfilter
+from caster.lib.dfplus.merge.mergerule import MergeRule
+from caster.lib.dfplus.state.short import R
+
 
 _NEXUS = control.nexus()
 
@@ -29,7 +32,7 @@ def send_input(pre, color, n, action, nexus):
         Playback([(["mouse", "right", "click"], 0.0)]).execute()
 
 
-class GridControlRule(MappingRule):
+class GridControlRule(MergeRule):
 
     mapping = {
         "[<pre>] <color> <n> [<action>]":   R(Function(send_input, nexus=_NEXUS), rdescript="Rainbow Grid: Action"),
@@ -65,6 +68,8 @@ class GridControlRule(MappingRule):
 
 context = AppContext(title="rainbowgrid")
 grammar = Grammar("rainbowgrid", context=context)
-grammar.add_rule(GridControlRule(name="rainbow"))
 if settings.SETTINGS["apps"]["rainbow"]:
+    rule = GridControlRule(name="rainbow")
+    gfilter.run_on(rule)
+    grammar.add_rule(rule)
     grammar.load()

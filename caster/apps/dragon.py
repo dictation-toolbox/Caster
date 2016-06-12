@@ -1,13 +1,13 @@
 
-from dragonfly import (Grammar, Playback, MappingRule, Key,
-                       Dictation, IntegerRef, Function)
+from dragonfly import (Grammar, Playback, Key, Dictation, Function)
 
+from caster.lib import control
 from caster.lib import utilities, settings
-from caster.lib import control
-from caster.lib.dfplus.state.short import R
 from caster.lib.dfplus.additions import IntegerRefST
+from caster.lib.dfplus.merge import gfilter
 from caster.lib.dfplus.merge.mergerule import MergeRule
-from caster.lib import control
+from caster.lib.dfplus.state.short import R
+
 
 _NEXUS = control.nexus()
 
@@ -20,7 +20,7 @@ def fix_dragon_double(nexus):
         utilities.simple_log(False)
 
 
-class CommandRule(MergeRule):
+class DragonRule(MergeRule):
     pronunciation = "dragon"
 
     mapping = {
@@ -48,10 +48,10 @@ class CommandRule(MergeRule):
 
 #---------------------------------------------------------------------------
 
-grammar = None
+grammar = Grammar("Dragon Naturallyspeaking")
 
-if not settings.WSR:
-    grammar = Grammar("Dragon Naturallyspeaking")
-    grammar.add_rule(CommandRule(name="dragon"))
-    if settings.SETTINGS["apps"]["dragon"]:
-        grammar.load()
+if settings.SETTINGS["apps"]["dragon"] and not settings.WSR:
+    rule = DragonRule(name="dragon")
+    gfilter.run_on(rule)
+    grammar.add_rule(rule)
+    grammar.load()

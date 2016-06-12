@@ -5,8 +5,7 @@ Created on Sep 27, 2015
 '''
 from dragonfly.actions.action_key import Key
 
-from caster.lib import control
-from caster.lib.dfplus.merge.ccrmerger import Inf
+from caster.lib.dfplus.merge.mergepair import MergeInf
 from caster.lib.dfplus.state.short import R
 
 
@@ -20,7 +19,7 @@ def add_modkeys(rule):
         rule.marked = True
 
 def modkeysup(mp):
-    if mp.time == Inf.BOOT:
+    if mp.time == MergeInf.BOOT:
         if mp.rule1 is not None:
             add_modkeys(mp.rule1)
         add_modkeys(mp.rule2)

@@ -1,13 +1,15 @@
-from subprocess import Popen
-
-from dragonfly import (Function, Grammar, IntegerRef, MappingRule, AppContext, Choice)
+from dragonfly import (Function, Grammar, AppContext)
 
 from caster.asynch.hmc import h_launch
 from caster.lib import control
 from caster.lib import settings, utilities
 from caster.lib.dfplus.additions import IntegerRefST
+from caster.lib.dfplus.merge import gfilter
+from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.actions import AsynchronousAction
 from caster.lib.dfplus.state.short import R, L, S
+
+
 _NEXUS = control.nexus()
 
 def kill(nexus):
@@ -44,16 +46,18 @@ def hmc_settings_complete(nexus):
     
 
 
-class HMCRule(MappingRule):
+class HMCRule(MergeRule):
     mapping = {
         "kill homunculus":              R(Function(kill, nexus=_NEXUS), rdescript="Kill Helper Window"),
         "complete":                     R(Function(complete, nexus=_NEXUS), rdescript="Complete Input")
     }
 grammar = Grammar("hmc", context=AppContext(title=settings.HOMUNCULUS_VERSION))
-grammar.add_rule(HMCRule())
+r1 = HMCRule()
+gfilter.run_on(r1)
+grammar.add_rule(r1)
 grammar.load()
 
-class HMCHistoryRule(MappingRule):
+class HMCHistoryRule(MergeRule):
     mapping = {
         # specific to macro recorder
         "check <n>":                    R(Function(hmc_checkbox, nexus=_NEXUS), rdescript="Check Checkbox"),
@@ -66,36 +70,44 @@ class HMCHistoryRule(MappingRule):
               IntegerRefST("n2", 1, 25),
              ]
 grammar_history = Grammar("hmc history", context=AppContext(title=settings.HMC_TITLE_RECORDING))
-grammar_history.add_rule(HMCHistoryRule())
+r2 = HMCHistoryRule()
+gfilter.run_on(r2)
+grammar_history.add_rule(r2)
 grammar_history.load()
 
-class HMCDirectoryRule(MappingRule):
+class HMCDirectoryRule(MergeRule):
     mapping = {
         # specific to directory browser
         "browse":                       R(Function(hmc_directory_browse, nexus=_NEXUS), rdescript="Browse Computer")
     }
 grammar_directory = Grammar("hmc directory", context=AppContext(title=settings.HMC_TITLE_DIRECTORY))
-grammar_directory.add_rule(HMCDirectoryRule())
+r3 = HMCDirectoryRule()
+gfilter.run_on(r3)
+grammar_directory.add_rule(r3)
 grammar_directory.load()
 
-class HMCConfirmRule(MappingRule):
+class HMCConfirmRule(MergeRule):
     mapping = {
         # specific to confirm
         "confirm":                      R(Function(hmc_confirm, value=True, nexus=_NEXUS), rdescript="HMC: Confirm Action"),
         "cancel":                       R(Function(hmc_confirm, value=False, nexus=_NEXUS), rdescript="HMC: Cancel Action")
     }
 grammar_confirm = Grammar("hmc confirm", context=AppContext(title=settings.HMC_TITLE_CONFIRM))
-grammar_confirm.add_rule(HMCConfirmRule())
+r4 = HMCConfirmRule()
+gfilter.run_on(r4)
+grammar_confirm.add_rule(r4)
 grammar_confirm.load()
 
 
-class HMCSettingsRule(MappingRule):
+class HMCSettingsRule(MergeRule):
     mapping = {
         "kill homunculus":              R(Function(kill), rdescript="Kill Settings Window"),
         "complete":                     R(Function(hmc_settings_complete), rdescript="Complete Input"),
     }
 grammar_settings = Grammar("hmc settings", context=AppContext(title=settings.SETTINGS_WINDOW_TITLE))
-grammar_settings.add_rule(HMCSettingsRule())
+r5 = HMCSettingsRule()
+gfilter.run_on(r5)
+grammar_settings.add_rule(r5)
 grammar_settings.load()
 
 
@@ -120,11 +132,13 @@ def settings_window(nexus):
         on_complete = AsynchronousAction.hmc_complete(lambda data: receive_settings(data), nexus)
         AsynchronousAction([L(S(["cancel"], on_complete))], time_in_seconds=1, repetitions=300, blocking=False).execute()
 
-class LaunchRule(MappingRule):
+class LaunchRule(MergeRule):
     mapping = {
         "toggle status window":     R(Function(toggle_status, nexus=_NEXUS), rdescript="Toggle Status Window"), 
         "launch settings window":   R(Function(settings_window, nexus=_NEXUS), rdescript="Launch Settings Window"), 
         }
 grammarw = Grammar("Caster Windows")
-grammarw.add_rule(LaunchRule())
+r6 = LaunchRule()
+gfilter.run_on(r6)
+grammarw.add_rule(r6)
 grammarw.load()

@@ -5,15 +5,12 @@ from caster.lib import control
 from caster.lib import settings
 from caster.lib.ccr.core.nav import Navigation
 from caster.lib.dfplus.additions import IntegerRefST
+from caster.lib.dfplus.merge import gfilter
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 
 
-from caster.lib.dfplus.merge.mergerule import MergeRule
-from caster.lib import control
-
-
-class CommandRule(MergeRule):
+class FlashDevelopRule(MergeRule):
     pronunciation = "flash develop"
 
     mapping = {
@@ -75,11 +72,15 @@ class FlashDevelopCCR(MergeRule):
 
 context = AppContext(executable="FlashDevelop", title="FlashDevelop")
 grammar = Grammar("FlashDevelop", context=context)
-grammar.add_rule(CommandRule())
+
 if settings.SETTINGS["apps"]["flashdevelop"]:
     if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(CommandRule())
+        control.nexus().merger.add_global_rule(FlashDevelopRule())
         control.nexus().merger.add_global_rule(FlashDevelopCCR())
     else:
         control.nexus().merger.add_app_rule(FlashDevelopCCR(name="FlashDevelop"), context)
+        
+        rule = FlashDevelopRule()
+        gfilter.run_on(rule)
+        grammar.add_rule(rule)
         grammar.load()

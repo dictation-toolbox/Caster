@@ -1,16 +1,14 @@
-from dragonfly import (Grammar, AppContext, MappingRule,
-                       Dictation, IntegerRef, Key)
+from dragonfly import (Grammar, AppContext, Dictation, Key)
 
+from caster.lib import control
 from caster.lib import settings
 from caster.lib.dfplus.additions import IntegerRefST
+from caster.lib.dfplus.merge import gfilter
+from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 
 
-from caster.lib.dfplus.merge.mergerule import MergeRule
-from caster.lib import control
-
-
-class CommandRule(MergeRule):
+class JetbrainsRule(MergeRule):
     pronunciation = "jet brains"
 
     mapping = {
@@ -52,9 +50,12 @@ context = AppContext(executable="idea", title="IntelliJ") \
           | AppContext(executable="studio64") \
           | AppContext(executable="pycharm")
 grammar = Grammar("IntelliJ + Android Studio + PyCharm", context=context)
-grammar.add_rule(CommandRule(name="jet brains"))
+
 if settings.SETTINGS["apps"]["jetbrains"]:
     if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(CommandRule())
+        control.nexus().merger.add_global_rule(JetbrainsRule())
     else:
+        rule = JetbrainsRule(name="jet brains")
+        gfilter.run_on(rule)
+        grammar.add_rule(rule)
         grammar.load()

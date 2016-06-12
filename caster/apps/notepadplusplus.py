@@ -9,20 +9,17 @@ Command-module for Notepad++
 """
 #---------------------------------------------------------------------------
 
-from dragonfly import (Grammar, AppContext, MappingRule,
-                       Dictation, IntegerRef, Mouse,
-                       Key, Text, Repeat, Pause)
+from dragonfly import (Grammar, AppContext, Dictation, Mouse, Key, Repeat)
 
+from caster.lib import control
 from caster.lib import settings
 from caster.lib.dfplus.additions import IntegerRefST
+from caster.lib.dfplus.merge import gfilter
+from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 
 
-from caster.lib.dfplus.merge.mergerule import MergeRule
-from caster.lib import control
-
-
-class CommandRule(MergeRule):
+class NPPRule(MergeRule):
     pronunciation = "notepad plus plus"
 
     mapping = {
@@ -46,9 +43,12 @@ class CommandRule(MergeRule):
 
 context = AppContext(executable="notepad++")
 grammar = Grammar("Notepad++", context=context)
-grammar.add_rule(CommandRule(name="notepad plus plus"))
+
 if settings.SETTINGS["apps"]["notepadplusplus"]:
     if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(CommandRule())
+        control.nexus().merger.add_global_rule(NPPRule())
     else:
+        rule = NPPRule(name="notepad plus plus")
+        gfilter.run_on(rule)
+        grammar.add_rule(rule)
         grammar.load()

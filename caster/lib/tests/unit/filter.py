@@ -7,8 +7,9 @@ from caster.lib.ccr.java.java import Java
 from caster.lib.ccr.python.python import Python
 from caster.lib.ccr.recording.alias import ChainAlias
 from caster.lib.ccr.standard import SymbolSpecs
-from caster.lib.dfplus.merge.ccrmerger import Inf, CCRMerger
+from caster.lib.dfplus.merge.ccrmerger import CCRMerger
 from caster.lib.dfplus.merge.filter import make_filter, there_is_spec_overlap, incoming_gets_priority
+from caster.lib.dfplus.merge.mergepair import MergeInf
 from caster.lib.tests.unit.state import TestNexus
 
 
@@ -34,14 +35,14 @@ class TestFilterFunctions(TestNexus):
 class TestFilterNonBootTime(TestFilterFunctions):
     def setUp(self):
         TestFilterFunctions.setUp(self)
-        self.nexus.merger.merge(Inf.BOOT)
+        self.nexus.merger.merge(MergeInf.BOOT)
         self.set_global("Python", True, True)
 
 
     def test_runtime_global_spec_replace(self):
         ff = make_filter(lambda mp: incoming_gets_priority(mp), 
                          lambda mp: there_is_spec_overlap(mp), 
-                         Inf.RUN, Inf.GLOBAL)        
+                         MergeInf.RUN, MergeInf.GLOBAL)        
         self.nexus.merger.add_filter(ff)
         python = Python()
         
@@ -68,7 +69,7 @@ class TestFilterNonBootTime(TestFilterFunctions):
             mp.rule2.mapping_actual()[SymbolSpecs.IF] = Text("test")
         
         ff = make_filter(lambda mp: replace_if_action(mp), 
-                         None, Inf.RUN, Inf.GLOBAL)
+                         None, MergeInf.RUN, MergeInf.GLOBAL)
         self.nexus.merger.add_filter(ff)
         
         self.set_global("Java", True, True)

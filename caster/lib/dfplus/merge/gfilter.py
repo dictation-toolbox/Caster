@@ -6,6 +6,7 @@ import os
 from dragonfly.grammar.elements import Choice
 
 from caster.lib import settings
+from caster.lib.dfplus.merge.mergepair import MergePair, MergeInf
 
 
 class GlobalFilterDefs(object):
@@ -53,6 +54,7 @@ class GlobalFilterDefs(object):
                 self.extras[original] = new
                 self.defaults[original] = new
 
+
 DEFS = None
 
 if os.path.isfile(settings.SETTINGS["paths"]["FILTER_DEFS_PATH"]):
@@ -62,11 +64,11 @@ if os.path.isfile(settings.SETTINGS["paths"]["FILTER_DEFS_PATH"]):
         try:
             DEFS = GlobalFilterDefs(lines)
         except Exception:
-            print("Unable to parse fdefs.txt")
+            print("Unable to parse words.txt")
 
 def spec_override_from_config(mp):
     '''run at boot time only: changes are permanent'''
-    if mp.time != 3: # 3 == Inf.BOOT
+    if mp.time != MergeInf.BOOT_NO_MERGE: # 3 == MergeInf.BOOT
         return
     '''redundant safety check'''
     if DEFS is None:
@@ -75,19 +77,22 @@ def spec_override_from_config(mp):
     for rule in [mp.rule1, mp.rule2]:
         if rule is not None:
             '''SPECS'''
+            specs_changed = False
             for spec in rule.mapping_actual().keys():
                 action = rule.mapping_actual()[spec]
                 nspec = spec # new spec
                 for original in DEFS.specs.keys():
+                    
                     if original in spec:
                         new = DEFS.specs[original]
                         nspec = spec.replace(original, new)
-                        
                 if spec == nspec:
                     continue;
                 
                 del rule.mapping_actual()[spec]
                 rule.mapping_actual()[nspec] = action
+                specs_changed = True
+                
             
             '''EXTRAS'''
             extras = rule.extras_copy().values()
@@ -138,7 +143,7 @@ def spec_override_from_config(mp):
                             defaults[default_key] = nvalue
                             defaults_changed = True
             
-            if extras_changed or defaults_changed:
+            if specs_changed or extras_changed or defaults_changed:
                 rule.__init__(rule._name, rule.mapping_actual(), extras, defaults, rule._exported,
                               rule.ID, rule.composite, rule.compatible, rule._mcontext, rule._mwith)
                         
@@ -146,7 +151,8 @@ def spec_override_from_config(mp):
 if DEFS is not None:
     print("Global rule filter from file 'words.txt' activated ...")
     
-
-    
-    
+def run_on(rule):
+    if DEFS is not None:
+        mp = MergePair(MergeInf.BOOT_NO_MERGE, MergeInf.GLOBAL, None, rule, False)
+        spec_override_from_config(mp)
     

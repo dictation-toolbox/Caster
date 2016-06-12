@@ -7,16 +7,18 @@ Command-module for Legion
 import time
 
 from dragonfly import (Grammar, AppContext, Function,
-                       IntegerRef, Playback,
-                       Choice, MappingRule)
+                       Playback, Choice, MappingRule)
 import win32api
 import win32con
 
 from caster.asynch.mouse import grids
-from caster.lib import navigation, settings
 from caster.lib import control
-from caster.lib.dfplus.state.short import R
+from caster.lib import navigation, settings
 from caster.lib.dfplus.additions import IntegerRefST
+from caster.lib.dfplus.merge import gfilter
+from caster.lib.dfplus.merge.mergerule import MergeRule
+from caster.lib.dfplus.state.short import R
+
 
 _NEXUS = control.nexus()
 
@@ -53,7 +55,7 @@ def send_input(n, action, nexus):
         win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, x2, y, 0, 0)
 
 
-class GridControlRule(MappingRule):
+class GridControlRule(MergeRule):
 
     mapping = {
         "<n> [<action>]":                   R(Function(send_input, nexus=_NEXUS), rdescript="Legion: Action"),
@@ -80,6 +82,9 @@ class GridControlRule(MappingRule):
 
 context = AppContext(title="legiongrid")
 grammar = Grammar("legiongrid", context=context)
-grammar.add_rule(GridControlRule(name="legion"))
+
 if settings.SETTINGS["apps"]["legion"]:
+    rule = GridControlRule(name="legion")
+    gfilter.run_on(rule)
+    grammar.add_rule(rule)
     grammar.load()

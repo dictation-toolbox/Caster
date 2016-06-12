@@ -7,7 +7,8 @@ from dragonfly.actions.action_function import Function
 from dragonfly.actions.action_mimic import Mimic
 
 from caster.lib import settings, utilities
-from caster.lib.dfplus.merge.ccrmerger import Inf
+from caster.lib.dfplus.merge.mergepair import MergeInf
+
 
 if settings.WSR == False:
     import natlink
@@ -77,14 +78,14 @@ class AutoSwitcher(object):
                 languages = autos[extension] # get the languages to activate for that extension
                 
                 for language in languages: # activate them
-                    self._nexus.merger.merge(Inf.RUN, language, enable=True)
+                    self._nexus.merger.merge(MergeInf.RUN, language, enable=True)
                     self._send_message("Enabled '"+language+"'")
                     
                 self.auto_enabled_languages = languages
                 
             elif self.auto_enabled_languages is not None:
                 for language in self.auto_enabled_languages:
-                    self._nexus.merger.merge(Inf.RUN, language, enable=False)
+                    self._nexus.merger.merge(MergeInf.RUN, language, enable=False)
                     self._send_message("Disabled '"+language+"'")
                 self.auto_enabled_languages = None
                 

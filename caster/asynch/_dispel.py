@@ -2,10 +2,14 @@ import winsound
 
 from dragonfly import (Function, Grammar, Dictation, MappingRule)
 
-from caster.lib import settings, utilities
 from caster.lib import control
-from caster.lib.dfplus.state.short import R
+from caster.lib import settings, utilities
 from caster.lib.dfplus.additions import IntegerRefST
+from caster.lib.dfplus.merge import gfilter
+from caster.lib.dfplus.merge.mergerule import MergeRule
+from caster.lib.dfplus.state.short import R
+
+
 _NEXUS = control.nexus()
 
 class Dispel:  # this needs an entry in the settings file, needs to retain information when Dragon is reset
@@ -71,7 +75,9 @@ class Dispel:  # this needs an entry in the settings file, needs to retain infor
 
 ALARM = Dispel(_NEXUS)
 
-class MainRule(MappingRule):
+class DispelRule(MergeRule):
+    pronunciation = "dispel"
+    
     mapping = {
     "run dispel":                   R(Function(ALARM.start), rdescript="Turn On Ergonomic Alarm"),
     "kill dispel":                  R(Function(ALARM.stop), rdescript="Turn Off Ergonomic Alarm"),
@@ -90,5 +96,7 @@ class MainRule(MappingRule):
                }
 
 grammar = Grammar('dispel')
-grammar.add_rule(MainRule())
+rule = DispelRule()
+gfilter.run_on(rule)
+grammar.add_rule(rule)
 grammar.load() 

@@ -19,7 +19,8 @@ from caster.lib.ccr.core.punctuation import Punctuation
 from caster.lib.ccr.python.python import Python
 from caster.lib.dfplus.hint.hintnode import NodeRule
 from caster.lib.dfplus.hint.nodes import css
-from caster.lib.dfplus.merge.ccrmerger import CCRMerger, Inf
+from caster.lib.dfplus.merge.ccrmerger import CCRMerger
+from caster.lib.dfplus.merge.mergepair import MergeInf
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 
@@ -103,7 +104,7 @@ def prep_merger(merger, nc, ns):
     for rule in core_and_python()+[ctr]:
         merger.add_global_rule(rule)
     merger.update_config()
-    merger.merge(Inf.BOOT)
+    merger.merge(MergeInf.BOOT)
 
 def prep_grammar(grammar, nc, ns):
     ctr = ComplexityTestRule(nc, ns)

@@ -5,10 +5,13 @@ Command-module for DouglasGrid
 from dragonfly import (Grammar, AppContext, Function, Playback, Choice, MappingRule)
 
 from caster.asynch.mouse import grids
-from caster.lib import settings
 from caster.lib import control
+from caster.lib import settings
 from caster.lib.dfplus.additions import IntegerRefST
+from caster.lib.dfplus.merge import gfilter
+from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
+
 
 _NEXUS = control.nexus()
 
@@ -26,7 +29,7 @@ def send_input(n, n2, action, nexus):
     elif int_a == 1:
         Playback([(["mouse", "right", "click"], 0.0)]).execute()
 
-class GridControlRule(MappingRule):
+class GridControlRule(MergeRule):
 
     mapping = {
         "<n> [by] <n2> [<action>]":         R(Function(send_input, nexus=_NEXUS), rdescript="Douglas Grid: Action"),
@@ -49,6 +52,9 @@ class GridControlRule(MappingRule):
 
 context = AppContext(title="douglasgrid")
 grammar = Grammar("douglasgrid", context=context)
-grammar.add_rule(GridControlRule(name="Douglas"))
+
 if settings.SETTINGS["apps"]["douglas"]:
+    rule = GridControlRule(name="Douglas")
+    gfilter.run_on(rule)
+    grammar.add_rule(rule)
     grammar.load()

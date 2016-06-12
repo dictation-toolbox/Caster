@@ -1,9 +1,12 @@
+from subprocess import Popen
 import xmlrpclib
 
 from dragonfly import (Grammar, MappingRule, Function, Key)
-from subprocess import Popen
-from caster.lib import settings, utilities
+
 from caster.lib import control
+from caster.lib import settings, utilities
+from caster.lib.dfplus.merge import gfilter
+from caster.lib.dfplus.merge.mergerule import MergeRule
 
 
 grammar = None
@@ -73,12 +76,15 @@ def refresh(_NEXUS):
         refresh(_NEXUS)
     
     mapping = {
-    "launch sick IDE":           Function(launch_IDE),
-    "launch sick server":        Function(launch_server),
-    "refresh sick you Lee":      Function(refresh_sick_command),
-    "sick shot":                 Key("cs-2"),
+        "launch sick IDE":           Function(launch_IDE),
+        "launch sick server":        Function(launch_server),
+        "refresh sick you Lee":      Function(refresh_sick_command),
+        "sick shot":                 Key("cs-2"),
     }
-    grammar.add_rule(MappingRule(name="sik", mapping=mapping))
+    
+    rule = MergeRule(name="sik", mapping=mapping)
+    gfilter.run_on(rule)
+    grammar.add_rule(rule)
     grammar.load()
     # start server
     try:

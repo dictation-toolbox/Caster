@@ -6,8 +6,11 @@ from dragonfly import (Function, Text, Grammar, Choice,
 
 from caster.lib import  settings, utilities, navigation
 from caster.lib import control
-from caster.lib.dfplus.state.short import R
 from caster.lib.dfplus.additions import IntegerRefST
+from caster.lib.dfplus.merge import gfilter
+from caster.lib.dfplus.merge.mergerule import MergeRule
+from caster.lib.dfplus.state.short import R
+
 
 _NEXUS = control.nexus()
 
@@ -56,7 +59,7 @@ def enable_sticky_list(sticky):
 def do_enable():
     enable_sticky_list(1)
 
-class SListUsageRule(MappingRule):
+class SListUsageRule(MergeRule):
     mapping = {
     "L add [<sticky>]":             R(Function(add_symbol, nexus=_NEXUS), rdescript="Add Selected To Sticky List"),
     "L get <n> [<sticky>]":         R(Function(get_symbol, nexus=_NEXUS), rdescript="Retrieve From Sticky List"),
@@ -78,7 +81,9 @@ class SListUsageRule(MappingRule):
 
 _NEXUS.sticky = utilities.load_json_file(settings.SETTINGS["paths"]["S_LIST_JSON_PATH"])
 grammar = Grammar('SListUsageRule')
-grammar.add_rule(SListUsageRule())
+rule = SListUsageRule()
+gfilter.run_on(rule)
+grammar.add_rule(rule)
 grammar.load()
 
 def unload():

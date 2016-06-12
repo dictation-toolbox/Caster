@@ -1,17 +1,14 @@
-from dragonfly import (Grammar, AppContext, MappingRule,
-                       Dictation, IntegerRef,
-                       Key, Text, Repeat, Pause)
+from dragonfly import (Grammar, AppContext, Dictation, Key)
 
+from caster.lib import control
 from caster.lib import settings
 from caster.lib.dfplus.additions import IntegerRefST
+from caster.lib.dfplus.merge import gfilter
+from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 
 
-from caster.lib.dfplus.merge.mergerule import MergeRule
-from caster.lib import control
-
-
-class CommandRule(MergeRule):
+class KDiff3Rule(MergeRule):
     pronunciation = "K diff"
 
     mapping = {
@@ -29,9 +26,12 @@ class CommandRule(MergeRule):
 
 context = AppContext(executable="kdiff3")
 grammar = Grammar("KDiff3", context=context)
-grammar.add_rule(CommandRule(name="kdiff3"))
+
 if settings.SETTINGS["apps"]["kdiff3"]:
     if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(CommandRule())
+        control.nexus().merger.add_global_rule(KDiff3Rule())
     else:
+        rule = KDiff3Rule(name="kdiff3")
+        gfilter.run_on(rule)
+        grammar.add_rule(rule)
         grammar.load()

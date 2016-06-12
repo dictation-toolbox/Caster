@@ -9,20 +9,17 @@ Command-module for MSVC
 """
 #---------------------------------------------------------------------------
 
-from dragonfly import (Grammar, AppContext, MappingRule,
-                       Dictation, IntegerRef,
-                       Key, Text, Repeat, Pause)
+from dragonfly import (Grammar, AppContext, Dictation, Key, Repeat)
 
+from caster.lib import control
 from caster.lib import settings
 from caster.lib.dfplus.additions import IntegerRefST
+from caster.lib.dfplus.merge import gfilter
+from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 
 
-from caster.lib.dfplus.merge.mergerule import MergeRule
-from caster.lib import control
-
-
-class CommandRule(MergeRule):
+class MSVCRule(MergeRule):
     pronunciation = "Microsoft visual studio"
 
     mapping = {
@@ -65,9 +62,12 @@ class CommandRule(MergeRule):
 
 context = AppContext(executable="WDExpress")
 grammar = Grammar("WDExpress", context=context)
-grammar.add_rule(CommandRule(name="M S V C"))
+
 if settings.SETTINGS["apps"]["msvc"]:
     if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(CommandRule())
+        control.nexus().merger.add_global_rule(MSVCRule())
     else:
+        rule = MSVCRule(name="M S V C")
+        gfilter.run_on(rule)
+        grammar.add_rule(rule)
         grammar.load()

@@ -13,14 +13,15 @@ from dragonfly import (Grammar, AppContext, MappingRule,
                        Dictation, IntegerRef, Function,
                        Key, Text, Repeat)
 
+from caster.lib import control
 from caster.lib import settings
 from caster.lib.dfplus.additions import IntegerRefST
-from caster.lib.dfplus.state.short import R
+from caster.lib.dfplus.merge import gfilter
 from caster.lib.dfplus.merge.mergerule import MergeRule
-from caster.lib import control
+from caster.lib.dfplus.state.short import R
 
 
-class CommandRule(MergeRule):
+class ChromeRule(MergeRule):
     pronunciation = "google chrome"
 
     mapping = {
@@ -53,9 +54,12 @@ class CommandRule(MergeRule):
 
 context = AppContext(executable="chrome") 
 grammar = Grammar("chrome", context=context)
-grammar.add_rule(CommandRule(name="chrome"))
+
 if settings.SETTINGS["apps"]["chrome"]:
     if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(CommandRule())
+        control.nexus().merger.add_global_rule(ChromeRule())
     else:
+        rule = ChromeRule(name="chrome")
+        gfilter.run_on(rule)
+        grammar.add_rule(rule)
         grammar.load()

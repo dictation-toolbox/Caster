@@ -1,25 +1,26 @@
 
-from dragonfly import (Grammar, MappingRule, Function)
+from dragonfly import (Grammar, Function)
 
 from caster.lib import utilities, settings
+from caster.lib.dfplus.merge import gfilter
+from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 
 
-class CommandRule(MappingRule):
+class WindowsSpeechRecognitionRule(MergeRule):
 
     mapping = {
         "reboot windows speech recognition":                R(Function(utilities.reboot, wsr=True), rdescript="Reboot Windows Speech Recognition"),
         }
-    extras = [              
-             ]
+    extras = []
     defaults = {}
 
 #---------------------------------------------------------------------------
 
-grammar = None
+grammar = Grammar("Windows Speech Recognition")
 
-if settings.WSR:
-    grammar = Grammar("Windows Speech Recognition")
-    grammar.add_rule(CommandRule(name="Windows Speech Recognition"))
-    if settings.SETTINGS["apps"]["wsr"]:
-        grammar.load()
+if settings.WSR and settings.SETTINGS["apps"]["wsr"]:
+    rule = WindowsSpeechRecognitionRule(name="Windows Speech Recognition")
+    gfilter.run_on(rule)
+    grammar.add_rule(rule)
+    grammar.load()

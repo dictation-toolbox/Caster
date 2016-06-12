@@ -5,7 +5,7 @@ Created on Jun 29, 2014
 '''
 
 import time
-from dragonfly import (Key, Function, Grammar, Playback, Dictation, Choice, Pause, MappingRule)
+from dragonfly import (Key, Function, Grammar, Playback, Dictation, Choice, Pause)
 from caster.lib.ccr.standard import SymbolSpecs
 
 def _wait_for_wsr_activation():
@@ -42,7 +42,7 @@ try:
     from caster.lib.dfplus.state.short import R
     from caster.lib.dfplus.additions import IntegerRefST
     
-    from caster.lib.dfplus.merge.ccrmerger import Inf
+    from caster.lib.dfplus.merge.mergepair import MergeInf
     from caster.lib.ccr import *
     from caster.lib.ccr.recording.again import Again
     from caster.lib.ccr.recording.alias import VanillaAlias
@@ -51,6 +51,7 @@ try:
     from caster.lib.dfplus.hint.nodes import css
     from caster.user.filters.examples import scen4, modkeysup
     from caster import user
+    from caster.lib.dfplus.merge.mergerule import MergeRule
     from caster.lib.dfplus.merge import gfilter
     
 except:
@@ -70,7 +71,7 @@ def change_monitor():
     else:
         print("This command requires SikuliX to be enabled in the settings file")
 
-class MainRule(MappingRule):
+class MainRule(MergeRule):
     
     @staticmethod
     def generate_ccr_choices(nexus):
@@ -141,13 +142,19 @@ class MainRule(MappingRule):
 
 
 grammar = Grammar('general')
-grammar.add_rule(MainRule())
-grammar.add_rule(Again(_NEXUS))
-grammar.add_rule(VanillaAlias(name="vanilla alias"))
+main_rule = MainRule()
+gfilter.run_on(main_rule)
+again_rule = Again(_NEXUS)
+gfilter.run_on(again_rule)
+alias_rule = VanillaAlias(name="vanilla alias")
+gfilter.run_on(alias_rule)
+grammar.add_rule(main_rule)
+grammar.add_rule(again_rule)
+grammar.add_rule(alias_rule)
 grammar.load()
 
 _NEXUS.merger.update_config()
-_NEXUS.merger.merge(Inf.BOOT)
+_NEXUS.merger.merge(MergeInf.BOOT)
 
 if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
     print("\nWARNING: Status Window is an experimental feature, and there is a known freezing glitch with it.\n")

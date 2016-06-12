@@ -6,17 +6,17 @@ Created on Sep 6, 2015
 
 from dragonfly.actions.action_function import Function
 from dragonfly.actions.action_playback import Playback
-from dragonfly.grammar.rule_mapping import MappingRule
 
 from caster.lib import settings
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.state.actions import AsynchronousAction
 from caster.lib.dfplus.state.short import L, S, R
+from caster.lib.dfplus.merge.mergerule import MergeRule
 
-class Again(MappingRule):
+class Again(MergeRule):
     def __init__(self, nexus):
         self.nexus = nexus
-        MappingRule.__init__(self, name="repeat that", extras = [ IntegerRefST("n", 1, 50) ], defaults = { "n": 1 }, 
+        MergeRule.__init__(self, name="repeat that", extras = [ IntegerRefST("n", 1, 50) ], defaults = { "n": 1 }, 
                              mapping = { "again (<n> [(times|time)] | do)":  R(Function(lambda n: self._create_asynchronous(n)), show=False) } 
                              )
     def _repeat(self, utterance):

@@ -5,15 +5,13 @@ Created on Sep 27, 2015
 '''
 from dragonfly.actions.action_text import Text
 
-from caster.lib import control
-from caster.lib.ccr.python.python import Python
-from caster.lib.dfplus.merge.ccrmerger import Inf
+from caster.lib.dfplus.merge.mergepair import MergeInf
 from caster.lib.dfplus.state.short import R
 
 
 def scenario_1(mp):
     '''manually handle a conflicting spec'''
-    if mp.type == Inf.APP and mp.rule1 is not None:
+    if mp.type == MergeInf.APP and mp.rule1 is not None:
         print("doing merge for apps")
         for spec in mp.rule1.mapping_actual().keys():
             if spec in mp.rule2.mapping_actual().keys():
@@ -32,7 +30,7 @@ def replace_spec(rule, target, replacement):
 
 def scenario_2(mp):
     '''replacing a spec'''
-    if mp.time == Inf.BOOT:
+    if mp.time == MergeInf.BOOT:
         # at merge time, the base rule can be None, so make sure to check
         target = "[go to] line <n>"
         replacement = "travel to line <n>"
@@ -49,7 +47,7 @@ def update_python(rule):
 
 def scenario_3(mp):
     ''' replacing an action '''
-    if mp.time == Inf.RUN and mp.type == Inf.GLOBAL:
+    if mp.time == MergeInf.RUN and mp.type == MergeInf.GLOBAL:
         # Inf.RUN means any time except boot or SelfModifyingRule updates
         # Ing.GLOBAL means during global rule de/activation
         if mp.rule1 is not None and mp.rule1.get_name() == "Python":
@@ -65,7 +63,7 @@ def add_is_to_python(rule):
 
 def scenario_4(mp):
     ''' adding an action '''
-    if mp.time == Inf.BOOT:
+    if mp.time == MergeInf.BOOT:
         if mp.rule1 is not None: 
             add_is_to_python(mp.rule1)
         add_is_to_python(mp.rule2)

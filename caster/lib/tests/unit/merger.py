@@ -1,22 +1,29 @@
-from caster.apps import griddouglas, eclipse
+from dragonfly.actions.action_key import Key
+from dragonfly.grammar.rule_mapping import MappingRule
+
+from caster.apps import eclipse
 from caster.apps.eclipse import EclipseCCR
 from caster.lib.ccr.bash.bash import Bash
 from caster.lib.ccr.java.java import Java
 from caster.lib.ccr.python.python import Python
 from caster.lib.ccr.recording.alias import ChainAlias
 from caster.lib.ccr.standard import SymbolSpecs
-from caster.lib.dfplus.merge.ccrmerger import CCRMerger, Inf
+from caster.lib.dfplus.merge.ccrmerger import CCRMerger
+from caster.lib.dfplus.merge.mergepair import MergeInf
 from caster.lib.tests.unit.state import TestNexus
 
 
 def demo_filter(_):
     ''' delete conflicting specs out of the base rule '''
-    if _.type == Inf.GLOBAL and _.time != Inf.BOOT \
+    if _.type == MergeInf.GLOBAL and _.time != MergeInf.BOOT \
     and _.rule1 is not None and _.rule2.get_name()=="Bash":
         for spec in _.rule1.mapping_actual().keys():
             if spec in _.rule2.mapping_actual().keys():
                 del _.rule1.mapping_actual()[spec]
         _.check_compatibility = False
+        
+class DemoMappingRule(MappingRule):
+    mapping = {"test": Key("a"),}
 
 class TestMerger(TestNexus):
     
@@ -30,7 +37,7 @@ class TestMerger(TestNexus):
         self.nexus.merger.add_app_rule(EclipseCCR(), eclipse.context)
         self.nexus.merger.add_filter(demo_filter)
         self.nexus.merger.update_config()
-        self.nexus.merger.merge(Inf.BOOT)
+        self.nexus.merger.merge(MergeInf.BOOT)
         self.set_global = self.nexus.merger.global_rule_changer()
         self.set_selfmod = self.nexus.merger.selfmod_rule_changer()
     def tearDown(self):
@@ -78,7 +85,8 @@ class TestMerger(TestNexus):
         self.assertFalse("chain alias" in self.nexus.merger._base_global.mapping_actual())
         
     def test_reject_mapping_rules(self):
-        self.assertRaises(AttributeError, lambda: self.nexus.merger.add_global_rule(griddouglas.GridControlRule(name="douglas")))
+        
+        self.assertRaises(AttributeError, lambda: self.nexus.merger.add_global_rule(DemoMappingRule()))
         
         
         

@@ -12,15 +12,14 @@ Command-module for git
 from dragonfly import (Grammar, AppContext, MappingRule,
                        Key, Text)
 
+from caster.lib import control
 from caster.lib import settings
+from caster.lib.dfplus.merge import gfilter
+from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 
 
-from caster.lib.dfplus.merge.mergerule import MergeRule
-from caster.lib import control
-
-
-class CommandRule(MergeRule):
+class CMDRule(MergeRule):
     pronunciation = "command prompt"
 
     mapping = {
@@ -44,10 +43,13 @@ class CommandRule(MergeRule):
 
 context = AppContext(executable="cmd")
 grammar = Grammar("cmd", context=context)
-grammar.add_rule(CommandRule(name="command prompt"))
+
 if settings.SETTINGS["apps"]["cmd"]:
     if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(CommandRule())
+        control.nexus().merger.add_global_rule(CMDRule())
         print("added CMD")
     else:
+        rule = CMDRule(name="command prompt")
+        gfilter.run_on(rule)
+        grammar.add_rule(rule)
         grammar.load()

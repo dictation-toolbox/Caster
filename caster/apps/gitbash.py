@@ -9,23 +9,21 @@ Command-module for git
 """
 #---------------------------------------------------------------------------
 
-from dragonfly import (Grammar, AppContext, MappingRule, Mimic,
-                       Key, Text, Function, IntegerRef)
+from dragonfly import (Grammar, AppContext, Mimic,
+                       Key, Text, Function)
 
+from caster.lib import control
 from caster.lib import settings
 from caster.lib.dfplus.additions import IntegerRefST
-from caster.lib.dfplus.state.short import R
+from caster.lib.dfplus.merge import gfilter
 from caster.lib.dfplus.merge.mergerule import MergeRule
-from caster.lib import control
+from caster.lib.dfplus.state.short import R
 
-def apply(n):
+def _apply(n):
     if n!=0:
         Text("stash@{"+str(int(n))+"}").execute()
 
-
-
-
-class CommandRule(MergeRule):
+class GitBashRule(MergeRule):
     pronunciation = "git bash"
 
     mapping = {
@@ -67,7 +65,7 @@ class CommandRule(MergeRule):
         
         
         "stash":            R(Text("git stash")+Key("enter"), rdescript="GIT: Stash"),
-        "stash apply [<n>]":R(Text("git stash apply")+Function(apply), rdescript="GIT: Stash Apply"),
+        "stash apply [<n>]":R(Text("git stash apply")+Function(_apply), rdescript="GIT: Stash Apply"),
         "stash list":       R(Text("git stash list")+Key("enter"), rdescript="GIT: Stash List"),
         "stash branch":     R(Text("git stash branch NAME"), rdescript="GIT: Stash Branch"),
 
@@ -94,9 +92,12 @@ class CommandRule(MergeRule):
 context = AppContext(executable="sh")
 context2 = AppContext(executable="cmd")
 grammar = Grammar("MINGW32", context=(context | context2))
-grammar.add_rule(CommandRule(name="git bash"))
+
 if settings.SETTINGS["apps"]["gitbash"]:
     if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(CommandRule())
+        control.nexus().merger.add_global_rule(GitBashRule())
     else:
+        rule = GitBashRule(name="git bash")
+        gfilter.run_on(rule)
+        grammar.add_rule(rule)
         grammar.load()

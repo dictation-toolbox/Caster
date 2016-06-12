@@ -3,41 +3,21 @@ Created on Sep 12, 2015
 
 @author: synkarius
 '''
+'''Standard merge filter: app_merge'''
+
 from dragonfly.grammar.elements import RuleRef, Alternative, Repetition
 from dragonfly.grammar.grammar_base import Grammar
 from dragonfly.grammar.rule_compound import CompoundRule
 
 from caster.lib import utilities, settings
 from caster.lib.dfplus.merge import gfilter
+from caster.lib.dfplus.merge.mergepair import MergePair, MergeInf
 from caster.lib.dfplus.merge.mergerule import MergeRule
 
 
-class Inf(object):
-    TYPE = "type"
-    GLOBAL = 0
-    APP = 1
-    SELFMOD = 2
-    #
-    TIME = "time"
-    BOOT = 3
-    RUN = 4
-    BOOT_NO_MERGE = 5
-    
-
-class MergePair(object):
-    def __init__(self, time, type, rule1, rule2, check_compatibility, extras=None):
-        self.time = time
-        self.type = type
-        self.rule1 = rule1
-        self.rule2 = rule2
-        self.changed = False # presently unused
-        self.check_compatibility = check_compatibility
-        self.extras = extras
-
-'''Standard merge filter: app_merge'''
 def app_merge(mp):
     '''forces app rules to define which parts of the base rule they will accept'''
-    if mp.type == Inf.APP:
+    if mp.type == MergeInf.APP:
         base = mp.rule1 #base copy, actually
         if base is None:
             return
@@ -168,12 +148,12 @@ class CCRMerger(object):
     def global_rule_changer(self):
         def _(name, enable, save):
             self._config[CCRMerger._GLOBAL][name] = enable
-            self.merge(Inf.RUN, name, enable, save)
+            self.merge(MergeInf.RUN, name, enable, save)
         return _
     def selfmod_rule_changer(self):
         def _(name2, enable, save):
             self._config[CCRMerger._SELFMOD][name2] = enable
-            self.merge(Inf.SELFMOD, name2, enable, save)
+            self.merge(MergeInf.SELFMOD, name2, enable, save)
         return _
     
     '''merging'''
@@ -236,33 +216,33 @@ class CCRMerger(object):
         named_rule = None
         
         '''get base CCR rule'''
-        if time == Inf.BOOT: # rebuild via config
+        if time == MergeInf.BOOT: # rebuild via config
             for name, rule in self._global_rules.iteritems():
                 '''we want to be able to make permanent changes at boot time, not just 
                 to activated rules, but to everything -- but we dont' want it to interfere
                 with normal merge logic-- hence the introduction of the BOOT_NO_MERGE time'''
-                mp = MergePair(Inf.BOOT_NO_MERGE, Inf.GLOBAL, None, rule, False) # copies not made at boot time, allows user to make permanent changes
+                mp = MergePair(MergeInf.BOOT_NO_MERGE, MergeInf.GLOBAL, None, rule, False) # copies not made at boot time, allows user to make permanent changes
                 self._run_filters(mp)
                 
                 if self._config[CCRMerger._GLOBAL][name]:
-                    mp = MergePair(time, Inf.GLOBAL, base, rule, False) # copies not made at boot time, allows user to make permanent changes
+                    mp = MergePair(time, MergeInf.GLOBAL, base, rule, False) # copies not made at boot time, allows user to make permanent changes
                     self._run_filters(mp)
                     if base is None: base = rule
                     else: base = self._compatibility_merge(mp, base, rule)
         else: # rebuild via composite
             composite = base.composite.copy()# IDs of all rules that the composite rule is made of
-            if time != Inf.SELFMOD:
+            if time != MergeInf.SELFMOD:
                 named_rule = self._global_rules[name] if name is not None else None
                 if enable == False:
                     composite.discard(named_rule.ID) # throw out rule getting disabled
             base = None
             for rule in self._get_rules_by_composite(composite): 
-                mp = MergePair(time, Inf.GLOBAL, base, rule.copy(), False)
+                mp = MergePair(time, MergeInf.GLOBAL, base, rule.copy(), False)
                 self._run_filters(mp)
                 if base is None: base = rule
                 else: base = self._compatibility_merge(mp, base, mp.rule2) # mp.rule2 because named_rule got copied
-            if time != Inf.SELFMOD and enable == True:
-                mp = MergePair(time, Inf.GLOBAL, base, named_rule.copy(), True)
+            if time != MergeInf.SELFMOD and enable == True:
+                mp = MergePair(time, MergeInf.GLOBAL, base, named_rule.copy(), True)
                 self._run_filters(mp)
                 base = self._compatibility_merge(mp, base, mp.rule2) # mp.rule2 because named_rule got copied
                 
@@ -273,7 +253,7 @@ class CCRMerger(object):
             it next time they modify themselves; 
             furthermore, they need to preserve state'''
             if self._config[CCRMerger._SELFMOD][name2]:
-                mp = MergePair(time, Inf.SELFMOD, base, rule, False)
+                mp = MergePair(time, MergeInf.SELFMOD, base, rule, False)
                 self._run_filters(mp)
                 base = self._compatibility_merge(mp, base, rule)
         
@@ -282,7 +262,7 @@ class CCRMerger(object):
         for rule in self._app_rules.values():
             base_copy = base.copy() if base is not None else base # make a copy b/c commands will get stripped out
             context = rule.get_context()
-            mp = MergePair(time, Inf.APP, base_copy, rule.copy(), False, CCRMerger.specs_per_rulename(self._global_rules))
+            mp = MergePair(time, MergeInf.APP, base_copy, rule.copy(), False, CCRMerger.specs_per_rulename(self._global_rules))
             self._run_filters(mp)
             rule = self._compatibility_merge(mp, base_copy, mp.rule2) # mp.rule2 because named_rule got copied
             rule.set_context(context)
@@ -319,7 +299,7 @@ class CCRMerger(object):
         
         
         '''save if necessary'''
-        if time in [Inf.RUN, Inf.SELFMOD] and save:
+        if time in [MergeInf.RUN, MergeInf.SELFMOD] and save:
             # everything in base composite is active, everything in selfmod is active, update the config as such
             active_global_names = [rule.get_name() for rule in active_global]
             for rule_name in self._global_rules:

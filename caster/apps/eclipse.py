@@ -2,10 +2,9 @@
 
 import re
 
-from dragonfly import (Grammar, AppContext, MappingRule,
+from dragonfly import (Grammar, AppContext,
                        Dictation, Key, Text, Repeat, Pause)
 from dragonfly.actions.action_function import Function
-from dragonfly.actions.action_mimic import Mimic
 from dragonfly.actions.action_paste import Paste
 from dragonfly.grammar.elements import Choice
 
@@ -14,9 +13,10 @@ from caster.lib import control, utilities
 from caster.lib import settings
 from caster.lib.ccr.core.nav import Navigation
 from caster.lib.dfplus.additions import IntegerRefST, Boolean
+from caster.lib.dfplus.merge import gfilter
 from caster.lib.dfplus.merge.mergerule import MergeRule
-from caster.lib.dfplus.state.short import R, L, S
 from caster.lib.dfplus.state.actions2 import UntilCancelled
+from caster.lib.dfplus.state.short import R
 
 
 class EclipseController(object):
@@ -104,7 +104,7 @@ ec_con = EclipseController()
 
 
 
-class CommandRule(MergeRule):
+class EclipseRule(MergeRule):
     pronunciation = "eclipse"
 
     mapping = {
@@ -198,11 +198,15 @@ class EclipseCCR(MergeRule):
 
 context = AppContext(executable="javaw", title="Eclipse") | AppContext(executable="eclipse", title="Eclipse") | AppContext(executable="AptanaStudio3")
 grammar = Grammar("Eclipse", context=context)
-grammar.add_rule(CommandRule(name="eclipse"))
+
 if settings.SETTINGS["apps"]["eclipse"]:
     if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(CommandRule())
+        control.nexus().merger.add_global_rule(EclipseRule())
         control.nexus().merger.add_global_rule(EclipseCCR())
     else:
         control.nexus().merger.add_app_rule(EclipseCCR(), context)
+        
+        rule = EclipseRule(name="eclipse")
+        gfilter.run_on(rule)
+        grammar.add_rule(rule)
         grammar.load()

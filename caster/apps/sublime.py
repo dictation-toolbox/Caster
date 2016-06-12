@@ -1,15 +1,14 @@
-from dragonfly import (Grammar, AppContext, MappingRule, Dictation, Key)
+from dragonfly import (Grammar, AppContext, Dictation, Key)
 
+from caster.lib import control
 from caster.lib import settings
 from caster.lib.dfplus.additions import IntegerRefST
+from caster.lib.dfplus.merge import gfilter
+from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 
 
-from caster.lib.dfplus.merge.mergerule import MergeRule
-from caster.lib import control
-
-
-class CommandRule(MergeRule):
+class SublimeRule(MergeRule):
     pronunciation = "sublime"
 
     mapping = {
@@ -41,9 +40,12 @@ class CommandRule(MergeRule):
 
 context = AppContext(executable="sublime_text")
 grammar = Grammar("Sublime", context=context)
-grammar.add_rule(CommandRule(name="sublime"))
+
 if settings.SETTINGS["apps"]["sublime"]:
     if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(CommandRule())
+        control.nexus().merger.add_global_rule(SublimeRule())
     else:
+        rule = SublimeRule(name="sublime")
+        gfilter.run_on(rule)
+        grammar.add_rule(rule)
         grammar.load()
