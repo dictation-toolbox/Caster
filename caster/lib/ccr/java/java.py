@@ -10,7 +10,7 @@ class JavaNon(MappingRule):
     mapping = {
         "try catch":                        R(Text("try{}catch(Exception e){}"), rdescript="Java: Try Catch"),
         "deco override":                    R(Text("@Override"), rdescript="Java: Override Decorator"),
-        "iterate and remove":               R(Paste("for (Iterator<TYPE> iterator = NAME.iterator(); iterator.hasNext();) {\n\tString string = iterator.next();\nif (CONDITION) {\niterator.remove();\n}\n}"), rdescript="Java: Iterate And Remove"),
+        "iterate and remove":               R(Paste("for (Iterator<TOKEN> iterator = TOKEN.iterator(); iterator.hasNext();) {\n\tString string = iterator.next();\nif (CONDITION) {\niterator.remove();\n}\n}"), rdescript="Java: Iterate And Remove"),
         "string builder":                   R(Paste("StringBuilder builder = new StringBuilder(); builder.append(orgStr); builder.deleteCharAt(orgStr.length()-1);"), rdescript="Java: String Builder"),
           }
 
@@ -32,8 +32,8 @@ class Java(MergeRule):
         #
         SymbolSpecs.DO_LOOP:                R(Text("do {}")+Key("left, enter:2"), rdescript="Java: Do Loop"),
         SymbolSpecs.WHILE_LOOP:             R(Text("while ()")+Key("left"), rdescript="Java: While"),
-        SymbolSpecs.FOR_LOOP:               R(Text("for (int i=0; i<VALUE; i++)"), rdescript="Java: For i Loop"),
-        SymbolSpecs.FOR_EACH_LOOP:          R(Text("for (CLASS TYPE : LIST)"), rdescript="Java: For Each Loop"),
+        SymbolSpecs.FOR_LOOP:               R(Text("for (int i=0; i<TOKEN; i++)"), rdescript="Java: For i Loop"),
+        SymbolSpecs.FOR_EACH_LOOP:          R(Text("for (TOKEN TOKEN : TOKEN)"), rdescript="Java: For Each Loop"),
         #
         SymbolSpecs.TO_INTEGER:             R(Text("Integer.parseInt()")+ Key("left"), rdescript="Java: Convert To Integer"),
         SymbolSpecs.TO_FLOAT:               R(Text("Double.parseDouble()")+ Key("left"), rdescript="Java: Convert To Floating-Point"),
@@ -47,7 +47,7 @@ class Java(MergeRule):
         #
         SymbolSpecs.IMPORT:                 R(Text( "import " ), rdescript="Java: Import"),
         #
-        SymbolSpecs.FUNCTION:               R(Text("SCOPE TYPE NAME(){}")+Key("left"), rdescript="Java: Function"),
+        SymbolSpecs.FUNCTION:               R(Text("TOKEN(){}")+Key("left"), rdescript="Java: Function"),
         SymbolSpecs.CLASS:                  R(Text("class {}")+Key("left/5:2"), rdescript=""),
         #
         SymbolSpecs.COMMENT:                R(Text( "//" ), rdescript="Java: Add Comment"),
@@ -63,7 +63,7 @@ class Java(MergeRule):
         
         # Java specific
         
-        "it are in":                        R(Text("Arrays.asList(NAME).contains(VALUE)"), rdescript="Java: In"),
+        "it are in":                        R(Text("Arrays.asList(TOKEN).contains(TOKEN)"), rdescript="Java: In"),
         "try states":                       R(Text("try"), rdescript="Java: Try"),
         "arrow":                            R(Text("->"), rdescript="Java: Lambda Arrow"),
         

@@ -1,28 +1,34 @@
+'''
+master_text_nav shouldn't take strings as arguments - it should take ints, so it can be language-agnostic
+'''
+
 from ctypes import windll
 from subprocess import Popen
 import time
 
-from dragonfly import (Key, Text , Playback, Choice, Mouse, monitors)
+from dragonfly import (Key, Text, Choice, Mouse, monitors)
 import dragonfly
-from dragonfly.actions.action_base import ActionError
-from dragonfly.actions.keyboard import Keyboard
 import win32clipboard
 
 from caster.asynch.mouse.legion import LegionScanner
 from caster.lib import utilities, settings
-from caster.lib import control
 
 
-DIRECTION_STANDARD={"sauce [E]": "up", "dunce [E]": "down", "lease [E]": "left", "Ross [E]": "right", "back": "left" }
+DIRECTIONS = ["up", "down", "left", "right"]
+DIRECTION_STANDARD={"sauce [E]": 0, "dunce [E]": 1, "lease [E]": 2, "Ross [E]": 3, "back": 2 }
+
+''''
+Note: distinct token types were removed because
+A) a general purpose fill token is easier to remember than 10 of them, and
+B) the user of a programming language will know what they're supposed to get filled with
+'''
 TARGET_CHOICE = Choice("target",
-                {"comma": ",", "(period | dot)": ".", "(pair | parentheses)": "(~)",
-                "[square] (bracket | brackets)": "[~]", "curly [brace]": "{~}",
-                "loop": "for~while", "L paren": "(", "are paren": ")", "openers": "(~[~{",
-                "closers": "}~]~)",
-                "parameter": "PARAMETER", "variable": "VARIABLE", "type": "TYPE",
-                "name": "NAME", "object": "OBJECT", "list": "LIST", "scope": "SCOPE",
-                "value": "VALUE", "class": "CLASS", "function": "FUNCTION", "expression": "EXPRESSION"
-                })
+                            {"comma": ",", "(period | dot)": ".", "(pair | parentheses)": "(~)",
+                            "[square] (bracket | brackets)": "[~]", "curly [brace]": "{~}",
+                            "loop": "for~while", "L paren": "(", "are paren": ")", "openers": "(~[~{",
+                            "closers": "}~]~)", "token": "TOKEN"}
+                       )
+
 CAPITALIZATION, SPACING = 0, 0
 
 def get_alphabet_choice(spec):
@@ -56,9 +62,9 @@ def get_alphabet_choice(spec):
             "Zulu": "z", 
                })
 
-def get_direction_choice(spec):
+def get_direction_choice(name):
     global DIRECTION_STANDARD
-    return Choice(spec, DIRECTION_STANDARD)
+    return Choice(name, DIRECTION_STANDARD)
 
 def initialize_clipboard(nexus):
     if len(nexus.clip) == 0:
@@ -254,10 +260,13 @@ def master_text_nav(mtn_mode, mtn_dir, nnavi500, extreme):
     '''
     (<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]
     mtn_mode: "shin" s, "queue" cs, "fly" c, (default None)
-    mtn_dir: up, down, left, right, (default right)
+    mtn_dir: 0-up, 1-down, 2-left, 3-right, (default right)
     nnavi500: number of keypresses (default 1)
     extreme: home/end (default None)
     '''
+    
+    '''convert language-agnostic int back into string for keypress'''
+    mtn_dir = DIRECTIONS[int(mtn_dir)] 
     
     k = None
     if mtn_mode is None:

@@ -16,15 +16,15 @@ class Bash(MergeRule):
         SymbolSpecs.IF:                 R(Text("if [[  ]]; ")+Key("left/5:5"), rdescript="Bash: If"),
         SymbolSpecs.ELSE:               R(Text("else"), rdescript="Bash: Else"),
         #
-        SymbolSpecs.SWITCH:             R(Text("case VALUE in"), rdescript="Bash: Switch"),
-        SymbolSpecs.CASE:               R(Text("VALUE)  ;;")+Key("left/5:2"), rdescript="Bash: Case"),
+        SymbolSpecs.SWITCH:             R(Text("case TOKEN in"), rdescript="Bash: Switch"),
+        SymbolSpecs.CASE:               R(Text("TOKEN)  ;;")+Key("left/5:2"), rdescript="Bash: Case"),
         SymbolSpecs.BREAK:              R(Text("break"), rdescript="Bash: Break"),
         SymbolSpecs.DEFAULT:            R(Text("*)  ;;"), rdescript="Bash: Default"),
         #
         SymbolSpecs.DO_LOOP:            R(Text("until [  ]; do")+Key("left/5:7"), rdescript="Bash: Do Loop"),
         SymbolSpecs.WHILE_LOOP:         R(Text("while [  ]; do")+Key("left/5:7"), rdescript="Bash: While"),
-        SymbolSpecs.FOR_LOOP:           R(Text("for (( i=0; i<=VALUE; i++ )); do"), rdescript="Bash: For i Loop"),
-        SymbolSpecs.FOR_EACH_LOOP:      R(Text("for NAME in VALUE; do"), rdescript="Bash: For Each Loop"), 
+        SymbolSpecs.FOR_LOOP:           R(Text("for (( i=0; i<=TOKEN; i++ )); do"), rdescript="Bash: For i Loop"),
+        SymbolSpecs.FOR_EACH_LOOP:      R(Text("for TOKEN in TOKEN; do"), rdescript="Bash: For Each Loop"), 
         #
         # integers?
         # strings?
@@ -38,7 +38,7 @@ class Bash(MergeRule):
         #
         SymbolSpecs.IMPORT:             R(Text(". /path/to/functions"), rdescript="Bash: Import"), # (top of file, under #!/bin/bash)
         # 
-        SymbolSpecs.FUNCTION:           R(Text("NAME(){}")+Key("left, enter/5:2"), rdescript="Bash: Function"),
+        SymbolSpecs.FUNCTION:           R(Text("TOKEN(){}")+Key("left, enter/5:2"), rdescript="Bash: Function"),
         # classes?
         #
         SymbolSpecs.COMMENT:            R(Text("# "), rdescript="Bash: Add Comment"),
@@ -59,8 +59,8 @@ class Bash(MergeRule):
         "key fee":                      R(Text("fi"), rdescript="Bash: End If"),
         "shell iffae":                  R(Text("elif [[  ]]; ")+Key("left/5:5"), rdescript="Bash: Else If"),
         "sue iffae":                    R(Text("[[  ]]")+Key("left/5:3"), rdescript="Bash: Short If"),
-        "length of":                    R(Text("${#NAME[@]}"), rdescript="Bash: Length"),
-        "push":                         R(Text("NAME+=()"), rdescript="Bash: Push"),
+        "length of":                    R(Text("${#TOKEN[@]}"), rdescript="Bash: Length"),
+        "push":                         R(Text("TOKEN+=()"), rdescript="Bash: Push"),
         "continue":                     R(Text("continue"), rdescript="Bash: Continue"),
         "she bang":                     R(Text("#!/bin/bash"), rdescript="Bash: Shebang"),
         "end switch":                   R(Text("esac"), rdescript="Bash: End Switch"), 

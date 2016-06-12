@@ -26,8 +26,8 @@ class CPP(MergeRule):
         #
         SymbolSpecs.DO_LOOP:                R(Text("do {}")+Key("left, enter:2"), rdescript="C++: Do Loop"),
         SymbolSpecs.WHILE_LOOP:             R(Text("while ()")+Key("left"), rdescript="C++: While"),
-        SymbolSpecs.FOR_LOOP:               R(Text("for (int i=0; i<VALUE; i++)"), rdescript="C++: For i Loop"),
-        SymbolSpecs.FOR_EACH_LOOP:          R(Text("for_each (VALUE, VALUE, FUNCTION);"), rdescript="C++: For Each Loop"),
+        SymbolSpecs.FOR_LOOP:               R(Text("for (int i=0; i<TOKEN; i++)"), rdescript="C++: For i Loop"),
+        SymbolSpecs.FOR_EACH_LOOP:          R(Text("for_each (TOKEN, TOKEN, TOKEN);"), rdescript="C++: For Each Loop"),
         #
         SymbolSpecs.TO_INTEGER:             R(Text("(int)"), rdescript="C++: Convert To Integer"),
         SymbolSpecs.TO_FLOAT:               R(Text("(double)"), rdescript="C++: Convert To Floating-Point"),
@@ -41,8 +41,8 @@ class CPP(MergeRule):
         #
         SymbolSpecs.IMPORT:                 R(Text("#include"), rdescript="C++: Import"),
         #
-        SymbolSpecs.FUNCTION:               R(Text("TYPE NAME(){}")+Key("left"), rdescript="C++: Function"),
-        SymbolSpecs.CLASS:                  R(Text("class NAME{}")+Key("left"), rdescript="C++: Class"),
+        SymbolSpecs.FUNCTION:               R(Text("TOKEN TOKEN(){}")+Key("left"), rdescript="C++: Function"),
+        SymbolSpecs.CLASS:                  R(Text("class TOKEN{}")+Key("left"), rdescript="C++: Class"),
         #
         SymbolSpecs.COMMENT:                R(Text( "//" ), rdescript="C++: Add Comment"),
         SymbolSpecs.LONG_COMMENT:           R(Text("/**/")+Key("left, left"), rdescript="C++: Long Comment"),

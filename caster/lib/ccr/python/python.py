@@ -80,7 +80,7 @@ class Python(MergeRule):
         "global":                       R(Text("global "), rdescript="Python: Global"),
                         
         "make assertion":               R(Text("assert "), rdescript="Python: Assert"),
-        "list comprehension":           R(Text("[x for x in LIST if CONDITION]"), rdescript="Python: List Comprehension"),
+        "list comprehension":           R(Text("[x for x in TOKEN if TOKEN]"), rdescript="Python: List Comprehension"),
        
         "[dot] (pie | pi)":             R(Text(".py"), rdescript="Python: .py"),
         "jason":                        R(Text("json"), rdescript="Python: json"),

@@ -15,15 +15,15 @@ class Haxe(MergeRule):
         SymbolSpecs.IF:                     R(Key("i, f, lparen, rparen, left"), rdescript="Haxe: If"),
         SymbolSpecs.ELSE:                   R(Key("e, l, s, e"), rdescript="Haxe: Else"),
         #
-        SymbolSpecs.SWITCH:                 R(Text("switch(){\ncase : EXPRESSION;\ndefault: EXPRESSION;")+Key("up,up,left,left"), rdescript="Haxe: Switch"),
+        SymbolSpecs.SWITCH:                 R(Text("switch(){\ncase : TOKEN;\ndefault: TOKEN;")+Key("up,up,left,left"), rdescript="Haxe: Switch"),
         SymbolSpecs.CASE:                   R(Text("case :")+Key("left"), rdescript="Haxe: Case"),
         SymbolSpecs.BREAK:                  R(Text("break;"), rdescript="Haxe: Break"),
         SymbolSpecs.DEFAULT:                R(Text("default: "), rdescript="Haxe: Default"),
         #
-        SymbolSpecs.DO_LOOP:                R(Text("do EXPRESSION while()")+Key("left, enter:2"), rdescript="Haxe: Do Loop"),
+        SymbolSpecs.DO_LOOP:                R(Text("do TOKEN while()")+Key("left, enter:2"), rdescript="Haxe: Do Loop"),
         SymbolSpecs.WHILE_LOOP:             R(Text("while ()")+Key("left"), rdescript="Haxe: While"),
-        SymbolSpecs.FOR_LOOP:               R(Text("for (i in 0...VALUE)"), rdescript="Haxe: For i Loop"),
-        SymbolSpecs.FOR_EACH_LOOP:          R(Text("for (VALUE in NAME)"), rdescript="Haxe: For Each Loop"),
+        SymbolSpecs.FOR_LOOP:               R(Text("for (i in 0...TOKEN)"), rdescript="Haxe: For i Loop"),
+        SymbolSpecs.FOR_EACH_LOOP:          R(Text("for (TOKEN in TOKEN)"), rdescript="Haxe: For Each Loop"),
         #
         SymbolSpecs.TO_INTEGER:             R(Text("Std.int()")+Key("left"), rdescript="Haxe: Convert To Integer"),
         SymbolSpecs.TO_FLOAT:               R(Text("Std.parseFloat()")+Key("left"), rdescript="Haxe: Convert To Floating-Point"),
@@ -57,8 +57,8 @@ class Haxe(MergeRule):
         "instance of":                      R(Text("Std.is()")+Key("left"), rdescript="Haxe: Infer Type"),
         "anon funk":                        R(Text("->"), rdescript="Haxe: Lambda"),
         
-        "map of":                           R(Text("Map<TYPE, TYPE>()"), rdescript="Haxe: Map"),
-        "array of":                         R(Text("Array<TYPE>()")+Key("left"), rdescript="Haxe: Array"),
+        "map of":                           R(Text("Map<TOKEN, TOKEN>()"), rdescript="Haxe: Map"),
+        "array of":                         R(Text("Array<TOKEN>()")+Key("left"), rdescript="Haxe: Array"),
         
         "far | variable":                   R(Text("var "), rdescript="Haxe: Variable"),
         
@@ -75,7 +75,7 @@ class Haxe(MergeRule):
         "static":                           R(Text("static "), rdescript="Haxe: Static"),
         "this":                             R(Text("this"), rdescript="Haxe: This"),
         
-        "safe cast":                        R(Text("cast (NAME, CLASS)"), rdescript="Haxe: Safe Cast"), 
+        "safe cast":                        R(Text("cast (TOKEN, TOKEN)"), rdescript="Haxe: Safe Cast"), 
         "get class":                        R(Text("Type.getClass()")+Key("left"), rdescript="Haxe: Get Class"), 
         "get name":                         R(Text("Type.getClassName()")+Key("left"), rdescript="Haxe: Get Class Name")
         

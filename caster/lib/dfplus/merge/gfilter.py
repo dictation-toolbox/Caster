@@ -129,13 +129,12 @@ def spec_override_from_config(mp):
                             defaults_changed = True
             
             if extras_changed or defaults_changed:
-                print("attempting replacement")
                 rule.__init__(rule._name, rule.mapping_actual(), extras, defaults, rule._exported,
                               rule.ID, rule.composite, rule.compatible, rule._mcontext, rule._mwith)
                         
 
 if DEFS is not None:
-    print("Global Filter from File activated ...")
+    print("Global rule filter from file 'words.txt' activated ...")
     
 
     

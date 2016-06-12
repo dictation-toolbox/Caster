@@ -40,7 +40,7 @@ class SQL(MergeRule):
         "using":                    R(Text(" using () ")+Key("left/5:2"), rdescript="SQL: Using"),
         
         "insert into":              R(Text(" insert into "), rdescript="SQL: Insert"),
-        "update":                   R(Text(" update NAME set "), rdescript="SQL: Update"),
+        "update":                   R(Text(" update TOKEN set "), rdescript="SQL: Update"),
         "delete":                   R(Text(" delete "), rdescript="SQL: Delete"),
         
         

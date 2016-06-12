@@ -27,8 +27,8 @@ class CSharp(MergeRule):
         #
         SymbolSpecs.DO_LOOP:                R(Text("do {}")+Key("left, enter:2"), rdescript="C#: Do Loop"),
         SymbolSpecs.WHILE_LOOP:             R(Text("while ()")+Key("left"), rdescript="C#: While"),
-        SymbolSpecs.FOR_LOOP:               R(Text("for (int i=0; i<VALUE; i++)"), rdescript="C#: For i Loop"),
-        SymbolSpecs.FOR_EACH_LOOP:          R(Text("foreach (VALUE in Collection)"), rdescript="C#: For Each Loop"),
+        SymbolSpecs.FOR_LOOP:               R(Text("for (int i=0; i<TOKEN; i++)"), rdescript="C#: For i Loop"),
+        SymbolSpecs.FOR_EACH_LOOP:          R(Text("foreach (TOKEN in Collection)"), rdescript="C#: For Each Loop"),
         #
         SymbolSpecs.TO_INTEGER:             R(Text("Convert.ToInt32()")+Key("left"), rdescript="C#: Convert To Integer"),
         SymbolSpecs.TO_FLOAT:               R(Text("Convert.ToDouble()")+Key("left"), rdescript="C#: Convert To Floating-Point"),
@@ -41,8 +41,8 @@ class CSharp(MergeRule):
         SymbolSpecs.SYSOUT:                 R(Text("Console.WriteLine()")+ Key("left"), rdescript="C#: Print"),
         
         #
-        SymbolSpecs.FUNCTION:               R(Text("TYPE NAME(){}")+Key("left"), rdescript="C#: Function"),
-        SymbolSpecs.CLASS:                  R(Text("class NAME{}")+Key("left"), rdescript="C#: Class"),
+        SymbolSpecs.FUNCTION:               R(Text("TOKEN TOKEN(){}")+Key("left"), rdescript="C#: Function"),
+        SymbolSpecs.CLASS:                  R(Text("class TOKEN{}")+Key("left"), rdescript="C#: Class"),
        #
         
         SymbolSpecs.COMMENT:                R(Text( "//" ), rdescript="C#: Add Comment"),
@@ -59,9 +59,9 @@ class CSharp(MergeRule):
         # C# specific
         
         "using":                            R(Text("using"), rdescript="C#: Using"),      
-        "enum":                             R(Text("enum NAME {}")+Key("left"), rdescript="C#: Enum"),   
-        "struct":                           R(Text("struct NAME {}")+Key("left"), rdescript="C#: Struct"),
-        "interface":                        R(Text("interface NAME {}")+Key("left"), rdescript="C#: Struct"),
+        "enum":                             R(Text("enum TOKEN {}")+Key("left"), rdescript="C#: Enum"),   
+        "struct":                           R(Text("struct TOKEN {}")+Key("left"), rdescript="C#: Struct"),
+        "interface":                        R(Text("interface TOKEN {}")+Key("left"), rdescript="C#: Struct"),
         
         "public":                           R(Text("public "), rdescript="C#: Public"),
         "private":                          R(Text("private "), rdescript="C#: Private"),
@@ -74,7 +74,7 @@ class CSharp(MergeRule):
         "constant":                         R(Text("const"), rdescript="C#: Constant"),
         "array":                            R(Mimic("brackets"), rdescript="C#: Array"),
         "list":                             R(Text("List<>")+Key("left"), rdescript="C# List"),
-        "var":                              R(Text("var NAME = TYPE;"), rdescript="C# variable"),
+        "var":                              R(Text("var TOKEN = TOKEN;"), rdescript="C# variable"),
         "(lambda|goes to)":                 R(Text("->"), rdescript="C#: lambda"),
         
         
