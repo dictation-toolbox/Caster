@@ -26,6 +26,9 @@ class GlobalFilterDefs(object):
         
         for line in lines:
             
+            if line.startswith("#") or not line.strip(): # ignore comments and empty lines
+                continue
+            
             pair = line.split("->")
             original = pair[0].strip()
             
@@ -36,11 +39,18 @@ class GlobalFilterDefs(object):
             new = pair[1].strip()
             
             '''only handles mode 1 for now'''
-            if mode in [0, 1]:
+            if mode == 0:
                 self.specs[original] = new
-            elif mode in [0, 2, 4]:
                 self.extras[original] = new
-            elif mode in [0, 3, 4]:
+                self.defaults[original] = new
+            elif mode == 1:
+                self.specs[original] = new
+            elif mode == 2:
+                self.extras[original] = new
+            elif mode == 3:
+                self.defaults[original] = new
+            elif mode == 4:
+                self.extras[original] = new
                 self.defaults[original] = new
 
 DEFS = None
