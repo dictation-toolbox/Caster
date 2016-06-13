@@ -5,7 +5,7 @@ Created on Sep 1, 2015
 '''
 from dragonfly import Repeat, Function, Key, Dictation, Choice, Mouse, MappingRule
 
-from caster.lib import context, navigation, settings, alphanumeric
+from caster.lib import context, navigation, settings, alphanumeric, textformat
 from caster.lib import control
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge.ccrmerger import CCRMerger
@@ -137,7 +137,7 @@ class Navigation(MergeRule):
     'save':                         R(Key("c-s"), rspec="save", rdescript="Save"),
     'shock [<nnavi50>]':            R(Key("enter"), rspec="shock", rdescript="Enter")* Repeat(extra="nnavi50"),
     
-    "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]": R(Function(navigation.master_text_nav), rdescript="Keyboard Text Navigation"),
+    "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]": R(Function(textformat.master_text_nav), rdescript="Keyboard Text Navigation"),
     
     "stoosh [<nnavi500>]":          R(Key("c-c")+Function(navigation.clipboard_to_file, nexus=_NEXUS), rspec="stoosh", rdescript="Copy"),
     "cut [<nnavi500>]":             R(Key("c-x")+Function(navigation.clipboard_to_file, nexus=_NEXUS), rspec="cut", rdescript="Cut"),
@@ -154,9 +154,9 @@ class Navigation(MergeRule):
     "Kraken":                       R(Key("c-space"), rspec="Kraken", rdescript="Control Space"),
          
     # text formatting
-    "set format (<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)":  R(Function(navigation.set_text_format), rdescript="Set Text Format"), 
-    "(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel) <textnv> [brunt]":  R(Function(navigation.master_format_text), rdescript="Text Format"), 
-    "format [<textnv>]":            R(Function(navigation.prior_text_format), rdescript="Last Text Format"),
+    "set format (<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)":  R(Function(textformat.set_text_format), rdescript="Set Text Format"), 
+    "(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel) <textnv> [brunt]":  R(Function(textformat.master_format_text), rdescript="Text Format"), 
+    "format [<textnv>]":            R(Function(textformat.prior_text_format), rdescript="Last Text Format"),
     
     "dredge":                       R(Key("a-tab"), rdescript="Alt-Tab"),
 
