@@ -4,7 +4,7 @@ from dragonfly.language.base.integer_internal import MapIntBuilder, \
     IntegerContentBase
 from dragonfly.language.loader import language
 
-from caster.lib import utilities, settings, navigation
+from caster.lib import utilities, settings, alphanumeric
 
 
 class SelectiveAction(ActionBase):
@@ -40,7 +40,7 @@ if not settings.SETTINGS["miscellaneous"]["integer_remap_crash_fix"]:
         builders = [int_0, int_1_9, int_10_19, int_20_99,
                     int_100s, int_100big, int_1000s, int_1000000s]
     if "en" in language.language_map and settings.SETTINGS["miscellaneous"]["integer_remap_opt_in"]:
-        mapping = navigation.numbers_map_1_to_9()
+        mapping = alphanumeric.numbers_map_1_to_9()
         IntegerContentST.builders[1] = MapIntBuilder(mapping)
         INTEGER_CONTENT = IntegerContentST
     

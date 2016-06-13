@@ -3,7 +3,7 @@ from dragonfly.actions.action_startapp import BringApp
 from dragonfly.windows.window import Window
 
 from caster.asynch.hmc import h_launch
-from caster.lib import settings, utilities, navigation
+from caster.lib import settings, utilities, alphanumeric
 from caster.lib.dfplus.state.actions import AsynchronousAction, ContextSeeker, \
     RegisteredAction
 from caster.lib.dfplus.state.short import L, S
@@ -126,7 +126,7 @@ class FuzzyMatchAction(ContextSeeker):
     default_1: speaking a next command other than a number or cancel activates the first choice in the list
         ; 
     '''
-    TEN = ["numb "+x for x in navigation.numbers_list_1_to_9()+["ten"]]
+    TEN = ["numb "+x for x in alphanumeric.numbers_list_1_to_9()+["ten"]]
     def __init__(self, list_function, filter_function, selection_function, default_1=True, rspec="default", 
                  rdescript="unnamed command (FM)", log_file_path=None):
         def get_choices(data):

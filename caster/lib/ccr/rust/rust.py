@@ -1,7 +1,6 @@
 from dragonfly import Key, Text, Choice, MappingRule
 
-from caster.lib import control
-from caster.lib import navigation
+from caster.lib import control, alphanumeric
 from caster.lib.ccr.standard import SymbolSpecs
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge.mergerule import MergeRule
@@ -99,8 +98,8 @@ class Rust(MergeRule):
             Choice("signed", {"unsigned": "u"}), 
             Choice("mutability", {"mute ah | mute": "mut "}), 
             IntegerRefST("n", 0, 1000), 
-            navigation.get_alphabet_choice("a"), 
-            navigation.get_alphabet_choice("b"),
+            alphanumeric.get_alphabet_choice("a"), 
+            alphanumeric.get_alphabet_choice("b"),
            ]
     defaults = {
             "bits": "32", "signed": "i", "mutability": "", "a": "i", "b": "j", "n": 1

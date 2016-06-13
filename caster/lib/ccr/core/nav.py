@@ -5,7 +5,7 @@ Created on Sep 1, 2015
 '''
 from dragonfly import Repeat, Function, Key, Dictation, Choice, Mouse, MappingRule
 
-from caster.lib import context, navigation, settings, utilities
+from caster.lib import context, navigation, settings, alphanumeric
 from caster.lib import control
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge.ccrmerger import CCRMerger
@@ -80,7 +80,7 @@ class NavigationNon(MappingRule):
                                                          fnfz.dredge_tie_selection, rdescript="Fuzzy Window Matcher", 
                                                          log_file_path=settings.SETTINGS["paths"]["PITA_LOG_FOLDER"] + "/tie_matches.log"),
         
-        "elite translation <text>":         R(Function(navigation.elite_text), rdescript="1337 Text"),
+        "elite translation <text>":         R(Function(alphanumeric.elite_text), rdescript="1337 Text"),
         
           }
 

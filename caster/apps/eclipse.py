@@ -8,7 +8,7 @@ from dragonfly.actions.action_function import Function
 from dragonfly.actions.action_paste import Paste
 from dragonfly.grammar.elements import Choice
 
-from caster.lib import context as CONTEXT, navigation
+from caster.lib import context as CONTEXT, alphanumeric
 from caster.lib import control, utilities
 from caster.lib import settings
 from caster.lib.ccr.core.nav import Navigation
@@ -158,9 +158,9 @@ class EclipseRule(MergeRule):
             Dictation("text"),
             Dictation("mim"),
             IntegerRefST("n", 1, 3000),
-            navigation.get_alphabet_choice("a"),
-            navigation.get_alphabet_choice("b"),
-            navigation.get_alphabet_choice("c"),
+            alphanumeric.get_alphabet_choice("a"),
+            alphanumeric.get_alphabet_choice("b"),
+            alphanumeric.get_alphabet_choice("c"),
             Choice("punctuation", {"hash tag": "#"}),
             Boolean("back"),
             Boolean("go"),
