@@ -9,7 +9,24 @@ from caster.lib import settings
 from caster.lib.dfplus.merge.mergepair import MergePair, MergeInf
 
 
+
 class GlobalFilterDefs(object):
+    
+    P = "<?>"
+    
+    @staticmethod
+    def preserve(spec, target):
+        _ = "<"+target+">"
+        if _ in spec:
+            return spec.replace(_, GlobalFilterDefs.P)
+        else:
+            return spec
+    
+    @staticmethod        
+    def restore(spec, target):
+        return spec.replace(GlobalFilterDefs.P, "<"+target+">")
+    
+    
     '''parsing modes'''
     MODES = {
              "<<<ANY>>>":       0,
@@ -38,6 +55,7 @@ class GlobalFilterDefs(object):
                 continue
             
             new = pair[1].strip()
+            new = "#".join(new.split("#")[:1])
             
             '''only handles mode 1 for now'''
             if mode == 0:
@@ -85,7 +103,9 @@ def spec_override_from_config(mp):
                     
                     if original in spec:
                         new = DEFS.specs[original]
-                        nspec = spec.replace(original, new)
+                        nspec = GlobalFilterDefs.preserve(nspec, original)
+                        nspec = nspec.replace(original, new)
+                        nspec = GlobalFilterDefs.restore(nspec, original)
                 if spec == nspec:
                     continue;
                 
