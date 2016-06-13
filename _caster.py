@@ -144,13 +144,18 @@ class MainRule(MergeRule):
 grammar = Grammar('general')
 main_rule = MainRule()
 gfilter.run_on(main_rule)
-again_rule = Again(_NEXUS)
-gfilter.run_on(again_rule)
-alias_rule = VanillaAlias(name="vanilla alias")
-gfilter.run_on(alias_rule)
 grammar.add_rule(main_rule)
-grammar.add_rule(again_rule)
-grammar.add_rule(alias_rule)
+
+if settings.SETTINGS["feature_rules"]["again"]:
+    again_rule = Again(_NEXUS)
+    gfilter.run_on(again_rule)
+    grammar.add_rule(again_rule)
+
+if settings.SETTINGS["feature_rules"]["alias"]:
+    alias_rule = VanillaAlias(name="vanilla alias")
+    gfilter.run_on(alias_rule)
+    grammar.add_rule(alias_rule)
+
 grammar.load()
 
 _NEXUS.merger.update_config()

@@ -186,6 +186,17 @@ def init_default_values():
                        ("wsr", True),
                        ])
     
+    # feature switches
+    values_change_count += update_values(SETTINGS, [("feature_rules", {})])
+    values_change_count += update_values(SETTINGS["feature_rules"], [
+                       ("dispel", True),
+                       ("hmc", True),
+                       ("stickylist", True),
+                       ("again", True),
+                       ("alias", True),
+                       ("chainalias", True),
+                       ])
+    
     # node rules
     values_change_count += update_values(SETTINGS, [("nodes", {})])
     

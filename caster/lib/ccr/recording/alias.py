@@ -88,6 +88,7 @@ class ChainAlias(SelfModifyingRule):
         mapping["delete chain aliases"] = R(Function(lambda: delete_all(self, ChainAlias.json_path)), rdescript="Delete Vanilla Aliases")
         self.reset(mapping)
 
-control.nexus().merger.add_selfmodrule(ChainAlias(_NEXUS))
+if settings.SETTINGS["feature_rules"]["chainalias"]:
+    control.nexus().merger.add_selfmodrule(ChainAlias(_NEXUS))
 
     

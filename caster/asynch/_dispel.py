@@ -96,7 +96,8 @@ class DispelRule(MergeRule):
                }
 
 grammar = Grammar('dispel')
-rule = DispelRule()
-gfilter.run_on(rule)
-grammar.add_rule(rule)
-grammar.load() 
+if settings.SETTINGS["feature_rules"]["dispel"]:
+    rule = DispelRule()
+    gfilter.run_on(rule)
+    grammar.add_rule(rule)
+    grammar.load() 

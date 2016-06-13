@@ -55,7 +55,8 @@ grammar = Grammar("hmc", context=AppContext(title=settings.HOMUNCULUS_VERSION))
 r1 = HMCRule()
 gfilter.run_on(r1)
 grammar.add_rule(r1)
-grammar.load()
+if settings.SETTINGS["feature_rules"]["hmc"]:
+    grammar.load()
 
 class HMCHistoryRule(MergeRule):
     mapping = {
@@ -73,7 +74,8 @@ grammar_history = Grammar("hmc history", context=AppContext(title=settings.HMC_T
 r2 = HMCHistoryRule()
 gfilter.run_on(r2)
 grammar_history.add_rule(r2)
-grammar_history.load()
+if settings.SETTINGS["feature_rules"]["hmc"]:
+    grammar_history.load()
 
 class HMCDirectoryRule(MergeRule):
     mapping = {
@@ -84,7 +86,8 @@ grammar_directory = Grammar("hmc directory", context=AppContext(title=settings.H
 r3 = HMCDirectoryRule()
 gfilter.run_on(r3)
 grammar_directory.add_rule(r3)
-grammar_directory.load()
+if settings.SETTINGS["feature_rules"]["hmc"]:
+    grammar_directory.load()
 
 class HMCConfirmRule(MergeRule):
     mapping = {
@@ -96,7 +99,8 @@ grammar_confirm = Grammar("hmc confirm", context=AppContext(title=settings.HMC_T
 r4 = HMCConfirmRule()
 gfilter.run_on(r4)
 grammar_confirm.add_rule(r4)
-grammar_confirm.load()
+if settings.SETTINGS["feature_rules"]["hmc"]:
+    grammar_confirm.load()
 
 
 class HMCSettingsRule(MergeRule):
@@ -108,7 +112,8 @@ grammar_settings = Grammar("hmc settings", context=AppContext(title=settings.SET
 r5 = HMCSettingsRule()
 gfilter.run_on(r5)
 grammar_settings.add_rule(r5)
-grammar_settings.load()
+if settings.SETTINGS["feature_rules"]["hmc"]:
+    grammar_settings.load()
 
 
 
@@ -141,4 +146,8 @@ grammarw = Grammar("Caster Windows")
 r6 = LaunchRule()
 gfilter.run_on(r6)
 grammarw.add_rule(r6)
-grammarw.load()
+if settings.SETTINGS["feature_rules"]["hmc"]:
+    grammarw.load()
+    
+if not settings.SETTINGS["feature_rules"]["hmc"]:
+    print("WARNING: Tk Window controls have been disabled -- this is not advised!")

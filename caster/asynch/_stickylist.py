@@ -1,8 +1,7 @@
 from subprocess import Popen
 import time
 
-from dragonfly import (Function, Text, Grammar, Choice,
-                       IntegerRef, Dictation, Mimic, MappingRule)
+from dragonfly import (Function, Text, Grammar, Choice, Dictation)
 
 from caster.lib import  settings, utilities, navigation
 from caster.lib import control
@@ -79,14 +78,11 @@ class SListUsageRule(MergeRule):
                "sticky": 0
                }
 
-_NEXUS.sticky = utilities.load_json_file(settings.SETTINGS["paths"]["S_LIST_JSON_PATH"])
-grammar = Grammar('SListUsageRule')
-rule = SListUsageRule()
-gfilter.run_on(rule)
-grammar.add_rule(rule)
-grammar.load()
 
-def unload():
-    global grammar
-    if grammar: grammar.unload()
-    grammar = None
+grammar = Grammar('SListUsageRule')
+if settings.SETTINGS["feature_rules"]["stickylist"]:
+    rule = SListUsageRule()
+    gfilter.run_on(rule)
+    grammar.add_rule(rule)
+    grammar.load()
+    _NEXUS.sticky = utilities.load_json_file(settings.SETTINGS["paths"]["S_LIST_JSON_PATH"])
