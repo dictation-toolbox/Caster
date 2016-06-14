@@ -8,9 +8,57 @@ from dragonfly.grammar.elements import Choice
 from caster.lib import settings
 from caster.lib.dfplus.merge.mergepair import MergePair, MergeInf
 
-
+class PreservedSpec(object):
+    def __init__(self):
+        self.original = None # original spec from Caster
+        self.extras = [] # bound extras' words
+        self.cleaned = None # original with bound extras replaced with '?'s
+        self.altered = None # 'cleaned' after replacement process
+    
+    @staticmethod
+    def preserve(spec):
+        p = PreservedSpec()
+        p.original = spec
+        
+        angles_mode = False
+        preserved_word = ""
+        cleaned_spec = ""
+        for c in spec:
+            if c == '<':
+                angles_mode = True
+                cleaned_spec += "<?"
+                continue
+            elif c == '>':
+                angles_mode = False
+                p.extras.append(preserved_word)
+                preserved_word = ""
+                cleaned_spec += ">"
+                continue
+            elif angles_mode:
+                preserved_word += c
+            else:
+                cleaned_spec += c
+        p.cleaned = cleaned_spec
+        p.altered = cleaned_spec
+        
+        return p
+    
+    @staticmethod
+    def restore(pspec):
+        p = pspec
+        
+        q = p.altered.split("?")
+        if len(q) == 1: # no bound extras
+            return p.altered # so just return the gfilter result
+        
+        # intersperse the lists
+        c = [b for a in map(None, q, p.extras) for b in a if b is not None]
+        
+        return "".join(c)
 
 class GlobalFilterDefs(object):
+    
+    
     
     P = "<?>"
     
@@ -98,19 +146,21 @@ def spec_override_from_config(mp):
             specs_changed = False
             for spec in rule.mapping_actual().keys():
                 action = rule.mapping_actual()[spec]
-                nspec = spec # new spec
+                
+                pspec = PreservedSpec.preserve(spec)
+                
                 for original in DEFS.specs.keys():
-                    
-                    if original in spec:
+                    if original in pspec.altered:
                         new = DEFS.specs[original]
-                        nspec = GlobalFilterDefs.preserve(nspec, original)
-                        nspec = nspec.replace(original, new)
-                        nspec = GlobalFilterDefs.restore(nspec, original)
-                if spec == nspec:
+                        pspec.altered = pspec.altered.replace(original, new)
+                        
+                pspec.altered = PreservedSpec.restore(pspec)
+                        
+                if spec == pspec.altered:
                     continue;
                 
                 del rule.mapping_actual()[spec]
-                rule.mapping_actual()[nspec] = action
+                rule.mapping_actual()[pspec.altered] = action
                 specs_changed = True
                 
             
