@@ -156,7 +156,7 @@ class Navigation(MergeRule):
     # text formatting
     "set format (<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)":  R(Function(textformat.set_text_format), rdescript="Set Text Format"), 
     "(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel) <textnv> [brunt]":  R(Function(textformat.master_format_text), rdescript="Text Format"), 
-    "format [<textnv>]":            R(Function(textformat.prior_text_format), rdescript="Last Text Format"),
+    "format <textnv>":              R(Function(textformat.prior_text_format), rdescript="Last Text Format"),
     
     "dredge":                       R(Key("a-tab"), rdescript="Alt-Tab"),
 
