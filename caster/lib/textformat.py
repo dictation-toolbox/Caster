@@ -4,7 +4,6 @@ from dragonfly.actions.action_key import Key
 from dragonfly.actions.action_text import Text
 
 from caster.lib import settings
-from caster.lib.navigation import DIRECTIONS
 
 _CAPITALIZATION, _SPACING = 0, 0
 
@@ -72,9 +71,6 @@ def master_text_nav(mtn_mode, mtn_dir, nnavi500, extreme):
     nnavi500: number of keypresses (default 1)
     extreme: home/end (default None)
     '''
-    
-    '''convert language-agnostic int back into string for keypress'''
-    mtn_dir = DIRECTIONS[int(mtn_dir)] 
     
     k = None
     if mtn_mode is None:

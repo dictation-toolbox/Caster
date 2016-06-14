@@ -3,7 +3,7 @@ import time
 from dragonfly import *
 
 from caster.lib import utilities, settings
-from caster.lib import control
+
 
 def _target_is_character(target):
     '''determines if the target is a single character'''
