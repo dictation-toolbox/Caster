@@ -191,7 +191,7 @@ class Navigation(MergeRule):
 
     defaults ={
             "nnavi500": 1, "nnavi50": 1, "textnv": "", "capitalization": 0, "spacing":0, 
-            "mtn_mode": None, "mtn_dir": 3, "extreme": None 
+            "mtn_mode": None, "mtn_dir": "right", "extreme": None 
            }
 
 control.nexus().merger.add_global_rule(Navigation())
