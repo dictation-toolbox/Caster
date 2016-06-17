@@ -93,7 +93,9 @@ class HMCConfirmRule(MergeRule):
     mapping = {
         # specific to confirm
         "confirm":                      R(Function(hmc_confirm, value=True, nexus=_NEXUS), rdescript="HMC: Confirm Action"),
-        "cancel":                       R(Function(hmc_confirm, value=False, nexus=_NEXUS), rdescript="HMC: Cancel Action")
+        "disconfirm":                   R(Function(hmc_confirm, value=False, nexus=_NEXUS), 
+                                          rspec="hmc_cancel",
+                                          rdescript="HMC: Cancel Action")
     }
 grammar_confirm = Grammar("hmc confirm", context=AppContext(title=settings.HMC_TITLE_CONFIRM))
 r4 = HMCConfirmRule()

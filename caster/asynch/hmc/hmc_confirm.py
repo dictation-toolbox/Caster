@@ -20,7 +20,7 @@ class HomunculusConfirm(Homunculus):
         
         self.geometry("320x50+" + str(int(self.winfo_screenwidth() / 2 - 160)) + "+" + str(int(self.winfo_screenheight() / 2 - 25)))
         Label(self, text="Please confirm: "+" ".join(params[1].split(settings.HMC_SEPARATOR)), name="i").pack() 
-        Label(self, text="(say \"confirm\" or \"cancel\")", name="i2").pack()       
+        Label(self, text="(say \"confirm\" or \"disconfirm\")", name="i2").pack()       
     
     def xmlrpc_get_message(self):
         if self.completed:
