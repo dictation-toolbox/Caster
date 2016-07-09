@@ -124,6 +124,7 @@ If you're just getting started with voice programming, I suggest reading [this a
 # troubleshooting
 
 * [The "Cannot load compatibility module support" Error](https://github.com/simianhacker/code-by-voice/issues/2)
+* [Error 6034](https://groups.yahoo.com/neo/groups/VoiceCoder/conversations/topics/8601)
 
 # other
 
