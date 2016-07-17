@@ -81,3 +81,58 @@ grammar.add_rule(MyRule())
 grammar.load()
 ```
 It is nearly identical to the rule in the previous section, except that now to trigger the first command, you don't have to speak the word "key". So, you could say "press arch" or "press key arch" and the effect would be the same. The second command has an optional extra now. So, if you only say "print these words", the default for "my_words" will be used and "word I said: said nothing" will be printed.
+
+##The Function Action
+
+The Dragonfly Key, Mouse, and Text actions will get you pretty far, but what if you need to create more complex behavior? For example, suppose you want to make XMLRPC calls or execute conditional logic based on the specifics of your command? This is where Dragonfly's Function action becomes useful.
+
+```
+from dragonfly import *
+
+def my_fn(my_key):
+  '''some custom logic here'''
+
+class MyRule(MappingRule):
+  mapping = {
+    "press <my_key>":     Function(my_fn),
+  }
+  extras = {
+    Choice("my_key", {
+      "arch": "a",
+      "brav": "b",
+      "char": "c"
+    })
+  }
+
+grammar = Grammar("my_new_grammar")
+grammar.add_rule(MyRule())
+grammar.load()
+```
+In this example, we defined a function called "my_fn". Any extras in the spec of the command will be available to the function which the Function action will call.
+
+##Compound Actions
+
+Actions can be combined with the `+` operator. (They can also be repeated a dynamic number of times via the `*` operator and Dragonfly's Repeat class.) Below, a Key action and a Function action are combined. Both will execute when the spec is spoken.
+```
+from dragonfly import *
+
+def my_fn(my_key):
+  '''some custom logic here'''
+
+class MyRule(MappingRule):
+  mapping = {
+    "press <my_key>":     Key("%(my_key)s") + Function(my_fn),
+  }
+  extras = {
+    Choice("my_key", {
+      "arch": "a",
+      "brav": "b",
+      "char": "c"
+    })
+  }
+
+grammar = Grammar("my_new_grammar")
+grammar.add_rule(MyRule())
+grammar.load()
+```
+Notice that both the Key action and the Function action use the "my_key" extra. It is available to all of the actions in the command.
