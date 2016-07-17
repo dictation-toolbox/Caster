@@ -37,14 +37,14 @@ class MyRule(MappingRule):
     "press key <my_key>":               Key("%(a)s"),
     "print these words <my_words>":     Text("words I said: %(my_words)s"),
   }
-  extras = {
+  extras = [
     Choice("my_key", {
       "arch": "a",
       "brav": "b",
       "char": "c"
     }),
     Dictation("my_words"),
-  }
+  ]
 
 grammar = Grammar("my_new_grammar")
 grammar.add_rule(MyRule())
@@ -64,17 +64,17 @@ class MyRule(MappingRule):
     "press [key] <my_key>":               Key("%(a)s"),
     "print these words [<my_words>]":     Text("words I said: %(my_words)s"),
   }
-  extras = {
+  extras = [
     Choice("my_key", {
       "arch": "a",
       "brav": "b",
       "char": "c"
     }),
     Dictation("my_words"),
-  }
-  defaults = [
-    "my_words": "said nothing"
   ]
+  defaults = {
+    "my_words": "said nothing"
+  }
 
 grammar = Grammar("my_new_grammar")
 grammar.add_rule(MyRule())
@@ -96,13 +96,13 @@ class MyRule(MappingRule):
   mapping = {
     "press <my_key>":     Function(my_fn),
   }
-  extras = {
+  extras = [
     Choice("my_key", {
       "arch": "a",
       "brav": "b",
       "char": "c"
     })
-  }
+  ]
 
 grammar = Grammar("my_new_grammar")
 grammar.add_rule(MyRule())
@@ -123,13 +123,13 @@ class MyRule(MappingRule):
   mapping = {
     "press <my_key>":     Key("%(my_key)s") + Function(my_fn),
   }
-  extras = {
+  extras = [
     Choice("my_key", {
       "arch": "a",
       "brav": "b",
       "char": "c"
     })
-  }
+  ]
 
 grammar = Grammar("my_new_grammar")
 grammar.add_rule(MyRule())
