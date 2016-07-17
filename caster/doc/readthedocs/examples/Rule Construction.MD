@@ -51,3 +51,33 @@ grammar.add_rule(MyRule())
 grammar.load()
 ```
 With this rule, you can say "press key arch" and "a" will be pressed, or "press key brav" and "b" will be pressed. The second command in the rule uses a `Dictation` extra. Any amount of words can be captured by a `Dictation` extra. So, for example, you can say "print these words the short green tree" -- and that will print "words I said: the short green tree". Whatever you said will be slotted into the result in place of "%(my_words)s".
+
+##Optional Words, Optional Extras, and Defaults
+
+Suppose you want to leave words out sometimes. You can use square brackets to make parts of the `spec`, including the extras, optional. However, if you make extras optional, you should set sensible `default`s or you will get errors when you omit said optional extras. Here is a rule with commands with specs with optional parts:
+
+```
+from dragonfly import *
+
+class MyRule(MappingRule):
+  mapping = {
+    "press [key] <my_key>":               Key("%(a)s"),
+    "print these words [<my_words>]":     Text("words I said: %(my_words)s"),
+  }
+  extras = {
+    Choice("my_key", {
+      "arch": "a",
+      "brav": "b",
+      "char": "c"
+    }),
+    Dictation("my_words"),
+  }
+  defaults = [
+    "my_words": "said nothing"
+  ]
+
+grammar = Grammar("my_new_grammar")
+grammar.add_rule(MyRule())
+grammar.load()
+```
+It is nearly identical to the rule in the previous section, except that now to trigger the first command, you don't have to speak the word "key". So, you could say "press arch" or "press key arch" and the effect would be the same. The second command has an optional extra now. So, if you only say "print these words", the default for "my_words" will be used and "word I said: said nothing" will be printed.
