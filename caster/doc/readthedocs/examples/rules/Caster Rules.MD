@@ -132,7 +132,7 @@ from caster.lib import control
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R, S, L
 
-class Birds(MergeRule):
+class Times(MergeRule):
   mapping = {
     "noon time":      R(Text("noon"), rspec="noon"),
     "afternoon":      R(Text("2 PM"), rspec="afternoon"),
@@ -147,9 +147,50 @@ class Birds(MergeRule):
                                          ]
                                     )
   }
-control.nexus().merger.add_global_rule(Birds())
+control.nexus().merger.add_global_rule(Times())
 ```
-In this example, I can first say "noon time", "afternoon", or "midnight" to print "noon", "2 PM", or "midnight" respectively. But if I say "wait for" first, a forward-looking `ContextSeeker` will be added to the Context Stack. Nothing will happen immediately. If I then follow up by saying "afternoon", the second `S` will be selected, and "day time" will print. The trigger command, "afternoon" will not execute. It has been *consumed* by the `ContextSeeker`. Consumption can be disabled -- see the "ContextSet Parameters" section.
+In this example, you can first say "noon time", "afternoon", or "midnight" to print "noon", "2 PM", or "midnight" respectively. But if you say "wait for" first, a forward-looking `ContextSeeker` will be added to the Context Stack. Nothing will happen immediately. If you then follow up by saying "afternoon", the second `S` will be selected, and "day time" will print. The trigger command, "afternoon" will not execute. It has been *consumed* by the `ContextSeeker`. Consumption can be disabled -- see the "ContextSet Parameters" section.
+
+###ContextSet Parameters
+
+The `S` object has a lot of options to specify different kinds of behavior. They are as follows.
+* `specTriggers`: the (required) array of `rspec`s which cause the `S` to be chosen rather than its siblings
+* `f`: the second (required) parameter, either a Dragonfly action or a Python function reference. If it is a Dragonfly action, the appropriate Dragonfly `extra`s will be made available to it, as if it were spoken by itself. If it is a Python function, you have some options about how to deliver parameteres to the function when it is executed. See `parameters`, `user_spoken`, and `use_rspec` for details. (Also note, you can set all three, but there is an order of precedence if you do so: rspec, spoken, parameters -- only one will be used.)
+* `parameters`: If `f` is a Python function, you may hard-code its parameters by setting `parameters` to an array. Example below.
+* `use_spoken`: If set to True, `use_spoken` will cause an array of strings to be delivered to the `f` function when it executes. Example below. 
+* `use_rspec`: If set to True, `use_rspec` will deliver the `rspec` string to the function as a single parameter. Example below.
+* `consume`: If set to False, trigger commands will not be consumed by `ContextSeeker`s.
+ 
+That's a lot, so let's see it in action.
+```
+from dragonfly import *
+
+from caster.lib import control
+from caster.lib.dfplus.merge.mergerule import MergeRule
+from caster.lib.dfplus.state.short import R, S, L
+
+def print_params_to_console(params):
+  print(params)
+
+class Times(MergeRule):
+  mapping = {
+    "noon time":      R(Text("noon"), rspec="noon"),
+    "evening":        R(Text("5 PM"), rspec="evening"),
+    "midnight":       R(Text("midnight"), rspec="midnight"),
+    "wait for":       ContextSeeker(forward=
+                                         [
+                                          L(
+                                            S(["no time"], NullAction()), 
+                                            S(["noon"], print_params_to_console, parameters=["some parameters"]),
+                                            S(["evening"], print_params_to_console, use_spoken=True),
+                                            S(["midnight"], print_params_to_console, use_rspec=True),
+                                          )
+                                         ]
+                                    )
+  }
+control.nexus().merger.add_global_rule(Times())
+```
+In this example, each of the `S` objects (except the first) delivers parameters to the print_params_to_console function differently. If you say "wait for noon time", an array of strings (specifically, ["some", "parameters"]) will be printed to the console. If you say "wait for midnight", the triggering rspec will  be printed ("midnight"). The "evening" option is the most interesting though. If you say "wait for evening", an array containing "wait", "for", and "evening" will be printed. However, if you say, "wait for", and then separately say "evening", an array containing only "evening" will be printed.
 
 ##Pre-made Rules
 
