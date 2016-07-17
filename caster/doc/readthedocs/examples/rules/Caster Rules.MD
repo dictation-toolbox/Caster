@@ -120,6 +120,36 @@ control.nexus().merger.add_global_rule(Birds())
 * `L` is the type alias for `ContextLevel`. That there is only one of them indicates that this `ContextSeeker` is going to look backwards only one command. So, if you say "favorite bird sentence", the context seeker will find what it was looking for (a command one-prior to itself with `rspec` "parakeet"). However, if you say "parakeet press key arch sentence", the favorite bird command will be two back in the Context Stack rather than one back and the context seeker will not find it, and will execute the default instead.
 * `S` is the type alias for `ContextSet`. An `S` is essentially an if-then branch. Its first parameter is an array of acceptable `rspec`s which will cause it to be chosen rather than one of its siblings. In the case of the second `S`, there is only one, "parakeet". An `S`'s second parameter is what will happen if it is chosen.
 * **Defaults**. The first `S` in an `L` will be the default action for the `ContextSeeker`. Since in our example, we want nothing to happen if the "favorite bird" command isn't spoken immediately prior, we give the first `S` a bogus `rspec` to look for. (You can also give it a legitimate `rspec` if you do want to be able to trigger it intentionally sometimes.) Note that unlike a `command`'s `spec`, an `R`'s or `S`'s `rspec`s do not need to be pronounceable.
+* **Wildcards**. If an `S`'s `rspec` array includes an asterisk (like `S(["*"], Key("a"))`), that `S` will be chosen unconditionally, using any command as a trigger.
+ 
+`ContextSeeker`s can look backwards multiple commands, executing conditional logic on each backwards command that they find, in order.
+
+`ContextSeeker`s can also look forward. Let's look at an example of a forward-looking command.
+```
+from dragonfly import *
+
+from caster.lib import control
+from caster.lib.dfplus.merge.mergerule import MergeRule
+from caster.lib.dfplus.state.short import R, S, L
+
+class Birds(MergeRule):
+  mapping = {
+    "noon time":      R(Text("noon"), rspec="noon"),
+    "afternoon":      R(Text("2 PM"), rspec="afternoon"),
+    "midnight":       R(Text("midnight"), rspec="midnight"),
+    "wait for":       ContextSeeker(forward=
+                                         [
+                                          L(
+                                            S(["no time"], NullAction()), 
+                                            S(["noon", "afternoon"], Text("day time")),
+                                            S(["midnight"], Text("night time")),
+                                          )
+                                         ]
+                                    )
+  }
+control.nexus().merger.add_global_rule(Birds())
+```
+In this example, I can first say "noon time", "afternoon", or "midnight" to print "noon", "2 PM", or "midnight" respectively. But if I say "wait for" first, a forward-looking `ContextSeeker` will be added to the Context Stack. Nothing will happen immediately. If I then follow up by saying "afternoon", the second `S` will be selected, and "day time" will print. The trigger command, "afternoon" will not execute. It has been *consumed* by the `ContextSeeker`. Consumption can be disabled -- see the "ContextSet Parameters" section.
 
 ##Pre-made Rules
 
