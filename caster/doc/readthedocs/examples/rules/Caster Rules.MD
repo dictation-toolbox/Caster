@@ -7,4 +7,4 @@ Dragonfly is a powerful framework for mapping voice commands to actions. Caster 
 
 ##Pre-made Rules
 
-Out-of-the-box, Caster gives the user new mouse navigation commands (see the Mouse page), text formatting and navigation commands, and programming-language specific rules.
+Out-of-the-box, Caster gives the user new mouse navigation commands (see the Mouse page), text formatting and navigation commands, and programming-language specific rules. See the Quick Reference for more details.
