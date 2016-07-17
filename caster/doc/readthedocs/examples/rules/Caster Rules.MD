@@ -1,6 +1,7 @@
 #Caster Rules
 
 Dragonfly is a powerful framework for mapping voice commands to actions. Caster gives the user:
+
 * the ability to dynamically combine CCR rules at run time,
 * a pre-made set of rules to start with as a base, 
 * tools with which to modify the pre-made rules,
@@ -47,6 +48,7 @@ control.nexus().merger.add_global_rule(OtherRule())
 
 ```
 Differences you should notice here:
+
 * The `pronunciation` property: this is what you say in order to enable or disable the rule. If it is not specified, the pronunciation will be the name of the class. So, to enable the first MergeRule, you'd say, "enable key rule". To disable it, you'd say, "disable key rule".
 * The `non` property: this is a reference to a MappingRule. This MappingRule will be activated alongside the MergeRule when it is activated. See how we are not creating a Grammar object and using it to add the MappingRule like we would normally? Although the MergeRule will be added to the CCR pool, the MappingRule will not. All of its commands will remain as singular, uncombineable. This is often desirable because either (1) certain specs don't blend well, or (2) certain commands are not usually combined with others and so keeping them out of the CCR pool reduces combinatorial complexity and improves performance.
 * Using the Nexus. Caster MergeRules are usually added to the "nexus". This is a singleton object which manages the CCR pool and various other Caster services. You can add a MergeRule to a Dragonfly Grammar object, but you won't get the benefits that way.
@@ -72,6 +74,7 @@ class Birds(MergeRule):
 control.nexus().merger.add_global_rule(Birds())
 ```
 Two things of note here.
+
 * There is no `pronunciation` property. To enable this rule then, you'd say "enable birds".
 * The `R` action has a `rdescript` parameter. This is a description of what the action does, and allows the action to be registered with various printing services (such as the Python console, the status window, or loggers) so you can see the order in which actions executed, or that they *have* executed.
 
@@ -117,6 +120,7 @@ class Birds(MergeRule):
 control.nexus().merger.add_global_rule(Birds())
 ```
 *Whoa there!* you're thinking. *That's a lot of parentheses and square brackets.* It is. Let's go through what's happening here.
+
 * `L` is the type alias for `ContextLevel`. That there is only one of them indicates that this `ContextSeeker` is going to look backwards only one command. So, if you say "favorite bird sentence", the context seeker will find what it was looking for (a command one-prior to itself with `rspec` "parakeet"). However, if you say "parakeet press key arch sentence", the favorite bird command will be two back in the Context Stack rather than one back and the context seeker will not find it, and will execute the default instead.
 * `S` is the type alias for `ContextSet`. An `S` is essentially an if-then branch. Its first parameter is an array of acceptable `rspec`s which will cause it to be chosen rather than one of its siblings. In the case of the second `S`, there is only one, "parakeet". An `S`'s second parameter is what will happen if it is chosen.
 * **Defaults**. The first `S` in an `L` will be the default action for the `ContextSeeker`. Since in our example, we want nothing to happen if the "favorite bird" command isn't spoken immediately prior, we give the first `S` a bogus `rspec` to look for. (You can also give it a legitimate `rspec` if you do want to be able to trigger it intentionally sometimes.) Note that unlike a `command`'s `spec`, an `R`'s or `S`'s `rspec`s do not need to be pronounceable.
@@ -154,6 +158,7 @@ In this example, you can first say "noon time", "afternoon", or "midnight" to pr
 ###ContextSet Parameters
 
 The `S` object has a lot of options to specify different kinds of behavior. They are as follows.
+
 * `specTriggers`: the (required) array of `rspec`s which cause the `S` to be chosen rather than its siblings
 * `f`: the second (required) parameter, either a Dragonfly action or a Python function reference. If it is a Dragonfly action, the appropriate Dragonfly `extra`s will be made available to it, as if it were spoken by itself. If it is a Python function, you have some options about how to deliver parameteres to the function when it is executed. See `parameters`, `user_spoken`, and `use_rspec` for details. (Also note, you can set all three, but there is an order of precedence if you do so: rspec, spoken, parameters -- only one will be used.)
 * `parameters`: If `f` is a Python function, you may hard-code its parameters by setting `parameters` to an array. Example below.
@@ -202,6 +207,7 @@ Out-of-the-box, Caster gives the user new mouse navigation commands (see the Mou
 ##Modifying the Pre-made Rules
 
 If you want to modify the pre-made ruleset, there are a few ways to go about it. Of course, you could just edit the source, but then you'd have to deal with merge conflicts when updating to newer versions of Caster. There are two ways to get around this:
+
 * **Make a copy in the safe zone.** (1) Copy the file you'd like to change into your `caster/user` folder. (2) Disable the original rule in your `settings.json` file. (3) Give the new MergeRule a `pronunciation` which is distinct from that of the original. For example, if you're modifying java.py, give the new Java rule a `pronunciation` of "my java" rather than "java". 
 * **Use rule filters.** This is the recommended way. Rule filters allow you to change any part of any rule, either at boot time or when the rule is activated ("merge time"). See the Rule Filters section of the CCR page for more details.
 
