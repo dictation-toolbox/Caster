@@ -53,7 +53,11 @@ Differences you should notice here:
 * The benefits. MergeRules are merged with each other when activated and are combined into a large CCR command. So for instance, if you said "enable key rule", you could then say "press keys arch press keys arch brav" to press A, A, B. If you then said "enable other rule", you could say "press keys arch hello" to press A and print "hello".
 
 ##The Context Stack
-In addition to new types of rules, Caster provides new types of actions. The simplest is `RegisteredAction`. (Type aliased to  `R` for short.) `R` can wrap any Dragonfly action(s) and adds additional functionality to said wrapped action(s). Let's look at a simple example.
+In addition to new types of rules, Caster provides new types of actions. 
+
+###RegisteredAction
+
+The simplest is `RegisteredAction`. (Type aliased to  `R` for short.) `R` can wrap any Dragonfly action(s) and adds additional functionality to said wrapped action(s). Let's look at a simple example.
 ```
 from dragonfly import *
 
@@ -69,7 +73,53 @@ control.nexus().merger.add_global_rule(Birds())
 ```
 Two things of note here.
 * There is no `pronunciation` property. To enable this rule then, you'd say "enable birds".
-* The `R` action has a `rdescript` parameter. This is a description of what the action is intended to do, and allows the action to be registered with various printing services (such as the Python console, the status window, or loggers) so you can see the order in which actions executed, or that they *have* executed.
+* The `R` action has a `rdescript` parameter. This is a description of what the action does, and allows the action to be registered with various printing services (such as the Python console, the status window, or loggers) so you can see the order in which actions executed, or that they *have* executed.
+
+`R` can also be used to mark a command as a part of another command. This is one significant difference between Caster and Dragonfly. Dragonfly commands are once-and-done. Caster commands can interact with other commands which have been spoken in the past or will be spoken in the future. In order to use this functionality, we set the `rspec` property of the `R` action. Like so:
+```
+from dragonfly import *
+
+from caster.lib import control
+from caster.lib.dfplus.merge.mergerule import MergeRule
+from caster.lib.dfplus.state.short import R
+
+class Birds(MergeRule):
+  mapping = {
+    "favorite bird":   R(Text("parakeet"), rdescript="Print my favorite bird", rspec="favorite_bird"),
+  }
+control.nexus().merger.add_global_rule(Birds())
+```
+
+###ContextSeeker
+
+`ContextSeeker` is the most complex and powerful Caster action. It is able to look backwards at commands spoken prior to itself, and react according to what it finds. It is also able to delay its execution until future commands are spoken, and then act according to what comes next.
+
+In order to do this, the `ContextSeeker` constructor takes one or both of two arrays of command-searching objects, the "backward" array and the "forward" array. Let's look at a simple example first, a `ContextSeeker` that looks backward one command for the "favorite bird" command and then prints the rest of the sentence if and only if it finds it.
+```
+from dragonfly import *
+
+from caster.lib import control
+from caster.lib.dfplus.merge.mergerule import MergeRule
+from caster.lib.dfplus.state.short import R, S, L
+
+class Birds(MergeRule):
+  mapping = {
+    "press key arch": R(Key("a"), rdescript="Press the A key"),
+    "favorite bird":  R(Text("parakeet"), rdescript="Print my favorite bird", rspec="favorite_bird"),
+    "sentence":       ContextSeeker(back=[
+                                          L(
+                                            S(["!!!"], NullAction()), 
+                                            S(["parakeet"], Text(" is my favorite bird")) 
+                                          )
+                                         ]
+                                    )
+  }
+control.nexus().merger.add_global_rule(Birds())
+```
+*Whoa there!* you're thinking. *That's a lot of parentheses and square brackets.* It is. Let's go through what's happening here.
+* `L` is the type alias for `ContextLevel`. That there is only one of them indicates that this `ContextSeeker` is going to look backwards only one command. So, if you say "favorite bird sentence", the context seeker will find what it was looking for (a command one-prior to itself with `rspec` "parakeet"). However, if you say "parakeet press key arch sentence", the favorite bird command will be two back in the Context Stack rather than one back and the context seeker will not find it, and will execute the default instead.
+* `S` is the type alias for `ContextSet`. An `S` is essentially an if-then branch. Its first parameter is an array of acceptable `rspec`s which will cause it to be chosen rather than one of its siblings. In the case of the second `S`, there is only one, "parakeet". An `S`'s second parameter is what will happen if it is chosen.
+* **Defaults**. The first `S` in an `L` will be the default action for the `ContextSeeker`. Since in our example, we want nothing to happen if the "favorite bird" command isn't spoken immediately prior, we give the first `S` a bogus `rspec` to look for. (You can also give it a legitimate `rspec` if you do want to be able to trigger it intentionally sometimes.) Note that unlike a `command`'s `spec`, an `R`'s or `S`'s `rspec`s do not need to be pronounceable.
 
 ##Pre-made Rules
 
