@@ -53,7 +53,23 @@ Differences you should notice here:
 * The benefits. MergeRules are merged with each other when activated and are combined into a large CCR command. So for instance, if you said "enable key rule", you could then say "press keys arch press keys arch brav" to press A, A, B. If you then said "enable other rule", you could say "press keys arch hello" to press A and print "hello".
 
 ##The Context Stack
-TODO: rewrite the context stack section here with better (progressive) examples.
+In addition to new types of rules, Caster provides new types of actions. The simplest is `RegisteredAction`. (Type aliased to  `R` for short.) `R` can wrap any Dragonfly action(s) and adds additional functionality to said wrapped action(s). Let's look at a simple example.
+```
+from dragonfly import *
+
+from caster.lib import control
+from caster.lib.dfplus.merge.mergerule import MergeRule
+from caster.lib.dfplus.state.short import R
+
+class Birds(MergeRule):
+  mapping = {
+    "favorite bird":   R(Text("parakeet"), rdescript="Print my favorite bird"),
+  }
+control.nexus().merger.add_global_rule(Birds())
+```
+Two things of note here.
+* There is no `pronunciation` property. To enable this rule then, you'd say "enable birds".
+* The `R` action has a `rdescript` parameter. This is a description of what the action is intended to do, and allows the action to be registered with various printing services (such as the Python console, the status window, or loggers) so you can see the order in which actions executed, or that they *have* executed.
 
 ##Pre-made Rules
 
