@@ -4,7 +4,7 @@ This page contains information about running Dragonfly and Caster with Windows S
 
 ##Running a Dragonfly Python file with WSR
 
-In order to run a Dragonfly .py file, you should create a Grammar object, add a Rule to it (as detailed in the Rule Construction page), and then add the following to the bottom of the file:
+In order to create a runnable Dragonfly .py file, you should create a Grammar object, add a Rule to it (as detailed in the Rule Construction page), and then add the following to the bottom of the file:
 
 ```
 if __name__ == "__main__":
