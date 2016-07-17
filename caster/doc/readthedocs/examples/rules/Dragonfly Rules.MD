@@ -1,3 +1,5 @@
+#Dragonfly Rules
+
 This page demonstrates how to get started making Dragonfly rules. Let's start with a very simple Dragonfly `MappingRule`. The following is a complete Python file which will work with Dragon. (For WSR, see the WSR page.)
 
 ##My First Rule
