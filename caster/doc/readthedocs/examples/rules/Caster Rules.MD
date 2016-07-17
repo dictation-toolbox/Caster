@@ -192,6 +192,9 @@ control.nexus().merger.add_global_rule(Times())
 ```
 In this example, each of the `S` objects (except the first) delivers parameters to the print_params_to_console function differently. If you say "wait for noon time", an array of strings (specifically, ["some", "parameters"]) will be printed to the console. If you say "wait for midnight", the triggering rspec will  be printed ("midnight"). The "evening" option is the most interesting though. If you say "wait for evening", an array containing "wait", "for", and "evening" will be printed. However, if you say, "wait for", and then separately say "evening", an array containing only "evening" will be printed.
 
+###AsynchronousAction
+TODO: AsynchronousAction, progressive examples
+
 ##Pre-made Rules
 
 Out-of-the-box, Caster gives the user new mouse navigation commands (see the Mouse page), text formatting and navigation commands, and programming-language specific rules. (See the Quick Reference for more details.) Unlike Dragonfly, Caster is targeted at programmers specifically, and so more technical knowledge is assumed of its user base.
