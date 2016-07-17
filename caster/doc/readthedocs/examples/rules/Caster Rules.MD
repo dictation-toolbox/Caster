@@ -43,6 +43,9 @@ class OtherRule(MergeRule):
     "hello":    Text("hello"),
   }
 
+control.nexus().merger.add_global_rule(MyMergeRule())
+control.nexus().merger.add_global_rule(OtherRule())
+
 ```
 
 
