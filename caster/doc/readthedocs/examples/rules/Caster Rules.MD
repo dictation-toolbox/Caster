@@ -97,13 +97,15 @@ control.nexus().merger.add_global_rule(Birds())
 
 `ContextSeeker` is the most complex and powerful Caster action. It is able to look backwards at commands spoken prior to itself, and react according to what it finds. It is also able to delay its execution until future commands are spoken, and then act according to what comes next.
 
-In order to do this, the `ContextSeeker` constructor takes one or both of two arrays of command-searching objects, the "backward" array and the "forward" array. Let's look at a simple example first, a `ContextSeeker` that looks backward one command for the "favorite bird" command and then prints the rest of the sentence if and only if it finds it.
+In order to do this, the ContextSeeker constructor takes one or both of two arrays of command-searching objects, the "backward" array and the "forward" array. Let's look at a simple example first, a ContextSeeker that looks backward one command for the "favorite bird" command and then prints the rest of the sentence if and only if it finds it.
 ```
 from dragonfly import *
 
 from caster.lib import control
 from caster.lib.dfplus.merge.mergerule import MergeRule
-from caster.lib.dfplus.state.short import R, S, L
+from caster.lib.dfplus.state.actions import ContextSeeker
+from caster.lib.dfplus.state.actions2 import NullAction
+from caster.lib.dfplus.state.short import R, L, S
 
 class Birds(MergeRule):
   mapping = {
@@ -121,20 +123,22 @@ control.nexus().merger.add_global_rule(Birds())
 ```
 *Whoa there!* you're thinking. *That's a lot of parentheses and square brackets.* It is. Let's go through what's happening here.
 
-* `L` is the type alias for `ContextLevel`. That there is only one of them indicates that this `ContextSeeker` is going to look backwards only one command. So, if you say "favorite bird sentence", the context seeker will find what it was looking for (a command one-prior to itself with `rspec` "parakeet"). However, if you say "parakeet press key arch sentence", the favorite bird command will be two back in the Context Stack rather than one back and the context seeker will not find it, and will execute the default instead.
+* `L` is the type alias for `ContextLevel`. That there is only one of them indicates that this ContextSeeker is going to look backwards only one command. So, if you say "favorite bird sentence", the context seeker will find what it was looking for (a command one-prior to itself with `rspec` "parakeet"). However, if you say "parakeet press key arch sentence", the favorite bird command will be two back in the Context Stack rather than one back and the context seeker will not find it, and will execute the default instead.
 * `S` is the type alias for `ContextSet`. An `S` is essentially an if-then branch. Its first parameter is an array of acceptable `rspec`s which will cause it to be chosen rather than one of its siblings. In the case of the second `S`, there is only one, "parakeet". An `S`'s second parameter is what will happen if it is chosen.
-* **Defaults**. The first `S` in an `L` will be the default action for the `ContextSeeker`. Since in our example, we want nothing to happen if the "favorite bird" command isn't spoken immediately prior, we give the first `S` a bogus `rspec` to look for. (You can also give it a legitimate `rspec` if you do want to be able to trigger it intentionally sometimes.) Note that unlike a `command`'s `spec`, an `R`'s or `S`'s `rspec`s do not need to be pronounceable.
+* **Defaults**. The first `S` in an `L` will be the default action for the ContextSeeker. Since in our example, we want nothing to happen if the "favorite bird" command isn't spoken immediately prior, we give the first `S` a bogus `rspec` to look for. (You can also give it a legitimate `rspec` if you do want to be able to trigger it intentionally sometimes.) Note that unlike a `command`'s `spec`, an `R`'s or `S`'s `rspec`s do not need to be pronounceable.
 * **Wildcards**. If an `S`'s `rspec` array includes an asterisk (like `S(["*"], Key("a"))`), that `S` will be chosen unconditionally, using any command as a trigger.
  
-`ContextSeeker`s can look backwards multiple commands, executing conditional logic on each backwards command that they find, in order.
+ContextSeekers can look backwards multiple commands, executing conditional logic on each backwards command that they find, in order.
 
-`ContextSeeker`s can also look forward. Let's look at an example of a forward-looking command.
+ContextSeekers can also look forward. Let's look at an example of a forward-looking command.
 ```
 from dragonfly import *
 
 from caster.lib import control
 from caster.lib.dfplus.merge.mergerule import MergeRule
-from caster.lib.dfplus.state.short import R, S, L
+from caster.lib.dfplus.state.actions import ContextSeeker
+from caster.lib.dfplus.state.actions2 import NullAction
+from caster.lib.dfplus.state.short import R, L, S
 
 class Times(MergeRule):
   mapping = {
@@ -153,7 +157,7 @@ class Times(MergeRule):
   }
 control.nexus().merger.add_global_rule(Times())
 ```
-In this example, you can first say "noon time", "afternoon", or "midnight" to print "noon", "2 PM", or "midnight" respectively. But if you say "wait for" first, a forward-looking `ContextSeeker` will be added to the Context Stack. Nothing will happen immediately. If you then follow up by saying "afternoon", the second `S` will be selected, and "day time" will print. The trigger command, "afternoon" will not execute. It has been *consumed* by the `ContextSeeker`. Consumption can be disabled -- see the "ContextSet Parameters" section.
+In this example, you can first say "noon time", "afternoon", or "midnight" to print "noon", "2 PM", or "midnight" respectively. But if you say "wait for" first, a forward-looking ContextSeeker will be added to the Context Stack. Nothing will happen immediately. If you then follow up by saying "afternoon", the second `S` will be selected, and "day time" will print. The trigger command, "afternoon" will not execute. It has been *consumed* by the ContextSeeker. Consumption can be disabled -- see the "ContextSet Parameters" section.
 
 ###ContextSet Parameters
 
@@ -164,7 +168,7 @@ The `S` object has a lot of options to specify different kinds of behavior. They
 * `parameters`: If `f` is a Python function, you may hard-code its parameters by setting `parameters` to an array. Example below.
 * `use_spoken`: If set to True, `use_spoken` will cause an array of strings to be delivered to the `f` function when it executes. Example below. 
 * `use_rspec`: If set to True, `use_rspec` will deliver the `rspec` string to the function as a single parameter. Example below.
-* `consume`: If set to False, trigger commands will not be consumed by `ContextSeeker`s.
+* `consume`: If set to False, trigger commands will not be consumed by ContextSeekers.
  
 That's a lot, so let's see it in action.
 ```
@@ -172,7 +176,9 @@ from dragonfly import *
 
 from caster.lib import control
 from caster.lib.dfplus.merge.mergerule import MergeRule
-from caster.lib.dfplus.state.short import R, S, L
+from caster.lib.dfplus.state.actions import ContextSeeker
+from caster.lib.dfplus.state.actions2 import NullAction
+from caster.lib.dfplus.state.short import R, L, S
 
 def print_params_to_console(params):
   print(params)
@@ -198,7 +204,53 @@ control.nexus().merger.add_global_rule(Times())
 In this example, each of the `S` objects (except the first) delivers parameters to the print_params_to_console function differently. If you say "wait for noon time", an array of strings (specifically, ["some", "parameters"]) will be printed to the console. If you say "wait for midnight", the triggering rspec will  be printed ("midnight"). The "evening" option is the most interesting though. If you say "wait for evening", an array containing "wait", "for", and "evening" will be printed. However, if you say, "wait for", and then separately say "evening", an array containing only "evening" will be printed.
 
 ###AsynchronousAction
-TODO: AsynchronousAction, progressive examples
+
+`AsynchronousAction` is a special type of ContextSeeker. AsynchronousActions only look forward. They have only one ContextLevel (`L`) and one ContextSet (`S`). The action in an AsynchronousAction's 0-th ContextSet is repeated continuously until a termination condition is met. The termination conditions are the following:
+
+* **Cancellation**: any of the `rspec` triggers in the 0-th ContextSet are detected.
+* **Timeout**: the action runs until the maximum repetitions.
+* **Success**: the action is a Python function and returns True.
+ 
+Let's look at a few basic AsynchronousActions:
+```
+from dragonfly import *
+
+from caster.lib import control
+from caster.lib.dfplus.merge.mergerule import MergeRule
+from caster.lib.dfplus.state.actions import ContextSeeker
+from caster.lib.dfplus.state.actions2 import NullAction
+from caster.lib.dfplus.state.short import R, L, S
+
+my_value = 0
+
+def repeat_me():
+  global my_value
+  my_value = my_value + 5
+  print(my_value)
+  if my_value == 10:
+    my_value = 0
+    return True
+  return False
+
+class Actions(MergeRule):
+  mapping = {
+    "term":         R(NullAction(), rspec="term_"),
+    "key left":     AsynchronousAction([L(S(["term_"], Key("left")))]),
+    "key right":    AsynchronousAction([L(S(["!"], Key("right")))], 
+                        time_in_seconds=2, repetitions=5),
+    "repeat_me":    AsynchronousAction([L(S(["!"], repeat_me))]),
+  }
+control.nexus().merger.add_global_rule(Times())
+```
+Here we have one `R` and three AsynchronousActions. The first AsynchronousAction will run indefinitely, pressing the left key at one-second intervals (the default for `time_in_seconds`) until the "term" command is spoken. The second AsynchronousAction will run for 10 seconds, pressing the right key at two-second intervals. The third will run the "repeat_me" function twice and then terminate because "repeat_me" returned True.
+
+The parameters for AsynchronousAction are as follows.
+
+* `forward`: described above.
+* `repetitions`: maximum repetitions. It is a good habit to set this unless you intend the AsynchronousAction to be able to run forever.
+* `time_in_seconds`: the time between executions of the action in `forward`.
+* `blocking`: whether the AsynchronousAction should block other commands from executing while it is running. Caster commands, but not Dragonfly can be blocked. Defaults to True. Unless cancelled, blocked commands will execute after the AsynchronousAction is finished.
+* `finisher`: a Dragonfly action which runs after the AsynchronousAction is finished.
 
 ##Pre-made Rules
 
@@ -212,4 +264,24 @@ If you want to modify the pre-made ruleset, there are a few ways to go about it.
 * **Use rule filters.** This is the recommended way. Rule filters allow you to change any part of any rule, either at boot time or when the rule is activated ("merge time"). See the Rule Filters section of the CCR page for more details.
 
 ##Rule Filters
-TODO: explanation, progressive examples
+
+###Rule Merging
+
+Before we get into how rule filters work, you need to know a little about the rule-merging process.
+
+When MergeRules are activated, they are merged together with each other into one large CCR rule. If rules are incompatible with each other, the more-recently activated rule will deactivate the less-recently activated rule. For instance, both the Java and Python rules have "if" and "else" commands, so either would deactivate the other. Compatibility is based on specs: rules with even one identical spec are incompatible.
+
+Let's say you have four rules, A, B, C, and D. A is incompatible with D, but B and C are not incompatible with anything. Now suppose you have B, C, and D active and you speak the command to activate A. The current combined rule, composed of B, C, and D, is dropped. A is treated as the new combined rule. It is then merged with B. Now the combined rule consists of A and B. Then C is merged in: still no incompatibilities, so the new combined rule is A, B, and C. Now Caster attempts to merge D in, but discovers the incompatibility and drops D, since A is the more-recently activated of the two incompatible rules.
+
+###Merge Times
+
+There are three times these merges occur: at boot, when you manually activate a rule, and when a `SelfModifyingRule` changes itself. The third is out of the scope of this document, and so will not be discussed. At boot, Caster looks at your CCR config file (caster/bin/data/ccr.json), and activates whatever rules you had active last time you were using Caster. By default, four CCR rules are active: Alphabet, Numbers, Navigation, and Punctuation.
+
+###How Rule Filters Work
+
+In our example above with A, B, C, and D, the rules were combined (or at least attempted) in pairs. (A and B, C and AB, D and ABC.) At each point at which an incompatibility could occur (each "merge point"), Caster gives you the user the opportunity to examine and change the incoming pair of rules. You can write functions which do anything you want to the two rules, based on any properties of the rules, or the merge. To do this, you need to understand MappingRules and MergeRules, and their properties. That is why this section is last. Let's look at some example rule filters.
+
+```
+
+
+```
