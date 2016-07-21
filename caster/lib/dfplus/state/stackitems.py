@@ -51,8 +51,8 @@ class StackItemRegisteredAction(StackItem):
         return self.preserved
     def put_time_action(self):
         self.preserve()
-        if settings.SETTINGS["miscellaneous"]["status_window_enabled"] and self.show:
-            self.nexus.intermediary.text(self.rdescript)
+        if settings.SETTINGS["miscellaneous"]["print_rdescripts"] and self.show:
+            print(self.rdescript)
     
 class StackItemSeeker(StackItemRegisteredAction):
     TYPE = "seeker"

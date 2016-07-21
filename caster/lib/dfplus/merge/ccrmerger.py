@@ -135,14 +135,6 @@ class CCRMerger(object):
         return self._app_rules.keys()
     def selfmod_rule_names(self):
         return self._self_modifying_rules.keys()
-    def language_autos(self):
-        autos = {}
-        for rule in self._global_rules.values():
-            if rule.__class__.auto is not None:
-                for extension in rule.__class__.auto:
-                    autos[extension] = [rule.get_name()]
-                # right here check for language groups, add them into autos
-        return autos
     
     '''rule change functions'''
     def global_rule_changer(self):

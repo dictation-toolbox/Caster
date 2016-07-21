@@ -14,8 +14,6 @@ class DependencyMan:
                    #("wx", None, ["Settings Window"], "http://www.wxpython.org"),
                    ("win32ui", "pywin32", ["very many essential"], "http://sourceforge.net/projects/pywin32")
                     ]
-        if not settings.WSR:
-            self.list.append(("natlink", None, ["Auto-Command full capabilities"], "http://sourceforge.net/projects/natlink"))
         warnings = 0
         for dep in self.list:
             is_win32ui = dep[0] == "win32ui"

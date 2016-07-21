@@ -112,14 +112,6 @@ def remote_debug(who_called_it=None):
     except Exception:
         print("ERROR: " + who_called_it + " called utilities.remote_debug() but the debug server wasn't running.")
     
-
-def launch_status():
-    '''returns whether the window was launched'''
-    if not window_exists(None, settings.STATUS_WINDOW_TITLE):
-        Popen(["pythonw", settings.SETTINGS["paths"]["STATUS_WINDOW_PATH"]])
-        return True
-    return False
-
 def reboot(wsr=False):
     popen_parameters = []
     if wsr:

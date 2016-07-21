@@ -28,11 +28,6 @@ class MergeRule(MappingRule):
     
     mapping = {"hello world default macro": Pause("10")}
     
-    '''MergeRules which define `auto` (array of strings, 
-    each string a file extension for a language) will work
-    with auto command and language mode'''
-    auto = None
-    
     '''MergeRules which define `pronunciation` will use
     the pronunciation string rather than their class name
     for their respective enable/disable commands'''
@@ -42,11 +37,6 @@ class MergeRule(MappingRule):
     their paired non-CCR MergeRule and activate it 
     alongside themselves'''
     non = None
-    
-    '''MergeRules which define `token_set` will enable
-    scanning of directories for use with the 
-    "symbol match" command in their language'''
-    token_set = None
     
     '''MergeRules which define `mcontext` with a 
     Dragonfly AppContext become non-global; this

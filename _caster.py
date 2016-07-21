@@ -36,9 +36,8 @@ try:
     from caster.lib import context
     import caster.lib.dev.dev
     from caster.asynch.sikuli import sikuli
-    from caster.lib import navigation, password
+    from caster.lib import navigation
     navigation.initialize_clipboard(_NEXUS)
-    from caster.lib.pita import scanner, trainer
     from caster.lib.dfplus.state.short import R
     from caster.lib.dfplus.additions import IntegerRefST
     
@@ -99,20 +98,12 @@ class MainRule(MergeRule):
     "remax":                        R(Key("a-space/10,r/10,a-space/10,x"), rdescript="Force Maximize"),
         
     # passwords
-    'hash password <text> <text2> <text3>':                    R(Function(password.hash_password), rdescript="Get Hash Password"),
-    'get password <text> <text2> <text3>':                     R(Function(password.get_password), rdescript="Get Seed Password"),
-    'get restricted password <text> <text2> <text3>':          R(Function(password.get_restricted_password), rdescript="Get Char-Restricted Password"),
-    'quick pass <text> <text2> <text3>':                       R(Function(password.get_simple_password), rdescript="Get Crappy Password"),
+    
     
     # mouse alternatives
     "legion [<monitor>]":           R(Function(navigation.mouse_alternates, mode="legion", nexus=_NEXUS), rdescript="Activate Legion"),
     "rainbow [<monitor>]":          R(Function(navigation.mouse_alternates, mode="rainbow", nexus=_NEXUS), rdescript="Activate Rainbow Grid"),
     "douglas [<monitor>]":          R(Function(navigation.mouse_alternates, mode="douglas", nexus=_NEXUS), rdescript="Activate Douglas Grid"),
-    
-    # symbol match
-    "scan directory":               R(Function(scanner.scan_directory, nexus=_NEXUS), rdescript="Scan Directory For PITA"),
-    "rescan current":               R(Function(scanner.rescan_current_file), rdescript="Rescan Current File For PITA"),
-    "begin symbol training":        R(Function(trainer.trainer_box, nexus=_NEXUS), rdescript="Train From Scanned Directory") , 
     
     # ccr de/activation
     "<enable> <name>":              R(Function(_NEXUS.merger.global_rule_changer(), save=True), rdescript="Toggle CCR Module"),
@@ -160,10 +151,6 @@ grammar.load()
 
 _NEXUS.merger.update_config()
 _NEXUS.merger.merge(MergeInf.BOOT)
-
-if settings.SETTINGS["miscellaneous"]["status_window_enabled"]:
-    print("\nWARNING: Status Window is an experimental feature, and there is a known freezing glitch with it.\n")
-    utilities.launch_status()
 
 print("*- Starting " + settings.SOFTWARE_NAME + " -*")
 

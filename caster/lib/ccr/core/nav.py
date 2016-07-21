@@ -5,15 +5,14 @@ Created on Sep 1, 2015
 '''
 from dragonfly import Repeat, Function, Key, Dictation, Choice, Mouse, MappingRule
 
-from caster.lib import context, navigation, settings, alphanumeric, textformat
+from caster.lib import context, navigation, alphanumeric, textformat
 from caster.lib import control
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge.ccrmerger import CCRMerger
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.actions import AsynchronousAction, ContextSeeker
-from caster.lib.dfplus.state.actions2 import FuzzyMatchAction, UntilCancelled
+from caster.lib.dfplus.state.actions2 import UntilCancelled
 from caster.lib.dfplus.state.short import L, S, R
-from caster.lib.pita import fnfz
 from dragonfly.actions.action_mimic import Mimic
 from caster.lib.ccr.standard import SymbolSpecs
 
@@ -69,16 +68,6 @@ class NavigationNon(MappingRule):
         "next tab [<n>]":                   R(Key("c-pgdown"), rdescript="Next Tab") * Repeat(extra="n"),
         "prior tab [<n>]":                  R(Key("c-pgup"), rdescript="Previous Tab") * Repeat(extra="n"),
         "close tab [<n>]":                  R(Key("c-w/20"), rdescript="Close Tab") * Repeat(extra="n"),
-        
-        "symbol match <text>":              FuzzyMatchAction(fnfz.pita_list_provider, fnfz.pita_filter, 
-                                                         fnfz.pita_selection, rdescript="Fuzzy Symbol Matcher", 
-                                                         log_file_path=settings.SETTINGS["paths"]["PITA_LOG_FOLDER"] + "/pita_matches.log"),
-        "ex match <text>":                  FuzzyMatchAction(fnfz.dredge_ex_list_provider, fnfz.dredge_ex_filter, 
-                                                         fnfz.dredge_ex_selection, rdescript="Fuzzy Executable Matcher", 
-                                                         log_file_path=settings.SETTINGS["paths"]["PITA_LOG_FOLDER"] + "/exe_matches.log"),
-        "tie match <text>":                 FuzzyMatchAction(fnfz.dredge_tie_list_provider, fnfz.dredge_tie_filter, 
-                                                         fnfz.dredge_tie_selection, rdescript="Fuzzy Window Matcher", 
-                                                         log_file_path=settings.SETTINGS["paths"]["PITA_LOG_FOLDER"] + "/tie_matches.log"),
         
         "elite translation <text>":         R(Function(alphanumeric.elite_text), rdescript="1337 Text"),
         

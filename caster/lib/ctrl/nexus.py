@@ -3,8 +3,6 @@ from dragonfly.grammar.recobs import RecognitionHistory
 
 from caster.lib import settings
 from caster.lib.ctrl.dependencies import DependencyMan
-from caster.lib.ctrl.intermediary import StatusIntermediary
-from caster.lib.ctrl.switcher import AutoSwitcher
 from caster.lib.ctrl.wsrdf import TimerForWSR, RecognitionHistoryForWSR
 from caster.lib.dfplus.communication import Communicator
 from caster.lib.dfplus.merge.ccrmerger import CCRMerger
@@ -17,7 +15,6 @@ class Nexus:
         self.state = CasterState()
         
         self.clip = {}
-        self.sticky = []
         
         self.history = RecognitionHistoryForWSR(20)
         if not settings.WSR:
@@ -32,14 +29,12 @@ class Nexus:
             self.timer = _Timer(0.025)
         
         self.comm = Communicator()
-        self.intermediary = StatusIntermediary(self.comm, self.timer)
         
         self.dep = DependencyMan()
         
         self.macros_grammar = Grammar("recorded_macros")
         
         self.merger = CCRMerger(real_merger_config)
-        self.auto = AutoSwitcher(self)
 
 _NEXUS = None
 def nexus():

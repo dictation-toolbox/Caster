@@ -107,16 +107,14 @@ class NodeRule(SelfModifyingRule):
         for child in self.node.children:
             child.fill_out_rule(mapping, extras, defaults, self)
         if len(mapping)==0:
-            if not first:
-                self.nexus.intermediary.text("Node Reset")# status window messaging
             self.reset_node()
             for child in self.node.children:
                 child.fill_out_rule(mapping, extras, defaults, self)
         else:
-            if not first and not is_reset:# status window messaging
+            if not first and not is_reset:# sta#tus win#dow messaging
                 choices = [x.get_spec_and_base_and_node()[0] for x in self.node.children]
-                for choice in choices:
-                    self.nexus.intermediary.text(choice)
+                #for choice in choices:
+                #    self.nexus.intermediary.text(choice)
         
         self.extras = extras
         self.defaults = defaults

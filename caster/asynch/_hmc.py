@@ -124,24 +124,13 @@ def receive_settings(data):
     settings.save_config()
     # TODO: apply new settings
     
-def toggle_status(nexus):
-    enabled = settings.SETTINGS["miscellaneous"]["status_window_enabled"]
-    if enabled:
-        nexus.intermediary.kill()
-    else:
-        utilities.launch_status()
-    settings.SETTINGS["miscellaneous"]["status_window_enabled"] = not enabled
-    settings.save_config()
-
 def settings_window(nexus):
-    if not utilities.window_exists(None, settings.STATUS_WINDOW_TITLE + settings.SOFTWARE_VERSION_NUMBER):
-        h_launch.launch(settings.WXTYPE_SETTINGS)
-        on_complete = AsynchronousAction.hmc_complete(lambda data: receive_settings(data), nexus)
-        AsynchronousAction([L(S(["cancel"], on_complete))], time_in_seconds=1, repetitions=300, blocking=False).execute()
+    h_launch.launch(settings.WXTYPE_SETTINGS)
+    on_complete = AsynchronousAction.hmc_complete(lambda data: receive_settings(data), nexus)
+    AsynchronousAction([L(S(["cancel"], on_complete))], time_in_seconds=1, repetitions=300, blocking=False).execute()
 
 class LaunchRule(MergeRule):
     mapping = {
-        "toggle status window":     R(Function(toggle_status, nexus=_NEXUS), rdescript="Toggle Status Window"), 
         "launch settings window":   R(Function(settings_window, nexus=_NEXUS), rdescript="Launch Settings Window"), 
         }
 grammarw = Grammar("Caster Windows")

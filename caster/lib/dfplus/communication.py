@@ -5,10 +5,8 @@ class Communicator:
     LOCALHOST = "127.0.0.1"
     def __init__(self):
         self.coms = {}
-        self.com_registry = {"sticky_list":     1337, 
-                             "hmc":             1338, 
+        self.com_registry = {"hmc":             1338, 
                              "grids":           1339, 
-                             "status":          1340,
                              "sikuli":          8000
                              }
     def get_com(self, name):

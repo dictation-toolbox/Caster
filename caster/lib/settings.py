@@ -10,8 +10,6 @@ BASE_PATH = os.path.realpath(__file__).split("\\lib")[0].replace("\\", "/")
 # title
 SOFTWARE_VERSION_NUMBER = "0.5.8"
 SOFTWARE_NAME = "Caster v " + SOFTWARE_VERSION_NUMBER
-S_LIST_VERSION = "Sticky List v " + SOFTWARE_VERSION_NUMBER
-DISPEL_VERSION = "Dispel v " + SOFTWARE_VERSION_NUMBER
 HOMUNCULUS_VERSION = "HMC v " + SOFTWARE_VERSION_NUMBER
 HMC_TITLE_VOCABULARY = " :: Vocabulary Manager"
 HMC_TITLE_RECORDING = " :: Recording Manager"
@@ -21,7 +19,6 @@ LEGION_TITLE = "legiongrid"
 RAINBOW_TITLE = "rainbowgrid"
 DOUGLAS_TITLE = "douglasgrid"
 SETTINGS_WINDOW_TITLE = "Caster Settings Window v "
-STATUS_WINDOW_TITLE="Caster Status Window v "
 
 # enums
 QTYPE_DEFAULT = "0"
@@ -98,10 +95,7 @@ def init_default_values():
         ("DLL_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/lib/dll/"),
         ("SETTINGS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/settings.json"),
         ("CCR_CONFIG_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/ccr.json"),
-        ("PITA_JSON_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/pita.json"),
-        ("PITA_LOG_FOLDER" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/"),
         ("S_LIST_JSON_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/s_list.json"),
-        ("DISPEL_JSON_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/dispel.json"),
         ("SAVED_CLIPBOARD_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/clipboard.json"),
         ("RECORDED_MACROS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/recorded_macros.json"),
         ("ALIAS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/aliases.json."),
@@ -114,8 +108,6 @@ def init_default_values():
         
         # EXECUTABLES
         ("WSR_PATH", "C:/Windows/Speech/Common/sapisvr.exe"),
-        ("STATUS_WINDOW_PATH", SETTINGS["paths"]["BASE_PATH"] + "/asynch/statuswindow.py"),
-        ("STICKY_LIST_PATH", SETTINGS["paths"]["BASE_PATH"] + "/asynch/stickylist.py"),
         ("LEGION_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/asynch/mouse/legion.py"),
         ("RAINBOW_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/asynch/mouse/grids.py"),
         ("DOUGLAS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/asynch/mouse/grids.py"),
@@ -189,9 +181,7 @@ def init_default_values():
     # feature switches
     values_change_count += update_values(SETTINGS, [("feature_rules", {})])
     values_change_count += update_values(SETTINGS["feature_rules"], [
-                       ("dispel", True),
                        ("hmc", True),
-                       ("stickylist", True),
                        ("again", True),
                        ("alias", True),
                        ("chainalias", True),
@@ -215,34 +205,15 @@ def init_default_values():
                        ("debug_speak", False), 
                        ("dev_commands", False),
                        ("sikuli_enabled", False),
-                       ("status_window_enabled", False), 
                        ("keypress_wait", 50), # milliseconds
                        ("max_ccr_repetitions", 16), 
                        ("enable_match_logging", False),
                        ("atom_palette_wait", "30"),
                        ("rdp_mode", False),
                        ("integer_remap_opt_in", False), 
-                       ("integer_remap_crash_fix", False)
+                       ("integer_remap_crash_fix", False),
+                       ("print_rdescripts", False)
                        ])
-    
-    # fuzzy string matching section
-    values_change_count += update_values(SETTINGS, [("pita", {})])
-    values_change_count += update_values(SETTINGS["pita"], [
-         ("recent_files", 10),
-        ("extensions", [".py", ".java", ".cpp", ".h", ".js"]), 
-        ("filter_strict", False), 
-        ("use_bonus", True), 
-        ("use_penalty", True), 
-        ("automatic_lowercase", True)  ])
-        
-    # auto_com section
-    values_change_count += update_values(SETTINGS, [("auto_com", {})])
-    values_change_count += update_values(SETTINGS["auto_com"], [
-        ("active", False), 
-        ("change_language", False), 
-        ("change_language_only", False), 
-        ("interval", 3), 
-        ("executables", ["pycharm.exe", "WDExpress.exe", "notepad++.exe"])     ])
     
     # pronunciations section
     values_change_count += update_values(SETTINGS, [("pronunciations", {})])

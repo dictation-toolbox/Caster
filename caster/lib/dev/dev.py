@@ -210,7 +210,7 @@ class StackTest(MappingRule):
     defaults = {"text": "", "text2": ""}
 def load():
     global grammar
-#     grammar.add_rule(StackTest())
+    grammar.add_rule(StackTest())
     grammar.add_rule(DevelopmentHelp())
     grammar.add_rule(Experimental())
     grammar.load()
