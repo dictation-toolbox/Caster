@@ -200,13 +200,16 @@ context = AppContext(executable="javaw", title="Eclipse") | AppContext(executabl
 grammar = Grammar("Eclipse", context=context)
 
 if settings.SETTINGS["apps"]["eclipse"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(EclipseRule())
-        control.nexus().merger.add_global_rule(EclipseCCR())
-    else:
-        control.nexus().merger.add_app_rule(EclipseCCR(), context)
+#     if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
+#         control.nexus().merger.add_global_rule(EclipseRule())
+#         control.nexus().merger.add_global_rule(EclipseCCR())
+#     else:
+#         control.nexus().merger.add_app_rule(EclipseCCR(), context)
         
         rule = EclipseRule(name="eclipse")
         gfilter.run_on(rule)
+        ccr = EclipseCCR()
+        gfilter.run_on(ccr)
         grammar.add_rule(rule)
+        grammar.add_rule(ccr)
         grammar.load()
