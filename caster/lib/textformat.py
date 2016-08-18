@@ -1,4 +1,5 @@
 import time
+import sys
 
 from dragonfly.actions.action_key import Key
 from dragonfly.actions.action_text import Text
@@ -7,7 +8,7 @@ from caster.lib import settings
 
 _CAPITALIZATION, _SPACING = 0, 0
 
-def set_text_format(capitalization, spacing):
+def normalize_text_format(capitalization, spacing):
     '''
     Commands for capitalization: 
     1 yell - ALLCAPS
@@ -24,13 +25,47 @@ def set_text_format(capitalization, spacing):
         capitalization = 5
     if spacing == 0 and capitalization == 3: 
         spacing = 1
+    return capitalization, spacing
+
+def set_text_format(capitalization, spacing):
+    capitalization, spacing = normalize_text_format(capitalization, spacing)
     global _CAPITALIZATION, _SPACING
     _CAPITALIZATION = capitalization
     _SPACING = spacing
-    return capitalization, spacing
+    print("Text formatting: %s" % get_text_format_description(_CAPITALIZATION, _SPACING))
+
+def clear_text_format():
+    global _CAPITALIZATION, _SPACING
+    _CAPITALIZATION = 0
+    _SPACING = 0
+
+def peek_text_format():
+    global _CAPITALIZATION, _SPACING
+    print("Text formatting: %s" % get_text_format_description(_CAPITALIZATION, _SPACING))
+
+def get_text_format_description(capitalization, spacing):
+    caps = {
+        0: "<none>",
+        1: "yell",
+        2: "tie",
+        3: "gerrish",
+        4: "sing",
+        5: "laws"
+        }
+    spaces = {
+        0: "<none>",
+        1: "gum",
+        2: "spine",
+        3: "snake"
+        }
+    if capitalization == 0 and spacing == 0:
+        return "<none>"
+    else:
+        text = get_formatted_text(capitalization, spacing, str("this is a test"))
+        return "%s %s (%s)" % (caps[capitalization], spaces[spacing], text)
 
 def master_format_text(capitalization, spacing, textnv):
-    capitalization, spacing = set_text_format(capitalization, spacing)
+    capitalization, spacing = normalize_text_format(capitalization, spacing)
     Text(get_formatted_text(capitalization, spacing, str(textnv))).execute()    
 
 def get_formatted_text(capitalization, spacing, t):
