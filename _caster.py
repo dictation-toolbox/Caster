@@ -4,6 +4,9 @@ main Caster module
 Created on Jun 29, 2014
 '''
 
+import logging
+logging.basicConfig()
+
 import time
 from dragonfly import (Key, Function, Grammar, Playback, Dictation, Choice, Pause)
 from caster.lib.ccr.standard import SymbolSpecs
