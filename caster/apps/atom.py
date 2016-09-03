@@ -1,6 +1,5 @@
 """
 __author__ = 'Zone22'
-
 Command-module for Atom
 Official Site "https://atom.io/"
 """
@@ -22,6 +21,7 @@ atom_palette_wait = "30"
 if settings.SETTINGS["miscellaneous"]["atom_palette_wait"]:
     atom_palette_wait = settings.SETTINGS["miscellaneous"]["atom_palette_wait"]
 
+
 class AtomRule(MergeRule):
     pronunciation = "atom"
 
@@ -31,6 +31,7 @@ class AtomRule(MergeRule):
 # The '#extra' subsection of commands that fit within the category but are not displayed by the menu or UI
 # Legend: '#' for not assigned, '##' for shortcut or functional duplicate.
 # ----------Spoken Command/Action------------------> Shortcut keys----------> #Displayed Text
+
     #Basic Cursor Navigation
             "up [<n>]":                                R(Key("up"), rdescript="Atom: Move Cursor Up #") * Repeat(extra="n"),
             "down [<n>]":                              R(Key("down"), rdescript="Atom: Move Cursor Down #") * Repeat(extra="n"),
@@ -59,7 +60,6 @@ class AtomRule(MergeRule):
             "save all":                                R(Key("cs-p") + Text("Save All") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Save All"),
             "close pane":                              R(Key("cs-p") + Text("Pane Close") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Close Pane"),
             "close pane others":                       R(Key("cs-p") + Text("Pane Close Other Items") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Close Pane"),
-            "close pane":                              R(Key("cs-p") + Text("Pane Close") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Close Pane"),
             "close window":                            R(Key("cs-w"), rdescript="Atom: Close Window"),
         #Extra
     #Edit Menu
@@ -176,9 +176,12 @@ class AtomRule(MergeRule):
             "move to previous diff [different]":       R(Key("cs-p") + Text("Move to Previous Diff") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Move to Previous Different"),
             "[toggle] diff List":                      R(Key("cs-p") + Text("Toggle Diff List") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Toggle Diff List"),
         #Keybinding Resolver Submenu
-            "toggle key [binding] resolver":           R(Key("cs-p") + Text("Key Binding Resolver: Toggle") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Toggle Keybinding Resolver"), #Dragonfly does not contain in key names 'period' or '.'
+            "toggle key [binding] resolver":           R(Key("cs-p") + Text("Key Binding Resolver: Toggle") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Toggle Keybinding Resolver"),
         #Markdown Preview Submenu
-            "markdown preview":                        R(Key("cs-m"), rdescript="Atom: Toggle Preview"),
+            "markdown preview":                        R(Key("cs-m"), rdescript="Atom: Markdown Toggle Preview"),
+        #Extras
+            "markdown copy html":                      R(Key("cs-p") + Text("Markdown Preview: Copy HTML") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Markdown Preview: Copy HTML"),
+            "markdown toggle break on newline":        R(Key("cs-p") + Text("Markdown Preview: Toggle Break On Single Newline") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Markdown Preview: Toggle Break On Single Newline"),
         #Package Generator Submenu
             "make|generate package":                   R(Key("cs-p") + Text("Package Generator: Generate Package") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Generate Atom Package"),
             "make|generate syntax theme":              R(Key("cs-p") + Text("Package Generator: Generate Syntax Theme") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Generate Atom Syntax Theme"),
@@ -192,7 +195,7 @@ class AtomRule(MergeRule):
             "search packages|themes":                  R(Key("cs-p") + Text("Settings View: Install Packages and Themes") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Install Packages/Themes"),
             "update packages":                         R(Key("cs-p") + Text("Settings View: Check for Package Update") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Check for Packages"),
         #Snippets Submenu
-            "expand":                                  R(Key("cs-p") + Text("Snippets: Expand") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Expand Snippets"),
+            "expand snippets":                         R(Key("cs-p") + Text("Snippets: Expand") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Expand Snippets"),
             "next snippet":                            R(Key("tab"), rdescript="Atom: Next Stop|Snippet"),
             "previous snippet":                        R(Key("a-tab"), rdescript="Atom: Previous Stop|Snippet"),
             "available snippet":                       R(Key("as-tab"), rdescript="Atom: Available Snippets"),
@@ -202,7 +205,7 @@ class AtomRule(MergeRule):
             "find symbol":                             R(Key("c-r"), rdescript="Atom: Find Symbol"),
             "project symbol":                          R(Key("cs-r"), rdescript="Atom: Project Symbol"),
         #Timecop Submenu
-            "timecop":                                 R(Key("cs-p") + Text("timecop:view") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Show Timecop"),
+            "timecop":                                 R(Key("cs-p") + Text("Timecop: View") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Show Timecop"),
         #Tree View Submenu
             "tree focus":                              R(Key("c-0"), rdescript="Atom: Toggle Focus on TreeView"),
             "tree [View] [toggle] view":               R(Key("c-backslash"), rdescript="Atom: Toggle"),
@@ -220,7 +223,7 @@ class AtomRule(MergeRule):
             "convert tabs [to] spaces":                R(Key("cs-p") + Text("Whitespace: Convert Tabs to Spaces") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Convert Tabs to Spaces"),
             "convert spaces [to] tabs":                R(Key("cs-p") + Text("Whitespace: Convert Spaces to Tabs") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Convert Spaces to Tabs"),
         #Merge Conflicts Submenu
-            "git [detect] [merge] conflicts":          R(Key("cs-p") + Text("Merge Conflicts") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Detect"),
+            "git [detect] [merge] conflicts":          R(Key("cs-p") + Text("Merge Conflicts Detect") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Detect"),
 
 # ----Atom Optional Third-Party Packages and Dependencies-----------------------------------------------------------------------------
  #Install through command prompt, Atom install manager or a .bat file at http://tinyurl.com/Atom-Dependencies
@@ -241,23 +244,26 @@ class AtomRule(MergeRule):
     # apm install sublime-style-column-selection
 
 #Atom Third-Party Package Commands-------------------------------------------------------------------------------------------------
-        #Adom Beautify
-            "beautify script [run]":                   R(Key("ac-b"), rdescript="Atom: Run Beautify Package"),
+        #Atom Beautify
+            "beautify editor":                         R(Key("cs-p") + Text("Atom Beautify: Beautify Editor") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom : Beautify Editor"),
+            "beautify migrate settings":               R(Key("cs-p") + Text("Atom Beautify: Migrate Settings") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Beautify: Migrate Settings"),
+            "beautify debug editor":                   R(Key("cs-p") + Text("Atom Beautify: Help Debug Editor") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Beautify: Debug Editor"),
         #Toggle Quotes
             "toggle quotes":                           R(Key("cs-apostrophe"), rdescript="Atom: Toggle Quotes: Single or Double"),
         #Script
-            "script run [by] line":                    R(Key("cs-p") + Text("Script:Run Script Line Number") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Script:Run Script by Line"),
-            "script close view":                       R(Key("cs-p") + Text("Script:Close View") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Script:Close View"),
-            "script [run] options|configure":          R(Key("cs-p") + Text("Script:Run Options") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Script:Run Options or Configure"),
-            "script kill [process]":                   R(Key("cs-p") + Text("Script:Kill Process") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Script:Kill Process"),
-            "script save [options]":                   R(Key("cs-p") + Text("Script:Save Options") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Script:Save Options"),
-            "script close [options]":                  R(Key("cs-p") + Text("Script:Close Options") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Script:Close Options"),
-            "script run":                              R(Key("cs-p") + Text("Script:Run") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Script:run"),
-            "script copy [run] [results]":             R(Key("cs-p") + Text("Script:Copy Run Results") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Script:Copy Run Results"),
+            "script run":                              R(Key("cs-p") + Text("Script: Run") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Script: run"),
+            "script [run] options":                    R(Key("cs-p") + Text("Script: Run Options") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Script: Run Options or Configure"),
+            "script [run] profile":                    R(Key("cs-p") + Text("Script: Run With Profile") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Script: Run With Profile"),
+            "script run [by] line":                    R(Key("cs-p") + Text("Script: Run By Line Number") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Script: Run Script by Line"),
+            "script kill [process]":                   R(Key("cs-p") + Text("Script: Kill Process") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Script: Kill Process"),
+            "script close view":                       R(Key("cs-p") + Text("Script: Close View") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Script: Close View"),
+            "script copy [run] [results]":             R(Key("cs-p") + Text("Script: Copy Run Results") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Script: Copy Run Results"),
+            #"script close window and stop script":     R(Key("cs-p") + Text("Script: Close Window and Stop Script") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Script: Close Window and Stop Script"),
         #Delete Plus
             "delete words":                            R(Key("cs-p") + Text("Delete Plus: Delete") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Delete Plus"),
         #Last Edit
-            "last edit":                               R(Key("c-i"), rdescript="Atom: Last Edit"),
+            "back edit":                               R(Key("c-i"), rdescript="Atom: Previous Edit"),
+            "next edit":                               R(Key("ca-i"), rdescript="Atom: Next Last Edit"),
         #Looper
             #"cursor loud|capitalize [<n3>]":           R(Key("a-down"), rdescript="Atom: Looper Capitalize") * Repeat(extra="n"), # Not fully implemented
             #"cursor camel [<n4>]":                     R(Key("a-down"), rdescript="Atom: Looper Camelcase") * Repeat(extra="n"), # Not fully implemented
@@ -275,33 +281,46 @@ class AtomRule(MergeRule):
             "github [open] issues":                    R(Key("cs-p") + Text("Open on GitHub: Issues") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Open On Github @ Issues"),
             "github [open] repository":                R(Key("cs-p") + Text("Open on GitHub: Repository") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Open On Github @ Repository"),
     #Git Plus
-            "git add":                                 R(Key("cs-p") + Text("Git Plus: Add") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Add"),
-            "git add all":                             R(Key("cs-p") + Text("Git plus: Add All") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Add All"),
+            "git custom|run":                          R(Key("cs-p") + Text("Git Plus: Run") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Run"),
+            "git log":                                 R(Key("cs-p") + Text("Git Plus: Log") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Log"),
+            "git log current [file]":                  R(Key("cs-p") + Text("Git Plus: Log Current File") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Current File"),
+            "git status":                              R(Key("cs-p") + Text("Git Plus: Status") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Status"),
+            "git show":                                R(Key("cs-p") + Text("Git Plus: Show") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Show"),
+            "git tags":                                R(Key("cs-p") + Text("Git Plus: Tags") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Tags"),
+            "git open changed files":                  R(Key("cs-p") + Text("Git Plus: Git Open Changed Files") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Open Changed Files"),
+            "git checkout [branch|tag]":               R(Key("cs-p") + Text("Git Plus: Checkout") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Checkout Branch|Tag"),
+            "git menu":                                R(Key("cs-p") + Text("Git Plus: Menu") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Menu"),
+            "git pull":                                R(Key("cs-p") + Text("Git Plus: Pull") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Pull"),
+            "git pull [using] rebase":                 R(Key("cs-p") + Text("Git Plus: Pull Using Rebase") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Pull Using Rebase"),
+            "git push":                                R(Key("cs-p") + Text("Git Plus: Push") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Push"),
+            "git commit":                              R(Key("cs-p") + Text("Git Plus: Commit") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Commit"),
+            "git commit amend":                        R(Key("cs-p") + Text("Git Plus: Commit Amend") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Commit Amend"),
+            "git merge":                               R(Key("cs-p") + Text("Git Plus: Merge") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Merge"),
+            "git merge remote":                        R(Key("cs-p") + Text("Git Plus: Merge Remote") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Merge Remote"),
             "git diff":                                R(Key("cs-p") + Text("Git Plus: Diff") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Diff"),
             "git diff all":                            R(Key("cs-p") + Text("Git Plus: Diff All") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Diff All"),
-            "git add commit":                          R(Key("cs-p") + Text("Git Plus: Add Commit") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Add Commit"),
-            "git add all commit":                      R(Key("cs-p") + Text("Git Plus: Add All Commit") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Add All Commit"),
-            "git add all commit push":                 R(Key("cs-p") + Text("Git Plus: Add All Commit Push") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Add All Commit Push"),
-            "git log":                                 R(Key("cs-p") + Text("Git Plus: Log") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Git Log"),
-            "git merge":                               R(Key("cs-p") + Text("Git Plus: Merge") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Git Merge"),
-            "git pull using rebase":                   R(Key("cs-p") + Text("Git Plus: Pull Using Rebase") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Git Pull Using Rebase"),
+            "git add":                                 R(Key("cs-p") + Text("Git Plus: Add") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Add"),
+            "git add all":                             R(Key("cs-p") + Text("Git plus: Add All") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Add All"),
+            "git add [and] commit":                    R(Key("cs-p") + Text("Git Plus: Add And Commit") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Add And Commit"),
+            "git add all [and] commit":                R(Key("cs-p") + Text("Git Plus: Add All and Commit") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Add All and Commit"),
+            "git add all commit [and] push":           R(Key("cs-p") + Text("Git Plus: Add All Commit And Push") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Add All Commit Push"),
+            "git new branch":                          R(Key("cs-p") + Text("Git Plus: New Branch") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git New Branch"),
+            "git rm|remove":                           R(Key("cs-p") + Text("Git Plus: Remove") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Git Remove"),
     #Project Manager
-            "project manager":                         R(Key("cs-p") + Text("Project Manager:Toggle") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Project Manager: Toggle"),
-            "project save":                            R(Key("cs-p") + Text("Project Manager:Save Project") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Project Manager: Save Project"),
-            "project edit":                            R(Key("cs-p") + Text("Project Manager:Edit Project") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Project Manager: Edit Project"),
-            "project reload setting":                  R(Key("cs-p") + Text("Project Manager:Project Settings") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Project Manager: Project Settings"),
+            "project manager [list]":                  R(Key("cs-p") + Text("Project Manager:List") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Project Manager: Toggle"),
+            "project manager save":                    R(Key("cs-p") + Text("Project Manager:Save Project") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Project Manager: Save Project"),
+            "project manager edit":                    R(Key("cs-p") + Text("Project Manager:Edit Project") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Project Manager: Edit Project"),
     #Menu Sidebar
-            "[project] sidebar":                       R(Key("cs-p") + Text("Project Sidebar: Toggle") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Project Sidebar: Toggle"),
+            "[project manager] sidebar":               R(Key("cs-p") + Text("Project Sidebar: Toggle") + Pause(atom_palette_wait) + Key("enter"), rdescript="Atom: Project Sidebar: Toggle"),
     #Expand Selection to Quotes
             "expand|fill quotes":                      R(Key("c-apostrophe"), rdescript="Atom: Expand Selection to Quotes"),
     #Auto Complete
             "auto [complete]":                         R(Key("c-space"), rdescript="Atom: Show Auto Complete Menu"),
     #Highlight Selected---- #Placeholder
     #Sublime Style Column Selection---- #Placeholder
-    #Relative Numbers-----Package depreciated needs update for functionality.
 
 #Atom | Dragonfly Development--------------------------------------------------------------------------------------------------------------------------------------------------------
-    # Template to create more commands. Documentation: https://dragonfly.readthedocs.org/en/latest/actions.html
+    # Template to create more commands. Documentation: https://dragonfly.readthedocs.org/en/latest/actions.html and http://caster.readthedocs.io/en/latest/caster/doc/Intro/
         # Used for basic key shortcuts
             #"text for voice command":               R(Key("modifier-key"), rdescript="program name: command name/description"),
             #"":                                     R(Key(""), rdescript="Atom: "),
