@@ -8,6 +8,9 @@ test.py
 log.txt
 complexity_report*
 *.log
+*.*\#
+*.*~
+
 
 # Ignore Natlink
 /core/

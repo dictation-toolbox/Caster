@@ -89,9 +89,12 @@ class GitBashRule(MergeRule):
 
 #---------------------------------------------------------------------------
 
-context = AppContext(executable="sh")
-context2 = AppContext(executable="cmd")
-grammar = Grammar("MINGW32", context=(context | context2))
+context = AppContext(executable="\\sh.exe")
+context2 = AppContext(executable="\\bash.exe")
+context3 = AppContext(executable="\\cmd.exe")
+context4 = AppContext(executable="\\mintty.exe")
+
+grammar = Grammar("MINGW32", context=(context | context2 | context3 | context4))
 
 if settings.SETTINGS["apps"]["gitbash"]:
     if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
