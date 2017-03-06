@@ -80,7 +80,6 @@ class HistoryRule(SelfModifyingRule):
 			# Further, I changed the delay from 0.0 to 1.0. The delay of 0.0 generally did not work for me. We may want to consider
 			# exposing this as a configurable setting.
             mapping[ascii_str] = R(Playback([(sequence, 1.0) for sequence in sequences]), rdescript="Recorded Macro: " + ascii_str)
-        print("14.")
         mapping["record from history"] = R(Function(self.record_from_history), rdescript="Record From History")
         mapping["delete recorded macros"] = R(Function(self.delete_recorded_macros), rdescript="Delete Recorded Macros")
         # reload with new mapping
