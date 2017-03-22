@@ -1,4 +1,4 @@
-from dragonfly import (Grammar, AppContext, Dictation, Key)
+from dragonfly import (Grammar, AppContext, Dictation, Key, Text)
 
 from caster.lib import control
 from caster.lib import settings
@@ -12,7 +12,7 @@ class SublimeRule(MergeRule):
     pronunciation = "sublime"
 
     mapping = {
-        "go to line":               R(Key("c-g"), rdescript="Sublime: Go To Line"),
+        "[go to] line <n>":         R(Key("c-g") + Text("%(n)s") + Key("enter"), rdescript="Sublime: Go to Line #"),
         "go to symbol":             R(Key("c-r"), rdescript="Sublime: Go To Symbol"), 
         "go to word":               R(Key("c-semicolon"), rdescript="Sublime: Go To Word"), 
         
