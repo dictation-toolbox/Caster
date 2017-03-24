@@ -50,15 +50,15 @@ def word_number(wn):
     Text(numbers_to_words[int(wn)]).execute()
 
 def numbers_list_1_to_9():
-    result=[ "one",
-             "torque",
-             "traio",
-             "fairn",
-             "faif",
-             "six",
-             "seven",
-             "eigen",
-             "nine"]
+    result=[ "eins",
+             "tsvai",
+             "dry",
+             "fear",
+             "foonf",
+             "zeks",
+             "zeeben",
+             "acht",
+             "known"]
     if not settings.SETTINGS["miscellaneous"]["integer_remap_opt_in"]:
         result[1]="two"
         result[2]="three"
