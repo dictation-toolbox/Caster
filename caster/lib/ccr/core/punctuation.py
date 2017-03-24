@@ -14,7 +14,7 @@ class Punctuation(MergeRule):
     
     mapping = {
         "sem":                           R(Key("semicolon"), rdescript="Semicolon"),
-        "seem":                             R(Key(" ; "), rdescript="Semicolon with trailing space"),
+        "seem":                             R(Text(" ; "), rdescript="Semicolon with trailing space"),
         "quote":                        R(Key("dquote"), rdescript="Quotation mark"),
         "quotes":                           R(Key("dquote,dquote,left"), rdescript="Quotation Marks"),
         "bip":                          R(Text("'"), rdescript="Apostrophe"),
@@ -47,7 +47,7 @@ class Punctuation(MergeRule):
         "dash":                 R(Text("-"), rdescript="Dash with space"),
         "pip":              R(Text("|"), rdescript="Pipe Symbol"),
         "pipe":                         R(Text(" | "), rdescript="Pipe Symbol with space"),
-        'da [<npunc>]':                    R(Key("space"), rdescript="Space") * Repeat(extra="npunc"),
+        'ta [<npunc>]':                    R(Key("space"), rdescript="Space") * Repeat(extra="npunc"),
         "bang":                           R(Text("!"), rdescript="Exclamation Mark"),
         "fizz":                           R(Text(":"), rdescript="Colon"),
         "face":                     R(Text(" : "), rdescript="Colon with space"),
