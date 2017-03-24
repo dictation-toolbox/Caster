@@ -179,7 +179,7 @@ class Navigation(MergeRule):
                 {"shin": "s", "queue": "cs", "fly": "c",
                 }),
         Choice("extreme",
-                {"Wally": "way",
+                {"way": "way",
                 }),
     ]
 
