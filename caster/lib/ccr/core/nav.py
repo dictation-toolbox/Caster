@@ -148,9 +148,8 @@ class Navigation(MergeRule):
     "peek format":                  R(Function(textformat.peek_text_format), rdescript="Peek Format"),
     "(<capitalization> <spacing> | <capitalization> | <spacing>) <textnv> [brunt]":  R(Function(textformat.master_format_text), rdescript="Text Format"),
     "format <textnv>":              R(Function(textformat.prior_text_format), rdescript="Last Text Format"),
-    
     "dredge":                       R(Key("a-tab"), rdescript="Alt-Tab"),
-
+    "<textnv>":                     R(Function(textformat.master_format_text, capitalization=5), rdescript="Default dictation format"),
     }
 
     extras = [
