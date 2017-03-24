@@ -124,16 +124,16 @@ class Navigation(MergeRule):
     
     # keyboard shortcuts
     'save':                         R(Key("c-s"), rspec="save", rdescript="Save"),
-    'shock [<nnavi50>]':            R(Key("enter"), rspec="shock", rdescript="Enter")* Repeat(extra="nnavi50"),
+    'slap [<nnavi50>]':            R(Key("enter"), rspec="slap", rdescript="Enter")* Repeat(extra="nnavi50"),
     
     "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]": R(Function(textformat.master_text_nav), rdescript="Keyboard Text Navigation"),
     
-    "stoosh [<nnavi500>]":          R(Key("c-c")+Function(navigation.clipboard_to_file, nexus=_NEXUS), rspec="stoosh", rdescript="Copy"),
+    "cop [<nnavi500>]":          R(Key("c-c")+Function(navigation.clipboard_to_file, nexus=_NEXUS), rspec="cop", rdescript="Copy"),
     "cut [<nnavi500>]":             R(Key("c-x")+Function(navigation.clipboard_to_file, nexus=_NEXUS), rspec="cut", rdescript="Cut"),
-    "spark [<nnavi500>]":           R(Function(navigation.drop, nexus=_NEXUS), rspec="spark", rdescript="Paste"),
+    "paish [<nnavi500>]":           R(Function(navigation.drop, nexus=_NEXUS), rspec="paish", rdescript="Paste"),
     
-    "deli [<nnavi50>]":             R(Key("del/5"), rspec="deli", rdescript="Delete") * Repeat(extra="nnavi50"),
-    "clear [<nnavi50>]":            R(Key("backspace/5:%(nnavi50)d"), rspec="clear", rdescript="Backspace"),
+    "kit [<nnavi50>]":             R(Key("del/5"), rspec="kit", rdescript="Delete") * Repeat(extra="nnavi50"),
+    "scrip [<nnavi50>]":            R(Key("backspace/5:%(nnavi50)d"), rspec="clear", rdescript="Backspace"),
     SymbolSpecs.CANCEL:             R(Key("escape"), rspec="cancel", rdescript="Cancel Action"),
     
     

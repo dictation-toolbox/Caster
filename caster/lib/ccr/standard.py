@@ -43,7 +43,7 @@ class SymbolSpecs(object):
     FALSE = "false"
 
     # not part of the programming standard:
-    CANCEL = "(terminate | escape)"
+    CANCEL = "(cape | escape)"
     
     @staticmethod
     def set_cancel_word(spec):
