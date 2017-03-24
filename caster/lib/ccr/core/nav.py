@@ -141,6 +141,10 @@ class Navigation(MergeRule):
     "(tell | tau) <semi>":          R(Function(navigation.next_line), rspec="tell dock", rdescript="Complete Line"), 
     "duple [<nnavi50>]":            R(Key("escape, home, s-end, c-c, end, enter, c-v"), rspec="duple", rdescript="Duplicate Line") * Repeat(extra="nnavi50"),
     "Kraken":                       R(Key("c-space"), rspec="Kraken", rdescript="Control Space"),
+
+    "whack":                        R(Key("end, semicolon, enter"), rdescript="End line with semicolon & enter"),
+    "wig":                          R(Key("end, semicolon"), rdescript="End line with semicolon"),
+    "sweep":                        R(Key("end, comma, enter"), rdescript="End line with comma & enter"),
          
     # text formatting
     "set format (<capitalization> <spacing> | <capitalization> | <spacing>)":  R(Function(textformat.set_text_format), rdescript="Set Text Format"),
