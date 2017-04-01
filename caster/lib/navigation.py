@@ -13,7 +13,7 @@ import win32clipboard
 from caster.asynch.mouse.legion import LegionScanner
 from caster.lib import utilities, settings
 
-DIRECTION_STANDARD={"uck [E]": "up", "dune [E]": "down", "lop [E]": "left", "rock [E]": "right", "back": "left" }
+DIRECTION_STANDARD={"hup [E]": "up", "dune [E]": "down", "lop [E]": "left", "rock [E]": "right", "back": "left" }
 
 ''''
 Note: distinct token types were removed because

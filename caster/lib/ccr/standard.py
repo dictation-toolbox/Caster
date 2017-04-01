@@ -21,9 +21,9 @@ class SymbolSpecs(object):
     TO_FLOAT = "to float"
     TO_STRING = "to string"
     
-    AND = "and"
-    OR = "or"
-    NOT = "not"
+    AND = "lodge and"
+    OR = "lodge or"
+    NOT = "lodge not"
     
     SYSOUT = "print out"
     

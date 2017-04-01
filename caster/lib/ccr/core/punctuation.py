@@ -23,7 +23,7 @@ class Punctuation(MergeRule):
         "rate":                   R(Key("langle"), rdescript="< Comparison"),
         "greequals":  R(Key("rangle, equals"), rdescript=">= Comparison"),
         "leequals":     R(Key("langle, equals"), rdescript="<= Comparison"),
-        "qual":                    R(Key("equals,equals"), rdescript="Equality"),
+        "qual":                    R(Key("space, equals, equals, space"), rdescript="Equality"),
         "eek":                           R(Key("equals"), rdescript="Equals Sign"),
         "quiv":                         R(Text(" = "), rdescript="Equals with space"),
         "pren":                          R(Key("lparen, rparen, left"), rdescript="Parentheses"),
