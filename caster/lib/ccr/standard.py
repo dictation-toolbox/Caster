@@ -6,6 +6,7 @@ Created on Oct 17, 2015
 class SymbolSpecs(object):
     IF = "if"
     ELSE = "else"
+    ELIF = "elif"
     
     SWITCH = "switch"
     CASE = "case of"
@@ -14,7 +15,7 @@ class SymbolSpecs(object):
     
     DO_LOOP = "do"
     WHILE_LOOP = "while"
-    FOR_LOOP = "for"
+    FOR_LOOP = "for o"
     FOR_EACH_LOOP = "for each"
     
     TO_INTEGER = "to integer"
