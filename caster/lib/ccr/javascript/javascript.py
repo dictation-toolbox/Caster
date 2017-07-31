@@ -3,9 +3,9 @@ Created on Sep 2, 2015
 
 @author: synkarius
 '''
-from dragonfly import Key, Text, Dictation
+from dragonfly import Key, Text, Dictation, Function
 
-from caster.lib import control
+from caster.lib import control, textformat
 from caster.lib.ccr.standard import SymbolSpecs
 from caster.lib.dfplus.additions import SelectiveAction
 from caster.lib.dfplus.merge.mergerule import MergeRule, TokenSet
@@ -42,10 +42,10 @@ class Javascript(MergeRule):
         #
         SymbolSpecs.SYSOUT:             R(Text("console.log()") + Key("left"), rdescript="Javascript: Print"),
         #
-        # (no imports in javascript)
+        # FIXME: add imports
         # 
         SymbolSpecs.FUNCTION:           R(Text("function () {};") + Key("left:6, enter"), rdescript="Javascript: Function"),
-        # TODO: add classes
+        # FIXME: add classes
         #
         SymbolSpecs.COMMENT:            R(Text("//"), rdescript="Javascript: Add Comment"),
         SymbolSpecs.LONG_COMMENT:       R(Text("/**/") + Key("left,left"), rdescript="Javascript: Long Comment"),
@@ -82,21 +82,33 @@ class Javascript(MergeRule):
         "instance of":                  R(Text("instanceof "), rdescript="Javascript: Instance Of"),
         
         "(far | variable)":             R(Text("var "), rdescript="Javascript: Variable"),
+        "block":                        R(Key("lbrace, enter"), rdescript="brace block"),
+
+        "(met | med) <textnv>":         R(Text(".")
+                                            + Function(textformat.camel_format)
+                                            + Key("lparen"), rdescript="JS: method call"),
+        "part <textnv>":                 R(Text(".")
+                                            + Function(textformat.camel_format),
+                                            rdescript="js: object property"),
 
         #ES6 stuff
         "(cons | const)":               R(Text("const "), rdescript="es6 const"),
-        "lambda funk":                  R(Text("() => ") + Key("left:5"), rdescript="es6 arrow function"),
-        "lambda funk <text>":           R(Key("lparen") + Text("%(text)s")
-                                            + Key("rparen") + Text(" => ") + Key("end"),
+        "lambda":                       R(Text("() => ") + Key("left:5"), rdescript="es6 arrow function"),
+        "lambda <text>":                R(Key("lparen") + Text("%(text)s") + Key("rparen") + Text(" => "),
                                             rdescript="es6 arrow func w/ arg"),
 
         # React stuff
-        "my props":                     R(Text("this.props."), rdescript="React props"),
-        "my state":                     R(Text("this.state."), rdescript="React state"),
+        "my props":                     R(Text("this.props"), rdescript="React props"),
+        "my state":                     R(Text("this.state"), rdescript="React state"),
         "set state":                    R(Text("this.setState") + Key("lparen, lbrace"), rdescript="React setState"),
+        "set state funk":               R(Text("this.setState") + Key("lparen"), rdescript="React functional setState"),
           }
 
-    extras = [Dictation("text"),]
+    extras = [
+        Dictation("text"),
+        Dictation("textnv"),
+        ]
+
     defaults = {}
     
     token_set = TokenSet(["abstract", "arguments", "boolean", "break", "byte",

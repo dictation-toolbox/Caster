@@ -127,4 +127,7 @@ def master_text_nav(mtn_mode, mtn_dir, nnavi500, extreme):
         way = "end" if mtn_dir in ["right", "down"] else "home"
         k = str(mtn_mode) + "-" + str(way)
     Key(k).execute()
-    time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.) 
+    time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
+
+def camel_format(textnv):
+    master_format_text(3, 1, textnv)
