@@ -3,7 +3,7 @@ Created on Sep 1, 2015
 
 @author: synkarius
 '''
-from dragonfly import Repeat, Function, Key, Dictation, Choice, Mouse, MappingRule
+from dragonfly import Repeat, Function, Key, Text, Dictation, Choice, Mouse, MappingRule
 
 from caster.lib import context, navigation, alphanumeric, textformat
 from caster.lib import control
