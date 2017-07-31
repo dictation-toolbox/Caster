@@ -134,7 +134,7 @@ class Navigation(MergeRule):
     
     "kit [<nnavi50>]":              R(Key("del/5"), rspec="kit", rdescript="Delete") * Repeat(extra="nnavi50"),
     "scrip [<nnavi50>]":            R(Key("backspace/5:%(nnavi50)d"), rspec="clear", rdescript="Backspace"),
-    "eat [<nnavi50>] [<mtn_dir>]":  R(Key("s-%(mtn_dir)s/5:%(nnavi50)d") + Key("backspace"), rdescript="delete by word"),
+    "eat [<nnavi50>] [<mtn_dir>]":  R(Key("cs-%(mtn_dir)s/5:%(nnavi50)d") + Key("backspace"), rdescript="delete by word"),
     SymbolSpecs.CANCEL:             R(Key("escape"), rspec="cancel", rdescript="Cancel Action"),
     
     
@@ -155,7 +155,7 @@ class Navigation(MergeRule):
     "(<capitalization> <spacing> | <capitalization> | <spacing>) <textnv> [brunt]":  R(Function(textformat.master_format_text), rdescript="Text Format"),
     "format <textnv>":              R(Function(textformat.prior_text_format), rdescript="Last Text Format"),
     "dredge":                       R(Key("a-tab"), rdescript="Alt-Tab"),
-    "<textnv>":                     R(Function(textformat.master_format_text, capitalization=5), rdescript="Default dictation format"),
+    "<textnv>":                     R(Function(textformat.master_format_text), rdescript="Default dictation format"),
 
     # term cmds
     "term paish":                   R(Key("s-insert"), rdescript="Paste into term"),
