@@ -98,19 +98,3 @@ def letters2(big, letter):
     Key(letter).execute()
     if str(big) != "":
         Key("shift:up").execute()
-
-'''for fun'''
-def elite_text(text):
-    elite_map={"a": "@", "b":"|3", "c": "(", "d": "|)", "e": "3", 
-               "f": "|=", "g":"6", "h": "]-[", "i": "|", "j": "_|", 
-               "k": "|{", "l": "|_", "m": r"|\/|", "n": r"|\|", "o": "()", 
-               "p": "|D", "q": "(,)", "r": "|2", "s": "$", "t": "']['", 
-               "u": "|_|", "v": r"\/", "w": r"\/\/", "x": "}{", "y": "`/", "z": r"(\)"}
-    text=str(text).lower()
-    result=""
-    for c in text:
-        if c in elite_map:
-            result+=elite_map[c]
-        else:
-            result+=c
-    Text(result).execute()

@@ -69,8 +69,6 @@ class NavigationNon(MappingRule):
         "prior tab [<n>]":                  R(Key("c-pgup"), rdescript="Previous Tab") * Repeat(extra="n"),
         "close tab [<n>]":                  R(Key("c-w/20"), rdescript="Close Tab") * Repeat(extra="n"),
         
-        "elite translation <text>":         R(Function(alphanumeric.elite_text), rdescript="1337 Text"),
-        
         "(jump to | go to) line <nlinejump>": R(Key("c-g/5") + Text("%(nlinejump)d") + Key("enter"), rdescript="jump to line"),
           }
 
