@@ -19,12 +19,15 @@ class Punctuation(MergeRule):
         "quotes":                           R(Key("dquote,dquote,left"), rdescript="Quotation Marks"),
         "bip":                          R(Text("'"), rdescript="Apostrophe"),
         "bips":                      R(Key("apostrophe,apostrophe,left"), rdescript="Thin Quotation Marks"),
-        "lit":                R(Key("rangle"), rdescript="> Comparison"),
-        "late":             R(Key("space, rangle, space"), rdescript=" > "),
-        "rit":                   R(Key("langle"), rdescript="< Comparison"),
-        "rate":                 R(Key("space, langle, space"), rdescript=" < "),
+        "lug":                R(Key("rangle"), rdescript="> Comparison"),
+        "lang":             R(Key("space, rangle, space"), rdescript=" > "),
+        "rug":                   R(Key("langle"), rdescript="< Comparison"),
+        "rang":                 R(Key("space, langle, space"), rdescript=" < "),
         "greequals":  R(Key("rangle, equals"), rdescript=">= Comparison"),
         "leequals":     R(Key("langle, equals"), rdescript="<= Comparison"),
+        "treacle | treek":                  R(Text(" === "), rdescript="triple equals"),
+        "neck":                             R(Text(" != "), rdescript="!="),
+        "isn't":                            R(Text(" !== "), rdescript="!=="),
         "quiv":                    R(Key("space, equals, equals, space"), rdescript="Equality"),
         "eek":                           R(Key("equals"), rdescript="Equals Sign"),
         "qual":                         R(Text(" = "), rdescript="Equals with space"),
@@ -38,6 +41,7 @@ class Punctuation(MergeRule):
         "leska":                            R(Key("lbracket"), rdescript="Left bracket"),
         "reska":                            R(Key("rbracket"), rdescript="Right bracket"),
         "brace":                            R(Key("lbrace, rbrace, left"), rdescript="Curly Braces"),
+        "brizz":                            R(Key("lbrace, enter"), rdescript="braces with enter"),
         "lebray":                           R(Key("lbrace"), rdescript="Left brace"),
         "rebray":                           R(Key("rbrace"), rdescript="Right brace"),
         "brack":                            R(Key("langle, rangle, left"), rdescript="Angle Brackets"),
@@ -74,7 +78,7 @@ class Punctuation(MergeRule):
         'tabby [<npunc>]':                  R(Key("tab"), rdescript="Tab") * Repeat(extra="npunc"),
         "tick":                         R(Text("`"), rdescript="Backtick"),
         "amps":                        R(Key("ampersand"), rdescript="Ampersand"),
-        
+        "tis":                      R(Key("equals, dquote"), rdescript="equals string"),
           }
  
 

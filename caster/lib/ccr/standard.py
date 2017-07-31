@@ -36,12 +36,14 @@ class SymbolSpecs(object):
     COMMENT = "add comment"
     LONG_COMMENT = "long comment"
     
-    NULL = "not"
+    NULL = "newell"
     
     RETURN = "return"
     
     TRUE = "true"
     FALSE = "false"
+
+    ARROW = "row"
 
     # not part of the programming standard:
     CANCEL = "(cape | escape)"

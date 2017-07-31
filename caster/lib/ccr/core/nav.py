@@ -47,9 +47,9 @@ class NavigationNon(MappingRule):
         "garb [<nnavi500>]":                R(Mouse("left")+Mouse("left")+Key("c-c")+Function(navigation.clipboard_to_file, nexus=_NEXUS), rdescript="Highlight @ Mouse + Copy"),
         "drop [<nnavi500>]":                R(Mouse("left")+Mouse("left")+Function(navigation.drop, nexus=_NEXUS), rdescript="Highlight @ Mouse + Paste"),
         
-        "sure stoosh":                      R(Key("c-c"), rdescript="Simple Copy"),
-        "sure cut":                         R(Key("c-x"), rdescript="Simple Cut"),
-        "sure spark":                       R(Key("c-v"), rdescript="Simple Paste"),
+        "cop":                              R(Key("c-c"), rdescript="Simple Copy"),
+        "cut":                              R(Key("c-x"), rdescript="Simple Cut"),
+        "paish":                            R(Key("c-v"), rdescript="Simple Paste"),
         
         "undo [<n>]":                       R(Key("c-z"), rdescript="Undo") * Repeat(extra="n"),
         "redo [<n>]":                       R(Key("c-y"), rdescript="Redo") * Repeat(extra="n"),
@@ -71,6 +71,7 @@ class NavigationNon(MappingRule):
         
         "elite translation <text>":         R(Function(alphanumeric.elite_text), rdescript="1337 Text"),
         
+        "(jump to | go to) line <nlinejump>": R(Key("c-g/5") + Text("%(nlinejump)d") + Key("enter"), rdescript="jump to line"),
           }
 
     extras   = [
@@ -78,6 +79,7 @@ class NavigationNon(MappingRule):
               Dictation("mim"),
               IntegerRefST("n", 1, 50),
               IntegerRefST("nnavi500", 1, 500),
+              IntegerRefST("nlinejump", 0, 1000),
               Choice("time_in_seconds",
                 {"super slow": 5, "slow": 2, "normal": 0.6, "fast": 0.1, "superfast": 0.05
                 }),
@@ -124,16 +126,17 @@ class Navigation(MergeRule):
     
     # keyboard shortcuts
     'save':                         R(Key("c-s"), rspec="save", rdescript="Save"),
-    'slap [<nnavi50>]':            R(Key("enter"), rspec="slap", rdescript="Enter")* Repeat(extra="nnavi50"),
+    'slap [<nnavi50>]':             R(Key("enter"), rspec="slap", rdescript="Enter") * Repeat(extra="nnavi50"),
     
     "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]": R(Function(textformat.master_text_nav), rdescript="Keyboard Text Navigation"),
     
-    "cop [<nnavi500>]":          R(Key("c-c")+Function(navigation.clipboard_to_file, nexus=_NEXUS), rspec="cop", rdescript="Copy"),
-    "cut [<nnavi500>]":             R(Key("c-x")+Function(navigation.clipboard_to_file, nexus=_NEXUS), rspec="cut", rdescript="Cut"),
-    "paish [<nnavi500>]":           R(Function(navigation.drop, nexus=_NEXUS), rspec="paish", rdescript="Paste"),
+    "sure cop [<nnavi500>]":        R(Key("c-c")+Function(navigation.clipboard_to_file, nexus=_NEXUS), rspec="cop", rdescript="Copy"),
+    "sure cut [<nnavi500>]":        R(Key("c-x")+Function(navigation.clipboard_to_file, nexus=_NEXUS), rspec="cut", rdescript="Cut"),
+    "sure paish [<nnavi500>]":      R(Function(navigation.drop, nexus=_NEXUS), rspec="paish", rdescript="Paste"),
     
-    "kit [<nnavi50>]":             R(Key("del/5"), rspec="kit", rdescript="Delete") * Repeat(extra="nnavi50"),
+    "kit [<nnavi50>]":              R(Key("del/5"), rspec="kit", rdescript="Delete") * Repeat(extra="nnavi50"),
     "scrip [<nnavi50>]":            R(Key("backspace/5:%(nnavi50)d"), rspec="clear", rdescript="Backspace"),
+    "eat [<nnavi50>] [<mtn_dir>]":  R(Key("s-%(mtn_dir)s/5:%(nnavi50)d") + Key("backspace"), rdescript="delete by word"),
     SymbolSpecs.CANCEL:             R(Key("escape"), rspec="cancel", rdescript="Cancel Action"),
     
     
@@ -145,6 +148,7 @@ class Navigation(MergeRule):
     "whack":                        R(Key("end, semicolon, enter"), rdescript="End line with semicolon & enter"),
     "wig":                          R(Key("end, semicolon"), rdescript="End line with semicolon"),
     "sweep":                        R(Key("end, comma, enter"), rdescript="End line with comma & enter"),
+    "brute":                        R(Key("end, space, lbrace, enter"), rdescript="End line with brace block"),
          
     # text formatting
     "set format (<capitalization> <spacing> | <capitalization> | <spacing>)":  R(Function(textformat.set_text_format), rdescript="Set Text Format"),
@@ -154,6 +158,13 @@ class Navigation(MergeRule):
     "format <textnv>":              R(Function(textformat.prior_text_format), rdescript="Last Text Format"),
     "dredge":                       R(Key("a-tab"), rdescript="Alt-Tab"),
     "<textnv>":                     R(Function(textformat.master_format_text, capitalization=5), rdescript="Default dictation format"),
+
+    # term cmds
+    "term paish":                   R(Key("s-insert"), rdescript="Paste into term"),
+
+    # tab cmds
+    "next tab [<nnavi50>]":         R(Key("c-tab"), rdescript="next tab") * Repeat(extra="nnavi50"),
+    "last tab [<nnavi50>]":         R(Key("cs-tab"), rdescript="last tab") * Repeat(extra="nnavi50"),
     }
 
     extras = [
@@ -185,7 +196,7 @@ class Navigation(MergeRule):
 
     defaults ={
             "nnavi500": 1, "nnavi50": 1, "textnv": "", "capitalization": 0, "spacing":0, 
-            "mtn_mode": None, "mtn_dir": "right", "extreme": None 
+            "mtn_mode": None, "mtn_dir": "left", "extreme": None 
            }
 
 control.nexus().merger.add_global_rule(Navigation())
