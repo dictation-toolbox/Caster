@@ -17,7 +17,7 @@ def get_alphabet_choice(spec):
             "ice": "i",
             "jinks": "j",
             "koop": "k",
-            "lug": "l",
+            "loom": "l",
             "moke": "m",
             "nerb": "n",
             "ork": "o",
