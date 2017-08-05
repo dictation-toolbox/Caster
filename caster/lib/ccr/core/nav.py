@@ -68,6 +68,8 @@ class NavigationNon(MappingRule):
         "next tab [<n>]":                   R(Key("c-pgdown"), rdescript="Next Tab") * Repeat(extra="n"),
         "prior tab [<n>]":                  R(Key("c-pgup"), rdescript="Previous Tab") * Repeat(extra="n"),
         "close tab [<n>]":                  R(Key("c-w/20"), rdescript="Close Tab") * Repeat(extra="n"),
+
+        "nool <n>":                             R(Key("end, enter"), rdescript="new line") * Repeat(extra="n"),
         
         "[(jump | go to)] line <nlinejump>": R(Key("c-g/5") + Text("%(nlinejump)d") + Key("enter"), rdescript="jump to line"),
           }
@@ -123,7 +125,7 @@ class Navigation(MergeRule):
                                                       rdescript="Jump: Back In" ),
     
     # keyboard shortcuts
-    'save':                         R(Key("c-s"), rspec="save", rdescript="Save"),
+    'save this':                         R(Key("c-s"), rspec="save", rdescript="Save"),
     'slap [<nnavi50>]':             R(Key("enter"), rspec="slap", rdescript="Enter") * Repeat(extra="nnavi50"),
     
     "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]": R(Function(textformat.master_text_nav), rdescript="Keyboard Text Navigation"),
@@ -171,7 +173,7 @@ class Navigation(MergeRule):
         Dictation("textnv"),
         
         Choice("capitalization",
-                  {"yell": 1, "tie": 2,"Gerrish": 3,"sing":4, "laws":5
+                  {"yell": 1, "tie": 2,"grish": 3,"sing":4, "laws":5
                   }),
         Choice("spacing",
                   {"gum": 1, "gun": 1, "spine": 2, "snake":3
