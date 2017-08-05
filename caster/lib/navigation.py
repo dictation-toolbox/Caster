@@ -159,6 +159,3 @@ def next_line(semi):
     time.sleep(0.25)
     Text(semi).execute()
     Key("enter").execute()
-
-
-
