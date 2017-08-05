@@ -11,9 +11,9 @@ class SymbolSpecs(object):
     SWITCH = "switch"
     CASE = "case of"
     BREAK = "break"
-    DEFAULT = "default"
+    DEFAULT = "default case"
     
-    DO_LOOP = "do"
+    DO_LOOP = "do loop"
     WHILE_LOOP = "while"
     FOR_LOOP = "for o"
     FOR_EACH_LOOP = "for each"
