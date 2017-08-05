@@ -131,3 +131,9 @@ def master_text_nav(mtn_mode, mtn_dir, nnavi500, extreme):
 
 def camel_format(textnv):
     master_format_text(3, 1, textnv)
+
+def upper_camel(textnv):
+    master_format_text(2, 1, textnv)
+
+def js_format(textnv, is_method):
+    master_format_text(is_method, 1, textnv)
