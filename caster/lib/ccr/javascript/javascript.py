@@ -135,12 +135,9 @@ class Javascript(MergeRule):
                                             rdescript="react: matched component tag"),
 
         # flow
-        "using flow":                   R(Text("// @flow"), rdescript="enable flow"),
+        "using flow":                   R(Text("// @flow") + Key("enter, backspace:3"), rdescript="enable flow"),
         "maybe":                        R(Text(": ?"), rdescript="maybe type"),
         "optional":                     R(Text("?: "), rdescript="optional property"),
-        
-
-
 
         #atom/nuclide
         "tag wrap":                     R(Key("as-w"), rdescript="tag wrap"),
