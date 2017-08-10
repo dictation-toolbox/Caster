@@ -36,7 +36,7 @@ class SymbolSpecs(object):
     COMMENT = "add comment"
     LONG_COMMENT = "long comment"
     
-    NULL = "newell"
+    NULL = "null"
     
     RETURN = "return"
     
