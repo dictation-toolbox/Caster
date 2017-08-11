@@ -104,35 +104,6 @@ class Javascript(MergeRule):
         "lambda":                       R(Text("() => ") + Key("left:5"), rdescript="es6 arrow function"),
         "lambda <text>":                R(Key("lparen") + Text("%(text)s") + Key("rparen") + Text(" => "),
                                             rdescript="es6 arrow func w/ arg"),
-        
-        # React stuff
-        "react":                        R(Text("react"), rdescript="react"),
-        "react router dom":             R(Text("react-router-dom"), rdescript="react-router"),
-        "my props":                     R(Text("this.props"), rdescript="React props"),
-        "my state":                     R(Text("this.state"), rdescript="React state"),
-        "set state":                    R(Text("this.setState") + Key("lparen, lbrace"), rdescript="React setState"),
-        "set state funk":               R(Text("this.setState") + Key("lparen"), rdescript="React functional setState"),
-        "<lifecycle>":                  R(Text("%(lifecycle)s") + Key("lparen, rparen, space, lbrace, enter"),
-                                            rdescript="React component lifecycle methods"),
-        "react constructor":            R(Text("constructor(props) ") + Key("lbrace, enter") + Text("super(props)")
-                                            + Key("enter"), rdescript="React constructor"),
-        "react (main | maine) import":  R(Text("import React, { Component } from 'react';") + Key("enter"),
-                                            rdescript="main React imports"),
-        "react dom import":             R(Text("import ReactDOM from 'react-dom';") + Key("enter"),
-                                            rdescript="React imports"),
-        "class name":                   R(Text("className"), rdescript="React: className"),
-        "browser router":               R(Text("BrowserRouter"), rdescript="react-router: BrowserRouter"),
-        "react component <textnv>":     R(Text("class ") + Function(textformat.js_format)
-                                           + Text(" extends Component ") + Key("lbrace, enter"),
-                                            rdescript="React component"),
-        "proper":                       R(Key("equals, lbrace"), rdescript="react:prop"),
-        "proper <textnv>":              R(Function(textformat.camel_format) + Key("equal, lbrace"),
-                                            rdescript="react: prop w/ name"),
-        "comp tag <textnv>":            R(Key("langle") + Function(textformat.upper_camel) + Text(" /") + Key("left:2"),
-                                            rdescript="react: self-closing component tag"),
-        "comp tag <textnv> matched":    R(Key("langle") + Function(textformat.upper_camel) + Key("rangle, langle")
-                                            + Text("/") + Function(textformat.upper_camel) + Key("c-left:3"),
-                                            rdescript="react: matched component tag"),
 
         # flow
         "using flow":                   R(Text("// @flow") + Key("enter, backspace:3"), rdescript="enable flow"),
@@ -147,16 +118,6 @@ class Javascript(MergeRule):
         Dictation("text"),
         Dictation("textnv"),
         Dictation("imported_from"),
-        Choice("lifecycle", {
-            "react render": "render",
-            "component will mount": "componentWillMount",
-            "component did mount": "componentDidMount",
-            "component will receive props": "componentWillReceiveProps",
-            "should component update": "shouldComponentUpdate",
-            "component will update": "componentWillUpdate",
-            "component did update": "componentDidUpdate",
-            "component will unmount": "componentWillUnmount"
-            }),
         Choice("is_method", {
             "met": 3,
             "ob": 2
@@ -182,9 +143,6 @@ class Javascript(MergeRule):
                  "yield"],
                          "//",
                          ["/*", "*/"])
-    
-    
-    
 
-    
+
 control.nexus().merger.add_global_rule(Javascript(ID=200))
