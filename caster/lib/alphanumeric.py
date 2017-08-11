@@ -8,30 +8,30 @@ def get_alphabet_choice(spec):
               {
             "arch": "a", 
             "brov": "b", 
-            "char": "c", 
-            "delta": "d", 
-            "echo": "e", 
-            "foxy": "f", 
+            "chum": "c",
+            "dell": "d",
+            "etch": "e",
+            "fox": "f",
             "goof": "g", 
-            "hotel": "h", 
-            "India": "i", 
-            "julia": "j", 
-            "kilo": "k", 
-            "Lima": "l", 
-            "Mike": "m", 
-            "Novakeen": "n", 
-            "oscar": "o", 
-            "prime": "p", 
-            "Quebec": "q", 
-            "Romeo": "r", 
-            "Sierra": "s", 
-            "tango": "t", 
-            "uniform": "u", 
-            "victor": "v", 
-            "whiskey": "w", 
-            "x-ray": "x", 
-            "yankee": "y", 
-            "Zulu": "z", 
+            "hark": "h",
+            "ice": "i",
+            "jinks": "j",
+            "koop": "k",
+            "loom": "l",
+            "moke": "m",
+            "nerb": "n",
+            "ork": "o",
+            "pooch": "p",
+            "quash": "q",
+            "rosh": "r",
+            "souk": "s",
+            "teek": "t",
+            "unks": "u",
+            "verge": "v",
+            "womp": "w",
+            "trex": "x",
+            "yang": "y",
+            "zooch": "z",
                })
 
 def word_number(wn):
@@ -50,15 +50,15 @@ def word_number(wn):
     Text(numbers_to_words[int(wn)]).execute()
 
 def numbers_list_1_to_9():
-    result=[ "one",
-             "torque",
-             "traio",
-             "fairn",
-             "faif",
-             "six",
-             "seven",
-             "eigen",
-             "nine"]
+    result=[ "eins",
+             "tsvai",
+             "dry",
+             "fear",
+             "foonf",
+             "zeks",
+             "zeeben",
+             "acht",
+             "known"]
     if not settings.SETTINGS["miscellaneous"]["integer_remap_opt_in"]:
         result[1]="two"
         result[2]="three"
@@ -98,19 +98,3 @@ def letters2(big, letter):
     Key(letter).execute()
     if str(big) != "":
         Key("shift:up").execute()
-
-'''for fun'''
-def elite_text(text):
-    elite_map={"a": "@", "b":"|3", "c": "(", "d": "|)", "e": "3", 
-               "f": "|=", "g":"6", "h": "]-[", "i": "|", "j": "_|", 
-               "k": "|{", "l": "|_", "m": r"|\/|", "n": r"|\|", "o": "()", 
-               "p": "|D", "q": "(,)", "r": "|2", "s": "$", "t": "']['", 
-               "u": "|_|", "v": r"\/", "w": r"\/\/", "x": "}{", "y": "`/", "z": r"(\)"}
-    text=str(text).lower()
-    result=""
-    for c in text:
-        if c in elite_map:
-            result+=elite_map[c]
-        else:
-            result+=c
-    Text(result).execute()

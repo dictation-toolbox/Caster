@@ -13,7 +13,7 @@ import win32clipboard
 from caster.asynch.mouse.legion import LegionScanner
 from caster.lib import utilities, settings
 
-DIRECTION_STANDARD={"sauce [E]": "up", "dunce [E]": "down", "lease [E]": "left", "Ross [E]": "right", "back": "left" }
+DIRECTION_STANDARD={"hub [E]": "up", "dune [E]": "down", "lop [E]": "left", "rock [E]": "right", "back": "left" }
 
 ''''
 Note: distinct token types were removed because
@@ -159,6 +159,3 @@ def next_line(semi):
     time.sleep(0.25)
     Text(semi).execute()
     Key("enter").execute()
-
-
-

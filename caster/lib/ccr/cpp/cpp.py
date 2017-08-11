@@ -56,16 +56,13 @@ class CPP(MergeRule):
         
         
         # C++ specific
-        
-        "public":                           R(Text("public "), rdescript="C++: Public"),
-        "private":                          R(Text("private "), rdescript="C++: Private"),
-        "static":                           R(Text("static "), rdescript="C++: Static"),
-        "final":                            R(Text("final "), rdescript="C++: Final"),
-        
         "static cast integer":              R(Text("static_cast<int>()") + Key("left"), rdescript="C++: Static Cast Integer"),
         "static cast double":               R(Text("static_cast<double>()") + Key("left"), rdescript="C++: Static Cast Double"),
         
-        "([global] scope | name)":          R(Text("::"), rdescript="C++: ::"),
+        "(scope | lee)":                    R(Text("::"), rdescript="C++: ::"),
+        "stead":                            R(Text("std"), rdescript="standard namespace"),
+        "steadily":                         R(Text("std::"), rdescript="standard namespace"),
+
         "Vic":                              R(Text("vector"), rdescript="C++: Vector"),
         "pushback":                         R(Text("push_back"), rdescript="C++: Pushback"),
         
@@ -73,20 +70,23 @@ class CPP(MergeRule):
         "constant":                         R(Text("const"), rdescript="C++: Constant"),
         "array":                            R(Mimic("brackets"), rdescript="C++: Array"),
         
-        #http://www.learncpp.com/cpp-tutorial/67-introduction-to-pointers/
         "(reference to | address of)":      R(Text("&"), rdescript="C++: Reference"),
-        "(pointer | D reference)":          R(Text("*"), rdescript="C++: Dereference"),
-        "member":                           R(Text("->"), rdescript="C++: Member"),
-        
+        "(pointer | point)":                R(Text("*"), rdescript="C++: Pointer"),
+        "(D reference | D ref)":            R(Text("->"), rdescript="C++: Arrow dereference"),
                 
         "new new":                          R(Text("new "), rdescript="C++: New"),
         "integer":                          R(Text("int "), rdescript="C++: Integer"),
         "double":                           R(Text("double "), rdescript="C++: Double"),
         "character":                        R(Text("char "), rdescript="C++: Character"),
-        "big integer":                      R(Text("Integer"), rdescript="C++: Big Integer"),
-        "string":                           R(Text("string "), rdescript="C++: String"),
+        "big int":                          R(Text("Integer"), rdescript="C++: Big Integer"),
+        "string":                           R(Text("string"), rdescript="C++: String"),
+
+        "stir":                             R(Text("str()"), rdescript="C++: str()"),
         
         "ternary":                          R(Text("()?;") + (Key("left") * 3), rdescript="C++: Ternary"),
+        
+        "put to":                           R(Text(" << "), rdescript="put to operator"),
+        "get from":                         R(Text(" >> "), rdescript="get from operator"),
     }
 
     extras   = []

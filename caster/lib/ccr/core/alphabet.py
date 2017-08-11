@@ -16,6 +16,7 @@ class Alphabet(MergeRule):
         alphanumeric.get_alphabet_choice("letter"),
         Choice("big",
               {"big": "big",
+               "sky": "big",
                }),
     ]
     defaults = {

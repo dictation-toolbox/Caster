@@ -32,7 +32,7 @@ class Java(MergeRule):
         #
         SymbolSpecs.DO_LOOP:                R(Text("do {}")+Key("left, enter:2"), rdescript="Java: Do Loop"),
         SymbolSpecs.WHILE_LOOP:             R(Text("while ()")+Key("left"), rdescript="Java: While"),
-        SymbolSpecs.FOR_LOOP:               R(Text("for (int i=0; i<TOKEN; i++)"), rdescript="Java: For i Loop"),
+        SymbolSpecs.FOR_LOOP:               R(Text("for () {")+Key("enter,up,left"), rdescript="Java: For i Loop"),
         SymbolSpecs.FOR_EACH_LOOP:          R(Text("for (TOKEN TOKEN : TOKEN)"), rdescript="Java: For Each Loop"),
         #
         SymbolSpecs.TO_INTEGER:             R(Text("Integer.parseInt()")+ Key("left"), rdescript="Java: Convert To Integer"),
@@ -43,7 +43,7 @@ class Java(MergeRule):
         SymbolSpecs.OR:                     R(Text(" || "), rdescript="Java: Or"),
         SymbolSpecs.NOT:                    R(Text("!"), rdescript="Java: Not"),
         #
-        SymbolSpecs.SYSOUT:                 R(Text("java.lang.System.out.println()")+Key("left"), rdescript="Java: Print"),
+        SymbolSpecs.SYSOUT:                 R(Text("System.out.println()")+Key("left"), rdescript="Java: Print"),
         #
         SymbolSpecs.IMPORT:                 R(Text( "import " ), rdescript="Java: Import"),
         #
@@ -65,7 +65,7 @@ class Java(MergeRule):
         
         "it are in":                        R(Text("Arrays.asList(TOKEN).contains(TOKEN)"), rdescript="Java: In"),
         "try states":                       R(Text("try"), rdescript="Java: Try"),
-        "arrow":                            R(Text("->"), rdescript="Java: Lambda Arrow"),
+        "row":                            R(Text("->"), rdescript="Java: Lambda Arrow"),
         
         "public":                           R(Text("public "), rdescript="Java: Public"),
         "private":                          R(Text("private "), rdescript="Java: Private"),
@@ -91,14 +91,17 @@ class Java(MergeRule):
         "array list":                       R(Text("ArrayList"), rdescript="Java: ArrayList"),
        
         "continue":                         R(Text("continue"), rdescript="Java: Continue"),
-        "sue iffae":                        R(Text("if ()")+Key("left"), rdescript="Java: Short If"),
-        "sue shells":                       R(Text("else")+Key("enter"), rdescript="Java: Short Else"),
+        "sue if":                        R(Text("if ()")+Key("left"), rdescript="Java: Short If"),
+        "sue else":                       R(Text("else")+Key("enter"), rdescript="Java: Short Else"),
         
-        "shell iffae":                      R(Text("else if ()")+Key("left"), rdescript="Java: Else If"),
+        "ell if":                      R(Text("else if ()")+Key("left"), rdescript="Java: Else If"),
         "throw exception":                  R(Text("throw new Exception()")+Key("left"), rdescript="Java: Throw Exception"),
         
-        "character at":                     R(Text("charAt"), rdescript="Java: Character At Method"),
-        "is instance of":                   R(Text(" instanceof "), rdescript="Java: Instance Of"),
+        "char at":                     R(Text("charAt"), rdescript="Java: Character At Method"),
+        "instance of":                   R(Text(" instanceof "), rdescript="Java: Instance Of"),
+
+        "funk":                             R(Key("lparen, rparen, left"), rdescript="Java method args"),
+        "body":                             R(Key("end, space, lbrace, rbrace, left, enter"), rdescript="Java method/class body")
           
     }
 

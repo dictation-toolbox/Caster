@@ -15,8 +15,8 @@ complexity_report*
 # Ignore Natlink
 /core/
 
-# Ignore User Rules and Filters
-/caster/user
+# Ignore Private User Rules and Filters
+/caster/user/private
 
 # Ignore Custom Sikuli Scripts
 /caster/asynch/sikuli/scripts
