@@ -75,7 +75,7 @@ class CSharp(MergeRule):
         "array":                            R(Mimic("brackets"), rdescript="C#: Array"),
         "list":                             R(Text("List<>")+Key("left"), rdescript="C# List"),
         "var":                              R(Text("var TOKEN = TOKEN;"), rdescript="C# variable"),
-        "(lambda|goes to)":                 R(Text("->"), rdescript="C#: lambda"),
+        "(lambda|goes to)":                 R(Text("=>"), rdescript="C#: lambda"),
         
         
                 
