@@ -60,12 +60,9 @@ class Javascript(MergeRule):
         
         
         # JavaScript specific
-        "anon funk":                    R(Text("function () {}") + Key("left:1, enter")
-                                         + SelectiveAction(Key("enter, up"), ["AptanaStudio3.exe"]),
-                                         rdescript="Javascript: Anonymous Function"),
+        "anon funk":                    R(Text("() => {}") + Key("left:1, enter"), rdescript="Javascript: Anonymous Function"),
         "timer":                        R(Text("setInterval()") + Key("left"), rdescript="Javascript: Timer"),
         "timeout":                      R(Text("setTimeout()") + Key("left"), rdescript="Javascript: Timeout"),
-        "sue iffae":                    R(Text("if()") + Key("left"), rdescript="Javascript: Short If"),
         "document":                     R(Text("document"), rdescript="Javascript: Document"),
         "index of":                     R(Text("indexOf()") + Key("left"), rdescript="Javascript: Index Of"),
         "has own property":             R(Text("hasOwnProperty()") + Key("left"), rdescript="Javascript: Has Own Property"),
@@ -83,10 +80,10 @@ class Javascript(MergeRule):
         "throw":                        R(Text("throw "), rdescript="Javascript: Throw"),
         "instance of":                  R(Text("instanceof "), rdescript="Javascript: Instance Of"),
         
-        "(far | variable)":             R(Text("var "), rdescript="Javascript: Variable"),
-        "sue iffae":                    R(Text("if ()") + Key("left"), rdescript="Javascript: Short If"),
-        "sue shells":                   R(Text("else") + Key("enter"), rdescript="Javascript: Short Else"),
-         
+        "var":                          R(Text("var "), rdescript="Javascript: Var"),
+        "const":                        R(Text("const"), rdescript=" JavaScript: Const"),
+        "Let":                          R(Text("let"), rdescript=" JavaScript: Let"),
+
         "shell iffae":                  R(Text("else if ()") + Key("left"), rdescript="Javascript: Else If"),
        
           }
