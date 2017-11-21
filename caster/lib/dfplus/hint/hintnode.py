@@ -91,7 +91,7 @@ class NodeRule(SelfModifyingRule):
         
         self.refresh(node, first, is_reset)
     
-    def get_name(self):
+    def get_pronunciation(self):
         return self.master_node.spec
     
     def refresh(self, *args):

@@ -341,9 +341,9 @@ def update_python(rule):
 
 def replace_python_else_action(mp):
     if mp.time == MergeInf.RUN and mp.type == MergeInf.GLOBAL:
-        if mp.rule1 is not None and mp.rule1.get_name() == "Python":
+        if mp.rule1 is not None and mp.rule1.get_pronunciation() == "Python":
             update_python(mp.rule1)
-        if mp.rule2.get_name() == "Python":
+        if mp.rule2.get_pronunciation() == "Python":
             update_python(mp.rule2)
         
 control.nexus().merger.add_filter(replace_python_else_action)
@@ -359,7 +359,7 @@ from caster.lib.dfplus.merge.mergepair import MergeInf
 from caster.lib.dfplus.state.short import R
 
 def add_is_to_python(rule):
-    if rule.get_name() == "Python":
+    if rule.get_pronunciation() == "Python":
         rule.mapping_actual()["identity is"] = R(Text(" is "), rdescript="Python: Is")
 
 def add_is_to_python_filter(mp):

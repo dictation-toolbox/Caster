@@ -13,7 +13,7 @@ def add_modkeys(rule):
     release = R(Key("shift:up, ctrl:up, alt:up"), rdescript = "Mod Keys Up")
     
     if not hasattr(rule, "marked") and\
-    rule.get_name()[0:6] != "Merged": # don't augment merged rules-- they'd get it twice
+    rule.get_pronunciation()[0:6] != "Merged": # don't augment merged rules-- they'd get it twice
         for spec in rule.mapping_actual().keys():
             rule.mapping_actual()[spec] = release + rule.mapping_actual()[spec] + release
         rule.marked = True

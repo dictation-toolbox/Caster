@@ -144,7 +144,7 @@ def test(specs, choices, ccr_max):
     '''activate everything except the heavy rule'''
     merger_ccr_activator = merger.global_rule_changer()
     for rule in core_and_python():
-        merger_ccr_activator(rule.get_name(), True, False)
+        merger_ccr_activator(rule.get_pronunciation(), True, False)
     print("..")
     merger.selfmod_rule_changer()("css", True, False)
     print("...")

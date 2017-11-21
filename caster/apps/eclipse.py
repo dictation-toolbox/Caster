@@ -170,7 +170,7 @@ class EclipseRule(MergeRule):
 class EclipseCCR(MergeRule):
     pronunciation = "eclipse jump"
     
-    mwith = [Navigation().get_name()]
+    mwith = [Navigation().get_pronunciation()]
     
     mapping = {
             #Line Ops
