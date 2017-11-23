@@ -24,46 +24,36 @@ def _wait_for_wsr_activation():
 
 _NEXUS = None
 
-try:
-    from caster.lib import settings# requires nothing
-    settings.WSR = __name__ == "__main__"
-    from caster.lib import utilities# requires settings
-    if settings.WSR:
-        _wait_for_wsr_activation()
-        SymbolSpecs.set_cancel_word("escape")
-    from caster.lib import control
-    _NEXUS = control.nexus()
-    
-    from caster.apps import *
-    from caster.asynch import *
-    from caster.lib import context
-    import caster.lib.dev.dev
-    from caster.asynch.sikuli import sikuli
-    from caster.lib import navigation
-    navigation.initialize_clipboard(_NEXUS)
-    from caster.lib.dfplus.state.short import R
-    from caster.lib.dfplus.additions import IntegerRefST
-    
-    from caster.lib.dfplus.merge.mergepair import MergeInf
-    from caster.lib.ccr import *
-    from caster.lib.ccr.recording.again import Again
-    from caster.lib.ccr.recording.alias import VanillaAlias
-    from caster.lib.ccr.recording import history
-    from caster.lib.dev import dev
-    from caster.lib.dfplus.hint.nodes import css
-    from caster.user.filters.examples import scen4, modkeysup
-    from caster import user
-    from caster.lib.dfplus.merge.mergerule import MergeRule
-    from caster.lib.dfplus.merge import gfilter
-    
-except:
-    print("\nAttempting to load CCR anyway...")
-    from caster.lib import utilities
-    from caster.lib import control
-    _NEXUS = control.nexus()
-    
-    utilities.simple_log()
+from caster.lib import settings# requires nothing
+settings.WSR = __name__ == "__main__"
+from caster.lib import utilities# requires settings
+if settings.WSR:
+    _wait_for_wsr_activation()
+    SymbolSpecs.set_cancel_word("escape")
+from caster.lib import control
+_NEXUS = control.nexus()
 
+from caster.apps import *
+from caster.asynch import *
+from caster.lib import context
+import caster.lib.dev.dev
+from caster.asynch.sikuli import sikuli
+from caster.lib import navigation
+navigation.initialize_clipboard(_NEXUS)
+from caster.lib.dfplus.state.short import R
+from caster.lib.dfplus.additions import IntegerRefST
+
+from caster.lib.dfplus.merge.mergepair import MergeInf
+from caster.lib.ccr import *
+from caster.lib.ccr.recording.again import Again
+from caster.lib.ccr.recording.alias import VanillaAlias
+from caster.lib.ccr.recording import history
+from caster.lib.dev import dev
+from caster.lib.dfplus.hint.nodes import css
+from caster.user.filters.examples import scen4, modkeysup
+from caster import user
+from caster.lib.dfplus.merge.mergerule import MergeRule
+from caster.lib.dfplus.merge import gfilter
         
 
 
