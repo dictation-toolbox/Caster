@@ -57,7 +57,7 @@ class FlashDevelopRule(MergeRule):
 
 class FlashDevelopCCR(MergeRule):
     pronunciation = "flash develop test"
-    mwith = [Navigation().get_name()]
+    mwith = [Navigation().get_pronunciation()]
     
     mapping = {
             "[go to] line <n>":                         R(Key("c-g") + Pause("50") + Text("%(n)d") + Key("enter"), 

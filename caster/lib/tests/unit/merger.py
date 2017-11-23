@@ -16,7 +16,7 @@ from caster.lib.tests.unit.state import TestNexus
 def demo_filter(_):
     ''' delete conflicting specs out of the base rule '''
     if _.type == MergeInf.GLOBAL and _.time != MergeInf.BOOT \
-    and _.rule1 is not None and _.rule2.get_name()=="Bash":
+    and _.rule1 is not None and _.rule2.get_pronunciation()=="Bash":
         for spec in _.rule1.mapping_actual().keys():
             if spec in _.rule2.mapping_actual().keys():
                 del _.rule1.mapping_actual()[spec]

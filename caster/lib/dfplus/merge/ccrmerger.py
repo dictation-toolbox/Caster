@@ -100,14 +100,14 @@ class CCRMerger(object):
     
     '''setup: adding rules and filters'''
     def add_global_rule(self, rule):
-        assert rule.get_context() is None, "global rules may not have contexts, "+rule.get_name()+" has a context: "+str(rule.get_context())
+        assert rule.get_context() is None, "global rules may not have contexts, "+rule.get_pronunciation()+" has a context: "+str(rule.get_context())
         assert isinstance(rule, MergeRule) and not hasattr(rule, "set_merger"), \
             "only MergeRules may be added as global rules; use add_selfmodrule() or add_app_rule()"
         self._add_to(rule, self._global_rules)
     def add_app_rule(self, rule, context=None):
         if context is not None and rule.get_context() is None: rule.set_context(context)
-        assert rule.get_context() is not None, "app rules must have contexts, "+rule.get_name()+" has no context"
-        assert rule.get_merge_with() is not None, "app rules must define mwith, "+rule.get_name()+" has no mwith"
+        assert rule.get_context() is not None, "app rules must have contexts, "+rule.get_pronunciation()+" has no context"
+        assert rule.get_merge_with() is not None, "app rules must define mwith, "+rule.get_pronunciation()+" has no mwith"
         self._add_to(rule, self._app_rules)
     def add_selfmodrule(self, rule):
         assert hasattr(rule, "set_merger"), "only SelfModifyingRules may be added by add_selfmodrule()"
@@ -118,15 +118,15 @@ class CCRMerger(object):
         if not filter in self._filters:
             self._filters.append(filter)
     def _add_to(self, rule, group):
-        if rule.get_name() in \
+        if rule.get_pronunciation() in \
         self.global_rule_names()+\
         self.app_rule_names()+\
         self.selfmod_rule_names():
-            raise Exception("Rule Naming Conflict: "+rule.get_name())
+            raise Exception("Rule Naming Conflict: "+rule.get_pronunciation())
         if isinstance(rule, MergeRule):
             for name in group.keys(): 
                 group[name].compatibility_check(rule) # calculate compatibility for uncombined rules at boot time
-            group[rule.get_name()] = rule
+            group[rule.get_pronunciation()] = rule
     
     '''getters'''
     def global_rule_names(self):
@@ -293,10 +293,10 @@ class CCRMerger(object):
         '''save if necessary'''
         if time in [MergeInf.RUN, MergeInf.SELFMOD] and save:
             # everything in base composite is active, everything in selfmod is active, update the config as such
-            active_global_names = [rule.get_name() for rule in active_global]
+            active_global_names = [rule.get_pronunciation() for rule in active_global]
             for rule_name in self._global_rules:
                 self._config[CCRMerger._GLOBAL][rule_name] = rule_name in active_global_names
-            active_selfmod_names = [name3 for name3 in self._config[CCRMerger._SELFMOD] if self._config[CCRMerger._SELFMOD][name3]]#[rule.get_name() for rule in selfmod]
+            active_selfmod_names = [name3 for name3 in self._config[CCRMerger._SELFMOD] if self._config[CCRMerger._SELFMOD][name3]]#[rule.get_pronunciation() for rule in selfmod]
             for rule_name in self._self_modifying_rules:
                 self._config[CCRMerger._SELFMOD][rule_name] = rule_name in active_selfmod_names
             self.save_config()

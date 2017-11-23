@@ -50,15 +50,15 @@ def scenario_3(mp):
     if mp.time == MergeInf.RUN and mp.type == MergeInf.GLOBAL:
         # Inf.RUN means any time except boot or SelfModifyingRule updates
         # Ing.GLOBAL means during global rule de/activation
-        if mp.rule1 is not None and mp.rule1.get_name() == "Python":
+        if mp.rule1 is not None and mp.rule1.get_pronunciation() == "Python":
             update_python(mp.rule1)
-        if mp.rule2.get_name() == "Python":
+        if mp.rule2.get_pronunciation() == "Python":
             update_python(mp.rule2)
         
 # control.nexus().merger.add_filter(scenario_3)
 
 def add_is_to_python(rule):
-    if rule.get_name() == "Python":
+    if rule.get_pronunciation() == "Python":
         rule.mapping_actual()["identity is"] = R(Text(" is "), rdescript="Python: Is")
 
 def scenario_4(mp):
