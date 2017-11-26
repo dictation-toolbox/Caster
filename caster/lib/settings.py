@@ -11,7 +11,6 @@ BASE_PATH = os.path.realpath(__file__).split("\\lib")[0].replace("\\", "/")
 SOFTWARE_VERSION_NUMBER = "0.5.8"
 SOFTWARE_NAME = "Caster v " + SOFTWARE_VERSION_NUMBER
 HOMUNCULUS_VERSION = "HMC v " + SOFTWARE_VERSION_NUMBER
-HMC_TITLE_VOCABULARY = " :: Vocabulary Manager"
 HMC_TITLE_RECORDING = " :: Recording Manager"
 HMC_TITLE_DIRECTORY = " :: Directory Selector"
 HMC_TITLE_CONFIRM = " :: Confirm"
@@ -93,9 +92,7 @@ def init_default_values():
     values_change_count += update_values(SETTINGS["paths"], [
         # DATA
         ("DLL_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/lib/dll/"),
-        ("SETTINGS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/settings.json"),
         ("CCR_CONFIG_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/ccr.json"),
-        ("S_LIST_JSON_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/s_list.json"),
         ("SAVED_CLIPBOARD_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/clipboard.json"),
         ("RECORDED_MACROS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/recorded_macros.json"),
         ("ALIAS_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/aliases.json."),
@@ -125,10 +122,6 @@ def init_default_values():
         # CCR
         ("CONFIGDEBUGTXT_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/data/configdebug.txt"),
                 
-        # MISC
-        ("ALARM_SOUND_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/media/49685__ejfortin__nano-blade-loop.wav"),
-        ("MEDIA_PATH" , SETTINGS["paths"]["BASE_PATH"] + "/bin/media"),
-        
         # PYTHON
         ("WXPYTHON_PATH" , "C:/Python27/Lib/site-packages/wx-3.0-msw"),
                                   
@@ -190,24 +183,12 @@ def init_default_values():
     # node rules
     values_change_count += update_values(SETTINGS, [("nodes", {})])
     
-    # passwords section
-    values_change_count += update_values(SETTINGS, [("password", {})])
-    values_change_count += update_values(SETTINGS["password"], [
-                       ("seed1", "change these"), 
-                       ("seed2", "if you use"),
-                       ("seed3", "password"),
-                       ("seed4", "generation")
-                       ])
-    
     # miscellaneous section
     values_change_count += update_values(SETTINGS, [("miscellaneous", {})])
-    values_change_count += update_values(SETTINGS["miscellaneous"], [
-                       ("debug_speak", False), 
                        ("dev_commands", False),
                        ("sikuli_enabled", False),
                        ("keypress_wait", 50), # milliseconds
                        ("max_ccr_repetitions", 16), 
-                       ("enable_match_logging", False),
                        ("atom_palette_wait", "30"),
                        ("rdp_mode", False),
                        ("integer_remap_opt_in", False), 
