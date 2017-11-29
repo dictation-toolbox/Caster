@@ -13,7 +13,6 @@ from caster.lib.dfplus.state.short import R
 
 
 class CSharp(MergeRule):
-    auto = [".cs", ".cshtml"]
     pronunciation = "C sharp"
         
     mapping = {
