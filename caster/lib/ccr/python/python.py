@@ -7,7 +7,7 @@ from dragonfly import Key, Text, Dictation, MappingRule
 
 from caster.lib import control
 from caster.lib.ccr.standard import SymbolSpecs
-from caster.lib.dfplus.merge.mergerule import MergeRule, TokenSet
+from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 
 
@@ -90,13 +90,5 @@ class Python(MergeRule):
 
     extras   = [Dictation("text"),]
     defaults = {}
-    
-    token_set = TokenSet(["and", "del", "from", "not", "while", "as", "elif",
-                 "global", "or", "with", "assert", "else", "if", "pass",
-                 "yield", "break", "except", "import", "print", "class",
-                 "exec", "in", "raise", "continue", "finally", "is",
-                 "return", "def", "for", "lambda", "try"], 
-                         "#", 
-                         ["'''", '"""'])
 
 control.nexus().merger.add_global_rule(Python(ID=100))
