@@ -8,7 +8,6 @@ from caster.lib.dfplus.state.short import R
 
 
 class Haxe(MergeRule):
-    auto = [".hx"]
     pronunciation = "hacks"
         
     mapping = {

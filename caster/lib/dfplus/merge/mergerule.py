@@ -3,17 +3,7 @@ Created on Sep 1, 2015
 
 @author: synkarius
 '''
-import re
-
 from dragonfly import MappingRule, Pause, Function
-
-
-class TokenSet(object):
-    SYMBOL_PATTERN = re.compile("([A-Za-z0-9_]+)")
-    def __init__(self, keywords, line_comment, long_comment):
-        self.keywords = keywords
-        self.line_comment = line_comment
-        self.long_comment = long_comment
 
 class MergeRule(MappingRule):
     @staticmethod
