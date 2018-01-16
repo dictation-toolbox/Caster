@@ -2,7 +2,7 @@ from dragonfly import Key, Text, Paste, MappingRule
 
 from caster.lib import control
 from caster.lib.ccr.standard import SymbolSpecs
-from caster.lib.dfplus.merge.mergerule import MergeRule, TokenSet
+from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 
 
@@ -18,7 +18,6 @@ class JavaNon(MappingRule):
     ncdefaults = {}
 
 class Java(MergeRule):
-    auto = [".java"]
     non = JavaNon
         
     mapping = {
@@ -104,21 +103,5 @@ class Java(MergeRule):
 
     extras   = []
     defaults = {}
-    
-    token_set = TokenSet(["abstract", "continue", "for", "new", "switch", "assert",
-                 "default", "goto", "package", "synchronized", "boolean",
-                 "do", "if", "private", "this", "break", "double",
-                 "implements", "protected", "throw", "byte", "else",
-                 "import", "public", "throws", "case", "enum",
-                 "instanceof", "return", "transient", "catch", "extends",
-                 "int", "short", "try", "char", "final", "interface",
-                 "static", "void", "class", "finally", "long", "strictfp",
-                 "volatile", "const", "float", "native", "super", "while"], 
-                         "//", 
-                         ["/*", "*/"])
-
-
-
-
 
 control.nexus().merger.add_global_rule(Java())

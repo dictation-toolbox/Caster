@@ -3,17 +3,7 @@ Created on Sep 1, 2015
 
 @author: synkarius
 '''
-import re
-
 from dragonfly import MappingRule, Pause, Function
-
-
-class TokenSet(object):
-    SYMBOL_PATTERN = re.compile("([A-Za-z0-9_]+)")
-    def __init__(self, keywords, line_comment, long_comment):
-        self.keywords = keywords
-        self.line_comment = line_comment
-        self.long_comment = long_comment
 
 class MergeRule(MappingRule):
     @staticmethod
@@ -46,7 +36,7 @@ class MergeRule(MappingRule):
     '''app MergeRules MUST define `mwith` in order to
     define what else they can merge with -- this is an
     optimization to prevent pointlessly large global
-    CCR copies; mwith is a list of get_name()s'''
+    CCR copies; mwith is a list of get_pronunciation()s'''
     mwith = None
     
     def __init__(self, name=None, mapping=None, extras=None, defaults=None,
@@ -94,12 +84,12 @@ class MergeRule(MappingRule):
         defaults = self.defaults_copy()
         defaults.update(other.defaults_copy())
         context = self._mcontext if self._mcontext is not None else other.get_context() # one of these should always be None; contexts don't mix here
-        return MergeRule("Merged"+MergeRule.get_merge_name()+self.get_name()[0]+other.get_name()[0], 
+        return MergeRule("Merged"+MergeRule.get_merge_name()+self.get_pronunciation()[0]+other.get_pronunciation()[0], 
                          mapping, extras, defaults, self._exported and other._exported, # no ID
                          composite=self.composite.union(other.composite), mcontext=context)
                 
-    def get_name(self):
-        return self.name if self.pronunciation is None else self.pronunciation
+    def get_pronunciation(self):
+        return self.pronunciation if self.pronunciation is not None else self.name
     def copy(self):
         return MergeRule(self.name, self._mapping.copy(), self._extras.values(), self._defaults.copy(), 
                          self._exported, self.ID, self.composite, self.compatible, self._mcontext, self._mwith)

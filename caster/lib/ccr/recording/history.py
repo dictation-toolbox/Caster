@@ -46,7 +46,8 @@ class HistoryRule(SelfModifyingRule):
         
         word_sequences = [] # word_sequences is a list of lists of strings
         for i in data["selected_indices"]:
-            single_sequence = self.nexus.preserved[i]
+            # Convert from a tuple to a list because we may need to modify it.
+            single_sequence = list(self.nexus.preserved[i])
             # clean the results
             for k in range(0,len(single_sequence)):
                 if "\\" in single_sequence[k]:
@@ -72,8 +73,12 @@ class HistoryRule(SelfModifyingRule):
             utilities.save_json_file(recorded_macros, settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
         mapping = {}
         for spec in recorded_macros:
+            # Create a copy of the string without Unicode characters.
+            ascii_str = str(spec)
             sequences = recorded_macros[spec]
-            mapping[spec] = R(Playback([(sequence, 0.0) for sequence in sequences])*Repeat(extra="n"), rdescript="Recorded Macro: "+spec)
+            delay = settings.SETTINGS["miscellaneous"]["history_playback_delay_secs"]
+            # It appears that the associative string (ascii_str) must be ascii, but the sequences within Playback must be Unicode.
+            mapping[ascii_str] = R(Playback([(sequence, delay) for sequence in sequences]), rdescript="Recorded Macro: " + ascii_str)
         mapping["record from history"] = R(Function(self.record_from_history), rdescript="Record From History")
         mapping["delete recorded macros"] = R(Function(self.delete_recorded_macros), rdescript="Delete Recorded Macros")
         # reload with new mapping
