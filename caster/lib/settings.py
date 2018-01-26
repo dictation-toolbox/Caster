@@ -34,6 +34,7 @@ WSR = False
 def _find_natspeak():
     '''Tries to find the natspeak engine.'''
     possible_locations = [
+        "C:/Program Files (x86)/Nuance/NaturallySpeaking15/Program/natspeak.exe",
         "C:/Program Files (x86)/Nuance/NaturallySpeaking14/Program/natspeak.exe",
         "C:/Program Files (x86)/Nuance/NaturallySpeaking13/Program/natspeak.exe",
         "C:/Program Files (x86)/Nuance/NaturallySpeaking12/Program/natspeak.exe",
