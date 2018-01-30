@@ -111,6 +111,7 @@ _DEFAULT_SETTINGS = {
         "sqldeveloper": True,
         "sublime": True,
         "visualstudio": True,
+        "visualstudiocode"": True,
         "winword": True,
         "wsr": True,
     },
