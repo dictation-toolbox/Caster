@@ -167,7 +167,7 @@ class Navigation(MergeRule):
         Choice("semi",
                     {"dock": ";", "doc": ";", "sink": ""
                     }),
-        Choice("word_limit",{"single": 1,"double": 2,"triple":3}),
+        Choice("word_limit",{"single": 1,"double": 2,"triple":3,"Quadra":4}),
           
           
           
