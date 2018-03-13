@@ -66,7 +66,11 @@ def get_text_format_description(capitalization, spacing):
 
 def master_format_text(capitalization, spacing, textnv):
     capitalization, spacing = normalize_text_format(capitalization, spacing)
-    Text(get_formatted_text(capitalization, spacing, str(textnv))).execute()    
+    Text(get_formatted_text(capitalization, spacing, str(textnv))).execute()
+
+def partial_format_text(word_limit,textnv):
+    global _CAPITALIZATION, _SPACING   
+    Text(get_formatted_text(_CAPITALIZATION, _SPACING, " ".join(str(textnv).split(" ")[0:word_limit]))).execute()
 
 def get_formatted_text(capitalization, spacing, t):
     tlen = len(t)
