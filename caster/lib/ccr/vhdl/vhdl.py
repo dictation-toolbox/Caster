@@ -27,7 +27,10 @@ class VHDLnon(MappingRule):
     "component declaration":               R(component_declaration_string,rdescript="VHDL: component"),
     SymbolSpecs.SWITCH:                    R(case_string,rdescript="VHDL: case statement"),
     SymbolSpecs.CASE:                      R(Text("case TOKEN is")),
-    "process":                             R(process_string,rdescript="VHDL: process")
+    "process":                             R(process_string,rdescript="VHDL: process"),
+    "generate components":                 R(for_generate_string,rdescript="VHDL: generate block"),
+    "conditional component":               R(if_generate_string,rdescript="VHDL: generate block"),
+
 	}
 
 	
@@ -43,7 +46,7 @@ class VHDL(MergeRule):
 
 
         SymbolSpecs.IF:                         R(Text("if () then ")+Key("enter,enter")+Text("end if;")+Key("home,up,up"),rdescript="VHDL: If"),
-        SymbolSpecs.IF+" generate":             R(Text("if () then ")+Key("enter,enter")+Text("end if;")+Key("home,up,up"),rdescript="VHDL: If"),
+        
 
 
         SymbolSpecs.ELSE:                       R(Key("e,l,s,e,enter"),rdescript="VHDL: If"),
