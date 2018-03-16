@@ -47,6 +47,9 @@ class VHDL(MergeRule):
         "alternate":                            R(Key("e,l,s,i, f,space,T,O,K,E,N,space,t,h,e,n,enter,tab"), rdescript="VHDL: If"),
         SymbolSpecs.CASE:                       R(Text("case TOKEN is")+Key("enter,tab"),rdescript="VHDL: case"),        
         "when":                                 R(Text("when "), rdescript="VHDL: when"),
+
+        SymbolSpecs.FOR_LOOP:                   R(Text("for  in to loop")+Key("left:12"),rdescript="VHDL: For loop"),
+        "generate":                             R(Text("GENERATE"),rdescript="VHDL: generate"),
         
         
 

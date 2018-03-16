@@ -1,4 +1,4 @@
-
+from dragonfly import Key,Text
 case_string=Text("case TOKEN is")+Key("enter,tab")+Text("when 'TOKEN'  =>  TOKEN")+\
 Key("enter,backspace")+Text("end case;")
 
@@ -21,3 +21,6 @@ Key("enter")+Text(");")+Key("enter,backspace")+Text("end entity;")
 architecture_string=\
 Text("architecture TOKEN is")+Key("enter")+Text("begin")+\
 Key("enter,tab")+Text("TOKEN")+Key("enter,backspace")+Text("end architecture;")
+
+generate_string=Text("TOKEN:")+Key("enter,tab")+Text("for TOKEN in  to  generate")+Key("enter,tab")+Text("TOKEN : TOKEN port map")+Key("enter,tab")+\
+Text("();")+Key("enter,backspace:2")+Text("end generate TOKEN;")+Key("up:4,left:6")
