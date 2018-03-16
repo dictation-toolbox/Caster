@@ -43,6 +43,9 @@ class VHDL(MergeRule):
 
 
         SymbolSpecs.IF:                         R(Text("if () then ")+Key("enter,enter")+Text("end if;")+Key("home,up,up"),rdescript="VHDL: If"),
+        SymbolSpecs.IF+" generate":             R(Text("if () then ")+Key("enter,enter")+Text("end if;")+Key("home,up,up"),rdescript="VHDL: If"),
+
+
         SymbolSpecs.ELSE:                       R(Key("e,l,s,e,enter"),rdescript="VHDL: If"),
         "alternate":                            R(Key("e,l,s,i, f,space,T,O,K,E,N,space,t,h,e,n,enter,tab"), rdescript="VHDL: If"),
         SymbolSpecs.CASE:                       R(Text("case TOKEN is")+Key("enter,tab"),rdescript="VHDL: case"),        
