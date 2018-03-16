@@ -11,31 +11,12 @@ from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 
 
-case_string=Text("case TOKEN is")+Key("enter,tab")+Text("when 'TOKEN'  =>  TOKEN")+\
-Key("enter,backspace")+Text("end case;")
+from vhdl_strings import *
 
-process_string=\
-Text("TOKEN: process()")+Key("enter")+Text("begin")+\
-Key("enter,tab")+Text("TOKEN")+Key("enter,backspace")+Text("end process;")
-
-component_string=\
-Text("TOKEN: TOKEN")+Key("enter")+Text("(")+\
-Key("right,semicolon,left:2,enter,tab")+Text("port map(")+Key("enter,tab")+Text("TOKEN <= TOKEN,")+\
-Key("right,enter,s-home,backspace")
-
-component_declaration_string=\
-Text("component TOKEN is")+Key("enter,tab")+Text("port (TOKEN: in std_logic;")+\
-Key("enter")+Text(");")+Key("enter,backspace")+Text("end component;")
-
-entity_string=Text("entity TOKEN is")+Key("enter,tab")+Text("port (TOKEN: in std_logic;")+\
-Key("enter")+Text(");")+Key("enter,backspace")+Text("end entity;")
-
-architecture_string=\
-Text("architecture TOKEN is")+Key("enter")+Text("begin")+\
-Key("enter,tab")+Text("TOKEN")+Key("enter,backspace")+Text("end architecture;")
 
 def binary_string(digit,amount):
     return Text(str(digit)*amount).execute()
+
 
 class VHDLnon(MappingRule):
 	mapping= {
@@ -64,7 +45,7 @@ class VHDL(MergeRule):
         SymbolSpecs.IF:                         R(Text("if () then ")+Key("enter,enter")+Text("end if;")+Key("home,up,up"),rdescript="VHDL: If"),
         SymbolSpecs.ELSE:                       R(Key("e,l,s,e,enter"),rdescript="VHDL: If"),
         "alternate":                            R(Key("e,l,s,i, f,space,T,O,K,E,N,space,t,h,e,n,enter,tab"), rdescript="VHDL: If"),
-        SymbolSpecs.CASE:                      R(Text("case TOKEN is")+Key("enter,tab"),rdescript="VHDL: case"),        
+        SymbolSpecs.CASE:                       R(Text("case TOKEN is")+Key("enter,tab"),rdescript="VHDL: case"),        
         "when":                                 R(Text("when "), rdescript="VHDL: when"),
         
         
@@ -80,11 +61,11 @@ class VHDL(MergeRule):
         "type":                                 R(Text("type :")+Key("left"),rdescript="VHDL: type"),
         # Operators
         "Not Equal":							R(Text("/="),rdescript="VHDL: Not Equal"),
-        SymbolSpecs.NOT:									R(Text("not"),rdescript="VHDL: NOT"),     
-        SymbolSpecs.OR:									R(Text("or"),rdescript="VHDL: OR"),
+        SymbolSpecs.NOT:				        R(Text("not"),rdescript="VHDL: NOT"),     
+        SymbolSpecs.OR:							R(Text("or"),rdescript="VHDL: OR"),
         "not and":								R(Text("nand"),rdescript="VHDL: NAND"),
-        "XOR":							R(Text("xor"),rdescript="VHDL: XOR"),
-        "X NOR":						R(Text("xnor"),rdescript="VHDL: XNOR"),
+        "XOR":							        R(Text("xor"),rdescript="VHDL: XOR"),
+        "X NOR":						        R(Text("xnor"),rdescript="VHDL: XNOR"),
         
 
 
