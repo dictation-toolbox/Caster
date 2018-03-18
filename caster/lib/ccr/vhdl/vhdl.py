@@ -19,6 +19,7 @@ def binary_string(digit,amount):
 
 
 class VHDLnon(MappingRule):
+<<<<<<< HEAD
     mapping= {
         "entity":                               R(entity_string,rdescript="Vhdl: Entity"),
         "Architecture":                        R(architecture_string,rdescript="Vhdl: Entity"),
@@ -30,6 +31,11 @@ class VHDLnon(MappingRule):
         "process":                             R(process_string,rdescript="VHDL: process"),
         "generate components":                 R(for_generate_string,rdescript="VHDL: generate block"),
         "conditional component":               R(if_generate_string,rdescript="VHDL: generate block"),
+=======
+	mapping= {
+	"entity":			   R(entity_string,rdescript="Vhdl: Entity"),
+    "Architecture":                        R(architecture_string,rdescript="Vhdl: Entity"),
+>>>>>>> 2774b3033115ce081295428ffe4f1c4d1fc14a15
 
     }
 
@@ -59,6 +65,7 @@ class VHDL(MergeRule):
         
         
 
+<<<<<<< HEAD
         "Input":                                R(Text("in"),rdescript="VHDL: In"),
         "Output":                                R(Text("out"),rdescript="VHDL: Output"),
         "Standard Logic":                        R(Text("std_logic"),rdescript="VHDL: Standard Logic"),
@@ -84,6 +91,33 @@ class VHDL(MergeRule):
 
         "Down To":                                R(Text("downto"),rdescript="VHDL: DownTo"),
         "Up To":                                R(Text("upto"),rdescript="VHDL: UpTo"),
+=======
+        "Input":				R(Text("in"),rdescript="VHDL: In"),
+        "Output":				R(Text("out"),rdescript="VHDL: Output"),
+        "Standard Logic":			R(Text("std_logic"),rdescript="VHDL: Standard Logic"),
+        "Standard Logic Vector":		R(Text("std_logic_vector"),rdescript="VHDL: Standard Logic Vector"),
+
+        "Constant":				R(Text("constant : ")+Key("left,left"),rdescript="VHDL: Constant"),
+        "Signal":				R(Text("signal : ")+Key("left,left"),rdescript="VHDL: Signal"),
+        "integer":                              R(Text("integer TOKEN to TOKEN"),rdescript="VHDL: integer"),
+        "type":                                 R(Text("type :")+Key("left"),rdescript="VHDL: type"),
+        # Operators
+        "Not Equal":				R(Text("/="),rdescript="VHDL: Not Equal"),
+        SymbolSpecs.NOT:			R(Text("not"),rdescript="VHDL: NOT"),     
+        SymbolSpecs.OR:				R(Text("or"),rdescript="VHDL: OR"),
+        "not and":				R(Text("nand"),rdescript="VHDL: NAND"),
+        "XOR":					R(Text("xor"),rdescript="VHDL: XOR"),
+        "X NOR":				R(Text("xnor"),rdescript="VHDL: XNOR"),
+        
+
+
+        "Assignment":				R(Text(" <= ")+Key("left"),rdescript="VHDL: Assignment"),
+        "Association":				R(Text(' => ')+Key("left"),rdescript="VHDL: Association"),        
+        "Concatenate":				R(Text(" & "),rdescript="VHDL: Concatenate"),
+
+        "Down To":				R(Text("downto"),rdescript="VHDL: DownTo"),
+        "Up To":				R(Text("upto"),rdescript="VHDL: UpTo"),
+>>>>>>> 2774b3033115ce081295428ffe4f1c4d1fc14a15
 
         SymbolSpecs.COMMENT:                    R(Text( "-- " ), rdescript="VHDL: Add Comment"),
      
