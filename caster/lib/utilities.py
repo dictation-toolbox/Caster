@@ -1,29 +1,29 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals, print_function
 
-import os
+from __future__ import print_function, unicode_literals
+
+import io
 import json
-import sys
+import os
 import re
-from subprocess import Popen
+import sys
 import traceback
-import codecs
+from __builtin__ import True
+from subprocess import Popen
 
-from dragonfly.windows.window import Window
 import win32gui
 import win32ui
-from __builtin__ import True
-
+from dragonfly.windows.window import Window
 
 try:  # Style C -- may be imported into Caster, or externally
-    BASE_PATH = os.path.realpath(__file__).split("\\caster")[
-        0].replace("\\", "/")
+    BASE_PATH = os.path.realpath(__file__).split("\\caster")[0].replace("\\", "/")
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:
     from caster.lib import settings
 
-# filename_pattern was used to determine when to update the list in the element window, checked to see when a new file name had appeared
+# filename_pattern was used to determine when to update the list in the element window,
+# checked to see when a new file name had appeared
 FILENAME_PATTERN = re.compile(r"[/\\]([\w_ ]+\.[\w]+)")
 
 
@@ -53,8 +53,8 @@ def get_window_by_title(title):
 
 def get_window_title_info():
     '''get name of active file and folders in path;
-        will be needed to look up collection of symbols
-        in scanner data'''
+    will be needed to look up collection of symbols
+    in scanner data'''
     global FILENAME_PATTERN
     title = get_active_window_title().replace("\\", "/")
     match_object = FILENAME_PATTERN.findall(title)
@@ -65,16 +65,11 @@ def get_window_title_info():
     return [filename, path_folders, title]
 
 
-# begin stuff that was moved
-
 def save_json_file(data, path):
     try:
-        formatted_data = json.dumps(data, sort_keys=True, indent=4,
-                                    ensure_ascii=False, encoding="utf-8")
-        # if not os.path.exists(path):
-        #     f = open(path, "w")
-        #     f.close()
-        with codecs.open(path, "w", encoding="utf-8") as f:
+        formatted_data = unicode(
+            json.dumps(data, sort_keys=True, indent=4, ensure_ascii=False))
+        with io.open(path, "wt", encoding="utf-8") as f:
             f.write(formatted_data)
     except Exception:
         simple_log(True)
@@ -83,11 +78,13 @@ def save_json_file(data, path):
 def load_json_file(path):
     result = {}
     try:
-        if os.path.isfile(path):  # If the file exists.
-            with codecs.open(path, "r", encoding="utf-8") as f:
-                result = json.loads(f.read().replace("\r", ""))
-        else:
+        with io.open(path, "rt", encoding="utf-8") as f:
+            result = json.loads(f.read())
+    except IOError as e:
+        if e.errno == 2:  # The file doesn't exist.
             save_json_file(result, path)
+        else:
+            raise
     except Exception:
         simple_log(True)
     return result
@@ -101,17 +98,14 @@ def simple_log(to_file=False):
     msg = list_to_string(sys.exc_info())
     print(msg)
     for tb in traceback.format_tb(sys.exc_info()[2]):
-        print (tb)
+        print(tb)
     if to_file:
-        with codecs.open(
-                settings.SETTINGS["paths"]["LOG_PATH"], 'a', encoding="utf-8") as f:
+        with io.open(settings.SETTINGS["paths"]["LOG_PATH"], 'at', encoding="utf-8") as f:
             f.write(msg + "\n")
 
 
 def availability_message(feature, dependency):
     print(feature + " feature not available without " + dependency)
-
-# end stuff that was moved
 
 
 def remote_debug(who_called_it=None):
