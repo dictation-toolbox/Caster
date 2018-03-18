@@ -1,7 +1,7 @@
 '''
 Created on Sep 1, 2015
 
-@author: synkarius
+@author: gerrish
 '''
 from dragonfly import Key, Mimic, Text,MappingRule,Function,Choice
 from caster.lib.dfplus.additions import IntegerRefST
@@ -19,25 +19,25 @@ def binary_string(digit,amount):
 
 
 class VHDLnon(MappingRule):
-	mapping= {
-	"entity":			                   R(entity_string,rdescript="Vhdl: Entity"),
-    "Architecture":                        R(architecture_string,rdescript="Vhdl: Entity"),
+    mapping= {
+        "entity":                               R(entity_string,rdescript="Vhdl: Entity"),
+        "Architecture":                        R(architecture_string,rdescript="Vhdl: Entity"),
 
-    "component":                           R(component_string,rdescript="VHDL: component"),
-    "component declaration":               R(component_declaration_string,rdescript="VHDL: component"),
-    SymbolSpecs.SWITCH:                    R(case_string,rdescript="VHDL: case statement"),
-    SymbolSpecs.CASE:                      R(Text("case TOKEN is")),
-    "process":                             R(process_string,rdescript="VHDL: process"),
-    "generate components":                 R(for_generate_string,rdescript="VHDL: generate block"),
-    "conditional component":               R(if_generate_string,rdescript="VHDL: generate block"),
+        "component":                           R(component_string,rdescript="VHDL: component"),
+        "component declaration":               R(component_declaration_string,rdescript="VHDL: component"),
+        SymbolSpecs.SWITCH:                    R(case_string,rdescript="VHDL: case statement"),
+        SymbolSpecs.CASE:                      R(Text("case TOKEN is")),
+        "process":                             R(process_string,rdescript="VHDL: process"),
+        "generate components":                 R(for_generate_string,rdescript="VHDL: generate block"),
+        "conditional component":               R(if_generate_string,rdescript="VHDL: generate block"),
 
-	}
+    }
 
-	
+    
 
 
 class VHDL(MergeRule):
-	
+    
     pronunciation = "VHDL"
     non=VHDLnon
         
@@ -59,31 +59,31 @@ class VHDL(MergeRule):
         
         
 
-        "Input":								R(Text("in"),rdescript="VHDL: In"),
-        "Output":								R(Text("out"),rdescript="VHDL: Output"),
-        "Standard Logic":						R(Text("std_logic"),rdescript="VHDL: Standard Logic"),
-        "Standard Logic Vector":			    R(Text("std_logic_vector"),rdescript="VHDL: Standard Logic Vector"),
+        "Input":                                R(Text("in"),rdescript="VHDL: In"),
+        "Output":                                R(Text("out"),rdescript="VHDL: Output"),
+        "Standard Logic":                        R(Text("std_logic"),rdescript="VHDL: Standard Logic"),
+        "Standard Logic Vector":                R(Text("std_logic_vector"),rdescript="VHDL: Standard Logic Vector"),
 
-        "Constant":								R(Text("constant : ")+Key("left,left"),rdescript="VHDL: Constant"),
-        "Signal":								R(Text("signal : ")+Key("left,left"),rdescript="VHDL: Signal"),
+        "Constant":                                R(Text("constant : ")+Key("left,left"),rdescript="VHDL: Constant"),
+        "Signal":                                R(Text("signal : ")+Key("left,left"),rdescript="VHDL: Signal"),
         "integer":                              R(Text("integer TOKEN to TOKEN"),rdescript="VHDL: integer"),
         "type":                                 R(Text("type :")+Key("left"),rdescript="VHDL: type"),
         # Operators
-        "Not Equal":							R(Text("/="),rdescript="VHDL: Not Equal"),
-        SymbolSpecs.NOT:				        R(Text("not"),rdescript="VHDL: NOT"),     
-        SymbolSpecs.OR:							R(Text("or"),rdescript="VHDL: OR"),
-        "not and":								R(Text("nand"),rdescript="VHDL: NAND"),
-        "XOR":							        R(Text("xor"),rdescript="VHDL: XOR"),
-        "X NOR":						        R(Text("xnor"),rdescript="VHDL: XNOR"),
+        "Not Equal":                            R(Text("/="),rdescript="VHDL: Not Equal"),
+        SymbolSpecs.NOT:                        R(Text("not"),rdescript="VHDL: NOT"),     
+        SymbolSpecs.OR:                            R(Text("or"),rdescript="VHDL: OR"),
+        "not and":                                R(Text("nand"),rdescript="VHDL: NAND"),
+        "XOR":                                    R(Text("xor"),rdescript="VHDL: XOR"),
+        "X NOR":                                R(Text("xnor"),rdescript="VHDL: XNOR"),
         
 
 
-        "Assignment":							R(Text(" <= ")+Key("left"),rdescript="VHDL: Assignment"),
-        "Association":							R(Text(' => ')+Key("left"),rdescript="VHDL: Association"),        
-        "Concatenate":							R(Text(" & "),rdescript="VHDL: Concatenate"),
+        "Assignment":                            R(Text(" <= ")+Key("left"),rdescript="VHDL: Assignment"),
+        "Association":                            R(Text(' => ')+Key("left"),rdescript="VHDL: Association"),        
+        "Concatenate":                            R(Text(" & "),rdescript="VHDL: Concatenate"),
 
-        "Down To":								R(Text("downto"),rdescript="VHDL: DownTo"),
-        "Up To":								R(Text("upto"),rdescript="VHDL: UpTo"),
+        "Down To":                                R(Text("downto"),rdescript="VHDL: DownTo"),
+        "Up To":                                R(Text("upto"),rdescript="VHDL: UpTo"),
 
         SymbolSpecs.COMMENT:                    R(Text( "-- " ), rdescript="VHDL: Add Comment"),
      
