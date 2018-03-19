@@ -89,32 +89,32 @@ class VHDL(MergeRule):
         "Down To":                              R(Text("downto"),rdescript="VHDL: DownTo"),
         "Up To":                                R(Text("upto"),rdescript="VHDL: UpTo"),
 
-        "Input":				                R(Text("in"),rdescript="VHDL: In"),
-        "Output":				                R(Text("out"),rdescript="VHDL: Output"),
-        "Standard Logic":			            R(Text("std_logic"),rdescript="VHDL: Standard Logic"),
-        "Standard Logic Vector":		        R(Text("std_logic_vector"),rdescript="VHDL: Standard Logic Vector"),
+        "Input":		                R(Text("in"),rdescript="VHDL: In"),
+        "Output":				R(Text("out"),rdescript="VHDL: Output"),
+        "Standard Logic":			R(Text("std_logic"),rdescript="VHDL: Standard Logic"),
+        "Standard Logic Vector":		R(Text("std_logic_vector"),rdescript="VHDL: Standard Logic Vector"),
 
-        "Constant":				                R(Text("constant : ")+Key("left,left"),rdescript="VHDL: Constant"),
-        "Signal":				                R(Text("signal : ")+Key("left,left"),rdescript="VHDL: Signal"),
+        "Constant":				R(Text("constant : ")+Key("left,left"),rdescript="VHDL: Constant"),
+        "Signal":				R(Text("signal : ")+Key("left,left"),rdescript="VHDL: Signal"),
         "integer":                              R(Text("integer TOKEN to TOKEN"),rdescript="VHDL: integer"),
         "type":                                 R(Text("type :")+Key("left"),rdescript="VHDL: type"),
         # Operators
-        "Not Equal":				            R(Text("/="),rdescript="VHDL: Not Equal"),
-        SymbolSpecs.NOT:			            R(Text("not"),rdescript="VHDL: NOT"),     
-        SymbolSpecs.OR:				            R(Text("or"),rdescript="VHDL: OR"),
-        "not and":				                R(Text("nand"),rdescript="VHDL: NAND"),
-        "XOR":					                R(Text("xor"),rdescript="VHDL: XOR"),
-        "X NOR":				                R(Text("xnor"),rdescript="VHDL: XNOR"),
+        "Not Equal":				R(Text("/="),rdescript="VHDL: Not Equal"),
+        SymbolSpecs.NOT:			R(Text("not"),rdescript="VHDL: NOT"),     
+        SymbolSpecs.OR:				R(Text("or"),rdescript="VHDL: OR"),
+        "not and":				R(Text("nand"),rdescript="VHDL: NAND"),
+        "XOR":					R(Text("xor"),rdescript="VHDL: XOR"),
+        "X NOR":				R(Text("xnor"),rdescript="VHDL: XNOR"),
 
         
 
 
-        "Assignment":				            R(Text(" <= ")+Key("left"),rdescript="VHDL: Assignment"),
+        "Assignment":				R(Text(" <= ")+Key("left"),rdescript="VHDL: Assignment"),
         "Association":	                        R(Text(' => ')+Key("left"),rdescript="VHDL: Association"),        
-        "Concatenate":				            R(Text(" & "),rdescript="VHDL: Concatenate"),
+        "Concatenate":				R(Text(" & "),rdescript="VHDL: Concatenate"),
 
-        "Down To":				                R(Text("downto"),rdescript="VHDL: DownTo"),
-        "Up To":				                R(Text("upto"),rdescript="VHDL: UpTo"),
+        "Down To":				R(Text("downto"),rdescript="VHDL: DownTo"),
+        "Up To":				R(Text("upto"),rdescript="VHDL: UpTo"),
 
 
         SymbolSpecs.COMMENT:                    R(Text( "-- " ), rdescript="VHDL: Add Comment"),
