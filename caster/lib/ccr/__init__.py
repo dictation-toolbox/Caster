@@ -12,5 +12,5 @@ from javascript.javascript import Javascript
 from python.python import Python
 from rust.rust import Rust
 from sql.sql import SQL
-from vhdl import VHDL
-from prolog import Prolog
+from vhdl.vhdl import VHDL
+from prolog.prolog import Prolog
