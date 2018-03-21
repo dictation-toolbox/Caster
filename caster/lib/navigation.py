@@ -10,11 +10,7 @@ from subprocess import Popen
 import dragonfly
 from caster.asynch.mouse.legion import LegionScanner
 from caster.lib import settings, utilities
-from dragonfly import Choice, Key, Mouse, Text, monitors
-from win32clipboard import (CF_TEXT, CF_UNICODETEXT, CloseClipboard,
-                            EmptyClipboard, GetClipboardData,
-                            GetPriorityClipboardFormat, OpenClipboard,
-                            SetClipboardText)
+from dragonfly import Choice, Clipboard, Key, Mouse, Text, monitors
 
 DIRECTION_STANDARD = {
     "sauce [E]": "up",
@@ -99,11 +95,7 @@ def clipboard_to_file(nnavi500, nexus, do_copy=False):
         try:
             # time for keypress to execute
             time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"] / 1000.)
-            OpenClipboard()
-            fmt = GetPriorityClipboardFormat((CF_UNICODETEXT, CF_TEXT))
-            if fmt > 0:
-                nexus.clip[key] = GetClipboardData(fmt)
-            CloseClipboard()
+            nexus.clip[key] = Clipboard.get_system_text()
             utilities.save_json_file(nexus.clip,
                                      settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
         except Exception:
@@ -119,10 +111,7 @@ def drop(nnavi500, nexus):
         failure = False
         try:
             if key in nexus.clip:
-                OpenClipboard()
-                EmptyClipboard()
-                SetClipboardText(nexus.clip[key], CF_UNICODETEXT)
-                CloseClipboard()
+                Clipboard.set_system_text(nexus.clip[key])
                 Key("c-v").execute()
             else:
                 dragonfly.get_engine().speak("slot empty")
