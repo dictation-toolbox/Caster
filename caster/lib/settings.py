@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+import collections
 
 import collections
 import io
@@ -128,6 +128,7 @@ _DEFAULT_SETTINGS = {
         "again": True,
         "alias": True,
         "chainalias": True,
+        "caster_api": False
     },
 
     # node rules
@@ -162,6 +163,13 @@ def _save(data, path):
             json.dumps(data, sort_keys=True, indent=4, ensure_ascii=False))
         with io.open(path, "wt", encoding="utf-8") as f:
             f.write(formatted_data)
+        formatted_data = json.dumps(data, sort_keys=True, indent=4, ensure_ascii=False)
+        if not os.path.exists(path):
+            f = open(path, "w")
+            f.close()
+        f = open(path, "w")
+        f.write(formatted_data)
+        f.close()
     except Exception:
         print "Error saving json file: " + path
 
@@ -173,10 +181,15 @@ def _init(path):
             result = json.loads(f.read())
     except ValueError as e:
         print("\n\n" + repr(e) + " while loading settings file: " + path + "\n\n")
+        f = open(path, "r")
+        result = json.loads(f.read())
+        f.close()
+    except ValueError:
+        print("\n\nValueError while loading settings file: " + path + "\n\n")
         print(sys.exc_info())
     except IOError as e:
-        print("\n\n" + repr(e) + " while loading settings file: " + path +
-              "\nAttempting to recover...\n\n")
+        print("\n\nIOError: Could not find settings file: " + path +
+              "\nInitializing file...\n\n")
     result, num_default_added = _deep_merge_defaults(result, _DEFAULT_SETTINGS)
     if num_default_added > 0:
         print "Default settings values added: %d " % num_default_added
@@ -225,6 +238,9 @@ def report_to_file(message, path=None):
     if path is not None: _path = path
     with io.open(_path, 'at', encoding="utf-8") as f:
         f.write(unicode(message) + "\n")
+    f = open(_path, 'a')
+    f.write(str(message) + "\n")
+    f.close()
 
 
 ## Kick everything off.

@@ -131,3 +131,35 @@ def reboot(wsr=False):
 
     print(popen_parameters)
     Popen(popen_parameters)
+
+
+def command_or_key_nexus(
+        key="", cmd=""):  #  Checks to send an API command or send dragonfly key actions
+    # Only use dragonfly key actions or an API Commands. API Commands can be combined with dragonfly methods.
+    # api = settings.SETTINGS["feature_rules"]["caster_api"]
+    debug_api = settings.SETTINGS["feature_rules"]["caster_api_debug"]
+    commands_list = cmd
+    shortcuts = key
+    if debug_api is True:  # If the API is enabled and a String is present send_json_commands will initialize.
+        if cmd == "":
+            print("The command does not have API implemented")
+        else:  # sends json commands
+            print("command_key_nexis Initialized to send json commands(cmd)")  # Debugging
+            try:  # when post to API fails to send command use keyboard shortcut instead.
+                commands_list = map(
+                    string.strip, commands_list.split(',')
+                )  # from commands_list split strings separated by a comma and removes white spaces.
+                for a_command in commands_list:  # for each command found in commands_list post a request to API
+                    r = requests.post('http://127.0.0.1:1781/api/commands/' + a_command)
+                    r.raise_for_status()
+            except requests.exceptions.HTTPError as error:
+                print(error)
+            except requests.exceptions.RequestException as error:
+                Key(shortcuts).execute()
+                print(error)
+    else:  #
+        if shortcuts == "":
+            print("The command does not have keyboard shortcut assigned")
+        else:
+            print("command_key_nexis Initialized Key(shortcuts).execute()")  # Debugging
+            Key(shortcuts).execute()
