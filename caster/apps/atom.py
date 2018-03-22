@@ -1,5 +1,5 @@
 """
-__author__ = 'Zone22'
+__author__ = 'LexiconCode'
 Command-module for Atom
 Official Site "https://atom.io/"
 """
