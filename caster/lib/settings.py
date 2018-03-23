@@ -100,6 +100,7 @@ _DEFAULT_SETTINGS = {
         "flashdevelop": True,
         "foxitreader": True,
         "gitbash": True,
+        "gitter": True,
         "kdiff3": True,
         "douglas": True,
         "legion": True,
