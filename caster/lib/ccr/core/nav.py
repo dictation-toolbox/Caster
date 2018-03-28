@@ -107,7 +107,7 @@ class Navigation(MergeRule):
                                                                lambda fnparams: UntilCancelled(Mimic(*filter(lambda s: s != "periodic", fnparams)), 1).execute(), \
                                                                use_spoken=True))]),
     # VoiceCoder-inspired -- these should be done at the IDE level
-    "fill <target>":                R(Key("escape, escape, end"), show=False) +
+    "fill <target>":                R(Key("escape, escape"), show=False) +
                                     AsynchronousAction([L(S(["cancel"], Function(context.fill_within_line, nexus=_NEXUS)))
                                                    ], time_in_seconds=0.2, repetitions=50, rdescript="Fill" ),
     "jump in":                      AsynchronousAction([L(S(["cancel"], context.nav, ["right", "(~[~{~<"]))

@@ -40,8 +40,8 @@ def navigate_to_character(direction3, target, fill=False):
         look_left = str(direction3) == "left"
         
         # make sure nothing is highlighted to boot
-        if not fill:# (except when doing "fill" -- if at end of line, there is no space for this )
-            Key("right, left" if look_left else "left, right").execute()
+        #if not fill:# (except when doing "fill" -- if at end of line, there is no space for this )
+        Key("right, left" if look_left else "left, right").execute()
         if look_left:
             Key("cs-left").execute()
         else:
@@ -121,7 +121,7 @@ def read_selected_without_altering_clipboard(same_is_okay=False):
 
 
 def fill_within_line(target, nexus):
-    result = navigate_to_character("left", str(target), True)
+    result = navigate_to_character("right", str(target), True)
     if result:
         nexus.state.terminate_asynchronous(True)  
     return result
