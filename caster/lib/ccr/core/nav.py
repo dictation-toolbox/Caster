@@ -148,7 +148,7 @@ class Navigation(MergeRule):
     "peek format":                  R(Function(textformat.peek_text_format), rdescript="Peek Format"),
     "(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel) <textnv> [brunt]":  R(Function(textformat.master_format_text), rdescript="Text Format"), 
     "format <textnv>":              R(Function(textformat.prior_text_format), rdescript="Last Text Format"),
-    
+    "<word_limit> format <textnv>": R(Function(textformat.partial_format_text), rdescript="Partial Text Format"),
     "dredge":                       R(Key("a-tab"), rdescript="Alt-Tab"),
 
     }
@@ -167,6 +167,7 @@ class Navigation(MergeRule):
         Choice("semi",
                     {"dock": ";", "doc": ";", "sink": ""
                     }),
+        Choice("word_limit",{"single": 1,"double": 2,"triple":3,"Quadra":4}),
           
           
           
