@@ -28,6 +28,5 @@ for module_name,class_name_tup in command_sets.iteritems():
             globals()[class_name]= module    #make the name available globally 
 
         except Exception as e:
-            print(
-                "Ignoring ccr rule '{}'. Failed to load with: ".format(class_name))
+            print("Ignoring ccr rule '{}'. Failed to load with: ".format(class_name))
             print(e)
