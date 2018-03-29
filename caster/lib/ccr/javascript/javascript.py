@@ -3,13 +3,12 @@ Created on Sep 2, 2015
 
 @author: synkarius
 '''
-from dragonfly import Key, Text
-
 from caster.lib import control
 from caster.lib.ccr.standard import SymbolSpecs
 from caster.lib.dfplus.additions import SelectiveAction
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
+from dragonfly import Key, Text
 
 
 class Javascript(MergeRule):
@@ -80,8 +79,8 @@ class Javascript(MergeRule):
         "instance of":                  R(Text("instanceof "), rdescript="Javascript: Instance Of"),
         
         "var":                          R(Text("var "), rdescript="Javascript: Var"),
-        "const":                        R(Text("const"), rdescript=" JavaScript: Const"),
-        "Let":                          R(Text("let"), rdescript=" JavaScript: Let"),
+        "const":                        R(Text("const "), rdescript=" JavaScript: Const"),
+        "Let":                          R(Text("let "), rdescript=" JavaScript: Let"),
 
         "shell iffae":                  R(Text("else if ()") + Key("left"), rdescript="Javascript: Else If"),
        
