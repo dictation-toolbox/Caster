@@ -65,18 +65,18 @@ def mouse_alternates(mode, nexus, monitor=1):
             ls.scan(bbox)
             tscan = ls.get_update()
             Popen([
-                "pythonw", settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0],
+                settings.SETTINGS["paths"]["PYTHONW"], settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0],
                 "-m",
                 str(monitor)
             ])  # , "-d", "500_500_500_500"
         elif mode == "rainbow" and not utilities.window_exists(None, "rainbowgrid"):
             Popen([
-                "pythonw", settings.SETTINGS["paths"]["RAINBOW_PATH"], "-g", "r", "-m",
+                settings.SETTINGS["paths"]["PYTHONW"], settings.SETTINGS["paths"]["RAINBOW_PATH"], "-g", "r", "-m",
                 str(monitor)
             ])
         elif mode == "douglas" and not utilities.window_exists(None, "douglasgrid"):
             Popen([
-                "pythonw", settings.SETTINGS["paths"]["DOUGLAS_PATH"], "-g", "d", "-m",
+                settings.SETTINGS["paths"]["PYTHONW"], settings.SETTINGS["paths"]["DOUGLAS_PATH"], "-g", "d", "-m",
                 str(monitor)
             ])
     else:

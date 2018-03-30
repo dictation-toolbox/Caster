@@ -35,9 +35,9 @@ def launch(hmc_type, data=None):
 
 def _get_instructions(hmc_type):
     if hmc_type==settings.WXTYPE_SETTINGS:
-        return ["pythonw", settings.SETTINGS["paths"]["SETTINGS_WINDOW_PATH"]]
+        return [settings.SETTINGS["paths"]["PYTHONW"], settings.SETTINGS["paths"]["SETTINGS_WINDOW_PATH"]]
     else:
-        return ["pythonw", settings.SETTINGS["paths"]["HOMUNCULUS_PATH"], hmc_type]
+        return [settings.SETTINGS["paths"]["PYTHONW"], settings.SETTINGS["paths"]["HOMUNCULUS_PATH"], hmc_type]
 
 def _get_title(hmc_type):
     default=settings.HOMUNCULUS_VERSION
