@@ -1,4 +1,3 @@
-from SimpleXMLRPCServer import SimpleXMLRPCServer
 from ctypes import *
 import getopt
 import re
@@ -17,7 +16,7 @@ finally:
     from caster.lib import gdi, settings, utilities
 
 try:
-    from PIL import ImageGrab
+    from PIL import ImageGrab, ImageFilter
 except ImportError:
     utilities.availability_message("Legion", "PIL")
 
@@ -147,6 +146,7 @@ class LegionScanner:
         # ImageGrab.grab currently doesn't support multiple monitors.
         # If PIL gets updated with multimon support, this can be switched back.
         img = gdi.grab_screen(bbox) # ImageGrab.grab(bbox)
+        img = img.filter(ImageFilter.FIND_EDGES)
         result = self.tirg_scan(img)
         if result != self.last_signature:
             with self.lock:
