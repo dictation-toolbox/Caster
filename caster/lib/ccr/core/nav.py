@@ -34,12 +34,15 @@ class NavigationNon(MappingRule):
         "(F nine | F9)":                    R(Key("f9"), rdescript="Key: F9"),
         
         "[show] context menu":              R(Key("s-f10"), rdescript="Context Menu"),
-        
-        'kick':                             R(Function(navigation.kick, nexus=_NEXUS), rdescript="Mouse: Left Click"),
-        'kick mid':                         R(Function(navigation.kick_middle, nexus=_NEXUS), rdescript="Mouse: Middle Click"),
-        'psychic':                          R(Function(navigation.kick_right, nexus=_NEXUS), rdescript="Mouse: Right Click"),
-        '(kick double|double kick)':        R(Function(navigation.kick, nexus=_NEXUS) * Repeat(2), rdescript="Mouse: Double Click"),
+
+        "bench":                            R(Function(navigation.left_down, nexus=_NEXUS), rdescript="Mouse: Left Down"),
+        "squat":                            R(Function(navigation.left_up, nexus=_NEXUS), rdescript="Mouse: Left Up"),
+        "kick":                             R(Function(navigation.left_click, nexus=_NEXUS), rdescript="Mouse: Left Click"),
+        "kick mid":                         R(Function(navigation.middle_click, nexus=_NEXUS), rdescript="Mouse: Middle Click"),
+        "psychic":                          R(Function(navigation.right_click, nexus=_NEXUS), rdescript="Mouse: Right Click"),
+        "(kick double|double kick)":        R(Function(navigation.left_click, nexus=_NEXUS) * Repeat(2), rdescript="Mouse: Double Click"),
         "shift right click":                R(Key("shift:down") + Mouse("right") + Key("shift:up"), rdescript="Mouse: Shift + Right Click"),
+
         "curse <direction> [<direction2>] [<nnavi500>] [<dokick>]": R(Function(navigation.curse), rdescript="Curse"),
         "scree <direction> [<nnavi500>]":   R(Function(navigation.wheel_scroll), rdescript="Wheel Scroll"),
       

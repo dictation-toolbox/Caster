@@ -141,22 +141,32 @@ def kill_grids_and_wait(nexus):
         time.sleep(0.1)
 
 
-def kick(nexus):
+def left_click(nexus):
     kill_grids_and_wait(nexus)
     windll.user32.mouse_event(0x00000002, 0, 0, 0, 0)
     windll.user32.mouse_event(0x00000004, 0, 0, 0, 0)
 
 
-def kick_right(nexus):
+def right_click(nexus):
     kill_grids_and_wait(nexus)
     windll.user32.mouse_event(0x00000008, 0, 0, 0, 0)
     windll.user32.mouse_event(0x00000010, 0, 0, 0, 0)
 
 
-def kick_middle(nexus):
+def middle_click(nexus):
     kill_grids_and_wait(nexus)
     windll.user32.mouse_event(0x00000020, 0, 0, 0, 0)
     windll.user32.mouse_event(0x00000040, 0, 0, 0, 0)
+
+
+def left_down(nexus):
+    kill_grids_and_wait(nexus)
+    windll.user32.mouse_event(0x00000002, 0, 0, 0, 0)
+
+
+def left_up(nexus):
+    kill_grids_and_wait(nexus)
+    windll.user32.mouse_event(0x00000004, 0, 0, 0, 0)
 
 
 def wheel_scroll(direction, nnavi500):
@@ -184,9 +194,9 @@ def curse(direction, direction2, nnavi500, dokick):
     Mouse("<" + str(x) + ", " + str(y) + ">").execute()
     if int(dokick) != 0:
         if int(dokick) == 1:
-            kick()
+            left_click()
         elif int(dokick) == 2:
-            kick_right()
+            right_click()
 
 
 def next_line(semi):
