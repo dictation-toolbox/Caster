@@ -35,8 +35,8 @@ class NavigationNon(MappingRule):
         
         "[show] context menu":              R(Key("s-f10"), rdescript="Context Menu"),
 
-        "bench":                            R(Function(navigation.left_down, nexus=_NEXUS), rdescript="Mouse: Left Down"),
-        "squat":                            R(Function(navigation.left_up, nexus=_NEXUS), rdescript="Mouse: Left Up"),
+        "squat":                            R(Function(navigation.left_down, nexus=_NEXUS), rdescript="Mouse: Left Down"),
+        "bench":                            R(Function(navigation.left_up, nexus=_NEXUS), rdescript="Mouse: Left Up"),
         "kick":                             R(Function(navigation.left_click, nexus=_NEXUS), rdescript="Mouse: Left Click"),
         "kick mid":                         R(Function(navigation.middle_click, nexus=_NEXUS), rdescript="Mouse: Middle Click"),
         "psychic":                          R(Function(navigation.right_click, nexus=_NEXUS), rdescript="Mouse: Right Click"),
