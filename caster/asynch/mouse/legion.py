@@ -20,11 +20,17 @@ try:
 except ImportError:
     utilities.availability_message("Legion", "PIL")
 
+'''
+Roughly determines the size of each rectangle (give or take a few pixels).
+Anything less than 60 starts to feel cluttered. 30 is the bare minimum before three digit numbers no longer fit.
+'''
+MAX_WIDTH = 60
+
 class Rectangle:
-    top = None
-    bottom = None
-    left = None
-    right = None
+    y1 = None
+    y2 = None
+    x1 = None
+    x2 = None
 
 class LegionGrid(TkTransparent):
     def __init__(self, grid_size=None, tirg=None, auto_quit=False):
@@ -67,15 +73,38 @@ class LegionGrid(TkTransparent):
             ii = i % 4
             if ii == 0:
                 curr_rect = Rectangle()
-                curr_rect.left = int(tirg_list[i])#-self.dimensions.x
+                curr_rect.x1 = int(tirg_list[i])
             elif ii == 1:
-                curr_rect.top = int(tirg_list[i])#-self.dimensions.y
+                curr_rect.y1 = int(tirg_list[i])
             elif ii == 2:
-                curr_rect.right = int(tirg_list[i])#-self.dimensions.x
+                curr_rect.x2 = int(tirg_list[i])
             elif ii == 3:
-                curr_rect.bottom = int(tirg_list[i])#-self.dimensions.y
-                self.tirg_rectangles.append(curr_rect) 
-    
+                curr_rect.y2 = int(tirg_list[i])
+                self.tirg_rectangles.append(curr_rect)
+        self.split_rectangles()
+
+    def split_rectangles(self):
+        # Split larger rectangles into smaller ones to allow greater precision.
+        rectangles_to_split = []
+        for rect in self.tirg_rectangles: # Collect all the rectangles that are too large.
+            if rect.x2 - rect.x1 >= MAX_WIDTH:
+                rectangles_to_split.append(rect)
+        self.tirg_rectangles = [x for x in self.tirg_rectangles if x not in rectangles_to_split] # Remove large rectangles.
+        self.perform_split(rectangles_to_split)
+
+    def perform_split(self, rectangles_to_split):
+        # Helper class for splitting larger rectangles to smaller ones.
+        for rect in rectangles_to_split:
+            width = rect.x2 - rect.x1
+            pieces = width / MAX_WIDTH
+            new_width = width / pieces
+            for i in range(0, pieces):
+                r = Rectangle()
+                r.x1 = rect.x1 + new_width * i
+                r.y1 = rect.y1
+                r.x2 = r.x1 + new_width
+                r.y2 = rect.y2
+                self.tirg_rectangles.append(r)
     
     def draw(self):
         ''' or self.server.has_rect_update'''
@@ -90,14 +119,14 @@ class LegionGrid(TkTransparent):
         fill_outer = "Black"
         rect_num = 0
         for rect in self.tirg_rectangles:
-            center_x = int((rect.left + rect.right) / 2)
-            center_y = int((rect.top + rect.bottom) / 2)
+            center_x = int((rect.x1 + rect.x2) / 2)
+            center_y = int((rect.y1 + rect.y2) / 2)
             label = str(rect_num)
             # lines
-            self._canvas.create_line(rect.left, rect.top, rect.right, rect.top, fill=fill_inner)
-            self._canvas.create_line(rect.left, rect.bottom, rect.right, rect.bottom, fill=fill_inner)
-            self._canvas.create_line(rect.left, rect.top, rect.left, rect.bottom, fill=fill_inner)
-            self._canvas.create_line(rect.right, rect.top, rect.right, rect.bottom, fill=fill_inner)
+            self._canvas.create_line(rect.x1, rect.y1, rect.x2, rect.y1, fill=fill_inner)
+            self._canvas.create_line(rect.x1, rect.y2, rect.x2, rect.y2, fill=fill_inner)
+            self._canvas.create_line(rect.x1, rect.y1, rect.x1, rect.y2, fill=fill_inner)
+            self._canvas.create_line(rect.x2, rect.y1, rect.x2, rect.y2, fill=fill_inner)
             
             # text
             self._canvas.create_text(center_x + 1, center_y + 1, text=label, font=font, fill=fill_outer)
@@ -106,8 +135,8 @@ class LegionGrid(TkTransparent):
             self._canvas.create_text(center_x - 1, center_y - 1, text=label, font=font, fill=fill_outer)
             self._canvas.create_text(center_x, center_y, text=label, font=font, fill=fill_inner)
             
-            '''rect.left, rect.right are now being saved below for the highlight function'''
-            self.tirg_positions[label] = (center_x, center_y, rect.left, rect.right)
+            '''rect.x1, rect.x2 are now being saved below for the highlight function'''
+            self.tirg_positions[label] = (center_x, center_y, rect.x1, rect.x2)
             rect_num += 1
 
 
