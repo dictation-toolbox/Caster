@@ -8,8 +8,8 @@ from caster.lib.ccr.python.python import Python
 from caster.lib.ccr.recording.alias import VanillaAlias
 from caster.lib.dfplus.merge.mergerule import MergeRule
 
-class TestMergeRule(unittest.TestCase):
 
+class TestMergeRule(unittest.TestCase):
     def test_name_generation(self):
         size = 10
         names = set()
@@ -62,5 +62,3 @@ class TestMergeRule(unittest.TestCase):
         del _merged.mapping_actual()["display available commands"]
         self.assertEqual(vanilla_specs + java_specs, len(_merged.mapping_actual().keys()))
         self.assertEqual(vanilla_specs, len(vanilla.mapping_actual().keys()))
-        
-        
