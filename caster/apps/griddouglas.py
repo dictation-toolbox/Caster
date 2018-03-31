@@ -12,11 +12,12 @@ from caster.lib.dfplus.merge import gfilter
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 
-
 _NEXUS = control.nexus()
+
 
 def kill(nexus):
     nexus.comm.get_com("grids").kill()
+
 
 def send_input(n, n2, action, nexus):
     s = nexus.comm.get_com("grids")
@@ -29,24 +30,27 @@ def send_input(n, n2, action, nexus):
     elif int_a == 1:
         Playback([(["mouse", "right", "click"], 0.0)]).execute()
 
+
 class GridControlRule(MergeRule):
 
     mapping = {
-        "<n> [by] <n2> [<action>]":         R(Function(send_input, nexus=_NEXUS), rdescript="Douglas Grid: Action"),
-        "exit | escape | cancel":           R(Function(kill, nexus=_NEXUS), rdescript="Exit Douglas Grid"),
-                }
+        "<n> [by] <n2> [<action>]":
+            R(Function(send_input, nexus=_NEXUS), rdescript="Douglas Grid: Action"),
+        "exit | escape | cancel":
+            R(Function(kill, nexus=_NEXUS), rdescript="Exit Douglas Grid"),
+    }
     extras = [
-              IntegerRefST("n", 0, 300),
-              IntegerRefST("n2", 0, 300),
-              Choice("action", {
-                              "kick": 0,
-                              "psychic": 1,
-                             }
-                    ),
-             ]
+        IntegerRefST("n", 0, 300),
+        IntegerRefST("n2", 0, 300),
+        Choice("action", {
+            "kick": 0,
+            "psychic": 1,
+        }),
+    ]
     defaults = {
-            "action": -1,
-            }
+        "action": -1,
+    }
+
 
 #---------------------------------------------------------------------------
 
