@@ -3,7 +3,6 @@ Command-module for RainbowGrid
 
 """
 
-
 from dragonfly import (Grammar, AppContext, Function, Playback, Choice, MappingRule)
 
 from caster.asynch.mouse import grids
@@ -14,14 +13,15 @@ from caster.lib.dfplus.merge import gfilter
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 
-
 _NEXUS = control.nexus()
+
 
 def kill(nexus):
     nexus.comm.get_com("grids").kill()
 
+
 def send_input(pre, color, n, action, nexus):
-    s=nexus.comm.get_com("grids")
+    s = nexus.comm.get_com("grids")
     s.move_mouse(int(pre), int(color), int(n))
     s.kill()
     grids.wait_for_death(settings.RAINBOW_TITLE)
@@ -35,34 +35,33 @@ def send_input(pre, color, n, action, nexus):
 class GridControlRule(MergeRule):
 
     mapping = {
-        "[<pre>] <color> <n> [<action>]":   R(Function(send_input, nexus=_NEXUS), rdescript="Rainbow Grid: Action"),
-        "exit | escape | cancel":           R(Function(kill, nexus=_NEXUS), rdescript="Exit Rainbow Grid"),
-
-
-        }
+        "[<pre>] <color> <n> [<action>]":
+            R(Function(send_input, nexus=_NEXUS), rdescript="Rainbow Grid: Action"),
+        "exit | escape | cancel":
+            R(Function(kill, nexus=_NEXUS), rdescript="Exit Rainbow Grid"),
+    }
     extras = [
-              IntegerRefST("pre", 0, 9),
-              Choice("color", {
-                              "red": 0,
-                              "(orange | tan | brown)": 1,
-                              "yellow": 2,
-                              "green": 3,
-                              "blue": 4,
-                              "purple": 5
-                             }
-                    ),
-              Choice("action", {
-                              "kick": 0,
-                              "psychic": 1,
-                             }
-                    ),
-              IntegerRefST("n", 0, 100),
-              
-             ]
+        IntegerRefST("pre", 0, 9),
+        Choice(
+            "color", {
+                "red": 0,
+                "(orange | tan | brown)": 1,
+                "yellow": 2,
+                "green": 3,
+                "blue": 4,
+                "purple": 5
+            }),
+        Choice("action", {
+            "kick": 0,
+            "psychic": 1,
+        }),
+        IntegerRefST("n", 0, 100),
+    ]
     defaults = {
-            "pre": 0,
-            "action": -1,
-            }
+        "pre": 0,
+        "action": -1,
+    }
+
 
 #---------------------------------------------------------------------------
 

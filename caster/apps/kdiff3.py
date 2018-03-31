@@ -12,15 +12,15 @@ class KDiff3Rule(MergeRule):
     pronunciation = "K diff"
 
     mapping = {
-        "refresh":                          R(Key("f5"), rdescript="Refresh"),
-        }
+        "refresh": R(Key("f5"), rdescript="Refresh"),
+    }
     extras = [
-              Dictation("text"),
-              Dictation("mim"),
-              IntegerRefST("n", 1, 1000),
-              
-             ]
-    defaults = {"n": 1, "mim":""}
+        Dictation("text"),
+        Dictation("mim"),
+        IntegerRefST("n", 1, 1000),
+    ]
+    defaults = {"n": 1, "mim": ""}
+
 
 #---------------------------------------------------------------------------
 

@@ -3,8 +3,8 @@ __author__ = 'LexiconCode'
 Command-module for Atom
 Official Site "https://atom.io/"
 """
-from dragonfly import (AppContext, Dictation, Grammar, IntegerRef, Key,
-                       MappingRule, Pause, Repeat, Text)
+from dragonfly import (AppContext, Dictation, Grammar, IntegerRef, Key, MappingRule,
+                       Pause, Repeat, Text)
 from dragonfly.actions.action_mimic import Mimic
 
 from caster.lib import control, settings
@@ -36,18 +36,18 @@ class AtomRule(MergeRule):
 
         #Basic Cursor Navigation
         "up [<n>]":
-            R(Key("up"), rdescript="Atom: Move Cursor Up #") * Repeat(extra="n"),
+            R(Key("up"), rdescript="Atom: Move Cursor Up #")*Repeat(extra="n"),
         "down [<n>]":
-            R(Key("down"), rdescript="Atom: Move Cursor Down #") * Repeat(extra="n"),
+            R(Key("down"), rdescript="Atom: Move Cursor Down #")*Repeat(extra="n"),
         "right [<n>]":
-            R(Key("right"), rdescript="Atom: Move Cursor Right #") * Repeat(extra="n"),
+            R(Key("right"), rdescript="Atom: Move Cursor Right #")*Repeat(extra="n"),
         "left [<n>]":
-            R(Key("left"), rdescript="Atom: Move Cursor Left #") * Repeat(extra="n"),
+            R(Key("left"), rdescript="Atom: Move Cursor Left #")*Repeat(extra="n"),
         #Basic White Text Manipulation
         "tab|indent [<n>]":
-            R(Key("tab"), rdescript="Atom: Press Tab Key #") * Repeat(extra="n"),
+            R(Key("tab"), rdescript="Atom: Press Tab Key #")*Repeat(extra="n"),
         "space [<n>]":
-            R(Key("space"), rdescript="Atom: Press Tab Key #") * Repeat(extra="n"),
+            R(Key("space"), rdescript="Atom: Press Tab Key #")*Repeat(extra="n"),
         # Menu UI-------------------------------------------------------------------------------------------
         #File Menu
         "[open] new window":
@@ -92,7 +92,7 @@ class AtomRule(MergeRule):
         "copy ":
             R(Key("c-insert"), rdescript="Atom: Copy"),
         "paste [<n>]":
-            R(Key("s-insert"), rdescript="Atom: Paste") * Repeat(extra="n"),
+            R(Key("s-insert"), rdescript="Atom: Paste")*Repeat(extra="n"),
         "copy path":
             R(Key("cs-c"), rdescript="Atom: Copy Path"),
         "select all":
@@ -115,15 +115,15 @@ class AtomRule(MergeRule):
         "auto indent windows":
             R(palettized("Window Auto Indent"), rdescript="Atom: Auto Indent"),
         "[move] line up [<n>]":
-            R(Key("c-up"), rdescript="Atom: Move Line Up #") * Repeat(extra="n"),
+            R(Key("c-up"), rdescript="Atom: Move Line Up #")*Repeat(extra="n"),
         "[move] line down [<n>]":
-            R(Key("c-down"), rdescript="Atom: Move Line Down #") * Repeat(extra="n"),
+            R(Key("c-down"), rdescript="Atom: Move Line Down #")*Repeat(extra="n"),
         "duplicate line [<n>]":
-            R(Key("cs-d"), rdescript="Atom: Duplicate Line") * Repeat(
+            R(Key("cs-d"), rdescript="Atom: Duplicate Line")*Repeat(
                 extra="n"
             ),  #Unless remapped the command triggers Dragon NaturallySpeaking dictation box
         "delete line [<n>]":
-            R(Key("cs-k"), rdescript="Atom: Delete Line or # Lines Below") *
+            R(Key("cs-k"), rdescript="Atom: Delete Line or # Lines Below")*
             Repeat(extra="n"),
         "join line":
             R(Key("c-j"), rdescript="Atom: Join Line"),
@@ -135,17 +135,16 @@ class AtomRule(MergeRule):
         "lowercase":
             R(palettized("Editor Lower Case"), rdescript="Atom: Convert lowercase"),
         "delete [to] end [of word] [<n>]":
-            R(Key("c-delete"), rdescript="Atom: Delete to End oF Word") *
-            Repeat(extra="n"),
+            R(Key("c-delete"), rdescript="Atom: Delete to End oF Word")*Repeat(extra="n"),
         "delete sub [word] [<n>]":
-            R(Key("a-backspace"), rdescript="Atom: Delete to End of Subword") *
+            R(Key("a-backspace"), rdescript="Atom: Delete to End of Subword")*
             Repeat(extra="n"),
         "delete [to] previous [word] [<n>]":
             R(palettized("Delete to Previous Word boundary"),
-              rdescript="Atom: Delete to previous word boundary") * Repeat(extra="n"),
+              rdescript="Atom: Delete to previous word boundary")*Repeat(extra="n"),
         "delete [to] next [word] [<n>]":
             R(palettized("Delete to Next Word Boundary"),
-              rdescript="Atom: Delete to next word boundary") * Repeat(extra="n"),
+              rdescript="Atom: Delete to next word boundary")*Repeat(extra="n"),
         ##"delete line":                           R(Key("cs-k"), rdescript="Atom: Delete Line"),
         "transpose":
             R(palettized("Transpose") + Key("enter"), rdescript="Atom: Transpose"),
@@ -177,9 +176,9 @@ class AtomRule(MergeRule):
         "toggle menubar":
             R(palettized("Toggle Menu Bar"), rdescript="Atom: Toggle Menubar"),
         "increase font [size] [<n>]":
-            R(Key("cs-equals"), rdescript="Atom: Increase Font Size") * Repeat(extra="n"),
+            R(Key("cs-equals"), rdescript="Atom: Increase Font Size")*Repeat(extra="n"),
         "decrease font [size] [<n>]":
-            R(Key("cs-minus"), rdescript="Atom: Decrease Font size") * Repeat(extra="n"),
+            R(Key("cs-minus"), rdescript="Atom: Decrease Font size")*Repeat(extra="n"),
         "reset font [size]":
             R(Key("c-0"), rdescript="Atom: Reset Font Size"),
         "toggle soft wrap":
@@ -231,10 +230,9 @@ class AtomRule(MergeRule):
             R(Key("ac-i"), rdescript="Atom: Toggle Developer Tools"),
         #Selection Menu
         "[add] select above [<n>]":
-            R(Key("ac-up"), rdescript="Atom: Add Selection Above #") * Repeat(extra="n"),
+            R(Key("ac-up"), rdescript="Atom: Add Selection Above #")*Repeat(extra="n"),
         "[add] select below [<n>]":
-            R(Key("ac-down"), rdescript="Atom: Add Selection Below #") *
-            Repeat(extra="n"),
+            R(Key("ac-down"), rdescript="Atom: Add Selection Below #")*Repeat(extra="n"),
         "split into lines":
             R(palettized("Split Into Lines"), rdescript="Atom: Split Into lines"),
         "single section":
@@ -246,10 +244,10 @@ class AtomRule(MergeRule):
         #"select line":                             R(Key("c-l"), rdescript="Atom: Select Line"),
         #"select word [<n>]":                       R(palettized("Editor: Word"), rdescript="Atom: Select Word") * Repeat(extra="n"),
         "[select] [to] begin [of] word [<n>]":
-            R(Key("cs-left"), rdescript="Atom: Select to Beginning of Word #") *
+            R(Key("cs-left"), rdescript="Atom: Select to Beginning of Word #")*
             Repeat(extra="n"),
         "[select] [to] end word [<n>]":
-            R(Key("cs-right"), rdescript="Atom: Select to End of Word #") *
+            R(Key("cs-right"), rdescript="Atom: Select to End of Word #")*
             Repeat(extra="n"),
         "[select] [to] begin line":
             R(palettized("Editor: Select to Beginning of Line"),
@@ -624,29 +622,29 @@ class AtomRule(MergeRule):
         #Atom Shortcut Snippets
         "dev keys [input] [<n>]":
             R(Text('#"": R(Key("-"), rdescript="Atom: "),') + Key("enter"),
-              rdescript="Macro: Dev Keys #") * Repeat(extra="n"),
+              rdescript="Macro: Dev Keys #")*Repeat(extra="n"),
         "dev [command] palette [<n>]":
             R(Text('#"": R(palettized(""), rdescript="Atom: "),') + Key("enter"),
-              rdescript="Macro: Dev Command Palette #") * Repeat(extra="n"),
+              rdescript="Macro: Dev Command Palette #")*Repeat(extra="n"),
         #Repeatable Snippets
         "dev numb keys [input] [<n>]":
             R(Text('#" [<n>]": R(Key("-"), rdescript="Atom: ") * Repeat(extra="n"),') +
               Key("enter"),
-              rdescript="Macro: Numb Dev Keys #") * Repeat(extra="n"),
+              rdescript="Macro: Numb Dev Keys #")*Repeat(extra="n"),
         "dev numb [command] palette [<n>]":
             R(Text('#" [<n>]": R(palettized(""), rdescript="Atom: ") * Repeat(extra="n"),'
                    ) + Key("enter"),
-              rdescript="Macro: Dev Numb Command Palette #") * Repeat(extra="n"),
+              rdescript="Macro: Dev Numb Command Palette #")*Repeat(extra="n"),
         #Basic Dragonfly Snippets
         "dev key [<n>]":
-            R(Text('"": Key(""),'), rdescript="Dragonfly: Print Dev Key #") *
+            R(Text('"": Key(""),'), rdescript="Dragonfly: Print Dev Key #")*
             Repeat(extra="n"),
         "dev text [<n>]":
-            R(Text('"": Text(""),'), rdescript="Dragonfly: Print Dev Text #") *
+            R(Text('"": Text(""),'), rdescript="Dragonfly: Print Dev Text #")*
             Repeat(extra="n"),
         "send command [<n>]":
             R(Text('"": R(Function(SendJsonCommands, a_command=""), rdescript=""),'),
-              rdescript="Macro: Print SendJsonCommands Template #") * Repeat(extra="n"),
+              rdescript="Macro: Print SendJsonCommands Template #")*Repeat(extra="n"),
     }
 
     extras = [
