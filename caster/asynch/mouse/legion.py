@@ -1,8 +1,9 @@
-from ctypes import *
 import getopt
+import os
 import re
-import sys, os
+import sys
 import threading
+from ctypes import *
 
 from dragonfly import monitors
 
@@ -161,8 +162,10 @@ class LegionScanner:
         self.screen_has_changed = False
 
     def setup_dll(self):
+        import sys
         self.tirg_dll = cdll.LoadLibrary(
-            settings.SETTINGS["paths"]["DLL_PATH"] + "tirg-dll.dll")
+            (settings.SETTINGS["paths"]["DLL_PATH"] + "tirg-dll.dll").encode(
+                sys.getfilesystemencoding()))
         self.tirg_dll.getTextBBoxesFromFile.argtypes = [c_char_p, c_int, c_int]
         self.tirg_dll.getTextBBoxesFromFile.restype = c_char_p
         self.tirg_dll.getTextBBoxesFromBytes.argtypes = [c_char_p, c_int, c_int]
