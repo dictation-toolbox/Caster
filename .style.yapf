@@ -1,0 +1,6 @@
+[style]
+based_on_style=pep8
+column_limit=90
+indent_dictionary_value=True
+split_complex_comprehension=True
+no_spaces_around_selected_binary_operators=*,/

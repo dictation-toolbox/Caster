@@ -37,7 +37,7 @@ class Punctuation(MergeRule):
         "comma":                            R(Text(","), rdescript="Comma"),
         "carrot":                           R(Text("^"), rdescript="Carat"),                     
         "(period | dot)":                   R(Text("."), rdescript="Dot"),
-        "at sign":                          R(Text("@"), rdescript="At Sign"),
+        "atty":                             R(Text("@"), rdescript="At Sign"),
         "hash tag":                         R(Text("#"), rdescript="Hash Tag"),
         "apostrophe":                       R(Text("'"), rdescript="Apostrophe"),
         "underscore":                       R(Text("_"), rdescript="Underscore"),        
