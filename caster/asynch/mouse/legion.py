@@ -206,7 +206,9 @@ def main(argv):
     dimensions = None
     auto_quit = False
 
-    errorCode = windll.shcore.SetProcessDpiAwareness(2)  #enable 1-1 pixel mapping
+    error_code = windll.shcore.SetProcessDpiAwareness(2)  #enable 1-1 pixel mapping
+    if error_code == -2147024891:
+        raise OSError("Failed to get system dpi settings")
     dpi_map = {96: 1.0, 120: 1.25, 144: 1.5, 192: 2.0}
 
     LOGPIXELSX = 88
