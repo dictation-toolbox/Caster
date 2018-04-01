@@ -205,6 +205,17 @@ def main(argv):
     monitor = 1
     dimensions = None
     auto_quit = False
+
+    errorCode = windll.shcore.SetProcessDpiAwareness(2)  #enable 1-1 pixel mapping
+    dpi_map = {96: 1.0, 120: 1.25, 144: 1.5, 192: 2.0}
+
+    LOGPIXELSX = 88
+    dc = windll.user32.GetDC(0)
+    horizontal_dpi = windll.gdi32.GetDeviceCaps(
+        dc, LOGPIXELSX)  # Horizontal DPI determines the DPI scaling value
+    windll.user32.ReleaseDC(0, dc)
+    dpi_scaling = dpi_map[horizontal_dpi]
+
     try:
         opts, args = getopt.getopt(argv, "ht:a:d:m:",
                                    ["tirg=", "dimensions=", "autoquit="])
@@ -228,7 +239,8 @@ def main(argv):
 
         if dimensions is None:
             r = monitors[int(monitor) - 1].rectangle
-            dimensions = Dimensions(int(r.dx), int(r.dy), int(r.x), int(r.y))
+            dimensions = Dimensions(
+                int(r.dx*dpi_scaling), int(r.dy*dpi_scaling), int(r.x), int(r.y))
         lg = LegionGrid(grid_size=dimensions, tirg=tirg, auto_quit=auto_quit)
     except Exception:
         utilities.simple_log(True)
