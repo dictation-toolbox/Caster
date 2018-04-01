@@ -17,10 +17,12 @@ def scenario_1(mp):
             if spec in mp.rule2.mapping_actual().keys():
                 '''this filter function gives priority to
                 global  rules over app rules'''
-                print("deleting conflicting spec "+ spec)
+                print("deleting conflicting spec " + spec)
                 del mp.rule2.mapping_actual()[spec]
 
+
 # control.nexus().merger.add_filter(scenario_1)
+
 
 def replace_spec(rule, target, replacement):
     if target in rule.mapping_actual().keys():
@@ -28,22 +30,27 @@ def replace_spec(rule, target, replacement):
         del rule.mapping_actual()[target]
         rule.mapping_actual()[replacement] = action
 
+
 def scenario_2(mp):
     '''replacing a spec'''
     if mp.time == MergeInf.BOOT:
         # at merge time, the base rule can be None, so make sure to check
         target = "[go to] line <n>"
         replacement = "travel to line <n>"
-        
-        if mp.rule1 is not None: 
+
+        if mp.rule1 is not None:
             replace_spec(mp.rule1, target, replacement)
         replace_spec(mp.rule2, target, replacement)
 
+
 # control.nexus().merger.add_filter(scenario_2)
+
 
 def update_python(rule):
     if "shells" in rule.mapping_actual().keys():
-        rule.mapping_actual()["shells"] = R(Text("not allowed to use 'else'"), rdescript="Troll Replacement")
+        rule.mapping_actual()["shells"] = R(
+            Text("not allowed to use 'else'"), rdescript="Troll Replacement")
+
 
 def scenario_3(mp):
     ''' replacing an action '''
@@ -54,19 +61,22 @@ def scenario_3(mp):
             update_python(mp.rule1)
         if mp.rule2.get_pronunciation() == "Python":
             update_python(mp.rule2)
-        
+
+
 # control.nexus().merger.add_filter(scenario_3)
+
 
 def add_is_to_python(rule):
     if rule.get_pronunciation() == "Python":
         rule.mapping_actual()["identity is"] = R(Text(" is "), rdescript="Python: Is")
 
+
 def scenario_4(mp):
     ''' adding an action '''
     if mp.time == MergeInf.BOOT:
-        if mp.rule1 is not None: 
+        if mp.rule1 is not None:
             add_is_to_python(mp.rule1)
         add_is_to_python(mp.rule2)
-        
-# control.nexus().merger.add_filter(scenario_4)
 
+
+# control.nexus().merger.add_filter(scenario_4)

@@ -9,8 +9,7 @@ Command-module for git
 """
 #---------------------------------------------------------------------------
 
-from dragonfly import (Grammar, AppContext, MappingRule,
-                       Key, Text)
+from dragonfly import (Grammar, AppContext, MappingRule, Key, Text)
 
 from caster.lib import control
 from caster.lib import settings
@@ -23,20 +22,15 @@ class CMDRule(MergeRule):
     pronunciation = "command prompt"
 
     mapping = {
-        "C drive":          R(Text(r"cd C:/")+Key("enter"), rdescript="CMD: Go To C:"),
-        "CD up":            R(Text( "cd .." )+Key("enter"), rdescript="CMD: Up Directory"),
-        "CD":               R(Text( "cd " ), rdescript="CMD: Navigate Directory"),
-        "list":             R(Text( "dir" )+Key("enter"), rdescript="CMD: List Files"),
-        "make directory":   R(Text( "mkdir " ), rdescript="CMD: Make directory"),
-        
-        
-        
-        "exit":             R(Text( "exit" )+Key("enter"), rdescript="CMD: Exit"),
-        }
-    extras = [
-              
-             ]
-    defaults ={}
+        "C drive": R(Text(r"cd C:/") + Key("enter"), rdescript="CMD: Go To C:"),
+        "CD up": R(Text("cd ..") + Key("enter"), rdescript="CMD: Up Directory"),
+        "CD": R(Text("cd "), rdescript="CMD: Navigate Directory"),
+        "list": R(Text("dir") + Key("enter"), rdescript="CMD: List Files"),
+        "make directory": R(Text("mkdir "), rdescript="CMD: Make directory"),
+        "exit": R(Text("exit") + Key("enter"), rdescript="CMD: Exit"),
+    }
+    extras = []
+    defaults = {}
 
 
 #---------------------------------------------------------------------------

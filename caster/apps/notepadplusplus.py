@@ -23,21 +23,27 @@ class NPPRule(MergeRule):
     pronunciation = "notepad plus plus"
 
     mapping = {
-            "stylize <n2>":                         R(Mouse("right")+Key("down:6/5, right")+(Key("down") * Repeat(extra="n2"))+Key("enter"), rdescript="Notepad++: Stylize"),
-            "remove style":                         R(Mouse("right")+Key("down:6/5, right/5, down:5/5, enter"), rdescript="Notepad++: Remove Style"),
-            
-            "preview in browser":                   R(Key("cas-r"), rdescript="Notepad++: Preview In Browser"),
-            
-            # requires function list plug-in:
-            "function list":                        R(Key("cas-l"), rdescript="Notepad++: Function List"),
-        }
+        "stylize <n2>":
+            R(Mouse("right") + Key("down:6/5, right") +
+              (Key("down")*Repeat(extra="n2")) + Key("enter"),
+              rdescript="Notepad++: Stylize"),
+        "remove style":
+            R(Mouse("right") + Key("down:6/5, right/5, down:5/5, enter"),
+              rdescript="Notepad++: Remove Style"),
+        "preview in browser":
+            R(Key("cas-r"), rdescript="Notepad++: Preview In Browser"),
+
+        # requires function list plug-in:
+        "function list":
+            R(Key("cas-l"), rdescript="Notepad++: Function List"),
+    }
     extras = [
-              Dictation("text"),
-              IntegerRefST("n", 1, 100),
-              IntegerRefST("n2", 1, 10),
-              
-             ]
+        Dictation("text"),
+        IntegerRefST("n", 1, 100),
+        IntegerRefST("n2", 1, 10),
+    ]
     defaults = {"n": 1}
+
 
 #---------------------------------------------------------------------------
 

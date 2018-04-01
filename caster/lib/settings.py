@@ -1,14 +1,17 @@
+# -*- coding: utf-8 -*-
+
+import collections
+import io
 import json
 import os
 import sys
-import collections
 
 SETTINGS = {}
-_SETTINGS_PATH = os.path.realpath(__file__).split("lib")[0]+"bin\\data\\settings.json"
+_SETTINGS_PATH = os.path.realpath(__file__).split("lib")[0] + "bin\\data\\settings.json"
 BASE_PATH = os.path.realpath(__file__).split("\\lib")[0].replace("\\", "/")
 
 # title
-SOFTWARE_VERSION_NUMBER = "0.5.9"
+SOFTWARE_VERSION_NUMBER = "0.5.10"
 SOFTWARE_NAME = "Caster v " + SOFTWARE_VERSION_NUMBER
 HOMUNCULUS_VERSION = "HMC v " + SOFTWARE_VERSION_NUMBER
 HMC_TITLE_RECORDING = " :: Recording Manager"
@@ -31,6 +34,7 @@ HMC_SEPARATOR = "[hmc]"
 
 WSR = False
 
+
 def _find_natspeak():
     '''Tries to find the natspeak engine.'''
     possible_locations = [
@@ -45,7 +49,8 @@ def _find_natspeak():
     print "Cannot find default dragon engine path"
     return ""
 
-# The defaults for every setting. Could be moved out into its own file. 
+
+# The defaults for every setting. Could be moved out into its own file.
 _DEFAULT_SETTINGS = {
     "paths": {
         "BASE_PATH": BASE_PATH,
@@ -84,6 +89,7 @@ _DEFAULT_SETTINGS = {
         "CONFIGDEBUGTXT_PATH": BASE_PATH + "/bin/data/configdebug.txt",
 
         # PYTHON
+        "PYTHONW": "C:/Python27/pythonw",
         "WXPYTHON_PATH": "C:/Python27/Lib/site-packages/wx-3.0-msw"
     },
 
@@ -100,6 +106,7 @@ _DEFAULT_SETTINGS = {
         "flashdevelop": True,
         "foxitreader": True,
         "gitbash": True,
+        "gitter": True,
         "kdiff3": True,
         "douglas": True,
         "legion": True,
@@ -131,7 +138,7 @@ _DEFAULT_SETTINGS = {
     "miscellaneous": {
         "dev_commands": False,
         "sikuli_enabled": False,
-        "keypress_wait": 50, # milliseconds
+        "keypress_wait": 50,  # milliseconds
         "max_ccr_repetitions": 16,
         "atom_palette_wait": "30",
         "rdp_mode": False,
@@ -152,27 +159,25 @@ _DEFAULT_SETTINGS = {
 def _save(data, path):
     '''only to be used for settings file'''
     try:
-        formatted_data = json.dumps(data, sort_keys=True, indent=4, ensure_ascii=False)
-        if not os.path.exists(path):
-            f = open(path, "w")
-            f.close()
-        f = open(path, "w")
-        f.write(formatted_data)
-        f.close()
+        formatted_data = unicode(
+            json.dumps(data, sort_keys=True, indent=4, ensure_ascii=False))
+        with io.open(path, "wt", encoding="utf-8") as f:
+            f.write(formatted_data)
     except Exception:
         print "Error saving json file: " + path
+
 
 def _init(path):
     result = {}
     try:
-        f = open(path, "r")
-        result = json.loads(f.read())
-        f.close()
-    except ValueError:
-        print("\n\nValueError while loading settings file: " + path + "\n\n")
+        with io.open(path, "rt", encoding="utf-8") as f:
+            result = json.loads(f.read())
+    except ValueError as e:
+        print("\n\n" + repr(e) + " while loading settings file: " + path + "\n\n")
         print(sys.exc_info())
-    except IOError:
-        print("\n\nIOError: Could not find settings file: " + path + "\nInitializing file...\n\n")
+    except IOError as e:
+        print("\n\n" + repr(e) + " while loading settings file: " + path +
+              "\nAttempting to recover...\n\n")
     result, num_default_added = _deep_merge_defaults(result, _DEFAULT_SETTINGS)
     if num_default_added > 0:
         print "Default settings values added: %d " % num_default_added
@@ -189,8 +194,8 @@ def _deep_merge_defaults(data, defaults):
     changes = 0
     for key, default_value in defaults.iteritems():
         # If the key is in the data, use that, but call recursivly if it's a dict.
-        if(key in data):
-            if(isinstance(data[key], collections.Mapping)):
+        if (key in data):
+            if (isinstance(data[key], collections.Mapping)):
                 child_data, child_changes = _deep_merge_defaults(data[key], default_value)
                 data[key] = child_data
                 changes += child_changes
@@ -200,33 +205,33 @@ def _deep_merge_defaults(data, defaults):
     return data, changes
 
 
-
 # Public interface:
 def save_config():
     '''Save the current in-memory settings to disk'''
     _save(SETTINGS, _SETTINGS_PATH)
 
+
 def get_settings():
     global SETTINGS
     return SETTINGS
+
 
 def get_default_browser_executable():
     global SETTINGS
     return SETTINGS["paths"]["DEFAULT_BROWSER_PATH"].split("/")[-1]
 
+
 def report_to_file(message, path=None):
     _path = SETTINGS["paths"]["LOG_PATH"]
     if path is not None: _path = path
-    f = open(_path, 'a')
-    f.write(str(message) + "\n")
-    f.close()
+    with io.open(_path, 'at', encoding="utf-8") as f:
+        f.write(unicode(message) + "\n")
 
 
 ## Kick everything off.
 SETTINGS = _init(_SETTINGS_PATH)
 for path in [
-        SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"],
-        SETTINGS["paths"]["WXPYTHON_PATH"]
-    ]:
+        SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"], SETTINGS["paths"]["WXPYTHON_PATH"]
+]:
     if not path in sys.path and os.path.isdir(path):
         sys.path.append(path)

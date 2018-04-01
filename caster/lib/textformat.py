@@ -8,6 +8,7 @@ from caster.lib import settings
 
 _CAPITALIZATION, _SPACING = 0, 0
 
+
 def normalize_text_format(capitalization, spacing):
     '''
     Commands for capitalization: 
@@ -21,11 +22,12 @@ def normalize_text_format(capitalization, spacing):
     2 spine- words-with-hyphens
     3 snake- words_with_underscores
     '''
-    if capitalization == 0: 
+    if capitalization == 0:
         capitalization = 5
-    if spacing == 0 and capitalization == 3: 
+    if spacing == 0 and capitalization == 3:
         spacing = 1
     return capitalization, spacing
+
 
 def set_text_format(capitalization, spacing):
     capitalization, spacing = normalize_text_format(capitalization, spacing)
@@ -34,39 +36,39 @@ def set_text_format(capitalization, spacing):
     _SPACING = spacing
     print("Text formatting: %s" % get_text_format_description(_CAPITALIZATION, _SPACING))
 
+
 def clear_text_format():
     global _CAPITALIZATION, _SPACING
     _CAPITALIZATION = 0
     _SPACING = 0
 
+
 def peek_text_format():
     global _CAPITALIZATION, _SPACING
     print("Text formatting: %s" % get_text_format_description(_CAPITALIZATION, _SPACING))
 
+
 def get_text_format_description(capitalization, spacing):
-    caps = {
-        0: "<none>",
-        1: "yell",
-        2: "tie",
-        3: "gerrish",
-        4: "sing",
-        5: "laws"
-        }
-    spaces = {
-        0: "<none>",
-        1: "gum",
-        2: "spine",
-        3: "snake"
-        }
+    caps = {0: "<none>", 1: "yell", 2: "tie", 3: "gerrish", 4: "sing", 5: "laws"}
+    spaces = {0: "<none>", 1: "gum", 2: "spine", 3: "snake"}
     if capitalization == 0 and spacing == 0:
         return "<none>"
     else:
         text = get_formatted_text(capitalization, spacing, str("this is a test"))
         return "%s %s (%s)" % (caps[capitalization], spaces[spacing], text)
 
+
 def master_format_text(capitalization, spacing, textnv):
     capitalization, spacing = normalize_text_format(capitalization, spacing)
-    Text(get_formatted_text(capitalization, spacing, str(textnv))).execute()    
+    Text(get_formatted_text(capitalization, spacing, str(textnv))).execute()
+
+
+def partial_format_text(word_limit, textnv):
+    global _CAPITALIZATION, _SPACING
+    Text(
+        get_formatted_text(_CAPITALIZATION, _SPACING, " ".join(
+            str(textnv).split(" ")[0:word_limit]))).execute()
+
 
 def get_formatted_text(capitalization, spacing, t):
     tlen = len(t)
@@ -94,9 +96,11 @@ def get_formatted_text(capitalization, spacing, t):
             t = "_".join(t.split(" "))
     return t
 
+
 def prior_text_format(textnv):
     global _CAPITALIZATION, _SPACING
     Text(get_formatted_text(_CAPITALIZATION, _SPACING, str(textnv))).execute()
+
 
 def master_text_nav(mtn_mode, mtn_dir, nnavi500, extreme):
     '''
@@ -106,7 +110,7 @@ def master_text_nav(mtn_mode, mtn_dir, nnavi500, extreme):
     nnavi500: number of keypresses (default 1)
     extreme: home/end (default None)
     '''
-    
+
     k = None
     if mtn_mode is None:
         if extreme is not None:
@@ -127,4 +131,4 @@ def master_text_nav(mtn_mode, mtn_dir, nnavi500, extreme):
         way = "end" if mtn_dir in ["right", "down"] else "home"
         k = str(mtn_mode) + "-" + str(way)
     Key(k).execute()
-    time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.) 
+    time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)

@@ -11,6 +11,12 @@ complexity_report*
 *.*\#
 *.*~
 
+# Ignore Rope
+.ropeproject/
+
+# Ignoring Visual Studio (Code)
+.vs/
+.vscode/
 
 # Ignore Natlink
 /core/

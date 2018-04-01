@@ -27,7 +27,7 @@ class ChromeRule(MergeRule):
         "new tab [<n>]":                R(Key("c-t"), rdescript="Browser: New Tab") * Repeat(extra="n"),
         "reopen tab [<n>]":             R(Key("cs-t"), rdescript="Browser: Reopen Tab") * Repeat(extra="n"),
         "close all tabs":               R(Key("cs-w"), rdescript="Browser: Close All Tabs"),
-        
+
         "go back [<n>]":                R(Key("a-left/20"), rdescript="Browser: Navigate History Backward") * Repeat(extra="n"),
         "go forward [<n>]":             R(Key("a-right/20"), rdescript="Browser: Navigate History Forward") * Repeat(extra="n"),
         "zoom in [<n>]":                R(Key("c-plus/20"), rdescript="Browser: Zoom In") * Repeat(extra="n"),
@@ -53,26 +53,26 @@ class ChromeRule(MergeRule):
         "focus notification":           R(Key("a-n"), rdescript="Browser: Focus Notification"),
         "allow notification":           R(Key("as-a"), rdescript="Browser: Allow Notification"),
         "deny notification":            R(Key("as-a"), rdescript="Browser: Deny Notification"),
-        
+
         "developer tools":              R(Key("f12"), rdescript="Browser: Developer Tools"),
         "view [page] source":           R(Key("c-u"), rdescript="Browser: View Page Source"),
         "resume":                       R(Key("f8"), rdescript="Browser: Resume"),
         "step over":                    R(Key("f10"), rdescript="Browser: Step Over"),
-        "step into":                    R(Key("f11"), rdescript="Browser: Step Into"), 
+        "step into":                    R(Key("f11"), rdescript="Browser: Step Into"),
         "step out":                     R(Key("s-f11"), rdescript="Browser: Step Out"),
-        
+
         "IRC identify":                 R(Text("/msg NickServ identify PASSWORD"), rdescript="IRC Chat Channel Identify"),
         }
     extras = [
-              Dictation("dict"),
-              IntegerRefST("n",1, 10),
-             ]
-    defaults ={"n": 1, "dict":"nothing"}
+        Dictation("dict"),
+        IntegerRefST("n", 1, 10),
+    ]
+    defaults = {"n": 1, "dict": "nothing"}
 
 
 #---------------------------------------------------------------------------
 
-context = AppContext(executable="chrome") 
+context = AppContext(executable="chrome")
 grammar = Grammar("chrome", context=context)
 
 if settings.SETTINGS["apps"]["chrome"]:
