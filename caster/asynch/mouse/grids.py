@@ -8,7 +8,7 @@ import sys, os
 from threading import Timer
 import time
 
-import win32api
+import win32api, win32gui
 
 import Tkinter as tk
 
@@ -113,9 +113,7 @@ class TkTransparent(tk.Tk):
         self.deiconify()
         self.lift()
         time.sleep(0.1)
-        self.focus_force()
-        self.focus_set()
-        self.focus()
+        win32gui.SetForegroundWindow(self)
 
     def hide(self):
         self.withdraw()
