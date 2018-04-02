@@ -209,14 +209,14 @@ def main(argv):
     error_code = windll.shcore.SetProcessDpiAwareness(2)  #enable 1-1 pixel mapping
     if error_code == -2147024891:
         raise OSError("Failed to set app awareness")
-    dpi_map = {96: 1.0, 120: 1.25, 144: 1.5, 192: 2.0, 216: 2.25, 240: 2.5}
+    #dpi_map = {96: 1.0, 120: 1.25, 144: 1.5, 192: 2.0, 216: 2.25, 240: 2.5}
 
     LOGPIXELSX = 88
     dc = windll.user32.GetDC(0)
     horizontal_dpi = windll.gdi32.GetDeviceCaps(
         dc, LOGPIXELSX)  # Horizontal DPI determines the DPI scaling value
     windll.user32.ReleaseDC(0, dc)
-    dpi_scaling = dpi_scaling/96.0
+    dpi_scaling = horizontal_dpi/96.0
 
     try:
         opts, args = getopt.getopt(argv, "ht:a:d:m:",
