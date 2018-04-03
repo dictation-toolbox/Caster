@@ -209,7 +209,7 @@ def main(argv):
     error_code = windll.shcore.SetProcessDpiAwareness(2)  #enable 1-1 pixel mapping
     if error_code == -2147024891:
         raise OSError("Failed to set app awareness")
-    dpi_map = {96: 1.0, 120: 1.25, 144: 1.5, 192: 2.0, 216: 2.25, 240: 2.5}
+    #dpi_map = {96: 1.0, 120: 1.25, 144: 1.5, 192: 2.0, 216: 2.25, 240: 2.5}
 
     LOGPIXELSX = 88
     dc = windll.user32.GetDC(0)
