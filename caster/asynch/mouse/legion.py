@@ -216,7 +216,7 @@ def main(argv):
     horizontal_dpi = windll.gdi32.GetDeviceCaps(
         dc, LOGPIXELSX)  # Horizontal DPI determines the DPI scaling value
     windll.user32.ReleaseDC(0, dc)
-    dpi_scaling = dpi_scaling/96.0
+    dpi_scaling = horizontal_dpi/96.0
 
     try:
         opts, args = getopt.getopt(argv, "ht:a:d:m:",
@@ -242,7 +242,8 @@ def main(argv):
         if dimensions is None:
             r = monitors[int(monitor) - 1].rectangle
             dimensions = Dimensions(
-                int(r.dx*dpi_scaling), int(r.dy*dpi_scaling), int(r.x), int(r.y))
+                int(r.dx*dpi_scaling), int(r.dy*dpi_scaling), int(r.x*dpi_scaling),
+                int(r.y*dpi_scaling))
         lg = LegionGrid(grid_size=dimensions, tirg=tirg, auto_quit=auto_quit)
     except Exception:
         utilities.simple_log(True)
