@@ -227,7 +227,7 @@ def main(argv):
             elif opt == '-m':
                 monitor = arg
             elif opt in ("-d", "--dimensions"):
-                # wxh+x+ySave
+                # wxh+x+y
                 dimensions = Dimensions(*[int(n) for n in arg.split("_")])
             elif opt in ("-a", "--autoquit"):
                 auto_quit = arg in ("1", "t")
