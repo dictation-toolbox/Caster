@@ -237,11 +237,7 @@ def main(argv):
             #tuple which contains the monitor rectangle
             (x, y, dx, dy) = monitor_choice[2]
 
-<<<<<<< HEAD
             dimensions = Dimensions(int(dx - x), int(dy - y), int(x), int(y))
-=======
-            dimensions = Dimensions(int(dx), int(dy), int(x), int(y))
->>>>>>> 9d9f1ece55036af2c0b21b1b5c84353e438667ca
 
         lg = LegionGrid(grid_size=dimensions, tirg=tirg, auto_quit=auto_quit)
     except Exception:
