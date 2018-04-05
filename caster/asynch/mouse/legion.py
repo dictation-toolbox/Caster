@@ -17,14 +17,16 @@ finally:
     from caster.lib import gdi, settings, utilities
 
 try:
-    from PIL import ImageGrab, ImageFilter
+    from PIL import ImageGrab, ImageFilter, Image
 except ImportError:
     utilities.availability_message("Legion", "PIL")
 '''
-Roughly determines the size of each rectangle (give or take a few pixels).
-Anything less than 60 starts to feel cluttered. 30 is the bare minimum before three digit numbers no longer fit.
+The screen will be divided into vertical columns of equal width.
+The width of each Legion box cannot exceed the width of the column.
+This way relative partitioning is achieved since larger resolutions 
+will be partitioned into columns of larger width.
 '''
-MAX_WIDTH = 60
+VERTICAL_PARTITIONS = 30
 
 
 class Rectangle:
@@ -39,7 +41,7 @@ class LegionGrid(TkTransparent):
         self.setup_xmlrpc_server()
         TkTransparent.__init__(self, settings.LEGION_TITLE, grid_size)
         self.attributes("-alpha", 0.7)
-
+        self.max_rectangle_width = int(grid_size.width/VERTICAL_PARTITIONS)
         self.tirg_positions = {}
         if tirg is not None:
             self.process_rectangles(tirg)
@@ -93,7 +95,7 @@ class LegionGrid(TkTransparent):
         # Split larger rectangles into smaller ones to allow greater precision.
         rectangles_to_split = []
         for rect in self.tirg_rectangles:  # Collect all the rectangles that are too large.
-            if rect.x2 - rect.x1 >= MAX_WIDTH:
+            if rect.x2 - rect.x1 >= self.max_rectangle_width:
                 rectangles_to_split.append(rect)
         self.tirg_rectangles = [
             x for x in self.tirg_rectangles if x not in rectangles_to_split
@@ -104,7 +106,7 @@ class LegionGrid(TkTransparent):
         # Helper class for splitting larger rectangles to smaller ones.
         for rect in rectangles_to_split:
             width = rect.x2 - rect.x1
-            pieces = width/MAX_WIDTH
+            pieces = width/self.max_rectangle_width
             new_width = width/pieces
             for i in range(0, pieces):
                 r = Rectangle()
