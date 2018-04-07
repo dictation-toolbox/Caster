@@ -26,7 +26,6 @@ The width of each Legion box cannot exceed the width of the column.
 This way relative partitioning is achieved since larger resolutions 
 will be partitioned into columns of larger width.
 '''
-VERTICAL_PARTITIONS = 30
 
 
 class Rectangle:
@@ -41,7 +40,8 @@ class LegionGrid(TkTransparent):
         self.setup_xmlrpc_server()
         TkTransparent.__init__(self, settings.LEGION_TITLE, grid_size)
         self.attributes("-alpha", 0.7)
-        self.max_rectangle_width = int(grid_size.width/VERTICAL_PARTITIONS)
+        self.max_rectangle_width = int(
+            grid_size.width/settings.SETTINGS["miscellaneous"]["legion_vertical_columns"])
         self.tirg_positions = {}
         if tirg is not None:
             self.process_rectangles(tirg)

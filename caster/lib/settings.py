@@ -146,6 +146,7 @@ _DEFAULT_SETTINGS = {
         "integer_remap_crash_fix": False,
         "print_rdescripts": False,
         "history_playback_delay_secs": 1.0,
+        "legion_vertical_columns": 30,
     },
     "pronunciations": {
         "c++": "C plus plus",
