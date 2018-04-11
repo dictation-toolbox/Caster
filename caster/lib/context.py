@@ -123,6 +123,29 @@ def read_selected_without_altering_clipboard(same_is_okay=False):
     return 0, temporary
 
 
+def paste_string_without_altering_clipboard(content):
+    '''
+    True - indicates success
+    False - indicates clipboard error
+    '''
+    time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/
+               1000.)  # time for previous keypress to execute
+    cb = Clipboard(from_system=True)
+
+    try:
+        Clipboard.set_system_text(str(content))
+
+        Key("c-v").execute()
+        time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/
+                   1000.)  # time for keypress to execute
+        cb.copy_to_system()
+
+    except Exception:
+        utilities.simple_log(False)
+        return False
+    return True
+
+
 def fill_within_line(target, nexus):
     result = navigate_to_character("left", str(target), True)
     if result:
