@@ -89,6 +89,7 @@ _DEFAULT_SETTINGS = {
         "CONFIGDEBUGTXT_PATH": BASE_PATH + "/bin/data/configdebug.txt",
 
         # PYTHON
+        "PYTHONW": "C:/Python27/pythonw",
         "WXPYTHON_PATH": "C:/Python27/Lib/site-packages/wx-3.0-msw"
     },
 

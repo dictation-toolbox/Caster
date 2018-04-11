@@ -1,8 +1,7 @@
 from subprocess import Popen
 import sys, os
 
-
-try: # Style C -- may be imported into Caster, or externally
+try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).split("\\caster")[0].replace("\\", "/")
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
@@ -12,7 +11,6 @@ finally:
     from caster.asynch.hmc.hmc_confirm import HomunculusConfirm
     from caster.asynch.hmc.homunculus import Homunculus
     from caster.lib import settings
-
 '''
 To add a new homunculus (pop-up ui window) type:
     (1) create the module
@@ -21,49 +19,59 @@ To add a new homunculus (pop-up ui window) type:
     (4) call launch() from this module with its type and any data it needs (data as a single string with no spaces)
 '''
 
+
 def launch(hmc_type, data=None):
     from dragonfly import (WaitWindow, FocusWindow, Key)
-    instructions=_get_instructions(hmc_type)
-    if data is not None:# and callback!=None:
+    instructions = _get_instructions(hmc_type)
+    if data is not None:  # and callback!=None:
         instructions.append(data)
     Popen(instructions)
-    
-    hmc_title=_get_title(hmc_type)
+
+    hmc_title = _get_title(hmc_type)
     WaitWindow(title=hmc_title, timeout=5).execute()
     FocusWindow(title=hmc_title).execute()
     Key("tab").execute()
 
+
 def _get_instructions(hmc_type):
-    if hmc_type==settings.WXTYPE_SETTINGS:
-        return ["pythonw", settings.SETTINGS["paths"]["SETTINGS_WINDOW_PATH"]]
+    if hmc_type == settings.WXTYPE_SETTINGS:
+        return [
+            settings.SETTINGS["paths"]["PYTHONW"],
+            settings.SETTINGS["paths"]["SETTINGS_WINDOW_PATH"]
+        ]
     else:
-        return ["pythonw", settings.SETTINGS["paths"]["HOMUNCULUS_PATH"], hmc_type]
+        return [
+            settings.SETTINGS["paths"]["PYTHONW"],
+            settings.SETTINGS["paths"]["HOMUNCULUS_PATH"], hmc_type
+        ]
+
 
 def _get_title(hmc_type):
-    default=settings.HOMUNCULUS_VERSION
-    if hmc_type==settings.QTYPE_DEFAULT or hmc_type==settings.QTYPE_INSTRUCTIONS:
+    default = settings.HOMUNCULUS_VERSION
+    if hmc_type == settings.QTYPE_DEFAULT or hmc_type == settings.QTYPE_INSTRUCTIONS:
         return default
-    elif hmc_type==settings.QTYPE_RECORDING:
-        return default+settings.HMC_TITLE_RECORDING
-    elif hmc_type==settings.QTYPE_DIRECTORY:
-        return default+settings.HMC_TITLE_DIRECTORY
-    elif hmc_type==settings.QTYPE_CONFIRM:
-        return default+settings.HMC_TITLE_CONFIRM
-    elif hmc_type==settings.WXTYPE_SETTINGS:
-        return settings.SETTINGS_WINDOW_TITLE+settings.SOFTWARE_VERSION_NUMBER
+    elif hmc_type == settings.QTYPE_RECORDING:
+        return default + settings.HMC_TITLE_RECORDING
+    elif hmc_type == settings.QTYPE_DIRECTORY:
+        return default + settings.HMC_TITLE_DIRECTORY
+    elif hmc_type == settings.QTYPE_CONFIRM:
+        return default + settings.HMC_TITLE_CONFIRM
+    elif hmc_type == settings.WXTYPE_SETTINGS:
+        return settings.SETTINGS_WINDOW_TITLE + settings.SOFTWARE_VERSION_NUMBER
     return default
 
+
 if __name__ == '__main__':
-    found_word=None
-    if len(sys.argv)>2:
-        found_word=sys.argv[2]
-    if sys.argv[1]==settings.QTYPE_DEFAULT:
+    found_word = None
+    if len(sys.argv) > 2:
+        found_word = sys.argv[2]
+    if sys.argv[1] == settings.QTYPE_DEFAULT:
         app = Homunculus(sys.argv[1])
-    elif sys.argv[1]==settings.QTYPE_RECORDING:
+    elif sys.argv[1] == settings.QTYPE_RECORDING:
         app = HomunculusRecording([settings.QTYPE_RECORDING, found_word])
-    elif sys.argv[1]==settings.QTYPE_INSTRUCTIONS:
+    elif sys.argv[1] == settings.QTYPE_INSTRUCTIONS:
         app = Homunculus(sys.argv[1], sys.argv[2])
-    elif sys.argv[1]==settings.QTYPE_DIRECTORY:
+    elif sys.argv[1] == settings.QTYPE_DIRECTORY:
         app = HomunculusDirectory(sys.argv[1])
-    elif sys.argv[1]==settings.QTYPE_CONFIRM:
+    elif sys.argv[1] == settings.QTYPE_CONFIRM:
         app = HomunculusConfirm([sys.argv[1], sys.argv[2]])

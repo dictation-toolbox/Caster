@@ -65,18 +65,20 @@ def mouse_alternates(mode, nexus, monitor=1):
             ls.scan(bbox)
             tscan = ls.get_update()
             Popen([
-                "pythonw", settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0],
-                "-m",
+                settings.SETTINGS["paths"]["PYTHONW"],
+                settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0], "-m",
                 str(monitor)
             ])  # , "-d", "500_500_500_500"
         elif mode == "rainbow" and not utilities.window_exists(None, "rainbowgrid"):
             Popen([
-                "pythonw", settings.SETTINGS["paths"]["RAINBOW_PATH"], "-g", "r", "-m",
+                settings.SETTINGS["paths"]["PYTHONW"],
+                settings.SETTINGS["paths"]["RAINBOW_PATH"], "-g", "r", "-m",
                 str(monitor)
             ])
         elif mode == "douglas" and not utilities.window_exists(None, "douglasgrid"):
             Popen([
-                "pythonw", settings.SETTINGS["paths"]["DOUGLAS_PATH"], "-g", "d", "-m",
+                settings.SETTINGS["paths"]["PYTHONW"],
+                settings.SETTINGS["paths"]["DOUGLAS_PATH"], "-g", "d", "-m",
                 str(monitor)
             ])
     else:
@@ -94,7 +96,7 @@ def clipboard_to_file(nnavi500, nexus, do_copy=False):
         failure = False
         try:
             # time for keypress to execute
-            time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"] / 1000.)
+            time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
             nexus.clip[key] = Clipboard.get_system_text()
             utilities.save_json_file(nexus.clip,
                                      settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
@@ -115,7 +117,7 @@ def drop(nnavi500, nexus):
                 Key("c-v").execute()
             else:
                 dragonfly.get_engine().speak("slot empty")
-            time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"] / 1000.)
+            time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
         except Exception:
             failure = True
         if not failure:
@@ -141,28 +143,38 @@ def kill_grids_and_wait(nexus):
         time.sleep(0.1)
 
 
-def kick(nexus):
+def left_click(nexus):
     kill_grids_and_wait(nexus)
     windll.user32.mouse_event(0x00000002, 0, 0, 0, 0)
     windll.user32.mouse_event(0x00000004, 0, 0, 0, 0)
 
 
-def kick_right(nexus):
+def right_click(nexus):
     kill_grids_and_wait(nexus)
     windll.user32.mouse_event(0x00000008, 0, 0, 0, 0)
     windll.user32.mouse_event(0x00000010, 0, 0, 0, 0)
 
 
-def kick_middle(nexus):
+def middle_click(nexus):
     kill_grids_and_wait(nexus)
     windll.user32.mouse_event(0x00000020, 0, 0, 0, 0)
     windll.user32.mouse_event(0x00000040, 0, 0, 0, 0)
 
 
+def left_down(nexus):
+    kill_grids_and_wait(nexus)
+    windll.user32.mouse_event(0x00000002, 0, 0, 0, 0)
+
+
+def left_up(nexus):
+    kill_grids_and_wait(nexus)
+    windll.user32.mouse_event(0x00000004, 0, 0, 0, 0)
+
+
 def wheel_scroll(direction, nnavi500):
     amount = 120
     if direction != "up":
-        amount = amount * -1
+        amount = amount* -1
     for i in xrange(1, abs(nnavi500) + 1):
         windll.user32.mouse_event(0x00000800, 0, 0, amount, 0)
         time.sleep(0.1)
@@ -184,9 +196,9 @@ def curse(direction, direction2, nnavi500, dokick):
     Mouse("<" + str(x) + ", " + str(y) + ">").execute()
     if int(dokick) != 0:
         if int(dokick) == 1:
-            kick()
+            left_click()
         elif int(dokick) == 2:
-            kick_right()
+            right_click()
 
 
 def next_line(semi):
