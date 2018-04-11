@@ -4,7 +4,7 @@ import re
 import sys
 import threading
 from ctypes import *
-from win32api import EnumDisplayMonitors
+from dragonfly import monitors
 
 #from dragonfly import monitors
 
@@ -235,11 +235,8 @@ def main(argv):
                 auto_quit = arg in ("1", "t")
 
         if dimensions is None:
-            monitor_choice = EnumDisplayMonitors(None, None)[int(monitor) - 1]
-            #tuple which contains the monitor rectangle
-            (x, y, dx, dy) = monitor_choice[2]
-
-            dimensions = Dimensions(int(dx - x), int(dy - y), int(x), int(y))
+            r = monitors[int(monitor) - 1].rectangle
+            dimensions = Dimensions(int(r.dx), int(r.dy), int(r.x), int(r.y))
 
         lg = LegionGrid(grid_size=dimensions, tirg=tirg, auto_quit=auto_quit)
     except Exception:
