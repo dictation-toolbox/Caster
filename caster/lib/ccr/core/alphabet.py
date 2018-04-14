@@ -8,18 +8,21 @@ from caster.lib.dfplus.state.short import R
 
 class Alphabet(MergeRule):
     pronunciation = CCRMerger.CORE[0]
-    
+
     mapping = {
-        "[<big>] <letter>": R(Function(alphanumeric.letters2, extra ={"big", "letter"}), rdescript="Spell"),
-        }
+        "[<big>] <letter>":
+            R(Function(alphanumeric.letters2, extra={"big", "letter"}),
+              rdescript="Spell"),
+    }
     extras = [
         alphanumeric.get_alphabet_choice("letter"),
-        Choice("big",
-              {"big": "big",
-               }),
+        Choice("big", {
+            "big": "big",
+        }),
     ]
     defaults = {
-    "big": "", 
+        "big": "",
     }
-    
+
+
 control.nexus().merger.add_global_rule(Alphabet())

@@ -8,29 +8,37 @@ from caster.lib import settings, utilities
 from caster.lib.dfplus.merge import gfilter
 from caster.lib.dfplus.merge.mergerule import MergeRule
 
-
 grammar = None
 server_proxy = None
 _NEXUS = control.nexus()
 
+
 def launch_IDE():
-    Popen([settings.SETTINGS["paths"]["SIKULI_COMPATIBLE_JAVA_EXE_PATH"],
-                "-jar", settings.SETTINGS["paths"]["SIKULI_IDE_JAR_PATH"]])
-    
+    Popen([
+        settings.SETTINGS["paths"]["SIKULI_COMPATIBLE_JAVA_EXE_PATH"], "-jar",
+        settings.SETTINGS["paths"]["SIKULI_IDE_JAR_PATH"]
+    ])
+
+
 def launch_server():
-    Popen([settings.SETTINGS["paths"]["SIKULI_COMPATIBLE_JAVA_EXE_PATH"],
-                "-jar", settings.SETTINGS["paths"]["SIKULI_SCRIPTS_JAR_PATH"],
-                "-r", settings.SETTINGS["paths"]["SIKULI_SERVER_PATH"]
-                ])
+    Popen([
+        settings.SETTINGS["paths"]["SIKULI_COMPATIBLE_JAVA_EXE_PATH"], "-jar",
+        settings.SETTINGS["paths"]["SIKULI_SCRIPTS_JAR_PATH"], "-r",
+        settings.SETTINGS["paths"]["SIKULI_SERVER_PATH"]
+    ])
+
+
 #
+
 
 def execute(fname):
     try:
         global server_proxy
-        fn=getattr(server_proxy, fname)
+        fn = getattr(server_proxy, fname)
         fn()
     except Exception:
         utilities.simple_log()
+
 
 def generate_commands(list_of_functions):
     global server_proxy
@@ -44,14 +52,16 @@ def generate_commands(list_of_functions):
     grammar.add_rule(MappingRule(mapping=mapping, name="sikuli server"))
     grammar.load()
 
+
 def start_server_proxy():
     global server_proxy
     server_proxy = control.nexus().comm.get_com("sikuli")
     fns = server_proxy.list_functions()
-    if len(fns)>0:
+    if len(fns) > 0:
         generate_commands(fns)
     print("Caster-Sikuli server started successfully.")
-    
+
+
 def server_proxy_timer_fn():
     print("Attempting Caster-Sikuli connection [...]")
     try:
@@ -59,29 +69,34 @@ def server_proxy_timer_fn():
         control.nexus().timer.remove_callback(server_proxy_timer_fn)
     except Exception:
         pass
+
+
 #         utilities.simple_log(False)
-    
+
+
 def unload():
     global grammar
     if grammar: grammar.unload()
     grammar = None
+
 
 def refresh(_NEXUS):
     ''' should be able to add new scripts on the fly and then call this '''
     unload()
     global grammar
     grammar = Grammar("si/kuli")
+
     def refresh_sick_command():
         server_proxy.terminate()
         refresh(_NEXUS)
-    
+
     mapping = {
-        "launch sick IDE":           Function(launch_IDE),
-        "launch sick server":        Function(launch_server),
-        "refresh sick you Lee":      Function(refresh_sick_command),
-        "sick shot":                 Key("cs-2"),
+        "launch sick IDE": Function(launch_IDE),
+        "launch sick server": Function(launch_server),
+        "refresh sick you Lee": Function(refresh_sick_command),
+        "sick shot": Key("cs-2"),
     }
-    
+
     rule = MergeRule(name="sik", mapping=mapping)
     gfilter.run_on(rule)
     grammar.add_rule(rule)
@@ -98,5 +113,3 @@ def refresh(_NEXUS):
 
 if settings.SETTINGS["miscellaneous"]["sikuli_enabled"]:
     refresh(_NEXUS)
-        
-
