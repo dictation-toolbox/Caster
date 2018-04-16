@@ -225,7 +225,11 @@ class Navigation(MergeRule):
             "gum": 1,
             "gun": 1,
             "spine": 2,
-            "snake": 3
+            "snake": 3,
+            "pebble": 4,
+            "incline": 5,
+            "dissent": 6,
+            "descent": 6
         }),
         Choice("semi", {
             "dock": ";",

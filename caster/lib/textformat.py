@@ -21,6 +21,8 @@ def normalize_text_format(capitalization, spacing):
     1 gum  - wordstogether
     2 spine- words-with-hyphens
     3 snake- words_with_underscores
+	4 pebble - words.with.fullstops
+	5 incline - words/with/slashes
     '''
     if capitalization == 0:
         capitalization = 5
@@ -50,7 +52,7 @@ def peek_text_format():
 
 def get_text_format_description(capitalization, spacing):
     caps = {0: "<none>", 1: "yell", 2: "tie", 3: "gerrish", 4: "sing", 5: "laws"}
-    spaces = {0: "<none>", 1: "gum", 2: "spine", 3: "snake"}
+    spaces = {0: "<none>", 1: "gum", 2: "spine", 3: "snake", 4: "pebble", 5: "incline", 6: "descent"}
     if capitalization == 0 and spacing == 0:
         return "<none>"
     else:
@@ -94,6 +96,12 @@ def get_formatted_text(capitalization, spacing, t):
             t = "-".join(t.split(" "))
         elif spacing == 3:
             t = "_".join(t.split(" "))
+        elif spacing == 4:
+            t = ".".join(t.split(" "))
+        elif spacing == 5:
+            t = "/".join(t.split(" "))
+        elif spacing == 6:
+            t = "\\".join(t.split(" "))
     return t
 
 
