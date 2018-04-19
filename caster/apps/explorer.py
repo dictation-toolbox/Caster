@@ -21,6 +21,12 @@ class IERule(MergeRule):
             R(Key("a-f, w, t"), rdescript="Explorer: New File"),
         "(show | file | folder) properties":
             R(Key("a-enter"), rdescript="Explorer: Properties Dialog"),
+        "get up":                            
+            R(Key("a-up"), rdescript="Explorer: Navigate up"),
+        "get back":
+            R(Key("a-left"), rdescript="Explorer: Navigate back"),
+        "get forward":
+            R(Key("a-right"), rdescript="Explorer: Navigate forward"),
     }
     extras = [
         Dictation("text"),
