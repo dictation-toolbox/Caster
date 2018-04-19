@@ -206,7 +206,7 @@ class Navigation(MergeRule):
     "(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel) <textnv> [brunt]":  R(Function(textformat.master_format_text), rdescript="Text Format"),
     "format <textnv>":              R(Function(textformat.prior_text_format), rdescript="Last Text Format"),
     "<word_limit> format <textnv>": R(Function(textformat.partial_format_text), rdescript="Partial Text Format"),
-    "trap <enclosure> bow":         R(Function(textformat.enclose_selected), rdescript="Enclose text "),
+    "hug <enclosure>":         R(Function(textformat.enclose_selected), rdescript="Enclose text "),
     "dredge":                       R(Key("a-tab"), rdescript="Alt-Tab"),
 
     }
