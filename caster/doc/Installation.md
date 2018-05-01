@@ -1,8 +1,10 @@
 # Installation
 
+- [Dragonfly](https://github.com/Danesprite/dragonfly)
+Follow the instructions in the readme to install danesprite's dragonfly fork. Currently, only the basic installation is required (no CMU Sphinx support).
+
 ## YouTube Videos
 
-- [Dragonfly](https://www.youtube.com/watch?v=iNAsV4pcnEA)
 - [Caster](https://www.youtube.com/watch?v=wjSwB4cpMDI)
 
 ## Addendums
