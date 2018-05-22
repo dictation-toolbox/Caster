@@ -5,6 +5,29 @@ import sys
 import threading
 from ctypes import *
 from dragonfly import monitors
+from os import name as osname
+
+if osname == "Windows":
+    import win32gui
+
+    def windowEnumerationHandler(hwnd, top_windows):
+        top_windows.append((hwnd, win32gui.GetWindowText(hwnd)))
+
+    def set_legion_as_top():
+        results = []
+        top_windows = []
+        win32gui.EnumWindows(windowEnumerationHandler, top_windows)
+        for i in top_windows:
+            if "legion" in i[1].lower():
+                print(i)
+                win32gui.ShowWindow(i[0], 5)
+                win32gui.SetForegroundWindow(i[0])
+                break
+else:
+
+    def set_legion_as_top():
+        pass
+
 
 #from dragonfly import monitors
 
@@ -245,3 +268,4 @@ def main(argv):
 
 if __name__ == "__main__":
     main(sys.argv[1:])
+    set_legion_as_top()
