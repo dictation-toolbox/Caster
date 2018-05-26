@@ -6,25 +6,20 @@ import threading
 from ctypes import *
 from dragonfly import monitors
 from os import name as osname
-
 if osname == "Windows":
     import win32gui
 
-    def windowEnumerationHandler(hwnd, top_windows):
-        top_windows.append((hwnd, win32gui.GetWindowText(hwnd)))
+    def windowEnumerationHandler(hwnd):        
+        if "legion" in win32gui.GetWindowText(hwnd):
+            win32gui.ShowWindow(hwnd, 5)
+            win32gui.SetForegroundWindow(hwnd)
 
-    def set_legion_as_top():
-        results = []
+    def set_legion_as_top():        
         top_windows = []
-        win32gui.EnumWindows(windowEnumerationHandler, top_windows)
-        for i in top_windows:
-            if "legion" in i[1].lower():                
-                win32gui.ShowWindow(i[0], 5)
-                win32gui.SetForegroundWindow(i[0])
-                break
+        win32gui.EnumWindows(windowEnumerationHandler)
 else:
-# Do nothing if in another operating system,
-# Needs Updating for different systems
+    # Do nothing if in another operating system,
+    # Needs Updating for different systems
     def set_legion_as_top():
         pass
 
