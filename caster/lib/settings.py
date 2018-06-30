@@ -5,7 +5,6 @@ import io
 import json
 import os
 import sys
-import win32api
 
 SETTINGS = {}
 _SETTINGS_PATH = os.path.realpath(__file__).split("lib")[0] + "bin\\data\\settings.json"
@@ -38,20 +37,18 @@ WSR = False
 
 def _find_natspeak():
     '''Tries to find the natspeak engine.'''
-    AllDrives = win32api.GetLogicalDriveStrings()
-    DrivesList = AllDrives.split('\000')[:-1]
-    PossibleDnsRoot = [item.replace('\\', '/Program Files (x86)/Nuance/')  for item in DrivesList] 
-    
-    for location in PossibleDnsRoot:
-        if os.path.isdir(location):
-            DnsVersion = os.listdir(location) 
-            ExePath = location + str(DnsVersion).strip("['']") + '/Program/natspeak.exe'
-            if os.path.isfile(ExePath):
-                return ExePath
+    possible_locations = [
+        "C:/Program Files (x86)/Nuance/NaturallySpeaking15/Program/natspeak.exe",
+        "C:/Program Files (x86)/Nuance/NaturallySpeaking14/Program/natspeak.exe",
+        "C:/Program Files (x86)/Nuance/NaturallySpeaking13/Program/natspeak.exe",
+        "C:/Program Files (x86)/Nuance/NaturallySpeaking12/Program/natspeak.exe",
+    ]
+    for location in possible_locations:
+        if os.path.isfile(location):
+            return location
     print "Cannot find default dragon engine path"
     return ""
 
-_find_natspeak()
 
 # The defaults for every setting. Could be moved out into its own file.
 _DEFAULT_SETTINGS = {
