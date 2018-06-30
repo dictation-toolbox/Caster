@@ -41,18 +41,25 @@ def _find_natspeak():
     AllDrives = win32api.GetLogicalDriveStrings()
     DrivesList = AllDrives.split('\000')[:-1]
     PossibleDnsRoot = [
-        item.replace('\\', '/Program Files (x86)/Nuance/')
-        for item in DrivesList
+        item.replace('\\', '/Program Files (x86)/Nuance/') for item in DrivesList
     ]
+
     for location in PossibleDnsRoot:
         if os.path.isdir(location):
-            DnsVersion = os.listdir(location)
-            ExePath = location + str(DnsVersion).strip(
-                "['']") + '/Program/natspeak.exe'
+            NuanceDir = os.listdir(location)
+
+            def DnsVersion(Dns):
+                return Dns.startswith('NaturallySpeaking')
+
+            DnsVersion = filter(DnsVersion, NuanceDir)
+            DnsRoot = location + str(DnsVersion).strip("['']")
+            ExePath = DnsRoot + '/Program/natspeak.exe'
             if os.path.isfile(ExePath):
                 return ExePath
-    print "Cannot find default dragon engine path"
-    return ""
+            else:
+                print "Cannot find default dragon engine path"
+                return ""
+
 
 # The defaults for every setting. Could be moved out into its own file.
 _DEFAULT_SETTINGS = {
