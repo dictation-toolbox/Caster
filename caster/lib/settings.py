@@ -40,25 +40,36 @@ def _find_natspeak():
     '''Tries to find the natspeak engine on all drives.'''
     AllDrives = win32api.GetLogicalDriveStrings()
     DrivesList = AllDrives.split('\000')[:-1]
-    PossibleDnsRoot = [
+    PossibleNuanceRoot = [
         item.replace('\\', '/Program Files (x86)/Nuance/') for item in DrivesList
     ]
-
-    for location in PossibleDnsRoot:
+    for num, location in enumerate(PossibleNuanceRoot, start=1):
         if os.path.isdir(location):
             NuanceDir = os.listdir(location)
 
             def DnsVersion(Dns):
-                return Dns.startswith('NaturallySpeaking')
+                UnsupportedDns = [
+                    'NaturallySpeaking9',
+                    'NaturallySpeaking10',
+                    'NaturallySpeaking11',
+                    'NaturallySpeaking12',
+                ]
+                Dns.startswith('NaturallySpeaking')
+                if Dns not in UnsupportedDns:
+                    return Dns
+                else:
+                    print 'Dragon ' + Dns + ' is not supported by Castor. Only versions 13 and above are supported. Purchase Dragon Naturally Speaking 13 or above'
 
             DnsVersion = filter(DnsVersion, NuanceDir)
-            DnsRoot = location + str(DnsVersion).strip("['']")
-            ExePath = DnsRoot + '/Program/natspeak.exe'
-            if os.path.isfile(ExePath):
-                return ExePath
+            NatSpeakPath = location + str(DnsVersion).strip(
+                "['']") + '/Program/natspeak.exe'
+            if os.path.isfile(NatSpeakPath):
+                return NatSpeakPath
             else:
-                print "Cannot find default dragon engine path"
-                return ""
+                continue
+
+    print "Cannot find dragon engine path"
+    return ""
 
 
 # The defaults for every setting. Could be moved out into its own file.
