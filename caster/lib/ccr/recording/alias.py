@@ -102,4 +102,4 @@ class ChainAlias(SelfModifyingRule):
 if settings.SETTINGS["feature_rules"]["chainalias"]:
     control.nexus().merger.add_selfmodrule(ChainAlias(_NEXUS))
 if settings.SETTINGS["feature_rules"]["alias"]:
-    control.nexus().merger.add_selfmodrule(VanillaAlias(_NEXUS))
+    control.nexus().merger.add_selfmodrule(VanillaAlias())
