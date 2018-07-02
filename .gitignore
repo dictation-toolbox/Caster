@@ -1,7 +1,12 @@
 # Ignore junk
 .idea/
 *.pyc
-*.json
+#*.json
+/caster/bin/data/aliases.json
+/caster/bin/data/ccr.json
+/caster/bin/data/clipboard.json
+/caster/bin/data/recorded_macros.json
+#/caster/bin/data/settings.json
 *.wav
 *.class
 test.py
@@ -10,6 +15,8 @@ complexity_report*
 *.log
 *.*\#
 *.*~
+*.exe
+/caster/apps/wish.py
 
 # Ignore Rope
 .ropeproject/
