@@ -5,7 +5,7 @@ import io
 import json
 import os
 import sys
-import win32api
+import wmi
 
 SETTINGS = {}
 _SETTINGS_PATH = os.path.realpath(__file__).split("lib")[0] + "bin\\data\\settings.json"
@@ -37,37 +37,23 @@ WSR = False
 
 
 def _find_natspeak():
-    '''Tries to find the natspeak engine on all drives.'''
-    AllDrives = win32api.GetLogicalDriveStrings()
-    DrivesList = AllDrives.split('\000')[:-1]
-    PossibleNuanceRoot = [
-        item.replace('\\', '/Program Files (x86)/Nuance/') for item in DrivesList
-    ]
-    for num, location in enumerate(PossibleNuanceRoot, start=1):
-        if os.path.isdir(location):
-            NuanceDir = os.listdir(location)
-
-            def DnsVersion(Dns):
-                UnsupportedDns = [
-                    'NaturallySpeaking9',
-                    'NaturallySpeaking10',
-                    'NaturallySpeaking11',
-                    'NaturallySpeaking12',
-                ]
-                Dns.startswith('NaturallySpeaking')
-                if Dns not in UnsupportedDns:
-                    return Dns
+    w = wmi.WMI()
+    for p in w.Win32_Product():
+        if p.Caption and 'Dragon' in p.Caption:
+            Name = '{}'.format(p.Name)
+            Version = '{}'.format(p.Version)
+            Vendor = '{}'.format(p.Vendor)
+            InstallLocation = '{}'.format(p.InstallLocation)
+            
+            if Vendor == 'Nuance Communications Inc.' and Name == 'Dragon':
+                DnsVersion = int(str(Version)[:2])
+                if DnsVersion >= 13:
+                    ExePath =  InstallLocation.replace('\\', '/') + 'Program/natspeak.exe'
+                    print ExePath
+                    if os.path.isfile(ExePath):
+                        return ExePath
                 else:
-                    print 'Dragon ' + Dns + ' is not supported by Castor. Only versions 13 and above are supported. Purchase Dragon Naturally Speaking 13 or above'
-
-            DnsVersion = filter(DnsVersion, NuanceDir)
-            NatSpeakPath = location + str(DnsVersion).strip(
-                "['']") + '/Program/natspeak.exe'
-            if os.path.isfile(NatSpeakPath):
-                return NatSpeakPath
-            else:
-                continue
-
+                    print ' Dragon Naturally Speaking' + str(Version) + ' is not supported by Castor. Only versions 13 and above are supported. Purchase Dragon Naturally Speaking 13 or above'
     print "Cannot find dragon engine path"
     return ""
 
