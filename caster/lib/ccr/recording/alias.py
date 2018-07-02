@@ -50,7 +50,7 @@ class VanillaAlias(SelfModifyingRule):
             mapping[spec] = R(
                 Text(str(aliases[VanillaAlias.json_path][spec])),
                 rdescript="Alias: " + spec)
-        mapping["vanilla alias <s>"] = R(
+        mapping["alias <s>"] = R(
             Function(lambda s: self.vanilla_alias(s)), rdescript="Create Vanilla Alias")
         mapping["delete vanilla aliases"] = R(
             Function(lambda: delete_all(self, VanillaAlias.json_path)),
@@ -101,3 +101,5 @@ class ChainAlias(SelfModifyingRule):
 
 if settings.SETTINGS["feature_rules"]["chainalias"]:
     control.nexus().merger.add_selfmodrule(ChainAlias(_NEXUS))
+if settings.SETTINGS["feature_rules"]["alias"]:
+    control.nexus().merger.add_selfmodrule(VanillaAlias())
