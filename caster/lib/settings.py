@@ -59,7 +59,7 @@ def _validate_natspeak():  # Validates 'Engine Path' for DNS in settings.json
         return _find_natspeak()
 
 
-def _find_natspeak():  # Finds DNS 13+ via Windows Registry.
+def _find_natspeak():  # Finds DNS path and verifies supported DNS versions via Windows Registry.
     print "Searching Windows Registry For DNS..."
     w = wmi.WMI()
     for p in w.Win32_Product():
@@ -80,7 +80,7 @@ def _find_natspeak():  # Finds DNS 13+ via Windows Registry.
                 else:
                     print " Dragon Naturally Speaking" + str(
                         version
-                    ) + " is not supported by Castor. Only versions 13 and above are supported. Purchase Dragon Naturally Speaking 13 or above"
+                    ) + " is not supported by Caster. Only versions 13 and above are supported. Purchase Dragon Naturally Speaking 13 or above"
     print "Cannot find dragon engine path"
     return ""
 
