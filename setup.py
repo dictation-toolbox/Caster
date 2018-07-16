@@ -13,9 +13,12 @@ setup(
     url= "https://github.com/synkarius/caster",
     install_requires=[
         "pywin32;platform_system=='Windows'",
-        "git+ssh://git@github.com/Danesprite/dragonfly.git",
+        
 
         "Pillow",
     ],
+    dependency_links=[
+        "git+ssh://git@github.com/Danesprite/dragonfly.git#egg=dragonfly",
+    ]
 
 )
