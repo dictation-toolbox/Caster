@@ -54,7 +54,7 @@ def _validate_natspeak():  # Validates 'Engine Path' for DNS in settings.json
                         print "Setting DNS path to " + exe_path
                 except Exception as e:
                     print "Error saving json file " + str(e) + _SETTINGS_PATH
-                return ""
+                return exe_path
     else:
         return _find_natspeak()
 
@@ -82,7 +82,7 @@ def _find_natspeak():  # Finds DNS path and verifies supported DNS versions via 
                         version
                     ) + " is not supported by Caster. Only versions 13 and above are supported. Purchase Dragon Naturally Speaking 13 or above"
     print "Cannot find dragon engine path"
-    return ""
+    return exe_path
 
 
 # The defaults for every setting. Could be moved out into its own file.
