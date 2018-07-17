@@ -82,7 +82,7 @@ def _find_natspeak():  # Finds DNS path and verifies supported DNS versions via 
                         version
                     ) + " is not supported by Caster. Only versions 13 and above are supported. Purchase Dragon Naturally Speaking 13 or above"
     print "Cannot find dragon engine path"
-    return exe_path
+    return ""
 
 
 # The defaults for every setting. Could be moved out into its own file.
