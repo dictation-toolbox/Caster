@@ -49,7 +49,7 @@ def _validate_natspeak():  # Validates 'Engine Path' for DNS in settings.json
                 try:
                     formatted_data = unicode(
                         json.dumps(data, sort_keys=True, indent=4, ensure_ascii=False))
-                    with io.open(_SETTINGS_PATH, "r+", encoding="utf-8") as json_file:
+                    with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as json_file:
                         json_file.write(formatted_data)
                         print "Setting DNS path to " + exe_path
                 except Exception as e:
