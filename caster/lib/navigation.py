@@ -47,7 +47,7 @@ def get_direction_choice(name):
 
 def initialize_clipboard(nexus):
     if len(nexus.clip) == 0:
-        nexus.clip = utilities.load_json_file(
+        nexus.clip = utilities.load_toml_file(
             settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
 
 
@@ -98,7 +98,7 @@ def stoosh_keep_clipboard(nnavi500, nexus):
                 # time for keypress to execute
                 time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
                 nexus.clip[key] = Clipboard.get_system_text()
-                utilities.save_json_file(nexus.clip,
+            utilities.save_toml_file(nexus.clip,
                                         settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
             except Exception:
                 failure = True
@@ -160,11 +160,26 @@ def duple_keep_clipboard(nnavi50):
         Key("enter, c-v").execute()
         time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
     cb.copy_to_system()
+def drop(nnavi500, nexus):
+    key = str(nnavi500)
+    while True:
+        failure = False
+        try:
+            if key in nexus.clip:
+                Clipboard.set_system_text(nexus.clip[key])
+                Key("c-v").execute()
+            else:
+                dragonfly.get_engine().speak("slot empty")
+            time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
+        except Exception:
+            failure = True
+        if not failure:
+            break
 
 
 def erase_multi_clipboard(nexus):
     nexus.clip = {}
-    utilities.save_json_file(nexus.clip,
+    utilities.save_toml_file(nexus.clip,
                              settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
 
 

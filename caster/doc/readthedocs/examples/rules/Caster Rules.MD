@@ -260,7 +260,7 @@ Out-of-the-box, Caster gives the user new mouse navigation commands (see the Mou
 
 If you want to modify the pre-made ruleset, there are a few ways to go about it. Of course, you could just edit the source, but then you'd have to deal with merge conflicts when updating to newer versions of Caster. There are two ways to get around this:
 
-* **Make a copy in the safe zone.** (1) Copy the file you'd like to change into your `caster/user` folder. (2) Disable the original rule in your `settings.json` file. (3) Give the new MergeRule a `pronunciation` which is distinct from that of the original. For example, if you're modifying java.py, give the new Java rule a `pronunciation` of "my java" rather than "java". 
+* **Make a copy in the safe zone.** (1) Copy the file you'd like to change into your `caster/user` folder. (2) Disable the original rule in your `settings.toml` file. (3) Give the new MergeRule a `pronunciation` which is distinct from that of the original. For example, if you're modifying java.py, give the new Java rule a `pronunciation` of "my java" rather than "java". 
 * **Use rule filters.** This is the recommended way. Rule filters allow you to change any part of any rule, either at boot time or when the rule is activated ("merge time"). See the Rule Filters section of the CCR page for more details. Supports both line and in-line python comments.
 
 ##Rule Filters
@@ -275,7 +275,7 @@ Let's say you have four rules, A, B, C, and D. A is incompatible with D, but B a
 
 ###Merge Times
 
-There are three times these merges occur: at boot, when you manually activate a rule, and when a `SelfModifyingRule` changes itself. The third is out of the scope of this document, and so will not be discussed. At boot, Caster looks at your CCR config file (caster/bin/data/ccr.json), and activates whatever rules you had active last time you were using Caster. By default, four CCR rules are active: Alphabet, Numbers, Navigation, and Punctuation.
+There are three times these merges occur: at boot, when you manually activate a rule, and when a `SelfModifyingRule` changes itself. The third is out of the scope of this document, and so will not be discussed. At boot, Caster looks at your CCR config file (caster/bin/data/ccr.toml), and activates whatever rules you had active last time you were using Caster. By default, four CCR rules are active: Alphabet, Numbers, Navigation, and Punctuation.
 
 ###How Rule Filters Work
 

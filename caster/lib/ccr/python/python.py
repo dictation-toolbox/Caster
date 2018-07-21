@@ -119,7 +119,7 @@ class Python(MergeRule):
         "[dot] (pie | pi)":
             R(Text(".py"), rdescript="Python: .py"),
         "jason":
-            R(Text("json"), rdescript="Python: json"),
+            R(Text("toml"), rdescript="Python: toml"),
         "identity is":
             R(Text(" is "), rdescript="Python: is"),
         "yield":
