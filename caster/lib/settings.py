@@ -229,7 +229,7 @@ def _save(data, path):
         with io.open(path, "wt", encoding="utf-8") as f:
             f.write(formatted_data)
     except Exception as e:
-        print "Error saving toml file " + str(e) + _SETTINGS_PATH
+        print "Error saving toml file: " + str(e) + _SETTINGS_PATH
 
 
 def _init(path):
