@@ -158,6 +158,8 @@ class Rlang(MergeRule):
             R(Text("dplyr"), rdescript="Rlang: dplyr"),
         "tidier":
             R(Text("tidyr"), rdescript="Rlang: tidyr"),
+        "tidy verse":
+            R(Text("tidyverse"), rdescript="Rlang: tidyverse"),
         "arrange":
             R(Text("arrange()") + Key('left'), rdescript="Rlang: dplyr::arrange"),
         "rename":
