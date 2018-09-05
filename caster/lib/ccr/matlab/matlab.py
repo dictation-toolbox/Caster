@@ -91,7 +91,7 @@ class Matlab(MergeRule):
             R(Text("elseif "), rdescript="Matlab: Else If"),
         "length of":
             R(Text("length()") + Key("left"), rdescript="Matlab: Length"),
-        "sprint eff":
+        "sprint F":
             R(Text("sprintf()") + Key("left"), rdescript="Matlab: Length"),
     }
 

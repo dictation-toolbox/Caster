@@ -54,8 +54,6 @@ class Rlang(MergeRule):
         #
         SymbolSpecs.COMMENT:
             R(Text("#"), rdescript="Rlang: Add Comment"),
-        SymbolSpecs.LONG_COMMENT:
-            R(Text('""') + Key("left"), rdescript="Rlang: Long Comment"),
         #
         SymbolSpecs.NULL:
             R(Text("NULL"), rdescript="Rlang: Null"),
@@ -102,10 +100,9 @@ class Rlang(MergeRule):
         "as numeric":
             R(Text("as.numeric()") + Key("left"), rdescript="Rlang: Convert To Integer"),
         "as double":
-            R(Text("as.double()") + Key("left"),
-              rdescript="Rlang: Convert To Floating-Point"),
+            R(Text("as.double()") + Key("left"), rdescript="Rlang: Convert To Floating-Point"),
         "as character":
-            R(Text("as.character()") + Key("left"), rdescript="Rlang: Convert To String"),
+            R(Text("as.character()") + Key("left"), rdescript="Rlang: Convert To character"),
         "as data frame":
             R(Text("as.data.frame()") + Key("left"), rdescript="Rlang: Convert To Data Frame"),
         #
