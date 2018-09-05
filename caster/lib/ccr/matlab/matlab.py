@@ -8,7 +8,7 @@ from dragonfly import Key, Text, Dictation, MappingRule
 
 from caster.lib import control
 from caster.lib.ccr.standard import SymbolSpecs
-from caster.lib.dfplus.merge.mergerule import MergeRule, TokenSet
+from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 
 
@@ -91,7 +91,7 @@ class Matlab(MergeRule):
             R(Text("elseif "), rdescript="Matlab: Else If"),
         "length of":
             R(Text("length()") + Key("left"), rdescript="Matlab: Length"),
-        "sprint eff":
+        "sprint F":
             R(Text("sprintf()") + Key("left"), rdescript="Matlab: Length"),
     }
 
@@ -99,12 +99,6 @@ class Matlab(MergeRule):
         Dictation("text"),
     ]
     defaults = {}
-
-    token_set = TokenSet([
-        "return", "function", "switch", "case", "else", "elseif", "end", "if",
-        "otherwise", "break", "continue", "do", "for", "while", "classdef", "methods",
-        "properties", "events", "persistent", "global", "try", "catch", "rethrow", "throw"
-    ], "%%", [])
 
 
 control.nexus().merger.add_global_rule(Matlab())

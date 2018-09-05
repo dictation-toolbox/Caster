@@ -13,7 +13,9 @@ command_sets = {
     "html.html": ("HTML", ),
     "java.java": ("Java", ),
     "javascript.javascript": ("Javascript", ),
+    "matlab.matlab": ("Matlab", ),
     "python.python": ("Python", ),
+    "r.r": ("Rlang", ),
     "rust.rust": ("Rust", ),
     "sql.sql": ("SQL", ),
     "prolog.prolog": ("Prolog", ),
@@ -24,8 +26,8 @@ command_sets = {
 for module_name,class_name_tup in command_sets.iteritems():
     for class_name in class_name_tup:
         try:
-            module = __import__(module_name, globals(), locals(),[class_name])    #attempts to import the class 
-            globals()[class_name]= module    #make the name available globally 
+            module = __import__(module_name, globals(), locals(),[class_name])    #attempts to import the class
+            globals()[class_name]= module    #make the name available globally
 
         except Exception as e:
             print("Ignoring ccr rule '{}'. Failed to load with: ".format(class_name))
