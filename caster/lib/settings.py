@@ -60,7 +60,8 @@ def _validate_engine_path():  # Validates 'Engine Path' in settings.json
         return _find_natspeak()
 
 
-def _find_natspeak():  # Finds DNS path and verifies supported DNS versions via Windows Registry.
+def _find_natspeak(
+):  # Finds DNS path and verifies supported DNS versions via Windows Registry.
     print "Searching Windows Registry For DNS..."
     proc_arch = os.environ['PROCESSOR_ARCHITECTURE'].lower()
     proc_arch64 = os.environ['PROCESSOR_ARCHITEW6432'].lower()
@@ -73,7 +74,9 @@ def _find_natspeak():  # Finds DNS path and verifies supported DNS versions via 
         raise Exception("Unhandled arch: %s" % proc_arch)
 
     for arch_key in arch_keys:
-        key = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", 0, _winreg.KEY_READ | arch_key)
+        key = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE,
+                              r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", 0,
+                              _winreg.KEY_READ | arch_key)
         for i in xrange(0, _winreg.QueryInfoKey(key)[0]):
             skey_name = _winreg.EnumKey(key, i)
             skey = _winreg.OpenKey(key, skey_name)
@@ -91,14 +94,17 @@ def _find_natspeak():  # Finds DNS path and verifies supported DNS versions via 
                     DisplayVersion = int(str(DisplayVersion)[:2])
                     if DisplayVersion >= 13:
                         exe_path = InstallLocation.replace("\\",
-                                                            "/") + "Program/natspeak.exe"
+                                                           "/") + "Program/natspeak.exe"
                         if os.path.isfile(exe_path):
                             print "Search Complete."
                             return exe_path
                     else:
-                        print " Dragon Naturally Speaking " + str(DisplayVersion) + " is not supported by Caster. Only versions 13 and above are supported. Purchase Dragon Naturally Speaking 13 or above"
+                        print " Dragon Naturally Speaking " + str(
+                            DisplayVersion
+                        ) + " is not supported by Caster. Only versions 13 and above are supported. Purchase Dragon Naturally Speaking 13 or above"
     print "Cannot find dragon engine path"
     return ""
+
 
 # The defaults for every setting. Could be moved out into its own file.
 _DEFAULT_SETTINGS = {
