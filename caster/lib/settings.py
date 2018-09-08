@@ -37,31 +37,32 @@ HMC_SEPARATOR = "[hmc]"
 WSR = False
 
 
-def _validate_engine_path():  # Validates 'Engine Path' in settings.json
+# Validates 'Engine Path' in settings.json
+def _validate_engine_path():
     if os.path.isfile(_SETTINGS_PATH):
         with io.open(_SETTINGS_PATH, "rt", encoding="utf-8") as json_file:
             data = json.loads(json_file.read())
-            exe_path = data["paths"]["ENGINE_PATH"]
-            if os.path.isfile(exe_path):
-                return exe_path
+            engine_path = data["paths"]["ENGINE_PATH"]
+            if os.path.isfile(engine_path):
+                return engine_path
             else:
-                exe_path = _find_natspeak()
-                data["paths"]["ENGINE_PATH"] = exe_path
+                engine_path = _find_natspeak()
+                data["paths"]["ENGINE_PATH"] = engine_path
                 try:
                     formatted_data = unicode(
                         json.dumps(data, sort_keys=True, indent=4, ensure_ascii=False))
                     with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as json_file:
                         json_file.write(formatted_data)
-                        print "Setting engine path to " + exe_path
+                        print "Setting engine path to " + engine_path
                 except Exception as e:
-                    print "Error saving json file " + str(e) + _SETTINGS_PATH
-                return exe_path
+                    print "Error saving settings file " + str(e) + _SETTINGS_PATH
+                return engine_path
     else:
         return _find_natspeak()
 
 
-def _find_natspeak(
-):  # Finds DNS path and verifies supported DNS versions via Windows Registry.
+# Finds engine 'natspeak.exe' path and verifies supported DNS versions via Windows Registry.
+def _find_natspeak():
     print "Searching Windows Registry For DNS..."
     proc_arch = os.environ['PROCESSOR_ARCHITECTURE'].lower()
     proc_arch64 = os.environ['PROCESSOR_ARCHITEW6432'].lower()
@@ -91,16 +92,16 @@ def _find_natspeak(
             finally:
                 skey.Close()
                 if Publisher == "Nuance Communications Inc." and "Dragon" in DisplayName:
-                    DisplayVersion = int(str(DisplayVersion)[:2])
-                    if DisplayVersion >= 13:
-                        exe_path = InstallLocation.replace("\\",
-                                                           "/") + "Program/natspeak.exe"
-                        if os.path.isfile(exe_path):
+                    DnsVersion = int(str(DisplayVersion)[:2])
+                    if DnsVersion >= 13:
+                        engine_path = InstallLocation.replace(
+                            "\\", "/") + "Program/natspeak.exe"
+                        if os.path.isfile(engine_path):
                             print "Search Complete."
-                            return exe_path
+                            return engine_path
                     else:
                         print " Dragon Naturally Speaking " + str(
-                            DisplayVersion
+                            DnsVersion
                         ) + " is not supported by Caster. Only versions 13 and above are supported. Purchase Dragon Naturally Speaking 13 or above"
     print "Cannot find dragon engine path"
     return ""
