@@ -5,7 +5,8 @@ import io
 import json
 import os
 import sys
-import wmi
+import errno
+import _winreg
 
 SETTINGS = {}
 _SETTINGS_PATH = os.path.realpath(__file__).split("lib")[0] + "bin\\data\\settings.json"
@@ -36,7 +37,7 @@ HMC_SEPARATOR = "[hmc]"
 WSR = False
 
 
-def _validate_natspeak():  # Validates 'Engine Path' for DNS in settings.json
+def _validate_engine_path():  # Validates 'Engine Path' in settings.json
     if os.path.isfile(_SETTINGS_PATH):
         with io.open(_SETTINGS_PATH, "rt", encoding="utf-8") as json_file:
             data = json.loads(json_file.read())
@@ -51,7 +52,7 @@ def _validate_natspeak():  # Validates 'Engine Path' for DNS in settings.json
                         json.dumps(data, sort_keys=True, indent=4, ensure_ascii=False))
                     with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as json_file:
                         json_file.write(formatted_data)
-                        print "Setting DNS path to " + exe_path
+                        print "Setting engine path to " + exe_path
                 except Exception as e:
                     print "Error saving json file " + str(e) + _SETTINGS_PATH
                 return exe_path
@@ -61,29 +62,43 @@ def _validate_natspeak():  # Validates 'Engine Path' for DNS in settings.json
 
 def _find_natspeak():  # Finds DNS path and verifies supported DNS versions via Windows Registry.
     print "Searching Windows Registry For DNS..."
-    w = wmi.WMI()
-    for p in w.Win32_Product():
-        if p.Caption and "Dragon" in p.Caption:
-            name = "{}".format(p.Name)
-            version = "{}".format(p.Version)
-            vendor = "{}".format(p.Vendor)
-            install_location = "{}".format(p.InstallLocation)
+    proc_arch = os.environ['PROCESSOR_ARCHITECTURE'].lower()
+    proc_arch64 = os.environ['PROCESSOR_ARCHITEW6432'].lower()
 
-            if vendor == "Nuance Communications Inc." and name == "Dragon":
-                dns_version = int(str(version)[:2])
-                if dns_version >= 13:
-                    exe_path = install_location.replace("\\",
-                                                        "/") + "Program/natspeak.exe"
-                    if os.path.isfile(exe_path):
-                        print "Search Complete."
-                        return exe_path
-                else:
-                    print " Dragon Naturally Speaking" + str(
-                        version
-                    ) + " is not supported by Caster. Only versions 13 and above are supported. Purchase Dragon Naturally Speaking 13 or above"
+    if proc_arch == 'x86' and not proc_arch64:
+        arch_keys = {0}
+    elif proc_arch == 'x86' or proc_arch == 'amd64':
+        arch_keys = {_winreg.KEY_WOW64_32KEY, _winreg.KEY_WOW64_64KEY}
+    else:
+        raise Exception("Unhandled arch: %s" % proc_arch)
+
+    for arch_key in arch_keys:
+        key = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", 0, _winreg.KEY_READ | arch_key)
+        for i in xrange(0, _winreg.QueryInfoKey(key)[0]):
+            skey_name = _winreg.EnumKey(key, i)
+            skey = _winreg.OpenKey(key, skey_name)
+            try:
+                DisplayName = _winreg.QueryValueEx(skey, 'DisplayName')[0]
+                Publisher = _winreg.QueryValueEx(skey, 'Publisher')[0]
+                DisplayVersion = _winreg.QueryValueEx(skey, 'DisplayVersion')[0]
+                InstallLocation = _winreg.QueryValueEx(skey, 'InstallLocation')[0]
+            except OSError as e:
+                if e.errno == errno.ENOENT:
+                    pass
+            finally:
+                skey.Close()
+                if Publisher == "Nuance Communications Inc." and "Dragon" in DisplayName:
+                    DisplayVersion = int(str(DisplayVersion)[:2])
+                    if DisplayVersion >= 13:
+                        exe_path = InstallLocation.replace("\\",
+                                                            "/") + "Program/natspeak.exe"
+                        if os.path.isfile(exe_path):
+                            print "Search Complete."
+                            return exe_path
+                    else:
+                        print " Dragon Naturally Speaking " + str(DisplayVersion) + " is not supported by Caster. Only versions 13 and above are supported. Purchase Dragon Naturally Speaking 13 or above"
     print "Cannot find dragon engine path"
     return ""
-
 
 # The defaults for every setting. Could be moved out into its own file.
 _DEFAULT_SETTINGS = {
@@ -106,7 +121,7 @@ _DEFAULT_SETTINGS = {
         # EXECUTABLES
         "DEFAULT_BROWSER_PATH": "C:/Program Files (x86)/Mozilla Firefox/firefox.exe",
         "DOUGLAS_PATH": BASE_PATH + "/asynch/mouse/grids.py",
-        "ENGINE_PATH": _validate_natspeak(),
+        "ENGINE_PATH": _validate_engine_path(),
         "HOMUNCULUS_PATH": BASE_PATH + "/asynch/hmc/h_launch.py",
         "LEGION_PATH": BASE_PATH + "/asynch/mouse/legion.py",
         "MEDIA_PATH": BASE_PATH + "/bin/media",
