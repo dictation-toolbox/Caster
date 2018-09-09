@@ -70,9 +70,9 @@ class HTML(MergeRule):
         "H group | headings group":
             Text("<hgroup></hgroup>") + Key("left/10:9"),
         "navigation | navigate":
-            Text("<nav></nav>") + Key("enter") + Text("</nav>") + Key("up"),
+            Text("<nav>") + Key("enter") + Text("</nav>") + Key("up"),
         "section":
-            Text("<section></section>") + Key("enter") + Text("</section>") + Key("up"),
+            Text("<section>") + Key("enter") + Text("</section>") + Key("up"),
         #Text content
         "description | DD":
             Text("<dd>"),
