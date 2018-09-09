@@ -81,14 +81,17 @@ def _find_natspeak():
         for i in xrange(0, _winreg.QueryInfoKey(key)[0]):
             skey_name = _winreg.EnumKey(key, i)
             skey = _winreg.OpenKey(key, skey_name)
+            DisplayName, Publisher, DisplayVersion, InstallLocation = 'null'
             try:
                 DisplayName = _winreg.QueryValueEx(skey, 'DisplayName')[0]
                 Publisher = _winreg.QueryValueEx(skey, 'Publisher')[0]
                 DisplayVersion = _winreg.QueryValueEx(skey, 'DisplayVersion')[0]
                 InstallLocation = _winreg.QueryValueEx(skey, 'InstallLocation')[0]
-            except OSError as e:
-                if e.errno == errno.ENOENT:
+            except OSError as error:
+                if error.errno == 2:  # Suppresses '[Error 2] The system cannot find the file specified'
                     pass
+                else:
+                    print error
             finally:
                 skey.Close()
                 if Publisher == "Nuance Communications Inc." and "Dragon" in DisplayName:
