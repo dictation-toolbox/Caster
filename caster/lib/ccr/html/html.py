@@ -65,8 +65,6 @@ class HTML(MergeRule):
             Text("<h5></h5>") + Key("left/10:5"),
         "H 6 | heading six":
             Text("<h6></h6>") + Key("left/10:5"),
-        "isolate ":
-            Text("<bdi></bdi>") + Key("left/10:6"),
         "H group | headings group":
             Text("<hgroup></hgroup>") + Key("left/10:9"),
         "navigation | navigate":
@@ -115,7 +113,7 @@ class HTML(MergeRule):
             Text("<code></code>") + Key("left/10:7"),
         "data":
             Text("<data></data>") + Key("left/10:7"),
-        "definine instance":
+        "defining instance":
             Text("<dfn></dfn>") + Key("left/10:6"),
         "emphasis | EM":
             Text("<em></em>") + Key("left/10:5"),
@@ -132,10 +130,10 @@ class HTML(MergeRule):
         "embraces pronunciation | RT":
             Text("<rt></rt>") + Key("left/10:5"),
         "ruby | pronounce asian":
-            Text("<ruby></ruby>") + Key("left/10:5"),
+            Text("<ruby></ruby>") + Key("left/10:7"),
         ##"strike through | strike":    Text("<s></s>")+  Key("left/10:4"),
-        "deleted | replaced":
-            Text("<del></del>") + Key("left/10:4"),
+        "deleted text | deleted | replaced":
+            Text("<del></del>") + Key("left/10:6"),
         "sample output":
             Text("<samp></samp>") + Key("left/10:7"),
         "small":
@@ -194,8 +192,6 @@ class HTML(MergeRule):
         "script":
             Text("<script></script>") + Key("left/10:9"),
         #Edits
-        "deleted text | deleted":
-            Text("<del></del>") + Key("left/10:6"),
         "inserted text | inserted":
             Text("<ins></ins>") + Key("left/10:6"),
         #Table content
@@ -218,7 +214,7 @@ class HTML(MergeRule):
         "table head | thead":
             Text("<thead>"),
         "table row | tee are":
-            Text("<tr></tr>"),
+            Text("<tr></tr>") + Key("left/10:5"),
         #Forms
         "button":
             Text("<button></button>") + Key("left/10:9"),
