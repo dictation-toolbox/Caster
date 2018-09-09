@@ -79,7 +79,7 @@ class SQL(MergeRule):
             R(Text(" MIN() ") + Key("left/5:2"), rdescript="SQL: Min"),
         "fun count":
             R(Text(" COUNT() ") + Key("left/5:2"), rdescript="SQL: Count"),
-        "fun average"
+        "fun average":
             R(Text(" AVG() ") + Key("left/5:2"), rdescript="SQL: Average"),
         "over partition by":
             R(Text(" OVER (PARTITION BY ) ") + Key("left/5:2"),
