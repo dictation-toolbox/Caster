@@ -23,6 +23,8 @@ class SQL(MergeRule):
             R(Text(" FROM "), rdescript="SQL: From"),
         "where":
             R(Text(" WHERE "), rdescript="SQL: Where"),
+        "between":
+            R(Text(" BETWEEN "), rdescript="SQL: Between"),
         "lodge and ":
             R(Text(" AND "), rdescript="SQL: And"),
         "lodge or":
@@ -73,8 +75,12 @@ class SQL(MergeRule):
             R(Text(" IS NOT NULL "), rdescript="SQL: Is Not Null"),
         "fun max":
             R(Text(" MAX() ") + Key("left/5:2"), rdescript="SQL: Max"),
+        "fun min":
+            R(Text(" MIN() ") + Key("left/5:2"), rdescript="SQL: Min"),
         "fun count":
             R(Text(" COUNT() ") + Key("left/5:2"), rdescript="SQL: Count"),
+        "fun average"
+            R(Text(" AVG() ") + Key("left/5:2"), rdescript="SQL: Average"),
         "over partition by":
             R(Text(" OVER (PARTITION BY ) ") + Key("left/5:2"),
               rdescript="SQL: Over Partition By"),
