@@ -106,7 +106,7 @@ class HTML(MergeRule):
         "bold":
             Text("<b></b>") + Key("left/10:4"),
         "override":
-            Text("<bdo></bdo>") + Key("left/10:7"),
+            Text("<bdo></bdo>") + Key("left/10:6"),
         "isolate | bi-directional isolation":
             Text("<bdi></bdi>") + Key("left/10:6"),
         "break | be are | BR":
