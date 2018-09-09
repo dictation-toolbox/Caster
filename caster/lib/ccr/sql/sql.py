@@ -17,7 +17,7 @@ class SQL(MergeRule):
     mapping = {
         "select":
             R(Text(" SELECT "), rdescript="SQL: Select"),
-        "select all":
+        "select (all | every)":
             R(Text(" SELECT * "), rdescript="SQL: Select All"),
         "from":
             R(Text(" FROM "), rdescript="SQL: From"),
