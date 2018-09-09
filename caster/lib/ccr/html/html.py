@@ -86,7 +86,7 @@ class HTML(MergeRule):
             Text("<figure>"),
         "H are | HR":
             Text("<hr>"),
-        "list ltem | LI":
+        "list item | LI":
             Text("<li></li>") + Key("left/10:5"),
         "main":
             Text("<main>") + Key("enter") + Text("</main>") + Key("up"),
