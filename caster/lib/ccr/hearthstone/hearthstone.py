@@ -27,7 +27,7 @@ class Hearthstone(MergeRule):
             R(Function(key.hand)),
         "tap":
             R(Function(key.tap)),
-        "end turn":
+        "end this turn":
             R(Function(key.end_turn)),
         "store mouse position":
             R(Function(key.get_mouse_position)),
