@@ -95,6 +95,6 @@ def end_turn():
     time.sleep(0.1)
 
 def get_mouse_position():
-    file = open("saved_mouse_positions", "a+")
+    file = open("saved_mouse_positions.txt", "a+")
     pos = pyautogui.position()
     file.write("[" + str(pos[0]) + ", " + str(pos[1]) + "] \n")
