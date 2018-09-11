@@ -20,6 +20,7 @@ command_sets = {
     "sql.sql": ("SQL", ),
     "prolog.prolog": ("Prolog", ),
     "vhdl.vhdl": ("VHDL", ),
+    "hearthstone.hearthstone": ("Hearthstone", ),
 }
 
 
