@@ -48,49 +48,54 @@ keyMap = {
 def my_minions(boardn):
     phrase = "my " + str(boardn)
     coords = keyMap[phrase]
-    pyautogui.moveTo(coords[0], coords[1], 0.15)
+    pyautogui.moveTo(coords[0], coords[1], 0.1)
+    pyautogui.click(clicks=1, button='left')
+    time.sleep(0.15)
+
+def click_board():
+    pyautogui.moveTo(keyMap["my 7"][0],keyMap["my 7"][1], 0.1)
     pyautogui.click(clicks=1, button='left')
     time.sleep(0.15)
 
 def his_minions(boardn):
     phrase = "his " + str(boardn)
     coords = keyMap[phrase]
-    pyautogui.moveTo(coords[0], coords[1], 0.15)
+    pyautogui.moveTo(coords[0], coords[1], 0.1)
     pyautogui.click(clicks=1, button='left')
     time.sleep(0.15)
 
 def hand(handn):
     phrase = "hand " + str(handn)
     coords = keyMap[phrase]
-    pyautogui.moveTo(coords[0], coords[1], 0.15)
+    pyautogui.moveTo(coords[0], coords[1], 0.1)
     pyautogui.click(clicks=1, button='left')
     time.sleep(0.15)
 
 def face():
     phrase = "face"
     coords = keyMap[phrase]
-    pyautogui.moveTo(coords[0], coords[1], 0.15)
+    pyautogui.moveTo(coords[0], coords[1], 0.1)
     pyautogui.click(clicks=1, button='left')
     time.sleep(0.15)
 
 def tap():
     phrase = "tap"
     coords = keyMap[phrase]
-    pyautogui.moveTo(coords[0], coords[1], 0.15)
+    pyautogui.moveTo(coords[0], coords[1], 0.1)
     pyautogui.click(clicks=1, button='left')
     time.sleep(0.15)
 
 def hero():
     phrase = "hero"
     coords = keyMap[phrase]
-    pyautogui.moveTo(coords[0], coords[1], 0.15)
+    pyautogui.moveTo(coords[0], coords[1], 0.1)
     pyautogui.click(clicks=1, button='left')
     time.sleep(0.15)
 
 def end_turn():
     phrase = "end turn"
     coords = keyMap[phrase]
-    pyautogui.moveTo(coords[0], coords[1], 0.15)
+    pyautogui.moveTo(coords[0], coords[1], 0.1)
     pyautogui.click(clicks=1, button='left')
     time.sleep(0.15)
 

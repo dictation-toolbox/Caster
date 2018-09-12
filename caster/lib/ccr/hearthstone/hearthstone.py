@@ -31,11 +31,13 @@ class Hearthstone(MergeRule):
             R(Function(key.end_turn)),
         "store mouse position":
             R(Function(key.get_mouse_position)),
+        "board":
+            R(Function(key.click_board)),
     }
 
     extras = [
-        IntegerRefST("boardn", 1, 13),
-        IntegerRefST("handn", 1, 10),
+        IntegerRefST("boardn", 1, 14),
+        IntegerRefST("handn", 1, 11),
     ]
     defaults = {
     }
