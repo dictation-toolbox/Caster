@@ -122,6 +122,8 @@ class Python(MergeRule):
             R(Text("json"), rdescript="Python: json"),
         "identity is":
             R(Text(" is "), rdescript="Python: is"),
+        "yield":
+            R(Text("yield "), rdescript="Python: Yield"),
     }
 
     extras = [

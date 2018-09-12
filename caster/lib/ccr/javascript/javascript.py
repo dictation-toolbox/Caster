@@ -22,7 +22,7 @@ class Javascript(MergeRule):
             R(Text("else {}") + Key("left, enter:2, up"), rdescript="Javascript: Else"),
         #
         SymbolSpecs.SWITCH:
-            R(Text("switch() {}") + Key("left, enter:2, up"),
+            R(Text("switch () {}") + Key("left, enter:2, up"),
               rdescript="Javascript: Switch"),
         SymbolSpecs.CASE:
             R(Text("case :") + Key("left"), rdescript="Javascript: Case"),
@@ -65,7 +65,8 @@ class Javascript(MergeRule):
             R(Text("function TOKEN() {};") + Key("left:2, enter") +
               SelectiveAction(Key("enter, up"), ["AptanaStudio3.exe"]),
               rdescript="Javascript: Function"),
-        # (no classes in javascript yet)
+	    SymbolSpecs.CLASS:
+            R(Text("class  {}") + Key("left/5:3"), rdescript="Javascript: Class"),
         #
         SymbolSpecs.COMMENT:
             R(Text("//"), rdescript="Javascript: Add Comment"),
@@ -129,6 +130,10 @@ class Javascript(MergeRule):
             R(Text("let "), rdescript=" JavaScript: Let"),
         "shell iffae":
             R(Text("else if ()") + Key("left"), rdescript="Javascript: Else If"),
+        "a sink":
+            R(Text("async "), rdescript="Javascript: Async"),
+        "await":
+            R(Text("await "), rdescript="Javascript: Await"),
     }
 
     extras = []
