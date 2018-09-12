@@ -80,9 +80,9 @@ class Java(MergeRule):
             R(Text("import "), rdescript="Java: Import"),
         #
         SymbolSpecs.FUNCTION:
-            R(Text("TOKEN(){}") + Key("left"), rdescript="Java: Function"),
+            R(Text("TOKEN() {}") + Key("left"), rdescript="Java: Function"),
         SymbolSpecs.CLASS:
-            R(Text("class {}") + Key("left/5:2"), rdescript=""),
+            R(Text("class {}") + Key("left/5:2"), rdescript="Java: Class"),
         #
         SymbolSpecs.COMMENT:
             R(Text("//"), rdescript="Java: Add Comment"),
@@ -158,6 +158,8 @@ class Java(MergeRule):
             R(Text("charAt"), rdescript="Java: Character At Method"),
         "is instance of":
             R(Text(" instanceof "), rdescript="Java: Instance Of"),
+        "dock string":
+            R(Text("/***/")+ Key("left,left,enter"), rdescript="Java: Docstring"),
     }
 
     extras = []

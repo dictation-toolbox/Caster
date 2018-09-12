@@ -9,6 +9,7 @@ command_sets = {
     "core.punctuation": ("Punctuation", ),
     "cpp.cpp": ("CPP", ),
     "csharp.csharp": ("CSharp", ),
+    "dart.dart": ("Dart", ),
     "haxe.haxe": ("Haxe", ),
     "html.html": ("HTML", ),
     "java.java": ("Java", ),
