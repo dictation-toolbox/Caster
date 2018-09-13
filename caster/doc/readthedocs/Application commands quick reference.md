@@ -1,7 +1,6 @@
-# Application commands quick reference
+# Application Commands Quick Reference
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
-- [Application commands quick reference](#application-commands-quick-reference)
 - [Atom](#atom)
 - [Google Chrome](#google-chrome)
 - [Command prompt](#command-prompt)
