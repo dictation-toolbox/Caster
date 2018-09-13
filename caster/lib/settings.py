@@ -146,6 +146,7 @@ _DEFAULT_SETTINGS = {
         "douglas": True,
         "legion": True,
         "rainbow": True,
+        "rstudio": True,
         "ssms": True,
         "jetbrains": True,
         "msvc": True,
