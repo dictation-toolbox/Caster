@@ -36,7 +36,10 @@ HMC_SEPARATOR = "[hmc]"
 WSR = False
 
 
-def _validate_natspeak():  # Validates 'Engine Path' for DNS in settings.json
+def _validate_natspeak(): 
+    '''
+    Validates 'Engine Path' for DNS in settings.json
+    '''
     if os.path.isfile(_SETTINGS_PATH):
         with io.open(_SETTINGS_PATH, "rt", encoding="utf-8") as json_file:
             data = json.loads(json_file.read())
@@ -59,7 +62,10 @@ def _validate_natspeak():  # Validates 'Engine Path' for DNS in settings.json
         return _find_natspeak()
 
 
-def _find_natspeak():  # Finds DNS path and verifies supported DNS versions via Windows Registry.
+def _find_natspeak():  
+    '''
+    Finds DNS path and verifies supported DNS versions via Windows Registry.
+    '''
     print "Searching Windows Registry For DNS..."
     w = wmi.WMI()
     for p in w.Win32_Product():
@@ -68,19 +74,18 @@ def _find_natspeak():  # Finds DNS path and verifies supported DNS versions via 
             version = "{}".format(p.Version)
             vendor = "{}".format(p.Vendor)
             install_location = "{}".format(p.InstallLocation)
-
-            if vendor == "Nuance Communications Inc." and name == "Dragon":
+            if vendor == "Nuance Communications Inc." and name[:6] == "Dragon":
                 dns_version = int(str(version)[:2])
                 if dns_version >= 13:
-                    exe_path = install_location.replace("\\",
-                                                        "/") + "Program/natspeak.exe"
+                    exe_path = install_location.replace("\\", 
+                                            "/") + "Program/natspeak.exe"
                     if os.path.isfile(exe_path):
                         print "Search Complete."
                         return exe_path
                 else:
-                    print " Dragon Naturally Speaking" + str(
-                        version
-                    ) + " is not supported by Caster. Only versions 13 and above are supported. Purchase Dragon Naturally Speaking 13 or above"
+                    print (" Dragon Naturally Speaking %d is not supported by \
+                    Caster. Only versions 13 and above are supported. Purchase \
+                    Dragon Naturally Speaking 13 or above" % version)
     print "Cannot find dragon engine path"
     return ""
 
