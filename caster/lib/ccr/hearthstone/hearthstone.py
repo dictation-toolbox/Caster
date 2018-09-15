@@ -3,7 +3,7 @@ Created on Sep 11, 2018
 
 @author: Mike Roberts
 '''
-from dragonfly import Function
+from dragonfly import Function, Mouse
 
 from caster.lib import control
 from caster.lib.dfplus.additions import IntegerRefST
@@ -11,6 +11,8 @@ from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 from caster.lib.ccr.hearthstone import key
 from caster.lib import settings
+
+import time
 
 class Hearthstone(MergeRule):
     pronunciation = "hearth stone"
@@ -29,8 +31,6 @@ class Hearthstone(MergeRule):
             R(Function(key.tap)),
         "end this turn":
             R(Function(key.end_turn)),
-        "store mouse position":
-            R(Function(key.get_mouse_position)),
         "board":
             R(Function(key.click_board)),
     }

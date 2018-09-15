@@ -1,7 +1,5 @@
-import pyautogui
+from dragonfly import Mouse
 import time
-import sys
-
 keyMap = {
   "face": [962, 204],
   "hero": [959, 817],
@@ -46,60 +44,49 @@ keyMap = {
 }
 
 def my_minions(boardn):
+    time.sleep(0.15)
     phrase = "my " + str(boardn)
-    coords = keyMap[phrase]
-    pyautogui.moveTo(coords[0], coords[1], 0.1)
-    pyautogui.click(clicks=1, button='left')
+    Mouse("[" + str(keyMap[phrase][0]) + ", " + str(keyMap[phrase][1]) + "], left").execute()
     time.sleep(0.15)
 
 def click_board():
-    pyautogui.moveTo(keyMap["my 7"][0],keyMap["my 7"][1], 0.1)
-    pyautogui.click(clicks=1, button='left')
+    time.sleep(0.15)
+    phrase = "my 7"
+    Mouse("[" + str(keyMap[phrase][0]) + ", " + str(keyMap[phrase][1]) + "], left").execute()
     time.sleep(0.15)
 
 def his_minions(boardn):
+    time.sleep(0.15)
     phrase = "his " + str(boardn)
-    coords = keyMap[phrase]
-    pyautogui.moveTo(coords[0], coords[1], 0.1)
-    pyautogui.click(clicks=1, button='left')
+    Mouse("[" + str(keyMap[phrase][0]) + ", " + str(keyMap[phrase][1]) + "], left").execute()
     time.sleep(0.15)
 
 def hand(handn):
+    time.sleep(0.15)
     phrase = "hand " + str(handn)
-    coords = keyMap[phrase]
-    pyautogui.moveTo(coords[0], coords[1], 0.1)
-    pyautogui.click(clicks=1, button='left')
+    Mouse("[" + str(keyMap[phrase][0]) + ", " + str(keyMap[phrase][1]) + "], left").execute()
     time.sleep(0.15)
 
 def face():
+    time.sleep(0.15)
     phrase = "face"
-    coords = keyMap[phrase]
-    pyautogui.moveTo(coords[0], coords[1], 0.1)
-    pyautogui.click(clicks=1, button='left')
+    Mouse("[" + str(keyMap[phrase][0]) + ", " + str(keyMap[phrase][1]) + "], left").execute()
     time.sleep(0.15)
 
 def tap():
+    time.sleep(0.15)
     phrase = "tap"
-    coords = keyMap[phrase]
-    pyautogui.moveTo(coords[0], coords[1], 0.1)
-    pyautogui.click(clicks=1, button='left')
+    Mouse("[" + str(keyMap[phrase][0]) + ", " + str(keyMap[phrase][1]) + "], left").execute()
     time.sleep(0.15)
 
 def hero():
+    time.sleep(0.15)
     phrase = "hero"
-    coords = keyMap[phrase]
-    pyautogui.moveTo(coords[0], coords[1], 0.1)
-    pyautogui.click(clicks=1, button='left')
+    Mouse("[" + str(keyMap[phrase][0]) + ", " + str(keyMap[phrase][1]) + "], left").execute()
     time.sleep(0.15)
 
 def end_turn():
-    phrase = "end turn"
-    coords = keyMap[phrase]
-    pyautogui.moveTo(coords[0], coords[1], 0.1)
-    pyautogui.click(clicks=1, button='left')
     time.sleep(0.15)
-
-def get_mouse_position():
-    file = open("saved_mouse_positions.txt", "a+")
-    pos = pyautogui.position()
-    file.write("[" + str(pos[0]) + ", " + str(pos[1]) + "] \n")
+    phrase = "end turn"
+    Mouse("[" + str(keyMap[phrase][0]) + ", " + str(keyMap[phrase][1]) + "], left").execute()
+    time.sleep(0.15)
