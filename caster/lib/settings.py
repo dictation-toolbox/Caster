@@ -37,7 +37,7 @@ HMC_SEPARATOR = "[hmc]"
 WSR = False
 
 
-# Validates 'Engine Path' in settings.json
+# Validates 'Engine Path' in settings.toml
 def _validate_engine_path():
     if os.path.isfile(_SETTINGS_PATH):
         with io.open(_SETTINGS_PATH, "rt", encoding="utf-8") as toml_file:
@@ -53,9 +53,9 @@ def _validate_engine_path():
                     with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as toml_file:
                         toml_file.write(formatted_data)
                     formatted_data = unicode(
-                        json.dumps(data, sort_keys=True, indent=4, ensure_ascii=False))
-                    with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as json_file:
-                        json_file.write(formatted_data)
+                        toml.dumps(data))
+                    with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as toml_file:
+                        toml_file.write(formatted_data)
                         print "Setting engine path to " + engine_path
                 except Exception as e:
                     print "Error saving settings file " + str(e) + _SETTINGS_PATH
