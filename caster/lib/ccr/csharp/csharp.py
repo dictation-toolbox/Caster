@@ -15,6 +15,9 @@ from caster.lib.dfplus.state.short import R
 class CSharp(MergeRule):
     pronunciation = "C sharp"
 
+    text_format = 3, 1 #gerrishGum
+    secondary_text_format = 2, 1 #TieGum
+
     mapping = {
         SymbolSpecs.IF:
             R(Key("i, f, lparen, rparen, leftbrace, enter,up,left"), rdescript="C#: If"),

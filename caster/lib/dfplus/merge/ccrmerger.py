@@ -9,7 +9,7 @@ from dragonfly.grammar.elements import RuleRef, Alternative, Repetition
 from dragonfly.grammar.grammar_base import Grammar
 from dragonfly.grammar.rule_compound import CompoundRule
 
-from caster.lib import utilities, settings
+from caster.lib import utilities, settings, textformat
 from caster.lib.dfplus.merge import gfilter
 from caster.lib.dfplus.merge.mergepair import MergePair, MergeInf
 from caster.lib.dfplus.merge.mergerule import MergeRule
@@ -262,6 +262,25 @@ class CCRMerger(object):
                 named_rule = self._global_rules[name] if name is not None else None
                 if enable == False:
                     composite.discard(named_rule.ID)  # throw out rule getting disabled
+                    textformat.format.clear_text_format()
+                    textformat.secondary_format.clear_text_format()
+                else:
+                    if hasattr(named_rule, 'text_format'):   
+                       #print('%s format is %s' % (str(named_rule), str(named_rule.text_format))) 
+                       cap, spacing = named_rule.text_format
+                    else:
+                        #print('%s has no primary format' % str(named_rule)) 
+                        cap = textformat.format.default_cap
+                        spacing = textformat.format.default_spacing
+                    textformat.format.set_text_format(cap, spacing)
+                    if hasattr(named_rule, 'secondary_text_format'):   
+                        #print('%s secondary format is %s' % (str(named_rule), str(named_rule.secondary_text_format))) 
+                        cap2, spacing2 = named_rule.secondary_text_format
+                    else:
+                        #print('%s has no secondary format' % str(named_rule)) 
+                        cap2 = textformat.secondary_format.default_cap
+                        spacing2 = textformat.secondary_format.default_spacing
+                    textformat.secondary_format.set_text_format(cap2, spacing2)
             base = None
             for rule in self._get_rules_by_composite(composite):
                 mp = MergePair(time, MergeInf.GLOBAL, base, rule.copy(), False)

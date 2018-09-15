@@ -7,6 +7,7 @@ from caster.lib.dfplus.state.short import R
 
 
 class JavaNon(MappingRule):
+
     mapping = {
         "try catch":
             R(Text("try{}catch(Exception e){}"), rdescript="Java: Try Catch"),
@@ -31,6 +32,9 @@ class JavaNon(MappingRule):
 class Java(MergeRule):
     non = JavaNon
 
+    text_format = 3, 1 #gerrishGum
+    secondary_text_format = 2, 1 #TieGum
+    
     mapping = {
         SymbolSpecs.IF:
             R(Text("if() {") + Key("enter,up,left"), rdescript="Java: If"),

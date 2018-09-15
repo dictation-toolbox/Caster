@@ -29,6 +29,9 @@ class PythonNon(MappingRule):
 class Python(MergeRule):
     non = PythonNon
 
+    text_format = 5, 3 #snake_laws
+    secondary_text_format = 2, 1 #TieGum
+
     mapping = {
         SymbolSpecs.IF:
             R(Key("i,f,space,colon,left"), rdescript="Python: If"),
