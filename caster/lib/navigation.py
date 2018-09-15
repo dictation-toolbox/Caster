@@ -84,44 +84,81 @@ def mouse_alternates(mode, nexus, monitor=1):
     else:
         utilities.availability_message(mode.title(), "PIL")
 
-
-def clipboard_to_file(nnavi500, nexus, do_copy=False):
-    if do_copy:
+def stoosh_keep_clipboard(nnavi500, nexus):
+    if nnavi500 == 1:
         Key("c-c").execute()
+    else:
+        max_tries = 20
+        cb = Clipboard(from_system=True)
+        Key("c-c").execute()
+        key = str(nnavi500)
+        for i in range(0, max_tries):
+            failure = False
+            try:
+                # time for keypress to execute
+                time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
+                nexus.clip[key] = Clipboard.get_system_text()
+                utilities.save_json_file(nexus.clip,
+                                        settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
+            except Exception:
+                failure = True
+                utilities.simple_log()
+                if not failure:
+                    break
+        cb.copy_to_system()
 
-    max_tries = 20
+def cut_keep_clipboard(nnavi500, nexus):
+    if nnavi500 == 1:
+        Key("c-x").execute()
+    else:
+        max_tries = 20
+        cb = Clipboard(from_system=True)
+        Key("c-x").execute()
+        key = str(nnavi500)
+        for i in range(0, max_tries):
+            failure = False
+            try:
+                # time for keypress to execute
+                time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
+                nexus.clip[key] = Clipboard.get_system_text()
+                utilities.save_json_file(nexus.clip,
+                                        settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
+            except Exception:
+                failure = True
+                utilities.simple_log()
+                if not failure:
+                    break
+        cb.copy_to_system()
 
-    key = str(nnavi500)
-    for i in range(0, max_tries):
-        failure = False
-        try:
-            # time for keypress to execute
-            time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
-            nexus.clip[key] = Clipboard.get_system_text()
-            utilities.save_json_file(nexus.clip,
-                                     settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
-        except Exception:
-            failure = True
-            utilities.simple_log()
-        if not failure:
-            break
+def drop_keep_clipboard(nnavi500, nexus):
+    if nnavi500 == 1:
+        Key("c-v").execute()
+    else:
+        key = str(nnavi500)
+        cb = Clipboard(from_system=True)
+        while True:
+            failure = False
+            try:
+                if key in nexus.clip:
+                    Clipboard.set_system_text(nexus.clip[key])
+                    Key("c-v").execute()
+                else:
+                    dragonfly.get_engine().speak("slot empty")
+                time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
+            except Exception:
+                failure = True
+            if not failure:
+                break
+        cb.copy_to_system()
 
-
-def drop(nnavi500, nexus):
-    key = str(nnavi500)
-    while True:
-        failure = False
-        try:
-            if key in nexus.clip:
-                Clipboard.set_system_text(nexus.clip[key])
-                Key("c-v").execute()
-            else:
-                dragonfly.get_engine().speak("slot empty")
-            time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
-        except Exception:
-            failure = True
-        if not failure:
-            break
+def duple_keep_clipboard(nnavi50):
+    cb = Clipboard(from_system=True)
+    Key("escape, home, s-end, c-c, end").execute()
+    time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
+    for i in range(0, nnavi50):
+        Key("enter, c-v").execute()
+        time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
+    cb.copy_to_system()
 
 
 def erase_multi_clipboard(nexus):

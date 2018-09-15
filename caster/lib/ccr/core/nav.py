@@ -74,11 +74,12 @@ class NavigationNon(MappingRule):
             R(Key("control:down") + Mouse("left") + Key("control:up"),
               rdescript="Mouse: Ctrl + Left Click"),
         "garb [<nnavi500>]":
-            R(Mouse("left") + Mouse("left") + Key("c-c") +
-              Function(navigation.clipboard_to_file, nexus=_NEXUS),
+            R(Mouse("left") + Mouse("left") + Function(
+                navigation.stoosh_keep_clipboard, nexus=_NEXUS),
               rdescript="Highlight @ Mouse + Copy"),
         "drop [<nnavi500>]":
-            R(Mouse("left") + Mouse("left") + Function(navigation.drop, nexus=_NEXUS),
+            R(Mouse("left") + Mouse("left") + Function(
+                navigation.drop_keep_clipboard, nexus=_NEXUS),
               rdescript="Highlight @ Mouse + Paste"),
         "sure stoosh":
             R(Key("c-c"), rdescript="Simple Copy"),
@@ -185,9 +186,9 @@ class Navigation(MergeRule):
 
     "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]": R(Function(textformat.master_text_nav), rdescript="Keyboard Text Navigation"),
 
-    "stoosh [<nnavi500>]":          R(Key("c-c")+Function(navigation.clipboard_to_file, nexus=_NEXUS), rspec="stoosh", rdescript="Copy"),
-    "cut [<nnavi500>]":             R(Key("c-x")+Function(navigation.clipboard_to_file, nexus=_NEXUS), rspec="cut", rdescript="Cut"),
-    "spark [<nnavi500>]":           R(Function(navigation.drop, nexus=_NEXUS), rspec="spark", rdescript="Paste"),
+    "stoosh [<nnavi500>]":          R(Function(navigation.stoosh_keep_clipboard, nexus=_NEXUS), rspec="stoosh", rdescript="Copy"),
+    "cut [<nnavi500>]":             R(Function(navigation.cut_keep_clipboard, nexus=_NEXUS), rspec="cut", rdescript="Cut"),
+    "spark [<nnavi500>]":           R(Function(navigation.drop_keep_clipboard, nexus=_NEXUS), rspec="spark", rdescript="Paste"),
 
     "deli [<nnavi50>]":             R(Key("del/5"), rspec="deli", rdescript="Delete") * Repeat(extra="nnavi50"),
     "clear [<nnavi50>]":            R(Key("backspace/5:%(nnavi50)d"), rspec="clear", rdescript="Backspace"),
@@ -196,7 +197,7 @@ class Navigation(MergeRule):
 
     "shackle":                      R(Key("home/5, s-end"), rspec="shackle", rdescript="Select Line"),
     "(tell | tau) <semi>":          R(Function(navigation.next_line), rspec="tell dock", rdescript="Complete Line"),
-    "duple [<nnavi50>]":            R(Key("escape, home, s-end, c-c, end, enter, c-v"), rspec="duple", rdescript="Duplicate Line") * Repeat(extra="nnavi50"),
+    "duple [<nnavi50>]":            R(Function(navigation.duple_keep_clipboard), rspec="duple", rdescript="Duplicate Line"),
     "Kraken":                       R(Key("c-space"), rspec="Kraken", rdescript="Control Space"),
 
     # text formatting
@@ -212,17 +213,19 @@ class Navigation(MergeRule):
     }
 
     extras = [
+        IntegerRefST("nnavi10", 1, 11),
         IntegerRefST("nnavi50", 1, 50),
         IntegerRefST("nnavi500", 1, 500),
         Dictation("textnv"),
-        Choice("enclosure", {
-            "prekris": "(~)",
-            "angle": "<~>",
-            "curly": "{~}",
-            "brax": "[~]",
-            "thin quotes": "'~'",
-            'quotes': '"~"',
-        }),
+        Choice(
+            "enclosure", {
+                "prekris": "(~)",
+                "angle": "<~>",
+                "curly": "{~}",
+                "brax": "[~]",
+                "thin quotes": "'~'",
+                'quotes': '"~"',
+            }),
         Choice("capitalization", {
             "yell": 1,
             "tie": 2,
@@ -230,16 +233,17 @@ class Navigation(MergeRule):
             "sing": 4,
             "laws": 5
         }),
-        Choice("spacing", {
-            "gum": 1,
-            "gun": 1,
-            "spine": 2,
-            "snake": 3,
-            "pebble": 4,
-            "incline": 5,
-            "dissent": 6,
-            "descent": 6
-        }),
+        Choice(
+            "spacing", {
+                "gum": 1,
+                "gun": 1,
+                "spine": 2,
+                "snake": 3,
+                "pebble": 4,
+                "incline": 5,
+                "dissent": 6,
+                "descent": 6
+            }),
         Choice("semi", {
             "dock": ";",
             "doc": ";",
@@ -266,6 +270,7 @@ class Navigation(MergeRule):
     defaults = {
         "nnavi500": 1,
         "nnavi50": 1,
+        "nnavi10": 1,
         "textnv": "",
         "capitalization": 0,
         "spacing": 0,
