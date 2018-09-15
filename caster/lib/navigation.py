@@ -103,8 +103,8 @@ def stoosh_keep_clipboard(nnavi500, nexus):
             except Exception:
                 failure = True
                 utilities.simple_log()
-                if not failure:
-                    break
+            if not failure:
+                break
         cb.copy_to_system()
 
 def cut_keep_clipboard(nnavi500, nexus):
@@ -126,25 +126,26 @@ def cut_keep_clipboard(nnavi500, nexus):
             except Exception:
                 failure = True
                 utilities.simple_log()
-                if not failure:
-                    break
+            if not failure:
+                break
         cb.copy_to_system()
 
 def drop_keep_clipboard(nnavi500, nexus):
     if nnavi500 == 1:
         Key("c-v").execute()
     else:
+        max_tries = 20
         key = str(nnavi500)
         cb = Clipboard(from_system=True)
-        while True:
+        for i in range(0, max_tries):
             failure = False
             try:
                 if key in nexus.clip:
                     Clipboard.set_system_text(nexus.clip[key])
                     Key("c-v").execute()
+                    time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
                 else:
                     dragonfly.get_engine().speak("slot empty")
-                time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
             except Exception:
                 failure = True
             if not failure:
