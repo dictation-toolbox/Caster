@@ -16,16 +16,15 @@ _NEXUS = control.nexus()
 
 def launch_IDE():
     Popen([
-        settings.SETTINGS["paths"]["JAVA_EXE_PATH"], "-jar",
-        settings.SETTINGS["paths"]["SIKULI_JAR_PATH"], "-jar", 
-        settings.SETTINGS["paths"]["SIKULI_IDE_JAR_PATH"]
+        settings.SETTINGS["paths"]["JAVA_EXE_PATH"],
+         "-jar", settings.SETTINGS["paths"]["SIKULI_JAR_PATH"], 
         ])
 
 def launch_server():
     Popen([
-        settings.SETTINGS["paths"]["JAVA_EXE_PATH"], "-jar",
-        settings.SETTINGS["paths"]["SIKULI_JAR_PATH"], "-r",
-        settings.SETTINGS["paths"]["SIKULI_SERVER_PATH"]
+        settings.SETTINGS["paths"]["JAVA_EXE_PATH"], 
+        "-jar", settings.SETTINGS["paths"]["SIKULI_JAR_PATH"],
+        "-r", settings.SETTINGS["paths"]["SIKULI_SERVER_PATH"]
     ])
 
 
