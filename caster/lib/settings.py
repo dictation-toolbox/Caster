@@ -144,7 +144,7 @@ _DEFAULT_SETTINGS = {
         "REBOOT_PATH": BASE_PATH + "/bin/reboot.bat",
         "REBOOT_PATH_WSR": BASE_PATH + "/bin/reboot_wsr.bat",
         "SETTINGS_WINDOW_PATH": BASE_PATH + "/asynch/settingswindow.py",
-        "SIKULI_COMPATIBLE_JAVA_EXE_PATH": "",
+        "JAVA_EXE_PATH": "",
         "SIKULI_JAR_PATH": "",
         "SIKULI_SERVER_PATH": BASE_PATH + "/asynch/sikuli/scripts/xmlrpc_server.sikuli",
         "WSR_PATH": "C:/Windows/Speech/Common/sapisvr.exe",
