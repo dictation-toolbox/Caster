@@ -1,8 +1,10 @@
 # Installation
 
+- [Dragonfly](https://github.com/Danesprite/dragonfly)
+Follow the instructions in the readme to install danesprite's dragonfly fork. Alternatively, install caster using the YouTube video below and run `(Caster_installation_path)/bin/dragonfly_upgrade.bat` before restarting your voice recognition engine.
+
 ## YouTube Videos
 
-- [Dragonfly](https://www.youtube.com/watch?v=iNAsV4pcnEA)
 - [Caster](https://www.youtube.com/watch?v=wjSwB4cpMDI)
 
 ## Addendums

@@ -1,16 +1,35 @@
-from bash.bash import Bash
-from core.alphabet import Alphabet
-from core.nav import Navigation
-from core.numbers import Numbers
-from core.punctuation import Punctuation
-from cpp.cpp import CPP
-from csharp.csharp import CSharp
-from haxe.haxe import Haxe
-from html.html import HTML
-from java.java import Java
-from javascript.javascript import Javascript
-from python.python import Python
-from rust.rust import Rust
-from sql.sql import SQL
-from vhdl.vhdl import VHDL
-from prolog.prolog import Prolog
+# new modules should be added in the dictionary
+# the tupple contains the rules which will be imported
+
+command_sets = {
+    "bash.bash": ("Bash", ),
+    "core.alphabet": ("Alphabet", ),
+    "core.nav": ("Navigation", ),
+    "core.numbers": ("Numbers", ),
+    "core.punctuation": ("Punctuation", ),
+    "cpp.cpp": ("CPP", ),
+    "csharp.csharp": ("CSharp", ),
+    "dart.dart": ("Dart", ),
+    "haxe.haxe": ("Haxe", ),
+    "html.html": ("HTML", ),
+    "java.java": ("Java", ),
+    "javascript.javascript": ("Javascript", ),
+    "matlab.matlab": ("Matlab", ),
+    "python.python": ("Python", ),
+    "r.r": ("Rlang", ),
+    "rust.rust": ("Rust", ),
+    "sql.sql": ("SQL", ),
+    "prolog.prolog": ("Prolog", ),
+    "vhdl.vhdl": ("VHDL", ),
+}
+
+
+for module_name,class_name_tup in command_sets.iteritems():
+    for class_name in class_name_tup:
+        try:
+            module = __import__(module_name, globals(), locals(),[class_name])    #attempts to import the class
+            globals()[class_name]= module    #make the name available globally
+
+        except Exception as e:
+            print("Ignoring ccr rule '{}'. Failed to load with: ".format(class_name))
+            print(e)

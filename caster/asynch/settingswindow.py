@@ -11,8 +11,7 @@ from wx import Notebook, NB_MULTILINE, Menu, ID_EXIT, EVT_MENU, MenuBar, \
 
 from wx.lib.scrolledpanel import ScrolledPanel
 
-
-try: # Style C -- may be imported into Caster, or externally
+try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).split("\\caster")[0].replace("\\", "/")
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
@@ -20,23 +19,25 @@ finally:
     from caster.lib import settings
     from caster.lib.dfplus.communication import Communicator
 
+
 class Field:
     def __init__(self, wx_field, original, text_type=None):
         self.children = []
         self.wx_field = wx_field
         self.original = original
         self.text_type = text_type
+
     def add_child(self, field):
         self.children.append(field)
 
-class SettingsFrame(Frame):
 
+class SettingsFrame(Frame):
     def __init__(self, parent, title):
-        Frame.__init__(self, parent, title=title, size=(500,400))
+        Frame.__init__(self, parent, title=title, size=(500, 400))
         self.setup_xmlrpc_server()
         self.completed = False
-        
-        # Create the notebook 
+
+        # Create the notebook
         self.notebook = Notebook(self, style=NB_MULTILINE)
         # Setting up the menu
         file_menu = Menu()
@@ -45,41 +46,45 @@ class SettingsFrame(Frame):
         menu_bar = MenuBar()
         menu_bar.Append(file_menu, '&File')
         self.SetMenuBar(menu_bar)
-        
+
         alpha = settings.SETTINGS.keys()
         alpha.sort()
         self.fields = []
         for top in alpha:
             self.make_page(top)
-        
+
         self.CenterOnScreen()
         self.Show()
-        
+
         self.Bind(EVT_CLOSE, self.xmlrpc_kill)
+
         def start_server():
             while not self.server_quit:
                 self.server.handle_request()
+
         Timer(0.5, start_server).start()
         Timer(300, self.xmlrpc_kill).start()
-    
+
     def prepare_for_exit(self, e):
         self.Hide()
         self.completed = True
         threading.Timer(10, self.xmlrpc_kill).start()
-    
+
     def tree_to_dictionary(self, t=None):
         d = {}
-        
+
         children = None
         if t is None: children = self.fields
         else: children = t.children
-        
+
         for field in children:
             value = None
             if isinstance(field.wx_field, TextCtrl):
                 value = field.wx_field.GetValue()
                 if field.text_type == list:
-                    d[field.original] = [x for x in value.replace(", ", ",").split(",") if x] # don't count empty strings
+                    d[field.original] = [
+                        x for x in value.replace(", ", ",").split(",") if x
+                    ]  # don't count empty strings
                 elif field.text_type == int:
                     d[field.original] = int(value)
                 else:
@@ -88,64 +93,65 @@ class SettingsFrame(Frame):
                 d[field.original] = self.tree_to_dictionary(field)
             elif isinstance(field.wx_field, CheckBox):
                 d[field.original] = field.wx_field.GetValue()
-        
+
         return d
-        
-    def setup_xmlrpc_server(self): 
+
+    def setup_xmlrpc_server(self):
         self.server_quit = 0
         comm = Communicator()
-        self.server = SimpleXMLRPCServer((Communicator.LOCALHOST, comm.com_registry["hmc"]), allow_none=True)
+        self.server = SimpleXMLRPCServer(
+            (Communicator.LOCALHOST, comm.com_registry["hmc"]), allow_none=True)
         self.server.register_function(self.xmlrpc_get_message, "get_message")
         self.server.register_function(self.xmlrpc_complete, "complete")
         self.server.register_function(self.xmlrpc_kill, "kill")
-    
+
     def xmlrpc_kill(self, e=None):
         self.server_quit = 1
         os.kill(os.getpid(), signal.SIGTERM)
         self.Close()
-        
+
     def xmlrpc_get_message(self):
         if self.completed:
             Timer(1, self.xmlrpc_kill).start()
             return self.tree_to_dictionary()
         else:
             return None
-        
+
     def xmlrpc_complete(self):
         self.completed = True
         self.Hide()
-    
-    def make_page(self, title): 
-        page = ScrolledPanel(parent = self.notebook, id = -1)
+
+    def make_page(self, title):
+        page = ScrolledPanel(parent=self.notebook, id=-1)
         vbox = BoxSizer(VERTICAL)
         field = Field(page, title)
         self.get_fields(page, vbox, field)
         self.fields.append(field)
-        
+
         page.SetupScrolling()
         page.SetSizer(vbox)
         self.notebook.AddPage(page, title)
-    
+
     def get_fields(self, page, vbox, field):
         keys = settings.SETTINGS[field.original].keys()
         keys.sort()
-        
+
         for label in keys:
             hbox = BoxSizer(HORIZONTAL)
             value = settings.SETTINGS[field.original][label]
-            
+
             lbl = StaticText(page, label=label)
             hbox.Add(lbl, flag=RIGHT, border=8)
-            
+
             subfield = Field(None, label)
             item = self.field_from_value(page, value, subfield)
             field.add_child(subfield)
-            
-            if item!=None:
+
+            if item != None:
                 hbox.Add(item, proportion=1)
-            vbox.Add(hbox, flag=EXPAND|LEFT|RIGHT|TOP, border=5)
+            vbox.Add(hbox, flag=EXPAND | LEFT | RIGHT | TOP, border=5)
             vbox.Add((-1, 5))
-    
+
     def field_from_value(self, window, value, field):
         item = None
         if isinstance(value, basestring):
@@ -173,9 +179,9 @@ class SettingsFrame(Frame):
                 subfield = Field(None, lbl)
                 item = self.field_from_value(subpage, value2, subfield)
                 field.add_child(subfield)
-                if item!=None:
+                if item != None:
                     hbox.Add(item, proportion=1)
-                vbox.Add(hbox, flag=EXPAND|LEFT|RIGHT|TOP, border=5)
+                vbox.Add(hbox, flag=EXPAND | LEFT | RIGHT | TOP, border=5)
                 vbox.Add((-1, 5))
             subpage.SetSizer(vbox)
             subpage.Show()
@@ -183,7 +189,9 @@ class SettingsFrame(Frame):
         field.wx_field = item
         return item
 
+
 # if __name__ == '__main__':
 app = App(False)
-frame = SettingsFrame(None, settings.SETTINGS_WINDOW_TITLE + settings.SOFTWARE_VERSION_NUMBER)
+frame = SettingsFrame(None,
+                      settings.SETTINGS_WINDOW_TITLE + settings.SOFTWARE_VERSION_NUMBER)
 app.MainLoop()
