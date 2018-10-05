@@ -10,9 +10,6 @@ from caster.lib.dfplus.state.short import R
 from dragonfly import Key, Text
 
 class Dart(MergeRule):
-
-    text_format = 3, 1 #gerrishGum
-    secondary_text_format = 2, 1 #TieGum
     
     mapping = {
 

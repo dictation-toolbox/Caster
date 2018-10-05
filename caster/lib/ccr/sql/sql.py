@@ -12,8 +12,6 @@ from caster.lib.dfplus.state.short import R
 
 
 class SQL(MergeRule):
-    text_format = 5, 3 #snake_laws
-    secondary_text_format = 2, 1 #TieGum
     
     pronunciation = "sequel"
 

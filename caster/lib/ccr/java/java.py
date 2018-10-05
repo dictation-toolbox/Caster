@@ -31,9 +31,6 @@ class JavaNon(MappingRule):
 
 class Java(MergeRule):
     non = JavaNon
-
-    text_format = 3, 1 #gerrishGum
-    secondary_text_format = 2, 1 #TieGum
     
     mapping = {
         SymbolSpecs.IF:

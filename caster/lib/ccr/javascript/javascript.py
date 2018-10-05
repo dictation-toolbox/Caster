@@ -12,8 +12,6 @@ from dragonfly import Key, Text
 
 
 class Javascript(MergeRule):
-    text_format = 3, 1 #gerrishGum
-    secondary_text_format = 2, 1 #TieGum
 
     mapping = {
 

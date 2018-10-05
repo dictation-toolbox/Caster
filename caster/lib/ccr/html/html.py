@@ -5,9 +5,7 @@ from caster.lib.dfplus.merge.mergerule import MergeRule
 
 
 class HTML(MergeRule):
-    text_format = 5, 0 #just laws
-    secondary_text_format = 5, 2 #spine-laws
-
+ 
     mapping = {
         # A macro with ## is depreciated HTML.
         #Macros

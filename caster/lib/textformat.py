@@ -97,8 +97,8 @@ class TextFormat():
     def get_formatted_text(self, t):
         return TextFormat.formatted_text(self.capitalization, self.spacing, t)
 
-format = TextFormat(default_cap=5, default_spacing=0)
-secondary_format = TextFormat(default_cap=1, default_spacing=1)
+format = TextFormat(*settings.SETTINGS["formats"]["_default"]["text_format"])
+secondary_format = TextFormat(*settings.SETTINGS["formats"]["_default"]["secondary_format"])
 
 def choose_format(big):
     return format if not big else secondary_format

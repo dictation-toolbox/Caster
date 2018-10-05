@@ -265,22 +265,18 @@ class CCRMerger(object):
                     textformat.format.clear_text_format()
                     textformat.secondary_format.clear_text_format()
                 else:
-                    if hasattr(named_rule, 'text_format'):   
-                       #print('%s format is %s' % (str(named_rule), str(named_rule.text_format))) 
-                       cap, spacing = named_rule.text_format
-                    else:
-                        #print('%s has no primary format' % str(named_rule)) 
-                        cap = textformat.format.default_cap
-                        spacing = textformat.format.default_spacing
-                    textformat.format.set_text_format(cap, spacing)
-                    if hasattr(named_rule, 'secondary_text_format'):   
-                        #print('%s secondary format is %s' % (str(named_rule), str(named_rule.secondary_text_format))) 
-                        cap2, spacing2 = named_rule.secondary_text_format
-                    else:
-                        #print('%s has no secondary format' % str(named_rule)) 
-                        cap2 = textformat.secondary_format.default_cap
-                        spacing2 = textformat.secondary_format.default_spacing
-                    textformat.secondary_format.set_text_format(cap2, spacing2)
+                    name = named_rule.__class__.__name__
+                    if name in settings.SETTINGS["formats"]:
+                        if 'text_format' in settings.SETTINGS["formats"][name]:
+                            cap, spacing = settings.SETTINGS["formats"][name]['text_format']
+                            textformat.format.set_text_format(cap, spacing)
+                        else:
+                            textformat.format.clear_text_format()
+                        if 'secondary_format' in settings.SETTINGS["formats"][name]:
+                            cap, spacing = settings.SETTINGS["formats"][name]['secondary_format']
+                            textformat.secondary_format.set_text_format(cap, spacing)
+                        else:
+                            textformat.secondary_format.clear_text_format()
             base = None
             for rule in self._get_rules_by_composite(composite):
                 mp = MergePair(time, MergeInf.GLOBAL, base, rule.copy(), False)

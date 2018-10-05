@@ -213,7 +213,49 @@ _DEFAULT_SETTINGS = {
         "c++": "C plus plus",
         "jquery": "J query",
     },
-    "one time warnings": {}
+    "one time warnings": {},
+    "formats": {
+        "_default": {
+            "text_format": [5, 0],
+            "secondary_format": [1, 1],
+        },
+        "Python": {
+            "text_format": [5, 3],
+            "secondary_format": [2, 1],
+        },
+        "CPP": {
+            "text_format": [3, 1],
+            "secondary_format": [2, 1],
+        },
+        "Java": {
+            "text_format": [3, 1],
+            "secondary_format": [2, 1],
+        },
+        "Javascript": {
+            "text_format": [3, 1],
+            "secondary_format": [2, 1],
+        },
+        "HTML": {
+            "text_format": [5, 3],
+            "secondary_format": [2, 1],
+        },
+        "CSharp": {
+            "text_format": [3, 1],
+            "secondary_format": [2, 1],
+        },
+        "Dart": {
+            "text_format": [3, 1],
+            "secondary_format": [2, 1],
+        },
+        "SQL": {
+            "text_format": [5, 3],
+            "secondary_format": [2, 1],
+        },
+        "Rust": {
+            "text_format": [5, 3],
+            "secondary_format": [2, 1],
+        },
+    }
 }
 
 
