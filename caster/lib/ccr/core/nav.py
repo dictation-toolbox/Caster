@@ -74,12 +74,13 @@ class NavigationNon(MappingRule):
             R(Key("control:down") + Mouse("left") + Key("control:up"),
               rdescript="Mouse: Ctrl + Left Click"),
         "garb [<nnavi500>]":
-            R(Mouse("left") + Mouse("left") + Key("c-c") +
-              Function(navigation.clipboard_to_file, nexus=_NEXUS),
-              rdescript="Highlight @ Mouse + Copy"),
+            R(Mouse("left") + Mouse("left") + Function(
+                navigation.stoosh_keep_clipboard, nexus=_NEXUS),
+                rdescript="Highlight @ Mouse + Copy"),
         "drop [<nnavi500>]":
-            R(Mouse("left") + Mouse("left") + Function(navigation.drop, nexus=_NEXUS),
-              rdescript="Highlight @ Mouse + Paste"),
+            R(Mouse("left") + Mouse("left") + Function(
+                navigation.drop_keep_clipboard, nexus=_NEXUS),
+                rdescript="Highlight @ Mouse + Paste"),
         "sure stoosh":
             R(Key("c-c"), rdescript="Simple Copy"),
         "sure cut":
@@ -159,72 +160,96 @@ class Navigation(MergeRule):
 
     mapping = {
     # "periodic" repeats whatever comes next at 1-second intervals until "cancel" is spoken or 100 tries occur
-    "periodic":                     ContextSeeker(forward=[L(S(["cancel"], lambda: None), \
-                                                             S(["*"], \
-                                                               lambda fnparams: UntilCancelled(Mimic(*filter(lambda s: s != "periodic", fnparams)), 1).execute(), \
-                                                               use_spoken=True))]),
+        "periodic":
+            ContextSeeker(forward=[L(S(["cancel"], lambda: None),
+            S(["*"], lambda fnparams: UntilCancelled(Mimic(*filter(lambda s: s != "periodic", fnparams)), 1).execute(),
+            use_spoken=True))]),
     # VoiceCoder-inspired -- these should be done at the IDE level
-    "fill <target>":                R(Key("escape, escape, end"), show=False) +
-                                    AsynchronousAction([L(S(["cancel"], Function(context.fill_within_line, nexus=_NEXUS)))
-                                                   ], time_in_seconds=0.2, repetitions=50, rdescript="Fill" ),
-    "jump in":                      AsynchronousAction([L(S(["cancel"], context.nav, ["right", "(~[~{~<"]))
-                                                   ], time_in_seconds=0.1, repetitions=50, rdescript="Jump: In" ),
-    "jump out":                     AsynchronousAction([L(S(["cancel"], context.nav, ["right", ")~]~}~>"]))
-                                                   ], time_in_seconds=0.1, repetitions=50, rdescript="Jump: Out" ),
-    "jump back":                    AsynchronousAction([L(S(["cancel"], context.nav, ["left", "(~[~{~<"]))
-                                                   ], time_in_seconds=0.1, repetitions=50, rdescript="Jump: Back" ),
-    "jump back in":                 AsynchronousAction([L(S(["cancel"], context.nav, ["left", "(~[~{~<"]))
-                                                   ], finisher=Key("right"),
-                                                      time_in_seconds=0.1,
-                                                      repetitions=50,
-                                                      rdescript="Jump: Back In" ),
+        "fill <target>":
+            R(Key("escape, escape, end"), show=False) +
+            AsynchronousAction([L(S(["cancel"], Function(context.fill_within_line, nexus=_NEXUS)))],
+            time_in_seconds=0.2, repetitions=50, rdescript="Fill" ),
+        "jump in":
+            AsynchronousAction([L(S(["cancel"], context.nav, ["right", "(~[~{~<"]))],
+            time_in_seconds=0.1, repetitions=50, rdescript="Jump: In"),
+        "jump out":
+            AsynchronousAction([L(S(["cancel"], context.nav, ["right", ")~]~}~>"]))],
+            time_in_seconds=0.1, repetitions=50, rdescript="Jump: Out"),
+        "jump back":
+            AsynchronousAction([L(S(["cancel"], context.nav, ["left", "(~[~{~<"]))],
+            time_in_seconds=0.1, repetitions=50, rdescript="Jump: Back"),
+        "jump back in":
+            AsynchronousAction([L(S(["cancel"], context.nav, ["left", "(~[~{~<"]))],
+            finisher=Key("right"), time_in_seconds=0.1, repetitions=50, rdescript="Jump: Back In" ),
 
     # keyboard shortcuts
-    'save':                         R(Key("c-s"), rspec="save", rdescript="Save"),
-    'shock [<nnavi50>]':            R(Key("enter"), rspec="shock", rdescript="Enter")* Repeat(extra="nnavi50"),
+        'save':
+            R(Key("c-s"), rspec="save", rdescript="Save"),
+        'shock [<nnavi50>]':
+            R(Key("enter"), rspec="shock", rdescript="Enter")* Repeat(extra="nnavi50"),
 
-    "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]": R(Function(text_utils.master_text_nav), rdescript="Keyboard Text Navigation"),
+        "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]": 
+            R(Function(text_utils.master_text_nav), rdescript="Keyboard Text Navigation"),
 
-    "stoosh [<nnavi500>]":          R(Key("c-c")+Function(navigation.clipboard_to_file, nexus=_NEXUS), rspec="stoosh", rdescript="Copy"),
-    "cut [<nnavi500>]":             R(Key("c-x")+Function(navigation.clipboard_to_file, nexus=_NEXUS), rspec="cut", rdescript="Cut"),
-    "spark [<nnavi500>]":           R(Function(navigation.drop, nexus=_NEXUS), rspec="spark", rdescript="Paste"),
+        "stoosh [<nnavi500>]":
+            R(Function(navigation.stoosh_keep_clipboard, nexus=_NEXUS), rspec="stoosh", rdescript="Copy"),
+        "cut [<nnavi500>]":
+            R(Function(navigation.cut_keep_clipboard, nexus=_NEXUS), rspec="cut", rdescript="Cut"),
+        "spark [<nnavi500>]":
+            R(Function(navigation.drop_keep_clipboard, nexus=_NEXUS), rspec="spark", rdescript="Paste"),
 
-    "deli [<nnavi50>]":             R(Key("del/5"), rspec="deli", rdescript="Delete") * Repeat(extra="nnavi50"),
-    "clear [<nnavi50>]":            R(Key("backspace/5:%(nnavi50)d"), rspec="clear", rdescript="Backspace"),
-    SymbolSpecs.CANCEL:             R(Key("escape"), rspec="cancel", rdescript="Cancel Action"),
+        "deli [<nnavi50>]":
+            R(Key("del/5"), rspec="deli", rdescript="Delete") * Repeat(extra="nnavi50"),
+        "clear [<nnavi50>]":
+            R(Key("backspace/5:%(nnavi50)d"), rspec="clear", rdescript="Backspace"),
+        SymbolSpecs.CANCEL:
+            R(Key("escape"), rspec="cancel", rdescript="Cancel Action"),
 
 
-    "shackle":                      R(Key("home/5, s-end"), rspec="shackle", rdescript="Select Line"),
-    "(tell | tau) <semi>":          R(Function(navigation.next_line), rspec="tell dock", rdescript="Complete Line"),
-    "duple [<nnavi50>]":            R(Key("escape, home, s-end, c-c, end, enter, c-v"), rspec="duple", rdescript="Duplicate Line") * Repeat(extra="nnavi50"),
-    "Kraken":                       R(Key("c-space"), rspec="Kraken", rdescript="Control Space"),
+        "shackle":
+            R(Key("home/5, s-end"), rspec="shackle", rdescript="Select Line"),
+        "(tell | tau) <semi>":
+            R(Function(navigation.next_line), rspec="tell dock", rdescript="Complete Line"),
+        "duple [<nnavi50>]":
+            R(Function(navigation.duple_keep_clipboard), rspec="duple", rdescript="Duplicate Line"),
+        "Kraken":
+            R(Key("c-space"), rspec="Kraken", rdescript="Control Space"),
 
     # text formatting
-    "set [<big>] format (<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)":  R(Function(textformat.set_text_format), rdescript="Set Text Format"),
-    "clear caster [<big>] formatting":      R(Function(textformat.clear_text_format), rdescript="Clear Caster Formatting"),
-    "peek [<big>] format":                  R(Function(textformat.peek_text_format), rdescript="Peek Format"),
-    "(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel) <textnv> [brunt]":  R(Function(textformat.master_format_text), rdescript="Text Format"),
-    "[<big>] format <textnv>":              R(Function(textformat.prior_text_format), rdescript="Last Text Format"),
-    "<word_limit> [<big>] format <textnv>": R(Function(textformat.partial_format_text), rdescript="Partial Text Format"),
+        "set [<big>] format (<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)":  
+            R(Function(textformat.set_text_format), rdescript="Set Text Format"),
+        "clear caster [<big>] formatting":      
+            R(Function(textformat.clear_text_format), rdescript="Clear Caster Formatting"),
+        "peek [<big>] format":                  
+            R(Function(textformat.peek_text_format), rdescript="Peek Format"),
+        "(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel) <textnv> [brunt]":  
+            R(Function(textformat.master_format_text), rdescript="Text Format"),
+        "[<big>] format <textnv>":              
+            R(Function(textformat.prior_text_format), rdescript="Last Text Format"),
+        "<word_limit> [<big>] format <textnv>": 
+            R(Function(textformat.partial_format_text), rdescript="Partial Text Format"),
 
-    "hug <enclosure>":              R(Function(text_utils.enclose_selected), rdescript="Enclose text "),
-    
-    "dredge":                       R(Key("a-tab"), rdescript="Alt-Tab"),
+        "hug <enclosure>":              
+            R(Function(text_utils.enclose_selected), rdescript="Enclose text "),
+        "dredge":                       
+            R(Key("a-tab"), rdescript="Alt-Tab"),
 
     }
 
     extras = [
+        IntegerRefST("nnavi10", 1, 11),
         IntegerRefST("nnavi50", 1, 50),
         IntegerRefST("nnavi500", 1, 500),
         Dictation("textnv"),
-        Choice("enclosure", {
-            "prekris": "(~)",
-            "angle": "<~>",
-            "curly": "{~}",
-            "brax": "[~]",
-            "thin quotes": "'~'",
-            'quotes': '"~"',
-        }),
+        Choice(
+            "enclosure", {
+                "prekris": "(~)",
+                "angle": "<~>",
+                "curly": "{~}",
+                "brax": "[~]",
+                "thin quotes": "'~'",
+                'quotes': '"~"',
+            }),
         Choice("capitalization", {
             "yell": 1,
             "tie": 2,
@@ -232,16 +257,17 @@ class Navigation(MergeRule):
             "sing": 4,
             "laws": 5
         }),
-        Choice("spacing", {
-            "gum": 1,
-            "gun": 1,
-            "spine": 2,
-            "snake": 3,
-            "pebble": 4,
-            "incline": 5,
-            "dissent": 6,
-            "descent": 6
-        }),
+        Choice(
+            "spacing", {
+                "gum": 1,
+                "gun": 1,
+                "spine": 2,
+                "snake": 3,
+                "pebble": 4,
+                "incline": 5,
+                "dissent": 6,
+                "descent": 6
+            }),
         Choice("semi", {
             "dock": ";",
             "doc": ";",
@@ -271,6 +297,7 @@ class Navigation(MergeRule):
     defaults = {
         "nnavi500": 1,
         "nnavi50": 1,
+        "nnavi10": 1,
         "textnv": "",
         "capitalization": 0,
         "spacing": 0,
