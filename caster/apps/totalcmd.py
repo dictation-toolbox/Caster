@@ -9,7 +9,7 @@ from caster.lib.dfplus.state.short import R
 
 
 class TotalCommanderRule (MergeRule):
-    pronunciation = "total commqnder"
+    pronunciation = "total commander"
 
     mapping = {
         "find [in] files":
@@ -75,7 +75,7 @@ class TotalCommanderRule (MergeRule):
     }
 
 class SyncDirsRule (MergeRule):
-    pronunciation = "total commqnder synchronize directories"
+    pronunciation = "total commander synchronize directories"
 
     mapping = {
         "compare files":
