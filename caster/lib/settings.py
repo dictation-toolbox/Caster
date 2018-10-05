@@ -217,26 +217,10 @@ _DEFAULT_SETTINGS = {
     "formats": {
         "_default": {
             "text_format": [5, 0],
-            "secondary_format": [1, 1],
-        },
-        "Python": {
-            "text_format": [5, 3],
-            "secondary_format": [2, 1],
+            "secondary_format": [1, 0],
         },
         "CPP": {
             "text_format": [3, 1],
-            "secondary_format": [2, 1],
-        },
-        "Java": {
-            "text_format": [3, 1],
-            "secondary_format": [2, 1],
-        },
-        "Javascript": {
-            "text_format": [3, 1],
-            "secondary_format": [2, 1],
-        },
-        "HTML": {
-            "text_format": [5, 3],
             "secondary_format": [2, 1],
         },
         "CSharp": {
@@ -247,13 +231,33 @@ _DEFAULT_SETTINGS = {
             "text_format": [3, 1],
             "secondary_format": [2, 1],
         },
-        "SQL": {
+        "HTML": {
+            "text_format": [5, 0],
+            "secondary_format": [5, 2],
+        },
+        "Java": {
+            "text_format": [3, 1],
+            "secondary_format": [2, 1],
+        },
+        "Javascript": {
+            "text_format": [3, 1],
+            "secondary_format": [2, 1],
+        },
+        "Matlab": {
+            "text_format": [3, 1],
+            "secondary_format": [1, 3],
+        },
+        "Python": {
             "text_format": [5, 3],
             "secondary_format": [2, 1],
         },
         "Rust": {
             "text_format": [5, 3],
             "secondary_format": [2, 1],
+        },
+       "SQL": {
+            "text_format": [5, 3],
+            "secondary_format": [1, 3],
         },
     }
 }
