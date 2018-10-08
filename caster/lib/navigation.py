@@ -160,21 +160,6 @@ def duple_keep_clipboard(nnavi50):
         Key("enter, c-v").execute()
         time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
     cb.copy_to_system()
-def drop(nnavi500, nexus):
-    key = str(nnavi500)
-    while True:
-        failure = False
-        try:
-            if key in nexus.clip:
-                Clipboard.set_system_text(nexus.clip[key])
-                Key("c-v").execute()
-            else:
-                dragonfly.get_engine().speak("slot empty")
-            time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
-        except Exception:
-            failure = True
-        if not failure:
-            break
 
 
 def erase_multi_clipboard(nexus):

@@ -118,8 +118,10 @@ class Python(MergeRule):
               rdescript="Python: List Comprehension"),
         "[dot] (pie | pi)":
             R(Text(".py"), rdescript="Python: .py"),
-        "jason":
+        "toml":
             R(Text("toml"), rdescript="Python: toml"),
+        "jason":
+            R(Text("toml"), rdescript="Python: json"),
         "identity is":
             R(Text(" is "), rdescript="Python: is"),
         "yield":
