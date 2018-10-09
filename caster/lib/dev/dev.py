@@ -1,7 +1,8 @@
 from difflib import SequenceMatcher
 from subprocess import Popen
 import time
-
+import os
+import threading
 from dragonfly import (Function, Key, BringApp, Text, WaitWindow, Dictation, Choice,
                        Grammar, MappingRule, Paste)
 
@@ -116,11 +117,10 @@ def bring_test():
 class DevelopmentHelp(MappingRule):
     mapping = {
         # caster development tools
-        "(show | open) documentation":
-            BringApp(settings.SETTINGS["paths"]["DEFAULT_BROWSER_PATH"]) +
-            WaitWindow(executable=settings.get_default_browser_executable()) +
-            Key('c-t') + WaitWindow(title="New Tab") +
-            Text('http://dragonfly.readthedocs.org/en/latest') + Key('enter'),
+        "(show | open) dragonfly documentation":
+            Function(lambda: threading.Thread(target=os.startfile, args=('http://dragonfly2.readthedocs.io/en/latest',)).start()),
+        "(show | open) caster documentation":
+            Function(lambda: threading.Thread(target=os.startfile, args=('https://caster.readthedocs.io/en/latest',)).start()),
         "open natlink folder":
             R(BringApp("C:/Windows/explorer.exe",
                        settings.SETTINGS["paths"]["BASE_PATH"].replace("/", "\\")),
