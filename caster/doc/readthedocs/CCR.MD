@@ -31,7 +31,7 @@ There are different kinds of Dragonfly and Caster rules which can be created or 
 
 * **Rule, CompoundRule, MappingRule**: the original Dragonfly rule types. These can be used with Caster, but not for CCR.
 * **MergeRule**: the basic Caster CCR building block. It is similar to Dragonfly's MappingRule, but has a few extra properties.
-* **SelfModifyingRule**: this is a type of MergeRule which modifies its own command set based on some kind of user input. NodeRule, VanillaAlias, ChainAlias, and HistoryRule are all SelfModifyingRules.
+* **SelfModifyingRule**: this is a type of MergeRule which modifies its own command set based on some kind of user input. NodeRule, Alias, ChainAlias, and HistoryRule are all SelfModifyingRules.
 
 We'll go into more detail on the differences between these rules elsewhere. For now, know that most rules used for CCR in Caster extend MergeRule.
 
