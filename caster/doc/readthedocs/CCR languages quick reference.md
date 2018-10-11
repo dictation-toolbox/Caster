@@ -9,6 +9,7 @@ A quick reference guide for the language-specific commands included with Caster.
 * [HTML](#html)
 * [Java](#java)
 * [Javascript](#javascript)
+* [LaTeX](#latex)
 * [Matlab](#matlab)
 * [Prolog](#prolog)
 * [Python](#python)
@@ -254,6 +255,19 @@ index of|`indexOf()`||value true|`true`
 inner HTML|`innerHTML`||var|`var `
 instance of|`instanceof `||while loop|`while ()`
 length|`length`|||``
+
+
+# LaTeX
+Commands are designed to follow LaTeX syntax as closely as possible, for example `insert document class` produces `\documentclass{}`. See lines 69- of caster/lib/ccr/latex/latex.py for a full list of available inputs.
+
+Command | Output | | Command | Output
+---|---|---|---|---
+`[use] package [<packages>]`|`\usepackage{<packages>}`||insert quote|\`\`''
+[use] package bib latex|`\usepackage[style=authoryear]{biblatex}`||math fraction|`\frac{}{} `
+add comment|`%`||subscript|`_{}`
+`begin <element>`|`\begin{<element>}` </br> </br> `\end{<element>}`||superscript|`^{}`
+`insert <command>`|`\<command>{}`||`symbol [<big>] <symbol>`|`\<symbol>`
+`insert <commandnoarg>`|`\<commandnoarg>`|||``
 
 
 # Matlab
