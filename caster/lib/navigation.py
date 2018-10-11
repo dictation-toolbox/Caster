@@ -8,9 +8,10 @@ from ctypes import windll
 from subprocess import Popen
 
 import dragonfly
+from dragonfly import Choice, Clipboard, Key, Mouse, Paste, Text, monitors
+
 from caster.asynch.mouse.legion import LegionScanner
 from caster.lib import settings, utilities
-from dragonfly import Choice, Clipboard, Key, Mouse, Text, monitors
 
 DIRECTION_STANDARD = {
     "sauce [E]": "up",
@@ -130,19 +131,23 @@ def cut_keep_clipboard(nnavi500, nexus):
                 break
         cb.copy_to_system()
 
-def drop_keep_clipboard(nnavi500, nexus):
+def drop_keep_clipboard(nnavi500, nexus, textsize=None):
+    orig_text = Clipboard.get_system_text()
+    if not orig_text:
+        return
+    text = orig_text.upper() if textsize else orig_text
+    text = orig_text.lower() if textsize is False else text
+    cb = Clipboard(from_system=True)
     if nnavi500 == 1:
-        Key("c-v").execute()
+        Paste(text).execute()
     else:
         max_tries = 20
         key = str(nnavi500)
-        cb = Clipboard(from_system=True)
         for i in range(0, max_tries):
             failure = False
             try:
                 if key in nexus.clip:
-                    Clipboard.set_system_text(nexus.clip[key])
-                    Key("c-v").execute()
+                    Paste(nexus.clip[key]).execute()
                     time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
                 else:
                     dragonfly.get_engine().speak("slot empty")
@@ -150,7 +155,7 @@ def drop_keep_clipboard(nnavi500, nexus):
                 failure = True
             if not failure:
                 break
-        cb.copy_to_system()
+    cb.copy_to_system()
 
 def duple_keep_clipboard(nnavi50):
     cb = Clipboard(from_system=True)

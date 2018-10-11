@@ -195,7 +195,7 @@ class Navigation(MergeRule):
             R(Function(navigation.stoosh_keep_clipboard, nexus=_NEXUS), rspec="stoosh", rdescript="Copy"),
         "cut [<nnavi500>]":
             R(Function(navigation.cut_keep_clipboard, nexus=_NEXUS), rspec="cut", rdescript="Cut"),
-        "spark [<nnavi500>]":
+        "[<textsize>] spark [<nnavi500>]":
             R(Function(navigation.drop_keep_clipboard, nexus=_NEXUS), rspec="spark", rdescript="Paste"),
 
         "deli [<nnavi50>]":
@@ -288,6 +288,10 @@ class Navigation(MergeRule):
         Choice("extreme", {
             "Wally": "way",
         }),
+        Choice("textsize", {
+            "yell": True,
+            "laws": False,
+        })
     ]
 
     defaults = {
@@ -299,7 +303,8 @@ class Navigation(MergeRule):
         "spacing": 0,
         "mtn_mode": None,
         "mtn_dir": "right",
-        "extreme": None
+        "extreme": None,
+        "textsize": None
     }
 
 
