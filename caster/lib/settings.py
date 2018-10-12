@@ -118,6 +118,7 @@ _DEFAULT_SETTINGS = {
         # DATA
         "ALIAS_PATH": BASE_PATH + "/bin/data/aliases.json.",
         "BRINGME_PATH": BASE_PATH + "/bin/data/bringme.json.",
+        "BRINGME_DEFAULTS_PATH": BASE_PATH + "/bin/media/bringme.json.defaults",
         "CCR_CONFIG_PATH": BASE_PATH + "/bin/data/ccr.json",
         "DLL_PATH": BASE_PATH + "/lib/dll/",
         "FILTER_DEFS_PATH": BASE_PATH + "/user/words.txt",
