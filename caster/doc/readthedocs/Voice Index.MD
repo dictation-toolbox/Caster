@@ -57,32 +57,32 @@ If you're just getting started with voice programming, I suggest reading [this a
 
 # Sources and Modules
 
-* [Github - Dragonfly](https://github.com/Danesprite/dragonfly) - (Recommended) - A Community fork of t4ngo's Dragonfly repository.
-* [Github - t4ngo/dragonfly](https://github.com/t4ngo/dragonfly) - Stale
+- [Github - Dragonfly](https://github.com/Danesprite/dragonfly) - (Recommended) - A Community fork of t4ngo's Dragonfly repository.
+- [Github - t4ngo/dragonfly](https://github.com/t4ngo/dragonfly) - Stale
 
 # Dragonfly and Natlink Documentation
 
-​       **Dragonfly**
+  **Dragonfly**
 
-* [Dragonfly - readthedocs](http://dragonfly2.readthedocs.org/en/latest/) - (Recommended Documentation)
+- [Dragonfly - readthedocs](http://dragonfly2.readthedocs.org/en/latest/) - (Recommended Documentation)
 
-* [t4ngo's Dragonfly - readthedocs](http://dragonfly.readthedocs.org/en/latest/) - Stale
+- [t4ngo's Dragonfly - readthedocs](http://dragonfly.readthedocs.org/en/latest/) - Stale
 
   **Natlink**
 
-* [Qh.antenna.nl - Natlink, Unimacro and Vocola ](http://qh.antenna.nl/unimacro/index.html) - (Recommended) Documentation and install instructions
+- [Qh.antenna.nl - Natlink, Unimacro and Vocola ](http://qh.antenna.nl/unimacro/index.html) - (Recommended) Documentation and install instructions
 
   **As Needed**
 
   - [Register Natlink pyd Manually](https://www.youtube.com/watch?v=_WnMGOfHYuM) 
   - [Microsoft Visual C++ 2010 Service Pack 1 Redistributable Package MFC Security Update](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=2ahUKEwi874yllILeAhWKxYMKHYgrDF8QFjAAegQICRAB&url=https%3A%2F%2Fwww.microsoft.com%2Fen-us%2Fdownload%2Fdetails.aspx%3Fid%3D26999&usg=AOvVaw0cUChp6Ql2-eV0zUE9XCaC)
 
-* [Qh.antenna.nl -  Implementation_and_Acceptance_of Natlink.pdf](https://web.archive.org/web/20160711183956/https://qh.antenna.nl/unimacro/implementation_and_acceptance_of_natlink.pdf)
+- [Qh.antenna.nl -  Implementation_and_Acceptance_of Natlink.pdf](https://web.archive.org/web/20160711183956/https://qh.antenna.nl/unimacro/implementation_and_acceptance_of_natlink.pdf)
 
 
 # Other Dragonfly Repositories 
 
-   **Updated** 10/10/2018  Link - Last commit on (Month - Day - Year)
+   **Updated** - 10/10/2018  Link - Last commit on (Month - Day - Year)
 
 - [Github - dictation-toolbox](https://github.com/dictation-toolbox) - Aenea - A system to allow speech recognition via Dragonfly on one computer to send events to another.  
 - [Github - russell/damselfly](https://github.com/russell/damselfly) - Damselfly - Damselfly: Use dragon naturally speaking to control linux apps.
@@ -109,19 +109,19 @@ If you're just getting started with voice programming, I suggest reading [this a
 
 # Other Related Documents
 
-  **Updated** 10/10/2018
+  **Updated** -10/10/2018
 
-* [KnowBrainer Dragon and Computer Tweaks](http://www.knowbrainer.com/index.cfm/wiki/knowbrainer-dragon-and-computer-tweaks/)
-* [KnowBrainer Dragon 15 Review PDF](www.knowbrainer.com/index.cfm/wiki/dragon-15-review/)
-* [Njr.sabi.net - Creating a dictation buffer](https://njr.sabi.net/2014/04/13/creating-a-dictation-buffer/)
-* [ShortTalk Emacs Quickref.pdf](http://shorttalk-emacs.sourceforge.net/ShortTalk/quickref.pdf)
-* [Alexander15w's Command Language Comparison Spreadsheet](https://docs.google.com/spreadsheets/d/1pk2gwTFbMebgYSsrxIFsZ-QvpEPWCybF8ypdeBvfBsg/pubhtml)
+- [KnowBrainer Dragon and Computer Tweaks](http://www.knowbrainer.com/index.cfm/wiki/knowbrainer-dragon-and-computer-tweaks/)
+- [KnowBrainer Dragon 15 Review PDF](www.knowbrainer.com/index.cfm/wiki/dragon-15-review/)
+- [Njr.sabi.net - Creating a dictation buffer](https://njr.sabi.net/2014/04/13/creating-a-dictation-buffer/)
+- [ShortTalk Emacs Quickref.pdf](http://shorttalk-emacs.sourceforge.net/ShortTalk/quickref.pdf)
+- [Alexander15w's Command Language Comparison Spreadsheet](https://docs.google.com/spreadsheets/d/1pk2gwTFbMebgYSsrxIFsZ-QvpEPWCybF8ypdeBvfBsg/pubhtml)
 
 # Open Source and Commercial Dragon Addons
 
-**Updated** 10/13/2018
+**Updated** - 10/13/2018
 
-​      **Open Source** 
+​      **Open Source**
 
 - [Vocola](http://vocola.net)
 
@@ -131,7 +131,7 @@ If you're just getting started with voice programming, I suggest reading [this a
 
 - [Click by Voice](https://github.com/mdbridge/click-by-voice) - Extension for Chrome
 
-  **Commercial** 
+  **Commercial**
 
 - [Voicecode.io](http://voicecode.io) 
 
@@ -149,68 +149,68 @@ If you're just getting started with voice programming, I suggest reading [this a
 
 # Video
 
-**Updated** 10/13/2018
+**Updated** - 10/13/2018
 
-* [Tavis Rudd - Pycon Talk](http://www.youtube.com/watch?v=8SkdfdXWYaI) - Using Python to Code by Voice - (Mar 20, 2013)
+- [Tavis Rudd - Pycon Talk](http://www.youtube.com/watch?v=8SkdfdXWYaI) - Using Python to Code by Voice - (Mar 20, 2013)
 
-* [Tavis Rudd - 5 programming languages in 5 mins, by Voice (Polyglot Conf)](https://www.youtube.com/watch?v=qXvbQQV1ydo) - (Apr 15, 2013)
+- [Tavis Rudd - 5 programming languages in 5 mins, by Voice (Polyglot Conf)](https://www.youtube.com/watch?v=qXvbQQV1ydo) - (Apr 15, 2013)
 
   - [Some links related to Tavis Rudd voice coding talk at #pycon](https://gist.github.com/tavisrudd/5226505)
 
-* [Explanation of continuous command recognition by Twizzybiz](https://www.youtube.com/watch?v=g3c5H7sAbBQ) - (Apr 9, 2009)
+- [Explanation of continuous command recognition by Twizzybiz](https://www.youtube.com/watch?v=g3c5H7sAbBQ) - (Apr 9, 2009)
 
-* [A voice programmer](http://www.youtube.com/watch?v=LVAO8DXUnRI) - Speech Recognition used for Programming and Software development Demonstration. - (Dec 31, 2011)
+- [A voice programmer](http://www.youtube.com/watch?v=LVAO8DXUnRI) - Speech Recognition used for Programming and Software development Demonstration. - (Dec 31, 2011)
 
-* [Voice Coding Demonstration](https://www.youtube.com/watch?v=ZKIPVtmL5RY)  - (Jan 15, 2017)
+- [Voice Coding Demonstration](https://www.youtube.com/watch?v=ZKIPVtmL5RY)  - (Jan 15, 2017)
 
-* [Demo of Voice Coding + Art](https://www.youtube.com/watch?v=hGPNs5C1Lp0) - (Apr 16, 2018)
+- [Demo of Voice Coding + Art](https://www.youtube.com/watch?v=hGPNs5C1Lp0) - (Apr 16, 2018)
 
-* [Controlling computer and programming by voice (Voice Coding)](https://www.youtube.com/watch?v=-UVCN8L4J0Y) - (May 13, 2018)
+- [Controlling computer and programming by voice (Voice Coding)](https://www.youtube.com/watch?v=-UVCN8L4J0Y) - (May 13, 2018)
 
-* [Multiple chained speech recognition commands in dragonfly -- low latency for fluid use](https://www.youtube.com/watch?v=O9mkQsXA2Ok) - (Mar 11, 2015)
+- [Multiple chained speech recognition commands in dragonfly -- low latency for fluid use](https://www.youtube.com/watch?v=O9mkQsXA2Ok) - (Mar 11, 2015)
 
-* [Short demo showing how to install the "Click by Voice" extension for Chrome](https://www.youtube.com/watch?v=6qrjuTCX6Rw) - (Jul 21, 2017)
+- [Short demo showing how to install the "Click by Voice" extension for Chrome](https://www.youtube.com/watch?v=6qrjuTCX6Rw) - (Jul 21, 2017)
 
 
 # Installation Instructions
 
-**Updated** 10/13/2018
+**Updated** - 10/13/2018 
 
 - [Instructions for Dragonfly and Castor](https://github.com/synkarius/caster/issues/217#issuecomment-377290954) (Recommended)
 
-* [Install Vid (Caster)](http://explosionduck.com/caster/install) - Slightly outdated
-* [Install Vid (Dragonfly)](http://explosionduck.com/caster/install/dragonfly.html) - Slightly outdated
-* [Installing Natlink Vocola and Dragonfly](https://www.youtube.com/watch?v=yVEbAcxEPWY) - t4ngo Dragonfly
+- [Install Vid (Caster)](http://explosionduck.com/caster/install) - Slightly outdated
+- [Install Vid (Dragonfly)](http://explosionduck.com/caster/install/dragonfly.html) - Slightly outdated
+- [Installing Natlink Vocola and Dragonfly](https://www.youtube.com/watch?v=yVEbAcxEPWY) - t4ngo Dragonfly
 
 # Legacy
 
-* [NatLink For Python 2.5](http://www.westga.edu/~drocco/voice/NatLink/)
-* [A collection of utilities and macros for voice recognition using Dragon NaturallySpeaking® by ScanSoft®](https://web.archive.org/web/20110917000900/http://sean.wenzel.net/voicerecognition/index.epl)
+- [NatLink For Python 2.5](http://www.westga.edu/~drocco/voice/NatLink/)
+- [A collection of utilities and macros for voice recognition using Dragon NaturallySpeaking® by ScanSoft®](https://web.archive.org/web/20110917000900/http://sean.wenzel.net/voicerecognition/index.epl)
 
 # Troubleshooting
 
-* [The "Cannot load compatibility module support" Error](https://github.com/simianhacker/code-by-voice/issues/2)
-* [Error 6034](https://groups.yahoo.com/neo/groups/VoiceCoder/conversations/topics/8601)
-* [Troubleshooting FAQ - Dragonfly and Castor](https://github.com/synkarius/caster/issues/217#issuecomment-377290954) - (Scroll to the bottom of the post)
+- [The "Cannot load compatibility module support" Error](https://github.com/simianhacker/code-by-voice/issues/2)
+- [Error 6034](https://groups.yahoo.com/neo/groups/VoiceCoder/conversations/topics/8601)
+- [Troubleshooting FAQ - Dragonfly and Castor](https://github.com/synkarius/caster/issues/217#issuecomment-377290954) - (Scroll to the bottom of the post)
 
 # Other
 
-* [Manual_adv_remote_debugger](http://pydev.org/manual_adv_remote_debugger.html)
+- [Manual_adv_remote_debugger](http://pydev.org/manual_adv_remote_debugger.html)
 
-* [Python HTTP CLI](http://nuancedev.github.io/samples/http/python/)
+- [Python HTTP CLI](http://nuancedev.github.io/samples/http/python/)
 
-* [Famous Programers with Repetitive Strain Injury](http://ergoemacs.org/emacs/emacs_hand_pain_celebrity.html)
+- [Famous Programers with Repetitive Strain Injury](http://ergoemacs.org/emacs/emacs_hand_pain_celebrity.html)
 
-* [Voice Elements](http://zenorocha.github.io/voice-elements/) - A couple of Web Components that can do
+- [Voice Elements](http://zenorocha.github.io/voice-elements/) - A couple of Web Components that can do
   amazing stuff using the Web Speech API
 
-* [Use Function() vs process_recognition() and value()](https://github.com/dictation-toolbox/aenea-grammars/issues/1)
+- [Use Function() vs process_recognition() and value()](https://github.com/dictation-toolbox/aenea-grammars/issues/1)
 
-* [Speech_Recognition](https://github.com/Uberi/speech_recognition) - Speech recognition module for Python, supporting several engines and APIs, online and offline
+- [Speech_Recognition](https://github.com/Uberi/speech_recognition) - Speech recognition module for Python, supporting several engines and APIs, online and offline
 
-* [Microsoft Visual C++ Compiler for Python 2.7](https://www.microsoft.com/en-us/download/confirmation.aspx?id=44266)
+- [Microsoft Visual C++ Compiler for Python 2.7](https://www.microsoft.com/en-us/download/confirmation.aspx?id=44266)
 
-* [The Eleventh HOPE (2016): Coding by Voice with Open Source Speech Recognition](https://www.youtube.com/watch?v=YRyYIIFKsdU&list=PLVkfMfvD1Tblhrrr9V79sjH_wndQ4Tp9I&index=15)
+- [The Eleventh HOPE (2016): Coding by Voice with Open Source Speech Recognition](https://www.youtube.com/watch?v=YRyYIIFKsdU&list=PLVkfMfvD1Tblhrrr9V79sjH_wndQ4Tp9I&index=15)
 
    **Archived Links**
 
