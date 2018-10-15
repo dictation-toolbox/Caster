@@ -5,6 +5,8 @@ import io
 import json
 import os
 import sys
+import errno
+import _winreg
 
 SETTINGS = {}
 _SETTINGS_PATH = os.path.realpath(__file__).split("lib")[0] + "bin\\data\\settings.json"
@@ -35,18 +37,76 @@ HMC_SEPARATOR = "[hmc]"
 WSR = False
 
 
+# Validates 'Engine Path' in settings.json
+def _validate_engine_path():
+    if os.path.isfile(_SETTINGS_PATH):
+        with io.open(_SETTINGS_PATH, "rt", encoding="utf-8") as json_file:
+            data = json.loads(json_file.read())
+            engine_path = data["paths"]["ENGINE_PATH"]
+            if os.path.isfile(engine_path):
+                return engine_path
+            else:
+                engine_path = _find_natspeak()
+                data["paths"]["ENGINE_PATH"] = engine_path
+                try:
+                    formatted_data = unicode(
+                        json.dumps(data, sort_keys=True, indent=4, ensure_ascii=False))
+                    with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as json_file:
+                        json_file.write(formatted_data)
+                        print "Setting engine path to " + engine_path
+                except Exception as e:
+                    print "Error saving settings file " + str(e) + _SETTINGS_PATH
+                return engine_path
+    else:
+        return _find_natspeak()
+
+
+# Finds engine 'natspeak.exe' path and verifies supported DNS versions via Windows Registry.
 def _find_natspeak():
-    '''Tries to find the natspeak engine.'''
-    possible_locations = [
-        "C:/Program Files (x86)/Nuance/NaturallySpeaking15/Program/natspeak.exe",
-        "C:/Program Files (x86)/Nuance/NaturallySpeaking14/Program/natspeak.exe",
-        "C:/Program Files (x86)/Nuance/NaturallySpeaking13/Program/natspeak.exe",
-        "C:/Program Files (x86)/Nuance/NaturallySpeaking12/Program/natspeak.exe",
-    ]
-    for location in possible_locations:
-        if os.path.isfile(location):
-            return location
-    print "Cannot find default dragon engine path"
+    print "Searching Windows Registry For DNS..."
+    proc_arch = os.environ['PROCESSOR_ARCHITECTURE'].lower()
+    proc_arch64 = os.environ['PROCESSOR_ARCHITEW6432'].lower()
+
+    if proc_arch == 'x86' and not proc_arch64:
+        arch_keys = {0}
+    elif proc_arch == 'x86' or proc_arch == 'amd64':
+        arch_keys = {_winreg.KEY_WOW64_32KEY, _winreg.KEY_WOW64_64KEY}
+    else:
+        raise Exception("Unhandled arch: %s" % proc_arch)
+
+    for arch_key in arch_keys:
+        key = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE,
+                              r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", 0,
+                              _winreg.KEY_READ | arch_key)
+        for i in xrange(0, _winreg.QueryInfoKey(key)[0]):
+            skey_name = _winreg.EnumKey(key, i)
+            skey = _winreg.OpenKey(key, skey_name)
+            DisplayName, Publisher, DisplayVersion, InstallLocation = 'null'
+            try:
+                DisplayName = _winreg.QueryValueEx(skey, 'DisplayName')[0]
+                Publisher = _winreg.QueryValueEx(skey, 'Publisher')[0]
+                DisplayVersion = _winreg.QueryValueEx(skey, 'DisplayVersion')[0]
+                InstallLocation = _winreg.QueryValueEx(skey, 'InstallLocation')[0]
+            except OSError as error:
+                if error.errno == 2:  # Suppresses '[Error 2] The system cannot find the file specified'
+                    pass
+                else:
+                    print error
+            finally:
+                skey.Close()
+                if Publisher == "Nuance Communications Inc." and "Dragon" in DisplayName:
+                    DnsVersion = int(str(DisplayVersion)[:2])
+                    if DnsVersion >= 13:
+                        engine_path = InstallLocation.replace(
+                            "\\", "/") + "Program/natspeak.exe"
+                        if os.path.isfile(engine_path):
+                            print "Search Complete."
+                            return engine_path
+                    else:
+                        print " Dragon Naturally Speaking " + str(
+                            DnsVersion
+                        ) + " is not supported by Caster. Only versions 13 and above are supported. Purchase Dragon Naturally Speaking 13 or above"
+    print "Cannot find dragon engine path"
     return ""
 
 
@@ -71,7 +131,7 @@ _DEFAULT_SETTINGS = {
         # EXECUTABLES
         "DEFAULT_BROWSER_PATH": "C:/Program Files (x86)/Mozilla Firefox/firefox.exe",
         "DOUGLAS_PATH": BASE_PATH + "/asynch/mouse/grids.py",
-        "ENGINE_PATH": _find_natspeak(),
+        "ENGINE_PATH": _validate_engine_path(),
         "HOMUNCULUS_PATH": BASE_PATH + "/asynch/hmc/h_launch.py",
         "LEGION_PATH": BASE_PATH + "/asynch/mouse/legion.py",
         "MEDIA_PATH": BASE_PATH + "/bin/media",
@@ -89,6 +149,7 @@ _DEFAULT_SETTINGS = {
         "CONFIGDEBUGTXT_PATH": BASE_PATH + "/bin/data/configdebug.txt",
 
         # PYTHON
+        "PYTHONW": "C:/Python27/pythonw",
         "WXPYTHON_PATH": "C:/Python27/Lib/site-packages/wx-3.0-msw"
     },
 
@@ -110,9 +171,11 @@ _DEFAULT_SETTINGS = {
         "douglas": True,
         "legion": True,
         "rainbow": True,
+        "rstudio": True,
         "ssms": True,
         "jetbrains": True,
         "msvc": True,
+        "totalcmd": True,
         "notepadplusplus": True,
         "sqldeveloper": True,
         "sublime": True,
@@ -145,6 +208,7 @@ _DEFAULT_SETTINGS = {
         "integer_remap_crash_fix": False,
         "print_rdescripts": False,
         "history_playback_delay_secs": 1.0,
+        "legion_vertical_columns": 30,
     },
     "pronunciations": {
         "c++": "C plus plus",

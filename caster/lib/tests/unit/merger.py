@@ -21,12 +21,15 @@ def demo_filter(_):
             if spec in _.rule2.mapping_actual().keys():
                 del _.rule1.mapping_actual()[spec]
         _.check_compatibility = False
-        
+
+
 class DemoMappingRule(MappingRule):
-    mapping = {"test": Key("a"),}
+    mapping = {
+        "test": Key("a"),
+    }
+
 
 class TestMerger(TestNexus):
-    
     def setUp(self):
         TestNexus.setUp(self)
         self.PYTHON_ID = 100
@@ -40,26 +43,29 @@ class TestMerger(TestNexus):
         self.nexus.merger.merge(MergeInf.BOOT)
         self.set_global = self.nexus.merger.global_rule_changer()
         self.set_selfmod = self.nexus.merger.selfmod_rule_changer()
+
     def tearDown(self):
         self.nexus.merger.wipe()
         TestNexus.tearDown(self)
-    
+
     def test_config_defaults(self):
         '''make sure the config is set up correctly'''
         self.assertTrue(CCRMerger._GLOBAL in self.nexus.merger._config)
         self.assertTrue(CCRMerger._SELFMOD in self.nexus.merger._config)
         self.assertTrue(CCRMerger._APP in self.nexus.merger._config)
-    
+
     def test_config_placement(self):
         '''make sure the config is set up correctly'''
         self.assertTrue("Python" in self.nexus.merger._config[CCRMerger._GLOBAL])
-        self.assertTrue(ChainAlias.pronunciation in self.nexus.merger._config[CCRMerger._SELFMOD])
-        self.assertTrue(EclipseCCR.pronunciation in self.nexus.merger._config[CCRMerger._APP])
+        self.assertTrue(
+            ChainAlias.pronunciation in self.nexus.merger._config[CCRMerger._SELFMOD])
+        self.assertTrue(
+            EclipseCCR.pronunciation in self.nexus.merger._config[CCRMerger._APP])
         self.assertEqual(len(self.nexus.merger.global_rule_names()), 3)
         self.assertEqual(len(self.nexus.merger.selfmod_rule_names()), 1)
         self.assertEqual(len(self.nexus.merger.app_rule_names()), 1)
         self.assertRaises(Exception, lambda: self.nexus.merger.add_global_rule(Java()))
-    
+
     def test_rule_activation(self):
         bash = Bash()
         self.set_global("Python", True, True)
@@ -75,18 +81,18 @@ class TestMerger(TestNexus):
         self.assertTrue(self.nexus.merger._config[CCRMerger._GLOBAL]["Java"])
         self.set_selfmod(ChainAlias.pronunciation, True, True)
         self.assertTrue(self.nexus.merger._config[CCRMerger._GLOBAL]["Java"])
-        self.assertFalse(ChainAlias.pronunciation in self.nexus.merger._config[CCRMerger._GLOBAL])
-        self.assertTrue(self.nexus.merger._config[CCRMerger._SELFMOD][ChainAlias.pronunciation])
+        self.assertFalse(
+            ChainAlias.pronunciation in self.nexus.merger._config[CCRMerger._GLOBAL])
+        self.assertTrue(
+            self.nexus.merger._config[CCRMerger._SELFMOD][ChainAlias.pronunciation])
         self.set_global("Java", False, True)
         self.assertTrue(SymbolSpecs.IF in self.nexus.merger._base_global.mapping_actual())
         self.assertTrue(self.nexus.merger._base_global.mapping_actual()[SymbolSpecs.IF]\
                         ==bash.mapping_actual()[SymbolSpecs.IF])
         self.set_selfmod(ChainAlias.pronunciation, False, True)
         self.assertFalse("chain alias" in self.nexus.merger._base_global.mapping_actual())
-        
+
     def test_reject_mapping_rules(self):
-        
-        self.assertRaises(AttributeError, lambda: self.nexus.merger.add_global_rule(DemoMappingRule()))
-        
-        
-        
+
+        self.assertRaises(AttributeError,
+                          lambda: self.nexus.merger.add_global_rule(DemoMappingRule()))

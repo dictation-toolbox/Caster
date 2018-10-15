@@ -11,22 +11,25 @@ import time
 from dragonfly import (Key, Function, Grammar, Playback, Dictation, Choice, Pause)
 from caster.lib.ccr.standard import SymbolSpecs
 
+
 def _wait_for_wsr_activation():
     count = 1
     while True:
-        try: 
+        try:
             from caster.apps import firefox
             break
-        except: 
-            print("(%d) Attempting to load Caster -- WSR not loaded and listening yet..." % count)
+        except:
+            print("(%d) Attempting to load Caster -- WSR not loaded and listening yet..."
+                  % count)
             count += 1
             time.sleep(1)
 
+
 _NEXUS = None
 
-from caster.lib import settings# requires nothing
+from caster.lib import settings  # requires nothing
 settings.WSR = __name__ == "__main__"
-from caster.lib import utilities# requires settings
+from caster.lib import utilities  # requires settings
 if settings.WSR:
     _wait_for_wsr_activation()
     SymbolSpecs.set_cancel_word("escape")
@@ -46,7 +49,7 @@ from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge.mergepair import MergeInf
 from caster.lib.ccr import *
 from caster.lib.ccr.recording.again import Again
-from caster.lib.ccr.recording.alias import VanillaAlias
+from caster.lib.ccr.recording.alias import Alias
 from caster.lib.ccr.recording import history
 from caster.lib.dev import dev
 from caster.lib.dfplus.hint.nodes import css
@@ -54,7 +57,6 @@ from caster.user.filters.examples import scen4, modkeysup
 from caster import user
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.merge import gfilter
-        
 
 
 def change_monitor():
@@ -63,66 +65,81 @@ def change_monitor():
     else:
         print("This command requires SikuliX to be enabled in the settings file")
 
+
 class MainRule(MergeRule):
-    
     @staticmethod
     def generate_ccr_choices(nexus):
         choices = {}
         for ccr_choice in nexus.merger.global_rule_names():
             choices[ccr_choice] = ccr_choice
         return Choice("name", choices)
+
     @staticmethod
     def generate_sm_ccr_choices(nexus):
         choices = {}
         for ccr_choice in nexus.merger.selfmod_rule_names():
             choices[ccr_choice] = ccr_choice
         return Choice("name2", choices)
-    
+
     mapping = {
-    # Dragon NaturallySpeaking commands moved to dragon.py
-    
-    # hardware management
-    "volume <volume_mode> [<n>]":   R(Function(navigation.volume_control, extra={'n', 'volume_mode'}), rdescript="Volume Control"),
-    "change monitor":               R(Key("w-p") + Pause("100") + Function(change_monitor), rdescript="Change Monitor"),
-    
-    # window management
-    'minimize':                     Playback([(["minimize", "window"], 0.0)]),
-    'maximize':                     Playback([(["maximize", "window"], 0.0)]),
-    "remax":                        R(Key("a-space/10,r/10,a-space/10,x"), rdescript="Force Maximize"),
-        
-    # passwords
-    
-    
-    # mouse alternatives
-    "legion [<monitor>]":           R(Function(navigation.mouse_alternates, mode="legion", nexus=_NEXUS), rdescript="Activate Legion"),
-    "rainbow [<monitor>]":          R(Function(navigation.mouse_alternates, mode="rainbow", nexus=_NEXUS), rdescript="Activate Rainbow Grid"),
-    "douglas [<monitor>]":          R(Function(navigation.mouse_alternates, mode="douglas", nexus=_NEXUS), rdescript="Activate Douglas Grid"),
-    
-    # ccr de/activation
-    "<enable> <name>":              R(Function(_NEXUS.merger.global_rule_changer(), save=True), rdescript="Toggle CCR Module"),
-    "<enable> <name2>":             R(Function(_NEXUS.merger.selfmod_rule_changer(), save=True), rdescript="Toggle sm-CCR Module"),
-    
-    
+        # Dragon NaturallySpeaking commands moved to dragon.py
+
+        # hardware management
+        "volume <volume_mode> [<n>]":
+            R(Function(navigation.volume_control, extra={'n', 'volume_mode'}),
+              rdescript="Volume Control"),
+        "change monitor":
+            R(Key("w-p") + Pause("100") + Function(change_monitor),
+              rdescript="Change Monitor"),
+
+        # window management
+        'minimize':
+            Playback([(["minimize", "window"], 0.0)]),
+        'maximize':
+            Playback([(["maximize", "window"], 0.0)]),
+        "remax":
+            R(Key("a-space/10,r/10,a-space/10,x"), rdescript="Force Maximize"),
+
+        # passwords
+
+        # mouse alternatives
+        "legion [<monitor>]":
+            R(Function(navigation.mouse_alternates, mode="legion", nexus=_NEXUS),
+              rdescript="Activate Legion"),
+        "rainbow [<monitor>]":
+            R(Function(navigation.mouse_alternates, mode="rainbow", nexus=_NEXUS),
+              rdescript="Activate Rainbow Grid"),
+        "douglas [<monitor>]":
+            R(Function(navigation.mouse_alternates, mode="douglas", nexus=_NEXUS),
+              rdescript="Activate Douglas Grid"),
+
+        # ccr de/activation
+        "<enable> <name>":
+            R(Function(_NEXUS.merger.global_rule_changer(), save=True),
+              rdescript="Toggle CCR Module"),
+        "<enable> <name2>":
+            R(Function(_NEXUS.merger.selfmod_rule_changer(), save=True),
+              rdescript="Toggle sm-CCR Module"),
     }
     extras = [
-              IntegerRefST("n", 1, 50),
-              Dictation("text"),
-              Dictation("text2"),
-              Dictation("text3"),
-              Choice("enable",
-                    {"enable": True, "disable": False
-                    }),
-              Choice("volume_mode",
-                    {"mute": "mute", "up":"up", "down":"down"
-                     }),
-              generate_ccr_choices.__func__(_NEXUS),
-              generate_sm_ccr_choices.__func__(_NEXUS),
-              IntegerRefST("monitor", 1, 10)
-             ]
-    defaults = {"n": 1, "nnv": 1,
-               "text": "", "volume_mode": "setsysvolume",
-               "enable":-1
-               }
+        IntegerRefST("n", 1, 50),
+        Dictation("text"),
+        Dictation("text2"),
+        Dictation("text3"),
+        Choice("enable", {
+            "enable": True,
+            "disable": False
+        }),
+        Choice("volume_mode", {
+            "mute": "mute",
+            "up": "up",
+            "down": "down"
+        }),
+        generate_ccr_choices.__func__(_NEXUS),
+        generate_sm_ccr_choices.__func__(_NEXUS),
+        IntegerRefST("monitor", 1, 10)
+    ]
+    defaults = {"n": 1, "nnv": 1, "text": "", "volume_mode": "setsysvolume", "enable": -1}
 
 
 grammar = Grammar('general')
@@ -136,7 +153,7 @@ if settings.SETTINGS["feature_rules"]["again"]:
     grammar.add_rule(again_rule)
 
 if settings.SETTINGS["feature_rules"]["alias"]:
-    alias_rule = VanillaAlias(name="vanilla alias")
+    alias_rule = Alias(name="alias")
     gfilter.run_on(alias_rule)
     grammar.add_rule(alias_rule)
 
@@ -146,7 +163,6 @@ _NEXUS.merger.update_config()
 _NEXUS.merger.merge(MergeInf.BOOT)
 
 print("*- Starting " + settings.SOFTWARE_NAME + " -*")
-
 
 if settings.WSR:
     import pythoncom
