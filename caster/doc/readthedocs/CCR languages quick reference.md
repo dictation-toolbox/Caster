@@ -331,7 +331,8 @@ import|`library()`||value true|`TRUE`
 lodge and|` && `||while loop|`while ()`
 
 ## Functions
-Should all be prefixed with `fun `
+Should all be prefixed with `fun `  
+
 Command | Output | | Command | Output
 ---|---|---|---|---
 (LM / linear model)|`lm()`||library|`library()`
@@ -356,6 +357,7 @@ length|`length()`||vector|`c()`
 
 ## Graph functions
 Should all be prefixed with `graph `
+
 Command | Output | | Command | Output
 ---|---|---|---|---
 |``||line [plot]|`geom_line()`
