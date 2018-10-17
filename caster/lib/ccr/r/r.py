@@ -4,14 +4,15 @@ Created on May 23, 2017
 @author: shippy
 '''
 
-from dragonfly import Key, Text, Dictation, MappingRule
+from dragonfly import Key, Text, Dictation, MappingRule, Choice
 
 from caster.lib import control
 from caster.lib.ccr.standard import SymbolSpecs
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 
-
+def rfunction(function):
+    return (Text(function + "()") + Key("left"))
 
 class Rlang(MergeRule):
     auto = [".R", ".r"]
@@ -67,8 +68,7 @@ class Rlang(MergeRule):
             R(Text("FALSE"), rdescript="Rlang: False"),
 
         # Rlang specific
-        "library":
-            R(Text("library()") + Key("left"), rdescript="Rlang: Import"),
+
         "assign":
             R(Text(" <- "), rdescript="Rlang: Assignment"),
         "contained in":
@@ -84,113 +84,83 @@ class Rlang(MergeRule):
             R(Text("NA"), rdescript="Rlang: Not Available"),
         "shell iffae | LFA":
             R(Text("elseif ()") + Key("left"), rdescript="Rlang: Else If"),
-        "length of":
-            R(Text("length()") + Key("left"), rdescript="Rlang: Length"),
-        "names of":
-            R(Text("names()") + Key("left"), rdescript="Rlang: Names"),
-        "head of":
-            R(Text("head()") + Key("left"), rdescript="Rlang: Head"),
-        "paste of":
-            R(Text("paste0()") + Key("left"), rdescript="Rlang: Paste"),
-        "trim white space":
-            R(Text("trimws()") + Key("left"), rdescript="Rlang: trim whitespace"),
-        #
-        "as factor":
-            R(Text("as.factor()") + Key("left"), rdescript="Rlang: Convert to factor"),
-        "as numeric":
-            R(Text("as.numeric()") + Key("left"), rdescript="Rlang: Convert To Integer"),
-        "as double":
-            R(Text("as.double()") + Key("left"), rdescript="Rlang: Convert To Floating-Point"),
-        "as character":
-            R(Text("as.character()") + Key("left"), rdescript="Rlang: Convert To character"),
-        "as data frame":
-            R(Text("as.data.frame()") + Key("left"), rdescript="Rlang: Convert To Data Frame"),
-        #
-        "vector of":
-            R(Text("c()") + Key("left"), rdescript="Rlang: Vector"),
-        "list of":
-            R(Text("list()") + Key("left"), rdescript="Rlang: List"),
         "dot (our|are)":
             R(Text(".R"), rdescript="Rlang: .py"),
         "see as vee":
             R(Text("csv"), rdescript="Rlang: csv"),
-        # ggplot keywords
-        "gee plot":
-            R(Text("ggplot()") + Key('left'), rdescript="Rlang: ggplot"),
-        "gee aesthetics":
-            R(Text("aes()") + Key('left'), rdescript="Rlang: ggplot::aes"),
-        "gee theme":
-            R(Text("theme()") + Key('left'), rdescript="Rlang: ggplot::aes"),
-        "gee title":
-            R(Text("ggtitle()") + Key('left'), rdescript="Rlang: ggplot::ggtitle"),
-        "gee ex label":
-            R(Text("xlab()") + Key('left'), rdescript="Rlang: ggplot::ggtitle"),
-        "gee why label":
-            R(Text("ylab()") + Key('left'), rdescript="Rlang: ggplot::ggtitle"),
-        "gee labels":
-            R(Text("labs()") + Key('left'), rdescript="Rlang: ggplot::labels"),
-        "gee ex limit":
-            R(Text("xlim()") + Key('left'), rdescript="Rlang: ggplot::ggtitle"),
-        "gee why limit":
-            R(Text("ylim()") + Key('left'), rdescript="Rlang: ggplot::ggtitle"),
-        "graph (scatter | point) [plot]":
-            R(Text("geom_point()") + Key('left'), rdescript="Rlang: ggplot::scatterplot"),
-        "graph line [plot]":
-            R(Text("geom_line()") + Key('left'), rdescript="Rlang: ggplot::scatterplot"),
-        "graph path [plot]":
-            R(Text("geom_path()") + Key('left'), rdescript="Rlang: ggplot::scatterplot"),
-        "graph smooth [plot]":
-            R(Text("geom_smooth()") + Key('left'), rdescript="Rlang: ggplot::scatterplot"),
-        "graph column [plot]":
-            R(Text("geom_col()") + Key('left'), rdescript="Rlang: ggplot::scatterplot"),
-        "graph histogram [plot]":
-            R(Text("geom_histogram()") + Key('left'),
-              rdescript="Rlang: ggplot::scatterplot"),
-        "graph density [plot]":
-            R(Text("geom_density()") + Key('left'),
-              rdescript="Rlang: ggplot::scatterplot"),
 
         # dplyr and tidyr keywords: https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf
-        "deeply":
-            R(Text("dplyr"), rdescript="Rlang: dplyr"),
-        "tidier":
-            R(Text("tidyr"), rdescript="Rlang: tidyr"),
+
         "tidy verse":
             R(Text("tidyverse"), rdescript="Rlang: tidyverse"),
-        "arrange":
-            R(Text("arrange()") + Key('left'), rdescript="Rlang: dplyr::arrange"),
-        "rename":
-            R(Text("rename()") + Key('left'), rdescript="Rlang: dplyr::rename"),
-        "filter":
-            R(Text("filter()") + Key('left'), rdescript="Rlang: dplyr::filter"),
-        "select":
-            R(Text("select()") + Key('left'), rdescript="Rlang: dplyr::select"),
-        "summarise":
-            R(Text("summarise()") + Key('left'), rdescript="Rlang: dplyr::summarise"),
-        "count":
-            R(Text("count()") + Key('left'), rdescript="Rlang: dplyr::count"),
-        "mutate":
-            R(Text("mutate()") + Key('left'), rdescript="Rlang: dplyr::mutate"),
-        "group by":
-            R(Text("group_by()") + Key('left'), rdescript="Rlang: dplyr::group_by"),
-        "ungroup":
-            R(Text("ungroup()"), rdescript="Rlang: dplyr::ungroup"),
-        "bind rows":
-            R(Text("bind_rows()") + Key('left'), rdescript="Rlang: dplyr::bind_rows"),
-        "left join":
-            R(Text("left_join()") + Key('left'), rdescript="Rlang: dplyr::left_join"),
-        "inner join":
-            R(Text("inner_join()") + Key('left'), rdescript="Rlang: dplyr::inner_join"),
-        "full join":
-            R(Text("full_join()") + Key('left'), rdescript="Rlang: dplyr::full_join"),
-        "case when":
-            R(Text("case_when()") + Key('left'), rdescript="Rlang: dplyr::case_when"),
-        "gather":
-            R(Text("gather()") + Key('left'), rdescript="Rlang: tidyr::gather"),
+
+        "fun <function>":
+            R(rfunction("%(function)s"), rdescript="Rlang: insert a function"),
+
+        "graph <ggfun>":
+            R(rfunction("%(ggfun)s"), rdescript="Rlang: insert a ggplot function"),
     }
 
     extras = [
         Dictation("text"),
+        Choice("function", {
+            "arrange": "arrange",
+            "as character": "as.character",
+            "as data frame": "as.data.frame",
+            "as double": "as.double",
+            "as factor": "as.factor",
+            "as numeric": "as.numeric",
+            "bind rows": "bind_rows",
+            "case when": "case_when",
+            "count": "count",
+            "drop NA":"drop_na",
+            "filter": "filter",
+            "full join": "full_join",
+            "gather": "gather",
+            "group by": "group_by",
+            "head": "head",
+            "inner join": "inner_join",
+            "left join": "left_join",
+            "length": "length",
+            "library": "library",
+            "list": "list",
+            "(LM | linear model)": "lm",
+            "mean":"mean",
+            "mutate": "mutate",
+            "names": "names",
+            "paste": "paste0",
+            "read CSV":"read_csv",
+            "rename": "rename",
+            "select": "select",
+            "string contains":"str_contains",
+            "string detect":"str_detect",
+            "string replace":"string_replace",
+            "string replace all":"string_replace_all",
+            "starts with":"starts_with",
+            "sum":"sum",
+            "summarise": "summarise",
+            "trim white space": "trimws",
+            "ungroup": "ungroup",
+            "vector": "c",
+        }),
+        Choice("ggfun", {
+            "aesthetics": "aes",
+            "column [plot]": "geom_col",
+            "density [plot]": "geom_density",
+            "ex limit":"xlim",
+            "facet grid": "facet_grid",
+            "histogram [plot]": "geom_histogram",
+            "labels": "labs",
+            "line [plot]": "geom_line",
+            "path [plot]": "geom_path",
+            "plot": "ggplot",
+            "point [plot]": "geom_point",
+            "save":"ggsave",
+            "smooth [plot]": "geom_smooth",
+            "theme minimal": "theme_minimal",
+            "why limit":"ylim",
+        }),
+
     ]
     defaults = {}
 
