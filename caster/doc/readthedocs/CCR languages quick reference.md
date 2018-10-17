@@ -360,7 +360,7 @@ Should all be prefixed with `graph `
 
 Command | Output | | Command | Output
 ---|---|---|---|---
-|``||line [plot]|`geom_line()`
+``|``||line [plot]|`geom_line()`
 aesthetics|`aes()`||path [plot]|`geom_path()`
 column [plot]|`geom_col()`||plot|`ggplot()`
 density [plot]|`geom_density()`||point [plot]|`geom_point()`
