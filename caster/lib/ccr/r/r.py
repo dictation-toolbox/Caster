@@ -66,7 +66,6 @@ class Rlang(MergeRule):
             R(Text("FALSE"), rdescript="Rlang: False"),
 
         # Rlang specific
-
         "assign":
             R(Text(" <- "), rdescript="Rlang: Assignment"),
         "contained in":
@@ -75,7 +74,8 @@ class Rlang(MergeRule):
         "slurp | chain":
             R(Key('space, percent, rangle, percent, space'), rdescript="Rlang: Pipe"),
         "tell (slurp | chain)":
-            R(Key('end, space, percent, rangle, percent, enter'), rdescript="Rlang: Pipe at end"),
+            R(Key('end, space, percent, rangle, percent, enter'),
+              rdescript="Rlang: Pipe at end"),
         "tell add":
             R(Key('end, space, plus, enter'), rdescript="Rlang: plus at end"),
         "NA":
@@ -88,77 +88,76 @@ class Rlang(MergeRule):
             R(Text("csv"), rdescript="Rlang: csv"),
 
         # dplyr and tidyr keywords: https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf
-
         "tidy verse":
             R(Text("tidyverse"), rdescript="Rlang: tidyverse"),
-
         "fun <function>":
             R(Text("%(function)s()") + Key("left"), rdescript="Rlang: insert a function"),
-
         "graph <ggfun>":
-            R(Text("%(ggfun)s()") + Key("left"), rdescript="Rlang: insert a ggplot function"),
+            R(Text("%(ggfun)s()") + Key("left"),
+              rdescript="Rlang: insert a ggplot function"),
     }
 
     extras = [
         Dictation("text"),
-        Choice("function", {
-            "arrange": "arrange",
-            "as character": "as.character",
-            "as data frame": "as.data.frame",
-            "as double": "as.double",
-            "as factor": "as.factor",
-            "as numeric": "as.numeric",
-            "bind rows": "bind_rows",
-            "case when": "case_when",
-            "count": "count",
-            "drop NA":"drop_na",
-            "filter": "filter",
-            "full join": "full_join",
-            "gather": "gather",
-            "group by": "group_by",
-            "head": "head",
-            "inner join": "inner_join",
-            "left join": "left_join",
-            "length": "length",
-            "library": "library",
-            "list": "list",
-            "(LM | linear model)": "lm",
-            "mean":"mean",
-            "mutate": "mutate",
-            "names": "names",
-            "paste": "paste0",
-            "read CSV":"read_csv",
-            "rename": "rename",
-            "select": "select",
-            "string contains":"str_contains",
-            "string detect":"str_detect",
-            "string replace":"string_replace",
-            "string replace all":"string_replace_all",
-            "starts with":"starts_with",
-            "sum":"sum",
-            "summarise": "summarise",
-            "trim white space": "trimws",
-            "ungroup": "ungroup",
-            "vector": "c",
-        }),
-        Choice("ggfun", {
-            "aesthetics": "aes",
-            "column [plot]": "geom_col",
-            "density [plot]": "geom_density",
-            "ex limit":"xlim",
-            "facet grid": "facet_grid",
-            "histogram [plot]": "geom_histogram",
-            "labels": "labs",
-            "line [plot]": "geom_line",
-            "path [plot]": "geom_path",
-            "plot": "ggplot",
-            "point [plot]": "geom_point",
-            "save":"ggsave",
-            "smooth [plot]": "geom_smooth",
-            "theme minimal": "theme_minimal",
-            "why limit":"ylim",
-        }),
-
+        Choice(
+            "function", {
+                "arrange": "arrange",
+                "as character": "as.character",
+                "as data frame": "as.data.frame",
+                "as double": "as.double",
+                "as factor": "as.factor",
+                "as numeric": "as.numeric",
+                "bind rows": "bind_rows",
+                "case when": "case_when",
+                "count": "count",
+                "drop NA": "drop_na",
+                "filter": "filter",
+                "full join": "full_join",
+                "gather": "gather",
+                "group by": "group_by",
+                "head": "head",
+                "inner join": "inner_join",
+                "left join": "left_join",
+                "length": "length",
+                "library": "library",
+                "list": "list",
+                "(LM | linear model)": "lm",
+                "mean": "mean",
+                "mutate": "mutate",
+                "names": "names",
+                "paste": "paste0",
+                "read CSV": "read_csv",
+                "rename": "rename",
+                "select": "select",
+                "string contains": "str_contains",
+                "string detect": "str_detect",
+                "string replace": "string_replace",
+                "string replace all": "string_replace_all",
+                "starts with": "starts_with",
+                "sum": "sum",
+                "summarise": "summarise",
+                "trim white space": "trimws",
+                "ungroup": "ungroup",
+                "vector": "c",
+            }),
+        Choice(
+            "ggfun", {
+                "aesthetics": "aes",
+                "column [plot]": "geom_col",
+                "density [plot]": "geom_density",
+                "ex limit": "xlim",
+                "facet grid": "facet_grid",
+                "histogram [plot]": "geom_histogram",
+                "labels": "labs",
+                "line [plot]": "geom_line",
+                "path [plot]": "geom_path",
+                "plot": "ggplot",
+                "point [plot]": "geom_point",
+                "save": "ggsave",
+                "smooth [plot]": "geom_smooth",
+                "theme minimal": "theme_minimal",
+                "why limit": "ylim",
+            }),
     ]
     defaults = {}
 
