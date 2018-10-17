@@ -11,8 +11,6 @@ from caster.lib.ccr.standard import SymbolSpecs
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 
-def rfunction(function):
-    return (Text(function + "()") + Key("left"))
 
 class Rlang(MergeRule):
     auto = [".R", ".r"]
@@ -95,10 +93,10 @@ class Rlang(MergeRule):
             R(Text("tidyverse"), rdescript="Rlang: tidyverse"),
 
         "fun <function>":
-            R(rfunction("%(function)s"), rdescript="Rlang: insert a function"),
+            R(Text("%(function)s()") + Key("left"), rdescript="Rlang: insert a function"),
 
         "graph <ggfun>":
-            R(rfunction("%(ggfun)s"), rdescript="Rlang: insert a ggplot function"),
+            R(Text("%(ggfun)s()") + Key("left"), rdescript="Rlang: insert a ggplot function"),
     }
 
     extras = [
