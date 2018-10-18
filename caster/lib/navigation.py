@@ -133,13 +133,14 @@ def cut_keep_clipboard(nnavi500, nexus):
 
 def drop_keep_clipboard(nnavi500, nexus, textsize=None):
     orig_text = Clipboard.get_system_text()
-    if not orig_text:
-        return
     text = orig_text.upper() if textsize else orig_text
     text = orig_text.lower() if textsize is False else text
     cb = Clipboard(from_system=True)
     if nnavi500 == 1:
-        Paste(text).execute()
+        if not orig_text:
+            Key('c-v').execute()
+        else:
+            Paste(text).execute()
     else:
         max_tries = 20
         key = str(nnavi500)
