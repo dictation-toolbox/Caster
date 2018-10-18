@@ -14,6 +14,7 @@ command_sets = {
     "html.html": ("HTML", ),
     "java.java": ("Java", ),
     "javascript.javascript": ("Javascript", ),
+    "latex.latex": ("LaTeX", ),
     "matlab.matlab": ("Matlab", ),
     "python.python": ("Python", ),
     "r.r": ("Rlang", ),

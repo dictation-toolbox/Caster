@@ -13,7 +13,7 @@ _SETTINGS_PATH = os.path.realpath(__file__).split("lib")[0] + "bin\\data\\settin
 BASE_PATH = os.path.realpath(__file__).split("\\lib")[0].replace("\\", "/")
 
 # title
-SOFTWARE_VERSION_NUMBER = "0.5.10"
+SOFTWARE_VERSION_NUMBER = "0.5.11"
 SOFTWARE_NAME = "Caster v " + SOFTWARE_VERSION_NUMBER
 HOMUNCULUS_VERSION = "HMC v " + SOFTWARE_VERSION_NUMBER
 HMC_TITLE_RECORDING = " :: Recording Manager"
@@ -171,9 +171,11 @@ _DEFAULT_SETTINGS = {
         "douglas": True,
         "legion": True,
         "rainbow": True,
+        "rstudio": True,
         "ssms": True,
         "jetbrains": True,
         "msvc": True,
+        "totalcmd": True,
         "notepadplusplus": True,
         "sqldeveloper": True,
         "sublime": True,
