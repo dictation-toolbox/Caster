@@ -90,6 +90,8 @@ class Rlang(MergeRule):
             R(Text("names()") + Key("left"), rdescript="Rlang: Names"),
         "head of":
             R(Text("head()") + Key("left"), rdescript="Rlang: Head"),
+        "tail of":
+            R(Text("tail()") + Key("left"), rdescript="Rlang: Tail"),
         "paste of":
             R(Text("paste0()") + Key("left"), rdescript="Rlang: Paste"),
         "trim white space":
@@ -187,6 +189,21 @@ class Rlang(MergeRule):
             R(Text("case_when()") + Key('left'), rdescript="Rlang: dplyr::case_when"),
         "gather":
             R(Text("gather()") + Key('left'), rdescript="Rlang: tidyr::gather"),
+# Digital_ecologist's pacman support
+        "pack load":
+            R(Text("p_load()") + Key("left"), rdescript="Rlang:pacman:: p_load"),
+        "pack install":
+            R(Text("p_install()") + Key("left"), rdescript="Rlang:pacman:: p_install"),
+        "pack install hub":
+            R(Text("p_install_gh()") + Key("left"), rdescript="Rlang:pacman:: p_install_gh"),
+        "pack install version":
+            R(Text("p_install_version()") + Key("left"), rdescript="Rlang:pacman:: p_install_version"),
+        "pack install temp":
+            R(Text("p_temp()") + Key("left"), rdescript="Rlang:pacman:: p_temp"),
+        "pack unload":
+            R(Text("p_unload()") + Key("left"), rdescript="Rlang:pacman:: p_unload"),
+        "pack update":
+            R(Text("p_update()") + Key("left"), rdescript="Rlang:pacman:: p_update"),
     }
 
     extras = [
