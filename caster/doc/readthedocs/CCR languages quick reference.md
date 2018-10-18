@@ -315,7 +315,7 @@ lodge and|` and `|||``
 # R
 Command | Output | | Command | Output
 ---|---|---|---|---
-`fun <function>`|`<function>()`||lodge not|`!`
+`<function>`|`<function>()`||lodge not|`!`
 NA|`NA`||lodge or| &#124; &#124;
 add comment|`#`||print to console|`print()`
 assign|` <- `||return|`return()`
@@ -330,11 +330,12 @@ iffae|`if ()`||value not|`NULL`
 import|`library()`||value true|`TRUE`
 lodge and|` && `||while loop|`while ()`
 
-## Functions
-Should all be prefixed with `fun `  
+## Core/tidyverse functions
+If you are having trouble with over-recognition (R commands appearing where you don't want them) due to the large number of commands, consider adding a prefix to the `<function>` command - line 93 - in lib/ccr/r/r.py to increase phonetic distinctness.
 
 Command | Output | | Command | Output
 ---|---|---|---|---
+``|``||length|`length()`
 (LM / linear model)|`lm()`||library|`library()`
 arrange|`arrange()`||list|`list()`
 as character|`as.character()`||mean|`mean()`
@@ -347,27 +348,37 @@ case when|`case_when()`||select|`select()`
 count|`count()`||starts with|`starts_with()`
 drop NA|`drop_na()`||string contains|`str_contains()`
 filter|`filter()`||string detect|`str_detect()`
-full join|`full_join()`||string replace|`string_replace()`
-gather|`gather()`||string replace all|`string_replace_all()`
+full join|`full_join()`||string replace|`str_replace()`
+gather|`gather()`||string replace all|`str_replace_all()`
 group by|`group_by()`||sum|`sum()`
 head|`head()`||summarise|`summarise()`
-inner join|`inner_join()`||trim white space|`trimws()`
-left join|`left_join()`||ungroup|`ungroup()`
-length|`length()`||vector|`c()`
+inner join|`inner_join()`||tail|`tail()`
+install packages|`install.packages()`||trim white space|`trimws()`
+is NA|`is.na()`||ungroup|`ungroup()`
+left join|`left_join()`||vector|`c()`
 
-## Graph functions
+## Graph plotting functions
 Should all be prefixed with `graph `
-
 Command | Output | | Command | Output
 ---|---|---|---|---
 ``|``||line [plot]|`geom_line()`
 aesthetics|`aes()`||path [plot]|`geom_path()`
 column [plot]|`geom_col()`||plot|`ggplot()`
 density [plot]|`geom_density()`||point [plot]|`geom_point()`
-ex limit|`xlim()`||save|`ggsave()`
-facet grid|`facet_grid()`||smooth [plot]|`geom_smooth()`
-histogram [plot]|`geom_histogram()`||theme minimal|`theme_minimal()`
+ex label|`xlab()`||save|`ggsave()`
+ex limit|`xlim()`||smooth [plot]|`geom_smooth()`
+facet grid|`facet_grid()`||theme minimal|`theme_minimal()`
+histogram [plot]|`geom_histogram()`||why label|`ylab()`
 labels|`labs()`||why limit|`ylim()`
+
+## Pacman functions
+Should all be prefixed with `pack `
+Command | Output | | Command | Output
+---|---|---|---|---
+``|``||install version|`p_install_version()`
+install|`p_install()`||load|`p_load()`
+install hub|`p_install_gh()`||unload|`p_unload()`
+install temp|`p_temp()`||update|`p_update()`
 
 
 # Rust

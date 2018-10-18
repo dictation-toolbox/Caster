@@ -87,14 +87,16 @@ class Rlang(MergeRule):
         "see as vee":
             R(Text("csv"), rdescript="Rlang: csv"),
 
-        # dplyr and tidyr keywords: https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf
+
         "tidy verse":
             R(Text("tidyverse"), rdescript="Rlang: tidyverse"),
-        "fun <function>":
+        "<function>":
             R(Text("%(function)s()") + Key("left"), rdescript="Rlang: insert a function"),
         "graph <ggfun>":
             R(Text("%(ggfun)s()") + Key("left"),
               rdescript="Rlang: insert a ggplot function"),
+        "pack <pacfun>":
+            R(Text("%(pacfun)s()") + Key("left"), rdescript="Rlang: insert a pacman function"),
     }
 
     extras = [
@@ -117,6 +119,8 @@ class Rlang(MergeRule):
                 "group by": "group_by",
                 "head": "head",
                 "inner join": "inner_join",
+                "install packages":"install.packages",
+                "is NA":"is.na",
                 "left join": "left_join",
                 "length": "length",
                 "library": "library",
@@ -131,11 +135,12 @@ class Rlang(MergeRule):
                 "select": "select",
                 "string contains": "str_contains",
                 "string detect": "str_detect",
-                "string replace": "string_replace",
-                "string replace all": "string_replace_all",
+                "string replace": "str_replace",
+                "string replace all": "str_replace_all",
                 "starts with": "starts_with",
                 "sum": "sum",
                 "summarise": "summarise",
+                "tail":"tail",
                 "trim white space": "trimws",
                 "ungroup": "ungroup",
                 "vector": "c",
@@ -145,6 +150,7 @@ class Rlang(MergeRule):
                 "aesthetics": "aes",
                 "column [plot]": "geom_col",
                 "density [plot]": "geom_density",
+                "ex label":"xlab",
                 "ex limit": "xlim",
                 "facet grid": "facet_grid",
                 "histogram [plot]": "geom_histogram",
@@ -156,7 +162,18 @@ class Rlang(MergeRule):
                 "save": "ggsave",
                 "smooth [plot]": "geom_smooth",
                 "theme minimal": "theme_minimal",
+                "why label":"ylab",
                 "why limit": "ylim",
+            }),
+        Choice(
+            "pacfun", {
+                "install":"p_install",
+                "install hub":"p_install_gh",
+                "install version":"p_install_version",
+                "install temp":"p_temp",
+                "load":"p_load",
+                "unload":"p_unload",
+                "update":"p_update",
             }),
     ]
     defaults = {}
