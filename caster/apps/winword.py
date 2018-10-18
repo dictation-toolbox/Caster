@@ -9,8 +9,7 @@ Command-module for word
 """
 #---------------------------------------------------------------------------
 
-from dragonfly import (Grammar, AppContext, MappingRule,
-                       Dictation, Key)
+from dragonfly import (Grammar, AppContext, MappingRule, Dictation, Key)
 
 from caster.lib import control
 from caster.lib import settings
@@ -24,15 +23,13 @@ class MSWordRule(MergeRule):
     pronunciation = "Microsoft Word"
 
     mapping = {
-        "insert image":              R(Key("alt, n, p"), rdescript="Word: Insert Image"),
-        
-        
-        }
+        "insert image": R(Key("alt, n, p"), rdescript="Word: Insert Image"),
+    }
     extras = [
-              Dictation("dict"),
-              IntegerRefST("n",1, 100),
-             ]
-    defaults ={"n": 1, "dict":"nothing"}
+        Dictation("dict"),
+        IntegerRefST("n", 1, 100),
+    ]
+    defaults = {"n": 1, "dict": "nothing"}
 
 
 #---------------------------------------------------------------------------

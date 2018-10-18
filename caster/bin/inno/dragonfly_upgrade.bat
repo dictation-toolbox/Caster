@@ -6,18 +6,26 @@ cd temp_dragonfly
 
 
 
-git clone https://github.com/t4ngo/dragonfly.git
-
-
-
-cd dragonfly\dragonfly
-xcopy /Y/E/Q * C:\Python27\Lib\site-packages\dragonfly 
-
-cd C:\
-rmdir /S/Q temp_dragonfly
+git clone --recursive https://github.com/Danesprite/dragonfly.git
+cd dragonfly
+python setup.py install
 
 echo ------------------------------------------
 echo         Dragonfly Upgrade Complete
 echo ------------------------------------------
+
+git submodule foreach python setup.py install
+
+
+echo ------------------------------------------
+echo         Dragonfly Submodules installed
+echo ------------------------------------------
+
+python -m pip install  .[sphinx]
+
+
+cd C:\
+rmdir /S/Q temp_dragonfly
+
 
 pause

@@ -5,11 +5,11 @@ from caster.apps.eclipse import EclipseCCR
 from caster.lib.ccr.java.java import Java
 from caster.lib.ccr.javascript.javascript import Javascript
 from caster.lib.ccr.python.python import Python
-from caster.lib.ccr.recording.alias import VanillaAlias
+from caster.lib.ccr.recording.alias import Alias
 from caster.lib.dfplus.merge.mergerule import MergeRule
 
-class TestMergeRule(unittest.TestCase):
 
+class TestMergeRule(unittest.TestCase):
     def test_name_generation(self):
         size = 10
         names = set()
@@ -52,7 +52,7 @@ class TestMergeRule(unittest.TestCase):
         python_specs = len(python.mapping_actual().keys())
         java = Java()
         java_specs = len(java.mapping_actual().keys())
-        vanilla = VanillaAlias(refresh=False)
+        vanilla = Alias(refresh=False)
         vanilla_specs = len(vanilla.mapping_actual().keys())
         _merged = python.merge(java)
         self.assertEqual(python_specs, len(python.mapping_actual().keys()))
@@ -62,5 +62,3 @@ class TestMergeRule(unittest.TestCase):
         del _merged.mapping_actual()["display available commands"]
         self.assertEqual(vanilla_specs + java_specs, len(_merged.mapping_actual().keys()))
         self.assertEqual(vanilla_specs, len(vanilla.mapping_actual().keys()))
-        
-        

@@ -1,6 +1,5 @@
-from dragonfly import (Grammar, AppContext, MappingRule,
-                       Dictation, IntegerRef,
-                       Key, Text, Repeat, Pause)
+from dragonfly import (Grammar, AppContext, MappingRule, Dictation, IntegerRef, Key, Text,
+                       Repeat, Pause)
 
 from caster.lib import control
 from caster.lib import settings
@@ -14,17 +13,27 @@ class IERule(MergeRule):
     pronunciation = "explorer"
 
     mapping = {
-        "address bar":                       R(Key("a-d"), rdescript="Explorer: Address Bar"),
-        "new folder":                        R(Key("cs-n"), rdescript="Explorer: New Folder"),
-        "new file":                          R(Key("a-f, w, t"), rdescript="Explorer: New File"),
-        "(show | file | folder) properties": R(Key("a-enter"), rdescript="Explorer: Properties Dialog"),
-        }
+        "address bar":
+            R(Key("a-d"), rdescript="Explorer: Address Bar"),
+        "new folder":
+            R(Key("cs-n"), rdescript="Explorer: New Folder"),
+        "new file":
+            R(Key("a-f, w, t"), rdescript="Explorer: New File"),
+        "(show | file | folder) properties":
+            R(Key("a-enter"), rdescript="Explorer: Properties Dialog"),
+        "get up":                            
+            R(Key("a-up"), rdescript="Explorer: Navigate up"),
+        "get back":
+            R(Key("a-left"), rdescript="Explorer: Navigate back"),
+        "get forward":
+            R(Key("a-right"), rdescript="Explorer: Navigate forward"),
+    }
     extras = [
-              Dictation("text"),
-              IntegerRefST("n", 1, 1000),
-              
-             ]
+        Dictation("text"),
+        IntegerRefST("n", 1, 1000),
+    ]
     defaults = {"n": 1}
+
 
 #---------------------------------------------------------------------------
 

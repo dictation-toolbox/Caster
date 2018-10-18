@@ -10,7 +10,7 @@ Dragonfly is a powerful framework for mapping voice commands to actions. Caster 
 ##MergeRules VS MappingRules
 
 A Caster MergeRule is very similar to a Dragonfly MappingRule, but it has a few extra properties and can do things that MappingRules can't easily do. The following is an example of a full Python file containing two MergeRules *and* a MappingRule.
-```
+```Python
 from dragonfly import *
 
 from caster.lib import control
@@ -60,7 +60,7 @@ In addition to new types of rules, Caster provides new types of actions.
 ###RegisteredAction
 
 The simplest is `RegisteredAction`. (Type aliased to  `R` for short.) `R` can wrap any Dragonfly action(s) and adds additional functionality to said wrapped action(s). Let's look at a simple example.
-```
+```Python
 from dragonfly import *
 
 from caster.lib import control
@@ -79,7 +79,7 @@ Two things of note here.
 * The `R` action has a `rdescript` parameter. This is a description of what the action does, and allows the action to be registered with various printing services (such as the Python console, the status window, or loggers) so you can see the order in which actions executed, or that they *have* executed.
 
 `R` can also be used to mark a command as a part of another command. This is one significant difference between Caster and Dragonfly. Dragonfly commands are once-and-done. Caster commands can interact with other commands which have been spoken in the past or will be spoken in the future. In order to use this functionality, we set the `rspec` property of the `R` action. Like so:
-```
+```Python
 from dragonfly import *
 
 from caster.lib import control
@@ -98,7 +98,7 @@ control.nexus().merger.add_global_rule(Birds())
 `ContextSeeker` is the most complex and powerful Caster action. It is able to look backwards at commands spoken prior to itself, and react according to what it finds. It is also able to delay its execution until future commands are spoken, and then act according to what comes next.
 
 In order to do this, the ContextSeeker constructor takes one or both of two arrays of command-searching objects, the "backward" array and the "forward" array. Let's look at a simple example first, a ContextSeeker that looks backward one command for the "favorite bird" command and then prints the rest of the sentence if and only if it finds it.
-```
+```Python
 from dragonfly import *
 
 from caster.lib import control
@@ -127,11 +127,11 @@ control.nexus().merger.add_global_rule(Birds())
 * `S` is the type alias for `ContextSet`. An `S` is essentially an if-then branch. Its first parameter is an array of acceptable `rspec`s which will cause it to be chosen rather than one of its siblings. In the case of the second `S`, there is only one, "parakeet". An `S`'s second parameter is what will happen if it is chosen.
 * **Defaults**. The first `S` in an `L` will be the default action for the ContextSeeker. Since in our example, we want nothing to happen if the "favorite bird" command isn't spoken immediately prior, we give the first `S` a bogus `rspec` to look for. (You can also give it a legitimate `rspec` if you do want to be able to trigger it intentionally sometimes.) Note that unlike a `command`'s `spec`, an `R`'s or `S`'s `rspec`s do not need to be pronounceable.
 * **Wildcards**. If an `S`'s `rspec` array includes an asterisk (like `S(["*"], Key("a"))`), that `S` will be chosen unconditionally, using any command as a trigger.
- 
+
 ContextSeekers can look backwards multiple commands, executing conditional logic on each backwards command that they find, in order.
 
 ContextSeekers can also look forward. Let's look at an example of a forward-looking command.
-```
+```Python
 from dragonfly import *
 
 from caster.lib import control
@@ -169,9 +169,9 @@ The `S` object has a lot of options to specify different kinds of behavior. They
 * `use_spoken`: If set to True, `use_spoken` will cause an array of strings to be delivered to the `f` function when it executes. Example below. 
 * `use_rspec`: If set to True, `use_rspec` will deliver the `rspec` string to the function as a single parameter. Example below.
 * `consume`: If set to False, trigger commands will not be consumed by ContextSeekers.
- 
+
 That's a lot, so let's see it in action.
-```
+```Python
 from dragonfly import *
 
 from caster.lib import control
@@ -210,9 +210,9 @@ In this example, each of the `S` objects (except the first) delivers parameters 
 * **Cancellation**: any of the `rspec` triggers in the 0-th ContextSet are detected.
 * **Timeout**: the action runs until the maximum repetitions.
 * **Success**: the action is a Python function and returns True.
- 
+
 Let's look at a few basic AsynchronousActions:
-```
+```Python
 from dragonfly import *
 
 from caster.lib import control
@@ -261,7 +261,7 @@ Out-of-the-box, Caster gives the user new mouse navigation commands (see the Mou
 If you want to modify the pre-made ruleset, there are a few ways to go about it. Of course, you could just edit the source, but then you'd have to deal with merge conflicts when updating to newer versions of Caster. There are two ways to get around this:
 
 * **Make a copy in the safe zone.** (1) Copy the file you'd like to change into your `caster/user` folder. (2) Disable the original rule in your `settings.json` file. (3) Give the new MergeRule a `pronunciation` which is distinct from that of the original. For example, if you're modifying java.py, give the new Java rule a `pronunciation` of "my java" rather than "java". 
-* **Use rule filters.** This is the recommended way. Rule filters allow you to change any part of any rule, either at boot time or when the rule is activated ("merge time"). See the Rule Filters section of the CCR page for more details.
+* **Use rule filters.** This is the recommended way. Rule filters allow you to change any part of any rule, either at boot time or when the rule is activated ("merge time"). See the Rule Filters section of the CCR page for more details. Supports both line and in-line python comments.
 
 ##Rule Filters
 
@@ -281,7 +281,7 @@ There are three times these merges occur: at boot, when you manually activate a 
 
 In our example above with A, B, C, and D, the rules were combined (or at least attempted) in pairs. (A and B, C and AB, D and ABC.) At each point at which an incompatibility could occur (each "merge point"), Caster gives you the user the opportunity to examine and change the incoming pair of rules. You can write functions which do anything you want to the two rules, based on any properties of the rules, or the merge. To do this, you need to understand MappingRules and MergeRules, and their properties. That is why this section is last. Let's look at some example rule filters.
 
-```
+```Python
 from caster.lib import control
 from caster.lib.dfplus.merge.mergepair import MergeInf
 from caster.lib.dfplus.state.short import R
@@ -303,7 +303,7 @@ This rule filter would ensure that there was never any incompatibility, by delet
 
 Here is another example. Suppose you don't like a particular spec and want to replace or modify it?
 
-```
+```Python
 from caster.lib import control
 from caster.lib.dfplus.merge.mergepair import MergeInf
 from caster.lib.dfplus.state.short import R
@@ -328,7 +328,7 @@ control.nexus().merger.add_filter(replace_spec_filter)
 In this example, "[go to] line <n>" is replaced by "travel to line <n>". This could be configured to replace any number of specs, perhaps reading in from a dictionary file.
 
 Maybe you're fine with a spec, but you want to replace the action?
-```
+```Python
 from dragonfly.actions.action_text import Text
 
 from caster.lib import control
@@ -351,7 +351,7 @@ control.nexus().merger.add_filter(replace_python_else_action)
 Notice here how both `rule1` and `rule2` are being checked. That is because either of them might be the Python rule which is being targeted.
 
 Here is another example. In this one, we add the "identity is" command to the Python rule:
-```
+```python
 from dragonfly.actions.action_text import Text
 
 from caster.lib import control
@@ -373,4 +373,4 @@ control.nexus().merger.add_filter(add_is_to_python_filter)
 
 ###Where Do I Put These?
 
-The designated location which Caster will check for rule filters is the caster/user/filters folder. Any Python files you put there with rule filters will be picked up, and, like the rest of the caster/user folder, will not be affected by Caster updates.
+The designated location which Caster will check for rule filters is the `caster/user/filters` folder. Any Python files you put there with rule filters will be picked up, and, like the rest of the `caster/user` folder, will not be affected by Caster updates.
