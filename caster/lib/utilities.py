@@ -13,6 +13,10 @@ from subprocess import Popen
 
 import win32gui
 import win32ui
+
+from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,
+    HKEY_CURRENT_USER, OpenKey, QueryValueEx)
+
 from dragonfly.windows.window import Window
 
 try:  # Style C -- may be imported into Caster, or externally
@@ -131,3 +135,26 @@ def reboot(wsr=False):
 
     print(popen_parameters)
     Popen(popen_parameters)
+
+def default_browser_command():
+    '''
+    Tries to get default browser command, returns either a space delimited
+    command string with '%1' as URL placeholder, or empty string.
+    '''
+    browser_class = 'Software\\Microsoft\\Windows\\Shell\\Associations\\UrlAssociations\\https\\UserChoice'
+    try:
+        reg = ConnectRegistry(None,HKEY_CURRENT_USER)
+        key = OpenKey(reg, browser_class)
+        value, t = QueryValueEx(key, 'ProgId')
+        CloseKey(key)
+        CloseKey(reg)
+        reg = ConnectRegistry(None,HKEY_CLASSES_ROOT)
+        key = OpenKey(reg, '%s\\shell\\open\\command' % value)
+        path, t = QueryValueEx(key, None)
+    except WindowsError as e:
+        #logger.warn(e)
+        return ''
+    finally:
+        CloseKey(key)
+        CloseKey(reg)
+    return path
