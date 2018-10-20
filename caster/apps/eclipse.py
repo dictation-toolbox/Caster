@@ -46,7 +46,8 @@ class EclipseController(object):
             self.regex = True
             Key("delete, backspace").execute()
         else:
-            print("Eclipse configuration failed (%s)" % result)
+            control.nexus().intermediary.text(
+                "Eclipse configuration failed (" + result + ")")
 
     def lines_relative(self, back, n):
         if back:  #backward
