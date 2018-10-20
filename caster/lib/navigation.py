@@ -9,7 +9,7 @@ from subprocess import Popen
 
 import dragonfly
 from caster.asynch.mouse.legion import LegionScanner
-from caster.lib import control, settings, utilities
+from caster.lib import settings, utilities
 from dragonfly import Choice, Clipboard, Key, Mouse, Text, monitors
 
 DIRECTION_STANDARD = {
@@ -234,9 +234,9 @@ def curse(direction, direction2, nnavi500, dokick):
     Mouse("<" + str(x) + ", " + str(y) + ">").execute()
     if int(dokick) != 0:
         if int(dokick) == 1:
-            left_click(control.nexus())
+            left_click()
         elif int(dokick) == 2:
-            right_click(control.nexus())
+            right_click()
 
 
 def next_line(semi):

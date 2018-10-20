@@ -116,7 +116,7 @@ def remote_debug(who_called_it=None):
     if who_called_it is None:
         who_called_it = "An unidentified process"
     try:
-        import pydevd  # @UnresolvedImport pylint: disable=import-error
+        import pydevd  # @UnresolvedImport
         pydevd.settrace()
     except Exception:
         print("ERROR: " + who_called_it +
