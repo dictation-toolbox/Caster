@@ -12,6 +12,7 @@ pip uninstall six
 pip uninstall pyperclip
 pip uninstall pillow
 pip uninstall pywin32
+pip uninstall toml
 
 echo ------------------------------------------
 echo Caster Dependencies Uninstall Complete
