@@ -67,11 +67,11 @@ class HistoryRule(SelfModifyingRule):
         '''args: spec, list of lists of strings'''
 
         # get mapping
-        recorded_macros = utilities.load_json_file(
+        recorded_macros = utilities.load_toml_file(
             settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
         if len(args) > 0:
             recorded_macros[args[0]] = args[1]
-            utilities.save_json_file(recorded_macros,
+            utilities.save_toml_file(recorded_macros,
                                      settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
         mapping = {}
         for spec in recorded_macros:
@@ -94,7 +94,7 @@ class HistoryRule(SelfModifyingRule):
         self.refresh()
 
     def delete_recorded_macros(self):
-        utilities.save_json_file({}, settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
+        utilities.save_toml_file({}, settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
         self.refresh()
 
 

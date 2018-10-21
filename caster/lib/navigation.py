@@ -47,7 +47,7 @@ def get_direction_choice(name):
 
 def initialize_clipboard(nexus):
     if len(nexus.clip) == 0:
-        nexus.clip = utilities.load_json_file(
+        nexus.clip = utilities.load_toml_file(
             settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
 
 
@@ -84,6 +84,7 @@ def mouse_alternates(mode, nexus, monitor=1):
     else:
         utilities.availability_message(mode.title(), "PIL")
 
+
 def stoosh_keep_clipboard(nnavi500, nexus):
     if nnavi500 == 1:
         Key("c-c").execute()
@@ -98,14 +99,15 @@ def stoosh_keep_clipboard(nnavi500, nexus):
                 # time for keypress to execute
                 time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
                 nexus.clip[key] = Clipboard.get_system_text()
-                utilities.save_json_file(nexus.clip,
-                                        settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
+                utilities.save_toml_file(
+                    nexus.clip, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
             except Exception:
                 failure = True
                 utilities.simple_log()
             if not failure:
                 break
         cb.copy_to_system()
+
 
 def cut_keep_clipboard(nnavi500, nexus):
     if nnavi500 == 1:
@@ -121,14 +123,15 @@ def cut_keep_clipboard(nnavi500, nexus):
                 # time for keypress to execute
                 time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
                 nexus.clip[key] = Clipboard.get_system_text()
-                utilities.save_json_file(nexus.clip,
-                                        settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
+                utilities.save_toml_file(
+                nexus.clip, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
             except Exception:
                 failure = True
                 utilities.simple_log()
             if not failure:
                 break
         cb.copy_to_system()
+
 
 def drop_keep_clipboard(nnavi500, nexus):
     if nnavi500 == 1:
@@ -152,6 +155,7 @@ def drop_keep_clipboard(nnavi500, nexus):
                 break
         cb.copy_to_system()
 
+
 def duple_keep_clipboard(nnavi50):
     cb = Clipboard(from_system=True)
     Key("escape, home, s-end, c-c, end").execute()
@@ -164,7 +168,7 @@ def duple_keep_clipboard(nnavi50):
 
 def erase_multi_clipboard(nexus):
     nexus.clip = {}
-    utilities.save_json_file(nexus.clip,
+    utilities.save_toml_file(nexus.clip,
                              settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
 
 

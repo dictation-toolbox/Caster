@@ -2,14 +2,14 @@
 
 import collections
 import io
-import json
+import toml
 import os
 import sys
 import errno
 import _winreg
 
 SETTINGS = {}
-_SETTINGS_PATH = os.path.realpath(__file__).split("lib")[0] + "bin\\data\\settings.json"
+_SETTINGS_PATH = os.path.realpath(__file__).split("lib")[0] + "bin\\data\\settings.toml"
 BASE_PATH = os.path.realpath(__file__).split("\\lib")[0].replace("\\", "/")
 
 # title
@@ -37,11 +37,11 @@ HMC_SEPARATOR = "[hmc]"
 WSR = False
 
 
-# Validates 'Engine Path' in settings.json
+# Validates 'Engine Path' in settings.toml
 def _validate_engine_path():
     if os.path.isfile(_SETTINGS_PATH):
-        with io.open(_SETTINGS_PATH, "rt", encoding="utf-8") as json_file:
-            data = json.loads(json_file.read())
+        with io.open(_SETTINGS_PATH, "rt", encoding="utf-8") as toml_file:
+            data = toml.loads(toml_file.read())
             engine_path = data["paths"]["ENGINE_PATH"]
             if os.path.isfile(engine_path):
                 return engine_path
@@ -49,10 +49,13 @@ def _validate_engine_path():
                 engine_path = _find_natspeak()
                 data["paths"]["ENGINE_PATH"] = engine_path
                 try:
+                    formatted_data = unicode(toml.dumps(data))
+                    with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as toml_file:
+                        toml_file.write(formatted_data)
                     formatted_data = unicode(
-                        json.dumps(data, sort_keys=True, indent=4, ensure_ascii=False))
-                    with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as json_file:
-                        json_file.write(formatted_data)
+                        toml.dumps(data))
+                    with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as toml_file:
+                        toml_file.write(formatted_data)
                         print "Setting engine path to " + engine_path
                 except Exception as e:
                     print "Error saving settings file " + str(e) + _SETTINGS_PATH
@@ -116,13 +119,13 @@ _DEFAULT_SETTINGS = {
         "BASE_PATH": BASE_PATH,
 
         # DATA
-        "ALIAS_PATH": BASE_PATH + "/bin/data/aliases.json.",
-        "CCR_CONFIG_PATH": BASE_PATH + "/bin/data/ccr.json",
+        "ALIAS_PATH": BASE_PATH + "/bin/data/aliases.toml",
+        "CCR_CONFIG_PATH": BASE_PATH + "/bin/data/ccr.toml",
         "DLL_PATH": BASE_PATH + "/lib/dll/",
         "FILTER_DEFS_PATH": BASE_PATH + "/user/words.txt",
         "LOG_PATH": BASE_PATH + "/bin/data/log.txt",
-        "RECORDED_MACROS_PATH": BASE_PATH + "/bin/data/recorded_macros.json",
-        "SAVED_CLIPBOARD_PATH": BASE_PATH + "/bin/data/clipboard.json",
+        "RECORDED_MACROS_PATH": BASE_PATH + "/bin/data/recorded_macros.toml",
+        "SAVED_CLIPBOARD_PATH": BASE_PATH + "/bin/data/clipboard.toml",
         "SIKULI_SCRIPTS_FOLDER_PATH": BASE_PATH + "/asynch/sikuli/scripts",
 
         # REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
@@ -222,19 +225,18 @@ _DEFAULT_SETTINGS = {
 def _save(data, path):
     '''only to be used for settings file'''
     try:
-        formatted_data = unicode(
-            json.dumps(data, sort_keys=True, indent=4, ensure_ascii=False))
+        formatted_data = unicode(toml.dumps(data))
         with io.open(path, "wt", encoding="utf-8") as f:
             f.write(formatted_data)
-    except Exception:
-        print "Error saving json file: " + path
+    except Exception as e:
+        print "Error saving toml file: " + str(e) + _SETTINGS_PATH
 
 
 def _init(path):
     result = {}
     try:
         with io.open(path, "rt", encoding="utf-8") as f:
-            result = json.loads(f.read())
+            result = toml.loads(f.read())
     except ValueError as e:
         print("\n\n" + repr(e) + " while loading settings file: " + path + "\n\n")
         print(sys.exc_info())
