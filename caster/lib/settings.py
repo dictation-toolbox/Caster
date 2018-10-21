@@ -35,9 +35,11 @@ WXTYPE_SETTINGS = "7"
 HMC_SEPARATOR = "[hmc]"
 
 WSR = False
+"""
+Validates 'Engine Path' in settings.toml
+"""
 
 
-# Validates 'Engine Path' in settings.toml
 def _validate_engine_path():
     if os.path.isfile(_SETTINGS_PATH):
         with io.open(_SETTINGS_PATH, "rt", encoding="utf-8") as toml_file:
@@ -52,21 +54,21 @@ def _validate_engine_path():
                     formatted_data = unicode(toml.dumps(data))
                     with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as toml_file:
                         toml_file.write(formatted_data)
-                    formatted_data = unicode(
-                        toml.dumps(data))
-                    with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as toml_file:
-                        toml_file.write(formatted_data)
-                        print "Setting engine path to " + engine_path
+                    print("Setting engine path to ") + engine_path
                 except Exception as e:
-                    print "Error saving settings file " + str(e) + _SETTINGS_PATH
+                    print("Error saving settings file ") + str(e) + _SETTINGS_PATH
                 return engine_path
     else:
         return _find_natspeak()
 
 
-# Finds engine 'natspeak.exe' path and verifies supported DNS versions via Windows Registry.
+""" 
+Finds engine 'natspeak.exe' path and verifies supported DNS versions via Windows Registry.
+"""
+
+
 def _find_natspeak():
-    print "Searching Windows Registry For DNS..."
+    print("Searching Windows Registry For DNS...")
     proc_arch = os.environ['PROCESSOR_ARCHITECTURE'].lower()
     proc_arch64 = os.environ['PROCESSOR_ARCHITEW6432'].lower()
 
@@ -94,7 +96,7 @@ def _find_natspeak():
                 if error.errno == 2:  # Suppresses '[Error 2] The system cannot find the file specified'
                     pass
                 else:
-                    print error
+                    print(error)
             finally:
                 skey.Close()
                 if Publisher == "Nuance Communications Inc." and "Dragon" in DisplayName:
@@ -106,14 +108,17 @@ def _find_natspeak():
                             print "Search Complete."
                             return engine_path
                     else:
-                        print " Dragon Naturally Speaking " + str(
-                            DnsVersion
-                        ) + " is not supported by Caster. Only versions 13 and above are supported. Purchase Dragon Naturally Speaking 13 or above"
-    print "Cannot find dragon engine path"
+                        print(
+                            " Dragon Naturally Speaking " + str(DnsVersion) +
+                            " is not supported by Caster. Only versions 13 and above are supported. Purchase Dragon Naturally Speaking 13 or above"
+                        )
+    print("Cannot find dragon engine path")
     return ""
 
 
-# The defaults for every setting. Could be moved out into its own file.
+""" 
+The defaults for every setting. Could be moved out into its own file.
+"""
 _DEFAULT_SETTINGS = {
     "paths": {
         "BASE_PATH": BASE_PATH,
@@ -219,9 +224,11 @@ _DEFAULT_SETTINGS = {
     },
     "one time warnings": {}
 }
+""" 
+Internal Methods
+"""
 
 
-# Internal Methods
 def _save(data, path):
     '''only to be used for settings file'''
     try:
@@ -270,7 +277,11 @@ def _deep_merge_defaults(data, defaults):
     return data, changes
 
 
-# Public interface:
+"""
+Public interface:
+"""
+
+
 def save_config():
     '''Save the current in-memory settings to disk'''
     _save(SETTINGS, _SETTINGS_PATH)
@@ -293,7 +304,10 @@ def report_to_file(message, path=None):
         f.write(unicode(message) + "\n")
 
 
-## Kick everything off.
+"""
+Kick everything off.
+"""
+
 SETTINGS = _init(_SETTINGS_PATH)
 for path in [
         SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"], SETTINGS["paths"]["WXPYTHON_PATH"]
