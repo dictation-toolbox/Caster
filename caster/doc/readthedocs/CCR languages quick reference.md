@@ -329,43 +329,70 @@ lodge and|` and `|||``
 # R
 Command | Output | | Command | Output
 ---|---|---|---|---
-NA|`NA`||graph smooth [plot]|`geom_smooth()`
-add comment|`#`||group by|`group_by()`
-arrange|`arrange()`||head of|`head()`
-as character|`as.character()`||iffae|`if ()`
-as data frame|`as.data.frame()`||import|`library()`
-as double|`as.double()`||inner join|`inner_join()`
-as factor|`as.factor()`||left join|`left_join()`
-as numeric|`as.numeric()`||length of|`length()`
-assign|` <- `||library|`library()`
-bind rows|`bind_rows()`||list of|`list()`
-breaker|`break`||lodge and|` && `
-case when|`case_when()`||lodge not|`!`
-contained in|` %in% `||lodge or| &#124; &#124;
-count|`count()`||mutate|`mutate()`
-deeply|`dplyr`||names of|`names()`
-dot (our/are)|`.R`||paste of|`paste0()`
-filter|`filter()`||print to console|`print()`
-for each|`for ( in ):`||rename|`rename()`
-for loop|`for (i in 1:)`||return|`return()`
-full join|`full_join()`||see as vee|`csv`
-function|`function()`||select|`select()`
-gather|`gather()`||shell iffae / LFA|`elseif ()`
-gee aesthetics|`aes()`||shells|`else `
-gee ex label|`xlab()`||slurp / chain|` %>% `
-gee ex limit|`xlim()`||summarise|`summarise()`
-gee labels|`labs()`||tell (slurp / chain)|`{end of line} %>% {newline}`
-gee plot|`ggplot()`||tell add|`{end of line} + {newline}`
-gee theme|`theme()`||tidier|`tidyr`
-gee title|`ggtitle()`||tidy verse|`tidyverse`
-gee why label|`ylab()`||trim white space|`trimws()`
-gee why limit|`ylim()`||ungroup|`ungroup()`
-graph (scatter / point) [plot]|`geom_point()`||value false|`FALSE`
-graph column [plot]|`geom_col()`||value not|`NULL`
-graph density [plot]|`geom_density()`||value true|`TRUE`
-graph histogram [plot]|`geom_histogram()`||vector of|`c()`
-graph line [plot]|`geom_line()`||while loop|`while ()`
-graph path [plot]|`geom_path()`|||``
+`<function>`|`<function>()`||lodge not|`!`
+NA|`NA`||lodge or| &#124; &#124;
+add comment|`#`||print to console|`print()`
+assign|` <- `||return|`return()`
+breaker|`break`||see as vee|`csv`
+contained in|` %in% `||shells|`else `
+dot (our/are)|`.R`||slurp / chain|` %>% `
+for each|`for ( in ):`||tell (slurp / chain)|`{end of line} %>% {newline}`
+for loop|`for (i in 1:)`||tell add|`{end of line} + {newline}`
+function|`function()`||tidy verse|`tidyverse`
+`graph <ggfun>`|`<ggfun>()`||value false|`FALSE`
+iffae|`if ()`||value not|`NULL`
+import|`library()`||value true|`TRUE`
+lodge and|` && `||while loop|`while ()`
+
+## Core/tidyverse functions
+If you are having trouble with over-recognition (R commands appearing where you don't want them) due to the large number of commands, consider adding a prefix to the `<function>` command - line 93 - in lib/ccr/r/r.py to increase phonetic distinctness.
+
+Command | Output | | Command | Output
+---|---|---|---|---
+``|``||length|`length()`
+(LM / linear model)|`lm()`||library|`library()`
+arrange|`arrange()`||list|`list()`
+as character|`as.character()`||mean|`mean()`
+as data frame|`as.data.frame()`||mutate|`mutate()`
+as double|`as.double()`||names|`names()`
+as factor|`as.factor()`||paste|`paste0()`
+as numeric|`as.numeric()`||read CSV|`read_csv()`
+bind rows|`bind_rows()`||rename|`rename()`
+case when|`case_when()`||select|`select()`
+count|`count()`||starts with|`starts_with()`
+drop NA|`drop_na()`||string contains|`str_contains()`
+filter|`filter()`||string detect|`str_detect()`
+full join|`full_join()`||string replace|`str_replace()`
+gather|`gather()`||string replace all|`str_replace_all()`
+group by|`group_by()`||sum|`sum()`
+head|`head()`||summarise|`summarise()`
+inner join|`inner_join()`||tail|`tail()`
+install packages|`install.packages()`||trim white space|`trimws()`
+is NA|`is.na()`||ungroup|`ungroup()`
+left join|`left_join()`||vector|`c()`
+
+## Graph plotting functions
+Should all be prefixed with `graph `
+Command | Output | | Command | Output
+---|---|---|---|---
+``|``||line [plot]|`geom_line()`
+aesthetics|`aes()`||path [plot]|`geom_path()`
+column [plot]|`geom_col()`||plot|`ggplot()`
+density [plot]|`geom_density()`||point [plot]|`geom_point()`
+ex label|`xlab()`||save|`ggsave()`
+ex limit|`xlim()`||smooth [plot]|`geom_smooth()`
+facet grid|`facet_grid()`||theme minimal|`theme_minimal()`
+histogram [plot]|`geom_histogram()`||why label|`ylab()`
+labels|`labs()`||why limit|`ylim()`
+
+## Pacman functions
+Should all be prefixed with `pack `
+Command | Output | | Command | Output
+---|---|---|---|---
+``|``||install version|`p_install_version()`
+install|`p_install()`||load|`p_load()`
+install hub|`p_install_gh()`||unload|`p_unload()`
+install temp|`p_temp()`||update|`p_update()`
 
 
 # Rust
