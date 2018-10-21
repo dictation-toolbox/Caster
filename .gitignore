@@ -30,3 +30,7 @@ complexity_report*
 # Ignore SonarQube
 .sonar
 sonar-project.properties
+
+# Ignore Eclipse/Pydev Files
+.project
+.pydevproject
