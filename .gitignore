@@ -34,3 +34,7 @@ sonar-project.properties
 # Ignore Eclipse/Pydev Files
 .project
 .pydevproject
+.settings
+
+# Ignore User Data
+caster/bin/data
