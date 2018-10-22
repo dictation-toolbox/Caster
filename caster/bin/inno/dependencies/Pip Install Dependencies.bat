@@ -1,12 +1,14 @@
 @echo off
-echo Installing: pywin32, dragonfly, pillow, psutil
+echo Installing: dragonfly2, wxPython, pillow
 
 cd c:\python27\scripts
-pip install pywin32
-pip install wxpython
-pip install dragonfly
+pip install setuptools
+pip install dragonfly2
+pip install -U wxPython
 pip install pillow
-pip install psutil
+pip install toml
+pip install toml
+
 
 echo ------------------------------------------
 echo Caster Dependencies Installation Complete

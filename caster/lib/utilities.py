@@ -3,7 +3,7 @@
 from __future__ import print_function, unicode_literals
 
 import io
-import json
+import toml
 import os
 import re
 import sys
@@ -65,24 +65,23 @@ def get_window_title_info():
     return [filename, path_folders, title]
 
 
-def save_json_file(data, path):
+def save_toml_file(data, path):
     try:
-        formatted_data = unicode(
-            json.dumps(data, sort_keys=True, indent=4, ensure_ascii=False))
+        formatted_data = unicode(toml.dumps(data))
         with io.open(path, "wt", encoding="utf-8") as f:
             f.write(formatted_data)
     except Exception:
         simple_log(True)
 
 
-def load_json_file(path):
+def load_toml_file(path):
     result = {}
     try:
         with io.open(path, "rt", encoding="utf-8") as f:
-            result = json.loads(f.read())
+            result = toml.loads(f.read())
     except IOError as e:
         if e.errno == 2:  # The file doesn't exist.
-            save_json_file(result, path)
+            save_toml_file(result, path)
         else:
             raise
     except Exception:
@@ -112,7 +111,7 @@ def remote_debug(who_called_it=None):
     if who_called_it is None:
         who_called_it = "An unidentified process"
     try:
-        import pydevd  # @UnresolvedImport
+        import pydevd  # @UnresolvedImport pylint: disable=import-error
         pydevd.settrace()
     except Exception:
         print("ERROR: " + who_called_it +
