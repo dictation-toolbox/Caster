@@ -38,9 +38,9 @@ WSR = False
 
 
 def _validate_engine_path():
-'''
-Validates path 'Engine Path' in settings.toml
-'''
+    '''
+    Validates path 'Engine Path' in settings.toml
+    '''
     if os.path.isfile(_SETTINGS_PATH):
         with io.open(_SETTINGS_PATH, "rt", encoding="utf-8") as toml_file:
             data = toml.loads(toml_file.read())
@@ -63,9 +63,9 @@ Validates path 'Engine Path' in settings.toml
 
 
 def _find_natspeak():
-'''
-Finds engine 'natspeak.exe' path and verifies supported DNS versions via Windows Registry.
-'''
+    '''
+    Finds engine 'natspeak.exe' path and verifies supported DNS versions via Windows Registry.
+    '''
     print("Searching Windows Registry For DNS...")
     proc_arch = os.environ['PROCESSOR_ARCHITECTURE'].lower()
     proc_arch64 = os.environ['PROCESSOR_ARCHITEW6432'].lower()
