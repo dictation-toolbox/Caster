@@ -7,7 +7,7 @@ pip install dragonfly2
 pip install -U wxPython
 pip install pillow
 pip install toml
-pip install toml
+
 
 
 echo ------------------------------------------
