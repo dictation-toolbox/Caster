@@ -5,7 +5,7 @@ from caster.apps.eclipse import EclipseCCR
 from caster.lib.ccr.java.java import Java
 from caster.lib.ccr.javascript.javascript import Javascript
 from caster.lib.ccr.python.python import Python
-from caster.lib.ccr.recording.alias import VanillaAlias
+from caster.lib.ccr.recording.alias import Alias
 from caster.lib.dfplus.merge.mergerule import MergeRule
 
 
@@ -52,7 +52,7 @@ class TestMergeRule(unittest.TestCase):
         python_specs = len(python.mapping_actual().keys())
         java = Java()
         java_specs = len(java.mapping_actual().keys())
-        vanilla = VanillaAlias(refresh=False)
+        vanilla = Alias(refresh=False)
         vanilla_specs = len(vanilla.mapping_actual().keys())
         _merged = python.merge(java)
         self.assertEqual(python_specs, len(python.mapping_actual().keys()))

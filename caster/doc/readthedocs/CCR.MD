@@ -31,7 +31,7 @@ There are different kinds of Dragonfly and Caster rules which can be created or 
 
 * **Rule, CompoundRule, MappingRule**: the original Dragonfly rule types. These can be used with Caster, but not for CCR.
 * **MergeRule**: the basic Caster CCR building block. It is similar to Dragonfly's MappingRule, but has a few extra properties.
-* **SelfModifyingRule**: this is a type of MergeRule which modifies its own command set based on some kind of user input. NodeRule, VanillaAlias, ChainAlias, and HistoryRule are all SelfModifyingRules.
+* **SelfModifyingRule**: this is a type of MergeRule which modifies its own command set based on some kind of user input. NodeRule, Alias, ChainAlias, and HistoryRule are all SelfModifyingRules.
 
 We'll go into more detail on the differences between these rules elsewhere. For now, know that most rules used for CCR in Caster extend MergeRule.
 
@@ -49,7 +49,7 @@ There are nine points at which Caster builds or rebuilds its CCR command sets:
 
 Let's go through these.
 
-**Boot Time**: At boot, Caster checks `bin/data/ccr.json` to see what you have enabled. It then takes all global rules (MergeRules which do not have an AppContext) and combines (1) them, one by one. At each intersection of two rules (each "merge"), you have the opportunity to change how the merge happens via rule filters. Caster then checks active SelfModifyingRules for compatibility both against the base (global rules) rule (2) and against the other active SelfModifyingRules (3). Finally, when the base + selfmodifyingrules is done merging, one copy of it is made for each app rule (MergeRule with an AppContext) and the copy is merged with a copy of the app rule. The original base rule is also given a context which is the inverse of all of the other contexts. That is, the base rule will run everywhere except in any of the app rules because the app rules each have their own copy of the base rule merged into them.
+**Boot Time**: At boot, Caster checks `bin/data/ccr.toml` to see what you have enabled. It then takes all global rules (MergeRules which do not have an AppContext) and combines (1) them, one by one. At each intersection of two rules (each "merge"), you have the opportunity to change how the merge happens via rule filters. Caster then checks active SelfModifyingRules for compatibility both against the base (global rules) rule (2) and against the other active SelfModifyingRules (3). Finally, when the base + selfmodifyingrules is done merging, one copy of it is made for each app rule (MergeRule with an AppContext) and the copy is merged with a copy of the app rule. The original base rule is also given a context which is the inverse of all of the other contexts. That is, the base rule will run everywhere except in any of the app rules because the app rules each have their own copy of the base rule merged into them.
 
 **Run Time**: The run time merge process is basically the same as the boot time merge process except for the creation of the base rule. Instead of creating it from scratch, the current base rule is used. If the user is enabling a command set, that command set gets compatibility-checked and then merged in (possibly knocking one or more others out unless rule filters specify otherwise). If the user is disabling a command set, that command set's commands are removed from the base rule and then the base rule is rebuilt (again, doing merges at each step of the rebuilding process). Then SelfModifyingRules, then app rules, just as at Boot.
 
