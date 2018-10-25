@@ -1,9 +1,0 @@
-{
-    "Caster": "https://caster.readthedocs.io/en/latest/", 
-    "Dragonfly": "https://dragonfly2.readthedocs.io/en/latest/", 
-    "Google": "https://www.google.com", 
-    "libraries": "%USERPROFILE%", 
-    "my documents": "%USERPROFILE%\\Documents", 
-    "my pictures": "%USERPROFILE%\\Pictures", 
-    "notepad": "notepad"
-}

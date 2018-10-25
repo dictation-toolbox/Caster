@@ -1,0 +1,14 @@
+[website]
+"Caster" = "https://caster.readthedocs.io/en/latest/"
+"Dragonfly" = "https://dragonfly2.readthedocs.io/en/latest/"
+"Google" = "https://www.google.com"
+
+[folder]
+"libraries" = "%USERPROFILE%"
+"my documents" = "%USERPROFILE%\\Documents"
+"my pictures" = "%USERPROFILE%\\Pictures"
+
+[program]
+"notepad" = "C:\\Windows\\notepad.exe"
+
+[file]
