@@ -133,7 +133,6 @@ _DEFAULT_SETTINGS = {
         "REMOTE_DEBUGGER_PATH": "",
 
         # EXECUTABLES
-        "DEFAULT_BROWSER_PATH": "C:/Program Files (x86)/Mozilla Firefox/firefox.exe",
         "DOUGLAS_PATH": BASE_PATH + "/asynch/mouse/grids.py",
         "ENGINE_PATH": _validate_engine_path(),
         "HOMUNCULUS_PATH": BASE_PATH + "/asynch/hmc/h_launch.py",
@@ -280,11 +279,6 @@ def save_config():
 def get_settings():
     global SETTINGS
     return SETTINGS
-
-
-def get_default_browser_executable():
-    global SETTINGS
-    return SETTINGS["paths"]["DEFAULT_BROWSER_PATH"].split("/")[-1]
 
 
 def report_to_file(message, path=None):
