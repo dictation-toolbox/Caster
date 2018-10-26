@@ -10,12 +10,6 @@ complexity_report*
 *.log
 *.*\#
 *.*~
-# LaTeX auxiliaries
-*.aux
-*.bbl
-*.blg
-*.log
-*.synctex.gz
 
 # Ignore Rope
 .ropeproject/
