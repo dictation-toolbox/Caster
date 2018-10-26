@@ -98,7 +98,7 @@ class CCRMerger(object):
             self._config[CCRMerger._SELFMOD] = {}
         for name in self.selfmod_rule_names():
             if not name in self._config[CCRMerger._SELFMOD]:
-                self._config[CCRMerger._SELFMOD][name] = False
+                self._config[CCRMerger._SELFMOD][name] = True
                 changed = True
 
         if changed: self.save_config()
