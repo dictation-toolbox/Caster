@@ -120,6 +120,8 @@ _DEFAULT_SETTINGS = {
         "BASE_PATH": BASE_PATH,
 
         # DATA
+        "BRINGME_PATH": BASE_PATH + "/bin/data/bringme.toml",
+        "BRINGME_DEFAULTS_PATH": BASE_PATH + "/bin/share/bringme.toml.defaults",
         "ALIAS_PATH": BASE_PATH + "/bin/data/aliases.toml",
         "CCR_CONFIG_PATH": BASE_PATH + "/bin/data/ccr.toml",
         "DLL_PATH": BASE_PATH + "/lib/dll/",
