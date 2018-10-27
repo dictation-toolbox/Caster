@@ -66,12 +66,12 @@ class CCRMerger(object):
 
     def save_config(self):
         if self.use_real_config:
-            utilities.save_json_file(self._config,
+            utilities.save_toml_file(self._config,
                                      settings.SETTINGS["paths"]["CCR_CONFIG_PATH"])
 
     def load_config(self):
         if self.use_real_config:
-            self._config = utilities.load_json_file(
+            self._config = utilities.load_toml_file(
                 settings.SETTINGS["paths"]["CCR_CONFIG_PATH"])
         else:
             self._config = {}
@@ -98,7 +98,7 @@ class CCRMerger(object):
             self._config[CCRMerger._SELFMOD] = {}
         for name in self.selfmod_rule_names():
             if not name in self._config[CCRMerger._SELFMOD]:
-                self._config[CCRMerger._SELFMOD][name] = False
+                self._config[CCRMerger._SELFMOD][name] = True
                 changed = True
 
         if changed: self.save_config()

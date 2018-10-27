@@ -251,7 +251,7 @@ def run_tests():
                     if result.choices == nc_orig: not_max_yet = False
                     break
 
-    reports.append("\nSettings JSON CCR Max Reps: " + str(original_ccr_max) + "\n")
+    reports.append("\nSettings toml CCR Max Reps: " + str(original_ccr_max) + "\n")
     reports.append(
         "Total time for test: " + str(int(time.time() - start_time)) + " sec\n\n")
     result = "".join(reports)

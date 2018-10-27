@@ -3,7 +3,7 @@
 from __future__ import print_function, unicode_literals
 
 import io
-import json
+import toml
 import os
 import re
 import sys
@@ -13,6 +13,10 @@ from subprocess import Popen
 
 import win32gui
 import win32ui
+
+from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,
+    HKEY_CURRENT_USER, OpenKey, QueryValueEx)
+
 from dragonfly.windows.window import Window
 
 try:  # Style C -- may be imported into Caster, or externally
@@ -65,24 +69,23 @@ def get_window_title_info():
     return [filename, path_folders, title]
 
 
-def save_json_file(data, path):
+def save_toml_file(data, path):
     try:
-        formatted_data = unicode(
-            json.dumps(data, sort_keys=True, indent=4, ensure_ascii=False))
+        formatted_data = unicode(toml.dumps(data))
         with io.open(path, "wt", encoding="utf-8") as f:
             f.write(formatted_data)
     except Exception:
         simple_log(True)
 
 
-def load_json_file(path):
+def load_toml_file(path):
     result = {}
     try:
         with io.open(path, "rt", encoding="utf-8") as f:
-            result = json.loads(f.read())
+            result = toml.loads(f.read())
     except IOError as e:
         if e.errno == 2:  # The file doesn't exist.
-            save_json_file(result, path)
+            save_toml_file(result, path)
         else:
             raise
     except Exception:
@@ -112,7 +115,7 @@ def remote_debug(who_called_it=None):
     if who_called_it is None:
         who_called_it = "An unidentified process"
     try:
-        import pydevd  # @UnresolvedImport
+        import pydevd  # @UnresolvedImport pylint: disable=import-error
         pydevd.settrace()
     except Exception:
         print("ERROR: " + who_called_it +
@@ -131,3 +134,26 @@ def reboot(wsr=False):
 
     print(popen_parameters)
     Popen(popen_parameters)
+
+def default_browser_command():
+    '''
+    Tries to get default browser command, returns either a space delimited
+    command string with '%1' as URL placeholder, or empty string.
+    '''
+    browser_class = 'Software\\Microsoft\\Windows\\Shell\\Associations\\UrlAssociations\\https\\UserChoice'
+    try:
+        reg = ConnectRegistry(None,HKEY_CURRENT_USER)
+        key = OpenKey(reg, browser_class)
+        value, t = QueryValueEx(key, 'ProgId')
+        CloseKey(key)
+        CloseKey(reg)
+        reg = ConnectRegistry(None,HKEY_CLASSES_ROOT)
+        key = OpenKey(reg, '%s\\shell\\open\\command' % value)
+        path, t = QueryValueEx(key, None)
+    except WindowsError as e:
+        #logger.warn(e)
+        return ''
+    finally:
+        CloseKey(key)
+        CloseKey(reg)
+    return path

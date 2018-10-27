@@ -40,8 +40,8 @@ class Homunculus(tk.Tk):
             self.data = data.split("|")
             Label(
                 self,
-                text=" ".join(self.data[0].split(settings.HMC_SEPARATOR)),
-                name="pathlabel").pack()
+                text=" ".join(self.data[0].split(settings.HMC_SEPARATOR)), # pylint: disable=no-member
+                name="pathlabel").pack() 
             self.ext_box = Text(self, name="ext_box")
             self.ext_box.pack(side=tk.LEFT)
 

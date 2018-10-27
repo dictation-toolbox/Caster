@@ -1,0 +1,13 @@
+[TYPECHECK]
+generated-members=pythoncom.*,wx.*
+
+[MASTER]
+extension-pkg-whitelist=pythoncom,wx,pydevd
+
+[MESSAGES CONTROL]
+
+disable=print-statement
+
+disable=all
+
+enable=E

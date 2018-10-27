@@ -2,18 +2,18 @@
 
 import collections
 import io
-import json
+import toml
 import os
 import sys
 import errno
 import _winreg
 
 SETTINGS = {}
-_SETTINGS_PATH = os.path.realpath(__file__).split("lib")[0] + "bin\\data\\settings.json"
+_SETTINGS_PATH = os.path.realpath(__file__).split("lib")[0] + "bin\\data\\settings.toml"
 BASE_PATH = os.path.realpath(__file__).split("\\lib")[0].replace("\\", "/")
 
 # title
-SOFTWARE_VERSION_NUMBER = "0.5.10"
+SOFTWARE_VERSION_NUMBER = "0.5.11"
 SOFTWARE_NAME = "Caster v " + SOFTWARE_VERSION_NUMBER
 HOMUNCULUS_VERSION = "HMC v " + SOFTWARE_VERSION_NUMBER
 HMC_TITLE_RECORDING = " :: Recording Manager"
@@ -37,11 +37,13 @@ HMC_SEPARATOR = "[hmc]"
 WSR = False
 
 
-# Validates 'Engine Path' in settings.json
 def _validate_engine_path():
+    '''
+    Validates path 'Engine Path' in settings.toml
+    '''
     if os.path.isfile(_SETTINGS_PATH):
-        with io.open(_SETTINGS_PATH, "rt", encoding="utf-8") as json_file:
-            data = json.loads(json_file.read())
+        with io.open(_SETTINGS_PATH, "rt", encoding="utf-8") as toml_file:
+            data = toml.loads(toml_file.read())
             engine_path = data["paths"]["ENGINE_PATH"]
             if os.path.isfile(engine_path):
                 return engine_path
@@ -49,21 +51,22 @@ def _validate_engine_path():
                 engine_path = _find_natspeak()
                 data["paths"]["ENGINE_PATH"] = engine_path
                 try:
-                    formatted_data = unicode(
-                        json.dumps(data, sort_keys=True, indent=4, ensure_ascii=False))
-                    with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as json_file:
-                        json_file.write(formatted_data)
-                        print "Setting engine path to " + engine_path
+                    formatted_data = unicode(toml.dumps(data))
+                    with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as toml_file:
+                        toml_file.write(formatted_data)
+                    print("Setting engine path to ") + engine_path
                 except Exception as e:
-                    print "Error saving settings file " + str(e) + _SETTINGS_PATH
+                    print("Error saving settings file ") + str(e) + _SETTINGS_PATH
                 return engine_path
     else:
         return _find_natspeak()
 
 
-# Finds engine 'natspeak.exe' path and verifies supported DNS versions via Windows Registry.
 def _find_natspeak():
-    print "Searching Windows Registry For DNS..."
+    '''
+    Finds engine 'natspeak.exe' path and verifies supported DNS versions via Windows Registry.
+    '''
+    print("Searching Windows Registry For DNS...")
     proc_arch = os.environ['PROCESSOR_ARCHITECTURE'].lower()
     proc_arch64 = os.environ['PROCESSOR_ARCHITEW6432'].lower()
 
@@ -91,7 +94,7 @@ def _find_natspeak():
                 if error.errno == 2:  # Suppresses '[Error 2] The system cannot find the file specified'
                     pass
                 else:
-                    print error
+                    print(error)
             finally:
                 skey.Close()
                 if Publisher == "Nuance Communications Inc." and "Dragon" in DisplayName:
@@ -103,10 +106,11 @@ def _find_natspeak():
                             print "Search Complete."
                             return engine_path
                     else:
-                        print " Dragon Naturally Speaking " + str(
-                            DnsVersion
-                        ) + " is not supported by Caster. Only versions 13 and above are supported. Purchase Dragon Naturally Speaking 13 or above"
-    print "Cannot find dragon engine path"
+                        print(
+                            " Dragon Naturally Speaking " + str(DnsVersion) +
+                            " is not supported by Caster. Only versions 13 and above are supported. Purchase Dragon Naturally Speaking 13 or above"
+                        )
+    print("Cannot find dragon engine path")
     return ""
 
 
@@ -116,20 +120,21 @@ _DEFAULT_SETTINGS = {
         "BASE_PATH": BASE_PATH,
 
         # DATA
-        "ALIAS_PATH": BASE_PATH + "/bin/data/aliases.json.",
-        "CCR_CONFIG_PATH": BASE_PATH + "/bin/data/ccr.json",
+        "BRINGME_PATH": BASE_PATH + "/bin/data/bringme.toml",
+        "BRINGME_DEFAULTS_PATH": BASE_PATH + "/bin/share/bringme.toml.defaults",
+        "ALIAS_PATH": BASE_PATH + "/bin/data/aliases.toml",
+        "CCR_CONFIG_PATH": BASE_PATH + "/bin/data/ccr.toml",
         "DLL_PATH": BASE_PATH + "/lib/dll/",
         "FILTER_DEFS_PATH": BASE_PATH + "/user/words.txt",
         "LOG_PATH": BASE_PATH + "/bin/data/log.txt",
-        "RECORDED_MACROS_PATH": BASE_PATH + "/bin/data/recorded_macros.json",
-        "SAVED_CLIPBOARD_PATH": BASE_PATH + "/bin/data/clipboard.json",
+        "RECORDED_MACROS_PATH": BASE_PATH + "/bin/data/recorded_macros.toml",
+        "SAVED_CLIPBOARD_PATH": BASE_PATH + "/bin/data/clipboard.toml",
         "SIKULI_SCRIPTS_FOLDER_PATH": BASE_PATH + "/asynch/sikuli/scripts",
 
         # REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
         "REMOTE_DEBUGGER_PATH": "",
 
         # EXECUTABLES
-        "DEFAULT_BROWSER_PATH": "C:/Program Files (x86)/Mozilla Firefox/firefox.exe",
         "DOUGLAS_PATH": BASE_PATH + "/asynch/mouse/grids.py",
         "ENGINE_PATH": _validate_engine_path(),
         "HOMUNCULUS_PATH": BASE_PATH + "/asynch/hmc/h_launch.py",
@@ -175,6 +180,7 @@ _DEFAULT_SETTINGS = {
         "ssms": True,
         "jetbrains": True,
         "msvc": True,
+        "totalcmd": True,
         "notepadplusplus": True,
         "sqldeveloper": True,
         "sublime": True,
@@ -267,19 +273,18 @@ _DEFAULT_SETTINGS = {
 def _save(data, path):
     '''only to be used for settings file'''
     try:
-        formatted_data = unicode(
-            json.dumps(data, sort_keys=True, indent=4, ensure_ascii=False))
+        formatted_data = unicode(toml.dumps(data))
         with io.open(path, "wt", encoding="utf-8") as f:
             f.write(formatted_data)
-    except Exception:
-        print "Error saving json file: " + path
+    except Exception as e:
+        print "Error saving toml file: " + str(e) + _SETTINGS_PATH
 
 
 def _init(path):
     result = {}
     try:
         with io.open(path, "rt", encoding="utf-8") as f:
-            result = json.loads(f.read())
+            result = toml.loads(f.read())
     except ValueError as e:
         print("\n\n" + repr(e) + " while loading settings file: " + path + "\n\n")
         print(sys.exc_info())
@@ -324,11 +329,6 @@ def get_settings():
     return SETTINGS
 
 
-def get_default_browser_executable():
-    global SETTINGS
-    return SETTINGS["paths"]["DEFAULT_BROWSER_PATH"].split("/")[-1]
-
-
 def report_to_file(message, path=None):
     _path = SETTINGS["paths"]["LOG_PATH"]
     if path is not None: _path = path
@@ -336,7 +336,7 @@ def report_to_file(message, path=None):
         f.write(unicode(message) + "\n")
 
 
-## Kick everything off.
+# Kick everything off.
 SETTINGS = _init(_SETTINGS_PATH)
 for path in [
         SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"], SETTINGS["paths"]["WXPYTHON_PATH"]

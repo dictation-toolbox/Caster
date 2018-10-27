@@ -1,6 +1,8 @@
-from difflib import SequenceMatcher
+import os
 from subprocess import Popen
 import time
+import threading
+import shlex
 
 from dragonfly import (Function, Key, BringApp, Text, WaitWindow, Dictation, Choice,
                        Grammar, MappingRule, Paste)
@@ -22,7 +24,7 @@ grammar = Grammar('development')
 
 
 def experiment():
-    '''this function is for tests'''
+    '''This function is for test'''
 
 
 #     try:
@@ -112,15 +114,19 @@ def bring_test():
     except Exception:
         utilities.simple_log()
 
+def launch_url(url):
+    command = utilities.default_browser_command()
+    if not command:
+        threading.Thread(target=os.startfile, args=(url,)).start()
+    else:
+        path = command.replace('%1', url)
+        Popen(shlex.split(path))
 
 class DevelopmentHelp(MappingRule):
     mapping = {
         # caster development tools
-        "(show | open) documentation":
-            BringApp(settings.SETTINGS["paths"]["DEFAULT_BROWSER_PATH"]) +
-            WaitWindow(executable=settings.get_default_browser_executable()) +
-            Key('c-t') + WaitWindow(title="New Tab") +
-            Text('http://dragonfly.readthedocs.org/en/latest') + Key('enter'),
+        "(show | open) <url> documentation":
+            Function(launch_url),
         "open natlink folder":
             R(BringApp("C:/Windows/explorer.exe",
                        settings.SETTINGS["paths"]["BASE_PATH"].replace("/", "\\")),
@@ -145,7 +151,11 @@ class DevelopmentHelp(MappingRule):
         Choice("filetype", {
             "java": "*.java",
             "python": "*.py",
-        })
+        }),
+        Choice("url", {
+            "caster": "https://caster.readthedocs.io/en/latest/",
+            "dragonfly": "https://dragonfly2.readthedocs.io/en/latest/",
+        }),
     ]
     defaults = {"text": ""}
 
