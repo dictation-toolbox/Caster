@@ -1,8 +1,6 @@
-[original Gist](https://gist.github.com/chilimangoes/f6ae51ca53d96a19a46c45ecd4b0d296)
+[Original Gist](https://gist.github.com/chilimangoes/f6ae51ca53d96a19a46c45ecd4b0d296)
 
-In the following examples, a comma separates commands that can be strung together into a single utterance,
-while a semicolon separates commands that must be said as separate utterances (because either the previous
-or next phrase is not a CCR command).
+In the following examples, a comma separates commands that can be strung together into a single utterance, while a semicolon separates commands that must be said as separate utterances (because either the previous or next phrase is not a CCR command).
 
 ## Example 1:
 
