@@ -1,11 +1,10 @@
 # Contributing
 
-*How can I help?*
+_How can I help?_
 
 1. **Write code.** There is [a lot which needs to be done](https://github.com/synkarius/caster/issues). If you can program in Python, please write some code. Note that all pull requests should be sent to the "develop" branch (see the [Caster GitHub Workflow](#caster-github-workflow) section below).
 2. **Write documentation.** The [ReadTheDocs page](http://caster.readthedocs.org/en/latest/) is pretty sparse. (Everything on [the wiki](https://github.com/synkarius/caster/wiki) will be getting moved to the ReadTheDocs, so create new docs as .MD files.)
 3. **Speak.** Tell others who might be interested in Caster. Join our discussions on the issues page and [Gitter](https://gitter.im/synkarius/caster). The more the merrier, and your thoughts are welcome and encouraged.
-
 
 ## Caster GitHub Workflow
 
@@ -17,7 +16,6 @@ This guide assumes that you have already forked the Caster repository, cloned yo
     git clone https://github.com/{YOUR-USER-NAME}/caster/
     cd caster
     git remote add upstream https://github.com/synkarius/caster/
-
 
 ### Prepare a feature branch for your pull request
 
@@ -31,18 +29,15 @@ Create a new branch for your PR:
 
 Where **`pr-feature-name`** is the name you want to give to your new feature branch.
 
-
 ### Make your changes and commit them to your PR branch:
 
     edit somefile.txt
     edit anotherfile.cpp
     git commit -a -m "Made some changes..."
 
-
 ### Push your PR branch up to your GitHub fork:
 
     git push origin pr-feature-name
-
 
 ### Open a pull request
 
