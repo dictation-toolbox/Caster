@@ -136,8 +136,8 @@
 | `(lock Dragon / deactivate)` | `dictation mode`    | `right point` |
 | `(number/numbers) mode`      | `fix dragon double` | `scratch`     |
 | `center point`               | `left point`        | `spell mode`  |
-| `com off`                    | `normal mode`       | ``            |
-| `com on`                     | `reboot dragon`     | ``            |
+| `com off`                    | `normal mode`       |               |
+| `com on`                     | `reboot dragon`     |               |
 
 # Eclipse
 
@@ -185,7 +185,7 @@
 | `[add] bookmark`   | `show downloads` | `super refresh` |
 | `developer tools`  | `show history`   | `zoom in <n>`   |
 | `new tab [<n>]`    | `step into`      | `zoom out <n>`  |
-| `reopen tab [<n>]` | `step out`       | ``              |
+| `reopen tab [<n>]` | `step out`       |                 |
 
 # Flash Develop
 
@@ -221,8 +221,8 @@
 | `bug fix commit <n>`          | `reference commit <n>`     | `visualize`                 |
 | `checkout`                    | `remote`                   | `visualize all`             |
 | `cherry pick`                 | `remove untracked`         | `visualize file`            |
-| `commit`                      | `search recursive`         | ``                          |
-| `exit`                        | `search recursive count`   | ``                          |
+| `commit`                      | `search recursive`         |                             |
+| `exit`                        | `search recursive count`   |                             |
 
 # Gitter
 
@@ -289,7 +289,7 @@
 | `(un / on) comment line`  | `go to line`     | `step into`       |
 | `[toggle] breakpoint`     | `next bookmark`  | `step out [of]`   |
 | `[toggle] full screen`    | `next tab [<n>]` | `step over [<n>]` |
-| `close tab [<n>]`         | `prior bookmark` | ``                |
+| `close tab [<n>]`         | `prior bookmark` |                   |
 
 # Sublime
 
@@ -298,7 +298,7 @@
 | `comment block` | `go to symbol`  | `set bookmark`    |
 | `comment line`  | `go to word`    | `transform lower` |
 | `full screen`   | `next bookmark` | `transform upper` |
-| `go to line`    | `open file`     | ``                |
+| `go to line`    | `open file`     |                   |
 
 # Visual Studio
 
