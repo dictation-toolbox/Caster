@@ -1,4 +1,4 @@
-# CCR languages quick reference
+# CCR Languages Quick Reference
 
 A quick reference guide for the language-specific commands included with Caster. Use the `"enable <language>"` command to activate a particular module.
 
@@ -87,7 +87,7 @@ A quick reference guide for the language-specific commands included with Caster.
 | convert to integer        | `Convert.ToInt32()`             | static           | `static`                                                     |
 | convert to string         | `Convert.ToString()`            | string           | `string`                                                     |
 | default                   | `default:`                      | struct           | `struct TOKEN {}`                                            |
-| do loop                   | `do {`<br/>`}`                  | switch           | `switch(){`<br/>`case : break;`<br/>`default: break;`<br/>`}` |
+| do loop                   | `do {`<br/>`}`                  | switch           | `switch(){`<br/>`case : break;`<br/>`default: break;`<br/>`}`|
 | double                    | `double`                        | ternary          | `()?t:f`                                                     |
 | enum                      | `enum TOKEN {}`                 | using            | `using`                                                      |
 | for each                  | `foreach (TOKEN in Collection)` | value false      | `false`                                                      |
@@ -116,7 +116,7 @@ A quick reference guide for the language-specific commands included with Caster.
 | double                    | `Float`                   | shells           | `else`                                                       |
 | dynamic                   | `Dynamic`                 | static           | `static`                                                     |
 | far / variable            | `var`                     | string           | `String`                                                     |
-| for each                  | `for (TOKEN in TOKEN)`    | switch           | `switch(){`<br/>`case : TOKEN;`<br/>`default: TOKEN;`<br/>`}` |
+| for each                  | `for (TOKEN in TOKEN)`    | switch           | `switch(){`<br/>`case : TOKEN;`<br/>`default: TOKEN;`<br/>`}`|
 | for loop                  | `for (i in 0...TOKEN)`    | this             | `this`                                                       |
 | function                  | `function`                | value false      | `false`                                                      |
 | get class                 | `Type.getClass()`         | value not        | `null`                                                       |
@@ -162,7 +162,6 @@ A quick reference guide for the language-specific commands included with Caster.
 | decorator                          | `<decorator>`                  | select                         | `<select>`<br/>`</select>`                                      |
 | defining instance                  | `<dfn></dfn>`                  | semantics / italics            | `<i></i>`                                                       |
 | deleted text / deleted / replaced  | `<del></del>`                  | shadow                         | `<shadow>`                                                      |
-| `|`                                | small | `<small></small>`              |
 | description / DD                   | `<dd>`                         | source                         | `<source >`                                                     |
 | details                            | `<details>`                    | span                           | `<span></span>`                                                 |
 | dialog                             | `<dialog>`                     | strong                         | `<strong></strong>`                                             |
@@ -185,7 +184,6 @@ A quick reference guide for the language-specific commands included with Caster.
 | inline frame close                 | `</iframe>`                    | template                       | `<template>`                                                    |
 | input                              | `<input >`                     | text area                      | `<textarea >`                                                   |
 | inserted text / inserted           | `<ins></ins>`                  | text area close                | `</textarea>`                                                   |
-| `|`                                | time  | `<time></time>`                |
 | isolate / bi-directional isolation | `<bdi></bdi>`                  | title                          | `<title></title>`                                               |
 | keyboard input                     | `<kbd></kbd>`                  | track                          | `<track >`                                                      |
 | keygen                             | `<keygen >`                    | underline                      | `<u></u>`                                                       |
@@ -193,8 +191,8 @@ A quick reference guide for the language-specific commands included with Caster.
 | label close                        | `</label>`                     | variable                       | `<var></var>`                                                   |
 | legend                             | `<legend>`                     | video                          | `<video >`                                                      |
 | link                               | `<link >`                      | video close                    | `</video>`                                                      |
-| list element / DL                  | `<dl>`                         |                                |                                                               |
-
+| list element / DL                  | `<dl>`                         | small                          | `<small></small>`                                               |
+| time                               | `<time></time>`                |                                |
 # Java
 
 | Command        | Output       | Command            | Output                                                       |
@@ -244,7 +242,7 @@ Commands are designed to follow LaTeX syntax as closely as possible, for example
 | Command                      | Output                                            | Command                   | Output      |
 | ---------------------------- | ------------------------------------------------- | ------------------------- | ----------- |
 | `[use] package [<packages>]` | `\usepackage{<packages>}`                         | insert quote              | \`\`''      |
-| [use] package bib latex      | `\usepackage[style=authoryear]{biblatex}`         | math fraction             | `\frac{}{}` |
+| `[use] package bib latex`    | `\usepackage[style=authoryear]{biblatex}`         | math fraction             | `\frac{}{}` |
 | add comment                  | `%`                                               | subscript                 | `_{}`       |
 | `begin <element>`            | `\begin{<element>}` </br> </br> `\end{<element>}` | superscript               | `^{}`       |
 | `insert <command>`           | `\<command>{}`                                    | `symbol [<big>] <symbol>` | `\<symbol>` |
@@ -331,7 +329,6 @@ If you are having trouble with over-recognition (R commands appearing where you 
 
 | Command             | Output               | Command            | Output              |
 | ------------------- | -------------------- | ------------------ | ------------------- |
-| `|`                 | length | `length()`         |
 | (LM / linear model) | `lm()`               | library            | `library()`         |
 | arrange             | `arrange()`          | list               | `list()`            |
 | as character        | `as.character()`     | mean               | `mean()`            |
@@ -352,60 +349,60 @@ If you are having trouble with over-recognition (R commands appearing where you 
 | install packages    | `install.packages()` | trim white space   | `trimws()`          |
 | is NA               | `is.na()`            | ungroup            | `ungroup()`         |
 | left join           | `left_join()`        | vector             | `c()`               |
+| length              | `length()`           |                    |                     |
 
 ## Graph plotting functions
 
 Should all be prefixed with `graph`
-Command | Output | Command | Output
----|---|---|---
-||line [plot]|`geom_line()`
-aesthetics|`aes()`|path [plot]|`geom_path()`
-column [plot]|`geom_col()`|plot|`ggplot()`
-density [plot]|`geom_density()`|point [plot]|`geom_point()`
-ex label|`xlab()`|save|`ggsave()`
-ex limit|`xlim()`|smooth [plot]|`geom_smooth()`
-facet grid|`facet_grid()`|theme minimal|`theme_minimal()`
-histogram [plot]|`geom_histogram()`|why label|`ylab()`
-labels|`labs()`|why limit|`ylim()`
+| Command             | Output               | Command            | Output              |
+| ------------------- | -------------------- | ------------------ | --------------------|
+| path [plot]         | `geom_path()`        | density [plot]     | `geom_density()`    |
+| line [plot]         | `geom_line()`        | smooth [plot]      | `geom_smooth()`     |
+| column [plot]       | `geom_col()`         | histogram [plot]   | `geom_histogram()`  |                 
+| point [plot]        | `geom_point()`       | ex label           | `xlab()`            |
+| save                | `ggsave()`           | ex limit           | `xlim()`            |
+| facet grid          | `facet_grid()`       | plot               | `ggplot()`          |   
+| why label           | `ylab()`             | labels             | `labs()`            |
+| theme minimal       | `theme_minimal()`    |                    |                     |
 
 ## Pacman functions
 
 Should all be prefixed with `pack`
-Command | Output | Command | Output
----|---|---|---
-`|`|install version|`p_install_version()`
-install|`p_install()`|load|`p_load()`
-install hub|`p_install_gh()`|unload|`p_unload()`
-install temp|`p_temp()`|update|`p_update()`
+| Command             | Output               | Command            | Output              |
+| ------------------- | -------------------- | ------------------ | --------------------|
+| install version     | `p_install_version()`| load               | `p_load()`          |
+| nstall              | `p_install()`        | install hub        | `p_install_gh()`    |
+| unload              | `p_unload()`         | update             | `p_update()`        |
+| install temp        | `p_temp()`           |                    |                     |
 
 # Rust
 
-| Command                                | Output                                   | Command           | Output                                       |
-| -------------------------------------- | ---------------------------------------- | ----------------- | -------------------------------------------- |
-| `[unsigned] integer [<ibits>]`         | `[u32] i32`                              | lodge and         | `&&`                                         |
-| add comment                            | `//`                                     | lodge not         | `!`                                          |
-| `array [of] size <n>`                  | `[TOKEN; 0..1000]`                       | lodge or          | &#124; &#124;                                |
-| `bind [mute]`                          | `let [mut ]`                             | long comment      | `///`                                        |
-| boolean                                | `bool`                                   | macro assertion   | `assert_eq!()`                               |
-| brace pan                              | ``|macro format string|`format!()       |
-| breaker                                | `break;`                                 | macro panic       | `panic!()`                                   |
-| case of                                | `=>`                                     | macro vector      | `vec![]`                                     |
-| class                                  | `+`                                      | namespace         | `::`                                         |
-| convert to floating point              | `parse::<f64>().unwrap()`                | of type           | `:`                                          |
-| convert to integer                     | `parse::<i32>().unwrap()`                | print to console  | `println!()`                                 |
-| convert to string                      | `to_string()`                            | `refer to [mute]` | `&[mut ]`                                    |
-| default                                | `_`                                      | return            | `return`                                     |
-| do loop                                | `while {TOKEN;TOKEN}{}`                  | shells            | `else {}`                                    |
-| `enumerate for each [<a> <b>]`         | `for (i, j) in TOKEN.enumerate() {}`     | static            | `static`                                     |
-| `enumerate for loop [of <a> [in <n>]]` | `for (i, TOKEN) in (0..1).enumerate(){}` | string            | `String`                                     |
-| `float [<fbits>]`                      | `f32`                                    | switch            | `match`                                      |
-| for each                               | `for TOKEN in TOKEN {}`                  | ternary           | `if TOKEN == TOKEN { TOKEN } else { TOKEN }` |
-| `for loop [of <a> [in <n>]]`           | `for i in 0..1 {}`                       | value false       | `false`                                      |
-| `function [<return>]`                  | `fn TOKEN(TOKEN) [-> TOKEN {}]`          | value not         | `None`                                       |
-| iffae                                  | `if {}`                                  | value some        | `Some()`                                     |
-| import                                 | `use`                                    | value true        | `true`                                       |
-| infinite loop                          | `loop {}`                                | while loop        | `while TOKEN {}`                             |
-| lifetime                               | `''`                                     |                   |                                            |
+| Command                                | Output                                   | Command            | Output                                       |
+| -------------------------------------- | ---------------------------------------- | ------------------ | -------------------------------------------- |
+| `[unsigned] integer [<ibits>]`         | `[u32] i32`                              | lodge and          | `&&`                                         |
+| add comment                            | `//`                                     | lodge not          | `!`                                          |
+| `array [of] size <n>`                  | `[TOKEN; 0..1000]`                       | lodge or           | &#124; &#124;                                |
+| `bind [mute]`                          | `let [mut ]`                             | long comment       | `///`                                        |
+| boolean                                | `bool`                                   | macro assertion    | `assert_eq!()`                               |
+| brace pan                              | ` `                                      | macro format string| `format!()`                                  |                                            
+| breaker                                | `break;`                                 | macro panic        | `panic!()`                                   |
+| case of                                | `=>`                                     | macro vector       | `vec![]`                                     |
+| class                                  | `+`                                      | namespace          | `::`                                         |
+| convert to floating point              | `parse::<f64>().unwrap()`                | of type            | `:`                                          |
+| convert to integer                     | `parse::<i32>().unwrap()`                | print to console   | `println!()`                                 |
+| convert to string                      | `to_string()`                            | `refer to [mute]`  | `&[mut ]`                                    |
+| default                                | `_`                                      | return             | `return`                                     |
+| do loop                                | `while {TOKEN;TOKEN}{}`                  | shells             | `else {}`                                    |
+| `enumerate for each [<a> <b>]`         | `for (i, j) in TOKEN.enumerate() {}`     | static             | `static`                                     |
+| `enumerate for loop [of <a> [in <n>]]` | `for (i, TOKEN) in (0..1).enumerate(){}` | string             | `String`                                     |
+| `float [<fbits>]`                      | `f32`                                    | switch             | `match`                                      |
+| for each                               | `for TOKEN in TOKEN {}`                  | ternary            | `if TOKEN == TOKEN { TOKEN } else { TOKEN }` |
+| `for loop [of <a> [in <n>]]`           | `for i in 0..1 {}`                       | value false        | `false`                                      |
+| `function [<return>]`                  | `fn TOKEN(TOKEN) [-> TOKEN {}]`          | value not          | `None`                                       |
+| iffae                                  | `if {}`                                  | value some         |  `Some()`                                    |
+| import                                 | `use`                                    | value true         | `true`                                       |
+| infinite loop                          | `loop {}`                                | while loop         | `while TOKEN {}`                             |
+| lifetime                               | `''`                                     |                    |                                              |
 
 # SQL
 
@@ -452,6 +449,6 @@ install temp|`p_temp()`|update|`p_update()`
 | alternate                   | `elsif TOKEN then`                                                                  | process                       | `TOKEN: process()`<br/>`begin`<br/>`TOKEN`<br/>`end process;`                             |
 | `binary [<amount>] <digit>` | `01`                                                                                | shells                        | `else`                                                                                    |
 | case of                     | `case TOKEN is`                                                                     | switch                        | `case TOKEN is`<br/>`when 'TOKEN' => TOKEN`<br/>`end case;`                               |
-| `|`                         | type | `type :`                      |
-| component                   | `TOKEN: TOKEN`<br/>`(`<br/>`port map(`<br/>`TOKEN <= TOKEN,`<br/><br/>`)`<br/>`);`  | when                          | `when`                                                                                    |
-| component declaration       | `component TOKEN is`<br/>`port (TOKEN: in std_logic;`<br/>`);`<br/>`end component;` |                               |                                                                                         |
+| type                        | `type :`                                                                            | when                          | `when`                                                                                    |
+| component                   | `TOKEN: TOKEN`<br/>`(`<br/>`port map(`<br/>`TOKEN <= TOKEN,`<br/><br/>`)`<br/>`);`  | component declaration         | `component TOKEN is`<br/>`port (TOKEN: in std_logic;`<br/>`);`<br/>`end component;`       |                                                                                            |
+| component declaration       | `component TOKEN is`<br/>`port (TOKEN: in std_logic;`<br/>`);`<br/>`end component;` |                               |                                                                                           |
