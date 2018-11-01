@@ -3,11 +3,13 @@ Created on 2018-05-27 from javascript.py
 
 @author: comodoro
 '''
+
 from caster.lib import control
+from caster.lib.actions import Key, Text
 from caster.lib.ccr.standard import SymbolSpecs
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
-from dragonfly import Key, Text
+
 
 class Dart(MergeRule):
 

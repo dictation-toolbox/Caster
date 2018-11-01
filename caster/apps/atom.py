@@ -3,11 +3,13 @@ __author__ = 'LexiconCode'
 Command-module for Atom
 Official Site "https://atom.io/"
 """
-from dragonfly import (AppContext, Dictation, Grammar, IntegerRef, Key, MappingRule,
-                       Pause, Repeat, Text)
+from dragonfly import (Dictation, Grammar, IntegerRef, MappingRule, Pause,
+                       Repeat)
 from dragonfly.actions.action_mimic import Mimic
 
 from caster.lib import control, settings
+from caster.lib.actions import Key, Text
+from caster.lib.context import AppContext
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge import gfilter
 from caster.lib.dfplus.merge.mergerule import MergeRule

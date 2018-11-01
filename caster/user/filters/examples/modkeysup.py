@@ -3,8 +3,8 @@ Created on Sep 27, 2015
 
 @author: synkarius
 '''
-from dragonfly.actions.action_key import Key
 
+from caster.lib.actions import Key
 from caster.lib.dfplus.merge.mergepair import MergeInf
 from caster.lib.dfplus.state.short import R
 

@@ -3,10 +3,9 @@ Created on Sep 2, 2015
 
 @author: synkarius
 '''
-from dragonfly.actions.action_key import Key
-from dragonfly.actions.action_text import Text
 
 from caster.lib import control
+from caster.lib.actions import Key, Text
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 

@@ -8,9 +8,10 @@ from ctypes import windll
 from subprocess import Popen
 
 import dragonfly
+from dragonfly import Choice, Clipboard, monitors
 from caster.asynch.mouse.legion import LegionScanner
 from caster.lib import control, settings, utilities
-from dragonfly import Choice, Clipboard, Key, Mouse, Text, monitors
+from caster.lib.actions import Key, Text, Mouse
 
 DIRECTION_STANDARD = {
     "sauce [E]": "up",

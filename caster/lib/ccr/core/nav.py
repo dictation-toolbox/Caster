@@ -3,10 +3,11 @@ Created on Sep 1, 2015
 
 @author: synkarius
 '''
-from dragonfly import Repeat, Function, Key, Dictation, Choice, Mouse, MappingRule
+from dragonfly import Repeat, Function, Dictation, Choice, MappingRule
 
 from caster.lib import context, navigation, alphanumeric, textformat
 from caster.lib import control
+from caster.lib.actions import Key, Mouse
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge.ccrmerger import CCRMerger
 from caster.lib.dfplus.merge.mergerule import MergeRule

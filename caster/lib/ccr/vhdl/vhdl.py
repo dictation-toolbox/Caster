@@ -3,10 +3,12 @@ Created on 18 Mar 2018
 
 @author: gerrish
 '''
-from dragonfly import Key, Mimic, Text, MappingRule, Function, Choice
-from caster.lib.dfplus.additions import IntegerRefST
+
+from dragonfly import Mimic, MappingRule, Function, Choice
 from caster.lib import control
+from caster.lib.actions import Key, Text
 from caster.lib.ccr.standard import SymbolSpecs
+from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 

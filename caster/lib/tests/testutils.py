@@ -1,11 +1,10 @@
-from dragonfly.actions.action_key import Key
 from dragonfly.actions.action_pause import Pause
 from dragonfly.actions.action_playback import Playback
 from dragonfly.actions.action_startapp import BringApp
-from dragonfly.actions.action_text import Text
 from dragonfly.actions.action_waitwindow import WaitWindow
 
 from caster.lib import context
+from caster.lib.actions import Key, Text
 
 #     get_notepad()
 #     notepad_message("\nStarting Tests")

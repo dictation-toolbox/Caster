@@ -7,11 +7,11 @@ import random
 import re
 import time
 
-from dragonfly.actions.action_text import Text
 from dragonfly.grammar.elements import Choice
 from dragonfly.grammar.grammar_base import Grammar
 
 from caster.lib import settings
+from caster.lib.actions import Text
 from caster.lib.ccr.core.alphabet import Alphabet
 from caster.lib.ccr.core.nav import Navigation
 from caster.lib.ccr.core.numbers import Numbers

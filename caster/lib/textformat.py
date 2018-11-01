@@ -1,8 +1,7 @@
 import time
 import sys
 
-from dragonfly.actions.action_key import Key
-from dragonfly.actions.action_text import Text
+from caster.lib.actions import Key, Text
 from dragonfly import Clipboard
 
 from caster.lib import settings, context

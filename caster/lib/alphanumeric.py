@@ -1,6 +1,7 @@
-from dragonfly import (Key, Text, Choice)
+from dragonfly import Choice
 
 from caster.lib import settings
+from caster.lib.actions import Key, Text
 
 
 def get_alphabet_choice(spec):

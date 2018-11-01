@@ -4,9 +4,10 @@ Created on May 23, 2017
 @author: shippy
 '''
 
-from dragonfly import Key, Text, Dictation, MappingRule, Choice
+from dragonfly import Dictation, MappingRule, Choice
 
 from caster.lib import control
+from caster.lib.actions import Key, Text
 from caster.lib.ccr.standard import SymbolSpecs
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R

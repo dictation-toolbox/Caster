@@ -1,8 +1,8 @@
-from dragonfly.actions.action_key import Key
 from dragonfly.grammar.rule_mapping import MappingRule
 
 from caster.apps import eclipse
 from caster.apps.eclipse import EclipseCCR
+from caster.lib.actions import Key
 from caster.lib.ccr.bash.bash import Bash
 from caster.lib.ccr.java.java import Java
 from caster.lib.ccr.python.python import Python
