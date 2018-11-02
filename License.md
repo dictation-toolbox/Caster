@@ -15,7 +15,7 @@ GNU LESSER GENERAL PUBLIC LICENSE
 the terms and conditions of version 3 of the GNU General Public
 License, supplemented by the additional permissions listed below.
 
-  0. Additional Definitions.
+    0. Additional Definitions.
 
   As used herein, "this License" refers to version 3 of the GNU Lesser
 General Public License, and the "GNU GPL" refers to version 3 of the GNU
@@ -174,7 +174,7 @@ Library.
 ##Licenses for Non-Original Code
 Below is a list of all the non-original code used in this work, and the licenses each respective piece uses.
 
-* Dragonfly: LGPL3
-* pywin32: Python Software Foundation License
-* Pillow: PIL Software License
-* TiRG by trg787: Public Domain License, see (github.com/synkarius/tirg-dll)
+- Dragonfly: LGPL3
+- pywin32: Python Software Foundation License
+- Pillow: PIL Software License
+- TiRG by trg787: Public Domain License, see (github.com/synkarius/tirg-dll)
