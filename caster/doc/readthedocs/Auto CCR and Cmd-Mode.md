@@ -2,7 +2,7 @@
 
 Caster can automatically turn CCR modules on and off based on the foreground window, as well as command mode. There's a section of the settings file that looks like the following which must be modified to activate this feature:
 
-```python
+```json
 "auto_com": {
     "active": true,
     "change_language": true,
