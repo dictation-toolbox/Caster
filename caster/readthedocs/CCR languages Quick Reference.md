@@ -70,60 +70,60 @@ A quick reference guide for the language-specific commands included with Caster.
 
 # C&#35;
 
-| Command                   | Output                          | Command          | Output                                                       |
-| ------------------------- | ------------------------------- | ---------------- | ------------------------------------------------------------ |
-| (lambda/goes to)          | `=>`                            | internal         | `internal`                                                   |
-| add comment               | `//`                            | list             | `List<>`                                                     |
-| array                     | `Brackets`                      | lodge and        | `&&`                                                         |
-| big integer               | `Integer`                       | lodge not        | `!`                                                          |
-| breaker                   | `break;`                        | lodge or         | &#124; &#124;                                                |
-| case of                   | `case :`                        | long comment     | `/**/`                                                       |
-| cast double               | `(double)`                      | new new          | `new`                                                        |
-| cast integer              | `(int)`                         | print to console | `Console.WriteLine()`                                        |
-| character                 | `char`                          | private          | `private`                                                    |
-| class                     | `class TOKEN{}`                 | public           | `public`                                                     |
-| constant                  | `const`                         | return           | `return`                                                     |
-| convert to floating point | `Convert.ToDouble()`            | shells           | `else{`<br/>`}`                                              |
-| convert to integer        | `Convert.ToInt32()`             | static           | `static`                                                     |
-| convert to string         | `Convert.ToString()`            | string           | `string`                                                     |
-| default                   | `default:`                      | struct           | `struct TOKEN {}`                                            |
-| do loop                   | `do {`<br/>`}`                  | switch           | `switch(){`<br/>`case : break;`<br/>`default: break;`<br/>`}`|
-| double                    | `double`                        | ternary          | `()?t:f`                                                     |
-| enum                      | `enum TOKEN {}`                 | using            | `using`                                                      |
-| for each                  | `foreach (TOKEN in Collection)` | value false      | `false`                                                      |
-| for loop                  | `for (int i=0; i<TOKEN; i++)`   | value not        | `null`                                                       |
-| function                  | `TOKEN TOKEN(){}`               | value true       | `true`                                                       |
-| iffae                     | `if(){`<br/>`}`                 | var              | `var TOKEN = TOKEN;`                                         |
-| integer                   | `int`                           | while loop       | `while ()`                                                   |
-| interface                 | `interface TOKEN {}`            |                  |                                                              |
+| Command                   | Output                          | Command          | Output                                                        |
+| ------------------------- | ------------------------------- | ---------------- | ------------------------------------------------------------- |
+| (lambda/goes to)          | `=>`                            | internal         | `internal`                                                    |
+| add comment               | `//`                            | list             | `List<>`                                                      |
+| array                     | `Brackets`                      | lodge and        | `&&`                                                          |
+| big integer               | `Integer`                       | lodge not        | `!`                                                           |
+| breaker                   | `break;`                        | lodge or         | &#124; &#124;                                                 |
+| case of                   | `case :`                        | long comment     | `/**/`                                                        |
+| cast double               | `(double)`                      | new new          | `new`                                                         |
+| cast integer              | `(int)`                         | print to console | `Console.WriteLine()`                                         |
+| character                 | `char`                          | private          | `private`                                                     |
+| class                     | `class TOKEN{}`                 | public           | `public`                                                      |
+| constant                  | `const`                         | return           | `return`                                                      |
+| convert to floating point | `Convert.ToDouble()`            | shells           | `else{`<br/>`}`                                               |
+| convert to integer        | `Convert.ToInt32()`             | static           | `static`                                                      |
+| convert to string         | `Convert.ToString()`            | string           | `string`                                                      |
+| default                   | `default:`                      | struct           | `struct TOKEN {}`                                             |
+| do loop                   | `do {`<br/>`}`                  | switch           | `switch(){`<br/>`case : break;`<br/>`default: break;`<br/>`}` |
+| double                    | `double`                        | ternary          | `()?t:f`                                                      |
+| enum                      | `enum TOKEN {}`                 | using            | `using`                                                       |
+| for each                  | `foreach (TOKEN in Collection)` | value false      | `false`                                                       |
+| for loop                  | `for (int i=0; i<TOKEN; i++)`   | value not        | `null`                                                        |
+| function                  | `TOKEN TOKEN(){}`               | value true       | `true`                                                        |
+| iffae                     | `if(){`<br/>`}`                 | var              | `var TOKEN = TOKEN;`                                          |
+| integer                   | `int`                           | while loop       | `while ()`                                                    |
+| interface                 | `interface TOKEN {}`            |                  |                                                               |
 
 # Haxe
 
-| Command                   | Output                    | Command          | Output                                                       |
-| ------------------------- | ------------------------- | ---------------- | ------------------------------------------------------------ |
-| add comment               | `//`                      | integer          | `Int`                                                        |
-| anon funk                 | `->`                      | lodge and        | `&&`                                                         |
-| array of                  | `Array<TOKEN>()`          | lodge not        | `!`                                                          |
-| boolean                   | `Bool`                    | lodge or         | &#124; &#124;                                                |
-| breaker                   | `break;`                  | long comment     | `/**/`                                                       |
-| case of                   | `case :`                  | map of           | `Map<TOKEN, TOKEN>()`                                        |
-| class                     | `class`                   | new new          | `new`                                                        |
-| convert to floating point | `Std.parseFloat()`        | print to console | `trace()`                                                    |
-| convert to integer        | `Std.int()`               | private          | `private`                                                    |
-| convert to string         | `Std.string()`            | public           | `public`                                                     |
-| default                   | `default:`                | return           | `return`                                                     |
-| do loop                   | `do TOKEN while(`<br/>`)` | safe cast        | `cast (TOKEN, TOKEN)`                                        |
-| double                    | `Float`                   | shells           | `else`                                                       |
-| dynamic                   | `Dynamic`                 | static           | `static`                                                     |
-| far / variable            | `var`                     | string           | `String`                                                     |
-| for each                  | `for (TOKEN in TOKEN)`    | switch           | `switch(){`<br/>`case : TOKEN;`<br/>`default: TOKEN;`<br/>`}`|
-| for loop                  | `for (i in 0...TOKEN)`    | this             | `this`                                                       |
-| function                  | `function`                | value false      | `false`                                                      |
-| get class                 | `Type.getClass()`         | value not        | `null`                                                       |
-| get name                  | `Type.getClassName()`     | value true       | `true`                                                       |
-| iffae                     | `if()`                    | void             | `Void`                                                       |
-| import                    | `import`                  | while loop       | `while ()`                                                   |
-| instance of               | `Std.is()`                |                  |                                                              |
+| Command                   | Output                    | Command          | Output                                                        |
+| ------------------------- | ------------------------- | ---------------- | ------------------------------------------------------------- |
+| add comment               | `//`                      | integer          | `Int`                                                         |
+| anon funk                 | `->`                      | lodge and        | `&&`                                                          |
+| array of                  | `Array<TOKEN>()`          | lodge not        | `!`                                                           |
+| boolean                   | `Bool`                    | lodge or         | &#124; &#124;                                                 |
+| breaker                   | `break;`                  | long comment     | `/**/`                                                        |
+| case of                   | `case :`                  | map of           | `Map<TOKEN, TOKEN>()`                                         |
+| class                     | `class`                   | new new          | `new`                                                         |
+| convert to floating point | `Std.parseFloat()`        | print to console | `trace()`                                                     |
+| convert to integer        | `Std.int()`               | private          | `private`                                                     |
+| convert to string         | `Std.string()`            | public           | `public`                                                      |
+| default                   | `default:`                | return           | `return`                                                      |
+| do loop                   | `do TOKEN while(`<br/>`)` | safe cast        | `cast (TOKEN, TOKEN)`                                         |
+| double                    | `Float`                   | shells           | `else`                                                        |
+| dynamic                   | `Dynamic`                 | static           | `static`                                                      |
+| far / variable            | `var`                     | string           | `String`                                                      |
+| for each                  | `for (TOKEN in TOKEN)`    | switch           | `switch(){`<br/>`case : TOKEN;`<br/>`default: TOKEN;`<br/>`}` |
+| for loop                  | `for (i in 0...TOKEN)`    | this             | `this`                                                        |
+| function                  | `function`                | value false      | `false`                                                       |
+| get class                 | `Type.getClass()`         | value not        | `null`                                                        |
+| get name                  | `Type.getClassName()`     | value true       | `true`                                                        |
+| iffae                     | `if()`                    | void             | `Void`                                                        |
+| import                    | `import`                  | while loop       | `while ()`                                                    |
+| instance of               | `Std.is()`                |                  |                                                               |
 
 # HTML
 
@@ -192,20 +192,21 @@ A quick reference guide for the language-specific commands included with Caster.
 | legend                             | `<legend>`                     | video                          | `<video >`                                                      |
 | link                               | `<link >`                      | video close                    | `</video>`                                                      |
 | list element / DL                  | `<dl>`                         | small                          | `<small></small>`                                               |
-| time                               | `<time></time>`                |                                |
+| time                               | `<time></time>`                |                                |                                                                 |
+
 # Java
 
-| Command        | Output       | Command            | Output                                                       |
-| -------------- | ------------ | ------------------ | ------------------------------------------------------------ |
+| Command        | Output       | Command            | Output                                                                                                                                                                                  |
+| -------------- | ------------ | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | add comment    | `//`         | iterate and remove | `for (Iterator<TOKEN> iterator = TOKEN.iterator();`<br/>`iterator.hasNext();) {`<br/>`String string = iterator.next();`<br/>`if (CONDITION) {`<br/>`iterator.remove();`<br/>`}`<br/>`}` |
-| array list     | `ArrayList`  | lodge and          | `&&`                                                         |
-| arrow          | `->`         | lodge not          | `!`                                                          |
-| big double     | `Double`     | lodge or           | &#124; &#124;                                                |
-| big integer    | `Integer`    | long comment       | `/**/`                                                       |
-| boolean        | `boolean`    | new new            | `new`                                                        |
-| breaker        | `break;`     | print to console   | `java.lang.System.out.println()`                             |
-| case of        | `case :`     | private            | `private`                                                    |
-| cast to double | `(double)()` | public             | `public`                                                     |
+| array list     | `ArrayList`  | lodge and          | `&&`                                                                                                                                                                                    |
+| arrow          | `->`         | lodge not          | `!`                                                                                                                                                                                     |
+| big double     | `Double`     | lodge or           | &#124; &#124;                                                                                                                                                                           |
+| big integer    | `Integer`    | long comment       | `/**/`                                                                                                                                                                                  |
+| boolean        | `boolean`    | new new            | `new`                                                                                                                                                                                   |
+| breaker        | `break;`     | print to console   | `java.lang.System.out.println()`                                                                                                                                                        |
+| case of        | `case :`     | private            | `private`                                                                                                                                                                               |
+| cast to double | `(double)()` | public             | `public`                                                                                                                                                                                |
 
 # Javascript
 
@@ -269,14 +270,14 @@ Commands are designed to follow LaTeX syntax as closely as possible, for example
 
 # Prolog
 
-| Command             | Output | Command | Output   |
-| ------------------- | ------ | ------- | -------- |
-| Anonymous           | `_`    | Rule    | `() :-.` |
-| Close Block comment | `*\`   | comment | `%`      |
-| Fail                | `Fail` | cut     | `!`      |
-| Not                 | `\+`   | iffae   | `( ; )`  |
-| Open Block comment  | `/*`   | implies | `:-`     |
-| Or                  | `;`    |         |          |
+| Command             | Output               | Command | Output   |
+| ------------------- | -------------------- | ------- | -------- |
+| Anonymous           | `_`                  | Rule    | `() :-.` |
+| Close Block comment | `*\`                 | comment | `%`      |
+| Fail                | `Fail`               | cut     | `!`      |
+| Not                 | `\+`                 | iffae   | `( ; )`  |
+| Open Block comment  | `/*`                 | implies | `:-`     |
+| Or                  | `;`                  |         |          |
 
 # Python
 
@@ -323,7 +324,7 @@ Commands are designed to follow LaTeX syntax as closely as possible, for example
 | import          | `library()`     | value true           | `TRUE`                        |
 | lodge and       | `&&`            | while loop           | `while ()`                    |
 
-## Core/tidyverse functions
+## Core/TidyVerse Functions
 
 If you are having trouble with over-recognition (R commands appearing where you don't want them) due to the large number of commands, consider adding a prefix to the `<function>` command - line 93 - in lib/ccr/r/r.py to increase phonetic distinctness.
 
@@ -351,40 +352,42 @@ If you are having trouble with over-recognition (R commands appearing where you 
 | left join           | `left_join()`        | vector             | `c()`               |
 | length              | `length()`           |                    |                     |
 
-## Graph plotting functions
+## Graph Plotting Functions
 
 Should all be prefixed with `graph`
-| Command             | Output               | Command            | Output              |
-| ------------------- | -------------------- | ------------------ | --------------------|
-| path [plot]         | `geom_path()`        | density [plot]     | `geom_density()`    |
-| line [plot]         | `geom_line()`        | smooth [plot]      | `geom_smooth()`     |
-| column [plot]       | `geom_col()`         | histogram [plot]   | `geom_histogram()`  |                 
-| point [plot]        | `geom_point()`       | ex label           | `xlab()`            |
-| save                | `ggsave()`           | ex limit           | `xlim()`            |
-| facet grid          | `facet_grid()`       | plot               | `ggplot()`          |   
-| why label           | `ylab()`             | labels             | `labs()`            |
-| theme minimal       | `theme_minimal()`    |                    |                     |
 
-## Pacman functions
+| Command       | Output            | Command          | Output             |
+| ------------- | ----------------- | ---------------- | ------------------ |
+| path [plot]   | `geom_path()`     | density [plot]   | `geom_density()`   |
+| line [plot]   | `geom_line()`     | smooth [plot]    | `geom_smooth()`    |
+| column [plot] | `geom_col()`      | histogram [plot] | `geom_histogram()` |
+| point [plot]  | `geom_point()`    | ex label         | `xlab()`           |
+| save          | `ggsave()`        | ex limit         | `xlim()`           |
+| facet grid    | `facet_grid()`    | plot             | `ggplot()`         |
+| why label     | `ylab()`          | labels           | `labs()`           |
+| theme minimal | `theme_minimal()` |                  |                    |
+
+## Pacman Functions
 
 Should all be prefixed with `pack`
-| Command             | Output               | Command            | Output              |
-| ------------------- | -------------------- | ------------------ | --------------------|
-| install version     | `p_install_version()`| load               | `p_load()`          |
-| nstall              | `p_install()`        | install hub        | `p_install_gh()`    |
-| unload              | `p_unload()`         | update             | `p_update()`        |
-| install temp        | `p_temp()`           |                    |                     |
+
+| Command         | Output                | Command     | Output           |
+| --------------- | --------------------- | ----------- | ---------------- |
+| install version | `p_install_version()` | load        | `p_load()`       |
+| nstall          | `p_install()`         | install hub | `p_install_gh()` |
+| unload          | `p_unload()`          | update      | `p_update()`     |
+| install temp    | `p_temp()`            |             |                  |
 
 # Rust
 
 | Command                                | Output                                   | Command            | Output                                       |
-| -------------------------------------- | ---------------------------------------- | ------------------ | -------------------------------------------- |
+| -------------------------------------- | ---------------------------------------- | -------------------| -------------------------------------------- |
 | `[unsigned] integer [<ibits>]`         | `[u32] i32`                              | lodge and          | `&&`                                         |
 | add comment                            | `//`                                     | lodge not          | `!`                                          |
 | `array [of] size <n>`                  | `[TOKEN; 0..1000]`                       | lodge or           | &#124; &#124;                                |
 | `bind [mute]`                          | `let [mut ]`                             | long comment       | `///`                                        |
 | boolean                                | `bool`                                   | macro assertion    | `assert_eq!()`                               |
-| brace pan                              | ` `                                      | macro format string| `format!()`                                  |                                            
+| brace pan                              | ` `                                      | macro format string| `format!()`                                  |
 | breaker                                | `break;`                                 | macro panic        | `panic!()`                                   |
 | case of                                | `=>`                                     | macro vector       | `vec![]`                                     |
 | class                                  | `+`                                      | namespace          | `::`                                         |
@@ -399,7 +402,7 @@ Should all be prefixed with `pack`
 | for each                               | `for TOKEN in TOKEN {}`                  | ternary            | `if TOKEN == TOKEN { TOKEN } else { TOKEN }` |
 | `for loop [of <a> [in <n>]]`           | `for i in 0..1 {}`                       | value false        | `false`                                      |
 | `function [<return>]`                  | `fn TOKEN(TOKEN) [-> TOKEN {}]`          | value not          | `None`                                       |
-| iffae                                  | `if {}`                                  | value some         |  `Some()`                                    |
+| iffae                                  | `if {}`                                  | value some         | `Some()`                                     |
 | import                                 | `use`                                    | value true         | `true`                                       |
 | infinite loop                          | `loop {}`                                | while loop         | `while TOKEN {}`                             |
 | lifetime                               | `''`                                     |                    |                                              |
@@ -428,27 +431,32 @@ Should all be prefixed with `pack`
 
 # VHDL
 
-| Command                     | Output                                                                              | Command                       | Output                                                                                    |
-| --------------------------- | ----------------------------------------------------------------------------------- | ----------------------------- | ----------------------------------------------------------------------------------------- |
-| Architecture                | `architecture TOKEN is`<br/>`begin`<br/>`TOKEN`<br/>`end architecture;`             | conditional component         | `TOKEN:`<br/>`if () GENERATE TOKEN : TOKEN port mapping ();end generate TOKEN;`           |
-| Assignment                  | `<=`                                                                                | convert to integer            | `to_integer()`                                                                            |
-| Association                 | `=>`                                                                                | converts to integer specific  | `conv_integer(,)`                                                                         |
-| Concatenate                 | `&`                                                                                 | converts to signed            | `signed()`                                                                                |
-| Constant                    | `constant :`                                                                        | converts to unsigned          | `unsigned()`                                                                              |
-| Down To                     | `downto`                                                                            | converts to unsigned specific | `conv_unsigned(,)`                                                                        |
-| Input                       | `in`                                                                                | entity                        | `entity TOKEN is`<br/>`port (TOKEN: in std_logic;`<br/>`);`<br/>`end entity;`             |
-| Not Equal                   | `/=`                                                                                | for loop                      | `for in to loop`                                                                          |
-| Output                      | `out`                                                                               | generate                      | `GENERATE`                                                                                |
-| Signal                      | `signal :`                                                                          | generate components           | `TOKEN:`<br/>`for TOKEN in to GENERATE TOKEN : TOKEN port mapping ();end generate TOKEN;` |
-| Standard Logic              | `std_logic`                                                                         | iffae                         | `if () then end if;`                                                                      |
-| Standard Logic Vector       | `std_logic_vector`                                                                  | integer                       | `integer TOKEN to TOKEN`                                                                  |
-| Up To                       | `upto`                                                                              | length                        | `length'`                                                                                 |
-| X NOR                       | `xnor`                                                                              | lodge not                     | `not`                                                                                     |
-| XOR                         | `xor`                                                                               | lodge or                      | `or`                                                                                      |
-| add comment                 | `--`                                                                                | not and                       | `nand`                                                                                    |
-| alternate                   | `elsif TOKEN then`                                                                  | process                       | `TOKEN: process()`<br/>`begin`<br/>`TOKEN`<br/>`end process;`                             |
-| `binary [<amount>] <digit>` | `01`                                                                                | shells                        | `else`                                                                                    |
-| case of                     | `case TOKEN is`                                                                     | switch                        | `case TOKEN is`<br/>`when 'TOKEN' => TOKEN`<br/>`end case;`                               |
-| type                        | `type :`                                                                            | when                          | `when`                                                                                    |
-| component                   | `TOKEN: TOKEN`<br/>`(`<br/>`port map(`<br/>`TOKEN <= TOKEN,`<br/><br/>`)`<br/>`);`  | component declaration         | `component TOKEN is`<br/>`port (TOKEN: in std_logic;`<br/>`);`<br/>`end component;`       |                                                                                            |
-| component declaration       | `component TOKEN is`<br/>`port (TOKEN: in std_logic;`<br/>`);`<br/>`end component;` |                               |                                                                                           |
+| Command                     | Output                                                                  | Command                       | Output                                                                                    |
+| --------------------------- | ----------------------------------------------------------------------- | ----------------------------- | ----------------------------------------------------------------------------------------- |
+| Architecture                | `architecture TOKEN is`<br/>`begin`<br/>`TOKEN`<br/>`end architecture;` | conditional component         | `TOKEN:`<br/>`if () GENERATE TOKEN : TOKEN port mapping ();end generate TOKEN;`           |
+| Assignment                  | `<=`                                                                    | convert to integer            | `to_integer()`                                                                            |
+| Association                 | `=>`                                                                    | converts to integer specific  | `conv_integer(,)`                                                                         |
+| Concatenate                 | `&`                                                                     | converts to signed            | `signed()`                                                                                |
+| Down To                     | `downto`                                                                | converts to unsigned specific | `conv_unsigned(,)`                                                                        |
+| Input                       | `in`                                                                    | entity                        | `entity TOKEN is`<br/>`port (TOKEN: in std_logic;`<br/>`);`<br/>`end entity;`             |
+| Not Equal                   | `/=`                                                                    | for loop                      | `for in to loop`                                                                          |
+| Output                      | `out`                                                                   | generate                      | `GENERATE`                                                                                |
+| Signal                      | `signal :`                                                              | generate components           | `TOKEN:`<br/>`for TOKEN in to GENERATE TOKEN : TOKEN port mapping ();end generate TOKEN;` |
+| Standard Logic              | `std_logic`                                                             | iffae                         | `if () then end if;`                                                                      |
+| Standard Logic Vector       | `std_logic_vector`                                                      | integer                       | `integer TOKEN to TOKEN`                                                                  |
+| Up To                       | `upto`                                                                  | length                        | `length'`                                                                                 |
+| X NOR                       | `xnor`                                                                  | lodge not                     | `not`                                                                                     |
+| XOR                         | `xor`                                                                   | lodge or                      | `or`                                                                                      |
+| add comment                 | `--`                                                                    | not and                       | `nand`                                                                                    |
+| alternate                   | `elsif TOKEN then`                                                      | process                       | `TOKEN: process()`<br/>`begin`<br/>`TOKEN`<br/>`end process;`                             |
+| `binary [<amount>] <digit>` | `01`                                                                    | shells                        | `else`                                                                                    |
+| case of                     | `case TOKEN is`                                                         | switch                        | `case TOKEN is`<br/>`when 'TOKEN' => TOKEN`<br/>`end case;`                               |
+| type                        | `type :`                                                                | when                          | `when`                                                                                    |
+
+# VHDL Components
+
+| Command               | Output                                                                              |
+| --------------------- | ----------------------------------------------------------------------------------- |
+| component             | `TOKEN: TOKEN`<br/>`(`<br/>`port map(`<br/>`TOKEN <= TOKEN,`<br/><br/>`)`<br/>`);`  |
+| component declaration | `component TOKEN is`<br/>`port (TOKEN: in std_logic;`<br/>`);`<br/>`end component;` |
+| component declaration | `component TOKEN is`<br/>`port (TOKEN: in std_logic;`<br/>`);`<br/>`end component;` |

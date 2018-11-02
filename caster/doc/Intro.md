@@ -16,4 +16,4 @@ Caster is a collection of tools intended to enable and speed up programming by v
 - "Record From History" - turn previously spoken commands into macros
 - Configurable settings
 - Ergonomic break alarm (optional)
-- various Dragon NaturallySpeaking enhancements
+- Various Dragon NaturallySpeaking enhancements

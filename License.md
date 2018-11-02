@@ -1,9 +1,10 @@
-##Contents
+## Contents
 
 1. License for Original Code
 2. License for Non-Original Code
 
-##License for Original Code
+## License for Original Code
+
 GNU LESSER GENERAL PUBLIC LICENSE
 Version 3, 29 June 2007
 
@@ -15,7 +16,7 @@ This version of the GNU Lesser General Public License incorporates
 the terms and conditions of version 3 of the GNU General Public
 License, supplemented by the additional permissions listed below.
 
-0. Additional Definitions.
+1. Additional Definitions.
 
 As used herein, "this License" refers to version 3 of the GNU Lesser
 General Public License, and the "GNU GPL" refers to version 3 of the GNU
@@ -49,7 +50,7 @@ Application, but excluding the System Libraries of the Combined Work.
 You may convey a covered work under sections 3 and 4 of this License
 without being bound by section 3 of the GNU GPL.
 
-2. Conveying Modified Versions.
+1. Conveying Modified Versions.
 
 If you modify a copy of the Library, and, in your modifications, a
 facility refers to a function or data to be supplied by an Application
@@ -65,7 +66,7 @@ whatever part of its purpose remains meaningful, or
 b) under the GNU GPL, with none of the additional permissions of
 this License applicable to that copy.
 
-3. Object Code Incorporating Material from Library Header Files.
+1. Object Code Incorporating Material from Library Header Files.
 
 The object code form of an Application may incorporate material from
 a header file that is part of the Library. You may convey such object
@@ -81,7 +82,7 @@ covered by this License.
 b) Accompany the object code with a copy of the GNU GPL and this license
 document.
 
-4. Combined Works.
+1. Combined Works.
 
 You may convey a Combined Work under terms of your choice that,
 taken together, effectively do not restrict modification of the
@@ -103,20 +104,22 @@ copies of the GNU GPL and this license document.
 
 d) Do one of the following:
 
-       0) Convey the Minimal Corresponding Source under the terms of this
-       License, and the Corresponding Application Code in a form
-       suitable for, and under terms that permit, the user to
-       recombine or relink the Application with a modified version of
-       the Linked Version to produce a modified Combined Work, in the
-       manner specified by section 6 of the GNU GPL for conveying
-       Corresponding Source.
+```
+   0) Convey the Minimal Corresponding Source under the terms of this
+   License, and the Corresponding Application Code in a form
+   suitable for, and under terms that permit, the user to
+   recombine or relink the Application with a modified version of
+   the Linked Version to produce a modified Combined Work, in the
+   manner specified by section 6 of the GNU GPL for conveying
+   Corresponding Source.
 
-       1) Use a suitable shared library mechanism for linking with the
-       Library.  A suitable mechanism is one that (a) uses at run time
-       a copy of the Library already present on the user's computer
-       system, and (b) will operate properly with a modified version
-       of the Library that is interface-compatible with the Linked
-       Version.
+   1) Use a suitable shared library mechanism for linking with the
+   Library.  A suitable mechanism is one that (a) uses at run time
+   a copy of the Library already present on the user's computer
+   system, and (b) will operate properly with a modified version
+   of the Library that is interface-compatible with the Linked
+   Version.
+```
 
 e) Provide Installation Information, but only if you would otherwise
 be required to provide such information under section 6 of the
@@ -130,7 +133,7 @@ Code. If you use option 4d1, you must provide the Installation
 Information in the manner specified by section 6 of the GNU GPL
 for conveying Corresponding Source.)
 
-5. Combined Libraries.
+1. Combined Libraries.
 
 You may place library facilities that are a work based on the
 Library side by side in a single library together with other library
@@ -146,7 +149,7 @@ b) Give prominent notice with the combined library that part of it
 is a work based on the Library, and explaining where to find the
 accompanying uncombined form of the same work.
 
-6. Revised Versions of the GNU Lesser General Public License.
+1. Revised Versions of the GNU Lesser General Public License.
 
 The Free Software Foundation may publish revised and/or new versions
 of the GNU Lesser General Public License from time to time. Such new
@@ -169,7 +172,8 @@ apply, that proxy's public statement of acceptance of any version is
 permanent authorization for you to choose that version for the
 Library.
 
-##Licenses for Non-Original Code
+## Licenses for Non-Original Code
+
 Below is a list of all the non-original code used in this work, and the licenses each respective piece uses.
 
 - Dragonfly: LGPL3

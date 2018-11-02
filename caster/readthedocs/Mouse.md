@@ -12,7 +12,7 @@ Demonstration [here](https://youtu.be/UISjQBMmQ-I).
 ### Moving
 
 - Move around: `curse <direction> [[E] <direction>] <distance_in_pixel>`  
-   _direction_ can be _sauce_ (up), _dunce_ (down), _lease_ (left) and _ross_ (right).
+  _direction_ can be _sauce_ (up), _dunce_ (down), _lease_ (left) and _ross_ (right).
 
 **Example**:
 
@@ -59,8 +59,8 @@ Demonstration [here](https://youtu.be/UISjQBMmQ-I).
 
 - Evoke: `rainbow`
 - Select square: `[<number_of_color_palette] <color> <number>`  
-   _number_of_color_palette_ refers to the fact that colors loop when filling the screen.  
-   _color_ can be replaced by the following colors: _red_, _orange_, _yellow_, _green_, _blue_, _purple_.
+  _number_of_color_palette_ refers to the fact that colors loop when filling the screen.  
+  _color_ can be replaced by the following colors: _red_, _orange_, _yellow_, _green_, _blue_, _purple_.
 
 **Example**:
 

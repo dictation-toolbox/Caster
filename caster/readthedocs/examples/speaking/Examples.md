@@ -1,14 +1,12 @@
-[original Gist](https://gist.github.com/chilimangoes/f6ae51ca53d96a19a46c45ecd4b0d296)
+[Original Gist](https://gist.github.com/chilimangoes/f6ae51ca53d96a19a46c45ecd4b0d296)
 
-In the following examples, a comma separates commands that can be strung together into a single utterance,
-while a semicolon separates commands that must be said as separate utterances (because either the previous
-or next phrase is not a CCR command).
+In the following examples, a comma separates commands that can be strung together into a single utterance, while a semicolon separates commands that must be said as separate utterances (because either the previous or next phrase is not a CCR command).
 
 ## Example 1:
 
 Dictate the following JavaScript function.
 
-```
+```python
 function setStatusText(text) {
     var icon = $('.and-session-extender-connection-status > a.dropdown-toggle');
     icon.attr({ 'title': text });
@@ -35,7 +33,7 @@ The rest of the dictation after the function definition would be the same. This 
 
 Dictate a variable or identifier name that has a Caster CCR keyword embedded in it.
 
-```
+```python
 var formatPattern = "some pattern";
 ```
 
