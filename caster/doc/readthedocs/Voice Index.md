@@ -86,7 +86,6 @@ If you're just getting started with voice programming, I suggest reading [this a
 
 - [Github - dictation-toolbox](https://github.com/dictation-toolbox) - Aenea - A system to allow speech recognition via Dragonfly on one computer to send events to another.
 - [Github - russell/damselfly](https://github.com/russell/damselfly) - Damselfly - Damselfly: Use dragon naturally speaking to control linux apps.
-
 - [Github - jgarvin/mandimus](https://github.com/jgarvin/mandimus) - (Sep 7, 2018)
 - [Github - j127/coding-by-voice](https://github.com/j127/coding-by-voice) (Jun 19, 2015)
 - [Github - codebold/hiccup](https://github.com/codebold/hiccup) - (Jan 10, 2015)
@@ -152,23 +151,14 @@ If you're just getting started with voice programming, I suggest reading [this a
 **Updated** - 10/13/2018
 
 - [Tavis Rudd - Pycon Talk](http://www.youtube.com/watch?v=8SkdfdXWYaI) - Using Python to Code by Voice - (Mar 20, 2013)
-
 - [Tavis Rudd - 5 programming languages in 5 mins, by Voice (Polyglot Conf)](https://www.youtube.com/watch?v=qXvbQQV1ydo) - (Apr 15, 2013)
-
   - [Some links related to Tavis Rudd voice coding talk at #pycon](https://gist.github.com/tavisrudd/5226505)
-
 - [Explanation of continuous command recognition by Twizzybiz](https://www.youtube.com/watch?v=g3c5H7sAbBQ) - (Apr 9, 2009)
-
 - [A voice programmer](http://www.youtube.com/watch?v=LVAO8DXUnRI) - Speech Recognition used for Programming and Software development Demonstration. - (Dec 31, 2011)
-
 - [Voice Coding Demonstration](https://www.youtube.com/watch?v=ZKIPVtmL5RY) - (Jan 15, 2017)
-
 - [Demo of Voice Coding + Art](https://www.youtube.com/watch?v=hGPNs5C1Lp0) - (Apr 16, 2018)
-
 - [Controlling computer and programming by voice (Voice Coding)](https://www.youtube.com/watch?v=-UVCN8L4J0Y) - (May 13, 2018)
-
 - [Multiple chained speech recognition commands in dragonfly -- low latency for fluid use](https://www.youtube.com/watch?v=O9mkQsXA2Ok) - (Mar 11, 2015)
-
 - [Short demo showing how to install the "Click by Voice" extension for Chrome](https://www.youtube.com/watch?v=6qrjuTCX6Rw) - (Jul 21, 2017)
 
 # Installation Instructions
@@ -176,7 +166,6 @@ If you're just getting started with voice programming, I suggest reading [this a
 **Updated** - 10/13/2018
 
 - [Instructions for Dragonfly and Castor](https://github.com/synkarius/caster/issues/217#issuecomment-377290954) (Recommended)
-
 - [Install Vid (Caster)](http://explosionduck.com/caster/install) - Slightly outdated
 - [Install Vid (Dragonfly)](http://explosionduck.com/caster/install/dragonfly.html) - Slightly outdated
 - [Installing Natlink Vocola and Dragonfly](https://www.youtube.com/watch?v=yVEbAcxEPWY) - t4ngo Dragonfly
@@ -214,8 +203,13 @@ If you're just getting started with voice programming, I suggest reading [this a
   **Archived Links**
 
 - [Google Code - Dragonfly](https://code.google.com/p/dragonfly/) - Depreciated Dragonfly repository
+
 - [Google Code - dragonfly-modules](https://code.google.com/p/dragonfly-modules/) - Depreciated Dragonfly repository
+
 - [Pythonhosted - Dragonfly -Module Index](http://pythonhosted.org/dragonfly/py-modindex.html) - Archived Documentation
+
 - [Pythonhosted -Dragonfly](http://pythonhosted.org/dragonfly/index.html) - Archived Documentation
+
 - [Tutorial on setting Dragonfly](http://vimeo.com/9156942) - Video outdated
+
 - [Nuance Community Help](https://web.archive.org/web/20170609174054/http://nuance-community.custhelp.com/hives/be1ac29547/summary) - Forum Deleted - Archived

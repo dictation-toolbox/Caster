@@ -1,4 +1,4 @@
-#Caster Rules
+# Caster Rules
 
 Dragonfly is a powerful framework for mapping voice commands to actions. Caster gives the user:
 
@@ -7,7 +7,7 @@ Dragonfly is a powerful framework for mapping voice commands to actions. Caster 
 - tools with which to modify the pre-made rules,
 - the Context Stack, a way of tracking state between commands.
 
-##MergeRules VS MappingRules
+## MergeRules VS MappingRules
 
 A Caster MergeRule is very similar to a Dragonfly MappingRule, but it has a few extra properties and can do things that MappingRules can't easily do. The following is an example of a full Python file containing two MergeRules _and_ a MappingRule.
 
@@ -55,10 +55,11 @@ Differences you should notice here:
 - Using the Nexus. Caster MergeRules are usually added to the "nexus". This is a singleton object which manages the CCR pool and various other Caster services. You can add a MergeRule to a Dragonfly Grammar object, but you won't get the benefits that way.
 - The benefits. MergeRules are merged with each other when activated and are combined into a large CCR command. So for instance, if you said "enable key rule", you could then say "press keys arch press keys arch brav" to press A, A, B. If you then said "enable other rule", you could say "press keys arch hello" to press A and print "hello".
 
-##The Context Stack
+## The Context Stack
+
 In addition to new types of rules, Caster provides new types of actions.
 
-###RegisteredAction
+### RegisteredAction
 
 The simplest is `RegisteredAction`. (Type aliased to `R` for short.) `R` can wrap any Dragonfly action(s) and adds additional functionality to said wrapped action(s). Let's look at a simple example.
 
@@ -97,7 +98,7 @@ class Birds(MergeRule):
 control.nexus().merger.add_global_rule(Birds())
 ```
 
-###ContextSeeker
+### ContextSeeker
 
 `ContextSeeker` is the most complex and powerful Caster action. It is able to look backwards at commands spoken prior to itself, and react according to what it finds. It is also able to delay its execution until future commands are spoken, and then act according to what comes next.
 
@@ -167,7 +168,7 @@ control.nexus().merger.add_global_rule(Times())
 
 In this example, you can first say "noon time", "afternoon", or "midnight" to print "noon", "2 PM", or "midnight" respectively. But if you say "wait for" first, a forward-looking ContextSeeker will be added to the Context Stack. Nothing will happen immediately. If you then follow up by saying "afternoon", the second `S` will be selected, and "day time" will print. The trigger command, "afternoon" will not execute. It has been _consumed_ by the ContextSeeker. Consumption can be disabled -- see the "ContextSet Parameters" section.
 
-###ContextSet Parameters
+### ContextSet Parameters
 
 The `S` object has a lot of options to specify different kinds of behavior. They are as follows.
 
@@ -213,7 +214,7 @@ control.nexus().merger.add_global_rule(Times())
 
 In this example, each of the `S` objects (except the first) delivers parameters to the print_params_to_console function differently. If you say "wait for noon time", an array of strings (specifically, ["some", "parameters"]) will be printed to the console. If you say "wait for midnight", the triggering rspec will be printed ("midnight"). The "evening" option is the most interesting though. If you say "wait for evening", an array containing "wait", "for", and "evening" will be printed. However, if you say, "wait for", and then separately say "evening", an array containing only "evening" will be printed.
 
-###AsynchronousAction
+### AsynchronousAction
 
 `AsynchronousAction` is a special type of ContextSeeker. AsynchronousActions only look forward. They have only one ContextLevel (`L`) and one ContextSet (`S`). The action in an AsynchronousAction's 0-th ContextSet is repeated continuously until a termination condition is met. The termination conditions are the following:
 
@@ -264,20 +265,20 @@ The parameters for AsynchronousAction are as follows.
 - `blocking`: whether the AsynchronousAction should block other commands from executing while it is running. Caster commands, but not Dragonfly can be blocked. Defaults to True. Unless cancelled, blocked commands will execute after the AsynchronousAction is finished.
 - `finisher`: a Dragonfly action which runs after the AsynchronousAction is finished.
 
-##Pre-made Rules
+## Pre-made Rules
 
 Out-of-the-box, Caster gives the user new mouse navigation commands (see the Mouse page), text formatting and navigation commands, and programming-language specific rules. (See the Quick Reference for more details.) Unlike Dragonfly, Caster is targeted at programmers specifically, and so more technical knowledge is assumed of its user base.
 
-##Modifying the Pre-made Rules
+## Modifying the Pre-made Rules
 
 If you want to modify the pre-made ruleset, there are a few ways to go about it. Of course, you could just edit the source, but then you'd have to deal with merge conflicts when updating to newer versions of Caster. There are two ways to get around this:
 
 - **Make a copy in the safe zone.** (1) Copy the file you'd like to change into your `caster/user` folder. (2) Disable the original rule in your `settings.toml` file. (3) Give the new MergeRule a `pronunciation` which is distinct from that of the original. For example, if you're modifying java.py, give the new Java rule a `pronunciation` of "my java" rather than "java".
 - **Use rule filters.** This is the recommended way. Rule filters allow you to change any part of any rule, either at boot time or when the rule is activated ("merge time"). See the Rule Filters section of the CCR page for more details. Supports both line and in-line python comments.
 
-##Rule Filters
+## Rule Filters
 
-###Rule Merging
+### Rule Merging
 
 Before we get into how rule filters work, you need to know a little about the rule-merging process.
 
@@ -285,11 +286,11 @@ When MergeRules are activated, they are merged together with each other into one
 
 Let's say you have four rules, A, B, C, and D. A is incompatible with D, but B and C are not incompatible with anything. Now suppose you have B, C, and D active and you speak the command to activate A. The current combined rule, composed of B, C, and D, is dropped. A is treated as the new combined rule. It is then merged with B. Now the combined rule consists of A and B. Then C is merged in: still no incompatibilities, so the new combined rule is A, B, and C. Now Caster attempts to merge D in, but discovers the incompatibility and drops D, since A is the more-recently activated of the two incompatible rules.
 
-###Merge Times
+### Merge Times
 
 There are three times these merges occur: at boot, when you manually activate a rule, and when a `SelfModifyingRule` changes itself. The third is out of the scope of this document, and so will not be discussed. At boot, Caster looks at your CCR config file (caster/bin/data/ccr.toml), and activates whatever rules you had active last time you were using Caster. By default, four CCR rules are active: Alphabet, Numbers, Navigation, and Punctuation.
 
-###How Rule Filters Work
+### How Rule Filters Work
 
 In our example above with A, B, C, and D, the rules were combined (or at least attempted) in pairs. (A and B, C and AB, D and ABC.) At each point at which an incompatibility could occur (each "merge point"), Caster gives you the user the opportunity to examine and change the incoming pair of rules. You can write functions which do anything you want to the two rules, based on any properties of the rules, or the merge. To do this, you need to understand MappingRules and MergeRules, and their properties. That is why this section is last. Let's look at some example rule filters.
 
@@ -388,6 +389,6 @@ def add_is_to_python_filter(mp):
 control.nexus().merger.add_filter(add_is_to_python_filter)
 ```
 
-###Where Do I Put These?
+### Where Do I Put These?
 
 The designated location which Caster will check for rule filters is the `caster/user/filters` folder. Any Python files you put there with rule filters will be picked up, and, like the rest of the `caster/user` folder, will not be affected by Caster updates.

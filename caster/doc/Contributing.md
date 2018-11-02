@@ -12,33 +12,43 @@ Pull requests for Caster need to be submitted against the `develop` branch, whic
 
 This guide assumes that you have already forked the Caster repository, cloned your copy locally, and setup a remote pointing to the upstream (synkarius) repository. This setup process is identical to the standard workflow, covered [here](https://help.github.com/articles/fork-a-repo/), but essentially consists of creating a fork on GitHub, followed by something like the following sequence of commands to make a local copy of the repository and link it back to the upstream (synkarius) fork:
 
-    cd C:\MyProjects
-    git clone https://github.com/{YOUR-USER-NAME}/caster/
-    cd caster
-    git remote add upstream https://github.com/synkarius/caster/
+```bash
+cd C:\MyProjects
+git clone https://github.com/{YOUR-USER-NAME}/caster/
+cd caster
+git remote add upstream https://github.com/synkarius/caster/
+```
 
 ### Prepare a feature branch for your pull request
 
 Fetch the latest from the upstream (synkarius) repo:
 
-    git fetch upstream
+```bash
+git fetch upstream
+```
 
 Create a new branch for your PR:
 
-    git checkout --no-track -b pr-feature-name upstream/develop
+```bash
+git checkout --no-track -b pr-feature-name upstream/develop
+```
 
 Where **`pr-feature-name`** is the name you want to give to your new feature branch.
 
 ### Make your changes and commit them to your PR branch:
 
-    edit somefile.txt
-    edit anotherfile.cpp
-    git commit -a -m "Made some changes..."
+```bash
+edit somefile.txt
+edit anotherfile.cpp
+git commit -a -m "Made some changes..."
+```
 
 ### Push your PR branch up to your GitHub fork:
 
-    git push origin pr-feature-name
+```bash
+git push origin pr-feature-name
+```
 
 ### Open a pull request
 
-When you navigate to your fork on GitHub, you will be asked if you want to open a pull request for the branch you just pushed. Click the button to open a new pull request, enter a title and description for the PR, and make sure you select the `develop` branch on the base (synkarius) fork.
+When you navigate to your fork on GitHub, you will be asked if you want to open a pull request for the branch you just pushed. Click the button to open a new pull request, enter a title and description for the PR, and make sure you select the `develop` branch on the base `synkarius` fork.

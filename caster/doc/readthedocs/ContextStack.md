@@ -14,7 +14,9 @@ Caster augments the Dragonfly command model via the context stack. The context s
 
 A RegisteredAction wraps a Dragonfly action. When Dragonfly executes the RegisteredAction, an object representing it is passed to the context stack, which then figures out what to do with it. It is used as follows.
 
-    "some spec":        RegisteredAction(Key("c-f"), rdescript="Find")
+```python
+"some spec":        RegisteredAction(Key("c-f"), rdescript="Find")
+```
 
 RegisteredAction has a number of optional parameters which affect its processing in the context stack.
 
@@ -35,9 +37,11 @@ Its constructor requires either or both of two lists, and has a bunch of optiona
 
 A ContextLevel is a set of possible outcomes which can be triggered by a RegisteredAction or other context stack action. Each outcome is called a ContextSet. Each ContextSet requires a set of trigger words to select it with, an outcome, and optionally some other parameters. It looks like one of these:
 
-    ContextSet(["hello", "goodbye"], Text, "greeting"),
-    ContextSet(["banana"], myfunction, -1),
-    ContextSet(["apple"], otherfunction)
+```python
+ContextSet(["hello", "goodbye"], Text, "greeting"),
+ContextSet(["banana"], myfunction, -1),
+ContextSet(["apple"], otherfunction)
+```
 
 A few points about the ContextSet:
 
@@ -50,11 +54,13 @@ A few points about the ContextSet:
 
 ContextLevel example:
 
-    ContextLevel([
-        ContextSet(["hello", "goodbye"], Text, "greeting"),
-        ContextSet(["banana"], myfunction, -1),
-        ContextSet(["apple"], otherfunction)
-                ])
+```python
+ContextLevel([
+    ContextSet(["hello", "goodbye"], Text, "greeting"),
+    ContextSet(["banana"], myfunction, -1),
+    ContextSet(["apple"], otherfunction)
+            ])
+```
 
 **Back To ContextSeeker**
 
@@ -73,21 +79,25 @@ ContextSeeker optional parameters:
 
 Let's say we have these two functions.
 
-    def close_last_spoken(spoken):
-        first = spoken[0]
-        Text("</"+first+">").execute()
-    def close_last_rspec(rspec):
-        Text("</"+rspec+">").execute()
+```python
+def close_last_spoken(spoken):
+    first = spoken[0]
+    Text("</"+first+">").execute()
+def close_last_rspec(rspec):
+    Text("</"+rspec+">").execute()
+```
 
 We could tie them into a MappingRule like this:
 
-    "close last tag":               ContextSeeker([L(S(["cancel"], None),
-                                                     S(["html spoken"], close_last_spoken, use_spoken=True),
-                                                     S(["span", "div"], close_last_rspec, use_rspec=True))
-                                                   ]),
-    "html":                         R(Text("<html>"), rspec="html spoken"),
-    "divider":                      R(Text("<div>"), rspec="div"),
-    "span":                         R(Text("<span>"), rspec="span")
+```python
+"close last tag":               ContextSeeker([L(S(["cancel"], None),
+                                                 S(["html spoken"], close_last_spoken, use_spoken=True),
+                                                 S(["span", "div"], close_last_rspec, use_rspec=True))
+                                               ]),
+"html":                         R(Text("<html>"), rspec="html spoken"),
+"divider":                      R(Text("<div>"), rspec="div"),
+"span":                         R(Text("<span>"), rspec="span")
+```
 
 ## AsynchronousAction
 
@@ -108,6 +118,8 @@ AsynchronousAction also has the special property that you can use `time_in_secon
 
 Example AsynchronousActions:
 
-    "press right repeatedly":        AsynchronousAction(L([S(["cancel", Key, "right"])]),
-                                             repetitions=100, blocking=False),
-    "print time <time_in_seconds>":  AsynchronousAction(L([S(["stop"], fn_print_time)]))
+```python
+"press right repeatedly":        AsynchronousAction(L([S(["cancel", Key, "right"])]),
+                                         repetitions=100, blocking=False),
+"print time <time_in_seconds>":  AsynchronousAction(L([S(["stop"], fn_print_time)]))
+```

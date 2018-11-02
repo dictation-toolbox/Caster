@@ -6,7 +6,7 @@ In the following examples, a comma separates commands that can be strung togethe
 
 Dictate the following JavaScript function.
 
-```
+```python
 function setStatusText(text) {
     var icon = $('.and-session-extender-connection-status > a.dropdown-toggle');
     icon.attr({ 'title': text });
@@ -33,7 +33,7 @@ The rest of the dictation after the function definition would be the same. This 
 
 Dictate a variable or identifier name that has a Caster CCR keyword embedded in it.
 
-```
+```python
 var formatPattern = "some pattern";
 ```
 

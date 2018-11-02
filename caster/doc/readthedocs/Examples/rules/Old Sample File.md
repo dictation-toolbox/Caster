@@ -1,8 +1,8 @@
-#Sample.py
+# Sample.py
 
 This is the old complete sample python rule file. The comments explain a lot of things which beginners might struggle with.
 
-```
+```python
 # These lines that start with the # are called comments. They don't affect the way the code runs.
 # In this tutorial file, I put comments above the relevant lines.
 

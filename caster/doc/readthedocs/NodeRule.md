@@ -55,7 +55,9 @@ If the **status window** is active, the NodeRule will use it to display hints ab
 
 To create a NodeRule, you first have to create a [HintNode](https://github.com/synkarius/caster/blob/master/caster/lib/dfplus/hint/hintnode.py) which will be passed into the NodeRule constructor. For examples, look at the [nodes directory](https://github.com/synkarius/caster/tree/master/caster/lib/dfplus/hint/nodes). A HintNode basically looks like this:
 
-    HintNode("spec", SomeDragonflyAction(), [<child nodes>], [<extras>], {<defaults>})
+```python
+HintNode("spec", SomeDragonflyAction(), [<child nodes>], [<extras>], {<defaults>})
+```
 
 Some further explanation:
 
@@ -67,10 +69,12 @@ Some further explanation:
 
 A few examples:
 
-    HintNode("hello node <abc>", Text("hello node %(abc)s"), extras=[Dictation("abc")])
-    HintNode("goodbye", Mimic("go to sleep"))
-    HintNode("spell name", Function(some_function), [HintNode("Fred", Text("Fred")), HintNode("Sally", Text("Sally"))])
-    HintNode("choose [<d>]", Function(print_choice), extras=[Choice("d", {"one":1, "two":})], defaults={"d":1})
+```python
+HintNode("hello node <abc>", Text("hello node %(abc)s"), extras=[Dictation("abc")])
+HintNode("goodbye", Mimic("go to sleep"))
+HintNode("spell name", Function(some_function), [HintNode("Fred", Text("Fred")), HintNode("Sally", Text("Sally"))])
+HintNode("choose [<d>]", Function(print_choice), extras=[Choice("d", {"one":1, "two":})], defaults={"d":1})
+```
 
 ### Registering Your NodeRule with CCR (optional)
 

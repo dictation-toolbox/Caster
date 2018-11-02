@@ -91,7 +91,7 @@ MergeRule has a handful of class-level properties which can be defined to enable
 
 In order to make any new rules you might create available to the CCRMerger, you must register them as follows:
 
-```
+```python
 # Global Rules
 my_global_rule = SomeRule()
 control.nexus().merger.add_global_rule(my_global_rule)
