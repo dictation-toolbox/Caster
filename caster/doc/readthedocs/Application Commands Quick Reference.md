@@ -292,13 +292,25 @@
 | `close tab [<n>]`         | `prior bookmark` |                   |
 
 # Sublime
+| Command                  | Command                        | Command                           |
+|:-------------------------|:-------------------------------|:----------------------------------|
+| `new file`               | `new window`                   | `open file`                       |
+| `save as`                | `comment line`                 | `comment block`                   |
+| `outdent lines`          | `join lines`                   | `match bracket`                   |
+| `(select / sell) all`    | `(select / sell) scope [<n2>]` | `(select / sell) brackets [<n2>]` |
+| `(select / sell) indent` | `find`                         | `get all`                         |
+| `replace`                | `edit lines`                   | `edit next [<n3>]`                |
+| `edit up [<n3>]`         | `edit down [<n3>]`             | `edit all`                        |
+| `transform upper`        | `transform lower`              | `line <n>`                        |
+| `go to`                  | `command pallette`             | `fold`                            |
+| `unfold`                 | `unfold all`                   | `fold [level] <n2>`               |
+| `full screen`            | `(set / add) bookmark`         | `next bookmark`                   |
+| `previous bookmark`      | `clear bookmarks`              | `build it`                        |
+| `record macro`           | `play [back] macro [<n3>]`     | `(new / create) snippet`          |
+| `close pane`             | `next pane`                    | `previous pane`                   |
+| `pane <n2>`              | `column <cols>`                | `focus <n2>`                      |
+| `move <n2>`              | `open terminal`                | ` `                               |
 
-| Command         | Command         | Command           |
-| --------------- | --------------- | ----------------- |
-| `comment block` | `go to symbol`  | `set bookmark`    |
-| `comment line`  | `go to word`    | `transform lower` |
-| `full screen`   | `next bookmark` | `transform upper` |
-| `go to line`    | `open file`     |                   |
 
 # Visual Studio
 
