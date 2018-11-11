@@ -10,4 +10,21 @@ Caster is a collection of tools aimed at enabling programming entirely by voice.
 - [contributing / how can I help?](https://github.com/synkarius/caster/blob/master/caster/doc/CONTRIBUTING.md)
 - [github.io page](http://synkarius.github.io/caster/)
 
+
+# Complete feature list
+
+* Support for various IDEs: Atom, Eclipse, Emacs, Jetbrains IDEs, MSVC, Sublime
+* CCR modules for Python, Java, Bash, C++, Rust, HTML, CSS, JavaScript, SQL; easily configure new languages/ modules
+* Text/line navigation commands, text formatting commands
+* Alphabet, numbers, punctuation input commands
+* Sikuli integration
+* Four additional mouse navigation modes
+* The Context Stack - asynchronous and context seeking commands
+* Spec reduction via NodeRule
+* Easy setup
+* "Alias" Commands - on-the-fly commands created by highlighting stuff
+* "Record From History" - turn previously spoken commands into macros
+* Configurable settings
+
+
 [![Join the chat at https://gitter.im/synkarius/caster](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/synkarius/caster?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
