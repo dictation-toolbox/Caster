@@ -5,6 +5,7 @@ _If you're looking for the giant list of links which was here before, it has bee
 Caster is a collection of tools aimed at enabling programming entirely by voice. It runs on top of [Dragonfly](https://github.com/Danesprite/dragonfly), which runs on either Dragon NaturallySpeaking or Windows Speech Recognition.
 
 - [**Introduction - What does it do?**](caster/doc/Intro.md)
+- [Quick reference guide - Caster commands at a glance](CasterQuickReference0.5.8.pdf)
 - [Instructions for installing](caster/doc/Installation.md)
 - info: [[ReadTheDocs](http://caster.readthedocs.org/en/latest/README/)] [[YouTube](https://www.youtube.com/channel/UC2qZzmCj_5ZKkTa3i9X1LCg)]
 - [contributing / how can I help?](https://github.com/synkarius/caster/blob/master/caster/doc/CONTRIBUTING.md)
