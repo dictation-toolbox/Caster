@@ -15,7 +15,7 @@ will activate the Python module, giving access to commands like
 * `for loop` which will insert `for i in range(0, ):`
 * `print to console` - `print()`
 
-**A complete list** of supported languages and available commands can be found in the [CCR languages quick reference](readthedocs/Application%20commands%20quick%20reference.md)
+**A complete list** of supported languages and available commands can be found in the [CCR languages quick reference](readthedocs/CCR%20languages%20Quick%20Reference.md)
 
 ## Context specific control commands
 These commands are only activated when a particular program is the active window, and they provide support for text editors, IDEs, web browsers etc. For example, while the Sublime text editor is the active window, saying
@@ -24,7 +24,7 @@ These commands are only activated when a particular program is the active window
 * `open file` will execute a `ctrl-o` keystroke,
 * `edit next <n>` will execute `ctrl-d` n times, selecting the next n instances of the currently selected word.
 
-**A complete list** of supported applications and available commands can be found in the [Application commands quick reference](readthedocs/Application%20commands%20quick%20reference.md)
+**A complete list** of supported applications and available commands can be found in the [Application commands quick reference](readthedocs/Application%20Commands%20Quick%20Reference.md)
 
 ## Universal navigation and editing commands
 These commands are active all the time, and provide input commands for letters, numbers and punctuation, as well as the ability to easily manipulate windows and text. For example
