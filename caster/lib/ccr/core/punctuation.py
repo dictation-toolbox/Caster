@@ -1,6 +1,4 @@
-from dragonfly.actions.action_base import Repeat
-from dragonfly.actions.action_key import Key
-from dragonfly.actions.action_text import Text
+from dragonfly import Choice, Key, Repeat, Text
 
 from caster.lib import control
 from caster.lib.dfplus.additions import IntegerRefST
@@ -29,8 +27,6 @@ class Punctuation(MergeRule):
             R(Key("langle, equals"), rdescript="<= Comparison"),
         "[is] equal to":
             R(Key("equals,equals"), rdescript="Equality"),
-        "equals":
-            R(Key("equals"), rdescript="Equals Sign"),
         "prekris":
             R(Key("lparen, rparen, left"), rdescript="Parentheses"),
         "brax":
@@ -39,10 +35,12 @@ class Punctuation(MergeRule):
             R(Key("lbrace, rbrace, left"), rdescript="Curly Braces"),
         "angle":
             R(Key("langle, rangle, left"), rdescript="Angle Brackets"),
-        "plus":
-            R(Text("+"), rdescript="Plus Sign"),
-        "minus":
-            R(Text("-"), rdescript="Dash"),
+        "[<long>] equals":
+            R(Text("%(long)s" + "=" + "%(long)s"), rdescript="Equals Sign"),
+        "[<long>] plus":
+            R(Text("%(long)s" + "+" + "%(long)s"), rdescript="Plus Sign"),
+        "[<long>] minus":
+            R(Text("%(long)s" + "-" + "%(long)s"), rdescript="Dash"),
         "pipe (sim | symbol)":
             R(Text("|"), rdescript="Pipe Symbol"),
         'ace [<npunc>]':
@@ -83,13 +81,22 @@ class Punctuation(MergeRule):
             R(Text(", "), rdescript="Comma + Space"),
         "ampersand":
             R(Key("ampersand"), rdescript="Ampersand"),
+        "tilde":
+            R(Key("tilde"), rdescript="Tilde"),
+
+
     }
 
     extras = [
         IntegerRefST("npunc", 0, 10),
+        Choice("long", {
+              "long": " ",
+        }),
+
     ]
     defaults = {
         "npunc": 1,
+        "long": "",
     }
 
 
