@@ -225,11 +225,11 @@ _DEFAULT_SETTINGS = {
             "text_format": [5, 0],
             "secondary_format": [1, 0],
         },
-        "CPP": {
+        "C plus plus": {
             "text_format": [3, 1],
             "secondary_format": [2, 1],
         },
-        "CSharp": {
+        "C sharp": {
             "text_format": [3, 1],
             "secondary_format": [2, 1],
         },
@@ -249,7 +249,7 @@ _DEFAULT_SETTINGS = {
             "text_format": [3, 1],
             "secondary_format": [2, 1],
         },
-        "Matlab": {
+        "matlab": {
             "text_format": [3, 1],
             "secondary_format": [1, 3],
         },
@@ -261,7 +261,7 @@ _DEFAULT_SETTINGS = {
             "text_format": [5, 3],
             "secondary_format": [2, 1],
         },
-       "SQL": {
+        "sequel": {
             "text_format": [5, 3],
             "secondary_format": [1, 3],
         },

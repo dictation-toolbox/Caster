@@ -1,23 +1,19 @@
-import time
-import sys
-
-from dragonfly.actions.action_key import Key
 from dragonfly.actions.action_text import Text
-from dragonfly import Clipboard
 
-from caster.lib import settings, context
+from caster.lib import settings
+
 
 class TextFormat():
     '''
     Represents text formatting (capitalization and spacing) rules
-    
-    Commands for capitalization: 
+
+    Commands for capitalization:
     1 yell - ALLCAPS
     2 tie - TitleCase
     3 Gerrish - camelCase
     4 sing - Sentencecase
     5 laws (default) - alllower
-    Commands for word spacing: 
+    Commands for word spacing:
     0 (default except Gerrish) - words with spaces
     1 gum (default for Gerrish)  - wordstogether
     2 spine - words-with-hyphens
@@ -62,7 +58,8 @@ class TextFormat():
     @classmethod
     def get_text_format_description(cls, capitalization, spacing):
         caps = {0: "<none>", 1: "yell", 2: "tie", 3: "gerrish", 4: "sing", 5: "laws"}
-        spaces = {0: "<none>", 1: "gum", 2: "spine", 3: "snake", 4: "pebble", 5: "incline", 6: "descent"}
+        spaces = {0: "<none>", 1: "gum", 2: "spine", 3: "snake",
+                  4: "pebble", 5: "incline", 6: "descent"}
         if capitalization == 0 and spacing == 0:
             return "<none>"
         else:
@@ -85,7 +82,6 @@ class TextFormat():
         self.capitalization = capitalization
         self.spacing = spacing
         self._normalize_text_format()
-        #print('Format set to %s' % str(self))
 
     def clear_text_format(self):
         self.capitalization = self.default_cap
@@ -97,28 +93,28 @@ class TextFormat():
     def get_formatted_text(self, t):
         return TextFormat.formatted_text(self.capitalization, self.spacing, t)
 
+
 format = TextFormat(*settings.SETTINGS["formats"]["_default"]["text_format"])
 secondary_format = TextFormat(*settings.SETTINGS["formats"]["_default"]["secondary_format"])
 
-def choose_format(big):
+def _choose_format(big):
     return format if not big else secondary_format
-    
-#module interface
+
+# module interface
 def set_text_format(big, capitalization, spacing):
-    choose_format(big).set_text_format(capitalization, spacing)
-    #peek_text_format(big)
+    _choose_format(big).set_text_format(capitalization, spacing)
 
 def clear_text_format(big):
-    choose_format(big).clear_text_format()
+    _choose_format(big).clear_text_format()
 
 def peek_text_format(big):
-    print("Text formatting: %s" % str(choose_format(big)))
+    print("Text formatting: %s" % str(_choose_format(big)))
 
 def partial_format_text(big, word_limit, textnv):
-    Text(choose_format(big).get_formatted_text(" ".join(str(textnv).split(" ")[0:word_limit]))).execute()
+    Text(_choose_format(big).get_formatted_text(" ".join(str(textnv).split(" ")[0:word_limit]))).execute()
 
 def prior_text_format(big, textnv):
-    Text(choose_format(big).get_formatted_text(str(textnv))).execute()
+    Text(_choose_format(big).get_formatted_text(str(textnv))).execute()
 
 def master_format_text(capitalization, spacing, textnv):
     Text(TextFormat.formatted_text(capitalization, spacing, str(textnv))).execute()

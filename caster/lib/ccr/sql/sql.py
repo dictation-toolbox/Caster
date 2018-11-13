@@ -12,7 +12,6 @@ from caster.lib.dfplus.state.short import R
 
 
 class SQL(MergeRule):
-    
     pronunciation = "sequel"
 
     mapping = {

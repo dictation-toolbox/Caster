@@ -5,7 +5,6 @@ from caster.lib.dfplus.merge.mergerule import MergeRule
 
 
 class HTML(MergeRule):
- 
     mapping = {
         # A macro with ## is depreciated HTML.
         #Macros
