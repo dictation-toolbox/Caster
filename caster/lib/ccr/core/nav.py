@@ -191,6 +191,10 @@ class Navigation(MergeRule):
         "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]": 
             R(Function(text_utils.master_text_nav), rdescript="Keyboard Text Navigation"),
 
+        "shift click":
+            R(Key("shift:down") + Mouse("left") + Key("shift:up"),
+              rdescript="Mouse: Shift Click"),
+
         "stoosh [<nnavi500>]":
             R(Function(navigation.stoosh_keep_clipboard, nexus=_NEXUS), rspec="stoosh", rdescript="Copy"),
         "cut [<nnavi500>]":
@@ -198,6 +202,8 @@ class Navigation(MergeRule):
         "spark [<nnavi500>]":
             R(Function(navigation.drop_keep_clipboard, nexus=_NEXUS), rspec="spark", rdescript="Paste"),
 
+        "splat [<splatdir>] [<nnavi10>]":
+            R(Key("c-%(splatdir)s"), rspec="splat", rdescript="Splat") * Repeat(extra="nnavi10"),
         "deli [<nnavi50>]":
             R(Key("del/5"), rspec="deli", rdescript="Delete") * Repeat(extra="nnavi50"),
         "clear [<nnavi50>]":
@@ -292,6 +298,10 @@ class Navigation(MergeRule):
         Choice("big", {
             "big": "big",
         }),
+        Choice("splatdir", {
+            "lease":"backspace",
+            "ross":"delete",
+        }),
     ]
 
     defaults = {
@@ -304,7 +314,8 @@ class Navigation(MergeRule):
         "mtn_mode": None,
         "mtn_dir": "right",
         "extreme": None,
-        "big": None
+        "big": None,
+        "splatdir":"backspace",
     }
 
 
