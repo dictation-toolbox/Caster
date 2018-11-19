@@ -333,7 +333,7 @@ class CCRMerger(object):
             active_apps.append(rule)
         '''negation context for appless version of base rule'''
         contexts = [app_rule.get_context() for app_rule in self._app_rules.values() \
-                    if rule.get_context() is not None]# get all contexts
+                    if app_rule.get_context() is not None]# get all contexts
         negation_context = None
         for context in contexts:
             negate = ~context
