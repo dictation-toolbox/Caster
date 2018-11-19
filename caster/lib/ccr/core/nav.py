@@ -5,7 +5,7 @@ Created on Sep 1, 2015
 '''
 from dragonfly import Repeat, Function, Key, Dictation, Choice, Mouse, MappingRule
 
-from caster.lib import context, navigation, alphanumeric, textformat
+from caster.lib import context, navigation, alphanumeric, textformat, text_utils
 from caster.lib import control
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge.ccrmerger import CCRMerger
@@ -188,8 +188,8 @@ class Navigation(MergeRule):
         'shock [<nnavi50>]':
             R(Key("enter"), rspec="shock", rdescript="Enter")* Repeat(extra="nnavi50"),
 
-        "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]":
-            R(Function(textformat.master_text_nav), rdescript="Keyboard Text Navigation"),
+        "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]": 
+            R(Function(text_utils.master_text_nav), rdescript="Keyboard Text Navigation"),
 
         "shift click":
             R(Key("shift:down") + Mouse("left") + Key("shift:up"),
@@ -222,21 +222,22 @@ class Navigation(MergeRule):
             R(Key("c-space"), rspec="Kraken", rdescript="Control Space"),
 
     # text formatting
-        "set format (<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)":
+        "set [<big>] format (<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)":  
             R(Function(textformat.set_text_format), rdescript="Set Text Format"),
-        "clear caster formatting":
+        "clear caster [<big>] formatting":      
             R(Function(textformat.clear_text_format), rdescript="Clear Caster Formatting"),
-        "peek format":
+        "peek [<big>] format":                  
             R(Function(textformat.peek_text_format), rdescript="Peek Format"),
-        "(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel) <textnv> [brunt]":
+        "(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel) <textnv> [brunt]":  
             R(Function(textformat.master_format_text), rdescript="Text Format"),
-        "format <textnv>":
+        "[<big>] format <textnv>":              
             R(Function(textformat.prior_text_format), rdescript="Last Text Format"),
-        "<word_limit> format <textnv>":
+        "<word_limit> [<big>] format <textnv>": 
             R(Function(textformat.partial_format_text), rdescript="Partial Text Format"),
-        "hug <enclosure>":
-            R(Function(textformat.enclose_selected), rdescript="Enclose text "),
-        "dredge":
+
+        "hug <enclosure>":              
+            R(Function(text_utils.enclose_selected), rdescript="Enclose text "),
+        "dredge":                       
             R(Key("a-tab"), rdescript="Alt-Tab"),
 
     }
@@ -294,6 +295,9 @@ class Navigation(MergeRule):
         Choice("extreme", {
             "Wally": "way",
         }),
+        Choice("big", {
+            "big": "big",
+        }),
         Choice("splatdir", {
             "lease":"backspace",
             "ross":"delete",
@@ -310,6 +314,7 @@ class Navigation(MergeRule):
         "mtn_mode": None,
         "mtn_dir": "right",
         "extreme": None,
+        "big": None,
         "splatdir":"backspace",
     }
 
