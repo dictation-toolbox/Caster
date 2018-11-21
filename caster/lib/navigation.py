@@ -135,6 +135,7 @@ def cut_keep_clipboard(nnavi500, nexus):
 
 def drop_keep_clipboard(nnavi500, nexus, capitalization, spacing):
     if capitalization != 0 or spacing != 0 or nnavi500 != 1:
+        cb = Clipboard(from_system=True)
         if nnavi500 > 1:
             max_tries = 20
             key = str(nnavi500)
@@ -152,7 +153,13 @@ def drop_keep_clipboard(nnavi500, nexus, capitalization, spacing):
         else:
             text = Clipboard.get_system_text()
 
-        textformat.master_format_text(capitalization, spacing, text)
+        formatted = textformat.TextFormat.formatted_text(capitalization, spacing, text)
+
+        Clipboard.set_system_text(formatted)
+        time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
+        Key("c-v").execute()
+        time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
+        cb.copy_to_system()
     # Maintain standard spark functionality for non-strings
     else:
         Key("c-v").execute()
