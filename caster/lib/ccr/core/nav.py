@@ -75,12 +75,15 @@ class NavigationNon(MappingRule):
               rdescript="Mouse: Ctrl + Left Click"),
         "garb [<nnavi500>]":
             R(Mouse("left") + Mouse("left") + Function(
-                navigation.stoosh_keep_clipboard, nexus=_NEXUS),
-                rdescript="Highlight @ Mouse + Copy"),
+                navigation.stoosh_keep_clipboard,
+                nexus=_NEXUS,
+                capitalization=0,
+                spacing=0),
+              rdescript="Highlight @ Mouse + Copy"),
         "drop [<nnavi500>]":
             R(Mouse("left") + Mouse("left") + Function(
                 navigation.drop_keep_clipboard, nexus=_NEXUS),
-                rdescript="Highlight @ Mouse + Paste"),
+              rdescript="Highlight @ Mouse + Paste"),
         "sure stoosh":
             R(Key("c-c"), rdescript="Simple Copy"),
         "sure cut":
@@ -188,7 +191,7 @@ class Navigation(MergeRule):
         'shock [<nnavi50>]':
             R(Key("enter"), rspec="shock", rdescript="Enter")* Repeat(extra="nnavi50"),
 
-        "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]": 
+        "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]":
             R(Function(text_utils.master_text_nav), rdescript="Keyboard Text Navigation"),
 
         "shift click":
@@ -199,7 +202,7 @@ class Navigation(MergeRule):
             R(Function(navigation.stoosh_keep_clipboard, nexus=_NEXUS), rspec="stoosh", rdescript="Copy"),
         "cut [<nnavi500>]":
             R(Function(navigation.cut_keep_clipboard, nexus=_NEXUS), rspec="cut", rdescript="Cut"),
-        "spark [<nnavi500>]":
+        "spark [<nnavi500>] [(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)]":
             R(Function(navigation.drop_keep_clipboard, nexus=_NEXUS), rspec="spark", rdescript="Paste"),
 
         "splat [<splatdir>] [<nnavi10>]":
@@ -222,22 +225,22 @@ class Navigation(MergeRule):
             R(Key("c-space"), rspec="Kraken", rdescript="Control Space"),
 
     # text formatting
-        "set [<big>] format (<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)":  
+        "set [<big>] format (<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)":
             R(Function(textformat.set_text_format), rdescript="Set Text Format"),
-        "clear caster [<big>] formatting":      
+        "clear caster [<big>] formatting":
             R(Function(textformat.clear_text_format), rdescript="Clear Caster Formatting"),
-        "peek [<big>] format":                  
+        "peek [<big>] format":
             R(Function(textformat.peek_text_format), rdescript="Peek Format"),
-        "(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel) <textnv> [brunt]":  
+        "(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel) <textnv> [brunt]":
             R(Function(textformat.master_format_text), rdescript="Text Format"),
-        "[<big>] format <textnv>":              
+        "[<big>] format <textnv>":
             R(Function(textformat.prior_text_format), rdescript="Last Text Format"),
-        "<word_limit> [<big>] format <textnv>": 
+        "<word_limit> [<big>] format <textnv>":
             R(Function(textformat.partial_format_text), rdescript="Partial Text Format"),
 
-        "hug <enclosure>":              
+        "hug <enclosure>":
             R(Function(text_utils.enclose_selected), rdescript="Enclose text "),
-        "dredge":                       
+        "dredge":
             R(Key("a-tab"), rdescript="Alt-Tab"),
 
     }
@@ -299,8 +302,8 @@ class Navigation(MergeRule):
             "big": "big",
         }),
         Choice("splatdir", {
-            "lease":"backspace",
-            "ross":"delete",
+            "lease": "backspace",
+            "ross": "delete",
         }),
     ]
 
@@ -315,7 +318,7 @@ class Navigation(MergeRule):
         "mtn_dir": "right",
         "extreme": None,
         "big": None,
-        "splatdir":"backspace",
+        "splatdir": "backspace",
     }
 
 
