@@ -299,7 +299,7 @@ class Navigation(MergeRule):
             "Wally": "way",
         }),
         Choice("big", {
-            "big": "big",
+            "big": True,
         }),
         Choice("splatdir", {
             "lease": "backspace",
@@ -317,7 +317,7 @@ class Navigation(MergeRule):
         "mtn_mode": None,
         "mtn_dir": "right",
         "extreme": None,
-        "big": None,
+        "big": False,
         "splatdir": "backspace",
     }
 
