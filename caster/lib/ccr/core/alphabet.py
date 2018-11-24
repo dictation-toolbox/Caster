@@ -17,11 +17,11 @@ class Alphabet(MergeRule):
     extras = [
         alphanumeric.get_alphabet_choice("letter"),
         Choice("big", {
-            "big": "big",
+            "big": True,
         }),
     ]
     defaults = {
-        "big": "",
+        "big": False,
     }
 
 
