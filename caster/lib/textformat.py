@@ -2,7 +2,7 @@ import time
 import sys
 
 from caster.lib.actions import Key, Text
-from dragonfly import Clipboard
+from caster.lib.clipboard import Clipboard
 
 from caster.lib import settings, context
 
