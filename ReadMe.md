@@ -6,6 +6,7 @@ Caster is a collection of tools aimed at enabling programming entirely by voice.
 
 - [**Introduction - What does it do?**](caster/doc/Intro.md)
 - [Quick reference guide - Caster commands at a glance](CasterQuickReference0.5.8.pdf)
+- [A short video demonstration](https://www.youtube.com/watch?v=T1bKAqDhH_E)
 - [Instructions for installing](caster/doc/Installation.md)
 - info: [[ReadTheDocs](http://caster.readthedocs.org/en/latest/README/)] [[YouTube](https://www.youtube.com/channel/UC2qZzmCj_5ZKkTa3i9X1LCg)]
 - [contributing / how can I help?](https://github.com/synkarius/caster/blob/master/caster/doc/CONTRIBUTING.md)
