@@ -213,7 +213,6 @@ whiskey \\ x-ray \\ yankee \\ zulu \\
 
 \footnotetext[1]{Takes optional direction parameter, one of the direction keys from table (5)}
 \footnotetext[2]{Takes optional number parameter for repetition}
-\footnotetext[3]{Takes optional number parameter, which is used to determine a persistent clipboard slot}
 \footnotetext[5]{Takes prekris, brax, curly, angle, [thin] quotes}
 
 %----------------------------------------------------------------------------------------
@@ -222,10 +221,13 @@ whiskey \\ x-ray \\ yankee \\ zulu \\
 
 \command{stoosh \footnotemark[3]}{copy}
 \command{cut \footnotemark[3]}{cut}
-\command{spark \footnotemark[3]}{paste}
+\command{spark \footnotemark[3] \footnotemark[6]}{paste}
 \command{garb \footnotemark[3]}{double-click + copy}
 \command{drop \footnotemark[3]}{double-click + paste}
 \command{duple \footnotemark[2]}{duplicate line}
+
+\footnotetext[3]{Takes optional number parameter, which is used to determine a persistent clipboard slot}
+\footnotetext[6]{Takes optional formatting parameters, e.g. "spark tie bow"}
 %---------------------------------------------------------------------------------
 \end{minipage} % End the second column of text
 } % End the second division of the page
@@ -313,9 +315,9 @@ Capitalisation and spacing can be combined into a single command. Whether combin
 
 \sectiontitle{Format setting}
 
-\examplecommand{set format <capitalisation> <spacing> bow}{Set a standard format}
-\examplecommand{format <dictation>}{Apply the standard format to dictation}
+\examplecommand{set [big] format <capitalisation> <spacing> bow}{Set a standard/[secondary] format}
 
+\examplecommand{[big] format <dictation>}{Apply the standard/[secondary] format to dictation}
 %----------------------------------------------------------------------------------------
 
 \sectiontitle{Mouse replacement}
@@ -324,6 +326,7 @@ Capitalisation and spacing can be combined into a single command. Whether combin
 \command{kick mid}{middle click}
 \command{psychic}{right click}
 \command{shift right click}{shift right click}
+\command{shift click}{shift click}
 \command{squat}{left button down}
 \command{bench}{left button up}
 \command{colic}{control left click}
