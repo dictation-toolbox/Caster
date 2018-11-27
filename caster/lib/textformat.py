@@ -3,7 +3,6 @@ import sys
 
 from caster.lib.actions import Key, Text
 from caster.lib.clipboard import Clipboard
-
 from caster.lib import settings, context
 from caster.lib import settings
 
