@@ -5,7 +5,7 @@ Created on Sep 1, 2015
 '''
 from dragonfly import Repeat, Function, Dictation, Choice, MappingRule
 
-from caster.lib import context, navigation, alphanumeric, textformat
+from caster.lib import context, navigation, alphanumeric, textformat, text_utils
 from caster.lib import control
 from caster.lib.actions import Key, Mouse
 from caster.lib.dfplus.additions import IntegerRefST
@@ -76,12 +76,15 @@ class NavigationNon(MappingRule):
               rdescript="Mouse: Ctrl + Left Click"),
         "garb [<nnavi500>]":
             R(Mouse("left") + Mouse("left") + Function(
-                navigation.stoosh_keep_clipboard, nexus=_NEXUS),
-                rdescript="Highlight @ Mouse + Copy"),
+                navigation.stoosh_keep_clipboard,
+                nexus=_NEXUS,
+                capitalization=0,
+                spacing=0),
+              rdescript="Highlight @ Mouse + Copy"),
         "drop [<nnavi500>]":
             R(Mouse("left") + Mouse("left") + Function(
                 navigation.drop_keep_clipboard, nexus=_NEXUS),
-                rdescript="Highlight @ Mouse + Paste"),
+              rdescript="Highlight @ Mouse + Paste"),
         "sure stoosh":
             R(Key("c-c"), rdescript="Simple Copy"),
         "sure cut":
@@ -190,15 +193,21 @@ class Navigation(MergeRule):
             R(Key("enter"), rspec="shock", rdescript="Enter")* Repeat(extra="nnavi50"),
 
         "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]":
-            R(Function(textformat.master_text_nav), rdescript="Keyboard Text Navigation"),
+            R(Function(text_utils.master_text_nav), rdescript="Keyboard Text Navigation"),
+
+        "shift click":
+            R(Key("shift:down") + Mouse("left") + Key("shift:up"),
+              rdescript="Mouse: Shift Click"),
 
         "stoosh [<nnavi500>]":
             R(Function(navigation.stoosh_keep_clipboard, nexus=_NEXUS), rspec="stoosh", rdescript="Copy"),
         "cut [<nnavi500>]":
             R(Function(navigation.cut_keep_clipboard, nexus=_NEXUS), rspec="cut", rdescript="Cut"),
-        "spark [<nnavi500>]":
+        "spark [<nnavi500>] [(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)]":
             R(Function(navigation.drop_keep_clipboard, nexus=_NEXUS), rspec="spark", rdescript="Paste"),
 
+        "splat [<splatdir>] [<nnavi10>]":
+            R(Key("c-%(splatdir)s"), rspec="splat", rdescript="Splat") * Repeat(extra="nnavi10"),
         "deli [<nnavi50>]":
             R(Key("del/5"), rspec="deli", rdescript="Delete") * Repeat(extra="nnavi50"),
         "clear [<nnavi50>]":
@@ -217,20 +226,21 @@ class Navigation(MergeRule):
             R(Key("c-space"), rspec="Kraken", rdescript="Control Space"),
 
     # text formatting
-        "set format (<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)":
+        "set [<big>] format (<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)":
             R(Function(textformat.set_text_format), rdescript="Set Text Format"),
-        "clear caster formatting":
+        "clear caster [<big>] formatting":
             R(Function(textformat.clear_text_format), rdescript="Clear Caster Formatting"),
-        "peek format":
+        "peek [<big>] format":
             R(Function(textformat.peek_text_format), rdescript="Peek Format"),
         "(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel) <textnv> [brunt]":
             R(Function(textformat.master_format_text), rdescript="Text Format"),
-        "format <textnv>":
+        "[<big>] format <textnv>":
             R(Function(textformat.prior_text_format), rdescript="Last Text Format"),
-        "<word_limit> format <textnv>":
+        "<word_limit> [<big>] format <textnv>":
             R(Function(textformat.partial_format_text), rdescript="Partial Text Format"),
+
         "hug <enclosure>":
-            R(Function(textformat.enclose_selected), rdescript="Enclose text "),
+            R(Function(text_utils.enclose_selected), rdescript="Enclose text "),
         "dredge":
             R(Key("a-tab"), rdescript="Alt-Tab"),
 
@@ -289,6 +299,13 @@ class Navigation(MergeRule):
         Choice("extreme", {
             "Wally": "way",
         }),
+        Choice("big", {
+            "big": True,
+        }),
+        Choice("splatdir", {
+            "lease": "backspace",
+            "ross": "delete",
+        }),
     ]
 
     defaults = {
@@ -300,7 +317,9 @@ class Navigation(MergeRule):
         "spacing": 0,
         "mtn_mode": None,
         "mtn_dir": "right",
-        "extreme": None
+        "extreme": None,
+        "big": False,
+        "splatdir": "backspace",
     }
 
 

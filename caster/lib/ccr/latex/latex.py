@@ -22,7 +22,7 @@ def back_curl(first, second):
 
 
 def symbol_letters(big, symbol):
-    if big == "big":
+    if big:
         symbol = symbol.title()
     Text(str(symbol)).execute()
 
@@ -183,11 +183,11 @@ class LaTeX(MergeRule):
                 "right": "right)",
             }),
         Choice("big", {
-            "big": "big",
+            "big": True,
         }),
     ]
     defaults = {
-        "big": "",
+        "big": False,
         "packages": "",
     }
 

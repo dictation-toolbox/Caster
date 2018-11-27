@@ -126,7 +126,7 @@ def cut_keep_clipboard(nnavi500, nexus):
                 time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
                 nexus.clip[key] = Clipboard.get_system_text()
                 utilities.save_toml_file(
-                nexus.clip, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
+                    nexus.clip, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
             except Exception:
                 failure = True
                 utilities.simple_log()
@@ -135,27 +135,36 @@ def cut_keep_clipboard(nnavi500, nexus):
         cb.copy_to_system()
 
 
-def drop_keep_clipboard(nnavi500, nexus):
-    if nnavi500 == 1:
-        Key("c-v").execute()
-    else:
-        max_tries = 20
-        key = str(nnavi500)
+def drop_keep_clipboard(nnavi500, nexus, capitalization, spacing):
+    if capitalization != 0 or spacing != 0 or nnavi500 != 1:
         cb = Clipboard(from_system=True)
-        for i in range(0, max_tries):
-            failure = False
-            try:
-                if key in nexus.clip:
-                    Clipboard.set_system_text(nexus.clip[key])
-                    Key("c-v").execute()
-                    time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
-                else:
-                    dragonfly.get_engine().speak("slot empty")
-            except Exception:
-                failure = True
-            if not failure:
-                break
+        if nnavi500 > 1:
+            max_tries = 20
+            key = str(nnavi500)
+            for i in range(0, max_tries):
+                failure = False
+                try:
+                    if key in nexus.clip:
+                        text = nexus.clip[key]
+                    else:
+                        dragonfly.get_engine().speak("slot empty")
+                except Exception:
+                    failure = True
+                if not failure:
+                    break
+        else:
+            text = Clipboard.get_system_text()
+
+        formatted = textformat.TextFormat.formatted_text(capitalization, spacing, text)
+
+        Clipboard.set_system_text(formatted)
+        time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
+        Key("c-v").execute()
+        time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
         cb.copy_to_system()
+    # Maintain standard spark functionality for non-strings
+    else:
+        Key("c-v").execute()
 
 
 def duple_keep_clipboard(nnavi50):

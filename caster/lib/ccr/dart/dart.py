@@ -13,8 +13,6 @@ from caster.lib.dfplus.state.short import R
 
 class Dart(MergeRule):
 
-    desired_text_format = 3, 1 #gerrishGum
-
     mapping = {
 
         # CCR PROGRAMMING STANDARD
@@ -60,13 +58,14 @@ class Dart(MergeRule):
         #
         SymbolSpecs.SYSOUT:
             R(Text("print()") + Key("left"), rdescript="Dart: Print"),
-			
+
         SymbolSpecs.IMPORT:
-            R(Text("import ''")  + Key("left"), rdescript="Dart: Import"),
+            R(Text("import ''") + Key("left"), rdescript="Dart: Import"),
 
         SymbolSpecs.FUNCTION:
             R(Text("TOKEN() {}") + Key("left, enter"), rdescript="Dart: Function"),
-		SymbolSpecs.CLASS:
+
+        SymbolSpecs.CLASS:
             R(Text("class {}") + Key("left/5:2"), rdescript="Dart: Class"),
         #
         SymbolSpecs.COMMENT:

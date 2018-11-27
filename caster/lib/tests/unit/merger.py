@@ -92,7 +92,3 @@ class TestMerger(TestNexus):
         self.set_selfmod(ChainAlias.pronunciation, False, True)
         self.assertFalse("chain alias" in self.nexus.merger._base_global.mapping_actual())
 
-    def test_reject_mapping_rules(self):
-
-        self.assertRaises(AttributeError,
-                          lambda: self.nexus.merger.add_global_rule(DemoMappingRule()))
