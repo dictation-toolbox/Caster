@@ -27,11 +27,11 @@ if settings.SETTINGS["miscellaneous"]["use_aenea"] and _is_aenea_available():
             # Get the server's clipboard content if possible and update this
             # system's clipboard.
             try:
-                server_text = aenea.communications.server.copy()
+                server_text = aenea.communications.server.paste()
                 DragonflyClipboard.set_system_text(server_text)
                 return server_text
             except ProtocolError as e:
-                print("ProtocolError caught when calling server.copy(): %s"
+                print("ProtocolError caught when calling server.paste(): %s"
                       % e)
                 print("Only getting local clipboard content.")
                 return DragonflyClipboard.get_system_text()
@@ -40,9 +40,9 @@ if settings.SETTINGS["miscellaneous"]["use_aenea"] and _is_aenea_available():
         def set_system_text(cls, content):
             # Set the server's clipboard content if possible.
             try:
-                aenea.communications.server.paste(content)
+                aenea.communications.server.copy(content)
             except ProtocolError as e:
-                print("ProtocolError caught when calling server.paste(): %s"
+                print("ProtocolError caught when calling server.copy(): %s"
                       % e)
                 print("Only setting local clipboard content.")
 
