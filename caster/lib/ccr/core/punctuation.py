@@ -1,4 +1,4 @@
-from dragonfly.actions.action_base import Repeat
+from dragonfly import Choice, Repeat
 
 from caster.lib import control
 from caster.lib.actions import Key, Text
