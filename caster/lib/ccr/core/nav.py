@@ -77,13 +77,14 @@ class NavigationNon(MappingRule):
         "garb [<nnavi500>]":
             R(Mouse("left") + Mouse("left") + Function(
                 navigation.stoosh_keep_clipboard,
-                nexus=_NEXUS,
-                capitalization=0,
-                spacing=0),
+                nexus=_NEXUS),
               rdescript="Highlight @ Mouse + Copy"),
         "drop [<nnavi500>]":
             R(Mouse("left") + Mouse("left") + Function(
-                navigation.drop_keep_clipboard, nexus=_NEXUS),
+                navigation.drop_keep_clipboard,
+                nexus=_NEXUS,
+                capitalization=0,
+                spacing=0),
               rdescript="Highlight @ Mouse + Paste"),
         "sure stoosh":
             R(Key("c-c"), rdescript="Simple Copy"),
