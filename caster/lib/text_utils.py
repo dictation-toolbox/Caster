@@ -1,8 +1,7 @@
 import time
 
-from dragonfly.actions.action_key import Key
-from dragonfly.actions.action_text import Text
 
+from caster.lib.actions import Key, Text
 from caster.lib import settings, context
 
 def master_text_nav(mtn_mode, mtn_dir, nnavi500, extreme):
