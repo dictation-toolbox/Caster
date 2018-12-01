@@ -10,6 +10,7 @@ command_sets = {
     "cpp.cpp": ("CPP", ),
     "csharp.csharp": ("CSharp", ),
     "dart.dart": ("Dart", ),
+    "go.go": ("Go", ),
     "haxe.haxe": ("Haxe", ),
     "html.html": ("HTML", ),
     "java.java": ("Java", ),
