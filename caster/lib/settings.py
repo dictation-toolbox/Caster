@@ -169,6 +169,7 @@ _DEFAULT_SETTINGS = {
         "explorer": True,
         "firefox": True,
         "flashdevelop": True,
+        "fman": True,
         "foxitreader": True,
         "gitbash": True,
         "gitter": True,
