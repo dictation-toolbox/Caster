@@ -1,5 +1,6 @@
 # new modules should be added in the dictionary
-# the tupple contains the rules which will be imported
+# the tuple contains the rules which will be imported
+from caster.lib import utilities
 
 command_sets = {
     "bash.bash": ("Bash", ),
@@ -24,13 +25,13 @@ command_sets = {
     "vhdl.vhdl": ("VHDL", ),
 }
 
-
-for module_name,class_name_tup in command_sets.iteritems():
+for module_name, class_name_tup in command_sets.iteritems():
     for class_name in class_name_tup:
         try:
-            module = __import__(module_name, globals(), locals(),[class_name])    #attempts to import the class
-            globals()[class_name]= module    #make the name available globally
+            module = __import__(module_name, globals(), locals(),
+                                [class_name])  # attempts to import the class
+            globals()[class_name] = module  # make the name available globally
 
         except Exception as e:
             print("Ignoring ccr rule '{}'. Failed to load with: ".format(class_name))
-            print(e)
+            utilities.simple_log()

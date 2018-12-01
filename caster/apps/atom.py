@@ -8,7 +8,8 @@ from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge import gfilter
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
-from dragonfly import AppContext, Dictation, Grammar, Key, Pause, Repeat, Text
+from dragonfly import (AppContext, Choice, Dictation, Grammar, Key, Pause,
+                       Repeat, Text)
 
 # How long to wait for the Atom palette to load before hitting the enter key
 atom_palette_wait = 30
@@ -81,9 +82,9 @@ class AtomRule(MergeRule):
         "save all":
             ACP("Save All", "Atom: Save All"),
         "close pane":
-            ACP("Pane Close", "Atom: Close Pane"),
+            ACK("c-k, c-w", "Atom: Close Pane"),
         "close pane others":
-            ACK("ca-w", "Atom: Close Pane"),
+            ACK("c-k, ca-w", "Atom: Close Pane"),
         "close window":
             ACK("cs-w", "Atom: Close Window"),
         #Extra
@@ -92,7 +93,7 @@ class AtomRule(MergeRule):
             ACK("cs-c", "Atom: Copy Path"),
         "select all":
             ACK("c-a", "Atom: Select All"),
-        "[toggle] comments":
+        "[toggle] (comments | comment line)":
             ACK("c-slash", "Atom: Toggle Comments"),
         "reflow section":
             ACK("ac-q", "Atom: Reflow Section"),
@@ -117,8 +118,6 @@ class AtomRule(MergeRule):
             ACK("cs-k", "Atom: Delete Line or # Lines Below")*Repeat(extra="n"),
         "join line":
             ACK("c-j", "Atom: Join Line"),
-        "comment line":
-            ACK("c-slash", "Atom: Toggle Comment Line"),
         #Text Submenu
         "uppercase":
             ACP("Editor Upper Case", "Atom: Convert Uppercase"),
@@ -141,7 +140,7 @@ class AtomRule(MergeRule):
             ACK("ac-rightbrace", "Atom: Unfold"),
         "unfold all":
             ACK("c-k, c-0, acs-rightbrace", "Atom: Unfold All"),
-        "fold [level] [<n2>]":
+        "fold [level] <n2>":
             ACK("c-k, c-%(n2)s", "Atom: Fold Level 1-9"),
         #Bookmarks Submenu
         "view (all | [all] bookmarks)":
@@ -170,36 +169,31 @@ class AtomRule(MergeRule):
         "[toggle] treeview":
             ACK("c-backslash", "Atom: Toggle Treeview"),
         #Panes Submenu
-        "split above":
-            ACP("Pane: Split Up", "Atom: Split Up"),
-        "split below":
-            ACP("Pane: Split Down", "Atom: Split Down"),
-        "split left":
-            ACP("Pane: Split Left", "Atom: Split Left"),
-        "split right":
-            ACP("Pane: Split Right", "Atom: Split Right"),
-        "focus [on] next [pane]":
-            ACP("Window: Focus Next Pane", "Atom: Focus Next Pane"),
-        "focus [on] previous [pane]":
-            ACP("Window: Focus Previous Pane", "Atom: Focus Previous Pane"),
-        "focus [pane] [on] above":
-            ACP("Window: Focus Pane Above", "Atom: Focused Pane Above"),
-        "focus [pane] [on] below":
-            ACP("Window: Focus Pane Below", "Atom: Focus Pane Below"),
-        "focus [pane] [on] left":
-            ACP("Window: Focus Pane on Left", "Atom: Focus On left"),
-        "focus [pane] [on] right":
-            ACP("Window: Focus Pane on Right", "Atom: Focus Pane on Right"),
-        ##"close pane":  ACP("Window: pane close", "Atom: Close Pane"),
+        "split [pane] above":
+            ACK("c-k, up", "Atom: Split Up"),
+        "split [pane] below":
+            ACK("c-k, down", "Atom: Split Down"),
+        "split [pane] left":
+            ACK("c-k, left", "Atom: Split Left"),
+        "split [pane] right":
+            ACK("c-k, right", "Atom: Split Right"),
+        "[focus [on]] next pane":
+            ACK("c-k, c-n", "Atom: Focus Next Pane"),
+        "[focus [on]] previous pane":
+            ACK("c-k, c-p", "Atom: Focus Previous Pane"),
+        "(focus [on] [pane] | pane) above":
+            ACK("c-k, c-up", "Atom: Focused Pane Above"),
+        "(focus [on] [pane] | pane) below":
+            ACK("c-k, c-down", "Atom: Focus Pane Below"),
+        "(focus [on] [pane] | pane) left":
+            ACK("c-k, c-left", "Atom: Focus On left"),
+        "(focus [on] [pane] | pane) right":
+            ACK("c-k, c-right", "Atom: Focus Pane on Right"),
         #extras
-        "[go to] pane [<n2>]":
+        "[go to] pane [item] <n2>":
             ACK("a-%(n2)s", "Atom: Go to Pane 1-9"),
-        "focus previous":
-            ACP("Core: Focus Previous", "Atom: Focus Previous"),
-        "next pane":
-            ACP("Window: Focus Previous Pane", "Atom: Next Pane"),
-        "previous pane":
-            ACP("Window: Focus Next Pane", "Atom: Previous Pane"),
+        "[go to] <nrw> (tab | pane [item])":
+            ACK("a-%(nrw)s", "Atom: Go to Pane 1-9"),
         #Developer Submenu
         #"open in development mode":    ACK("", "Open in Development Mode"),
         "run atom [specs]":
@@ -215,31 +209,32 @@ class AtomRule(MergeRule):
             ACK("ac-down", "Atom: Add Selection Below #")*Repeat(extra="n"),
         "split into lines":
             ACP("Split Into Lines", "Atom: Split Into lines"),
-        "single section":
-            ACK("escape", "Atom: Single Section"),
-        "select [to] top":
-            ACK("cs-home", "Atom: Select to Top"),
-        "select [to] bottom":
-            ACK("cs-end", "Atom: Select to Bottom"),
-        #"select line":                             ACK("c-l", "Atom: Select Line"),
-        #"select word [<n>]":                       ACP("Editor: Word", "Atom: Select Word") * Repeat(extra="n"),
-        "[select] [to] begin line":
+        "select line":
+            ACK("c-l", "Atom: Select Line"),
+        "[select] [to] (begin | beginning) [of] line":
             ACP("Editor: Select to Beginning of Line",
                 "Atom: Select to Beginning of line"),
         "[select] inside brackets":
-            ACK("ac-m", "Atom: Select Inside Brackets"),
+            ACK("ac-comma", "Atom: Select Inside Brackets"),
         #Find Menu
-        "(replace | replacing) in buffer":
-            ACK("ac-f", "Atom: Replacing in Buffer"),
-        "select next":
+        "find (selection | selected)":
+            ACK("c-e", "Atom: Replacing in Buffer"),
+        "find [and] select all":
             ACK("a-f3", "Atom: Select All"),
+        "[find] select next [<n>]":
+            ACK("c-d", "Atom: Select Next")*Repeat(extra="n"),
+        "[find] select skip [this] [<n>]":
+            ACK("c-k, c-d", "Atom: Select Skip")*Repeat(extra="n"),
+        "[find] select skip next [<n>]":
+            ACK("c-d", "Atom: Select Skip") +
+            ACK("c-k, c-d", "Atom: Select Skip")*Repeat(extra="n"),
         "find replace next":
             ACP("Find and Replace: Replace Next", "Atom: Replace Next"),
         "find replace all":
             ACP("Find and Replace: Replace All", "Atom: Replace All"),
         "find buffer":
             ACK("c-b", "Atom: Find Buffer"),
-        "find file":
+        "(find | go to) file":
             ACK("c-p", "Atom: Find File"),
         "find modified file":
             ACK("cs-b", "Atom: Find Modified File"),
@@ -247,7 +242,6 @@ class AtomRule(MergeRule):
         #Bracket Matcher Submenu
         "bracket [go to] match":
             ACK("c-m", "Atom: Go To Matching Bracket"),
-        ##"select inside bracket":                 ACK("ac-m", "Atom: Select inside bracket"),
         "bracket remove [from] selection":
             ACK("c-lbrace", "Atom: Remove Bracket from Selection"),
         "close [current] tag":
@@ -578,9 +572,24 @@ class AtomRule(MergeRule):
         Dictation("mim"),
         IntegerRefST("n", 1, 50),
         IntegerRefST("line_number", 1, 50000),
-        IntegerRefST("n2", 1, 9),
+        IntegerRefST("n2", 1, 10),
+        Choice(
+            "nrw", {
+                "first": 1,
+                "second": 2,
+                "third": 3,
+                "fourth": 4,
+                "fifth": 5,
+                "sixth": 6,
+                "seventh": 7,
+                "eighth": 8,
+                "(ninth | last)": 9,
+            }),
     ]
-    defaults = {"n": 1, "mim": "", "line_number": 1}
+    defaults = {
+        "n": 1,
+        "mim": "",
+    }
 
 
 #---------------------------------------------------------------------------
