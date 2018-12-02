@@ -97,6 +97,26 @@ A quick reference guide for the language-specific commands included with Caster.
 | integer                   | `int`                           | while loop       | `while ()`                                                    |
 | interface                 | `interface TOKEN {}`            |                  |                                                               |
 
+# Go
+Command | Output | | Command | Output
+---|---|---|---|---
+iffae|`if  {`<br/>` }`||shells|`else {`<br/>`   }`
+switch|`switch  {`<br/>`   }`||case of|`case :`
+breaker|`break`||default|`default:`
+while loop|`for  {`<br/>`    }`||for loop|`for i := 0; i<; i++ {`<br/>`    }`
+for each|`for i := range  {`<br/>`    }`||convert to integer|`strconv.Atoi()`
+convert to string|`strconv.Itoa()`||lodge and|` && `
+lodge or|&#124; &#124;||lodge not|`!`
+print to console|`fmt.Println()`||import|`import (`<br/>`)`
+function|`func `||class|`type  struct {`<br/>`   }`
+add comment|`//`||long comment|`/**/`
+value not|`nil`||return|`return `
+value true|`true`||value false|`false`
+(inter / integer)|``||boolean|``
+string|`string`||assign|` := `
+(function / funk) main|`func main() {`<br/>`    }`||make map|`make(map[])`
+package|`package `|||``
+
 # Haxe
 
 | Command                   | Output                    | Command          | Output                                                        |
