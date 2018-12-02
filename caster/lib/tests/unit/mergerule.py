@@ -2,10 +2,10 @@
 import unittest
 from dragonfly.grammar.context import AppContext
 from caster.apps.eclipse import EclipseCCR
-from caster.lib.ccr.java.java import Java
-from caster.lib.ccr.javascript.javascript import Javascript
-from caster.lib.ccr.python.python import Python
-from caster.lib.ccr.recording.alias import Alias
+from caster.ccr.java.java import Java
+from caster.ccr.javascript.javascript import Javascript
+from caster.ccr.python.python import Python
+from caster.ccr.recording.alias import Alias
 from caster.lib.dfplus.merge.mergerule import MergeRule
 
 

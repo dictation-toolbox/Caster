@@ -1,11 +1,11 @@
 from caster.apps import eclipse
 from caster.apps.eclipse import EclipseCCR
 from caster.lib.actions import Text
-from caster.lib.ccr.bash.bash import Bash
-from caster.lib.ccr.java.java import Java
-from caster.lib.ccr.python.python import Python
-from caster.lib.ccr.recording.alias import ChainAlias
-from caster.lib.ccr.standard import SymbolSpecs
+from caster.ccr.bash.bash import Bash
+from caster.ccr.java.java import Java
+from caster.ccr.python.python import Python
+from caster.ccr.recording.alias import ChainAlias
+from caster.ccr.standard import SymbolSpecs
 from caster.lib.dfplus.merge.ccrmerger import CCRMerger
 from caster.lib.dfplus.merge.filter import make_filter, there_is_spec_overlap, incoming_gets_priority
 from caster.lib.dfplus.merge.mergepair import MergeInf

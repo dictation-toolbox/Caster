@@ -5,7 +5,7 @@ Command-module for RainbowGrid
 
 from dragonfly import (Grammar, AppContext, Function, Playback, Choice, MappingRule)
 
-from caster.asynch.mouse import grids
+from caster.lib.asynch.mouse import grids
 from caster.lib import control
 from caster.lib import settings
 from caster.lib.dfplus.additions import IntegerRefST

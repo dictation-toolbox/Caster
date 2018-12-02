@@ -129,25 +129,25 @@ _DEFAULT_SETTINGS = {
         "LOG_PATH": BASE_PATH + "/bin/data/log.txt",
         "RECORDED_MACROS_PATH": BASE_PATH + "/bin/data/recorded_macros.toml",
         "SAVED_CLIPBOARD_PATH": BASE_PATH + "/bin/data/clipboard.toml",
-        "SIKULI_SCRIPTS_FOLDER_PATH": BASE_PATH + "/asynch/sikuli/scripts",
+        "SIKULI_SCRIPTS_FOLDER_PATH": BASE_PATH + "/lib/asynch/sikuli/scripts",
 
         # REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
         "REMOTE_DEBUGGER_PATH": "",
 
         # EXECUTABLES
-        "DOUGLAS_PATH": BASE_PATH + "/asynch/mouse/grids.py",
+        "DOUGLAS_PATH": BASE_PATH + "/lib/asynch/mouse/grids.py",
         "ENGINE_PATH": _validate_engine_path(),
-        "HOMUNCULUS_PATH": BASE_PATH + "/asynch/hmc/h_launch.py",
-        "LEGION_PATH": BASE_PATH + "/asynch/mouse/legion.py",
+        "HOMUNCULUS_PATH": BASE_PATH + "/lib/asynch/hmc/h_launch.py",
+        "LEGION_PATH": BASE_PATH + "/lib/asynch/mouse/legion.py",
         "MEDIA_PATH": BASE_PATH + "/bin/media",
-        "RAINBOW_PATH": BASE_PATH + "/asynch/mouse/grids.py",
+        "RAINBOW_PATH": BASE_PATH + "/lib/asynch/mouse/grids.py",
         "REBOOT_PATH": BASE_PATH + "/bin/reboot.bat",
         "REBOOT_PATH_WSR": BASE_PATH + "/bin/reboot_wsr.bat",
-        "SETTINGS_WINDOW_PATH": BASE_PATH + "/asynch/settingswindow.py",
+        "SETTINGS_WINDOW_PATH": BASE_PATH + "/lib/asynch/settingswindow.py",
         "SIKULI_COMPATIBLE_JAVA_EXE_PATH": "",
         "SIKULI_IDE_JAR_PATH": "",
         "SIKULI_SCRIPTS_JAR_PATH": "",
-        "SIKULI_SERVER_PATH": BASE_PATH + "/asynch/sikuli/scripts/xmlrpc_server.sikuli",
+        "SIKULI_SERVER_PATH": BASE_PATH + "/lib/asynch/sikuli/scripts/xmlrpc_server.sikuli",
         "WSR_PATH": "C:/Windows/Speech/Common/sapisvr.exe",
 
         # CCR

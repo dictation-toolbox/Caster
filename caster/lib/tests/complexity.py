@@ -12,11 +12,11 @@ from dragonfly.grammar.grammar_base import Grammar
 
 from caster.lib import settings
 from caster.lib.actions import Text
-from caster.lib.ccr.core.alphabet import Alphabet
-from caster.lib.ccr.core.nav import Navigation
-from caster.lib.ccr.core.numbers import Numbers
-from caster.lib.ccr.core.punctuation import Punctuation
-from caster.lib.ccr.python.python import Python
+from caster.ccr.core.alphabet import Alphabet
+from caster.ccr.core.nav import Navigation
+from caster.ccr.core.numbers import Numbers
+from caster.ccr.core.punctuation import Punctuation
+from caster.ccr.python.python import Python
 from caster.lib.dfplus.hint.hintnode import NodeRule
 from caster.lib.dfplus.hint.nodes import css
 from caster.lib.dfplus.merge.ccrmerger import CCRMerger

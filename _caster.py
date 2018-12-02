@@ -9,7 +9,7 @@ logging.basicConfig()
 
 import time
 from dragonfly import (Function, Grammar, Playback, Dictation, Choice, Pause)
-from caster.lib.ccr.standard import SymbolSpecs
+from caster.ccr.standard import SymbolSpecs
 
 
 def _wait_for_wsr_activation():
@@ -37,22 +37,22 @@ from caster.lib import control
 _NEXUS = control.nexus()
 
 from caster.apps import *
-from caster.asynch import *
+from caster.lib.asynch import *
 from caster.lib import context
 from caster.lib.actions import Key
 import caster.lib.dev.dev
-from caster.asynch.sikuli import sikuli
+from caster.lib.asynch.sikuli import sikuli
 from caster.lib import navigation
 navigation.initialize_clipboard(_NEXUS)
 from caster.lib.dfplus.state.short import R
 from caster.lib.dfplus.additions import IntegerRefST
 
 from caster.lib.dfplus.merge.mergepair import MergeInf
-from caster.lib.ccr import *
-from caster.lib.ccr.recording.again import Again
-from caster.lib.ccr.recording.bringme import bring_rule
-from caster.lib.ccr.recording.alias import Alias
-from caster.lib.ccr.recording import history
+from caster.ccr import *
+from caster.ccr.recording.again import Again
+from caster.ccr.recording.bringme import bring_rule
+from caster.ccr.recording.alias import Alias
+from caster.ccr.recording import history
 from caster.lib.dev import dev
 from caster.lib.dfplus.hint.nodes import css
 from caster.user.filters.examples import scen4, modkeysup

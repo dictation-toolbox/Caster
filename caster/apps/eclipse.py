@@ -12,7 +12,7 @@ from caster.lib import control, utilities
 from caster.lib import settings
 from caster.lib.actions import Key, Text
 from caster.lib.context import AppContext
-from caster.lib.ccr.core.nav import Navigation
+from caster.ccr.core.nav import Navigation
 from caster.lib.dfplus.additions import IntegerRefST, Boolean
 from caster.lib.dfplus.merge import gfilter
 from caster.lib.dfplus.merge.mergerule import MergeRule

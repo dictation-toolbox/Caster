@@ -1,6 +1,6 @@
 from dragonfly.actions.action_function import Function
 
-from caster.asynch.hmc import h_launch
+from caster.lib.asynch.hmc import h_launch
 from caster.lib import settings, utilities
 from caster.lib.dfplus.state.actions import AsynchronousAction, \
     RegisteredAction
