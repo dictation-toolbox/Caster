@@ -3,8 +3,9 @@ Created November 2018
 
 @author: Mike Roberts
 '''
-from dragonfly import Choice, Key, Text
+from dragonfly import Choice
 
+from caster.lib.actions import Key, Text
 from caster.lib import control
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
@@ -17,7 +18,7 @@ class Go(MergeRule):
         SymbolSpecs.IF:
             R(Text("if  {}") + Key("left, enter, up, end, left:2"), rdescript="Go: if"),
         SymbolSpecs.ELSE:
-            R(Text("else {}") + Key("left, enter, up"), rdescript="Go: else"),
+            R(Text("else {}") + Key("left, enter"), rdescript="Go: else"),
         #
         SymbolSpecs.SWITCH:
             R(Text("switch  {}") + Key("left, enter, up, end, left:2"),
