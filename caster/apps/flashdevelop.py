@@ -1,9 +1,10 @@
-from dragonfly import (Grammar, AppContext, MappingRule, Dictation, Key, Text, Repeat,
-                       Pause)
+from dragonfly import (Grammar, MappingRule, Dictation, Repeat, Pause)
 
 from caster.lib import control
 from caster.lib import settings
+from caster.lib.actions import Key, Text
 from caster.lib.ccr.core.nav import Navigation
+from caster.lib.context import AppContext
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge import gfilter
 from caster.lib.dfplus.merge.mergerule import MergeRule

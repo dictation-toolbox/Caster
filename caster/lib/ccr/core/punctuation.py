@@ -1,6 +1,7 @@
-from dragonfly import Choice, Key, Repeat, Text
+from dragonfly import Choice, Repeat
 
 from caster.lib import control
+from caster.lib.actions import Key, Text
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge.ccrmerger import CCRMerger
 from caster.lib.dfplus.merge.mergerule import MergeRule

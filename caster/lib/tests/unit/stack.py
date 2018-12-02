@@ -1,7 +1,8 @@
 from dragonfly.actions.action_function import Function
-from dragonfly.actions.action_text import Text
+
 
 from caster.lib import utilities
+from caster.lib.actions import Text
 from caster.lib.dfplus.state.actions import AsynchronousAction, ContextSeeker, \
     RegisteredAction
 from caster.lib.dfplus.state.actions2 import NullAction

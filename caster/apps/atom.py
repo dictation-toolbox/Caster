@@ -3,13 +3,15 @@ __author__ = 'LexiconCode'
 Command-module for Atom
 Official Site "https://atom.io/"
 """
+
 from caster.lib import control, settings
+from caster.lib.actions import Key, Text
+from caster.lib.context import AppContext
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge import gfilter
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
-from dragonfly import (AppContext, Choice, Dictation, Grammar, Key, Pause,
-                       Repeat, Text)
+from dragonfly import Dictation, Grammar, MappingRule, Pause, Repeat
 
 # How long to wait for the Atom palette to load before hitting the enter key
 atom_palette_wait = 30

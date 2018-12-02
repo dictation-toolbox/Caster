@@ -8,7 +8,7 @@ import logging
 logging.basicConfig()
 
 import time
-from dragonfly import (Key, Function, Grammar, Playback, Dictation, Choice, Pause)
+from dragonfly import (Function, Grammar, Playback, Dictation, Choice, Pause)
 from caster.lib.ccr.standard import SymbolSpecs
 
 
@@ -39,6 +39,7 @@ _NEXUS = control.nexus()
 from caster.apps import *
 from caster.asynch import *
 from caster.lib import context
+from caster.lib.actions import Key
 import caster.lib.dev.dev
 from caster.asynch.sikuli import sikuli
 from caster.lib import navigation

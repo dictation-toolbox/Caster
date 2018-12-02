@@ -9,10 +9,12 @@ Command-module for Notepad++
 """
 #---------------------------------------------------------------------------
 
-from dragonfly import (Grammar, AppContext, Dictation, Mouse, Key, Repeat)
+from dragonfly import (Grammar, Dictation, Repeat)
 
 from caster.lib import control
 from caster.lib import settings
+from caster.lib.actions import Key, Mouse
+from caster.lib.context import AppContext
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge import gfilter
 from caster.lib.dfplus.merge.mergerule import MergeRule

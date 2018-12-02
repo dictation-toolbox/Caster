@@ -8,9 +8,11 @@ from ctypes import windll
 from subprocess import Popen
 
 import dragonfly
+from dragonfly import Choice, monitors
 from caster.asynch.mouse.legion import LegionScanner
 from caster.lib import control, settings, utilities, textformat
-from dragonfly import Choice, Clipboard, Key, Mouse, Text, monitors
+from caster.lib.actions import Key, Text, Mouse
+from caster.lib.clipboard import Clipboard
 
 DIRECTION_STANDARD = {
     "sauce [E]": "up",
@@ -137,29 +139,26 @@ def drop_keep_clipboard(nnavi500, nexus, capitalization, spacing):
     if capitalization != 0 or spacing != 0 or nnavi500 != 1:
         cb = Clipboard(from_system=True)
         if nnavi500 > 1:
-            max_tries = 20
             key = str(nnavi500)
-            for i in range(0, max_tries):
-                failure = False
-                try:
-                    if key in nexus.clip:
-                        text = nexus.clip[key]
-                    else:
-                        dragonfly.get_engine().speak("slot empty")
-                except Exception:
-                    failure = True
-                if not failure:
-                    break
+            if key in nexus.clip:
+                text = nexus.clip[key]
+            else:
+                dragonfly.get_engine().speak("slot empty")
+                text = None
         else:
             text = Clipboard.get_system_text()
 
-        formatted = textformat.TextFormat.formatted_text(capitalization, spacing, text)
+        # Paste clipboard contents if the slot wasn't empty.
+        if text is not None:
+            formatted = textformat.TextFormat.formatted_text(capitalization, spacing, text)
+            Clipboard.set_system_text(formatted)
+            time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
+            Key("c-v").execute()
+            time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
 
-        Clipboard.set_system_text(formatted)
-        time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
-        Key("c-v").execute()
-        time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
+        # Restore the clipboard contents.
         cb.copy_to_system()
+
     # Maintain standard spark functionality for non-strings
     else:
         Key("c-v").execute()

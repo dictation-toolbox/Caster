@@ -1,6 +1,6 @@
-from dragonfly import Key, Text
 
 from caster.lib import control
+from caster.lib.actions import Key, Text
 from caster.lib.dfplus.merge.mergerule import MergeRule
 
 

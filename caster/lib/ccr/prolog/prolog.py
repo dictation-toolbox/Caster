@@ -3,10 +3,10 @@ Created on Sep 2, 2015
 
 @author: Gerrish
 '''
-from dragonfly import Key, Text, Dictation, MappingRule
-from dragonfly.actions.action_text import Text
+from dragonfly import Dictation, MappingRule
 
 from caster.lib import control
+from caster.lib.actions import Key, Text
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 from caster.lib.ccr.standard import SymbolSpecs

@@ -1,6 +1,7 @@
-from dragonfly import Key, Text, Choice, MappingRule
+from dragonfly import Choice, MappingRule
 
 from caster.lib import control, alphanumeric
+from caster.lib.actions import Key, Text
 from caster.lib.ccr.standard import SymbolSpecs
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge.mergerule import MergeRule

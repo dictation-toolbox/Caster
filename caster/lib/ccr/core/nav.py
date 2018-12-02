@@ -3,10 +3,11 @@ Created on Sep 1, 2015
 
 @author: synkarius
 '''
-from dragonfly import Repeat, Function, Key, Dictation, Choice, Mouse, MappingRule
+from dragonfly import Repeat, Function, Dictation, Choice, MappingRule
 
 from caster.lib import context, navigation, alphanumeric, textformat, text_utils
 from caster.lib import control
+from caster.lib.actions import Key, Mouse
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge.ccrmerger import CCRMerger
 from caster.lib.dfplus.merge.mergerule import MergeRule
@@ -76,13 +77,14 @@ class NavigationNon(MappingRule):
         "garb [<nnavi500>]":
             R(Mouse("left") + Mouse("left") + Function(
                 navigation.stoosh_keep_clipboard,
-                nexus=_NEXUS,
-                capitalization=0,
-                spacing=0),
+                nexus=_NEXUS),
               rdescript="Highlight @ Mouse + Copy"),
         "drop [<nnavi500>]":
             R(Mouse("left") + Mouse("left") + Function(
-                navigation.drop_keep_clipboard, nexus=_NEXUS),
+                navigation.drop_keep_clipboard,
+                nexus=_NEXUS,
+                capitalization=0,
+                spacing=0),
               rdescript="Highlight @ Mouse + Paste"),
         "sure stoosh":
             R(Key("c-c"), rdescript="Simple Copy"),

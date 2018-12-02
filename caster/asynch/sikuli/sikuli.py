@@ -1,10 +1,11 @@
 from subprocess import Popen
 import xmlrpclib
 
-from dragonfly import (Grammar, MappingRule, Function, Key)
+from dragonfly import (Grammar, MappingRule, Function)
 
 from caster.lib import control
 from caster.lib import settings, utilities
+from caster.lib.actions import Key
 from caster.lib.dfplus.merge import gfilter
 from caster.lib.dfplus.merge.mergerule import MergeRule
 

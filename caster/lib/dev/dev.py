@@ -4,11 +4,12 @@ import time
 import threading
 import shlex
 
-from dragonfly import (Function, Key, BringApp, Text, WaitWindow, Dictation, Choice,
+from dragonfly import (Function, BringApp, WaitWindow, Dictation, Choice,
                        Grammar, MappingRule, Paste)
 
 from caster.lib import utilities, settings, context, control
 from caster.lib.dev import devgen
+from caster.lib.actions import Key, Text
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.state.actions import ContextSeeker, AsynchronousAction, \
     RegisteredAction

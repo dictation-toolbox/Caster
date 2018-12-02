@@ -2,7 +2,7 @@
 
 import re
 
-from dragonfly import (Grammar, AppContext, Dictation, Key, Text, Repeat, Pause)
+from dragonfly import (Grammar, Dictation, Repeat, Pause)
 from dragonfly.actions.action_function import Function
 from dragonfly.actions.action_paste import Paste
 from dragonfly.grammar.elements import Choice
@@ -10,6 +10,8 @@ from dragonfly.grammar.elements import Choice
 from caster.lib import context as CONTEXT, alphanumeric
 from caster.lib import control, utilities
 from caster.lib import settings
+from caster.lib.actions import Key, Text
+from caster.lib.context import AppContext
 from caster.lib.ccr.core.nav import Navigation
 from caster.lib.dfplus.additions import IntegerRefST, Boolean
 from caster.lib.dfplus.merge import gfilter

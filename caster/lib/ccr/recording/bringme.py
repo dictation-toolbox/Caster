@@ -4,9 +4,10 @@ import subprocess
 import time
 import shlex
 # import dragonfly
-from dragonfly import Choice, Function, Dictation, Text
+from dragonfly import Choice, Function, Dictation
 
 from caster.lib import control, context, utilities, settings
+from caster.lib.actions import Text
 from caster.lib.dfplus.merge.selfmodrule import SelfModifyingRule
 from caster.lib.dfplus.state.short import R
 

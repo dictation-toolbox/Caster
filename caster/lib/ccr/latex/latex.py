@@ -3,9 +3,10 @@ Created on Sep 4, 2018
 
 @author: Mike Roberts
 '''
-from dragonfly import Function, Choice, Key, Text
+from dragonfly import Function, Choice
 
 from caster.lib import control
+from caster.lib.actions import Key, Text
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
 from caster.lib.ccr.standard import SymbolSpecs
