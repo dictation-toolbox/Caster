@@ -11,6 +11,7 @@
 - [Internet Explorer](#internet-explorer)
 - [Firefox](#firefox)
 - [Flash Develop](#flash-develop)
+- [fman](#fman)
 - [Foxit Reader](#foxit-reader)
 - [Git Bash](#git-bash)
 - [Gitter](#gitter)
@@ -199,8 +200,21 @@
 | `find everywhere`    | `refractor symbol` | `symbol prior [<n>]`    |
 | `format code`        | `resume`           | `terminate`             |
 
-# Foxit Reader
+# fman
+| Command           | Command                       | Command          |
+|:------------------|:------------------------------|:-----------------|
+| `copy`            | `deselect`                    | `edit`           |
+| `end`             | `explorer`                    | `go <fav>`       |
+| `go C`            | `go to`                       | `move`           |
+| `new file`        | `new folder`                  | `open left`      |
+| `open right`      | `properties`                  | `refresh`        |
+| `rename`          | `search`                      | `set favourite`  |
+| `show favourites` | `(show / hide) hidden`        | `sort [by] name` |
+| `sort [by] size`  | `sort [by] (modified / date)` | `stoosh path`    |
+| `terminal`        | `command pallette`            | `tabby`          |
 
+
+# Foxit Reader
 | Command           | Command          | Command           |
 | ----------------- | ---------------- | ----------------- |
 | `close tab [<n>]` | `next tab [<n>]` | `prior tab [<n>]` |

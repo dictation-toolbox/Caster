@@ -169,6 +169,7 @@ _DEFAULT_SETTINGS = {
         "explorer": True,
         "firefox": True,
         "flashdevelop": True,
+        "fman": True,
         "foxitreader": True,
         "gitbash": True,
         "gitter": True,
@@ -207,7 +208,7 @@ _DEFAULT_SETTINGS = {
         "sikuli_enabled": False,
         "keypress_wait": 50,  # milliseconds
         "max_ccr_repetitions": 16,
-        "atom_palette_wait": "30",
+        "atom_palette_wait": 30,  # hundredths of a second
         "rdp_mode": False,
         "integer_remap_opt_in": False,
         "integer_remap_crash_fix": False,
