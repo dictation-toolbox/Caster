@@ -11,7 +11,7 @@ from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge import gfilter
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
-from dragonfly import Dictation, Grammar, MappingRule, Pause, Repeat
+from dragonfly import Choice, Dictation, Grammar, Pause, Repeat
 
 # How long to wait for the Atom palette to load before hitting the enter key
 atom_palette_wait = 30
