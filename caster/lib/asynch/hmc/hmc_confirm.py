@@ -4,7 +4,7 @@ import sys
 from threading import Timer
 
 try:  # Style C -- may be imported into Caster, or externally
-    BASE_PATH = os.path.realpath(__file__).split("\\caster")[0].replace("\\", "/")
+    BASE_PATH = os.path.realpath(__file__).split("\\caster\\")[0].replace("\\", "/")
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:
