@@ -1,19 +1,29 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
+
 import collections
 import io
-import toml
 import os
 import sys
-import errno
+
+import toml
+
 import _winreg
+
+GENERIC_HELP_MESSAGE = """
+If you continue having problems with this or any other issue you can contact
+us through Gitter at <https://gitter.im/synkarius/caster> or on our GitHub
+issue tracker at <https://github.com/synkarius/caster/issues>.
+Thank you for using Caster!
+"""
 
 SETTINGS = {}
 _SETTINGS_PATH = os.path.realpath(__file__).split("lib")[0] + "bin\\data\\settings.toml"
 BASE_PATH = os.path.realpath(__file__).split("\\lib")[0].replace("\\", "/")
 
 # title
-SOFTWARE_VERSION_NUMBER = "0.5.11"
+SOFTWARE_VERSION_NUMBER = "0.5.12"
 SOFTWARE_NAME = "Caster v " + SOFTWARE_VERSION_NUMBER
 HOMUNCULUS_VERSION = "HMC v " + SOFTWARE_VERSION_NUMBER
 HMC_TITLE_RECORDING = " :: Recording Manager"
@@ -35,6 +45,35 @@ WXTYPE_SETTINGS = "7"
 HMC_SEPARATOR = "[hmc]"
 
 WSR = False
+
+
+def get_platform_information():
+    """Return a dictionary containing platform-specific information."""
+    import sysconfig
+    system_information = {"platform": sysconfig.get_platform()}
+    system_information.update({"python version": sys.version_info})
+    if sys.platform == "win32":
+        system_information.update({"binary path": sys.exec_prefix})
+        system_information.update({
+            "main binary": os.path.join(sys.exec_prefix, "python.exe")
+        })
+        system_information.update({
+            "hidden console binary": os.path.join(sys.exec_prefix, "pythonw.exe")
+        })
+    else:
+        system_information.update({"binary path": os.path.join(sys.exec_prefix, "bin")})
+        system_information.update({
+            "main binary": os.path.join(sys.exec_prefix, "bin", "python")
+        })
+        system_information.update({
+            "hidden console binary": os.path.join(sys.exec_prefix, "bin", "python")
+        })
+    if system_information["platform"] != "win32":
+        raise SystemError("Your platform is not currently supported by Caster.")
+    return system_information
+
+
+SYSTEM_INFORMATION = get_platform_information()
 
 
 def _validate_engine_path():
@@ -79,8 +118,8 @@ def _find_natspeak():
 
     for arch_key in arch_keys:
         key = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE,
-                              r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", 0,
-                              _winreg.KEY_READ | arch_key)
+                              "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall",
+                              0, _winreg.KEY_READ | arch_key)
         for i in xrange(0, _winreg.QueryInfoKey(key)[0]):
             skey_name = _winreg.EnumKey(key, i)
             skey = _winreg.OpenKey(key, skey_name)
@@ -103,7 +142,7 @@ def _find_natspeak():
                         engine_path = InstallLocation.replace(
                             "\\", "/") + "Program/natspeak.exe"
                         if os.path.isfile(engine_path):
-                            print "Search Complete."
+                            print("Search Complete.")
                             return engine_path
                     else:
                         print(
@@ -154,8 +193,7 @@ _DEFAULT_SETTINGS = {
         "CONFIGDEBUGTXT_PATH": BASE_PATH + "/bin/data/configdebug.txt",
 
         # PYTHON
-        "PYTHONW": "C:/Python27/pythonw",
-        "WXPYTHON_PATH": "C:/Python27/Lib/site-packages/wx-3.0-msw"
+        "PYTHONW": SYSTEM_INFORMATION["hidden console binary"],
     },
 
     # Apps Section
@@ -279,7 +317,7 @@ def _save(data, path):
         with io.open(path, "wt", encoding="utf-8") as f:
             f.write(formatted_data)
     except Exception as e:
-        print "Error saving toml file: " + str(e) + _SETTINGS_PATH
+        print("Error saving toml file: " + str(e) + _SETTINGS_PATH)
 
 
 def _init(path):
@@ -295,7 +333,7 @@ def _init(path):
               "\nAttempting to recover...\n\n")
     result, num_default_added = _deep_merge_defaults(result, _DEFAULT_SETTINGS)
     if num_default_added > 0:
-        print "Default settings values added: %d " % num_default_added
+        print("Default settings values added: %d " % num_default_added)
         _save(result, _SETTINGS_PATH)
     return result
 
@@ -340,8 +378,6 @@ def report_to_file(message, path=None):
 
 # Kick everything off.
 SETTINGS = _init(_SETTINGS_PATH)
-for path in [
-        SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"], SETTINGS["paths"]["WXPYTHON_PATH"]
-]:
-    if not path in sys.path and os.path.isdir(path):
-        sys.path.append(path)
+_debugger_path = SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"]
+if _debugger_path not in sys.path and os.path.isdir(_debugger_path):
+    sys.path.append(_debugger_path)
