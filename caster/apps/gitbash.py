@@ -39,7 +39,7 @@ class GitBashRule(MergeRule):
             R(Key("g, i, t, space, s, t, a, t, u, s"), rdescript="GIT: Status"),
         "git|get commit":
             R(Key(
-                "g, i, t, space, c, o, m, m, i, t, space, minus, a, m, space, quote, quote, left"
+                "g, i, t, space, c, o, m, m, i, t, space, minus, m, space, quote, quote, left"
             ),
               rdescript="GIT: Commit"),
         "git|get bug fix commit <n>":
