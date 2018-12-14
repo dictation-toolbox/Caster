@@ -164,7 +164,7 @@ class Navigation(MergeRule):
     pronunciation = CCRMerger.CORE[1]
 
     mapping = {
-    # "periodic" repeats whatever comes next at 1-second intervals until "cancel" is spoken or 100 tries occur
+    # "periodic" repeats whatever comes next at 1-second intervals until "terminate" is spoken or 100 tries occur
         "periodic":
             ContextSeeker(forward=[L(S(["cancel"], lambda: None),
             S(["*"], lambda fnparams: UntilCancelled(Mimic(*filter(lambda s: s != "periodic", fnparams)), 1).execute(),
