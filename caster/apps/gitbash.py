@@ -28,41 +28,41 @@ class GitBashRule(MergeRule):
     pronunciation = "git bash"
 
     mapping = {
-        "git|get base":
+        "(git|get) base":
             Text("git "),
-        "git initialize repository|get initialize repository|git init|get init":
+        "git initialize repository|get initialize repository|(git|get) init":
             Text("git init"),
-        "git|get add":
+        "(git|get) add":
             R(Key("g, i, t, space, a, d, d, space, dot"),
               rdescript="GIT: Add All"),
-        "git|get status":
+        "(git|get) status":
             R(Key("g, i, t, space, s, t, a, t, u, s"), rdescript="GIT: Status"),
-        "git|get commit":
+        "(git|get) commit":
             R(Key(
                 "g, i, t, space, c, o, m, m, i, t, space, minus, m, space, quote, quote, left"
             ),
               rdescript="GIT: Commit"),
-        "git|get bug fix commit <n>":
+        "(git|get) bug fix commit <n>":
             R(Mimic("get", "commit") + Text("fixes #%(n)d ") + Key("backspace"),
               rdescript="GIT: Bug Fix Commit"),
-        "git|get reference commit <n>":
+        "(git|get) reference commit <n>":
             R(Mimic("get", "commit") + Text("refs #%(n)d ") + Key("backspace"),
               rdescript="GIT: Reference Commit"),
-        "git|get checkout":
+        "(git|get) checkout":
             R(Text("git checkout "), rdescript="GIT: Check Out"),
-        "git|get branch":
+        "(git|get) branch":
             R(Text("git branch "), rdescript="GIT: Branch"),
-        "git|get remote":
+        "(git|get) remote":
             R(Text("git remote "), rdescript="GIT: Remote"),
-        "git|get merge":
+        "(git|get) merge":
             R(Text("git merge "), rdescript="GIT: Merge"),
-        "git|get merge tool":
+        "(git|get) merge tool":
             R(Text("git mergetool"), rdescript="GIT: Merge Tool"),
-        "git|get fetch":
+        "(git|get) fetch":
             R(Text("git fetch "), rdescript="GIT: Fetch"),
-        "git|get push":
+        "(git|get) push":
             R(Text("git push "), rdescript="GIT: Push"),
-        "git|get pull":
+        "(git|get) pull":
             R(Text("git pull "), rdescript="GIT: Pull"),
         "CD up":
             R(Text("cd .."), rdescript="GIT: Up Directory"),
