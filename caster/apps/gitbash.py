@@ -30,7 +30,7 @@ class GitBashRule(MergeRule):
     mapping = {
         "(git|get) base":
             Text("git "),
-        "git initialize repository|get initialize repository|(git|get) init":
+        "(git|get) (initialize repository|init)":
             Text("git init"),
         "(git|get) add":
             R(Key("g, i, t, space, a, d, d, space, dot"),
