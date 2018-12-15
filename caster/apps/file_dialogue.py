@@ -18,7 +18,8 @@ class FileDialogueRule(MergeRule):
         "[get] back [<n>]":
             R(Key("a-left"), rdescript="File Dialogue: Navigate back")*Repeat(extra="n"),
         "[get] forward [<n>]":
-            R(Key("a-right"), rdescript="File Dialogue: Navigate forward")*Repeat(extra="n"),
+            R(Key("a-right"), rdescript="File Dialogue: Navigate forward")*
+            Repeat(extra="n"),
         "(files | file list)":
             R(Key("a-d, f6:3"), rdescript="File Dialogue: Files list"),
         "navigation [pane]":
@@ -32,8 +33,14 @@ class FileDialogueRule(MergeRule):
     }
 
 
-context = AppContext(title="save file") | AppContext(title="save as") | AppContext(
-    title="select folder") | AppContext(title="open file") | AppContext(title="select file")
+dialogue_names = [
+    "open",
+    "select",
+]
+
+context = AppContext(title="save")
+for name in dialogue_names:
+    context = context | AppContext(title=name)
 
 grammar = Grammar("FileDialogue", context=context)
 if settings.SETTINGS["apps"]["filedialogue"]:
