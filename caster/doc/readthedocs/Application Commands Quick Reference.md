@@ -316,14 +316,17 @@
 | `replace`                | `edit lines`                   | `edit next [<n3>]`                |
 | `edit up [<n3>]`         | `edit down [<n3>]`             | `edit all`                        |
 | `transform upper`        | `transform lower`              | `line <n>`                        |
-| `go to`                  | `command pallette`             | `fold`                            |
+| `go to word`             | `go to symbol`                 | `go to [symbol in] project`       |
+| `go to file`             | `command pallette`             | `fold`                            |
 | `unfold`                 | `unfold all`                   | `fold [level] <n2>`               |
 | `full screen`            | `(set / add) bookmark`         | `next bookmark`                   |
 | `previous bookmark`      | `clear bookmarks`              | `build it`                        |
 | `record macro`           | `play [back] macro [<n3>]`     | `(new / create) snippet`          |
 | `close pane`             | `next pane`                    | `previous pane`                   |
-| `pane <n2>`              | `column <cols>`                | `focus <n2>`                      |
-| `move <n2>`              | `open terminal`                | ` `                               |
+| `pane <n2>`              | `column <one/two/left/right>`  | `focus <one/two/left/right>`      |
+| `move <n2>`              | `open terminal`                | `zoom in/out [<n2>]`              |
+| `toggle side bar`        | ``                             | ``                                |
+
 
 
 # Visual Studio

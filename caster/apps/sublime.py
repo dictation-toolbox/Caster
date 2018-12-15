@@ -67,8 +67,14 @@ class SublimeRule(MergeRule):
         #
         "line <n>":
             R(Key("c-g/10") + Text("%(n)s") + Key("enter"), rdescript="Sublime: Line n"),
-        "go to":
-            R(Key("c-p"), rdescript="Sublime: Go To"),
+        "go to file":
+            R(Key("c-p"), rdescript="Sublime: Go To file"),
+        "go to word":
+            R(Key("c-semicolon"), rdescript="Sublime: Go To word"),
+        "go to symbol":
+            R(Key("c-r"), rdescript="Sublime: Go To symbol"),
+        "go to [symbol in] project":
+            R(Key("cs-r"), rdescript="Sublime: Go To symbol in project"),
         "command pallette":
             R(Key("cs-p"), rdescript="Sublime: Command Pallette"),
         #
@@ -83,6 +89,13 @@ class SublimeRule(MergeRule):
         #
         "full screen":
             R(Key("f11"), rdescript="Sublime: Fullscreen"),
+        "toggle side bar":
+            R(Key("c-k, c-b"), rdescript="Sublime: Toggle sidebar"),
+        "zoom in [<n2>]":
+            R(Key("c-equal"), rdescript="Sublime: Zoom in")*Repeat(extra="n2"),
+        "zoom out [<n2>]":
+            R(Key("c-minus"), rdescript="Sublime: Zoom out")*Repeat(extra="n2"),
+        #
         "(set | add) bookmark":
             R(Key("c-f2"), rdescript="Sublime: Set Bookmark"),
         "next bookmark":
@@ -113,10 +126,10 @@ class SublimeRule(MergeRule):
         #
         "column <cols>":
             R(Key("as-%(cols)s"), rdescript="Sublime: Column"),
-        "focus <n2>":
-            R(Key("c-%(n2)s"), rdescript="Sublime: Focus Panel n"),
-        "move <n2>":
-            R(Key("cs-%(n2)s"), rdescript="Sublime: Move File to Panel n"),
+        "focus <panel>":
+            R(Key("c-%(panel)s"), rdescript="Sublime: Focus Panel n"),
+        "move <panel>":
+            R(Key("cs-%(panel)s"), rdescript="Sublime: Move File to Panel n"),
         #
         "open terminal":
             R(Key("cs-t"), rdescript="Sublime: Open Terminal Here"),
@@ -130,6 +143,12 @@ class SublimeRule(MergeRule):
             "two": "2",
             "three": "3",
             "grid": "5",
+        }),
+        Choice("panel", {
+            "one": "1",
+            "left": "1",
+            "two": "2",
+            "right": "2",
         }),
     ]
     defaults = {
