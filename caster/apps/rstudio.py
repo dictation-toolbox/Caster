@@ -69,7 +69,7 @@ class RStudioRule(MergeRule):
     ]
     defaults = {}
 
-context = AppContext(executable="rstudio", title="RStudio")
+context = AppContext(executable="rstudio")
 grammar = Grammar("RStudio", context=context)
 if settings.SETTINGS["apps"]["rstudio"]:
     if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
