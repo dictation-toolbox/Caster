@@ -21,6 +21,10 @@ class RStudioRule(MergeRule):
         R(Key("cs-n"), rdescript="RStudio: New File"),
     "open file":
         R(Key("c-o"), rdescript="RStudio: Open File"),
+    "open recent project":
+        R(Key("a-f, j"), rdescript="RStudio: Open Recent Project"),
+  	"open project":
+        R(Key("a-f, n, enter"), rdescript="RStudio: Open Project"),
     "save all":
         R(Key("ac-s"), rdescript="RStudio: Save All"),
     "select all":
@@ -65,7 +69,7 @@ class RStudioRule(MergeRule):
     ]
     defaults = {}
 
-context = AppContext(executable="rstudio", title="RStudio")
+context = AppContext(executable="rstudio")
 grammar = Grammar("RStudio", context=context)
 if settings.SETTINGS["apps"]["rstudio"]:
     if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
