@@ -167,6 +167,7 @@ _DEFAULT_SETTINGS = {
         "eclipse": True,
         "emacs": True,
         "explorer": True,
+        "filedialogue": True,
         "firefox": True,
         "flashdevelop": True,
         "fman": True,
