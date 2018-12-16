@@ -1,10 +1,9 @@
 import time
 
-from dragonfly import AppContext
-
 from caster.lib import utilities, settings
 from caster.lib.actions import Key
 from caster.lib.clipboard import Clipboard
+from caster.lib.context import AppContext
 
 # Override dragonfly.AppContext with aenea.ProxyAppContext if the 'use_aenea'
 # setting is set to true.
