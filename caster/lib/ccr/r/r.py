@@ -36,9 +36,9 @@ class Rlang(MergeRule):
         # (no do-while in Rlang)
         #
         SymbolSpecs.AND:
-            R(Text(" && "), rdescript="Rlang: And"),
+            R(Text(" & "), rdescript="Rlang: And"),
         SymbolSpecs.OR:
-            R(Text(" || "), rdescript="Rlang: Or"),
+            R(Text(" | "), rdescript="Rlang: Or"),
         SymbolSpecs.NOT:
             R(Text("!"), rdescript="Rlang: Not"),
         #
