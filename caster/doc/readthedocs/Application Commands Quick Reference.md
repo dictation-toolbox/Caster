@@ -9,6 +9,7 @@
 - [Eclipse](#eclipse)
 - [Emacs](#emacs)
 - [Internet Explorer](#internet-explorer)
+- [File Dialogues](#file-dialogues)
 - [Firefox](#firefox)
 - [Flash Develop](#flash-develop)
 - [fman](#fman)
@@ -177,6 +178,13 @@
 | `(show / file / folder) properties` | `get forward` | `new folder` |
 | `address bar`                       | `get up`      |              |
 | `get back`                          | `new file`    |              |
+
+# File Dialogues
+
+| Command               | Command      | Command       |
+|:----------------------|:-------------|:--------------|
+| `up [n]`              | `back [n]`   | `forward [n]` |
+| `(files / file list)` | `navigation` | `[file] name` |
 
 # Firefox
 
