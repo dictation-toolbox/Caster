@@ -3,9 +3,10 @@
 
 import io
 import os
-
+import traceback
 from caster.lib import settings
 from caster.lib.dfplus.merge.mergepair import MergeInf, MergePair
+from caster.lib.dfplus.merge.selfmodrule import SelfModifyingRule
 from dragonfly.grammar.elements import Choice
 
 
@@ -131,7 +132,8 @@ if os.path.isfile(settings.SETTINGS["paths"]["FILTER_DEFS_PATH"]):
             DEFS = GlobalFilterDefs(lines)
         except Exception:
             print("Unable to parse words.txt")
-
+            traceback.print_exc()
+            
 
 def spec_override_from_config(mp):
     '''run at boot time only: changes are permanent'''
@@ -216,9 +218,13 @@ def spec_override_from_config(mp):
                             defaults_changed = True
 
             if specs_changed or extras_changed or defaults_changed:
-                rule.__init__(rule._name, rule.mapping_actual(), extras, defaults,
-                              rule._exported, rule.ID, rule.composite, rule.compatible,
-                              rule._mcontext, rule._mwith)
+                if isinstance(rule, SelfModifyingRule):
+                    rule.__init__(rule._name, rule.mapping_actual(), extras, defaults,
+                                rule._exported, True)
+                else:
+                    rule.__init__(rule._name, rule.mapping_actual(), extras, defaults,
+                                rule._exported, rule.ID, rule.composite, rule.compatible,
+                                rule._mcontext, rule._mwith)
 
 
 if DEFS is not None:
