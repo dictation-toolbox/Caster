@@ -1,8 +1,9 @@
 @echo off
-echo Installing: dragonfly2, wxPython, pillow
+echo Installing: setuptools, future, dragonfly2, wxPython, pillow, toml
 
 cd c:\python27\scripts
 pip install setuptools
+pip install future
 pip install dragonfly2
 pip install -U wxPython
 pip install pillow

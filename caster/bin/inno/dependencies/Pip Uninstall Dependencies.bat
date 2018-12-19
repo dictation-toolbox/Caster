@@ -1,5 +1,5 @@
 @echo off
-echo Uninstall dragonfly2, wxPython, pillow, six, pyperclip, pillow, pywin32
+echo Uninstall dragonfly2, wxPython, future, pillow, six, pyperclip, pillow, pywin32
 echo ####
 echo #### Warning! Only uninstall dependencies that are no longer used for all Python projects.
 echo ####
@@ -7,6 +7,7 @@ echo ####
 cd c:\python27\scripts
 pip uninstall dragonfly2
 pip uninstall wxPython
+pip uninstall future
 pip uninstall pillow
 pip uninstall six
 pip uninstall pyperclip
