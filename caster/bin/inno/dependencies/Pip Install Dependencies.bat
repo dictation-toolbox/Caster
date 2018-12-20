@@ -2,12 +2,13 @@
 echo Installing: setuptools, future, dragonfly2, wxPython, pillow, toml
 
 cd c:\python27\scripts
-pip install setuptools
-pip install future
-pip install dragonfly2
+pip install -U pip
+pip install -U setuptools
+pip install -U future
+pip install -U dragonfly2
 pip install -U wxPython
-pip install pillow
-pip install toml
+pip install -U pillow
+pip install -U toml
 
 
 
