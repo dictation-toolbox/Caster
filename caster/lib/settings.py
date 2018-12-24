@@ -152,6 +152,7 @@ _DEFAULT_SETTINGS = {
 
         # CCR
         "CONFIGDEBUGTXT_PATH": BASE_PATH + "/bin/data/configdebug.txt",
+        "PLAYGROUNDTXT_PATH": BASE_PATH + "/user/playground.txt",
 
         # PYTHON
         "PYTHONW": "C:/Python27/pythonw",

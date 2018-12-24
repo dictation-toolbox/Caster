@@ -1,0 +1,25 @@
+from dragonfly import *
+from caster.lib import navigation
+from caster.lib.dfplus.state.short import R
+
+#Unused Examples
+release = Key("shift:up, ctrl:up")
+noSpaceNoCaps = Mimic("\\no-caps-on") + Mimic("\\no-space-on") # this gets added on the right side
+
+def testfunction():
+    print ('Function: Look in the natlink window for this text')
+
+cmd.map = {
+    # Spoken-form    ->    ->    ->     Action object
+    "some command goes here": R(Pause("100"), rdescript="test command"),
+    "experiment": Function(testfunction),
+    # more...
+    }
+
+
+cmd.extras = [
+
+]
+cmd.defaults = {
+
+}
