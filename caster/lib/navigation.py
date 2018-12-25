@@ -87,20 +87,23 @@ def mouse_alternates(mode, nexus, monitor=1):
         utilities.availability_message(mode.title(), "PIL")
 
 
-def stoosh_keep_clipboard(nnavi500, nexus):
+def _text_to_clipboard(nnavi500, nexus, copy=True):
+    keystroke = Key("c-c") if copy else Key("c-x")
     if nnavi500 == 1:
-        Key("c-c").execute()
+        keystroke.execute()
     else:
         max_tries = 20
         cb = Clipboard(from_system=True)
-        Key("c-c").execute()
+        keystroke.execute()
         key = str(nnavi500)
         for i in range(0, max_tries):
             failure = False
             try:
                 # time for keypress to execute
                 time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
-                nexus.clip[key] = Clipboard.get_system_text()
+                # Work around bug https://github.com/uiri/toml/issues/201
+                nexus.clip[key] = unicode(
+                    Clipboard.get_system_text()).replace('\\x', '\u07\u07')
                 utilities.save_toml_file(
                     nexus.clip, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
             except Exception:
@@ -110,30 +113,11 @@ def stoosh_keep_clipboard(nnavi500, nexus):
                 break
         cb.copy_to_system()
 
+def stoosh_keep_clipboard(nnavi500, nexus):
+    _text_to_clipboard(nnavi500, nexus, copy=True)
 
 def cut_keep_clipboard(nnavi500, nexus):
-    if nnavi500 == 1:
-        Key("c-x").execute()
-    else:
-        max_tries = 20
-        cb = Clipboard(from_system=True)
-        Key("c-x").execute()
-        key = str(nnavi500)
-        for i in range(0, max_tries):
-            failure = False
-            try:
-                # time for keypress to execute
-                time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
-                nexus.clip[key] = Clipboard.get_system_text()
-                utilities.save_toml_file(
-                    nexus.clip, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
-            except Exception:
-                failure = True
-                utilities.simple_log()
-            if not failure:
-                break
-        cb.copy_to_system()
-
+    _text_to_clipboard(nnavi500, nexus, copy=False)
 
 def drop_keep_clipboard(nnavi500, nexus, capitalization, spacing):
     if capitalization != 0 or spacing != 0 or nnavi500 != 1:
@@ -141,7 +125,8 @@ def drop_keep_clipboard(nnavi500, nexus, capitalization, spacing):
         if nnavi500 > 1:
             key = str(nnavi500)
             if key in nexus.clip:
-                text = nexus.clip[key]
+                # Work around bug https://github.com/uiri/toml/issues/201
+                text = nexus.clip[key].replace('\u07\u07', '\\x')
             else:
                 dragonfly.get_engine().speak("slot empty")
                 text = None
