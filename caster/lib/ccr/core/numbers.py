@@ -1,4 +1,4 @@
-from dragonfly import Function
+from dragonfly import Text, Choice
 
 from caster.lib import control, alphanumeric
 from caster.lib.dfplus.additions import IntegerRefST
@@ -11,15 +11,25 @@ class Numbers(MergeRule):
     pronunciation = CCRMerger.CORE[2]
     mapping = {
         "word number <wn>":
-            R(Function(alphanumeric.word_number, extra="wn"), rdescript="Number As Word"),
+            R(Text("%(wn)s"), rdescript="Number As Word"),
         "numb <wnKK>":
-            R(Function(alphanumeric.numbers2, extra="wnKK"),
-              rspec="number",
-              rdescript="Number"),
+            R(Text("%(wnKK)s"),
+              rspec="number", rdescript="Number"),
     }
 
     extras = [
-        IntegerRefST("wn", 0, 10),
+        Choice("wn", {
+            "zero": "zero",
+            "one": "one",
+            "two": "two",
+            "three": "three",
+            "four": "four",
+            "five": "five",
+            "six": "six",
+            "seven": "seven",
+            "eight": "eight",
+            "nine": "nine",
+    }),
         IntegerRefST("wnKK", 0, 1000000),
     ]
     defaults = {}

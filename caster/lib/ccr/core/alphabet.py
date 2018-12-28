@@ -11,7 +11,7 @@ class Alphabet(MergeRule):
 
     mapping = {
         "[<big>] <letter>":
-            R(Function(alphanumeric.letters2, extra={"big", "letter"}),
+            R(Function(alphanumeric.letters, extra={"big", "letter"}),
               rdescript="Spell"),
     }
     extras = [

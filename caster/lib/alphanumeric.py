@@ -35,21 +35,11 @@ def get_alphabet_choice(spec):
             "Zulu": "z",
         })
 
-
-def word_number(wn):
-    numbers_to_words = {
-        0: "zero",
-        1: "one",
-        2: "two",
-        3: "three",
-        4: "four",
-        5: "five",
-        6: "six",
-        7: "seven",
-        8: "eight",
-        9: "nine"
-    }
-    Text(numbers_to_words[int(wn)]).execute()
+def letters(big, letter):
+    if big:
+        Key(letter.capitalize()).execute()
+    else:
+        Key(letter).execute()
 
 
 def numbers_list_1_to_9():
@@ -69,32 +59,6 @@ def numbers_map_1_to_9():
     for i in range(0, len(l)):
         result[l[i]] = i + 1
     return result
-
-
-def numbers2(wnKK):
-    Text(str(wnKK)).execute()
-
-
-def letters(big, dict1, dict2, letter):
-    '''used with alphabet.txt'''
-    d1 = str(dict1)
-    if d1 != "":
-        Text(d1).execute()
-    if big:
-        Key("shift:down").execute()
-    letter.execute()
-    if big:
-        Key("shift:up").execute()
-    d2 = str(dict2)
-    if d2 != "":
-        Text(d2).execute()
-
-
-def letters2(big, letter):
-    if big:
-        Key(letter.capitalize()).execute()
-    else:
-        Key(letter).execute()
 
 
 '''for fun'''
