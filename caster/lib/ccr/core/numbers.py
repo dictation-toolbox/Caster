@@ -1,5 +1,6 @@
-from dragonfly import Text, Choice
+from dragonfly import Choice
 
+from caster.lib.actions import Text
 from caster.lib import control, alphanumeric
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge.ccrmerger import CCRMerger
