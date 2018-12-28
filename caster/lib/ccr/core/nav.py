@@ -3,7 +3,7 @@ Created on Sep 1, 2015
 
 @author: synkarius
 '''
-from dragonfly import Repeat, Function, Dictation, Choice, MappingRule
+from dragonfly import Repeat, Function, Dictation, Choice, MappingRule, Playback
 
 from caster.lib import context, navigation, alphanumeric, textformat, text_utils
 from caster.lib import control
@@ -48,6 +48,7 @@ class NavigationNon(MappingRule):
             R(Key("f9"), rdescript="Key: F9"),
         "[show] context menu":
             R(Key("s-f10"), rdescript="Context Menu"),
+        #Mouse
         "squat":
             R(Function(navigation.left_down, nexus=_NEXUS), rdescript="Mouse: Left Down"),
         "bench":
@@ -74,6 +75,7 @@ class NavigationNon(MappingRule):
         "colic":
             R(Key("control:down") + Mouse("left") + Key("control:up"),
               rdescript="Mouse: Ctrl + Left Click"),
+        #Clipboard
         "garb [<nnavi500>]":
             R(Mouse("left") + Mouse("left") + Function(
                 navigation.stoosh_keep_clipboard,
@@ -98,14 +100,32 @@ class NavigationNon(MappingRule):
             R(Key("c-y"), rdescript="Redo")*Repeat(extra="n"),
         "refresh":
             R(Key("c-r"), rdescript="Refresh"),
-        "maxiwin":
-            R(Key("w-up"), rdescript="Maximize Window"),
+        #Window management
+        'minimize':
+            Playback([(["minimize", "window"], 0.0)]),
+        'maximize':
+            Playback([(["maximize", "window"], 0.0)]),
+        "remax":
+            R(Key("a-space/10, r/10, a-space/10, x"), rdescript="Force Maximize"),
         "move window":
             R(Key("a-space, r, a-space, m"), rdescript="Move Window"),
-        "window (left | lease) [<n>]":
-            R(Key("w-left"), rdescript="Window Left")*Repeat(extra="n"),
-        "window (right | ross) [<n>]":
-            R(Key("w-right"), rdescript="Window Right")*Repeat(extra="n"),
+        "window <direction> [<direction2>]":
+            R(Key("win:down, %(direction)s/15, %(direction2)s, win:up"), rdescript="Window adjustment"),
+        #Workspaces
+        "show work [spaces]":
+            R(Key("w-tab")),
+        "(create | new) work [space]":
+            R(Key("wc-d")),
+        "close work [space]":
+            R(Key("wc-f4")),
+        "next work [space] [<n>]":
+            R(Key("wc-right"))*Repeat(extra="n"),
+        "(previous | prior) work [space] [<n>]":
+            R(Key("wc-left"))*Repeat(extra="n"),
+
+        "change monitor":
+            R(Key("w-p/100") + Function(navigation.change_monitor),
+              rdescript="Change Monitor"),
         "monitor (left | lease) [<n>]":
             R(Key("sw-left"), rdescript="Monitor Left")*Repeat(extra="n"),
         "monitor (right | ross) [<n>]":
@@ -114,6 +134,7 @@ class NavigationNon(MappingRule):
             R(Key("ca-tab, enter"), rdescript="Next Window"),
         "switch (window | windows)":
             R(Key("ca-tab"), rdescript="Switch Window")*Repeat(extra="n"),
+
         "next tab [<n>]":
             R(Key("c-pgdown"), rdescript="Next Tab")*Repeat(extra="n"),
         "prior tab [<n>]":
@@ -129,6 +150,7 @@ class NavigationNon(MappingRule):
         Dictation("mim"),
         IntegerRefST("n", 1, 50),
         IntegerRefST("nnavi500", 1, 500),
+        IntegerRefST("monitor", 1, 10),
         Choice("time_in_seconds", {
             "super slow": 5,
             "slow": 2,

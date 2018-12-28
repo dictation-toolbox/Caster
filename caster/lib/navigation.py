@@ -184,6 +184,11 @@ def volume_control(n, volume_mode):
     for i in range(0, int(n)):
         Key("volume" + str(volume_mode)).execute()
 
+def change_monitor():
+    if settings.SETTINGS["miscellaneous"]["sikuli_enabled"]:
+        Playback([(["monitor", "select"], 0.0)]).execute()
+    else:
+        print("This command requires SikuliX to be enabled in the settings file")
 
 def kill_grids_and_wait(nexus):
     window_title = utilities.get_active_window_title()

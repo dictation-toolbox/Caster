@@ -60,14 +60,6 @@ from caster import user
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.merge import gfilter
 
-
-def change_monitor():
-    if settings.SETTINGS["miscellaneous"]["sikuli_enabled"]:
-        Playback([(["monitor", "select"], 0.0)]).execute()
-    else:
-        print("This command requires SikuliX to be enabled in the settings file")
-
-
 class MainRule(MergeRule):
     @staticmethod
     def generate_ccr_choices(nexus):
@@ -90,19 +82,6 @@ class MainRule(MergeRule):
         "volume <volume_mode> [<n>]":
             R(Function(navigation.volume_control, extra={'n', 'volume_mode'}),
               rdescript="Volume Control"),
-        "change monitor":
-            R(Key("w-p") + Pause("100") + Function(change_monitor),
-              rdescript="Change Monitor"),
-
-        # window management
-        'minimize':
-            Playback([(["minimize", "window"], 0.0)]),
-        'maximize':
-            Playback([(["maximize", "window"], 0.0)]),
-        "remax":
-            R(Key("a-space/10,r/10,a-space/10,x"), rdescript="Force Maximize"),
-
-        # passwords
 
         # mouse alternatives
         "legion [<monitor>]":
@@ -125,6 +104,7 @@ class MainRule(MergeRule):
     }
     extras = [
         IntegerRefST("n", 1, 50),
+        IntegerRefST("monitor", 1, 10),
         Dictation("text"),
         Dictation("text2"),
         Dictation("text3"),
@@ -139,7 +119,6 @@ class MainRule(MergeRule):
         }),
         generate_ccr_choices.__func__(_NEXUS),
         generate_sm_ccr_choices.__func__(_NEXUS),
-        IntegerRefST("monitor", 1, 10)
     ]
     defaults = {"n": 1, "nnv": 1, "text": "", "volume_mode": "setsysvolume", "enable": -1}
 
