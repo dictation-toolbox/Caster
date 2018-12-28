@@ -225,7 +225,7 @@ class Navigation(MergeRule):
         "stoosh [<nnavi500>]":
             R(Function(navigation.stoosh_keep_clipboard, nexus=_NEXUS), rspec="stoosh", rdescript="Copy"),
         "cut [<nnavi500>]":
-            R(Function(navigation.cut_keep_clipboard, nexus=_NEXUS), rspec="cut", rdescript="Cut"),
+            R(Function(navigation.stoosh_keep_clipboard, nexus=_NEXUS, key="x"), rspec="cut", rdescript="Cut"),
         "spark [<nnavi500>] [(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)]":
             R(Function(navigation.drop_keep_clipboard, nexus=_NEXUS), rspec="spark", rdescript="Paste"),
 
@@ -242,7 +242,7 @@ class Navigation(MergeRule):
         "shackle":
             R(Key("home/5, s-end"), rspec="shackle", rdescript="Select Line"),
         "(tell | tau) <semi>":
-            R(Function(navigation.next_line), rspec="tell dock", rdescript="Complete Line"),
+            R(Key("escape/5, end/5, %(semi)s, enter"), rspec="tell dock", rdescript="Complete Line"),
         "duple [<nnavi50>]":
             R(Function(navigation.duple_keep_clipboard), rspec="duple", rdescript="Duplicate Line"),
         "Kraken":
@@ -302,8 +302,8 @@ class Navigation(MergeRule):
                 "descent": 6
             }),
         Choice("semi", {
-            "dock": ";",
-            "doc": ";",
+            "dock": "semicolon",
+            "doc": "semicolon",
             "sink": ""
         }),
         Choice("word_limit", {

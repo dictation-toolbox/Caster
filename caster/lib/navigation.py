@@ -87,37 +87,13 @@ def mouse_alternates(mode, nexus, monitor=1):
         utilities.availability_message(mode.title(), "PIL")
 
 
-def stoosh_keep_clipboard(nnavi500, nexus):
+def stoosh_keep_clipboard(nnavi500, nexus, key="c"):
     if nnavi500 == 1:
-        Key("c-c").execute()
+        Key("c-" + key).execute()
     else:
         max_tries = 20
         cb = Clipboard(from_system=True)
-        Key("c-c").execute()
-        key = str(nnavi500)
-        for i in range(0, max_tries):
-            failure = False
-            try:
-                # time for keypress to execute
-                time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
-                nexus.clip[key] = Clipboard.get_system_text()
-                utilities.save_toml_file(
-                    nexus.clip, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
-            except Exception:
-                failure = True
-                utilities.simple_log()
-            if not failure:
-                break
-        cb.copy_to_system()
-
-
-def cut_keep_clipboard(nnavi500, nexus):
-    if nnavi500 == 1:
-        Key("c-x").execute()
-    else:
-        max_tries = 20
-        cb = Clipboard(from_system=True)
-        Key("c-x").execute()
+        Key("c-" + key).execute()
         key = str(nnavi500)
         for i in range(0, max_tries):
             failure = False
@@ -254,13 +230,3 @@ def curse(direction, direction2, nnavi500, dokick):
             left_click(control.nexus())
         elif int(dokick) == 2:
             right_click(control.nexus())
-
-
-def next_line(semi):
-    semi = str(semi)
-    Key("escape").execute()
-    time.sleep(0.25)
-    Key("end").execute()
-    time.sleep(0.25)
-    Text(semi).execute()
-    Key("enter").execute()
