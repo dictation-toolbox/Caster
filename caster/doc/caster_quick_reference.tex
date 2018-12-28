@@ -73,7 +73,7 @@
 
 \put(10,205){ % Position on the page to put the title
 \begin{minipage}[t]{210mm} % The size and alignment of the title
-\section*{Caster Quick Reference - v0.5.8} % Title
+\section*{Caster Quick Reference - v0.5.9} % Title
 \end{minipage}
 }
 
@@ -370,9 +370,15 @@ Capitalisation and spacing can be combined into a single command. Whether combin
 \command{dredge}{alt + tab}
 \command{switch window}{display all windows}
 \command{move window}{move with arrow keys}
-\command{window left}{snap window to left}
-\command{window right}{snap window to right}
+\command{window <direction> \footnotemark[1]}{snap window}
+\command{show workspaces}{win + tab}
+\command{new work}{ctrl + win + d}
+\command{close work}{ctrl + win + F4}
+\command{previous work \footnotemark[2]}{ctrl + win + left}
+\command{next work \footnotemark[2]}{ctrl + win + right}
 
+\footnotetext[1]{Uses directions from table (5), can take multiple directions to snap to a corner}
+\footnotetext[2]{Takes an optional number parameter for repetition}
 %----------------------------------------------------------------------------------------
 
 \sectiontitle{Repetition}
@@ -392,25 +398,19 @@ Capitalisation and spacing can be combined into a single command. Whether combin
 
 %----------------------------------------------------------------------------------------
 
-\sectiontitle{Miscellaneous}
+\sectiontitle{Bring me}
 
-\command{pita <text>}{fuzzy string matching}
+\command{program/website/folder/file to bring me as <key>}{create a new bring me binding}
+\command{bring me <key>}{open bring me binding}
+\command{remove <key> from bring me}{}
+\command{restore bring me defaults}{}
+
 %----------------------------------------------------------------------------------------
 
-\sectiontitle{Special number words} \footnotemark[1]
+\sectiontitle{Dragon}
 
-\command{zero}{0}
-\command{ane}{1}
-\command{twain}{2}
-\command{traio}{3}
-\command{fairn}{4}
-\command{faif}{5}
-\command{six}{6}
-\command{seven}{7}
-\command{eigen}{8}
-\command{nine}{9}
-
-\footnotetext[1]{Commands which specify a number use these if the settings file is configured for it, all double-digits and larger are normal.}
+\command{number/spell/dictation/normal/command mode}{switch dragon modes}
+\command{reboot dragon}{}
 
 \end{minipage}
 }
