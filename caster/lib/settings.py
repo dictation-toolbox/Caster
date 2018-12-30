@@ -10,7 +10,7 @@ import _winreg
 
 SETTINGS = {}
 _SETTINGS_PATH = os.path.realpath(__file__).split("lib")[0] + "bin\\data\\settings.toml"
-BASE_PATH = os.path.realpath(__file__).split("\\lib")[0].replace("\\", "/")
+BASE_PATH = os.path.realpath(__file__).split("\\lib")[0]
 
 # title
 SOFTWARE_VERSION_NUMBER = "0.5.11"
