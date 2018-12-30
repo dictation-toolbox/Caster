@@ -9,8 +9,8 @@ import errno
 import _winreg
 
 SETTINGS = {}
-_SETTINGS_PATH = os.path.realpath(__file__).split("lib")[0] + "bin\\data\\settings.toml"
-BASE_PATH = os.path.realpath(__file__).split("\\lib")[0].replace("\\", "/")
+BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "lib", 1)[0].replace("\\", "/")
+_SETTINGS_PATH = BASE_PATH + "/bin/data/settings.toml"
 
 # title
 SOFTWARE_VERSION_NUMBER = "0.5.11"
