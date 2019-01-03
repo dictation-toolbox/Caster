@@ -18,6 +18,7 @@ from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,
     HKEY_CURRENT_USER, OpenKey, QueryValueEx)
 
 from dragonfly.windows.window import Window
+from dragonfly import Choice
 
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "caster", 1)[0]
@@ -92,6 +93,14 @@ def load_toml_file(path):
         simple_log(True)
     return result
 
+def Choice_from_file(name, paths):
+    if type(paths) is str:
+        paths = [paths]
+    phrases = {}
+    for path in paths:
+        path = BASE_PATH + "/" + path
+        phrases.update(load_toml_file(path)[name])
+    return Choice(name, phrases)
 
 def list_to_string(l):
     return u"\n".join([unicode(x) for x in l])
