@@ -93,14 +93,24 @@ def load_toml_file(path):
         simple_log(True)
     return result
 
-def Choice_from_file(name, paths):
-    if type(paths) is str:
-        paths = [paths]
+'''
+Takes a choice name and an arbitrary number of toml path/label
+pair lists. For example:
+mapping["<alphanumeric>"] = Text("%(alphanumeric)s")
+extras = [
+    utilities.Choice_from_file("alphanumeric",
+     ["caster/.../alphabet.toml", "letters"], 
+     ["caster/.../alphabet.toml", "numbers"]
+     )
+]
+'''
+def Choice_from_file(name, *args):
     phrases = {}
-    for path in paths:
-        path = BASE_PATH + "/" + path
-        phrases.update(load_toml_file(path)[name])
+    for arg in args:
+        path = BASE_PATH + "/" + arg[0]
+        phrases.update(load_toml_file(path)[arg[1]])
     return Choice(name, phrases)
+
 
 def list_to_string(l):
     return u"\n".join([unicode(x) for x in l])
