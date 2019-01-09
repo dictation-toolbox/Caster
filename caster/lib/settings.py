@@ -177,6 +177,7 @@ _DEFAULT_SETTINGS = {
         "kdiff3": True,
         "douglas": True,
         "legion": True,
+        "lyx": True,
         "rainbow": True,
         "rstudio": True,
         "ssms": True,
