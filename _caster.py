@@ -122,6 +122,14 @@ class MainRule(MergeRule):
         "<enable> <name2>":
             R(Function(_NEXUS.merger.selfmod_rule_changer(), save=True),
               rdescript="Toggle sm-CCR Module"),
+
+        "enable caster":
+            R(Function(_NEXUS.merger.merge, time=MergeInf.RUN, name="numbers"),
+                rdescript="Enable CCR rules"),
+        "disable caster":
+            R(Function(_NEXUS.merger.ccr_off), 
+                rdescript="Disable CCR rules"),
+
     }
     extras = [
         IntegerRefST("n", 1, 50),
