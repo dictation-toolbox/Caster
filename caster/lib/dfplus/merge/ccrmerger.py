@@ -276,8 +276,6 @@ class CCRMerger(object):
         named_rule = None
         '''get base CCR rule'''
         if time == MergeInf.BOOT:  # rebuild via config
-            if not self._config["ccr_on"]:
-                return
             for name, rule in self._global_rules.iteritems():
                 '''we want to be able to make permanent changes at boot time, not just 
                 to activated rules, but to everything -- but we dont' want it to interfere
@@ -389,6 +387,8 @@ class CCRMerger(object):
         self._apply_format(current_rule)
         if save:
             self.save_config()
+        if time == MergeInf.BOOT and not self._config["ccr_on"]:
+            self.ccr_off()
 
     @staticmethod
     def specs_per_rulename(d):
