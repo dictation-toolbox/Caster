@@ -99,18 +99,20 @@ pair lists. For example:
 mapping["<alphanumeric>"] = Text("%(alphanumeric)s")
 extras = [
     utilities.Choice_from_file("alphanumeric",
-     ["caster/.../alphabet.toml", "letters"], 
-     ["caster/.../alphabet.toml", "numbers"]
+     [utilities.get_full_path("caster/.../alphabet.toml"), "letters"], 
+     [utilities.get_full_path("caster/.../alphabet.toml"), "numbers"]
      )
 ]
 '''
 def Choice_from_file(name, *args):
     phrases = {}
     for arg in args:
-        path = BASE_PATH + "/" + arg[0]
-        phrases.update(load_toml_file(path)[arg[1]])
+        phrases.update(load_toml_file(arg[0])[arg[1]])
     return Choice(name, phrases)
 
+# takes e.g. "caster/.../file.extension" and returns a full path
+def get_full_path(path):
+    return BASE_PATH + "/" + path
 
 def list_to_string(l):
     return u"\n".join([unicode(x) for x in l])
