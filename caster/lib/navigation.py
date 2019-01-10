@@ -136,32 +136,31 @@ def cut_keep_clipboard(nnavi500, nexus):
 
 
 def drop_keep_clipboard(nnavi500, nexus, capitalization, spacing):
-    if capitalization != 0 or spacing != 0 or nnavi500 != 1:
-        cb = Clipboard(from_system=True)
-        if nnavi500 > 1:
-            key = str(nnavi500)
-            if key in nexus.clip:
-                text = nexus.clip[key]
-            else:
-                dragonfly.get_engine().speak("slot empty")
-                text = None
+    # Maintain standard spark functionality for non-strings
+    if capitalization == 0 and spacing == 0 and nnavi500 == 1:
+        Key("c-v").execute()
+        return
+    # Get clipboard text
+    if nnavi500 > 1:
+        key = str(nnavi500)
+        if key in nexus.clip:
+            text = nexus.clip[key]
         else:
-            text = Clipboard.get_system_text()
-
-        # Paste clipboard contents if the slot wasn't empty.
-        if text is not None:
-            formatted = textformat.TextFormat.formatted_text(capitalization, spacing, text)
-            Clipboard.set_system_text(formatted)
-            time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
-            Key("c-v").execute()
-            time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
-
+            dragonfly.get_engine().speak("slot empty")
+            text = None
+    else:
+        text = Clipboard.get_system_text()
+    # Format if necessary, and paste
+    if text is not None:
+        cb = Clipboard(from_system=True)
+        if capitalization != 0 or spacing != 0:
+            text = textformat.TextFormat.formatted_text(capitalization, spacing, text)
+        Clipboard.set_system_text(text)
+        time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
+        Key("c-v").execute()
+        time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
         # Restore the clipboard contents.
         cb.copy_to_system()
-
-    # Maintain standard spark functionality for non-strings
-    else:
-        Key("c-v").execute()
 
 
 def duple_keep_clipboard(nnavi50):
