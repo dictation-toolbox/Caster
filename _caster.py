@@ -7,9 +7,10 @@ Created on Jun 29, 2014
 import logging
 logging.basicConfig()
 
-import time
-from dragonfly import (Function, Grammar, Playback, Dictation, Choice, Pause)
+import time, socket
+from dragonfly import (Function, Grammar, Playback, Dictation, Choice, Pause, RunCommand)
 from castervoice.lib.ccr.standard import SymbolSpecs
+
 
 def _wait_for_wsr_activation():
     count = 1
@@ -22,6 +23,7 @@ def _wait_for_wsr_activation():
                   % count)
             count += 1
             time.sleep(1)
+
 
 _NEXUS = None
 from castervoice.lib import settings  # requires nothing
@@ -37,6 +39,7 @@ from castervoice.apps import *
 from castervoice.asynch import *
 from castervoice.lib import context
 from castervoice.lib.actions import Key
+from castervoice.lib.terminal import TerminalCommand
 import castervoice.lib.dev.dev
 from castervoice.asynch.sikuli import sikuli
 from castervoice.lib import navigation
@@ -54,6 +57,46 @@ from castervoice.lib.dev import dev
 from castervoice.lib.dfplus.hint.nodes import css
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.merge import gfilter
+
+def internetcheck(host="1.1.1.1", port=53, timeout=3):
+    """
+    Checks for network connection via DNS resolution.
+    :param host: CloudFire DNS
+    :param port: 53/tcp
+    :param timeout: An integer
+    :return: True or False
+    """
+    try:
+        socket.setdefaulttimeout(timeout)
+        socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))
+        return True
+    except Exception as error:
+        print (error.message)
+        return False
+
+
+class DependencyCheck(TerminalCommand):  # Currently only checks if dragonfly's package is up-to-date
+    command = "pip search dragonfly2"
+    trusted = True  # Command will execute silently without ConfirmAction
+
+    def process_command(self, proc):
+        update = False
+        for line in iter(proc.stdout.readline, b''):
+            if "INSTALLED" and "latest" in line:
+                update = True
+        if update is True:
+            print ("\nCaster: Dragonfly is up-to-date\n")
+        else:
+            print ("\nCaster: Say 'Update Caster Dependencies' to update.\n")
+
+if settings.SETTINGS["miscellaneous"]["online_mode"] is True:
+    if internetcheck() is True:
+        DependencyCheck().execute()
+    else:
+        print("\nCaster: Network off-line check network connection\n")
+else:
+    print("\nCaster: Off-line mode is enabled\n")
+
 
 
 def change_monitor():
@@ -79,8 +122,10 @@ class MainRule(MergeRule):
         return Choice("name2", choices)
 
     mapping = {
-        # Dragon NaturallySpeaking commands moved to dragon.py
-
+        # dependency management
+        "update caster dependencies":
+            RunCommand('pip install --upgrade dragonfly2') + R(Playback([(["reboot", "dragon"], 0.0)]),
+              rdescript="Core: Update dependencies and restarts Caster"),
         # hardware management
         "volume <volume_mode> [<n>]":
             R(Function(navigation.volume_control, extra={'n', 'volume_mode'}),

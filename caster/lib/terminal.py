@@ -1,0 +1,33 @@
+from dragonfly import RunCommand, Function
+from caster.lib.dfplus.state.actions2 import ConfirmAction
+
+class TerminalCommand(RunCommand):
+    '''
+    TerminalCommand executes trusted or un-trusted RunCommands for terminal or CMD.
+    Trusted commands not utilize Confirm Action to safeguard RunCommand execution.
+
+    Example
+    class PingLocalHost(TerminalCommand):
+        command = "ping localhost"
+        trusted = True #
+    Ping().execute()
+    '''
+    trusted = False
+    def __init__(self, trusted=False, command=None, process_command=None):
+        # Pass arguments to RunCommand.
+        RunCommand.__init__(self, command, process_command)
+
+        # Allow setting 'trusted' at the class level.
+        if trusted:
+            self.trusted = trusted
+
+    def execute(self, data=None):
+        if self.trusted:
+            return RunCommand.execute(self, data)
+        else:
+            return ConfirmAction(
+                Function(lambda: RunCommand.execute(self, data)),
+                rdescript="CasterRunCommand: Confirm Action '%s'?" % self.command,
+                instructions="Run command '%s'?" % self.command
+            ).execute(data)
+

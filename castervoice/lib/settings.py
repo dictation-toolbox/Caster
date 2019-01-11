@@ -233,6 +233,7 @@ _DEFAULT_SETTINGS = {
         "history_playback_delay_secs": 1.0,
         "legion_vertical_columns": 30,
         "use_aenea": False,
+        "online_mode": True,
     },
     "pronunciations": {
         "c++": "C plus plus",
