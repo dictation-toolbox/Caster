@@ -28,10 +28,6 @@ class TextFormat():
 
     @classmethod
     def formatted_text(cls, capitalization, spacing, t):
-        if capitalization == 0:
-            capitalization = 5
-        if spacing == 0 and capitalization == 3:
-            spacing = 1
         tlen = len(t)
         if capitalization != 0:
             if capitalization == 1:
