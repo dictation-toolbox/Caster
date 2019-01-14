@@ -1,5 +1,6 @@
-﻿from dragonfly import MappingRule, Grammar, Config, Section, Item, Key, Text, Dictation, Mimic
+﻿from dragonfly import MappingRule, Grammar, Config, Section, Item, Dictation, Mimic
 from caster.lib import settings, utilities
+from caster.lib.actions import Key, Text
 
 _grammar = Grammar("dev gen")
 

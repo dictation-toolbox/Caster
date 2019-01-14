@@ -7,7 +7,7 @@ from threading import Timer
 import Tkinter as tk
 
 try:  # Style C -- may be imported into Caster, or externally
-    BASE_PATH = os.path.realpath(__file__).split("\\caster")[0].replace("\\", "/")
+    BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "caster", 1)[0]
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:
@@ -40,8 +40,8 @@ class Homunculus(tk.Tk):
             self.data = data.split("|")
             Label(
                 self,
-                text=" ".join(self.data[0].split(settings.HMC_SEPARATOR)),
-                name="pathlabel").pack()
+                text=" ".join(self.data[0].split(settings.HMC_SEPARATOR)), # pylint: disable=no-member
+                name="pathlabel").pack() 
             self.ext_box = Text(self, name="ext_box")
             self.ext_box.pack(side=tk.LEFT)
 

@@ -8,9 +8,11 @@ from ctypes import windll
 from subprocess import Popen
 
 import dragonfly
+from dragonfly import Choice, monitors
 from caster.asynch.mouse.legion import LegionScanner
-from caster.lib import settings, utilities
-from dragonfly import Choice, Clipboard, Key, Mouse, Text, monitors
+from caster.lib import control, settings, utilities, textformat
+from caster.lib.actions import Key, Text, Mouse
+from caster.lib.clipboard import Clipboard
 
 DIRECTION_STANDARD = {
     "sauce [E]": "up",
@@ -47,7 +49,7 @@ def get_direction_choice(name):
 
 def initialize_clipboard(nexus):
     if len(nexus.clip) == 0:
-        nexus.clip = utilities.load_json_file(
+        nexus.clip = utilities.load_toml_file(
             settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
 
 
@@ -85,48 +87,96 @@ def mouse_alternates(mode, nexus, monitor=1):
         utilities.availability_message(mode.title(), "PIL")
 
 
-def clipboard_to_file(nnavi500, nexus, do_copy=False):
-    if do_copy:
+def stoosh_keep_clipboard(nnavi500, nexus):
+    if nnavi500 == 1:
         Key("c-c").execute()
+    else:
+        max_tries = 20
+        cb = Clipboard(from_system=True)
+        Key("c-c").execute()
+        key = str(nnavi500)
+        for i in range(0, max_tries):
+            failure = False
+            try:
+                # time for keypress to execute
+                time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
+                nexus.clip[key] = Clipboard.get_system_text()
+                utilities.save_toml_file(
+                    nexus.clip, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
+            except Exception:
+                failure = True
+                utilities.simple_log()
+            if not failure:
+                break
+        cb.copy_to_system()
 
-    max_tries = 20
 
-    key = str(nnavi500)
-    for i in range(0, max_tries):
-        failure = False
-        try:
-            # time for keypress to execute
-            time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
-            nexus.clip[key] = Clipboard.get_system_text()
-            utilities.save_json_file(nexus.clip,
-                                     settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
-        except Exception:
-            failure = True
-            utilities.simple_log()
-        if not failure:
-            break
+def cut_keep_clipboard(nnavi500, nexus):
+    if nnavi500 == 1:
+        Key("c-x").execute()
+    else:
+        max_tries = 20
+        cb = Clipboard(from_system=True)
+        Key("c-x").execute()
+        key = str(nnavi500)
+        for i in range(0, max_tries):
+            failure = False
+            try:
+                # time for keypress to execute
+                time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
+                nexus.clip[key] = Clipboard.get_system_text()
+                utilities.save_toml_file(
+                    nexus.clip, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
+            except Exception:
+                failure = True
+                utilities.simple_log()
+            if not failure:
+                break
+        cb.copy_to_system()
 
 
-def drop(nnavi500, nexus):
-    key = str(nnavi500)
-    while True:
-        failure = False
-        try:
+def drop_keep_clipboard(nnavi500, nexus, capitalization, spacing):
+    if capitalization != 0 or spacing != 0 or nnavi500 != 1:
+        cb = Clipboard(from_system=True)
+        if nnavi500 > 1:
+            key = str(nnavi500)
             if key in nexus.clip:
-                Clipboard.set_system_text(nexus.clip[key])
-                Key("c-v").execute()
+                text = nexus.clip[key]
             else:
                 dragonfly.get_engine().speak("slot empty")
+                text = None
+        else:
+            text = Clipboard.get_system_text()
+
+        # Paste clipboard contents if the slot wasn't empty.
+        if text is not None:
+            formatted = textformat.TextFormat.formatted_text(capitalization, spacing, text)
+            Clipboard.set_system_text(formatted)
             time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
-        except Exception:
-            failure = True
-        if not failure:
-            break
+            Key("c-v").execute()
+            time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
+
+        # Restore the clipboard contents.
+        cb.copy_to_system()
+
+    # Maintain standard spark functionality for non-strings
+    else:
+        Key("c-v").execute()
+
+
+def duple_keep_clipboard(nnavi50):
+    cb = Clipboard(from_system=True)
+    Key("escape, home, s-end, c-c, end").execute()
+    time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
+    for i in range(0, nnavi50):
+        Key("enter, c-v").execute()
+        time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
+    cb.copy_to_system()
 
 
 def erase_multi_clipboard(nexus):
     nexus.clip = {}
-    utilities.save_json_file(nexus.clip,
+    utilities.save_toml_file(nexus.clip,
                              settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
 
 
@@ -196,9 +246,9 @@ def curse(direction, direction2, nnavi500, dokick):
     Mouse("<" + str(x) + ", " + str(y) + ">").execute()
     if int(dokick) != 0:
         if int(dokick) == 1:
-            left_click()
+            left_click(control.nexus())
         elif int(dokick) == 2:
-            right_click()
+            right_click(control.nexus())
 
 
 def next_line(semi):

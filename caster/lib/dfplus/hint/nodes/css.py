@@ -3,10 +3,11 @@ Created on May 30, 2015
 
 @author: dave
 '''
-from dragonfly import Text
+
 from dragonfly.grammar.grammar_base import Grammar
 
 from caster.lib import control
+from caster.lib.actions import Text
 from caster.lib.dfplus.hint import hintnode
 from caster.lib.dfplus.hint.hintnode import NodeRule
 from caster.lib.dfplus.state.actions2 import NullAction

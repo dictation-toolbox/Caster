@@ -2,7 +2,7 @@ from subprocess import Popen
 import sys, os
 
 try:  # Style C -- may be imported into Caster, or externally
-    BASE_PATH = os.path.realpath(__file__).split("\\caster")[0].replace("\\", "/")
+    BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "caster", 1)[0]
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:

@@ -1,6 +1,7 @@
-from dragonfly import (Key, Text, Choice)
+from dragonfly import Choice
 
 from caster.lib import settings
+from caster.lib.actions import Key, Text
 
 
 def get_alphabet_choice(spec):
@@ -79,10 +80,10 @@ def letters(big, dict1, dict2, letter):
     d1 = str(dict1)
     if d1 != "":
         Text(d1).execute()
-    if str(big) != "":
+    if big:
         Key("shift:down").execute()
     letter.execute()
-    if str(big) != "":
+    if big:
         Key("shift:up").execute()
     d2 = str(dict2)
     if d2 != "":
@@ -90,11 +91,10 @@ def letters(big, dict1, dict2, letter):
 
 
 def letters2(big, letter):
-    if str(big) != "":
-        Key("shift:down").execute()
-    Key(letter).execute()
-    if str(big) != "":
-        Key("shift:up").execute()
+    if big:
+        Key(letter.capitalize()).execute()
+    else:
+        Key(letter).execute()
 
 
 '''for fun'''

@@ -1,7 +1,6 @@
-from dragonfly.actions.action_text import Text
-
 from caster.apps import eclipse
 from caster.apps.eclipse import EclipseCCR
+from caster.lib.actions import Text
 from caster.lib.ccr.bash.bash import Bash
 from caster.lib.ccr.java.java import Java
 from caster.lib.ccr.python.python import Python

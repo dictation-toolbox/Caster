@@ -1,12 +1,12 @@
 import unittest
 
-from caster.lib.tests.unit import merger, mergerule, filter, state, stack, node
+from caster.lib.tests.unit import merger, mergerule, filter, state, stack, node, textformat
 
 
 def get_master_suite():
     test_cases = [
         merger.TestMerger, mergerule.TestMergeRule, filter.TestFilterNonBootTime,
-        stack.TestStack, state.TestState, node.TestNode, node.TestNodeRule
+        stack.TestStack, state.TestState, node.TestNode, node.TestNodeRule, textformat.TestTextFormat
     ]
     master_suite = unittest.TestSuite()
 

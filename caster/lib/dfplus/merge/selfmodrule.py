@@ -45,13 +45,8 @@ class SelfModifyingRule(MergeRule):
             grammar.unload()
             grammar.remove_rule(self)
 
-        extras = self.extras.values() if self.extras is not None and len(
-            self.extras) > 0 else [IntegerRefST("n", 1, 50),
-                                   Dictation("s")]
-        defaults = self.defaults if self.defaults is not None and len(
-            self.defaults) > 0 else {
-                "n": 1
-            }
+        extras = self.extras if self.extras else [IntegerRefST("n", 1, 50), Dictation("s")]
+        defaults = self.defaults if self.defaults else { "n": 1 }
         MergeRule.__init__(self, self.name, mapping, extras, defaults, self.exported,
                            self.context)
 

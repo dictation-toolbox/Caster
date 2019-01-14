@@ -4,9 +4,10 @@ Created on Sep 26, 2015
 @author: synkarius
 '''
 
-from dragonfly import Key, Mimic, Text
+from dragonfly import Mimic
 
 from caster.lib import control
+from caster.lib.actions import Key, Text
 from caster.lib.ccr.standard import SymbolSpecs
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R

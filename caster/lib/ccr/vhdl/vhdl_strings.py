@@ -1,4 +1,5 @@
-from dragonfly import Key, Text
+from caster.lib.actions import Key, Text
+
 case_string=Text("case TOKEN is")+Key("enter,tab")+Text("when 'TOKEN'  =>  TOKEN")+\
 Key("enter,backspace")+Text("end case;")
 

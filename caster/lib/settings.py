@@ -2,17 +2,18 @@
 
 import collections
 import io
-import json
+import toml
 import os
 import sys
-import wmi
+import errno
+import _winreg
 
 SETTINGS = {}
-_SETTINGS_PATH = os.path.realpath(__file__).split("lib")[0] + "bin\\data\\settings.json"
-BASE_PATH = os.path.realpath(__file__).split("\\lib")[0].replace("\\", "/")
+BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "lib", 1)[0].replace("\\", "/")
+_SETTINGS_PATH = BASE_PATH + "/bin/data/settings.toml"
 
 # title
-SOFTWARE_VERSION_NUMBER = "0.5.10"
+SOFTWARE_VERSION_NUMBER = "0.5.11"
 SOFTWARE_NAME = "Caster v " + SOFTWARE_VERSION_NUMBER
 HOMUNCULUS_VERSION = "HMC v " + SOFTWARE_VERSION_NUMBER
 HMC_TITLE_RECORDING = " :: Recording Manager"
@@ -36,52 +37,80 @@ HMC_SEPARATOR = "[hmc]"
 WSR = False
 
 
-def _validate_natspeak():  # Validates 'Engine Path' for DNS in settings.json
+def _validate_engine_path():
+    '''
+    Validates path 'Engine Path' in settings.toml
+    '''
     if os.path.isfile(_SETTINGS_PATH):
-        with io.open(_SETTINGS_PATH, "rt", encoding="utf-8") as json_file:
-            data = json.loads(json_file.read())
-            exe_path = data["paths"]["ENGINE_PATH"]
-            if os.path.isfile(exe_path):
-                return exe_path
+        with io.open(_SETTINGS_PATH, "rt", encoding="utf-8") as toml_file:
+            data = toml.loads(toml_file.read())
+            engine_path = data["paths"]["ENGINE_PATH"]
+            if os.path.isfile(engine_path):
+                return engine_path
             else:
-                exe_path = _find_natspeak()
-                data["paths"]["ENGINE_PATH"] = exe_path
+                engine_path = _find_natspeak()
+                data["paths"]["ENGINE_PATH"] = engine_path
                 try:
-                    formatted_data = unicode(
-                        json.dumps(data, sort_keys=True, indent=4, ensure_ascii=False))
-                    with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as json_file:
-                        json_file.write(formatted_data)
-                        print "Setting DNS path to " + exe_path
+                    formatted_data = unicode(toml.dumps(data))
+                    with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as toml_file:
+                        toml_file.write(formatted_data)
+                    print("Setting engine path to ") + engine_path
                 except Exception as e:
-                    print "Error saving json file " + str(e) + _SETTINGS_PATH
-                return exe_path
+                    print("Error saving settings file ") + str(e) + _SETTINGS_PATH
+                return engine_path
     else:
         return _find_natspeak()
 
 
-def _find_natspeak():  # Finds DNS path and verifies supported DNS versions via Windows Registry.
-    print "Searching Windows Registry For DNS..."
-    w = wmi.WMI()
-    for p in w.Win32_Product():
-        if p.Caption and "Dragon" in p.Caption:
-            name = "{}".format(p.Name)
-            version = "{}".format(p.Version)
-            vendor = "{}".format(p.Vendor)
-            install_location = "{}".format(p.InstallLocation)
+def _find_natspeak():
+    '''
+    Finds engine 'natspeak.exe' path and verifies supported DNS versions via Windows Registry.
+    '''
+    print("Searching Windows Registry For DNS...")
+    proc_arch = os.environ['PROCESSOR_ARCHITECTURE'].lower()
+    proc_arch64 = os.environ['PROCESSOR_ARCHITEW6432'].lower()
 
-            if vendor == "Nuance Communications Inc." and name == "Dragon":
-                dns_version = int(str(version)[:2])
-                if dns_version >= 13:
-                    exe_path = install_location.replace("\\",
-                                                        "/") + "Program/natspeak.exe"
-                    if os.path.isfile(exe_path):
-                        print "Search Complete."
-                        return exe_path
+    if proc_arch == 'x86' and not proc_arch64:
+        arch_keys = {0}
+    elif proc_arch == 'x86' or proc_arch == 'amd64':
+        arch_keys = {_winreg.KEY_WOW64_32KEY, _winreg.KEY_WOW64_64KEY}
+    else:
+        raise Exception("Unhandled arch: %s" % proc_arch)
+
+    for arch_key in arch_keys:
+        key = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE,
+                              r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", 0,
+                              _winreg.KEY_READ | arch_key)
+        for i in xrange(0, _winreg.QueryInfoKey(key)[0]):
+            skey_name = _winreg.EnumKey(key, i)
+            skey = _winreg.OpenKey(key, skey_name)
+            DisplayName, Publisher, DisplayVersion, InstallLocation = 'null'
+            try:
+                DisplayName = _winreg.QueryValueEx(skey, 'DisplayName')[0]
+                Publisher = _winreg.QueryValueEx(skey, 'Publisher')[0]
+                DisplayVersion = _winreg.QueryValueEx(skey, 'DisplayVersion')[0]
+                InstallLocation = _winreg.QueryValueEx(skey, 'InstallLocation')[0]
+            except OSError as error:
+                if error.errno == 2:  # Suppresses '[Error 2] The system cannot find the file specified'
+                    pass
                 else:
-                    print " Dragon Naturally Speaking" + str(
-                        version
-                    ) + " is not supported by Caster. Only versions 13 and above are supported. Purchase Dragon Naturally Speaking 13 or above"
-    print "Cannot find dragon engine path"
+                    print(error)
+            finally:
+                skey.Close()
+                if Publisher == "Nuance Communications Inc." and "Dragon" in DisplayName:
+                    DnsVersion = int(str(DisplayVersion)[:2])
+                    if DnsVersion >= 13:
+                        engine_path = InstallLocation.replace(
+                            "\\", "/") + "Program/natspeak.exe"
+                        if os.path.isfile(engine_path):
+                            print "Search Complete."
+                            return engine_path
+                    else:
+                        print(
+                            " Dragon Naturally Speaking " + str(DnsVersion) +
+                            " is not supported by Caster. Only versions 13 and above are supported. Purchase Dragon Naturally Speaking 13 or above"
+                        )
+    print("Cannot find dragon engine path")
     return ""
 
 
@@ -91,22 +120,23 @@ _DEFAULT_SETTINGS = {
         "BASE_PATH": BASE_PATH,
 
         # DATA
-        "ALIAS_PATH": BASE_PATH + "/bin/data/aliases.json.",
-        "CCR_CONFIG_PATH": BASE_PATH + "/bin/data/ccr.json",
+        "BRINGME_PATH": BASE_PATH + "/bin/data/bringme.toml",
+        "BRINGME_DEFAULTS_PATH": BASE_PATH + "/bin/share/bringme.toml.defaults",
+        "ALIAS_PATH": BASE_PATH + "/bin/data/aliases.toml",
+        "CCR_CONFIG_PATH": BASE_PATH + "/bin/data/ccr.toml",
         "DLL_PATH": BASE_PATH + "/lib/dll/",
         "FILTER_DEFS_PATH": BASE_PATH + "/user/words.txt",
         "LOG_PATH": BASE_PATH + "/bin/data/log.txt",
-        "RECORDED_MACROS_PATH": BASE_PATH + "/bin/data/recorded_macros.json",
-        "SAVED_CLIPBOARD_PATH": BASE_PATH + "/bin/data/clipboard.json",
+        "RECORDED_MACROS_PATH": BASE_PATH + "/bin/data/recorded_macros.toml",
+        "SAVED_CLIPBOARD_PATH": BASE_PATH + "/bin/data/clipboard.toml",
         "SIKULI_SCRIPTS_FOLDER_PATH": BASE_PATH + "/asynch/sikuli/scripts",
 
         # REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
         "REMOTE_DEBUGGER_PATH": "",
 
         # EXECUTABLES
-        "DEFAULT_BROWSER_PATH": "C:/Program Files (x86)/Mozilla Firefox/firefox.exe",
         "DOUGLAS_PATH": BASE_PATH + "/asynch/mouse/grids.py",
-        "ENGINE_PATH": _validate_natspeak(),
+        "ENGINE_PATH": _validate_engine_path(),
         "HOMUNCULUS_PATH": BASE_PATH + "/asynch/hmc/h_launch.py",
         "LEGION_PATH": BASE_PATH + "/asynch/mouse/legion.py",
         "MEDIA_PATH": BASE_PATH + "/bin/media",
@@ -137,8 +167,10 @@ _DEFAULT_SETTINGS = {
         "eclipse": True,
         "emacs": True,
         "explorer": True,
+        "filedialogue": True,
         "firefox": True,
         "flashdevelop": True,
+        "fman": True,
         "foxitreader": True,
         "gitbash": True,
         "gitter": True,
@@ -146,9 +178,11 @@ _DEFAULT_SETTINGS = {
         "douglas": True,
         "legion": True,
         "rainbow": True,
+        "rstudio": True,
         "ssms": True,
         "jetbrains": True,
         "msvc": True,
+        "totalcmd": True,
         "notepadplusplus": True,
         "sqldeveloper": True,
         "sublime": True,
@@ -175,19 +209,66 @@ _DEFAULT_SETTINGS = {
         "sikuli_enabled": False,
         "keypress_wait": 50,  # milliseconds
         "max_ccr_repetitions": 16,
-        "atom_palette_wait": "30",
+        "atom_palette_wait": 30,  # hundredths of a second
         "rdp_mode": False,
         "integer_remap_opt_in": False,
         "integer_remap_crash_fix": False,
         "print_rdescripts": False,
         "history_playback_delay_secs": 1.0,
         "legion_vertical_columns": 30,
+        "use_aenea": False,
     },
     "pronunciations": {
         "c++": "C plus plus",
         "jquery": "J query",
     },
-    "one time warnings": {}
+    "one time warnings": {},
+    "formats": {
+        "_default": {
+            "text_format": [5, 0],
+            "secondary_format": [1, 0],
+        },
+        "C plus plus": {
+            "text_format": [3, 1],
+            "secondary_format": [2, 1],
+        },
+        "C sharp": {
+            "text_format": [3, 1],
+            "secondary_format": [2, 1],
+        },
+        "Dart": {
+            "text_format": [3, 1],
+            "secondary_format": [2, 1],
+        },
+        "HTML": {
+            "text_format": [5, 0],
+            "secondary_format": [5, 2],
+        },
+        "Java": {
+            "text_format": [3, 1],
+            "secondary_format": [2, 1],
+        },
+        "Javascript": {
+            "text_format": [3, 1],
+            "secondary_format": [2, 1],
+        },
+        "matlab": {
+            "text_format": [3, 1],
+            "secondary_format": [1, 3],
+        },
+        "Python": {
+            "text_format": [5, 3],
+            "secondary_format": [2, 1],
+        },
+        "Rust": {
+            "text_format": [5, 3],
+            "secondary_format": [2, 1],
+        },
+        "sequel": {
+            "text_format": [5, 3],
+            "secondary_format": [1, 3],
+        },
+    }
 }
 
 
@@ -195,19 +276,18 @@ _DEFAULT_SETTINGS = {
 def _save(data, path):
     '''only to be used for settings file'''
     try:
-        formatted_data = unicode(
-            json.dumps(data, sort_keys=True, indent=4, ensure_ascii=False))
+        formatted_data = unicode(toml.dumps(data))
         with io.open(path, "wt", encoding="utf-8") as f:
             f.write(formatted_data)
-    except Exception:
-        print "Error saving json file: " + path
+    except Exception as e:
+        print "Error saving toml file: " + str(e) + _SETTINGS_PATH
 
 
 def _init(path):
     result = {}
     try:
         with io.open(path, "rt", encoding="utf-8") as f:
-            result = json.loads(f.read())
+            result = toml.loads(f.read())
     except ValueError as e:
         print("\n\n" + repr(e) + " while loading settings file: " + path + "\n\n")
         print(sys.exc_info())
@@ -252,11 +332,6 @@ def get_settings():
     return SETTINGS
 
 
-def get_default_browser_executable():
-    global SETTINGS
-    return SETTINGS["paths"]["DEFAULT_BROWSER_PATH"].split("/")[-1]
-
-
 def report_to_file(message, path=None):
     _path = SETTINGS["paths"]["LOG_PATH"]
     if path is not None: _path = path
@@ -264,7 +339,7 @@ def report_to_file(message, path=None):
         f.write(unicode(message) + "\n")
 
 
-## Kick everything off.
+# Kick everything off.
 SETTINGS = _init(_SETTINGS_PATH)
 for path in [
         SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"], SETTINGS["paths"]["WXPYTHON_PATH"]

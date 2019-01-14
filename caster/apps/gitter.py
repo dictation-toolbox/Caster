@@ -5,9 +5,11 @@ Official Site "https://gitter.im/"
 """
 #---------------------------------------------------------------------------
 
-from dragonfly import AppContext, Dictation, Grammar, Key, MappingRule, Text
+from dragonfly import Dictation, Grammar, MappingRule
 
 from caster.lib import control, settings
+from caster.lib.actions import Key, Text
+from caster.lib.context import AppContext
 from caster.lib.dfplus.merge import gfilter
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R

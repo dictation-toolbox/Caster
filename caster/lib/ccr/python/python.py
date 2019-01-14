@@ -3,9 +3,10 @@ Created on Sep 1, 2015
 
 @author: synkarius
 '''
-from dragonfly import Key, Text, Dictation, MappingRule
+from dragonfly import Dictation, MappingRule
 
 from caster.lib import control
+from caster.lib.actions import Key, Text
 from caster.lib.ccr.standard import SymbolSpecs
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
@@ -118,10 +119,14 @@ class Python(MergeRule):
               rdescript="Python: List Comprehension"),
         "[dot] (pie | pi)":
             R(Text(".py"), rdescript="Python: .py"),
+        "toml":
+            R(Text("toml"), rdescript="Python: toml"),
         "jason":
-            R(Text("json"), rdescript="Python: json"),
+            R(Text("toml"), rdescript="Python: json"),
         "identity is":
             R(Text(" is "), rdescript="Python: is"),
+        "yield":
+            R(Text("yield "), rdescript="Python: Yield"),
     }
 
     extras = [

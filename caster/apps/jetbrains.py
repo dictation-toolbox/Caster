@@ -1,7 +1,9 @@
-from dragonfly import (Grammar, AppContext, Dictation, Key)
+from dragonfly import (Grammar, Dictation)
 
 from caster.lib import control
 from caster.lib import settings
+from caster.lib.actions import Key
+from caster.lib.context import AppContext
 from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge import gfilter
 from caster.lib.dfplus.merge.mergerule import MergeRule
@@ -24,8 +26,8 @@ class JetbrainsRule(MergeRule):
             R(Key("c-q"), rdescript="JetBrains: Show Documentation"),
         "show param":
             R(Key("c-p"), rdescript="JetBrains: Show Parameters"),
-        "Jen method":
-            R(Key("a-insert"), rdescript="JetBrains: Generated Method"),
+        "Jen code":
+            R(Key("a-insert"), rdescript="JetBrains: Generate code"),
         "jump to source":
             R(Key("f4"), rdescript="JetBrains: Jump To Source"),
         "delete line":
@@ -45,15 +47,29 @@ class JetbrainsRule(MergeRule):
         "uncomment line":
             R(Key("cs-slash"), rdescript="JetBrains: Uncomment Line"),
         "select ex":
-            R(Key("c-w"), rdescript="JetBrains: untitled command"),
+            R(Key("c-w"), rdescript="JetBrains: Extended selection"),
         "select ex down":
-            R(Key("cs-w"), rdescript="JetBrains: entitled command"),
+            R(Key("cs-w"), rdescript="JetBrains: Extended selection back"),
         "search everywhere":
             R(Key("shift, shift"), rdescript="JetBrains: Search Everywhere"),
         "find in current":
             R(Key("cs-f"), rdescript="JetBrains: Find In Current"),
         "go to line":
             R(Key("c-g"), rdescript="JetBrains: Go To Line"),
+        "implement methods":
+            R(Key("c-i"), rdescript="JetBrains: Implement methods"),
+        "override methods":
+            R(Key("c-o"), rdescript="JetBrains: Override methods"),
+        "run config":
+            R(Key("as-f10"), rdescript="Jet Brains: Display run configurations dialogue"),
+        "find usages":
+            R(Key("a-f7"), rdescript="Jet Brains: Find usages"),
+        "refactor rename":
+            R(Key("s-f6"), rdescript="Jet Brains: Refactor rename"),
+        "go to declaration":
+            R(Key("c-b"), rdescript="Jet Brains: Go to declaration"),
+        "smart kraken": #kraken is Caster default for control space
+            R(Key("cs-space"), rdescript="Jet Brains: Smart completion"),
     }
     extras = [
         Dictation("text"),

@@ -1,8 +1,19 @@
 import time
 
-from dragonfly import *
+from dragonfly import AppContext
 
 from caster.lib import utilities, settings
+from caster.lib.actions import Key
+from caster.lib.clipboard import Clipboard
+
+# Override dragonfly.AppContext with aenea.ProxyAppContext if the 'use_aenea'
+# setting is set to true.
+if settings.SETTINGS["miscellaneous"]["use_aenea"]:
+    try:
+        from aenea import ProxyAppContext as AppContext
+    except ImportError:
+        print("Unable to import aenea.ProxyAppContext. dragonfly.AppContext "
+              "will be used instead.")
 
 
 def _target_is_character(target):

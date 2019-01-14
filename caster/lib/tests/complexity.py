@@ -7,11 +7,11 @@ import random
 import re
 import time
 
-from dragonfly.actions.action_text import Text
 from dragonfly.grammar.elements import Choice
 from dragonfly.grammar.grammar_base import Grammar
 
 from caster.lib import settings
+from caster.lib.actions import Text
 from caster.lib.ccr.core.alphabet import Alphabet
 from caster.lib.ccr.core.nav import Navigation
 from caster.lib.ccr.core.numbers import Numbers
@@ -251,7 +251,7 @@ def run_tests():
                     if result.choices == nc_orig: not_max_yet = False
                     break
 
-    reports.append("\nSettings JSON CCR Max Reps: " + str(original_ccr_max) + "\n")
+    reports.append("\nSettings toml CCR Max Reps: " + str(original_ccr_max) + "\n")
     reports.append(
         "Total time for test: " + str(int(time.time() - start_time)) + " sec\n\n")
     result = "".join(reports)

@@ -12,13 +12,19 @@ from wx import Notebook, NB_MULTILINE, Menu, ID_EXIT, EVT_MENU, MenuBar, \
 from wx.lib.scrolledpanel import ScrolledPanel
 
 try:  # Style C -- may be imported into Caster, or externally
-    BASE_PATH = os.path.realpath(__file__).split("\\caster")[0].replace("\\", "/")
+    BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "caster", 1)[0]
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:
     from caster.lib import settings
     from caster.lib.dfplus.communication import Communicator
 
+DICT_SETTING = 1
+STRING_SETTING = 2
+STRINGLIST_SETTING = 4
+INTEGERLIST_SETTING = 8
+INTEGER_SETTING = 16
+BOOLEAN_SETTING = 32
 
 class Field:
     def __init__(self, wx_field, original, text_type=None):
@@ -81,11 +87,15 @@ class SettingsFrame(Frame):
             value = None
             if isinstance(field.wx_field, TextCtrl):
                 value = field.wx_field.GetValue()
-                if field.text_type == list:
+                if field.text_type == STRINGLIST_SETTING:
                     d[field.original] = [
                         x for x in value.replace(", ", ",").split(",") if x
                     ]  # don't count empty strings
-                elif field.text_type == int:
+                elif field.text_type == INTEGERLIST_SETTING:
+                    d[field.original] = [
+                        int(x) for x in value.replace(", ", ",").split(",") if x
+                    ]  # don't count empty strings
+                elif field.text_type == INTEGER_SETTING:
                     d[field.original] = int(value)
                 else:
                     d[field.original] = value.replace("\\", "/")
@@ -156,16 +166,20 @@ class SettingsFrame(Frame):
         item = None
         if isinstance(value, basestring):
             item = TextCtrl(window, value=value)
-            field.text_type = basestring
+            field.text_type = STRING_SETTING
         elif isinstance(value, list):
-            item = TextCtrl(window, value=", ".join(value))
-            field.text_type = list
+            if isinstance(value[0], basestring):
+                item = TextCtrl(window, value=", ".join(value))
+                field.text_type = STRINGLIST_SETTING
+            elif isinstance(value[0], int):
+                item = TextCtrl(window, value=", ".join((str(x) for x in value)))
+                field.text_type = INTEGERLIST_SETTING
         elif isinstance(value, bool):
             item = CheckBox(window, -1, '', (120, 75))
             item.SetValue(value)
         elif isinstance(value, int):
             item = TextCtrl(window, value=str(value))
-            field.text_type = int
+            field.text_type = INTEGER_SETTING
         elif isinstance(value, dict):
             subpage = Panel(window)
             vbox = BoxSizer(VERTICAL)
@@ -179,7 +193,7 @@ class SettingsFrame(Frame):
                 subfield = Field(None, lbl)
                 item = self.field_from_value(subpage, value2, subfield)
                 field.add_child(subfield)
-                if item != None:
+                if item is not None:
                     hbox.Add(item, proportion=1)
                 vbox.Add(hbox, flag=EXPAND | LEFT | RIGHT | TOP, border=5)
                 vbox.Add((-1, 5))
