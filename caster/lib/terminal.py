@@ -9,7 +9,7 @@ class TerminalCommand(RunCommand):
     Example
     class PingLocalHost(TerminalCommand):
         command = "ping localhost"
-        trusted = True #
+        trusted = True
     Ping().execute()
     '''
     trusted = False
@@ -27,7 +27,7 @@ class TerminalCommand(RunCommand):
         else:
             return ConfirmAction(
                 Function(lambda: RunCommand.execute(self, data)),
-                rdescript="CasterRunCommand: Confirm Action '%s'?" % self.command,
+                rdescript="CasterTerminalCommand: Confirm Action '%s'?" % self.command,
                 instructions="Run command '%s'?" % self.command
             ).execute(data)
 
