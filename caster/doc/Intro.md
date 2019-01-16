@@ -1,7 +1,3 @@
-# Introduction to Caster
-
-Caster is a collection of tools intended to enable and speed up programming by voice. It makes use of [Natlink](http://qh.antenna.nl/unimacro/installation/installation.html) and [Dragonfly](https://code.google.com/p/dragonfly/) and requires Dragon NaturallySpeaking or WSR.
-
 # What can it do?
 Caster implements three main types of command:
 
@@ -41,18 +37,3 @@ With CCR, multiple commands can be executed in quick succession, allowing quick 
 * `print to console quotes tie bow hello world clamor` - `print("Hello World!")`
 * `shin ross wally clear` - `select to the end of the line, delete`
 * `queue lease stoosh` - `copy the previous word/variable name`
-
-# Complete feature list
-
-* Support for various IDEs: Atom, Eclipse, Emacs, Jetbrains IDEs, MSVC, Sublime
-* CCR modules for Python, Java, Bash, C++, Rust, HTML, CSS, JavaScript, SQL; easily configure new languages/ modules
-* Text/line navigation commands, text formatting commands
-* Alphabet, numbers and punctuation input commands
-* Sikuli integration
-* Four additional mouse navigation modes
-* The Context Stack - asynchronous and context seeking commands
-* Spec reduction via NodeRule
-* Easy setup
-* "Alias" Commands - on-the-fly commands created by highlighting stuff
-* "Record From History" - turn previously spoken commands into macros
-* Configurable settings
