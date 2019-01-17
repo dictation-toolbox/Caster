@@ -7,7 +7,7 @@ import shlex
 from dragonfly import Choice, Function, Dictation
 
 from caster.lib import control, context, utilities, settings
-from caster.lib.actions import Text
+from caster.lib.actions import Text, Key
 from caster.lib.dfplus.merge.selfmodrule import SelfModifyingRule
 from caster.lib.dfplus.state.short import R
 
@@ -50,6 +50,7 @@ def bring_add(launch, key):
     # elif launch == 'file':
     # no way to add file via pyperclip
     else:
+        Key("a-d/5").execute()
         fail, path = context.read_selected_without_altering_clipboard()
         if fail == 2:
             #FIXME
@@ -58,6 +59,7 @@ def bring_add(launch, key):
             if not path:
                 # dragonfly.get_engine().speak("nothing selected")
                 print("Selection for bring me not found ")
+        Key("escape").execute()
     if not path:
         #logger.warn('Cannot add %s as %s to bringme: cannot get path', launch, key)
         return
