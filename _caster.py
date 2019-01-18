@@ -158,7 +158,7 @@ if settings.SETTINGS["feature_rules"]["again"]:
     grammar.add_rule(again_rule)
 
 if settings.SETTINGS["feature_rules"]["alias"]:
-    alias_rule = Alias(name="alias")
+    alias_rule = Alias(_NEXUS)
     gfilter.run_on(alias_rule)
     grammar.add_rule(alias_rule)
 
