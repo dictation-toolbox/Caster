@@ -1,6 +1,6 @@
 #Embedded file name: C:\NatLink\NatLink\MacroSystem\caster\lib\tests\unit\mergerule.py
 import unittest
-from dragonfly.grammar.context import AppContext
+from caster.lib.context import AppContext
 from caster.apps.eclipse import EclipseCCR
 from caster.lib.ccr.java.java import Java
 from caster.lib.ccr.javascript.javascript import Javascript

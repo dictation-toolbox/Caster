@@ -3,7 +3,7 @@ Command-module for RainbowGrid
 
 """
 
-from dragonfly import (Grammar, AppContext, Function, Playback, Choice, MappingRule)
+from dragonfly import (Grammar, Function, Playback, Choice, MappingRule)
 
 from caster.asynch.mouse import grids
 from caster.lib import control
@@ -12,6 +12,7 @@ from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge import gfilter
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
+from caster.lib.context import AppContext
 
 _NEXUS = control.nexus()
 
