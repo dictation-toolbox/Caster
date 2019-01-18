@@ -78,37 +78,26 @@ def save_toml_file(data, path):
     except Exception:
         simple_log(True)
 
-
-def load_toml_file(path):
+# Load the target file if it exists. If not, create it and
+# fill it with the backupdict, if provided.
+def load_toml_file(path, backupdict=None):
     result = {}
     try:
         with io.open(path, "rt", encoding="utf-8") as f:
             result = toml.loads(f.read())
     except IOError as e:
         if e.errno == 2:  # The file doesn't exist.
-            save_toml_file(result, path)
+            print(path + " does not exist, recovering...")
+            if backupdict:
+                save_toml_file(backupdict, path)
+                return backupdict
+            else:
+                save_toml_file(result, path)
         else:
             raise
     except Exception:
         simple_log(True)
     return result
-
-'''
-Takes a choice name and an arbitrary number of toml path/label
-pair lists. For example:
-mapping["<alphanumeric>"] = Text("%(alphanumeric)s")
-extras = [
-    utilities.Choice_from_file("alphanumeric",
-     [utilities.get_full_path("caster/.../alphabet.toml"), "letters"], 
-     [utilities.get_full_path("caster/.../alphabet.toml"), "numbers"]
-     )
-]
-'''
-def Choice_from_file(name, *args):
-    phrases = {}
-    for arg in args:
-        phrases.update(load_toml_file(arg[0])[arg[1]])
-    return Choice(name, phrases)
 
 # takes e.g. "caster/.../file.extension" and returns a full path
 def get_full_path(path):
