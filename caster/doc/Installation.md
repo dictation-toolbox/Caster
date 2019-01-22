@@ -76,6 +76,7 @@ Castor dependencies
 
 * wxpython
 * pillow
+* toml
 
 **Alternative Speech Secognition Engines.**
 
