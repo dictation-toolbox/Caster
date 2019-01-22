@@ -25,17 +25,32 @@ def delete_all(alias, path):
     utilities.save_toml_file(aliases, settings.SETTINGS["paths"]["ALIAS_PATH"])
     alias.refresh()
 
+class AliasRule(SelfModifyingRule):
+    def __init__(self, nexus):
+        SelfModifyingRule.__init__(self)
+        self.nexus = nexus
 
-class Alias(SelfModifyingRule):
+    def alias(self, spec):
+        text = read_highlighted(10)
+        spec = str(spec)
+        if text is not None:
+            if spec:
+                self.refresh(spec, str(text))
+            else:
+                h_launch.launch(settings.QTYPE_INSTRUCTIONS, data="Enter_spec_for_command|")
+                on_complete = AsynchronousAction.hmc_complete(
+                    lambda data: self.refresh(data[0].replace("\n", ""), text), self.nexus)
+                AsynchronousAction(
+                    [L(S(["cancel"], on_complete))],
+                    time_in_seconds=0.5,
+                    repetitions=300,
+                    blocking=False).execute()
+
+
+class Alias(AliasRule):
     mapping = {"default command": NullAction()}
     toml_path = "single_aliases"
     pronunciation = "alias"
-
-    def alias(self, spec):
-        spec = str(spec)
-        if spec != "":
-            text = read_highlighted(10)
-            if text != None: self.refresh(spec, str(text))
 
     def refresh(self, *args):
         '''args: spec, text'''
@@ -50,7 +65,7 @@ class Alias(SelfModifyingRule):
             mapping[spec] = R(
                 Text(str(aliases[Alias.toml_path][spec])),
                 rdescript="Alias: " + spec)
-        mapping["alias <s>"] = R(
+        mapping["alias [<s>]"] = R(
             Function(lambda s: self.alias(s)), rdescript="Create Alias")
         mapping["delete aliases"] = R(
             Function(lambda: delete_all(self, Alias.toml_path)),
@@ -58,26 +73,10 @@ class Alias(SelfModifyingRule):
         self.reset(mapping)
 
 
-class ChainAlias(SelfModifyingRule):
-    def __init__(self, nexus):
-        SelfModifyingRule.__init__(self)
-        self.nexus = nexus
-
+class ChainAlias(AliasRule):
     toml_path = "chain_aliases"
     mapping = {"default chain command": NullAction()}
     pronunciation = "chain alias"
-
-    def chain_alias(self):
-        text = read_highlighted(10)
-        if text is not None:
-            h_launch.launch(settings.QTYPE_INSTRUCTIONS, data="Enter_spec_for_command|")
-            on_complete = AsynchronousAction.hmc_complete(
-                lambda data: self.refresh(data[0].replace("\n", ""), text), self.nexus)
-            AsynchronousAction(
-                [L(S(["cancel"], on_complete))],
-                time_in_seconds=0.5,
-                repetitions=300,
-                blocking=False).execute()
 
     def refresh(self, *args):
         aliases = utilities.load_toml_file(settings.SETTINGS["paths"]["ALIAS_PATH"])
@@ -91,15 +90,13 @@ class ChainAlias(SelfModifyingRule):
             mapping[spec] = R(
                 Text(str(aliases[ChainAlias.toml_path][spec])),
                 rdescript="Chain Alias: " + spec)
-        mapping["chain alias"] = R(
-            Function(self.chain_alias), rdescript="Create Chainable Alias")
+        mapping["chain alias [<s>]"] = R(
+            Function(lambda s: self.alias(s)), rdescript="Create Chainable Alias")
         mapping["delete chain aliases"] = R(
             Function(lambda: delete_all(self, ChainAlias.toml_path)),
             rdescript="Delete Aliases")
         self.reset(mapping)
 
-if settings.SETTINGS["feature_rules"]["alias"]:
-    control.nexus().merger.add_selfmodrule(Alias())
 if settings.SETTINGS["feature_rules"]["chainalias"]:
     control.nexus().merger.add_selfmodrule(ChainAlias(_NEXUS))
 
