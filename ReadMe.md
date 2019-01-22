@@ -17,10 +17,11 @@
   - [Applications](caster/doc/readthedocs/Application commands quick reference.md) - Application specific control - These commands are only activated when a particular program is the active window, and they provide support for text editors, IDEs, web browsers etc. For example, while the Sublime text editor is the active window, saying
     - `find` will execute a `ctrl-f` keystroke, bringing up the find and replace prompt,
     - `open file` will execute a `ctrl-o` keystroke,
-    - `edit next <n>` will execute `ctrl-d` n times, selecting the next n instances of the currently selected word.
+    - `edit next <n>` - `ctrl-d` n times, selecting the next n instances of the currently selected word.
   - [Program Languages](caster/doc/readthedocs/CCR languages quick reference.md) - Language specific coding - These modules are activated and deactivated with the `enable/disable <language>` voice command. For example, saying `enable python`. 
     - `for loop` which will insert `for i in range(0, ):`
-    - `print to console` - `print()
+    - `print to console` - `print()`
+    -  `open file` -  `open('filename', 'r') as f:`
 - [Contributing / How can I help?](https://github.com/synkarius/caster/blob/master/caster/doc/CONTRIBUTING.md)
 - Need help support or just curious? Join our community at [![Join the chat at https://gitter.im/synkarius/caster](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/synkarius/caster?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)or [Discord](https://discord.gg/9eAAsCJ) for voice chat.
 - The [Voice Index](http://caster.readthedocs.org/en/latest/caster/doc/readthedocs/Voice%20Index/) is a curated source of information: Videos, Blogs, Repositories, Presentations, etc related to Dragonfly, voice programming, and accessibility.
