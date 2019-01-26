@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="castervoice",
-    version="0.6.0",
+    version="0.6.1",
     author="synkarius",
     author_email="dconway1985@gmail.com",
     description="Dragonfly-Based Voice Programming Toolkit",
@@ -21,7 +21,8 @@ setuptools.setup(
         "dragonfly2>=0.10.1",
         "wxpython>=4.0.3",
         "pillow>=5.3.0",
-        "toml>=0.10.0"
+        "toml>=0.10.0",
+        "future"
     ],
     package_data={
         "castervoice": [
