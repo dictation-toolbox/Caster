@@ -9,14 +9,14 @@ logging.basicConfig()
 
 import time
 from dragonfly import (Function, Grammar, Playback, Dictation, Choice, Pause)
-from caster.lib.ccr.standard import SymbolSpecs
+from castervoice.lib.ccr.standard import SymbolSpecs
 
 
 def _wait_for_wsr_activation():
     count = 1
     while True:
         try:
-            from caster.apps import firefox
+            from castervoice.apps import firefox
             break
         except:
             print("(%d) Attempting to load Caster -- WSR not loaded and listening yet..."
@@ -27,38 +27,38 @@ def _wait_for_wsr_activation():
 
 _NEXUS = None
 
-from caster.lib import settings  # requires nothing
+from castervoice.lib import settings  # requires nothing
 settings.WSR = __name__ == "__main__"
-from caster.lib import utilities  # requires settings
+from castervoice.lib import utilities  # requires settings
 if settings.WSR:
     _wait_for_wsr_activation()
     SymbolSpecs.set_cancel_word("escape")
-from caster.lib import control
+from castervoice.lib import control
 _NEXUS = control.nexus()
 
-from caster.apps import *
-from caster.asynch import *
-from caster.lib import context
-from caster.lib.actions import Key
-import caster.lib.dev.dev
-from caster.asynch.sikuli import sikuli
-from caster.lib import navigation
+from castervoice.apps import *
+from castervoice.asynch import *
+from castervoice.lib import context
+from castervoice.lib.actions import Key
+import castervoice.lib.dev.dev
+from castervoice.asynch.sikuli import sikuli
+from castervoice.lib import navigation
 navigation.initialize_clipboard(_NEXUS)
-from caster.lib.dfplus.state.short import R
-from caster.lib.dfplus.additions import IntegerRefST
+from castervoice.lib.dfplus.state.short import R
+from castervoice.lib.dfplus.additions import IntegerRefST
 
-from caster.lib.dfplus.merge.mergepair import MergeInf
-from caster.lib.ccr import *
-from caster.lib.ccr.recording.again import Again
-from caster.lib.ccr.recording.bringme import bring_rule
-from caster.lib.ccr.recording.alias import Alias
-from caster.lib.ccr.recording import history
-from caster.lib.dev import dev
-from caster.lib.dfplus.hint.nodes import css
-from caster.user.filters.examples import scen4, modkeysup
-from caster import user
-from caster.lib.dfplus.merge.mergerule import MergeRule
-from caster.lib.dfplus.merge import gfilter
+from castervoice.lib.dfplus.merge.mergepair import MergeInf
+from castervoice.lib.ccr import *
+from castervoice.lib.ccr.recording.again import Again
+from castervoice.lib.ccr.recording.bringme import bring_rule
+from castervoice.lib.ccr.recording.alias import Alias
+from castervoice.lib.ccr.recording import history
+from castervoice.lib.dev import dev
+from castervoice.lib.dfplus.hint.nodes import css
+from castervoice.user.filters.examples import scen4, modkeysup
+from castervoice import user
+from castervoice.lib.dfplus.merge.mergerule import MergeRule
+from castervoice.lib.dfplus.merge import gfilter
 
 
 def change_monitor():
