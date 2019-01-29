@@ -7,6 +7,7 @@ from castervoice.lib.ctrl.wsrdf import TimerForWSR, RecognitionHistoryForWSR
 from castervoice.lib.dfplus.communication import Communicator
 from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
 from castervoice.lib.dfplus.state.stack import CasterState
+from castervoice.lib.ctrl.user import UserContentManager
 
 
 class Nexus:
@@ -35,6 +36,8 @@ class Nexus:
         self.macros_grammar = Grammar("recorded_macros")
 
         self.merger = CCRMerger(real_merger_config)
+        
+        self.user_content_manager = UserContentManager()
 
 
 _NEXUS = None

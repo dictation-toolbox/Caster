@@ -5,12 +5,15 @@ import io
 import toml
 import os
 import sys
-import errno
 import _winreg
 
 SETTINGS = {}
 BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "lib", 1)[0].replace("\\", "/")
-_SETTINGS_PATH = BASE_PATH + "/bin/data/settings.toml"
+_USER_DIR = os.path.expanduser("~").replace("\\", "/") + "/.caster"
+_SETTINGS_PATH = _USER_DIR + "/data/settings.toml"
+
+if not os.path.exists(_USER_DIR+"/data"):
+    os.makedirs(_USER_DIR+"/data")
 
 # title
 SOFTWARE_VERSION_NUMBER = "0.5.11"
@@ -118,18 +121,19 @@ def _find_natspeak():
 _DEFAULT_SETTINGS = {
     "paths": {
         "BASE_PATH": BASE_PATH,
+        "USER_DIR": _USER_DIR,
 
         # DATA
-        "BRINGME_PATH": BASE_PATH + "/bin/data/bringme.toml",
-        "BRINGME_DEFAULTS_PATH": BASE_PATH + "/bin/share/bringme.toml.defaults",
-        "ALIAS_PATH": BASE_PATH + "/bin/data/aliases.toml",
-        "CCR_CONFIG_PATH": BASE_PATH + "/bin/data/ccr.toml",
+        "BRINGME_PATH": _USER_DIR + "/data/bringme.toml",
+        "BRINGME_DEFAULTS_PATH": BASE_PATH + "/share/bringme.toml.defaults",
+        "ALIAS_PATH": _USER_DIR + "/data/aliases.toml",
+        "CCR_CONFIG_PATH": _USER_DIR + "/data/ccr.toml",
         "DLL_PATH": BASE_PATH + "/lib/dll/",
-        "FILTER_DEFS_PATH": BASE_PATH + "/user/words.txt",
-        "LOG_PATH": BASE_PATH + "/bin/data/log.txt",
-        "RECORDED_MACROS_PATH": BASE_PATH + "/bin/data/recorded_macros.toml",
-        "SAVED_CLIPBOARD_PATH": BASE_PATH + "/bin/data/clipboard.toml",
-        "SIKULI_SCRIPTS_FOLDER_PATH": BASE_PATH + "/asynch/sikuli/scripts",
+        "FILTER_DEFS_PATH": _USER_DIR + "/data/words.txt",
+        "LOG_PATH": _USER_DIR + "/log.txt",
+        "RECORDED_MACROS_PATH": _USER_DIR + "/data/recorded_macros.toml",
+        "SAVED_CLIPBOARD_PATH": _USER_DIR + "/data/clipboard.toml",
+        "SIKULI_SCRIPTS_FOLDER_PATH": _USER_DIR + "/sikuli/scripts",
 
         # REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
         "REMOTE_DEBUGGER_PATH": "",
@@ -147,11 +151,11 @@ _DEFAULT_SETTINGS = {
         "SIKULI_COMPATIBLE_JAVA_EXE_PATH": "",
         "SIKULI_IDE_JAR_PATH": "",
         "SIKULI_SCRIPTS_JAR_PATH": "",
-        "SIKULI_SERVER_PATH": BASE_PATH + "/asynch/sikuli/scripts/xmlrpc_server.sikuli",
+        "SIKULI_SERVER_PATH": _USER_DIR + "/sikuli/scripts/xmlrpc_server.sikuli",
         "WSR_PATH": "C:/Windows/Speech/Common/sapisvr.exe",
 
         # CCR
-        "CONFIGDEBUGTXT_PATH": BASE_PATH + "/bin/data/configdebug.txt",
+        "CONFIGDEBUGTXT_PATH": _USER_DIR + "/data/configdebug.txt",
 
         # PYTHON
         "PYTHONW": "C:/Python27/pythonw",
