@@ -55,8 +55,6 @@ from castervoice.lib.ccr.recording.alias import Alias
 from castervoice.lib.ccr.recording import history
 from castervoice.lib.dev import dev
 from castervoice.lib.dfplus.hint.nodes import css
-from castervoice.user.filters.examples import scen4, modkeysup
-from castervoice import user
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.merge import gfilter
 

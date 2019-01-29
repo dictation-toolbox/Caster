@@ -14,18 +14,9 @@ from castervoice.lib import settings
 class UserContentManager(object):
     
     def __init__(self):
-        self.rules = self.import_user_dir("get_rule", settings.SETTINGS["USER_DIR"] + "/rules")
-        self.filters = self.import_user_dir("get_filter", settings.SETTINGS["USER_DIR"] + "/filters")
+        self.rules = self.import_user_dir("get_rule", settings.SETTINGS["paths"]["USER_DIR"] + "/rules")
+        self.filters = self.import_user_dir("get_filter", settings.SETTINGS["paths"]["USER_DIR"] + "/filters")
         self.sikulix = None # TODO
-        
-#     def add_rules_to_nexus(self):
-#         ''''''
-#         
-#     def add_rules_and_filters_to_nexus(self, merger):
-#         for rule in self.rules:
-#             mer
-#         for rule_filter in self.filters:
-#             merger.add_filter(rule_filter)
 
     def import_user_dir(self, fn_name, fpath):
         result = []
