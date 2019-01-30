@@ -11,7 +11,6 @@ import time
 from dragonfly import (Function, Grammar, Playback, Dictation, Choice, Pause)
 from castervoice.lib.ccr.standard import SymbolSpecs
 
-
 def _wait_for_wsr_activation():
     count = 1
     while True:
@@ -24,9 +23,7 @@ def _wait_for_wsr_activation():
             count += 1
             time.sleep(1)
 
-
 _NEXUS = None
-
 from castervoice.lib import settings  # requires nothing
 settings.WSR = __name__ == "__main__"
 from castervoice.lib import utilities  # requires settings
@@ -162,8 +159,10 @@ if settings.SETTINGS["feature_rules"]["alias"]:
 
 grammar.load()
 
+_NEXUS.process_user_content()
 _NEXUS.merger.update_config()
 _NEXUS.merger.merge(MergeInf.BOOT)
+
 
 print("*- Starting " + settings.SOFTWARE_NAME + " -*")
 

@@ -7,9 +7,7 @@ Created on Jan 26, 2019
 from sys import path
 import importlib, os, glob
 from castervoice.lib import settings
-
-# TODO: fix accidentally deleted images... 
-# TODO: check to see if the import itself launches a separate dragonfly context
+import traceback
 
 class UserContentManager(object):
     
@@ -41,8 +39,8 @@ class UserContentManager(object):
             try:
                 lib = importlib.import_module(lib_name)
             except Exception as e:
-                print("Could not load '{}'. Module has errors: {}".format(lib_name, e))
-                return None
+                print("Could not load '{}'. Module has errors: {}".format(lib_name, traceback.format_exc()))
+                continue
             
             # get them and add them to nexus
             fn = None
@@ -51,7 +49,7 @@ class UserContentManager(object):
             except AttributeError:
                 msg = "No method named '{}' was found on '{}'. Did you forget to implement it?"
                 print(msg.format(fn_name, lib_name))
-                return None
+                continue
             
             
             result.append(fn())

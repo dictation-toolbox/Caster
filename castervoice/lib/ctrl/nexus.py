@@ -37,7 +37,12 @@ class Nexus:
 
         self.merger = CCRMerger(real_merger_config)
         
+        self.user_content_manager = None
+        
+    def process_user_content(self):
         self.user_content_manager = UserContentManager()
+        
+        self.merger.add_user_content(self.user_content_manager)
 
 
 _NEXUS = None

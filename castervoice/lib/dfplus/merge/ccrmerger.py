@@ -136,6 +136,12 @@ class CCRMerger(object):
     def add_filter(self, filter):
         if not filter in self._filters:
             self._filters.append(filter)
+            
+    def add_user_content(self, user_content_manager):
+        for rule in user_content_manager.rules:
+            self.add_global_rule(rule)
+        for filter_ in user_content_manager.filters:
+            self.add_filter(filter_)
 
     def _add_to(self, rule, group):
         if rule.get_pronunciation() in \
