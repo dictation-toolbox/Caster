@@ -74,9 +74,8 @@ def internetcheck(host="1.1.1.1", port=53, timeout=3):
         print (error.message)
         return False
 
-
-class DependencyCheck(TerminalCommand):  # Currently only checks if dragonfly's package is up-to-date
-    command = "pip search dragonfly2"
+class CasterCheck(TerminalCommand): 
+    command = "pip search castervoice"
     trusted = True  # Command will execute silently without ConfirmAction
 
     def process_command(self, proc):
@@ -85,13 +84,28 @@ class DependencyCheck(TerminalCommand):  # Currently only checks if dragonfly's 
             if "INSTALLED" and "latest" in line:
                 update = True
         if update is True:
-            print ("\nCaster: Dragonfly is up-to-date\n")
+            print ("\nCaster: is up-to-date\n")
         else:
-            print ("\nCaster: Say 'Update Caster Dependencies' to update.\n")
+            print ("\nCaster: Say 'Update Caster' to update.\n")
+
+class DragonflyCheck(TerminalCommand):
+    command = "pip search dragonfly2"
+    trusted = True
+
+    def process_command(self, proc):
+        update = False
+        for line in iter(proc.stdout.readline, b''):
+            if "INSTALLED" and "latest" in line:
+                update = True
+        if update is True:
+            print ("Caster: Dragonfly is up-to-date")
+        else:
+            print ("Caster: Say 'Update Dragonfly' to update.")
 
 if settings.SETTINGS["miscellaneous"]["online_mode"] is True:
     if internetcheck() is True:
-        DependencyCheck().execute()
+        CasterCheck().execute()
+        DragonflyCheck().execute()
     else:
         print("\nCaster: Network off-line check network connection\n")
 else:
@@ -122,10 +136,13 @@ class MainRule(MergeRule):
         return Choice("name2", choices)
 
     mapping = {
-        # dependency management
-        "update caster dependencies":
-            RunCommand('pip install --upgrade dragonfly2') + R(Playback([(["reboot", "dragon"], 0.0)]),
-              rdescript="Core: Update dependencies and restarts Caster"),
+        # update management
+        "update caster":
+            RunCommand('pip install --upgrade castervoice', synchronous=True) + R(Playback([(["reboot", "dragon"], 0.0)]),
+              rdescript="Core: Update and restart Caster"),
+        "update dragonfly":
+            RunCommand('pip install --upgrade dragonfly2', synchronous=True) + R(Playback([(["reboot", "dragon"], 0.0)]),
+              rdescript="Core: Update dragonfly2 and restart Caster"),
         # hardware management
         "volume <volume_mode> [<n>]":
             R(Function(navigation.volume_control, extra={'n', 'volume_mode'}),
@@ -209,7 +226,7 @@ _NEXUS.merger.update_config()
 _NEXUS.merger.merge(MergeInf.BOOT)
 
 
-print("*- Starting " + settings.SOFTWARE_NAME + " -*")
+print("\n*- Starting " + settings.SOFTWARE_NAME + " -*")
 
 if settings.WSR:
     import pythoncom
