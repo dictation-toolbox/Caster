@@ -6,11 +6,16 @@ class TerminalCommand(RunCommand):
     TerminalCommand executes trusted or un-trusted RunCommands for terminal or CMD.
     Trusted commands not utilize Confirm Action to safeguard RunCommand execution.
 
-    Example
+    Example 1 - A trusted command
     class PingLocalHost(TerminalCommand):
         command = "ping localhost"
         trusted = True
     Ping().execute()
+
+    Example 2 - A synchronous command
+    "update caster test":
+        R(RunCommand('pip install --upgrade castervoice', synchronous=True),
+            rdescript="Core: Update"),
     '''
     trusted = False
     def __init__(self, trusted=False, command=None, process_command=None):
