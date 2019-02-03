@@ -5,7 +5,7 @@ Command-module for Legion
 
 import time
 
-from dragonfly import (Grammar, AppContext, Function, Playback, Choice, MappingRule)
+from dragonfly import (Grammar, Function, Playback, Choice, MappingRule)
 import win32api
 import win32con
 
@@ -16,6 +16,7 @@ from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge import gfilter
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
+from caster.lib.context import AppContext
 
 _NEXUS = control.nexus()
 

@@ -1,4 +1,4 @@
-from dragonfly import (Grammar, AppContext, Dictation, Key, Repeat)
+from dragonfly import (Grammar, Dictation, Repeat)
 
 from caster.lib import control
 from caster.lib import settings
@@ -6,6 +6,8 @@ from caster.lib.dfplus.additions import IntegerRefST
 from caster.lib.dfplus.merge import gfilter
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
+from caster.lib.context import AppContext
+from caster.lib.actions import Key
 
 
 class TotalCommanderRule (MergeRule):

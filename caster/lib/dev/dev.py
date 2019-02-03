@@ -133,7 +133,7 @@ class DevelopmentHelp(MappingRule):
                        settings.SETTINGS["paths"]["BASE_PATH"].replace("/", "\\")),
               rdescript="Open Natlink Folder"),
         "refresh debug file":
-            Function(devgen.refresh),
+            R(Function(devgen.refresh), rdescript="Dev: Refreshed Debug File"),
         "Agrippa <filetype> <path>":
             Function(grep_this),
         "run rule complexity test":

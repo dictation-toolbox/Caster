@@ -8,6 +8,7 @@ from caster.lib.dfplus.merge import gfilter
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.actions import AsynchronousAction
 from caster.lib.dfplus.state.short import R, L, S
+from caster.lib.context import AppContext
 
 _NEXUS = control.nexus()
 

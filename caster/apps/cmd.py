@@ -9,14 +9,15 @@ Command-module for git
 """
 #---------------------------------------------------------------------------
 
-from dragonfly import (Grammar, AppContext, MappingRule, Key, Text)
+from dragonfly import (Grammar, MappingRule)
 
 from caster.lib import control
 from caster.lib import settings
 from caster.lib.dfplus.merge import gfilter
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
-
+from caster.lib.context import AppContext
+from caster.lib.actions import (Key, Text)
 
 class CMDRule(MergeRule):
     pronunciation = "command prompt"
