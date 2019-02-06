@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="castervoice",
-    version="0.6.6",
+    version="0.6.7",
     author="synkarius",
     author_email="dconway1985@gmail.com",
     description="Dragonfly-Based Voice Programming Toolkit",
@@ -30,7 +30,9 @@ setuptools.setup(
             "bin/share/bringme.toml.defaults",
             "bin/reboot.bat",
             "bin/reboot_wsr.bat",
-            "lib/dll/tirg-dll.dll"
+            "lib/dll/tirg-dll.dll",
+            "asynch/sikuli/server/xmlrpc_server.sikuli/xmlrpc_server.html",
+            "asynch/sikuli/server/xmlrpc_server.sikuli/xmlrpc_server.py"
         ]
     }
 )
