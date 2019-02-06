@@ -3,13 +3,13 @@
 from __future__ import print_function, unicode_literals
 
 import io
-import toml
 import os
 import re
 import sys
 import traceback
 from __builtin__ import True
 from subprocess import Popen
+import toml
 
 import win32gui
 import win32ui
