@@ -15,18 +15,31 @@ _NEXUS = control.nexus()
 
 
 def launch_IDE():
-    Popen([
-        settings.SETTINGS["paths"]["SIKULI_COMPATIBLE_JAVA_EXE_PATH"], "-jar",
-        settings.SETTINGS["paths"]["SIKULI_IDE_JAR_PATH"]
-    ])
+    ide_path = settings.SETTINGS["paths"]["SIKULI_IDE"]
+    if ide_path == "":
+        print("No 'SIKULI_IDE' path is available. Did you configure it in " + settings.get_filename())
+    else:
+        Popen(["java", "-jar", ide_path])
 
 
 def launch_server():
-    Popen([
-        settings.SETTINGS["paths"]["SIKULI_COMPATIBLE_JAVA_EXE_PATH"], "-jar",
-        settings.SETTINGS["paths"]["SIKULI_SCRIPTS_JAR_PATH"], "-r",
-        settings.SETTINGS["paths"]["SIKULI_SERVER_PATH"]
-    ])
+    runner_path = settings.SETTINGS["paths"]["SIKULI_RUNNER"]
+    if runner_path == "":
+        print("No 'SIKULI_RUNNER' path is available. Did you configure it in " + settings.get_filename())
+    else:
+        command = [] if settings.SETTINGS["sikuli"]["version"] == "1.1.3" else ["java", "-jar"]
+        command.extend([
+            settings.SETTINGS["paths"]["SIKULI_RUNNER"], 
+            "-r", settings.SETTINGS["paths"]["SIKULI_SERVER_PATH"],
+            "--args", settings.SETTINGS["paths"]["SIKULI_SCRIPTS_PATH"]
+        ])
+        Popen(command)
+#     
+#     Popen([
+#         settings.SETTINGS["paths"]["SIKULI_COMPATIBLE_JAVA_EXE_PATH"], "-jar",
+#         settings.SETTINGS["paths"]["SIKULI_SCRIPTS_JAR_PATH"], "-r",
+#         settings.SETTINGS["paths"]["SIKULI_SERVER_PATH"]
+#     ])
 
 
 #

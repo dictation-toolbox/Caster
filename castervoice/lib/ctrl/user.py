@@ -14,15 +14,14 @@ class UserContentManager(object):
     def __init__(self):
         self.rules = self.import_user_dir("get_rule", settings.SETTINGS["paths"]["USER_DIR"] + "/rules")
         self.filters = self.import_user_dir("get_filter", settings.SETTINGS["paths"]["USER_DIR"] + "/filters")
-        self.sikulix = None # TODO
 
     def import_user_dir(self, fn_name, fpath):
         result = []
         
         # check for existence of user dir
         if not os.path.isdir(fpath):
-            msg = "No directory '{}' was found. Did you configure your USER_DIR correctly?"
-            print(msg.format(fpath))
+            msg = "No directory '{}' was found. Did you configure your USER_DIR correctly in {}?"
+            print(msg.format(fpath, settings.get_filename()))
             return result
         path.append(fpath)
         

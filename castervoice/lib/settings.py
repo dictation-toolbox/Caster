@@ -12,11 +12,13 @@ BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "lib", 1)[0].replace
 _USER_DIR = os.path.expanduser("~").replace("\\", "/") + "/.caster"
 _SETTINGS_PATH = _USER_DIR + "/data/settings.toml"
 
-if not os.path.exists(_USER_DIR+"/data"):
-    os.makedirs(_USER_DIR+"/data")
+for directory in ["data", "rules", "filters", "sikuli"]:
+    d = _USER_DIR+"/"+directory
+    if not os.path.exists(d):
+        os.makedirs(d)
 
 # title
-SOFTWARE_VERSION_NUMBER = "0.5.11"
+SOFTWARE_VERSION_NUMBER = "0.6.6"
 SOFTWARE_NAME = "Caster v " + SOFTWARE_VERSION_NUMBER
 HOMUNCULUS_VERSION = "HMC v " + SOFTWARE_VERSION_NUMBER
 HMC_TITLE_RECORDING = " :: Recording Manager"
@@ -39,6 +41,8 @@ HMC_SEPARATOR = "[hmc]"
 
 WSR = False
 
+def get_filename():
+    return _SETTINGS_PATH
 
 def _validate_engine_path():
     '''
@@ -133,10 +137,14 @@ _DEFAULT_SETTINGS = {
         "LOG_PATH": _USER_DIR + "/log.txt",
         "RECORDED_MACROS_PATH": _USER_DIR + "/data/recorded_macros.toml",
         "SAVED_CLIPBOARD_PATH": _USER_DIR + "/data/clipboard.toml",
-        "SIKULI_SCRIPTS_FOLDER_PATH": _USER_DIR + "/sikuli/scripts",
+        "SIKULI_SCRIPTS_PATH": _USER_DIR + "/sikuli",
 
         # REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
         "REMOTE_DEBUGGER_PATH": "",
+
+        # SIKULIX EXECUTABLES
+        "SIKULI_IDE": "",
+        "SIKULI_RUNNER": "",
 
         # EXECUTABLES
         "DOUGLAS_PATH": BASE_PATH + "/asynch/mouse/grids.py",
@@ -148,10 +156,7 @@ _DEFAULT_SETTINGS = {
         "REBOOT_PATH": BASE_PATH + "/bin/reboot.bat",
         "REBOOT_PATH_WSR": BASE_PATH + "/bin/reboot_wsr.bat",
         "SETTINGS_WINDOW_PATH": BASE_PATH + "/asynch/settingswindow.py",
-        "SIKULI_COMPATIBLE_JAVA_EXE_PATH": "",
-        "SIKULI_IDE_JAR_PATH": "",
-        "SIKULI_SCRIPTS_JAR_PATH": "",
-        "SIKULI_SERVER_PATH": _USER_DIR + "/sikuli/scripts/xmlrpc_server.sikuli",
+        "SIKULI_SERVER_PATH": BASE_PATH + "/asynch/sikuli/server/xmlrpc_server.sikuli",
         "WSR_PATH": "C:/Windows/Speech/Common/sapisvr.exe",
 
         # CCR
@@ -195,6 +200,11 @@ _DEFAULT_SETTINGS = {
         "visualstudiocode": True,
         "winword": True,
         "wsr": True,
+    },
+    
+    # sikuli settings
+    "sikuli": {
+        "version": ""
     },
 
     # feature switches
