@@ -41,7 +41,7 @@ At time of writing, Sikuli [1.1.3 is no longer supported](https://raiman.github.
 ```
 - make commands with filename/"exports" convention as per the video
 
-## Video (only still valid for script creation conventions)
+## Script Creation Conventions
 
 This video is out of date in terms of the Sikuli setup and config options. It is still up to date for the filename/exports convention described toward the end of the video though.
 
