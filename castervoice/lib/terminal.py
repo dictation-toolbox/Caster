@@ -1,5 +1,5 @@
 from dragonfly import RunCommand, Function
-from caster.lib.dfplus.state.actions2 import ConfirmAction
+from castervoice.lib.dfplus.state.actions2 import ConfirmAction
 
 class TerminalCommand(RunCommand):
     '''
@@ -18,7 +18,7 @@ class TerminalCommand(RunCommand):
             rdescript="Core: Update"),
     '''
     trusted = False
-    def __init__(self, trusted=False, command=None, process_command=None):
+    def __init__(self, trusted=False, command=None, synchronous=False, process_command=None):
         # Pass arguments to RunCommand.
         RunCommand.__init__(self, command, process_command)
 
