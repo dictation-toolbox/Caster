@@ -2,10 +2,11 @@
 
 import collections
 import io
-import toml
 import os
 import sys
+import toml
 import _winreg
+
 
 SETTINGS = {}
 BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "lib", 1)[0].replace("\\", "/")
