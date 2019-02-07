@@ -154,7 +154,7 @@ class DevelopmentHelp(MappingRule):
             "python": "*.py",
         }),
         Choice("url", {
-            "castervoice": "https://castervoice.readthedocs.io/en/latest/",
+            "caster": "https://caster.readthedocs.io/en/latest/",
             "dragonfly": "https://dragonfly2.readthedocs.io/en/latest/",
         }),
     ]
