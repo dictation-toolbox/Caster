@@ -57,7 +57,7 @@ from castervoice.lib.dfplus.merge import gfilter
 
 
 def change_monitor():
-    if settings.SETTINGS["miscellaneous"]["sikuli_enabled"]:
+    if settings.SETTINGS["sikuli"]["enabled"]:
         Playback([(["monitor", "select"], 0.0)]).execute()
     else:
         print("This command requires SikuliX to be enabled in the settings file")

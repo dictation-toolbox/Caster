@@ -18,10 +18,10 @@ At time of writing, Sikuli [1.1.3 is no longer supported](https://raiman.github.
 - run it, choose option 1
 - fill out settings:
 ```
-    paths.SIKULI_IDE:    full/path/to/sikulix.jar
-    paths.SIKULI_RUNNER: full/path/to/runsikulix.cmd
-    sikuli.version: 1.1.3
-    miscellaneous.sikuli_enabled: true
+    paths.SIKULI_IDE = "full/path/to/sikulix.jar"
+    paths.SIKULI_RUNNER = "full/path/to/runsikulix.cmd"
+    sikuli.version = "1.1.3"
+    sikuli.enabled: true
 ```
 - make commands with filename/"exports" convention as per the video
 
@@ -34,10 +34,10 @@ At time of writing, Sikuli [1.1.3 is no longer supported](https://raiman.github.
 - place the two jars next to each other
 - fill out settings:
 ```
-    paths.SIKULI_IDE: full/path/to/sikulix.jar
-    paths.SIKULI_RUNNER: full/path/to/sikulix.jar
-    sikuli.version: 1.1.4
-    miscellaneous.sikuli_enabled: True
+    paths.SIKULI_IDE = "full/path/to/sikulix.jar"
+    paths.SIKULI_RUNNER = "full/path/to/sikulix.jar"
+    sikuli.version = "1.1.4"
+    sikuli.enabled = true
 ```
 - make commands with filename/"exports" convention as per the video
 

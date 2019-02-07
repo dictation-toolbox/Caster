@@ -18,7 +18,7 @@ for directory in ["data", "rules", "filters", "sikuli"]:
         os.makedirs(d)
 
 # title
-SOFTWARE_VERSION_NUMBER = "0.6.6"
+SOFTWARE_VERSION_NUMBER = "0.6.8"
 SOFTWARE_NAME = "Caster v " + SOFTWARE_VERSION_NUMBER
 HOMUNCULUS_VERSION = "HMC v " + SOFTWARE_VERSION_NUMBER
 HMC_TITLE_RECORDING = " :: Recording Manager"
@@ -204,6 +204,7 @@ _DEFAULT_SETTINGS = {
     
     # sikuli settings
     "sikuli": {
+        "enabled": False,
         "version": ""
     },
 
@@ -221,7 +222,6 @@ _DEFAULT_SETTINGS = {
     # miscellaneous section
     "miscellaneous": {
         "dev_commands": False,
-        "sikuli_enabled": False,
         "keypress_wait": 50,  # milliseconds
         "max_ccr_repetitions": 16,
         "atom_palette_wait": 30,  # hundredths of a second

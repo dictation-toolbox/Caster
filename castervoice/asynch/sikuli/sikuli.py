@@ -125,5 +125,5 @@ def refresh(_NEXUS):
         control.nexus().timer.add_callback(server_proxy_timer_fn, seconds5)
 
 
-if settings.SETTINGS["miscellaneous"]["sikuli_enabled"]:
+if settings.SETTINGS["sikuli"]["enabled"]:
     refresh(_NEXUS)
