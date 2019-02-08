@@ -19,7 +19,7 @@ for directory in ["data", "rules", "filters", "sikuli"]:
         os.makedirs(d)
 
 # title
-SOFTWARE_VERSION_NUMBER = "0.6.8"
+SOFTWARE_VERSION_NUMBER = "0.6.9"
 SOFTWARE_NAME = "Caster v " + SOFTWARE_VERSION_NUMBER
 HOMUNCULUS_VERSION = "HMC v " + SOFTWARE_VERSION_NUMBER
 HMC_TITLE_RECORDING = " :: Recording Manager"
