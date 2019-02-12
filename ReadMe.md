@@ -27,7 +27,7 @@
 
 # Feature List
 
-- [Easy Setup](castervoice/doc/Installation.md) and Configurable Settings
+- [Easy Setup](castervoice/doc/Installation.md) and Configurable Settings in C:\Users\%USERNAME%\.caster
 
 - Customize Commands aka `Specs` and their actions via [simplified filter rules](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/CCR/#rule-filters-simplified) and [filter rules](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/examples/rules/Caster%20Rules/#rule-filters)([code](https://github.com/dictation-toolbox/caster/tree/master/caster/user/filters/examples)).
 
