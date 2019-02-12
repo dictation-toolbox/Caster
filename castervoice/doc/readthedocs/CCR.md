@@ -13,7 +13,7 @@
   - [Other Features of MergeRule](#other-features-of-mergerule)
   - [How to Register Caster CCR Rules](#how-to-register-caster-ccr-rules)
 
----
+------
 
 ## Introduction
 
@@ -43,7 +43,7 @@ We'll go into more detail on the differences between these rules elsewhere. For 
 
 ### How to Add and Modify Rules
 
-If you'd like to add rules for new languages or popular libraries for languages, you should create them in the `lib/ccr/` folder. If you want to add a custom command set, say, for work, you should put it in the `user/rules/` folder. This folder is ignored by Git, so you won't upload it if/when you commit other changes.
+If you'd like to add rules for new languages or popular libraries for languages, you should create them in the `lib/ccr/` folder. If you want to add a custom command set, say, for work, you should put it in the `C:\Users\%USERNAME%\.caster\rules` folder. This folder is ignored by Git, so you won't upload it if/when you commit other changes.
 
 If you want to personalize existing command sets, you can use rule filters. Rule filters let you instruct Caster as to how it should modify command sets either at boot or at runtime when command sets change (for example, when you say `enable Python`).
 
@@ -57,17 +57,17 @@ There are nine points at which Caster builds or rebuilds its CCR command sets:
 
 Let's go through these.
 
-**Boot Time**: At boot, Caster checks `bin/data/ccr.toml` to see what you have enabled. It then takes all global rules (MergeRules which do not have an AppContext) and combines (1) them, one by one. At each intersection of two rules (each "merge"), you have the opportunity to change how the merge happens via rule filters. Caster then checks active SelfModifyingRules for compatibility both against the base (global rules) rule (2) and against the other active SelfModifyingRules (3). Finally, when the base + selfmodifyingrules is done merging, one copy of it is made for each app rule (MergeRule with an AppContext) and the copy is merged with a copy of the app rule. The original base rule is also given a context which is the inverse of all of the other contexts. That is, the base rule will run everywhere except in any of the app rules because the app rules each have their own copy of the base rule merged into them.
+**Boot Time**: At boot, Caster checks `.caster\data\ccr.toml` to see what you have enabled. It then takes all global rules (MergeRules which do not have an AppContext) and combines (1) them, one by one. At each intersection of two rules (each "merge"), you have the opportunity to change how the merge happens via rule filters. Caster then checks active SelfModifyingRules for compatibility both against the base (global rules) rule (2) and against the other active SelfModifyingRules (3). Finally, when the base + selfmodifyingrules is done merging, one copy of it is made for each app rule (MergeRule with an AppContext) and the copy is merged with a copy of the app rule. The original base rule is also given a context which is the inverse of all of the other contexts. That is, the base rule will run everywhere except in any of the app rules because the app rules each have their own copy of the base rule merged into them.
 
 **Run Time**: The run time merge process is basically the same as the boot time merge process except for the creation of the base rule. Instead of creating it from scratch, the current base rule is used. If the user is enabling a command set, that command set gets compatibility-checked and then merged in (possibly knocking one or more others out unless rule filters specify otherwise). If the user is disabling a command set, that command set's commands are removed from the base rule and then the base rule is rebuilt (again, doing merges at each step of the rebuilding process). Then SelfModifyingRules, then app rules, just as at Boot.
 
 **SelfModifyingRule Change Time**: If a SelfModifyingRule ("SMR") changes its command set, the base rule will remain untouched, but it will still be checked against the new SMR command set, and the new SMR command set will be checked against other active SMR command sets.
 
-What rule filters do is expose pairs of rules to the user, allowing the user to change the rules' mapping as they see fit, and/or enable/disable compatibility checking which follows the rule filters. For examples of rule filter, please check out the `user/filters/examples` folder.
+What rule filters do is expose pairs of rules to the user, allowing the user to change the rules' mapping as they see fit, and/or enable/disable compatibility checking which follows the rule filters. 
 
 #### Rule Filters Simplified
 
-Though rule filters are very powerful, setting one up for the first time is not trivial. Therefore, a simplified method for common use cases has been created. Create the file `/caster/user/words.txt` and it will be read at boot time, and a rule filter created from it and added to Caster's list of rule filters. The following is an example `words.txt`:
+Though rule filters are very powerful, setting one up for the first time is not trivial. Therefore, a simplified method for common use cases has been created. Create the file `.caster\data\words.txt` and it will be read at boot time, and a rule filter created from it and added to Caster's list of rule filters. The following is an example `words.txt`:
 
 ```
 <<<SPEC>>>
