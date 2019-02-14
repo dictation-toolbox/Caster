@@ -16,7 +16,7 @@ def find_version(*file_paths):
     raise RuntimeError("Unable to find version string.")
 
 
-def _post_install():
+def _post_install(dir):
     from post_setup import main
     main()
 
