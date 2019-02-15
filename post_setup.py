@@ -19,12 +19,12 @@ def finddirectory():
 
 
 def download():
-    response = urllib2.urlopen('https://raw.githubusercontent.com/dictation-toolbox/caster/develop/_caster.py')
+    response = urllib2.urlopen('https://raw.githubusercontent.com/dictation-toolbox/caster/develop/_caster.py', timeout=10)
     html = response.read()
     directory = finddirectory()
-    filename = directory + '\\_caster.py'
-    f = open(filename, 'w')
-    f.write(html)
+    filename = os.path.join(directory, '_caster.py')
+    with open(filename, 'w') as f:
+        f.write(html)
 
 
 def main():
