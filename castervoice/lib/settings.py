@@ -202,6 +202,13 @@ _DEFAULT_SETTINGS = {
         "winword": True,
         "wsr": True,
     },
+
+    # python settings
+    "python": {
+        "automatic_settings": True,  # Set to false to manually set "version" and "pip" below.
+        "version": "python",  # Depending Python setup (python, python2, python2.7, py, py -2)
+        "pip": "pip"  # Depending on PIP setup (pip ,pip2, pip2.7)
+    },
     
     # sikuli settings
     "sikuli": {
