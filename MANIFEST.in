@@ -1,0 +1,9 @@
+global-exclude *.pyc
+include ReadMe.md
+include castervoice/bin/data/configdebug.txt
+include castervoice/bin/share/bringme.toml.defaults
+include castervoice/bin/reboot.bat
+include castervoice/bin/reboot_wsr.bat
+include castervoice/lib/dll/tirg-dll.dll
+include castervoice/asynch/sikuli/server/xmlrpc_server.sikuli/xmlrpc_server.html
+include castervoice/asynch/sikuli/server/xmlrpc_server.sikuli/xmlrpc_server.py
