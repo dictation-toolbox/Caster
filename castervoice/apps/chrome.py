@@ -9,7 +9,7 @@ Command-module for Chrome and Firefox
 """
 #---------------------------------------------------------------------------
 
-from dragonfly import (Grammar, Dictation, Repeat)
+from dragonfly import (Grammar, Context, AppContext, Dictation, Key, Text, Repeat, Function, Choice)
 
 from castervoice.lib import control
 from castervoice.lib import settings
@@ -29,6 +29,8 @@ class ChromeRule(MergeRule):
         "new tab [<n>]":                R(Key("c-t"), rdescript="Browser: New Tab") * Repeat(extra="n"),
         "reopen tab [<n>]":             R(Key("cs-t"), rdescript="Browser: Reopen Tab") * Repeat(extra="n"),
         "close all tabs":               R(Key("cs-w"), rdescript="Browser: Close All Tabs"),
+        "nab [<n>]":                    R(Key("c-tab")) * Repeat(extra="n"),
+        "lab [<n>]":                    R(Key("cs-tab")) * Repeat(extra="n"),
 
         "go back [<n>]":                R(Key("a-left/20"), rdescript="Browser: Navigate History Backward") * Repeat(extra="n"),
         "go forward [<n>]":             R(Key("a-right/20"), rdescript="Browser: Navigate History Forward") * Repeat(extra="n"),
@@ -64,12 +66,55 @@ class ChromeRule(MergeRule):
         "step out":                     R(Key("s-f11"), rdescript="Browser: Step Out"),
 
         "IRC identify":                 R(Text("/msg NickServ identify PASSWORD"), rdescript="IRC Chat Channel Identify"),
+        "google that": R(Key("c-c, c-t, c-v, enter"), rdescript="googles highlighted text"),
+        # "google clipboard": R(Key("c-t, c-v, enter"), rdescript="googles clipboard text"),
+        "duplicate tab":R(Key("a-d,a-c,c-t/15,c-v/15, enter")),
+        "duplicate window":R(Key("a-d,a-c,c-n/15,c-v/15, enter")),
+        "extensions": R(Key("a-f/20, l, e/15, enter")),
+        
+        #Todo (actually these two should be global commands)
+        # google <dictation> 
+        # duck go <dictation> # duck go allows you to go to navigate the result links using the arrow keys
+            # thus you can make a command to do the following: search dictation in duck duck go and then press down enter
+            #  to select the first link. very useful in my experience using this in other utilities (I don't know how to make it here)
+
+
+# click by voice chrome extension commands
+        "<numbers> <dictation>": R(Key("cs-space/30")+Text("%(numbers)d:%(click_by_voice_options)s")
+            + Key("enter/30") + Text("%(dictation)s"), 
+            rdescript="input dictation into numbered text field"),
+        "go <numbers> <dictation>": R(Key("cs-space/30")+Text("%(numbers)d:%(click_by_voice_options)s")
+            + Key("enter/30") + Text("%(dictation)s") + Key("enter"), 
+            rdescript="input dictation into numbered text field then press enter"),
+        "next <numbers> <dictation>": R(Key("cs-space/30")+Text("%(numbers)d:%(click_by_voice_options)s")
+            + Key("enter/30") + Text("%(dictation)s") + Key("tab"), 
+            rdescript="input dictation into numbered text field then press tab"),
+        "<numbers> [<click_by_voice_options>]": R(Key("cs-space/30")
+            + Text("%(numbers)d:%(click_by_voice_options)s") + Key("enter"), 
+            rdescript="click link with click by voice options"),
+        "hide hints": R(Key("cs-space/30")+Text(":-")+Key("enter")),
+        "show hints": R(Key("cs-space/30")+Text(":+")+Key("enter")),
+
+
+
         }
     extras = [
-        Dictation("dict"),
+        Choice("click_by_voice_options", {
+            "go": "f",
+            "click": "c",
+            "push": "b",
+            "tab": "t",
+            "window": "w",
+            "hover": "h",
+            "link": "k",
+            "copy": "s",
+        }),
+        Dictation("dictation"),
         IntegerRefST("n", 1, 10),
+        IntegerRefST("m", 1, 10),
+        IntegerRefST("numbers", 1, 1000),
     ]
-    defaults = {"n": 1, "dict": "nothing"}
+    defaults = {"n": 1, "dict": "", "click_by_voice_options": "c"}
 
 
 #---------------------------------------------------------------------------
