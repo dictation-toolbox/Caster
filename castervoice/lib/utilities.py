@@ -31,6 +31,24 @@ finally:
 FILENAME_PATTERN = re.compile(r"[/\\]([\w_ ]+\.[\w]+)")
 
 
+# https://github.com/reckoner/pyVirtualDesktopAccessor
+# provides a 32-bit python implementation (this one).
+# there is a 64-bit implementation at
+# https://github.com/Ciantic/VirtualDesktopAccessor
+from ctypes import cdll
+from win32gui import GetForegroundWindow
+vda = cdll.LoadLibrary(BASE_PATH + "/castervoice/bin/VirtualDesktopAccessor.dll")
+
+def move_current_window_to_desktop(n=0, follow=False):
+    wndh = GetForegroundWindow()
+    vda.MoveWindowToDesktopNumber(wndh, n-1)
+    if follow:
+        vda.GoToDesktopNumber(n-1)
+
+def go_to_desktop_number(n):
+    return vda.GoToDesktopNumber(n-1)
+
+
 def window_exists(classname, windowname):
     try:
         win32ui.FindWindow(classname, windowname)
