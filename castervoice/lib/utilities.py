@@ -37,7 +37,10 @@ FILENAME_PATTERN = re.compile(r"[/\\]([\w_ ]+\.[\w]+)")
 # https://github.com/Ciantic/VirtualDesktopAccessor
 from ctypes import cdll
 from win32gui import GetForegroundWindow
-vda = cdll.LoadLibrary(BASE_PATH + "/castervoice/bin/VirtualDesktopAccessor.dll")
+try:
+    vda = cdll.LoadLibrary(BASE_PATH + "/castervoice/bin/VirtualDesktopAccessor.dll")
+except Exception:
+    simple_log(True)
 
 def move_current_window_to_desktop(n=0, follow=False):
     wndh = GetForegroundWindow()
