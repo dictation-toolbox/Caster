@@ -372,11 +372,14 @@ Capitalisation and spacing can be combined into a single command. Whether combin
 \command{move window}{move with arrow keys}
 \command{window left}{snap window to left}
 \command{window right}{snap window to right}
-\command{show work}{win + tab}
-\command{new work}{ctrl + win + d}
-\command{close work}{ctrl + win + F4}
-\command{previous work \footnotemark[1]}{ctrl + win + left}
-\command{next work \footnotemark[1]}{ctrl + win + right}
+\command{show work}{show active workspaces}
+\command{new work}{create a new workspace}
+\command{close work}{close the current workspace}
+\command{previous work \footnotemark[1]}{go to the previous workspace}
+\command{next work \footnotemark[1]}{go to the next workspace}
+\command{go work <n>}{go to workspace number n}
+\command{send work <n>}{send the current window to workspace n}
+\command{move work <n>}{move the current window to workspace n}
 
 \footnotetext[1]{Takes an optional number parameter for repetition}
 %----------------------------------------------------------------------------------------
@@ -407,16 +410,16 @@ Capitalisation and spacing can be combined into a single command. Whether combin
 
 %----------------------------------------------------------------------------------------
 
-\sectiontitle{Dragon}
-
-\command{number/spell/dictation/normal/command mode}{switch dragon modes}
-\command{reboot dragon}{}
-
 \end{minipage}
 }
 
 \put(200, 200){
 \begin{minipage}[t]{85mm}
+
+\sectiontitle{Dragon}
+
+\command{number/spell/dictation/normal/command mode}{switch dragon modes}
+\command{reboot dragon}{}
 
 \sectiontitle{Example command chains}
 
