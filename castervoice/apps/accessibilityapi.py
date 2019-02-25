@@ -7,21 +7,21 @@ WIP - Included as a App As it only works with certain applications.
 """
 #---------------------------------------------------------------------------
 
-from dragonfly import (Grammar, Dictation, Repeat)
+from dragonfly import (Grammar, Dictation, Function, Compound, Alternative, Literal, CursorPosition, TextQuery)
+from dragonfly import get_accessibility_controller
 
 from castervoice.lib import control
 from castervoice.lib import settings
-from castervoice.lib.actions import Key, Mouse
 from castervoice.lib.context import AppContext
-from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
 
 accessibility = get_accessibility_controller()
 
 class AccessibilityRule(MergeRule):
     pronunciation = "notepad plus plus"
+
+    mapping = {
 
 # Accessibility API Mappings
     "go before <text_position_query>": Function(
@@ -76,17 +76,18 @@ class AccessibilityRule(MergeRule):
         end_relative_phrase=str(extras["relative_phrase"])))
     ]
 
+    defaults = {
 
-#---------------------------------------------------------------------------
+    }
 
-context = AppContext(executable="chrome") \ 
+context = AppContext(executable="chrome") \
     | AppContext(executable="firefox") \
     | AppContext(executable="gitter") \
     | AppContext(executable="discord")
 
 grammar = Grammar("AccessibilityAPI", context=context)
 
-if settings.SETTINGS["apps"]["AccessibilityAPI"]:
+if settings.SETTINGS["apps"]["accessibilityapi"]:
     if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
         control.nexus().merger.add_global_rule(AccessibilityRule())
     else:

@@ -263,6 +263,7 @@ _DEFAULT_SETTINGS = {
         "visualstudiocode": True,
         "winword": True,
         "wsr": True,
+        "accessibilityapi": True,
     },
 
     # python settings
