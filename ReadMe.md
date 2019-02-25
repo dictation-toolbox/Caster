@@ -8,6 +8,7 @@
   - [Dictating maths into scientific notebook](https://www.youtube.com/watch?v=oq8EoPu0cGY&t=3s) and [Dictating math by voice using Caster](https://www.youtube.com/watch?v=z-iHvPmjcas)
 - [Instructions for installing](castervoice/doc/Installation.md)
 - Documentation on Caster [[ReadTheDocs](http://caster.readthedocs.org/en/latest/README/)] [[YouTube](https://www.youtube.com/channel/UC2qZzmCj_5ZKkTa3i9X1LCg)] and Dragonfly [[ReadTheDocs](https://dragonfly2.readthedocs.io/en/latest/)] 
+- [How to Speak Code](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/examples/speaking/examples1/) - Example Document
 - Caster Command Reference Guides 
   - [Caster](CasterQuickReference.pdf) - Universal navigation and editing - These commands are active all the time, and provide input commands for letters, numbers and punctuation, as well as the ability to easily manipulate windows and text. 
     - `window right` moves the active window to the right-hand side of the screen.
@@ -22,6 +23,7 @@
     - `print to console` - `print()`
     - `open file` -  `open('filename', 'r') as f:`
 - [Contributing / How can I help?](https://github.com/synkarius/caster/blob/master/caster/doc/CONTRIBUTING.md)
+- [Making your own Dragonfly and Caster rules](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/examples/Rule%20Construction/)
 - Need support or just curious? Join our community at [![Join the chat at https://gitter.im/synkarius/caster](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/synkarius/caster?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) and [Discord](https://discord.gg/9eAAsCJ) for voice chat.
 - The [Voice Index](castervoice/doc/readthedocs/Voice_Index.md) is a curated source of information: Videos, Blogs, Repositories, Presentations, etc related to Dragonfly, voice programming, and accessibility.
 
