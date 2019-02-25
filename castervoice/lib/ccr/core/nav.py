@@ -130,6 +130,9 @@ class NavigationNon(MappingRule):
             R(Key("wc-d"), rdescript="create workspace"),
         "close work [space]":
             R(Key("wc-f4"), rdescript="So close workspace"),
+        "close all work [spaces]":
+            R(Function(utilities.close_all_workspaces),
+                rdescript="close all work spaces"),
         "next work [space] [<n>]":
             R(Key("wc-right"), rdescript="next workspace")*Repeat(extra="n"),
         "(previous | prior) work [space] [<n>]":

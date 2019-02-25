@@ -30,27 +30,33 @@ finally:
 # checked to see when a new file name had appeared
 FILENAME_PATTERN = re.compile(r"[/\\]([\w_ ]+\.[\w]+)")
 
-
-# https://github.com/reckoner/pyVirtualDesktopAccessor
-# provides a 32-bit python implementation (this one).
-# there is a 64-bit implementation at
-# https://github.com/Ciantic/VirtualDesktopAccessor
 from ctypes import cdll
 from win32gui import GetForegroundWindow
-try:
+
+def load_vda():
+    # https://github.com/reckoner/pyVirtualDesktopAccessor
+    # provides a 32-bit python implementation (this one).
+    # there is a 64-bit implementation at
+    # https://github.com/Ciantic/VirtualDesktopAccessor
     vda = cdll.LoadLibrary(BASE_PATH + "/castervoice/bin/VirtualDesktopAccessor.dll")
-except Exception:
-    simple_log(True)
+    return vda
 
 def move_current_window_to_desktop(n=0, follow=False):
+    vda = load_vda()
     wndh = GetForegroundWindow()
     vda.MoveWindowToDesktopNumber(wndh, n-1)
     if follow:
         vda.GoToDesktopNumber(n-1)
 
 def go_to_desktop_number(n):
+    vda = load_vda()
     return vda.GoToDesktopNumber(n-1)
 
+def close_all_workspaces():
+    vda = load_vda()
+    total = vda.GetDesktopCount()
+    go_to_desktop_number(total)
+    Key("wc-f4/10:" + str(total-1)).execute()
 
 def window_exists(classname, windowname):
     try:
