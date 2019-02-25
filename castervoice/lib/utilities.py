@@ -18,6 +18,7 @@ from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,
     HKEY_CURRENT_USER, OpenKey, QueryValueEx)
 
 from dragonfly.windows.window import Window
+from dragonfly import Key
 
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0]
