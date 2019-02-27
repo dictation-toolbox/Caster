@@ -6,6 +6,7 @@ import os
 import sys
 import toml
 import _winreg
+import version
 
 
 SETTINGS = {}
@@ -19,7 +20,7 @@ for directory in ["data", "rules", "filters", "sikuli"]:
         os.makedirs(d)
 
 # title
-SOFTWARE_VERSION_NUMBER = "0.6.10"
+SOFTWARE_VERSION_NUMBER = version.__version__
 SOFTWARE_NAME = "Caster v " + SOFTWARE_VERSION_NUMBER
 HOMUNCULUS_VERSION = "HMC v " + SOFTWARE_VERSION_NUMBER
 HMC_TITLE_RECORDING = " :: Recording Manager"
