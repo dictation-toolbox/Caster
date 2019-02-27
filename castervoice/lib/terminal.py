@@ -14,13 +14,15 @@ class TerminalCommand(RunCommand):
 
     Example 2 - A synchronous command
     "update caster test":
-        R(RunCommand('pip install --upgrade castervoice', synchronous=True),
-            rdescript="Core: Update"),
+        R(TerminalCommand('pip install --upgrade castervoice', synchronous=True),
+          rdescript="Core: Update"),
+
     '''
     trusted = False
-    def __init__(self, trusted=False, command=None, synchronous=False, process_command=None):
+    def __init__(self, command=None, process_command=None,
+                 synchronous=False, trusted=False):
         # Pass arguments to RunCommand.
-        RunCommand.__init__(self, command, process_command)
+        RunCommand.__init__(self, command, process_command, synchronous)
 
         # Allow setting 'trusted' at the class level.
         if trusted:

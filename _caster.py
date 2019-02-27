@@ -4,6 +4,7 @@ main Caster module
 Created on Jun 29, 2014
 '''
 
+import os
 import logging
 logging.basicConfig()
 
@@ -74,43 +75,72 @@ def internetcheck(host="1.1.1.1", port=53, timeout=3):
         print (error.message)
         return False
 
-class CasterCheck(TerminalCommand): 
-    command = "pip search castervoice"
+
+# Find the pip.exe script for Python 2.7. Fallback on pip.exe.
+PIP_PATH = "pip.exe"
+python_scripts = os.path.join("Python27", "Scripts")
+for path in os.environ["PATH"].split(";"):
+    pip = os.path.join(path, "pip.exe")
+    if path.endswith(python_scripts) and os.path.isfile(pip):
+        PIP_PATH = pip
+        break
+
+
+class DependencyCheck(TerminalCommand):
     trusted = True  # Command will execute silently without ConfirmAction
+    synchronous = True
 
     def process_command(self, proc):
         update = False
         for line in iter(proc.stdout.readline, b''):
             if "INSTALLED" and "latest" in line:
                 update = True
-        if update is True:
-            print ("\nCaster: is up-to-date\n")
+
+        return update
+
+
+class CasterCheck(DependencyCheck):
+    command = [PIP_PATH, "search", "castervoice"]
+
+    def process_command(self, proc):
+        if DependencyCheck.process_command(self, proc):
+            print ("Caster: Caster is up-to-date")
         else:
-            print ("\nCaster: Say 'Update Caster' to update.\n")
+            print ("Caster: Say 'Update Caster' to update.")
 
-class DragonflyCheck(TerminalCommand):
-    command = "pip search dragonfly2"
-    trusted = True
+
+class DragonflyCheck(DependencyCheck):
+    command = [PIP_PATH, "search", "dragonfly2"]
 
     def process_command(self, proc):
-        update = False
-        for line in iter(proc.stdout.readline, b''):
-            if "INSTALLED" and "latest" in line:
-                update = True
-        if update is True:
+        if DependencyCheck.process_command(self, proc):
             print ("Caster: Dragonfly is up-to-date")
         else:
             print ("Caster: Say 'Update Dragonfly' to update.")
 
-if settings.SETTINGS["miscellaneous"]["online_mode"] is True:
-    if internetcheck() is True:
+
+class DependencyUpdate(RunCommand):
+    synchronous = True
+
+    def process_command(self, proc):
+        # Process the output from the command.
+        RunCommand.process_command(self, proc)
+
+        # Only reboot dragon if the command was successful and there is an
+        # internet connection; 'pip install ...' may exit successfully even
+        # if there were connection errors.
+        if proc.wait() == 0 and internetcheck():
+            Playback([(["reboot", "dragon"], 0.0)]).execute()
+
+
+if settings.SETTINGS["miscellaneous"]["online_mode"]:
+    if internetcheck():
         CasterCheck().execute()
         DragonflyCheck().execute()
     else:
         print("\nCaster: Network off-line check network connection\n")
 else:
     print("\nCaster: Off-line mode is enabled\n")
-
 
 
 def change_monitor():
@@ -138,10 +168,10 @@ class MainRule(MergeRule):
     mapping = {
         # update management
         "update caster":
-            RunCommand('pip install --upgrade castervoice', synchronous=True) + R(Playback([(["reboot", "dragon"], 0.0)]),
+            R(DependencyUpdate([PIP_PATH, "install", "--upgrade", "castervoice"]),
               rdescript="Core: Update and restart Caster"),
         "update dragonfly":
-            RunCommand('pip install --upgrade dragonfly2', synchronous=True) + R(Playback([(["reboot", "dragon"], 0.0)]),
+            R(DependencyUpdate([PIP_PATH, "install", "--upgrade", "dragonfly2"]),
               rdescript="Core: Update dragonfly2 and restart Caster"),
         # hardware management
         "volume <volume_mode> [<n>]":
