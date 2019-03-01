@@ -17,11 +17,13 @@ if not CONFIG:
 if not CONFIG:
     # logger.warn("Could not load bringme defaults")
     print("Could not load bringme defaults")
-    
+
+
 def refresh():
     bring_rule.refresh()
 
-#module functions
+
+# module functions
 def bring_it(desired_item):
     '''
     Currently simply invoke os.startfile. New thread keeps Dragon from crashing. 
@@ -34,8 +36,9 @@ def bring_it(desired_item):
         subprocess.Popen([r'C:\Windows\explorer.exe', item])
     elif item_type == 'program':
         subprocess.Popen(item)
-    else:    
+    else:
         threading.Thread(target=os.startfile, args=(item,)).start()
+
 
 def bring_add(launch, key):
     '''
@@ -53,7 +56,7 @@ def bring_add(launch, key):
         Key("a-d/5").execute()
         fail, path = context.read_selected_without_altering_clipboard()
         if fail == 2:
-            #FIXME
+            # FIXME
             time.sleep(0.1)
             _, path = context.read_selected_without_altering_clipboard()
             if not path:
@@ -61,11 +64,12 @@ def bring_add(launch, key):
                 print("Selection for bring me not found ")
         Key("escape").execute()
     if not path:
-        #logger.warn('Cannot add %s as %s to bringme: cannot get path', launch, key)
+        # logger.warn('Cannot add %s as %s to bringme: cannot get path', launch, key)
         return
     CONFIG[launch][key] = path
     utilities.save_toml_file(CONFIG, settings.SETTINGS["paths"]["BRINGME_PATH"])
     refresh()
+
 
 def bring_remove(key):
     '''
@@ -78,7 +82,8 @@ def bring_remove(key):
             utilities.save_toml_file(CONFIG, settings.SETTINGS["paths"]["BRINGME_PATH"])
             refresh()
             return
-        
+
+
 def bring_restore():
     '''
     Restore bring me list to defaults
@@ -87,31 +92,34 @@ def bring_restore():
     CONFIG = utilities.load_toml_file(settings.SETTINGS["paths"]["BRINGME_DEFAULTS_PATH"])
     refresh()
 
+
 def _rebuild_items():
-    #logger.debug('Bring me rebuilding extras')
-    return {key: (os.path.expandvars(value), header) for header, section in CONFIG.iteritems() 
-        for key, value in section.iteritems()}
+    # logger.debug('Bring me rebuilding extras')
+    return {key: (os.path.expandvars(value), header) for header, section in CONFIG.iteritems()
+            for key, value in section.iteritems()}
+
 
 class BringRule(SelfModifyingRule):
-
     pronunciation = "bring me"
-    
+
     def refresh(self, *args):
-        #logger.debug('Bring me refresh')
+        # logger.debug('Bring me refresh')
         self.extras[0] = Choice('desired_item', _rebuild_items())
         self.reset(self.mapping)
 
     mapping = {
-       "bring me <desired_item>":
+        "bring me <desired_item>":
             R(Function(bring_it), rdescript="BringMe: Launch preconfigured program, folder or website"),
-       "<launch> to bring me as <key>":
-            R(Function(bring_add, extra={"launch", "key"}), rdescript="BringMe: Add program, folder or website to the bring me list"),
-       "remove <key> from bring me":
-            R(Function(bring_remove, extra="key"), rdescript="BringMe: Remove program, folder or website from the bring me list"),
-       "restore bring me defaults":
+        "<launch> to bring me as <key>":
+            R(Function(bring_add, extra={"launch", "key"}),
+              rdescript="BringMe: Add program, folder or website to the bring me list"),
+        "remove <key> from bring me":
+            R(Function(bring_remove, extra="key"),
+              rdescript="BringMe: Remove program, folder or website from the bring me list"),
+        "restore bring me defaults":
             R(Function(bring_restore), rdescript="BringMe: Delete bring me list and put defaults in its place"),
     }
-    
+
     extras = [
         Choice("desired_item", _rebuild_items()),
         Choice("launch", {
@@ -123,13 +131,13 @@ class BringRule(SelfModifyingRule):
         Dictation("key"),
     ]
 
-    defaults = { 
-    'desired_item': ('', ""), 
-    'launch': 'program', 
-    'key': ''
+    defaults = {
+        'desired_item': ('', ""),
+        'launch': 'program',
+        'key': ''
     }
 
-bring_rule = BringRule()
-#Does not work
-#control.nexus().merger.add_selfmodrule(bring_rule)
 
+bring_rule = BringRule()
+# Does not work
+# control.nexus().merger.add_selfmodrule(bring_rule)
