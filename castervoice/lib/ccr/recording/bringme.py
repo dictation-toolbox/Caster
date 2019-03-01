@@ -103,13 +103,13 @@ class BringRule(SelfModifyingRule):
 
     mapping = {
        "bring me <desired_item>":
-            R(Function(bring_it), rdescript="Launch preconfigured program, folder or website"),
+            R(Function(bring_it), rdescript="BringMe: Launch preconfigured program, folder or website"),
        "<launch> to bring me as <key>":
-            R(Function(bring_add, extra={"launch", "key"}), rdescript="Add program, folder or website to the bring me list"),
+            R(Function(bring_add, extra={"launch", "key"}), rdescript="BringMe: Add program, folder or website to the bring me list"),
        "remove <key> from bring me":
-            R(Function(bring_remove, extra="key"), rdescript="Remove program, folder or website from the bring me list"),
+            R(Function(bring_remove, extra="key"), rdescript="BringMe: Remove program, folder or website from the bring me list"),
        "restore bring me defaults":
-            R(Function(bring_restore), rdescript="Delete bring me list and put defaults in its place"),
+            R(Function(bring_restore), rdescript="BringMe: Delete bring me list and put defaults in its place"),
     }
     
     extras = [
@@ -123,7 +123,11 @@ class BringRule(SelfModifyingRule):
         Dictation("key"),
     ]
 
-    defaults = { 'desired_item': ('', ""), 'launch': 'program', 'key': ''}
+    defaults = { 
+    'desired_item': ('', ""), 
+    'launch': 'program', 
+    'key': ''
+    }
 
 bring_rule = BringRule()
 #Does not work

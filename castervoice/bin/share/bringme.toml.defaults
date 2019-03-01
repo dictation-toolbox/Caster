@@ -1,14 +1,29 @@
 [website]
-"Caster" = "https://caster.readthedocs.io/en/latest/"
-"Dragonfly" = "https://dragonfly2.readthedocs.io/en/latest/"
-"Google" = "https://www.google.com"
+dragonfly = "https://dragonfly2.readthedocs.io/en/latest/"
+"dragonfly gitter" = "https://gitter.im/sphinx-dragonfly"
+caster = "https://caster.readthedocs.io/en/latest/"
+google = "https://www.google.com"
+"caster gitter" = "https://gitter.im/synkarius/caster"
+"caster discord" = "https://discord.gg/9eAAsCJr"
 
 [folder]
-"libraries" = "%USERPROFILE%"
-"my documents" = "%USERPROFILE%\\Documents"
+libraries = "%USERPROFILE%"
 "my pictures" = "%USERPROFILE%\\Pictures"
+"my documents" = "%USERPROFILE%\\Documents"
+"caster user" = "%USERPROFILE%\\.caster"
+filters = "%USERPROFILE%\\.caster\\filters"
+rules = "%USERPROFILE%\\.caster\\rules"
+data = "%USERPROFILE%\\.caster\\data"
+"sick you lee" = "%USERPROFILE%\\.caster\\sikuli"
 
 [program]
-"notepad" = "C:\\Windows\\notepad.exe"
+notepad = "C:\\Windows\\notepad.exe"
 
 [file]
+"open settings" = "%USERPROFILE%\\.caster\\data\\settings.toml"
+"open alias" = "%USERPROFILE%\\.caster\\data\\aliases.toml"
+"open bring me" = "%USERPROFILE%\\.caster\\data\\bringme.toml"
+"open ccr" = "%USERPROFILE%\\.caster\\data\\ccr.toml"
+"open config debug" = "%USERPROFILE%\\.caster\\data\\configdebug.txt"
+"open words" = "%USERPROFILE%\\.caster\\data\\words.txt"
+"open log" = "%USERPROFILE%\\.caster\\data\\log.txt"
