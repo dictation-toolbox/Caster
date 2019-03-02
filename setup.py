@@ -1,4 +1,5 @@
 import setuptools, os, codecs, re
+from distutils.command.install import install as _install
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -13,6 +14,19 @@ def find_version(*file_paths):
     if version_match:
         return version_match.group(1)
     raise RuntimeError("Unable to find version string.")
+
+
+def _post_install(dir):
+    from post_setup import main
+    main()
+
+
+class install(_install):
+    def run(self):
+        _install.run(self)
+        self.execute(_post_install, (self.install_lib,),
+                     msg="Running post install task")
+
 
 with open("ReadMe.md", "r") as fh:
     long_description = fh.read()
@@ -48,5 +62,8 @@ setuptools.setup(
             "asynch/sikuli/server/xmlrpc_server.sikuli/xmlrpc_server.html",
             "asynch/sikuli/server/xmlrpc_server.sikuli/xmlrpc_server.py"
         ]
-    }
+    },
+
+    cmdclass={'install': install
+              },
 )
