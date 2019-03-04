@@ -398,7 +398,7 @@ Capitalisation and spacing can be combined into a single command. Whether combin
 \sectiontitle{Aliasing}
 
 \command{alias <dict>}{alias highlighted text}
-\command{chain alias}{alias as CCR}
+\command{chain alias <dict>}{alias as CCR}
 
 %----------------------------------------------------------------------------------------
 
@@ -422,6 +422,20 @@ Capitalisation and spacing can be combined into a single command. Whether combin
 \command{number/spell/dictation/normal/command mode}{switch dragon modes}
 \command{reboot dragon}{}
 
+\sectiontitle{Update and Caster Management}
+
+\command{update caster}{Updates Caster}
+\command{update dragonfly}{Updates Dragonfly}
+\command{reboot caster}{Restarts Caster}
+
+\end{minipage}
+}
+\end{picture} % End the container for the entire page
+
+
+\begin{picture}(297,210) % Create a container for the page content
+\put(10,200){ % Divide the page
+\begin{minipage}[t]{85mm} % Create a box to house text
 \sectiontitle{Example command chains}
 
 \examplecommand{shackle clear}{Select and delete the current line}
@@ -434,10 +448,7 @@ Capitalisation and spacing can be combined into a single command. Whether combin
 \examplecommand{curly quotes arch ross deckle quotes brov}{\{"a":"b"\}}
 \examplecommand{backslash format command curly}{\textbackslash command\{\}}
 \examplecommand{(python) tell sink print to console spark three}{new line, print(<third clipboard position>)}
-
-
 \end{minipage}
-
 }
 
 \end{picture} % End the container for the entire page
