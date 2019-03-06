@@ -6,7 +6,7 @@ Created on Sep 1, 2015
 from dragonfly import Repeat, Function, Dictation, Choice, MappingRule
 
 from castervoice.lib import context, navigation, alphanumeric, textformat, text_utils
-from castervoice.lib import control
+from castervoice.lib import control, utilities
 from castervoice.lib.actions import Key, Mouse
 from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
@@ -122,6 +122,31 @@ class NavigationNon(MappingRule):
             R(Key("c-w/20"), rdescript="Close Tab")*Repeat(extra="n"),
         "elite translation <text>":
             R(Function(alphanumeric.elite_text), rdescript="1337 Text"),
+
+        # Workspace management
+        "show work [spaces]":
+            R(Key("w-tab"), rdescript="show workspaces"),
+        "(create | new) work [space]":
+            R(Key("wc-d"), rdescript="create workspace"),
+        "close work [space]":
+            R(Key("wc-f4"), rdescript="So close workspace"),
+        "close all work [spaces]":
+            R(Function(utilities.close_all_workspaces),
+                rdescript="close all work spaces"),
+        "next work [space] [<n>]":
+            R(Key("wc-right"), rdescript="next workspace")*Repeat(extra="n"),
+        "(previous | prior) work [space] [<n>]":
+            R(Key("wc-left"), rdescript="prior workspace")*Repeat(extra="n"),
+
+        "go work [space] <n>":
+            R(Function(lambda n: utilities.go_to_desktop_number(n)),
+                rdescript="go to workspace n"),
+        "send work [space] <n>":
+            R(Function(lambda n: utilities.move_current_window_to_desktop(n)),
+                rdescript="send current window to workspace n"),
+        "move work [space] <n>":
+            R(Function(lambda n: utilities.move_current_window_to_desktop(n, True)),
+                rdescript="move current window to workspace n"),
     }
 
     extras = [

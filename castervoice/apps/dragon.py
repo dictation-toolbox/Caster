@@ -36,12 +36,9 @@ class DragonRule(MergeRule):
         'normal mode':
             R(Playback([(["normal", "mode", "on"], 0.0)]),
               rdescript="Dragon: Normal Mode"),
-        'com on':
+        'command mode':
             R(Playback([(["command", "mode", "on"], 0.0)]),
-              rdescript="Dragon: Command Mode (On)"),
-        'com off':
-            R(Playback([(["command", "mode", "off"], 0.0)]),
-              rdescript="Dragon: Command Mode (Off)"),
+              rdescript="Dragon: Command Mode"),
         'scratch':
             R(Playback([(["scratch", "that"], 0.0)]), rdescript="Dragon: 'Scratch That'"),
         "reboot dragon":

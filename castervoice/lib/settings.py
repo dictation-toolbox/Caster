@@ -6,6 +6,7 @@ import os
 import sys
 import toml
 import _winreg
+import version
 
 
 SETTINGS = {}
@@ -19,7 +20,7 @@ for directory in ["data", "rules", "filters", "sikuli"]:
         os.makedirs(d)
 
 # title
-SOFTWARE_VERSION_NUMBER = "0.6.10"
+SOFTWARE_VERSION_NUMBER = version.__version__
 SOFTWARE_NAME = "Caster v " + SOFTWARE_VERSION_NUMBER
 HOMUNCULUS_VERSION = "HMC v " + SOFTWARE_VERSION_NUMBER
 HMC_TITLE_RECORDING = " :: Recording Manager"
@@ -202,6 +203,13 @@ _DEFAULT_SETTINGS = {
         "winword": True,
         "wsr": True,
     },
+
+    # python settings
+    "python": {
+        "automatic_settings": True,  # Set to false to manually set "version" and "pip" below.
+        "version": "python",  # Depending Python setup (python, python2, python2.7, py, py -2)
+        "pip": "pip"  # Depending on PIP setup (pip ,pip2, pip2.7)
+    },
     
     # sikuli settings
     "sikuli": {
@@ -233,6 +241,7 @@ _DEFAULT_SETTINGS = {
         "history_playback_delay_secs": 1.0,
         "legion_vertical_columns": 30,
         "use_aenea": False,
+        "online_mode": True,
     },
     "pronunciations": {
         "c++": "C plus plus",
