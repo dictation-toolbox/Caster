@@ -76,7 +76,7 @@ class DevRule(MappingRule):
         mapping = {
         # mimic/playback-related mappings for emulating recognition.
         "[dev] Mimic [<text>]": Function(type_mimic),
-        "dev [<text>]": Function(type_playback),
+        "[dev] Playback [<text>]": Function(type_playback),
         "[dev] split dictation [<text>]": Function(type_split_dictation),
     
         # Mouse action mappings.
