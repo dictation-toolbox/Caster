@@ -1,5 +1,7 @@
 # this file contains commands for more quickly creating dragonfly commands.
 # users may want to make this context-specific to they're text editors
+# Dane Finley helped with this
+# inspired by Lunis Orcutt
 
 from dragonfly import (Grammar, MappingRule, Dictation, Function, Choice)
 from dragonfly.actions.action_mouse import get_cursor_position
