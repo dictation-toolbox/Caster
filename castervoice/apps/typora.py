@@ -13,7 +13,7 @@ from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.state.short import R
-
+# ---------------------------------------------------------------------------
 
 class TyporaRule(MergeRule):
     pronunciation = "tie poor a"
@@ -22,10 +22,9 @@ class TyporaRule(MergeRule):
         # File
         "new markdown":
             R(Key("c-n"), rdescript="Typora: New Markdown Document"),
-        "new window":
-            R(Key("cs-n"), rdescript="Typora: New Window"),
-        # "new tab":
-        # R(Key(""), rdescript="Typora: New Tab"), # Not implemented in Windows OS
+        "new window":   
+            R(Key("cs-n"), rdescript="Typora: New Window"), # Listed but not implemented
+        # "new tab":      R(Key(""), rdescript="Typora: New Tab"), # Not implemented in Windows OS
         "open file":
             R(Key("c-o"), rdescript="Typora: Open File"),
         "open [file] quickly":
@@ -38,16 +37,16 @@ class TyporaRule(MergeRule):
             R(Key("c-w"), rdescript="Typora: Close"),
         # Edit
         "new paragraph":
-            R(Key("enter"), rdescript="Typora: New Paragraph") * Repeat(extra="n"),
+            R(Key("enter"), rdescript="Typora: New Paragraph") * Repeat(extra="h"),
         "new line":
-            R(Key("s-enter"), rdescript="Typora: New Line") * Repeat(extra="n"),
+            R(Key("s-enter"), rdescript="Typora: New Line") * Repeat(extra="h"),
         "copy [as] markdown":
             R(Key("cs-c"), rdescript="Typora: Copy as Markdown"),
         "delete row":
             R(Key("cs-backspace"), rdescript="Typora: Delete Row") * Repeat(extra="n"),
         "select [cell | scope]":
             R(Key("c-e"), rdescript="Typora: Select Style Scope or Cell"),
-        "select word":
+        "[select word]":
             R(Key("c-d"), rdescript="Typora: Select Word") * Repeat(extra="n"),
         "delete word":
             R(Key("cs-d"), rdescript="Typora: Delete Word") * Repeat(extra="n"),
@@ -57,6 +56,7 @@ class TyporaRule(MergeRule):
             R(Key("c-j"), rdescript="Typora: Jump to Selection"),
         "jump [to] buttom":
             R(Key("c-end"), rdescript="Typora: Jump to Buttom"),
+        # Say "escape" to exit the find/replace context
         "find":
             R(Key("c-f"), rdescript="Typora: Find"),
         "find next":
@@ -65,15 +65,15 @@ class TyporaRule(MergeRule):
             R(Key("c-h"), rdescript="Typora: Replace"),
         # Paragraph
         "heading <n>":
-            R(Key("c-%(n)d"), rdescript="Typora: Heading 1 to 6"),
+            R(Key("c-%(h)d"), rdescript="Typora: Heading size 0 through 6"),
         "paragraph":
             R(Key("c-o"), rdescript="Typora: Paragraph"),
-        "increase heading level":
-            R(Key("c-equal"), rdescript="Typora: Increase Heading Level") * Repeat(extra="n"),
-        "decrease heading level":
-            R(Key("c-minus"), rdescript="Typora: Decrease Heading Level") * Repeat(extra="n"),
+        "increase heading [level]":
+            R(Key("c-equal"), rdescript="Typora: Increase Heading Level") * Repeat(extra="h"),
+        "decrease heading [level]":
+            R(Key("c-minus"), rdescript="Typora: Decrease Heading Level") * Repeat(extra="h"),
         "table":
-            R(Key("c-t"), rdescript="Typora: Table"),
+            R(Key("c-t"), rdescript="Typora: Table"), # could be automated.
         "code fences":
             R(Key("cs-k"), rdescript="Typora: Code Fences"),
         "math block":
@@ -83,13 +83,13 @@ class TyporaRule(MergeRule):
         "ordered list":
             R(Key("cs-["), rdescript="Typora: Ordered List"),
         "indent":
-            R(Key("cs-]"), rdescript="Typora: Indent") * Repeat(extra="n"),
+            R(Key("cs-]"), rdescript="Typora: Indent") * Repeat(extra="h"),
         "outdent":
-            R(Key("c-["), rdescript="Typora: Outdent") * Repeat(extra="n"),
+            R(Key("cs-["), rdescript="Typora: Outdent") * Repeat(extra="h"),
         # Format
-        "strong":
-            R(Key("c-b"), rdescript="Typora: Strong"),
-        "emphasis":
+        "strong | bold":
+            R(Key("c-b"), rdescript="Typora: Strong"), 
+        "emphasis | italicize":
             R(Key("c-i"), rdescript="Typora: Emphasis"),
         "underline":
             R(Key("c-u"), rdescript="Typora: Underline"),
@@ -101,10 +101,10 @@ class TyporaRule(MergeRule):
             R(Key("c-k"), rdescript="Typora: Hyperlink"),
         "image":
             R(Key("cs-i"), rdescript="Typora: Image"),
-        "clear format":
-            R(Key("cs-backspace"), rdescript="Typora: Clear Format"),
+        "clear [format]":
+            R(Key("c-\\"), rdescript="Typora: Clear Format"),
         # View
-        "toggle sidebar":
+        "[toggle] sidebar":
             R(Key("cs-l"), rdescript="Typora: Toggle Sidebar"),
         "outline":
             R(Key("cs-1"), rdescript="Typora: Outline"),
@@ -112,13 +112,13 @@ class TyporaRule(MergeRule):
             R(Key("sc-2"), rdescript="Typora: Articles"),
         "file tree":
             R(Key("cs-3"), rdescript="Typora: File Tree"),
-        "source [code] mode":
-            R(Key("c-backspace"), rdescript="Typora: Source Code Mode"),
+        "source code [mode]":
+            R(Key("c-slash"), rdescript="Typora: Source Code Mode"),
         "focus mode":
             R(Key("f8"), rdescript="Typora: Focus Mode"),
-        "typewriter mode":
+        "typewriter [mode]":
             R(Key("f9"), rdescript="Typora: Typewriter Mode"),
-        "toggler fullscreen":
+        "[toggle] fullscreen":
             R(Key("f11"), rdescript="Typora: Toggler Fullscreen"),
         "actual size":
             R(Key("cs-0"), rdescript="Typora: Actual Size"),
@@ -126,16 +126,23 @@ class TyporaRule(MergeRule):
             R(Key("cs-="), rdescript="Typora: Zoom In") * Repeat(extra="n"),
         "zoom out":
             R(Key("cs--"), rdescript="Typora: Zoom Out") * Repeat(extra="n"),
-        "switch [between opened] documnets":
+        "switch documnets":
             R(Key("c-tab"), rdescript="Typora: Switch Between Opened Documnets"),
         "toggle [dev] tools":
-            R(Key("cs-i"), rdescript="Typora: Toggle DevTools"),
+            R(Key("cs-f12"), rdescript="Typora: Toggle DevTools"),
 
     }
+    
     extras = [
         Dictation("text"),
-        IntegerRefST("n", 1, 6),
+        IntegerRefST("h", 0, 6),
+        IntegerRefST("n", 1, 30),
     ]
+
+    defaults = {
+    "n": 1,
+    "h": 1
+    }
 
 
 # ---------------------------------------------------------------------------
