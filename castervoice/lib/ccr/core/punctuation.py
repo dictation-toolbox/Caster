@@ -44,12 +44,16 @@ class Punctuation(MergeRule):
             R(Text("%(long)s" + "-" + "%(long)s"), rdescript="Dash"),
         "pipe (sim | symbol)":
             R(Text("|"), rdescript="Pipe Symbol"),
+        "long pipe (sim | symbol)":
+            R(Text(" | "), rdescript="Pipe Symbol surrounded by spaces"),
         'ace [<npunc>]':
             R(Key("space"), rdescript="Space")*Repeat(extra="npunc"),
         "clamor":
             R(Text("!"), rdescript="Exclamation Mark"),
         "deckle":
             R(Text(":"), rdescript="Colon"),
+        "long deckle":
+            R(Key("right") + Text(": ")), rdescript="move right type colon then space",
         "starling":
             R(Key("asterisk"), rdescript="Asterisk"),
         "questo":
@@ -84,6 +88,21 @@ class Punctuation(MergeRule):
             R(Key("ampersand"), rdescript="Ampersand"),
         "tilde":
             R(Key("tilde"), rdescript="Tilde"),
+
+        # single parable punctuation characters with no arrow key movement afterwards (optional)
+            "lazer": R(Key("lparen"), rdescript="left parentheses"),
+            "razer": R(Key("rparen"), rdescript="right parentheses"),
+            "lapper": R(Key("lbrace"), rdescript="left curly brace"),
+            "rapper": R(Key("rbrace"), rdescript="right curly brace"),
+            "lacky": R(Key("lbracket"), rdescript="left square bracket"),
+            "racky": R(Key("rbracket"), rdescript="right square bracket"),
+            "langle": R(Key("langle"), rdescript="left angle bracket"),
+            "rangle": R(Key("rangle"), rdescript="right angle bracket"),
+            "stingle": R(Key("squote"), rdescript="single quote"),
+            "doter": R(Key("dquote"), rdescript="double quote"),
+            "backtick": R(Key("backtick"), rdescript="backtick"),
+
+
 
 
     }
