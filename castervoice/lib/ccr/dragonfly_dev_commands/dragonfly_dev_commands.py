@@ -1,7 +1,5 @@
 # this file contains commands for more quickly creating dragonfly commands.
 # users may want to make this context-specific to they're text editors
-# Dane Finley helped with this
-# inspired by Lunis Orcutt
 
 from dragonfly import (Grammar, MappingRule, Dictation, Function, Choice)
 from dragonfly.actions.action_mouse import get_cursor_position
@@ -10,6 +8,23 @@ from castervoice.lib.actions import Key, Text
 from castervoice.lib.ccr.standard import SymbolSpecs
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
+
+class PositionalTexter(object):
+
+    def __init__(self, func, extra=()):
+        self.func = func
+        self.extra = extra
+        self._str = func.__name__ 
+
+    def execute(self, data):
+        # argument = (data[self.extra[0]], data[self.extra[1]])
+        arguments = [data[argument_name] for argument_name in self.extra]
+        if not arguments:
+            return
+        result = self.func(*arguments)
+        Text(str(result)).execute()
+
+
 
 
 def split_dictation(text):
@@ -99,6 +114,7 @@ class DragonflyDevCommandsRule(MergeRule):
             rdescript="snippet for pause action"),
         "[dev] Repeat": R(Text(" * Repeat(extra='n'),"), 
             rdescript="snippet for repeat"),
+        "[dev] descript": R(Text(' rdescript=""') + Key("left"), rdescript="add the rdescript"),
         "[dev] Choice": R(Text('Choice("", {') + Key("enter:2") + Text("}),") +
             Key("up:2, right"),
                 rdescript="snippet for the choice extra"),
@@ -109,6 +125,8 @@ class DragonflyDevCommandsRule(MergeRule):
         "[dev] Mouse current [position]": R(Function(type_mouse_current),
             rdescript="snippet for making a command for clicking at the current cursor position"),
             
+
+
         # snippets for emulating recognition.
         "[dev] Mimic [<text>]": R(Function(type_mimic), rdescript="snippet for mimic"),
         "[dev] playback [<text>]": R(Function(type_playback), 
@@ -117,10 +135,11 @@ class DragonflyDevCommandsRule(MergeRule):
             rdescript="puts quotes around each word and separated by commas"),
                 
         
-        
         # for creating commands in one fell swoop
         "command [<spec>] key": R(Text('"%(spec)s": Key(""),') + Key("left:3"),
             rdescript="automatically create key command with given spec"),
+        "command [<spec>] keeper": R(Text('"%(text)s [<n>]": Key("") * Repeat(extra="n"),') + Key("left:23"),
+            rdescript="automatically create repeatable key command with given spec"),
         "command [<spec>] text": R(Text('"%(spec)s": Text(""),') + Key("left:3"),
             rdescript="automatically create text command with given spec"),
         "command [<spec>] [bring] app": R(Text('"%(spec)s": BringApp(r),') + Key("left"),
@@ -142,10 +161,15 @@ class DragonflyDevCommandsRule(MergeRule):
                 rdescript="automatically create a command to click at the current mouse position with given spec"),
             # for some reason the above command is not putting in the left click by default. perhaps someone can fix this
         
+
+
         # same as above but uses the caster standard format with the R and rdescript.
             # maybe somebody knows how to make it so that you can tab through the relevant places
         "commander [<spec>] key": R(Text('"%(spec)s": R(Key(""), rdescript=""')  + Key("right, comma") + Key("left:18"),
             rdescript="caster: automatically create key command with given spec"),
+        "commander [<spec>] keeper": R(Text('"%(spec)s [<n>]": R(Key(""), rdescript=""')  + Key("right")
+            + Text(" * Repeat(extra='n'),") + Key("left:38"),
+                rdescript="caster: automatically create repeatable key command with given spec"),
         "commander [<spec>] text": R(Text('"%(spec)s": R(Text(""), rdescript=""')  + Key("right, comma") + Key("left:18"),
             rdescript="caster: automatically create text command with given spec"),
         "commander [<spec>] [bring] app": R(Text('"%(spec)s": R(BringApp(r), rdescript=""')  + Key("right, comma") + Key("left:17"),
@@ -165,13 +189,6 @@ class DragonflyDevCommandsRule(MergeRule):
          #   + Function(type_playback) + Key("down:2") + Text(", rdescript=''") + Key("right, comma, left:3"),        
         
 
-
-
-        # Miscellaneous.
-        "plusser": Text(" + "),
-        "eaker": Text(" = "),
-        "kohler": Key("right") + Text(": "),
-        "piping": Text(" | "),   
     }
 
     extras = [
