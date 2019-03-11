@@ -202,6 +202,7 @@ _DEFAULT_SETTINGS = {
         "visualstudiocode": True,
         "winword": True,
         "wsr": True,
+        "typora": True,
     },
 
     # python settings
