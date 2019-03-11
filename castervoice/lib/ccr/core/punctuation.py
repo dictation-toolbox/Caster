@@ -53,7 +53,7 @@ class Punctuation(MergeRule):
         "deckle":
             R(Text(":"), rdescript="Colon"),
         "long deckle":
-            R(Key("right") + Text(": ")), rdescript="move right type colon then space",
+            R(Key("right") + Text(": "), rdescript="move right type colon then space"),
         "starling":
             R(Key("asterisk"), rdescript="Asterisk"),
         "questo":
