@@ -115,8 +115,7 @@ class DragonflyDevCommandsRule(MergeRule):
         "[dev] Repeat": R(Text(" * Repeat(extra='n'),"), 
             rdescript="snippet for repeat"),
         "[dev] descript": R(Text(' rdescript=""') + Key("left"), rdescript="add the rdescript"),
-        "[dev] Choice": R(Text('Choice("", {') + Key("enter:2") + Text("}),") +
-            Key("up:2, right"),
+        "[dev] Choice": R(Text('Choice("", {') + Pause("10") + Key("enter, up, right:4"),          
                 rdescript="snippet for the choice extra"),
         "[dev] bring app": R(Text("BringApp(r)") + Key("left"), 
             rdescript="snippet for bring app"),
