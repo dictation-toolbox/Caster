@@ -23,6 +23,7 @@
 - [SQL Developer](#sql-developer)
 - [SQL Server Management Studio](#sql-server-management-studio)
 - [Sublime](#sublime)
+- [Typora](#typora)
 - [Visual Studio](#visual-studio)
 - [Visual Studio Code](#visual-studio-code)
 
@@ -31,7 +32,7 @@
 # Atom
 
 | Command                               | Command                                           | Command                             |
-| ------------------------------------- | ------------------------------------------------- | ----------------------------------- |
+|:--------------------------------------|:--------------------------------------------------|:------------------------------------|
 | `[add] select above [<n>]`            | `git add`                                         | `open folder`                       |
 | `[add] select below [<n>]`            | `git add [and] commit`                            | `open settings`                     |
 | `[go to] line <n>`                    | `git add all`                                     | `paste [<n>]`                       |
@@ -110,7 +111,7 @@
 # Google Chrome
 
 | Command                    | Command              | Command              |
-| -------------------------- | -------------------- | -------------------- |
+|:---------------------------|:---------------------|:---------------------|
 | `IRC identify`             | `close all tabs`     | `show history`       |
 | `[add] bookmark`           | `deny notification`  | `step into`          |
 | `[find] next match [<n>]`  | `developer tools`    | `step out`           |
@@ -127,14 +128,14 @@
 # Command prompt
 
 | Command   | Command | Command          |
-| --------- | ------- | ---------------- |
+|:----------|:--------|:-----------------|
 | `C drive` | `CD up` | `list`           |
 | `CD`      | `exit`  | `make directory` |
 
 # Dragon
 
 | Command                      | Command             | Command       |
-| ---------------------------- | ------------------- | ------------- |
+|:-----------------------------|:--------------------|:--------------|
 | `(lock Dragon / deactivate)` | `dictation mode`    | `right point` |
 | `(number/numbers) mode`      | `fix dragon double` | `scratch`     |
 | `center point`               | `left point`        | `spell mode`  |
@@ -144,7 +145,7 @@
 # Eclipse
 
 | Command                                | Command                            | Command                 |
-| -------------------------------------- | ---------------------------------- | ----------------------- |
+|:---------------------------------------|:-----------------------------------|:------------------------|
 | `(debug / run) last`                   | `find word <text> [<back>] [<go>]` | `resume`                |
 | `build it`                             | `format code`                      | `split view horizontal` |
 | `comment line`                         | `jump to source`                   | `split view vertical`   |
@@ -158,7 +159,7 @@
 # Emacs
 
 | Command               | Command               | Command            |
-| --------------------- | --------------------- | ------------------ |
+|:----------------------|:----------------------|:-------------------|
 | `C function backward` | `forward delete word` | `paste`            |
 | `C function forward`  | `go to line <n>`      | `paste number <n>` |
 | `begin selection`     | `incremental reverse` | `prior bracket`    |
@@ -174,7 +175,7 @@
 # Internet Explorer
 
 | Command                             | Command       | Command      |
-| ----------------------------------- | ------------- | ------------ |
+|:------------------------------------|:--------------|:-------------|
 | `(show / file / folder) properties` | `get forward` | `new folder` |
 | `address bar`                       | `get up`      |              |
 | `get back`                          | `new file`    |              |
@@ -189,7 +190,7 @@
 # Firefox
 
 | Command            | Command          | Command         |
-| ------------------ | ---------------- | --------------- |
+|:-------------------|:-----------------|:----------------|
 | `IRC identify`     | `resume`         | `step over`     |
 | `[add] bookmark`   | `show downloads` | `super refresh` |
 | `developer tools`  | `show history`   | `zoom in <n>`   |
@@ -199,7 +200,7 @@
 # Flash Develop
 
 | Command              | Command            | Command                 |
-| -------------------- | ------------------ | ----------------------- |
+|:---------------------|:-------------------|:------------------------|
 | `(debug / run) last` | `jump away`        | `split view horizontal` |
 | `auto complete`      | `jump to source`   | `step into`             |
 | `build it`           | `next tab [<n>]`   | `step out [of]`         |
@@ -224,13 +225,13 @@
 
 # Foxit Reader
 | Command           | Command          | Command           |
-| ----------------- | ---------------- | ----------------- |
+|:------------------|:-----------------|:------------------|
 | `close tab [<n>]` | `next tab [<n>]` | `prior tab [<n>]` |
 
 # Git Bash
 
 | Command                       | Command                    | Command                     |
-| ----------------------------- | -------------------------- | --------------------------- |
+|:------------------------------|:---------------------------|:----------------------------|
 | `(get push / push)`           | `fetch`                    | `search recursive filetype` |
 | `(undo changes / reset hard)` | `gooey blame`              | `stash`                     |
 | `CD`                          | `initialize repository`    | `stash apply [<n>]`         |
@@ -249,7 +250,7 @@
 # Gitter
 
 | Command       | Command          | Command       |
-| ------------- | ---------------- | ------------- |
+|:--------------|:-----------------|:--------------|
 | `block quote` | `formatted code` | `insert item` |
 | `bold`        | `insert code`    | `insert link` |
 | `emphasize`   | `insert image`   | `mention`     |
@@ -257,7 +258,7 @@
 # Jetbrains
 
 | Command         | Command           | Command             |
-| --------------- | ----------------- | ------------------- |
+|:----------------|:------------------|:--------------------|
 | `Jen method`    | `find in current` | `search everywhere` |
 | `auto complete` | `format code`     | `search symbol`     |
 | `build`         | `go to line`      | `select ex`         |
@@ -269,7 +270,7 @@
 # Microsoft Visual Studio
 
 | Command                     | Command          | Command             |
-| --------------------------- | ---------------- | ------------------- |
+|:----------------------------|:-----------------|:--------------------|
 | `(do imports / import all)` | `debug [last]`   | `resume`            |
 | `breakpoint`                | `format code`    | `set bookmark`      |
 | `build [last]`              | `go to line`     | `snippet`           |
@@ -281,14 +282,14 @@
 # Notepad++
 
 | Command              | Command        |
-| -------------------- | -------------- |
+|:---------------------|:---------------|
 | `function list`      | `remove style` |
 | `preview in browser` | `stylize <n2>` |
 
 # RStudio
 
 | Command                     | Command      | Command         |
-| --------------------------- | ------------ | --------------- |
+|:----------------------------|:-------------|:----------------|
 | `[go to] line <n>`          | `focus main` | `previous plot` |
 | `close tab`                 | `last tab`   | `previous tab`  |
 | `comment (line / selected)` | `new file`   | `run document`  |
@@ -299,13 +300,13 @@
 # SQL Developer
 
 | Command        | Command       | Command          |
-| -------------- | ------------- | ---------------- |
+|:---------------|:--------------|:-----------------|
 | `comment line` | `format code` | `run this query` |
 
 # SQL Server Management Studio
 
 | Command                   | Command          | Command           |
-| ------------------------- | ---------------- | ----------------- |
+|:--------------------------|:-----------------|:------------------|
 | `(set / toggle) bookmark` | `comment block`  | `prior tab [<n>]` |
 | `(un / on) comment block` | `comment line`   | `resume`          |
 | `(un / on) comment line`  | `go to line`     | `step into`       |
@@ -336,11 +337,31 @@
 | `toggle side bar`        | ``                             | ``                                |
 
 
+# Typora
+| Command              | Command                        | Command                        |
+|:---------------------|:-------------------------------|:-------------------------------|
+| `new file`           | `new window`                   | `open file`                    |
+| `go [to] file`       | `reopen [closed] file`         | `save as`                      |
+| `close file`         | `new line <h>`                 | `copy [as] markdown`           |
+| `delete row <n>`     | `select [cell / scope]`        | `[select] word <n>`            |
+| `delete word <n>`    | `jump [to] buttom`             | `find"`                        |
+| `find next`          | `replace`                      | `heading <h>`                  |
+| `paragraph`          | `increase heading [level] <h>` | `decrease heading [level] <h>` |
+| `table`              | `code fences`                  | `math block`                   |
+| `quote`              | `ordered list`                 | `indent <h>`                   |
+| `out dent <h>`       | `strong / bold`                | `emphasis / italicize`         |
+| `underline`          | `code`                         | `strike`                       |
+| `hyperlink`          | `image`                        | `clear [format]`               |
+| `[toggle] sidebar`   | `outline`                      | `articles`                     |
+| `file tree`          | `source code [mode]`           | `focus mode`                   |
+| `typewriter [mode]`  | `[toggle] fullscreen`          | `actual size`                  |
+| `zoom in <n>`        | `zoom out <n>`                 | `switch documnets`             |
+| `toggle [dev] tools` | ` `                            | ` `                            |
 
 # Visual Studio
 
 | Command                            | Command                      | Command                             |
-| ---------------------------------- | ---------------------------- | ----------------------------------- |
+|:-----------------------------------|:-----------------------------|:------------------------------------|
 | `(list / show) documents`          | `collapse to definitions`    | `run all tests`                     |
 | `(set / toggle) bookmark`          | `comment block`              | `run tests`                         |
 | `(show / view) history`            | `comment line`               | `solution explorer`                 |
@@ -357,7 +378,7 @@
 # Visual Studio Code
 
 | Command                                       | Command                       | Command                |
-| --------------------------------------------- | ----------------------------- | ---------------------- |
+|:----------------------------------------------|:------------------------------|:-----------------------|
 | `(Find / Jump [to]) next <text>`              | `Go forward [<n>]`            | `[toggle] full screen` |
 | `(Find / Jump [to]) previous <text>`          | `Go to ( bottom / last line)` | `beol`                 |
 | `(Open [file] / Go to [tab]) [<text>]`        | `Go to (top / first line)`    | `ee-ol`                |
