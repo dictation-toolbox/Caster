@@ -11,6 +11,7 @@ command_sets = {
     "cpp.cpp": ("CPP", ),
     "csharp.csharp": ("CSharp", ),
     "dart.dart": ("Dart", ),
+    "dragonfly_dev_commands.dragonfly_dev_commands": ("Dragonfly_dev_commands"),
     "go.go": ("Go", ),
     "haxe.haxe": ("Haxe", ),
     "html.html": ("HTML", ),

@@ -73,7 +73,7 @@
 
 \put(10,205){ % Position on the page to put the title
 \begin{minipage}[t]{210mm} % The size and alignment of the title
-\section*{Caster Quick Reference - v0.5.8} % Title
+\section*{Caster Quick Reference} % Title
 \end{minipage}
 }
 
@@ -372,7 +372,17 @@ Capitalisation and spacing can be combined into a single command. Whether combin
 \command{move window}{move with arrow keys}
 \command{window left}{snap window to left}
 \command{window right}{snap window to right}
+\command{show work}{show active workspaces}
+\command{new work}{create a new workspace}
+\command{close work}{close the current workspace}
+\command{close all work}{close all workspaces}
+\command{previous work \footnotemark[1]}{go to the previous workspace}
+\command{next work \footnotemark[1]}{go to the next workspace}
+\command{go work <n>}{go to workspace number n}
+\command{send work <n>}{send the current window to workspace n}
+\command{move work <n>}{move the current window to workspace n}
 
+\footnotetext[1]{Takes an optional number parameter for repetition}
 %----------------------------------------------------------------------------------------
 
 \sectiontitle{Repetition}
@@ -388,29 +398,18 @@ Capitalisation and spacing can be combined into a single command. Whether combin
 \sectiontitle{Aliasing}
 
 \command{alias <dict>}{alias highlighted text}
-\command{chain alias}{alias as CCR}
+\command{chain alias <dict>}{alias as CCR}
 
 %----------------------------------------------------------------------------------------
 
-\sectiontitle{Miscellaneous}
+\sectiontitle{Bring me}
 
-\command{pita <text>}{fuzzy string matching}
+\command{program/website/folder/file to bring me as <key>}{create a new bring me binding}
+\command{bring me <key>}{open bring me binding}
+\command{remove <key> from bring me}{}
+\command{restore bring me defaults}{}
+
 %----------------------------------------------------------------------------------------
-
-\sectiontitle{Special number words} \footnotemark[1]
-
-\command{zero}{0}
-\command{ane}{1}
-\command{twain}{2}
-\command{traio}{3}
-\command{fairn}{4}
-\command{faif}{5}
-\command{six}{6}
-\command{seven}{7}
-\command{eigen}{8}
-\command{nine}{9}
-
-\footnotetext[1]{Commands which specify a number use these if the settings file is configured for it, all double-digits and larger are normal.}
 
 \end{minipage}
 }
@@ -418,6 +417,25 @@ Capitalisation and spacing can be combined into a single command. Whether combin
 \put(200, 200){
 \begin{minipage}[t]{85mm}
 
+\sectiontitle{Dragon}
+
+\command{number/spell/dictation/normal/command mode}{switch dragon modes}
+\command{reboot dragon}{}
+
+\sectiontitle{Update and Caster Management}
+
+\command{update caster}{Updates Caster}
+\command{update dragonfly}{Updates Dragonfly}
+\command{reboot caster}{Restarts Caster}
+
+\end{minipage}
+}
+\end{picture} % End the container for the entire page
+
+
+\begin{picture}(297,210) % Create a container for the page content
+\put(10,200){ % Divide the page
+\begin{minipage}[t]{85mm} % Create a box to house text
 \sectiontitle{Example command chains}
 
 \examplecommand{shackle clear}{Select and delete the current line}
@@ -430,10 +448,12 @@ Capitalisation and spacing can be combined into a single command. Whether combin
 \examplecommand{curly quotes arch ross deckle quotes brov}{\{"a":"b"\}}
 \examplecommand{backslash format command curly}{\textbackslash command\{\}}
 \examplecommand{(python) tell sink print to console spark three}{new line, print(<third clipboard position>)}
+\sectiontitle{Update and Caster Management}
 
-
+\command{update caster}{Updates Caster}
+\command{update dragonfly}{Updates Dragonfly}
+\command{reboot caster}{Restarts Caster}
 \end{minipage}
-
 }
 
 \end{picture} % End the container for the entire page

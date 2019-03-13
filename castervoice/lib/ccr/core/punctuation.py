@@ -44,12 +44,16 @@ class Punctuation(MergeRule):
             R(Text("%(long)s" + "-" + "%(long)s"), rdescript="Dash"),
         "pipe (sim | symbol)":
             R(Text("|"), rdescript="Pipe Symbol"),
+        "long pipe (sim | symbol)":
+            R(Text(" | "), rdescript="Pipe Symbol surrounded by spaces"),
         'ace [<npunc>]':
             R(Key("space"), rdescript="Space")*Repeat(extra="npunc"),
         "clamor":
             R(Text("!"), rdescript="Exclamation Mark"),
         "deckle":
             R(Text(":"), rdescript="Colon"),
+        "long deckle":
+            R(Key("right") + Text(": "), rdescript="move right type colon then space"),
         "starling":
             R(Key("asterisk"), rdescript="Asterisk"),
         "questo":
@@ -84,7 +88,6 @@ class Punctuation(MergeRule):
             R(Key("ampersand"), rdescript="Ampersand"),
         "tilde":
             R(Key("tilde"), rdescript="Tilde"),
-
 
     }
 
