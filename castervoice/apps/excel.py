@@ -70,10 +70,10 @@ class ExcelRule(MergeRule):
     # this uses the NATO phonetic alphabet. if you want to change it ,
         # change the dictionary above called word_to_letter
     "[select] cell <column_1> <row_1>": R(Key("c-g") + Text("%(column_1)s%(row_1)s")
-        + Key("enter"), rdescript="select cell with given coordinates e.g. alpha 2"),
+        + Key("enter"), rdescript="select cell with given coordinates e.g. alpha hotel 7"),
     "select <column_1> <row_1> through <column_2> <row_2>":
         R(Key("c-g") + Text("%(column_1)s%(row_1)s:%(column_2)s%(row_2)s") + Key("enter"),
-        rdescript="selects range of cells e.g. bravo 5 through golf 10"),
+        rdescript="selects range of cells e.g. bravo 5 through golf yankee 10"),
     "go to cell": R(Key("c-g"), rdescript="open 'go to' dialogbox"),
     "select current column": R(Key("c-space")),
     "select current row": R(Key("s-space")),
@@ -142,6 +142,7 @@ class ExcelRule(MergeRule):
         IntegerRefST("numbers", 1, 100),
         IntegerRefST("row_1", 1, 100),
         IntegerRefST("row_2", 1, 100),
+        # when I set the sequence length to 3 I got the grammar too complex Natlink error.
         Choice("column_1", make_sequence_dict_up_to_length(word_to_letter, 2)),
         Choice("column_2", make_sequence_dict_up_to_length(word_to_letter, 2)),
        
