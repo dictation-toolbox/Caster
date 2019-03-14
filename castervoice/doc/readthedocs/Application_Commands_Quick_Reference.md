@@ -16,6 +16,7 @@
 - [Foxit Reader](#foxit-reader)
 - [Git Bash](#git-bash)
 - [Gitter](#gitter)
+- [GitHub Desktop](#github-desktop)
 - [Jetbrains](#jetbrains)
 - [Microsoft Visual Studio](#microsoft-visual-studio)
 - [Notepad++](#notepad)
