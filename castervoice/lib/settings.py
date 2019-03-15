@@ -184,6 +184,7 @@ _DEFAULT_SETTINGS = {
         "fman": True,
         "foxitreader": True,
         "gitbash": True,
+        "githubdesktop": True,
         "gitter": True,
         "kdiff3": True,
         "douglas": True,
@@ -211,7 +212,7 @@ _DEFAULT_SETTINGS = {
         "version": "python",  # Depending Python setup (python, python2, python2.7, py, py -2)
         "pip": "pip"  # Depending on PIP setup (pip ,pip2, pip2.7)
     },
-    
+
     # sikuli settings
     "sikuli": {
         "enabled": False,

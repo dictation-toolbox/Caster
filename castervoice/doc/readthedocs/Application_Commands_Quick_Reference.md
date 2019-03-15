@@ -16,6 +16,7 @@
 - [Foxit Reader](#foxit-reader)
 - [Git Bash](#git-bash)
 - [Gitter](#gitter)
+- [GitHub Desktop](#github-desktop)
 - [Jetbrains](#jetbrains)
 - [Microsoft Visual Studio](#microsoft-visual-studio)
 - [Notepad++](#notepad)
@@ -246,6 +247,20 @@
 | `cherry pick`                 | `remove untracked`         | `visualize file`            |
 | `commit`                      | `search recursive`         |                             |
 | `exit`                        | `search recursive count`   |                             |
+
+
+# GitHub Desktop
+| Command                            | Command                 | Command                       |
+|:-----------------------------------|:------------------------|:------------------------------|
+| `new repository`                   | `add local repository`  | `clone repository`            |
+| `options`                          | `changes`               | `history`                     |
+| `(repositories / repository list)` | `branches [list]`       | `zoom in [<n>]`               |
+| `zoom out [<n>]`                   | `reset zoom`            | `push [repository]`           |
+| `pull [repository]`                | `remove repository`     | `view on github`              |
+| `(terminal / command prompt)`      | `explorer`              | `edit`                        |
+| `new branch`                       | `rename branch`         | `delete branch`               |
+| `update from master`               | `compare to branch`     | `merge into current [branch]` |
+| `compare on github`                | `[create] pull request` | ` `                           |
 
 # Gitter
 
