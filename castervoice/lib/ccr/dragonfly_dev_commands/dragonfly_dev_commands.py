@@ -1,29 +1,14 @@
 # this file contains commands for more quickly creating dragonfly commands.
 # users may want to make this context-specific to they're text editors
 
-from dragonfly import (Grammar, MappingRule, Dictation, Function, Choice)
+from dragonfly import (Grammar, MappingRule, Dictation, Function, Choice, Pause, Mouse)
 from dragonfly.actions.action_mouse import get_cursor_position
 from castervoice.lib import control
 from castervoice.lib.actions import Key, Text
+from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.ccr.standard import SymbolSpecs
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
-
-class PositionalTexter(object):
-
-    def __init__(self, func, extra=()):
-        self.func = func
-        self.extra = extra
-        self._str = func.__name__ 
-
-    def execute(self, data):
-        # argument = (data[self.extra[0]], data[self.extra[1]])
-        arguments = [data[argument_name] for argument_name in self.extra]
-        if not arguments:
-            return
-        result = self.func(*arguments)
-        Text(str(result)).execute()
-
 
 
 
@@ -62,10 +47,10 @@ def type_playback(text):
     # Define the action to execute.
     # This will press enter a few times. Indentation will depend on your
     # editor.
-    enter = Key("enter")
+    enter = Key("enter") + Pause("10")
     action = (Text('Playback([') + enter +
               Text('([%s], 0.0),' % words) + enter +
-              Text('])') + Key("up, end"))
+              Key("up, end"))
 
     # Move back only if no words were specified.
     if not text:
@@ -90,6 +75,26 @@ def type_mouse_current(mouse_button):
     # back to where it was when the command was spoken.
     Text('Mouse("[%d, %d]")' % get_cursor_position()).execute()
 
+def move_mouse(left_right, horizontal_distance, up_down, vertical_distance):
+    # todo: make some of the arguments optional
+    new_mouse_position = list(get_cursor_position())
+    # horizontal axis
+    if left_right == "left":
+        new_mouse_position[0] -=  horizontal_distance
+    if left_right == "right":
+        new_mouse_position[0] +=  horizontal_distance
+    # vertical axis
+    if up_down == "down":
+        new_mouse_position[1] -= vertical_distance
+    if up_down == "up":
+        new_mouse_position[1] += vertical_distance
+    new_mouse_position = tuple(new_mouse_position)
+    Mouse("[%d, %d]" % new_mouse_position).execute()
+
+
+    
+
+
 def type_mouse_current_position_button(mouse_button = "left"):
     first_part_of_string = 'Mouse("[%d, %d], ' % get_cursor_position()
     second_part_of_string = '%s' % mouse_button
@@ -100,8 +105,10 @@ class DragonflyDevCommandsRule(MergeRule):
     mapping = {
         # it doesn't like this pronunciation line i don't know why.
         # pronunciation = "dragonfly dev commands"
-
-
+    
+        "cursor <left_right> <distance_1> <up_down> <distance_2>":
+            R(Function(move_mouse, 
+                extra={"left_right", "distance_1", "up_down", "distance_2"})),
 
         # snippets
         "Key": R(Text('Key("")') + Key("left:2"),  
@@ -110,17 +117,17 @@ class DragonflyDevCommandsRule(MergeRule):
             rdescript="snippet for key action"),
         "[dev] Text": R(Text('Text("")') + Key("left:2"),
             rdescript="snippet for text action"),
-        "[dev] Pause": R(Text(' + Pause("")') + Key("left:2"),
+        "dev Pause": R(Text(' + Pause("")') + Key("left:2"),
             rdescript="snippet for pause action"),
-        "[dev] Repeat": R(Text(" * Repeat(extra='n'),"), 
+        "dev Function": R(Text("Function()") + Key("left")),
+        "dev Repeat": R(Text(" * Repeat(extra='n'),"), 
             rdescript="snippet for repeat"),
         "[dev] descript": R(Text(' rdescript=""') + Key("left"), rdescript="add the rdescript"),
-        "[dev] Choice": R(Text('Choice("", {') + Key("enter:2") + Text("}),") +
-            Key("up:2, right"),
+        "dev Choice": R(Text('Choice("", {') + Pause("10") + Key("enter, up, right:4"),          
                 rdescript="snippet for the choice extra"),
         "[dev] bring app": R(Text("BringApp(r)") + Key("left"), 
             rdescript="snippet for bring app"),
-        "[dev] Mouse [<mouse_button>]": R(Function(type_mouse), 
+        "dev Mouse [<mouse_button>]": R(Function(type_mouse), 
             rdescript="snippet for mouse click command"),
         "[dev] Mouse current [position]": R(Function(type_mouse_current),
             rdescript="snippet for making a command for clicking at the current cursor position"),
@@ -128,8 +135,8 @@ class DragonflyDevCommandsRule(MergeRule):
 
 
         # snippets for emulating recognition.
-        "[dev] Mimic [<text>]": R(Function(type_mimic), rdescript="snippet for mimic"),
-        "[dev] playback [<text>]": R(Function(type_playback), 
+        "dev Mimic [<text>]": R(Function(type_mimic), rdescript="snippet for mimic"),
+        "dev playback [<text>]": R(Function(type_playback), 
             rdescript="snippet for playback"), # this 1 has been inconsistent. maybe because it's automatically putting in two of each parable character e.g. brackets
         "[dev] split dictation [<text>]": R(Function(type_split_dictation), 
             rdescript="puts quotes around each word and separated by commas"),
@@ -161,8 +168,6 @@ class DragonflyDevCommandsRule(MergeRule):
                 rdescript="automatically create a command to click at the current mouse position with given spec"),
             # for some reason the above command is not putting in the left click by default. perhaps someone can fix this
         
-
-
         # same as above but uses the caster standard format with the R and rdescript.
             # maybe somebody knows how to make it so that you can tab through the relevant places
         "commander [<spec>] key": R(Text('"%(spec)s": R(Key(""), rdescript=""')  + Key("right, comma") + Key("left:18"),
@@ -189,6 +194,10 @@ class DragonflyDevCommandsRule(MergeRule):
          #   + Function(type_playback) + Key("down:2") + Text(", rdescript=''") + Key("right, comma, left:3"),        
         
 
+
+
+        
+       
     }
 
     extras = [
@@ -200,7 +209,17 @@ class DragonflyDevCommandsRule(MergeRule):
             "left": "left",
             "right": "right",
             "middle": "middle",
-    }),
+        }),
+        Choice("left_right", {
+            "left": "left",
+            "right": "right",
+        }),
+        Choice("up_down", {
+            "up": "up",
+            "down": "down",
+        }),
+        IntegerRefST("distance_1", 1, 500),
+        IntegerRefST("distance_2", 1, 500),
     ]
     defaults = {"spec": "", "dict": "", "text": "", "mouse_button": ""}
 
