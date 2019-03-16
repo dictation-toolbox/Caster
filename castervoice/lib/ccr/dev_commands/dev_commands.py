@@ -84,8 +84,6 @@ class DevCommands(MergeRule):
     mapping = {
 
         # Dragonfly Snippets
-        "key":
-            R(Text('Key("")') + Key("left:2"), rdescript="DragonflyDev: Snippet for Key Action"),
         "dev key":
             R(Text('Key(""),') + Key("left:3"), rdescript="DragonflyDev: Snippet for Key Action"),
         "dev text":
@@ -107,7 +105,7 @@ class DevCommands(MergeRule):
 
  # Caster Snippets
         "dev bring app":
-            R(Text("BringApp(r)") + Key("left"), rdescript="CasterDev: Snippet for Bring App"),
+            R(Text("BringApp()") + Key("left"), rdescript="CasterDev: Snippet for Bring App"),
         "dev descript":
             R(Text(' rdescript="MyGrammar: "') + Key("left"), rdescript="CasterDev: Add the rdescript"),
 
@@ -127,16 +125,16 @@ class DevCommands(MergeRule):
         "command [<spec>] key":
             R(Text('"%(spec)s": Key(""),') + Key("left:3"),
               rdescript="DragonflyDev: Automatically Create Key Command with Given Spec"),
-        "command [<spec>] keeper":
-            R(Text('"%(text)s [<n>]": Key("") * Repeat(extra="n"),') + Key("left:23"),
+        "command [<spec>] key repeat":
+            R(Text('"%(spec)s [<n>]": Key("") * Repeat(extra="n"),') + Key("left:23"),
               rdescript="DragonflyDev: Automatically Create Repeatable Key Command with Given Spec"),
         "command [<spec>] text":
             R(Text('"%(spec)s": Text(""),') + Key("left:3"),
               rdescript="DragonflyDev: Automatically Create Text Command with Given Spec"),
         "command [<spec>] [bring] app":
-            R(Text('"%(spec)s": BringApp(r),') + Key("left"),
+            R(Text('"%(spec)s": BringApp(),') + Key("left"),
               rdescript="DragonflyDev: Automatically Create Bring App with Given Spec"),
-        "command function [<spec>]":
+        "command [<spec>] function":
             R(Text('"%(spec)s": Function()') + Key("left"),
               rdescript="DragonflyDev: Automatically Create Function Command with Given Spec"),
         "command [<spec>] mimic [<text>]":
@@ -161,7 +159,7 @@ class DevCommands(MergeRule):
             R(Text('"%(spec)s": R(Key(""), rdescript="MyGrammar: "') + Key("right, comma") +
               Key("left:18"),
               rdescript="CasterDev: Automatically Create Key Command with Given Spec"),
-        "commander [<spec>] keeper":
+        "commander [<spec>] key repeat":
             R(Text('"%(spec)s [<n>]": R(Key(""), rdescript="MyGrammar: "') + Key("right") +
               Text(" * Repeat(extra='n'),") + Key("left:38"),
               rdescript="CasterDev: Automatically Create Repeatable Key Command with Given Spec"),
@@ -170,10 +168,10 @@ class DevCommands(MergeRule):
               Key("left:18"),
               rdescript="CasterDev: Automatically Create Text Command with Given Spec"),
         "commander [<spec>] [bring] app":
-            R(Text('"%(spec)s": R(BringApp(r), rdescript="MyGrammar: "') + Key("right, comma") +
+            R(Text('"%(spec)s": R(BringApp(), rdescript="MyGrammar: "') + Key("right, comma") +
               Key("left:17"),
               rdescript="CasterDev: Automatically Create Bing App Command with Given Spec"),
-        "commander function [<spec>]":
+        "commander [<spec>] function":
             R(Text('"%(spec)s": R(Function(), rdescript="MyGrammar: "') + Key("right, comma") +
               Key("left:17"),
               rdescript="CasterDev: Automatically Create Function Command with Given Spec"),
