@@ -103,73 +103,75 @@ class DevCommands(MergeRule):
             R(Function(move_mouse,
                     extra={"left_right", "distance_1", "up_down", "distance_2"})),
 
-        # Dragonfly Snippets
+ # Dragonfly Snippets
         "key":
-            R(Text('Key("")') + Key("left:2"), rdescript="Snippet for Key Action"),
+            R(Text('Key("")') + Key("left:2"), rdescript="DragonflyDev: Snippet for Key Action"),
         "dev key":
-            R(Text('Key(""),') + Key("left:3"), rdescript="Snippet for Key Action"),
+            R(Text('Key(""),') + Key("left:3"), rdescript="DragonflyDev: Snippet for Key Action"),
         "[dev] text":
-            R(Text('Text("")') + Key("left:2"), rdescript="Snippet for Text Action"),
+            R(Text('Text("")') + Key("left:2"), rdescript="DragonflyDev: Snippet for Text Action"),
         "dev pause":
-            R(Text(' + Pause("")') + Key("left:2"), rdescript="Snippet for Pause Action"),
+            R(Text(' + Pause("")') + Key("left:2"), rdescript="DragonflyDev: Snippet for Pause Action"),
         "dev function":
             R(Text("Function()") + Key("left")),
         "dev repeat":
-            R(Text(" * Repeat(extra='n'),"), rdescript="Snippet for Repeat"),
-        "[dev] descript":
-            R(Text(' rdescript="MyGrammar: "') + Key("left"), rdescript="Add the Rdescript"),
+            R(Text(" * Repeat(extra='n'),"), rdescript="DragonflyDev: Snippet for Repeat"),
         "dev choice":
             R(Text('Choice("", {') + Pause("10") + Key("enter, up, right:4"),
-              rdescript="Snippet for the Choice Extra"),
-        "[dev] bring app":
-            R(Text("BringApp(r)") + Key("left"), rdescript="Snippet for Bring App"),
+              rdescript="DragonflyDev: Snippet for the Choice Extra"),
         "dev mouse [<mouse_button>]":
-            R(Function(type_mouse), rdescript="Snippet for Mouse Click Command"),
+            R(Function(type_mouse), rdescript="DragonflyDev: Snippet for Mouse Click Command"),
         "[dev] mouse current [position]":
             R(Function(type_mouse_current),
-              rdescript= "Snippet for Making a Command for Clicking at the Current Cursor Position"),
+              rdescript="DragonflyDev: Snippet for Making a Command for Clicking at the Current Cursor Position"),
 
- # snippets for emulating Dragonfly/Castor recognition.
+ # Caster Snippets
+        "[dev] bring app":
+            R(Text("BringApp(r)") + Key("left"), rdescript="CasterDev: Snippet for Bring App"),
+        "[dev] descript":
+            R(Text(' rdescript="MyGrammar: "') + Key("left"), rdescript="CasterDev: Add the rdescript"),   
+
+ # Snippets for emulating Dragonfly or Caster recognition.
         "dev mimic [<text>]":
             R(Function(type_mimic), 
-              rdescript="Snippet for Mimic"),
+              rdescript="DragonflyDev: Snippet for Mimic"),
         "dev playback [<text>]": # This command has been inconsistent. 
             # maybe because it's automatically putting in two of each parable character e.g. brackets
             R(Function(type_playback), 
-              rdescript="Snippet for Playback"),
+              rdescript="DragonflyDev: Snippet for Playback"),
         "[dev] split dictation [<text>]":
             R(Function(type_split_dictation),
-              rdescript="Puts Quotes Around Each Word And Separated By Commas"),
+              rdescript="DragonflyDev: Puts Quotes Around Each Word and Separated by Commas"),
 
  # Dragonfly Development: Standard dragonfly commands
         "command [<spec>] key":
             R(Text('"%(spec)s": Key(""),') + Key("left:3"),
-              rdescript="Automatically Create Key Command with Given Spec"),
+              rdescript="DragonflyDev: Automatically Create Key Command with Given Spec"),
         "command [<spec>] keeper":
             R(Text('"%(text)s [<n>]": Key("") * Repeat(extra="n"),') + Key("left:23"),
-              rdescript="Automatically Create Repeatable Key Command with Given Spec"),
+              rdescript="DragonflyDev: Automatically Create Repeatable Key Command with Given Spec"),
         "command [<spec>] text":
             R(Text('"%(spec)s": Text(""),') + Key("left:3"),
-              rdescript="Automatically Create Text Command with Given Spec"),
+              rdescript="DragonflyDev: Automatically Create Text Command with Given Spec"),
         "command [<spec>] [bring] app":
             R(Text('"%(spec)s": BringApp(r),') + Key("left"),
-              rdescript="Automatically Create Bring App with Given Spec"),
+              rdescript="DragonflyDev: Automatically Create Bring App with Given Spec"),
         "command function [<spec>]":
             R(Text('"%(spec)s": Function()') + Key("left"),
-              rdescript="Automatically Create Function Command with Given Spec"),
+              rdescript="DragonflyDev: Automatically Create Function Command with Given Spec"),
         "command [<spec>] mimic [<text>]":
             R(Text('"%(spec)s": ,') + Key("left") + Function(type_mimic),
-              rdescript="Automatically Create Mimic Command with Given Spec"),
+              rdescript="DragonflyDev: Automatically Create Mimic Command with Given Spec"),
         "command [<spec>] playback [<text>]":# This command has been inconsistent. 
                                              # maybe because it's automatically putting in two of each parable character e.g. bracket
                                              # might have to adjust it depending on the editor
             R(Text('"%(spec)s": ,') + Key("left") + Function(type_playback),
-              rdescript="Automatically Create Playback Command with Given Spec"),
+              rdescript="DragonflyDev: Automatically Create Playback Command with Given Spec"),
         "command [<spec>] mouse [<mouse_button>]": # for some reason the above command is not putting in the left click by default. 
                                                    # perhaps someone can fix this
             R(Text('"%(spec)s": ,') + Key("left") + Function(
                 type_mouse_current_position_button, extra={"mouse_button"}),
-                rdescript="Automatically Create a Command to Click at the Current Mouse Position with Given Spec"),
+                rdescript="DragonflyDev: Automatically Create a Command to Click at the Current Mouse Position with Given Spec"),
 
 
  # Caster Development: commands uses the caster standard format with the R and rdescript.
