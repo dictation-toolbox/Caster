@@ -23,7 +23,7 @@
     - `print to console` - `print()`
     - `open file` -  `open('filename', 'r') as f:`
 - [Contributing / How can I help?](https://github.com/synkarius/caster/blob/master/caster/doc/CONTRIBUTING.md)
-- [Making your own Dragonfly and Caster rules](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/examples/Rule%20Construction/)
+- [Making your own Dragonfly and Caster rules](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/examples/Rule%20Construction/) augmented by [Development Commands](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/CCR/)
 - Need support or just curious? Join our community at [![Join the chat at https://gitter.im/synkarius/caster](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/synkarius/caster?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) and [Discord](https://discord.gg/9eAAsCJ) for voice chat.
 - The [Voice Index](castervoice/doc/readthedocs/Voice_Index.md) is a curated source of information: Videos, Blogs, Repositories, Presentations, etc related to Dragonfly, voice programming, and accessibility.
 
@@ -31,7 +31,7 @@
 
 - [Easy Setup](castervoice/doc/Installation.md) and Configurable Settings in `C:\Users\%USERNAME%\.caster`
 
-- Customize Commands aka `Specs` and their actions via [simplified filter rules](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/CCR/#rule-filters-simplified) and [filter rules](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/examples/rules/Caster%20Rules/#rule-filters)([code](https://github.com/dictation-toolbox/caster/tree/master/caster/user/filters/examples)).
+- Customize Commands aka `Specs` and their actions via [simplified filter rules](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/CCR/#rule-filters-simplified) and [filter rules](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/examples/rules/Caster%20Rules/#rule-filters)[code](https://github.com/dictation-toolbox/caster/tree/master/caster/user/filters/examples).
 
 - Compatible Speech Recognition Engines
 
@@ -48,7 +48,8 @@
   - Development Tools: Command Prompt, GitBash, KDiff3
   - Statistics: RStudio and lyx
   - Browsers: Firefox, Chrome and Internet Explorer
-  - Applications: Foxit Reader, Gitter, Microsoft Word, fman and Total Commander
+  - Git Client:  Github Desktop 
+  - Applications: Foxit Reader, Gitter, fman, Total Commander, Typora, Microsoft Word, Outlook, and Excel
 
 - [Editing and Navigation](CasterQuickReference.pdf)
 
