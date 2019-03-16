@@ -8,6 +8,7 @@
 - [Dragon](#dragon)
 - [Eclipse](#eclipse)
 - [Emacs](#emacs)
+- [Excel](#excel)
 - [Internet Explorer](#internet-explorer)
 - [File Dialogues](#file-dialogues)
 - [Firefox](#firefox)
@@ -20,6 +21,7 @@
 - [Jetbrains](#jetbrains)
 - [Microsoft Visual Studio](#microsoft-visual-studio)
 - [Notepad++](#notepad)
+- [Outlook](#outlook)
 - [RStudio](#rstudio)
 - [SQL Developer](#sql-developer)
 - [SQL Server Management Studio](#sql-server-management-studio)
@@ -172,6 +174,20 @@
 | `document backward`   | `open file`           | `undo`             |
 | `document forward`    | `paragraph backward`  | `word backward`    |
 | `forward delete`      | `paragraph forward`   | `word forward`     |
+
+# Excel
+
+| Command                                                  | Command                          | Command                            |
+|:---------------------------------------------------------|:---------------------------------|:-----------------------------------|
+| `next sheet [<n>]`                                       | `(prior / previous) sheet [<n>]` | `[select] cell <column_1> <row_1>` |
+| `select <column_1> <row_1> through <column_2> <row_2>  ` | `go to cell`                     | `select current column`            |
+| `select current row`                                     | `top of column`                  | `beginning of row  `               |
+| `insert stuff`                                           | `insert row`                     | `insert column`                    |
+| `insert cell [to the] left`                              | `insert cell above  `            | `insert pivot table`               |
+| `insert pivot chart`                                     | `add-ins`                        | `add border`                       |
+| `arrange Windows`                                        | `auto sum`                       | `freeze panes`                     |
+| `toggle edit cell`                                       | ` `                              | ` `                                |
+
 
 # Internet Explorer
 
