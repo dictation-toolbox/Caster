@@ -37,9 +37,9 @@ class GridControlRule(MergeRule):
 
     mapping = {
         "[<pre>] <color> <n> [<action>]":
-            R(Function(send_input, nexus=_NEXUS), rdescript="Rainbow Grid: Action"),
+            R(Function(send_input, nexus=_NEXUS), rdescript="Rainbow: Rainbow Grid: Action"),
         "exit | escape | cancel":
-            R(Function(kill, nexus=_NEXUS), rdescript="Exit Rainbow Grid"),
+            R(Function(kill, nexus=_NEXUS), rdescript="Rainbow: Exit Rainbow Grid"),
     }
     extras = [
         IntegerRefST("pre", 0, 9),

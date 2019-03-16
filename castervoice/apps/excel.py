@@ -81,57 +81,57 @@ class ExcelRule(MergeRule):
 
     mapping = {
         "next sheet [<n>]":
-            R(Key("c-pgdown"), rdescript="next sheet")*Repeat(extra='n'),
+            R(Key("c-pgdown"), rdescript="Excel: next sheet")*Repeat(extra='n'),
         "(prior | previous) sheet [<n>]":
-            R(Key("c-pgup"), rdescript="prior sheet")*Repeat(extra='n'),
+            R(Key("c-pgup"), rdescript="Excel: prior sheet")*Repeat(extra='n'),
 
         # this uses the NATO phonetic alphabet. if you want to change it ,
         # change the dictionary above called word_to_letter
         "[select] cell <column_1> <row_1>":
             R(Key("c-g") + Text("%(column_1)s%(row_1)s") + Key("enter"),
-              rdescript="select cell with given coordinates e.g. alpha hotel 7"),
+              rdescript="Excel: Select Cell with Given Coordinates e.g. Alpha Hotel 7"),
         "select <column_1> <row_1> through <column_2> <row_2>":
             R(Key("c-g") + Text("%(column_1)s%(row_1)s:%(column_2)s%(row_2)s") +
               Key("enter"),
-              rdescript="selects range of cells e.g. bravo 5 through golf yankee 10"),
+              rdescript="Excel: Selects Range of Cells e.g. Bravo 5 Through Golf Yankee 10"),
         "go to cell":
-            R(Key("c-g"), rdescript="open 'go to' dialogbox"),
+            R(Key("c-g"), rdescript="Excel:Open 'go to' Dialogbox"),
         "select current column":
-            R(Key("c-space")),
+            R(Key("c-space"), rdescript="Excel: Select Current Column"),
         "select current row":
-            R(Key("s-space")),
+            R(Key("s-space"), rdescript="Excel: Select Current Row"),
         "top of column":
-            R(Key("c-up"), rdescript="go to top of column"),
+            R(Key("c-up"), rdescript="Excel: Go to Top of Column"),
         "beginning of row":
-            R(Key("c-left"), rdescript="go to beginning of row"),
+            R(Key("c-left"), rdescript="Excel: Go to Beginning of Row"),
         "insert stuff":
-            Key("cs-plus"),
+            R(Key("cs-plus"), rdescript="Excel: Insert Stuff"),
         "insert row":
             R(Key("cs-plus, a-r, enter"),
-              rdescript="inserts entire row above current row"),
+              rdescript="Excel: Inserts Entire Row Above Current Row"),
         "insert column":
             R(Key("cs-plus, a-c, enter"),
-              rdescript="inserts entire column to the left of current column"),
+              rdescript="Excel: Inserts Entire Column to The Left of Current Column"),
         "insert cell [to the] left":
             R(Key("cs-plus, a-i, enter"),
-              rdescript="insert single cell to the left of current cell"),
+              rdescript="Excel: Insert Single Cell to The Left of Current Cell"),
         "insert cell above":
             R(Key("cs-plus, a-d, enter"),
-              rdescript="insert single cell above current cell"),
+              rdescript="Excel: Insert Single Cell above Current Cell"),
         "insert pivot table":
-            R(Key("a-n, v"), rdescript="insert pivot table"),
+            R(Key("a-n, v"), rdescript="Excel: Insert Pivot Table"),
         "insert pivot chart":
-            R(Key("a-n, s, z, c"), rdescript="insert pivot chart"),
+            R(Key("a-n, s, z, c"), rdescript="Excel: Insert Pivot Chart"),
         "add-ins":
-            R(Key("a-t, i"), rdescript="go to add-ins"),
+            R(Key("a-t, i"), rdescript="Excel: Go to Add Ins"),
         "add border":
-            R(Key("cs-ampersand"), rdescript="add border"),
+            R(Key("cs-ampersand"), rdescript="Excel: Add Border"),
         "arrange Windows":
-            R(Key("a-w/10, a"), rdescript="arrange Windows"),
+            R(Key("a-w/10, a"), rdescript="Excel: Arrange Windows"),
         "auto sum":
-            R(Key("a-equal"), rdescript="auto sum"),
+            R(Key("a-equal"), rdescript="Excel: Auto Sum"),
         "freeze panes":
-            R(Key("a-w, f"), rdescript="freeze panes"),
+            R(Key("a-w, f"), rdescript="Excel: Freeze Panes"),
 
         # From Mark Lillibridge regarding the edit cell command below:
         # There are at least two modes, edit (blue background) and enter (yellow background).
@@ -157,10 +157,7 @@ class ExcelRule(MergeRule):
         # First time, edits current cell via formula bar.  Unlike with
         # editing directly in a cell, this highlights ranges and cells used.
         "toggle edit cell":
-            R(Key("f2"),
-              rdescript=
-              "edits the cell rather than fully replacing; also toggles between edit and enter mode"
-              ),
+            R(Key("f2"), rdescript="Edits The Cell Rather Than Fully Replacing; Also Toggles Between Edit and Enter Mode"),
     }
     extras = [
         Dictation("dict"),
