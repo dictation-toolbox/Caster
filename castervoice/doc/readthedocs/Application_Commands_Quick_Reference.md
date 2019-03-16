@@ -8,6 +8,7 @@
 - [Dragon](#dragon)
 - [Eclipse](#eclipse)
 - [Emacs](#emacs)
+- [Excel](#excel)
 - [Internet Explorer](#internet-explorer)
 - [File Dialogues](#file-dialogues)
 - [Firefox](#firefox)
@@ -20,6 +21,7 @@
 - [Jetbrains](#jetbrains)
 - [Microsoft Visual Studio](#microsoft-visual-studio)
 - [Notepad++](#notepad)
+- [Outlook](#outlook)
 - [RStudio](#rstudio)
 - [SQL Developer](#sql-developer)
 - [SQL Server Management Studio](#sql-server-management-studio)
@@ -173,6 +175,20 @@
 | `document forward`    | `paragraph backward`  | `word backward`    |
 | `forward delete`      | `paragraph forward`   | `word forward`     |
 
+# Excel
+
+| Command                                                  | Command                          | Command                            |
+|:---------------------------------------------------------|:---------------------------------|:-----------------------------------|
+| `next sheet [<n>]`                                       | `(prior / previous) sheet [<n>]` | `[select] cell <column_1> <row_1>` |
+| `select <column_1> <row_1> through <column_2> <row_2>  ` | `go to cell`                     | `select current column`            |
+| `select current row`                                     | `top of column`                  | `beginning of row  `               |
+| `insert stuff`                                           | `insert row`                     | `insert column`                    |
+| `insert cell [to the] left`                              | `insert cell above  `            | `insert pivot table`               |
+| `insert pivot chart`                                     | `add-ins`                        | `add border`                       |
+| `arrange Windows`                                        | `auto sum`                       | `freeze panes`                     |
+| `toggle edit cell`                                       | ` `                              | ` `                                |
+
+
 # Internet Explorer
 
 | Command                             | Command       | Command      |
@@ -300,6 +316,36 @@
 |:---------------------|:---------------|
 | `function list`      | `remove style` |
 | `preview in browser` | `stylize <n2>` |
+
+# Outlook
+
+| Command                            | Command                            | Command                             |
+|:-----------------------------------|:-----------------------------------|:------------------------------------|
+| `new (appointment / event)`        | `new contact`                      | `new folder`                        |
+| `advanced (search / find)`         | `new office document`              | `(inbox / go to inbox)`             |
+| `new journal entry`                | `new task`                         | `new contact group`                 |
+| `(new message / new mail)`         | `new note`                         | `open the new search folder window` |
+| `new meeting request`              | `new task request`                 | `to field`                          |
+| `c c field`                        | `subject [field]`                  | `subject <text>`                    |
+| `attach file`                      | `add to dictionary`                | `click send message`                |
+| `find and replace`                 | `check names`                      | `spell check`                       |
+| `save as`                          | `expand [that]`                    | `collapse [that]`                   |
+| `[go to] sent mail`                | `go to drafts`                     | `go to trash`                       |
+| `go to spam`                       | `go to starred`                    | `go to important`                   |
+| `go to outbox`                     | `sort by [<sort_by>]`              | `reverse sort`                      |
+| `block sender`                     | `search [bar] [<dict>]`            | `(message list / messages)`         |
+| `empty search [bar]`               | `refresh [mail]`                   | `open attachment`                   |
+| `[open] attachment menu`           | `next message [<n>]`               | `(prior / previous) message [<n>]`  |
+| `[select] next link`               | `[select] (previous / prior) link` | `workweek [view]`                   |
+| `full week [view]`                 | `month view`                       | `reply all`                         |
+| `forward`                          | `Mark as read`                     | `Mark as unread`                    |
+| `reply`                            | `(folder / go to folder)`          | `next pane [<n>]`                   |
+| `(un /prior /previous) pane [<n>]` | `mail view`                        | `calendar`                          |
+| `contacts`                         | `tasks`                            | `go to notes`                       |
+| `folder list`                      | `find contact`                     | `address book`                      |
+| `next open message`                | `(prior / previous) open message`  | `previous view`                     |
+| `next view`                        | `[go] back`                        | ` `                                 |
+
 
 # RStudio
 
