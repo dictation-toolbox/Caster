@@ -167,47 +167,49 @@ class MainRule(MergeRule):
 
     mapping = {
         # update management
-        "update caster":
-            DependencyUpdate([PIP_PATH, "install", "--upgrade", "castervoice"]),
+        "update caster":    R(DependencyUpdate([PIP_PATH, "install", "--upgrade", "castervoice"]),
+                        rdescript="Core: Update and restart Caster"),
 
-        "update dragonfly":
-            DependencyUpdate([PIP_PATH, "install", "--upgrade", "dragonfly2"]),
+        "update dragonfly":    R(DependencyUpdate([PIP_PATH, "install", "--upgrade", "dragonfly2"]),
+                        rdescript="Core: Update dragonfly2 and restart Caster"),
 
         # hardware management
         "volume <volume_mode> [<n>]":
-            Function(navigation.volume_control, extra={'n', 'volume_mode'}),
+            R(Function(navigation.volume_control, 
+              extra={'n', 'volume_mode'}),
+              rdescript="Volume Control"),
 
-        "change monitor":
-            Key("w-p") + Pause("100") + Function(change_monitor),
+        "change monitor":   R(Key("w-p") + Pause("100") + Function(change_monitor),
+                        rdescript="Change Monitor"),
 
 
         # window management
-        'minimize':
-            Playback([(["minimize", "window"], 0.0)]),
-        'maximize':
-            Playback([(["maximize", "window"], 0.0)]),
-        "remax":
-            Key("a-space/10,r/10,a-space/10,x"),
+        'minimize':   R(Playback([(["minimize", "window"], 0.0)]), 
+                        rdescript="Minimize Window"),
+        'maximize':   R(Playback([(["maximize", "window"], 0.0)]), 
+                        rdescript="Maximize Window"),
+        "remax":   R(Key("a-space/10,r/10,a-space/10,x"), 
+                        rdescript="Force Maximize Window"),
 
         # passwords
 
         # mouse alternatives
-        "legion [<monitor>]":
-            Function(navigation.mouse_alternates, mode="legion", nexus=_NEXUS),
+        "legion [<monitor>]":   R(Function(navigation.mouse_alternates, mode="legion", nexus=_NEXUS),
+                        rdescript="Activate Legion"),
 
-        "rainbow [<monitor>]":
-            Function(navigation.mouse_alternates, mode="rainbow", nexus=_NEXUS),
+        "rainbow [<monitor>]":   R(Function(navigation.mouse_alternates, mode="rainbow", nexus=_NEXUS),
+                        rdescript="Activate Rainbow Grid"),
 
-        "douglas [<monitor>]":
-            Function(navigation.mouse_alternates, mode="douglas", nexus=_NEXUS),
+        "douglas [<monitor>]":  R(Function(navigation.mouse_alternates, mode="douglas", nexus=_NEXUS),
+                        rdescript="Activate Douglas Grid"),
 
 
         # ccr de/activation
-        "<enable> <name>":
-            Function(_NEXUS.merger.global_rule_changer(), save=True),
+        "<enable> <name>":   R(Function(_NEXUS.merger.global_rule_changer(), save=True),
+                        rdescript="Toggle CCR Module"),
 
-        "<enable> <name2>":
-            Function(_NEXUS.merger.selfmod_rule_changer(), save=True),
+        "<enable> <name2>":   R(Function(_NEXUS.merger.selfmod_rule_changer(), save=True),
+                        rdescript="Toggle sm-CCR Module"),
 
     }
     extras = [
@@ -229,7 +231,6 @@ class MainRule(MergeRule):
         IntegerRefST("monitor", 1, 10)
     ]
     defaults = {"n": 1, "nnv": 1, "text": "", "volume_mode": "setsysvolume", "enable": -1}
-
 
 grammar = Grammar('general')
 main_rule = MainRule()
