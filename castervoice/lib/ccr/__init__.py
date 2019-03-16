@@ -25,6 +25,7 @@ command_sets = {
     "sql.sql": ("SQL", ),
     "prolog.prolog": ("Prolog", ),
     "vhdl.vhdl": ("VHDL", ),
+    "vscode.vscode": ("VScode")
 }
 
 for module_name, class_name_tup in command_sets.iteritems():
