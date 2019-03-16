@@ -5,6 +5,7 @@ A quick reference guide for the language-specific commands included with Caster.
 - [Bash](#bash)
 - [C++](#c)
 - [C&#35;](#c-1)
+- [Development](#development)
 - [Haxe](#haxe)
 - [HTML](#html)
 - [Java](#java)
@@ -98,7 +99,35 @@ A quick reference guide for the language-specific commands included with Caster.
 | interface                 | `interface TOKEN {}`            |                  |                                                               |
 
 # Development
-
+| Command                                     | Output                                                                     |
+|:--------------------------------------------|:---------------------------------------------------------------------------|
+| `dev key`                                   | `Key(""),`                                                                 |
+| `dev text`                                  | `Text("")`                                                                 |
+| `dev pause`                                 | ` + Pause("")`                                                             |
+| `dev function`                              | `Function()`                                                               |
+| `dev repeat`                                | ` * Repeat(extra='n'),`                                                    |
+| `dev choice`                                | `Choice("", {}) `                                                          |
+| `dev mouse [<mouse_button>]`                | `Mouse("left")`                                                            |
+| `dev mouse current [position]`              | `Mouse("[1003, 537]")`                                                     |
+| `dev bring app`                             | `BringApp()`                                                               |
+| `dev descript`                              | ` rdescript="MyGrammar: "`                                                 |
+| `dev mimic [<text>]`                        | `Mimic("")`                                                                |
+| `dev split dictation [<text>]`              | `"this", "is", "an", "example"`                                            |
+| `command [<spec>] key`                      | `"example": Key(""),`                                                      |
+| `command [<spec>] key repeat`               | `"example [<n>]": Key("") * Repeat(extra="n"),`                            |
+| `command [<spec>] text`                     | `"example": Text(""),`                                                     |
+| `command [<spec>] [bring] app`              | `"example": BringApp(),`                                                   |
+| `command [<spec>] function`                 | `"example": Function()`                                                    |
+| `command [<spec>] mimic [<text>]`           | `"example": Mimic("test"),`                                                |
+| `command [<spec>] playback [<text>]`        | `"example": Playback([(["test", "command"], 0.0),    ,`                    |
+| `command [<spec>] mouse [<mouse_button>]`   | `"example": Mouse("[693, 468], left,`                                      |
+| `commander [<spec>] key`                    | `"example": R(Key(""), rdescript="MyGrammar: ",`                           |
+| `commander [<spec>] key repeat`             | `"example [<n>]": R(Key(""), rdescript="MyGrammar: " * Repeat(extra='n'),` |
+| `commander [<spec>] text`                   | `"example": R(Text(""), rdescript="MyGrammar: ",`                          |
+| `commander [<spec>] [bring] app`            | `"example": R(BringApp(), rdescript="MyGrammar: ",`                        |
+| `commander [<spec>] function`               | `"example": R(Function(), rdescript="MyGrammar: ",`                        |
+| `commander [<spec>] mimic [<text>]`         | `"example": R(Mimic("test"), rdescript="MyGrammar: ",`                     |
+| `commander [<spec>] mouse [<mouse_button>]` | `"example": R(Mouse("[1244, 690], left, rdescript="" ,`                    |
 
 # Go
 | Command                | Output                          |   | Command            | Output                              |
