@@ -168,18 +168,18 @@ class MainRule(MergeRule):
     mapping = {
         # update management
         "update caster":
-            R(DependencyUpdate([PIP_PATH, "install", "--upgrade", "castervoice"]),
-              rdescript="Core: Update and restart Caster"),
+            DependencyUpdate([PIP_PATH, "install", "--upgrade", "castervoice"]),
+
         "update dragonfly":
-            R(DependencyUpdate([PIP_PATH, "install", "--upgrade", "dragonfly2"]),
-              rdescript="Core: Update dragonfly2 and restart Caster"),
+            DependencyUpdate([PIP_PATH, "install", "--upgrade", "dragonfly2"]),
+
         # hardware management
         "volume <volume_mode> [<n>]":
-            R(Function(navigation.volume_control, extra={'n', 'volume_mode'}),
-              rdescript="Volume Control"),
+            Function(navigation.volume_control, extra={'n', 'volume_mode'}),
+
         "change monitor":
-            R(Key("w-p") + Pause("100") + Function(change_monitor),
-              rdescript="Change Monitor"),
+            Key("w-p") + Pause("100") + Function(change_monitor),
+
 
         # window management
         'minimize':
@@ -187,28 +187,28 @@ class MainRule(MergeRule):
         'maximize':
             Playback([(["maximize", "window"], 0.0)]),
         "remax":
-            R(Key("a-space/10,r/10,a-space/10,x"), rdescript="Force Maximize"),
+            Key("a-space/10,r/10,a-space/10,x"),
 
         # passwords
 
         # mouse alternatives
         "legion [<monitor>]":
-            R(Function(navigation.mouse_alternates, mode="legion", nexus=_NEXUS),
-              rdescript="Activate Legion"),
+            Function(navigation.mouse_alternates, mode="legion", nexus=_NEXUS),
+
         "rainbow [<monitor>]":
-            R(Function(navigation.mouse_alternates, mode="rainbow", nexus=_NEXUS),
-              rdescript="Activate Rainbow Grid"),
+            Function(navigation.mouse_alternates, mode="rainbow", nexus=_NEXUS),
+
         "douglas [<monitor>]":
-            R(Function(navigation.mouse_alternates, mode="douglas", nexus=_NEXUS),
-              rdescript="Activate Douglas Grid"),
+            Function(navigation.mouse_alternates, mode="douglas", nexus=_NEXUS),
+
 
         # ccr de/activation
         "<enable> <name>":
-            R(Function(_NEXUS.merger.global_rule_changer(), save=True),
-              rdescript="Toggle CCR Module"),
+            Function(_NEXUS.merger.global_rule_changer(), save=True),
+
         "<enable> <name2>":
-            R(Function(_NEXUS.merger.selfmod_rule_changer(), save=True),
-              rdescript="Toggle sm-CCR Module"),
+            Function(_NEXUS.merger.selfmod_rule_changer(), save=True),
+
     }
     extras = [
         IntegerRefST("n", 1, 50),
