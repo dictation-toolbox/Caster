@@ -169,7 +169,6 @@ class VisualStudioCodeNonCcrRule(MergeRule):
             R(Key("cs-p"), rdescript="Visual Studio Code: Command Palette"),
         "(Open [file] | Go to [tab]) [<text>]":
             R(Key("c-p") + Text("%(text)s"), rdescript="Visual Studio Code: Go To File"),
-        "normal open": R(Key("c-o"), rdescript="open files in the Windows Explorer child window of VS code"),
         "Save file":
             R(Key("c-s"), rdescript="Visual Studio Code: Save File"),
         "Save and close":
@@ -263,7 +262,7 @@ class VisualStudioCodeNonCcrRule(MergeRule):
         "step over [<n>]":
             R(Key("f10/50")*Repeat(extra="n"), rdescript="Visual Studio Code:Step Over"),
         "step into":
-            R(Key("f11"), rdescript="Visual Studio Code:Step Into"),
+            R(Key("f11"), rdescript="Visual Studio Coade:Step Into"),
         "step out [of]":
             R(Key("s-f11"), rdescript="Visual Studio Code:Step Out"),
         "resume":
@@ -387,3 +386,4 @@ grammar.load()
 #         gfilter.run_on(rule)
 #         grammar.add_rule(rule)
 #         grammar.load()
+restart Dragon restart Dragon restart Dragon
