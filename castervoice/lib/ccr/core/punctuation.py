@@ -13,81 +13,81 @@ class Punctuation(MergeRule):
 
     mapping = {
         "semper":
-            R(Key("semicolon"), rdescript="Semicolon"),
+            R(Key("semicolon"), rdescript="Core: Semicolon"),
         "quotes":
-            R(Key("dquote,dquote,left"), rdescript="Quotation Marks"),
+            R(Key("dquote,dquote,left"), rdescript="Core: Quotation Marks"),
         "thin quotes":
-            R(Key("apostrophe,apostrophe,left"), rdescript="Thin Quotation Marks"),
+            R(Key("apostrophe,apostrophe,left"), rdescript="Core: Thin Quotation Marks"),
         "[is] greater than":
-            R(Key("rangle"), rdescript="> Comparison"),
+            R(Key("rangle"), rdescript="Core: > Comparison"),
         "[is] less than":
-            R(Key("langle"), rdescript="< Comparison"),
+            R(Key("langle"), rdescript="Core: < Comparison"),
         "[is] greater [than] [or] equal [to]":
-            R(Key("rangle, equals"), rdescript=">= Comparison"),
+            R(Key("rangle, equals"), rdescript="Core: >= Comparison"),
         "[is] less [than] [or] equal [to]":
-            R(Key("langle, equals"), rdescript="<= Comparison"),
+            R(Key("langle, equals"), rdescript="Core: <= Comparison"),
         "[is] equal to":
-            R(Key("equals,equals"), rdescript="Equality"),
+            R(Key("equals,equals"), rdescript="Core: Equality"),
         "prekris":
-            R(Key("lparen, rparen, left"), rdescript="Parentheses"),
+            R(Key("lparen, rparen, left"), rdescript="Core: Parentheses"),
         "brax":
-            R(Key("lbracket, rbracket, left"), rdescript="Square Brackets"),
+            R(Key("lbracket, rbracket, left"), rdescript="Core: Square Brackets"),
         "curly":
-            R(Key("lbrace, rbrace, left"), rdescript="Curly Braces"),
+            R(Key("lbrace, rbrace, left"), rdescript="Core: Curly Braces"),
         "angle":
-            R(Key("langle, rangle, left"), rdescript="Angle Brackets"),
+            R(Key("langle, rangle, left"), rdescript="Core: Angle Brackets"),
         "[<long>] equals":
-            R(Text("%(long)s" + "=" + "%(long)s"), rdescript="Equals Sign"),
+            R(Text("%(long)s" + "=" + "%(long)s"), rdescript="Core: Equals Sign"),
         "[<long>] plus":
-            R(Text("%(long)s" + "+" + "%(long)s"), rdescript="Plus Sign"),
+            R(Text("%(long)s" + "+" + "%(long)s"), rdescript="Core: Plus Sign"),
         "[<long>] minus":
-            R(Text("%(long)s" + "-" + "%(long)s"), rdescript="Dash"),
+            R(Text("%(long)s" + "-" + "%(long)s"), rdescript="Core: Dash"),
         "pipe (sim | symbol)":
-            R(Text("|"), rdescript="Pipe Symbol"),
+            R(Text("|"), rdescript="Core: Pipe Symbol"),
         "long pipe (sim | symbol)":
-            R(Text(" | "), rdescript="Pipe Symbol surrounded by spaces"),
+            R(Text(" | "), rdescript="Core: Pipe Symbol surrounded by spaces"),
         'ace [<npunc>]':
-            R(Key("space"), rdescript="Space")*Repeat(extra="npunc"),
+            R(Key("space"), rdescript="Core: Space")*Repeat(extra="npunc"),
         "clamor":
-            R(Text("!"), rdescript="Exclamation Mark"),
+            R(Text("!"), rdescript="Core: Exclamation Mark"),
         "deckle":
-            R(Text(":"), rdescript="Colon"),
+            R(Text(":"), rdescript="Core: Colon"),
         "long deckle":
-            R(Key("right") + Text(": "), rdescript="move right type colon then space"),
+            R(Key("right") + Text(": "), rdescript="Core: move right type colon then space"),
         "starling":
-            R(Key("asterisk"), rdescript="Asterisk"),
+            R(Key("asterisk"), rdescript="Core: Asterisk"),
         "questo":
-            R(Text("?"), rdescript="Question Mark"),
+            R(Text("?"), rdescript="Core: Question Mark"),
         "comma":
-            R(Text(","), rdescript="Comma"),
+            R(Text(","), rdescript="Core: Comma"),
         "carrot":
-            R(Text("^"), rdescript="Carat"),
+            R(Text("^"), rdescript="Core: Carat"),
         "(period | dot)":
-            R(Text("."), rdescript="Dot"),
+            R(Text("."), rdescript="Core: Dot"),
         "atty":
-            R(Text("@"), rdescript="At Sign"),
+            R(Text("@"), rdescript="Core: At Sign"),
         "hash tag":
-            R(Text("#"), rdescript="Hash Tag"),
+            R(Text("#"), rdescript="Core: Hash Tag"),
         "apostrophe":
-            R(Text("'"), rdescript="Apostrophe"),
+            R(Text("'"), rdescript="Core: Apostrophe"),
         "underscore":
-            R(Text("_"), rdescript="Underscore"),
+            R(Text("_"), rdescript="Core: Underscore"),
         "backslash":
-            R(Text("\\"), rdescript="Back Slash"),
+            R(Text("\\"), rdescript="Core: Back Slash"),
         "slash":
-            R(Text("/"), rdescript="Forward Slash"),
+            R(Text("/"), rdescript="Core: Forward Slash"),
         "Dolly":
-            R(Text("$"), rdescript="Dollar Sign"),
+            R(Text("$"), rdescript="Core: Dollar Sign"),
         "modulo":
-            R(Key("percent"), rdescript="Percent Sign"),
+            R(Key("percent"), rdescript="Core: Percent Sign"),
         'tabby [<npunc>]':
-            R(Key("tab"), rdescript="Tab")*Repeat(extra="npunc"),
+            R(Key("tab"), rdescript="Core: Tab")*Repeat(extra="npunc"),
         "boom":
-            R(Text(", "), rdescript="Comma + Space"),
+            R(Text(", "), rdescript="Core: Comma + Space"),
         "ampersand":
-            R(Key("ampersand"), rdescript="Ampersand"),
+            R(Key("ampersand"), rdescript="Core: Ampersand"),
         "tilde":
-            R(Key("tilde"), rdescript="Tilde"),
+            R(Key("tilde"), rdescript="Core: Tilde"),
 
     }
 
