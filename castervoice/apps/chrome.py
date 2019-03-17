@@ -25,117 +25,101 @@ from castervoice.lib.dfplus.state.short import R
 class ChromeRule(MergeRule):
     pronunciation = "google chrome"
     mapping = {
-        "new [<n>]":
-            R(Key("c-t"), rdescript="Browser: New Tab")*Repeat(extra="n"),
         "new window":
             Key("c-n"),
         "(new incognito window | incognito)":
             Key("cs-n"),
         "new tab [<n>]":
-            R(Key("c-t"), rdescript="Browser: New Tab")*Repeat(extra="n"),
+            R(Key("c-t"), rdescript="Chrome: New Tab")*Repeat(extra="n"),
         "reopen tab [<n>]":
-            R(Key("cs-t"), rdescript="Browser: Reopen Tab")*Repeat(extra="n"),
+            R(Key("cs-t"), rdescript="Chrome: Reopen Tab")*Repeat(extra="n"),
         "close tab [<n>]":
             R(Key("c-w"))*Repeat(extra='n'),
         "close all tabs":
-            R(Key("cs-w"), rdescript="Browser: Close All Tabs"),
-        "(nab | next tab) [<n>]":
+            R(Key("cs-w"), rdescript="Chrome: Close All Tabs"),
+        "next tab [<n>]":
             R(Key("c-tab"))*Repeat(extra="n"),
-        "(lab | previous tab) [<n>]":
+        "previous tab [<n>]":
             R(Key("cs-tab"))*Repeat(extra="n"),
-        "(new tab | nab) that":
+        "new tab that":
             R(Mouse("middle") + Pause("20") + Key("c-tab"),
               rdescript=
               "Browser: when the mouse is hovering over a link open that link in a new tab and then go to that new tab "
               ),
-        "second tab":
-            R(Key("c-2")),
-        "first tab":
-            R(Key("c-1")),
-        "third tab":
-            R(Key("c-3")),
-        "fourth tab":
-            R(Key("c-4")),
-        "fifth tab":
-            R(Key("c-5")),
-        "sixth tab":
-            R(Key("c-6")),
-        "seventh tab":
-            R(Key("c-7")),
-        "eighth tab":
-            R(Key("c-8")),
-        "ninth tab":
-            R(Key("c-9")),
+        "<nth> tab":
+            R(Key("c-%(nth)s"), rdescript="Chrome: nth tab" ),
         "last tab":
-            R(Key("c-1, cs-tab")),
+            R(Key("c-1, cs-tab"), rdescript="Chrome: Last tab"),
         "second last tab":
-            R(Key("c-1, cs-tab:2")),
+            R(Key("c-1, cs-tab:2"), rdescript="Chrome: Second last tab"),
         "go back [<n>]":
-            R(Key("a-left/20"), rdescript="Browser: Navigate History Backward")*
+            R(Key("a-left/20"), rdescript="Chrome: Navigate History Backward")*
             Repeat(extra="n"),
         "go forward [<n>]":
-            R(Key("a-right/20"), rdescript="Browser: Navigate History Forward")*
+            R(Key("a-right/20"), rdescript="Chrome: Navigate History Forward")*
             Repeat(extra="n"),
         "zoom in [<n>]":
-            R(Key("c-plus/20"), rdescript="Browser: Zoom In")*Repeat(extra="n"),
+            R(Key("c-plus/20"), rdescript="Chrome: Zoom In")*Repeat(extra="n"),
         "zoom out [<n>]":
-            R(Key("c-minus/20"), rdescript="Browser: Zoom")*Repeat(extra="n"),
+            R(Key("c-minus/20"), rdescript="Chrome: Zoom")*Repeat(extra="n"),
         "zoom reset":
-            R(Key("c-0"), rdescript="Browser: Reset Zoom"),
+            R(Key("c-0"), rdescript="Chrome: Reset Zoom"),
         "super refresh":
-            R(Key("c-f5"), rdescript="Browser: Super Refresh"),
+            R(Key("c-f5"), rdescript="Chrome: Super Refresh"),
         "switch focus [<n>]":
-            R(Key("f6/20"), rdescript="Browser: Switch Focus")*Repeat(extra="n"),
+            R(Key("f6/20"), rdescript="Chrome: Switch Focus")*Repeat(extra="n"),
         "[find] next match [<n>]":
-            R(Key("c-g/20"), rdescript="Browser: Next Match")*Repeat(extra="n"),
+            R(Key("c-g/20"), rdescript="Chrome: Next Match")*Repeat(extra="n"),
         "[find] prior match [<n>]":
-            R(Key("cs-g/20"), rdescript="Browser: Prior Match")*Repeat(extra="n"),
+            R(Key("cs-g/20"), rdescript="Chrome: Prior Match")*Repeat(extra="n"),
         "[toggle] caret browsing":
-            R(Key("f7"), rdescript="Browser: Caret Browsing"
+            R(Key("f7"), rdescript="Chrome: Caret Browsing"
               ),  # now available through an add on, was a standard feature
         "home page":
-            R(Key("a-home"), rdescript="Browser: Home Page"),
+            R(Key("a-home"), rdescript="Chrome: Home Page"),
         "[show] history":
-            R(Key("c-h"), rdescript="Browser: Show History"),
-        "[address] bar":
-            R(Key("c-l"), rdescript="Browser: Address Bar"),
+            R(Key("c-h"), rdescript="Chrome: Show History"),
+        "address bar":
+            R(Key("c-l"), rdescript="Chrome: Address Bar"),
         "show downloads":
-            R(Key("c-j"), rdescript="Browser: Show Downloads"),
-        "[add] bookmark":
-            R(Key("c-d"), rdescript="Browser: Add Bookmark"),
+            R(Key("c-j"), rdescript="Chrome: Show Downloads"),
+        "add bookmark":
+            R(Key("c-d"), rdescript="Chrome: Add Bookmark"),
         "bookmark all tabs":
-            R(Key("cs-d"), rdescript="Browser: Bookmark All Tabs"),
+            R(Key("cs-d"), rdescript="Chrome: Bookmark All Tabs"),
         "[toggle] bookmark bar":
-            R(Key("cs-b"), rdescript="Browser: Toggle Bookmark Bar"),
+            R(Key("cs-b"), rdescript="Chrome: Toggle Bookmark Bar"),
         "[show] bookmarks":
-            R(Key("cs-o"), rdescript="Browser: Show Bookmarks"),
+            R(Key("cs-o"), rdescript="Chrome: Show Bookmarks"),
         "switch user":
-            R(Key("cs-m"), rdescript="Browser: Switch User"),
+            R(Key("cs-m"), rdescript="Chrome: Switch User"),
         "chrome task manager":
-            R(Key("s-escape"), rdescript="Browser: Chrome Task Manager"),
+            R(Key("s-escape"), rdescript="Chrome: Chrome Task Manager"),
         "[toggle] full-screen":
-            R(Key("f11"), rdescript="Browser: Toggle Fullscreen Mode"),
+            R(Key("f11"), rdescript="Chrome: Toggle Fullscreen Mode"),
         "focus notification":
-            R(Key("a-n"), rdescript="Browser: Focus Notification"),
+            R(Key("a-n"), rdescript="Chrome: Focus Notification"),
         "allow notification":
-            R(Key("as-a"), rdescript="Browser: Allow Notification"),
+            R(Key("as-a"), rdescript="Chrome: Allow Notification"),
         "deny notification":
-            R(Key("as-a"), rdescript="Browser: Deny Notification"),
+            R(Key("as-a"), rdescript="Chrome: Deny Notification"),
         "developer tools":
-            R(Key("f12"), rdescript="Browser: Developer Tools"),
+            R(Key("f12"), rdescript="Chrome: Developer Tools"),
         "view [page] source":
-            R(Key("c-u"), rdescript="Browser: View Page Source"),
+            R(Key("c-u"), rdescript="Chrome: View Page Source"),
         "resume":
-            R(Key("f8"), rdescript="Browser: Resume"),
+            R(Key("f8"), rdescript="Chrome: Resume"),
         "step over":
-            R(Key("f10"), rdescript="Browser: Step Over"),
+            R(Key("f10"), rdescript="Chrome: Step Over"),
         "step into":
-            R(Key("f11"), rdescript="Browser: Step Into"),
+            R(Key("f11"), rdescript="Chrome: Step Into"),
         "step out":
-            R(Key("s-f11"), rdescript="Browser: Step Out"),
+            R(Key("s-f11"), rdescript="Chrome: Step Out"),
+
         "IRC identify":
             R(Text("/msg NickServ identify PASSWORD"),
               rdescript="IRC Chat Channel Identify"),
+
         "google that":
             R(Key("c-c, c-t, c-v, enter"), rdescript="googles highlighted text"),
         "duplicate tab":
@@ -201,6 +185,17 @@ class ChromeRule(MergeRule):
                 "link": "k",
                 "copy": "s",
             }),
+        Choice("nth", {
+            "first": "1",
+            "second": "2",
+            "third": "3",
+            "fourth": "4",
+            "fifth": "5",
+            "sixth": "6",
+            "seventh": "7",
+            "eighth": "8",
+            "ninth": "9",
+        }),
         Dictation("dictation"),
         IntegerRefST("n", 1, 10),
         IntegerRefST("m", 1, 10),
