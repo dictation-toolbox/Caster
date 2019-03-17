@@ -26,21 +26,21 @@ class ChromeRule(MergeRule):
     pronunciation = "google chrome"
     mapping = {
         "new window":
-            Key("c-n"),
+            R(Key("c-n"), rdescript="Chrome: New Window"),
         "(new incognito window | incognito)":
-            Key("cs-n"),
+            R(Key("cs-n"), rdescript="Chrome: New Incognito Window"),
         "new tab [<n>]":
             R(Key("c-t"), rdescript="Chrome: New Tab")*Repeat(extra="n"),
         "reopen tab [<n>]":
             R(Key("cs-t"), rdescript="Chrome: Reopen Tab")*Repeat(extra="n"),
         "close tab [<n>]":
-            R(Key("c-w"))*Repeat(extra='n'),
+            R(Key("c-w"), rdescript="Chrome: Close Tab")*Repeat(extra='n'),
         "close all tabs":
             R(Key("cs-w"), rdescript="Chrome: Close All Tabs"),
         "next tab [<n>]":
-            R(Key("c-tab"))*Repeat(extra="n"),
+            R(Key("c-tab"), rdescript="Chrome: Next Tab")*Repeat(extra="n"),
         "previous tab [<n>]":
-            R(Key("cs-tab"))*Repeat(extra="n"),
+            R(Key("cs-tab"), rdescript="Chrome: Previous Tab")*Repeat(extra="n"),
         "new tab that":
             R(Mouse("middle") + Pause("20") + Key("c-tab"),
               rdescript=
@@ -49,9 +49,9 @@ class ChromeRule(MergeRule):
         "<nth> tab":
             R(Key("c-%(nth)s"), rdescript="Chrome: nth tab" ),
         "last tab":
-            R(Key("c-1, cs-tab"), rdescript="Chrome: Last tab"),
+            R(Key("c-9"), rdescript="Chrome: Last tab"),
         "second last tab":
-            R(Key("c-1, cs-tab:2"), rdescript="Chrome: Second last tab"),
+            R(Key("c-9, cs-tab"), rdescript="Chrome: Second last tab"),
         "go back [<n>]":
             R(Key("a-left/20"), rdescript="Chrome: Navigate History Backward")*
             Repeat(extra="n"),
@@ -194,7 +194,6 @@ class ChromeRule(MergeRule):
             "sixth": "6",
             "seventh": "7",
             "eighth": "8",
-            "ninth": "9",
         }),
         Dictation("dictation"),
         IntegerRefST("n", 1, 10),
