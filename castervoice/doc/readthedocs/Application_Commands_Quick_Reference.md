@@ -113,20 +113,35 @@
 
 # Google Chrome
 
-| Command                    | Command              | Command              |
-|:---------------------------|:---------------------|:---------------------|
-| `IRC identify`             | `close all tabs`     | `show history`       |
-| `[add] bookmark`           | `deny notification`  | `step into`          |
-| `[find] next match [<n>]`  | `developer tools`    | `step out`           |
-| `[find] prior match [<n>]` | `focus notification` | `step over`          |
-| `[new] incognito window`   | `go back [<n>]`      | `super refresh`      |
-| `[toggle] bookmark bar`    | `go forward [<n>]`   | `switch focus [<n>]` |
-| `[toggle] caret browsing`  | `home page`          | `switch user`        |
-| `[toggle] full-screen`     | `new tab [<n>]`      | `view [page] source` |
-| `address bar`              | `reopen tab [<n>]`   | `zoom in [<n>]`      |
-| `allow notification`       | `resume`             | `zoom out [<n>]`     |
-| `bookmark all tabs`        | `show bookmarks`     | `zoom reset`         |
-| `chrome task manager`      | `show downloads`     |                      |
+| Command                                | Command                              | Command                      |
+|:---------------------------------------|:-------------------------------------|:-----------------------------|
+| `new window`                           | `(new incognito window / incognito)` | `new tab [<n>]`              |
+| `reopen tab [<n>]`                     | `close tab [<n>]`                    | `close all tabs`             |
+| `next tab [<n>]`                       | `previous tab [<n>]`                 | `new tab that`               |
+| `<nth> tab`                            | `last tab`                           | `second last tab`            |
+| `go back [<n>]`                        | `go forward [<n>]`                   | `zoom in [<n>]`              |
+| `zoom out [<n>]`                       | `zoom reset`                         | `super refresh`              |
+| `switch focus [<n>]`                   | `[find] next match [<n>]`            | `[find] prior match [<n>]`   |
+| `[toggle] caret browsing`              | `home page`                          | `[show] history`             |
+| `address bar`                          | `show downloads`                     | `add bookmark`               |
+| `bookmark all tabs`                    | `[toggle] bookmark bar`              | `[show] bookmarks`           |
+| `switch user`                          | `chrome task manager`                | `[toggle] full-screen`       |
+| `focus notification`                   | `allow notification`                 | `deny notification`          |
+| `developer tools`                      | `view [page] source`                 | `resume`                     |
+| `step over`                            | `step into`                          | `step out`                   |
+| `IRC identify`                         | `google that`                        | `duplicate tab`              |
+| `duplicate window`                     | `extensions`                         | `(menu / three dots)`        |
+| `settings`                             | `downloads`                          | `chrome task manager`        |
+| `clear browsing data`                  | `developer tools`                    | `more tools`                 |
+
+## Click by voice plug-in
+Options:
+* go, click, push, tab, window, hover, link, copy
+| Command                                | Command                              | Command                      |
+|:---------------------------------------|:-------------------------------------|:-----------------------------|
+| `<numbers> <dictation>`                | `go <numbers> <dictation>`           | `next <numbers> <dictation>` |
+| `<numbers> [<click_by_voice_options>]` | `hide hints`                         | `show hints`                 |
+
 
 # Command prompt
 
