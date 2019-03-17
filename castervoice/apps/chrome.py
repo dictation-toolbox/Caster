@@ -4,7 +4,7 @@
 # Licensed under the LGPL, see <http://www.gnu.org/licenses/>
 #
 """
-Command-module for Chrome and Firefox
+Command-module for Chrome 
 
 """
 #---------------------------------------------------------------------------
@@ -106,7 +106,6 @@ class ChromeRule(MergeRule):
         "chrome task manager": R(Key("s-escape"), rdescript="chrome task manager"),
         "clear browsing data": R(Key("cs-del"), rdescript="clear browsing data"),
         "developer tools": R(Key("cs-i"), rdescript="developer tools"),
-        "more tools": R(Key("a-f/5, l"), rdescript="more tools"),
         "more tools": R(Key("a-f/5, l"), rdescript="more tools"),
 
 
