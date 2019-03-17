@@ -22,7 +22,7 @@ class SSMSRule(MergeRule):
         "close tab [<n>]":
             R(Key("c-f4/20"), rdescript="SSMS: Close Tab")*Repeat(extra="n"),
         "go to line":
-            R(Key("c-g"), rdescript="SSMS: Go To Line"),
+            R(Key("c-g"), rdescript="SSMS: Go to Line"),
         "comment line":
             R(Key("c-k, c-c"), rdescript="SSMS: Comment Selection"),
         "comment block":

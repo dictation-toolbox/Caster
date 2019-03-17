@@ -23,7 +23,6 @@ from castervoice.lib.dfplus.state.short import R
 
 class ChromeRule(MergeRule):
     pronunciation = "google chrome"
-
     mapping = { 
  
     
@@ -130,8 +129,6 @@ class ChromeRule(MergeRule):
              rdescript="hide click by voice hints (i.e. numbers)"),
         "show hints": R(Key("cs-space/30")+Text(":+")+Key("enter"),
             rdescript="show click by voice hints (i.e. numbers)"),
-
-
         }
     extras = [
         Choice("click_by_voice_options", {

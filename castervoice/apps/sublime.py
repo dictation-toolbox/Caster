@@ -68,13 +68,13 @@ class SublimeRule(MergeRule):
         "line <n>":
             R(Key("c-g/10") + Text("%(n)s") + Key("enter"), rdescript="Sublime: Line n"),
         "go to file":
-            R(Key("c-p"), rdescript="Sublime: Go To file"),
+            R(Key("c-p"), rdescript="Sublime: Go to file"),
         "go to word":
-            R(Key("c-semicolon"), rdescript="Sublime: Go To word"),
+            R(Key("c-semicolon"), rdescript="Sublime: Go to word"),
         "go to symbol":
-            R(Key("c-r"), rdescript="Sublime: Go To symbol"),
+            R(Key("c-r"), rdescript="Sublime: Go to symbol"),
         "go to [symbol in] project":
-            R(Key("cs-r"), rdescript="Sublime: Go To symbol in project"),
+            R(Key("cs-r"), rdescript="Sublime: Go to symbol in project"),
         "command pallette":
             R(Key("cs-p"), rdescript="Sublime: Command Pallette"),
         #

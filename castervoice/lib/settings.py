@@ -177,6 +177,7 @@ _DEFAULT_SETTINGS = {
         "dragon": True,
         "eclipse": True,
         "emacs": True,
+        "excel": True,
         "explorer": True,
         "filedialogue": True,
         "firefox": True,
@@ -184,25 +185,27 @@ _DEFAULT_SETTINGS = {
         "fman": True,
         "foxitreader": True,
         "gitbash": True,
+        "githubdesktop": True,
         "gitter": True,
         "kdiff3": True,
         "douglas": True,
         "legion": True,
         "lyx": True,
-        "rainbow": True,
-        "rstudio": True,
-        "ssms": True,
         "jetbrains": True,
         "msvc": True,
-        "totalcmd": True,
         "notepadplusplus": True,
+        "outlook": True,
+        "rainbow": True,
+        "rstudio": True,
         "sqldeveloper": True,
+        "ssms": True,
         "sublime": True,
+        "totalcmd": True,
+        "typora": True,
         "visualstudio": True,
         "visualstudiocode": True,
         "winword": True,
         "wsr": True,
-        "typora": True,
     },
 
     # python settings
@@ -211,7 +214,7 @@ _DEFAULT_SETTINGS = {
         "version": "python",  # Depending Python setup (python, python2, python2.7, py, py -2)
         "pip": "pip"  # Depending on PIP setup (pip ,pip2, pip2.7)
     },
-    
+
     # sikuli settings
     "sikuli": {
         "enabled": False,
