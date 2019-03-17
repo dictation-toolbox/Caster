@@ -1,6 +1,6 @@
 # Sikuli Integration
 
-[This is Sikuli](http://www.sikuli.org). It's awesome, and you can use Caster to launch Sikuli actions by voice.
+[This is Sikuli](http://sikulix.com/). It's awesome, and you can use Caster to launch Sikuli actions by voice.
 
 ## Versions
 
