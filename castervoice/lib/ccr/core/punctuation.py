@@ -1,4 +1,4 @@
-from dragonfly import Choice, Repeat
+pfrom dragonfly import Choice, Repeat
 
 from castervoice.lib import control
 from castervoice.lib.actions import Key, Text
@@ -82,6 +82,8 @@ class Punctuation(MergeRule):
             R(Key("percent"), rdescript="Percent Sign"),
         'tabby [<npunc>]':
             R(Key("tab"), rdescript="Tab")*Repeat(extra="npunc"),
+        "(back tab | shin tab) [<npunc>]": R(Key("s-tab"),
+            rdescript="shift + tab") * Repeat(extra='npunc'),   
         "boom":
             R(Text(", "), rdescript="Comma + Space"),
         "ampersand":
