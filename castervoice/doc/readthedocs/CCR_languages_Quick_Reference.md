@@ -12,6 +12,7 @@ A quick reference guide for the language-specific commands included with Caster.
 - [Javascript](#javascript)
 - [LaTeX](#latex)
 - [Matlab](#matlab)
+- [Markdown](#markdown)
 - [Prolog](#prolog)
 - [Python](#python)
 - [R](#r)
@@ -319,6 +320,22 @@ Commands are designed to follow LaTeX syntax as closely as possible, for example
 | import                    | `library()`     | value true        | `true`        |
 | length of                 | `length()`      | while loop        | `while`       |
 | lodge and                 | `&&`            |                   |               |
+
+# Markdown
+
+| Command                          | Command                  |
+|:---------------------------------|:-------------------------|
+| `heading [<num>] [<dict>]`       | `table row <n>`          |
+| `table (break / split) <n>`      | `insert header`          |
+| `insert list`                    | `insert numbered list`   |
+| `insert [block] quote`           | `insert link`            |
+| `insert image`                   | `insert reference`       |
+| `insert equation`                | `insert math`            |
+| `insert (italics / italic text)` | `insert bold [text]`     |
+| `insert strike through [text]`   | `insert horizontal rule` |
+| `insert R code`                  | `insert in-line code`    |
+| `insert code [block]`            | ` `                      |
+
 
 # Prolog
 
