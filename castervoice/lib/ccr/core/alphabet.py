@@ -12,7 +12,7 @@ class Alphabet(MergeRule):
     mapping = {
         "[<big>] <letter>":
             R(Function(alphanumeric.letters2, extra={"big", "letter"}),
-              rdescript="Spell"),
+              rdescript="Core: Spell"),
     }
     extras = [
         alphanumeric.get_alphabet_choice("letter"),

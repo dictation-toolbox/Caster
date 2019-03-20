@@ -2,284 +2,281 @@
 from castervoice.lib import control
 from castervoice.lib.actions import Key, Text
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
-
+from castervoice.lib.dfplus.state.short import R
 
 class HTML(MergeRule):
     mapping = {
         # A macro with ## is depreciated HTML.
         #Macros
         "make link":
-            Text("<a href=''></a>") + Key("left/10:6"),
+            R(Text("<a href=''></a>") + Key("left/10:6"), rdescript="HTML: Make Link"),
         "table macro":
-            Text("<table>") + Key("enter") + Text("<tr>") + Key("enter") +
+            R(Text("<table>") + Key("enter") + Text("<tr>") + Key("enter") +
             Text("<td></td>") + Key("enter") + Text("</tr>") + Key("enter") +
-            Text("</table>"),
-        "close tag":
-            Key("c-left/10:2"),
+            Text("</table>"), rdescript="HTML: Table Macro"),
         "checkbox":
-            Text("<input type=\"checkbox\">"),
-
+            R(Text("<input type=\"checkbox\">"), rdescript="HTML: Checkbox"),
         #HTML elements
         #Basic or Root elements
         "HTML":
-            Text("<html>") + Key("enter") + Text("</html>") + Key("up"),
-        "DOC TYPE":
-            Text("<!DOCTYPE html>") + Key("enter"),
+            R(Text("<html>") + Key("enter") + Text("</html>") + Key("up"), rdescript="HTML: HTML"),
+        "doc type":
+            R(Text("<!DOCTYPE html>") + Key("enter"), rdescript="HTML: Doc Type"),
         #Document metadata
         "base":
-            Text("<base >") + Key("left/10:1"),
+            R(Text("<base >") + Key("left/10:1"), rdescript="HTML: Base"),
         "head":
-            Text("<head>") + Key("enter") + Text("</head>") + Key("up"),
+            R(Text("<head>") + Key("enter") + Text("</head>") + Key("up"), rdescript="HTML: Head"),
         "link":
-            Text("<link >") + Key("left/10:1"),
+            R(Text("<link >") + Key("left/10:1"), rdescript="HTML: Link"),
         "meta":
-            Text("<meta >") + Key("left/10:1"),
+            R(Text("<meta >") + Key("left/10:1"), rdescript="HTML: Meta"),
         "style":
-            Text("<style >") + Key("left/10:1"),
+            R(Text("<style >") + Key("left/10:1"), rdescript="HTML: Style"),
         "style close":
-            Text("</style>"),
+            R(Text("</style>"), rdescript="HTML: Style Close"),
         "title":
-            Text("<title></title>") + Key("left/10:8"),
+            R(Text("<title></title>") + Key("left/10:8"), rdescript="HTML: Title"),
         #Content sectioning
         "address ":
-            Text("<address>") + Key("enter") + Text("</address>") + Key("up"),
+            R(Text("<address>") + Key("enter") + Text("</address>") + Key("up"), rdescript="HTML: Address"),
         "article ":
-            Text("<article >"),
+            R(Text("<article >"), rdescript="HTML: Article"),
         "close article":
-            Text("</article>"),
+            R(Text("</article>"), rdescript="HTML: Close Article"),
         "body":
-            Text("<body>") + Key("enter") + Text("</body>") + Key("up"),
+            R(Text("<body>") + Key("enter") + Text("</body>") + Key("up"), rdescript="HTML: Body"),
         "footer":
-            Text("<footer>") + Key("enter") + Text("</footer>") + Key("up"),
+            R(Text("<footer>") + Key("enter") + Text("</footer>") + Key("up"), rdescript="HTML: Footer"),
         "header":
-            Text("<header>") + Key("enter") + Text("</header>") + Key("up"),
+            R(Text("<header>") + Key("enter") + Text("</header>") + Key("up"), rdescript="HTML: Header"),
         "H 1 | heading one":
-            Text("<h1></h1>") + Key("left/10:5"),
+            R(Text("<h1></h1>") + Key("left/10:5"), rdescript="HTML: Heading 1"),
         "H 2 | heading to":
-            Text("<h2></h2>") + Key("left/10:5"),
+            R(Text("<h2></h2>") + Key("left/10:5"), rdescript="HTML: Heading 2"),
         "H 3 | heading three":
-            Text("<h3></h3>") + Key("left/10:5"),
+            R(Text("<h3></h3>") + Key("left/10:5"), rdescript="HTML: Heading 3"),
         "H 4 | heading for":
-            Text("<h4></h4>") + Key("left/10:5"),
+            R(Text("<h4></h4>") + Key("left/10:5"), rdescript="HTML: Heading 4"),
         "H 5 | heading five":
-            Text("<h5></h5>") + Key("left/10:5"),
+            R(Text("<h5></h5>") + Key("left/10:5"), rdescript="HTML: Heading 5"),
         "H 6 | heading six":
-            Text("<h6></h6>") + Key("left/10:5"),
+            R(Text("<h6></h6>") + Key("left/10:5"), rdescript="HTML: Heading 6"),
         "H group | headings group":
-            Text("<hgroup></hgroup>") + Key("left/10:9"),
+            R(Text("<hgroup></hgroup>") + Key("left/10:9"), rdescript="HTML: Group"),
         "navigation | navigate":
-            Text("<nav>") + Key("enter") + Text("</nav>") + Key("up"),
+            R(Text("<nav>") + Key("enter") + Text("</nav>") + Key("up"), rdescript="HTML: Navigate"),
         "section":
-            Text("<section>") + Key("enter") + Text("</section>") + Key("up"),
-        #Text content
+            R(Text("<section>") + Key("enter") + Text("</section>") + Key("up"), rdescript="HTML: Section"),
+        # Text content
         "description | DD":
-            Text("<dd>"),
+            R(Text("<dd>"), rdescript="HTML: Description"),
         "division":
-            Text("<div></div>") + Key("left/10:6"),
+            R(Text("<div></div>") + Key("left/10:6"), rdescript="HTML: Division"),
         "list element | DL":
-            Text("<dl>"),
+            R(Text("<dl>"), rdescript="HTML: List Element"),
         "fig caption":
-            Text("<figcaption>"),
+            R(Text("<figcaption>"), rdescript="HTML: Fig Caption"),
         "figure":
-            Text("<figure>"),
+            R(Text("<figure>"), rdescript="HTML: Figure"),
         "H are | HR":
-            Text("<hr>"),
+            R(Text("<hr>"), rdescript="HTML: HR"),
         "list item | LI":
-            Text("<li></li>") + Key("left/10:5"),
+            R(Text("<li></li>") + Key("left/10:5"), rdescript="HTML: List Item"),
         "main":
-            Text("<main>") + Key("enter") + Text("</main>") + Key("up"),
+            R(Text("<main>") + Key("enter") + Text("</main>") + Key("up"), rdescript="HTML: Main"),
         "ordered list | OL":
-            Text("<ol>") + Key("enter") + Text("</ol>") + Key("up"),
+            R(Text("<ol>") + Key("enter") + Text("</ol>") + Key("up"), rdescript="HTML: Ordered List"),
         "paragraph":
-            Text("<p>") + Key("enter") + Text("</p>") + Key("up"),
+            R(Text("<p>") + Key("enter") + Text("</p>") + Key("up"), rdescript="HTML: Paragraph"),
         "pre-format":
-            Text("<pre>") + Key("enter") + Text("</pre>") + Key("up"),
+            R(Text("<pre>") + Key("enter") + Text("</pre>") + Key("up"), rdescript="HTML: Pre-format"),
         "unordered list | UL":
-            Text("<ul>") + Key("enter") + Text("</ul>") + Key("up"),
+            R(Text("<ul>") + Key("enter") + Text("</ul>") + Key("up"), rdescript="HTML: Unordered List"),
         #Inline text semantics
         "anchor":
-            Text("<a></a>") + Key("left/10:4"),
+            R(Text("<a></a>") + Key("left/10:4"), rdescript="HTML: Anchor"),
         "abbreviation":
-            Text("<abbr></abbr>") + Key("left/10:7"),
+            R(Text("<abbr></abbr>") + Key("left/10:7"), rdescript="HTML: Abbreviation"),
         "bold":
-            Text("<b></b>") + Key("left/10:4"),
+            R(Text("<b></b>") + Key("left/10:4"), rdescript="HTML: Bold"),
         "override":
-            Text("<bdo></bdo>") + Key("left/10:6"),
+            R(Text("<bdo></bdo>") + Key("left/10:6"), rdescript="HTML: Override"),
         "isolate | bi-directional isolation":
-            Text("<bdi></bdi>") + Key("left/10:6"),
+            R(Text("<bdi></bdi>") + Key("left/10:6"), rdescript="HTML: Bi-directional Isolation"),
         "break | be are | BR":
-            Text("<br>") + Key("enter"),
+            R(Text("<br>") + Key("enter"), rdescript="HTML: Break"),
         "code":
-            Text("<code></code>") + Key("left/10:7"),
+            R(Text("<code></code>") + Key("left/10:7"), rdescript="HTML: Code"),
         "data":
-            Text("<data></data>") + Key("left/10:7"),
+            R(Text("<data></data>") + Key("left/10:7"), rdescript="HTML: Data"),
         "defining instance":
-            Text("<dfn></dfn>") + Key("left/10:6"),
+            R(Text("<dfn></dfn>") + Key("left/10:6"), rdescript="HTML: Defining Instance"),
         "emphasis | EM":
-            Text("<em></em>") + Key("left/10:5"),
+            R(Text("<em></em>") + Key("left/10:5"), rdescript="HTML: Emphasis"),
         "semantics | italics":
-            Text("<i></i>") + Key("left/10:4"),
+            R(Text("<i></i>") + Key("left/10:4"), rdescript="HTML: Semantics | Italics"),
         "keyboard input":
-            Text("<kbd></kbd>") + Key("left/10:6"),
+            R(Text("<kbd></kbd>") + Key("left/10:6"), rdescript="HTML: Keyboard Input"),
         "mark | highlight":
-            Text("<mark></mark>") + Key("left/10:7"),
+            R(Text("<mark></mark>") + Key("left/10:7"), rdescript="HTML: Mark | Highlight"),
         "quote":
-            Text("<q></q>") + Key("left/10:4"),
+            R(Text("<q></q>") + Key("left/10:4"), rdescript="HTML: Quote"),
         "fall-back parenthesis | RP":
-            Text("<rp></rp>") + Key("left/10:5"),
+            R(Text("<rp></rp>") + Key("left/10:5"), rdescript="HTML: Fall-back Parentheses"),
         "embraces pronunciation | RT":
-            Text("<rt></rt>") + Key("left/10:5"),
+            R(Text("<rt></rt>") + Key("left/10:5"), rdescript="HTML: Embrace Pronunciation"),
         "ruby | pronounce asian":
-            Text("<ruby></ruby>") + Key("left/10:7"),
-        ##"strike through | strike":    Text("<s></s>")+  Key("left/10:4"),
+            R(Text("<ruby></ruby>") + Key("left/10:7"), rdescript="HTML: Ruby | Pronounce Asian"),
+        ##"strike through | strike":    Text("<s></s>")+  Key("left/10:4"), rdescript="HTML: Strike Through | Strike"),
         "deleted text | deleted | replaced":
-            Text("<del></del>") + Key("left/10:6"),
+            R(Text("<del></del>") + Key("left/10:6"), rdescript="HTML: Deleted Text | Deleted | Replaced"),
         "sample output":
-            Text("<samp></samp>") + Key("left/10:7"),
+            R(Text("<samp></samp>") + Key("left/10:7"), rdescript="HTML: Sample Output"),
         "small":
-            Text("<small></small>") + Key("left/10:8"),
+            R(Text("<small></small>") + Key("left/10:8"), rdescript="HTML: Small"),
         "span":
-            Text("<span></span>") + Key("left/10:7"),
+            R(Text("<span></span>") + Key("left/10:7"), rdescript="HTML: Span"),
         "strong":
-            Text("<strong></strong>") + Key("left/10:9"),
+            R(Text("<strong></strong>") + Key("left/10:9"), rdescript="HTML: Strong"),
         "subscript":
-            Text("<sub></sub>") + Key("left/10:6"),
+            R(Text("<sub></sub>") + Key("left/10:6"), rdescript="HTML: Subscript"),
         "superscript":
-            Text("<sup></sup>") + Key("left/10:6"),
+            R(Text("<sup></sup>") + Key("left/10:6"), rdescript="HTML: Superscript"),
         "time":
-            Text("<time></time>") + Key("left/10:7"),
+            R(Text("<time></time>") + Key("left/10:7"), rdescript="HTML: Time"),
         "underline":
-            Text("<u></u>") + Key("left/10:4"),
+            R(Text("<u></u>") + Key("left/10:4"), rdescript="HTML: Underline"),
         "variable":
-            Text("<var></var>") + Key("left/10:6"),
+            R(Text("<var></var>") + Key("left/10:6"), rdescript="HTML: Variable"),
         "optional break":
-            Text("<wbr></wbr>") + Key("left/10:6"),
+            R(Text("<wbr></wbr>") + Key("left/10:6"), rdescript="HTML: Optional Break"),
         #Image & multimedia
         "area":
-            Text("<area />") + Key("left/10:2"),
+            R(Text("<area />") + Key("left/10:2"), rdescript="HTML: Area"),
         "audio":
-            Text("<audio>") + Key("enter") + Text("</audio>") + Key("up"),
+            R(Text("<audio>") + Key("enter") + Text("</audio>") + Key("up"), rdescript="HTML: Audio"),
         "image ":
-            Text("<img></img>") + Key("left/10:6"),
+            R(Text("<img></img>") + Key("left/10:6"), rdescript="HTML: Image"),
         "map":
-            Text("<map>") + Key("enter") + Text("</map>") + Key("up"),
+            R(Text("<map>") + Key("enter") + Text("</map>") + Key("up"), rdescript="HTML: Map"),
         "track":
-            Text("<track >") + Key("left/10:1"),
+            R(Text("<track >") + Key("left/10:1"), rdescript="HTML: Track"),
         "video":
-            Text("<video >") + Key("left/10:1"),
+            R(Text("<video >") + Key("left/10:1"), rdescript="HTML: Video"),
         "video close":
-            Text("</video>"),
+            R(Text("</video>"), rdescript="HTML: Video Close"),
         #embedded content
         "embedded":
-            Text("<embed >") + Key("left/10:1"),
+            R(Text("<embed >") + Key("left/10:1"), rdescript="HTML: Embedded"),
         "inline frame":
-            Text("<iframe >") + Key("left/10:1"),
+            R(Text("<iframe >") + Key("left/10:1"), rdescript="HTML: Inline Frame"),
         "inline frame close":
-            Text("</iframe>") + Key("left/10:1"),
-        "object| embedded object":
-            Text("<object >") + Key("left/10:1"),
+            R(Text("</iframe>") + Key("left/10:1"), rdescript="HTML: In-line Frame Close"),
+        "object | embedded object":
+            R(Text("<object >") + Key("left/10:1"), rdescript="HTML: Object | Embedded Object"),
         "parameter ":
-            Text("<param >") + Key("left/10:1"),
+            R(Text("<param >") + Key("left/10:1"), rdescript="HTML: Parameter"),
         "source":
-            Text("<source >") + Key("left/10:1"),
+            R(Text("<source >") + Key("left/10:1"), rdescript="HTML: Source"),
         #Scripting
         "canvas":
-            Text("<canvas >") + Key("left/10:1"),
+            R(Text("<canvas >") + Key("left/10:1"), rdescript="HTML: Canvas"),
         "canvas close":
-            Text("</canvas>"),
+            R(Text("</canvas>"), rdescript="HTML: Canvas Close"),
         "noscript":
-            Text("<noscript>") + Key("enter") + Text("</noscript>") + Key("up"),
+            R(Text("<noscript>") + Key("enter") + Text("</noscript>") + Key("up"), rdescript="HTML: NoScript"),
         "script":
-            Text("<script></script>") + Key("left/10:9"),
+            R(Text("<script></script>") + Key("left/10:9"), rdescript="HTML: Script"),
         #Edits
         "inserted text | inserted":
-            Text("<ins></ins>") + Key("left/10:6"),
+            R(Text("<ins></ins>") + Key("left/10:6"), rdescript="HTML: Inserted Text | Inserted"),
         #Table content
         "table caption | tee caption":
-            Text("<caption>"),
+            R(Text("<caption>"), rdescript="HTML: Table Caption"),
         "table column | tee column":
-            Text("<col>"),
+            R(Text("<col>"), rdescript="HTML: Table Column"),
         "table column group | tee group":
-            Text("<colgroup>"),
+            R(Text("<colgroup>"), rdescript="HTML: Table Column Group"),
         "table":
-            Text("<table>"),
+            R(Text("<table>"), rdescript="HTML: Table"),
         "table body":
-            Text("<tbody>"),
+            R(Text("<tbody>"), rdescript="HTML: Table Body"),
         "table cell | TD | tee D":
-            Text("<td></td>") + Key("left/10:5"),
+            R(Text("<td></td>") + Key("left/10:5"), rdescript="HTML: Table Body Cell"),
         "table foot":
-            Text("<tfoot>"),
+            R(Text("<tfoot>"), rdescript="HTML: Table Foot"),
         "table header | TH":
-            Text("<th>"),
+            R(Text("<th>"), rdescript="HTML: Table Header"),
         "table head | thead":
-            Text("<thead>"),
+            R(Text("<thead>"), rdescript="HTML: Table Head"),
         "table row | tee are":
-            Text("<tr></tr>") + Key("left/10:5"),
+            R(Text("<tr></tr>") + Key("left/10:5"), rdescript="HTML: Table Row"),
         #Forms
         "button":
-            Text("<button></button>") + Key("left/10:9"),
+            R(Text("<button></button>") + Key("left/10:9"), rdescript="HTML: Button"),
         "data list":
-            Text("<datalist>") + Key("enter") + Text("</datalist>") + Key("up"),
+            R(Text("<datalist>") + Key("enter") + Text("</datalist>") + Key("up"), rdescript="HTML: Data List"),
         "field set":
-            Text("<fieldset>") + Key("enter") + Text("</fieldset>") + Key("up"),
+            R(Text("<fieldset>") + Key("enter") + Text("</fieldset>") + Key("up"), rdescript="HTML: Field Set"),
         "field set close":
-            Text("</fieldset>"),
+            R(Text("</fieldset>"), rdescript="HTML: Field Set Close"),
         "form":
-            Text("<form>") + Key("enter") + Text("</form>") + Key("up"),
+            R(Text("<form>") + Key("enter") + Text("</form>") + Key("up"), rdescript="HTML: Form"),
         "input":
-            Text("<input >") + Key("left/10:1"),
+            R(Text("<input >") + Key("left/10:1"), rdescript="HTML: Input"),
         "keygen":
-            Text("<keygen >") + Key("left/10:1"),
+            R(Text("<keygen >") + Key("left/10:1"), rdescript="HTML: Keygen"),
         "label":
-            Text("<label>"),
+            R(Text("<label>"), rdescript="HTML: Label"),
         "label close":
-            Text("</label>"),
+            R(Text("</label>"), rdescript="HTML: Label Close"),
         "legend":
-            Text("<legend>"),
+            R(Text("<legend>"), rdescript="HTML: Legend"),
         "meter":
-            Text("<meter >") + Key("left/10:1"),
+            R(Text("<meter >") + Key("left/10:1"), rdescript="HTML: Meter"),
         "meter close":
-            Text("</meter>"),
+            R(Text("</meter>"), rdescript="HTML: Meter Close"),
         "opt group":
-            Text("<optgroup>") + Key("enter") + Text("</optgroup>") + Key("up"),
+            R(Text("<optgroup>") + Key("enter") + Text("</optgroup>") + Key("up"), rdescript="HTML: Opt Group"),
         "option":
-            Text("<option >") + Key("left/10:1"),
+            R(Text("<option >") + Key("left/10:1"), rdescript="HTML: Option"),
         "option close":
-            Text("</option>"),
+            R(Text("</option>"), rdescript="HTML: Option Close"),
         "output":
-            Text("<output >") + Key("left/10:1"),
+            R(Text("<output >") + Key("left/10:1"), rdescript="HTML: Output"),
         "output close":
-            Text("</output>"),
+            R(Text("</output>"), rdescript="HTML: Output Close"),
         "progress":
-            Text("<progress >") + Key("left/10:1"),
+            R(Text("<progress >") + Key("left/10:1"), rdescript="HTML: Progress"),
         "select":
-            Text("<select>") + Key("enter") + Text("</select>") + Key("up"),
+            R(Text("<select>") + Key("enter") + Text("</select>") + Key("up"), rdescript="HTML: Select"),
         "text area":
-            Text("<textarea >") + Key("left/10:1"),
+            R(Text("<textarea >") + Key("left/10:1"), rdescript="HTML: Text Area"),
         "text area close":
-            Text("</textarea>"),
+            R(Text("</textarea>"), rdescript="HTML: Text Area Close"),
         #Interactive elements
         "details":
-            Text("<details>"),
+            R(Text("<details>"), rdescript="HTML: Details"),
         "dialog":
-            Text("<dialog>"),
+            R(Text("<dialog>"), rdescript="HTML: Dialogue"),
         "menu":
-            Text("<menu>"),
+            R(Text("<menu>"), rdescript="HTML: Menu"),
         "menu item":
-            Text("<menuitem>"),
+            R(Text("<menuitem>"), rdescript="HTML: Menu Item"),
         "summary":
-            Text("<summary>"),
+            R(Text("<summary>"), rdescript="HTML: Summary"),
         #Web Components: As defined in (W3C)
         "content":
-            Text("<content>"),
+            R(Text("<content>"), rdescript="HTML: Context"),
         "decorator":
-            Text("<decorator>"),
+            R(Text("<decorator>"), rdescript="HTML: Decorator"),
         "element":
-            Text("<element>"),
+            R(Text("<element>"), rdescript="HTML: Element"),
         "shadow":
-            Text("<shadow>"),
+            R(Text("<shadow>"), rdescript="HTML: Shadow"),
         "template":
-            Text("<template>"),
+            R(Text("<template>"), rdescript="HTML: Template"),
     }
     extras = []
     defaults = {}
