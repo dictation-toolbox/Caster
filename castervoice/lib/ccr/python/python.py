@@ -3,7 +3,7 @@ Created on Sep 1, 2015
 
 @author: synkarius
 '''
-from dragonfly import Dictation, MappingRule
+from dragonfly import Dictation, MappingRule, Choice, Pause
 
 from castervoice.lib import control
 from castervoice.lib.actions import Key, Text
@@ -24,6 +24,7 @@ class PythonNon(MappingRule):
             R(Text("try:") + Key("enter:2/10, backspace") + Text("except Exception:") +
               Key("enter"),
               rdescript="Python: Try Catch"),
+        
     }
 
 
@@ -71,9 +72,12 @@ class Python(MergeRule):
             R(Text("import "), rdescript="Python: Import"),
         #
         SymbolSpecs.FUNCTION:
-            R(Text("def "), rdescript="Python: Function"),
+            R(Text("def ():") + Key("left:3"), rdescript="Python: Function"),
         SymbolSpecs.CLASS:
-            R(Text("class "), rdescript="Python: Class"),
+            R(Text("class :") + Key("left"), rdescript="Python: Class"),
+        
+        
+
         #
         SymbolSpecs.COMMENT:
             R(Text("#"), rdescript="Python: Add Comment"),
@@ -114,9 +118,10 @@ class Python(MergeRule):
             R(Text("global "), rdescript="Python: Global"),
         "make assertion":
             R(Text("assert "), rdescript="Python: Assert"),
-        "list comprehension":
+        "list (comprehension | comp)":
             R(Text("[x for x in TOKEN if TOKEN]"),
               rdescript="Python: List Comprehension"),
+        
         "[dot] (pie | pi)":
             R(Text(".py"), rdescript="Python: .py"),
         "toml":
@@ -127,12 +132,82 @@ class Python(MergeRule):
             R(Text(" is "), rdescript="Python: is"),
         "yield":
             R(Text("yield "), rdescript="Python: Yield"),
+        
+        # essentially an improved version of the try catch command above
+            # probably a better option than this is to use snippets with tab stops 
+            # VS code has the extension Python-snippets. these are activated by 
+            # going into the command pallet (cs-p) and typing in "insert snippet"
+            # then press enter and then you have choices of snippets show up in the drop-down list.
+            # you can also make your own snippets.
+        "try [<exception>]": 
+            R(Text("try : ") + Pause("10") + Key("enter/2") 
+            + Text("except %(exception)s:") + Pause("10") + Key("enter/2"),
+                rdescript="create 'try catch' block with given exception"),
+        "try [<exception>] as": 
+            R(Text("try :") + Pause("10") + Key("enter/2") + Text("except %(exception)s as :")
+            + Pause("10") + Key("enter/2"),  rdescript="create 'try catch as' block with given exception"),
+
+        
+        # class and class methods
+        "subclass": R(Text("class ():") + Key("left:3"), rdescript="Python: subclass"),
+        "dunder": R(Text("____()") + Key("left:4"),  rdescript="Python special method"),
+        "init": Text("__init__()") + Key("left"),
+        "meth [<binary_meth>]": R(Text("__%(binary_meth)s__(self, other):"), 
+            rdescript="Python: binary special method"),     
+        "meth [<unary_meth>]": R(Text("__%(unary_meth)s__(self):"), 
+            rdescript="Python: unary special method"),     
+        
+        
+
+
+
     }
 
     extras = [
         Dictation("text"),
+        Choice("unary_meth", {
+                "reper": "reper",
+                "stir": "str",
+                "len": "len",
+        }),
+        Choice("binary_meth", {
+                "add": "add",
+                "subtract": "sub",
+        }),
+        Choice("exception", {
+            "exception": "Exception",
+            "stop iteration": "StopIteration",
+            "system exit": "SystemExit",
+            "standard": "StandardError",
+            "arithmetic": "ArithmeticError",
+            "overflow": "OverflowError",
+            "floating-point": "FloatingPointError",
+            "zero division": "ZeroDivisionError",
+            "assertion": "AssertionError",
+            "EOF": "EOFError",
+            "import": "ImportError",
+            "keyboard interrupt": "KeyboardInterrupt",
+            "lookup": "LookupError",
+            "index": "IndexError",
+            "key": "KeyError",
+            "name": "NameError",
+            "unbound local": "UnboundLocalError",
+            "environment": "EnvironmentError",
+            "IO": "IOError",
+            "OS": "OSError",
+            "syntax": "SyntaxError",
+            "system exit": "SystemExit",
+            "type": "TypeError",
+            "value": "ValueError",
+            "runtime": "RuntimeError",
+            "not implemented": "NotImplementedError",
+            
+
+
+
+        })
     ]
-    defaults = {}
+    defaults = {"unary_meth": "", "binary_meth": "", "exception": ""}
 
 
 control.nexus().merger.add_global_rule(Python(ID=100))
