@@ -24,7 +24,6 @@ class PythonNon(MappingRule):
             R(Text("try:") + Key("enter:2/10, backspace") + Text("except Exception:") +
               Key("enter"),
               rdescript="Python: Try Catch"),
-        
     }
 
 
@@ -36,11 +35,9 @@ class Python(MergeRule):
             R(Key("i,f,space,colon,left"), rdescript="Python: If"),
         SymbolSpecs.ELSE:
             R(Text("else:") + Key("enter"), rdescript="Python: Else"),
-        #
         # (no switch in Python)
         SymbolSpecs.BREAK:
             R(Text("break"), rdescript="Python: Break"),
-        #
         SymbolSpecs.FOR_EACH_LOOP:
             R(Text("for  in :") + Key("left:5"), rdescript="Python: For Each Loop"),
         SymbolSpecs.FOR_LOOP:
@@ -49,7 +46,6 @@ class Python(MergeRule):
         SymbolSpecs.WHILE_LOOP:
             R(Text("while :") + Key("left"), rdescript="Python: While"),
         # (no do-while in Python)
-        #
         SymbolSpecs.TO_INTEGER:
             R(Text("int()") + Key("left"), rdescript="Python: Convert To Integer"),
         SymbolSpecs.TO_FLOAT:
@@ -57,39 +53,28 @@ class Python(MergeRule):
               rdescript="Python: Convert To Floating-Point"),
         SymbolSpecs.TO_STRING:
             R(Text("str()") + Key("left"), rdescript="Python: Convert To String"),
-        #
         SymbolSpecs.AND:
             R(Text(" and "), rdescript="Python: And"),
         SymbolSpecs.OR:
             R(Text(" or "), rdescript="Python: Or"),
         SymbolSpecs.NOT:
             R(Text("!"), rdescript="Python: Not"),
-        #
         SymbolSpecs.SYSOUT:
             R(Text("print()") + Key("left"), rdescript="Python: Print"),
-        #
         SymbolSpecs.IMPORT:
             R(Text("import "), rdescript="Python: Import"),
-        #
         SymbolSpecs.FUNCTION:
             R(Text("def ():") + Key("left:3"), rdescript="Python: Function"),
         SymbolSpecs.CLASS:
             R(Text("class :") + Key("left"), rdescript="Python: Class"),
-        
-        
-
-        #
         SymbolSpecs.COMMENT:
             R(Text("#"), rdescript="Python: Add Comment"),
         SymbolSpecs.LONG_COMMENT:
             R(Text("''''''") + Key("left:3"), rdescript="Python: Long Comment"),
-        #
         SymbolSpecs.NULL:
             R(Text("None"), rdescript="Python: Null"),
-        #
         SymbolSpecs.RETURN:
             R(Text("return "), rdescript="Python: Return"),
-        #
         SymbolSpecs.TRUE:
             R(Text("True"), rdescript="Python: True"),
         SymbolSpecs.FALSE:
@@ -133,7 +118,7 @@ class Python(MergeRule):
         "yield":
             R(Text("yield "), rdescript="Python: Yield"),
         
-        # essentially an improved version of the try catch command above
+        # Essentially an improved version of the try catch command above
             # probably a better option than this is to use snippets with tab stops 
             # VS code has the extension Python-snippets. these are activated by 
             # going into the command pallet (cs-p) and typing in "insert snippet"
@@ -147,20 +132,14 @@ class Python(MergeRule):
             R(Text("try :") + Pause("10") + Key("enter/2") + Text("except %(exception)s as :")
             + Pause("10") + Key("enter/2"),  rdescript="create 'try catch as' block with given exception"),
 
-        
         # class and class methods
-        "subclass": R(Text("class ():") + Key("left:3"), rdescript="Python: subclass"),
-        "dunder": R(Text("____()") + Key("left:4"),  rdescript="Python special method"),
-        "init": Text("__init__()") + Key("left"),
+        "subclass": R(Text("class ():") + Key("left:3"), rdescript="Python: Subclass"),
+        "dunder": R(Text("____()") + Key("left:4"),  rdescript="Python: Special Method"),
+        "init": R(Text("__init__()") + Key("left"),  rdescript="Python: Init"),
         "meth [<binary_meth>]": R(Text("__%(binary_meth)s__(self, other):"), 
-            rdescript="Python: binary special method"),     
+            rdescript="Python: Binary Special Method"),     
         "meth [<unary_meth>]": R(Text("__%(unary_meth)s__(self):"), 
-            rdescript="Python: unary special method"),     
-        
-        
-
-
-
+            rdescript="Python: Unary Special Method"),     
     }
 
     extras = [
@@ -201,10 +180,6 @@ class Python(MergeRule):
             "value": "ValueError",
             "runtime": "RuntimeError",
             "not implemented": "NotImplementedError",
-            
-
-
-
         })
     ]
     defaults = {"unary_meth": "", "binary_meth": "", "exception": ""}
