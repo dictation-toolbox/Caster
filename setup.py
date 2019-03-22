@@ -16,14 +16,15 @@ def find_version(*file_paths):
     raise RuntimeError("Unable to find version string.")
 
 
-def _post_install():
+def _post_install(dir):
     from post_setup import main
     main()
 
+# install "needs to be converted from an 'old style' to a 'new style' class for super."
 
-class install(install):
+class new_install(install):
     def __init__(self, *args, **kwargs):
-        super(install, self).__init__(*args, **kwargs)
+        super(new_install, self).__init__(*args, **kwargs)
         atexit.register(_post_install)
 
 
@@ -63,6 +64,6 @@ setuptools.setup(
         ]
     },
 
-    cmdclass={'install': install
+    cmdclass={'install': new_install
               },
 )
