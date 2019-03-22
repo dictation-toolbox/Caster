@@ -16,17 +16,14 @@ def find_version(*file_paths):
     raise RuntimeError("Unable to find version string.")
 
 
-def _post_install(dir):
+def _post_install():
     from post_setup import main
     main()
 
-# install "needs to be converted from an 'old style' to a 'new style' class for super."
-
-class new_install(install):
+class new_install(install, object): 
     def __init__(self, *args, **kwargs):
         super(new_install, self).__init__(*args, **kwargs)
         atexit.register(_post_install)
-
 
 with open("ReadMe.md", "r") as fh:
     long_description = fh.read()
