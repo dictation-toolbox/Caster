@@ -1,18 +1,19 @@
 import os
 import urllib2
 
-
 def finddirectory():
     try:
         import natlinkstatus
         status = natlinkstatus.NatlinkStatus()
         coredir = status.CoreDirectory
         directory = (os.path.dirname(coredir))
-        print("\nCaster: NatLink found.\n" "Defaulting to Dragon NaturallySpeaking Engine\n")
+        print("\nCaster: NatLink found.\n" "Defaulting to Dragon NaturallySpeaking Engine\n"
+              "Caster will automatically start with Dragon NaturallySpeaking\n")
         return directory  # NatLink MacroSystem Directory
     except Exception:
         directory = os.path.join(os.environ['USERPROFILE'], "Desktop")
-        print("\nCaster: NatLink not found.\n" "Defaulting to Windows Speech Recognition Engine\n")
+        print("\nCaster: NatLink not found.\n" "Defaulting to Windows Speech Recognition Engine\n"
+              "Click on '_caster' on desktop to launch WSR with Caster\n")
         return directory  # Windows User Desktop Directory
 
 

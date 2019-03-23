@@ -1,5 +1,5 @@
-import setuptools, os, codecs, re
-from distutils.command.install import install as _install
+import setuptools, os, codecs, re, atexit
+from setuptools.command.install import install
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -16,17 +16,14 @@ def find_version(*file_paths):
     raise RuntimeError("Unable to find version string.")
 
 
-def _post_install(dir):
+def _post_install():
     from post_setup import main
     main()
 
-
-class install(_install):
-    def run(self):
-        _install.run(self)
-        self.execute(_post_install, (self.install_lib,),
-                     msg="Running post install task")
-
+class new_install(install, object): 
+    def __init__(self, *args, **kwargs):
+        super(new_install, self).__init__(*args, **kwargs)
+        atexit.register(_post_install)
 
 with open("ReadMe.md", "r") as fh:
     long_description = fh.read()
@@ -64,6 +61,6 @@ setuptools.setup(
         ]
     },
 
-    cmdclass={'install': install
+    cmdclass={'install': new_install
               },
 )
