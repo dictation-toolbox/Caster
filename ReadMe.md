@@ -1,12 +1,12 @@
 # Caster
 
-[Caster](http://dictation-toolbox.github.io/caster/) is a collection of tools aimed at enabling programming and accessibility entirely by voice built upon the [Dragonfly](https://github.com/dictation-toolbox/dragonfly) API.
+[Caster](https://github.com/dictation-toolbox/Caster) is a collection of tools aimed at enabling programming and accessibility entirely by voice built upon the [Dragonfly](https://github.com/dictation-toolbox/dragonfly) API.
 
 - Videos by the Caster Community.
   - [Caster Demo](https://www.youtube.com/watch?v=oIwh3z2jXD4)
   - [VimGolf and Project Euler](https://www.youtube.com/watch?v=T1bKAqDhH_E)
   - [Dictating maths into scientific notebook](https://www.youtube.com/watch?v=oq8EoPu0cGY&t=3s) and [Dictating math by voice using Caster](https://www.youtube.com/watch?v=z-iHvPmjcas)
-- [Instructions for installing](castervoice/doc/Installation.md)
+- [Instructions for installing](castervoice/doc/Installation.md) - Do not use the PIP install before reading these instructions as they contain prerequisites.
 - Documentation on Caster [[ReadTheDocs](http://caster.readthedocs.org/en/latest/README/)] [[YouTube](https://www.youtube.com/channel/UC2qZzmCj_5ZKkTa3i9X1LCg)] and Dragonfly [[ReadTheDocs](https://dragonfly2.readthedocs.io/en/latest/)] 
 - [How to Speak Code](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/examples/speaking/examples1/) - Example Document
 - Caster Command Reference Guides 
@@ -29,9 +29,9 @@
 
 # Feature List
 
-- [Easy Setup](castervoice/doc/Installation.md) and Configurable Settings in `C:\Users\%USERNAME%\.caster`
+- Configurable Settings in `C:\Users\%USERNAME%\.caster`
 
-- Customize Commands aka `Specs` and their actions via [simplified filter rules](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/CCR/#rule-filters-simplified) and [filter rules](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/examples/rules/Caster%20Rules/#rule-filters)[code](https://github.com/dictation-toolbox/caster/tree/master/caster/user/filters/examples).
+- Customize Commands aka `Specs` and their actions via [simplified filter rules](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/CCR/#rule-filters-simplified) and [filter rules](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/examples/rules/Caster%20Rules/#rule-filters)[code](https://github.com/dictation-toolbox/caster/tree/master/caster/user/filters/examples) (WIP).
 
 - Compatible Speech Recognition Engines
 
@@ -71,6 +71,6 @@
 - Caster extends the Dragonfly API for even more powerful commands.
 
   - The [Context Stack](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/ContextStack/) - Create asynchronous and context seeking commands
-  - Spec reduction via [NodeRule](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/NodeRule/)
+  - Spec reduction via [NodeRule](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/NodeRule/) (WIP)
 
   

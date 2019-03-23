@@ -20,12 +20,20 @@ Make sure to select `Add python to path`. This can be done manually by searching
 
 ### 2. NatLink
 
-- **Second only for Dragon NaturallySpeaking**. Download [Natlink](https://sourceforge.net/projects/natlink/files/natlink/natlinktest4.1/). Use natlink-4.1 victor or newer.
+- **Second only for Dragon NaturallySpeaking**. Download [Natlink](https://sourceforge.net/projects/natlink/files/natlink/natlinktest4.1/). Use `Natlink-4.1 whiskey3` or newer.
   - [Install Video instructions](https://www.youtube.com/watch?v=dj5xgWSOEXA)
 
 ### 3. Caster
 
-**Third** Download Caster and install dependencies.
+**Third** download Caster and install dependencies.
+
+- PIP Install (Beta) - If you're using DNS make sure you've installed and configured NatLink first!
+
+ `pip install castervoice --verbose` 
+
+At the end of the PIP install instructions will guide you of what to expect for WSR or DNS. Set up complete.
+
+- Classic Install
 
 1. Download Caster from [master branch](https://github.com/synkarius/caster/archive/master.zip). **Note** If you plan to develop Caster use the [development branch](https://github.com/synkarius/caster/archive/develop.zip).
 2. Open up the zip file downloaded
@@ -49,11 +57,13 @@ Make sure to select `Add python to path`. This can be done manually by searching
 
 ### Troubleshooting FAQ
 
-- Commands work in some Applications but not others that are supported by Caster. To fix verify that the program is not running an administrator/elevated privileges. 
+- You have followed the PIP install `pip install castervoice --verbose`  Caster does not start with DNS automatically or `_caster` does not appear on the desktop for WSR.
 
-   	Dragonfly grammars cannot interact with programs that have administrator/elevated privileges. A documented [Proof of Concept](https://github.com/dictation-toolbox/dragonfly/issues/11) work around but the project needs an active developer with C#.
-  
-  
+    The PIP install is in beta yet please report any issues or error messages that you experience github [issues](https://github.com/dictation-toolbox/Caster/issues) or [gitter chat](https://gitter.im/synkarius/Caster?utm_source=share-link&utm_medium=link&utm_campaign=share-link).
+
+- Commands work in some applications but not others that are supported by Caster. To fix verify that the program is not running an administrator/elevated privileges. 
+
+    Dragonfly grammars cannot interact with programs that have administrator/elevated privileges. A documented [Proof of Concept](https://github.com/dictation-toolbox/dragonfly/issues/11) work around but the project needs an active developer with C#.
 
 - Running "Configure NatLink via GUI" does not bring up the settings window - try running the program as an administrator:
 
