@@ -2,6 +2,34 @@ from dragonfly import ActionBase
 from castervoice.lib import context, control
 from castervoice.lib.actions import Text, Key
 
+'''
+Stores the currently highlighted text in a temporary variable,
+to be Retrieved after some other action. If no text was
+highlighted, an empty string will be stored.
+Sample usage:
+"find that": Store() + Key("c-f") + Retrieve() + Key("enter")
+
+In order to enable use with web URLs, Store() takes a string,
+space, which will replace all space characters, and a bool,
+remove_cr, which if true will remove any newlines in the
+selection, to avoid them triggering the request early.
+Sample usage:
+"wikipedia that":
+    Store(space="+", remove_cr=True) + Key("c-t") +
+    Text("https://en.wikipedia.org/w/index.php?search=") +
+    Retrieve() + Key("enter")
+
+There are cases where you may want the same function to do
+different things depending on whether or not text was highlighted.
+The action_if_no_text and action_if_text arguments to Retrieve()
+are calls to Key() and allow this.
+For example, you may want to finish inside a set of brackets
+if no text was highlighted, but outside if there was text.
+Sample usage:
+"insert bold text":
+    Store() + Text("\\textbf{}") + Key("left") +
+    Retrieve(action_if_text="right")
+'''
 
 class Store(ActionBase):
     def __init__(self, space=" ", remove_cr=False):
