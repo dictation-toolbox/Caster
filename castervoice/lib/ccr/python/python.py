@@ -7,7 +7,6 @@ from dragonfly import Dictation, MappingRule, Choice, Pause
 
 from castervoice.lib import control
 from castervoice.lib.actions import Key, Text
-from castervoice.lib.temporary import Store, Retrieve
 from castervoice.lib.ccr.standard import SymbolSpecs
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
@@ -141,7 +140,6 @@ class Python(MergeRule):
             rdescript="Python: Binary Special Method"),
         "meth [<unary_meth>]": R(Text("__%(unary_meth)s__(self):"),
             rdescript="Python: Unary Special Method"),
-
     }
 
     extras = [
