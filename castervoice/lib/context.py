@@ -68,7 +68,7 @@ def navigate_to_character(direction3, target, fill=False):
         index = _find_index_in_context(target, context, look_left)
 
         if index != -1:  # target found
-            '''move the cursor to the left of the target if looking left, 
+            '''move the cursor to the left of the target if looking left,
             to the right of the target if looking right:'''
             Key("left" if look_left else "right").execute()
             '''number of times to press left or right before the highlight

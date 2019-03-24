@@ -76,8 +76,13 @@ class SublimeRule(MergeRule):
             R(Key("c-r"), rdescript="Sublime: Go to symbol"),
         "go to [symbol in] project":
             R(Key("cs-r"), rdescript="Sublime: Go to symbol in project"),
+
         "go to that":
-            Store() + Key("cs-r") + Retrieve() + Key("enter"),
+            R(Store() + Key("cs-r") + Retrieve() + Key("enter"), rdescript="Sublime: Go to that"),
+        "find that in project":
+            R(Store() + Key("cs-f") + Retrieve() + Key("enter"), rdescript="Sublime: Find that in project"),
+        "find that":
+            R(Store() + Key("c-f") + Retrieve() + Key("enter"), rdescript="Sublime: Find that"),
 
         "command pallette":
             R(Key("cs-p"), rdescript="Sublime: Command Pallette"),
@@ -163,7 +168,7 @@ class SublimeRule(MergeRule):
 
 #---------------------------------------------------------------------------
 
-context = AppContext(executable="sublime_text")
+context = AppContext(executable="sublime_text", title="Sublime Text")
 grammar = Grammar("Sublime", context=context)
 
 if settings.SETTINGS["apps"]["sublime"]:

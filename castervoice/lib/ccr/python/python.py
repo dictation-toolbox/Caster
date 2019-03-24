@@ -142,16 +142,10 @@ class Python(MergeRule):
         "meth [<unary_meth>]": R(Text("__%(unary_meth)s__(self):"),
             rdescript="Python: Unary Special Method"),
 
-        "fun <fun>":
-            Store() + Text("%(fun)s()") + Key("left") + Retrieve(action_if_text="right"),
-
     }
 
     extras = [
         Dictation("text"),
-        Choice("fun", {
-                "test": "test",
-            }),
         Choice("unary_meth", {
                 "reper": "reper",
                 "stir": "str",

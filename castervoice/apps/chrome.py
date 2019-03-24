@@ -121,7 +121,13 @@ class ChromeRule(MergeRule):
             R(Text("/msg NickServ identify PASSWORD"),
               rdescript="IRC Chat Channel Identify"),
 
-        "google that": Store() + Key("c-t") + Retrieve() + Key("enter"),
+        "google that":
+            R(Store(remove_cr=True) + Key("c-t") + Retrieve() + Key("enter"),
+                rdescript="Chrome: google that"),
+
+        "wikipedia that":
+            R(Store(space="+", remove_cr=True) + Key("c-t") + Text("https://en.wikipedia.org/w/index.php?search=") + Retrieve() + Key("enter"),
+                rdescript="Chrome: Wikipedia that"),
 
         "duplicate tab":
             R(Key("a-d,a-c,c-t/15,c-v/15, enter"), rdescript="duplicate the current tab"),

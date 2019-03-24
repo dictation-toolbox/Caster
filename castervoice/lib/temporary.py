@@ -1,22 +1,36 @@
-from dragonfly import Function, Pause
+from dragonfly import ActionBase
 from castervoice.lib import context, control
 from castervoice.lib.actions import Text, Key
 
-_NEXUS = control.nexus()
+
+class Store(ActionBase):
+    def __init__(self, space=" ", remove_cr=False):
+        ActionBase.__init__(self)
+        self.space = space
+        self.remove_cr = remove_cr
+
+    def _execute(self, data=None):
+        _, orig = context.read_selected_without_altering_clipboard(False)
+        text = orig.replace(" ", self.space) if orig else ""
+        control.nexus().temp = text.replace("\n", "") if self.remove_cr else text
+        return True
 
 
-def Store():
-    def temp_store():
-        _, text = context.read_selected_without_altering_clipboard(False)
-        _NEXUS.temp = text if text else ""
-    return Function(temp_store)
+class Retrieve(ActionBase):
+    def __init__(self, action_if_no_text="", action_if_text=""):
+        ActionBase.__init__(self)
+        self.action_if_no_text = action_if_no_text
+        self.action_if_text = action_if_text
 
-def Retrieve(action_if_no_text="", action_if_text=""):
-    def temp_retrieve(action_if_no_text, action_if_text):
-        Text(_NEXUS.temp).execute()
-        if _NEXUS.temp:
-            Key(action_if_text).execute()
+    @classmethod
+    def text(cls):
+        return control.nexus().temp
+
+    def _execute(self, data=None):
+        output = control.nexus().temp
+        Text(output).execute()
+        if output:
+            Key(self.action_if_text).execute()
         else:
-            Key(action_if_no_text).execute()
-    return Function(temp_retrieve, action_if_no_text=action_if_no_text, action_if_text=action_if_text)
-
+            Key(self.action_if_no_text).execute()
+        return True
