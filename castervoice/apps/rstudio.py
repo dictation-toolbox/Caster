@@ -63,6 +63,10 @@ class RStudioRule(MergeRule):
         R(Key("ac-f12"), rdescript="RStudio: Next Plot"),
     "previous plot":
         R(Key("ac-f11"), rdescript="RStudio: Previous Plot"),
+
+    "(help | document) that":
+        R(Store() + Key("c-2, question") + Retrieve() + Key("enter, c-3"),
+            rdescript="RStudio: Get documentation for highlighted text"),
     }
     extras = [
         IntegerRefST("n", 1, 10000),
