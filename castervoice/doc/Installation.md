@@ -57,6 +57,9 @@ At the end of the PIP install instructions will guide you of what to expect for 
 
 ### Troubleshooting FAQ
 
+- Fix TypeError: command must be a non-empty string, not ['C:\\Python27\\Scripts\\pip.exe', 'search', 'castervoice']
+   Update `pip install --upgrade dragonfly2` Dragonfly
+
 - You have followed the PIP install `pip install castervoice --verbose`  Caster does not start with DNS automatically or `_caster` does not appear on the desktop for WSR.
 
     The PIP install is in beta yet please report any issues or error messages that you experience github [issues](https://github.com/dictation-toolbox/Caster/issues) or [gitter chat](https://gitter.im/synkarius/Caster?utm_source=share-link&utm_medium=link&utm_campaign=share-link).
