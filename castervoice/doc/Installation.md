@@ -95,12 +95,16 @@ Castor dependencies
 - setuptools
 - six
 - pyperclip
+- enum34
+- comtypes
+- regex
 
 --installed by **Caster**
 
 - wxpython
 - pillow
 - toml
+- future
 
 **Alternative Speech Secognition Engines.**
 
