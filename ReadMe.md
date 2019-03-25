@@ -2,11 +2,15 @@
 
 [Caster](https://github.com/dictation-toolbox/Caster) is a collection of tools aimed at enabling programming and accessibility entirely by voice built upon the [Dragonfly](https://github.com/dictation-toolbox/dragonfly) API.
 
+**Note for PyPi Users**: The PIP package is (_Beta_) based on the Caster development branch. Do not use the PIP install before reading these instructions as they contain prerequisites.
+Alternatively use the [master branch](https://github.com/dictation-toolbox/Caster) with classic install for  the best feature experience.
+
+
 - Videos by the Caster Community.
   - [Caster Demo](https://www.youtube.com/watch?v=oIwh3z2jXD4)
   - [VimGolf and Project Euler](https://www.youtube.com/watch?v=T1bKAqDhH_E)
   - [Dictating maths into scientific notebook](https://www.youtube.com/watch?v=oq8EoPu0cGY&t=3s) and [Dictating math by voice using Caster](https://www.youtube.com/watch?v=z-iHvPmjcas)
-- [Instructions for installing](castervoice/doc/Installation.md) - Do not use the PIP install before reading these instructions as they contain prerequisites.
+- [Instructions for installing](castervoice/doc/Installation.md)
 - Documentation on Caster [[ReadTheDocs](http://caster.readthedocs.org/en/latest/README/)] [[YouTube](https://www.youtube.com/channel/UC2qZzmCj_5ZKkTa3i9X1LCg)] and Dragonfly [[ReadTheDocs](https://dragonfly2.readthedocs.io/en/latest/)] 
 - [How to Speak Code](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/examples/speaking/examples1/) - Example Document
 - Caster Command Reference Guides 
@@ -24,7 +28,7 @@
     - `open file` -  `open('filename', 'r') as f:`
 - [Contributing / How can I help?](https://github.com/synkarius/caster/blob/master/caster/doc/CONTRIBUTING.md)
 - [Making your own Dragonfly and Caster rules](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/examples/Rule%20Construction/) augmented by [Development Commands](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/CCR/)
-- Need support or just curious? Join our community at [![Join the chat at https://gitter.im/synkarius/caster](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/synkarius/caster?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) and [Discord](https://discord.gg/9eAAsCJ) for voice chat.
+- Need support or just curious? Join our community at [![Join the chat at https://gitter.im/synkarius/caster](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dictation-toolbox/home) and [Discord](https://discord.gg/9eAAsCJ) for voice chat.
 - The [Voice Index](castervoice/doc/readthedocs/Voice_Index.md) is a curated source of information: Videos, Blogs, Repositories, Presentations, etc related to Dragonfly, voice programming, and accessibility.
 
 # Feature List
