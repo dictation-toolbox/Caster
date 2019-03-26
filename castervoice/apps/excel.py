@@ -24,33 +24,34 @@ from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
 
-# NATO alphabet dictionary
+# Caster Alphabet Dictionary
 word_to_letter = {
-    "Alpha": "a",
-    "Bravo": "b",
-    "Charlie": "c",
-    "Delta": "d",
-    "Echo": "e",
-    "Foxtrot": "f",
-    "Golf": "g",
-    "Hotel": "h",
+    "arch": "a",
+    "brov": "b",
+    "char": "c",
+    "delta": "d",
+    "echo": "e",
+    "foxy": "f",
+    "goof": "g",
+    "hotel": "h",
     "India": "i",
-    "Juliet": "j",
-    "Kilo": "k",
+    "julia": "j",
+    "kilo": "k",
     "Lima": "l",
     "Mike": "m",
-    "November": "n",
-    "Oscar": "o",
-    "Papa": "p",
+    "Novakeen": "n",
+    "oscar": "o",
+    "prime": "p",
     "Quebec": "q",
     "Romeo": "r",
     "Sierra": "s",
-    "Tango": "t",
-    "Uniform": "u",
-    "Victor": "v",
-    "X-ray": "x",
-    "Yankee": "y",
-    "Zulu": "z"
+    "tango": "t",
+    "uniform": "u",
+    "victor": "v",
+    "whiskey": "w",
+    "x-ray": "x",
+    "yankee": "y",
+    "Zulu": "z",
 }
 
 
@@ -81,12 +82,9 @@ class ExcelRule(MergeRule):
 
     mapping = {
         "next sheet [<n>]":
-            R(Key("c-pgdown"), rdescript="Excel: next sheet")*Repeat(extra='n'),
+            R(Key("c-pgdown"), rdescript="Excel: Next Sheet")*Repeat(extra='n'),
         "(prior | previous) sheet [<n>]":
-            R(Key("c-pgup"), rdescript="Excel: prior sheet")*Repeat(extra='n'),
-
-        # this uses the NATO phonetic alphabet. if you want to change it ,
-        # change the dictionary above called word_to_letter
+            R(Key("c-pgup"), rdescript="Excel: Prior Sheet")*Repeat(extra='n'),
         "[select] cell <column_1> <row_1>":
             R(Key("c-g") + Text("%(column_1)s%(row_1)s") + Key("enter"),
               rdescript="Excel: Select Cell with Given Coordinates e.g. Alpha Hotel 7"),
