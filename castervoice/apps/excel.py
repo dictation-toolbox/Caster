@@ -23,37 +23,7 @@ from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
-
-# Caster Alphabet Dictionary
-word_to_letter = {
-    "arch": "a",
-    "brov": "b",
-    "char": "c",
-    "delta": "d",
-    "echo": "e",
-    "foxy": "f",
-    "goof": "g",
-    "hotel": "h",
-    "India": "i",
-    "julia": "j",
-    "kilo": "k",
-    "Lima": "l",
-    "Mike": "m",
-    "Novakeen": "n",
-    "oscar": "o",
-    "prime": "p",
-    "Quebec": "q",
-    "Romeo": "r",
-    "Sierra": "s",
-    "tango": "t",
-    "uniform": "u",
-    "victor": "v",
-    "whiskey": "w",
-    "x-ray": "x",
-    "yankee": "y",
-    "Zulu": "z",
-}
-
+from castervoice.lib.alphanumeric import caster_alphabet
 
 # this function takes a dictionary and returns a dictionary whose keys are sequences of keys of the original dictionary
 # and whose values our the corresponding sequences of values of the original dictionary
@@ -165,8 +135,8 @@ class ExcelRule(MergeRule):
         IntegerRefST("row_1", 1, 100),
         IntegerRefST("row_2", 1, 100),
         # when I set the sequence length to 3 I got the grammar too complex Natlink error.
-        Choice("column_1", make_sequence_dict_up_to_length(word_to_letter, 2)),
-        Choice("column_2", make_sequence_dict_up_to_length(word_to_letter, 2)),
+        Choice("column_1", make_sequence_dict_up_to_length(caster_alphabet, 2)),
+        Choice("column_2", make_sequence_dict_up_to_length(caster_alphabet, 2)),
     ]
     defaults = {"n": 1, "dict": ""}
 
