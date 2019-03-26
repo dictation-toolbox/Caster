@@ -29,6 +29,11 @@ Sample usage:
 "insert bold text":
     Store() + Text("\\textbf{}") + Key("left") +
     Retrieve(action_if_text="right")
+
+NOTE:
+If the highlighted text is the same as what is currently on the
+clipboard, an empty string will be stored. This is a necessary
+side-effect of being able to detect when no text is highlighted.
 '''
 
 class Store(ActionBase):
