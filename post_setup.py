@@ -44,6 +44,7 @@ def download():
                                                                      "https://github.com/dictation-toolbox/caster/issues\n")
 def display():
     casterlog = (os.getcwd() + "\caster-install.log")
+    log.warning("Close window to continue")
     command = ('type ' + casterlog)
     os.system("start /wait cmd /k " + command)
 
