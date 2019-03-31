@@ -20,12 +20,20 @@ Make sure to select `Add python to path`. This can be done manually by searching
 
 ### 2. NatLink
 
-- **Second only for Dragon NaturallySpeaking**. Download [Natlink](https://sourceforge.net/projects/natlink/files/natlink/natlinktest4.1/). Use natlink-4.1 victor or newer.
+- **Second only for Dragon NaturallySpeaking**. Download [Natlink](https://sourceforge.net/projects/natlink/files/natlink/natlinktest4.1/). Use `Natlink-4.1 whiskey3` or newer.
   - [Install Video instructions](https://www.youtube.com/watch?v=dj5xgWSOEXA)
 
 ### 3. Caster
 
-**Third** Download Caster and install dependencies.
+**Third** download Caster and install dependencies.
+
+- PIP Install (Beta) - If you're using DNS make sure you've installed and configured NatLink first!
+
+ `pip install castervoice --verbose` 
+
+At the end of the PIP install instructions will guide you of what to expect for WSR or DNS. Set up complete.
+
+- Classic Install
 
 1. Download Caster from [master branch](https://github.com/synkarius/caster/archive/master.zip). **Note** If you plan to develop Caster use the [development branch](https://github.com/synkarius/caster/archive/develop.zip).
 2. Open up the zip file downloaded
@@ -49,11 +57,17 @@ Make sure to select `Add python to path`. This can be done manually by searching
 
 ### Troubleshooting FAQ
 
-- Commands work in some Applications but not others that are supported by Caster. To fix verify that the program is not running an administrator/elevated privileges. 
+- Fix TypeError: command must be a non-empty string, not ['C:\\Python27\\Scripts\\pip.exe', 'search', 'castervoice']
+  Update `pip install --upgrade dragonfly2` Dragonfly
 
-   	Dragonfly grammars cannot interact with programs that have administrator/elevated privileges. A documented [Proof of Concept](https://github.com/dictation-toolbox/dragonfly/issues/11) work around but the project needs an active developer with C#.
-  
-  
+- You have followed the PIP install `pip install castervoice --verbose`  Caster does not start with DNS automatically or `_caster` does not appear on the desktop for WSR.
+
+  The PIP install is in beta yet please report any issues or error messages that you experience github [issues](https://github.com/dictation-toolbox/Caster/issues) or [gitter chat](https://gitter.im/synkarius/Caster?utm_source=share-link&utm_medium=link&utm_campaign=share-link).
+
+- Commands work in some applications but not others that are supported by Caster. To fix verify that the program is not running an administrator/elevated privileges. Dragonfly grammars cannot interact with programs that have administrator/elevated privileges.
+
+  -  Advanced [Workaround](https://groups.google.com/d/msg/dragonflyspeech/2VrJKBI2mSo/R4zl6u2mBwAJ) - Editing natlink.exe with hex editor and re-signing with self signed certificate - **Use at your own risk!** Instructions note disadvantages.
+  - [Proof of Concept](https://github.com/dictation-toolbox/dragonfly/issues/11) work around but the project needs an active developer with C#.
 
 - Running "Configure NatLink via GUI" does not bring up the settings window - try running the program as an administrator:
 
@@ -70,7 +84,7 @@ Make sure to select `Add python to path`. This can be done manually by searching
 
 - To fix `ImportError: cannot import name RuleWrap`
 
-  ​	You likely either have the wrong version of Dragonfly installed, or don't have it installed at all.  RuleWrap is a Dragonfly import. Try `pip uninstall dragonfly` (it's okay if it doesn't find the package) then `pip install dragonfly2`.
+  You likely either have the wrong version of Dragonfly installed, or don't have it installed at all.  RuleWrap is a Dragonfly import. Try `pip uninstall dragonfly` (it's okay if it doesn't find the package) then `pip install dragonfly2`.
 
 ### Extra information
 
@@ -82,12 +96,16 @@ Castor dependencies
 - setuptools
 - six
 - pyperclip
+- enum34
+- comtypes
+- regex
 
 --installed by **Caster**
 
 - wxpython
 - pillow
 - toml
+- future
 
 **Alternative Speech Secognition Engines.**
 

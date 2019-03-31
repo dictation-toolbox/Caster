@@ -85,7 +85,7 @@ This `words.txt` will create a rule filter which goes through **all** Caster rul
 MergeRule has a handful of class-level properties which can be defined to enable certain behavior.
 
 - `pronunciation`: This property allows me to change which word I can use in the `enable`/`disable` commands. For example, if my MergeRule-extending class is called `NYCCommands`, I can set `pronunciation="new york city"` in order to be able to say `enable new york city`.
-- `non`: Suppose you want a non-CCR rule activated alongside your CCR rule. For instance, let's say there are some Python commands you want available while you're coding in Python, but which you know you'll never use as part of a command sequence and which you don't want in the CCR command set for performance / phonetic distinctness reasons. You can define `non` as the class of that rule and it will be instantiated and activated alongside the MergeRule you define it on.
+- `non`: Suppose you want a non-CCR rule activated alongside your CCR rule. For instance, let's say there are some Python commands you want available while you're coding in Python, but which you know you'll never use as part of a command sequence and which you don't want in the CCR command set for performance / phonetic distinctness reasons. You can define `non` as the class of that rule and it will be instantiated and activated alongside the MergeRule you define it on. The same thing works for App CCR rules.
 
 ### How to Register Caster CCR Rules
 

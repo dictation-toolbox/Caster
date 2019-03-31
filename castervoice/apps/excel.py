@@ -29,36 +29,7 @@ from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
-
-# NATO alphabet dictionary
-word_to_letter = {
-    "Alpha": "a",
-    "Bravo": "b",
-    "Charlie": "c",
-    "Delta": "d",
-    "Echo": "e",
-    "Foxtrot": "f",
-    "Golf": "g",
-    "Hotel": "h",
-    "India": "i",
-    "Juliet": "j",
-    "Kilo": "k",
-    "Lima": "l",
-    "Mike": "m",
-    "November": "n",
-    "Oscar": "o",
-    "Papa": "p",
-    "Quebec": "q",
-    "Romeo": "r",
-    "Sierra": "s",
-    "Tango": "t",
-    "Uniform": "u",
-    "Victor": "v",
-    "X-ray": "x",
-    "Yankee": "y",
-    "Zulu": "z"
-}
-
+from castervoice.lib.alphanumeric import caster_alphabet
 
 # this function takes a dictionary and returns a dictionary whose keys are sequences of keys of the original dictionary
 # and whose values our the corresponding sequences of values of the original dictionary
@@ -87,12 +58,9 @@ class ExcelRule(MergeRule):
 
     mapping = {
         "next sheet [<n>]":
-            R(Key("c-pgdown"), rdescript="Excel: next sheet")*Repeat(extra='n'),
+            R(Key("c-pgdown"), rdescript="Excel: Next Sheet")*Repeat(extra='n'),
         "(prior | previous) sheet [<n>]":
-            R(Key("c-pgup"), rdescript="Excel: prior sheet")*Repeat(extra='n'),
-
-        # this uses the NATO phonetic alphabet. if you want to change it ,
-        # change the dictionary above called word_to_letter
+            R(Key("c-pgup"), rdescript="Excel: Prior Sheet")*Repeat(extra='n'),
         "[select] cell <column_1> <row_1>":
             R(Key("c-g") + Text("%(column_1)s%(row_1)s") + Key("enter"),
               rdescript="Excel: Select Cell with Given Coordinates e.g. Alpha Hotel 7"),
@@ -173,8 +141,8 @@ class ExcelRule(MergeRule):
         IntegerRefST("row_1", 1, 100),
         IntegerRefST("row_2", 1, 100),
         # when I set the sequence length to 3 I got the grammar too complex Natlink error.
-        Choice("column_1", make_sequence_dict_up_to_length(word_to_letter, 2)),
-        Choice("column_2", make_sequence_dict_up_to_length(word_to_letter, 2)),
+        Choice("column_1", make_sequence_dict_up_to_length(caster_alphabet, 2)),
+        Choice("column_2", make_sequence_dict_up_to_length(caster_alphabet, 2)),
     ]
     defaults = {"n": 1, "dict": ""}
 
