@@ -15,6 +15,7 @@ from dragonfly import (Grammar, Context, AppContext, Dictation, Key, Text, Repea
 from castervoice.lib import control
 from castervoice.lib import settings
 from castervoice.lib.actions import Key, Text
+from castervoice.lib.temporary import Store, Retrieve
 from castervoice.lib.context import AppContext
 from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge import gfilter
@@ -121,7 +122,13 @@ class ChromeRule(MergeRule):
               rdescript="IRC Chat Channel Identify"),
 
         "google that":
-            R(Key("c-c, c-t, c-v, enter"), rdescript="googles highlighted text"),
+            R(Store(remove_cr=True) + Key("c-t") + Retrieve() + Key("enter"),
+                rdescript="Chrome: google that"),
+
+        "wikipedia that":
+            R(Store(space="+", remove_cr=True) + Key("c-t") + Text("https://en.wikipedia.org/w/index.php?search=") + Retrieve() + Key("enter"),
+                rdescript="Chrome: Wikipedia that"),
+
         "duplicate tab":
             R(Key("a-d,a-c,c-t/15,c-v/15, enter"), rdescript="duplicate the current tab"),
         "duplicate window":

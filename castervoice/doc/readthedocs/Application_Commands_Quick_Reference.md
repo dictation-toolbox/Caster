@@ -133,6 +133,7 @@
 | `duplicate window`                     | `extensions`                         | `(menu / three dots)`        |
 | `settings`                             | `downloads`                          | `chrome task manager`        |
 | `clear browsing data`                  | `developer tools`                    | `more tools`                 |
+| `google that`                  | `wikipedia that`                    | ``                 |
 
 ## Click by voice plug-in
 Options:
@@ -364,14 +365,15 @@ Options:
 
 # RStudio
 
-| Command                     | Command      | Command         |
-|:----------------------------|:-------------|:----------------|
-| `[go to] line <n>`          | `focus main` | `previous plot` |
-| `close tab`                 | `last tab`   | `previous tab`  |
-| `comment (line / selected)` | `new file`   | `run document`  |
-| `find`                      | `next plot`  | `run line`      |
-| `first tab`                 | `next tab`   | `save all`      |
-| `focus console`             | `open file`  | `select all`    |
+| Command                     | Command      | Command          |
+|:----------------------------|:-------------|:-----------------|
+| `[go to] line <n>`          | `focus main` | `previous plot`  |
+| `close tab`                 | `last tab`   | `previous tab`   |
+| `comment (line / selected)` | `new file`   | `run document`   |
+| `find`                      | `next plot`  | `run line`       |
+| `first tab`                 | `next tab`   | `save all`       |
+| `focus console`             | `open file`  | `select all`     |
+| `help that`                 | `head that`  | `vee table that` |
 
 # SQL Developer
 
@@ -410,7 +412,8 @@ Options:
 | `close pane`             | `next pane`                    | `previous pane`                   |
 | `pane <n2>`              | `column <one/two/left/right>`  | `focus <one/two/left/right>`      |
 | `move <n2>`              | `open terminal`                | `zoom in/out [<n2>]`              |
-| `toggle side bar`        | ``                             | ``                                |
+| `toggle side bar`        | `find that`                    | `find that in project`            |
+| `go to that`             | ` `                            | ` `                               |
 
 
 # Typora
