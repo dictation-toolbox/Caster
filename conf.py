@@ -1,9 +1,7 @@
 # Read The Docs Configuration file
-
-import sys
-if sys.version_info >= (3, 3):
+try:
     from unittest.mock import MagicMock
-else:
+except ImportError:
     from mock import MagicMock
 
 class Mock(MagicMock):
