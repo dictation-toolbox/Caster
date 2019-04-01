@@ -4,7 +4,7 @@
 situation = ("The printer is jammed, cannot print statement") # End-user experience
 
 # End-user thoughts
-problem = True 
+problem = True
 insurmountable = True
 
 def enduser():
@@ -13,15 +13,5 @@ def enduser():
     else:
         print ("End-user call IT anyway because they made it more worser")
         call_IT() # Dumb
-
-def call_IT():
-    print ("Press number 1 for printer support. " + situation)
-    one = 1
-    while True:
-        if one == 1:
-            print ("Slightly human but robotic voice: I'm sorry I did not recognize your entry") # Infinite loop
-
-enduser() # End-user: Beginning a bad day
-
 
 
