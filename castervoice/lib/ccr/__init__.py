@@ -24,7 +24,7 @@ command_sets = {
     "rust.rust": ("Rust", ),
     "sql.sql": ("SQL", ),
     "prolog.prolog": ("Prolog", ),
-    "vhdl.vhdl": ("VHDL", ),  
+    "vhdl.vhdl": ("VHDL", ),
 }
 
 for module_name, class_name_tup in command_sets.iteritems():
