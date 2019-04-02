@@ -1,4 +1,4 @@
-pfrom dragonfly import Choice, Repeat
+from dragonfly import Choice, Repeat
 
 from castervoice.lib import control
 from castervoice.lib.actions import Key, Text
