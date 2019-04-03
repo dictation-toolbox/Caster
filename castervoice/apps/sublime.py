@@ -30,6 +30,10 @@ class SublimeRule(MergeRule):
             R(Key("cs-n"), rdescript="Sublime: New Window"),
         "open file":
             R(Key("c-o"), rdescript="Sublime: Open File"),
+        "open folder":
+            R(Key("f10, f, down:2, enter"), rdescript="Sublime: Open Folder"),
+        "open recent":
+            R(Key("f10, f, down:3, enter"), rdescript="Sublime: Open Recent"),
         "save as":
             R(Key("cs-s"), rdescript="Sublime: Save As"),
         #
@@ -211,7 +215,7 @@ class SublimeRule(MergeRule):
 
 #---------------------------------------------------------------------------
 
-context = AppContext(title="Sublime Text")
+context = AppContext(executable="sublime_text", title="Sublime Text")
 grammar = Grammar("Sublime", context=context)
 
 if settings.SETTINGS["apps"]["sublime"]:
