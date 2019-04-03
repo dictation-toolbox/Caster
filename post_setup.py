@@ -49,11 +49,6 @@ def display():
     os.system("start /wait cmd /k " + command)
 
 
-def main():
+def runpostinstall():
     download()
     display()
-    pass
-
-
-if __name__ == '__main__':
-    main()
