@@ -1,4 +1,4 @@
-from dragonfly import (Choice, Dictation, Grammar, Repeat)
+from dragonfly import (Choice, Dictation, Grammar, Repeat, Function)
 
 from castervoice.lib import control
 from castervoice.lib import settings
@@ -10,6 +10,15 @@ from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
 
+def action_lines(action, n, nn):
+    if nn:
+        num_lines = int(nn)-int(n)+1 if nn>n else int(n)-int(nn)+1
+        top_line = min(int(nn), int(n))
+    else:
+        num_lines = 1
+        top_line = int(n)
+    command = Key("c-g") + Text(str(top_line)) + Key("enter, s-down:" + str(num_lines) + ", " + action)
+    command.execute()
 
 class SublimeRule(MergeRule):
     pronunciation = "sublime"
@@ -21,6 +30,10 @@ class SublimeRule(MergeRule):
             R(Key("cs-n"), rdescript="Sublime: New Window"),
         "open file":
             R(Key("c-o"), rdescript="Sublime: Open File"),
+        "open folder":
+            R(Key("f10, f, down:2, enter"), rdescript="Sublime: Open Folder"),
+        "open recent":
+            R(Key("f10, f, down:3, enter"), rdescript="Sublime: Open Recent"),
         "save as":
             R(Key("cs-s"), rdescript="Sublime: Save As"),
         #
@@ -68,8 +81,12 @@ class SublimeRule(MergeRule):
         #
         "line <n>":
             R(Key("c-g/10") + Text("%(n)s") + Key("enter"), rdescript="Sublime: Line n"),
+        "<action> line <n> [to <nn>]":
+            R(Function(action_lines), rdescript="Sublime: Action lines"),
         "go to file":
             R(Key("c-p"), rdescript="Sublime: Go to file"),
+        "go to <dict> [<filetype>]":
+            R(Key("c-p") + Text("%(dict)s" + "%(filetype)s") + Key("enter"), rdescript="Sublime: go to <dict> [<filetype>]"),
         "go to word":
             R(Key("c-semicolon"), rdescript="Sublime: Go to word"),
         "go to symbol":
@@ -100,6 +117,8 @@ class SublimeRule(MergeRule):
             R(Key("f11"), rdescript="Sublime: Fullscreen"),
         "toggle side bar":
             R(Key("c-k, c-b"), rdescript="Sublime: Toggle sidebar"),
+        "show key bindings":
+            Key("f10, p, right, k"),
         "zoom in [<n2>]":
             R(Key("c-equal"), rdescript="Sublime: Zoom in")*Repeat(extra="n2"),
         "zoom out [<n2>]":
@@ -124,15 +143,14 @@ class SublimeRule(MergeRule):
         "(new | create) snippet":
             R(Key("ac-n"), rdescript="Sublime: New Snippet"),
         #
-        "close pane":
-            R(Key("c-w"), rdescript="Sublime: Close Window"),
-        "next pane":
-            R(Key("c-pgdown"), rdescript="Sublime: Next Pane"),
-        "previous pane":
-            R(Key("c-pgup"), rdescript="Sublime: Previous Pane"),
-        "pane <n2>":
-            R(Key("a-%(n2)s"), rdescript="Sublime: Pane n"),
-        #
+        "close tab":
+            R(Key("c-w"), rdescript="Sublime: Close tab"),
+        "next tab":
+            R(Key("c-pgdown"), rdescript="Sublime: Next tab"),
+        "previous tab":
+            R(Key("c-pgup"), rdescript="Sublime: Previous tab"),
+        "<nth> tab":
+            R(Key("a-%(nth)s"), rdescript="Sublime: <nth> tab"),
         "column <cols>":
             R(Key("as-%(cols)s"), rdescript="Sublime: Column"),
         "focus <panel>":
@@ -142,11 +160,32 @@ class SublimeRule(MergeRule):
         #
         "open terminal":
             R(Key("cs-t"), rdescript="Sublime: Open Terminal Here"),
+
     }
     extras = [
+        Dictation("dict"),
         IntegerRefST("n", 1, 1000),
+        IntegerRefST("nn", 1, 1000),
         IntegerRefST("n2", 1, 9),
         IntegerRefST("n3", 1, 21),
+        Choice("action", {
+            "select": "",
+            "copy": "c-c",
+            "cut": "c-x",
+            "delete": "backspace",
+            "replace": "c-v",
+            }),
+        Choice("nth", {
+            "first"  : "1",
+            "second" : "2",
+            "third"  : "3",
+            "fourth" : "4",
+            "fifth"  : "5",
+            "sixth"  : "6",
+            "seventh": "7",
+            "eighth" : "8",
+            "ninth"  : "9",
+            }),
         Choice("cols", {
             "one": "1",
             "two": "2",
@@ -159,10 +198,18 @@ class SublimeRule(MergeRule):
             "two": "2",
             "right": "2",
         }),
+        Choice("filetype", {
+            "pie | python": "py",
+            "mark [down]": "md",
+            "tech": "tex",
+            "tommel": "toml",
+        }),
     ]
     defaults = {
+        "nn": None,
         "n2": 1,
         "n3": 1,
+        "filetype": "",
     }
 
 

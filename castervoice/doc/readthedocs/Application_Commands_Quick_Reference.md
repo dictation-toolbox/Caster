@@ -393,28 +393,29 @@ Options:
 | `close tab [<n>]`         | `prior bookmark` |                   |
 
 # Sublime
-| Command                  | Command                        | Command                           |
-|:-------------------------|:-------------------------------|:----------------------------------|
-| `new file`               | `new window`                   | `open file`                       |
-| `save as`                | `comment line`                 | `comment block`                   |
-| `outdent lines`          | `join lines`                   | `match bracket`                   |
-| `(select / sell) all`    | `(select / sell) scope [<n2>]` | `(select / sell) brackets [<n2>]` |
-| `(select / sell) indent` | `find`                         | `get all`                         |
-| `replace`                | `edit lines`                   | `edit next [<n3>]`                |
-| `edit up [<n3>]`         | `edit down [<n3>]`             | `edit all`                        |
-| `transform upper`        | `transform lower`              | `line <n>`                        |
-| `go to word`             | `go to symbol`                 | `go to [symbol in] project`       |
-| `go to file`             | `command pallette`             | `fold`                            |
-| `unfold`                 | `unfold all`                   | `fold [level] <n2>`               |
-| `full screen`            | `(set / add) bookmark`         | `next bookmark`                   |
-| `previous bookmark`      | `clear bookmarks`              | `build it`                        |
-| `record macro`           | `play [back] macro [<n3>]`     | `(new / create) snippet`          |
-| `close pane`             | `next pane`                    | `previous pane`                   |
-| `pane <n2>`              | `column <one/two/left/right>`  | `focus <one/two/left/right>`      |
-| `move <n2>`              | `open terminal`                | `zoom in/out [<n2>]`              |
-| `toggle side bar`        | `find that`                    | `find that in project`            |
-| `go to that`             | ` `                            | ` `                               |
-
+| Command                        | Command                           | Command                       |
+|:-------------------------------|:----------------------------------|:------------------------------|
+| `new file`                     | `new window`                      | `open file`                   |
+| `open folder`                  | `open recent`                     | `save as`                     |
+| `comment line`                 | `comment block`                   | `outdent lines`               |
+| `join lines`                   | `match bracket`                   | `(select / sell) all`         |
+| `(select / sell) scope [<n2>]` | `(select / sell) brackets [<n2>]` | `(select / sell) indent`      |
+| `find`                         | `get all`                         | `replace`                     |
+| `edit lines`                   | `edit next [<n3>]`                | `edit up [<n3>]`              |
+| `edit down [<n3>]`             | `edit all`                        | `transform upper`             |
+| `transform lower`              | `line <n>`                        | `<action> line <n> [to <nn>]` |
+| `go to file`                   | `go to <dict> [<filetype>]`       | `go to word`                  |
+| `go to symbol`                 | `go to [symbol in] project`       | `go to that`                  |
+| `find that in project`         | `find that`                       | `command pallette`            |
+| `fold`                         | `unfold`                          | `unfold all`                  |
+| `fold [level] <n2>`            | `full screen`                     | `toggle side bar`             |
+| `zoom in [<n2>]`               | `zoom out [<n2>]`                 | `(set / add) bookmark`        |
+| `next bookmark`                | `previous bookmark`               | `clear bookmarks`             |
+| `build it`                     | `record macro`                    | `play [back] macro [<n3>]`    |
+| `(new / create) snippet`       | `close tab`                       | `next tab`                    |
+| `previous tab`                 | `<nth> tab`                       | `column <cols>`               |
+| `focus <panel>`                | `move <panel>`                    | `open terminal`               |
+    
 
 # Typora
 | Command              | Command                        | Command                        |
