@@ -5,15 +5,10 @@
 #
 """
 Command-module for Microsoft Excel
-<<<<<<< HEAD
-You also can find some good vocola commands for Excel on Mark Lillibridge's Github: 
-https://github.com/mdbridge/bit-bucket/tree/master/voice/my_commands/commands
 
-=======
 You also can find some good vocola commands for Excel on Mark Lillibridge's Github:
 https://github.com/mdbridge/bit-bucket/tree/master/voice/my_commands/commands
 Alex Boche 2019
->>>>>>> upstream/develop
 """
 #---------------------------------------------------------------------------
 import itertools
