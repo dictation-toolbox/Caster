@@ -135,7 +135,7 @@ class Python(MergeRule):
         # class and class methods
         "subclass": R(Text("class ():") + Key("left:3"), rdescript="Python: Subclass"),
         "dunder": R(Text("____()") + Key("left:4"),  rdescript="Python: Special Method"),
-        "initial": R(Text("__init__()"),  rdescript="Python: Init"),
+        "init": R(Text("__init__()"),  rdescript="Python: Init"),
         "meth [<binary_meth>]": R(Text("def __%(binary_meth)s__(self, other):"), 
             rdescript="Python: Binary Special Method"),     
         "meth [<unary_meth>]": R(Text("def __%(unary_meth)s__(self):"), 
