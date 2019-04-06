@@ -11,8 +11,7 @@ def finddirectory():
     try:
         import natlinkstatus
         status = natlinkstatus.NatlinkStatus()
-        coredir = status.CoreDirectory
-        directory = (os.path.dirname(coredir))
+        directory = status.getUserDirectory()
         log.warning("\nCaster: NatLink found.\n" "Defaulting to Dragon NaturallySpeaking Engine\n"
                     "Caster will automatically start with Dragon NaturallySpeaking\n")
         return directory  # NatLink MacroSystem Directory
