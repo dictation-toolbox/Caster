@@ -55,7 +55,10 @@ class DragonRule(MergeRule):
         "center point":
             R(Playback([(["MouseGrid"], 0.1), (["click"], 0.0)]),
               rdescript="Mouse: Center Point"),
+        # A Natlink Command
+        "clear caster log": R(Function(utilities.clear_log), rdescript="Core: Clear Caster Log"),
     }
+
     extras = [
         Dictation("text"),
         Dictation("mim"),

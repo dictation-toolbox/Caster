@@ -17,6 +17,8 @@ class Nexus:
 
         self.clip = {}
 
+        self.temp = ""
+
         self.history = RecognitionHistoryForWSR(20)
         if not settings.WSR:
             self.history = RecognitionHistory(20)
@@ -36,12 +38,12 @@ class Nexus:
         self.macros_grammar = Grammar("recorded_macros")
 
         self.merger = CCRMerger(real_merger_config)
-        
+
         self.user_content_manager = None
-        
+
     def process_user_content(self):
         self.user_content_manager = UserContentManager()
-        
+
         self.merger.add_user_content(self.user_content_manager)
 
 
