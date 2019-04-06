@@ -234,14 +234,14 @@ _DEFAULT_SETTINGS = {
 
     # miscellaneous section
     "miscellaneous": {
-        "dev_commands": False,
+        "dev_commands": True,
         "keypress_wait": 50,  # milliseconds
         "max_ccr_repetitions": 16,
         "atom_palette_wait": 30,  # hundredths of a second
-        "rdp_mode": False,
+        "rdp_mode": False, # Switch app context manually for remote desktop
         "integer_remap_opt_in": False,
         "integer_remap_crash_fix": False,
-        "print_rdescripts": False,
+        "print_rdescripts": True,
         "history_playback_delay_secs": 1.0,
         "legion_vertical_columns": 30,
         "use_aenea": False,
