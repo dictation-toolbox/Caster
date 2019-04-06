@@ -106,7 +106,7 @@ class Python(MergeRule):
         "list (comprehension | comp)":
             R(Text("[x for x in TOKEN if TOKEN]"),
               rdescript="Python: List Comprehension"),
-        
+
         "[dot] (pie | pi)":
             R(Text(".py"), rdescript="Python: .py"),
         "toml":
@@ -117,18 +117,18 @@ class Python(MergeRule):
             R(Text(" is "), rdescript="Python: is"),
         "yield":
             R(Text("yield "), rdescript="Python: Yield"),
-        
+
         # Essentially an improved version of the try catch command above
-            # probably a better option than this is to use snippets with tab stops 
-            # VS code has the extension Python-snippets. these are activated by 
+            # probably a better option than this is to use snippets with tab stops
+            # VS code has the extension Python-snippets. these are activated by
             # going into the command pallet (cs-p) and typing in "insert snippet"
             # then press enter and then you have choices of snippets show up in the drop-down list.
             # you can also make your own snippets.
-        "try [<exception>]": 
-            R(Text("try : ") + Pause("10") + Key("enter/2") 
+        "try [<exception>]":
+            R(Text("try : ") + Pause("10") + Key("enter/2")
             + Text("except %(exception)s:") + Pause("10") + Key("enter/2"),
                 rdescript="create 'try catch' block with given exception"),
-        "try [<exception>] as": 
+        "try [<exception>] as":
             R(Text("try :") + Pause("10") + Key("enter/2") + Text("except %(exception)s as :")
             + Pause("10") + Key("enter/2"),  rdescript="create 'try catch as' block with given exception"),
 

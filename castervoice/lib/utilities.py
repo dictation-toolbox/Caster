@@ -185,3 +185,19 @@ def default_browser_command():
         CloseKey(key)
         CloseKey(reg)
     return path
+
+
+def clear_log():
+    # Function to clear natlink status window
+    try:
+        import natlink
+        windows = Window.get_all_windows()
+        matching = [w for w in windows
+        if b"Messages from Python Macros" in w.title]
+        if matching:
+            handle = (matching[0].handle)
+            rt_handle = win32gui.FindWindowEx(handle, None, "RICHEDIT", None)
+            win32gui.SetWindowText(rt_handle, "")
+            return
+    except Exception as e:
+        print (e)

@@ -7,6 +7,7 @@ from dragonfly import (Dictation, Grammar, IntegerRef, MappingRule, Pause,
 
 from castervoice.lib import control, settings
 from castervoice.lib.actions import Key, Text
+from castervoice.lib.temporary import Store, Retrieve
 from castervoice.lib.context import AppContext
 from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge import gfilter
@@ -63,6 +64,15 @@ class RStudioRule(MergeRule):
         R(Key("ac-f12"), rdescript="RStudio: Next Plot"),
     "previous plot":
         R(Key("ac-f11"), rdescript="RStudio: Previous Plot"),
+
+    "(help | document) that":
+        R(Store() + Key("c-2, question") + Retrieve() + Key("enter, c-3"),
+            rdescript="RStudio: Get documentation for highlighted text"),
+    "glimpse that":
+        R(Store() + Key("c-2") + Retrieve() + Key("space, percent, rangle, percent") + Text(" glimpse()") + Key("enter/50, c-1"), rdescript="RStudio: Glimpse that"),
+    "vee table that":
+        R(Store() + Key("c-2") + Text("library(vtable)") + Key("enter/50") + Retrieve() + Key("space, percent, rangle, percent") + Text(" vtable()") + Key("enter/50, c-1"), rdescript="RStudio: Vtable that"),
+
     }
     extras = [
         IntegerRefST("n", 1, 10000),

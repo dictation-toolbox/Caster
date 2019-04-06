@@ -133,6 +133,7 @@
 | `duplicate window`                     | `extensions`                         | `(menu / three dots)`        |
 | `settings`                             | `downloads`                          | `chrome task manager`        |
 | `clear browsing data`                  | `developer tools`                    | `more tools`                 |
+| `google that`                  | `wikipedia that`                    | ``                 |
 
 ## Click by voice plug-in
 Options:
@@ -364,14 +365,15 @@ Options:
 
 # RStudio
 
-| Command                     | Command      | Command         |
-|:----------------------------|:-------------|:----------------|
-| `[go to] line <n>`          | `focus main` | `previous plot` |
-| `close tab`                 | `last tab`   | `previous tab`  |
-| `comment (line / selected)` | `new file`   | `run document`  |
-| `find`                      | `next plot`  | `run line`      |
-| `first tab`                 | `next tab`   | `save all`      |
-| `focus console`             | `open file`  | `select all`    |
+| Command                     | Command      | Command          |
+|:----------------------------|:-------------|:-----------------|
+| `[go to] line <n>`          | `focus main` | `previous plot`  |
+| `close tab`                 | `last tab`   | `previous tab`   |
+| `comment (line / selected)` | `new file`   | `run document`   |
+| `find`                      | `next plot`  | `run line`       |
+| `first tab`                 | `next tab`   | `save all`       |
+| `focus console`             | `open file`  | `select all`     |
+| `help that`                 | `head that`  | `vee table that` |
 
 # SQL Developer
 
@@ -391,27 +393,29 @@ Options:
 | `close tab [<n>]`         | `prior bookmark` |                   |
 
 # Sublime
-| Command                  | Command                        | Command                           |
-|:-------------------------|:-------------------------------|:----------------------------------|
-| `new file`               | `new window`                   | `open file`                       |
-| `save as`                | `comment line`                 | `comment block`                   |
-| `outdent lines`          | `join lines`                   | `match bracket`                   |
-| `(select / sell) all`    | `(select / sell) scope [<n2>]` | `(select / sell) brackets [<n2>]` |
-| `(select / sell) indent` | `find`                         | `get all`                         |
-| `replace`                | `edit lines`                   | `edit next [<n3>]`                |
-| `edit up [<n3>]`         | `edit down [<n3>]`             | `edit all`                        |
-| `transform upper`        | `transform lower`              | `line <n>`                        |
-| `go to word`             | `go to symbol`                 | `go to [symbol in] project`       |
-| `go to file`             | `command pallette`             | `fold`                            |
-| `unfold`                 | `unfold all`                   | `fold [level] <n2>`               |
-| `full screen`            | `(set / add) bookmark`         | `next bookmark`                   |
-| `previous bookmark`      | `clear bookmarks`              | `build it`                        |
-| `record macro`           | `play [back] macro [<n3>]`     | `(new / create) snippet`          |
-| `close pane`             | `next pane`                    | `previous pane`                   |
-| `pane <n2>`              | `column <one/two/left/right>`  | `focus <one/two/left/right>`      |
-| `move <n2>`              | `open terminal`                | `zoom in/out [<n2>]`              |
-| `toggle side bar`        | ``                             | ``                                |
-
+| Command                        | Command                           | Command                       |
+|:-------------------------------|:----------------------------------|:------------------------------|
+| `new file`                     | `new window`                      | `open file`                   |
+| `open folder`                  | `open recent`                     | `save as`                     |
+| `comment line`                 | `comment block`                   | `outdent lines`               |
+| `join lines`                   | `match bracket`                   | `(select / sell) all`         |
+| `(select / sell) scope [<n2>]` | `(select / sell) brackets [<n2>]` | `(select / sell) indent`      |
+| `find`                         | `get all`                         | `replace`                     |
+| `edit lines`                   | `edit next [<n3>]`                | `edit up [<n3>]`              |
+| `edit down [<n3>]`             | `edit all`                        | `transform upper`             |
+| `transform lower`              | `line <n>`                        | `<action> line <n> [to <nn>]` |
+| `go to file`                   | `go to <dict> [<filetype>]`       | `go to word`                  |
+| `go to symbol`                 | `go to [symbol in] project`       | `go to that`                  |
+| `find that in project`         | `find that`                       | `command pallette`            |
+| `fold`                         | `unfold`                          | `unfold all`                  |
+| `fold [level] <n2>`            | `full screen`                     | `toggle side bar`             |
+| `zoom in [<n2>]`               | `zoom out [<n2>]`                 | `(set / add) bookmark`        |
+| `next bookmark`                | `previous bookmark`               | `clear bookmarks`             |
+| `build it`                     | `record macro`                    | `play [back] macro [<n3>]`    |
+| `(new / create) snippet`       | `close tab`                       | `next tab`                    |
+| `previous tab`                 | `<nth> tab`                       | `column <cols>`               |
+| `focus <panel>`                | `move <panel>`                    | `open terminal`               |
+    
 
 # Typora
 | Command              | Command                        | Command                        |
