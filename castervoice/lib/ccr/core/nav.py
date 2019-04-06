@@ -17,6 +17,52 @@ from castervoice.lib.dfplus.state.short import L, S, R
 from dragonfly.actions.action_mimic import Mimic
 from castervoice.lib.ccr.standard import SymbolSpecs
 
+from inspect           import getargspec
+# from action_base      import ActionBase, ActionError
+from dragonfly.actions.action_base import ActionBase, ActionError
+
+# tweaked version of function action for dealing with the case when the argument names
+# from the extras don't match the argument names in the function signature
+class RemapArgsFunction(ActionBase):
+    # def __init__(self, function, remap_data=None, **defaults):
+    def __init__(self, function, defaults=None, remap_data=None):
+    
+        ActionBase.__init__(self)
+        self._function = function
+        self._defaults = defaults or {}
+        self._remap_data = remap_data or {}
+        self._str = function.__name__
+
+        # TODO Use inspect.signature instead; getargspec is deprecated.
+        (args, varargs, varkw, defaults) = getargspec(self._function)
+        if varkw:  self._filter_keywords = False
+        else:      self._filter_keywords = True
+        self._valid_keywords = set(args)
+
+    def _execute(self, data=None):
+        arguments = dict(self._defaults)
+        if isinstance(data, dict):
+            arguments.update(data)
+
+        # Remap specified names.
+        if arguments and self._remap_data:
+            for old_name, new_name in self._remap_data.items():
+                if old_name in data:
+                    arguments[new_name] = arguments.pop(old_name)
+
+        if self._filter_keywords:
+            invalid_keywords = set(arguments.keys()) - self._valid_keywords
+            for key in invalid_keywords:
+                del arguments[key]
+
+        try:
+            self._function(**arguments)
+        except Exception as e:
+            self._log.exception("Exception from function %s:"
+                                % self._function.__name__)
+            raise ActionError("%s: %s" % (self, e))
+
+
 _NEXUS = control.nexus()
 
 
@@ -48,22 +94,6 @@ class NavigationNon(MappingRule):
             R(Key("f9"), rdescript="Core: Key: F9"),
         "[show] context menu":
             R(Key("s-f10"), rdescript="Core: Context Menu"),
-        "squat":
-            R(Function(navigation.left_down, nexus=_NEXUS), rdescript="Core-Mouse: Left Down"),
-        "bench":
-            R(Function(navigation.left_up, nexus=_NEXUS), rdescript="Core-Mouse: Left Up"),
-        "kick":
-            R(Function(navigation.left_click, nexus=_NEXUS),
-              rdescript="Core-Mouse: Left Click"),
-        "kick mid":
-            R(Function(navigation.middle_click, nexus=_NEXUS),
-              rdescript="Core-Mouse: Middle Click"),
-        "psychic":
-            R(Function(navigation.right_click, nexus=_NEXUS),
-              rdescript="Core-Mouse: Right Click"),
-        "(kick double|double kick)":
-            R(Function(navigation.left_click, nexus=_NEXUS)*Repeat(2),
-              rdescript="Core-Mouse: Double Click"),
         "shift right click":
             R(Key("shift:down") + Mouse("right") + Key("shift:up"),
               rdescript="Core-Mouse: Shift + Right Click"),
@@ -92,10 +122,6 @@ class NavigationNon(MappingRule):
             R(Key("c-x"), rdescript="Core: Simple Cut"),
         "sure spark":
             R(Key("c-v"), rdescript="Core: Simple Paste"),
-        "undo [<n>]":
-            R(Key("c-z"), rdescript="Core: Undo")*Repeat(extra="n"),
-        "redo [<n>]":
-            R(Key("c-y"), rdescript="Core: Redo")*Repeat(extra="n"),
         "refresh":
             R(Key("c-r"), rdescript="Core: Refresh"),
         "maxiwin":
@@ -184,6 +210,71 @@ class NavigationNon(MappingRule):
     }
 
 
+def move_until_character_sequence(left_right, character_sequence):
+    if left_right == "left":
+        Key("s-home, c-c/2").execute()
+        Key("right").execute()
+    if left_right == "right":
+        Key("s-end, c-c/2").execute()
+        Key("left").execute()
+
+    character_sequence = str(character_sequence).lower()
+    text = pyperclip.paste()    
+    # don't distinguish between upper and lowercase
+    text = text.lower()
+    if left_right == "left":
+        if text.rfind(character_sequence) == -1:
+            raise IndexError("character_sequence not found")
+        else:
+            character_sequence_start_position = text.rfind(character_sequence) + len(character_sequence)
+            offset = len(text) - character_sequence_start_position 
+            Key("left:%d" %offset).execute()
+    if left_right == "right":
+        if text.find(character_sequence) == -1:
+            raise IndexError("character_sequence not found")
+        else:
+            character_sequence_start_position = text.find(character_sequence) 
+            offset = character_sequence_start_position 
+            Key("right:%d" %offset).execute()
+        
+
+
+def copypaste_delete_until_character_sequence(left_right, character_sequence):
+        if left_right == "left":
+            Key("s-home, c-c/2").execute()
+        if left_right == "right":
+            Key("s-end, c-c/2").execute()
+        character_sequence = str(character_sequence).lower()
+        text = pyperclip.paste()
+        # don't distinguish between upper and lowercase
+        text = text.lower()
+        new_text = delete_until_character_sequence(text, character_sequence, left_right)
+        offset = len(new_text)
+        pyperclip.copy(new_text)
+        Key("c-v/2").execute()
+        # move cursor back into the right spot. only necessary for left_right = "right"
+        if left_right == "right":
+            Key("left:%d" %offset).execute()
+        
+
+def delete_until_character_sequence(text, character_sequence, left_right):
+    if left_right == "left":
+        if text.rfind(character_sequence) == -1:
+            raise IndexError("character_sequence not found")
+        else:
+            character_sequence_start_position = text.rfind(character_sequence)
+            new_text_start_position = character_sequence_start_position 
+            new_text = text[:new_text_start_position]
+            return new_text
+    if left_right == "right":
+        if text.find(character_sequence) == -1:
+            raise IndexError("character_sequence not found")
+        else:
+            character_sequence_start_position = text.find(character_sequence)
+            new_text_start_position = character_sequence_start_position + len(character_sequence)
+            new_text = text[new_text_start_position:]
+            return new_text
+
 class Navigation(MergeRule):
     non = NavigationNon
     pronunciation = CCRMerger.CORE[1]
@@ -217,6 +308,8 @@ class Navigation(MergeRule):
             R(Key("c-s"), rspec="save", rdescript="Core: Save"),
         'shock [<nnavi50>]':
             R(Key("enter"), rspec="shock", rdescript="Core: Enter")* Repeat(extra="nnavi50"),
+        'shin shock [<nnavi50>]':
+            R(Key("s-enter"), rspec="shift shock", rdescript="Core: Shift Enter")* Repeat(extra="nnavi50"),
 
         "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]":
             R(Function(text_utils.master_text_nav), rdescript="Core: Keyboard Text Navigation"),
@@ -236,6 +329,10 @@ class Navigation(MergeRule):
             R(Key("c-%(splatdir)s"), rspec="splat", rdescript="Core: Splat") * Repeat(extra="nnavi10"),
         "deli [<nnavi50>]":
             R(Key("del/5"), rspec="deli", rdescript="Core: Delete") * Repeat(extra="nnavi50"),
+        "shin deli [<nnavi50>]":
+            R(Key("s-del/5"), rspec="shift deli", rdescript="Core:hard Delete") * Repeat(extra="nnavi50"),
+        "shin tabby [<nnavi50>]":
+            R(Key("s-tab/5"), rspec="shift tabby", rdescript="Core: shift tab") * Repeat(extra="nnavi50"),
         "clear [<nnavi50>]":
             R(Key("backspace/5:%(nnavi50)d"), rspec="clear", rdescript="Core: Backspace"),
         SymbolSpecs.CANCEL:
@@ -250,7 +347,43 @@ class Navigation(MergeRule):
             R(Function(navigation.duple_keep_clipboard), rspec="duple", rdescript="Core: Duplicate Line"),
         "Kraken":
             R(Key("c-space"), rspec="Kraken", rdescript="Core: Control Space"),
+        
+        
+        "ecker":
+            R(Key("escape"), rspec= "ecker",  rdescript="Core: escape"),
+        "smack [<n>]":
+            R(Key("cs-left, del"), rspec="smack",  rdescript="Core: delete words to left") * Repeat(extra='n'),
+        "tack [<n>]":
+            R(Key("cs-right, del"), rspec="tack",  rdescript="Core: delete words to right") * Repeat(extra='n'),
+        "smack wally":
+            R(Key("s-left, del"), rspec="smack wally",  rdescript="Core: delete all words to left"),
+        "tack wally":
+            R(Key("s-right, del"), rspec="tack wally",  rdescript="Core: delete all words to right"),
+        "dropdown list": 
+            R(Key("a-down"), rspec="dropdown list", rdescript="Core: drop down a drop down list"),
 
+    # moved from non- CCR rule
+        "undo [<n>]":
+            R(Key("c-z"), rdescript="Core: Undo")*Repeat(extra="n"),
+        "redo [<n>]":
+            R(Key("c-y"), rdescript="Core: Redo")*Repeat(extra="n"),
+        "squat":
+            R(Function(navigation.left_down, nexus=_NEXUS), rdescript="Core-Mouse: Left Down"),
+        "bench":
+            R(Function(navigation.left_up, nexus=_NEXUS), rdescript="Core-Mouse: Left Up"),
+        "kick":
+            R(Function(navigation.left_click, nexus=_NEXUS),
+              rdescript="Core-Mouse: Left Click"),
+        "kick mid":
+            R(Function(navigation.middle_click, nexus=_NEXUS),
+              rdescript="Core-Mouse: Middle Click"),
+        "psychic":
+            R(Function(navigation.right_click, nexus=_NEXUS),
+              rdescript="Core-Mouse: Right Click"),
+        "(kick double|double kick)":
+            R(Function(navigation.left_click, nexus=_NEXUS)*Repeat(2),
+              rdescript="Core-Mouse: Double Click"),
+        
     # text formatting
         "set [<big>] format (<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)":
             R(Function(textformat.set_text_format), rdescript="Core: Set Text Format"),
@@ -269,14 +402,35 @@ class Navigation(MergeRule):
             R(Function(text_utils.enclose_selected), rdescript="Core: Enclose text "),
         "dredge":
             R(Key("a-tab"), rdescript="Core: Alt-Tab"),
+        
+
+        # "delete until" commands
+        "kill ross <right_character>": 
+            RemapArgsFunction(copypaste_delete_until_character_sequence, dict(left_right="right"), dict(right_character='character_sequence')),
+        "kill ross <dictation>": 
+            RemapArgsFunction(copypaste_delete_until_character_sequence, dict(left_right="right"), dict(dictation='character_sequence')),
+        "kill leese <left_character>": 
+            RemapArgsFunction(copypaste_delete_until_character_sequence, dict(left_right="left"), dict(left_character="character_sequence")),
+        "kill leese <dictation>": 
+            RemapArgsFunction(copypaste_delete_until_character_sequence, dict(left_right="left"), dict(dictation='character_sequence')),
+            
+        # "move until" commands
+        "leeser <left_character>": RemapArgsFunction(move_until_character_sequence, dict(left_right = "left"), dict(left_character="character_sequence")),
+        "rosser <right_character>": RemapArgsFunction(move_until_character_sequence, dict(left_right = "right"), dict(right_character="character_sequence")),
+        "leeser <dictation>": RemapArgsFunction(move_until_character_sequence, dict(left_right = "left"), dict(dictation="character_sequence")),
+        "rosser <dictation>": RemapArgsFunction(move_until_character_sequence, dict(left_right = "right"), dict(dictation="character_sequence")),
+        
+
 
     }
 
     extras = [
+        IntegerRefST("n", 1, 11),
         IntegerRefST("nnavi10", 1, 11),
         IntegerRefST("nnavi50", 1, 50),
         IntegerRefST("nnavi500", 1, 500),
         Dictation("textnv"),
+        Dictation("dictation"),
         Choice(
             "enclosure", {
                 "prekris": "(~)",
@@ -332,6 +486,39 @@ class Navigation(MergeRule):
             "lease": "backspace",
             "ross": "delete",
         }),
+           Choice("left_character", {
+            "prekris": "(",
+            "right prekris": ")",
+            "brax": "[",
+            "right brax": "]",
+            "angle": "<",
+            "right angle": ">",
+            "curly": "{",
+            "right curly": "}"
+            "quotes": '"',
+            "single quote": "'",
+            "comma": ",",
+            "period": ".",
+            "questo": "?",
+            "backtick": "`",
+        }),
+        Choice("right_character", {
+            "prekris": ")",
+            "left prekris": "(",
+            "brax": "]",
+            "left brax": "[",
+            "angle": ">",
+            "lefty angle": "<"
+            "curly": "}",
+            "left curly": "{",
+            "quotes": '"',
+            "single quote": "'",
+            "comma": ",",
+            "period": ".",
+            "questo": "?",
+            "backtick": "`",
+        }),
+ 
     ]
 
     defaults = {
