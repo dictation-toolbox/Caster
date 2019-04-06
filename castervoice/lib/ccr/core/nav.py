@@ -352,7 +352,7 @@ class Navigation(MergeRule):
         "ecker":
             R(Key("escape"), rspec= "ecker",  rdescript="Core: escape"),
         "smack [<n>]":
-            R(Key("cs-left"), rspec="smack",  rdescript="Core: delete words to left") * Repeat(extra='n'),
+            R(Key("cs-left, del"), rspec="smack",  rdescript="Core: delete words to left") * Repeat(extra='n'),
         "tack [<n>]":
             R(Key("cs-right, del"), rspec="tack",  rdescript="Core: delete words to right") * Repeat(extra='n'),
         "smack wally":
