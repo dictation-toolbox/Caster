@@ -6,6 +6,7 @@ master_text_nav shouldn't take strings as arguments - it should take ints, so it
 import time
 from ctypes import windll
 from subprocess import Popen
+import pyperclip
 
 import dragonfly
 from dragonfly import Choice, monitors
@@ -13,6 +14,52 @@ from castervoice.asynch.mouse.legion import LegionScanner
 from castervoice.lib import control, settings, utilities, textformat
 from castervoice.lib.actions import Key, Text, Mouse
 from castervoice.lib.clipboard import Clipboard
+
+
+from inspect           import getargspec
+from dragonfly.actions.action_base import ActionBase, ActionError
+
+# tweaked version of function action for dealing with the case when the argument names
+# from the extras don't match the argument names in the function signature
+class RemapArgsFunction(ActionBase):
+    # def __init__(self, function, remap_data=None, **defaults):
+    def __init__(self, function, defaults=None, remap_data=None):
+    
+        ActionBase.__init__(self)
+        self._function = function
+        self._defaults = defaults or {}
+        self._remap_data = remap_data or {}
+        self._str = function.__name__
+
+        # TODO Use inspect.signature instead; getargspec is deprecated.
+        (args, varargs, varkw, defaults) = getargspec(self._function)
+        if varkw:  self._filter_keywords = False
+        else:      self._filter_keywords = True
+        self._valid_keywords = set(args)
+
+    def _execute(self, data=None):
+        arguments = dict(self._defaults)
+        if isinstance(data, dict):
+            arguments.update(data)
+
+        # Remap specified names.
+        if arguments and self._remap_data:
+            for old_name, new_name in self._remap_data.items():
+                if old_name in data:
+                    arguments[new_name] = arguments.pop(old_name)
+
+        if self._filter_keywords:
+            invalid_keywords = set(arguments.keys()) - self._valid_keywords
+            for key in invalid_keywords:
+                del arguments[key]
+
+        try:
+            self._function(**arguments)
+        except Exception as e:
+            self._log.exception("Exception from function %s:"
+                                % self._function.__name__)
+            raise ActionError("%s: %s" % (self, e))
+
 
 DIRECTION_STANDARD = {
     "sauce [E]": "up",
@@ -40,6 +87,72 @@ TARGET_CHOICE = Choice(
         "closers": "}~]~)",
         "token": "TOKEN"
     })
+
+
+def move_until_character_sequence(left_right, character_sequence):
+    if left_right == "left":
+        Key("s-home, c-c/2").execute()
+        Key("right").execute()
+    if left_right == "right":
+        Key("s-end, c-c/2").execute()
+        Key("left").execute()
+
+    character_sequence = str(character_sequence).lower()
+    text = pyperclip.paste()    
+    # don't distinguish between upper and lowercase
+    text = text.lower()
+    if left_right == "left":
+        if text.rfind(character_sequence) == -1:
+            raise IndexError("character_sequence not found")
+        else:
+            character_sequence_start_position = text.rfind(character_sequence) + len(character_sequence)
+            offset = len(text) - character_sequence_start_position 
+            Key("left:%d" %offset).execute()
+    if left_right == "right":
+        if text.find(character_sequence) == -1:
+            raise IndexError("character_sequence not found")
+        else:
+            character_sequence_start_position = text.find(character_sequence) 
+            offset = character_sequence_start_position 
+            Key("right:%d" %offset).execute()
+        
+
+
+def copypaste_delete_until_character_sequence(left_right, character_sequence):
+        if left_right == "left":
+            Key("s-home, c-c/2").execute()
+        if left_right == "right":
+            Key("s-end, c-c/2").execute()
+        character_sequence = str(character_sequence).lower()
+        text = pyperclip.paste()
+        # don't distinguish between upper and lowercase
+        text = text.lower()
+        new_text = delete_until_character_sequence(text, character_sequence, left_right)
+        offset = len(new_text)
+        pyperclip.copy(new_text)
+        Key("c-v/2").execute()
+        # move cursor back into the right spot. only necessary for left_right = "right"
+        if left_right == "right":
+            Key("left:%d" %offset).execute()
+        
+
+def delete_until_character_sequence(text, character_sequence, left_right):
+    if left_right == "left":
+        if text.rfind(character_sequence) == -1:
+            raise IndexError("character_sequence not found")
+        else:
+            character_sequence_start_position = text.rfind(character_sequence)
+            new_text_start_position = character_sequence_start_position 
+            new_text = text[:new_text_start_position]
+            return new_text
+    if left_right == "right":
+        if text.find(character_sequence) == -1:
+            raise IndexError("character_sequence not found")
+        else:
+            character_sequence_start_position = text.find(character_sequence)
+            new_text_start_position = character_sequence_start_position + len(character_sequence)
+            new_text = text[new_text_start_position:]
+            return new_text
 
 
 def get_direction_choice(name):

@@ -19,7 +19,6 @@ from castervoice.lib.ccr.standard import SymbolSpecs
 
 _NEXUS = control.nexus()
 
-
 class NavigationNon(MappingRule):
     mapping = {
         "<direction> <time_in_seconds>":
@@ -48,22 +47,6 @@ class NavigationNon(MappingRule):
             R(Key("f9"), rdescript="Core: Key: F9"),
         "[show] context menu":
             R(Key("s-f10"), rdescript="Core: Context Menu"),
-        "squat":
-            R(Function(navigation.left_down, nexus=_NEXUS), rdescript="Core-Mouse: Left Down"),
-        "bench":
-            R(Function(navigation.left_up, nexus=_NEXUS), rdescript="Core-Mouse: Left Up"),
-        "kick":
-            R(Function(navigation.left_click, nexus=_NEXUS),
-              rdescript="Core-Mouse: Left Click"),
-        "kick mid":
-            R(Function(navigation.middle_click, nexus=_NEXUS),
-              rdescript="Core-Mouse: Middle Click"),
-        "psychic":
-            R(Function(navigation.right_click, nexus=_NEXUS),
-              rdescript="Core-Mouse: Right Click"),
-        "(kick double|double kick)":
-            R(Function(navigation.left_click, nexus=_NEXUS)*Repeat(2),
-              rdescript="Core-Mouse: Double Click"),
         "shift right click":
             R(Key("shift:down") + Mouse("right") + Key("shift:up"),
               rdescript="Core-Mouse: Shift + Right Click"),
@@ -92,10 +75,6 @@ class NavigationNon(MappingRule):
             R(Key("c-x"), rdescript="Core: Simple Cut"),
         "sure spark":
             R(Key("c-v"), rdescript="Core: Simple Paste"),
-        "undo [<n>]":
-            R(Key("c-z"), rdescript="Core: Undo")*Repeat(extra="n"),
-        "redo [<n>]":
-            R(Key("c-y"), rdescript="Core: Redo")*Repeat(extra="n"),
         "refresh":
             R(Key("c-r"), rdescript="Core: Refresh"),
         "maxiwin":
@@ -217,6 +196,8 @@ class Navigation(MergeRule):
             R(Key("c-s"), rspec="save", rdescript="Core: Save"),
         'shock [<nnavi50>]':
             R(Key("enter"), rspec="shock", rdescript="Core: Enter")* Repeat(extra="nnavi50"),
+        'shin shock [<nnavi50>]':
+            R(Key("s-enter"), rspec="shift shock", rdescript="Core: Shift Enter")* Repeat(extra="nnavi50"),
 
         "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]":
             R(Function(text_utils.master_text_nav), rdescript="Core: Keyboard Text Navigation"),
@@ -234,8 +215,16 @@ class Navigation(MergeRule):
 
         "splat [<splatdir>] [<nnavi10>]":
             R(Key("c-%(splatdir)s"), rspec="splat", rdescript="Core: Splat") * Repeat(extra="nnavi10"),
+        "splat ross wally":
+            R(Key("s-end, del"), rspec="splat ross wally", rdescript="Core: delete right till end of line"),
+        "splat lease wally":
+            R(Key("s-home, del"), rspec="splat lease wally", rdescript="Core: delete left till end of line "),
         "deli [<nnavi50>]":
             R(Key("del/5"), rspec="deli", rdescript="Core: Delete") * Repeat(extra="nnavi50"),
+        "shin deli [<nnavi50>]":
+            R(Key("s-del/5"), rspec="shift deli", rdescript="Core:hard Delete") * Repeat(extra="nnavi50"),
+        "shin tabby [<nnavi50>]":
+            R(Key("s-tab/5"), rspec="shift tabby", rdescript="Core: shift tab") * Repeat(extra="nnavi50"),
         "clear [<nnavi50>]":
             R(Key("backspace/5:%(nnavi50)d"), rspec="clear", rdescript="Core: Backspace"),
         SymbolSpecs.CANCEL:
@@ -250,7 +239,32 @@ class Navigation(MergeRule):
             R(Function(navigation.duple_keep_clipboard), rspec="duple", rdescript="Core: Duplicate Line"),
         "Kraken":
             R(Key("c-space"), rspec="Kraken", rdescript="Core: Control Space"),
+        
+        "dropdown list": 
+            R(Key("a-down"), rspec="dropdown list", rdescript="Core: drop down a drop down list"),
 
+    # moved from non- CCR rule
+        "undo [<n>]":
+            R(Key("c-z"), rdescript="Core: Undo")*Repeat(extra="n"),
+        "redo [<n>]":
+            R(Key("c-y"), rdescript="Core: Redo")*Repeat(extra="n"),
+        "squat":
+            R(Function(navigation.left_down, nexus=_NEXUS), rdescript="Core-Mouse: Left Down"),
+        "bench":
+            R(Function(navigation.left_up, nexus=_NEXUS), rdescript="Core-Mouse: Left Up"),
+        "kick":
+            R(Function(navigation.left_click, nexus=_NEXUS),
+              rdescript="Core-Mouse: Left Click"),
+        "kick mid":
+            R(Function(navigation.middle_click, nexus=_NEXUS),
+              rdescript="Core-Mouse: Middle Click"),
+        "psychic":
+            R(Function(navigation.right_click, nexus=_NEXUS),
+              rdescript="Core-Mouse: Right Click"),
+        "(kick double|double kick)":
+            R(Function(navigation.left_click, nexus=_NEXUS)*Repeat(2),
+              rdescript="Core-Mouse: Double Click"),
+        
     # text formatting
         "set [<big>] format (<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)":
             R(Function(textformat.set_text_format), rdescript="Core: Set Text Format"),
@@ -269,14 +283,39 @@ class Navigation(MergeRule):
             R(Function(text_utils.enclose_selected), rdescript="Core: Enclose text "),
         "dredge":
             R(Key("a-tab"), rdescript="Core: Alt-Tab"),
+        
+
+        # "delete until" commands
+        "kill ross <right_character>": 
+            navigation.RemapArgsFunction(navigation.copypaste_delete_until_character_sequence, dict(left_right="right"), dict(right_character='character_sequence')),
+        "kill ross <dictation>": 
+            navigation.RemapArgsFunction(navigation.copypaste_delete_until_character_sequence, dict(left_right="right"), dict(dictation='character_sequence')),
+        "kill leese <left_character>": 
+            navigation.RemapArgsFunction(navigation.copypaste_delete_until_character_sequence, dict(left_right="left"), dict(left_character="character_sequence")),
+        "kill leese <dictation>": 
+            navigation.RemapArgsFunction(navigation.copypaste_delete_until_character_sequence, dict(left_right="left"), dict(dictation='character_sequence')),
+            
+        # "move until" commands
+        "leeser <left_character>": 
+            navigation.RemapArgsFunction(navigation.move_until_character_sequence, dict(left_right = "left"), dict(left_character="character_sequence")),
+        "rosser <right_character>":
+            navigation.RemapArgsFunction(navigation.move_until_character_sequence, dict(left_right = "right"), dict(right_character="character_sequence")),
+        "leeser <dictation>": 
+            navigation.RemapArgsFunction(navigation.move_until_character_sequence, dict(left_right = "left"), dict(dictation="character_sequence")),
+        "rosser <dictation>": 
+            navigation.RemapArgsFunction(navigation.move_until_character_sequence, dict(left_right = "right"), dict(dictation="character_sequence")),
+        
+
 
     }
 
     extras = [
+        IntegerRefST("n", 1, 11),
         IntegerRefST("nnavi10", 1, 11),
         IntegerRefST("nnavi50", 1, 50),
         IntegerRefST("nnavi500", 1, 500),
         Dictation("textnv"),
+        Dictation("dictation"),
         Choice(
             "enclosure", {
                 "prekris": "(~)",
@@ -332,6 +371,39 @@ class Navigation(MergeRule):
             "lease": "backspace",
             "ross": "delete",
         }),
+           Choice("left_character", {
+            "prekris": "(",
+            "right prekris": ")",
+            "brax": "[",
+            "right brax": "]",
+            "angle": "<",
+            "right angle": ">",
+            "curly": "{",
+            "right curly": "}"
+            "quotes": '"',
+            "single quote": "'",
+            "comma": ",",
+            "period": ".",
+            "questo": "?",
+            "backtick": "`",
+        }),
+        Choice("right_character", {
+            "prekris": ")",
+            "left prekris": "(",
+            "brax": "]",
+            "left brax": "[",
+            "angle": ">",
+            "lefty angle": "<"
+            "curly": "}",
+            "left curly": "{",
+            "quotes": '"',
+            "single quote": "'",
+            "comma": ",",
+            "period": ".",
+            "questo": "?",
+            "backtick": "`",
+        }),
+ 
     ]
 
     defaults = {
