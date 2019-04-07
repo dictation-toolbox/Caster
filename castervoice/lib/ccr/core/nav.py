@@ -217,10 +217,10 @@ class Navigation(MergeRule):
             R(Key("c-s"), rspec="save", rdescript="Save"),
         'shock [<nnavi50>]':
             R(Key("enter"), rspec="shock", rdescript="Enter")* Repeat(extra="nnavi50"),
-        'hard enter [<nnavi50>]':
-            R(Key("s-enter"), rspec="hard enter", rdescript="hard enter")* Repeat(extra="nnavi50"),
-        'hard delete [<nnavi50>]':
-            R(Key("s-del"), rspec="hard delete", rdescript="hard delete")* Repeat(extra="nnavi50"),
+        'hard shock [<nnavi50>]':
+            R(Key("s-enter"), rspec="hard shock", rdescript="Hard Shock")* Repeat(extra="nnavi50"),
+        'hard deli [<nnavi50>]':
+            R(Key("s-del"), rspec="hard deli", rdescript="Hard Deli")* Repeat(extra="nnavi50"),
         "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]":
             R(Function(text_utils.master_text_nav), rdescript="Keyboard Text Navigation"),
 
