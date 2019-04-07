@@ -5,12 +5,14 @@ A quick reference guide for the language-specific commands included with Caster.
 - [Bash](#bash)
 - [C++](#c)
 - [C&#35;](#c-1)
+- [Development](#development)
 - [Haxe](#haxe)
 - [HTML](#html)
 - [Java](#java)
 - [Javascript](#javascript)
 - [LaTeX](#latex)
 - [Matlab](#matlab)
+- [Markdown](#markdown)
 - [Prolog](#prolog)
 - [Python](#python)
 - [R](#r)
@@ -97,25 +99,56 @@ A quick reference guide for the language-specific commands included with Caster.
 | integer                   | `int`                           | while loop       | `while ()`                                                    |
 | interface                 | `interface TOKEN {}`            |                  |                                                               |
 
+# Development
+| Command                                     | Output                                                                     |
+|:--------------------------------------------|:---------------------------------------------------------------------------|
+| `dev key`                                   | `Key(""),`                                                                 |
+| `dev text`                                  | `Text("")`                                                                 |
+| `dev pause`                                 | ` + Pause("")`                                                             |
+| `dev function`                              | `Function()`                                                               |
+| `dev repeat`                                | ` * Repeat(extra='n'),`                                                    |
+| `dev choice`                                | `Choice("", {}) `                                                          |
+| `dev mouse [<mouse_button>]`                | `Mouse("left")`                                                            |
+| `dev mouse current [position]`              | `Mouse("[1003, 537]")`                                                     |
+| `dev bring app`                             | `BringApp()`                                                               |
+| `dev descript`                              | ` rdescript="MyGrammar: "`                                                 |
+| `dev mimic [<text>]`                        | `Mimic("")`                                                                |
+| `dev split dictation [<text>]`              | `"this", "is", "an", "example"`                                            |
+| `command [<spec>] key`                      | `"example": Key(""),`                                                      |
+| `command [<spec>] key repeat`               | `"example [<n>]": Key("") * Repeat(extra="n"),`                            |
+| `command [<spec>] text`                     | `"example": Text(""),`                                                     |
+| `command [<spec>] [bring] app`              | `"example": BringApp(),`                                                   |
+| `command [<spec>] function`                 | `"example": Function()`                                                    |
+| `command [<spec>] mimic [<text>]`           | `"example": Mimic("test"),`                                                |
+| `command [<spec>] playback [<text>]`        | `"example": Playback([(["test", "command"], 0.0),    ,`                    |
+| `command [<spec>] mouse [<mouse_button>]`   | `"example": Mouse("[693, 468], left,`                                      |
+| `commander [<spec>] key`                    | `"example": R(Key(""), rdescript="MyGrammar: ",`                           |
+| `commander [<spec>] key repeat`             | `"example [<n>]": R(Key(""), rdescript="MyGrammar: " * Repeat(extra='n'),` |
+| `commander [<spec>] text`                   | `"example": R(Text(""), rdescript="MyGrammar: ",`                          |
+| `commander [<spec>] [bring] app`            | `"example": R(BringApp(), rdescript="MyGrammar: ",`                        |
+| `commander [<spec>] function`               | `"example": R(Function(), rdescript="MyGrammar: ",`                        |
+| `commander [<spec>] mimic [<text>]`         | `"example": R(Mimic("test"), rdescript="MyGrammar: ",`                     |
+| `commander [<spec>] mouse [<mouse_button>]` | `"example": R(Mouse("[1244, 690], left, rdescript="" ,`                    |
+
 # Go
-Command | Output | | Command | Output
----|---|---|---|---
-iffae|`if  {`<br/>` }`||shells|`else {`<br/>`   }`
-switch|`switch  {`<br/>`   }`||case of|`case :`
-breaker|`break`||default|`default:`
-while loop|`for  {`<br/>`    }`||for loop|`for i := 0; i<; i++ {`<br/>`    }`
-for each|`for i := range  {`<br/>`    }`||convert to integer|`strconv.Atoi()`
-convert to string|`strconv.Itoa()`||lodge and|` && `
-lodge or|&#124; &#124;||lodge not|`!`
-print to console|`fmt.Println()`||import|`import (`<br/>`)`
-function|`func `||class|`type  struct {`<br/>`   }`
-add comment|`//`||long comment|`/**/`
-value not|`nil`||return|`return `
-value true|`true`||value false|`false`
-(inter / integer)|``||boolean|``
-string|`string`||assign|` := `
-(function / funk) main|`func main() {`<br/>`    }`||make map|`make(map[])`
-package|`package `|||``
+| Command                | Output                          |   | Command            | Output                              |
+|:-----------------------|:--------------------------------|:--|:-------------------|:------------------------------------|
+| iffae                  | `if  {`<br/>` }`                |   | shells             | `else {`<br/>`   }`                 |
+| switch                 | `switch  {`<br/>`   }`          |   | case of            | `case :`                            |
+| breaker                | `break`                         |   | default            | `default:`                          |
+| while loop             | `for  {`<br/>`    }`            |   | for loop           | `for i := 0; i<; i++ {`<br/>`    }` |
+| for each               | `for i := range  {`<br/>`    }` |   | convert to integer | `strconv.Atoi()`                    |
+| convert to string      | `strconv.Itoa()`                |   | lodge and          | ` && `                              |
+| lodge or               | &#124; &#124;                   |   | lodge not          | `!`                                 |
+| print to console       | `fmt.Println()`                 |   | import             | `import (`<br/>`)`                  |
+| function               | `func `                         |   | class              | `type  struct {`<br/>`   }`         |
+| add comment            | `//`                            |   | long comment       | `/**/`                              |
+| value not              | `nil`                           |   | return             | `return `                           |
+| value true             | `true`                          |   | value false        | `false`                             |
+| (inter / integer)      | ``                              |   | boolean            | ``                                  |
+| string                 | `string`                        |   | assign             | ` := `                              |
+| (function / funk) main | `func main() {`<br/>`    }`     |   | make map           | `make(map[])`                       |
+| package                | `package `                      |   |                    | ``                                  |
 
 # Haxe
 
@@ -287,6 +320,22 @@ Commands are designed to follow LaTeX syntax as closely as possible, for example
 | import                    | `library()`     | value true        | `true`        |
 | length of                 | `length()`      | while loop        | `while`       |
 | lodge and                 | `&&`            |                   |               |
+
+# Markdown
+
+| Command                          | Command                  |
+|:---------------------------------|:-------------------------|
+| `heading [<num>] [<dict>]`       | `table row <n>`          |
+| `table (break / split) <n>`      | `insert header`          |
+| `insert list`                    | `insert numbered list`   |
+| `insert [block] quote`           | `insert link`            |
+| `insert image`                   | `insert reference`       |
+| `insert equation`                | `insert math`            |
+| `insert (italics / italic text)` | `insert bold [text]`     |
+| `insert strike through [text]`   | `insert horizontal rule` |
+| `insert R code`                  | `insert in-line code`    |
+| `insert code [block]`            | ` `                      |
+
 
 # Prolog
 

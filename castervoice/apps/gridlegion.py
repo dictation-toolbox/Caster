@@ -64,7 +64,7 @@ class GridControlRule(MergeRule):
             R(Function(navigation.mouse_alternates, mode="legion", nexus=_NEXUS),
               rdescript="Legion: Refresh"),
         "exit | escape | cancel":
-            R(Function(kill, nexus=_NEXUS), rdescript="Exit Legion"),
+            R(Function(kill, nexus=_NEXUS), rdescript="Legion: Exit Legion"),
     }
     extras = [
         Choice("action", {

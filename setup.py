@@ -1,11 +1,17 @@
-import setuptools, os, codecs, re
-from distutils.command.install import install as _install
+import setuptools
+import os
+import codecs
+import re
+import atexit
+from setuptools.command.install import install
 
 here = os.path.abspath(os.path.dirname(__file__))
+
 
 def read(*parts):
     with codecs.open(os.path.join(here, *parts), 'r') as fp:
         return fp.read()
+
 
 def find_version(*file_paths):
     version_file = read(*file_paths)
@@ -16,16 +22,15 @@ def find_version(*file_paths):
     raise RuntimeError("Unable to find version string.")
 
 
-def _post_install(dir):
-    from post_setup import main
-    main()
+def _post_install():
+    from post_setup import runpostinstall
+    runpostinstall()
 
 
-class install(_install):
-    def run(self):
-        _install.run(self)
-        self.execute(_post_install, (self.install_lib,),
-                     msg="Running post install task")
+class new_install(install, object):
+    def __init__(self, *args, **kwargs):
+        super(new_install, self).__init__(*args, **kwargs)
+        atexit.register(_post_install)
 
 
 with open("ReadMe.md", "r") as fh:
@@ -41,29 +46,19 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/dictation-toolbox/castervoice",
     packages=setuptools.find_packages(),
+    include_package_data=True,
+    zip_safe=False,
     classifiers=[
         "Programming Language :: Python :: 2",
         "Operating System :: OS Independent"
     ],
     install_requires=[
         "dragonfly2>=0.11.1",
-        "wxpython>=4.0.3",
+        "wxpython>=4.0.4",
         "pillow>=5.3.0",
         "toml>=0.10.0",
         "future"
     ],
-    package_data={
-        "castervoice": [
-            "bin/data/configdebug.txt",
-            "bin/share/bringme.toml.defaults",
-            "bin/reboot.bat",
-            "bin/reboot_wsr.bat",
-            "lib/dll/tirg-dll.dll",
-            "asynch/sikuli/server/xmlrpc_server.sikuli/xmlrpc_server.html",
-            "asynch/sikuli/server/xmlrpc_server.sikuli/xmlrpc_server.py"
-        ]
-    },
-
-    cmdclass={'install': install
+    cmdclass={'install': new_install
               },
 )
