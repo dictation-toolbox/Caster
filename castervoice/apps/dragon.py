@@ -1,4 +1,3 @@
-
 # from dragonfly import (Grammar, Playback, Key, Dictation, Function, Choice, Mimic, WaitWindow, Pause, Repeat)
 from dragonfly import *
 from castervoice.lib import control
@@ -68,10 +67,10 @@ class DragonRule(MergeRule):
         'normal mode':
             R(Playback([(["normal", "mode", "on"], 0.0)]),
               rdescript="Dragon: Normal Mode"),
-        'com on':
+        'command mode on':
             R(Playback([(["command", "mode", "on"], 0.0)]),
               rdescript="Dragon: Command Mode (On)"),
-        'com off':
+        'command mode off':
             R(Playback([(["command", "mode", "off"], 0.0)]),
               rdescript="Dragon: Command Mode (Off)"),
         'scratch':
@@ -90,8 +89,6 @@ class DragonRule(MergeRule):
         "center point":
             R(Playback([(["MouseGrid"], 0.1), (["click"], 0.0)]),
               rdescript="Mouse: Center Point"),
-
-        # new commands from Alex      
         "[show] windows": Mimic("list", "all", "windows"), # this emulates a useful native dragon command
         "cory <dict>": 
             R(Mimic("correct", extra="dict") + WaitWindow(title="spelling window") + Mimic("choose", "one"),
@@ -145,6 +142,7 @@ class SpellingWindowRule(MergeRule):
          "second last word": Key("right, c-left:1, cs-left"),
          "<number>": Mimic("choose", extra="number"), # instead of having to say e.g. choose one you can just say one
     }
+
 
     # see above
     extras = extras_for_whole_file

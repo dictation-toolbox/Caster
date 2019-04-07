@@ -16,64 +16,64 @@ class TotalCommanderRule (MergeRule):
     mapping = {
         "find [in] files":
             R(Key('a-f7'),
-              rdescript="Total Commander: find"),
+              rdescript="Total Commander: Find"),
         "view":
             R(Key('f3'),
-              rdescript="Total Commander: find next/view file"),
+              rdescript="Total Commander: Find Next/View File"),
         "edit":
             R(Key('f4'),
-              rdescript="Total Commander: edit file"),
+              rdescript="Total Commander: Edit File"),
         "copy":
             R(Key('f5'),
-              rdescript="Total Commander: copy"),
+              rdescript="Total Commander: Copy"),
         "move":
             R(Key('f6'),
-              rdescript="Total Commander: move file"),
+              rdescript="Total Commander: Move File"),
         "new directory":
             R(Key('f7'),
-              rdescript="Total Commander: create directory"),
+              rdescript="Total Commander: Create Directory"),
         "wipe":
             R(Key('s-delete'),
-              rdescript="Total Commander: really delete file"),
+              rdescript="Total Commander: Really Delete File"),
         "FTP":
             R(Key('c-f'),
               rdescript="Total Commander: Connect to FTP"),
         "synchronize":
             R(Key('a-c') + Key('y'),
-              rdescript="Total Commander: synchronize dirs"),
+              rdescript="Total Commander: Synchronize Dirs"),
         "sort by name":
             R(Key('c-f3'),
-              rdescript="Total Commander: sort files by name"),
+              rdescript="Total Commander: Sort Files by Name"),
         "sort by extension":
             R(Key('c-f4'),
-              rdescript="Total Commander: sort files by extension"),
+              rdescript="Total Commander: Sort Files by Extension"),
         "sort by date":
             R(Key('c-f5'),
-              rdescript="Total Commander: sort files by date"),
+              rdescript="Total Commander: Sort Files by Date"),
         "sort by size":
             R(Key('c-f6'),
-              rdescript="Total Commander: sort files by size"),
+              rdescript="Total Commander: Sort Files by Size"),
         "file filter":
             R(Key('c-f12'),
-              rdescript="Total Commander: filter files"),
+              rdescript="Total Commander: Filter Files"),
         "new tab":
             R(Key('c-t'),
-              rdescript="Total Commander: new tab"),
+              rdescript="Total Commander: New Tab"),
         "multi rename":
             R(Key('c-m'),
-              rdescript="Total Commander: batch rename files"),
+              rdescript="Total Commander: Batch Rename Files"),
         "display thumbnails":
             R(Key('cs-f1'),
-              rdescript="Total Commander: display thumbnails in panel"),
+              rdescript="Total Commander: Display Thumbnails in Panel"),
         "display list":
             R(Key('c-f1'),
-              rdescript="Total Commander: display plain file list in panel"),
+              rdescript="Total Commander: Display Plain File List in Panel"),
         "display details":
             R(Key('c-f2'),
-              rdescript="Total Commander: display details in panel"),
+              rdescript="Total Commander: Display Details in Panel"),
         "display file tree":
             R(Key('c-f8'),
-              rdescript="Total Commander: display file tree in panel"),
+              rdescript="Total Commander: Display File Tree in Panel"),
     }
 
 class SyncDirsRule (MergeRule):

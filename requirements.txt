@@ -1,5 +1,5 @@
-Caster
-wxPython>=4.0.3
-dragonfly2>=0.11.0
-Pillow>=5.3.0
+dragonfly2>=0.12.0
+wxpython>=4.0.3
+pillow>=5.3.0
 toml>=0.10.0
+future
