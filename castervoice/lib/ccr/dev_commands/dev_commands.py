@@ -79,7 +79,7 @@ def type_mouse_current_position_button(mouse_button="left"):
 
 
 class DevCommands(MergeRule):
-    pronunciation = "development"
+    pronunciation = "voice dev commands"
 
     mapping = {
 
