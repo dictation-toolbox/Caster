@@ -32,7 +32,7 @@ class AcrobatRule(MergeRule):
               rdescript="go to page acrobat)"),
         "set zoom <n>":
             R(Key("c-y/40") + Text("%(n)s") + Key("enter"), rdescript="set zoom level"),
-        "open":
+        "open file":
             R(Key("c-o"), rdescript="open"),
         "duplicate tab":
             R(Key("a-w,n/40,ws-left"), rdescript="duplicate tab in new window"),
@@ -42,11 +42,11 @@ class AcrobatRule(MergeRule):
         "(disable scrolling | single page mode)":
             R(Key("a-v, p, s"),
               rdescript="single page mode, you can scroll one page at a time"),
-        "(nab | next tab) [<n>]":
+        "next tab [<n>]":
             R(Key("c-tab"), rdescript="next tab")*Repeat(extra="n"),
-        "(lab | prior tab) [<n>]":
+        "prior tab [<n>]":
             R(Key("cs-tab"), rdescript="prior tab")*Repeat(extra="n"),
-        "(home button|homer)":
+        "home button":
             R(Mouse("[100, 101], left"), rdescript="click home button on top left"
               ),  # coordinates may be user dependent
 
@@ -66,7 +66,7 @@ class AcrobatRule(MergeRule):
               rdescript="open sticky note, close it, and then save"),
         "delete note":
             R(Mouse("right") + Key("l, c-s"), rdescript="close sticky note then save"),
-        "(go | go back) [<n>]":
+        "go back [<n>]":
             R(Key("a-left"), rdescript="go back to previous location")*Repeat(extra='n'),
         "save as":
             R(Key("a-f, a"), rdescript="save as"),
