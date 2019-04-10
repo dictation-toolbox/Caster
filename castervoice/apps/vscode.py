@@ -46,7 +46,7 @@ class VSCodeCcrRule(MergeRule):
             Repeat(extra='n'),
         "(Unindent|outdent) [<n>]":
             R(Key("s-tab"), rdescript="Visual Studio Code: Unindent")*Repeat(extra="n"),
-        "Comment":
+        "Comment line":
             R(Key("c-slash"), rdescript="Visual Studio Code: Line Comment"),
         "Block comment":
             R(Key("sa-a"), rdescript="Visual Studio Code: Block Comment"),
@@ -65,15 +65,9 @@ class VSCodeCcrRule(MergeRule):
             R(Key("csa-pgup"), rdescript="add cursors all the way up"),
         "tall cursor down":
             R(Key("csa-pgdown"), rdescript="add cursors all the way down"),
-        "expand  [<n>]":
-            R(Key("sa-right"), rdescript="highlight current word(s)")*Repeat(extra='n'),
-        "shrink  [<n>]":
-            R(Key("sa-left"),
-              rdescript="shrink the previous highlighting range or unhighlight")*
-            Repeat(extra='n'),
 
         # # command below requires "brackets select" extension for VS code
-        "expo [<n>]":
+        "select [in] brackets [<n>]":
             R(Key("ca-a"),
               rdescript=
               "select in between parable punctuation inclusive using 'brackets select' extension"
@@ -82,20 +76,20 @@ class VSCodeCcrRule(MergeRule):
             R(Key("c-l"), rdescript="select all occurrences of current selection"),
         "all current word":
             R(Key("c-f2"), rdescript="select all occurrences of current word"),
-        "next word [<n>]":
+        "select next [<n>]":
             R(Key("c-f3"), rdescript="select next occurrence of current word")*
             Repeat(extra='n'),
-        "select next word [<n>]":
+        "go to next [<n>]":
             R(Key("sa-right/2, c-f3, c-left/2, escape"),
               rdescript="go to next occurrence of current word")*Repeat(extra='n'),
         # may or may not want the escape afterwards to close the find box
         # note the above command might sometimes be off by one so you have to say one higher
         # than what you mean e.g. if the cursor is at the beginning of the word rather
         # than in the middle or end, you will have to say "next word two" to get to the next word
-        "select prior word [<n>]":
+        "select prior [<n>]":
             R(Key("cs-f3"), rdescript="select prior occurrence of current word")*
             Repeat(extra='n'),
-        "prior word [<n>]":
+        "go Sueto prior [<n>]":
             R(Key("sa-right/2, cs-f3, c-left/2, escape"),
               rdescript="go to prior occurrence of current word")*Repeat(extra='n'),
         # may or may not want the escape afterwards to close the find box
@@ -122,8 +116,6 @@ class VSCodeCcrRule(MergeRule):
             Repeat(extra='n'),
         "match bracket":
             R(Key("cs-backslash"), rdescript="jump to matching bracket"),
-        "Go back":
-            R(Key("a-left"), rdescript="Visual Studio Code: Go Back"),
 
         # commands for selecting between parable characters using "quick and simple text selection" VScode extension (required)
         # repetition of these commands by saying the number expands the selection to include the text between the next (i.e. outer) set of parable characters of the given type
@@ -193,14 +185,6 @@ class VisualStudioCodeNonCcrRule(MergeRule):
         "[(go to | jump | jump to)] line <n>":
             R(Key("c-g") + Text("%(n)d") + Key("enter"),
               rdescript="Visual Studio Code: Go to Line"),
-        "Go to (top | first line)":
-            R(Key("c-home"), rdescript="Visual Studio Code: Go to Top"),
-        "Go to ( bottom | last line)":
-            R(Key("c-end"), rdescript="Visual Studio Code: Go to Bottom"),
-        "ee-ol":
-            R(Key("end"), rdescript="Visual Studio Code: End Of Line"),
-        "beol":
-            R(Key("home"), rdescript="Visual Studio Code: Beginning of Line"),
         "Go back <n>":
             R(Key("a-left"), rdescript="Visual Studio Code: Go Back")*Repeat(extra="n"),
         "Go forward [<n>]":
@@ -252,8 +236,6 @@ class VisualStudioCodeNonCcrRule(MergeRule):
             R(Key("cs-p"), rdescript="Visual Studio Code: Command Palette"),
         "(Open [file] | Go to [tab]) [<text>]":
             R(Key("c-p") + Text("%(text)s"), rdescript="Visual Studio Code: Go To File"),
-        "Save file":
-            R(Key("c-s"), rdescript="Visual Studio Code: Save File"),
         "Save and close":
             R(Key("c-s/10, c-w"), rdescript="Visual Studio Code: Save And Close File"),
         "new file":
@@ -270,15 +252,12 @@ class VisualStudioCodeNonCcrRule(MergeRule):
             R(Key("cs-s"), rdescript="save as"),
         "save all":
             R(Key("c-k, s"), rdescript="Save all"),
-        "nexta [<n>]":
-            R(Key("c-pgdown"), rdescript="Visual Studio Code: Next Tab")*Repeat(
-                extra="n"
-            ),  # These would be next and previous tab but i have a conflict with chrome
-        "prexta [<n>]":
+        "next tab [<n>]":
+            R(Key("c-pgdown"), rdescript="Visual Studio Code: Next Tab")*
+            Repeat(extra="n"),
+        "previous tab [<n>]":
             R(Key("c-pgup"), rdescript="Visual Studio Code: Previous Tab")*
             Repeat(extra="n"),
-        "Close tab":
-            R(Key("c-f4"), rdescript="Visual Studio Code: Close Tab"),
         "close tab [<n>]":
             R(Key("c-f4/20"), rdescript="Visual Studio: Close Tab")*Repeat(extra="n"),
         "(recent | R) tab [<n>]":
@@ -298,10 +277,28 @@ class VisualStudioCodeNonCcrRule(MergeRule):
             R(Key("c-k, o"), rdescript="show active file in new window"),
 
         # Search
-        "(search | find in) [all] (files | codebase)":
-            R(Key("cs-f"), rdescript="Visual Studio Code: Find in Codebase"),
-        "(search | find) [file]":
+        "(search | find)":
             R(Key("c-f"), rdescript="Visual Studio Code: Find in File"),
+        "replace":
+            R(Key("c-h"), rdescript="replace"),
+        "find in files":
+            R(Key("cs-f"), rdescript="find in files"),
+        "replace in files":
+            R(Key("cs-h"), rdescript="replace in files"),
+        "next find":
+            R(Key("f3"), rdescript="go to next occurrence"),
+        "(prior | previous) find":
+            R(Key("s-f3"), rdescript="go to previous occurrence"),
+        "select all occurrences":
+            R(Key("a-enter"), rdescript="select all occurrences of find match"),
+
+        "toggle case sensitive":
+            R(Key("a-c"), rdescript="toggle case-sensitive"),
+        "toggle regex":
+            R(Key("a-r"), rdescript="toggle regular expressions"),
+        "toggle whole word":
+            R(Key("a-w"), rdescript="toggle whole word"),
+
         "(Find | Jump [to]) next <text>":
             R(Function(findNthToken, n=1, direction="forward"),
               rdescript="Visual Studio Code: Find Next"),
@@ -333,8 +330,8 @@ class VisualStudioCodeNonCcrRule(MergeRule):
               rdescript=
               "shift current group of tabs to the right e.g. swap with pane to the right"
               ),
-        "<first_second_third> pane":
-            R(Key("c-%(first_second_third)s"), rdescript="go to nth pane"),
+        "<nth> tab":
+            R(Key("c-%(nth)s"), rdescript="go to nth pane"),
 
         # languages editing
         "Go to definition":
@@ -391,30 +388,6 @@ class VisualStudioCodeNonCcrRule(MergeRule):
         "toggle tab moves focus":
             R(Key("c-m"), rdescript="toggle taboos focus"),
 
-        # find and replace (see also multi-cursor and selection section above)
-        "replace":
-            R(Key("c-h"), rdescript="replace"),
-        "find in files":
-            R(Key("cs-f"), rdescript="find in files"),
-        "replace in files":
-            R(Key("cs-h"), rdescript="replace in files"),
-        "next find":
-            R(Key("f3"), rdescript="go to next occurrence"),
-        "(prior | previous) find":
-            R(Key("s-f3"), rdescript="go to previous occurrence"),
-        "select all occurrences of find match":
-            R(Key("a-enter"), rdescript="select all occurrences of find match"),
-        # the following commented-out commands are nearly duplicates from "multi-cursor and selection" section above
-        # "select all occurrences of find match": Key("a-enter"),
-        # "add selection to next find match": Key("c-d"),
-        # "move last selection to next find match": Key("c-k, c-d"),
-        # not sure exactly how the following commands work
-        "toggle case sensitive":
-            R(Key("a-c"), rdescript="toggle case-sensitive"),
-        "toggle regex":
-            R(Key("a-r"), rdescript="toggle regular expressions"),
-        "toggle whole word":
-            R(Key("a-w"), rdescript="toggle whole word"),
 
         # integrated terminal
         "[show] terminal":
@@ -446,11 +419,6 @@ class VisualStudioCodeNonCcrRule(MergeRule):
         "toggle word wrap":
             R(Key("a-z"), rdescript="toggle word wrap"),
 
-        # miscellaneous
-        "black":
-            R(Key("sa-f"), rdescript="apply black formatting"),
-        # must install black.not sure if this hotkey is specific to my system
-        #"yap": R(Key(""), rdescript="apply yapf formatting"),
         "run this line":
             R(Key("csa-l"), rdescript="run this line"),
         "join line":
@@ -473,17 +441,13 @@ class VisualStudioCodeNonCcrRule(MergeRule):
             R(Key("ca-j"), rdescript="Mark previous"),
         "mark next":
             R(Key("ca-l"), rdescript="Mark next"),
-
-        # requires the keyboard-scroll extension (once=middle, twice=top, thrice=bottom)
-        "center mass":
-            R(Key("c-l"), rdescript="center mass"),
     }
     extras = [
         Dictation("text"),
         Dictation("mim"),
         IntegerRefST("n", 1, 1000),
         Choice(
-            "first_second_third", {
+            "nth", {
                 "first": "1",
                 "second": "2",
                 "third": "3",
