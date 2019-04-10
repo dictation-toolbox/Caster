@@ -89,7 +89,7 @@ class VSCodeCcrRule(MergeRule):
         "select prior [<n>]":
             R(Key("cs-f3"), rdescript="select prior occurrence of current word")*
             Repeat(extra='n'),
-        "go Sueto prior [<n>]":
+        "go to prior [<n>]":
             R(Key("sa-right/2, cs-f3, c-left/2, escape"),
               rdescript="go to prior occurrence of current word")*Repeat(extra='n'),
         # may or may not want the escape afterwards to close the find box
@@ -154,7 +154,7 @@ class VSCodeCcrRule(MergeRule):
     defaults = {"n": 1, "mim": "", "text": ""}
 
 
-class VisualStudioCodeNonCcrRule(MergeRule):
+class VSCodeNonCcrRule(MergeRule):
     pronunciation = "Visual Studio code non-continuous"
     mapping = {
         # moving around a file
@@ -239,7 +239,7 @@ class VisualStudioCodeNonCcrRule(MergeRule):
             R(Key("cs-t"), rdescript="reopen most recently tab")*Repeat(extra='n'),
         "Exit preview":
             R(Key("space, c-z"), rdescript="Visual Studio Code: Exit Preview"),
-        "keep preview mode editor open":
+        "keep preview open":
             R(Key("c-k, enter"), rdescript="keep preview mode editor open"),
         "copy path":
             R(Key("c-k, p"), rdescript="copy path of active file"),
@@ -440,6 +440,6 @@ context = AppContext(title="Visual Studio Code")
 grammar = Grammar("Visual Studio Code", context=context)
 if settings.SETTINGS["apps"]["visualstudiocode"]:
     if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(VisualStudioCodeRule())
+        control.nexus().merger.add_global_rule(VSCodeCcrRule())
     else:
-        control.nexus().merger.add_app_rule(VisualStudioCodeRule(), context)
+        control.nexus().merger.add_app_rule(VSCodeCcrRule(), context)
