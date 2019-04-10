@@ -119,59 +119,36 @@ class VSCodeCcrRule(MergeRule):
 
         # commands for selecting between parable characters using "quick and simple text selection" VScode extension (required)
         # repetition of these commands by saying the number expands the selection to include the text between the next (i.e. outer) set of parable characters of the given type
-        "[select] between prekris [<n>]":
-            R(Key("c-k, lparen"),
+        "select between <between_parables> [<n>]":
+            R(Key("c-k, %(between_parables)s"),
               rdescript=
               "select between parentheses noninclusive using 'quick and simple text selection' VScode extension"
               )*Repeat(extra='n'),
-        "[select] around prekris [<n>]":
-            R(Key("c-k, rparen"),
+        "select around <around_parables> [<n>]":
+            R(Key("c-k, %(around_parables)s"),
               rdescript=
               "select between parentheses inclusive using 'quick and simple text selection' VScode extension"
               )*Repeat(extra='n'),
-        "[select] between single [<n>]":
-            R(Key("c-k, squote"),
-              rdescript=
-              "select between single quotes noninclusive using 'quick and simple text selection' VScode extensios"
-              )*Repeat(extra='n'),
-        "[select] between quotes [<n>]":
-            R(Key("c-k, dquote"),
-              rdescript=
-              "select between double quotes noninclusive using 'quick and simple text selection' VScode extension"
-              )*Repeat(extra='n'),
-        "[select] between brax [<n>]":
-            R(Key("c-k, lbracket"),
-              rdescript=
-              "select between square brackets noninclusive using 'quick and simple text selection' VScode extension"
-              )*Repeat(extra='n'),
-        "[select] around brax [<n>]":
-            R(Key("c-k, rbracket"),
-              rdescript=
-              "select between square brackets inclusive using 'quick and simple text selection' VScode extension"
-              )*Repeat(extra='n'),
-        "[select] between curly [<n>]":
-            R(Key("c-k, lbrace"),
-              rdescript=
-              "select between curly brace noninclusive using 'quick and simple text selection' VScode extension"
-              )*Repeat(extra='n'),
-        "[select] around curly [<n>]":
-            R(Key("c-k, rbrace"),
-              rdescript=
-              "select between curly brace inclusive using 'quick and simple text selection' VScode extension"
-              )*Repeat(extra='n'),
-        "[select] between angle [<n>]":
-            R(Key("c-k, langle"),
-              rdescript=
-              "select between angle brackets noninclusive using 'quick and simple text selection' VScode extension"
-              )*Repeat(extra='n'),
-        # inclusive angle doesn't seem to work
-        # "[select] around angle [<n>]": R(Key("c-k, rangle"), rdescript="select between angle brackets inclusive using 'quick and simple text selection' VScode extension")* Repeat(extra='n'),
     }
     extras = [
         Dictation("text"),
         Dictation("mim"),
         IntegerRefST("n", 1, 100),
         IntegerRefST("m", 1, 10),
+        Choice("between_parables", {
+            "prekris": "lparen",
+            "brax": "lbracket",
+            "curly": "lbrace",
+            "angle": "langle",
+            "single": "squote",
+            "quote": "dquote",
+            }),
+        Choice("around_parables", {
+            "prekris": "rparen",
+            "brax": "rbracket",
+            "curly": "rbrace",
+            "angle": "rangle",
+            }),
     ]
 
     defaults = {"n": 1, "mim": "", "text": ""}
@@ -180,7 +157,6 @@ class VSCodeCcrRule(MergeRule):
 class VisualStudioCodeNonCcrRule(MergeRule):
     pronunciation = "Visual Studio code non-continuous"
     mapping = {
-
         # moving around a file
         "[(go to | jump | jump to)] line <n>":
             R(Key("c-g") + Text("%(n)d") + Key("enter"),
@@ -227,9 +203,6 @@ class VisualStudioCodeNonCcrRule(MergeRule):
             R(Key("c-k, v"), rdescript="open markdown preview to the side"),
         "Zen mode":
             R(Key("c-k, z"), rdescript="Zen mode"),  # note: use esc esc to exit
-        # "debug": R(Key("cs-d"), rdescript="debug"), this is a command below
-        # "[show] problems [panel]": Key("cs-m"), this is a command below
-        # I'm just commenting these out here to avoid repetition because I put them the debug section
 
         # File management
         "[open] command palette":
@@ -270,7 +243,7 @@ class VisualStudioCodeNonCcrRule(MergeRule):
             R(Key("c-k, enter"), rdescript="keep preview mode editor open"),
         "copy path":
             R(Key("c-k, p"), rdescript="copy path of active file"),
-        "reveal active file in Explorer":
+        "windows explorer here":
             R(Key("c-k, r"),
               rdescript="open Windows Explorer to the location of active file"),
         "show active file in new window":
