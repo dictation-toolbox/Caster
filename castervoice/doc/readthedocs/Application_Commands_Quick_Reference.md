@@ -2,6 +2,7 @@
 
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
+- [Adobe acrobat](#adobe-acrobat)
 - [Atom](#atom)
 - [Google Chrome](#google-chrome)
 - [Command prompt](#command-prompt)
@@ -31,6 +32,21 @@
 - [Visual Studio Code](#visual-studio-code)
 
 <!-- /TOC -->
+# Adobe acrobat
+| Command                            | Command                      | Command                                  |
+|:-----------------------------------|:-----------------------------|:-----------------------------------------|
+| `[go to] page <n>`                 | `set zoom <n>`               | `open file`                              |
+| `duplicate tab`                    | `enable scrolling`           | `(disable scrolling / single page mode)` |
+| `next tab [<n>]`                   | `prior tab [<n>]`            | `home button`                            |
+| `add note [<dict>]`                | `fast [add] note [<dict>]`   | `open blank note`                        |
+| `add blank note`                   | `delete note`                | `go back [<n>]`                          |
+| `save as`                          | `fast save`                  | `down it [<n>]`                          |
+| `up it [<n>]`                      | `tools pane`                 | `menu bar`                               |
+| `model tree`                       | `bookmarks`                  | `[page] thumbnails`                      |
+| `rotate [<n>]`                     | `scroll <speed_one_to_nine>` | `scroll`                                 |
+| `change speed <speed_one_to_nine>` | `reverse [direction]`        | `stop [scrolling]`                       |
+| `highlight`                        | `hand tool`                  | `select tool`                            |
+
 
 # Atom
 
