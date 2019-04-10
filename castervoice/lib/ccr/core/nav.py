@@ -16,6 +16,7 @@ from castervoice.lib.dfplus.state.actions2 import UntilCancelled
 from castervoice.lib.dfplus.state.short import L, S, R
 from dragonfly.actions.action_mimic import Mimic
 from castervoice.lib.ccr.standard import SymbolSpecs
+from castervoice.lib.remap_args_function_action import RemapArgsFunction
 
 _NEXUS = control.nexus()
 
@@ -29,6 +30,10 @@ class NavigationNon(MappingRule):
         "erase multi clipboard":
             R(Function(navigation.erase_multi_clipboard, nexus=_NEXUS),
               rdescript="Core: Erase Multi Clipboard"),
+        "page (down | dunce) [<nnavi500>]":
+            R(Key("pgdown"), rdescript="Core: page down") * Repeat(extra="nnavi50"),
+        "page (up | sauce) [<nnavi500>]":
+            R(Key("pgup"), rdescript="Core: page up") * Repeat(extra="nnavi50"),
         "find":
             R(Key("c-f"), rdescript="Core: Find"),
         "find next [<n>]":
@@ -233,6 +238,8 @@ class Navigation(MergeRule):
 
         "shackle":
             R(Key("home/5, s-end"), rspec="shackle", rdescript="Core: Select Line"),
+        "start line": 
+            R(Key("end, enter"), rspec="start line",  rdescript="Core: "),
         "(tell | tau) <semi>":
             R(Function(navigation.next_line), rspec="tell dock", rdescript="Core: Complete Line"),
         "duple [<nnavi50>]":
@@ -285,26 +292,43 @@ class Navigation(MergeRule):
             R(Key("a-tab"), rdescript="Core: Alt-Tab"),
         
 
-        # "delete until" commands
-        "kill ross <right_character>": 
-            navigation.RemapArgsFunction(navigation.copypaste_delete_until_character_sequence, dict(left_right="right"), dict(right_character='character_sequence')),
-        "kill ross <dictation>": 
-            navigation.RemapArgsFunction(navigation.copypaste_delete_until_character_sequence, dict(left_right="right"), dict(dictation='character_sequence')),
-        "kill leese <left_character>": 
-            navigation.RemapArgsFunction(navigation.copypaste_delete_until_character_sequence, dict(left_right="left"), dict(left_character="character_sequence")),
-        "kill leese <dictation>": 
-            navigation.RemapArgsFunction(navigation.copypaste_delete_until_character_sequence, dict(left_right="left"), dict(dictation='character_sequence')),
-            
-        # "move until" commands
-        "leeser <left_character>": 
-            navigation.RemapArgsFunction(navigation.move_until_character_sequence, dict(left_right = "left"), dict(left_character="character_sequence")),
-        "rosser <right_character>":
-            navigation.RemapArgsFunction(navigation.move_until_character_sequence, dict(left_right = "right"), dict(right_character="character_sequence")),
-        "leeser <dictation>": 
-            navigation.RemapArgsFunction(navigation.move_until_character_sequence, dict(left_right = "left"), dict(dictation="character_sequence")),
-        "rosser <dictation>": 
-            navigation.RemapArgsFunction(navigation.move_until_character_sequence, dict(left_right = "right"), dict(dictation="character_sequence")),
+        # the following text manipulation commands currently only work on text
+            # that is on the same line as the cursor
         
+        "change lease <dictation> to <dictation2>":
+            RemapArgsFunction(navigation.copypaste_replace_phrase_with_phrase, dict(dictation="replaced_phrase", dictation2="replacement_phrase"), left_right="left"),
+        "change ross <dictation> to <dictation2>":
+            RemapArgsFunction(navigation.copypaste_replace_phrase_with_phrase, dict(dictation="replaced_phrase", dictation2="replacement_phrase"), left_right="right"),
+        
+        "remove lease <dictation>":
+            RemapArgsFunction(navigation.copypaste_remove_phrase_from_text, dict(dictation="phrase"), left_right="left"),
+        "remove lease <left_character>":
+            RemapArgsFunction(navigation.copypaste_remove_phrase_from_text, dict(left_character="phrase"), left_right="left"),
+        "remove ross <right_character>":
+            RemapArgsFunction(navigation.copypaste_remove_phrase_from_text, dict(right_character="phrase"), left_right="right"),
+        "remove ross <dictation>":
+            RemapArgsFunction(navigation.copypaste_remove_phrase_from_text, dict(dictation="phrase"), left_right="right"),
+
+
+        "go lease <left_character>":
+            RemapArgsFunction(navigation.move_until_character_sequence, dict(left_character="character_sequence"), left_right="left"),
+        "go lease <dictation>":
+            RemapArgsFunction(navigation.move_until_character_sequence, dict(dictation="character_sequence"), left_right="left"),
+        "go ross <right_character>":
+            RemapArgsFunction(navigation.move_until_character_sequence, dict(right_character="character_sequence"), left_right="right"),
+        "go ross <dictation>":
+            RemapArgsFunction(navigation.move_until_character_sequence, dict(dictation="character_sequence"), left_right="right"),
+        
+        "wipe lease <left_character>":
+            RemapArgsFunction(navigation.copypaste_delete_until_character_sequence, dict(left_character="character_sequence"), left_right="left"),
+        "wipe lease <dictation>":
+            RemapArgsFunction(navigation.copypaste_delete_until_character_sequence, dict(dictation="character_sequence"), left_right="left"),
+        "wipe ross <right_character>":
+            RemapArgsFunction(navigation.copypaste_delete_until_character_sequence, dict(right_character="character_sequence"), left_right="right"),
+        "wipe ross <dictation>":
+            RemapArgsFunction(navigation.copypaste_delete_until_character_sequence, dict(dictation="character_sequence"), left_right="right"),
+
+            
 
 
     }
@@ -316,6 +340,7 @@ class Navigation(MergeRule):
         IntegerRefST("nnavi500", 1, 500),
         Dictation("textnv"),
         Dictation("dictation"),
+        Dictation("dictation2"),
         Choice(
             "enclosure", {
                 "prekris": "(~)",

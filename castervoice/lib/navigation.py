@@ -11,54 +11,11 @@ import pyperclip
 import dragonfly
 from dragonfly import Choice, monitors
 from castervoice.asynch.mouse.legion import LegionScanner
-from castervoice.lib import control, settings, utilities, textformat
+from castervoice.lib import control, settings, utilities, textformat, context
 from castervoice.lib.actions import Key, Text, Mouse
 from castervoice.lib.clipboard import Clipboard
 
 
-from inspect           import getargspec
-from dragonfly.actions.action_base import ActionBase, ActionError
-
-# tweaked version of function action for dealing with the case when the argument names
-# from the extras don't match the argument names in the function signature
-class RemapArgsFunction(ActionBase):
-    # def __init__(self, function, remap_data=None, **defaults):
-    def __init__(self, function, defaults=None, remap_data=None):
-    
-        ActionBase.__init__(self)
-        self._function = function
-        self._defaults = defaults or {}
-        self._remap_data = remap_data or {}
-        self._str = function.__name__
-
-        # TODO Use inspect.signature instead; getargspec is deprecated.
-        (args, varargs, varkw, defaults) = getargspec(self._function)
-        if varkw:  self._filter_keywords = False
-        else:      self._filter_keywords = True
-        self._valid_keywords = set(args)
-
-    def _execute(self, data=None):
-        arguments = dict(self._defaults)
-        if isinstance(data, dict):
-            arguments.update(data)
-
-        # Remap specified names.
-        if arguments and self._remap_data:
-            for old_name, new_name in self._remap_data.items():
-                if old_name in data:
-                    arguments[new_name] = arguments.pop(old_name)
-
-        if self._filter_keywords:
-            invalid_keywords = set(arguments.keys()) - self._valid_keywords
-            for key in invalid_keywords:
-                del arguments[key]
-
-        try:
-            self._function(**arguments)
-        except Exception as e:
-            self._log.exception("Exception from function %s:"
-                                % self._function.__name__)
-            raise ActionError("%s: %s" % (self, e))
 
 
 DIRECTION_STANDARD = {
@@ -89,28 +46,124 @@ TARGET_CHOICE = Choice(
     })
 
 
+def replace_phrase_with_phrase(text, replaced_phrase, replacement_phrase, left_right):
+    if left_right == "left":
+        left_index = text.rfind(replaced_phrase)
+    if left_right == "right":
+        left_index = text.find(replaced_phrase)
+    # the if statement below is independent of whetherhim left_right equals left or right
+    if left_index == -1:
+        raise IndexError("{} not found").format(replaced_phrase)
+    right_index = left_index + len(replaced_phrase)
+    return text[: left_index] + replacement_phrase + text[right_index:] 
+    
+
+# comments show how to do it using pyperclip instead of caster's method
+    # unlike pyperclip caster's method does not alter the clipboard 
+def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, left_right):
+    if left_right == "left":
+        Key("s-home").execute()
+        # Key("s-home, c-c/2").execute()
+    if left_right == "right":
+        Key("s-end").execute()
+        # Key("s-end, c-c/2").execute()
+    err, selected_text = context.read_selected_without_altering_clipboard()
+        # selected_text = pyperclip.paste()
+    if err != 0:
+        # I'm not discriminating between err = 1 and err = 2
+        print("failed to copy text")
+        return
+
+    text = str(selected_text).lower()
+    replaced_phrase = str(replaced_phrase).lower()
+    replacement_phrase = str(replacement_phrase).lower()
+    new_text = replace_phrase_with_phrase(text, replaced_phrase, replacement_phrase, left_right)
+    if not context.paste_string_without_altering_clipboard(new_text):
+        print("failed to paste {}".format(new_text))
+    # pyperclip.copy(output)
+    # Key("c-v").execute()
+    if left_right == "right":
+        offset = len(output)
+        Key("left:%d" %offset).execute()
+
+def remove_phrase_from_text(text, phrase, left_right):
+    if left_right == "left":
+        left_index = text.rfind(phrase)
+    if left_right == "right":
+        left_index = text.find(phrase)
+    # the if statement below is independent of whether left_right equals left or right
+    if left_index == -1:
+        raise IndexError("{} not found").format(phrase)
+    right_index = left_index + len(phrase)
+    # if the "phrase" is punctuation, just remove it, but otherwise remove an extra space adjacent to the phrase
+    punctuation_list = [".", ",", "'", "[", "]", "<", ">", "{", "}", "?", "–", "-", ";"]
+    if phrase in punctuation_list:
+        return text[: left_index] + text[right_index:] 
+    else:
+        return text[: left_index - 1] + text[right_index:] 
+
+# comments show how to do it using pyperclip instead of caster's method
+    # unlike pyperclip caster's method does not alter the clipboard 
+def copypaste_remove_phrase_from_text(phrase, left_right):
+    if left_right == "left":
+        Key("s-home").execute()
+        # Key("s-home, c-c/2").execute()
+    if left_right == "right":
+        Key("s-end").execute()
+        # Key("s-end, c-c/2").execute()
+    err, selected_text = context.read_selected_without_altering_clipboard()
+        # selected_text = pyperclip.paste()
+    if err != 0:
+        # I'm not discriminating between err = 1 and err = 2
+        print("failed to copy text")
+        return
+
+    text = str(selected_text).lower()
+        # don't distinguish between uppercase and lowercase
+    phrase = str(phrase).lower()
+    new_text = remove_phrase_from_text(text, phrase, left_right)
+    context.paste_string_without_altering_clipboard(output)
+    if not context.paste_string_without_altering_clipboard(new_text):
+                print("failed to paste {}".format(new_text))
+
+    # pyperclip.copy(output)
+    # Key("c-v").execute()
+    if left_right == "right":
+        offset = len(output)
+        Key("left:%d" %offset).execute()
+
+
+# comments show how to do it using pyperclip instead of caster's method
+    # unlike pyperclip caster's method does not alter the clipboard 
 def move_until_character_sequence(left_right, character_sequence):
     if left_right == "left":
-        Key("s-home, c-c/2").execute()
-        Key("right").execute()
+        Key("s-home").execute()
+        # Key("s-home, c-c/2").execute()
     if left_right == "right":
-        Key("s-end, c-c/2").execute()
-        Key("left").execute()
-
+        Key("s-end").execute()
+        # Key("s-end, c-c/2").execute()
+    err, selected_text = context.read_selected_without_altering_clipboard()
+        # selected_text = pyperclip.paste()
+    if err != 0:
+        # I'm not discriminating between err = 1 and err = 2
+        print("failed to copy text")
+        return
+    
+    text = str(selected_text).lower()
+        # don't distinguish between upper and lowercase
     character_sequence = str(character_sequence).lower()
-    text = pyperclip.paste()    
-    # don't distinguish between upper and lowercase
-    text = text.lower()
     if left_right == "left":
+        Key("right").execute() # unselect text
         if text.rfind(character_sequence) == -1:
-            raise IndexError("character_sequence not found")
+            raise IndexError("{} not found".format(character_sequence))
         else:
             character_sequence_start_position = text.rfind(character_sequence) + len(character_sequence)
             offset = len(text) - character_sequence_start_position 
             Key("left:%d" %offset).execute()
     if left_right == "right":
+        Key("left").execute() # unselect text
         if text.find(character_sequence) == -1:
-            raise IndexError("character_sequence not found")
+            raise IndexError("{} not found".format(character_sequence))
         else:
             character_sequence_start_position = text.find(character_sequence) 
             offset = character_sequence_start_position 
@@ -118,41 +171,63 @@ def move_until_character_sequence(left_right, character_sequence):
         
 
 
-def copypaste_delete_until_character_sequence(left_right, character_sequence):
-        if left_right == "left":
-            Key("s-home, c-c/2").execute()
-        if left_right == "right":
-            Key("s-end, c-c/2").execute()
-        character_sequence = str(character_sequence).lower()
-        text = pyperclip.paste()
-        # don't distinguish between upper and lowercase
-        text = text.lower()
-        new_text = delete_until_character_sequence(text, character_sequence, left_right)
-        offset = len(new_text)
-        pyperclip.copy(new_text)
-        Key("c-v/2").execute()
-        # move cursor back into the right spot. only necessary for left_right = "right"
-        if left_right == "right":
-            Key("left:%d" %offset).execute()
-        
-
 def delete_until_character_sequence(text, character_sequence, left_right):
     if left_right == "left":
         if text.rfind(character_sequence) == -1:
-            raise IndexError("character_sequence not found")
+            raise IndexError("{} not found".format(character_sequence))
         else:
             character_sequence_start_position = text.rfind(character_sequence)
-            new_text_start_position = character_sequence_start_position 
-            new_text = text[:new_text_start_position]
-            return new_text
+            # if character sequence goes to the end of the line
+            if character_sequence_start_position == 0:
+                Key("del").execute()
+            else:
+                new_text_start_position = character_sequence_start_position 
+                new_text = text[:new_text_start_position]
+                return new_text
     if left_right == "right":
         if text.find(character_sequence) == -1:
-            raise IndexError("character_sequence not found")
+            raise IndexError("{} not found".format(character_sequence))
         else:
             character_sequence_start_position = text.find(character_sequence)
-            new_text_start_position = character_sequence_start_position + len(character_sequence)
-            new_text = text[new_text_start_position:]
-            return new_text
+            # if character sequence goes to the end of the line
+            if character_sequence_start_position + len(character_sequence) == len(text):
+                Key("del").execute()
+            else:
+                new_text_start_position = character_sequence_start_position + len(character_sequence)
+                new_text = text[new_text_start_position:]
+                return new_text
+
+      
+# comments show how to do it using pyperclip instead of caster's method 
+    # unlike pyperclip caster's method does not alter the clipboard 
+def copypaste_delete_until_character_sequence(left_right, character_sequence):
+        if left_right == "left":
+            Key("s-home").execute()
+            # Key("s-home, c-c/2").execute()
+        if left_right == "right":
+            Key("s-end").execute()
+            # Key("s-end, c-c/2").execute()
+        err, selected_text = context.read_selected_without_altering_clipboard()
+        # selected_text = pyperclip.paste()
+        if err != 0:
+            # I'm not discriminating between err = 1 and err = 2
+            print("failed to copy text")
+            return
+    
+        text = str(selected_text).lower()      
+            # don't distinguish between upper and lowercase
+        character_sequence = str(character_sequence).lower()
+        text = text.lower()
+        new_text = delete_until_character_sequence(text, character_sequence, left_right)
+        offset = len(new_text)
+        if not context.paste_string_without_altering_clipboard(new_text):
+            print("failed to paste {}".format(new_text))
+        # pyperclip.copy(new_text)
+        # Key("c-v/2").execute()
+        # move cursor back into the right spot. only necessary for left_right = "right"
+        if left_right == "right":
+            Key("left:%d" %offset).execute()
+
 
 
 def get_direction_choice(name):
@@ -366,8 +441,8 @@ def curse(direction, direction2, nnavi500, dokick):
 def next_line(semi):
     semi = str(semi)
     Key("escape").execute()
-    time.sleep(0.25)
+    time.sleep(0.01)
     Key("end").execute()
-    time.sleep(0.25)
+    time.sleep(0.01)
     Text(semi).execute()
     Key("enter").execute()
