@@ -376,17 +376,55 @@
 | `close tab [<n>]`                  | `resume`                     |                                     |
 
 # Visual Studio Code
+## CCR (Continuous Command Recognition)
+| Command                      | Command                                   | Command                                 |
+|:-----------------------------|:------------------------------------------|:----------------------------------------|
+| `scroll up [<n>]`            | `scroll down [<n>]`                       | `scroll page up [<n>]`                  |
+| `scroll page down [<n>]`     | `(Unindent/outdent) [<n>]`                | `Comment line`                          |
+| `Block comment`              | `cursor above [<n>]`                      | `cursor below [<n>]`                    |
+| `remove cursor`              | `tall cursor up`                          | `tall cursor down`                      |
+| `select [in] brackets [<n>]` | `all current selection`                   | `all current word`                      |
+| `select next [<n>]`          | `go to next [<n>]`                        | `select prior [<n>]`                    |
+| `go to prior [<n>]`          | `cursor all`                              | `next cursor [<n>]`                     |
+| `indent [<n>]`               | `hard delete [<n>]`                       | `copy line up [<n>]`                    |
+| `copy line up [<n>]`         | `switch line down [<n>]`                  | `switch line up [<n>]`                  |
+| `match bracket`              | `select between <between_parables> [<n>]` | `select around <around_parables> [<n>]` |
 
-| Command                                       | Command                       | Command                |
-|:----------------------------------------------|:------------------------------|:-----------------------|
-| `(Find / Jump [to]) next <text>`              | `Go forward [<n>]`            | `[toggle] full screen` |
-| `(Find / Jump [to]) previous <text>`          | `Go to ( bottom / last line)` | `beol`                 |
-| `(Open [file] / Go to [tab]) [<text>]`        | `Go to (top / first line)`    | `ee-ol`                |
-| `(go to / jump / jump to) line <n>`           | `Go to definition`            | `indent [<n>]`         |
-| `(search / find in) [all] (files / codebase)` | `Go to required definition`   | `nexta [<n>]`          |
-| `(search / find) [file]`                      | `Save and close`              | `prexta [<n>]`         |
-| `Block comment`                               | `Save file`                   | `resume`               |
-| `Close tab`                                   | `Unindent [<n>]`              | `step into`            |
-| `Comment`                                     | `[open] command palette`      | `step out [of]`        |
-| `Exit preview`                                | `[toggle] Zen mode`           | `step over [<n>]`      |
-| `Go back [<n>]`                               | `[toggle] breakpoint`         |                        |
+## Non-CCR
+| Command                                | Command                               | Command                                  |
+|:---------------------------------------|:--------------------------------------|:-----------------------------------------|
+| `[(go to / jump / jump to)] line <n>`  | `Go back <n>`                         | `Go forward [<n>]`                       |
+| `[toggle] full screen`                 | `toggle orientation`                  | `zoom in [<n>]`                          |
+| `zoom out [<n>]`                       | `sidebar`                             | `explorer`                               |
+| `source control`                       | `keyboard shortcuts`                  | `key mappings`                           |
+| `settings`                             | `snippets`                            | `extensions`                             |
+| `search details`                       | `output panel`                        | `markdown preview`                       |
+| `markdown preview side`                | `Zen mode`                            | `[open] command palette`                 |
+| `(Open [file] / Go to [tab]) [<text>]` | `Save and close`                      | `new file`                               |
+| `new window`                           | `close window`                        | `close workspace`                        |
+| `close editor`                         | `save as`                             | `save all`                               |
+| `next tab [<n>]`                       | `previous tab [<n>]`                  | `close tab [<n>]`                        |
+| `(recent / R) tab [<n>]`               | `reopen tab [<n>]`                    | `Exit preview`                           |
+| `keep preview open`                    | `copy path`                           | `windows explorer here`                  |
+| `show active file in new window`       | `(search / find)`                     | `replace`                                |
+| `find in files`                        | `replace in files`                    | `next find`                              |
+| `(prior / previous) find`              | `select all occurrences`              | `toggle regex`                           |
+| `toggle whole word`                    | `(Find / Jump [to]) previous <text>`  | `show all symbols`                       |
+| `go to symbol`                         | `close editor`                        | `close folder`                           |
+| `split editor`                         | `next pane`                           | `(prior / previous / un) pane`           |
+| `shift group left`                     | `shift group left`                    | `<nth> tab`                              |
+| `Go to definition`                     | `Go to required definition`           | `peak definition`                        |
+| `trigger parameter hints`              | `format that`                         | `(definition to side / side def)`        |
+| `show references`                      | `rename symbol`                       | `(trim white)`                           |
+| `change file language`                 | `debug`                               | `[toggle] breakpoint`                    |
+| `step over [<n>]`                      | `step into`                           | `step out [of]`                          |
+| `resume`                               | `stopper`                             | `continue`                               |
+| `show hover`                           | `[show] problems [panel]`             | `next error`                             |
+| `(prior / previous) error`             | `toggle tab moves focus`              | `[show] terminal`                        |
+| `new terminal`                         | `terminal scroll up`                  | `terminal scroll down`                   |
+| `terminal page up`                     | `terminal page down`                  | `(fold / collapse) region`               |
+| `(unfold / uncollapse) region`         | `(fold / collapse) [all] subregions`  | `(unfold / uncollapse) [all] subregions` |
+| `(fold / collapse) [all] regions`      | `(unfold / uncollapse) [all] regions` | `toggle word wrap`                       |
+| `join line`                            | `toggle blame`                        | `lens commit details`                    |
+| `lens file history`                    | `lens repo status`                    | `toggle git lens`                        |
+| `mark (prev / prior / previous)`       | `mark next`                           | ` `                                      |
