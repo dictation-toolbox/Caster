@@ -59,6 +59,11 @@ from castervoice.lib.dfplus.hint.nodes import css
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.merge import gfilter
 
+# Load user rules
+_NEXUS.process_user_content()
+_NEXUS.merger.update_config()
+_NEXUS.merger.merge(MergeInf.BOOT)
+
 def internetcheck(host="1.1.1.1", port=53, timeout=3):
     """
     Checks for network connection via DNS resolution.
@@ -175,7 +180,7 @@ class MainRule(MergeRule):
 
         # hardware management
         "volume <volume_mode> [<n>]":
-            R(Function(navigation.volume_control, 
+            R(Function(navigation.volume_control,
               extra={'n', 'volume_mode'}),
               rdescript="Volume Control"),
 
@@ -184,11 +189,11 @@ class MainRule(MergeRule):
 
 
         # window management
-        'minimize':   R(Playback([(["minimize", "window"], 0.0)]), 
+        'minimize':   R(Playback([(["minimize", "window"], 0.0)]),
                         rdescript="Minimize Window"),
-        'maximize':   R(Playback([(["maximize", "window"], 0.0)]), 
+        'maximize':   R(Playback([(["maximize", "window"], 0.0)]),
                         rdescript="Maximize Window"),
-        "remax":   R(Key("a-space/10,r/10,a-space/10,x"), 
+        "remax":   R(Key("a-space/10,r/10,a-space/10,x"),
                         rdescript="Force Maximize Window"),
 
         # passwords
@@ -252,9 +257,6 @@ if settings.SETTINGS["feature_rules"]["alias"]:
 
 grammar.load()
 
-_NEXUS.process_user_content()
-_NEXUS.merger.update_config()
-_NEXUS.merger.merge(MergeInf.BOOT)
 
 
 print("\n*- Starting " + settings.SOFTWARE_NAME + " -*")
