@@ -78,7 +78,7 @@ def type_mouse_current_position_button(mouse_button="left"):
     Text(full_string).execute()
 
 
-class DevCommands(MergeRule):
+class VoiceDevCommands(MergeRule):
     pronunciation = "voice dev commands"
 
     mapping = {
@@ -211,4 +211,4 @@ class DevCommands(MergeRule):
     defaults = {"spec": "", "dict": "", "text": "", "mouse_button": ""}
 
 
-control.nexus().merger.add_global_rule(DevCommands())
+control.nexus().merger.add_global_rule(VoiceDevCommands())

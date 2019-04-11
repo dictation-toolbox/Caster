@@ -11,7 +11,7 @@ command_sets = {
     "cpp.cpp": ("CPP", ),
     "csharp.csharp": ("CSharp", ),
     "dart.dart": ("Dart", ),
-    "dev_commands.dev_commands": ("DevCommands"),
+    "voice_dev_commands.voice_dev_commands": ("VoiceDevCommands"),
     "go.go": ("Go", ),
     "haxe.haxe": ("Haxe", ),
     "html.html": ("HTML", ),
