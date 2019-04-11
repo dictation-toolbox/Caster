@@ -5,7 +5,7 @@ A quick reference guide for the language-specific commands included with Caster.
 - [Bash](#bash)
 - [C++](#c)
 - [C&#35;](#c-1)
-- [Development](#development)
+- [VoiceDevCommands](#VoiceDevCommands)
 - [Haxe](#haxe)
 - [HTML](#html)
 - [Java](#java)
@@ -99,7 +99,7 @@ A quick reference guide for the language-specific commands included with Caster.
 | integer                   | `int`                           | while loop       | `while ()`                                                    |
 | interface                 | `interface TOKEN {}`            |                  |                                                               |
 
-# Development
+# VoiceDevCommands
 | Command                                     | Output                                                                     |
 |:--------------------------------------------|:---------------------------------------------------------------------------|
 | `dev key`                                   | `Key(""),`                                                                 |
