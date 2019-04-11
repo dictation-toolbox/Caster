@@ -218,12 +218,14 @@ class Navigation(MergeRule):
         "spark [<nnavi500>] [(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)]":
             R(Function(navigation.drop_keep_clipboard, nexus=_NEXUS), rspec="spark", rdescript="Core: Paste"),
 
-        "splat [<splatdir>] [<nnavi10>]":
-            R(Key("c-%(splatdir)s"), rspec="splat", rdescript="Core: Splat") * Repeat(extra="nnavi10"),
-        "splat ross wally":
-            R(Key("s-end, del"), rspec="splat ross wally", rdescript="Core: delete right till end of line"),
-        "splat lease wally":
-            R(Key("s-home, del"), rspec="splat lease wally", rdescript="Core: delete left till end of line "),
+        "splat [<nnavi50>]": R(Key("cs-left:%(nnavi50)s, del"), rspec="splat",  
+            rdescript="delete words to the left"),
+        "sprat [<nnavi50>]": R(Key("cs-right:%(nnavi50)s, del"), rspec="sprat",  
+            rdescript="delete words to the right"),
+        "splat wally":
+            R(Key("s-home, del"), rspec="splat wally", rdescript="Core: delete left till end of line"),
+        "sprat wally":
+            R(Key("s-end, del"), rspec="sprat wally", rdescript="Core: delete right till end of line "),
         "deli [<nnavi50>]":
             R(Key("del/5"), rspec="deli", rdescript="Core: Delete") * Repeat(extra="nnavi50"),
         "shin deli [<nnavi50>]":
@@ -392,11 +394,7 @@ class Navigation(MergeRule):
         Choice("big", {
             "big": True,
         }),
-        Choice("splatdir", {
-            "lease": "backspace",
-            "ross": "delete",
-        }),
-           Choice("left_character", {
+        Choice("left_character", {
             "prekris": "(",
             "right prekris": ")",
             "brax": "[",
@@ -442,7 +440,6 @@ class Navigation(MergeRule):
         "mtn_dir": "right",
         "extreme": None,
         "big": False,
-        "splatdir": "backspace",
     }
 
 
