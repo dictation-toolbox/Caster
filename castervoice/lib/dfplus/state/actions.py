@@ -22,11 +22,6 @@ class RegisteredAction(ActionBase):
         self.show = show
 
     def _execute(self, data=None):
-        # formats rdescript with the given data
-        try:
-            self.rdescript = self.rdescript % data
-        except:
-            pass
         # copies everything relevant and places it in the stack
         self.nexus().state.add(StackItemRegisteredAction(self, data))
 
