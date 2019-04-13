@@ -80,6 +80,9 @@ class CCRMerger(object):
     def update_config(self):
         '''call this after all rules have been added'''
         changed = False
+        if not "ccr_on" in self._config:
+            self._config["ccr_on"] = True
+            changed = True
         '''global rules'''
         if not CCRMerger._GLOBAL in self._config:
             self._config[CCRMerger._GLOBAL] = {}
@@ -231,6 +234,11 @@ class CCRMerger(object):
             grammar.disable()
             del grammar
 
+    def ccr_off(self):
+        self.wipe()
+        self._config["ccr_on"] = False
+        self.save_config()
+
     def _sync_enabled(self):
         '''
         When enabling new rules, conflicting ones get automatically disabled.
@@ -291,6 +299,9 @@ class CCRMerger(object):
                     if base is None: base = rule
                     else: base = self._compatibility_merge(mp, base, rule)
         else:  # rebuild via composite
+            if not self._config["ccr_on"]:
+                self._config["ccr_on"] = True
+                self.save_config()
             composite = base.composite.copy(
             )  # IDs of all rules that the composite rule is made of
             if time != MergeInf.SELFMOD:
@@ -386,6 +397,8 @@ class CCRMerger(object):
         self._apply_format(current_rule)
         if save:
             self.save_config()
+        if time == MergeInf.BOOT and not self._config["ccr_on"]:
+            self.ccr_off()
 
     @staticmethod
     def specs_per_rulename(d):
