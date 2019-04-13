@@ -75,7 +75,7 @@ class MergeRule(MappingRule):
     def format_actions(self):
         def create_rdescript(command, raction):
             extras = ""
-            named_extras = re.findall(r"<(.*)>", command)
+            named_extras = re.findall(r"<(.*?)>", command)
             if named_extras:
                 extras = ", %(" + ")s, %(".join(named_extras) + ")s"
             return "%s: %s%s" % (self.name, command, extras)
