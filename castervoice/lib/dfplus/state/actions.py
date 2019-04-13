@@ -21,6 +21,10 @@ class RegisteredAction(ActionBase):
         self.rundo = rundo
         self.show = show
 
+    def __mul__(self, factor):
+        self.base = self.base * factor
+        return self
+
     def _execute(self, data=None):
         # copies everything relevant and places it in the stack
         self.nexus().state.add(StackItemRegisteredAction(self, data))
