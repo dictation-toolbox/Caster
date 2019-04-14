@@ -20,7 +20,7 @@ from castervoice.lib.ccr.standard import SymbolSpecs
 _NEXUS = control.nexus()
 
 
-class NavigationNon(MappingRule):
+class NavigationNon(MergeRule):
     mapping = {
         "<direction> <time_in_seconds>":
             AsynchronousAction(
@@ -115,7 +115,7 @@ class NavigationNon(MappingRule):
         "switch (window | windows)":
             R(Key("ca-tab"), rdescript="Core: Switch Window")*Repeat(extra="n"),
         "next tab [<n>]":
-            R(Key("c-pgdown"), rdescript="Core: Next Tab")*Repeat(extra="n"),
+            R(Key("c-pgdown"))*Repeat(extra="n"),
         "prior tab [<n>]":
             R(Key("c-pgup"), rdescript="Core: Previous Tab")*Repeat(extra="n"),
         "close tab [<n>]":
