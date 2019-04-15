@@ -210,7 +210,7 @@ class Navigation(MergeRule):
             time_in_seconds=0.1, repetitions=50, rdescript="Core: Jump: Back"),
         "jump back in":
             AsynchronousAction([L(S(["cancel"], context.nav, ["left", ")~]~}~>"]))],
-            finisher=Key("right"), time_in_seconds=0.1, repetitions=50, rdescript="Core: Jump: Back In" ),
+            time_in_seconds=0.1, repetitions=50, rdescript="Core: Jump: Back In" ),
 
     # keyboard shortcuts
         'save':
