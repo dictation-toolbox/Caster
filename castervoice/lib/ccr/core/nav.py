@@ -199,16 +199,16 @@ class Navigation(MergeRule):
             R(Key("escape, escape, end"), show=False) +
             AsynchronousAction([L(S(["cancel"], Function(context.fill_within_line, nexus=_NEXUS)))],
             time_in_seconds=0.2, repetitions=50, rdescript="Core: Fill" ),
-        "jump in":
+        "jump in ross":
             AsynchronousAction([L(S(["cancel"], context.nav, ["right", "(~[~{~<"]))],
             time_in_seconds=0.1, repetitions=50, rdescript="Core: Jump: In"),
-        "jump out":
+        "jump out ross":
             AsynchronousAction([L(S(["cancel"], context.nav, ["right", ")~]~}~>"]))],
             time_in_seconds=0.1, repetitions=50, rdescript="Core: Jump: Out"),
-        "jump back":
+        "jump out lease":
             AsynchronousAction([L(S(["cancel"], context.nav, ["left", "(~[~{~<"]))],
             time_in_seconds=0.1, repetitions=50, rdescript="Core: Jump: Back"),
-        "jump back in":
+        "jump in lease":
             AsynchronousAction([L(S(["cancel"], context.nav, ["left", ")~]~}~>"]))],
             time_in_seconds=0.1, repetitions=50, rdescript="Core: Jump: Back In" ),
 
