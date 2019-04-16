@@ -133,7 +133,7 @@ class OutlookRule(MergeRule):
             R(Key("tab:3"),
               rdescript="Outlook: Moves the Focus From the Search Bar to the Messages List"),
         "(empty | clear) search [bar]":
-            R(Key("c-e, c-a, del/3, esc"), rdescript="Outlook: Clear Search Bar"),
+            R(Key("c-e, c-a, del/3, escape"), rdescript="Outlook: Clear Search Bar"),
             # from the search bar to get the focus into the messages is three tabs
             # pressing escape also seems to work.
         "refresh [mail]":
@@ -161,7 +161,7 @@ class OutlookRule(MergeRule):
         "[select] next link":
             R(Key("tab"), rdescript="Outlook: Highlight Next Link"),
         "[select] (previous | prior) link":
-            R(Key("s-tab"), rdescript="OUtlook: Highlight Previous Link"),
+            R(Key("s-tab"), rdescript="Outlook: Highlight Previous Link"),
 
     # calendar
         "workweek [view]":
