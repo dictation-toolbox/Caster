@@ -211,6 +211,12 @@ class Navigation(MergeRule):
         "jump in lease":
             AsynchronousAction([L(S(["cancel"], context.nav, ["left", ")~]~}~>"]))],
             time_in_seconds=0.1, repetitions=50, rdescript="Core: Jump: Back In" ),
+        "butt ross":
+            AsynchronousAction([L(S(["cancel"], context.nav, ["right", ")~]~}~>"]))],
+            finisher=Key("left"), time_in_seconds=0.1, repetitions=50, rdescript="Core: Jump: Out right"),
+        "butt lease":
+            AsynchronousAction([L(S(["cancel"], context.nav, ["left", "(~[~{~<"]))],
+            finisher=Key("right"), time_in_seconds=0.1, repetitions=50, rdescript="Core: Jump: Out left"),
 
     # keyboard shortcuts
         'save':
