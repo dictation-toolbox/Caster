@@ -39,6 +39,19 @@ def bring_it(desired_item):
     else:
         threading.Thread(target=os.startfile, args=(item,)).start()
 
+def explorer_bring_it(folder_path):
+    Key("c-l/20").execute()
+    # Attempt to paste enclosed text without altering clipboard
+    if not context.paste_string_without_altering_clipboard(folder_path):
+        print("failed to paste {}".format(folder_path))
+    # if you are in a child window instead of Windows Explorer main window,
+        # I think you will need one more tab to get the focus back in the folder/file list
+        # so say "tabby"
+        # I guess we could make two separate commands for this. the other one would be called
+        # "child bring me <folder_path>"
+    Key("enter/10, tab:3").execute() 
+
+
 
 def bring_add(launch, key):
     '''
@@ -110,6 +123,9 @@ class BringRule(SelfModifyingRule):
     mapping = {
         "bring me <desired_item>":
             R(Function(bring_it), rdescript="BringMe: Launch preconfigured program, folder or website"),
+        "explorer bring me <folder_path>":
+            R(Function(explorer_bring_it), 
+            rdescript="go to preconfigured folder within currently open Windows Explorer window or child window"),
         "<launch> to bring me as <key>":
             R(Function(bring_add, extra={"launch", "key"}),
               rdescript="BringMe: Add program, folder or website to the bring me list"),
@@ -122,6 +138,7 @@ class BringRule(SelfModifyingRule):
 
     extras = [
         Choice("desired_item", _rebuild_items()),
+        Choice("folder_path", CONFIG["folder"]),
         Choice("launch", {
             "[current] program": "program",
             "website": "website",
