@@ -48,6 +48,7 @@ At the end of the PIP install instructions a CMD window will guide you of what t
 2. Open [command prompt](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows) (CMD)  `cd C:\Users\<YourUsername>\Documents` 
 
 3. `git clone https://github.com/dictation-toolbox/Caster.git` then run one of the following command
+
    `git checkout develop` Development branch
 
    `git checkout master` Master branch
