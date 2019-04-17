@@ -31,27 +31,30 @@ Make sure to select `Add python to path`. This can be done manually by searching
 
 **Third** download Caster and install dependencies. Choose **PIP** or **Classic** Install.
 
+**PIP** install is convenient way to install Caster and uses it's development branch. **Classic** install enables the user to track changes with Caster code using git. Git allows users to contribute their own code to the Caster project. 
+
 - **PIP Install** (Beta) - If you're using DNS make sure you've installed and configured NatLink first! Open [command prompt](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows) (CMD) and type the following then press enter.
 
 `pip install castervoice` 
 
-At the end of the PIP install instructions a CMD window will guide you of what to expect for WSR or DNS. Setup complete. **Note** If a window does not appear please refer to the troubleshooting section. 
+At the end of the PIP install instructions a CMD window will guide you of what to expect for WSR or DNS. Setup complete. **Note** If a window does not appear please refer to the troubleshooting section.  
 
 - **Classic Install**
 
- The classic install is for Caster development or as an alternative install method.
+ The classic install is for Caster development or as an alternative install method.  **Note**: If you wish to contribute Castor code instructions for creating your own fork can be found in [Contributing.md](https://github.com/dictation-toolbox/Caster/blob/develop/castervoice/doc/Contributing.md) and you can skip to step 3.
 
 1. Download and Install [git](https://git-scm.com/downloads)
 
-2. Open [command prompt](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows) (CMD)  `cd C:\Users\<YourUsername>\Documents` run one of the following command
+2. Open [command prompt](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows) (CMD)  `cd C:\Users\<YourUsername>\Documents` 
 
-   `git clone https://github.com/dictation-toolbox/Caster.git -b develop` Development branch
+3. `git clone https://github.com/dictation-toolbox/Caster.git` then run one of the following command
+   `git checkout develop` Development branch
 
-   `git clone https://github.com/dictation-toolbox/Caster.git -b master` Master branch
+   `git checkout master` Master branch
 
-3. Check and install Caster dependencies from CMD. Change the directory to the install directory selected in this step 
+4. Check and install Caster dependencies from CMD. Change the directory to the install directory selected in this step 
 
-4. Change directory example `cd C:\Users\<YourUsername>\Documents\Caster`
+5. Change directory example `cd C:\Users\<YourUsername>\Documents\Caster`
 
    Then `pip install -r requirements.txt`
 
