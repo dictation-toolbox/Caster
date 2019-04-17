@@ -1,14 +1,5 @@
 # Installation
 
-## YouTube Videos 
-
-The following install videos are a out of date but remain for reference.
-
-- [Dragonfly](https://www.youtube.com/watch?v=iNAsV4pcnEA) 
-- [Caster](https://www.youtube.com/watch?v=wjSwB4cpMDI)
-
-## **Introduction**
-
 Caster currently supports the following speech recognition engines on Microsoft Windows Vista through Windows 10.
 
 - Windows Speech Recognition (WSR)
@@ -22,14 +13,25 @@ Make sure to select `Add python to path`. This can be done manually by searching
 
 ### 2. NatLink
 
-- **Second only for Dragon NaturallySpeaking**. Download [Natlink](https://sourceforge.net/projects/natlink/files/natlink/natlinktest4.1/). Use `Natlink-4.1 whiskey3` or newer.
-  - [Install Video instructions](https://www.youtube.com/watch?v=dj5xgWSOEXA)
+- **Second only for Dragon NaturallySpeaking**.
 
-### 3. Caster
+- Download and install [Natlink](https://sourceforge.net/projects/natlink/files/natlink/natlinktest4.1/). Use `Natlink-4.1 whiskey3` or newer.
 
-**Third** download Caster and install dependencies. Choose PIP or Classic Install.
+- Create a new folder in your Documents `C:\Users\<YourUsername>\Documents` called `Caster` with a capital C.
 
-- **PIP Install** (Beta) - If you're using DNS make sure you've installed and configured NatLink first! Open [command prompt](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows)(CMD) and type the following then press enter.
+  1. Open the start menu and search for `natlink`, click the file called `Configure NatLink via GUI`.
+
+       ![Configure start](https://mathfly.org/images/configure_start.png)
+
+  2. Ensure that the details of your DNS setup are correct in the “info” tab.
+
+  3. In the “configure” tab, under “NatLink” and “UserDirectory” click  enable. When you are prompted for a folder, give it the location of the empty folder folder (`C:\Users\<YourUsername>\Documents\Caster`).
+
+       ![Caster-Natlink.jpg](https://i.postimg.cc/d1jN4xcw/Caster-Natlink.jpg)
+
+**Third** download Caster and install dependencies. Choose **PIP** or **Classic** Install.
+
+- **PIP Install** (Beta) - If you're using DNS make sure you've installed and configured NatLink first! Open [command prompt](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows) (CMD) and type the following then press enter.
 
 `pip install castervoice` 
 
@@ -39,30 +41,28 @@ At the end of the PIP install instructions a CMD window will guide you of what t
 
  The classic install is for Caster development or as an alternative install method.
 
-1. Download Caster from [master branch](https://github.com/synkarius/caster/archive/master.zip). **Note** If you plan to develop Caster use the [development branch](https://github.com/synkarius/caster/archive/develop.zip).
+1. Download and Install [git](https://git-scm.com/downloads)
 
-2. Open up the zip file downloaded
+2. Open [command prompt](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows) (CMD)  `cd C:\Users\<YourUsername>\Documents` run one of the following command
 
-3. Click on the file `caster-master` or `caster-develop` . **Note** Choose based on your speech recognition engine.
+   `git clone https://github.com/dictation-toolbox/Caster.git -b develop` Development branch
 
-   - **Dragon NaturallySpeaking** (DNS) copy and paste its contents into An empty folder, this can be any folder but it is common to use `user\Documents\NatLink`.
-   - **Windows Speech Recognition**  (WSR) copy and paste its contents to a new folder. Suggested locations would be a folder on the desktop for ease of access.
+   `git clone https://github.com/dictation-toolbox/Caster.git -b master` Master branch
 
-4. Check and install Caster dependencies from CMD. Change the directory to the install directory selected in SThistep 3.
-   Change directory example `cd C:\Users\<YourUsername>\Documents\NatLink`
+3. Check and install Caster dependencies from CMD. Change the directory to the install directory selected in this step 
+
+4. Change directory example `cd C:\Users\<YourUsername>\Documents\Caster`
 
    Then `pip install -r requirements.txt`
 
 ### 4. Setup and launch for Classic Install.
 
 - **Dragon NaturallySpeaking**
-  1. Open the start menu and search for "natlink", click the file called "Configure NatLink via GUI" and run it using python 2.7.
-  2. Ensure that the details of your DNS setup are correct in the "info" tab.
-  3. In the "configure" tab, under "NatLink" and "UserDirectory" click enable. When you are prompted for a folder, give it the location of your caster folder from step three (`user\Documents\NatLink\caster-master`).
-  4. Reboot Dragon. NatLink should load at the same time, with caster commands available. To test this, open a notepad window and try saying `arch brov char delta` producing `abcd` text.
+  1. Start or reboot Dragon. NatLink should load at the same time, with caster commands available. To test this, open a notepad window and try saying `arch brov char delta` producing `abcd` text.
 - **Windows Speech Recognition**
-  1.  Start caster by double click on `_caster.py`. 
-  2. To test open a notepad window and try saying `arch brov char delta` producing `abcd` text. Set up complete!
+  1.  In  `C:\Users\<YourUsername>\Documents\Caster`
+  2.  Start caster by double click on `_caster.py`. 
+  3.  To test open a notepad window and try saying `arch brov char delta` producing `abcd` text. Set up complete!
 
 ### Troubleshooting FAQ
 
@@ -72,7 +72,7 @@ At the end of the PIP install instructions a CMD window will guide you of what t
   **Note** Depending on your file associations it may launch an editor instead of running the file. Run the file using CMD. Detailed instructions below.
 
   1. Change the directory to  `Desktop` in CMD.
-     Example `cd C:\Users\<YourUsername>\Desktop`
+     Example PIP `cd C:\Users\<YourUsername>\Desktop` or Classic `cd C:\Users\<YourUsername>\Documents\Caster`
   2. Then `python _caster.py`
 
 - You have followed the PIP install `pip install castervoice` CMD window does not provide instructions during install. Caster does not start with DNS automatically or `_caster` does not appear on the desktop for WSR.
@@ -85,10 +85,25 @@ At the end of the PIP install instructions a CMD window will guide you of what t
 
 **NatLink**
 
+- When using `start_configurenatlink.py` gives  `ImportError: No module named six"` or `ImportError: No module named future"`
+
+  To fix pip Install  `pip install six` or `pip install dragonfly2` in CMD
+
+- Cannot load compatibility module support `(GUID = {dd990001-bb89-1d2-b031-0060088dc929}))`
+
+  [Detailed Instructions](https://qh.antenna.nl/unimacro/installation/problemswithinstallation.html) Typically fixed by installing Microsoft Visual C++ 2010 Service Pack 1 Redistributable Package
+
 - Running "Configure NatLink via GUI" does not bring up the settings window - try running the program as an administrator:
+
   1. Open an administrator command prompt by searching for "cmd" in start and either right click, run as administrator or ctrl-shift-enter.
-  2. Change directory to the folder where start_configurenatlink.py was installed. This is likely to be `C:\NatLink\NatLink\confignatlinkvocolaunimacro` so the command would be `cd C:\NatLink\NatLink\confignatlinkvocolaunimacro`.
+
+  2. Change directory to the folder where start_configurenatlink.py was installed. This is likely to be 
+
+     `cd C:\NatLink\NatLink\confignatlinkvocolaunimacro`.
+
   3. Run `python start_configurenatlink.py`.
+
+- The [qh.antenna troubleshooting guide](https://qh.antenna.nl/unimacro/installation/problemswithinstallation.html) has further solutions for NatLink Issues.
 
 **Dragonfly**
 
@@ -99,7 +114,7 @@ At the end of the PIP install instructions a CMD window will guide you of what t
   - [Proof of Concept](https://github.com/dictation-toolbox/dragonfly/issues/11) work around but the project needs an active developer with C#.
 - To fix `ImportError: No module named win32con`
   Package win32con is out of date or not installed. Try `pip install pywin32`  Alternatively if the error persists use the [Windows installer](https://sourceforge.net/projects/pywin32/files/pywin32/Build%20221/pywin32-221.win32-py2.7.exe/download)
-- To fix `lost sys.stder` use `pywin32` for `system wide` features, such as registering COM objects or implementing Windows Services. So you **must** run the following command from an elevated command prompt:
+- To fix `lost sys.stder` use `pywin32` for `system wide` features, such as registering COM objects or implementing Windows Services. So you **must** run the following command from an elevated CMD:
 
 > python C:\Python27\Scripts\pywin32_postinstall.py -install
 
@@ -127,6 +142,18 @@ Caster dependencies
 - pillow
 - toml
 - future
+
+## YouTube Videos 
+
+The following install videos are a out of date but remain for reference.
+
+- [Natlink](https://www.youtube.com/watch?v=dj5xgWSOEXA)
+
+- [Dragonfly](https://www.youtube.com/watch?v=iNAsV4pcnEA) 
+
+- [Caster](https://www.youtube.com/watch?v=wjSwB4cpMDI)
+
+  
 
 **Alternative Speech Secognition Engines.**
 
