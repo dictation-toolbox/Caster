@@ -44,11 +44,6 @@ def explorer_bring_it(folder_path):
     # Attempt to paste enclosed text without altering clipboard
     if not context.paste_string_without_altering_clipboard(folder_path):
         print("failed to paste {}".format(folder_path))
-    # if you are in a child window instead of Windows Explorer main window,
-        # I think you will need one more tab to get the focus back in the folder/file list
-        # so say "tabby"
-        # I guess we could make two separate commands for this. the other one would be called
-        # "child bring me <folder_path>"
     Key("enter/10, tab:3").execute() 
 
 
@@ -125,7 +120,11 @@ class BringRule(SelfModifyingRule):
             R(Function(bring_it), rdescript="BringMe: Launch preconfigured program, folder or website"),
         "explorer bring me <folder_path>":
             R(Function(explorer_bring_it), 
-            rdescript="go to preconfigured folder within currently open Windows Explorer window or child window"),
+            rdescript="go to preconfigured folder within currently open Windows Explorer main window"),
+        # child windows require one extra tab press at the end to get the focus in the file list
+        "child bring me <folder_path>":
+            R(Function(explorer_bring_it) + Key("tab"), 
+            rdescript="go to preconfigured folder within currently open Windows Explorer child window"),
         "<launch> to bring me as <key>":
             R(Function(bring_add, extra={"launch", "key"}),
               rdescript="BringMe: Add program, folder or website to the bring me list"),
