@@ -72,20 +72,17 @@ At the end of the PIP install instructions a CMD window will guide you of what t
 
 **Caster Install**
 
-- For WRS double click on `_caster.py` opens the file and does not launch Caster. 
+- For WRS double clicking on `_caster.py` or `start_caster.py` opens the file and does not launch Caster. 
   **Note** Depending on your file associations it may launch an editor instead of running the file. Run the file using CMD. Detailed instructions below.
-
   1. Change the directory to  `Desktop` in CMD.
      Example PIP `cd C:\Users\<YourUsername>\Desktop` or Classic `cd C:\Users\<YourUsername>\Documents\Caster`
-  2. Then `python _caster.py`
+  2. Then Classic:`python _caster.py` or PIP: `python start_caster.py` 
 
-- You have followed the PIP install `pip install castervoice` CMD window does not provide instructions during install. Caster does not start with DNS automatically or `_caster` does not appear on the desktop for WSR.
+- You have followed the PIP install `pip install castervoice` CMD window does not provide instructions during install. Caster does not start with DNS automatically or `start_caster.py` does not appear on the desktop for WSR.
 
-  - Caster can also be alternatively installed by cloning this repository or [downloading](https://github.com/dictation-toolbox/Caster/archive/develop.zip) it and running the following CMD command in the project's root directory:
+  -  Look for `CasterInstall.log` on your desktop to check for error messages.
+  - The PIP install is in beta yet please report any issues or error messages that you experience github [issues](https://github.com/dictation-toolbox/Caster/issues) or [gitter chat](https://gitter.im/synkarius/Caster?utm_source=share-link&utm_medium=link&utm_campaign=share-link). 
 
-   `python setup.py install`
-
-  The PIP install is in beta yet please report any issues or error messages that you experience github [issues](https://github.com/dictation-toolbox/Caster/issues) or [gitter chat](https://gitter.im/synkarius/Caster?utm_source=share-link&utm_medium=link&utm_campaign=share-link).
 
 **NatLink**
 
