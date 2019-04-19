@@ -1,15 +1,23 @@
 import pyperclip
 from dragonfly import (Grammar, MappingRule, Dictation, IntegerRef,
-                       Repeat, Pause)
+                       Repeat, Pause, Function, Choice, AppContext)
 
 from castervoice.lib import control, context, utilities, settings
+from castervoice.lib.context import paste_string_without_altering_clipboard
 from castervoice.lib import settings
 from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
-from castervoice.lib.context import AppContext
 from castervoice.lib.actions import (Key, Text)
+
+# note that the tab structure of Windows Explorer main window is slightly different than 
+# that of Windows Explorer dialogbox (aka child window)
+# this file is only for Windows Explorer main window.
+
+# bring me dependencies
+CONFIG = utilities.load_toml_file(settings.SETTINGS["paths"]["BRINGME_PATH"])
+if not CONFIG:import pyperclip
 
 # note that the tab structure of Windows Explorer window is slightly different than 
 # that of Windows Explorer dialogbox (aka child window)
@@ -27,9 +35,9 @@ if not CONFIG:
 def explorer_bring_it(folder_path):
     Key("c-l/20").execute()
     # Attempt to paste enclosed text without altering clipboard
-    if not context.paste_string_without_altering_clipboard(folder_path):
+    if not paste_string_without_altering_clipboard(folder_path):
         print("failed to paste {}".format(folder_path))
-    # the paste without altering the clipboard seems a bit inconsistent for me
+    # the paste without altering the clipboard seems a bit inconsistent for me though it's working now
     # if it's not working properly, here's an alternative method that does alter the clipboard
         # pyperclip.copy(folder_path)
         # Pause("5").execute()
@@ -37,7 +45,7 @@ def explorer_bring_it(folder_path):
     Pause("10").execute()
     # note that the tab structure of of Windows Explorer window is slightly different than 
     # that of Windows Explorer dialogbox (aka child window)
-    Key("enter/10, tab:3").execute() 
+    Key("enter/20, a-d/5, tab:3").execute() 
 
 class IERule(MergeRule):
     pronunciation = "explorer"
@@ -66,7 +74,7 @@ class IERule(MergeRule):
         IntegerRefST("n", 1, 1000),
         Choice("folder_path", CONFIG["folder"]),
         ]
-    ]
+    
     defaults = {"n": 1}
 
 
