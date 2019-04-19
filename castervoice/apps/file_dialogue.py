@@ -1,3 +1,4 @@
+# import pyperclip
 from dragonfly import (AppContext, Dictation, Grammar, IntegerRef, Key, MappingRule,
                        Pause, Repeat, Text)
 from dragonfly.actions.action_mimic import Mimic
@@ -7,6 +8,20 @@ from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
+
+
+def explorer_child_bring_it(folder_path):
+    Key("c-l/20").execute()
+    # Attempt to paste enclosed text without altering clipboard
+    if not context.paste_string_without_altering_clipboard(folder_path):
+        print("failed to paste {}".format(folder_path))
+    # the paste without altering the clipboard seems a bit inconsistent for me
+    # if it's not working properly, here's an alternative method that does alter the clipboard
+        # pyperclip.copy(folder_path)
+        # Pause("5").execute()
+        # Key("c-v/30").execute()
+    Pause("10").execute()
+    Key("enter/10, tab:4").execute() 
 
 
 class FileDialogueRule(MergeRule):
@@ -26,8 +41,13 @@ class FileDialogueRule(MergeRule):
             R(Key("a-d, f6:2"), rdescript="File Dialogue: Navigation pane"),
         "[file] name":
             R(Key("a-d, f6:5"), rdescript="File Dialogue: File name"),
+        "bring me <folder_path>":
+            R(Function(explorer_child_bring_it),
+            rdescript="go to preconfigured folder within currently open Windows Explorer child window"),
     }
-    extras = [IntegerRefST("n", 1, 10)]
+    extras = [IntegerRefST("n", 1, 10),
+        Choice("folder_path", CONFIG["folder"]),
+        ]
     defaults = {
         "n": 1,
     }
