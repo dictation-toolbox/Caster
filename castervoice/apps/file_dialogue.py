@@ -9,8 +9,12 @@ from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
 
+# note that the tab structure of of Windows Explorer window is slightly different than 
+# that of Windows Explorer dialogbox (aka child window)
+# this file is only for Windows Explorer dialogbox.
 
-def explorer_child_bring_it(folder_path):
+
+def dialogue_bring_it(folder_path):
     Key("c-l/20").execute()
     # Attempt to paste enclosed text without altering clipboard
     if not context.paste_string_without_altering_clipboard(folder_path):
@@ -42,7 +46,7 @@ class FileDialogueRule(MergeRule):
         "[file] name":
             R(Key("a-d, f6:5"), rdescript="File Dialogue: File name"),
         "bring me <folder_path>":
-            R(Function(explorer_child_bring_it),
+            R(Function(dialogue_bring_it),
             rdescript="go to preconfigured folder within currently open Windows Explorer child window"),
     }
     extras = [IntegerRefST("n", 1, 10),
