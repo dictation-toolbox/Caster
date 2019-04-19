@@ -3,16 +3,25 @@ from dragonfly import (AppContext, Dictation, Grammar, IntegerRef, Key, MappingR
                        Pause, Repeat, Text)
 from dragonfly.actions.action_mimic import Mimic
 
-from castervoice.lib import control, settings
+from castervoice.lib import control, context, utilities, settings
 from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
 
+
 # note that the tab structure of of Windows Explorer window is slightly different than 
 # that of Windows Explorer dialogbox (aka child window)
 # this file is only for Windows Explorer dialogbox.
 
+
+CONFIG = utilities.load_toml_file(settings.SETTINGS["paths"]["BRINGME_PATH"])
+if not CONFIG:
+    CONFIG = utilities.load_toml_file(settings.SETTINGS["paths"]["BRINGME_DEFAULTS_PATH"])
+if not CONFIG:
+    # logger.warn("Could not load bringme defaults")
+    print("Could not load bringme defaults")
+    
 
 def dialogue_bring_it(folder_path):
     Key("c-l/20").execute()
