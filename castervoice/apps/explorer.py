@@ -26,17 +26,16 @@ if not CONFIG:
     
 
 def explorer_bring_it(folder_path):
-    Key("c-l/20").execute()
-    # Attempt to paste enclosed text without altering clipboard
-    if not paste_string_without_altering_clipboard(folder_path):
-        print("failed to paste {}".format(folder_path))
-    # paste_string_without_altering_clipboard is imported from lib castervoice.lib.context 
-    # the paste without altering the clipboard seems a bit inconsistent for me though it's working now
-    # if it's not working properly, here's an alternative method that does alter the clipboard
+    Key("c-l/5").execute()
+    Text("{}".format(folder_path)).execute()
+    # Alternate method: is faster but somewhat inconsistent.
+        # if not paste_string_without_altering_clipboard(folder_path):
+        #     print("failed to paste {}".format(folder_path))
+        # Pause("10").execute()
+    # Second alternate method: is both fast and consistent, but alters the clipboard
         # pyperclip.copy(folder_path)
         # Pause("5").execute()
         # Key("c-v/30").execute()
-    Pause("10").execute()
     Key("enter/20, a-d/5, tab:3").execute() 
 
 class IERule(MergeRule):
