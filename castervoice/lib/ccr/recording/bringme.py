@@ -1,4 +1,5 @@
 import os
+import shutil
 import threading
 import subprocess
 import time
@@ -11,9 +12,12 @@ from castervoice.lib.actions import Text, Key
 from castervoice.lib.dfplus.merge.selfmodrule import SelfModifyingRule
 from castervoice.lib.dfplus.state.short import R
 
+if os.path.isfile(settings.SETTINGS["paths"]["BRINGME_PATH"]) is False:
+    bringme_default = settings.SETTINGS["paths"]["BRINGME_DEFAULTS_PATH"]
+    bringme_user = settings.SETTINGS["paths"]["BRINGME_PATH"]
+    shutil.copy(bringme_default, bringme_user)
+
 CONFIG = utilities.load_toml_file(settings.SETTINGS["paths"]["BRINGME_PATH"])
-if not CONFIG:
-    CONFIG = utilities.load_toml_file(settings.SETTINGS["paths"]["BRINGME_DEFAULTS_PATH"])
 if not CONFIG:
     # logger.warn("Could not load bringme defaults")
     print("Could not load bringme defaults")
@@ -37,7 +41,7 @@ def bring_it(desired_item):
     elif item_type == 'program':
         subprocess.Popen(item)
     else:
-        threading.Thread(target=os.startfile, args=(item,)).start()
+        threading.Thread(target=os.startfile, args=(item, )).start()
 
 
 def bring_add(launch, key):
@@ -95,8 +99,10 @@ def bring_restore():
 
 def _rebuild_items():
     # logger.debug('Bring me rebuilding extras')
-    return {key: (os.path.expandvars(value), header) for header, section in CONFIG.iteritems()
-            for key, value in section.iteritems()}
+    return {
+        key: (os.path.expandvars(value), header)
+        for header, section in CONFIG.iteritems() for key, value in section.iteritems()
+    }
 
 
 class BringRule(SelfModifyingRule):
@@ -109,33 +115,33 @@ class BringRule(SelfModifyingRule):
 
     mapping = {
         "bring me <desired_item>":
-            R(Function(bring_it), rdescript="BringMe: Launch preconfigured program, folder or website"),
+            R(Function(bring_it),
+              rdescript="BringMe: Launch preconfigured program, folder or website"),
         "<launch> to bring me as <key>":
             R(Function(bring_add, extra={"launch", "key"}),
               rdescript="BringMe: Add program, folder or website to the bring me list"),
         "remove <key> from bring me":
             R(Function(bring_remove, extra="key"),
-              rdescript="BringMe: Remove program, folder or website from the bring me list"),
+              rdescript="BringMe: Remove program, folder or website from the bring me list"
+              ),
         "restore bring me defaults":
-            R(Function(bring_restore), rdescript="BringMe: Delete bring me list and put defaults in its place"),
+            R(Function(bring_restore),
+              rdescript="BringMe: Delete bring me list and put defaults in its place"),
     }
 
     extras = [
         Choice("desired_item", _rebuild_items()),
-        Choice("launch", {
-            "[current] program": "program",
-            "website": "website",
-            "folder": "folder",
-            "file": "file",
-        }),
+        Choice(
+            "launch", {
+                "[current] program": "program",
+                "website": "website",
+                "folder": "folder",
+                "file": "file",
+            }),
         Dictation("key"),
     ]
 
-    defaults = {
-        'desired_item': ('', ""),
-        'launch': 'program',
-        'key': ''
-    }
+    defaults = {'desired_item': ('', ""), 'launch': 'program', 'key': ''}
 
 
 bring_rule = BringRule()
