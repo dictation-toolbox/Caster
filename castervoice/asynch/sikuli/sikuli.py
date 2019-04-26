@@ -61,6 +61,9 @@ def start_server_proxy():
     global grammar
     server_proxy = control.nexus().comm.get_com("sikuli")
     fns = server_proxy.list_functions()
+    # Even though bootstrap_start_server_proxy() didn't load grammar before,
+    # you have to unload() here because terminate_sick_command() might have been
+    # called before and loaded the grammar.
     grammar.unload()
     populate_grammar(fns)
     grammar.load()
@@ -104,7 +107,8 @@ class SikuliControlCommandsRule(MergeRule):
     mapping = {
         "launch sick IDE": Function(launch_IDE),
         "launch sick server": Function(bootstrap_start_server_proxy),
-        "terminate sick server": Function(terminate_sick_command),    }
+        "terminate sick server": Function(terminate_sick_command),
+    }
 
 if settings.SETTINGS["sikuli"]["enabled"]:
     grammar = Grammar("sikuli")
