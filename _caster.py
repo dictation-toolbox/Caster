@@ -271,6 +271,11 @@ if settings.SETTINGS["feature_rules"]["alias"]:
 
 grammar.load()
 
+if globals().has_key('profile_switch_occurred'):
+    reload(sikuli)
+else:
+    profile_switch_occurred = None
+
 print("\n*- Starting " + settings.SOFTWARE_NAME + " -*")
 
 if settings.WSR:
