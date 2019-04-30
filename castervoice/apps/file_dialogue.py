@@ -1,9 +1,9 @@
 # import pyperclip
 from dragonfly import (Grammar, MappingRule, Dictation, IntegerRef,
-                       Repeat, Pause, Function, Choice, AppContext)
+                       Repeat, Pause, Function, Choice)
 
 from castervoice.lib import control, context, utilities, settings
-from castervoice.lib.context import paste_string_without_altering_clipboard
+from castervoice.lib.context import AppContext, paste_string_without_altering_clipboard
 from castervoice.lib import settings
 from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge import gfilter
@@ -56,7 +56,7 @@ class FileDialogueRule(MergeRule):
             R(Key("a-d, f6:2"), rdescript="File Dialogue: Navigation pane"),
         "[file] name":
             R(Key("a-d, f6:5"), rdescript="File Dialogue: File name"),
-        "bring me <folder_path>":
+        "[(child | dialogue)] bring me <folder_path>":
             R(Function(dialogue_bring_it),
             rdescript="go to preconfigured folder within currently open Windows Explorer child window"),
     }

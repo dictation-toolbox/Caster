@@ -1,9 +1,9 @@
 # import pyperclip
 from dragonfly import (Grammar, MappingRule, Dictation, IntegerRef,
-                       Repeat, Pause, Function, Choice, AppContext)
+                       Repeat, Pause, Function, Choice)
 
 from castervoice.lib import control, context, utilities, settings
-from castervoice.lib.context import paste_string_without_altering_clipboard
+from castervoice.lib.context import AppContext, paste_string_without_altering_clipboard
 from castervoice.lib import settings
 from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge import gfilter
@@ -56,7 +56,7 @@ class IERule(MergeRule):
             R(Key("a-left"), rdescript="Explorer: Navigate back"),
         "get forward":
             R(Key("a-right"), rdescript="Explorer: Navigate forward"),
-        "bring me <folder_path>":
+        "[explorer] bring me <folder_path>":
             R(Function(explorer_bring_it),
             rdescript="go to preconfigured folder within currently open Windows Explorer main window"),
     }
