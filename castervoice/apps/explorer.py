@@ -29,6 +29,17 @@ class IERule(MergeRule):
             R(Key("a-left"), rdescript="Explorer: Navigate back"),
         "get forward":
             R(Key("a-right"), rdescript="Explorer: Navigate forward"),
+        "search [<text>]":
+            R(Key("a-d, tab:1") + Text("%(text)s"), rdescript="Explorer: Search"),
+        "(navigation | nav | left) pane":
+            R(Key("a-d, tab:2"), rdescript="Explorer: navigation pane"),
+        "(center pane | (file | folder) (pane | list))":
+            R(Key("a-d, tab:3"), rdescript="Explorer: Center Pane"),
+            # for the sort command below,
+            # once you've selected the relevant heading for sorting using the arrow keys, press enter
+        "sort [headings]":
+            R(Key("a-d, tab:4"), rdescript="Explorer: Sort headings e.g. name, date, etc."),
+        
     }
     extras = [
         Dictation("text"),
