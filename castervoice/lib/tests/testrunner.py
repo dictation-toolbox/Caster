@@ -23,3 +23,6 @@ def get_master_suite():
 def run_tests():
     
     unittest.TextTestRunner(verbosity=2).run(get_master_suite())
+
+if __name__ == '__main__':
+    run_tests()

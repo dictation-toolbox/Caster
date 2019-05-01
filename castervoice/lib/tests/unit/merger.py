@@ -3,9 +3,9 @@ from dragonfly.grammar.rule_mapping import MappingRule
 from castervoice.apps import eclipse
 from castervoice.apps.eclipse import EclipseCCR
 from castervoice.lib.actions import Key
-from castervoice.lib.ccr.bash.bash import Bash
-from castervoice.lib.ccr.java.java import Java
-from castervoice.lib.ccr.python.python import Python
+from castervoice.lib.tests.mocks import Bash
+from castervoice.lib.tests.mocks import Java
+from castervoice.lib.tests.mocks import Python
 from castervoice.lib.ccr.recording.alias import ChainAlias
 from castervoice.lib.ccr.standard import SymbolSpecs
 from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger

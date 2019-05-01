@@ -2,9 +2,9 @@
 import unittest
 from castervoice.lib.context import AppContext
 from castervoice.apps.eclipse import EclipseCCR
-from castervoice.lib.ccr.java.java import Java
-from castervoice.lib.ccr.javascript.javascript import Javascript
-from castervoice.lib.ccr.python.python import Python
+from castervoice.lib.tests.mocks import Java
+from castervoice.lib.tests.mocks import Javascript
+from castervoice.lib.tests.mocks import Python
 from castervoice.lib.ccr.recording.alias import Alias
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 

@@ -4,17 +4,27 @@ from castervoice.lib.dfplus.merge.mergerule import MergeRule
 
 class Python(MergeRule):
     mapping = {
-        "sue iffae": Text("if :") + Key("left"),
+        "iffae": Text("if :") + Key("left"),
         "yield": Text("yield "),
 
     }
 
 class Java(MergeRule):
     mapping = {
-        "sue iffae": Text("if ():") + Key("left:2"),
+        "iffae": Text("if () {") + Key("enter,up,left"),
+        "dock string": Text("/***/") + Key("left,left,enter"),
+    }
+
+class Javascript(MergeRule):
+    mapping = {
+        "iffae": Text("if () {") + Key("enter,up,left"),
+        "tick string": Text("``") + Key("left"),
     }
 
 class Bash(MergeRule):
     mapping = {
-        "sue iffae": Text("[[  ]]") + Key("left/5:3"),
+        "iffae":
+            Text("if [[  ]]; ") + Key("left/5:5"),
+        "key do":
+            Text("do"),
     }
