@@ -7,6 +7,7 @@ from castervoice.lib import control
 from castervoice.lib import settings, utilities
 from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
+from castervoice.lib.dfplus.state.short import R
 
 grammar = None
 custom_rule = None
@@ -105,9 +106,9 @@ class SikuliControlCommandsRule(MergeRule):
     pronunciation = "sikuli"
 
     mapping = {
-        "launch sick IDE": Function(launch_IDE),
-        "launch sick server": Function(bootstrap_start_server_proxy),
-        "terminate sick server": Function(terminate_sick_command),
+        "launch sick IDE":       R(Function(launch_IDE), rdescript="Sikulix: Launch Sikulix IDE"),
+        "launch sick server":    R(Function(bootstrap_start_server_proxy), rdescript="Sikulix: Launch Sikulix Server"),
+        "terminate sick server": R(Function(terminate_sick_command), rdescript="Sikulix: Terminate Sikulix server"),
     }
 
 if settings.SETTINGS["sikuli"]["enabled"]:
