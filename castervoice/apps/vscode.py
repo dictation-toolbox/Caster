@@ -188,9 +188,9 @@ class VSCodeNonCcrRule(MergeRule):
         "key mappings":
             R(Key("c-k, c-s:2"), rdescript="VS Code: Key Mappings"),
         "settings":
-            R(Key("a-f, p, s"), rdescript="VS Code: User/workspace Settings"),
+            R(Key("a-f, p, s, enter"), rdescript="VS Code: User/workspace Settings"),
         "snippets":
-            R(Key("a-f, p, s:2"), rdescript="VS Code: User Snippets"),
+            R(Key("a-f, p, s:2, enter"), rdescript="VS Code: User Snippets"),
         "extensions":
             R(Key("cs-x"), rdescript="VS Code: Extensions"),
         "search details":
@@ -208,8 +208,12 @@ class VSCodeNonCcrRule(MergeRule):
         # File Management
         "[open] command palette":
             R(Key("cs-p"), rdescript="VS Code: Command Palette"),
-        "(open [file] | go to [tab]) [<text>]":
-            R(Key("c-p") + Text("%(text)s"), rdescript="VS Code: Go to File"),
+        "(open file | go to [tab]) [<text>]":
+            R(Key("c-p") + Text("%(text)s"), rdescript="VS Code: Go to File without using dialogbox"),
+        "open dialogue":
+            R(Key("c-o"), rdescript="VS Code: open file dialogbox")
+        "open folder": 
+            R(Key("c-k, c-o"), rdescript="VS Code: Open folder"),
         "Save and close":
             R(Key("c-s/10, c-w"), rdescript="VS Code: Save And Close File"),
         "new file":
@@ -300,7 +304,7 @@ class VSCodeNonCcrRule(MergeRule):
         "shift group left":
             R(Key("c-k, left"),
               rdescript="Shift Current Group of Tabs to the Left E.g. Swap with Pane to the Left"),
-        "shift group left":
+        "shift group right":
             R(Key("c-k, right"),
               rdescript="Shift Current Group of Tabs to the Right E.g. Swap with Pane to the Right"
               ),
@@ -347,7 +351,7 @@ class VSCodeNonCcrRule(MergeRule):
             R(Key("s-f5"), rdescript="VS Code: Debug Stop"),
         "continue":
             R(Key("f5"), rdescript="VS Code: Start/Continue"),
-        "show hover":
+        "(show hover|mouse hover|hover mouse)":
             R(Key("c-k, c-i"),
               rdescript="Show the little box as if you are hovering your mouse over the place where the cursor (As opposed to the mouse pointer) currently is"
               ),
