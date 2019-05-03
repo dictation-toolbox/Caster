@@ -52,7 +52,7 @@ class TestMergeRule(unittest.TestCase):
         python_specs = len(python.mapping_actual().keys())
         java = Java()
         java_specs = len(java.mapping_actual().keys())
-        vanilla = Alias(refresh=False)
+        vanilla = Alias()
         vanilla_specs = len(vanilla.mapping_actual().keys())
         _merged = python.merge(java)
         self.assertEqual(python_specs, len(python.mapping_actual().keys()))
