@@ -232,6 +232,14 @@ class Navigation(MergeRule):
         "spark [<nnavi500>] [(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)]":
             R(Function(navigation.drop_keep_clipboard, nexus=_NEXUS), rspec="spark", rdescript="Core: Paste"),
 
+        
+        "shin deli [<nnavi50>]":
+            R(Key("s-del/5"), rspec="shift deli", rdescript="Core:hard Delete") * Repeat(extra="nnavi50"),
+        "shin tabby [<nnavi50>]":
+            R(Key("s-tab/5"), rspec="shift tabby", rdescript="Core: shift tab") * Repeat(extra="nnavi50"),
+        'shin shock [<nnavi50>]':
+            R(Key("s-enter"), rspec="shift shock", rdescript="Core: Shift Enter")* Repeat(extra="nnavi50"),
+
         "splat [<nnavi50>]": 
             R(Key("cs-left:%(nnavi50)s, del"), rspec="splat",  
             rdescript="Core: delete words to the left"),
@@ -258,6 +266,8 @@ class Navigation(MergeRule):
             R(Function(navigation.duple_keep_clipboard), rspec="duple", rdescript="Core: Duplicate Line"),
         "Kraken":
             R(Key("c-space"), rspec="Kraken", rdescript="Core: Control Space"),
+        "dropdown list": 
+            R(Key("a-down"), rspec="dropdown list", rdescript="Core: drop down a drop down list"),
 
     # text formatting
         "set [<big>] format (<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)":
