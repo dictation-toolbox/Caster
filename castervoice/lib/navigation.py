@@ -233,8 +233,8 @@ def curse(direction, direction2, nnavi500, dokick):
 def next_line(semi):
     semi = str(semi)
     Key("escape").execute()
-    time.sleep(0.25)
+    time.sleep(0.05)
     Key("end").execute()
-    time.sleep(0.25)
+    time.sleep(0.05)
     Text(semi).execute()
     Key("enter").execute()
