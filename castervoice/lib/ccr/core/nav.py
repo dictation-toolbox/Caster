@@ -203,9 +203,9 @@ class Navigation(MergeRule):
             R(Function(text_utils.master_text_nav), rdescript="Core: Keyboard Text Navigation"),
 
          
-        "undo [<n>]":
+        "undo [<nnavi50>]":
             R(Key("c-z"), rdescript="Core: Undo")*Repeat(extra="n"),
-        "redo [<n>]":
+        "redo [<nnavi50>]":
             R(Key("c-y"), rdescript="Core: Redo")*Repeat(extra="n"),
         "squat":
             R(Function(navigation.left_down, nexus=_NEXUS), rdescript="Core-Mouse: Left Down"),
