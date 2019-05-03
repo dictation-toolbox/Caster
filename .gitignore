@@ -42,3 +42,4 @@ caster/bin/data
 # Ignore dist files
 dist
 castervoice.egg-info
+/.stignore

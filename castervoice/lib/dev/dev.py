@@ -1,11 +1,12 @@
 import os
+import shutil
 from subprocess import Popen
 import time
 import threading
 import shlex
 
-from dragonfly import (Function, BringApp, WaitWindow, Dictation, Choice,
-                       Grammar, MappingRule, Paste)
+from dragonfly import (Function, BringApp, WaitWindow, Dictation, Choice, Grammar,
+                       MappingRule, Paste)
 
 from castervoice.lib import utilities, settings, context, control
 from castervoice.lib.dev import devgen
@@ -20,6 +21,12 @@ from castervoice.lib.dfplus.state.stackitems import StackItemRegisteredAction
 from castervoice.lib.tests import testrunner
 from castervoice.lib.tests.complexity import run_tests
 from castervoice.lib.tests.testutils import MockAlternative
+
+if os.path.isfile(settings.SETTINGS["paths"]["CONFIGDEBUGTXT_PATH"]) is False:
+    configdebug_default = settings.SETTINGS["paths"][
+        "BASE_PATH"] + "/bin/data/configdebug.txt"
+    configdebug_user = settings.SETTINGS["paths"]["CONFIGDEBUGTXT_PATH"]
+    shutil.copy(configdebug_default, configdebug_user)
 
 grammar = Grammar('development')
 
@@ -115,13 +122,15 @@ def bring_test():
     except Exception:
         utilities.simple_log()
 
+
 def launch_url(url):
     command = utilities.default_browser_command()
     if not command:
-        threading.Thread(target=os.startfile, args=(url,)).start()
+        threading.Thread(target=os.startfile, args=(url, )).start()
     else:
         path = command.replace('%1', url)
         Popen(shlex.split(path))
+
 
 class DevelopmentHelp(MappingRule):
     mapping = {
@@ -153,10 +162,11 @@ class DevelopmentHelp(MappingRule):
             "java": "*.java",
             "python": "*.py",
         }),
-        Choice("url", {
-            "caster": "https://caster.readthedocs.io/en/latest/",
-            "dragonfly": "https://dragonfly2.readthedocs.io/en/latest/",
-        }),
+        Choice(
+            "url", {
+                "caster": "https://caster.readthedocs.io/en/latest/",
+                "dragonfly": "https://dragonfly2.readthedocs.io/en/latest/",
+            }),
     ]
     defaults = {"text": ""}
 
@@ -235,16 +245,15 @@ class StackTest(MappingRule):
                     S(["bravery"], Text("bravery2 [%(text)s] ")))
             ]),
         "asynchronous test":
-            AsynchronousAction(
-                [
-                    L(
-                        S(["ashes", "charcoal"], print_time, None),
-                        S(["bravery"], Text, "bravery1"))
-                ],
-                time_in_seconds=0.2,
-                repetitions=20,
-                finisher=Text(FINISHER_TEXT),
-                blocking=False),
+            AsynchronousAction([
+                L(
+                    S(["ashes", "charcoal"], print_time, None),
+                    S(["bravery"], Text, "bravery1"))
+            ],
+                               time_in_seconds=0.2,
+                               repetitions=20,
+                               finisher=Text(FINISHER_TEXT),
+                               blocking=False),
         "ashes":
             RegisteredAction(Text("ashes _ "), rspec="ashes"),
         "bravery":

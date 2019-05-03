@@ -80,6 +80,9 @@ class CCRMerger(object):
     def update_config(self):
         '''call this after all rules have been added'''
         changed = False
+        if not "ccr_on" in self._config:
+            self._config["ccr_on"] = True
+            changed = True
         '''global rules'''
         if not CCRMerger._GLOBAL in self._config:
             self._config[CCRMerger._GLOBAL] = {}
@@ -136,7 +139,7 @@ class CCRMerger(object):
     def add_filter(self, filter):
         if not filter in self._filters:
             self._filters.append(filter)
-            
+
     def add_user_content(self, user_content_manager):
         for rule in user_content_manager.rules:
             self.add_global_rule(rule)
@@ -231,6 +234,11 @@ class CCRMerger(object):
             grammar.disable()
             del grammar
 
+    def ccr_off(self):
+        self.wipe()
+        self._config["ccr_on"] = False
+        self.save_config()
+
     def _sync_enabled(self):
         '''
         When enabling new rules, conflicting ones get automatically disabled.
@@ -239,7 +247,7 @@ class CCRMerger(object):
         if CCRMerger._ORDER not in self._config:
             self._config[CCRMerger._ORDER] = []
         enabled = [
-            r for r in self._config[CCRMerger._ORDER] 
+            r for r in self._config[CCRMerger._ORDER]
             if self._config[CCRMerger._GLOBAL].get(r)][-100:]
         self._config[CCRMerger._ORDER] = OrderedDict(izip_longest(enabled, [])).keys()
 
@@ -265,7 +273,7 @@ class CCRMerger(object):
         instantiates affiliated rules;
         adds everything to its grammar
         ;
-        assumptions made: 
+        assumptions made:
         * SelfModifyingRules have already made changes to themselves
         * the appropriate activation boolean(s) in the appropriate map has already been set'''
         current_rule = None
@@ -275,7 +283,7 @@ class CCRMerger(object):
         '''get base CCR rule'''
         if time == MergeInf.BOOT:  # rebuild via config
             for name, rule in self._global_rules.iteritems():
-                '''we want to be able to make permanent changes at boot time, not just 
+                '''we want to be able to make permanent changes at boot time, not just
                 to activated rules, but to everything -- but we dont' want it to interfere
                 with normal merge logic-- hence the introduction of the BOOT_NO_MERGE time'''
                 mp = MergePair(
@@ -291,6 +299,9 @@ class CCRMerger(object):
                     if base is None: base = rule
                     else: base = self._compatibility_merge(mp, base, rule)
         else:  # rebuild via composite
+            if not self._config["ccr_on"]:
+                self._config["ccr_on"] = True
+                self.save_config()
             composite = base.composite.copy(
             )  # IDs of all rules that the composite rule is made of
             if time != MergeInf.SELFMOD:
@@ -318,7 +329,7 @@ class CCRMerger(object):
         for name2, rule in self._self_modifying_rules.iteritems():
             '''no need to make copies of selfmod rules because even if
             filter functions trash their mapping, they'll just regenerate
-            it next time they modify themselves; 
+            it next time they modify themselves;
             furthermore, they need to preserve state'''
             if self._config[CCRMerger._SELFMOD][name2]:
                 mp = MergePair(time, MergeInf.SELFMOD, base, rule, False)
@@ -330,12 +341,14 @@ class CCRMerger(object):
             base_copy = base.copy(
             ) if base is not None else base  # make a copy b/c commands will get stripped out
             context = rule.get_context()
+            non_copy = rule.non if rule.non else None
             mp = MergePair(time, MergeInf.APP, base_copy, rule.copy(), False,
                            CCRMerger.specs_per_rulename(self._global_rules))
             self._run_filters(mp)
             rule = self._compatibility_merge(
                 mp, base_copy, mp.rule2)  # mp.rule2 because named_rule got copied
             rule.set_context(context)
+            rule.non = non_copy
             active_apps.append(rule)
         '''negation context for appless version of base rule'''
         contexts = [app_rule.get_context() for app_rule in self._app_rules.values() \
@@ -360,6 +373,8 @@ class CCRMerger(object):
             self._add_grammar(rule)
         for rule in active_apps:
             self._add_grammar(rule, True, rule.get_context())
+            if rule.non is not None:
+                self._add_grammar(rule.non(), False, rule.get_context())
         for grammar in self._grammars:
             grammar.load()
         '''save if necessary'''
@@ -382,6 +397,8 @@ class CCRMerger(object):
         self._apply_format(current_rule)
         if save:
             self.save_config()
+        if time == MergeInf.BOOT and not self._config["ccr_on"]:
+            self.ccr_off()
 
     @staticmethod
     def specs_per_rulename(d):

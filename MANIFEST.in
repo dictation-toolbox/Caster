@@ -1,4 +1,6 @@
 global-exclude *.pyc
+include _caster.py
+include post_setup.py
 include ReadMe.md
 include castervoice/bin/data/configdebug.txt
 include castervoice/bin/share/bringme.toml.defaults
