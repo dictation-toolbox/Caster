@@ -48,22 +48,7 @@ class NavigationNon(MappingRule):
             R(Key("f9"), rdescript="Core: Key: F9"),
         "[show] context menu":
             R(Key("s-f10"), rdescript="Core: Context Menu"),
-        "squat":
-            R(Function(navigation.left_down, nexus=_NEXUS), rdescript="Core-Mouse: Left Down"),
-        "bench":
-            R(Function(navigation.left_up, nexus=_NEXUS), rdescript="Core-Mouse: Left Up"),
-        "kick":
-            R(Function(navigation.left_click, nexus=_NEXUS),
-              rdescript="Core-Mouse: Left Click"),
-        "kick mid":
-            R(Function(navigation.middle_click, nexus=_NEXUS),
-              rdescript="Core-Mouse: Middle Click"),
-        "psychic":
-            R(Function(navigation.right_click, nexus=_NEXUS),
-              rdescript="Core-Mouse: Right Click"),
-        "(kick double|double kick)":
-            R(Function(navigation.left_click, nexus=_NEXUS)*Repeat(2),
-              rdescript="Core-Mouse: Double Click"),
+        
         "shift right click":
             R(Key("shift:down") + Mouse("right") + Key("shift:up"),
               rdescript="Core-Mouse: Shift + Right Click"),
@@ -92,10 +77,6 @@ class NavigationNon(MappingRule):
             R(Key("c-x"), rdescript="Core: Simple Cut"),
         "sure spark":
             R(Key("c-v"), rdescript="Core: Simple Paste"),
-        "undo [<n>]":
-            R(Key("c-z"), rdescript="Core: Undo")*Repeat(extra="n"),
-        "redo [<n>]":
-            R(Key("c-y"), rdescript="Core: Redo")*Repeat(extra="n"),
         "refresh":
             R(Key("c-r"), rdescript="Core: Refresh"),
         "maxiwin":
@@ -221,9 +202,27 @@ class Navigation(MergeRule):
         "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]":
             R(Function(text_utils.master_text_nav), rdescript="Core: Keyboard Text Navigation"),
 
-        "shift click":
-            R(Key("shift:down") + Mouse("left") + Key("shift:up"),
-              rdescript="Core-Mouse: Shift Click"),
+         
+        "undo [<n>]":
+            R(Key("c-z"), rdescript="Core: Undo")*Repeat(extra="n"),
+        "redo [<n>]":
+            R(Key("c-y"), rdescript="Core: Redo")*Repeat(extra="n"),
+        "squat":
+            R(Function(navigation.left_down, nexus=_NEXUS), rdescript="Core-Mouse: Left Down"),
+        "bench":
+            R(Function(navigation.left_up, nexus=_NEXUS), rdescript="Core-Mouse: Left Up"),
+        "kick":
+            R(Function(navigation.left_click, nexus=_NEXUS),
+              rdescript="Core-Mouse: Left Click"),
+        "kick mid":
+            R(Function(navigation.middle_click, nexus=_NEXUS),
+              rdescript="Core-Mouse: Middle Click"),
+        "psychic":
+            R(Function(navigation.right_click, nexus=_NEXUS),
+              rdescript="Core-Mouse: Right Click"),
+        "(kick double|double kick)":
+            R(Function(navigation.left_click, nexus=_NEXUS)*Repeat(2),
+              rdescript="Core-Mouse: Double Click"),
 
         "stoosh [<nnavi500>]":
             R(Function(navigation.stoosh_keep_clipboard, nexus=_NEXUS), rspec="stoosh", rdescript="Core: Copy"),
@@ -240,7 +239,6 @@ class Navigation(MergeRule):
             R(Key("backspace/5:%(nnavi50)d"), rspec="clear", rdescript="Core: Backspace"),
         SymbolSpecs.CANCEL:
             R(Key("escape"), rspec="cancel", rdescript="Core: Cancel Action"),
-
 
         "shackle":
             R(Key("home/5, s-end"), rspec="shackle", rdescript="Core: Select Line"),
