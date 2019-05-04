@@ -270,6 +270,49 @@ class Navigation(MergeRule):
         "dredge":
             R(Key("a-tab"), rdescript="Core: Alt-Tab"),
 
+
+
+        # the following text manipulation commands currently only work on text
+            # that is on the same line as the cursor, though this could be expanded.
+            # The alphabet should probably be added into the choice dictionaries.
+            # the keypress waittime should probably be made higher for these commands.
+            # the wait times in the functions could also be reduced.
+            # the functions should probably be adjusted to avoid inappropriately recognizing substrings
+            
+
+        "change lease <dictation> to <dictation2>":
+            Function(navigation.copypaste_replace_phrase_with_phrase, dict(dictation="replaced_phrase", dictation2="replacement_phrase"), left_right="left"),
+        "change ross <dictation> to <dictation2>":
+            Function(navigation.copypaste_replace_phrase_with_phrase, dict(dictation="replaced_phrase", dictation2="replacement_phrase"), left_right="right"),
+
+        "remove lease <dictation>":
+            Function(navigation.copypaste_remove_phrase_from_text, dict(dictation="phrase"), left_right="left"),
+        "remove lease <left_character>":
+            Function(navigation.copypaste_remove_phrase_from_text, dict(left_character="phrase"), left_right="left"),
+        "remove ross <right_character>":
+            Function(navigation.copypaste_remove_phrase_from_text, dict(right_character="phrase"), left_right="right"),
+        "remove ross <dictation>":
+            Function(navigation.copypaste_remove_phrase_from_text, dict(dictation="phrase"), left_right="right"),
+
+
+        "go lease <left_character>":
+            Function(navigation.move_until_character_sequence, dict(left_character="character_sequence"), left_right="left"),
+        "go lease <dictation>":
+            Function(navigation.move_until_character_sequence, dict(dictation="character_sequence"), left_right="left"),
+        "go ross <right_character>":
+            Function(navigation.move_until_character_sequence, dict(right_character="character_sequence"), left_right="right"),
+        "go ross <dictation>":
+            Function(navigation.move_until_character_sequence, dict(dictation="character_sequence"), left_right="right"),
+
+        "wipe lease <left_character>":
+            Function(navigation.copypaste_delete_until_character_sequence, dict(left_character="character_sequence"), left_right="left"),
+        "wipe lease <dictation>":
+            Function(navigation.copypaste_delete_until_character_sequence, dict(dictation="character_sequence"), left_right="left"),
+        "wipe ross <right_character>":
+            Function(navigation.copypaste_delete_until_character_sequence, dict(right_character="character_sequence"), left_right="right"),
+        "wipe ross <dictation>":
+            Function(navigation.copypaste_delete_until_character_sequence, dict(dictation="character_sequence"), left_right="right"),
+
     }
 
     extras = [
@@ -277,6 +320,9 @@ class Navigation(MergeRule):
         IntegerRefST("nnavi50", 1, 50),
         IntegerRefST("nnavi500", 1, 500),
         Dictation("textnv"),
+        Dictation("dictation"),
+        Dictation("dictation2"),
+
         Choice(
             "enclosure", {
                 "prekris": "(~)",
@@ -332,6 +378,41 @@ class Navigation(MergeRule):
             "lease": "backspace",
             "ross": "delete",
         }),
+        Choice("left_character", {
+            "prekris": "(",
+            "right prekris": ")",
+            "brax": "[",
+            "right brax": "]",
+            "angle": "<",
+            "right angle": ">",
+            "curly": "{",
+            "right curlry": "}",
+            "quotes": '"',
+            "single quote": "'",
+            "comma": ",",
+            "period": ".",
+            "questo": "?",
+            "backtick": "`",
+            "equals": "=",
+        }),
+        Choice("right_character", {
+            "prekris": ")",
+            "left prekris": "(",
+            "brax": "]",
+            "left brax": "[",
+            "angle": ">",
+            "lefty angle": "<",
+            "curly": "}",
+            "left curly": "{",
+            "quotes": '"',
+            "single quote": "'",
+            "comma": ",",
+            "period": ".",
+            "questo": "?",
+            "backtick": "`",
+            "equals": "=",
+        }),
+        
     ]
 
     defaults = {
