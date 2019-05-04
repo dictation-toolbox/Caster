@@ -33,6 +33,37 @@ caster_alphabet = {
             "Zulu"    : "z",
         }
 
+
+# Thanks to Ryan Hileman
+# talon_alphabet = {
+#     "air": "a",
+#     "bat": "b",
+#     "cap": "c",
+#     "drum": "d",
+#     "each": "e",
+#     "fine": "f",
+#     "gust": "g",
+#     "harp": "h",
+#     "sit": "i",
+#     "jury": "j",
+#     "crunch": "k",
+#     "look": "l",
+#     "made": "m",
+#     "near": "n",
+#     "odd": "o",
+#     "pit": "p",
+#     "quench": "q",
+#     "red": "r",
+#     "sun": "s",
+#     "trap": "t",
+#     "urge": "u",
+#     "vest": "v",
+#     "whale": "w",
+#     "plex": "x",
+#     "yank": "y",
+#     "zip": "z",
+# }
+
 def get_alphabet_choice(spec):
     return Choice(spec, caster_alphabet)
 
