@@ -3,11 +3,12 @@ Created on Sep 1, 2015
 
 @author: synkarius
 '''
-from dragonfly import Repeat, Function, Dictation, Choice, MappingRule
+from dragonfly import Repeat, Function, Dictation, Choice, MappingRule, ContextAction
 
 from castervoice.lib import context, navigation, alphanumeric, textformat, text_utils
 from castervoice.lib import control, utilities
 from castervoice.lib.actions import Key, Mouse
+from castervoice.lib.context import AppContext
 from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
@@ -95,7 +96,10 @@ class NavigationNon(MappingRule):
         "undo [<n>]":
             R(Key("c-z"), rdescript="Core: Undo")*Repeat(extra="n"),
         "redo [<n>]":
-            R(Key("c-y"), rdescript="Core: Redo")*Repeat(extra="n"),
+            R(ContextAction(default=Key("c-y"), actions=[
+                # Use cs-z for rstudio
+                (AppContext(executable="rstudio"), Key("cs-z")),
+                ]), rdescript="Core: Redo")*Repeat(extra="n"),
         "refresh":
             R(Key("c-r"), rdescript="Core: Refresh"),
         "maxiwin":
