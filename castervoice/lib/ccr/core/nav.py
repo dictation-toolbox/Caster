@@ -96,10 +96,10 @@ class NavigationNon(MappingRule):
         "undo [<n>]":
             R(Key("c-z"), rdescript="Core: Undo")*Repeat(extra="n"),
         "redo [<n>]":
-            R(ContextAction(default=Key("c-y"), actions=[
+            R(ContextAction(default=Key("c-y")*Repeat(extra="n"), actions=[
                 # Use cs-z for rstudio
-                (AppContext(executable="rstudio"), Key("cs-z")),
-                ]), rdescript="Core: Redo")*Repeat(extra="n"),
+                (AppContext(executable="rstudio"), Key("cs-z")*Repeat(extra="n")),
+                ]), rdescript="Core: Redo"),
         "refresh":
             R(Key("c-r"), rdescript="Core: Refresh"),
         "maxiwin":
