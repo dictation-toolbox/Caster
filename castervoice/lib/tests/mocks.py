@@ -1,6 +1,8 @@
-from dragonfly.os_dependent_mock import Text, Key
+from dragonfly.os_dependent_mock import MockAction
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 
+Text = MockAction
+Key = MockAction
 
 class Python(MergeRule):
     mapping = {
