@@ -3,6 +3,7 @@ from castervoice.lib.dfplus.merge.mergerule import MergeRule
 
 Text = MockAction
 Key = MockAction
+Function = MockAction
 
 class Python(MergeRule):
     mapping = {
@@ -29,4 +30,12 @@ class Bash(MergeRule):
             Text("if [[  ]]; ") + Key("left/5:5"),
         "key do":
             Text("do"),
+    }
+
+class Alias(MergeRule):
+    mapping = {
+        "alias":
+            Function(lambda: None),
+        "delete aliases":
+            Function(lambda: None),
     }
