@@ -87,7 +87,7 @@ class GridControlRule(MergeRule):
         "point <point>":
             R(Function(store_point), rdescript="Douglas Grid: Stor point"),
         "select":
-            R(Function(select_text, nexus=_NEXUS), rdescript="Douglas Grid: Select"),
+            R(Function(select_text, nexus=_NEXUS), rdescript="Douglas Grid: Select (point version)"),
         "exit | escape | cancel":
             R(Function(kill, nexus=_NEXUS), rdescript="Douglas Grid: Exit"),
     }
