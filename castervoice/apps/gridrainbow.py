@@ -28,6 +28,7 @@ def send_input(pre, color, n, action, nexus):
     if (int_a == 0) | (int_a == 1):
         s.kill()
         grids.wait_for_death(settings.DOUGLAS_TITLE)
+        time.sleep(0.1)
     if int_a == 0:
         Mouse("left").execute()
     elif int_a == 1:
