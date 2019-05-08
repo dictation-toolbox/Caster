@@ -168,7 +168,8 @@ _DEFAULT_SETTINGS = {
 
         # PYTHON
         "PYTHONW": "C:/Python27/pythonw",
-        "WXPYTHON_PATH": "C:/Python27/Lib/site-packages/wx-3.0-msw"
+        "WXPYTHON_PATH": "C:/Python27/Lib/site-packages/wx-3.0-msw",
+        "GIT_FOLDER_REMOTE_URL_PATH": _USER_DIR + "/data/local_to_remote_git_match.toml"
     },
 
     # Apps Section
