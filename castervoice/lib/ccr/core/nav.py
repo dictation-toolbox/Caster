@@ -147,7 +147,6 @@ class NavigationNon(MappingRule):
         "move work [space] <n>":
             R(Function(lambda n: utilities.move_current_window_to_desktop(n, True)),
                 rdescript="Core: Move Current Window to Workspace N"),
-
     }
 
     extras = [
