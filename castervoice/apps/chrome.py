@@ -141,27 +141,6 @@ class ChromeRule(MergeRule):
             R(Key("cs-i")),
         "more tools":
             R(Key("a-f/5, l")),
-
-        # click by voice chrome extension commands
-        # these require the click by voice Chrome extension
-        # these allow you to browse Google Chrome hands-free
-        #  (I haven't tried surfer keys yet, but apparently that's another good option)
-        "<numbers> <dictation>":
-            R(Key("cs-space/30") + Text("%(numbers)d:%(click_by_voice_options)s") +
-              Key("enter/30") + Text("%(dictation)s")),
-        "go <numbers> <dictation>":
-            R(Key("cs-space/30") + Text("%(numbers)d:%(click_by_voice_options)s") +
-              Key("enter/30") + Text("%(dictation)s") + Key("enter")),
-        "next <numbers> <dictation>":
-            R(Key("cs-space/30") + Text("%(numbers)d:%(click_by_voice_options)s") +
-              Key("enter/30") + Text("%(dictation)s") + Key("tab")),
-        "<numbers> [<click_by_voice_options>]":
-            R(Key("cs-space/30") + Text("%(numbers)d:%(click_by_voice_options)s") +
-              Key("enter")),
-        "hide hints":
-            R(Key("cs-space/30") + Text(":-") + Key("enter")),
-        "show hints":
-            R(Key("cs-space/30") + Text(":+") + Key("enter")),
     }
     extras = [
         Choice(

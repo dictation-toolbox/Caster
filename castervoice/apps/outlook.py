@@ -5,10 +5,14 @@
 #
 """
 Command-module for Microsoft Outlook
-Note: I believe Microsoft Outlook is by far the most Dragon friendly email application.
+Note (from Alex Boche 2019): In my opinion, Microsoft Outlook probably most Dragon-friendly email application.
 All text fields are full text control, and all of the menus should be say-what-you-see natively in Dragon.
-So it should be possible to control Outlook for the most part without these commands but they will help.
-Alex Boche 2019
+A good alternative to using Outlook is to use an e-mail website in Chrome or Firefox since these applications
+support Wolfmanstout's accessibility API commands which can replace full text control.
+Outlook users may want to consider purchasing Voice Computer which provides good numbering software
+for the buttons and text fields in Outlook although a free and better alternative 
+to Voice Computer may be coming soon.
+
 
 """
 #---------------------------------------------------------------------------
@@ -128,8 +132,10 @@ class OutlookRule(MergeRule):
         "(message list | messages)":
             R(Key("tab:3"),
               rdescript="Outlook: Moves the Focus From the Search Bar to the Messages List"),
-        "empty search [bar]":
-            R(Key("c-e, c-a, del"), rdescript="Outlook: Clear Search Bar"),
+        "(empty | clear) search [bar]":
+            R(Key("c-e, c-a, del/3, escape"), rdescript="Outlook: Clear Search Bar"),
+            # from the search bar to get the focus into the messages is three tabs
+            # pressing escape also seems to work.
         "refresh [mail]":
             R(Key("f9"), rdescript="Outlook: Refresh"),
 
@@ -155,7 +161,7 @@ class OutlookRule(MergeRule):
         "[select] next link":
             R(Key("tab"), rdescript="Outlook: Highlight Next Link"),
         "[select] (previous | prior) link":
-            R(Key("s-tab"), rdescript="OUtlook: Highlight Previous Link"),
+            R(Key("s-tab"), rdescript="Outlook: Highlight Previous Link"),
 
     # calendar
         "workweek [view]":
@@ -166,16 +172,16 @@ class OutlookRule(MergeRule):
             R(Key("ca-4"), rdescript="OutloOk: Show Month View"),
 
     # message shortcuts
-        "reply all":
-            R(Key("cs-r"), rdescript="Outlook:Reply All"),
+        "reply [<dict>]":
+            R(Key("c-r") + Text("%(dict)s"), rdescript="Outlook: Reply"),
+        "reply all [<dict>]":
+            R(Key("cs-r") + Text("%(dict)s"), rdescript="Outlook:Reply All"),
         "forward":
             R(Key("c-f"), rdescript="Outlook: Forward"),
         "Mark as read":
             R(Key("c-q"), rdescript="Outlook: Mark as Read"),
         "Mark as unread":
             R(Key("c-u"), rdescript="Outlook: Mark as Unread"),
-        "reply":
-            R(Key("c-r"), rdescript="Outlook: Reply"),
         "(folder | go to folder)":
             R(Key("c-y"), rdescript="Outlook: Go to Folder List"),
 

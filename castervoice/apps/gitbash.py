@@ -19,7 +19,7 @@ from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
 from castervoice.lib.context import AppContext
 from castervoice.lib.actions import (Key, Text)
-
+from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
 
 def _apply(n):
     if n != 0:
@@ -28,7 +28,7 @@ def _apply(n):
 
 class GitBashRule(MergeRule):
     pronunciation = "git bash"
-
+    mwith = CCRMerger.CORE
     mapping = {
         "(git|get) base":
             Text("git "),
@@ -130,18 +130,13 @@ class GitBashRule(MergeRule):
 
 #---------------------------------------------------------------------------
 
-context = AppContext(executable="\\sh.exe")
-context2 = AppContext(executable="\\bash.exe")
-context3 = AppContext(executable="\\cmd.exe")
-context4 = AppContext(executable="\\mintty.exe")
-
-grammar = Grammar("MINGW32", context=(context | context2 | context3 | context4))
+context = AppContext(executable="\\sh.exe") | \
+          AppContext(executable="\\bash.exe") | \
+          AppContext(executable="\\cmd.exe") | \
+          AppContext(executable="\\mintty.exe")
 
 if settings.SETTINGS["apps"]["gitbash"]:
     if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
         control.nexus().merger.add_global_rule(GitBashRule())
     else:
-        rule = GitBashRule(name="git bash")
-        gfilter.run_on(rule)
-        grammar.add_rule(rule)
-        grammar.load()
+        control.nexus().merger.add_app_rule(GitBashRule(), context)

@@ -144,7 +144,7 @@ def paste_string_without_altering_clipboard(content):
     cb = Clipboard(from_system=True)
 
     try:
-        Clipboard.set_system_text(str(content))
+        Clipboard.set_system_text(unicode(content))
 
         Key("c-v").execute()
         time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/

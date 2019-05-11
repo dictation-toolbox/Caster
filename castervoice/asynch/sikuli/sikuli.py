@@ -5,14 +5,13 @@ from dragonfly import (Grammar, MappingRule, Function)
 
 from castervoice.lib import control
 from castervoice.lib import settings, utilities
-from castervoice.lib.actions import Key
 from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
+from castervoice.lib.dfplus.state.short import R
 
 grammar = None
+custom_rule = None
 server_proxy = None
-_NEXUS = control.nexus()
-
 
 def launch_IDE():
     ide_path = settings.SETTINGS["paths"]["SIKULI_IDE"]
@@ -20,7 +19,6 @@ def launch_IDE():
         print("No 'SIKULI_IDE' path is available. Did you configure it in " + settings.get_filename())
     else:
         Popen(["java", "-jar", ide_path])
-
 
 def launch_server():
     runner_path = settings.SETTINGS["paths"]["SIKULI_RUNNER"]
@@ -41,10 +39,6 @@ def launch_server():
 #         settings.SETTINGS["paths"]["SIKULI_SERVER_PATH"]
 #     ])
 
-
-#
-
-
 def execute(fname):
     try:
         global server_proxy
@@ -53,28 +47,43 @@ def execute(fname):
     except Exception:
         utilities.simple_log()
 
-
-def generate_commands(list_of_functions):
+def terminate_sick_command():
     global server_proxy
     global grammar
+    global custom_rule
+    grammar.unload()
+    grammar.remove_rule(custom_rule)
+    grammar.load()
+    control.nexus().comm.coms.pop('sikuli')
+    server_proxy.terminate()
+
+def start_server_proxy():
+    global server_proxy
+    global grammar
+    server_proxy = control.nexus().comm.get_com("sikuli")
+    fns = server_proxy.list_functions()
+    # Even though bootstrap_start_server_proxy() didn't load grammar before,
+    # you have to unload() here because terminate_sick_command() might have been
+    # called before and loaded the grammar.
+    grammar.unload()
+    populate_grammar(fns)
+    grammar.load()
+    print("Caster-Sikuli server started successfully.")
+
+def populate_grammar(fns):
+    global grammar
+    global custom_rule
+    if len(fns) > 0:
+        mapping_custom_commands = generate_custom_commands(fns)
+        custom_rule = MappingRule(mapping=mapping_custom_commands, name="sikuli custom")
+        grammar.add_rule(custom_rule)
+
+def generate_custom_commands(list_of_functions):
     mapping = {}
     for fname in list_of_functions:
         spec = " ".join(fname.split("_"))
         mapping[spec] = Function(execute, fname=fname)
-    grammar.unload()
-    grammar = Grammar("sikuli")
-    grammar.add_rule(MappingRule(mapping=mapping, name="sikuli server"))
-    grammar.load()
-
-
-def start_server_proxy():
-    global server_proxy
-    server_proxy = control.nexus().comm.get_com("sikuli")
-    fns = server_proxy.list_functions()
-    if len(fns) > 0:
-        generate_commands(fns)
-    print("Caster-Sikuli server started successfully.")
-
+    return mapping
 
 def server_proxy_timer_fn():
     print("Attempting Caster-Sikuli connection [...]")
@@ -84,38 +93,7 @@ def server_proxy_timer_fn():
     except Exception:
         pass
 
-
-#         utilities.simple_log(False)
-
-
-def unload():
-    global grammar
-    if grammar: grammar.unload()
-    grammar = None
-
-
-def refresh(_NEXUS):
-    ''' should be able to add new scripts on the fly and then call this '''
-    unload()
-    global grammar
-    grammar = Grammar("si/kuli")
-
-    def refresh_sick_command():
-        server_proxy.terminate()
-        refresh(_NEXUS)
-
-    mapping = {
-        "launch sick IDE": Function(launch_IDE),
-        "launch sick server": Function(launch_server),
-        "refresh sick you Lee": Function(refresh_sick_command),
-        "sick shot": Key("cs-2"),
-    }
-
-    rule = MergeRule(name="sik", mapping=mapping)
-    gfilter.run_on(rule)
-    grammar.add_rule(rule)
-    grammar.load()
-    # start server
+def bootstrap_start_server_proxy():
     try:
         # if the server is already running, this should go off without a hitch
         start_server_proxy()
@@ -124,6 +102,18 @@ def refresh(_NEXUS):
         seconds5 = 5
         control.nexus().timer.add_callback(server_proxy_timer_fn, seconds5)
 
+class SikuliControlCommandsRule(MergeRule):
+    pronunciation = "sikuli"
+
+    mapping = {
+        "launch sick IDE":       R(Function(launch_IDE), rdescript="Sikulix: Launch Sikulix IDE"),
+        "launch sick server":    R(Function(bootstrap_start_server_proxy), rdescript="Sikulix: Launch Sikulix Server"),
+        "terminate sick server": R(Function(terminate_sick_command), rdescript="Sikulix: Terminate Sikulix server"),
+    }
 
 if settings.SETTINGS["sikuli"]["enabled"]:
-    refresh(_NEXUS)
+    grammar = Grammar("sikuli")
+    rule = SikuliControlCommandsRule(name="sikuli control commands")
+    gfilter.run_on(rule)
+    grammar.add_rule(rule)
+    bootstrap_start_server_proxy()
