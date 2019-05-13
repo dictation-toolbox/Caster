@@ -1,13 +1,12 @@
 from dragonfly.grammar.rule_mapping import MappingRule
-
-from castervoice.apps import eclipse
-from castervoice.apps.eclipse import EclipseCCR
-from castervoice.lib.actions import Key
+import castervoice.lib.tests.mocks
+from castervoice.lib.tests.mocks import eclipse_context
+from castervoice.lib.tests.mocks import EclipseCCR
+from castervoice.lib.tests.mocks import Key
 from castervoice.lib.tests.mocks import Bash
 from castervoice.lib.tests.mocks import Java
 from castervoice.lib.tests.mocks import Python
 from castervoice.lib.ccr.recording.alias import ChainAlias
-from castervoice.lib.ccr.standard import SymbolSpecs
 from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
 from castervoice.lib.dfplus.merge.mergepair import MergeInf
 from castervoice.lib.tests.unit.state import TestNexus
@@ -37,7 +36,7 @@ class TestMerger(TestNexus):
         self.nexus.merger.add_global_rule(Java())
         self.nexus.merger.add_global_rule(Bash())
         self.nexus.merger.add_selfmodrule(ChainAlias(self.nexus))
-        self.nexus.merger.add_app_rule(EclipseCCR(), eclipse.context)
+        self.nexus.merger.add_app_rule(EclipseCCR(), eclipse_context)
         self.nexus.merger.add_filter(demo_filter)
         self.nexus.merger.update_config()
         self.nexus.merger.merge(MergeInf.BOOT)
@@ -70,8 +69,8 @@ class TestMerger(TestNexus):
         bash = Bash()
         self.set_global("Python", True, True)
         self.assertTrue(self.PYTHON_ID in self.nexus.merger._base_global.composite)
-        self.assertFalse(self.nexus.merger._base_global.mapping_actual()[SymbolSpecs.IF]\
-                        ==bash.mapping_actual()[SymbolSpecs.IF])
+        self.assertFalse(self.nexus.merger._base_global.mapping_actual()["iffae"]
+                        == bash.mapping_actual()["iffae"])
         self.set_global("Java", True, True)
         self.assertFalse(self.nexus.merger._config[CCRMerger._GLOBAL]["Python"])
         self.assertTrue(self.nexus.merger._config[CCRMerger._GLOBAL]["Java"])
@@ -86,9 +85,8 @@ class TestMerger(TestNexus):
         self.assertTrue(
             self.nexus.merger._config[CCRMerger._SELFMOD][ChainAlias.pronunciation])
         self.set_global("Java", False, True)
-        self.assertTrue(SymbolSpecs.IF in self.nexus.merger._base_global.mapping_actual())
-        self.assertTrue(self.nexus.merger._base_global.mapping_actual()[SymbolSpecs.IF]\
-                        ==bash.mapping_actual()[SymbolSpecs.IF])
+        self.assertTrue("iffae" in self.nexus.merger._base_global.mapping_actual())
+        self.assertTrue(self.nexus.merger._base_global.mapping_actual()["iffae"]
+                        == bash.mapping_actual()["iffae"])
         self.set_selfmod(ChainAlias.pronunciation, False, True)
         self.assertFalse("chain alias" in self.nexus.merger._base_global.mapping_actual())
-

@@ -1,9 +1,15 @@
 from dragonfly.os_dependent_mock import MockAction
+from dragonfly import AppContext
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
+from castervoice.lib.dfplus.additions import IntegerRefST, Boolean
+import mock
+import sys
+import types
 
 Text = MockAction
 Key = MockAction
 Function = MockAction
+Pause = MockAction
 
 class Python(MergeRule):
     mapping = {
@@ -39,3 +45,35 @@ class Alias(MergeRule):
         "delete aliases":
             Function(lambda: None),
     }
+
+class EclipseRule(MergeRule):
+    pronunciation = "eclipse"
+
+    mapping = {
+            "open resource":                            Key("cs-r"),
+            "open type":                                Key("cs-t"),
+    }
+
+class EclipseCCR(MergeRule):
+    pronunciation = "eclipse jump"
+    mwith = []
+    mapping = {
+            "[go to] line <n>":                         Key("c-l") + Pause("50") + Text("%(n)d") + Key("enter")+ Pause("50"),
+            "shackle <n> [<back>]":                     Key("c-l")+Key("right, cs-left"),
+
+        }
+
+    extras = [
+        IntegerRefST("n", 1, 1000),
+        Boolean("back"),
+    ]
+
+eclipse_context = AppContext(
+    executable="javaw", title="Eclipse") | AppContext(
+        executable="eclipse", title="Eclipse") | AppContext(executable="AptanaStudio3")
+
+module_names = ['win32gui', 'win32con']
+for module_name in module_names:
+    bogus_module = types.ModuleType(module_name)
+    sys.modules[module_name] = bogus_module
+mock.patch.object('win3gui', 'GetForegroundWindow', return_value='testing')
