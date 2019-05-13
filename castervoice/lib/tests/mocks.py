@@ -1,7 +1,6 @@
 from dragonfly.os_dependent_mock import MockAction
 from dragonfly import AppContext
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.additions import IntegerRefST, Boolean
 import mock
 import sys
 import types
@@ -58,8 +57,8 @@ class EclipseCCR(MergeRule):
     pronunciation = "eclipse jump"
     mwith = []
     mapping = {
-            "[go to] line <n>":                         Key("c-l") + Pause("50") + Text("%(n)d") + Key("enter")+ Pause("50"),
-            "shackle <n> [<back>]":                     Key("c-l")+Key("right, cs-left"),
+            "Test 1":                         Key("c-l") + Pause("50"),
+            "Test 2":                     Key("c-l")+Key("right, cs-left"),
 
         }
 
