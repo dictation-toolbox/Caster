@@ -14,6 +14,8 @@ from castervoice.lib.actions import Key, Text
 from castervoice.lib.context import AppContext, read_selected_without_altering_clipboard
 from castervoice.lib.utilities import load_toml_file
 
+_USER_DIR = os.path.expanduser("~").replace("\\", "/") + "/.caster"
+
 def _rebuild_items(config):
     # logger.debug('Bring me rebuilding extras')
     return {
@@ -34,7 +36,7 @@ def github_branch_pull_request():
             print(url[1])
             if url[0] == 0:
                 split_string = url[1].split("/pull/")
-                CONFIG = load_toml_file("C:/Users/kmbel/.caster/data/local_remote_git_match.toml")
+                CONFIG = load_toml_file(_USER_DIR + "/data/local_remote_git_match.toml")
                 items = _rebuild_items(CONFIG)
                 local_directory = items[split_string[0]][0]
                 print(local_directory)
