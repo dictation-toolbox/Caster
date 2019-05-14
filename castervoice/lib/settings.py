@@ -168,7 +168,7 @@ _DEFAULT_SETTINGS = {
 
         # PYTHON
         "PYTHONW": "C:/Python27/pythonw",
-        "WXPYTHON_PATH": "C:/Python27/Lib/site-packages/wx-3.0-msw",
+        "WXPYTHON_PATH": "C:/Python27/Lib/site-packages/wx-3.0-msw"
     },
 
     # Apps Section
