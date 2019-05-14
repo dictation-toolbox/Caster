@@ -52,6 +52,10 @@ class NavigationNon(MappingRule):
             R(Function(navigation.left_down, nexus=_NEXUS), rdescript="Core-Mouse: Left Down"),
         "bench":
             R(Function(navigation.left_up, nexus=_NEXUS), rdescript="Core-Mouse: Left Up"),
+        "press":
+            R(Function(navigation.right_down, nexus=_NEXUS), rdescript="Core-Mouse: Right Down"),
+        "hoist":
+            R(Function(navigation.right_up, nexus=_NEXUS), rdescript="Core-Mouse: Right Up"),
         "kick":
             R(Function(navigation.left_click, nexus=_NEXUS),
               rdescript="Core-Mouse: Left Click"),
