@@ -20,33 +20,32 @@ from castervoice.lib.ccr.standard import SymbolSpecs
 _NEXUS = control.nexus()
 
 
-class NavigationNon(MappingRule):
+class NavigationNon(MergeRule):
     mapping = {
         "<direction> <time_in_seconds>":
             AsynchronousAction([L(S(["cancel"], Key("%(direction)s"), consume=False))],
                                repetitions=1000,
                                blocking=False),
         "erase multi clipboard":
-            R(Function(navigation.erase_multi_clipboard, nexus=_NEXUS),
-              rdescript="Core: Erase Multi Clipboard"),
+            R(Function(navigation.erase_multi_clipboard, nexus=_NEXUS)),
         "find":
-            R(Key("c-f"), rdescript="Core: Find"),
+            R(Key("c-f")),
         "find next [<n>]":
-            R(Key("f3"), rdescript="Core: Find Next")*Repeat(extra="n"),
+            R(Key("f3"))*Repeat(extra="n"),
         "find prior [<n>]":
-            R(Key("s-f3"), rdescript="Core: Find Prior")*Repeat(extra="n"),
+            R(Key("s-f3"))*Repeat(extra="n"),
         "find everywhere":
-            R(Key("cs-f"), rdescript="Core: Find Everywhere"),
+            R(Key("cs-f")),
         "replace":
-            R(Key("c-h"), rdescript="Core: Replace"),
+            R(Key("c-h")),
         "(F to | F2)":
-            R(Key("f2"), rdescript="Core: Key: F2"),
+            R(Key("f2")),
         "(F six | F6)":
-            R(Key("f6"), rdescript="Core: Key: F6"),
+            R(Key("f6")),
         "(F nine | F9)":
-            R(Key("f9"), rdescript="Core: Key: F9"),
+            R(Key("f9")),
         "[show] context menu":
-            R(Key("s-f10"), rdescript="Core: Context Menu"),
+            R(Key("s-f10")),
         "squat":
             R(Function(navigation.left_down, nexus=_NEXUS),
               rdescript="Core-Mouse: Left Down"),
@@ -54,27 +53,21 @@ class NavigationNon(MappingRule):
             R(Function(navigation.left_up, nexus=_NEXUS),
               rdescript="Core-Mouse: Left Up"),
         "kick":
-            R(Function(navigation.left_click, nexus=_NEXUS),
-              rdescript="Core-Mouse: Left Click"),
+            R(Function(navigation.left_click, nexus=_NEXUS)),
         "kick mid":
-            R(Function(navigation.middle_click, nexus=_NEXUS),
-              rdescript="Core-Mouse: Middle Click"),
+            R(Function(navigation.middle_click, nexus=_NEXUS)),
         "psychic":
-            R(Function(navigation.right_click, nexus=_NEXUS),
-              rdescript="Core-Mouse: Right Click"),
+            R(Function(navigation.right_click, nexus=_NEXUS)),
         "(kick double|double kick)":
-            R(Function(navigation.left_click, nexus=_NEXUS)*Repeat(2),
-              rdescript="Core-Mouse: Double Click"),
+            R(Function(navigation.left_click, nexus=_NEXUS)*Repeat(2)),
         "shift right click":
-            R(Key("shift:down") + Mouse("right") + Key("shift:up"),
-              rdescript="Core-Mouse: Shift + Right Click"),
+            R(Key("shift:down") + Mouse("right") + Key("shift:up")),
         "curse <direction> [<direction2>] [<nnavi500>] [<dokick>]":
-            R(Function(navigation.curse), rdescript="Core: Curse"),
+            R(Function(navigation.curse)),
         "scree <direction> [<nnavi500>]":
-            R(Function(navigation.wheel_scroll), rdescript="Core: Wheel Scroll"),
+            R(Function(navigation.wheel_scroll)),
         "colic":
-            R(Key("control:down") + Mouse("left") + Key("control:up"),
-              rdescript="Core-Mouse: Ctrl + Left Click"),
+            R(Key("control:down") + Mouse("left") + Key("control:up")),
         "garb [<nnavi500>]":
             R(Mouse("left") + Mouse("left") +
               Function(navigation.stoosh_keep_clipboard, nexus=_NEXUS),
@@ -85,54 +78,54 @@ class NavigationNon(MappingRule):
                 spacing=0),
               rdescript="Core: Highlight @ Mouse + Paste"),
         "sure stoosh":
-            R(Key("c-c"), rdescript="Core: Simple Copy"),
+            R(Key("c-c")),
         "sure cut":
-            R(Key("c-x"), rdescript="Core: Simple Cut"),
+            R(Key("c-x")),
         "sure spark":
-            R(Key("c-v"), rdescript="Core: Simple Paste"),
+            R(Key("c-v")),
         "undo [<n>]":
-            R(Key("c-z"), rdescript="Core: Undo")*Repeat(extra="n"),
+            R(Key("c-z"))*Repeat(extra="n"),
         "redo [<n>]":
-            R(Key("c-y"), rdescript="Core: Redo")*Repeat(extra="n"),
+            R(Key("c-y"))*Repeat(extra="n"),
         "refresh":
-            R(Key("c-r"), rdescript="Core: Refresh"),
+            R(Key("c-r")),
         "maxiwin":
-            R(Key("w-up"), rdescript="Core: Maximize Window"),
+            R(Key("w-up")),
         "move window":
-            R(Key("a-space, r, a-space, m"), rdescript="Core: Move Window"),
+            R(Key("a-space, r, a-space, m")),
         "window (left | lease) [<n>]":
-            R(Key("w-left"), rdescript="Core: Window Left")*Repeat(extra="n"),
+            R(Key("w-left"))*Repeat(extra="n"),
         "window (right | ross) [<n>]":
-            R(Key("w-right"), rdescript="Core: Window Right")*Repeat(extra="n"),
+            R(Key("w-right"))*Repeat(extra="n"),
         "monitor (left | lease) [<n>]":
-            R(Key("sw-left"), rdescript="Core: Monitor Left")*Repeat(extra="n"),
+            R(Key("sw-left"))*Repeat(extra="n"),
         "monitor (right | ross) [<n>]":
-            R(Key("sw-right"), rdescript="Core: Monitor Right")*Repeat(extra="n"),
+            R(Key("sw-right"))*Repeat(extra="n"),
         "(next | prior) window":
-            R(Key("ca-tab, enter"), rdescript="Core: Next Window"),
+            R(Key("ca-tab, enter")),
         "switch (window | windows)":
-            R(Key("ca-tab"), rdescript="Core: Switch Window")*Repeat(extra="n"),
+            R(Key("ca-tab"))*Repeat(extra="n"),
         "next tab [<n>]":
-            R(Key("c-pgdown"), rdescript="Core: Next Tab")*Repeat(extra="n"),
+            R(Key("c-pgdown"))*Repeat(extra="n"),
         "prior tab [<n>]":
-            R(Key("c-pgup"), rdescript="Core: Previous Tab")*Repeat(extra="n"),
+            R(Key("c-pgup"))*Repeat(extra="n"),
         "close tab [<n>]":
-            R(Key("c-w/20"), rdescript="Core: Close Tab")*Repeat(extra="n"),
+            R(Key("c-w/20"))*Repeat(extra="n"),
         "elite translation <text>":
-            R(Function(alphanumeric.elite_text), rdescript="Core: 1337 Text"),
+            R(Function(alphanumeric.elite_text)),
 
         # Workspace management
         "show work [spaces]":
-            R(Key("w-tab"), rdescript="Core: Show Workspaces"),
+            R(Key("w-tab")),
         "(create | new) work [space]":
-            R(Key("wc-d"), rdescript="Core: Create Workspace"),
+            R(Key("wc-d")),
         "close work [space]":
-            R(Key("wc-f4"), rdescript="Core: Close Workspace"),
+            R(Key("wc-f4")),
         "close all work [spaces]":
             R(Function(utilities.close_all_workspaces),
               rdescript="Core: Close All Work Spaces"),
         "next work [space] [<n>]":
-            R(Key("wc-right"), rdescript="Core: Next Workspace")*Repeat(extra="n"),
+            R(Key("wc-right"))*Repeat(extra="n"),
         "(previous | prior) work [space] [<n>]":
             R(Key("wc-left"), rdescript="Core: Prior Workspace")*Repeat(extra="n"),
         "go work [space] <n>":
@@ -228,7 +221,7 @@ class Navigation(MergeRule):
 
         # keyboard shortcuts
         'save':
-            R(Key("c-s"), rspec="save", rdescript="Core: Save"),
+            R(Key("c-s"), rspec="save"),
         'shock [<nnavi50>]':
             R(Key("enter"), rspec="shock", rdescript="Core: Enter")*
             Repeat(extra="nnavi50"),
@@ -257,11 +250,11 @@ class Navigation(MergeRule):
             R(Key("del/5"), rspec="deli", rdescript="Core: Delete")*
             Repeat(extra="nnavi50"),
         "clear [<nnavi50>]":
-            R(Key("backspace/5:%(nnavi50)d"), rspec="clear", rdescript="Core: Backspace"),
+            R(Key("backspace/5:%(nnavi50)d"), rspec="clear"),
         SymbolSpecs.CANCEL:
             R(Key("escape"), rspec="cancel", rdescript="Core: Cancel Action"),
         "shackle":
-            R(Key("home/5, s-end"), rspec="shackle", rdescript="Core: Select Line"),
+            R(Key("home/5, s-end"), rspec="shackle"),
         "(tell | tau) <semi>":
             R(Function(navigation.next_line),
               rspec="tell dock",
@@ -271,27 +264,27 @@ class Navigation(MergeRule):
               rspec="duple",
               rdescript="Core: Duplicate Line"),
         "Kraken":
-            R(Key("c-space"), rspec="Kraken", rdescript="Core: Control Space"),
+            R(Key("c-space"), rspec="Kraken"),
 
         # text formatting
         "set [<big>] format (<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)":
-            R(Function(textformat.set_text_format), rdescript="Core: Set Text Format"),
+            R(Function(textformat.set_text_format)),
         "clear castervoice [<big>] formatting":
             R(Function(textformat.clear_text_format),
               rdescript="Core: Clear Caster Formatting"),
         "peek [<big>] format":
-            R(Function(textformat.peek_text_format), rdescript="Core: Peek Format"),
+            R(Function(textformat.peek_text_format)),
         "(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel) <textnv> [brunt]":
-            R(Function(textformat.master_format_text), rdescript="Core: Text Format"),
+            R(Function(textformat.master_format_text)),
         "[<big>] format <textnv>":
-            R(Function(textformat.prior_text_format), rdescript="Core: Last Text Format"),
+            R(Function(textformat.prior_text_format)),
         "<word_limit> [<big>] format <textnv>":
             R(Function(textformat.partial_format_text),
               rdescript="Core: Partial Text Format"),
         "hug <enclosure>":
-            R(Function(text_utils.enclose_selected), rdescript="Core: Enclose text "),
+            R(Function(text_utils.enclose_selected)),
         "dredge":
-            R(Key("a-tab"), rdescript="Core: Alt-Tab"),
+            R(Key("a-tab")),
 
         
         # the following text manipulation commands currently only work on text
@@ -313,54 +306,54 @@ class Navigation(MergeRule):
         "remove [<lease_ross>] <dictation>":
             R(Function(navigation.copypaste_remove_phrase_from_text,
                        dict(dictation="phrase", lease_ross="left_right")),
-              rdescript="remove chosen phrase to the left or right of the cursor"),
+              rdescript="Core: remove chosen phrase to the left or right of the cursor"),
         "remove [lease] <left_character>":
             R(Function(navigation.copypaste_remove_phrase_from_text,
                        dict(left_character="phrase"),
                        left_right="left"),
-              rdescript="remove chosen character to the left of the cursor"),
+              rdescript="Core: remove chosen character to the left of the cursor"),
         "remove ross <right_character>":
             R(Function(navigation.copypaste_remove_phrase_from_text,
                        dict(right_character="phrase"),
                        left_right="right"),
-              rdescript="remove chosen character to the right of the cursor"),
+              rdescript="Core: remove chosen character to the right of the cursor"),
         "go [lease] <left_character>":
             R(Function(navigation.move_until_phrase,
                        dict(left_character="phrase"),
                        left_right="left"),
-              rdescript="move to chosen character to the left of the cursor"),
+              rdescript="Core: move to chosen character to the left of the cursor"),
         "go [<lease_ross>] <dictation>":
             R(Function(navigation.move_until_phrase,
                        dict(dictation="phrase", lease_ross="left_right")),
-              rdescript="move to chosen phrase to the left or right of the cursor"),
+              rdescript="Core: move to chosen phrase to the left or right of the cursor"),
         "go ross <right_character>":
             R(Function(navigation.move_until_phrase,
                        dict(right_character="phrase"),
                        left_right="right"),
-              rdescript="move to chosen character to the right of the cursor"),
+              rdescript="Core: move to chosen character to the right of the cursor"),
         "grab [<lease_ross>] <dictation> ":
             R(Function(navigation.select_until_phrase, dict(dictation="phrase", lease_ross="left_right")),
-                 rdescript="select until chosen phrase (inclusive)"),
+                 rdescript="Core: select until chosen phrase (inclusive)"),
         "grab [lease] <left_character>":
             R(Function(navigation.select_until_phrase, dict(left_character="phrase"), left_right="left"),
             rdescript="select left until chosen character (exclusive)"),
         "grab ross <right_character>":
             R(Function(navigation.select_until_phrase, dict(right_character="phrase"), left_right="right"),
-            rdescript="select right until chosen character (exclusive)"),
+            rdescript="Core: select right until chosen character (exclusive)"),
         "wipe [<lease_ross>] <dictation>":
             R(Function(navigation.copypaste_delete_until_phrase,
                        dict(dictation="phrase", lease_ross="left_right")),
-              rdescript="delete left until chosen phrase"),
+              rdescript="Core: delete left until chosen phrase"),
         "wipe [lease] <left_character>":
             R(Function(navigation.copypaste_delete_until_phrase,
                        dict(left_character="phrase"),
                        left_right="left"),
-              rdescript="delete left until chosen character"),
+              rdescript="Core: delete left until chosen character"),
         "wipe ross <right_character>":
             R(Function(navigation.copypaste_delete_until_phrase,
                        dict(right_character="phrase"),
                        left_right="right"),
-              rdescript="delete left until chosen character"),
+              rdescript="Core: delete left until chosen character"),
     }
 
     extras = [
