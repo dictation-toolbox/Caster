@@ -83,6 +83,9 @@ At the end of the PIP install instructions a CMD window will guide you of what t
   -  Look for `CasterInstall.log` on your desktop to check for error messages.
   - The PIP install is in beta yet please report any issues or error messages that you experience github [issues](https://github.com/dictation-toolbox/Caster/issues) or [gitter chat](https://gitter.im/synkarius/Caster?utm_source=share-link&utm_medium=link&utm_campaign=share-link). 
 
+- To fix `ERROR:action.exec:Execution failed: Function(mouse_alternates): [Error 126] The specified module could not be found`. Triggered by using the `Legion` command
+  In order to use Legion, you may need to install [Microsoft Visual C++ Redistributable Packages for Visual Studio 2013 (x86).](https://www.microsoft.com/en-us/download/details.aspx?id=40784) 
+
 
 **NatLink**
 
