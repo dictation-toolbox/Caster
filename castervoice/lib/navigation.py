@@ -12,7 +12,7 @@ import re
 import dragonfly
 from dragonfly import Choice, monitors, Pause
 from castervoice.asynch.mouse.legion import LegionScanner
-from castervoice.lib import control, settings, utilities, textformat, context
+from castervoice.lib import control, settings, utilities, textformat
 from castervoice.lib.actions import Key, Text, Mouse
 from castervoice.lib.clipboard import Clipboard
 
@@ -43,11 +43,13 @@ TARGET_CHOICE = Choice(
         "token": "TOKEN"
     })
 
-punctuation_list = [".", ",", "'", "[", "]", "<", ">", "{", "}", "?", "–", "-", ";", "=", "/", "\\", "$"] # is this correct with the backslash?
+punctuation_list = ["`", "(", ")", ",", "'", "[", "]", "<", ">", "{", "}", "?", "–", "-", ";", "=", "/", "\\", "$", "+", "*", "%",] 
 
 def get_start_end_position(text, phrase, left_right):
     if left_right == "left":
-        if phrase in punctuation_list:
+        # if replaced phrase is a single character, don't require a word boundary ( i.e. space or beginning/end of line ) for match
+        if len(phrase)==1:
+            # phrases a single character
             pattern = re.escape(phrase)
         else:
             # the \b avoids e.g. matching 'and' in 'land' but seems to allow e.g. matching 'and' in 'hello.and'
@@ -67,11 +69,14 @@ def get_start_end_position(text, phrase, left_right):
 
 
     if left_right == "right":
-        # if replaced phrase is punctuation, don't require a word boundary for match
-        if phrase in punctuation_list:
+        # if replaced phrase is a single character, don't require a word boundary ( i.e. space or beginning/end of line ) for match
+        
+        if len(phrase) == 1:
+            # phrase is a single character
             pattern = re.escape(phrase.lower())
-        # phrase contains a word
+        
         else:
+            # phrase contains a word
             pattern = r"\b" + re.escape(phrase.lower()) + r"\b"
         match = re.search(pattern, text.lower())
         if not match:
@@ -104,6 +109,7 @@ def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, le
     if left_right == "right":
         # Key("s-end").execute()
         Key("s-end, c-c/2").execute()
+    Pause("50").execute()
     # err, selected_text = context.read_selected_without_altering_clipboard()
     selected_text = pyperclip.paste()
     # if err != 0:
@@ -156,7 +162,7 @@ def copypaste_remove_phrase_from_text(phrase, left_right):
         
     if left_right == "right":
         Key("s-end, c-c/2").execute()
-    
+    Pause("50").execute()
     # get text from clipboard
     selected_text = pyperclip.paste()
 
@@ -191,8 +197,11 @@ def move_until_phrase(left_right, phrase):
         Key("s-home, c-c/2").execute()
     if left_right == "right":
         Key("s-end, c-c/2").execute()
+    Pause("50").execute()
     selected_text = pyperclip.paste()
-    Pause("10").execute()
+    # the print statement below is for debugging purposes and should be removed eventually
+    print("selected_text: {}".format(selected_text))
+    
     phrase = str(phrase)
     match = get_start_end_position(selected_text, phrase, left_right)
     if match:
@@ -238,8 +247,8 @@ def select_until_phrase(left_right, phrase):
         Key("s-home, c-c/2").execute()
     if left_right == "right":
         Key("s-end, c-c/2").execute()
+    Pause("50").execute()
     selected_text = pyperclip.paste()
-    Pause("10").execute()
     phrase = str(phrase)
     match = get_start_end_position(selected_text, phrase, left_right)
     if match:
@@ -281,7 +290,7 @@ def select_until_phrase(left_right, phrase):
     # if left_right == "right":
     #     Key("left").execute() # unselect text
     #     Key("s-right:%d" %(right_index -1)).execute() # make noninclusive if it's punctuation 
-
+   
     # put previous clipboard item back in the clipboard
     Pause("20").execute()
     pyperclip.copy(temp_for_previous_clipboard_item)
@@ -310,7 +319,7 @@ def copypaste_delete_until_phrase(left_right, phrase):
         
     if left_right == "right":
         Key("s-end, c-c/2").execute()
-    
+    Pause("50").execute()
     # get text from clipboard
     selected_text = pyperclip.paste()
 
@@ -333,7 +342,6 @@ def copypaste_delete_until_phrase(left_right, phrase):
     # put previous clipboard item back in the clipboard
     Pause("20").execute()
     pyperclip.copy(temp_for_previous_clipboard_item)
-
 
 
 def get_direction_choice(name):
