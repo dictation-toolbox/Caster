@@ -49,13 +49,13 @@ class NavigationNon(MappingRule):
         "[show] context menu":
             R(Key("s-f10"), rdescript="Core: Context Menu"),
         "squat":
-            R(Function(navigation.left_down, nexus=_NEXUS), rdescript="Core-Mouse: Left Down"),
+            R(Function(navigation.left_down, nexus=_NEXUS)),
         "bench":
-            R(Function(navigation.left_up, nexus=_NEXUS), rdescript="Core-Mouse: Left Up"),
+            R(Function(navigation.left_up, nexus=_NEXUS)),
         "press":
-            R(Function(navigation.right_down, nexus=_NEXUS), rdescript="Core-Mouse: Right Down"),
+            R(Function(navigation.right_down, nexus=_NEXUS)),
         "hoist":
-            R(Function(navigation.right_up, nexus=_NEXUS), rdescript="Core-Mouse: Right Up"),
+            R(Function(navigation.right_up, nexus=_NEXUS)),
         "kick":
             R(Function(navigation.left_click, nexus=_NEXUS),
               rdescript="Core-Mouse: Left Click"),
