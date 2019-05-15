@@ -6,9 +6,11 @@ master_text_nav shouldn't take strings as arguments - it should take ints, so it
 import time
 from ctypes import windll
 from subprocess import Popen
+import pyperclip
+import re
 
 import dragonfly
-from dragonfly import Choice, monitors
+from dragonfly import Choice, monitors, Pause
 from castervoice.asynch.mouse.legion import LegionScanner
 from castervoice.lib import control, settings, utilities, textformat
 from castervoice.lib.actions import Key, Text, Mouse
@@ -40,6 +42,301 @@ TARGET_CHOICE = Choice(
         "closers": "}~]~)",
         "token": "TOKEN"
     })
+
+punctuation_list = [",", "'", "[", "]", "<", ">", "{", "}", "?", "–", "-", ";", "=", "/", "\\", "$"] # is this correct with the backslash?
+
+def get_start_end_position(text, phrase, left_right):
+    if left_right == "left":
+        if phrase in punctuation_list:
+            pattern = re.escape(phrase)
+        else:
+            # the \b avoids e.g. matching 'and' in 'land' but seems to allow e.g. matching 'and' in 'hello.and'
+            # for matching purposes use lowercase
+
+            pattern = r"\b" + re.escape(phrase.lower()) + r"\b"            
+        
+        if not re.search(pattern, text.lower()):
+            # replaced phase not found
+            print("'{}' not found".format(phrase))
+            return
+        
+        match_iter = re.finditer(pattern, text.lower())
+        match_list = [(m.start(), m.end()) for m in match_iter]
+        last_match = match_list[-1]
+        left_index, right_index = last_match
+
+
+    if left_right == "right":
+        # if replaced phrase is punctuation, don't require a word boundary for match
+        if phrase in punctuation_list:
+            pattern = re.escape(phrase.lower())
+        # phrase contains a word
+        else:
+            pattern = r"\b" + re.escape(phrase.lower()) + r"\b"
+        match = re.search(pattern, text.lower())
+        if not match:
+            print("'{}' not found".format(phrase))
+            return
+        else:
+            left_index, right_index = match.span()
+    return (left_index, right_index)
+
+
+def replace_phrase_with_phrase(text, replaced_phrase, replacement_phrase, left_right):
+    match = get_start_end_position(text, replaced_phrase, left_right)
+    if match:
+        left_index, right_index = match
+    else:
+        return
+    return text[: left_index] + replacement_phrase + text[right_index:] 
+    
+
+# comments show how to do it using casters clipboard functions
+    
+def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, left_right):
+    # temporarily store previous clipboard item
+    temp_for_previous_clipboard_item = pyperclip.paste()
+    Pause("30").execute()
+
+    if left_right == "left":
+        # Key("s-home").execute()
+        Key("s-home, c-c/2").execute()
+    if left_right == "right":
+        # Key("s-end").execute()
+        Key("s-end, c-c/2").execute()
+    Pause("50").execute()
+    # err, selected_text = context.read_selected_without_altering_clipboard()
+    selected_text = pyperclip.paste()
+    # if err != 0:
+        # I'm not discriminating between err = 1 and err = 2
+        # print("failed to copy text")
+        # return
+    
+    replaced_phrase = str(replaced_phrase)
+    replacement_phrase = str(replacement_phrase)
+    new_text = replace_phrase_with_phrase(selected_text, replaced_phrase, replacement_phrase, left_right)
+    if not new_text:
+        # replaced_phrase not found
+        Key("c-v").execute()
+        if left_right == "right":
+            print("right")
+            Key("left:%d" %len(selected_text)).execute()
+        return
+    # if not context.paste_string_without_altering_clipboard(new_text):
+    #     print("failed to paste {}".format(new_text))
+    pyperclip.copy(new_text)
+    Key("c-v").execute()
+    if left_right == "right":
+        offset = len(new_text)
+        Key("left:%d" %offset).execute()
+    # put previous clipboard item back in the clipboard
+    Pause("20").execute()
+    pyperclip.copy(temp_for_previous_clipboard_item)
+
+def remove_phrase_from_text(text, phrase, left_right):
+    match = get_start_end_position(text, phrase, left_right)
+    if match:
+        left_index, right_index = match
+    else:
+        return
+        
+    # if the "phrase" is punctuation, just remove it, but otherwise remove an extra space adjacent to the phrase
+    if phrase in punctuation_list:
+        return text[: left_index] + text[right_index:] 
+    else:
+        return text[: left_index - 1] + text[right_index:] 
+
+
+def copypaste_remove_phrase_from_text(phrase, left_right):
+    # temporarily store previous clipboard item
+    temp_for_previous_clipboard_item = pyperclip.paste()
+    Pause("30").execute()
+
+    if left_right == "left":
+        Key("s-home, c-c/2").execute()
+        
+    if left_right == "right":
+        Key("s-end, c-c/2").execute()
+    Pause("50").execute()
+    # get text from clipboard
+    selected_text = pyperclip.paste()
+
+    phrase = str(phrase)
+    new_text = remove_phrase_from_text(selected_text, phrase, left_right)
+    if not new_text:
+        # phrase not found
+        Key("c-v").execute()
+        if left_right == "right":
+            print("right")
+            Key("left:%d" %len(selected_text)).execute()
+        return
+
+    pyperclip.copy(new_text)
+    Key("c-v").execute()
+
+    if left_right == "right":
+        offset = len(new_text)
+        Key("left:%d" %offset).execute()
+    # put previous clipboard item back in the clipboard
+    Pause("20").execute()
+    pyperclip.copy(temp_for_previous_clipboard_item)
+
+
+def move_until_phrase(left_right, phrase):
+    """ move until the close end of the phrase"""
+
+    # temporarily store previous clipboard item
+    temp_for_previous_clipboard_item = pyperclip.paste()
+    
+    if left_right == "left":
+        Key("s-home, c-c/2").execute()
+    if left_right == "right":
+        Key("s-end, c-c/2").execute()
+    Pause("50").execute()
+    selected_text = pyperclip.paste()
+    # the print statement below is for debugging purposes and should be removed eventually
+    print("selected_text: {}".format(selected_text))
+    
+    phrase = str(phrase)
+    match = get_start_end_position(selected_text, phrase, left_right)
+    if match:
+        left_index, right_index = match
+    else:
+        Key("c-v").execute()
+        if left_right == "right":
+            offset = len(selected_text)
+            Key("left:%d" %offset).execute()
+        return
+    left_index, right_index = get_start_end_position(selected_text, phrase, left_right)
+    # I am using the method of pasting over the existing text rather than simply unselecting because of some weird behavior in texstudio
+    # comments below indicate the other method
+    Key("c-v").execute()
+    if left_right == "left": 
+        offset = len(selected_text) - right_index
+        Key("left:%d" %offset).execute()
+    if left_right == "right":
+        offset = len(selected_text) - left_index
+        Key("left:%d" %offset).execute()
+    
+    # Alternative method: simply unselect rather than pacing over the existing text. (a little faster) does not work texstudio
+    # if left_right == "left":
+    #     Key("right").execute() # unselect text
+    #     offset = len(selected_text) - right_index
+    #     Key("left:%d" %offset).execute()
+    # if left_right == "right":
+    #     Key("left").execute() # unselect text
+    #     offset = left_index
+    #     Key("right:%d" %offset).execute()
+    
+    # put previous clipboard item back in the clipboard
+    Pause("20").execute()
+    pyperclip.copy(temp_for_previous_clipboard_item)
+
+def select_until_phrase(left_right, phrase):
+    """ the selection will include the phrase unless it is punctuation"""
+    # temporarily store previous clipboard item
+    temp_for_previous_clipboard_item = pyperclip.paste()
+
+    
+    if left_right == "left":
+        Key("s-home, c-c/2").execute()
+    if left_right == "right":
+        Key("s-end, c-c/2").execute()
+    Pause("50").execute()
+    selected_text = pyperclip.paste()
+    phrase = str(phrase)
+    match = get_start_end_position(selected_text, phrase, left_right)
+    if match:
+        left_index, right_index = match
+    else:
+        Key("c-v").execute()
+        if left_right == "right":
+            offset = len(selected_text)
+            Key("left:%d" %offset).execute()
+        return
+    left_index, right_index = get_start_end_position(selected_text, phrase, left_right)
+    
+    # I am using the method of pasting over the existing text rather than simply unselecting because of some weird behavior in texstudio
+    # comments below indicate the other method
+    Key("c-v").execute()
+    if left_right == "left":
+        offset = len(selected_text) - left_index
+        # make noninclusive if it's punctuation
+        if phrase in punctuation_list:
+            offset -= 1
+        Key("s-left:%d" %offset).execute()
+    if left_right == "right":
+        len_selected_text = len(selected_text)
+        offset = right_index
+        # make noninclusive if it's punctuation
+        if phrase in punctuation_list:
+            offset -= 1
+        Key("left:%d" %len_selected_text).execute()
+        Key("s-right:%d" %offset).execute()
+    
+    # # alternative method: simply unselects text rather than pasting over the text. a little faster but does not work in tex studio
+    # if left_right == "left":
+    #     Key("right").execute() # unselect text
+    #     offset = len(selected_text) - left_index
+    #     # make noninclusive if it's punctuation 
+    #     if phrase in punctuation_list:
+    #         offset -= 1
+    #     Key("s-left:%d" %offset).execute()
+    # if left_right == "right":
+    #     Key("left").execute() # unselect text
+    #     Key("s-right:%d" %(right_index -1)).execute() # make noninclusive if it's punctuation 
+   
+    # put previous clipboard item back in the clipboard
+    Pause("20").execute()
+    pyperclip.copy(temp_for_previous_clipboard_item)
+
+
+
+def delete_until_phrase(text, phrase, left_right):
+    match = get_start_end_position(text, phrase, left_right)
+    if match:
+        left_index, right_index = match
+    else:
+        return
+    if left_right == "left":
+        return text[: right_index]
+    if left_right == "right":
+        return text[right_index :]
+
+def copypaste_delete_until_phrase(left_right, phrase):
+    phrase = str(phrase)
+    # temporarily store previous clipboard item
+    temp_for_previous_clipboard_item = pyperclip.paste()
+    Pause("30").execute()
+
+    if left_right == "left":
+        Key("s-home, c-c/2").execute()
+        
+    if left_right == "right":
+        Key("s-end, c-c/2").execute()
+    Pause("50").execute()
+    # get text from clipboard
+    selected_text = pyperclip.paste()
+
+    phrase = str(phrase)
+    new_text = delete_until_phrase(selected_text, phrase, left_right)
+    if not new_text:
+        # phrase not found
+        Key("c-v").execute()
+        if left_right == "right":
+            Key("left:%d" %len(selected_text)).execute()
+        return
+
+    # put modified text on the clipboard
+    pyperclip.copy(new_text)
+    Key("c-v").execute()
+
+    if left_right == "right":
+        offset = len(new_text)
+        Key("left:%d" %offset).execute()
+    # put previous clipboard item back in the clipboard
+    Pause("20").execute()
+    pyperclip.copy(temp_for_previous_clipboard_item)
 
 
 def get_direction_choice(name):

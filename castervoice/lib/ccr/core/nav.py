@@ -256,6 +256,79 @@ class Navigation(MergeRule):
             R(Function(text_utils.enclose_selected)),
         "dredge":
             R(Key("a-tab")),
+    
+
+        
+        
+        # the following text manipulation commands currently only work on text
+            # that is on the same line as the cursor, though this could be expanded.
+        # requires the latest version of dragonfly because of her recent modification of the Function action
+            # I think dragonfly2-0.13.0
+        # The alphabet should probably be added into the choice dictionaries.
+        # the keypress waittime should probably be made higher for these commands.
+        # the wait times in the functions could also be reduced.
+        # the functions should probably be adjusted to avoid inappropriately recognizing substrings
+        # these work in most applications not all (e.g. doesn't work in Microsoft Word),
+        # probably something to do with the wait times within paste_string_without_altering_clipboard
+        
+        "change [<lease_ross>] <dictation> to <dictation2>":
+            R(Function(navigation.copypaste_replace_phrase_with_phrase,
+                       dict(dictation="replaced_phrase", dictation2="replacement_phrase", lease_ross="left_right")),
+              rdescript="Core: replace text to the left or right of the cursor"),
+        
+        "remove [<lease_ross>] <dictation>":
+            R(Function(navigation.copypaste_remove_phrase_from_text,
+                       dict(dictation="phrase", lease_ross="left_right")),
+              rdescript="remove chosen phrase to the left or right of the cursor"),
+        "remove [lease] <left_character>":
+            R(Function(navigation.copypaste_remove_phrase_from_text,
+                       dict(left_character="phrase"),
+                       left_right="left"),
+              rdescript="remove chosen character to the left of the cursor"),
+        "remove ross <right_character>":
+            R(Function(navigation.copypaste_remove_phrase_from_text,
+                       dict(right_character="phrase"),
+                       left_right="right"),
+              rdescript="remove chosen character to the right of the cursor"),
+        "go [lease] <left_character>":
+            R(Function(navigation.move_until_phrase,
+                       dict(left_character="phrase"),
+                       left_right="left"),
+              rdescript="move to chosen character to the left of the cursor"),
+        "go [<lease_ross>] <dictation>":
+            R(Function(navigation.move_until_phrase,
+                       dict(dictation="phrase", lease_ross="left_right")),
+              rdescript="move to chosen phrase to the left or right of the cursor"),
+        "go ross <right_character>":
+            R(Function(navigation.move_until_phrase,
+                       dict(right_character="phrase"),
+                       left_right="right"),
+              rdescript="move to chosen character to the right of the cursor"),
+        "grab [<lease_ross>] <dictation> ":
+            R(Function(navigation.select_until_phrase, dict(dictation="phrase", lease_ross="left_right")),
+                 rdescript="select until chosen phrase (inclusive)"),
+        "grab [lease] <left_character>":
+            R(Function(navigation.select_until_phrase, dict(left_character="phrase"), left_right="left"),
+            rdescript="select left until chosen character"),
+        "grab ross <right_character>":
+            R(Function(navigation.select_until_phrase, dict(right_character="phrase"), left_right="right"),
+            rdescript="select right until chosen character"),
+        "wipe [<lease_ross>] <dictation>":
+            R(Function(navigation.copypaste_delete_until_phrase,
+                       dict(dictation="phrase", lease_ross="left_right")),
+              rdescript="delete left until chosen phrase (exclusive)"),
+        "wipe [lease] <left_character>":
+            R(Function(navigation.copypaste_delete_until_phrase,
+                       dict(left_character="phrase"),
+                       left_right="left"),
+              rdescript="delete left until chosen character (exclusive)"),
+        "wipe ross <right_character>":
+            R(Function(navigation.copypaste_delete_until_phrase,
+                       dict(right_character="phrase"), 
+                       left_right="right"),
+              rdescript="delete left until chosen character"),
+        
+
 
     }
 
@@ -264,6 +337,8 @@ class Navigation(MergeRule):
         IntegerRefST("nnavi50", 1, 50),
         IntegerRefST("nnavi500", 1, 500),
         Dictation("textnv"),
+        Dictation("dictation"),
+        Dictation("dictation2"),
         Choice(
             "enclosure", {
                 "prekris": "(~)",
@@ -319,7 +394,64 @@ class Navigation(MergeRule):
             "lease": "backspace",
             "ross": "delete",
         }),
+        Choice("lease_ross", {
+            "lease": "left",
+            "ross": "right",
+        }),
+        Choice(
+            "left_character", {
+                "[left] prekris": "(",
+                "right prekris": ")",
+                "[left] brax": "[",
+                "right brax": "]",
+                "[left] angle": "<",
+                "right angle": ">",
+                "[left] curly": "{",
+                "right curly": "}",
+                "quotes": '"',
+                "single quote": "'",
+                "comma": ",",
+                "period": ".",
+                "questo": "?",
+                "backtick": "`",
+                "equals": "=",
+                "dolly": "$",
+                "slash": "/",
+                "backslash": "\\",
+                "minus": "-",
+                "plus": "+",
+                "starling": "*",
+                "x-ray": "x",
+
+            }),
+        Choice(
+            "right_character", {
+                "[right] prekris": ")",
+                "left prekris": "(",
+                "[right] brax": "]",
+                "left brax": "[",
+                "[right] angle": ">",
+                "left angle": "<",
+                "[right] curly": "}",
+                "left curly": "{",
+                "quotes": '"',
+                "single quote": "'",
+                "comma": ",",
+                "period": ".",
+                "questo": "?",
+                "backtick": "`",
+                "equals": "=",
+                "dolly": "$",
+                "slash": "/",
+                "backslash": "\\",
+                "minus": "-",
+                "plus": "+",
+                "starling": "*",
+                "x-ray": "x",
+                
+            }),
     ]
+
 
     defaults = {
         "nnavi500": 1,
@@ -333,6 +465,7 @@ class Navigation(MergeRule):
         "extreme": None,
         "big": False,
         "splatdir": "backspace",
+        "lease_ross": "left",
     }
 
 
