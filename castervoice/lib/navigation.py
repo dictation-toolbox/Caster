@@ -114,10 +114,8 @@ def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, le
     Pause("50").execute() # this pause is only needed for certain applications ( e.g. tex studio)
     
     selected_text = pyperclip.paste()
-    # if err != 0:
-        # I'm not discriminating between err = 1 and err = 2
-        # print("failed to copy text")
-        # return
+    # the print statement below is for debugging purposes and should be removed eventually
+    # print("selected_text: {}".format(selected_text))
     
     replaced_phrase = str(replaced_phrase)
     replacement_phrase = str(replacement_phrase)
@@ -169,6 +167,8 @@ def copypaste_remove_phrase_from_text(phrase, left_right):
     
     # get text from clipboard
     selected_text = pyperclip.paste()
+    # the print statement below is for debugging purposes and should be removed eventually
+    # print("selected_text: {}".format(selected_text))
 
     phrase = str(phrase)
     new_text = remove_phrase_from_text(selected_text, phrase, left_right)
@@ -207,7 +207,7 @@ def move_until_phrase(left_right, phrase):
     
     selected_text = pyperclip.paste()
     # the print statement below is for debugging purposes and should be removed eventually
-    print("selected_text: {}".format(selected_text))
+    # print("selected_text: {}".format(selected_text))
     
     phrase = str(phrase)
     match = get_start_end_position(selected_text, phrase, left_right)
@@ -256,9 +256,10 @@ def select_until_phrase(left_right, phrase):
         Key("s-end, c-c/2").execute()
     
     # Give time to allow the text to get onto the clipboard
-    Pause("50").execute() # this pause is only needed for certain applications ( e.g. tex studio)
-    
+    Pause("60").execute() # this pause is only needed for certain applications ( e.g. tex studio)
     selected_text = pyperclip.paste()
+    # the print statement below is for debugging purposes and should be removed eventually
+    # print("selected_text: {}".format(selected_text))
     phrase = str(phrase)
     match = get_start_end_position(selected_text, phrase, left_right)
     if match:
@@ -335,7 +336,8 @@ def copypaste_delete_until_phrase(left_right, phrase):
 
     # get text from clipboard
     selected_text = pyperclip.paste()
-
+    # the print statement below is for debugging purposes and should be removed eventually
+    # print("selected_text: {}".format(selected_text))
     phrase = str(phrase)
     new_text = delete_until_phrase(selected_text, phrase, left_right)
     if not new_text:
