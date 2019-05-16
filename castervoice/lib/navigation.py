@@ -109,8 +109,10 @@ def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, le
     if left_right == "right":
         # Key("s-end").execute()
         Key("s-end, c-c/2").execute()
-    Pause("50").execute()
-    # err, selected_text = context.read_selected_without_altering_clipboard()
+    
+    # Give time to allow the text to get onto the clipboard
+    Pause("50").execute() # this pause is only needed for certain applications ( e.g. tex studio)
+    
     selected_text = pyperclip.paste()
     # if err != 0:
         # I'm not discriminating between err = 1 and err = 2
@@ -127,8 +129,7 @@ def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, le
             print("right")
             Key("left:%d" %len(selected_text)).execute()
         return
-    # if not context.paste_string_without_altering_clipboard(new_text):
-    #     print("failed to paste {}".format(new_text))
+    
     pyperclip.copy(new_text)
     Key("c-v").execute()
     if left_right == "right":
@@ -162,7 +163,10 @@ def copypaste_remove_phrase_from_text(phrase, left_right):
         
     if left_right == "right":
         Key("s-end, c-c/2").execute()
-    Pause("50").execute()
+    
+    # Give time to allow the text to get onto the clipboard
+    Pause("50").execute() # this pause is only needed for certain applications ( e.g. tex studio)
+    
     # get text from clipboard
     selected_text = pyperclip.paste()
 
@@ -197,7 +201,10 @@ def move_until_phrase(left_right, phrase):
         Key("s-home, c-c/2").execute()
     if left_right == "right":
         Key("s-end, c-c/2").execute()
-    Pause("50").execute()
+    
+    # Give time to allow the text to get onto the clipboard
+    Pause("50").execute() # this pause is only needed for certain applications ( e.g. tex studio)
+    
     selected_text = pyperclip.paste()
     # the print statement below is for debugging purposes and should be removed eventually
     print("selected_text: {}".format(selected_text))
@@ -247,7 +254,10 @@ def select_until_phrase(left_right, phrase):
         Key("s-home, c-c/2").execute()
     if left_right == "right":
         Key("s-end, c-c/2").execute()
-    Pause("50").execute()
+    
+    # Give time to allow the text to get onto the clipboard
+    Pause("50").execute() # this pause is only needed for certain applications ( e.g. tex studio)
+    
     selected_text = pyperclip.paste()
     phrase = str(phrase)
     match = get_start_end_position(selected_text, phrase, left_right)
@@ -319,7 +329,10 @@ def copypaste_delete_until_phrase(left_right, phrase):
         
     if left_right == "right":
         Key("s-end, c-c/2").execute()
-    Pause("50").execute()
+    
+    # Give time to allow the text to get onto the clipboard
+    Pause("50").execute() # this pause is only needed for certain applications ( e.g. tex studio)
+
     # get text from clipboard
     selected_text = pyperclip.paste()
 

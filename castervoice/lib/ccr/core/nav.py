@@ -268,19 +268,23 @@ class Navigation(MergeRule):
         # the keypress waittime should probably be made higher for these commands.
         # the wait times in the functions could also be reduced.
         # the functions should probably be adjusted to avoid inappropriately recognizing substrings
-        # these work in most applications not all (e.g. doesn't work in Microsoft Word),
-        # probably something to do with the wait times within paste_string_without_altering_clipboard
+        # these work in most applications not all (e.g. sometimes doesn't work in Microsoft Word),
+        # Of these commands are not working in a particular application sometimes the problem is that 
+        # there is not enough time from when control-c is pressed until the contents of the clipboard are passed into the function
+        # The solution is to add a longer pause after pressing control see in the supporting functions in navigation.py
+        # For some applications this pause ( and other pauses in the functions for that matter ) is not necessary
+        # and may be removed by the user if they wish to speed up the execution of these commands
         
-        "change [<lease_ross>] <dictation> to <dictation2>":
+        "change <lease_ross> <dictation> to <dictation2>":
             R(Function(navigation.copypaste_replace_phrase_with_phrase,
                        dict(dictation="replaced_phrase", dictation2="replacement_phrase", lease_ross="left_right")),
               rdescript="Core: replace text to the left or right of the cursor"),
         
-        "remove [<lease_ross>] <dictation>":
+        "remove <lease_ross> <dictation>":
             R(Function(navigation.copypaste_remove_phrase_from_text,
                        dict(dictation="phrase", lease_ross="left_right")),
               rdescript="remove chosen phrase to the left or right of the cursor"),
-        "remove [lease] <left_character>":
+        "remove lease <left_character>":
             R(Function(navigation.copypaste_remove_phrase_from_text,
                        dict(left_character="phrase"),
                        left_right="left"),
@@ -290,12 +294,12 @@ class Navigation(MergeRule):
                        dict(right_character="phrase"),
                        left_right="right"),
               rdescript="remove chosen character to the right of the cursor"),
-        "go [lease] <left_character>":
+        "go lease <left_character>":
             R(Function(navigation.move_until_phrase,
                        dict(left_character="phrase"),
                        left_right="left"),
               rdescript="move to chosen character to the left of the cursor"),
-        "go [<lease_ross>] <dictation>":
+        "go <lease_ross> <dictation>":
             R(Function(navigation.move_until_phrase,
                        dict(dictation="phrase", lease_ross="left_right")),
               rdescript="move to chosen phrase to the left or right of the cursor"),
@@ -304,20 +308,20 @@ class Navigation(MergeRule):
                        dict(right_character="phrase"),
                        left_right="right"),
               rdescript="move to chosen character to the right of the cursor"),
-        "grab [<lease_ross>] <dictation> ":
+        "grab <lease_ross> <dictation> ":
             R(Function(navigation.select_until_phrase, dict(dictation="phrase", lease_ross="left_right")),
                  rdescript="select until chosen phrase (inclusive)"),
-        "grab [lease] <left_character>":
+        "grab lease <left_character>":
             R(Function(navigation.select_until_phrase, dict(left_character="phrase"), left_right="left"),
             rdescript="select left until chosen character"),
         "grab ross <right_character>":
             R(Function(navigation.select_until_phrase, dict(right_character="phrase"), left_right="right"),
             rdescript="select right until chosen character"),
-        "wipe [<lease_ross>] <dictation>":
+        "wipe <lease_ross> <dictation>":
             R(Function(navigation.copypaste_delete_until_phrase,
                        dict(dictation="phrase", lease_ross="left_right")),
               rdescript="delete left until chosen phrase (exclusive)"),
-        "wipe [lease] <left_character>":
+        "wipe lease <left_character>":
             R(Function(navigation.copypaste_delete_until_phrase,
                        dict(left_character="phrase"),
                        left_right="left"),
