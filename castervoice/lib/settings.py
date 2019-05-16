@@ -52,6 +52,8 @@ def _validate_engine_path():
     '''
     Validates path 'Engine Path' in settings.toml
     '''
+    if not sys.platform.startswith('win'):
+        return ''
     if os.path.isfile(_SETTINGS_PATH):
         with io.open(_SETTINGS_PATH, "rt", encoding="utf-8") as toml_file:
             data = toml.loads(toml_file.read())

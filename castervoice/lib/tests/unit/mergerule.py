@@ -1,7 +1,7 @@
 #Embedded file name: C:\NatLink\NatLink\MacroSystem\castervoice\lib\tests\unit\mergerule.py
 import unittest
 from castervoice.lib.context import AppContext
-from castervoice.apps.eclipse import EclipseCCR
+from castervoice.lib.tests.mocks import EclipseCCR
 from castervoice.lib.tests.mocks import Java
 from castervoice.lib.tests.mocks import Javascript
 from castervoice.lib.tests.mocks import Python

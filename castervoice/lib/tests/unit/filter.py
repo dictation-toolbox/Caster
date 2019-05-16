@@ -1,11 +1,9 @@
-from castervoice.apps import eclipse
-from castervoice.apps.eclipse import EclipseCCR
-from castervoice.lib.actions import Text
+from castervoice.lib.tests.mocks import eclipse_context
+from castervoice.lib.tests.mocks import EclipseCCR
+from castervoice.lib.tests.mocks import Text
 from castervoice.lib.tests.mocks import Bash
 from castervoice.lib.tests.mocks import Java
 from castervoice.lib.tests.mocks import Python
-from castervoice.lib.ccr.recording.alias import ChainAlias
-from castervoice.lib.ccr.standard import SymbolSpecs
 from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
 from castervoice.lib.dfplus.merge.filter import make_filter, there_is_spec_overlap, incoming_gets_priority
 from castervoice.lib.dfplus.merge.mergepair import MergeInf
@@ -20,7 +18,7 @@ class TestFilterFunctions(TestNexus):
         self.nexus.merger.add_global_rule(Python(name=self._python2))
         self.nexus.merger.add_global_rule(Java())
         self.nexus.merger.add_global_rule(Bash())
-        self.nexus.merger.add_app_rule(EclipseCCR(), eclipse.context)
+        self.nexus.merger.add_app_rule(EclipseCCR(), eclipse_context)
         self.nexus.merger.update_config()
         self.set_global = self.nexus.merger.global_rule_changer()
         self.set_selfmod = self.nexus.merger.selfmod_rule_changer()
@@ -59,8 +57,8 @@ class TestFilterNonBootTime(TestFilterFunctions):
     def test_runtime_global_action_replace(self):
         def replace_if_action(mp):
             if mp.rule1 is not None:
-                mp.rule1.mapping_actual()[SymbolSpecs.IF] = Text("test")
-            mp.rule2.mapping_actual()[SymbolSpecs.IF] = Text("test")
+                mp.rule1.mapping_actual()["iffae"] = Text("test")
+            mp.rule2.mapping_actual()["iffae"] = Text("test")
 
         ff = make_filter(lambda mp: replace_if_action(mp), None, MergeInf.RUN,
                          MergeInf.GLOBAL)
@@ -70,7 +68,7 @@ class TestFilterNonBootTime(TestFilterFunctions):
         self.set_global("Python", True, True)
 
         self.assertTrue(
-            isinstance(self.nexus.merger._base_global.mapping_actual()[SymbolSpecs.IF],
+            isinstance(self.nexus.merger._base_global.mapping_actual()["iffae"],
                        Text))
 
         self.nexus.merger._filters = []
@@ -79,5 +77,5 @@ class TestFilterNonBootTime(TestFilterFunctions):
         self.set_global("Python", True, True)
         '''make sure originals weren't changed'''
         self.assertFalse(
-            isinstance(self.nexus.merger._base_global.mapping_actual()[SymbolSpecs.IF],
+            isinstance(self.nexus.merger._base_global.mapping_actual()["iffae"],
                        Text))
