@@ -294,16 +294,16 @@ class Navigation(MergeRule):
                        dict(right_character="phrase"),
                        left_right="right"),
               rdescript="remove chosen character to the right of the cursor"),
-        "go lease <left_character>":
+        "go [<lease_ross>] [<before_after>] <dictation>":
+            R(Function(navigation.move_until_phrase,
+                       dict(dictation="phrase", lease_ross="left_right")),
+              rdescript="move to chosen phrase to the left or right of the cursor"),
+        "go [lease] [<before_after>] <left_character>":
             R(Function(navigation.move_until_phrase,
                        dict(left_character="phrase"),
                        left_right="left"),
               rdescript="move to chosen character to the left of the cursor"),
-        "go <lease_ross> <dictation>":
-            R(Function(navigation.move_until_phrase,
-                       dict(dictation="phrase", lease_ross="left_right")),
-              rdescript="move to chosen phrase to the left or right of the cursor"),
-        "go ross <right_character>":
+        "go ross [<before_after>] <right_character>":
             R(Function(navigation.move_until_phrase,
                        dict(right_character="phrase"),
                        left_right="right"),
@@ -402,6 +402,10 @@ class Navigation(MergeRule):
             "lease": "left",
             "ross": "right",
         }),
+        Choice("before_after", {
+            "before": "before",
+            "after": "after",
+        }),
         Choice(
             "left_character", {
                 "[left] prekris": "(",
@@ -470,6 +474,7 @@ class Navigation(MergeRule):
         "big": False,
         "splatdir": "backspace",
         "lease_ross": "left",
+        "before_after": None,
     }
 
 
