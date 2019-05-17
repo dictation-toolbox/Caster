@@ -7,8 +7,9 @@ from castervoice.lib.tests.mocks import Javascript
 from castervoice.lib.tests.mocks import Python
 from castervoice.lib.tests.mocks import Alias
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
+from castervoice.lib.tests.unit.nexus import TestNexus
 
-class TestMergeRule(unittest.TestCase):
+class TestMergeRule(TestNexus):
     def test_name_generation(self):
         size = 10
         names = set()
@@ -51,13 +52,11 @@ class TestMergeRule(unittest.TestCase):
         python_specs = len(python.mapping_actual().keys())
         java = Java()
         java_specs = len(java.mapping_actual().keys())
-        vanilla = Alias()
+        vanilla = Alias(self)
         vanilla_specs = len(vanilla.mapping_actual().keys())
         _merged = python.merge(java)
         self.assertEqual(python_specs, len(python.mapping_actual().keys()))
         self.assertEqual(java_specs, len(java.mapping_actual().keys()))
         _merged = vanilla.merge(java)
-        '''MergeRules get this @ merging:'''
-        del _merged.mapping_actual()["display available commands"]
         self.assertEqual(vanilla_specs + java_specs, len(_merged.mapping_actual().keys()))
         self.assertEqual(vanilla_specs, len(vanilla.mapping_actual().keys()))

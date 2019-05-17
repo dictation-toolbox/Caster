@@ -55,14 +55,13 @@ class AliasRule(SelfModifyingRule):
         SelfModifyingRule.__init__(self)
 
 class Alias(AliasRule):
-    def __init__(self):
+    def __init__(self, nexus):
         SelfModifyingRule.__init__(self)
 
     def refresh(self, *args):
         mapping = {}
         mapping["alias"] = Function(lambda : None)
         mapping["delete aliases"] = Function(lambda: None)
-        self.reset(mapping)
 
 class ChainAlias(AliasRule):
     pronunciation = "chain alias"
