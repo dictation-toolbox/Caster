@@ -200,6 +200,16 @@ def left_up(nexus):
     windll.user32.mouse_event(0x00000004, 0, 0, 0, 0)
 
 
+def right_down(nexus):
+    kill_grids_and_wait(nexus)
+    windll.user32.mouse_event(0x00000008, 0, 0, 0, 0)
+
+
+def right_up(nexus):
+    kill_grids_and_wait(nexus)
+    windll.user32.mouse_event(0x00000010, 0, 0, 0, 0)
+
+
 def wheel_scroll(direction, nnavi500):
     amount = 120
     if direction != "up":
