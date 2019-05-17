@@ -1,4 +1,3 @@
-
 import mock
 import sys
 import types
