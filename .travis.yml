@@ -1,0 +1,21 @@
+language: python
+python:
+  - "2.7"
+branches:
+  only:
+    - travis
+matrix:
+  include:
+    - os: windows
+      language: sh
+      python: "2.7"
+      before_install:
+        - choco install python2
+        - export PATH="/c/Python27:/c/Python27/Scripts:$PATH"
+        - python -m pip install --upgrade pip wheel
+      install:
+        - pip install -U -r requirements-dev.txt
+        - pip install -vvv --user -e .
+      script:
+        - python castervoice/lib/tests/testrunner.py
+        - pylint -E castervoice
