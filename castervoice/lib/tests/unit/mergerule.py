@@ -58,5 +58,7 @@ class TestMergeRule(TestNexus):
         self.assertEqual(python_specs, len(python.mapping_actual().keys()))
         self.assertEqual(java_specs, len(java.mapping_actual().keys()))
         _merged = vanilla.merge(java)
+        '''MergeRules get this @ merging:'''
+        del _merged.mapping_actual()["display available commands"]
         self.assertEqual(vanilla_specs + java_specs, len(_merged.mapping_actual().keys()))
         self.assertEqual(vanilla_specs, len(vanilla.mapping_actual().keys()))
