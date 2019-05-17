@@ -329,6 +329,8 @@ Capitalisation and spacing can be combined into a single command. Whether combin
 \command{shift click}{shift click}
 \command{squat}{left button down}
 \command{bench}{left button up}
+\command{lean}{right button down}
+\command{hoist}{right button up}
 \command{colic}{control left click}
 \command{scree \footnotemark[1]}{scroll wheel}
 \command{curse}{move cursor by pixels}
@@ -348,7 +350,7 @@ Capitalisation and spacing can be combined into a single command. Whether combin
 \command{jump in \footnotemark[2]}{move cursor inside next ([\{<}
 \command{jump out \footnotemark[2]}{move cursor past next )]\}>}
 \command{jump back \footnotemark[2]}{move cursor inside prev )]\}>}
-\command{jump in \footnotemark[2]}{highlight <target> in line}
+\command{fill <target> \footnotemark[2]}{highlight <target> in line}
 
 \footnotetext[2]{All of these are asynchronous, and can be cancelled with the word "cancel" if the search is taking too long. See \textit{navigation.py} for a full list of targets.}
 
@@ -420,13 +422,14 @@ Capitalisation and spacing can be combined into a single command. Whether combin
 \sectiontitle{Dragon}
 
 \command{number/spell/dictation/normal/command mode}{switch dragon modes}
-\command{reboot dragon}{}
 
 \sectiontitle{Update and Caster Management}
 
+\command{clear caster log}{Clears Log Window}
 \command{update caster}{Updates Caster}
 \command{update dragonfly}{Updates Dragonfly}
-\command{reboot caster}{Restarts Caster}
+\command{reboot dragon}{Restarts Caster}
+\command{reboot windows speech recognition}{Restarts Caster}
 
 \end{minipage}
 }
@@ -448,12 +451,6 @@ Capitalisation and spacing can be combined into a single command. Whether combin
 \examplecommand{curly quotes arch ross deckle quotes brov}{\{"a":"b"\}}
 \examplecommand{backslash format command curly}{\textbackslash command\{\}}
 \examplecommand{(python) tell sink print to console spark three}{new line, print(<third clipboard position>)}
-\sectiontitle{Update and Caster Management}
-
-\command{clear caster log}{Clears Log Window}
-\command{update caster}{Updates Caster}
-\command{update dragonfly}{Updates Dragonfly}
-\command{reboot caster}{Restarts Caster}
 \end{minipage}
 }
 

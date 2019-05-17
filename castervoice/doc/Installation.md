@@ -29,7 +29,8 @@ Make sure to select `Add python to path`. This can be done manually by searching
 
        ![Caster-Natlink.jpg](https://i.postimg.cc/d1jN4xcw/Caster-Natlink.jpg)
 
-**Third** download Caster and install dependencies. Choose **PIP** or **Classic** Install.
+### 3. Caster
+- Download Caster and install dependencies. Choose **PIP** or **Classic** Install.
 
 **PIP** install is convenient way to install Caster and uses it's development branch. **Classic** install enables the user to track changes with Caster code using git. Git allows users to contribute their own code to the Caster project. 
 
@@ -82,6 +83,9 @@ At the end of the PIP install instructions a CMD window will guide you of what t
 
   -  Look for `CasterInstall.log` on your desktop to check for error messages.
   - The PIP install is in beta yet please report any issues or error messages that you experience github [issues](https://github.com/dictation-toolbox/Caster/issues) or [gitter chat](https://gitter.im/synkarius/Caster?utm_source=share-link&utm_medium=link&utm_campaign=share-link). 
+
+- To fix `ERROR:action.exec:Execution failed: Function(mouse_alternates): [Error 126] The specified module could not be found`. Triggered by using the `Legion` command
+  In order to use Legion, you may need to install [Microsoft Visual C++ Redistributable Packages for Visual Studio 2013 (x86).](https://www.microsoft.com/en-us/download/details.aspx?id=40784) 
 
 
 **NatLink**

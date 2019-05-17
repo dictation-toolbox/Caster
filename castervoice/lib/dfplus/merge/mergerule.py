@@ -4,7 +4,8 @@ Created on Sep 1, 2015
 @author: synkarius
 '''
 from dragonfly import MappingRule, Pause, Function
-
+# from castervoice.lib.dfplus.state.short import R
+import re
 
 class MergeRule(MappingRule):
     @staticmethod
@@ -24,10 +25,10 @@ class MergeRule(MappingRule):
     for their respective enable/disable commands'''
     pronunciation = None
     '''MergeRules which define `non` will instantiate
-    their paired non-CCR MergeRule and activate it 
+    their paired non-CCR MergeRule and activate it
     alongside themselves'''
     non = None
-    '''MergeRules which define `mcontext` with a 
+    '''MergeRules which define `mcontext` with a
     Dragonfly AppContext become non-global; this
     is the same as adding a context to a Grammar'''
     mcontext = None
@@ -63,11 +64,25 @@ class MergeRule(MappingRule):
                 lambda: self._display_available_commands())
 
         MappingRule.__init__(self, name, mapping, extras, defaults, exported)
+        self.format_actions()
+
 
     def __eq__(self, other):
         if not isinstance(other, MergeRule):
             return False
         return self.ID == other.ID
+
+    def format_actions(self):
+        def create_rdescript(command, raction):
+            extras = ""
+            named_extras = re.findall(r"<(.*?)>", command)
+            if named_extras:
+                extras = ", %(" + ")s, %(".join(named_extras) + ")s"
+            return "%s: %s%s" % (self.name, command, extras)
+        for command, action in self.mapping.items():
+            if hasattr(action, "rdescript") and action.rdescript is None:
+                self.mapping[command].rdescript = create_rdescript(command, action)
+
 
     ''' "copy" getters used for safe merging;
     "actual" versions used for filter functions'''

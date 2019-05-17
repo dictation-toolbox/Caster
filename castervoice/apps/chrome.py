@@ -27,157 +27,120 @@ class ChromeRule(MergeRule):
     pronunciation = "google chrome"
     mapping = {
         "new window":
-            R(Key("c-n"), rdescript="Chrome: New Window"),
+            R(Key("c-n")),
         "(new incognito window | incognito)":
-            R(Key("cs-n"), rdescript="Chrome: New Incognito Window"),
+            R(Key("cs-n")),
         "new tab [<n>]":
-            R(Key("c-t"), rdescript="Chrome: New Tab")*Repeat(extra="n"),
+            R(Key("c-t")*Repeat(extra="n")),
         "reopen tab [<n>]":
-            R(Key("cs-t"), rdescript="Chrome: Reopen Tab")*Repeat(extra="n"),
+            R(Key("cs-t"))*Repeat(extra="n"),
         "close tab [<n>]":
-            R(Key("c-w"), rdescript="Chrome: Close Tab")*Repeat(extra='n'),
+            R(Key("c-w"))*Repeat(extra='n'),
         "close all tabs":
-            R(Key("cs-w"), rdescript="Chrome: Close All Tabs"),
+            R(Key("cs-w")),
         "next tab [<n>]":
-            R(Key("c-tab"), rdescript="Chrome: Next Tab")*Repeat(extra="n"),
+            R(Key("c-tab"))*Repeat(extra="n"),
         "previous tab [<n>]":
-            R(Key("cs-tab"), rdescript="Chrome: Previous Tab")*Repeat(extra="n"),
+            R(Key("cs-tab"))*Repeat(extra="n"),
         "new tab that":
-            R(Mouse("middle") + Pause("20") + Key("c-tab"),
-              rdescript=
-              "Browser: when the mouse is hovering over a link open that link in a new tab and then go to that new tab "
-              ),
+            R(Mouse("middle") + Pause("20") + Key("c-tab")),
         "<nth> tab":
-            R(Key("c-%(nth)s"), rdescript="Chrome: nth tab" ),
+            R(Key("c-%(nth)s") ),
         "last tab":
-            R(Key("c-9"), rdescript="Chrome: Last tab"),
+            R(Key("c-9")),
         "second last tab":
-            R(Key("c-9, cs-tab"), rdescript="Chrome: Second last tab"),
+            R(Key("c-9, cs-tab")),
         "go back [<n>]":
-            R(Key("a-left/20"), rdescript="Chrome: Navigate History Backward")*
-            Repeat(extra="n"),
+            R(Key("a-left/20"))*Repeat(extra="n"),
         "go forward [<n>]":
-            R(Key("a-right/20"), rdescript="Chrome: Navigate History Forward")*
-            Repeat(extra="n"),
+            R(Key("a-right/20"))*Repeat(extra="n"),
         "zoom in [<n>]":
-            R(Key("c-plus/20"), rdescript="Chrome: Zoom In")*Repeat(extra="n"),
+            R(Key("c-plus/20"))*Repeat(extra="n"),
         "zoom out [<n>]":
-            R(Key("c-minus/20"), rdescript="Chrome: Zoom")*Repeat(extra="n"),
+            R(Key("c-minus/20"))*Repeat(extra="n"),
         "zoom reset":
-            R(Key("c-0"), rdescript="Chrome: Reset Zoom"),
+            R(Key("c-0")),
         "super refresh":
-            R(Key("c-f5"), rdescript="Chrome: Super Refresh"),
+            R(Key("c-f5")),
         "switch focus [<n>]":
-            R(Key("f6/20"), rdescript="Chrome: Switch Focus")*Repeat(extra="n"),
+            R(Key("f6/20"))*Repeat(extra="n"),
         "[find] next match [<n>]":
-            R(Key("c-g/20"), rdescript="Chrome: Next Match")*Repeat(extra="n"),
+            R(Key("c-g/20"))*Repeat(extra="n"),
         "[find] prior match [<n>]":
-            R(Key("cs-g/20"), rdescript="Chrome: Prior Match")*Repeat(extra="n"),
+            R(Key("cs-g/20"))*Repeat(extra="n"),
         "[toggle] caret browsing":
-            R(Key("f7"), rdescript="Chrome: Caret Browsing"
-              ),  # now available through an add on, was a standard feature
+            R(Key("f7")),
+              # now available through an add on, was a standard feature
         "home page":
-            R(Key("a-home"), rdescript="Chrome: Home Page"),
+            R(Key("a-home")),
         "[show] history":
-            R(Key("c-h"), rdescript="Chrome: Show History"),
+            R(Key("c-h")),
         "address bar":
-            R(Key("c-l"), rdescript="Chrome: Address Bar"),
+            R(Key("c-l")),
         "show downloads":
-            R(Key("c-j"), rdescript="Chrome: Show Downloads"),
+            R(Key("c-j")),
         "add bookmark":
-            R(Key("c-d"), rdescript="Chrome: Add Bookmark"),
+            R(Key("c-d")),
         "bookmark all tabs":
-            R(Key("cs-d"), rdescript="Chrome: Bookmark All Tabs"),
+            R(Key("cs-d")),
         "[toggle] bookmark bar":
-            R(Key("cs-b"), rdescript="Chrome: Toggle Bookmark Bar"),
+            R(Key("cs-b")),
         "[show] bookmarks":
-            R(Key("cs-o"), rdescript="Chrome: Show Bookmarks"),
+            R(Key("cs-o")),
         "switch user":
-            R(Key("cs-m"), rdescript="Chrome: Switch User"),
+            R(Key("cs-m")),
         "chrome task manager":
-            R(Key("s-escape"), rdescript="Chrome: Chrome Task Manager"),
+            R(Key("s-escape")),
         "[toggle] full-screen":
-            R(Key("f11"), rdescript="Chrome: Toggle Fullscreen Mode"),
+            R(Key("f11")),
         "focus notification":
-            R(Key("a-n"), rdescript="Chrome: Focus Notification"),
+            R(Key("a-n")),
         "allow notification":
-            R(Key("as-a"), rdescript="Chrome: Allow Notification"),
+            R(Key("as-a")),
         "deny notification":
-            R(Key("as-a"), rdescript="Chrome: Deny Notification"),
+            R(Key("as-a")),
         "developer tools":
-            R(Key("f12"), rdescript="Chrome: Developer Tools"),
+            R(Key("f12")),
         "view [page] source":
-            R(Key("c-u"), rdescript="Chrome: View Page Source"),
+            R(Key("c-u")),
         "resume":
-            R(Key("f8"), rdescript="Chrome: Resume"),
+            R(Key("f8")),
         "step over":
-            R(Key("f10"), rdescript="Chrome: Step Over"),
+            R(Key("f10")),
         "step into":
-            R(Key("f11"), rdescript="Chrome: Step Into"),
+            R(Key("f11")),
         "step out":
-            R(Key("s-f11"), rdescript="Chrome: Step Out"),
+            R(Key("s-f11")),
 
         "IRC identify":
-            R(Text("/msg NickServ identify PASSWORD"),
-              rdescript="IRC Chat Channel Identify"),
+            R(Text("/msg NickServ identify PASSWORD")),
 
         "google that":
-            R(Store(remove_cr=True) + Key("c-t") + Retrieve() + Key("enter"),
-                rdescript="Chrome: google that"),
+            R(Store(remove_cr=True) + Key("c-t") + Retrieve() + Key("enter")),
 
         "wikipedia that":
-            R(Store(space="+", remove_cr=True) + Key("c-t") + Text("https://en.wikipedia.org/w/index.php?search=") + Retrieve() + Key("enter"),
-                rdescript="Chrome: Wikipedia that"),
+            R(Store(space="+", remove_cr=True) + Key("c-t") + Text("https://en.wikipedia.org/w/index.php?search=") + Retrieve() + Key("enter")),
 
         "duplicate tab":
-            R(Key("a-d,a-c,c-t/15,c-v/15, enter"), rdescript="duplicate the current tab"),
+            R(Key("a-d,a-c,c-t/15,c-v/15, enter")),
         "duplicate window":
-            R(Key("a-d,a-c,c-n/15,c-v/15, enter"),
-              rdescript="duplicate the current tab in a new window"),
+            R(Key("a-d,a-c,c-n/15,c-v/15, enter")),
         "extensions":
-            R(Key("a-f/20, l, e/15, enter"), rdescript="chrome extensions"),
+            R(Key("a-f/20, l, e/15, enter")),
         "(menu | three dots)":
-            R(Key("a-f"),
-              rdescript="go to the three dots menu at the top right of chrome"),
+            R(Key("a-f")),
         "settings":
-            R(Key("a-f/5, s"), rdescript="chrome settings"),
+            R(Key("a-f/5, s")),
         "downloads":
-            R(Key("c-j"), rdescript="show downloads"),
+            R(Key("c-j")),
         "chrome task manager":
-            R(Key("s-escape"), rdescript="chrome task manager"),
+            R(Key("s-escape")),
         "clear browsing data":
-            R(Key("cs-del"), rdescript="clear browsing data"),
+            R(Key("cs-del")),
         "developer tools":
-            R(Key("cs-i"), rdescript="developer tools"),
+            R(Key("cs-i")),
         "more tools":
-            R(Key("a-f/5, l"), rdescript="more tools"),
-
-        # click by voice chrome extension commands
-        # these require the click by voice Chrome extension
-        # these allow you to browse Google Chrome hands-free
-        #  (I haven't tried surfer keys yet, but apparently that's another good option)
-        "<numbers> <dictation>":
-            R(Key("cs-space/30") + Text("%(numbers)d:%(click_by_voice_options)s") +
-              Key("enter/30") + Text("%(dictation)s"),
-              rdescript="input dictation into numbered text field"),
-        "go <numbers> <dictation>":
-            R(Key("cs-space/30") + Text("%(numbers)d:%(click_by_voice_options)s") +
-              Key("enter/30") + Text("%(dictation)s") + Key("enter"),
-              rdescript="input dictation into numbered text field then press enter"),
-        "next <numbers> <dictation>":
-            R(Key("cs-space/30") + Text("%(numbers)d:%(click_by_voice_options)s") +
-              Key("enter/30") + Text("%(dictation)s") + Key("tab"),
-              rdescript="input dictation into numbered text field then press tab"),
-        "<numbers> [<click_by_voice_options>]":
-            R(Key("cs-space/30") + Text("%(numbers)d:%(click_by_voice_options)s") +
-              Key("enter"),
-              rdescript="click link with click by voice options"),
-        "hide hints":
-            R(Key("cs-space/30") + Text(":-") + Key("enter"),
-              rdescript="hide click by voice hints (i.e. numbers)"),
-        "show hints":
-            R(Key("cs-space/30") + Text(":+") + Key("enter"),
-              rdescript="show click by voice hints (i.e. numbers)"),
+            R(Key("a-f/5, l")),
     }
     extras = [
         Choice(

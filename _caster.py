@@ -59,10 +59,11 @@ from castervoice.lib.dfplus.hint.nodes import css
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.merge import gfilter
 
-# Load user rules
-_NEXUS.process_user_content()
-_NEXUS.merger.update_config()
-_NEXUS.merger.merge(MergeInf.BOOT)
+if not globals().has_key('profile_switch_occurred'):
+    # Load user rules
+    _NEXUS.process_user_content()
+    _NEXUS.merger.update_config()
+    _NEXUS.merger.merge(MergeInf.BOOT)
 
 
 # Checks if install is classic or PIP of caster
@@ -270,6 +271,11 @@ if settings.SETTINGS["feature_rules"]["alias"]:
     grammar.add_rule(alias_rule)
 
 grammar.load()
+
+if globals().has_key('profile_switch_occurred'):
+    reload(sikuli)
+else:
+    profile_switch_occurred = None
 
 print("\n*- Starting " + settings.SOFTWARE_NAME + " -*")
 
