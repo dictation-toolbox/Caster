@@ -258,8 +258,9 @@ class Navigation(MergeRule):
 
         "hug <enclosure>":
             R(Function(text_utils.enclose_selected)),
-        "dredge":
-            R(Key("a-tab")),
+        "dredge [<nnavi10>]":
+            R(Key("alt:down, tab/20:%(nnavi10)d, alt:up"), 
+               rdescript="Core: switch to most recent Windows"),
 
     }
 
