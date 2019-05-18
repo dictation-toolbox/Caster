@@ -13,6 +13,7 @@ import time
 from castervoice.lib.actions import Key, Text
 from castervoice.lib.context import AppContext, read_selected_without_altering_clipboard
 from castervoice.lib.utilities import load_toml_file
+from castervoice.lib import settings
 
 _USER_DIR = os.path.expanduser("~").replace("\\", "/") + "/.caster"
 
@@ -43,8 +44,12 @@ def github_branch_pull_request():
                 local_directory = local_directory.replace("\\", "\\\\")
                 print(local_directory)
                 # needs a settings path entry for git-bash.exe or preferred terminal?
-                Popen("C:/Program Files/Git/git-bash.exe")
-                # need a wait command REMOVE import time when done
+                TERMINAL_PATH = settings.SETTINGS["paths"]["TERMINAL_PATH"]
+                if TERMINAL_PATH != "":
+                    terminal = Popen(TERMINAL_PATH)
+                else:
+                    raise Exception('TERMINAL_PATH in <user_dir>/.caster/data/settings.toml is not set')
+                # This can be improved with a wait command
                 time.sleep(2)
                 print("Checking out pull request locally 3.")
                 Text("cd ").execute()
@@ -60,7 +65,7 @@ def github_branch_pull_request():
                 Text(fetch_command).execute()
                 time.sleep(0.2)
                 print("Checking out pull request locally 7.")
-                Key("enter").execute() # fetch is safe enough
+                Key("enter").execute() # fetch is safe enough so will run this
                 time.sleep(0.2)
                 print("Checking out pull request locally 8.")
                 split_string[0] = split_string[0].replace("https://github.com/", "")

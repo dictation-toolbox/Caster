@@ -43,7 +43,11 @@ HMC_SEPARATOR = "[hmc]"
 
 WSR = False
 
-
+if os.path.isfile('C:/Program Files/Git/git-bash.exe'):
+    TERMINAL_PATH_DEFAULT = "C:/Program Files/Git/git-bash.exe"
+else:
+    TERMINAL_PATH_DEFAULT = ""
+        
 def get_filename():
     return _SETTINGS_PATH
 
@@ -168,7 +172,11 @@ _DEFAULT_SETTINGS = {
 
         # PYTHON
         "PYTHONW": "C:/Python27/pythonw",
-        "WXPYTHON_PATH": "C:/Python27/Lib/site-packages/wx-3.0-msw"
+        "WXPYTHON_PATH": "C:/Python27/Lib/site-packages/wx-3.0-msw",
+        "TERMINAL_PATH": TERMINAL_PATH_DEFAULT,
+
+            
+        
     },
 
     # Apps Section
