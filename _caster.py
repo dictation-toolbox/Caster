@@ -4,19 +4,20 @@ main Caster module
 Created on Jun 29, 2014
 '''
 
+import os
 import logging
 logging.basicConfig()
 
-import time
-from dragonfly import (Function, Grammar, Playback, Dictation, Choice, Pause)
-from caster.lib.ccr.standard import SymbolSpecs
+import time, socket
+from dragonfly import (Function, Grammar, Playback, Dictation, Choice, Pause, RunCommand)
+from castervoice.lib.ccr.standard import SymbolSpecs
 
 
 def _wait_for_wsr_activation():
     count = 1
     while True:
         try:
-            from caster.apps import firefox
+            from castervoice.apps import firefox
             break
         except:
             print("(%d) Attempting to load Caster -- WSR not loaded and listening yet..."
@@ -26,43 +27,139 @@ def _wait_for_wsr_activation():
 
 
 _NEXUS = None
-
-from caster.lib import settings  # requires nothing
+from castervoice.lib import settings  # requires nothing
 settings.WSR = __name__ == "__main__"
-from caster.lib import utilities  # requires settings
+from castervoice.lib import utilities  # requires settings
 if settings.WSR:
     _wait_for_wsr_activation()
     SymbolSpecs.set_cancel_word("escape")
-from caster.lib import control
+from castervoice.lib import control
 _NEXUS = control.nexus()
 
-from caster.apps import *
-from caster.asynch import *
-from caster.lib import context
-from caster.lib.actions import Key
-import caster.lib.dev.dev
-from caster.asynch.sikuli import sikuli
-from caster.lib import navigation
+from castervoice.apps import *
+from castervoice.asynch import *
+from castervoice.lib import context
+from castervoice.lib.actions import Key
+from castervoice.lib.terminal import TerminalCommand
+import castervoice.lib.dev.dev
+from castervoice.asynch.sikuli import sikuli
+from castervoice.lib import navigation
 navigation.initialize_clipboard(_NEXUS)
-from caster.lib.dfplus.state.short import R
-from caster.lib.dfplus.additions import IntegerRefST
+from castervoice.lib.dfplus.state.short import R
+from castervoice.lib.dfplus.additions import IntegerRefST
 
-from caster.lib.dfplus.merge.mergepair import MergeInf
-from caster.lib.ccr import *
-from caster.lib.ccr.recording.again import Again
-from caster.lib.ccr.recording.bringme import bring_rule
-from caster.lib.ccr.recording.alias import Alias
-from caster.lib.ccr.recording import history
-from caster.lib.dev import dev
-from caster.lib.dfplus.hint.nodes import css
-from caster.user.filters.examples import scen4, modkeysup
-from caster import user
-from caster.lib.dfplus.merge.mergerule import MergeRule
-from caster.lib.dfplus.merge import gfilter
+from castervoice.lib.dfplus.merge.mergepair import MergeInf
+from castervoice.lib.ccr import *
+from castervoice.lib.ccr.recording.again import Again
+from castervoice.lib.ccr.recording.bringme import bring_rule
+from castervoice.lib.ccr.recording.alias import Alias
+from castervoice.lib.ccr.recording import history
+from castervoice.lib.dev import dev
+from castervoice.lib.dfplus.hint.nodes import css
+from castervoice.lib.dfplus.merge.mergerule import MergeRule
+from castervoice.lib.dfplus.merge import gfilter
+
+if not globals().has_key('profile_switch_occurred'):
+    # Load user rules
+    _NEXUS.process_user_content()
+    _NEXUS.merger.update_config()
+    _NEXUS.merger.merge(MergeInf.BOOT)
+
+
+# Checks if install is classic or PIP of caster
+def installtype():
+    directory = os.path.join(os.getcwd(), "castervoice")
+    if os.path.isdir(directory):
+        return
+
+
+def internetcheck(host="1.1.1.1", port=53, timeout=3):
+    """
+    Checks for network connection via DNS resolution.
+    :param host: CloudFire DNS
+    :param port: 53/tcp
+    :param timeout: An integer
+    :return: True or False
+    """
+    try:
+        socket.setdefaulttimeout(timeout)
+        socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))
+        return True
+    except Exception as error:
+        print(error.message)
+        return False
+
+
+# Find the pip.exe script for Python 2.7. Fallback on pip.exe.
+PIP_PATH = "pip.exe"
+python_scripts = os.path.join("Python27", "Scripts")
+for path in os.environ["PATH"].split(";"):
+    pip = os.path.join(path, "pip.exe")
+    if path.endswith(python_scripts) and os.path.isfile(pip):
+        PIP_PATH = pip
+        break
+
+
+class DependencyCheck(TerminalCommand):
+    trusted = True  # Command will execute silently without ConfirmAction
+    synchronous = True
+
+    def process_command(self, proc):
+        update = False
+        for line in iter(proc.stdout.readline, b''):
+            if "INSTALLED" and "latest" in line:
+                update = True
+
+        return update
+
+
+class CasterCheck(DependencyCheck):
+    command = [PIP_PATH, "search", "castervoice"]
+
+    def process_command(self, proc):
+        if DependencyCheck.process_command(self, proc):
+            print("Caster: Caster is up-to-date")
+        else:
+            print("Caster: Say 'Update Caster' to update.")
+
+
+class DragonflyCheck(DependencyCheck):
+    command = [PIP_PATH, "search", "dragonfly2"]
+
+    def process_command(self, proc):
+        if DependencyCheck.process_command(self, proc):
+            print("Caster: Dragonfly is up-to-date")
+        else:
+            print("Caster: Say 'Update Dragonfly' to update.")
+
+
+class DependencyUpdate(RunCommand):
+    synchronous = True
+
+    def process_command(self, proc):
+        # Process the output from the command.
+        RunCommand.process_command(self, proc)
+
+        # Only reboot dragon if the command was successful and there is an
+        # internet connection; 'pip install ...' may exit successfully even
+        # if there were connection errors.
+        if proc.wait() == 0 and internetcheck():
+            Playback([(["reboot", "dragon"], 0.0)]).execute()
+
+
+if settings.SETTINGS["miscellaneous"]["online_mode"]:
+    if internetcheck():
+        if installtype() is False:
+            CasterCheck().execute()
+        DragonflyCheck().execute()
+    else:
+        print("\nCaster: Network off-line check network connection\n")
+else:
+    print("\nCaster: Off-line mode is enabled\n")
 
 
 def change_monitor():
-    if settings.SETTINGS["miscellaneous"]["sikuli_enabled"]:
+    if settings.SETTINGS["sikuli"]["enabled"]:
         Playback([(["monitor", "select"], 0.0)]).execute()
     else:
         print("This command requires SikuliX to be enabled in the settings file")
@@ -84,7 +181,13 @@ class MainRule(MergeRule):
         return Choice("name2", choices)
 
     mapping = {
-        # Dragon NaturallySpeaking commands moved to dragon.py
+        # update management
+        "update caster":
+            R(DependencyUpdate([PIP_PATH, "install", "--upgrade", "castervoice"]),
+              rdescript="Core: Update and restart Caster"),
+        "update dragonfly":
+            R(DependencyUpdate([PIP_PATH, "install", "--upgrade", "dragonfly2"]),
+              rdescript="Core: Update dragonfly2 and restart Caster"),
 
         # hardware management
         "volume <volume_mode> [<n>]":
@@ -96,11 +199,11 @@ class MainRule(MergeRule):
 
         # window management
         'minimize':
-            Playback([(["minimize", "window"], 0.0)]),
+            R(Playback([(["minimize", "window"], 0.0)]), rdescript="Minimize Window"),
         'maximize':
-            Playback([(["maximize", "window"], 0.0)]),
+            R(Playback([(["maximize", "window"], 0.0)]), rdescript="Maximize Window"),
         "remax":
-            R(Key("a-space/10,r/10,a-space/10,x"), rdescript="Force Maximize"),
+            R(Key("a-space/10,r/10,a-space/10,x"), rdescript="Force Maximize Window"),
 
         # passwords
 
@@ -122,6 +225,11 @@ class MainRule(MergeRule):
         "<enable> <name2>":
             R(Function(_NEXUS.merger.selfmod_rule_changer(), save=True),
               rdescript="Toggle sm-CCR Module"),
+        "enable caster":
+            R(Function(_NEXUS.merger.merge, time=MergeInf.RUN, name="numbers"),
+              rdescript="Enable CCR rules"),
+        "disable caster":
+            R(Function(_NEXUS.merger.ccr_off), rdescript="Disable CCR rules"),
     }
     extras = [
         IntegerRefST("n", 1, 50),
@@ -158,16 +266,18 @@ if settings.SETTINGS["feature_rules"]["again"]:
     grammar.add_rule(again_rule)
 
 if settings.SETTINGS["feature_rules"]["alias"]:
-    alias_rule = Alias(name="alias")
+    alias_rule = Alias(_NEXUS)
     gfilter.run_on(alias_rule)
     grammar.add_rule(alias_rule)
 
 grammar.load()
 
-_NEXUS.merger.update_config()
-_NEXUS.merger.merge(MergeInf.BOOT)
+if globals().has_key('profile_switch_occurred'):
+    reload(sikuli)
+else:
+    profile_switch_occurred = None
 
-print("*- Starting " + settings.SOFTWARE_NAME + " -*")
+print("\n*- Starting " + settings.SOFTWARE_NAME + " -*")
 
 if settings.WSR:
     import pythoncom
