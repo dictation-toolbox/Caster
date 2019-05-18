@@ -111,7 +111,7 @@ def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, le
         Key("s-end, c-c/2").execute()
     
     # Give time to allow the text to get onto the clipboard
-    Pause("50").execute() # this pause is only needed for certain applications ( e.g. tex studio)
+    Pause("50").execute() # this pause is only needed for certain applications ( e.g. tex studio), Try reducing it and see if you get away with it 
     
     selected_text = pyperclip.paste()
     # the print statement below is for debugging purposes and should be removed eventually
@@ -163,7 +163,7 @@ def copypaste_remove_phrase_from_text(phrase, left_right):
         Key("s-end, c-c/2").execute()
     
     # Give time to allow the text to get onto the clipboard
-    Pause("50").execute() # this pause is only needed for certain applications ( e.g. tex studio)
+    Pause("50").execute() # this pause is only needed for certain applications ( e.g. tex studio), Try reducing it and see if you get away with it 
     
     # get text from clipboard
     selected_text = pyperclip.paste()
@@ -203,7 +203,7 @@ def move_until_phrase(left_right, before_after, phrase):
         Key("s-end, c-c/2").execute()
     
     # Give time to allow the text to get onto the clipboard
-    Pause("50").execute() # this pause is only needed for certain applications ( e.g. tex studio)
+    Pause("50").execute() # this pause is only needed for certain applications ( e.g. tex studio), Try reducing it and see if you get away with it 
     
     selected_text = pyperclip.paste()
     # the print statement below is for debugging purposes and should be removed eventually
@@ -330,7 +330,7 @@ def select_until_phrase(left_right, phrase):
         Key("s-end, c-c/2").execute()
     
     # Give time to allow the text to get onto the clipboard
-    Pause("60").execute() # this pause is only needed for certain applications ( e.g. tex studio)
+    Pause("50").execute() # this pause is only needed for certain applications ( e.g. tex studio), Try reducing it and see if you get away with it 
     selected_text = pyperclip.paste()
     # the print statement below is for debugging purposes and should be removed eventually
     # print("selected_text: {}".format(selected_text))
@@ -406,7 +406,7 @@ def copypaste_delete_until_phrase(left_right, phrase):
         Key("s-end, c-c/2").execute()
     
     # Give time to allow the text to get onto the clipboard
-    Pause("50").execute() # this pause is only needed for certain applications ( e.g. tex studio)
+    Pause("50").execute() # this pause is only needed for certain applications ( e.g. tex studio), Try reducing it and see if you get away with it 
 
     # get text from clipboard
     selected_text = pyperclip.paste()

@@ -267,7 +267,6 @@ class Navigation(MergeRule):
         # The alphabet should probably be added into the choice dictionaries.
         # the keypress waittime should probably be made higher for these commands.
         # the wait times in the functions could also be reduced.
-        # the functions should probably be adjusted to avoid inappropriately recognizing substrings
         # these work in most applications not all (e.g. sometimes doesn't work in Microsoft Word),
         # Of these commands are not working in a particular application sometimes the problem is that 
         # there is not enough time from when control-c is pressed until the contents of the clipboard are passed into the function
