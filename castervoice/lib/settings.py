@@ -79,7 +79,10 @@ def _find_natspeak():
     '''
     print("Searching Windows Registry For DNS...")
     proc_arch = os.environ['PROCESSOR_ARCHITECTURE'].lower()
-    proc_arch64 = os.environ['PROCESSOR_ARCHITEW6432'].lower()
+    try:
+        proc_arch64 = os.environ['PROCESSOR_ARCHITEW6432'].lower()
+    except KeyError:
+        proc_arch64 = False
 
     if proc_arch == 'x86' and not proc_arch64:
         arch_keys = {0}
