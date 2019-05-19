@@ -4,11 +4,6 @@
 # __version__ = "3.0"
 #
 
-from enum_custom import MultiValueEnum
-from enum import Enum
-
-from Command import Command
-
 # general
 expand = "expand [selection] [<n>]"
 kraken = "smart kraken"
@@ -21,8 +16,8 @@ build = "build"
 run = "run"
 build_and_run = "build and run"
 config = "run config"
-show_documentation = "show doc"
-show_parameters = "show param"
+show_documentation = "show (doc|documentation)"
+show_parameters = "show (param|parameter)"
 
 # window navigation
 tab = "tee ross|next tab"
@@ -30,7 +25,7 @@ prior_tab = "(tee sauce|(prior|previous) tab)"
 close_tab = "tee deli [<n>]|close tab [<n>]"
 go_to_editor = "go [to] editor"
 go_to_project_explorer = "go [to] project"
-go_to_terminal = "go [to] term"
+toggle_terminal = "[toggle] (term|terminal)"
 new_file = "new file"
 
 # code navigation
@@ -52,10 +47,10 @@ find_in_files = "find [in] files"
 replace_in_files = "replace [in] files"
 
 # line operations
-line_up = "line up [<n>]"
-line_down = "line down [<n>]"
-delete_line = "delete line"
-kill_the_rest_of_line = "kill"
+line_up = "[move] line up [<n>]"
+line_down = "[move] line down [<n>]"
+delete_line = "(kill|delete)"
+delete_until_end_of_line = "kill ross|delete right"
 comment_line = "comment line"
 uncomment_line = "uncomment line"
 duplicate = "duplicate"
