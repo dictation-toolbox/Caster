@@ -36,7 +36,10 @@ class GitBashRule(MergeRule):
             Text("git init"),
         "(git|get) add":
             R(Key("g, i, t, space, a, d, d, space, dot"),
-              rdescript="GIT: Add All"),
+              rdescript="GIT: Add all in directory"),
+        "(git|get) add all":
+            R(Key("g, i, t, space, a, d, d, space, minus, A"),
+              rdescript="GIT: Add all"),
         "(git|get) status":
             R(Key("g, i, t, space, s, t, a, t, u, s"), rdescript="GIT: Status"),
         "(git|get) commit":
