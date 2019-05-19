@@ -34,7 +34,7 @@ class JetbrainsRule(MergeRule):
     ]
 
     mapping = {
-        IDE.QUICK_FIX : R(Key("a-enter")),
+        IDE.QUICK_FIX: R(Key("a-enter")),
         IDE.duplicate: R(Key("c-d")),
         "auto complete": R(Key("cs-a")),
         IDE.FORMAT_ALL_CODE: R(Key("ca-l")),
@@ -42,9 +42,11 @@ class JetbrainsRule(MergeRule):
         "show param": R(Key("c-p")),
         IDE.GENERATE_CODE: R(Key("a-insert")),
         IDE.NEW_FILE: R(Key("a-insert")),
-        IDE.source: R(Key("f4")),
-        IDE.delete_line: R(Key("c-y")),
-        IDE.search_symbol_in_all_files: R(Key("cas-n")),
+        "jump to source": R(Key("f4")),
+        IDE.DELETE_LINE: R(Key("c-y")),
+        IDE.SEARCH_FOR_SYMBOL_AND_ALL_FILES: R(Key("cas-n")),
+        IDE.SEARCH_FOR_SYMBOL_AND_ALL_FILES: R(Key("cs-n")),
+        IDE.SEARCH_FOR_CLASS: R(Key("c-n")),
         IDE.BUILD_PROJECT: R(Key("c-f9")),
         IDE.BUILD_AND_RUN_PROJECT: R(Key("s-f10")),
         IDE.NEXT_TAB: R(Key("a-right")),
@@ -53,26 +55,25 @@ class JetbrainsRule(MergeRule):
         IDE.uncomment_line: R(Key("cs-slash")),
         "select ex" : R(Key("c-w")),
         "select ex down" : R(Key("cs-w")),
-        IDE.search_in_all_files: R(Key("shift, shift")),
-        IDE.find_in_current_file: R(Key("c-f")),
-        IDE.replace_in_current_file: R(Key("c-r")),
-        IDE.find_in_all_files: R(Key("cs-f")),
-        IDE.replace_in_all_files: R(Key("cs-r")),
+        IDE.SEARCH_IN_ALL_FILES: R(Key("shift, shift")),
+        IDE.FIND_IN_CURRENT_FILE: R(Key("c-f")),
+        IDE.REPLACE_IN_CURRENT_FILE: R(Key("c-r")),
+        IDE.FIND_IN_ALL_FILES: R(Key("cs-f")),
+        IDE.REPLACE_IN_ALL_FILES: R(Key("cs-r")),
         IDE.GO_TO_LINE: R(Key("c-g/10") + Text("%(n)s") + Key("enter")),
         IDE.methods: R(Key("c-i")),
         IDE.override_methods: R(Key("c-o")),
         IDE.RUN_CONFIGURE_PROJECT: R(Key("as-f10")),
-        IDE.find_usage: R(Key("a-f7")),
-        IDE.declaration: R(Key("c-b")),
+        IDE.FIND_USAGE: R(Key("a-f7")),
+        IDE.GO_TO_DECLARATION: R(Key("c-b")),
         IDE.SMART_AUTO_COMPLETE: R(Key("cs-space")),
         IDE.NAVIGATE_BACKWARD: R(Key("ca-left")) * Repeat(extra="n"),
-        IDE.forward: R(Key("ca-left")) * Repeat(extra="n"),
-        IDE.delete_to_line_end: R(Key("c-y")),
+        IDE.NAVIGATE_FORWARD: R(Key("ca-left")) * Repeat(extra="n"),
         IDE.METHOD_FORWARD: R(Key("a-down")) * Repeat(extra="n"),
         IDE.METHOD_BACKWARD: R(Key("a-up")) * Repeat(extra="n"),
         IDE.imports: R(Key("ca-o")) * Repeat(extra="n"),
-        IDE.LINE_UP: R(Key("as-up")) * Repeat(extra="n"),
-        IDE.line_down: R(Key("as-down")) * Repeat(extra="n"),
+        IDE.MOVE_LINE_UP: R(Key("as-up")) * Repeat(extra="n"),
+        IDE.MOVE_LINE_DOWN: R(Key("as-down")) * Repeat(extra="n"),
         IDE.EXPAND_SELECTION: R(Key("c-w")) * Repeat(extra="n"),
         IDE.indent: R(Key("ca-i")),
         "[<n>] before" : R(Key("c-left")) * Repeat(extra="n"),
@@ -80,7 +81,14 @@ class JetbrainsRule(MergeRule):
         "[<n>] befores": R(Key("cs-left")) * Repeat(extra="n"),
         "[<n>] afters" : R(Key("cs-right")) * Repeat(extra="n"),
         IDE.CLOSE_TAB: R(Key("c-f4")) * Repeat(extra="n"),
-        # Refactoring
+        IDE.RUN_PROJECT: R(Key("cs-f10")),
+        "settings": R(Key("ca-s")),
+
+        # delete to line end and start must be bound manually
+        IDE.DELETE_TO_LINE_START: R(Key("a-d,0")),
+        IDE.DELETE_TO_LINE_END: R(Key("a-d,$")),
+
+        # refactoring
         IDE.refactor: R(Key("cas-t")),
         IDE.rename: R(Key("s-f6")),
         IDE.inline: R(Key("ca-n")),
@@ -89,11 +97,11 @@ class JetbrainsRule(MergeRule):
         IDE.field: R(Key("ca-f")) * Repeat(extra="n"),
         IDE.constant: R(Key("ca-c")) * Repeat(extra="n"),
         IDE.extract_param: R(Key("ca-p")) * Repeat(extra="n"),
-        # Needs to be manually bound under settings->keymappings
-        IDE.GO_TO_EDITOR: R(Key("esc")),
+
+        # window navigation
+        IDE.GO_TO_EDITOR: R(Key("escape")),
         IDE.GO_TO_PROJECT_EXPLORER: R(Key("a-1")),
         IDE.TOGGLE_TERMINAL: R(Key("a-f12")),
-        IDE.RUN_PROJECT: R(Key("cs-f10"))
     }
     defaults = {"n": 1, "mim": ""}
 

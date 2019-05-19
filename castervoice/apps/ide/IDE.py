@@ -14,9 +14,9 @@ BUILD_PROJECT = "build"
 RUN_PROJECT = "run"
 BUILD_AND_RUN_PROJECT = "build and run"
 RUN_CONFIGURE_PROJECT = "run config"
-debug_project
-debug_File
-run_file
+#debug_project
+#debug_File
+#run_file
 
 
 # window navigation
@@ -33,26 +33,26 @@ GO_TO_LINE = "go [to line] [<n>]"
 METHOD_FORWARD = "method forward [<n>]"
 METHOD_BACKWARD = "method back [<n>]"
 NAVIGATE_BACKWARD = "go back [<n>]"
-forward = "go forward [<n>]"
-declaration = "go [to] declaration"
-source = "(go source|jump [to] source)"
+NAVIGATE_FORWARD = "go forward [<n>]"
+GO_TO_DECLARATION = "go [to] (source|declaration)"
 
 # find replace
-find_in_current_file = "find"
-replace_in_current_file = "replace"
-find_in_all_files = "find [in] files"
-replace_in_all_files = "replace [in] files"
-find_usage = "find (usage|usages)"
-search_in_all_files = "search"
-search_symbol_in_all_files = "search symbol"
-
+FIND_IN_CURRENT_FILE = "find"
+REPLACE_IN_CURRENT_FILE = "replace"
+FIND_IN_ALL_FILES = "find [in] files"
+REPLACE_IN_ALL_FILES = "replace [in] files"
+FIND_USAGE = "find (usage|usages)"
+SEARCH_IN_ALL_FILES = "search"
+SEARCH_FOR_SYMBOL_AND_ALL_FILES = "search [for] symbol"
+SEARCH_FOR_FILE = "search [for] file"
+SEARCH_FOR_CLASS = "search [for] class"
 
 # line operations
-LINE_UP = "(lup|[move] line up [<n>])"
-line_down = "(l oww n|[move] line down [<n>])"
-delete_line = "(kill|delete)"
-delete_to_line_end = "kill ross|kill right"
-delete_to_line_start = "kill lease|kill left"
+MOVE_LINE_UP = "[move] line up [<n>]"
+MOVE_LINE_DOWN = "[move] line down [<n>]"
+DELETE_LINE = "(kill|delete)"
+DELETE_TO_LINE_END = "kill ross|kill right"
+DELETE_TO_LINE_START = "kill lease|kill left"
 comment_line = "comment line"
 uncomment_line = "uncomment line"
 duplicate = "duplicate"
