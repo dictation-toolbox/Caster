@@ -245,7 +245,7 @@ class Navigation(MergeRule):
             R(Function(textformat.clear_text_format)),
         "peek [<big>] format":
             R(Function(textformat.peek_text_format)),
-        "(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel) <textnv> [brunt]":
+        "(<capitalization> <spacing> | <capitalization> | <spacing>) [(bow|bowel)] <textnv> [brunt]":
             R(Function(textformat.master_format_text)),
         "[<big>] format <textnv>":
             R(Function(textformat.prior_text_format)),
