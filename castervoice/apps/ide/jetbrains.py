@@ -1,7 +1,6 @@
 from dragonfly import (Grammar, AppContext, Dictation, Key, Repeat)
 
 from castervoice.apps.gitbash import GitBashRule
-from castervoice.apps.ide.Command import Command
 from castervoice.lib import control
 from castervoice.lib import settings
 from castervoice.lib.actions import Key, Text
@@ -67,7 +66,7 @@ class JetbrainsRule(MergeRule):
         IDE.kraken: R(Key("cs-space")),
         IDE.back: R(Key("ca-left")) * Repeat(extra="n"),
         IDE.forward: R(Key("ca-left")) * Repeat(extra="n"),
-        IDE.kill_the_rest_of_line: R(Key("c-y")),
+        IDE.delete_until_end_of_line: R(Key("c-y")),
         IDE.method_forward: R(Key("a-down")) * Repeat(extra="n"),
         IDE.method_back: R(Key("a-up")) * Repeat(extra="n"),
         IDE.imports: R(Key("ca-o")) * Repeat(extra="n"),
@@ -89,9 +88,10 @@ class JetbrainsRule(MergeRule):
         IDE.field: R(Key("ca-f")) * Repeat(extra="n"),
         IDE.constant: R(Key("ca-c")) * Repeat(extra="n"),
         IDE.extract_param: R(Key("ca-p")) * Repeat(extra="n"),
-        IDE.go_to_editor: R(Key("escape")),
+        # Needs to be manually bound under settings->keymappings
+        IDE.go_to_editor: R(Key("cas-a")),
         IDE.go_to_project_explorer: R(Key("a-1")),
-        IDE.go_to_terminal: R(Key("a-f12")),
+        IDE.toggle_terminal: R(Key("a-f12")),
         IDE.run: R(Key("cs-f10"))
     }
     defaults = {"n": 1, "mim": ""}
