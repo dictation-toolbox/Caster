@@ -84,9 +84,18 @@ class JetbrainsRule(MergeRule):
         IDE.RUN_PROJECT: R(Key("cs-f10")),
         "settings": R(Key("ca-s")),
 
-        # delete to line end and start must be bound manually
+        # must be bound manually
         IDE.DELETE_TO_LINE_START: R(Key("a-d,0")),
         IDE.DELETE_TO_LINE_END: R(Key("a-d,$")),
+        # jet brains can only split horizontally or vertically
+        IDE.SPLIT_WINDOW_UP: R(Key("cs-s,h")),
+        IDE.SPLIT_WINDOW_DOWN: R(Key("cs-s,h")),
+        IDE.SPLIT_WINDOW_RIGHT: R(Key("cs-s,v")),
+        IDE.SPLIT_WINDOW_LEFT: R(Key("cs-s,v")),
+        IDE.SPLIT_MOVE_UP: R(Key("cs-s,up")),
+        IDE.SPLIT_MOVE_DOWN: R(Key("cs-s,down")),
+        IDE.SPLIT_MOVE_RIGHT: R(Key("cs-s,right")),
+        IDE.SPLIT_MOVE_LEFT: R(Key("cs-s,left")),
 
         # refactoring
         IDE.refactor: R(Key("cas-t")),
