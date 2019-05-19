@@ -36,9 +36,6 @@ for root, dirnames, filenames in os.walk(base, topdown=True):
     for filename in fnmatch.filter(filenames, '*.py'):
         modules.append(package_prefix + filename)
 
-print "hello"
-print modules
-
 # only valid applications will be added to the list
 __all__ = [
     f[:-3]

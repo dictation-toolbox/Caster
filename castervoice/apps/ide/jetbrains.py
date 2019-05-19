@@ -33,6 +33,8 @@ class JetbrainsRule(MergeRule):
         IntegerRefST("n", 1, 1000),
     ]
 
+    DELAY = "10"
+
     mapping = {
         IDE.QUICK_FIX: R(Key("a-enter")),
         IDE.DUPLICATE_LINE: R(Key("c-d")),
@@ -49,8 +51,8 @@ class JetbrainsRule(MergeRule):
         IDE.SEARCH_FOR_CLASS: R(Key("c-n")),
         IDE.BUILD_PROJECT: R(Key("c-f9")),
         IDE.BUILD_AND_RUN_PROJECT: R(Key("s-f10")),
-        IDE.NEXT_TAB: R(Key("a-right")),
-        IDE.PREVIOUS_TAB: R(Key("a-left")),
+        IDE.NEXT_TAB: R(Key("a-right/%s" % DELAY)) * Repeat(extra="n"),
+        IDE.PREVIOUS_TAB: R(Key("a-left/%s" % DELAY)) * Repeat(extra="n"),
         IDE.COMMENT_LINE: R(Key("c-slash")),
         IDE.UNCOMMENT_COMMENT_LINE: R(Key("cs-slash")),
         "select ex" : R(Key("c-w")),
@@ -60,7 +62,7 @@ class JetbrainsRule(MergeRule):
         IDE.REPLACE_IN_CURRENT_FILE: R(Key("c-r")),
         IDE.FIND_IN_ALL_FILES: R(Key("cs-f")),
         IDE.REPLACE_IN_ALL_FILES: R(Key("cs-r")),
-        IDE.GO_TO_LINE: R(Key("c-g/10") + Text("%(n)s") + Key("enter")),
+        IDE.GO_TO_LINE: R(Key("c-g/%s" % DELAY) + Text("%(n)s") + Key("enter")),
         IDE.IMPLEMENT_METHOD: R(Key("c-i")),
         IDE.OVERRIDE_METHOD: R(Key("c-o")),
         "run config": R(Key("as-f10")),
@@ -80,7 +82,7 @@ class JetbrainsRule(MergeRule):
         "[<n>] after" : R(Key("c-right")) * Repeat(extra="n"),
         "[<n>] befores": R(Key("cs-left")) * Repeat(extra="n"),
         "[<n>] afters" : R(Key("cs-right")) * Repeat(extra="n"),
-        IDE.CLOSE_TAB: R(Key("c-f4")) * Repeat(extra="n"),
+        IDE.CLOSE_TAB_N_TIMES: R(Key("c-f4/%s" % DELAY)) * Repeat(extra="n"),
         IDE.RUN_PROJECT: R(Key("cs-f10")),
         "settings": R(Key("ca-s")),
 
@@ -92,10 +94,10 @@ class JetbrainsRule(MergeRule):
         IDE.SPLIT_WINDOW_DOWN: R(Key("cs-s,h")),
         IDE.SPLIT_WINDOW_RIGHT: R(Key("cs-s,v")),
         IDE.SPLIT_WINDOW_LEFT: R(Key("cs-s,v")),
-        IDE.SPLIT_MOVE_UP: R(Key("cs-s,up")),
-        IDE.SPLIT_MOVE_DOWN: R(Key("cs-s,down")),
-        IDE.SPLIT_MOVE_RIGHT: R(Key("cs-s,right")),
-        IDE.SPLIT_MOVE_LEFT: R(Key("cs-s,left")),
+        IDE.SPLIT_MOVE_UP: R(Key("cs-s/%s,up"))* Repeat(extra="n"),
+        IDE.SPLIT_MOVE_DOWN: R(Key("cs-s,down"))* Repeat(extra="n"),
+        IDE.SPLIT_MOVE_RIGHT: R(Key("cs-s,right"))* Repeat(extra="n"),
+        IDE.SPLIT_MOVE_LEFT: R(Key("cs-s,left"))* Repeat(extra="n"),
 
         # refactoring
         IDE.REFACTOR: R(Key("cas-t")),
