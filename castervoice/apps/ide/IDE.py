@@ -49,9 +49,9 @@ REPLACE_IN_CURRENT_FILE = "replace"
 REPLACE_IN_ALL_FILES = "replace [in] (all|files)"
 FIND_USAGE = "find (usage|usages)"
 SEARCH_IN_ALL_FILES = "search"
-SEARCH_FOR_SYMBOL_IN_ALL_FILES = "search [for] symbol"
-SEARCH_FOR_FILE_IN_ALL_FILES = "search [for] file"
-SEARCH_FOR_CLASS_IN_ALL_FILES = "search [for] class"
+SEARCH_FOR_SYMBOL_IN_ALL_FILES = "find symbol"
+SEARCH_FOR_FILE_IN_ALL_FILES = "find file"
+SEARCH_FOR_CLASS_IN_ALL_FILES = "find class"
 
 # line operations
 MOVE_LINE_UP = "[move] line up [<n>]"

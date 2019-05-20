@@ -4,6 +4,9 @@
 # __version__ = "3.0"
 #
 
+# Navigation
+GO_BACK = "go back"
+GO_FORWARD = "go forward"
 
-GO_BACK = 1, "back"
-GO_FORWARD = 2, "forward"
+# Tabs
+
