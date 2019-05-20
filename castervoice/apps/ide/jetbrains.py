@@ -33,7 +33,7 @@ class JetbrainsRule(MergeRule):
         IntegerRefST("n", 1, 1000),
     ]
 
-    DELAY = "10"
+    DELAY = "100"
 
     mapping = {
         IDE.QUICK_FIX: R(Key("a-enter")),
@@ -47,7 +47,7 @@ class JetbrainsRule(MergeRule):
         "jump to source": R(Key("f4")),
         IDE.DELETE_LINE: R(Key("c-y")),
         IDE.SEARCH_FOR_SYMBOL_IN_ALL_FILES: R(Key("cas-n")),
-        IDE.SEARCH_FOR_FILE_IN_ALL_FILES: R(Key("cs-n")),
+        IDE.SEARCH_FOR_FILE_IN_ALL_FILES: R(Key("c-n")),
         IDE.SEARCH_FOR_CLASS_IN_ALL_FILES: R(Key("c-n")),
         IDE.BUILD_PROJECT: R(Key("c-f9")),
         IDE.BUILD_AND_RUN_PROJECT: R(Key("s-f10")),
@@ -94,7 +94,7 @@ class JetbrainsRule(MergeRule):
         IDE.SPLIT_WINDOW_DOWN: R(Key("cs-s,h")),
         IDE.SPLIT_WINDOW_RIGHT: R(Key("cs-s,v")),
         IDE.SPLIT_WINDOW_LEFT: R(Key("cs-s,v")),
-        IDE.SPLIT_MOVE_UP: R(Key("cs-s/%s,up"))* Repeat(extra="n"),
+        IDE.SPLIT_MOVE_UP: R(Key("cs-s,up"))* Repeat(extra="n"),
         IDE.SPLIT_MOVE_DOWN: R(Key("cs-s,down"))* Repeat(extra="n"),
         IDE.SPLIT_MOVE_RIGHT: R(Key("cs-s,right"))* Repeat(extra="n"),
         IDE.SPLIT_MOVE_LEFT: R(Key("cs-s,left"))* Repeat(extra="n"),

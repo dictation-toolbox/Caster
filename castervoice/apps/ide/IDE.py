@@ -43,9 +43,9 @@ NAVIGATE_FORWARD = "go (right|forward) [<n>]"
 GO_TO_DECLARATION = "go [to] (source|declaration)"
 
 # find replace
+FIND_IN_ALL_FILES = "find [in] (all|files)"
 FIND_IN_CURRENT_FILE = "find"
 REPLACE_IN_CURRENT_FILE = "replace"
-FIND_IN_ALL_FILES = "find [in] (all|files)"
 REPLACE_IN_ALL_FILES = "replace [in] (all|files)"
 FIND_USAGE = "find (usage|usages)"
 SEARCH_IN_ALL_FILES = "search"
