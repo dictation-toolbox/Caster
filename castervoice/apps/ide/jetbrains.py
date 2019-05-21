@@ -33,7 +33,7 @@ class JetbrainsRule(MergeRule):
         IntegerRefST("n", 1, 1000),
     ]
 
-    DELAY = "100"
+    DELAY = "20"
 
     mapping = {
         IDE.QUICK_FIX: R(Key("a-enter")),
@@ -59,8 +59,8 @@ class JetbrainsRule(MergeRule):
         "select ex down" : R(Key("cs-w")),
         IDE.SEARCH_FOR_ALL_IN_ALL_FILES: R(Key("shift, shift")),
         IDE.FIND_IN_CURRENT_FILE: R(Key("c-f")),
-        IDE.FIND_NEXT: R(Key("enter")),
-        IDE.FIND_PREVIOUS: R(Key("s-enter")),
+        IDE.FIND_NEXT_MATCH: R(Key("enter")),
+        IDE.FIND_PREVIOUS_MATCH: R(Key("s-enter")),
         IDE.REPLACE_IN_CURRENT_FILE: R(Key("c-r")),
         IDE.FIND_IN_ALL_FILES: R(Key("cs-f")),
         IDE.REPLACE_IN_ALL_FILES: R(Key("cs-r")),
@@ -75,31 +75,16 @@ class JetbrainsRule(MergeRule):
         IDE.NAVIGATE_FORWARD: R(Key("ca-left")) * Repeat(extra="n"),
         IDE.METHOD_FORWARD: R(Key("a-down")) * Repeat(extra="n"),
         IDE.METHOD_BACKWARD: R(Key("a-up")) * Repeat(extra="n"),
+        IDE.NEXT_ERROR: R(Key("f2")) * Repeat(extra="n"),
+        IDE.PREVIOUS_ERROR: R(Key("s-f2")) * Repeat(extra="n"),
         IDE.OPTIMIZE_IMPORTS: R(Key("ca-o")) * Repeat(extra="n"),
         IDE.MOVE_LINE_UP: R(Key("as-up")) * Repeat(extra="n"),
         IDE.MOVE_LINE_DOWN: R(Key("as-down")) * Repeat(extra="n"),
         IDE.EXPAND_SELECTION: R(Key("c-w")) * Repeat(extra="n"),
         IDE.AUTO_INDENT: R(Key("ca-i")),
-        "[<n>] before" : R(Key("c-left")) * Repeat(extra="n"),
-        "[<n>] after" : R(Key("c-right")) * Repeat(extra="n"),
-        "[<n>] befores": R(Key("cs-left")) * Repeat(extra="n"),
-        "[<n>] afters" : R(Key("cs-right")) * Repeat(extra="n"),
         IDE.CLOSE_TAB_N_TIMES: R(Key("c-f4/%s" % DELAY)) * Repeat(extra="n"),
         IDE.RUN_PROJECT: R(Key("cs-f10")),
         "settings": R(Key("ca-s")),
-
-        # must be bound manually
-        IDE.DELETE_TO_LINE_START: R(Key("a-d,0")),
-        IDE.DELETE_TO_LINE_END: R(Key("a-d,$")),
-        # jet brains can only split horizontally or vertically
-        IDE.SPLIT_WINDOW_UP: R(Key("cs-s,h")),
-        IDE.SPLIT_WINDOW_DOWN: R(Key("cs-s,h")),
-        IDE.SPLIT_WINDOW_RIGHT: R(Key("cs-s,v")),
-        IDE.SPLIT_WINDOW_LEFT: R(Key("cs-s,v")),
-        IDE.SPLIT_MOVE_UP: R(Key("cs-s,up"))* Repeat(extra="n"),
-        IDE.SPLIT_MOVE_DOWN: R(Key("cs-s,down"))* Repeat(extra="n"),
-        IDE.SPLIT_MOVE_RIGHT: R(Key("cs-s,right"))* Repeat(extra="n"),
-        IDE.SPLIT_MOVE_LEFT: R(Key("cs-s,left"))* Repeat(extra="n"),
 
         # refactoring
         IDE.REFACTOR: R(Key("cas-t")),
@@ -115,6 +100,19 @@ class JetbrainsRule(MergeRule):
         IDE.GO_TO_EDITOR: R(Key("escape")),
         IDE.GO_TO_PROJECT_EXPLORER: R(Key("a-1")),
         IDE.TOGGLE_TERMINAL: R(Key("a-f12")),
+
+        # must be bound manually below this point
+        IDE.DELETE_TO_LINE_START: R(Key("a-d,0")),
+        IDE.DELETE_TO_LINE_END: R(Key("a-d,$")),
+        # jet brains can only split horizontally or vertically
+        IDE.SPLIT_WINDOW_UP: R(Key("cs-s,h")),
+        IDE.SPLIT_WINDOW_DOWN: R(Key("cs-s,h")),
+        IDE.SPLIT_WINDOW_RIGHT: R(Key("cs-s,v")),
+        IDE.SPLIT_WINDOW_LEFT: R(Key("cs-s,v")),
+        IDE.SPLIT_MOVE_UP: R(Key("cs-s,up"))* Repeat(extra="n"),
+        IDE.SPLIT_MOVE_DOWN: R(Key("cs-s,down"))* Repeat(extra="n"),
+        IDE.SPLIT_MOVE_RIGHT: R(Key("cs-s,right"))* Repeat(extra="n"),
+        IDE.SPLIT_MOVE_LEFT: R(Key("cs-s,left"))* Repeat(extra="n"),
     }
     defaults = {"n": 1, "mim": ""}
 

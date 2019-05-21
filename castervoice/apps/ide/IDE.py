@@ -3,8 +3,8 @@
 #
 
 # variables
-right = "right|sauce"
-left = "left|lease"
+right = "(right|sauce)"
+left = "(left|lease)"
 up = "(up|sauce|above)"
 down = "(down|dunce|below)"
 forward = "(%s|next|forward)" % right
@@ -23,6 +23,8 @@ DEBUG_PROJECT = "debug"
 BUILD_AND_RUN_PROJECT = "build and run"
 DEBUG_CURRENT_FILE = "debug file"
 RUN_CURRENT_FILE = "run file"
+NEXT_ERROR = "(%s error|error %s)" % (forward, right)
+PREVIOUS_ERROR = "(%s error|error %s)" % (back, left)
 
 # window navigation
 NEXT_TAB = "%s tab [<n>]|tab %s [<n>]" % (forward, right)
@@ -53,8 +55,8 @@ GO_TO_DECLARATION = "[go to] (source|declaration)"
 
 # search and replace
 FIND_IN_CURRENT_FILE = "find"
-FIND_NEXT = "find %s" % right
-FIND_PREVIOUS = "find %s" % left
+FIND_NEXT_MATCH = "find %s" % right
+FIND_PREVIOUS_MATCH = "find %s" % left
 REPLACE_IN_CURRENT_FILE = "replace"
 FIND_IN_ALL_FILES = "find [in] (all|files)"
 REPLACE_IN_ALL_FILES = "replace [in] (all|files)"

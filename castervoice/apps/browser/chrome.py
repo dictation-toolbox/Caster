@@ -21,77 +21,76 @@ from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
-
+import Browser as Browser
 
 class ChromeRule(MergeRule):
     pronunciation = "google chrome"
+
     mapping = {
-        "new window":
+        Browser.OPEN_NEW_WINDOW:
             R(Key("c-n")),
-        "(new incognito window | incognito)":
+        Browser.OPEN_NEW_INCOGNITO_WINDOW:
             R(Key("cs-n")),
-        "new tab [<n>]":
+        Browser.NEW_TAB_N_TIMES:
             R(Key("c-t")*Repeat(extra="n")),
-        "reopen tab [<n>]":
+        Browser.REOPEN_TAB_N_TIMES:
             R(Key("cs-t"))*Repeat(extra="n"),
-        "close tab [<n>]":
+        Browser.CLOSE_TAB_N_TIMES:
             R(Key("c-w"))*Repeat(extra='n'),
-        "close all tabs":
+        Browser.CLOSE_ALL_TABS:
             R(Key("cs-w")),
-        "next tab [<n>]":
+        Browser.NEXT_TAB_N_TIMES:
             R(Key("c-tab"))*Repeat(extra="n"),
-        "previous tab [<n>]":
+        Browser.PREVIOUS_TAB_N_TIMES:
             R(Key("cs-tab"))*Repeat(extra="n"),
-        "new tab that":
+        Browser.OPEN_NEW_TAB_BASED_ON_CURSOR:
             R(Mouse("middle") + Pause("20") + Key("c-tab")),
-        "<nth> tab":
+        Browser.SWITCH_TO_NTH_TAB:
             R(Key("c-%(nth)s") ),
-        "last tab":
+        Browser.SWITCH_TO_LAST_TAB:
             R(Key("c-9")),
-        "second last tab":
+        Browser.SWITCH_TO_SECOND_TO_LAST_TAB:
             R(Key("c-9, cs-tab")),
-        "go back [<n>]":
+        Browser.GO_BACK_N_TIMES:
             R(Key("a-left/20"))*Repeat(extra="n"),
-        "go forward [<n>]":
+        Browser.GO_FORWARD_N_TIMES:
             R(Key("a-right/20"))*Repeat(extra="n"),
-        "zoom in [<n>]":
+        Browser.ZOOM_IN_N_TIMES:
             R(Key("c-plus/20"))*Repeat(extra="n"),
-        "zoom out [<n>]":
+        Browser.ZOOM_OUT_N_TIMES:
             R(Key("c-minus/20"))*Repeat(extra="n"),
-        "zoom reset":
+        Browser.ZOOM_RESET_DEFAULT:
             R(Key("c-0")),
-        "super refresh":
+        Browser.FORCE_HARD_REFRESH:
             R(Key("c-f5")),
         "switch focus [<n>]":
             R(Key("f6/20"))*Repeat(extra="n"),
-        "[find] next match [<n>]":
+        Browser.FIND_NEXT_MATCH:
             R(Key("c-g/20"))*Repeat(extra="n"),
-        "[find] prior match [<n>]":
+        Browser.FIND_PREVIOUS_MATCH:
             R(Key("cs-g/20"))*Repeat(extra="n"),
-        "[toggle] caret browsing":
+        Browser.TOGGLE_CARET_BROWSING:
             R(Key("f7")),
               # now available through an add on, was a standard feature
-        "home page":
+        Browser.GO_TO_HOMEPAGE:
             R(Key("a-home")),
-        "[show] history":
+        Browser.SHOW_HISTORY:
             R(Key("c-h")),
-        "address bar":
+        Browser.SELECT_ADDRESS_BAR:
             R(Key("c-l")),
-        "show downloads":
+        Browser.SHOW_DOWNLOADS:
             R(Key("c-j")),
-        "add bookmark":
+        Browser.ADD_BOOKMARK:
             R(Key("c-d")),
-        "bookmark all tabs":
+        Browser.BOOKMARK_ALL_TABS:
             R(Key("cs-d")),
-        "[toggle] bookmark bar":
+        Browser.TOGGLE_BOOKMARK_TOOLBAR:
             R(Key("cs-b")),
-        "[show] bookmarks":
+        Browser.SHOW_BOOKMARKS:
             R(Key("cs-o")),
         "switch user":
             R(Key("cs-m")),
-        "chrome task manager":
-            R(Key("s-escape")),
-        "[toggle] full-screen":
+        Browser.TOGGLE_FULL_SCREEN:
             R(Key("f11")),
         "focus notification":
             R(Key("a-n")),
@@ -99,17 +98,15 @@ class ChromeRule(MergeRule):
             R(Key("as-a")),
         "deny notification":
             R(Key("as-a")),
-        "developer tools":
-            R(Key("f12")),
-        "view [page] source":
+        Browser.SHOW_PAGE_SOURCE:
             R(Key("c-u")),
-        "resume":
+        Browser.DEBUG_RESUME:
             R(Key("f8")),
-        "step over":
+        Browser.DEBUG_STEP_OVER:
             R(Key("f10")),
-        "step into":
+        Browser.DEBUG_STEP_INTO:
             R(Key("f11")),
-        "step out":
+        Browser.DEBUG_STEP_OUT:
             R(Key("s-f11")),
 
         "IRC identify":
@@ -121,23 +118,21 @@ class ChromeRule(MergeRule):
         "wikipedia that":
             R(Store(space="+", remove_cr=True) + Key("c-t") + Text("https://en.wikipedia.org/w/index.php?search=") + Retrieve() + Key("enter")),
 
-        "duplicate tab":
+        Browser.DUPLICATE_TAB:
             R(Key("a-d,a-c,c-t/15,c-v/15, enter")),
-        "duplicate window":
+        Browser.DUPLICATE_WINDOW:
             R(Key("a-d,a-c,c-n/15,c-v/15, enter")),
-        "extensions":
+        Browser.SHOW_EXTENSIONS:
             R(Key("a-f/20, l, e/15, enter")),
-        "(menu | three dots)":
+        Browser.SHOW_MENU:
             R(Key("a-f")),
-        "settings":
+        Browser.SHOW_SETTINGS:
             R(Key("a-f/5, s")),
-        "downloads":
-            R(Key("c-j")),
-        "chrome task manager":
+        Browser.SHOW_TASK_MANAGER:
             R(Key("s-escape")),
-        "clear browsing data":
+        Browser.CLEAR_BROWSING_DATA:
             R(Key("cs-del")),
-        "developer tools":
+        Browser.SHOW_DEVELOPER_TOOLS:
             R(Key("cs-i")),
         "more tools":
             R(Key("a-f/5, l")),
