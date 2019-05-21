@@ -12,7 +12,7 @@ Command-module for Chrome
 from dragonfly import (Grammar, Repeat,
                        Mouse, Pause)
 
-import Browser
+import browser
 from castervoice.apps.browser.chrome_and_firefox import ChromeAndFirefox
 from castervoice.lib import control
 from castervoice.lib import settings
@@ -27,21 +27,21 @@ class ChromeRule(ChromeAndFirefox):
     pronunciation = "google chrome"
 
     _mapping = {
-        Browser.OPEN_NEW_WINDOW:
+        browser.OPEN_NEW_WINDOW:
             R(Key("c-n")),
-        Browser.OPEN_NEW_INCOGNITO_WINDOW:
+        browser.OPEN_NEW_INCOGNITO_WINDOW:
             R(Key("cs-n")),
-        Browser.PREVIOUS_TAB_N_TIMES:
+        browser.PREVIOUS_TAB_N_TIMES:
             R(Key("cs-tab")) * Repeat(extra="n"),
-        Browser.SWITCH_TO_NTH_TAB:
+        browser.SWITCH_TO_NTH_TAB:
             R(Key("c-%(nth)s")),
-        Browser.SWITCH_TO_LAST_TAB:
+        browser.SWITCH_TO_LAST_TAB:
             R(Key("c-9")),
-        Browser.SWITCH_TO_SECOND_TO_LAST_TAB:
+        browser.SWITCH_TO_SECOND_TO_LAST_TAB:
             R(Key("c-9, cs-tab")),
         "switch focus [<n>]":
             R(Key("f6/20")) * Repeat(extra="n"),
-        Browser.TOGGLE_BOOKMARK_TOOLBAR:
+        browser.TOGGLE_BOOKMARK_TOOLBAR:
             R(Key("cs-b")),
         "switch user":
             R(Key("cs-m")),
@@ -56,7 +56,7 @@ class ChromeRule(ChromeAndFirefox):
         "wikipedia that":
             R(Store(space="+", remove_cr=True) + Key("c-t") + Text(
                 "https://en.wikipedia.org/w/index.php?search=") + Retrieve() + Key("enter")),
-        Browser.SHOW_EXTENSIONS:
+        browser.SHOW_EXTENSIONS:
             R(Key("a-f/20, l, e/15, enter")),
         "more tools":
             R(Key("a-f/5, l")),

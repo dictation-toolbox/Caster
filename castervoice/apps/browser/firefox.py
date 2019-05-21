@@ -11,7 +11,7 @@ Command-module for Firefox
 
 from dragonfly import (Grammar, Repeat)
 
-import Browser
+import browser
 from castervoice.apps.browser.chrome_and_firefox import ChromeAndFirefox
 from castervoice.lib import control
 from castervoice.lib import settings
@@ -25,16 +25,16 @@ class FirefoxRule(ChromeAndFirefox):
     pronunciation = "fire fox"
 
     _mapping = {
-        Browser.PREVIOUS_TAB_N_TIMES:
+        browser.PREVIOUS_TAB_N_TIMES:
             # control shift tab doesn't work and this appears to be an undocumented work new tab that new tab that around
             R(Key("c-tab/30")) * Repeat(extra="n"),
-        Browser.SWITCH_TO_NTH_TAB:
+        browser.SWITCH_TO_NTH_TAB:
             R(Key("c-%(nth)")),
-        Browser.FIND_NEXT_MATCH:
+        browser.FIND_NEXT_MATCH:
             R(Key("c-g/20")) * Repeat(extra="n"),
-        Browser.TOGGLE_BOOKMARK_TOOLBAR:
+        browser.TOGGLE_BOOKMARK_TOOLBAR:
             R(Key("c-b")),
-        Browser.SHOW_EXTENSIONS:
+        browser.SHOW_EXTENSIONS:
             R(Key("a-a, l, e/15, enter")),
     }
     mapping = ChromeAndFirefox.merge_dictionaries(_mapping, ChromeAndFirefox.chromeAndFirefoxMapping)
