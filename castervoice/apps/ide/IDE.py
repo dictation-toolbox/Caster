@@ -78,7 +78,7 @@ DUPLICATE_LINE_UP = "(duplicate|duple) %s" % up
 DUPLICATE_LINE_DOWN = "(duplicate|duple) %s" % down
 
 # refactor
-OPTIMIZE_IMPORTS = "optimize imports"
+OPTIMIZE_IMPORTS = "[organize|optimize] imports"
 REFACTOR = "refactor"
 RENAME = "rename"
 INLINE = "inline"

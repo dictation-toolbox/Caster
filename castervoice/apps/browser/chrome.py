@@ -9,19 +9,19 @@ Command-module for Chrome
 """
 #---------------------------------------------------------------------------
 
-from dragonfly import (Grammar, Context, AppContext, Dictation, Key, Text, Repeat,
-                       Function, Choice, Mouse, Pause)
+from dragonfly import (Grammar, Repeat,
+                       Mouse, Pause)
 
+import Browser
 from castervoice.lib import control
 from castervoice.lib import settings
 from castervoice.lib.actions import Key, Text
-from castervoice.lib.temporary import Store, Retrieve
 from castervoice.lib.context import AppContext
-from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
-import Browser as Browser
+from castervoice.lib.temporary import Store, Retrieve
+
 
 class ChromeRule(MergeRule):
     pronunciation = "google chrome"
@@ -137,34 +137,7 @@ class ChromeRule(MergeRule):
         "more tools":
             R(Key("a-f/5, l")),
     }
-    extras = [
-        Choice(
-            "click_by_voice_options",
-            {
-                "go": "f",
-                "click": "c",
-                "push": "b",  # open as new tab but don't go to it
-                "tab": "t",  # open as new tab and go to it
-                "window": "w",
-                "hover": "h",
-                "link": "k",
-                "copy": "s",
-            }),
-        Choice("nth", {
-            "first": "1",
-            "second": "2",
-            "third": "3",
-            "fourth": "4",
-            "fifth": "5",
-            "sixth": "6",
-            "seventh": "7",
-            "eighth": "8",
-        }),
-        Dictation("dictation"),
-        IntegerRefST("n", 1, 10),
-        IntegerRefST("m", 1, 10),
-        IntegerRefST("numbers", 0, 1000),
-    ]
+    extras = Browser.EXTRAS
     defaults = {"n": 1, "dict": "", "click_by_voice_options": "c"}
 
 

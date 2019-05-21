@@ -9,7 +9,7 @@ from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
-import IDE as IDE
+import IDE
 
 
 class JetbrainsRule(MergeRule):
