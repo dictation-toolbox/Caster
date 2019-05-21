@@ -1,10 +1,8 @@
 #
 # __author__ = "lexxish"
-# __license__ = "LGPL"
-# __version__ = "3.0"
 #
 
-# Navigation
+# navigation
 GO_BACK = "go back"
 GO_FORWARD = "go forward"
 

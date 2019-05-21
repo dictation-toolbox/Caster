@@ -30,8 +30,6 @@ for root, dirnames, filenames in os.walk(base, topdown=True):
         package_prefix = root[-diff+1:].replace("\\",".") + "."
     else:
         package_prefix = ""
-        print root
-        print base
 
     for filename in fnmatch.filter(filenames, '*.py'):
         modules.append(package_prefix + filename)
