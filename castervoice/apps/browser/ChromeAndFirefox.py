@@ -1,10 +1,11 @@
 #
 # __author__ = "lexxish"
 #
-from dragonfly import Key, Mouse, Repeat, Pause
+from dragonfly import Key, Mouse, Repeat, Pause, Choice, Dictation
 
 from castervoice.apps.browser import Browser
 from castervoice.lib.actions import Text
+from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
 
@@ -96,3 +97,33 @@ class ChromeAndFirefox(MergeRule):
         "IRC identify":
             R(Text("/msg NickServ identify PASSWORD")),
     }
+
+    EXTRAS = [
+        Choice(
+            "click_by_voice_options",
+            {
+                "go": "f",
+                "click": "c",
+                "push": "b",  # open as new tab but don't go to it
+                "tab": "t",  # open as new tab and go to it
+                "window": "w",
+                "hover": "h",
+                "link": "k",
+                "copy": "s",
+            }),
+        Choice("nth", {
+            "first": "1",
+            "second": "2",
+            "third": "3",
+            "fourth": "4",
+            "fifth": "5",
+            "sixth": "6",
+            "seventh": "7",
+            "eighth": "8",
+        }),
+        Dictation("dictation"),
+
+        IntegerRefST("n", 1, 100),
+        IntegerRefST("m", 1, 10),
+        IntegerRefST("numbers", 0, 1000),
+    ]

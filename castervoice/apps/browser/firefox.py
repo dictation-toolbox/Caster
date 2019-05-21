@@ -9,16 +9,16 @@ Command-module for Firefox
 """
 #---------------------------------------------------------------------------
 
-from dragonfly import (Grammar, Dictation, Repeat, Mouse, Pause)
+from dragonfly import (Grammar, Repeat)
 
+import Browser
 from castervoice.apps.browser.ChromeAndFirefox import ChromeAndFirefox
 from castervoice.lib import control
 from castervoice.lib import settings
-from castervoice.lib.actions import Key, Text
+from castervoice.lib.actions import Key
 from castervoice.lib.context import AppContext
 from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.state.short import R
-import Browser
 
 
 class FirefoxRule(ChromeAndFirefox):
