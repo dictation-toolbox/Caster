@@ -62,7 +62,7 @@ class ChromeRule(ChromeAndFirefox):
             R(Key("a-f/5, l")),
     }
     mapping = ChromeAndFirefox.merge_dictionaries(_mapping, ChromeAndFirefox.chromeAndFirefoxMapping)
-    extras = Browser.EXTRAS
+    extras = ChromeAndFirefox.EXTRAS
     defaults = {"n": 1, "dict": "", "click_by_voice_options": "c"}
 
 

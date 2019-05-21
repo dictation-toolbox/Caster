@@ -38,7 +38,7 @@ class FirefoxRule(ChromeAndFirefox):
             R(Key("a-a, l, e/15, enter")),
     }
     mapping = ChromeAndFirefox.merge_dictionaries(_mapping, ChromeAndFirefox.chromeAndFirefoxMapping)
-    extras = Browser.EXTRAS
+    extras = ChromeAndFirefox.EXTRAS
     defaults = {"n": 1, "dict": "nothing"}
 
 
