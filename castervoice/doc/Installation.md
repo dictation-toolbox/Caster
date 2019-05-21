@@ -29,7 +29,8 @@ Make sure to select `Add python to path`. This can be done manually by searching
 
        ![Caster-Natlink.jpg](https://i.postimg.cc/d1jN4xcw/Caster-Natlink.jpg)
 
-**Third** download Caster and install dependencies. Choose **PIP** or **Classic** Install.
+### 3. Caster
+- Download Caster and install dependencies. Choose **PIP** or **Classic** Install.
 
 **PIP** install is convenient way to install Caster and uses it's development branch. **Classic** install enables the user to track changes with Caster code using git. Git allows users to contribute their own code to the Caster project. 
 

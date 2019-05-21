@@ -42,7 +42,7 @@ Alternatively use the [master branch](https://github.com/dictation-toolbox/Caste
   - [Dragon NaturallySpeaking](https://www.nuance.com/dragon.html) v13 and higher
   - [Windows Speech Recognition](https://support.microsoft.com/en-us/help/17208/windows-10-use-speech-recognition)
 
-- Supported [Programming Languages](https://github.com/dictation-toolbox/Caster/blob/develop/castervoice/doc/readthedocs/CCR_languages_Quick_Reference.md) - Enhanced by Caster's [Continues Command Recognition](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/CCR/) - [Demo](https://www.youtube.com/watch?v=Obdegwr_LFc&index=5&list=PLV6JPhkq1x8LHu02YefhUU9rXiB2PK8tc)
+- Supported [Programming Languages](https://github.com/dictation-toolbox/Caster/blob/develop/castervoice/doc/readthedocs/CCR_languages_Quick_Reference.md) - Enhanced by Caster's [Continuous Command Recognition](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/CCR/) - [Demo](https://www.youtube.com/watch?v=Obdegwr_LFc&index=5&list=PLV6JPhkq1x8LHu02YefhUU9rXiB2PK8tc)
 
   - Python, Java, Bash, C++, C#, Rust, Go, HTML, CSS, JavaScript, SQL, Dart, Latex , Matlab, R, Prolog, VHDL, and Haxe
 

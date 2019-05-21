@@ -51,6 +51,10 @@ class NavigationNon(MergeRule):
             R(Function(navigation.left_down, nexus=_NEXUS)),
         "bench":
             R(Function(navigation.left_up, nexus=_NEXUS)),
+        "lean":
+            R(Function(navigation.right_down, nexus=_NEXUS)),
+        "hoist":
+            R(Function(navigation.right_up, nexus=_NEXUS)),
         "kick":
             R(Function(navigation.left_click, nexus=_NEXUS)),
         "kick mid":
@@ -254,9 +258,9 @@ class Navigation(MergeRule):
 
         "hug <enclosure>":
             R(Function(text_utils.enclose_selected)),
-        "dredge":
-            R(Key("a-tab")),
-    
+        "dredge [<nnavi10>]":
+            R(Key("alt:down, tab/20:%(nnavi10)d, alt:up"), 
+               rdescript="Core: switch to most recent Windows"),
 
         
         
