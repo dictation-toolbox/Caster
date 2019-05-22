@@ -15,18 +15,6 @@ from castervoice.lib.dfplus.state.short import R
 class JetbrainsRule(MergeRule):
     pronunciation = "jet brains"
 
-    def merge_dictionaries(x, y):
-        z = x.copy()  # start with x's keys and values
-        z.update(y)  # modifies z with y's keys and values & returns None
-        return z
-
-    def command_list_to_dictionary(commands):
-        dictionary = {}
-        for command in commands:
-            dictionary[command.phrase] = command.registered_action
-        return dictionary
-
-
     extras = [
         Dictation("text"),
         Dictation("mim"),
@@ -72,7 +60,7 @@ class JetbrainsRule(MergeRule):
         ide.GO_TO_DECLARATION: R(Key("c-b")),
         ide.SMART_AUTO_COMPLETE: R(Key("cs-space")),
         ide.NAVIGATE_BACKWARD: R(Key("ca-left")) * Repeat(extra="n"),
-        ide.NAVIGATE_FORWARD: R(Key("ca-left")) * Repeat(extra="n"),
+        ide.NAVIGATE_FORWARD: R(Key("ca-right")) * Repeat(extra="n"),
         ide.METHOD_FORWARD: R(Key("a-down")) * Repeat(extra="n"),
         ide.METHOD_BACKWARD: R(Key("a-up")) * Repeat(extra="n"),
         ide.NEXT_ERROR: R(Key("f2")) * Repeat(extra="n"),
@@ -83,8 +71,10 @@ class JetbrainsRule(MergeRule):
         ide.EXPAND_SELECTION: R(Key("c-w")) * Repeat(extra="n"),
         ide.AUTO_INDENT: R(Key("ca-i")),
         ide.CLOSE_TAB_N_TIMES: R(Key("c-f4/%s" % DELAY)) * Repeat(extra="n"),
-        ide.RUN_PROJECT: R(Key("cs-f10")),
-        "settings": R(Key("ca-s")),
+        ide.RUN_PROJECT: R(Key("s-f10")),
+        ide.DEBUG_PROJECT: R(Key("s-f9")),
+        ide.REDO: R(Key("cs-z")) * Repeat(extra="n"),
+        ide.SHOW_SETTINGS: R(Key("ca-s")),
 
         # refactoring
         ide.REFACTOR: R(Key("cas-t")),
@@ -114,17 +104,19 @@ class JetbrainsRule(MergeRule):
         ide.SPLIT_MOVE_RIGHT: R(Key("cs-s,right")) * Repeat(extra="n"),
         ide.SPLIT_MOVE_LEFT: R(Key("cs-s,left")) * Repeat(extra="n"),
     }
+
     defaults = {"n": 1, "mim": ""}
 
-
-# ---------------------------------------------------------------------------
 
 context = AppContext(executable="idea", title="IntelliJ") \
           | AppContext(executable="idea64", title="IntelliJ") \
           | AppContext(executable="studio64") \
           | AppContext(executable="pycharm")
-grammar = Grammar("IntelliJ + Android Studio + PyCharm", context=context)
 
+
+# ---------------------------------------------------------------------------
+
+grammar = Grammar("IntelliJ + Android Studio + PyCharm", context=context)
 if settings.SETTINGS["apps"]["jetbrains"]:
     if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
         control.nexus().merger.add_global_rule(JetbrainsRule())

@@ -1,7 +1,10 @@
 #
 # __author__ = "lexxish"
 #
+from dragonfly import Choice
+
 from castervoice.apps.shared.directions import FORWARD, RIGHT, BACK, LEFT
+from castervoice.lib.dfplus.additions import IntegerRefST
 
 OPEN_NEW_WINDOW = "(new window|win new)"
 OPEN_NEW_INCOGNITO_WINDOW = "(new incognito window | incognito)"
@@ -12,8 +15,7 @@ CLOSE_TAB_N_TIMES = "close tab [<n>]|tab close [<n>]"
 NEXT_TAB_N_TIMES = "%s tab [<n>]|tab %s [<n>]" % (FORWARD, RIGHT)
 PREVIOUS_TAB_N_TIMES = "%s tab [<n>]|tab %s [<n>]" % (BACK, LEFT)
 OPEN_NEW_TAB_BASED_ON_CURSOR = "new tab that"
-SWITCH_TO_NTH_TAB = "<nth> tab"
-SWITCH_TO_TAB_N = "tab <n>"
+SWITCH_TO_TAB_N = "tab <m>|<nth> tab"
 SWITCH_TO_LAST_TAB = "last tab"
 SWITCH_TO_SECOND_TO_LAST_TAB = "second last tab"
 GO_FORWARD_N_TIMES = "go %s [<n>]" % FORWARD
@@ -24,7 +26,7 @@ ZOOM_RESET_DEFAULT = "zoom reset"
 FORCE_HARD_REFRESH = "(hard refresh|super refresh)"
 FIND_NEXT_MATCH = "find %s [match] [<n>]" % BACK
 FIND_PREVIOUS_MATCH = "find %s [match] [<n>]" % FORWARD
-TOGGLE_CARET_BROWSING = "[toggle] caret browsing" % BACK
+TOGGLE_CARET_BROWSING = "[toggle] caret browsing"
 GO_TO_HOMEPAGE = "[go] home [page]"
 SHOW_HISTORY = "[show] history"
 SELECT_ADDRESS_BAR = "address bar"
@@ -47,3 +49,19 @@ SHOW_SETTINGS = "[show] settings"
 SHOW_TASK_MANAGER = "[show chrome] task manager"
 CLEAR_BROWSING_DATA = "(clear history|clear browsing data)"
 SHOW_DEVELOPER_TOOLS = "[show] developer tools"
+
+DEFAULTS = {"n": 1, "m":"", "nth": ""}
+EXTRAS = [
+    Choice("nth", {
+        "first": "1",
+        "second": "2",
+        "third": "3",
+        "fourth": "4",
+        "fifth": "5",
+        "sixth": "6",
+        "seventh": "7",
+        "eighth": "8",
+    }),
+    IntegerRefST("n", 1, 100),
+    IntegerRefST("m", 1, 10)
+]

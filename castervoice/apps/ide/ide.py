@@ -19,6 +19,8 @@ DEBUG_CURRENT_FILE = "debug file"
 RUN_CURRENT_FILE = "run file"
 NEXT_ERROR = "(%s error|error %s)" % (FORWARD, RIGHT)
 PREVIOUS_ERROR = "(%s error|error %s)" % (BACK, LEFT)
+REDO = "redo [<n>]"
+SHOW_SETTINGS = "[show] settings"
 
 # window navigation
 NEXT_TAB = "%s tab [<n>]|tab %s [<n>]" % (FORWARD, RIGHT)

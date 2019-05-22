@@ -33,10 +33,8 @@ class ChromeRule(ChromeAndFirefox):
             R(Key("cs-n")),
         browser.PREVIOUS_TAB_N_TIMES:
             R(Key("cs-tab")) * Repeat(extra="n"),
-        browser.SWITCH_TO_NTH_TAB:
-            R(Key("c-%(nth)s")),
         browser.SWITCH_TO_TAB_N:
-            R(Key("c-%(n)s")),
+            R(Key("c-%(m)s%(nth)s")),
         browser.SWITCH_TO_LAST_TAB:
             R(Key("c-9")),
         browser.SWITCH_TO_SECOND_TO_LAST_TAB:
@@ -64,8 +62,8 @@ class ChromeRule(ChromeAndFirefox):
             R(Key("a-f/5, l")),
     }
     mapping = ChromeAndFirefox.merge_dictionaries(_mapping, ChromeAndFirefox.chromeAndFirefoxMapping)
-    extras = ChromeAndFirefox.EXTRAS
-    defaults = {"n": 1, "dict": "", "click_by_voice_options": "c"}
+    extras = browser.EXTRAS
+    defaults = browser.DEFAULTS
 
 
 # ---------------------------------------------------------------------------

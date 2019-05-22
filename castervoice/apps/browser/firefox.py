@@ -28,10 +28,6 @@ class FirefoxRule(ChromeAndFirefox):
         browser.PREVIOUS_TAB_N_TIMES:
             # control shift tab doesn't work and this appears to be an undocumented work new tab that new tab that around
             R(Key("c-tab/30")) * Repeat(extra="n"),
-        browser.SWITCH_TO_NTH_TAB:
-            R(Key("c-%(nth)")),
-        browser.SWITCH_TO_TAB_N:
-            R(Key("c-%(n)")),
         browser.FIND_NEXT_MATCH:
             R(Key("c-g/20")) * Repeat(extra="n"),
         browser.TOGGLE_BOOKMARK_TOOLBAR:
@@ -40,8 +36,8 @@ class FirefoxRule(ChromeAndFirefox):
             R(Key("a-a, l, e/15, enter")),
     }
     mapping = ChromeAndFirefox.merge_dictionaries(_mapping, ChromeAndFirefox.chromeAndFirefoxMapping)
-    extras = ChromeAndFirefox.EXTRAS
-    defaults = {"n": 1, "dict": "nothing"}
+    extras = browser.EXTRAS
+    defaults = browser.DEFAULTS
 
 
 #---------------------------------------------------------------------------
