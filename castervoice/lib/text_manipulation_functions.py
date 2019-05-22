@@ -7,49 +7,44 @@ character_list = [".", ",", "'", "(", ")", "[", "]", "<", ">", "{", "}", "?", "-
 "\\", "$", "_", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", 
     "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"] 
 
-def get_start_end_position(text, phrase, left_right):
+def get_start_end_position(text, phrase, left_right, occurrence_number):
+# def get_start_end_position(text, phrase, left_right):
+    if phrase in character_list:
+        pattern = re.escape(phrase)
+    else:
+        # avoid e.g. matching 'and' in 'land' but allow e.g. matching 'and' in 'hello.and'
+        # for matching purposes use lowercase
+        # PROBLEM: this will not match words in class names like "Class" in "ClassName"
+        # PROBLEM: it's not matching the right one when you have two occurrences of the same word in a row
+        pattern = '(?:[^A-Za-z]|\A)({})(?:[^A-Za-z]|\Z)'.format(phrase.lower()) # must get group 1
+
+    if not re.search(pattern, text.lower()):
+        # replaced phase not found
+        print("'{}' not found".format(phrase))
+        return
+    match_iter = re.finditer(pattern, text.lower())
+    if phrase in character_list: # consider changing this to if len(phrase) == 1 or something
+        match_index_list = [(m.start(), m.end()) for m in match_iter] 
+    else:
+        match_index_list = [(m.start(1), m.end(1)) for m in match_iter] # first group
+    
     if left_right == "left":
-        if phrase in character_list:
-            pattern = re.escape(phrase)
-        else:
-            # avoid e.g. matching 'and' in 'land' but allow e.g. matching 'and' in 'hello.and'
-            # for matching purposes use lowercase
-            # PROBLEM: this will not match words in class names like "Class" in "ClassName"
-            pattern = '(?:[^A-Za-z]|\A)({})(?:[^A-Za-z]|\Z)'.format(phrase.lower()) # must get group 1
-
-        if not re.search(pattern, text.lower()):
-            # replaced phase not found
-            print("'{}' not found".format(phrase))
+        try:
+            match = match_index_list[-1*occurrence_number] # count from the right
+        except IndexError:
+            print("There aren't that many occurrences of '{}'".format(phrase))
             return
-        
-        match_iter = re.finditer(pattern, text.lower())
-        if phrase in character_list: # consider changing this to if len(phrase) == 1 or something
-            match_list = [(m.start(), m.end()) for m in match_iter] 
-        else:
-            match_list = [(m.start(1), m.end(1)) for m in match_iter] # first group
-        last_match = match_list[-1] # Todo: allow user to pick which match they want e.g. the second to last one
-        left_index, right_index = last_match
-
-
     if left_right == "right":
-        # if replaced phrase is punctuation, don't require a word boundary for match
-        if phrase in character_list:
-            pattern = re.escape(phrase.lower())
-        # phrase contains a word
-        else:
-            pattern = '(?:[^A-Za-z]|\A)({})(?:[^A-Za-z]|\Z)'.format(phrase.lower()) # must get group 1
+        try:
+            match = match_index_list[occurrence_number - 1] # count from the left
+        except IndexError:
+            print("There aren't that many occurrences of '{}'".format(phrase))
+            return 
+    left_index, right_index = match
 
-        match = re.search(pattern, text.lower())
-        if not match:
-            print("'{}' not found".format(phrase))
-            return
-        else:
-            if phrase in character_list:
-                left_index, right_index = match.span()
-            else:
-                left_index, right_index = match.span(1) # Group 1
+
     return (left_index, right_index)
-
+    # return 
 
 def select_text_and_return_it(left_right, number_of_lines_to_search):
     # temporarily store previous clipboard item
@@ -59,7 +54,7 @@ def select_text_and_return_it(left_right, number_of_lines_to_search):
         Key("s-home, s-up:%d, s-home, c-c" %number_of_lines_to_search).execute()
     if left_right == "right":
         Key("s-end, s-down:%d, s-end, c-c" %number_of_lines_to_search).execute()
-    Pause("70").execute()
+    Pause("70").execute() # Users should reduce this pause time to as low as they can get away with
     selected_text = pyperclip.paste()
     return (selected_text, temp_for_previous_clipboard_item)
 
@@ -84,23 +79,26 @@ def deal_with_phrase_not_found(selected_text, temp_for_previous_clipboard_item, 
         pyperclip.copy(temp_for_previous_clipboard_item)
 
 
-def replace_phrase_with_phrase(text, replaced_phrase, replacement_phrase, left_right):
-    match = get_start_end_position(text, replaced_phrase, left_right)
-    if match:
-        left_index, right_index = match
+def replace_phrase_with_phrase(text, replaced_phrase, replacement_phrase, left_right, occurrence_number):
+# def replace_phrase_with_phrase(text, replaced_phrase, replacement_phrase, left_right):
+    match_index = get_start_end_position(text, replaced_phrase, left_right, occurrence_number)
+    if match_index:
+        left_index, right_index = match_index
     else:
         return
     return text[: left_index] + replacement_phrase + text[right_index:] 
     
 
 
-def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, left_right, number_of_lines_to_search, cursor_behavior):
+def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, left_right, number_of_lines_to_search, cursor_behavior, occurrence_number):
+# def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, left_right, number_of_lines_to_search, cursor_behavior):
     clip = select_text_and_return_it(left_right, number_of_lines_to_search)
     selected_text = clip[0]
     temp_for_previous_clipboard_item = clip[1]
     replaced_phrase = str(replaced_phrase)
     replacement_phrase = str(replacement_phrase) 
-    new_text = replace_phrase_with_phrase(selected_text, replaced_phrase, replacement_phrase, left_right)
+    new_text = replace_phrase_with_phrase(selected_text, replaced_phrase, replacement_phrase, left_right, occurrence_number)
+    # new_text = replace_phrase_with_phrase(selected_text, replaced_phrase, replacement_phrase, left_right)
     if not new_text:
         # replaced_phrase not found
         deal_with_phrase_not_found(selected_text, temp_for_previous_clipboard_item, cursor_behavior, left_right)
@@ -117,10 +115,10 @@ def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, le
     Pause("20").execute()
     pyperclip.copy(temp_for_previous_clipboard_item)
 
-def remove_phrase_from_text(text, phrase, left_right):
-    match = get_start_end_position(text, phrase, left_right)
-    if match:
-        left_index, right_index = match
+def remove_phrase_from_text(text, phrase, left_right, occurrence_number):
+    match_index = get_start_end_position(text, phrase, left_right, occurrence_number)
+    if match_index:
+        left_index, right_index = match_index
     else:
         return
         
@@ -131,12 +129,12 @@ def remove_phrase_from_text(text, phrase, left_right):
         return text[: left_index - 1] + text[right_index:] 
 
 
-def copypaste_remove_phrase_from_text(phrase, left_right, number_of_lines_to_search, cursor_behavior):
+def copypaste_remove_phrase_from_text(phrase, left_right, number_of_lines_to_search, cursor_behavior, occurrence_number):
     clip = select_text_and_return_it(left_right, number_of_lines_to_search)
     selected_text = clip[0]
     temp_for_previous_clipboard_item = clip[1]
     phrase = str(phrase)
-    new_text = remove_phrase_from_text(selected_text, phrase, left_right)
+    new_text = remove_phrase_from_text(selected_text, phrase, left_right, occurrence_number)
     if not new_text:
         # phrase not found
         deal_with_phrase_not_found(selected_text, temp_for_previous_clipboard_item, cursor_behavior, left_right)
@@ -152,9 +150,9 @@ def copypaste_remove_phrase_from_text(phrase, left_right, number_of_lines_to_sea
     pyperclip.copy(temp_for_previous_clipboard_item)
 
 
-def move_until_phrase(left_right, before_after, phrase, number_of_lines_to_search, cursor_behavior):
-    # set default for before_after
-    if before_after == None:
+def move_until_phrase(left_right, before_after, phrase, number_of_lines_to_search, cursor_behavior, occurrence_number):
+    if not before_after:
+          # default to whatever is closest to the cursor
         if left_right  == "left":
             before_after = "after"
         if left_right == "right":
@@ -164,14 +162,13 @@ def move_until_phrase(left_right, before_after, phrase, number_of_lines_to_searc
     selected_text = clip[0]
     temp_for_previous_clipboard_item = clip[1]
     phrase = str(phrase)
-    match = get_start_end_position(selected_text, phrase, left_right)
-    if match:
-        left_index, right_index = match
+    match_index = get_start_end_position(selected_text, phrase, left_right, occurrence_number)
+    if match_index:
+        left_index, right_index = match_index
     else:
         # phrase not found
         deal_with_phrase_not_found(selected_text, temp_for_previous_clipboard_item, cursor_behavior, left_right)
         return
-    left_index, right_index = get_start_end_position(selected_text, phrase, left_right)
 
     
     if cursor_behavior == "standard":
@@ -216,19 +213,18 @@ def move_until_phrase(left_right, before_after, phrase, number_of_lines_to_searc
     Pause("20").execute()
     pyperclip.copy(temp_for_previous_clipboard_item)
 
-def select_phrase(phrase, left_right, number_of_lines_to_search, cursor_behavior):
+def select_phrase(phrase, left_right, number_of_lines_to_search, cursor_behavior, occurrence_number):
     clip = select_text_and_return_it(left_right, number_of_lines_to_search)
     selected_text = clip[0]
     temp_for_previous_clipboard_item = clip[1]
     phrase = str(phrase)
-    match = get_start_end_position(selected_text, phrase, left_right)
-    if match:
-        left_index, right_index = match
+    match_index = get_start_end_position(selected_text, phrase, left_right, occurrence_number)
+    if match_index:
+        left_index, right_index = match_index
     else:
         # phrase not found
         deal_with_phrase_not_found(selected_text, temp_for_previous_clipboard_item, cursor_behavior, left_right)
         return
-    left_index, right_index = get_start_end_position(selected_text, phrase, left_right)
     
 
 
@@ -274,27 +270,26 @@ def select_phrase(phrase, left_right, number_of_lines_to_search, cursor_behavior
     pyperclip.copy(temp_for_previous_clipboard_item)
 
 
-def select_until_phrase(left_right, phrase, before_after, number_of_lines_to_search, cursor_behavior):
-    # set default for before_after
+def select_until_phrase(left_right, phrase, before_after, number_of_lines_to_search, cursor_behavior, occurrence_number):
+    
     if not before_after:
-        if left_right  == "left":
-            before_after = "after"
-        if left_right == "right":
+    # default to select all the way through the phrase not just up until it
+        if left_right == "left":
             before_after = "before"
-
+        if left_right == "right":
+            before_after = "after"
     
     clip = select_text_and_return_it(left_right, number_of_lines_to_search)
     selected_text = clip[0]
     temp_for_previous_clipboard_item = clip[1]
     phrase = str(phrase)
-    match = get_start_end_position(selected_text, phrase, left_right)
-    if match:
-        left_index, right_index = match
+    match_index = get_start_end_position(selected_text, phrase, left_right, occurrence_number)
+    if match_index:
+        left_index, right_index = match_index
     else:
         # phrase not found
         deal_with_phrase_not_found(selected_text, temp_for_previous_clipboard_item, cursor_behavior, left_right)
         return
-    left_index, right_index = get_start_end_position(selected_text, phrase, left_right)
     
     # Approach 1: unselect using arrow keys rather than pasting over the existing text. (a little faster) does not work texstudio
     if cursor_behavior == "standard":
@@ -356,10 +351,10 @@ def select_until_phrase(left_right, phrase, before_after, number_of_lines_to_sea
 
 
 # seems a little inconsistent
-def delete_until_phrase(text, phrase, left_right, before_after):
-    match = get_start_end_position(text, phrase, left_right)
-    if match:
-        left_index, right_index = match
+def delete_until_phrase(text, phrase, left_right, before_after, occurrence_number):
+    match_index = get_start_end_position(text, phrase, left_right, occurrence_number)
+    if match_index:
+        left_index, right_index = match_index
     else:
         return
     # the spacing below may need to be tweaked
@@ -383,13 +378,20 @@ def delete_until_phrase(text, phrase, left_right, before_after):
             else:
                 return text[left_index :]
 
-def copypaste_delete_until_phrase(left_right, phrase, number_of_lines_to_search, before_after, cursor_behavior):
+def copypaste_delete_until_phrase(left_right, phrase, number_of_lines_to_search, before_after, cursor_behavior, occurrence_number):
+    if not before_after:
+        # default to delete all the way through the phrase not just up until it
+        if left_right == "left":
+            before_after = "before"
+        if left_right == "right":
+            before_after = "after"
+
     clip = select_text_and_return_it(left_right, number_of_lines_to_search)
     selected_text = clip[0]
     temp_for_previous_clipboard_item = clip[1]
     
     phrase = str(phrase)
-    new_text = delete_until_phrase(selected_text, phrase, left_right, before_after)
+    new_text = delete_until_phrase(selected_text, phrase, left_right, before_after, occurrence_number)
     if not new_text:
         # phrase not found
         deal_with_phrase_not_found(selected_text, temp_for_previous_clipboard_item, cursor_behavior, left_right)
