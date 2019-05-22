@@ -30,6 +30,8 @@ class FirefoxRule(ChromeAndFirefox):
             R(Key("c-tab/30")) * Repeat(extra="n"),
         browser.SWITCH_TO_NTH_TAB:
             R(Key("c-%(nth)")),
+        browser.SWITCH_TO_TAB_N:
+            R(Key("c-%(n)")),
         browser.FIND_NEXT_MATCH:
             R(Key("c-g/20")) * Repeat(extra="n"),
         browser.TOGGLE_BOOKMARK_TOOLBAR:

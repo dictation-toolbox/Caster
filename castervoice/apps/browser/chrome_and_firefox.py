@@ -29,7 +29,7 @@ class ChromeAndFirefox(MergeRule):
             R(Key("cs-t")) * Repeat(extra="n"),
         browser.CLOSE_TAB_N_TIMES:
             R(Key("c-w")) * Repeat(extra='n'),
-        browser.CLOSE_ALL_TABS:
+        browser.CLOSE_WINDOW:
             R(Key("cs-w")),
         browser.NEXT_TAB_N_TIMES:
             R(Key("c-tab")) * Repeat(extra="n"),

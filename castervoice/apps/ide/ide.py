@@ -49,8 +49,8 @@ GO_TO_DECLARATION = "[go to] (source|declaration)"
 
 # search and replace
 FIND_IN_CURRENT_FILE = "find"
-FIND_NEXT_MATCH = "find %s" % RIGHT
-FIND_PREVIOUS_MATCH = "find %s" % LEFT
+FIND_NEXT_MATCH = "find %s [match] [<n>]" % BACK
+FIND_PREVIOUS_MATCH = "find %s [match] [<n>]" % FORWARD
 REPLACE_IN_CURRENT_FILE = "replace"
 FIND_IN_ALL_FILES = "find [in] (all|files)"
 REPLACE_IN_ALL_FILES = "replace [in] (all|files)"

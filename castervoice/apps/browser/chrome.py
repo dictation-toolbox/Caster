@@ -35,6 +35,8 @@ class ChromeRule(ChromeAndFirefox):
             R(Key("cs-tab")) * Repeat(extra="n"),
         browser.SWITCH_TO_NTH_TAB:
             R(Key("c-%(nth)s")),
+        browser.SWITCH_TO_TAB_N:
+            R(Key("c-%(n)s")),
         browser.SWITCH_TO_LAST_TAB:
             R(Key("c-9")),
         browser.SWITCH_TO_SECOND_TO_LAST_TAB:
