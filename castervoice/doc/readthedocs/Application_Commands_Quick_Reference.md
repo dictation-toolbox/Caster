@@ -138,18 +138,18 @@
 | `go back [<n>]`                        | `go forward [<n>]`                   | `zoom in [<n>]`              |
 | `zoom out [<n>]`                       | `zoom reset`                         | `super refresh`              |
 | `switch focus [<n>]`                   | `[find] next match [<n>]`            | `[find] prior match [<n>]`   |
-| `[toggle] caret browsing`              | `home page`                          | `[show] history`             |
-| `address bar`                          | `show downloads`                     | `add bookmark`               |
+| `[toggle] caret browsing`              | `[go home] page`                     | `[show] history`             |
+| `address bar`                          | `[show] downloads`                   | `[add] bookmark`             |
 | `bookmark all tabs`                    | `[toggle] bookmark bar`              | `[show] bookmarks`           |
 | `switch user`                          | `chrome task manager`                | `[toggle] full-screen`       |
 | `focus notification`                   | `allow notification`                 | `deny notification`          |
 | `developer tools`                      | `view [page] source`                 | `resume`                     |
 | `step over`                            | `step into`                          | `step out`                   |
 | `IRC identify`                         | `google that`                        | `duplicate tab`              |
-| `duplicate window`                     | `extensions`                         | `(menu / three dots)`        |
-| `settings`                             | `downloads`                          | `chrome task manager`        |
-| `clear browsing data`                  | `developer tools`                    | `more tools`                 |
-| `google that`                  | `wikipedia that`                    | ``                 |
+| `duplicate window`                     | `[show] extensions`                  | `(menu / three dots)`        |
+| `settings`                             | `[show] downloads`                   | `[chrome] task manager`      |
+| `clear browsing data`                  | `[show ]developer tools`             | `more tools`                 |
+| `google that`                          | `wikipedia that`                     |                              |
 
 ## Click by voice plug-in
 Options:
@@ -238,13 +238,27 @@ Options:
 
 # Firefox
 
-| Command            | Command          | Command         |
-|:-------------------|:-----------------|:----------------|
-| `IRC identify`     | `resume`         | `step over`     |
-| `[add] bookmark`   | `show downloads` | `super refresh` |
-| `developer tools`  | `show history`   | `zoom in <n>`   |
-| `new tab [<n>]`    | `step into`      | `zoom out <n>`  |
-| `reopen tab [<n>]` | `step out`       |                 |
+| Command                                | Command                              | Command                      |
+|:---------------------------------------|:-------------------------------------|:-----------------------------|
+| `new window`                           | `(new incognito window / incognito)` | `new tab [<n>]`              |
+| `reopen tab [<n>]`                     | `close tab [<n>]`                    | `close all tabs`             |
+| `next tab [<n>]`                       | `previous tab [<n>]`                 | `new tab that`               |
+| `<nth> tab`                            | `last tab`                           | `second last tab`            |
+| `go back [<n>]`                        | `go forward [<n>]`                   | `zoom in [<n>]`              |
+| `zoom out [<n>]`                       | `zoom reset`                         | `super refresh`              |
+| `switch focus [<n>]`                   | `[find] next match [<n>]`            | `[find] prior match [<n>]`   |
+| `[toggle] caret browsing`              | `[go home] page`                     | `[show] history`             |
+| `address bar`                          | `[show] downloads`                   | `[add] bookmark`             |
+| `bookmark all tabs`                    | `[toggle] bookmark bar`              | `[show] bookmarks`           |
+| `switch user`                          | `[toggle] full-screen`               | `duplicate tab`              |
+| `focus notification`                   | `allow notification`                 | `deny notification`          |
+| `developer tools`                      | `[show page] source`                 | `resume`                     |
+| `step over`                            | `step into`                          | `step out`                   |
+| `IRC identify`                         | `google that`                        |                              |
+| `duplicate window`                     | `[show] extensions`                  |                              |
+| `[show] settings`                      | `[show] downloads`                   |                              |
+| `clear browsing data`                  | `[show ]developer tools`             |                              |
+| `google that`                          | `wikipedia that`                     |                              |
 
 # Flash Develop
 
@@ -329,6 +343,27 @@ Options:
 | `comment line`  | `next tab`        | `show doc`          |
 | `delete line`   | `prior tab`       | `show param`        |
 | `duplicate`     | `quickfix`        | `uncomment line`    |
+
+| Command                                | Command                              | Command                      |
+|:---------------------------------------|:-------------------------------------|:-----------------------------|
+| `Jen method`                           | `find in current`                    | `search [everywhere]`        |
+| `auto complete`                        | `format code`                        | `find symbol`                |
+| `auto file`                            | `format class`                       | `[find] usage`               |
+| `build`                                | `go to line`                         | `select ex`                  |
+| `build and run`                        | `jump to source`                     | `select ex down`             |
+| `comment [line]`                       | `next tab`                           | `show doc`                   |
+| `delete line`                          | `prior tab`                          | `show param`                 |
+| `duplicate`                            | `quickfix`                           | `uncomment line`             |
+| `expand [selection] [<n>]`             | `smart auto complete`                | `quickfix`                   |
+| `split right`                          | `pane left`                          | `pane right`                 |
+| `split down`                           | `pane down`                          | `pane up`                    |
+| `split `                               | `last tab`                           | `second last tab`            |
+| `go [to] editor`                       | `go [to] project explorer`           | `toggle terminal`            |
+| `new file`                             | `method forward`                     | `method back`                |
+| `[move] line up`                       | `kill forward`                       | `extract method`             |
+| `[move] line down`                     | `kill back`                          | `extract constant`           |
+| `extract param`                        | `kill`                               | `override method `           |
+| `auto indent`                          |
 
 # Microsoft Visual Studio
 
