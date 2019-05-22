@@ -137,7 +137,7 @@
 | `<nth> tab`                            | `last tab`                           | `second last tab`            |
 | `go back [<n>]`                        | `go forward [<n>]`                   | `zoom in [<n>]`              |
 | `zoom out [<n>]`                       | `zoom reset`                         | `super refresh`              |
-| `switch focus [<n>]`                   | `[find] next match [<n>]`            | `[find] prior match [<n>]`   |
+| `switch focus [<n>]`                   | `[find] next [match] [<n>]`          | `[find] prior [match] [<n>]` |
 | `[toggle] caret browsing`              | `[go home] page`                     | `[show] history`             |
 | `address bar`                          | `[show] downloads`                   | `[add] bookmark`             |
 | `bookmark all tabs`                    | `[toggle] bookmark bar`              | `[show] bookmarks`           |
@@ -246,7 +246,7 @@ Options:
 | `<nth> tab`                            | `last tab`                           | `second last tab`            |
 | `go back [<n>]`                        | `go forward [<n>]`                   | `zoom in [<n>]`              |
 | `zoom out [<n>]`                       | `zoom reset`                         | `super refresh`              |
-| `switch focus [<n>]`                   | `[find] next match [<n>]`            | `[find] prior match [<n>]`   |
+| `switch focus [<n>]`                   | `[find] next [match] [<n>]`          | `[find] prior [match] [<n>]` |
 | `[toggle] caret browsing`              | `[go home] page`                     | `[show] history`             |
 | `address bar`                          | `[show] downloads`                   | `[add] bookmark`             |
 | `bookmark all tabs`                    | `[toggle] bookmark bar`              | `[show] bookmarks`           |
