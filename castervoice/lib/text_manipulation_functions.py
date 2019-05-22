@@ -49,7 +49,7 @@ def get_start_end_position(text, phrase, left_right, occurrence_number):
 def select_text_and_return_it(left_right, number_of_lines_to_search):
     # temporarily store previous clipboard item
     temp_for_previous_clipboard_item = pyperclip.paste()
-    Pause("30").execute()
+    Pause("30").execute() # Users should reduce this pause time to as low as they can get away with
     if left_right == "left":
         Key("s-home, s-up:%d, s-home, c-c" %number_of_lines_to_search).execute()
     if left_right == "right":

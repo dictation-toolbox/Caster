@@ -11,9 +11,9 @@ from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
 from castervoice.lib.dfplus.state.short import R
 
 # Advertisement
-print("""Check out the new experimental text manipulation commands in castervoice\lib\ccr\core\text_manipulation.py 
-    You may want to reduce the pause time in the functions in castervoice\lib\text_manipulation_functions.py
-    """)
+print("""Check out the new experimental text manipulation commands in castervoice\lib\ccr\core\\text_manipulation.py 
+    You may want to reduce the pause time in the function select_text_and_return_it in castervoice\lib\\text_manipulation_functions.py
+    Please report bugs""")
 
 class TextManipulation(MergeRule):
     pronunciation = "text manipulation"
@@ -32,7 +32,7 @@ class TextManipulation(MergeRule):
         # The solution is to add a longer pause after pressing control see in the supporting functions in text_manipulation_functions.py
         # For some applications this pause ( and other pauses in the functions for that matter ) is not necessary
         # and may be removed by the user if they wish to speed up the execution of these commands
-        # These functions copy text into the clipboard and then return whatever you had there before backing onto the clipboardself.
+        # These functions copy text into the clipboard and then return whatever you had there before backing onto the clipboardcenter.
         # If you are using the multi clipboard, this might be annoying because you will have some
         # extra junk put on the second slot on your multi clipboard. To combat this problem you
         # could use castervoice.lib.context.read_selected_without_altering_clipboard() instead of pyperclip
