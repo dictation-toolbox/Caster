@@ -12,8 +12,8 @@ from castervoice.lib.dfplus.state.short import R
 
 # Advertisement
 print("""Check out the new experimental text manipulation commands in castervoice\lib\ccr\core\\text_manipulation.py 
-    You may want to reduce the pause time in the function select_text_and_return_it in castervoice\lib\\text_manipulation_functions.py
-    Please report bugs""")
+    Enable them by saying "enable text manipulation". You may want to reduce the pause time in the function select_text_and_return_it in castervoice\lib\\text_manipulation_functions.py
+    Please give feedback and report bugs""")
 
 class TextManipulation(MergeRule):
     pronunciation = "text manipulation"
@@ -22,23 +22,26 @@ class TextManipulation(MergeRule):
     mapping = {
 
         
-        # requires the latest version of dragonfly because of her recent modification of the Function action
+        """ requires a recent version of dragonfly because of recent modification of the Function action
             # I think dragonfly2-0.13.0
-        # The PAUSE TIMES in these functions should be reduced (possibly depending on the application ).
-        # I have them cranked up very high right now just to make sure everything works.
-        # the keypress waittime should probably be made shorter for these commands.
-        # When these commands are not working in a particular application sometimes the problem is that 
-        # there is not enough time from when control-c is pressed until the contents of the clipboard are passed into the function
-        # The solution is to add a longer pause after pressing control see in the supporting functions in text_manipulation_functions.py
-        # For some applications this pause ( and other pauses in the functions for that matter ) is not necessary
-        # and may be removed by the user if they wish to speed up the execution of these commands
-        # These functions copy text into the clipboard and then return whatever you had there before backing onto the clipboardcenter.
-        # If you are using the multi clipboard, this might be annoying because you will have some
-        # extra junk put on the second slot on your multi clipboard. To combat this problem you
-        # could use castervoice.lib.context.read_selected_without_altering_clipboard() instead of pyperclip
+         The PAUSE TIMES in these functions should be reduced (possibly depending on the application, eventually can use a context action ).
+         I have them cranked up very high right now just to make sure everything works.
+         the keypress waittime should probably be made shorter for these commands.
+         When these commands are not working in a particular application sometimes the problem is that 
+         there is not enough time from when control-c is pressed until the contents of the clipboard are passed into the function
+         The solution is to add a longer pause after pressing control see in the supporting functions in text_manipulation_functions.py
+         For some applications this pause ( and other pauses in the functions for that matter ) is not necessary
+         and may be removed by the user if they wish to speed up the execution of these commands
+         These functions copy text into the clipboard and then return whatever you had there before backing onto the clipboardcenter.
+         If you are using the multi clipboard, this might be annoying because you will have some
+         extra junk put on the second slot on your multi clipboard. To combat this problem you
+         could use castervoice.lib.context.read_selected_without_altering_clipboard() instead of pyperclip
+        """
 
 
-# Todo: Find way to to better consolidate these context actions.
+# Todo: Find way to to better consolidate these context actions. 
+# Todo: Put context actions for different apps based on pause time requirements
+# Todo: Consolidate command definitions for left character versus right character; handle defaults in the functions.
         
         # # PROBLEM: sometimes Dragon thinks the variables are part of dictation.           
         "(replace|change) <lease_ross> [<number_of_lines_to_search>] [<occurrence_number>] <dictation> (with|to) <dictation2>":
