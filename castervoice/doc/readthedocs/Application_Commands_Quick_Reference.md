@@ -333,17 +333,6 @@ Options:
 | `emphasize`   | `insert image`   | `mention`     |
 
 # Jetbrains
-
-| Command         | Command           | Command             |
-|:----------------|:------------------|:--------------------|
-| `Jen method`    | `find in current` | `search everywhere` |
-| `auto complete` | `format code`     | `search symbol`     |
-| `build`         | `go to line`      | `select ex`         |
-| `build and run` | `jump to source`  | `select ex down`    |
-| `comment line`  | `next tab`        | `show doc`          |
-| `delete line`   | `prior tab`       | `show param`        |
-| `duplicate`     | `quickfix`        | `uncomment line`    |
-
 | Command                                | Command                              | Command                      |
 |:---------------------------------------|:-------------------------------------|:-----------------------------|
 | `Jen method`                           | `find in current`                    | `search [everywhere]`        |
@@ -364,6 +353,22 @@ Options:
 | `[move] line down`                     | `kill back`                          | `extract constant`           |
 | `extract param`                        | `kill`                               | `override method `           |
 | `auto indent`                          |
+| GIT Commands (embedded terminal) 
+| `(get push / push)`                    | `fetch`                              | `search recursive filetype`  |
+| `(undo changes / reset hard)`          | `gooey blame`                        | `stash`                      |
+| `CD`                                   | `initialize repository`              | `stash apply [<n>]`          |
+| `CD up`                                | `list`                               | `stash branch`               |
+| `GUI / gooey`                          | `make directory`                     | `stash list`                 |
+| `abort cherry pick`                    | `merge`                              | `status`                     |
+| `add`                                  | `merge tool`                         | `stop tracking [file]`       |
+| `blame`                                | `preview remove untracked`           | `to file`                    |
+| `branch`                               | `pull`                               | `undo [last] commit`         |
+| `bug fix commit <n>`                   | `reference commit <n>`               | `visualize`                  |
+| `checkout`                             | `remote`                             | `visualize all`              |
+| `cherry pick`                          | `remove untracked`                   | `visualize file`             |
+| `commit`                               | `search recursive`                   |                              |
+| `exit`                                 | `search recursive count`             |                              |
+
 
 # Microsoft Visual Studio
 
