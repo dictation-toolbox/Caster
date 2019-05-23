@@ -13,7 +13,7 @@ from dragonfly import (Grammar, Repeat,
                        Mouse, Pause)
 
 import browser
-from castervoice.apps.browser.chrome_and_firefox import ChromeAndFirefox
+from castervoice.apps.browser.browser_shared_commands import ChromeAndFirefox
 from castervoice.lib import control
 from castervoice.lib import settings
 from castervoice.lib.actions import Key, Text

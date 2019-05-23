@@ -7,10 +7,11 @@ method = "(meth|method)"
 
 # general
 EXPAND_SELECTION = "expand [selection] [<n>]"
+SHRINK_SELECTION = "shrink [selection] [<n>]"
 SMART_AUTO_COMPLETE = "(skraken|smart kraken)"
 GENERATE_CODE = "jen code"
 QUICK_FIX = "quickfix"
-FORMAT_ALL_CODE = "format code"
+FORMAT_ALL_CODE = "format [code]"
 BUILD_PROJECT = "build"
 RUN_PROJECT = "run"
 DEBUG_PROJECT = "debug"
@@ -21,6 +22,7 @@ NEXT_ERROR = "(%s error|error %s)" % (FORWARD, RIGHT)
 PREVIOUS_ERROR = "(%s error|error %s)" % (BACK, LEFT)
 REDO = "redo [<n>]"
 SHOW_SETTINGS = "[show] settings"
+RENAME_CURRENT_FILE = "file rename | rename file"
 
 # window navigation
 NEXT_TAB = "%s tab [<n>]|tab %s [<n>]" % (FORWARD, RIGHT)
@@ -40,6 +42,7 @@ SPLIT_MOVE_UP = "pane %s [<n>]" % UP
 SPLIT_MOVE_DOWN = "pane %s [<n>]" % DOWN
 SPLIT_MOVE_RIGHT = "(pane %s|next pane) [<n>]" % RIGHT
 SPLIT_MOVE_LEFT = "(pane %s|(prior|previous) pane) [<n>]" % LEFT
+CLOSE_PANE_N_TIMES = "close pane [<n>]|pane close [<n>]"
 
 # navigation
 GO_TO_LINE = "go [to line] [<n>]"

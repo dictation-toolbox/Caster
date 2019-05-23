@@ -69,12 +69,15 @@ class JetbrainsRule(MergeRule):
         ide.MOVE_LINE_UP: R(Key("as-up")) * Repeat(extra="n"),
         ide.MOVE_LINE_DOWN: R(Key("as-down")) * Repeat(extra="n"),
         ide.EXPAND_SELECTION: R(Key("c-w")) * Repeat(extra="n"),
+        ide.SHRINK_SELECTION: R(Key("cs-w")) * Repeat(extra="n"),
         ide.AUTO_INDENT: R(Key("ca-i")),
         ide.CLOSE_TAB_N_TIMES: R(Key("c-f4/%s" % DELAY)) * Repeat(extra="n"),
         ide.RUN_PROJECT: R(Key("s-f10")),
         ide.DEBUG_PROJECT: R(Key("s-f9")),
         ide.REDO: R(Key("cs-z")) * Repeat(extra="n"),
         ide.SHOW_SETTINGS: R(Key("ca-s")),
+        # only works if you disable tabs.
+        ide.CLOSE_PANE_N_TIMES: R(Key("c-f4/%s" % DELAY)) * Repeat(extra="n"),
 
         # refactoring
         ide.REFACTOR: R(Key("cas-t")),
@@ -103,6 +106,7 @@ class JetbrainsRule(MergeRule):
         ide.SPLIT_MOVE_DOWN: R(Key("cs-s,down")) * Repeat(extra="n"),
         ide.SPLIT_MOVE_RIGHT: R(Key("cs-s,right")) * Repeat(extra="n"),
         ide.SPLIT_MOVE_LEFT: R(Key("cs-s,left")) * Repeat(extra="n"),
+        ide.RENAME_CURRENT_FILE: R(Key("cas-r")),
     }
 
     defaults = {"n": 1, "mim": ""}
