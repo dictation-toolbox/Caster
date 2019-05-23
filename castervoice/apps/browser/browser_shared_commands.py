@@ -9,7 +9,7 @@ from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
 
 
-class ChromeAndFirefox(MergeRule):
+class BrowserSharedCommands(MergeRule):
 
     @staticmethod
     def merge_dictionaries(x, y):

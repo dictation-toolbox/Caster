@@ -13,7 +13,7 @@ from dragonfly import (Grammar, Repeat,
                        Mouse, Pause)
 
 import browser
-from castervoice.apps.browser.browser_shared_commands import ChromeAndFirefox
+from castervoice.apps.browser.browser_shared_commands import BrowserSharedCommands
 from castervoice.lib import control
 from castervoice.lib import settings
 from castervoice.lib.actions import Key, Text
@@ -23,7 +23,7 @@ from castervoice.lib.dfplus.state.short import R
 from castervoice.lib.temporary import Store, Retrieve
 
 
-class ChromeRule(ChromeAndFirefox):
+class ChromeRule(BrowserSharedCommands):
     pronunciation = "google chrome"
 
     _mapping = {
@@ -61,7 +61,7 @@ class ChromeRule(ChromeAndFirefox):
         "more tools":
             R(Key("a-f/5, l")),
     }
-    mapping = ChromeAndFirefox.merge_dictionaries(_mapping, ChromeAndFirefox.chromeAndFirefoxMapping)
+    mapping = BrowserSharedCommands.merge_dictionaries(_mapping, BrowserSharedCommands.chromeAndFirefoxMapping)
     extras = browser.EXTRAS
     defaults = browser.DEFAULTS
 

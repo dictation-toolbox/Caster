@@ -12,7 +12,7 @@ Command-module for Firefox
 from dragonfly import (Grammar, Repeat)
 
 import browser
-from castervoice.apps.browser.browser_shared_commands import ChromeAndFirefox
+from castervoice.apps.browser.browser_shared_commands import BrowserSharedCommands
 from castervoice.lib import control
 from castervoice.lib import settings
 from castervoice.lib.actions import Key
@@ -21,7 +21,7 @@ from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.state.short import R
 
 
-class FirefoxRule(ChromeAndFirefox):
+class FirefoxRule(BrowserSharedCommands):
     pronunciation = "fire fox"
 
     _mapping = {
@@ -35,7 +35,7 @@ class FirefoxRule(ChromeAndFirefox):
         browser.SHOW_EXTENSIONS:
             R(Key("a-a, l, e/15, enter")),
     }
-    mapping = ChromeAndFirefox.merge_dictionaries(_mapping, ChromeAndFirefox.chromeAndFirefoxMapping)
+    mapping = BrowserSharedCommands.merge_dictionaries(_mapping, BrowserSharedCommands.chromeAndFirefoxMapping)
     extras = browser.EXTRAS
     defaults = browser.DEFAULTS
 
