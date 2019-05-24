@@ -16,7 +16,7 @@ Make sure to select `Add python to path`. This can be done manually by searching
 - **Second only for Dragon NaturallySpeaking**.
 - Download and install [Natlink](https://sourceforge.net/projects/natlink/files/natlink/natlinktest4.1/). Use `Natlink-4.1 whiskey3` or newer.
 - Open [command prompt](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows) (CMD) and type the following then press enter.
-  - `pip install future six wxPython`
+  - `pip install future six wxPython pywin32`
 - Create a new folder in your Documents `C:\Users\<YourUsername>\Documents` called `Caster` with a capital C.
   1. Open the start menu and search for `natlink`, click the file called `Configure NatLink via GUI`.
 
