@@ -3,7 +3,7 @@
 Caster currently supports the following speech recognition engines on Microsoft Windows Vista through Windows 10.
 
 - Windows Speech Recognition (WSR)
-- Dragon NaturallySpeaking (DNS) - *Caster only supports Dragon NaturallySpeaking 13 or higher.
+- Dragon NaturallySpeaking (DNS) - Caster only supports Dragon NaturallySpeaking 13 or higher.
 
 ### 1. Python
 
@@ -62,11 +62,11 @@ At the end of the PIP install instructions a CMD window will guide you of what t
 ### 4. Setup and launch for Classic Install.
 
 - **Dragon NaturallySpeaking**
-  1. Start or reboot Dragon. NatLink should load at the same time, with caster commands available. To test this, open a notepad window and try saying `arch brov char delta` producing `abcd` text.
+  1. Start or reboot Dragon. NatLink should load at the same time, with caster commands available. To test this, open Window's Notepad and try saying `arch brov char delta` producing `abcd` text.
 - **Windows Speech Recognition**
   1.  In  `C:\Users\<YourUsername>\Documents\Caster`
   2.  Start caster by double click on `_caster.py`. 
-  3.  To test open a notepad window and try saying `arch brov char delta` producing `abcd` text. Set up complete!
+  3.  To test open Window's Notepad and try saying `arch brov char delta` producing `abcd` text. Set up complete!
 
 ### Troubleshooting FAQ
 
