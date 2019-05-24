@@ -13,8 +13,7 @@ from castervoice.lib.dfplus.state.short import R
 # Advertisement
 print("""Check out the new experimental text manipulation commands in castervoice\lib\ccr\core\\text_manipulation.py 
     Enable them by saying "enable text manipulation". You may want to reduce the pause time in the function select_text_and_return_it in castervoice\lib\\text_manipulation_functions.py
-    Please give feedback and report bugs""")
-
+    These are WIP, Please give feedback and report bugs""")
 
 
 
@@ -34,21 +33,23 @@ print("""Check out the new experimental text manipulation commands in castervoic
     extra junk put on the second slot on your multi clipboard. To combat this problem you
     could use castervoice.lib.context.read_selected_without_altering_clipboard() instead of pyperclip
 """
+
 class TextManipulation(MergeRule):
     pronunciation = "text manipulation"
 
 
+    
+
+        
     mapping = {
 
+    # Todo: Find way to to better consolidate these context actions. 
+    # Todo: Put context actions for different apps based on pause time requirements
+    # Todo: Consolidate command definitions for left character versus right character; handle defaults in the functions, rather than choice objects.
+                
+        # PROBLEM: sometimes Dragon thinks the variables are part of dictation.           
         
-
-
-# Todo: Find way to to better consolidate these context actions. 
-# Todo: Put context actions for different apps based on pause time requirements
-# Todo: Consolidate command definitions for left character versus right character; handle defaults in the functions.
-        
-        # # PROBLEM: sometimes Dragon thinks the variables are part of dictation.           
-        "(replace|change) <lease_ross> [<number_of_lines_to_search>] [<occurrence_number>] <dictation> (with|to) <dictation2>":
+        "replace <lease_ross> [<number_of_lines_to_search>] [<occurrence_number>] <dictation> with <dictation2>":
             R(ContextAction(default=Function(text_manipulation_functions.copypaste_replace_phrase_with_phrase,
                        dict(dictation="replaced_phrase", dictation2="replacement_phrase", lease_ross="left_right"), 
                        cursor_behavior="standard"), actions=[
@@ -58,7 +59,27 @@ class TextManipulation(MergeRule):
                        cursor_behavior="texstudio"))]),
               rdescript="Text Manipulation: replace text to the left or right of the cursor"),
         
-        "remove <lease_ross> [<number_of_lines_to_search>] [<occurrence_number>] <dictation>":
+        "replace lease [<number_of_lines_to_search>] [<occurrence_number>] <left_character> with <left_character2>":
+            R(ContextAction(default=Function(text_manipulation_functions.copypaste_replace_phrase_with_phrase,
+                       dict(left_character="replaced_phrase", left_character2="replacement_phrase", lease_ross="left_right"), 
+                       cursor_behavior="standard"), actions=[
+                        # Use different cursor method for texstudio
+                        (AppContext(executable="texstudio"), Function(text_manipulation_functions.copypaste_replace_phrase_with_phrase,
+                       dict(left_character="replaced_phrase", left_character2="replacement_phrase", lease_ross="left_right"), 
+                       cursor_behavior="texstudio"))]),
+              rdescript="Text Manipulation: replace character to the left of the cursor"),
+        
+        "replace ross [<number_of_lines_to_search>] [<occurrence_number>] <right_character> with <right_character2>":
+            R(ContextAction(default=Function(text_manipulation_functions.copypaste_replace_phrase_with_phrase,
+                       dict(right_character="replaced_phrase", right_character2="replacement_phrase", lease_ross="left_right"), 
+                       cursor_behavior="standard"), actions=[
+                        # Use different cursor method for texstudio
+                        (AppContext(executable="texstudio"), Function(text_manipulation_functions.copypaste_replace_phrase_with_phrase,
+                       dict(right_character="replaced_phrase", right_character2="replacement_phrase", lease_ross="left_right"), 
+                       cursor_behavior="texstudio"))]),
+              rdescript="Text Manipulation: replace character to the right of the cursor"),
+        
+        "remove [<number_of_lines_to_search>] [<occurrence_number>] <dictation>":
             R(ContextAction(default=Function(text_manipulation_functions.copypaste_remove_phrase_from_text,
                        dict(dictation="phrase", lease_ross="left_right"), cursor_behavior="standard"),
                        actions=[(AppContext(executable="texstudio"), Function(text_manipulation_functions.copypaste_remove_phrase_from_text,
@@ -91,7 +112,7 @@ class TextManipulation(MergeRule):
                 (AppContext(executable="texstudio"), Function(text_manipulation_functions.move_until_phrase,
                        dict(dictation="phrase", lease_ross="left_right"), cursor_behavior="texstudio")),
                 ]), rdescript="Text Manipulation: move to chosen phrase to the left or right of the cursor"),
-        "go lease [<before_after>] [<number_of_lines_to_search>] [<occurrence_number>] <left_character>":
+        "go <lease_ross> [<before_after>] [<number_of_lines_to_search>] [<occurrence_number>] <left_character>":
             R(ContextAction(default=Function(text_manipulation_functions.move_until_phrase,
                        dict(left_character="phrase"),
                        left_right="left", cursor_behavior="standard"), actions=[(AppContext("texstudio"),
@@ -148,13 +169,13 @@ class TextManipulation(MergeRule):
             actions=[(AppContext("texstudio"), Function(text_manipulation_functions.select_until_phrase,
             dict(right_character="phrase"), left_right="right", cursor_behavior="texstudio"))]),
             rdescript="Text Manipulation: select right until chosen character"),
-        "wipe <lease_ross> [<number_of_lines_to_search>] [until] [<before_after>] [<occurrence_number>] <dictation>":
+        "remove <lease_ross> [<number_of_lines_to_search>] until [<before_after>] [<occurrence_number>] <dictation>":
             R(ContextAction(default=Function(text_manipulation_functions.copypaste_delete_until_phrase,
                        dict(dictation="phrase", lease_ross="left_right"), cursor_behavior="standard"),
                        actions=[(AppContext("texstudio"), Function(text_manipulation_functions.copypaste_delete_until_phrase,
                        dict(dictation="phrase", lease_ross="left_right"), cursor_behavior="texstudio"))]),
               rdescript="Text Manipulation: delete left until chosen phrase"),
-        "wipe lease [<number_of_lines_to_search>] [until] [<before_after>] [<occurrence_number>] <left_character>":
+        "remove lease [<number_of_lines_to_search>] until [<before_after>] [<occurrence_number>] <left_character>":
             R(ContextAction(default=Function(text_manipulation_functions.copypaste_delete_until_phrase,
                        dict(left_character="phrase"),
                        left_right="left", cursor_behavior="standard"),
@@ -162,7 +183,7 @@ class TextManipulation(MergeRule):
                        dict(left_character="phrase"),
                        left_right="left", cursor_behavior="texstudio"))]),
               rdescript="Text Manipulation: delete left until chosen character"),
-        "wipe ross [<number_of_lines_to_search>] [until] [<before_after>] [<occurrence_number>] <right_character>":
+        "remove ross [<number_of_lines_to_search>] until [<before_after>] [<occurrence_number>] <right_character>":
             R(ContextAction(default=Function(text_manipulation_functions.copypaste_delete_until_phrase,
                        dict(right_character="phrase"), 
                        left_right="right", cursor_behavior="standard"), 
@@ -187,7 +208,7 @@ class TextManipulation(MergeRule):
         Choice("character_sequence", {
             "comma": ",",
         }),
-     Choice(
+    Choice(
             "left_character", {
                 "[left] prekris": "(",
                 "right prekris": ")",
@@ -243,6 +264,63 @@ class TextManipulation(MergeRule):
                 "x-ray": "x",
                 
             }),
+    Choice(
+            "left_character2", {
+                "[left] prekris": "(",
+                "right prekris": ")",
+                "[left] brax": "[",
+                "right brax": "]",
+                "[left] angle": "<",
+                "right angle": ">",
+                "[left] curly": "{",
+                "right curly": "}",
+                "quotes": '"',
+                "(single quote | thin quote)": "'",
+                "comma": ",",
+                "(dot | period)": ".",
+                "questo": "?",
+                "deckle": ":",
+                "semper": ";",
+                "backtick": "`",
+                "equals": "=",
+                "dolly": "$",
+                "slash": "/",
+                "backslash": "\\",
+                "minus": "-",
+                "plus": "+",
+                "starling": "*",
+                "x-ray": "x",
+
+            }),
+        Choice(
+            "right_character2", {
+                "[right] prekris": ")",
+                "left prekris": "(",
+                "[right] brax": "]",
+                "left brax": "[",
+                "[right] angle": ">",
+                "left angle": "<",
+                "[right] curly": "}",
+                "left curly": "{",
+                "quotes": '"',
+                "(single quote | thin quote)": "'",
+                "comma": ",",
+                "(dot | period)": ".",
+                "questo": "?",
+                "deckle": ":",
+                "semper": ";",
+                "backtick": "`",
+                "equals": "=",
+                "dolly": "$",
+                "slash": "/",
+                "backslash": "\\",
+                "minus": "-",
+                "plus": "+",
+                "starling": "*",
+                "x-ray": "x",
+                
+            }),
+    
         Choice("lease_ross", {
             "lease": "left",
             "ross": "right",
