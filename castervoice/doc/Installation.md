@@ -11,14 +11,13 @@ Caster currently supports the following speech recognition engines on Microsoft 
 
 Make sure to select `Add python to path`. This can be done manually by searching for "edit environment variables for your account" and adding your Python27 folder to the list of Path values
 
-### 2. NatLink
+### 2. NatLink 
 
 - **Second only for Dragon NaturallySpeaking**.
-
 - Download and install [Natlink](https://sourceforge.net/projects/natlink/files/natlink/natlinktest4.1/). Use `Natlink-4.1 whiskey3` or newer.
-
+- Open [command prompt](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows) (CMD) and type the following then press enter.
+  - `pip install future six wxPython`
 - Create a new folder in your Documents `C:\Users\<YourUsername>\Documents` called `Caster` with a capital C.
-
   1. Open the start menu and search for `natlink`, click the file called `Configure NatLink via GUI`.
 
        ![Configure start](https://mathfly.org/images/configure_start.png)
