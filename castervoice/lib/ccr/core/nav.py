@@ -3,11 +3,12 @@ Created on Sep 1, 2015
 
 @author: synkarius
 '''
-from dragonfly import Repeat, Function, Dictation, Choice, MappingRule
+from dragonfly import Repeat, Function, Dictation, Choice, MappingRule, ContextAction
 
 from castervoice.lib import context, navigation, alphanumeric, textformat, text_utils
 from castervoice.lib import control, utilities
 from castervoice.lib.actions import Key, Mouse
+from castervoice.lib.context import AppContext
 from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
@@ -224,7 +225,9 @@ class Navigation(MergeRule):
         "undo [<nnavi10>]":
             R(Key("c-z"))*Repeat(extra="nnavi10"),
         "redo [<nnavi10>]":
-            R(Key("c-y"))*Repeat(extra="nnavi10"),
+            R(ContextAction(default=Key("c-y")*Repeat(extra="nnavi10"), actions=[
+                (AppContext(executable=["rstudio", "foxitreader"]), Key("cs-z")*Repeat(extra="nnavi10")),
+                ])),
 
     # text formatting
         "set [<big>] format (<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)":
