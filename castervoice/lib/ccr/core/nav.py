@@ -97,8 +97,7 @@ class NavigationNon(MappingRule):
             R(Key("c-z"), rdescript="Core: Undo")*Repeat(extra="n"),
         "redo [<n>]":
             R(ContextAction(default=Key("c-y")*Repeat(extra="n"), actions=[
-                # Use cs-z for rstudio
-                (AppContext(executable="rstudio"), Key("cs-z")*Repeat(extra="n")),
+                (AppContext(executable=["rstudio", "foxitreader"]), Key("cs-z")*Repeat(extra="n")),
                 ]), rdescript="Core: Redo"),
         "refresh":
             R(Key("c-r"), rdescript="Core: Refresh"),
