@@ -11,8 +11,7 @@ Command-module for Firefox
 
 from dragonfly import (Grammar, Dictation, Repeat)
 
-from castervoice.lib import control
-from castervoice.lib import settings
+from castervoice.lib import control, github_automation, settings
 from castervoice.lib.actions import Key, Text
 from castervoice.lib.context import AppContext
 from castervoice.lib.dfplus.additions import IntegerRefST
@@ -54,6 +53,11 @@ class FirefoxRule(MergeRule):
         "IRC identify":
             R(Text("/msg NickServ identify PASSWORD"),
               rdescript="FireFox: IRC Chat Channel Identify"),
+
+        "checkout [this] pull request [locally]":
+            R(Function(automation.github_checkoutupdate_pull_request, new=True)),
+        "update [this] pull request [locally]":
+            R(Function(automation.github_checkoutupdate_pull_request, new=False)),
     }
     extras = [
         Dictation("dict"),
