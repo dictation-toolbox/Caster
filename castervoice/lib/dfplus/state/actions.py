@@ -10,7 +10,7 @@ class RegisteredAction(ActionBase):
     def __init__(self,
                  base,
                  rspec="default",
-                 rdescript="unnamed command (RA)",
+                 rdescript=None,
                  rundo=None,
                  show=True):
         ActionBase.__init__(self)
@@ -21,8 +21,12 @@ class RegisteredAction(ActionBase):
         self.rundo = rundo
         self.show = show
 
-    def _execute(self,
-                 data=None):  # copies everything relevant and places it in the stack
+    def __mul__(self, factor):
+        self.base = self.base * factor
+        return self
+
+    def _execute(self, data=None):
+        # copies everything relevant and places it in the stack
         self.nexus().state.add(StackItemRegisteredAction(self, data))
 
     def set_nexus(self, nexus):
@@ -56,7 +60,7 @@ class AsynchronousAction(ContextSeeker):
     AsynchronousAction should have exactly one ContextLevel with one ContextSet.
     Any triggers in the 0th ContextSet will terminate the AsynchronousAction.
     The repetitions parameter indicates the maximum times the function provided
-    in the 0th ContextSet should run. 0 indicates forever (or until the 
+    in the 0th ContextSet should run. 0 indicates forever (or until the
     termination word is spoken). The time_in_seconds parameter indicates
     how often the associated function should run.
     '''
@@ -90,9 +94,9 @@ class AsynchronousAction(ContextSeeker):
 
     @staticmethod
     def hmc_complete(data_function, nexus):
-        ''' returns a function which applies the passed in function to 
+        ''' returns a function which applies the passed in function to
         the data returned by the pop-up window - the returned function
-        will be called by AsynchronousAction's timer repeatedly, 
+        will be called by AsynchronousAction's timer repeatedly,
         to see if the data is available yet'''
 
         def check_complete():

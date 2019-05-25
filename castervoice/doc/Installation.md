@@ -3,7 +3,7 @@
 Caster currently supports the following speech recognition engines on Microsoft Windows Vista through Windows 10.
 
 - Windows Speech Recognition (WSR)
-- Dragon NaturallySpeaking (DNS) - *Caster only supports Dragon NaturallySpeaking 13 or higher.
+- Dragon NaturallySpeaking (DNS) - Caster only supports Dragon NaturallySpeaking 13 or higher.
 
 ### 1. Python
 
@@ -11,14 +11,13 @@ Caster currently supports the following speech recognition engines on Microsoft 
 
 Make sure to select `Add python to path`. This can be done manually by searching for "edit environment variables for your account" and adding your Python27 folder to the list of Path values
 
-### 2. NatLink
+### 2. NatLink 
 
 - **Second only for Dragon NaturallySpeaking**.
-
 - Download and install [Natlink](https://sourceforge.net/projects/natlink/files/natlink/natlinktest4.1/). Use `Natlink-4.1 whiskey3` or newer.
-
+- Open [command prompt](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows) (CMD) and type the following then press enter.
+  - `pip install future six wxPython pywin32`
 - Create a new folder in your Documents `C:\Users\<YourUsername>\Documents` called `Caster` with a capital C.
-
   1. Open the start menu and search for `natlink`, click the file called `Configure NatLink via GUI`.
 
        ![Configure start](https://mathfly.org/images/configure_start.png)
@@ -29,7 +28,8 @@ Make sure to select `Add python to path`. This can be done manually by searching
 
        ![Caster-Natlink.jpg](https://i.postimg.cc/d1jN4xcw/Caster-Natlink.jpg)
 
-**Third** download Caster and install dependencies. Choose **PIP** or **Classic** Install.
+### 3. Caster
+- Download Caster and install dependencies. Choose **PIP** or **Classic** Install.
 
 **PIP** install is convenient way to install Caster and uses it's development branch. **Classic** install enables the user to track changes with Caster code using git. Git allows users to contribute their own code to the Caster project. 
 
@@ -62,11 +62,11 @@ At the end of the PIP install instructions a CMD window will guide you of what t
 ### 4. Setup and launch for Classic Install.
 
 - **Dragon NaturallySpeaking**
-  1. Start or reboot Dragon. NatLink should load at the same time, with caster commands available. To test this, open a notepad window and try saying `arch brov char delta` producing `abcd` text.
+  1. Start or reboot Dragon. NatLink should load at the same time, with caster commands available. To test this, open Window's Notepad and try saying `arch brov char delta` producing `abcd` text.
 - **Windows Speech Recognition**
   1.  In  `C:\Users\<YourUsername>\Documents\Caster`
   2.  Start caster by double click on `_caster.py`. 
-  3.  To test open a notepad window and try saying `arch brov char delta` producing `abcd` text. Set up complete!
+  3.  To test open Window's Notepad and try saying `arch brov char delta` producing `abcd` text. Set up complete!
 
 ### Troubleshooting FAQ
 
@@ -82,6 +82,9 @@ At the end of the PIP install instructions a CMD window will guide you of what t
 
   -  Look for `CasterInstall.log` on your desktop to check for error messages.
   - The PIP install is in beta yet please report any issues or error messages that you experience github [issues](https://github.com/dictation-toolbox/Caster/issues) or [gitter chat](https://gitter.im/synkarius/Caster?utm_source=share-link&utm_medium=link&utm_campaign=share-link). 
+
+- To fix `ERROR:action.exec:Execution failed: Function(mouse_alternates): [Error 126] The specified module could not be found`. Triggered by using the `Legion` command
+  In order to use Legion, you may need to install [Microsoft Visual C++ Redistributable Packages for Visual Studio 2013 (x86).](https://www.microsoft.com/en-us/download/details.aspx?id=40784) 
 
 
 **NatLink**
