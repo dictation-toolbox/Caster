@@ -129,27 +129,30 @@
 
 # Google Chrome
 
-| Command                                | Command                              | Command                      |
-|:---------------------------------------|:-------------------------------------|:-----------------------------|
-| `new window`                           | `(new incognito window / incognito)` | `new tab [<n>]`              |
-| `reopen tab [<n>]`                     | `close tab [<n>]`                    | `close all tabs`             |
-| `next tab [<n>]`                       | `previous tab [<n>]`                 | `new tab that`               |
-| `<nth> tab`                            | `last tab`                           | `second last tab`            |
-| `go back [<n>]`                        | `go forward [<n>]`                   | `zoom in [<n>]`              |
-| `zoom out [<n>]`                       | `zoom reset`                         | `super refresh`              |
-| `switch focus [<n>]`                   | `[find] next match [<n>]`            | `[find] prior match [<n>]`   |
-| `[toggle] caret browsing`              | `home page`                          | `[show] history`             |
-| `address bar`                          | `show downloads`                     | `add bookmark`               |
-| `bookmark all tabs`                    | `[toggle] bookmark bar`              | `[show] bookmarks`           |
-| `switch user`                          | `chrome task manager`                | `[toggle] full-screen`       |
-| `focus notification`                   | `allow notification`                 | `deny notification`          |
-| `developer tools`                      | `view [page] source`                 | `resume`                     |
-| `step over`                            | `step into`                          | `step out`                   |
-| `IRC identify`                         | `google that`                        | `duplicate tab`              |
-| `duplicate window`                     | `extensions`                         | `(menu / three dots)`        |
-| `settings`                             | `downloads`                          | `chrome task manager`        |
-| `clear browsing data`                  | `developer tools`                    | `more tools`                 |
-| `google that`                  | `wikipedia that`                    | ``                 |
+| Command                                | Command                              | Command                                   |
+|:---------------------------------------|:-------------------------------------|:------------------------------------------|
+| `new window`                           | `(new incognito window / incognito)` | `new tab [<n>]`                           |
+| `reopen tab [<n>]`                     | `close tab [<n>]`                    | `close all tabs`                          |
+| `next tab [<n>]`                       | `previous tab [<n>]`                 | `new tab that`                            |
+| `<nth> tab`                            | `last tab`                           | `second last tab`                         |
+| `go back [<n>]`                        | `go forward [<n>]`                   | `zoom in [<n>]`                           |
+| `zoom out [<n>]`                       | `zoom reset`                         | `super refresh`                           |
+| `switch focus [<n>]`                   | `[find] next match [<n>]`            | `[find] prior match [<n>]`                |
+| `[toggle] caret browsing`              | `home page`                          | `[show] history`                          |
+| `address bar`                          | `show downloads`                     | `add bookmark`                            |
+| `bookmark all tabs`                    | `[toggle] bookmark bar`              | `[show] bookmarks`                        |
+| `switch user`                          | `chrome task manager`                | `[toggle] full-screen`                    |
+| `focus notification`                   | `allow notification`                 | `deny notification`                       |
+| `developer tools`                      | `view [page] source`                 | `resume`                                  |
+| `step over`                            | `step into`                          | `step out`                                |
+| `IRC identify`                         | `google that`                        | `duplicate tab`                           |
+| `duplicate window`                     | `extensions`                         | `(menu / three dots)`                     |
+| `settings`                             | `downloads`                          | `chrome task manager`                     |
+| `clear browsing data`                  | `developer tools`                    | `more tools`                              |
+| `google that`                          | `wikipedia that`                     | `checkout [this] pull request [locally]`  |
+| `update [this] pull request [locally]` | ``                     | ``  |
+
+
 
 ## Click by voice plug-in
 Options:
@@ -238,13 +241,14 @@ Options:
 
 # Firefox
 
-| Command            | Command          | Command         |
-|:-------------------|:-----------------|:----------------|
-| `IRC identify`     | `resume`         | `step over`     |
-| `[add] bookmark`   | `show downloads` | `super refresh` |
-| `developer tools`  | `show history`   | `zoom in <n>`   |
-| `new tab [<n>]`    | `step into`      | `zoom out <n>`  |
-| `reopen tab [<n>]` | `step out`       |                 |
+| Command                                | Command          | Command                                  |
+|:---------------------------------------|:-----------------|:-----------------------------------------|
+| `IRC identify`                         | `resume`         | `step over`                              |
+| `[add] bookmark`                       | `show downloads` | `super refresh`                          |
+| `developer tools`                      | `show history`   | `zoom in <n>`                            |
+| `new tab [<n>]`                        | `step into`      | `zoom out <n>`                           |
+| `reopen tab [<n>]`                     | `step out`       | `checkout [this] pull request [locally]` |
+| `update [this] pull request [locally]` | ``                     | ``  |
 
 # Flash Develop
 
