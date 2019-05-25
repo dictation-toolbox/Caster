@@ -48,7 +48,7 @@ class StackItemRegisteredAction(StackItem):
         self.base = None
 
     def preserve(self):
-        '''save the useful parts of the incoming dragonfly data 
+        '''save the useful parts of the incoming dragonfly data
         (in this case, spoken words)'''
         if self.dragonfly_data is not None:
             self.preserved = [x[0] for x in self.dragonfly_data["_node"].results]
@@ -61,7 +61,12 @@ class StackItemRegisteredAction(StackItem):
     def put_time_action(self):
         self.preserve()
         if settings.SETTINGS["miscellaneous"]["print_rdescripts"] and self.show:
-            print(self.rdescript)
+            # formats rdescript with the given data
+            try:
+                rd = self.rdescript % self.dragonfly_data
+            except:
+                rd = self.rdescript
+            print(rd)
 
 
 class StackItemSeeker(StackItemRegisteredAction):
