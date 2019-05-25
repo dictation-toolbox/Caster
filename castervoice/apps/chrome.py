@@ -142,9 +142,9 @@ class ChromeRule(MergeRule):
             R(Key("a-f/5, l")),
             
         "checkout [this] pull request [locally]":
-            R(Function(automation.github_checkoutupdate_pull_request, new=True)),
+            R(Function(github_automation.github_checkoutupdate_pull_request, new=True)),
         "update [this] pull request [locally]":
-            R(Function(automation.github_checkoutupdate_pull_request, new=False)),
+            R(Function(github_automation.github_checkoutupdate_pull_request, new=False)),
     }
     extras = [
         Choice(

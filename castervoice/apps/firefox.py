@@ -9,7 +9,7 @@ Command-module for Firefox
 """
 #---------------------------------------------------------------------------
 
-from dragonfly import (Grammar, Dictation, Repeat)
+from dragonfly import (Grammar, Dictation, Repeat, Function)
 
 from castervoice.lib import control, github_automation, settings
 from castervoice.lib.actions import Key, Text
@@ -55,9 +55,9 @@ class FirefoxRule(MergeRule):
               rdescript="FireFox: IRC Chat Channel Identify"),
 
         "checkout [this] pull request [locally]":
-            R(Function(automation.github_checkoutupdate_pull_request, new=True)),
+            R(Function(github_automation.github_checkoutupdate_pull_request, new=True)),
         "update [this] pull request [locally]":
-            R(Function(automation.github_checkoutupdate_pull_request, new=False)),
+            R(Function(github_automation.github_checkoutupdate_pull_request, new=False)),
     }
     extras = [
         Dictation("dict"),

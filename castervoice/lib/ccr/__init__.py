@@ -12,7 +12,6 @@ command_sets = {
     "csharp.csharp": ("CSharp", ),
     "dart.dart": ("Dart", ),
     "voice_dev_commands.voice_dev_commands": ("VoiceDevCommands"),
-    "github.github": ("Github", ),
     "go.go": ("Go", ),
     "haxe.haxe": ("Haxe", ),
     "html.html": ("HTML", ),
