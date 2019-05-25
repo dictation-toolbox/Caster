@@ -195,20 +195,16 @@ class Navigation(MergeRule):
             R(Key("c-s"), rspec="save"),
         'shock [<nnavi50>]':
             R(Key("enter"), rspec="shock")* Repeat(extra="nnavi50"),
-
         "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]":
             R(Function(text_utils.master_text_nav)),
-
         "shift click":
             R(Key("shift:down") + Mouse("left") + Key("shift:up")),
-
         "stoosh [<nnavi500>]":
             R(Function(navigation.stoosh_keep_clipboard, nexus=_NEXUS), rspec="stoosh"),
         "cut [<nnavi500>]":
             R(Function(navigation.cut_keep_clipboard, nexus=_NEXUS), rspec="cut"),
         "spark [<nnavi500>] [(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)]":
             R(Function(navigation.drop_keep_clipboard, nexus=_NEXUS), rspec="spark"),
-
         "splat [<splatdir>] [<nnavi10>]":
             R(Key("c-%(splatdir)s"), rspec="splat") * Repeat(extra="nnavi10"),
         "deli [<nnavi50>]":
@@ -217,8 +213,6 @@ class Navigation(MergeRule):
             R(Key("backspace/5:%(nnavi50)d"), rspec="clear"),
         SymbolSpecs.CANCEL:
             R(Key("escape"), rspec="cancel"),
-
-
         "shackle":
             R(Key("home/5, s-end"), rspec="shackle"),
         "(tell | tau) <semi>":
@@ -227,8 +221,6 @@ class Navigation(MergeRule):
             R(Function(navigation.duple_keep_clipboard), rspec="duple"),
         "Kraken":
             R(Key("c-space"), rspec="Kraken"),
-
-            
         "undo [<nnavi10>]":
             R(Key("c-z"))*Repeat(extra="nnavi10"),
         "redo [<nnavi10>]":
