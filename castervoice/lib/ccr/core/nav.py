@@ -78,12 +78,6 @@ class NavigationNon(MergeRule):
             R(Key("c-x")),
         "sure spark":
             R(Key("c-v")),
-        "undo [<n>]":
-            R(Key("c-z"), rdescript="Core: Undo")*Repeat(extra="n"),
-        "redo [<n>]":
-            R(ContextAction(default=Key("c-y")*Repeat(extra="n"), actions=[
-                (AppContext(executable=["rstudio", "foxitreader"]), Key("cs-z")*Repeat(extra="n")),
-                ]), rdescript="Core: Redo"),
         "refresh":
             R(Key("c-r")),
         "maxiwin":
@@ -231,7 +225,9 @@ class Navigation(MergeRule):
         "undo [<nnavi10>]":
             R(Key("c-z"))*Repeat(extra="nnavi10"),
         "redo [<nnavi10>]":
-            R(Key("c-y"))*Repeat(extra="nnavi10"),
+            R(ContextAction(default=Key("c-y")*Repeat(extra="nnavi10"), actions=[
+                (AppContext(executable=["rstudio", "foxitreader"]), Key("cs-z")*Repeat(extra="nnavi10")),
+                ])),
 
     # text formatting
         "set [<big>] format (<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)":
