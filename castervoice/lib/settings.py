@@ -53,13 +53,10 @@ HMC_SEPARATOR = "[hmc]"
 
 WSR = False
 
-<<<<<<< HEAD
 if os.path.isfile('C:/Program Files/Git/git-bash.exe'):
     TERMINAL_PATH_DEFAULT = "C:/Program Files/Git/git-bash.exe"
 else:
     TERMINAL_PATH_DEFAULT = ""
-
-=======
 
 def get_platform_information():
     """Return a dictionary containing platform-specific information."""
@@ -89,7 +86,6 @@ def get_platform_information():
 
 SYSTEM_INFORMATION = get_platform_information()
 
->>>>>>> pure_develop
 def get_filename():
     return _SETTINGS_PATH
 
