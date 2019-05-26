@@ -8,12 +8,8 @@ from castervoice.lib import settings
 
 # HTML auto complete workaround for Jetbrains Products
 # If more applications have issues with auto complete may be moved to actions.py
-context = AppContext(executable="idea", title="IntelliJ") \
-    | AppContext(executable="idea64", title="IntelliJ") \
-    | AppContext(executable="studio64") \
-    | AppContext(executable="pycharm")  \
-    | AppContext(executable="webstorm64") \
-    | AppContext(executable="webstorm")
+context = AppContext(executable=["idea", "idea64", "studio64", "pycharm", "webstorm64", "webstorm"])
+
 if context:
     from dragonfly.actions.action_paste import Paste as Text
     if settings.SETTINGS["miscellaneous"]["use_aenea"]:
