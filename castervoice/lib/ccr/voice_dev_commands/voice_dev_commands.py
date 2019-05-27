@@ -89,7 +89,7 @@ class VoiceDevCommands(MergeRule):
         "dev text":
             R(Text('Text("")') + Key("left:2"), rdescript="DragonflyDev: Snippet for Text Action"),
         "dev pause":
-            R(Text(' + Pause("")') + Key("left:2"), rdescript="DragonflyDev: Snippet for Pause Action"),
+            R(Text('Pause("")') + Key("left:2"), rdescript="DragonflyDev: Snippet for Pause Action"),
         "dev function":
             R(Text("Function()") + Key("left")),
         "dev repeat":
