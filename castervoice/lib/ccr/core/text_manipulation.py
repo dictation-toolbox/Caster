@@ -29,7 +29,7 @@ print("""Check out the new experimental text manipulation commands in castervoic
     For some applications this pause ( and other pauses in the functions for that matter ) is not necessary
     and may be removed by the user if they wish to speed up the execution of these commands
     These functions copy text into the clipboard and then return whatever you had there before backing onto the clipboardcenter.
-    If you are using the multi clipboard, this might be annoying because you will have some
+    If you are using the multi clipboard, thins might be annoying because you will have some
     extra junk put on the second slot on your multi clipboard. To combat this problem you
     could use castervoice.lib.context.read_selected_without_altering_clipboard() instead of pyperclip
 """
@@ -174,6 +174,10 @@ class TextManipulation(MergeRule):
                 "minus": "-",
                 "plus": "+",
                 "starling": "*",
+                "clamor": "!",
+                "ampersand": "&",
+                "modulo": "%",
+                "atty": "@",
                 "arch"    : "a",
                 "brov"    : "b",
                 "char"    : "c",

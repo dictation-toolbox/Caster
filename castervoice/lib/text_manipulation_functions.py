@@ -3,8 +3,8 @@ import pyperclip
 import re 
 
 
-character_list = [".", ",", "'", "(", ")", "[", "]", "<", ">", "{", "}", "?", "-", ";", "=", "/", 
-"\\", "$", "_", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", 
+character_list = [".", ",", "'", '"', "(", ")", "[", "]", "<", ">", "{", "}", "?", "!", "-", ";", ":", "=", "/", 
+"`", "&", "%", "@", "\\", "$", "_", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", 
     "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"] 
 
 def get_start_end_position(text, phrase, left_right, occurrence_number):
@@ -49,12 +49,12 @@ def get_start_end_position(text, phrase, left_right, occurrence_number):
 def select_text_and_return_it(left_right, number_of_lines_to_search):
     # temporarily store previous clipboard item
     temp_for_previous_clipboard_item = pyperclip.paste()
-    Pause("30").execute() # Users should reduce this pause time to as low as they can get away with
+    Pause("70").execute()
     if left_right == "left":
         Key("s-home, s-up:%d, s-home, c-c" %number_of_lines_to_search).execute()
     if left_right == "right":
         Key("s-end, s-down:%d, s-end, c-c" %number_of_lines_to_search).execute()
-    Pause("70").execute() # Users should reduce this pause time to as low as they can get away with
+    Pause("20").execute()
     selected_text = pyperclip.paste()
     return (selected_text, temp_for_previous_clipboard_item)
 
@@ -126,7 +126,11 @@ def remove_phrase_from_text(text, phrase, left_right, occurrence_number):
     if phrase in character_list:
         return text[: left_index] + text[right_index:] 
     else:
-        return text[: left_index - 1] + text[right_index:] 
+        if left_index == 0:
+            # the phrase is at the beginning of the line
+            return text[right_index:]  # todo: consider removing extra space
+        else:
+            return text[: left_index - 1] + text[right_index:] 
 
 
 def copypaste_remove_phrase_from_text(phrase, left_right, number_of_lines_to_search, cursor_behavior, occurrence_number):
