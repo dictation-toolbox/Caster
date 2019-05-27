@@ -189,7 +189,7 @@ _DEFAULT_SETTINGS = {
         "SIKULI_SCRIPTS_PATH": _USER_DIR + "/sikuli",
         "GIT_FOLDER_REMOTE_URL_PATH": _USER_DIR + "/data/local_to_remote_git_match.toml",
         "GIT_FOLDER_REMOTE_URL_DEFAULT_PATH": _USER_DIR + "/data/local_to_remote_git_match.toml",
-        "BRINGME_DEFAULTS_PATH": BASE_PATH + "/bin/share/bringme.toml.defaults"
+        "BRINGME_DEFAULTS_PATH": BASE_PATH + "/bin/share/bringme.toml.defaults",
         
         # REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
         "REMOTE_DEBUGGER_PATH": "",
