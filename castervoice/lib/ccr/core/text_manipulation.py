@@ -178,6 +178,9 @@ class TextManipulation(MergeRule):
                 "ampersand": "&",
                 "modulo": "%",
                 "atty": "@",
+                "tilde": "~",
+                "pipe (sim | symbol)": "|",
+                
                 "arch"    : "a",
                 "brov"    : "b",
                 "char"    : "c",
