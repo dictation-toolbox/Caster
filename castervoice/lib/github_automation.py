@@ -2,7 +2,7 @@
 
 import io
 import os
-# import re
+import shutil
 import sys
 import traceback
 from __builtin__ import True
@@ -17,6 +17,11 @@ from castervoice.lib import settings
 from castervoice.lib.ccr.recording.bringme import _rebuild_items
 
 _USER_DIR = os.path.expanduser("~").replace("\\", "/") + "/.caster"
+
+if os.path.isfile(settings.SETTINGS["paths"]["GIT_FOLDER_REMOTE_URL_PATH"]) is False:
+    git_match_default = settings.SETTINGS["paths"]["GIT_FOLDER_REMOTE_URL_DEFAULT_PATH"]
+    git_match_user = settings.SETTINGS["paths"]["GIT_FOLDER_REMOTE_URL_PATH"]
+    shutil.copy(git_match_default, git_match_user)
 
 def rebuild_local_remote_items(config):
     # logger.debug('Github rebuilding extras')
@@ -39,7 +44,7 @@ def github_checkoutupdate_pull_request(new):
                 split_string = url[1].split("/pull/")
                 repo_url = split_string[0]
                 pr_name = split_string[1]
-                CONFIG = load_toml_file(_USER_DIR + "/data/local_remote_git_match.toml")
+                CONFIG = load_toml_file(settings.SETTINGS["paths"]["GIT_FOLDER_REMOTE_URL_PATH"])
                 if not CONFIG:
                     # logger.warn("Could not load bringme defaults")
                     raise Exception("Could not load local_remote_git_match.toml")
@@ -80,6 +85,6 @@ def github_checkoutupdate_pull_request(new):
                     else:
                         raise Exception('TERMINAL_PATH in <user_dir>/.caster/data/settings.toml is not set')
                 else:
-                    raise Exception("Repository not found in " + _USER_DIR + "/data/local_remote_git_match.toml")
+                    raise Exception("Repository not found in " + settings.SETTINGS["paths"]["GIT_FOLDER_REMOTE_URL_PATH"])
     except Exception as e:
         print (e)
