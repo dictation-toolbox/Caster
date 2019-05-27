@@ -133,7 +133,7 @@ class GitBashRule(MergeRule):
         # Folder path commands (not git specific)
         "[folder] path <folder_path>": 
             R(Text("%(folder_path)s"), rdescript="GIT: type in folder path"),
-        "(CD | go to) <folder_path>": 
+        "(CD | go to | navigate to | [shell] bring me) <folder_path>": 
             R(Text("cd %(folder_path)s") + Key("enter"), rdescript="GIT: go to folder"),
             
     }
