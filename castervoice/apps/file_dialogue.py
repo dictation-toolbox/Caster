@@ -28,12 +28,10 @@ class FileDialogueRule(MergeRule):
             R(Key("c-l, tab:3"), rdescript="File dialogue: navigation pane"),
         "(center|file|files|folder) (list | pane)":
             R(Key("c-l, tab:4"), rdescript="File Dialogue: file list"),
-        "files":
-            R(Key("c-l, tab:4"), rdescript="File Dialogue: files list"),  # same as above
         "sort [headings]":
             R(Key("c-l, tab:5"), rdescript="File Dialogue: sort"),
         "[file] name":
-            R(Key("c-l, tab:6"), rdescript="File Dialogue: filename"),
+            R(Key("a-n"), rdescript="File Dialogue: filename"),
         "file type":
             R(Key("c-l, tab:7"), rdescript="File Dialogue: file type"),
     }
