@@ -356,6 +356,7 @@ def select_until_phrase(left_right, phrase, before_after, number_of_lines_to_sea
 
 # seems a little inconsistent
 def delete_until_phrase(text, phrase, left_right, before_after, occurrence_number):
+    print("selected_text {} \n").format(text)
     match_index = get_start_end_position(text, phrase, left_right, occurrence_number)
     if match_index:
         left_index, right_index = match_index
@@ -396,18 +397,26 @@ def copypaste_delete_until_phrase(left_right, phrase, number_of_lines_to_search,
     
     phrase = str(phrase)
     new_text = delete_until_phrase(selected_text, phrase, left_right, before_after, occurrence_number)
-    if not new_text:
+        
+    if new_text is None: 
+        # do not use `if not new_text` because that will pick up the case where new_text="" which
+        # occurs if the phrase is at the beginning of the line
         # phrase not found
         deal_with_phrase_not_found(selected_text, temp_for_previous_clipboard_item, cursor_behavior, left_right)
         return
 
-    # put modified text on the clipboard
-    pyperclip.copy(new_text)
-    Key("c-v").execute()
+    if new_text == "":
+        # phrase is at the beginning of the line
+        Key("del").execute()
+        return
+    else:
+        # put modified text on the clipboard
+        pyperclip.copy(new_text)
+        Key("c-v").execute()
 
-    if left_right == "right":
-        offset = len(new_text)
-        Key("left:%d" %offset).execute()
+        if left_right == "right":
+            offset = len(new_text)
+            Key("left:%d" %offset).execute()
     # put previous clipboard item back in the clipboard
     Pause("20").execute()
     pyperclip.copy(temp_for_previous_clipboard_item)
