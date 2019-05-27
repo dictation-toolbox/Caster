@@ -53,6 +53,10 @@ HMC_SEPARATOR = "[hmc]"
 
 WSR = False
 
+if os.path.isfile('C:/Program Files/Git/git-bash.exe'):
+    TERMINAL_PATH_DEFAULT = "C:/Program Files/Git/git-bash.exe"
+else:
+    TERMINAL_PATH_DEFAULT = ""
 
 def get_platform_information():
     """Return a dictionary containing platform-specific information."""
@@ -204,6 +208,7 @@ _DEFAULT_SETTINGS = {
         "SETTINGS_WINDOW_PATH": BASE_PATH + "/asynch/settingswindow.py",
         "SIKULI_SERVER_PATH": BASE_PATH + "/asynch/sikuli/server/xmlrpc_server.sikuli",
         "WSR_PATH": "C:/Windows/Speech/Common/sapisvr.exe",
+        "TERMINAL_PATH": TERMINAL_PATH_DEFAULT,
 
         # CCR
         "CONFIGDEBUGTXT_PATH": _USER_DIR + "/data/configdebug.txt",
