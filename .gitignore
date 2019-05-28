@@ -43,3 +43,7 @@ caster/bin/data
 dist
 castervoice.egg-info
 /.stignore
+
+# Ignore npp backups
+*/nppBackup/*
+**/nppBackup

@@ -26,7 +26,7 @@ text_punc_dict = {
     "comma":                                ",",  
     "carrot":                               "^", 
     "(period | dot)":                       ".", 
-    "atty | at symbol":                     "@", 
+    "(atty | at symbol)":                   "@", 
     "hash tag":                             "#",
     "apostrophe | single quote | chicky":   "'",   
     "underscore":                           "_",
