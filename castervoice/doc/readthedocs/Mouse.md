@@ -50,9 +50,12 @@ Selecting from one point to another is available including fine adjustment of th
 - Select horizontally: `<horizontal_number_1> by <vertical_number_1> select <horizontal_number_2>`
 - Fine selection: `<horizontal_number_1> by <vertical_number_1> move` &rightarrow; `curse ...` &rightarrow; `point one` &rightarrow; `<horizontal_number_2> by <vertical_number_2> move` &rightarrow; `curse ...` &rightarrow; `point two` &rightarrow; `select`
 
-**Example**:
+**Examples**:
 
 - _5 by 20_
+- _5 by 20 select 10 by 30_
+- _5 by 20 select 10_
+- _5 by 20 move, curse sauce lease 5, point one, 10 by 30 move, curse dunce lease 10, point two, select_
 
 ### Rainbow
 
