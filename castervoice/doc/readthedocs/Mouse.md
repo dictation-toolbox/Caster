@@ -26,7 +26,7 @@ Demonstration [here](https://youtu.be/UISjQBMmQ-I).
 
 **Description**:
 
-- Approach the desired position by recursively selecting tiles on the screen. Provided by Dragon Naturally Speaking.
+Approach the desired position by recursively selecting tiles on the screen. Provided by Dragon Naturally Speaking.
 
 **Usage**:
 
@@ -38,12 +38,17 @@ Demonstration [here](https://youtu.be/UISjQBMmQ-I).
 
 **Description**:
 
-- Creates a grid on the screen with horizontal and vertical numbers at the borders. Squares are directly selectable by calling out the respective numbers.
+Creates a grid on the screen with horizontal (top of screen) and vertical (left of screen) numbers at the borders. Squares are directly selectable by calling out the respective numbers. 
+
+Selecting from one point to another is available including fine adjustment of the start and end points.
 
 **Usage**:
 
 - Evoke: `douglas`
-- Select square: `<horizontal_number> by <vertical_number>`
+- Move to square: `<horizontal_number> by <vertical_number>`
+- Select: `<horizontal_number_1> by <vertical_number_1> select <horizontal_number_2> by <vertical_number_2>`
+- Select horizontally: `<horizontal_number_1> by <vertical_number_1> select <horizontal_number_2>`
+- Fine selection: `<horizontal_number_1> by <vertical_number_1> move` &rightarrow; `curse ...` &rightarrow; `point one` &rightarrow; `<horizontal_number_2> by <vertical_number_2> move` &rightarrow; `curse ...` &rightarrow; `point two` &rightarrow; `select`
 
 **Example**:
 
