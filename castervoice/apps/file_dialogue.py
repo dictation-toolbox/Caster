@@ -35,7 +35,8 @@ class FileDialogueRule(MergeRule):
         "file type":
             R(Key("c-l, tab:7"), rdescript="File Dialogue: file type"),
     }
-    extras = [IntegerRefST("n", 1, 10)]
+    extras = [IntegerRefST("n", 1, 10),
+    Dictation("text"),]
     defaults = {
         "n": 1,
     }
