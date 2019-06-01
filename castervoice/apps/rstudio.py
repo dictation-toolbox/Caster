@@ -36,7 +36,7 @@ class RStudioRule(MergeRule):
     "[go to] line <ln1>":
         R(Key("as-g") + Pause("10") + Text("%(ln1)s") + Key("enter")),
     "<action> [line] <ln1> [by <ln2>]"  :
-        R(Function(navigation.action_lines, go_to_line="as-g/10", select_line_down="s-down", wait="/3")),
+        R(Function(navigation.action_lines, go_to_line="as-g/10", select_line_down="s-down", wait="/3", upon_arrival="home, ")),
 
     "focus console":
         R(Key("c-2")),
