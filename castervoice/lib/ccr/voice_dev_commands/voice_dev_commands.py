@@ -102,6 +102,8 @@ class VoiceDevCommands(MergeRule):
         "dev mouse current [position]":
             R(Function(type_mouse_current),
               rdescript="DragonflyDev: Snippet for Making a Command for Clicking at the Current Cursor Position"),
+        "dev execute": R(Key("end")+Text(".execute()"), 
+            rdescript="call 'execute' method at end of line"),
 
  # Caster Snippets
         "dev bring app":
