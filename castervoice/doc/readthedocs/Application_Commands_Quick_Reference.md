@@ -124,8 +124,10 @@
 | `focus [pane] [on] right`             | `open [your] int script`                          | `update packages`                   |
 | `focus previous`                      | `open [your] key map`                             | `uppercase`                         |
 | `fold`                                | `open [your] snippet`                             | `view all`                          |
-| `fold [level] [<n2>]`                 | `open [your] stylesheet`                          |                                     |
+| `fold [level] [<n2>]`                 | `open [your] stylesheet`                          | `<action>* [line] <ln1> [by <ln2>]` |
 | `fullscreen`                          | `open file`                                       |                                     |
+
+\* select / copy / cut / paste / delete
 
 # Google Chrome
 
