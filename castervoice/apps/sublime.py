@@ -1,4 +1,4 @@
-from dragonfly import (Choice, Dictation, Grammar, Repeat, Function, ShortIntegerRef)
+from dragonfly import (Choice, Dictation, Grammar, Repeat, Function)
 
 from castervoice.lib import settings, navigation, control
 from castervoice.lib.actions import Key, Text
@@ -151,8 +151,8 @@ class SublimeRule(MergeRule):
     }
     extras = [
         Dictation("dict"),
-        ShortIntegerRef("ln1", 1, 1000),
-        ShortIntegerRef("ln2", 1, 1000),
+        IntegerRefST("ln1", 1, 1000),
+        IntegerRefST("ln2", 1, 1000),
         IntegerRefST("n2", 1, 9),
         IntegerRefST("n3", 1, 21),
         Choice("action", navigation.actions),

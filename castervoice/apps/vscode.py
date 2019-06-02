@@ -1,7 +1,7 @@
 # thanks to Casper for contributing commands to this.
 
 from dragonfly import (Grammar, Context, AppContext, Dictation, Repeat, Function, Choice,
-                       Mouse, Pause, ShortIntegerRef)
+                       Mouse, Pause)
 
 from castervoice.lib import settings, navigation, control
 from castervoice.lib.actions import Key, Text
@@ -278,9 +278,9 @@ class VSCodeNonCcrRule(MergeRule):
     extras = [
         Dictation("text"),
         Dictation("mim"),
-        ShortIntegerRef("ln1", 1, 1000),
-        ShortIntegerRef("ln2", 1, 1000),
-        ShortIntegerRef("n", 1, 1000),
+        IntegerRefST("ln1", 1, 1000),
+        IntegerRefST("ln2", 1, 1000),
+        IntegerRefST("n", 1, 1000),
         Choice("action", navigation.actions),
         Choice(
             "nth", {

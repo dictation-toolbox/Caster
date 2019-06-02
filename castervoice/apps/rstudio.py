@@ -3,7 +3,7 @@ Mike Roberts 13/09/18
 '''
 
 from dragonfly import (Dictation, Grammar, IntegerRef, MappingRule, Pause,
-                       Repeat, Mimic, ShortIntegerRef, Function, Choice)
+                       Repeat, Mimic, Function, Choice)
 
 from castervoice.lib import control, settings, navigation
 from castervoice.lib.actions import Key, Text
@@ -76,8 +76,8 @@ class RStudioRule(MergeRule):
 
     }
     extras = [
-        ShortIntegerRef("ln1", 1, 10000),
-        ShortIntegerRef("ln2", 1, 10000),
+        IntegerRefST("ln1", 1, 10000),
+        IntegerRefST("ln2", 1, 10000),
         Choice("action", navigation.actions),
     ]
     defaults = {"ln2": ""}

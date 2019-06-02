@@ -269,5 +269,5 @@ def action_lines(action, ln1, ln2, go_to_line="c-g", select_line_down="s-down", 
 actions = {"select" : "",
            "copy"   : "c-c",
            "cut"    : "c-x",
-           "delete" : "backspace",
-           "replace": "c-v"}
+           "paste"  : "c-v",
+           "delete" : "backspace"}
