@@ -44,6 +44,5 @@ dist
 castervoice.egg-info
 /.stignore
 
-# Ignore npp backups
-*/nppBackup/*
+# Ignore Notepad++ backup files
 **/nppBackup
