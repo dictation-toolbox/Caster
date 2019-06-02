@@ -53,10 +53,6 @@ HMC_SEPARATOR = "[hmc]"
 
 WSR = False
 
-if os.path.isfile('C:/Program Files/Git/git-bash.exe'):
-    TERMINAL_PATH_DEFAULT = "C:/Program Files/Git/git-bash.exe"
-else:
-    TERMINAL_PATH_DEFAULT = ""
 
 def get_platform_information():
     """Return a dictionary containing platform-specific information."""
@@ -187,10 +183,7 @@ _DEFAULT_SETTINGS = {
         "RECORDED_MACROS_PATH": _USER_DIR + "/data/recorded_macros.toml",
         "SAVED_CLIPBOARD_PATH": _USER_DIR + "/data/clipboard.toml",
         "SIKULI_SCRIPTS_PATH": _USER_DIR + "/sikuli",
-        "GIT_FOLDER_REMOTE_URL_PATH": _USER_DIR + "/data/local_to_remote_git_match.toml",
-        "GIT_FOLDER_REMOTE_URL_DEFAULT_PATH": _USER_DIR + "/data/local_to_remote_git_match.toml",
-        "BRINGME_DEFAULTS_PATH": BASE_PATH + "/bin/share/bringme.toml.defaults",
-        
+
         # REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
         "REMOTE_DEBUGGER_PATH": "",
 
@@ -210,7 +203,6 @@ _DEFAULT_SETTINGS = {
         "SETTINGS_WINDOW_PATH": BASE_PATH + "/asynch/settingswindow.py",
         "SIKULI_SERVER_PATH": BASE_PATH + "/asynch/sikuli/server/xmlrpc_server.sikuli",
         "WSR_PATH": "C:/Windows/Speech/Common/sapisvr.exe",
-        "TERMINAL_PATH": TERMINAL_PATH_DEFAULT,
 
         # CCR
         "CONFIGDEBUGTXT_PATH": _USER_DIR + "/data/configdebug.txt",
@@ -251,7 +243,6 @@ _DEFAULT_SETTINGS = {
         "sqldeveloper": True,
         "ssms": True,
         "sublime": True,
-        "texstudio": True,
         "totalcmd": True,
         "typora": True,
         "visualstudio": True,
@@ -271,8 +262,8 @@ _DEFAULT_SETTINGS = {
 
     # sikuli settings
     "sikuli": {
-        "enabled": True,
-        "version": "1.1.4"
+        "enabled": False,
+        "version": ""
     },
 
     # feature switches
@@ -294,6 +285,7 @@ _DEFAULT_SETTINGS = {
         "atom_palette_wait": 30,  # hundredths of a second
         "rdp_mode": False,  # Switch app context manually for remote desktop
         "integer_remap_opt_in": False,
+        "short_integer_opt_out": False,
         "integer_remap_crash_fix": False,
         "print_rdescripts": True,
         "history_playback_delay_secs": 1.0,

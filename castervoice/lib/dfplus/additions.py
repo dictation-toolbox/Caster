@@ -1,4 +1,4 @@
-from dragonfly import (ActionBase, IntegerRef, Integer, ShortIntegerRef)
+from dragonfly import (ActionBase, IntegerRef, Integer)
 from dragonfly.grammar.elements import RuleWrap, Choice
 from dragonfly.language.base.integer_internal import MapIntBuilder, \
     IntegerContentBase
