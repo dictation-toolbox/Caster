@@ -204,7 +204,7 @@ class Navigation(MergeRule):
             R(Function(navigation.stoosh_keep_clipboard, nexus=_NEXUS), rspec="stoosh"),
         "cut [<nnavi500>]":
             R(Function(navigation.cut_keep_clipboard, nexus=_NEXUS), rspec="cut"),
-        "spark [<nnavi500>] [(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)]":
+        "spark [<nnavi500>] [(<capitalization> <spacing> | <capitalization> | <spacing>) [(bow|bowel)]]":
             R(Function(navigation.drop_keep_clipboard, nexus=_NEXUS), rspec="spark"),
         "splat [<splatdir>] [<nnavi10>]":
             R(Key("c-%(splatdir)s"), rspec="splat") * Repeat(extra="nnavi10"),
@@ -230,13 +230,13 @@ class Navigation(MergeRule):
                 ])),
 
     # text formatting
-        "set [<big>] format (<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)":
+        "set [<big>] format (<capitalization> <spacing> | <capitalization> | <spacing>) [(bow|bowel)]":
             R(Function(textformat.set_text_format)),
         "clear castervoice [<big>] formatting":
             R(Function(textformat.clear_text_format)),
         "peek [<big>] format":
             R(Function(textformat.peek_text_format)),
-        "(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel) <textnv> [brunt]":
+        "(<capitalization> <spacing> | <capitalization> | <spacing>) [(bow|bowel)] <textnv> [brunt]":
             R(Function(textformat.master_format_text)),
         "[<big>] format <textnv>":
             R(Function(textformat.prior_text_format)),

@@ -1,8 +1,25 @@
 
 from castervoice.lib import control
-from castervoice.lib.actions import Key, Text
+from castervoice.lib.context import AppContext
+from castervoice.lib.actions import Key
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
+from castervoice.lib import settings
+
+# HTML auto complete workaround for Jetbrains Products
+# If more applications have issues with auto complete may be moved to actions.py
+context = AppContext(executable=["idea", "idea64", "studio64", "pycharm", "webstorm64", "webstorm"])
+
+if context:
+    from dragonfly.actions.action_paste import Paste as Text
+    if settings.SETTINGS["miscellaneous"]["use_aenea"]:
+        try:
+            from aenea import Paste as Text
+        except ImportError:
+            print("Unable to import aenea Paste actions. Dragonfly actions will be used "
+            "instead.")
+else: 
+    from castervoice.lib.actions import Text
 
 class HTML(MergeRule):
     mapping = {
