@@ -152,7 +152,7 @@
 | `google that`                          | `wikipedia that`                     | ``                                        |
 
 | Command                                  | Notes                                                                       |
-|:-----------------------------------------|-----------------------------------------------------------------------------|
+|:-----------------------------------------|:----------------------------------------------------------------------------|
 | `checkout [this] pull request [locally]` | Must be called from the "Conversation" tab of the Github pull request page. |
 | `update [this] pull request [locally]`   | Must be called from the "Conversation" tab of the Github pull request page. |
 
@@ -251,10 +251,10 @@ Options:
 | `new tab [<n>]`                        | `step into`      | `zoom out <n>`                           |
 | `reopen tab [<n>]`                     | `step out`       | ``                                       |
 
-| Command                                                                                                              |
-|:---------------------------------------------------------------------------------------------------------------------|
-| `checkout [this] pull request [locally]` Must be called from the "Conversation" tab of the Github pull request page. |
-| `update [this] pull request [locally]` Must be called from the "Conversation" tab of the Github pull request page.   |
+| Command                                  | Notes                                                                       |
+|:-----------------------------------------|:----------------------------------------------------------------------------|
+| `checkout [this] pull request [locally]` | Must be called from the "Conversation" tab of the Github pull request page. |
+| `update [this] pull request [locally]`   | Must be called from the "Conversation" tab of the Github pull request page. |
 
 # Flash Develop
 
