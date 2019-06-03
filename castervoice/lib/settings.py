@@ -187,8 +187,8 @@ _DEFAULT_SETTINGS = {
         "RECORDED_MACROS_PATH": _USER_DIR + "/data/recorded_macros.toml",
         "SAVED_CLIPBOARD_PATH": _USER_DIR + "/data/clipboard.toml",
         "SIKULI_SCRIPTS_PATH": _USER_DIR + "/sikuli",
-        "GIT_FOLDER_REMOTE_URL_PATH": _USER_DIR + "/data/local_to_remote_git_match.toml",
-        "GIT_FOLDER_REMOTE_URL_DEFAULT_PATH": _USER_DIR + "/data/local_to_remote_git_match.toml",
+        "GIT_REPO_LOCAL_REMOTE_PATH": _USER_DIR + "/data/git_repo_local_to_remote_match.toml",
+        "GIT_REPO_LOCAL_REMOTE_DEFAULT_PATH": BASE_PATH + "/bin/share/git_repo_local_to_remote_match.toml.defaults",
         "BRINGME_DEFAULTS_PATH": BASE_PATH + "/bin/share/bringme.toml.defaults",
         
         # REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found

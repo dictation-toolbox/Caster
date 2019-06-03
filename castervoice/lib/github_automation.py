@@ -60,7 +60,7 @@ def github_checkoutupdate_pull_request(new):
                 fetch_command = "git fetch " + repo_url + ".git pull/" + pr_name + "/head"
                 if TERMINAL_PATH != "":
                     terminal = Popen(TERMINAL_PATH, cwd=local_directory)
-                                        # This can be improved with a wait command
+                    # This can be improved with a wait command
                     time.sleep(2)
                     print("Checking out pull request locally 3.")
                     Text(fetch_command).execute()
