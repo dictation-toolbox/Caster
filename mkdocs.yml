@@ -8,7 +8,7 @@ extra_javascript:
 google_analytics: null
 site_name: Caster
 site_author: dictation-toolbox
-site_url: https://caster.readthedocs.io
+site_url: https://castertest.readthedocs.io
 docs_dir: castervoice/doc
 site_dir: castervoice/doc_site
 repo_url: https://github.com/dictation-toolbox/caster
