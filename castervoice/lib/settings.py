@@ -285,6 +285,7 @@ _DEFAULT_SETTINGS = {
         "atom_palette_wait": 30,  # hundredths of a second
         "rdp_mode": False,  # Switch app context manually for remote desktop
         "integer_remap_opt_in": False,
+        "short_integer_opt_out": False,
         "integer_remap_crash_fix": False,
         "print_rdescripts": True,
         "history_playback_delay_secs": 1.0,
