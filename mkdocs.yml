@@ -14,4 +14,4 @@ site_dir: castervoice/doc_site
 repo_url: https://github.com/dictation-toolbox/caster
 
 nav:
-    - 'Home': '../../ReadMe.md'
+    - 'Home': 'ReadMe.md'
