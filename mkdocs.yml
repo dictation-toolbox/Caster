@@ -1,13 +1,1 @@
-extra_css:
-- https://assets.readthedocs.org/static/css/badge_only.css
-- https://assets.readthedocs.org/static/css/readthedocs-doc-embed.css
-extra_javascript:
-- readthedocs-data.js
-- https://assets.readthedocs.org/static/core/js/readthedocs-doc-embed.js
-- https://assets.readthedocs.org/static/javascript/readthedocs-analytics.js
-google_analytics: null
-site_name: Caster
-site_author: dictation-toolbox
-site_url: https://caster.readthedocs.io
-docs_dir: castervoice/doc
-site_dir: castervoice/doc_site
+
