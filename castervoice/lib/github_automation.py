@@ -33,48 +33,36 @@ def rebuild_local_remote_items(config):
 def github_checkoutupdate_pull_request(new):
     # Function to fetch a PR
     try:
-        print("Checking out pull request locally.")
         Key("c-l/20").execute()
-        print("Checking out pull request locally 2.")
         url = read_selected_without_altering_clipboard()
-        print(url[1])
         if url[0] == 0:
             split_string = url[1].split("/pull/")
             repo_url = split_string[0]
             pr_name = split_string[1]
-            print(settings.SETTINGS["paths"]["GIT_REPO_LOCAL_REMOTE_PATH"])
             CONFIG = load_toml_file(settings.SETTINGS["paths"]["GIT_REPO_LOCAL_REMOTE_PATH"])
             if not CONFIG:
                 # logger.warn("Could not load bringme defaults")
                 raise Exception("Could not load " + settings.SETTINGS["paths"]["GIT_REPO_LOCAL_REMOTE_PATH"])
 
             items = rebuild_local_remote_items(CONFIG)
-            print(items)
             if repo_url in items:
                 local_directory = items[repo_url][0]
-                print(local_directory)
                 local_directory = local_directory.replace("\\", "\\\\")
-                print(local_directory)
-                # needs a settings path entry for git-bash.exe or preferred terminal?
                 TERMINAL_PATH = settings.SETTINGS["paths"]["TERMINAL_PATH"]
                 fetch_command = "git fetch " + repo_url + ".git pull/" + pr_name + "/head"
                 if TERMINAL_PATH != "":
                     terminal = Popen(TERMINAL_PATH, cwd=local_directory)
                     # This can be improved with a wait command
                     time.sleep(2)
-                    print("Checking out pull request locally 3.")
                     Text(fetch_command).execute()
                     time.sleep(0.2)
-                    print("Checking out pull request locally 4.")
                     Key("enter").execute() # fetch is safe enough so will run this
                     time.sleep(0.2)
                     if new:
-                        print("Checking out pull request locally 5.")
                         branch_name_base = repo_url.replace("https://github.com/", "")
                         checkout_command = "git checkout -b " + branch_name_base + "/pull/" + pr_name + " FETCH_HEAD"
                         Text(checkout_command).execute()
                     else:
-                        print("Checking out pull request locally 5.")
                         branch_name_base = repo_url.replace("https://github.com/", "")
                         checkout_command = "git checkout " + branch_name_base + "/pull/" + pr_name
                         Text(checkout_command).execute()
