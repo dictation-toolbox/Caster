@@ -149,10 +149,12 @@
 | `duplicate window`                     | `extensions`                         | `(menu / three dots)`                     |
 | `settings`                             | `downloads`                          | `chrome task manager`                     |
 | `clear browsing data`                  | `developer tools`                    | `more tools`                              |
-| `google that`                          | `wikipedia that`                     | `checkout [this] pull request [locally]`  |
-| `update [this] pull request [locally]` Must be called from the "Conversation" tab of the pull request page.             |||
+| `google that`                          | `wikipedia that`                     | ``                                        |
 
-
+| Command                                                                                                              |
+|:---------------------------------------------------------------------------------------------------------------------|
+| `checkout [this] pull request [locally]` Must be called from the "Conversation" tab of the Github pull request page. |
+| `update [this] pull request [locally]` Must be called from the "Conversation" tab of the Github pull request page.   |
 
 ## Click by voice plug-in
 Options:
@@ -247,8 +249,12 @@ Options:
 | `[add] bookmark`                       | `show downloads` | `super refresh`                          |
 | `developer tools`                      | `show history`   | `zoom in <n>`                            |
 | `new tab [<n>]`                        | `step into`      | `zoom out <n>`                           |
-| `reopen tab [<n>]`                     | `step out`       | `checkout [this] pull request [locally]` |
-| `update [this] pull request [locally]` | ``                     | ``  |
+| `reopen tab [<n>]`                     | `step out`       | ``                                       |
+
+| Command                                                                                                              |
+|:---------------------------------------------------------------------------------------------------------------------|
+| `checkout [this] pull request [locally]` Must be called from the "Conversation" tab of the Github pull request page. |
+| `update [this] pull request [locally]` Must be called from the "Conversation" tab of the Github pull request page.   |
 
 # Flash Develop
 
