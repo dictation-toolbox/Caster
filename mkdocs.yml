@@ -6,11 +6,11 @@ extra_javascript:
 - https://assets.readthedocs.org/static/core/js/readthedocs-doc-embed.js
 - https://assets.readthedocs.org/static/javascript/readthedocs-analytics.js
 google_analytics: null
-site_name: KendonBCaster
+site_name: Caster
 site_author: dictation-toolbox
-site_url: https://kendonbcaster.readthedocs.io
+site_url: https://caster.readthedocs.io
 docs_dir: castervoice/doc
-repo_url: https://github.com/kendonb/caster
+repo_url: https://github.com/dictation-toolbox/caster
 
 theme:
     name: readthedocs
