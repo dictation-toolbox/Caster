@@ -2,15 +2,15 @@
 
 *How can I help?*
 
-1. **Write code.** There is [a lot which needs to be done](https://github.com/dictation-toolbox/caster/issues). If you can program in Python, please write some code. Note that all pull requests should be sent to the "develop" branch (see the [Caster GitHub Workflow](#caster-github-workflow) section below).
+1. **Write code.** There is [a lot which needs to be done](https://github.com/synkarius/caster/issues). If you can program in Python, please write some code. Note that all pull requests should be sent to the "develop" branch (see the [Caster GitHub Workflow](#caster-github-workflow) section below).
 2. **Write documentation.** The [ReadTheDocs page](http://caster.readthedocs.org/en/latest/) is pretty sparse. ReadTheDocs uses [markdown](https://markdown-guide.readthedocs.io/en/latest/) so create new docs as .md files.
-3. **Speak.** Tell others who might be interested in Caster. Join our discussions on the issues page and [Gitter](https://gitter.im/dictation-toolbox/caster). The more the merrier, and your thoughts are welcome and encouraged.
+3. **Speak.** Tell others who might be interested in Caster. Join our discussions on the issues page and [Gitter](https://gitter.im/synkarius/caster). The more the merrier, and your thoughts are welcome and encouraged.
 
 ## Caster GitHub Workflow
 
 Pull requests for Caster need to be submitted against the `develop` branch, which requires a slightly modified workflow from PRs submitted against a repository's `main` branch. It is recommended that you review one of the many online tutorials (for example, [this one](http://yangsu.github.io/pull-request-tutorial/)) to familiarize yourself with the standard GitHub workflow.
 
-This guide assumes that you have already forked the Caster repository, cloned your copy locally, and setup a remote pointing to the upstream (dictation-toolbox) repository. This setup process is identical to the standard workflow, covered [here](https://help.github.com/articles/fork-a-repo/), but essentially consists of creating a fork on GitHub, followed by something like the following sequence of commands to make a local copy of the repository and link it back to the upstream (dictation-toolbox) fork:
+This guide assumes that you have already forked the Caster repository, cloned your copy locally, and setup a remote pointing to the upstream (synkarius) repository. This setup process is identical to the standard workflow, covered [here](https://help.github.com/articles/fork-a-repo/), but essentially consists of creating a fork on GitHub, followed by something like the following sequence of commands to make a local copy of the repository and link it back to the upstream (synkarius) fork:
 
     cd C:\MyProjects
     git clone https://github.com/{YOUR-USER-NAME}/caster/
@@ -20,7 +20,7 @@ This guide assumes that you have already forked the Caster repository, cloned yo
 
 ### Prepare a feature branch for your pull request
 
-Fetch the latest from the upstream (dictation-toolbox) repo:
+Fetch the latest from the upstream (synkarius) repo:
 
     git fetch upstream
 
