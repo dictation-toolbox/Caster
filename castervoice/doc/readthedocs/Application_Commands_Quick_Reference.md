@@ -124,8 +124,10 @@
 | `focus [pane] [on] right`             | `open [your] int script`                          | `update packages`                   |
 | `focus previous`                      | `open [your] key map`                             | `uppercase`                         |
 | `fold`                                | `open [your] snippet`                             | `view all`                          |
-| `fold [level] [<n2>]`                 | `open [your] stylesheet`                          |                                     |
+| `fold [level] [<n2>]`                 | `open [your] stylesheet`                          | `<action>* [line] <ln1> [by <ln2>]` |
 | `fullscreen`                          | `open file`                                       |                                     |
+
+\* select / copy / cut / paste / delete
 
 # Google Chrome
 
@@ -381,15 +383,18 @@ Options:
 
 # RStudio
 
-| Command                     | Command      | Command          |
-|:----------------------------|:-------------|:-----------------|
-| `[go to] line <n>`          | `focus main` | `previous plot`  |
-| `close tab`                 | `last tab`   | `previous tab`   |
-| `comment (line / selected)` | `new file`   | `run document`   |
-| `find`                      | `next plot`  | `run line`       |
-| `first tab`                 | `next tab`   | `save all`       |
-| `focus console`             | `open file`  | `select all`     |
-| `help that`                 | `head that`  | `vee table that` |
+| Command                             | Command      | Command          |
+|:------------------------------------|:-------------|:-----------------|
+| `[go to] line <n>`                  | `focus main` | `previous plot`  |
+| `close tab`                         | `last tab`   | `previous tab`   |
+| `comment (line / selected)`         | `new file`   | `run document`   |
+| `find`                              | `next plot`  | `run line`       |
+| `first tab`                         | `next tab`   | `save all`       |
+| `focus console`                     | `open file`  | `select all`     |
+| `help that`                         | `head that`  | `vee table that` |
+| `<action>* [line] <ln1> [by <ln2>]` | ` `          | ` `              |
+
+\* select / copy / cut / paste / delete
 
 # SQL Developer
 
@@ -419,7 +424,7 @@ Options:
 | `find`                         | `get all`                         | `replace`                     |
 | `edit lines`                   | `edit next [<n3>]`                | `edit up [<n3>]`              |
 | `edit down [<n3>]`             | `edit all`                        | `transform upper`             |
-| `transform lower`              | `line <n>`                        | `<action> line <n> [to <nn>]` |
+| `transform lower`              | `line <n>`                        | `<action>* line <n> [to <nn>]`|
 | `go to file`                   | `go to <dict> [<filetype>]`       | `go to word`                  |
 | `go to symbol`                 | `go to [symbol in] project`       | `go to that`                  |
 | `find that in project`         | `find that`                       | `command pallette`            |
@@ -432,6 +437,7 @@ Options:
 | `previous tab`                 | `<nth> tab`                       | `column <cols>`               |
 | `focus <panel>`                | `move <panel>`                    | `open terminal`               |
     
+\* select / copy / cut / paste / delete
 
 # Typora
 | Command              | Command                        | Command                        |
@@ -523,4 +529,6 @@ Options:
 | `(fold / collapse) [all] regions`      | `(unfold / uncollapse) [all] regions` | `toggle word wrap`                       |
 | `join line`                            | `toggle blame`                        | `lens commit details`                    |
 | `lens file history`                    | `lens repo status`                    | `toggle git lens`                        |
-| `mark (prev / prior / previous)`       | `mark next`                           | ` `                                      |
+| `mark (prev / prior / previous)`       | `mark next`                           | `<action>* [line] <ln1> [by <ln2>]`      |
+
+\* select / copy / cut / paste / delete
