@@ -44,8 +44,4 @@ pages:
             - 'Dragonfly Rules': readthedocs/Examples/rules/Dragonfly_Rules.md
             - 'Old Sample File': readthedocs/Examples/rules/Old_Sample_File.md
         - Speaking Examples: readthedocs/Examples/Speaking/Examples.md
-<<<<<<< HEAD
     - Undocumented features: readthedocs/meta/Undocumented_Features.md
-=======
-    - Undocumented features: readthedocs/meta/Undocumented_Features.md
->>>>>>> b7a450de0e145666b5792f2b147122682dba90cc
