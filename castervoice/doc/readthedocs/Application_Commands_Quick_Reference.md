@@ -151,10 +151,10 @@
 | `clear browsing data`                  | `developer tools`                    | `more tools`                              |
 | `google that`                          | `wikipedia that`                     | ``                                        |
 
-| Command                                                                                                              |
-|:---------------------------------------------------------------------------------------------------------------------|
-| `checkout [this] pull request [locally]` Must be called from the "Conversation" tab of the Github pull request page. |
-| `update [this] pull request [locally]` Must be called from the "Conversation" tab of the Github pull request page.   |
+| Command                                  | Notes                                                                       |
+|:-----------------------------------------|-----------------------------------------------------------------------------|
+| `checkout [this] pull request [locally]` | Must be called from the "Conversation" tab of the Github pull request page. |
+| `update [this] pull request [locally]`   | Must be called from the "Conversation" tab of the Github pull request page. |
 
 ## Click by voice plug-in
 Options:
