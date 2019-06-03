@@ -150,7 +150,7 @@
 | `settings`                             | `downloads`                          | `chrome task manager`                     |
 | `clear browsing data`                  | `developer tools`                    | `more tools`                              |
 | `google that`                          | `wikipedia that`                     | `checkout [this] pull request [locally]`  |
-| `update [this] pull request [locally]` | ``                     | ``  |
+| `update [this] pull request [locally]`                                                                                  |||
 
 
 
