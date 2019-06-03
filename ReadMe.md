@@ -28,7 +28,7 @@ Alternatively use the [master branch](https://github.com/dictation-toolbox/Caste
     - `open file` -  `open('filename', 'r') as f:`
 - [Contributing / How can I help?](https://github.com/dictation-toolbox/Caster/blob/develop/castervoice/doc/Contributing.md)
 - [Making your own Dragonfly and Caster rules](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/examples/Rule%20Construction/) augmented by [Development Commands](https://github.com/dictation-toolbox/Caster/blob/develop/castervoice/doc/readthedocs/CCR_languages_Quick_Reference.md#development)
-- Need support or just curious? Join our community at [![Join the chat at https://gitter.im/synkarius/caster](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dictation-toolbox/home) and [Discord](https://discord.gg/9eAAsCJ) for voice chat.
+- Need support or just curious? Join our community at [![Join the chat at https://gitter.im/dictation-toolbox/caster](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dictation-toolbox/home) and [Discord](https://discord.gg/9eAAsCJ) for voice chat.
 - The [Voice Index](https://github.com/dictation-toolbox/Caster/blob/develop/castervoice/doc/readthedocs/Voice_Index.md) is a curated source of information: Videos, Blogs, Repositories, Presentations, etc related to Dragonfly, voice programming, and accessibility.
 
 # Feature List

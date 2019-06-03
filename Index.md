@@ -22,8 +22,8 @@
     - `for loop` which will insert `for i in range(0, ):`
     - `print to console` - `print()`
     -  `open file` -  `open('filename', 'r') as f:`
-- [Contributing / How can I help?](https://github.com/synkarius/caster/blob/master/caster/doc/CONTRIBUTING.md)
-- Need support or just curious? Join our community at [![Join the chat at https://gitter.im/synkarius/caster](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/synkarius/caster?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) or [Discord](https://discord.gg/9eAAsCJ) for voice chat.
+- [Contributing / How can I help?](https://github.com/dictation-toolbox/caster/blob/master/caster/doc/CONTRIBUTING.md)
+- Need support or just curious? Join our community at [![Join the chat at https://gitter.im/dictation-toolbox/caster](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dictation-toolbox/caster?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) or [Discord](https://discord.gg/9eAAsCJ) for voice chat.
 - The [Voice Index](http://caster.readthedocs.org/en/latest/caster/doc/readthedocs/Voice%20Index/) is a curated source of information: Videos, Blogs, Repositories, Presentations, etc related to Dragonfly, voice programming, and accessibility.
 
 # Feature List

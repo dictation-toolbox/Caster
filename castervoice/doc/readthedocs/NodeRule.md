@@ -23,7 +23,7 @@ So, let's say for example that I want to be able to speak any of the following c
 
 That's sixteen specs getting added. Since a lot of them will only be spoken after others, this command set fits well into a tree structure. (Not all command sets will.) The number of specs in the active CCR grammar from this command set can be reduced by only keeping a certain number of levels of the tree structure open (speakable) at a given time.
 
-<img src="https://raw.githubusercontent.com/synkarius/caster/master/caster/doc/img/noderule1.png">
+<img src="https://raw.githubusercontent.com/dictation-toolbox/caster/master/caster/doc/img/noderule1.png">
 
 In the above diagram, the first two levels of the tree are active. This means I can speak these specs:
 
@@ -39,7 +39,7 @@ In the above diagram, the first two levels of the tree are active. This means I 
 
 If I then speak spec (a), it's effect occurs, and the NodeRule updates itself so that the active nodes look like the diagram below.
 
-<img src="https://raw.githubusercontent.com/synkarius/caster/master/caster/doc/img/noderule2.png">
+<img src="https://raw.githubusercontent.com/dictation-toolbox/caster/master/caster/doc/img/noderule2.png">
 
 If I had spoken (a d) instead, only (m) would have been available next.
 
@@ -53,7 +53,7 @@ If the **status window** is active, the NodeRule will use it to display hints ab
 
 ### Making Your Own HintNode
 
-To create a NodeRule, you first have to create a [HintNode](https://github.com/synkarius/caster/blob/master/caster/lib/dfplus/hint/hintnode.py) which will be passed into the NodeRule constructor. For examples, look at the [nodes directory](https://github.com/synkarius/caster/tree/master/caster/lib/dfplus/hint/nodes). A HintNode basically looks like this:
+To create a NodeRule, you first have to create a [HintNode](https://github.com/dictation-toolbox/caster/blob/master/caster/lib/dfplus/hint/hintnode.py) which will be passed into the NodeRule constructor. For examples, look at the [nodes directory](https://github.com/dictation-toolbox/caster/tree/master/caster/lib/dfplus/hint/nodes). A HintNode basically looks like this:
 
 ```python
 HintNode("spec", SomeDragonflyAction(), [<child nodes>], [<extras>], {<defaults>})
