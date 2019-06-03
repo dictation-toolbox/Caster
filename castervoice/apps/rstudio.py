@@ -2,7 +2,7 @@
 Mike Roberts 13/09/18
 '''
 
-from dragonfly import (Dictation, Grammar, IntegerRef, MappingRule, Pause,
+from dragonfly import (Dictation, Grammar, MappingRule, Pause,
                        Repeat, Mimic)
 
 from castervoice.lib import control, settings

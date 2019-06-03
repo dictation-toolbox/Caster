@@ -9,9 +9,10 @@
 
 # You can skip down to the next comment, none of this stuff is really important...
 
-from dragonfly import (BringApp, Key, Function, Grammar, Playback, IntegerRef, Dictation,
+from dragonfly import (BringApp, Key, Function, Grammar, Playback, Dictation,
                        Choice, WaitWindow, MappingRule, Text)
 
+from castervoice.lib.dfplus.additions import IntegerRefST
 
 def my_function(n, text):
     print("put some Python logic here: " + str(text))
@@ -61,7 +62,7 @@ class MainRule(MappingRule):
             Function(my_function, extra={'n', 'text'}),
     }
     extras = [
-        IntegerRef("n", 1, 1000),
+        IntegerRefST("n", 1, 1000),
         Dictation("text"),
         Choice("choice", {
             "alarm": "alarm",
