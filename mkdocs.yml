@@ -15,7 +15,7 @@ repo_url: https://github.com/kendonb/caster
 theme:
     name: readthedocs
 
-nav:
+pages:
     - Home: index.md
     - License: LICENSE.md
     - Contributing: Contributing.md
