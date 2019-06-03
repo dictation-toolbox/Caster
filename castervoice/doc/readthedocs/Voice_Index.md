@@ -9,10 +9,9 @@
 7. [DNS Add-ons, Open-source and Commercial](#open-source-and-commercial-dragon-add-ons)
 8. [Videos](#video)
 9. [Installation Instructions](#installation-instructions) (Dragonfly and Caster)
-10. [Caster Wiki](https://github.com/synkarius/caster/wiki)
-11. [Legacy Links](#legacy)
-12. [Troubleshooting](#troubleshooting)
-13. [Miscellaneous](#other)
+10. [Legacy Links](#legacy)
+11. [Troubleshooting](#troubleshooting)
+12. [Miscellaneous](#other)
 
 # About
 
