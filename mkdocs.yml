@@ -15,7 +15,7 @@ repo_url: https://github.com/dictation-toolbox/caster
 theme:
     name: readthedocs
 
-pages:
+nav:
     - Home: index.md
     - License: LICENSE.md
     - Contributing: Contributing.md
