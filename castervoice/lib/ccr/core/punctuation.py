@@ -75,7 +75,7 @@ class Punctuation(MergeRule):
     }
 
     extras = [
-        IntegerRefST("npunc", 0, 100),
+        IntegerRefST("npunc", 0, 10),
         Choice(
             "long", {
                 "long": " ",
