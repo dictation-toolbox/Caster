@@ -88,6 +88,7 @@ class Punctuation(MergeRule):
     ]
     defaults = {
         "npunc": 1,
+        "npunc100": 1,
         "long": "",
     }
 
