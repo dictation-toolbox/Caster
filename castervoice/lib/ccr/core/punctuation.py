@@ -66,16 +66,16 @@ class Punctuation(MergeRule):
             R(Text("%(long)s" + "%(text_punc)s" + "%(long)s"))*Repeat(extra="npunc"),
         "<double_text_punc>": 
             R(Text("%(double_text_punc)s") + Key("left")),
-        'tabby [<npunc>]':
+        "tabby [<npunc>]":
             R(Key("tab"), rdescript="Core: Tab")*Repeat(extra="npunc"),
-        'lay tabby [<npunc>]':
+        "(back | shin) tabby [<npunc>]":
             R(Key("s-tab"), rdescript="Core: Shift Tab")*Repeat(extra="npunc"),
         "boom [<npunc>]":
             R(Text(", "), rdescript="Core: Comma + Space")*Repeat(extra="npunc"),
     }
 
     extras = [
-        IntegerRefST("npunc", 0, 10),
+        IntegerRefST("npunc", 0, 100),
         Choice(
             "long", {
                 "long": " ",
