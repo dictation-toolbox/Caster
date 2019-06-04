@@ -35,7 +35,7 @@ text_punc_dict = {
     "questo":                               "?", 
     "(atty | at symbol)":                   "@", 
     "left brax":                            "[",
-    "backslash":                           "\\", 
+    "lean slash":                          "\\",
     "right brax":                           "]",
     "carrot":                               "^", 
     "underscore":                           "_",
