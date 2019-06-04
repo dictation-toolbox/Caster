@@ -72,10 +72,13 @@ class Punctuation(MergeRule):
             R(Key("s-tab"), rdescript="Core: Shift Tab")*Repeat(extra="npunc"),
         "boom [<npunc>]":
             R(Text(", "), rdescript="Core: Comma + Space")*Repeat(extra="npunc"),
+        "ace [<npunc100>]":
+            R(Text(" "), rdescript="Core: Space")*Repeat(extra="npunc100"),
     }
 
     extras = [
         IntegerRefST("npunc", 0, 10),
+        IntegerRefST("npunc100", 0, 100),
         Choice(
             "long", {
                 "long": " ",
