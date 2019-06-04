@@ -17,9 +17,17 @@ from castervoice.lib.dfplus.state.actions2 import UntilCancelled
 from castervoice.lib.dfplus.state.short import L, S, R
 from dragonfly.actions.action_mimic import Mimic
 from castervoice.lib.ccr.standard import SymbolSpecs
+from castervoice.lib.ccr.core.punctuation import double_text_punc_dict
 
 _NEXUS = control.nexus()
 
+for key, value in double_text_punc_dict.items():
+    if len(value) == 2:
+        double_text_punc_dict[key] = value[0] + "~" + value[1]
+    elif len(value) == 4:
+        double_text_punc_dict[key] = value[0:1] + "~" + value[2:3]
+    else:
+        raise Exception("Need to deal with nonstandard pair length in double_text_punc_dict.")
 
 class NavigationNon(MergeRule):
     mapping = {
@@ -268,15 +276,7 @@ class Navigation(MergeRule):
         IntegerRefST("nnavi50", 1, 50),
         IntegerRefST("nnavi500", 1, 500),
         Dictation("textnv"),
-        Choice(
-            "enclosure", {
-                "prekris": "(~)",
-                "angle": "<~>",
-                "curly": "{~}",
-                "brax": "[~]",
-                "thin quotes": "'~'",
-                'quotes': '"~"',
-            }),
+        Choice("enclosure", double_text_punc_dict),
         Choice("capitalization", {
             "yell": 1,
             "tie": 2,
