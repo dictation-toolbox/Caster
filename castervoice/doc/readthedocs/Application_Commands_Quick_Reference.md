@@ -153,15 +153,6 @@
 | `clear browsing data`                  | `developer tools`                    | `more tools`                 |
 | `google that`                  | `wikipedia that`                    | ``                 |
 
-## Click by voice plug-in
-Options:
-* go, click, push, tab, window, hover, link, copy
-| Command                                | Command                              | Command                      |
-|:---------------------------------------|:-------------------------------------|:-----------------------------|
-| `<numbers> <dictation>`                | `go <numbers> <dictation>`           | `next <numbers> <dictation>` |
-| `<numbers> [<click_by_voice_options>]` | `hide hints`                         | `show hints`                 |
-
-
 # Command prompt
 
 | Command   | Command | Command          |
