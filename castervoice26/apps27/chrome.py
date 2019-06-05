@@ -141,21 +141,29 @@ class ChromeRule(MergeRule):
             R(Key("cs-i")),
         "more tools":
             R(Key("a-f/5, l")),
+      
+      # click by voice commands below require click by voice chrome extension
+      "<click_by_voice_options> <numbers>": R(Key("cs-space/30")
+            + Text("%(numbers)d:%(click_by_voice_options)s") + Key("enter"), 
+            rdescript="click link with click by voice options"),
+        "hide hints": R(Key("cs-space/30")+Text(":-")+Key("enter"),
+             rdescript="hide click by voice hints (i.e. numbers)"),
+        "show hints": R(Key("cs-space/30")+Text(":+")+Key("enter"),
+            rdescript="show click by voice hints (i.e. numbers)"),
+
     }
     extras = [
-        Choice(
-            "click_by_voice_options",
-            {
-                "go": "f",
-                "click": "c",
-                "push": "b",  # open as new tab but don't go to it
-                "tab": "t",  # open as new tab and go to it
-                "window": "w",
-                "hover": "h",
-                "link": "k",
-                "copy": "s",
-            }),
-        Choice("nth", {
+       Choice("click_by_voice_options", {
+            "focus": "f", # focuses the element (doesn't work on all elements, does work on iframes)
+            "click": "c", # click on the link
+            "push": "b", # open as new tab but don't go to it
+            "tab": "t", # open as new tab and go to it
+            "window": "w", # open in new window
+            "hover": "h", # simulates hovering the mouse over the element; repeat to unhover
+            "copy [link]": "k", # copy link URL
+            "copy [link] name": "s", # copies the name of the link e.g. "images" on the link for Google images.
+        }),
+       Choice("nth", {
             "first": "1",
             "second": "2",
             "third": "3",
