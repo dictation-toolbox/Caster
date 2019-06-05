@@ -3,11 +3,12 @@ Created on Sep 1, 2015
 
 @author: synkarius
 '''
-from dragonfly import Repeat, Function, Dictation, Choice, MappingRule
+from dragonfly import Repeat, Function, Dictation, Choice, MappingRule, ContextAction
 
 from castervoice.lib import context, navigation, alphanumeric, textformat, text_utils
 from castervoice.lib import control, utilities
 from castervoice.lib.actions import Key, Mouse
+from castervoice.lib.context import AppContext
 from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
@@ -47,22 +48,12 @@ class NavigationNon(MergeRule):
             R(Key("f9")),
         "[show] context menu":
             R(Key("s-f10")),
-        "squat":
-            R(Function(navigation.left_down, nexus=_NEXUS)),
-        "bench":
-            R(Function(navigation.left_up, nexus=_NEXUS)),
         "lean":
             R(Function(navigation.right_down, nexus=_NEXUS)),
         "hoist":
             R(Function(navigation.right_up, nexus=_NEXUS)),
-        "kick":
-            R(Function(navigation.left_click, nexus=_NEXUS)),
         "kick mid":
             R(Function(navigation.middle_click, nexus=_NEXUS)),
-        "psychic":
-            R(Function(navigation.right_click, nexus=_NEXUS)),
-        "(kick double|double kick)":
-            R(Function(navigation.left_click, nexus=_NEXUS)*Repeat(2)),
         "shift right click":
             R(Key("shift:down") + Mouse("right") + Key("shift:up")),
         "curse <direction> [<direction2>] [<nnavi500>] [<dokick>]":
@@ -87,10 +78,6 @@ class NavigationNon(MergeRule):
             R(Key("c-x")),
         "sure spark":
             R(Key("c-v")),
-        "undo [<n>]":
-            R(Key("c-z"))*Repeat(extra="n"),
-        "redo [<n>]":
-            R(Key("c-y"))*Repeat(extra="n"),
         "refresh":
             R(Key("c-r")),
         "maxiwin":
@@ -209,20 +196,16 @@ class Navigation(MergeRule):
             R(Key("c-s"), rspec="save"),
         'shock [<nnavi50>]':
             R(Key("enter"), rspec="shock")* Repeat(extra="nnavi50"),
-
         "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]":
             R(Function(text_utils.master_text_nav)),
-
         "shift click":
             R(Key("shift:down") + Mouse("left") + Key("shift:up")),
-
         "stoosh [<nnavi500>]":
             R(Function(navigation.stoosh_keep_clipboard, nexus=_NEXUS), rspec="stoosh"),
         "cut [<nnavi500>]":
             R(Function(navigation.cut_keep_clipboard, nexus=_NEXUS), rspec="cut"),
-        "spark [<nnavi500>] [(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)]":
+        "spark [<nnavi500>] [(<capitalization> <spacing> | <capitalization> | <spacing>) [(bow|bowel)]]":
             R(Function(navigation.drop_keep_clipboard, nexus=_NEXUS), rspec="spark"),
-
         "splat [<splatdir>] [<nnavi10>]":
             R(Key("c-%(splatdir)s"), rspec="splat") * Repeat(extra="nnavi10"),
         "deli [<nnavi50>]":
@@ -231,8 +214,6 @@ class Navigation(MergeRule):
             R(Key("backspace/5:%(nnavi50)d"), rspec="clear"),
         SymbolSpecs.CANCEL:
             R(Key("escape"), rspec="cancel"),
-
-
         "shackle":
             R(Key("home/5, s-end"), rspec="shackle"),
         "(tell | tau) <semi>":
@@ -241,15 +222,21 @@ class Navigation(MergeRule):
             R(Function(navigation.duple_keep_clipboard), rspec="duple"),
         "Kraken":
             R(Key("c-space"), rspec="Kraken"),
+        "undo [<nnavi10>]":
+            R(Key("c-z"))*Repeat(extra="nnavi10"),
+        "redo [<nnavi10>]":
+            R(ContextAction(default=Key("c-y")*Repeat(extra="nnavi10"), actions=[
+                (AppContext(executable=["rstudio", "foxitreader"]), Key("cs-z")*Repeat(extra="nnavi10")),
+                ])),
 
     # text formatting
-        "set [<big>] format (<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)":
+        "set [<big>] format (<capitalization> <spacing> | <capitalization> | <spacing>) [(bow|bowel)]":
             R(Function(textformat.set_text_format)),
         "clear castervoice [<big>] formatting":
             R(Function(textformat.clear_text_format)),
         "peek [<big>] format":
             R(Function(textformat.peek_text_format)),
-        "(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel) <textnv> [brunt]":
+        "(<capitalization> <spacing> | <capitalization> | <spacing>) [(bow|bowel)] <textnv> [brunt]":
             R(Function(textformat.master_format_text)),
         "[<big>] format <textnv>":
             R(Function(textformat.prior_text_format)),
@@ -261,8 +248,18 @@ class Navigation(MergeRule):
         "dredge [<nnavi10>]":
             R(Key("alt:down, tab/20:%(nnavi10)d, alt:up"), 
                rdescript="Core: switch to most recent Windows"),
-
         
+        # Ccr Mouse Commands
+        "kick":
+            R(Function(navigation.left_click, nexus=_NEXUS)),
+        "psychic":
+            R(Function(navigation.right_click, nexus=_NEXUS)),
+        "(kick double|double kick)":
+            R(Function(navigation.left_click, nexus=_NEXUS)*Repeat(2)),
+        "squat":
+            R(Function(navigation.left_down, nexus=_NEXUS)),
+        "bench":
+            R(Function(navigation.left_up, nexus=_NEXUS)),
         
     }
 
