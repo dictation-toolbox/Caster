@@ -148,7 +148,7 @@ def paste_string_without_altering_clipboard(content):
 
         Key("c-v").execute()
         time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/
-                   1000.)  # time for keypress to execute
+                   100.)  # time for keypress to execute
         cb.copy_to_system()
 
     except Exception:

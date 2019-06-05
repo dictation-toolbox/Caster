@@ -9,6 +9,7 @@ character_list = [".", ",", "'", '"', "(", ")", "[", "]", "<", ">", "{", "}", "?
 "`", "~", "&", "%", "@", "\\", "$", "_", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", 
     "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"] 
 
+
 def get_start_end_position(text, phrase, left_right, occurrence_number):
 # def get_start_end_position(text, phrase, left_right):
     if phrase in character_list:
