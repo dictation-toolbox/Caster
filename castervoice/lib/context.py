@@ -1,9 +1,9 @@
 import time
 
-from dragonfly import AppContext
+from dragonfly import AppContext, Pause
 
 from castervoice.lib import utilities, settings
-from castervoice.lib.actions import Key
+from castervoice.lib.actions import Key 
 from castervoice.lib.clipboard import Clipboard
 
 # Override dragonfly.AppContext with aenea.ProxyAppContext if the 'use_aenea'
@@ -122,7 +122,7 @@ def read_selected_without_altering_clipboard(same_is_okay=False):
 
         Key("c-c").execute()
         time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/
-                   1000.)  # time for keypress to execute
+                   1000)  # time for keypress to execute
         temporary = Clipboard.get_system_text()
         cb.copy_to_system()
 
@@ -145,10 +145,10 @@ def paste_string_without_altering_clipboard(content):
 
     try:
         Clipboard.set_system_text(unicode(content))
-
+        Pause("50").execute()
         Key("c-v").execute()
         time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/
-                   100.)  # time for keypress to execute
+                   1000.)  # time for keypress to execute
         cb.copy_to_system()
 
     except Exception:

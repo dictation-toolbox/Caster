@@ -9,7 +9,6 @@ character_list = [".", ",", "'", '"', "(", ")", "[", "]", "<", ">", "{", "}", "?
 "`", "~", "&", "%", "@", "\\", "$", "_", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", 
     "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"] 
 
-
 def get_start_end_position(text, phrase, left_right, occurrence_number):
 # def get_start_end_position(text, phrase, left_right):
     if phrase in character_list:
@@ -56,44 +55,39 @@ def select_text_and_return_it(left_right, number_of_lines_to_search):
     if left_right == "left":
         # Key("s-home, s-up:%d, s-home, c-c" %number_of_lines_to_search).execute()
         Key("s-home, s-up:%d, s-home" %number_of_lines_to_search).execute()
-        err, selected_text = context.read_selected_without_altering_clipboard()
-        if err != 0:
-            # I'm not discriminating between err = 1 and err = 2
-            print("failed to copy text")
-            return
     if left_right == "right":
         Key("s-end, s-down:%d, s-end" %number_of_lines_to_search).execute()
-    err, selected_text = context.read_selected_without_altering_clipboard()
-    if err != 0:
-            # I'm not discriminating between err = 1 and err = 2
-            print("failed to copy text")
-            return
-
+    Key("c-c").execute()
     Pause("70").execute()
+    selected_text = pyperclip.paste()
+
+    # err, selected_text = context.read_selected_without_altering_clipboard()
+    # if err != 0:
+    #         # I'm not discriminating between err = 1 and err = 2
+    #         print("failed to copy text")
+    #         return
+    Pause("10").execute()
+    # pyperclip.copy(temp_for_previous_clipboard_item)
     # return (selected_text, temp_for_previous_clipboard_item)
     return selected_text
 
 # def deal_with_phrase_not_found(selected_text, temp_for_previous_clipboard_item, cursor_behavior, left_right):
 def deal_with_phrase_not_found(selected_text, cursor_behavior, left_right):
-        # Approach 1: unselect text by using the arrow keys, a little faster but does not work in texstudio
+        # Approach 1: unselect text by pressing opposite arrow key, does not work in Tex studio
         if cursor_behavior == "standard":
             if left_right == "left":
                 Key("right").execute()
             if left_right == "right":
                 Key("left").execute()
-        # Approach 2: paste selected text over itself, sometimes a little slower but works in texstudio
+        # Approach 2: unselect text by pressing left and then right, works in Tex studio
         if cursor_behavior == "texstudio":
-            # move cursor to the right side of selection by pasting, 
-            # another way to do this in tex studio is to press left then right or vice versa
-            # depending on whether you're selecting from left to right or right to left
-            # Key("c-v").execute() # move cursor to the right side of selection by pasting, 
-            context.paste_string_without_altering_clipboard(selected_text)
+            Key("left, right").execute() # unselect text
             if left_right == "right":
                 Key("left:%d" %len(selected_text)).execute()
-    
         # put previous clipboard item back in the clipboard
         # Pause("20").execute()
         # pyperclip.copy(temp_for_previous_clipboard_item)
+
 
 
 def replace_phrase_with_phrase(text, replaced_phrase, replacement_phrase, left_right, occurrence_number):
@@ -122,7 +116,8 @@ def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, le
         deal_with_phrase_not_found(selected_text, cursor_behavior, left_right)
         return
     
-    pyperclip.copy(new_text)
+    print("{}".format(new_text))
+    # pyperclip.copy(new_text)
     # Key("c-v").execute()
     context.paste_string_without_altering_clipboard(new_text)
     if number_of_lines_to_search < 20: 
@@ -164,8 +159,9 @@ def copypaste_remove_phrase_from_text(phrase, left_right, number_of_lines_to_sea
         # deal_with_phrase_not_found(selected_text, temp_for_previous_clipboard_item, cursor_behavior, left_right)
         deal_with_phrase_not_found(selected_text, cursor_behavior, left_right)
         return 
-    pyperclip.copy(new_text)
+    # pyperclip.copy(new_text)
     # Key("c-v").execute()
+    
     context.paste_string_without_altering_clipboard(new_text)
 
     if left_right == "right":
@@ -225,7 +221,7 @@ def move_until_phrase(left_right, before_after, phrase, number_of_lines_to_searc
             
     if cursor_behavior == "texstudio":
     # Approach 2: paste the selected text over itself rather than simply unselecting. A little slower but works in Texstudio
-    # comments below indicate the other approach
+    # todo: change this so that it unselects by pressing left and then right rather than pasting over the top
         # Key("c-v").execute()
         context.paste_string_without_altering_clipboard(selected_text)
         if before_after == "before":
@@ -286,7 +282,7 @@ def select_phrase(phrase, left_right, number_of_lines_to_search, cursor_behavior
             Key("s-right:%d" %selection_offset).execute()
         
     # Approach 2: paste the selected text over itself rather than simply unselecting. A little slower but works Texstudio
-    # comments below indicate the other approach
+    # todo: change this so that it unselects by pressing left and then right rather than pasting over the top
     if cursor_behavior == "texstudio":
         # Key("c-v").execute()
         context.paste_string_without_altering_clipboard(selected_text)
@@ -349,6 +345,7 @@ def select_until_phrase(left_right, phrase, before_after, number_of_lines_to_sea
 
 
     # Approach 2: paste the selected text over itself rather than simply unselecting. A little slower but works Texstudio
+    # todo: change this so that it unselects by pressing left and then right rather than pasting over the top
     if cursor_behavior == "texstudio":
         # Key("c-v").execute()  
         context.paste_string_without_altering_clipboard(selected_text)
