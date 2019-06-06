@@ -2,12 +2,16 @@ from dragonfly import Key, Pause
 import pyperclip
 import re 
 from castervoice.lib import context
-# from castervoice.lib.ccr.core.text_manipulation import character_dict
+from castervoice.lib.ccr.core.punctuation import text_punc_dict,  double_text_punc_dict
+from castervoice.lib.alphanumeric import caster_alphabet
 
-# character_list = [text_manipulation.character_dict.values()]
-character_list = [".", ",", "'", '"', "(", ")", "[", "]", "<", ">", "{", "}", "?", "!", "-", ";", ":", "|", "=", "/", 
-"`", "~", "&", "%", "@", "\\", "$", "_", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", 
-    "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"] 
+
+text_punc_dict.update(caster_alphabet)
+character_dict = text_punc_dict
+character_list = [character_dict.values()]
+# character_list = [".", ",", "'", '"', "(", ")", "[", "]", "<", ">", "{", "}", "?", "!", "-", ";", ":", "|", "=", "/", 
+# "`", "~", "&", "%", "@", "\\", "$", "_", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", 
+#     "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"] 
 
 def get_start_end_position(text, phrase, left_right, occurrence_number):
 # def get_start_end_position(text, phrase, left_right):
@@ -71,16 +75,16 @@ def select_text_and_return_it(left_right, number_of_lines_to_search):
     # return (selected_text, temp_for_previous_clipboard_item)
     return selected_text
 
-# def deal_with_phrase_not_found(selected_text, temp_for_previous_clipboard_item, cursor_behavior, left_right):
-def deal_with_phrase_not_found(selected_text, cursor_behavior, left_right):
+# def deal_with_phrase_not_found(selected_text, temp_for_previous_clipboard_item, application, left_right):
+def deal_with_phrase_not_found(selected_text, application, left_right):
         # Approach 1: unselect text by pressing opposite arrow key, does not work in Tex studio
-        if cursor_behavior == "standard":
+        if application == "standard":
             if left_right == "left":
                 Key("right").execute()
             if left_right == "right":
                 Key("left").execute()
         # Approach 2: unselect text by pressing left and then right, works in Tex studio
-        if cursor_behavior == "texstudio":
+        if application == "texstudio":
             Key("left, right").execute() # unselect text
             if left_right == "right":
                 Key("left:%d" %len(selected_text)).execute()
@@ -101,8 +105,8 @@ def replace_phrase_with_phrase(text, replaced_phrase, replacement_phrase, left_r
     
 
 
-def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, left_right, number_of_lines_to_search, cursor_behavior, occurrence_number):
-# def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, left_right, number_of_lines_to_search, cursor_behavior):
+def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, left_right, number_of_lines_to_search, application, occurrence_number):
+# def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, left_right, number_of_lines_to_search, application):
     # clip = select_text_and_return_it(left_right, number_of_lines_to_search)
     # selected_text = clip[0]
     # temp_for_previous_clipboard_item = clip[1]
@@ -112,8 +116,8 @@ def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, le
     new_text = replace_phrase_with_phrase(selected_text, replaced_phrase, replacement_phrase, left_right, occurrence_number)
     if not new_text:
         # replaced_phrase not found
-        # deal_with_phrase_not_found(selected_text, temp_for_previous_clipboard_item, cursor_behavior, left_right)
-        deal_with_phrase_not_found(selected_text, cursor_behavior, left_right)
+        # deal_with_phrase_not_found(selected_text, temp_for_previous_clipboard_item, application, left_right)
+        deal_with_phrase_not_found(selected_text, application, left_right)
         return
     
     print("{}".format(new_text))
@@ -147,7 +151,7 @@ def remove_phrase_from_text(text, phrase, left_right, occurrence_number):
             return text[: left_index - 1] + text[right_index:] 
 
 
-def copypaste_remove_phrase_from_text(phrase, left_right, number_of_lines_to_search, cursor_behavior, occurrence_number):
+def copypaste_remove_phrase_from_text(phrase, left_right, number_of_lines_to_search, application, occurrence_number):
     # clip = select_text_and_return_it(left_right, number_of_lines_to_search)
     # selected_text = clip[0]
     # temp_for_previous_clipboard_item = clip[1]
@@ -156,8 +160,8 @@ def copypaste_remove_phrase_from_text(phrase, left_right, number_of_lines_to_sea
     new_text = remove_phrase_from_text(selected_text, phrase, left_right, occurrence_number)
     if not new_text:
         # phrase not found
-        # deal_with_phrase_not_found(selected_text, temp_for_previous_clipboard_item, cursor_behavior, left_right)
-        deal_with_phrase_not_found(selected_text, cursor_behavior, left_right)
+        # deal_with_phrase_not_found(selected_text, temp_for_previous_clipboard_item, application, left_right)
+        deal_with_phrase_not_found(selected_text, application, left_right)
         return 
     # pyperclip.copy(new_text)
     # Key("c-v").execute()
@@ -172,7 +176,7 @@ def copypaste_remove_phrase_from_text(phrase, left_right, number_of_lines_to_sea
     # pyperclip.copy(temp_for_previous_clipboard_item)
 
 
-def move_until_phrase(left_right, before_after, phrase, number_of_lines_to_search, cursor_behavior, occurrence_number):
+def move_until_phrase(left_right, before_after, phrase, number_of_lines_to_search, application, occurrence_number):
     if not before_after:
           # default to whatever is closest to the cursor
         if left_right  == "left":
@@ -190,13 +194,13 @@ def move_until_phrase(left_right, before_after, phrase, number_of_lines_to_searc
         left_index, right_index = match_index
     else:
         # phrase not found
-        # deal_with_phrase_not_found(selected_text, temp_for_previous_clipboard_item, cursor_behavior, left_right)
-        deal_with_phrase_not_found(selected_text, cursor_behavior, left_right)
+        # deal_with_phrase_not_found(selected_text, temp_for_previous_clipboard_item, application, left_right)
+        deal_with_phrase_not_found(selected_text, application, left_right)
 
         return
 
     
-    if cursor_behavior == "standard":
+    if application == "standard":
         # Approach 1: unselect using arrow keys rather than pasting over the existing text. (a little faster) does not work texstudio
         if right_index < round(len(selected_text))/2:
             # it's faster to approach phrase from the left
@@ -219,7 +223,7 @@ def move_until_phrase(left_right, before_after, phrase, number_of_lines_to_searc
                 offset = len(selected_text) - right_index - offset_correction
             Key("left:%d" %offset).execute()
             
-    if cursor_behavior == "texstudio":
+    if application == "texstudio":
     # Approach 2: paste the selected text over itself rather than simply unselecting. A little slower but works in Texstudio
     # todo: change this so that it unselects by pressing left and then right rather than pasting over the top
         # Key("c-v").execute()
@@ -239,7 +243,7 @@ def move_until_phrase(left_right, before_after, phrase, number_of_lines_to_searc
     # Pause("20").execute()
     # pyperclip.copy(temp_for_previous_clipboard_item)
 
-def select_phrase(phrase, left_right, number_of_lines_to_search, cursor_behavior, occurrence_number):
+def select_phrase(phrase, left_right, number_of_lines_to_search, application, occurrence_number):
     # clip = select_text_and_return_it(left_right, number_of_lines_to_search)
     # selected_text = clip[0]
     # temp_for_previous_clipboard_item = clip[1]
@@ -250,14 +254,14 @@ def select_phrase(phrase, left_right, number_of_lines_to_search, cursor_behavior
         left_index, right_index = match_index
     else:
         # phrase not found
-        # deal_with_phrase_not_found(selected_text, temp_for_previous_clipboard_item, cursor_behavior, left_right)
-        deal_with_phrase_not_found(selected_text, cursor_behavior, left_right)
+        # deal_with_phrase_not_found(selected_text, temp_for_previous_clipboard_item, application, left_right)
+        deal_with_phrase_not_found(selected_text, application, left_right)
         return
     
 
 
     # Approach 1: unselect using arrow keys rather than pasting over the existing text. (a little faster) does not work texstudio
-    if cursor_behavior == "standard":
+    if application == "standard":
         if right_index < round(len(selected_text))/2:
             # it's faster to approach phrase from the left
             Key("left").execute() # unselect text and place cursor on the left side of selection 
@@ -283,7 +287,7 @@ def select_phrase(phrase, left_right, number_of_lines_to_search, cursor_behavior
         
     # Approach 2: paste the selected text over itself rather than simply unselecting. A little slower but works Texstudio
     # todo: change this so that it unselects by pressing left and then right rather than pasting over the top
-    if cursor_behavior == "texstudio":
+    if application == "texstudio":
         # Key("c-v").execute()
         context.paste_string_without_altering_clipboard(selected_text)
         multiline_movement_correction = selected_text[right_index :].count("\r\n")
@@ -299,7 +303,7 @@ def select_phrase(phrase, left_right, number_of_lines_to_search, cursor_behavior
     # pyperclip.copy(temp_for_previous_clipboard_item)
 
 
-def select_until_phrase(left_right, phrase, before_after, number_of_lines_to_search, cursor_behavior, occurrence_number):
+def select_until_phrase(left_right, phrase, before_after, number_of_lines_to_search, application, occurrence_number):
     
     if not before_after:
     # default to select all the way through the phrase not just up until it
@@ -318,12 +322,12 @@ def select_until_phrase(left_right, phrase, before_after, number_of_lines_to_sea
         left_index, right_index = match_index
     else:
         # phrase not found
-        # deal_with_phrase_not_found(selected_text, temp_for_previous_clipboard_item, cursor_behavior, left_right)
-        deal_with_phrase_not_found(selected_text, cursor_behavior, left_right)
+        # deal_with_phrase_not_found(selected_text, temp_for_previous_clipboard_item, application, left_right)
+        deal_with_phrase_not_found(selected_text, application, left_right)
         return
     
     # Approach 1: unselect using arrow keys rather than pasting over the existing text. (a little faster) does not work texstudio
-    if cursor_behavior == "standard":
+    if application == "standard":
         if left_right == "left":
             Key("right").execute() # unselect text and move to left side of selection
             if before_after == "before":
@@ -346,7 +350,7 @@ def select_until_phrase(left_right, phrase, before_after, number_of_lines_to_sea
 
     # Approach 2: paste the selected text over itself rather than simply unselecting. A little slower but works Texstudio
     # todo: change this so that it unselects by pressing left and then right rather than pasting over the top
-    if cursor_behavior == "texstudio":
+    if application == "texstudio":
         # Key("c-v").execute()  
         context.paste_string_without_altering_clipboard(selected_text)
         if left_right == "left":
@@ -412,7 +416,7 @@ def delete_until_phrase(text, phrase, left_right, before_after, occurrence_numbe
             else:
                 return text[left_index :]
 
-def copypaste_delete_until_phrase(left_right, phrase, number_of_lines_to_search, before_after, cursor_behavior, occurrence_number):
+def copypaste_delete_until_phrase(left_right, phrase, number_of_lines_to_search, before_after, application, occurrence_number):
     if not before_after:
         # default to delete all the way through the phrase not just up until it
         if left_right == "left":
@@ -431,8 +435,8 @@ def copypaste_delete_until_phrase(left_right, phrase, number_of_lines_to_search,
         # do not use `if not new_text` because that will pick up the case where new_text="" which
         # occurs if the phrase is at the beginning of the line
         # phrase not found
-        # deal_with_phrase_not_found(selected_text, temp_for_previous_clipboard_item, cursor_behavior, left_right)
-        deal_with_phrase_not_found(selected_text, cursor_behavior, left_right)
+        # deal_with_phrase_not_found(selected_text, temp_for_previous_clipboard_item, application, left_right)
+        deal_with_phrase_not_found(selected_text, application, left_right)
         return
 
     if new_text == "":
