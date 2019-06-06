@@ -104,12 +104,13 @@ def read_nmax_tries(n, slp=0.1):
         time.sleep(slp)
 
 
-def read_selected_without_altering_clipboard(pause_time="0", same_is_okay=False):
+def read_selected_without_altering_clipboard(same_is_okay=False, pause_time="0"):
     '''Returns a tuple:
     (0, "text from system") - indicates success
     (1, None) - indicates no change
     (2, None) - indicates clipboard error
     '''
+    
     time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/
                1000.)  # time for previous keypress to execute
     cb = Clipboard(from_system=True)

@@ -57,100 +57,57 @@ class TextManipulation(MergeRule):
         # PROBLEM: sometimes Dragon thinks the variables are part of dictation.           
         
         "replace <direction> [<number_of_lines_to_search>] [<occurrence_number>] <dictation> with <dictation2>":
-            R(ContextAction(default=Function(text_manipulation_functions.copypaste_replace_phrase_with_phrase,
-                       dict(dictation="replaced_phrase", dictation2="replacement_phrase", direction="left_right"), 
-                       application="standard"), actions=[
-                        # Use different cursor method for texstudio
-                        (AppContext(executable="texstudio"), Function(text_manipulation_functions.copypaste_replace_phrase_with_phrase,
-                       dict(dictation="replaced_phrase", dictation2="replacement_phrase", direction="left_right"), 
-                       application="texstudio"))]),
+            R(Function(text_manipulation_functions.copypaste_replace_phrase_with_phrase,
+                       dict(dictation="replaced_phrase", dictation2="replacement_phrase")), 
               rdescript="Text Manipulation: replace text to the left or right of the cursor"),
-        
         "replace <direction>  [<number_of_lines_to_search>] [<occurrence_number>] <character> with <character2>":
-            R(ContextAction(default=Function(text_manipulation_functions.copypaste_replace_phrase_with_phrase,
-                       dict(character="replaced_phrase", character2="replacement_phrase", direction="left_right"), 
-                       application="standard"), actions=[
-                        # Use different cursor method for texstudio
-                        (AppContext(executable="texstudio"), Function(text_manipulation_functions.copypaste_replace_phrase_with_phrase,
-                       dict(character="replaced_phrase", character2="replacement_phrase", direction="left_right"), 
-                       application="texstudio"))]),
+            R(Function(text_manipulation_functions.copypaste_replace_phrase_with_phrase,
+                       dict(character="replaced_phrase", character2="replacement_phrase")), 
               rdescript="Text Manipulation: replace character to the left of the cursor"),
         
         "remove <direction> [<number_of_lines_to_search>] [<occurrence_number>] <dictation>":
-            R(ContextAction(default=Function(text_manipulation_functions.copypaste_remove_phrase_from_text,
-                       dict(dictation="phrase", direction="left_right"), application="standard"),
-                       actions=[(AppContext(executable="texstudio"), Function(text_manipulation_functions.copypaste_remove_phrase_from_text,
-                       dict(dictation="phrase", direction="left_right"), application="texstudio"))]),
-              rdescript="Text Manipulation: remove chosen phrase to the left or right of the cursor"),
+            R(Function(text_manipulation_functions.copypaste_remove_phrase_from_text,
+                       dict(dictation="phrase")),
+                        rdescript="Text Manipulation: remove chosen phrase to the left or right of the cursor"),
         "remove <direction> [<number_of_lines_to_search>] [<occurrence_number>] <character>":
-            R(ContextAction(default=Function(text_manipulation_functions.copypaste_remove_phrase_from_text,
-                       dict(character="phrase", direction="left_right"),
-                       application="standard"), actions=[(AppContext(executable="texstudio"), 
-                       Function(text_manipulation_functions.copypaste_remove_phrase_from_text,
-                       dict(character="phrase", direction="left_right"),
-                       application="texstudio"))]),
+            R(Function(text_manipulation_functions.copypaste_remove_phrase_from_text,
+                       dict(character="phrase")), 
               rdescript="Text Manipulation: remove chosen character to the left of the cursor"),
         
         "go <direction> [<number_of_lines_to_search>] [<before_after>] [<occurrence_number>] <dictation>":
-            R(ContextAction(default = Function(text_manipulation_functions.move_until_phrase,
-                       dict(dictation="phrase", direction="left_right"), application="standard"), 
-                       # Use different method for texstudio
-                       actions=[             
-                (AppContext(executable="texstudio"), Function(text_manipulation_functions.move_until_phrase,
-                       dict(dictation="phrase", direction="left_right"), application="texstudio")),
-                ]), rdescript="Text Manipulation: move to chosen phrase to the left or right of the cursor"),
+            R(Function(text_manipulation_functions.move_until_phrase,
+                       dict(dictation="phrase")), 
+               rdescript="Text Manipulation: move to chosen phrase to the left or right of the cursor"),
         "go <direction> [<before_after>] [<number_of_lines_to_search>] [<occurrence_number>] <character>":
-            R(ContextAction(default=Function(text_manipulation_functions.move_until_phrase,
-                       dict(character="phrase", direction="left_right"),
-                       application="standard"), actions=[(AppContext("texstudio"),
-                       Function(text_manipulation_functions.move_until_phrase,
-                       dict(character="phrase", direction="left_right"),
-                       application="texstudio"))]),
+            R(Function(text_manipulation_functions.move_until_phrase,
+                       dict(character="phrase")),
               rdescript="Text Manipulation: move to chosen character to the left of the cursor"),
+
         "grab <direction> [<number_of_lines_to_search>] [<occurrence_number>] <dictation>":
-            R(ContextAction(default=Function(text_manipulation_functions.select_phrase, 
-            dict(dictation="phrase", direction="left_right"), 
-            application="standard"), actions=[(AppContext("texstudio"),
-            Function(text_manipulation_functions.select_phrase,
-                       dict(dictation="phrase", direction="left_right"),
-                       application="texstudio"))]),
+            R(Function(text_manipulation_functions.select_phrase, 
+            dict(dictation="phrase")), 
                  rdescript="Text Manipulation: select chosen phrase"),
         "grab <direction> [<number_of_lines_to_search>] [<occurrence_number>] <character>":
-            R(ContextAction(default=Function(text_manipulation_functions.select_phrase,
-            dict(character="phrase", direction="left_right"),
-            application="standard"), actions=[(AppContext("texstudio"),
-            Function(text_manipulation_functions.select_phrase, dict(character="phrase", direction="left_right"),
-            application="texstudio"))]),
+            R(Function(text_manipulation_functions.select_phrase,
+            dict(character="phrase")),
             rdescript="Text Manipulation: select chosen character"),
         
         "grab <direction> [<number_of_lines_to_search>] until [<before_after>] [<occurrence_number>] <dictation> ":
-            R(ContextAction(default=Function(text_manipulation_functions.select_until_phrase, 
-            dict(dictation="phrase", direction="left_right"), 
-            application="standard"), actions=[(AppContext("texstudio"),
-            Function(text_manipulation_functions.select_until_phrase, dict(dictation="phrase", direction="left_right"), 
-            application="texstudio"))]),
+            R(Function(text_manipulation_functions.select_until_phrase, 
+            dict(dictation="phrase")), 
                  rdescript="Text Manipulation: select until chosen phrase"),
         "grab <direction> [<number_of_lines_to_search>] until [<before_after>] [<occurrence_number>] <character>":
-            R(ContextAction(default=Function(text_manipulation_functions.select_until_phrase,
-            dict(character="phrase", direction="left_right"), 
-            application="standard"), actions=[(AppContext("texstudio"),
-            Function(text_manipulation_functions.select_until_phrase, 
-            dict(character="phrase", direction="left_right"), 
-            application="texstudio"))]),
+            R(Function(text_manipulation_functions.select_until_phrase,
+            dict(character="phrase")), 
             rdescript="Text Manipulation: select until chosen character"),
+        
         "remove <direction> [<number_of_lines_to_search>] until [<before_after>] [<occurrence_number>] <dictation>":
-            R(ContextAction(default=Function(text_manipulation_functions.copypaste_delete_until_phrase,
-                       dict(dictation="phrase", direction="left_right"), application="standard"),
-                       actions=[(AppContext("texstudio"), Function(text_manipulation_functions.copypaste_delete_until_phrase,
-                       dict(dictation="phrase", direction="left_right"), application="texstudio"))]),
+            R(Function(text_manipulation_functions.copypaste_delete_until_phrase,
+                       dict(dictation="phrase")), 
               rdescript="Text Manipulation: delete until chosen phrase"),
         "remove <direction> [<number_of_lines_to_search>] until [<before_after>] [<occurrence_number>] <character>":
-            R(ContextAction(default=Function(text_manipulation_functions.copypaste_delete_until_phrase,
-                       dict(character="phrase", direction="left_right"),
-                       application="standard"),
-                       actions=[(AppContext("texstudio"), Function(text_manipulation_functions.copypaste_delete_until_phrase,
-                       dict(character="phrase", direction="left_right"),
-                       application="texstudio"))]),
+            R(Function(text_manipulation_functions.copypaste_delete_until_phrase,
+                       dict(character="phrase")),
               rdescript="Text Manipulation: delete until chosen character"),
         
 
