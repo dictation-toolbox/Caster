@@ -153,8 +153,8 @@
 
 | Command                                  | Notes                                                                       |
 |:-----------------------------------------|:----------------------------------------------------------------------------|
-| `checkout [this] pull request [locally]` | Must be called from the "Conversation" tab of the Github pull request page. |
-| `update [this] pull request [locally]`   | Must be called from the "Conversation" tab of the Github pull request page. |
+| `checkout [this] pull request [locally]` | Called from any tab of the Github pull request page. ("Conversation", "Commits", "Checks", "Files changed")|
+| `update [this] pull request [locally]`   | Called from any tab of the Github pull request page. ("Conversation", "Commits", "Checks", "Files changed")|
 
 ## Click by voice plug-in
 Options:
@@ -253,8 +253,8 @@ Options:
 
 | Command                                  | Notes                                                                       |
 |:-----------------------------------------|:----------------------------------------------------------------------------|
-| `checkout [this] pull request [locally]` | Must be called from the "Conversation" tab of the Github pull request page. |
-| `update [this] pull request [locally]`   | Must be called from the "Conversation" tab of the Github pull request page. |
+| `checkout [this] pull request [locally]` | Called from any tab of the Github pull request page. ("Conversation", "Commits", "Checks", "Files changed") |
+| `update [this] pull request [locally]`   | Called from any tab of the Github pull request page. ("Conversation", "Commits", "Checks", "Files changed") |
 
 # Flash Develop
 
