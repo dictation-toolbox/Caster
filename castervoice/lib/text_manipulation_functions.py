@@ -53,10 +53,13 @@ def text_manipulation_copy(application):
     # the wait time can also be modified up or down further by going into context.read_selected_without_altering_clipboard 
     # and changing the sleep time which is apparently slightly different than the pause time.
     # the sleep time is set to a positive number, so can be reduced
+    # here I am using "wait time" to mean the sum of the sleep and pause time right after pressing control c
     if application == "standard":
-        err, selected_text = context.read_selected_without_altering_clipboard() 
+        err, selected_text = context.read_selected_without_altering_clipboard(pause_time="10") 
+        # the default clause time is 1, but that is in addition to the sleep time which can be reduced
     if application == "texstudio":
         err, selected_text = context.read_selected_without_altering_clipboard(pause_time="70")
+        
     if err != 0:
         # I'm not discriminating between err = 1 and err = 2
         print("failed to copy text")
@@ -66,6 +69,7 @@ def text_manipulation_paste(text, application):
     
     if application == "standard":
         context.paste_string_without_altering_clipboard(text)
+        # the default clause time is 1, but that is in addition to the sleep time which can be reduced
     if application == "texstudio":
         context.paste_string_without_altering_clipboard(text, pause_time="100")
 
@@ -239,8 +243,7 @@ def move_until_phrase(left_right, before_after, phrase, number_of_lines_to_searc
             Key("left:%d" %offset).execute()
             
     if application == "texstudio":
-    # Approach 2: paste the selected text over itself rather than simply unselecting. A little slower but works in Texstudio
-    # todo: change this so that it unselects by pressing left and then right rather than pasting over the top
+    # Approach 2: Unselect text by pressing left and then right. A little slower but works in Texstudio
         # Key("c-v").execute()
         Key("left, right").execute() # unselect text
         if left_right == "left":

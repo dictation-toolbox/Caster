@@ -14,7 +14,8 @@ from castervoice.lib.alphanumeric import caster_alphabet
 
 # Advertisement
 print("""Check out the new experimental text manipulation commands in castervoice\lib\ccr\core\\text_manipulation.py 
-    where you can disable this message. Enable them by saying "enable text manipulation". You may want to reduce the pause time in the function select_text_and_return_it in castervoice\lib\\text_manipulation_functions.py
+    where you can disable this message. Enable them by saying "enable text manipulation". You may want to reduce the pause or sleep time
+    in the functions text_manipulation_copy and text_manipulation_paste in castervoice\lib\\text_manipulation_functions.py
     These are WIP, Please give feedback and report bugs""")
 
 
@@ -22,18 +23,22 @@ print("""Check out the new experimental text manipulation commands in castervoic
 
 """ requires a recent version of dragonfly because of recent modification of the Function action
     # I think dragonfly2-0.13.0
-    The PAUSE TIMES in these functions should be reduced (possibly depending on the application, eventually can use a context action ).
-    I have them cranked up very high right now just to make sure everything works.
+    The wait times should be adjusted depending on the application by changing the numbers in 
+    text_manipulation_copy and text_manipulation_paste as well as the functions they call which are
+    lib.context.read_selected_without_altering_clipboard and lib.context.paste_string_without_altering_clipboard
     the keypress waittime should probably be made shorter for these commands.
     When these commands are not working in a particular application sometimes the problem is that 
     there is not enough time from when control-c is pressed until the contents of the clipboard are passed into the function
     The solution is to add a longer pause after pressing control see in the supporting functions in text_manipulation_functions.py
-    For some applications this pause ( and other pauses in the functions for that matter ) is not necessary
+    For some applications, pauses in the copy and paste commands are unnecessary and should be removed or shortened by the user.
     and may be removed by the user if they wish to speed up the execution of these commands
-    These functions copy text into the clipboard and then return whatever you had there before backing onto the clipboardcenter.
+    The functions used by the commands copy text into the clipboard and then return whatever you had there before back onto the clipboard.
     If you are using the multi clipboard, thins might be annoying because you will have some
-    extra junk put on the second slot on your multi clipboard. To combat this problem you
-    could use castervoice.lib.context.read_selected_without_altering_clipboard() instead of pyperclip
+    extra junk put on the second slot on your multi clipboard. If you get the wait times exactly right, in principle this problem can be avoided
+    if you are using the functions lib.context.read_selected_without_altering_clipboard and lib.context.paste_string_without_altering_clipboard
+    Even though those functions use pyperclip, somehow they can sometimes avoid this problem if you get the 
+    right pause time (I think shorter is better), whereas using pure pyperclip 
+    does not seem to avoid this problem.
 """
 
 class TextManipulation(MergeRule):
