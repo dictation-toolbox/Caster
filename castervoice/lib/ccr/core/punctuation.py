@@ -35,11 +35,11 @@ text_punc_dict = {
     "questo":                               "?", 
     "(atty | at symbol)":                   "@", 
     "left brax":                            "[",
-    "lean slash":                          "\\",
+    "backslash":                           "\\",
     "right brax":                           "]",
     "carrot":                               "^", 
     "underscore":                           "_",
-    "ticky":                                "`",
+    "ticky | ((left | right) tickris )":    "`",
     "left curly":                           "{",
     "pipe (sim | symbol)":                  "|",
     "right curly":                          "}",
@@ -49,7 +49,7 @@ text_punc_dict = {
 double_text_punc_dict = {
     "quotes":                            "\"\"",
     "thin quotes":                         "''",
-    "bakes":                               "``",
+    "tickris":                             "``",
     "prekris":                             "()",
     "brax":                                "[]",
     "curly":                               "{}",
@@ -73,6 +73,8 @@ class Punctuation(MergeRule):
             R(Key("s-tab"), rdescript="Core: Shift Tab")*Repeat(extra="npunc"),
         "boom [<npunc>]":
             R(Text(", "), rdescript="Core: Comma + Space")*Repeat(extra="npunc"),
+        "bam [<npunc>]":
+            R(Text(". "), rdescript="Core: Comma + Space")*Repeat(extra="npunc"),
         "ace [<npunc100>]":
             R(Text(" "), rdescript="Core: Space")*Repeat(extra="npunc100"),
     }
