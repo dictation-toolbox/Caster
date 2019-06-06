@@ -104,7 +104,7 @@ def read_nmax_tries(n, slp=0.1):
         time.sleep(slp)
 
 
-def read_selected_without_altering_clipboard(same_is_okay=False):
+def read_selected_without_altering_clipboard(pause_time="0", same_is_okay=False):
     '''Returns a tuple:
     (0, "text from system") - indicates success
     (1, None) - indicates no change
@@ -121,6 +121,7 @@ def read_selected_without_altering_clipboard(same_is_okay=False):
         Clipboard.set_system_text("")
 
         Key("c-c").execute()
+        Pause(pause_time).execute()
         time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/
                    1000)  # time for keypress to execute
         temporary = Clipboard.get_system_text()
@@ -134,7 +135,7 @@ def read_selected_without_altering_clipboard(same_is_okay=False):
     return 0, temporary
 
 
-def paste_string_without_altering_clipboard(content):
+def paste_string_without_altering_clipboard(content, pause_time="1"):
     '''
     True - indicates success
     False - indicates clipboard error
@@ -145,7 +146,7 @@ def paste_string_without_altering_clipboard(content):
 
     try:
         Clipboard.set_system_text(unicode(content))
-        Pause("50").execute()
+        Pause(pause_time).execute()
         Key("c-v").execute()
         time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/
                    1000.)  # time for keypress to execute

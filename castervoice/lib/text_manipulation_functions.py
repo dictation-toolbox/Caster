@@ -8,11 +8,8 @@ from castervoice.lib.alphanumeric import caster_alphabet
 
 text_punc_dict.update(caster_alphabet)
 character_dict = text_punc_dict
-character_list = [character_dict.values()]
-# character_list = [".", ",", "'", '"', "(", ")", "[", "]", "<", ">", "{", "}", "?", "!", "-", ";", ":", "|", "=", "/", 
-# "`", "~", "&", "%", "@", "\\", "$", "_", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", 
-#     "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"] 
-
+character_list = character_dict.values()
+                
 def get_start_end_position(text, phrase, left_right, occurrence_number):
 # def get_start_end_position(text, phrase, left_right):
     if phrase in character_list:
@@ -50,9 +47,30 @@ def get_start_end_position(text, phrase, left_right, occurrence_number):
 
 
     return (left_index, right_index)
-    # return 
+    
 
-def select_text_and_return_it(left_right, number_of_lines_to_search):
+def text_manipulation_copy(application):
+    # the wait time can also be modified up or down further by going into context.read_selected_without_altering_clipboard 
+    # and changing the sleep time which is apparently slightly different than the pause time.
+    # the sleep time is set to a positive number, so can be reduced
+    if application == "standard":
+        err, selected_text = context.read_selected_without_altering_clipboard() 
+    if application == "texstudio":
+        err, selected_text = context.read_selected_without_altering_clipboard(pause_time="70")
+    if err != 0:
+        # I'm not discriminating between err = 1 and err = 2
+        print("failed to copy text")
+        return
+    return selected_text
+def text_manipulation_paste(text, application):
+    
+    if application == "standard":
+        context.paste_string_without_altering_clipboard(text)
+    if application == "texstudio":
+        context.paste_string_without_altering_clipboard(text, pause_time="100")
+
+
+def select_text_and_return_it(left_right, number_of_lines_to_search, application):
     # temporarily store previous clipboard item
     # temp_for_previous_clipboard_item = pyperclip.paste()
     # Pause("20").execute()
@@ -61,16 +79,15 @@ def select_text_and_return_it(left_right, number_of_lines_to_search):
         Key("s-home, s-up:%d, s-home" %number_of_lines_to_search).execute()
     if left_right == "right":
         Key("s-end, s-down:%d, s-end" %number_of_lines_to_search).execute()
-    Key("c-c").execute()
-    Pause("70").execute()
-    selected_text = pyperclip.paste()
-
-    # err, selected_text = context.read_selected_without_altering_clipboard()
-    # if err != 0:
-    #         # I'm not discriminating between err = 1 and err = 2
-    #         print("failed to copy text")
-    #         return
-    Pause("10").execute()
+    # Key("c-c").execute()
+    # Pause("70").execute()
+    # selected_text = pyperclip.paste()
+    selected_text = text_manipulation_copy(application)
+    if selected_text == None:
+        # failed to copy
+        return 
+    
+    # Pause("10").execute()
     # pyperclip.copy(temp_for_previous_clipboard_item)
     # return (selected_text, temp_for_previous_clipboard_item)
     return selected_text
@@ -92,8 +109,6 @@ def deal_with_phrase_not_found(selected_text, application, left_right):
         # Pause("20").execute()
         # pyperclip.copy(temp_for_previous_clipboard_item)
 
-
-
 def replace_phrase_with_phrase(text, replaced_phrase, replacement_phrase, left_right, occurrence_number):
 # def replace_phrase_with_phrase(text, replaced_phrase, replacement_phrase, left_right):
     match_index = get_start_end_position(text, replaced_phrase, left_right, occurrence_number)
@@ -110,7 +125,7 @@ def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, le
     # clip = select_text_and_return_it(left_right, number_of_lines_to_search)
     # selected_text = clip[0]
     # temp_for_previous_clipboard_item = clip[1]
-    selected_text = select_text_and_return_it(left_right, number_of_lines_to_search)
+    selected_text = select_text_and_return_it(left_right, number_of_lines_to_search, application)
     replaced_phrase = str(replaced_phrase)
     replacement_phrase = str(replacement_phrase) 
     new_text = replace_phrase_with_phrase(selected_text, replaced_phrase, replacement_phrase, left_right, occurrence_number)
@@ -123,7 +138,7 @@ def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, le
     print("{}".format(new_text))
     # pyperclip.copy(new_text)
     # Key("c-v").execute()
-    context.paste_string_without_altering_clipboard(new_text)
+    text_manipulation_paste(new_text, application)
     if number_of_lines_to_search < 20: 
         # only put the cursor back in the right spot if the number of lines to search is fairly small
         if left_right == "right":
@@ -155,7 +170,7 @@ def copypaste_remove_phrase_from_text(phrase, left_right, number_of_lines_to_sea
     # clip = select_text_and_return_it(left_right, number_of_lines_to_search)
     # selected_text = clip[0]
     # temp_for_previous_clipboard_item = clip[1]
-    selected_text = select_text_and_return_it(left_right, number_of_lines_to_search)
+    selected_text = select_text_and_return_it(left_right, number_of_lines_to_search, application)
     phrase = str(phrase)
     new_text = remove_phrase_from_text(selected_text, phrase, left_right, occurrence_number)
     if not new_text:
@@ -166,7 +181,7 @@ def copypaste_remove_phrase_from_text(phrase, left_right, number_of_lines_to_sea
     # pyperclip.copy(new_text)
     # Key("c-v").execute()
     
-    context.paste_string_without_altering_clipboard(new_text)
+    text_manipulation_paste(new_text, application)
 
     if left_right == "right":
         offset = len(new_text)
@@ -187,7 +202,7 @@ def move_until_phrase(left_right, before_after, phrase, number_of_lines_to_searc
     # clip = select_text_and_return_it(left_right, number_of_lines_to_search)
     # selected_text = clip[0]
     # temp_for_previous_clipboard_item = clip[1]
-    selected_text = select_text_and_return_it(left_right, number_of_lines_to_search)
+    selected_text = select_text_and_return_it(left_right, number_of_lines_to_search, application)
     phrase = str(phrase)
     match_index = get_start_end_position(selected_text, phrase, left_right, occurrence_number)
     if match_index:
@@ -227,18 +242,33 @@ def move_until_phrase(left_right, before_after, phrase, number_of_lines_to_searc
     # Approach 2: paste the selected text over itself rather than simply unselecting. A little slower but works in Texstudio
     # todo: change this so that it unselects by pressing left and then right rather than pasting over the top
         # Key("c-v").execute()
-        context.paste_string_without_altering_clipboard(selected_text)
-        if before_after == "before":
-            selected_text_to_the_right_of_phrase = selected_text[left_index :]    
-        if before_after == "after":
-            selected_text_to_the_right_of_phrase = selected_text[right_index :]
-        multiline_offset_correction = selected_text_to_the_right_of_phrase.count("\r\n")
-        if before_after  == "before":
-            offset = len(selected_text) - left_index - multiline_offset_correction
-        if before_after == "after":
-            offset = len(selected_text) - right_index - multiline_offset_correction
-        Key("left:%d" %offset).execute()
+        Key("left, right").execute() # unselect text
+        if left_right == "left":
+            # cursor is at the left side of the previously selected text
+            if before_after == "before":
+                selected_text_to_the_left_of_phrase = selected_text[:left_index]
+                multiline_offset_correction = selected_text_to_the_left_of_phrase.count("\r\n")
+                offset = left_index - multiline_offset_correction
+            if before_after == "after":
+                selected_text_to_the_left_of_phrase = selected_text[:right_index]
+                multiline_offset_correction = selected_text_to_the_left_of_phrase.count("\r\n")
+                offset = right_index - multiline_offset_correction
+            Key("right:%d" %offset).execute()
 
+        if left_right == "right":
+            # cursor is at the left side of the previously selected text
+            if before_after == "before":
+                selected_text_to_the_right_of_phrase = selected_text[left_index :]    
+            if before_after == "after":
+                selected_text_to_the_right_of_phrase = selected_text[right_index :]
+            multiline_offset_correction = selected_text_to_the_right_of_phrase.count("\r\n")
+            if before_after  == "before":
+                offset = len(selected_text) - left_index - multiline_offset_correction
+            if before_after == "after":
+                offset = len(selected_text) - right_index - multiline_offset_correction
+            Key("left:%d" %offset).execute()
+            
+            
     # put previous clipboard item back in the clipboard (Todo: consider factoring this out)
     # Pause("20").execute()
     # pyperclip.copy(temp_for_previous_clipboard_item)
@@ -247,7 +277,7 @@ def select_phrase(phrase, left_right, number_of_lines_to_search, application, oc
     # clip = select_text_and_return_it(left_right, number_of_lines_to_search)
     # selected_text = clip[0]
     # temp_for_previous_clipboard_item = clip[1]
-    selected_text = select_text_and_return_it(left_right, number_of_lines_to_search)
+    selected_text = select_text_and_return_it(left_right, number_of_lines_to_search, application)
     phrase = str(phrase)
     match_index = get_start_end_position(selected_text, phrase, left_right, occurrence_number)
     if match_index:
@@ -289,7 +319,7 @@ def select_phrase(phrase, left_right, number_of_lines_to_search, application, oc
     # todo: change this so that it unselects by pressing left and then right rather than pasting over the top
     if application == "texstudio":
         # Key("c-v").execute()
-        context.paste_string_without_altering_clipboard(selected_text)
+        text_manipulation_paste(selected_text, application) # yes, this is kind of redundant but it gets the proper pause time
         multiline_movement_correction = selected_text[right_index :].count("\r\n")
         movement_offset = len(selected_text) - right_index - multiline_movement_correction
         Key("left:%d" %movement_offset).execute()
@@ -315,7 +345,7 @@ def select_until_phrase(left_right, phrase, before_after, number_of_lines_to_sea
     # clip = select_text_and_return_it(left_right, number_of_lines_to_search)
     # selected_text = clip[0]
     # temp_for_previous_clipboard_item = clip[1]
-    selected_text = select_text_and_return_it(left_right, number_of_lines_to_search)
+    selected_text = select_text_and_return_it(left_right, number_of_lines_to_search, application)
     phrase = str(phrase)
     match_index = get_start_end_position(selected_text, phrase, left_right, occurrence_number)
     if match_index:
@@ -352,7 +382,7 @@ def select_until_phrase(left_right, phrase, before_after, number_of_lines_to_sea
     # todo: change this so that it unselects by pressing left and then right rather than pasting over the top
     if application == "texstudio":
         # Key("c-v").execute()  
-        context.paste_string_without_altering_clipboard(selected_text)
+        text_manipulation_paste(selected_text, application) # yes, this is kind of redundant but it gets the proper pause time
         if left_right == "left":
             if before_after == "before": 
                 selected_text_to_the_right_of_phrase = selected_text[left_index :]    
@@ -387,7 +417,7 @@ def select_until_phrase(left_right, phrase, before_after, number_of_lines_to_sea
     # pyperclip.copy(temp_for_previous_clipboard_item)
 
 
-# seems a little inconsistent
+
 def delete_until_phrase(text, phrase, left_right, before_after, occurrence_number):
     print("selected_text {} \n").format(text)
     match_index = get_start_end_position(text, phrase, left_right, occurrence_number)
@@ -427,7 +457,7 @@ def copypaste_delete_until_phrase(left_right, phrase, number_of_lines_to_search,
     # clip = select_text_and_return_it(left_right, number_of_lines_to_search)
     # selected_text = clip[0]
     # temp_for_previous_clipboard_item = clip[1]
-    selected_text = select_text_and_return_it(left_right, number_of_lines_to_search)
+    selected_text = select_text_and_return_it(left_right, number_of_lines_to_search, application)
     phrase = str(phrase)
     new_text = delete_until_phrase(selected_text, phrase, left_right, before_after, occurrence_number)
         
@@ -447,7 +477,7 @@ def copypaste_delete_until_phrase(left_right, phrase, number_of_lines_to_search,
         # put modified text on the clipboard
         # pyperclip.copy(new_text)
         # Key("c-v").execute()
-        context.paste_string_without_altering_clipboard(new_text)
+        text_manipulation_paste(selected_text, application)
 
         if left_right == "right":
             offset = len(new_text)
