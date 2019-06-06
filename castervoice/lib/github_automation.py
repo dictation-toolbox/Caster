@@ -38,7 +38,7 @@ def github_checkoutupdate_pull_request(new):
         if url[0] == 0:
             split_string = url[1].split("/pull/")
             repo_url = split_string[0]
-            pr_name = split_string[1]
+            pr_name = split_string[1].split("/")[0]
             CONFIG = load_toml_file(settings.SETTINGS["paths"]["GIT_REPO_LOCAL_REMOTE_PATH"])
             if not CONFIG:
                 # logger.warn("Could not load bringme defaults")
@@ -53,22 +53,18 @@ def github_checkoutupdate_pull_request(new):
                 if TERMINAL_PATH != "":
                     terminal = Popen(TERMINAL_PATH, cwd=local_directory)
                     # This can be improved with a wait command
-                    time.sleep(2)
-                    Text(fetch_command).execute()
-                    time.sleep(0.2)
-                    Key("enter").execute() # fetch is safe enough so will run this
-                    time.sleep(0.2)
+                    time.sleep(5)
                     if new:
                         branch_name_base = repo_url.replace("https://github.com/", "")
                         checkout_command = "git checkout -b " + branch_name_base + "/pull/" + pr_name + " FETCH_HEAD"
-                        Text(checkout_command).execute()
+                        Text(fetch_command + " && " + checkout_command).execute()
                     else:
                         branch_name_base = repo_url.replace("https://github.com/", "")
                         checkout_command = "git checkout " + branch_name_base + "/pull/" + pr_name
-                        Text(checkout_command).execute()
+                        Text(fetch_command + " && " + checkout_command).execute()
                         Key("enter").execute() # checkout is safe enough so will run this
                         merge_command = "git merge FETCH_HEAD"
-                        time.sleep(0.2)
+                        time.sleep(3)
                         Text(merge_command).execute()
                 else:
                     raise Exception('TERMINAL_PATH in <user_dir>/.caster/data/settings.toml is not set')
