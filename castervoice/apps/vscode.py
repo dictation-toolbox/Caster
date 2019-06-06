@@ -73,7 +73,7 @@ class VSCodeCcrRule(MergeRule):
               rdescript="VS Code: Select in between parable punctuation inclusive using 'brackets select' extension"
               )*Repeat(extra='n'),
         "all current selection":
-            R(Key("c-l"), rdescript="VS Code:Select All Occurrences of Current Selection"),
+            R(Key("c-l"), rdescript="VS Code: Select All Occurrences of Current Selection"),
         "all current word":
             R(Key("c-f2"), rdescript="VS Code: Select All Occurrences of Current Word"),
         "select next [<n>]":
@@ -170,7 +170,7 @@ class VSCodeNonCcrRule(MergeRule):
         # Display
         # note that most of these can be turned on/off with the same command
         "[toggle] full screen":
-            R(Key("sa-enter"), rdescript="VS Code: VS Code: Fullscreen"),
+            R(Key("sa-enter"), rdescript="VS Code: Fullscreen"),
         "toggle orientation":
             R(Key("sa-0"), rdescript="VS Code: Toggle Orientation"),
         "zoom in [<n>]":
@@ -237,7 +237,7 @@ class VSCodeNonCcrRule(MergeRule):
               rdescript="VS Code: Previous Tab"),
         "close tab [<n>]":
             R(Key("c-f4/20") * Repeat(extra='n'),
-              rdescript="VS Code: Visual Studio: Close Tab"),
+              rdescript="VS Code: Close Tab"),
         "(recent | R) tab [<n>]":
             R(Key("c-tab") * Repeat(extra='n'),
               rdescript="VS Code: Go to Most Recent Tab"),
@@ -273,11 +273,11 @@ class VSCodeNonCcrRule(MergeRule):
             R(Key("a-enter"), rdescript="VS Code: Select all Occurrences of Find Match"),
 
         "toggle case sensitive":
-            R(Key("a-c"), rdescript="VS Code: Toggle Case Sensitive"),
+            R(Key("a-c"), rdescript="VS Code: Toggle Find Case Sensitive"),
         "toggle regex":
-            R(Key("a-r"), rdescript="VS Code: Toggle Regular Expressions"),
+            R(Key("a-r"), rdescript="VS Code: Toggle Find Regular Expressions"),
         "toggle whole word":
-            R(Key("a-w"), rdescript="VS Code: Toggle Whole Word"),
+            R(Key("a-w"), rdescript="VS Code: Toggle Find Whole Word"),
 
         "(find | jump [to]) next <text>":
             R(Function(findNthToken, n=1, direction="forward"),
@@ -303,10 +303,10 @@ class VSCodeNonCcrRule(MergeRule):
             R(Key("c-k, c-right"), rdescript="VS Code: Move to Next Pane"),
         "shift group left":
             R(Key("c-k, left"),
-              rdescript="Shift Current Group of Tabs to the Left E.g. Swap with Pane to the Left"),
+              rdescript="VS Code: Shift Current Group of Tabs to the Left E.g. Swap with Pane to the Left"),
         "shift group right":
             R(Key("c-k, right"),
-              rdescript="Shift Current Group of Tabs to the Right E.g. Swap with Pane to the Right"
+              rdescript="VS Code: Shift Current Group of Tabs to the Right E.g. Swap with Pane to the Right"
               ),
         "<nth> tab":
             R(Key("c-%(nth)s"), rdescript="VS Code: Go to Nth Pane"),
