@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
@@ -19,8 +18,8 @@ Thank you for using Caster!
 """
 
 SETTINGS = {}
-BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "lib", 1)[0].replace(
-    "\\", "/")
+BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "lib",
+                                              1)[0].replace("\\", "/")
 _USER_DIR = os.path.expanduser("~").replace("\\", "/") + "/.caster"
 _SETTINGS_PATH = _USER_DIR + "/data/settings.toml"
 
@@ -61,26 +60,23 @@ def get_platform_information():
     system_information.update({"python version": sys.version_info})
     if sys.platform == "win32":
         system_information.update({"binary path": sys.exec_prefix})
-        system_information.update({
-            "main binary": os.path.join(sys.exec_prefix, "python.exe")
-        })
-        system_information.update({
-            "hidden console binary": os.path.join(sys.exec_prefix, "pythonw.exe")
-        })
+        system_information.update(
+            {"main binary": os.path.join(sys.exec_prefix, "python.exe")})
+        system_information.update(
+            {"hidden console binary": os.path.join(sys.exec_prefix, "pythonw.exe")})
     else:
         system_information.update({"binary path": os.path.join(sys.exec_prefix, "bin")})
-        system_information.update({
-            "main binary": os.path.join(sys.exec_prefix, "bin", "python")
-        })
-        system_information.update({
-            "hidden console binary": os.path.join(sys.exec_prefix, "bin", "python")
-        })
+        system_information.update(
+            {"main binary": os.path.join(sys.exec_prefix, "bin", "python")})
+        system_information.update(
+            {"hidden console binary": os.path.join(sys.exec_prefix, "bin", "python")})
     if system_information["platform"] != "win32":
         raise SystemError("Your platform is not currently supported by Caster.")
     return system_information
 
 
 SYSTEM_INFORMATION = get_platform_information()
+
 
 def get_filename():
     return _SETTINGS_PATH
@@ -103,7 +99,7 @@ def _validate_engine_path():
                     formatted_data = unicode(toml.dumps(data))
                     with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as toml_file:
                         toml_file.write(formatted_data)
-                    print("Setting engine path to ") + engine_path
+                    print("Setting engine path to " + engine_path)
                 except Exception as e:
                     print("Error saving settings file ") + str(e) + _SETTINGS_PATH
                 return engine_path
