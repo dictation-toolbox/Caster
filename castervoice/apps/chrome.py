@@ -29,8 +29,8 @@ class ChromeNonCcrRule(MergeRule):
 
         "(new incognito window | incognito)":
             R(Key("cs-n")),
-        "new tab [<n>]":
-            R(Key("c-t")*Repeat(extra="n")),
+        "new window":
+            R(Key("c-n")),
         "reopen tab [<n>]":
             R(Key("cs-t"))*Repeat(extra="n"),
         "close tab [<n>]":
@@ -177,9 +177,11 @@ class ChromeCcrRule(MergeRule):
     mapping = {
         "address bar":
             R(Key("c-l")),
-        "new window":
-            R(Key("c-n")),
+        "new tab [<n>]":
+            R(Key("c-t")*Repeat(extra="n")),
     }
+    extras = [IntegerRefST("n", 1, 10),]
+    defaults = {"n": 1}
 #---------------------------------------------------------------------------
 
 context = AppContext(executable="chrome")
@@ -189,12 +191,5 @@ if settings.SETTINGS["apps"]["chrome"]:
     if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
         control.nexus().merger.add_global_rule(ChromeCcrRule())
     else:
-        control.nexus().merger.add_global_rule(ChromeCcrRule(), context)
+        control.nexus().merger.add_app_rule(ChromeCcrRule(), context)
         
-context = AppContext(title="Visual Studio Code", executable="code")
-grammar = Grammar("Visual Studio Code", context=context)
-if settings.SETTINGS["apps"]["visualstudiocode"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(VSCodeCcrRule())
-    else:
-        control.nexus().merger.add_app_rule(VSCodeCcrRule(), context)
