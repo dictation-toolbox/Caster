@@ -21,13 +21,12 @@ from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
+from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
 
-
-class ChromeRule(MergeRule):
+class ChromeNonCcrRule(MergeRule):
     pronunciation = "google chrome"
     mapping = {
-        "new window":
-            R(Key("c-n")),
+
         "(new incognito window | incognito)":
             R(Key("cs-n")),
         "new tab [<n>]":
@@ -75,8 +74,7 @@ class ChromeRule(MergeRule):
             R(Key("a-home")),
         "[show] history":
             R(Key("c-h")),
-        "address bar":
-            R(Key("c-l")),
+
         "show downloads":
             R(Key("c-j")),
         "add bookmark":
@@ -172,7 +170,16 @@ class ChromeRule(MergeRule):
     ]
     defaults = {"n": 1, "dict": "", "click_by_voice_options": "c"}
 
-
+class ChromeCcrRule(MergeRule):
+    pronunciation = "chrome continuous"
+    mwith = CCRMerger.CORE
+    non = ChromeNonCcrRule
+    mapping = {
+        "address bar":
+            R(Key("c-l")),
+        "new window":
+            R(Key("c-n")),
+    }
 #---------------------------------------------------------------------------
 
 context = AppContext(executable="chrome")
@@ -180,9 +187,14 @@ grammar = Grammar("chrome", context=context)
 
 if settings.SETTINGS["apps"]["chrome"]:
     if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(ChromeRule())
+        control.nexus().merger.add_global_rule(ChromeCcrRule())
     else:
-        rule = ChromeRule(name="chrome")
-        gfilter.run_on(rule)
-        grammar.add_rule(rule)
-        grammar.load()
+        control.nexus().merger.add_global_rule(ChromeCcrRule(), context)
+        
+context = AppContext(title="Visual Studio Code", executable="code")
+grammar = Grammar("Visual Studio Code", context=context)
+if settings.SETTINGS["apps"]["visualstudiocode"]:
+    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
+        control.nexus().merger.add_global_rule(VSCodeCcrRule())
+    else:
+        control.nexus().merger.add_app_rule(VSCodeCcrRule(), context)
