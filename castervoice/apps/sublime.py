@@ -1,7 +1,6 @@
 from dragonfly import (Choice, Dictation, Grammar, Repeat, Function)
 
-from castervoice.lib import control
-from castervoice.lib import settings
+from castervoice.lib import settings, navigation, control
 from castervoice.lib.actions import Key, Text
 from castervoice.lib.temporary import Store, Retrieve
 from castervoice.lib.context import AppContext
@@ -10,181 +9,164 @@ from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
 
-def action_lines(action, n, nn):
-    if nn:
-        num_lines = int(nn)-int(n)+1 if nn>n else int(n)-int(nn)+1
-        top_line = min(int(nn), int(n))
-    else:
-        num_lines = 1
-        top_line = int(n)
-    command = Key("c-g") + Text(str(top_line)) + Key("enter, s-down:" + str(num_lines) + ", " + action)
-    command.execute()
 
 class SublimeRule(MergeRule):
     pronunciation = "sublime"
 
     mapping = {
         "new file":
-            R(Key("c-n"), rdescript="Sublime: New File"),
+            R(Key("c-n")),
         "new window":
-            R(Key("cs-n"), rdescript="Sublime: New Window"),
+            R(Key("cs-n")),
         "open file":
-            R(Key("c-o"), rdescript="Sublime: Open File"),
+            R(Key("c-o")),
         "open folder":
-            R(Key("f10, f, down:2, enter"), rdescript="Sublime: Open Folder"),
+            R(Key("f10, f, down:2, enter")),
         "open recent":
-            R(Key("f10, f, down:3, enter"), rdescript="Sublime: Open Recent"),
+            R(Key("f10, f, down:3, enter")),
         "save as":
-            R(Key("cs-s"), rdescript="Sublime: Save As"),
+            R(Key("cs-s")),
         #
         "comment line":
-            R(Key("c-slash"), rdescript="Sublime: Comment Line"),
+            R(Key("c-slash")),
         "comment block":
-            R(Key("cs-slash"), rdescript="Sublime: Comment Block"),
+            R(Key("cs-slash")),
         "outdent lines":
-            R(Key("c-lbracket"), rdescript="Sublime: Outdent Lines"),
+            R(Key("c-lbracket")),
         "join lines":
-            R(Key("c-j"), rdescript="Sublime: Join Lines"),
+            R(Key("c-j")),
         "match bracket":
-            R(Key("c-m"), rdescript="Sublime: Match Current Bracket"),
+            R(Key("c-m")),
         #
         "(select | sell) all":
-            R(Key("c-a"), rdescript="Sublime: Select All"),
+            R(Key("c-a")),
         "(select | sell) scope [<n2>]":
-            R(Key("cs-space"), rdescript="Sublime: Select Scope")*Repeat(extra="n2"),
+            R(Key("cs-space")),
         "(select | sell) brackets [<n2>]":
-            R(Key("cs-m"), rdescript="Sublime: Select Brackets")*Repeat(extra="n2"),
+            R(Key("cs-m")),
         "(select | sell) indent":
-            R(Key("cs-j"), rdescript="Sublime: Select Indent"),
+            R(Key("cs-j")),
         #
         "find":
-            R(Key("c-f"), rdescript="Sublime: Find"),
+            R(Key("c-f")),
         "get all":
-            R(Key("a-enter"), rdescript="Sublime: Get All"),
+            R(Key("a-enter")),
         "replace":
-            R(Key("c-h"), rdescript="Sublime: Find And Replace"),
+            R(Key("c-h")),
         "edit lines":
-            R(Key("cs-l"), rdescript="Sublime: Edit Selected Lines"),
+            R(Key("cs-l")),
         "edit next [<n3>]":
-            R(Key("c-d/10"), rdescript="Sublime: Edit Next n")*Repeat(extra="n3"),
+            R(Key("c-d/10")),
         "edit up [<n3>]":
-            R(Key("ac-up"), rdescript="Sublime: Edit Up n")*Repeat(extra="n3"),
+            R(Key("ac-up")),
         "edit down [<n3>]":
-            R(Key("ac-down"), rdescript="Sublime: Edit Down n")*Repeat(extra="n3"),
+            R(Key("ac-down")),
         "edit all":
-            R(Key("a-f3"), rdescript="Sublime: Edit All Instances"),
+            R(Key("a-f3")),
         #
         "transform upper":
-            R(Key("c-k, c-u"), rdescript="Sublime: Transform Upper"),
+            R(Key("c-k, c-u")),
         "transform lower":
-            R(Key("c-k, c-l"), rdescript="Sublime: Transform Lower"),
+            R(Key("c-k, c-l")),
         #
-        "line <n>":
-            R(Key("c-g/10") + Text("%(n)s") + Key("enter"), rdescript="Sublime: Line n"),
-        "<action> line <n> [to <nn>]":
-            R(Function(action_lines), rdescript="Sublime: Action lines"),
+        "line <ln1>":
+            R(Key("c-g/10") + Text("%(ln1)s") + Key("enter")),
+        "<action> [line] <ln1> [by <ln2>]":
+            R(Function(navigation.action_lines)),
         "go to file":
-            R(Key("c-p"), rdescript="Sublime: Go to file"),
+            R(Key("c-p")),
         "go to <dict> [<filetype>]":
-            R(Key("c-p") + Text("%(dict)s" + "%(filetype)s") + Key("enter"), rdescript="Sublime: go to <dict> [<filetype>]"),
+            R(Key("c-p") + Text("%(dict)s" + "%(filetype)s") + Key("enter")),
         "go to word":
-            R(Key("c-semicolon"), rdescript="Sublime: Go to word"),
+            R(Key("c-semicolon")),
         "go to symbol":
-            R(Key("c-r"), rdescript="Sublime: Go to symbol"),
+            R(Key("c-r")),
         "go to [symbol in] project":
-            R(Key("cs-r"), rdescript="Sublime: Go to symbol in project"),
-
+            R(Key("cs-r")),
         "go to that":
-            R(Store() + Key("cs-r") + Retrieve() + Key("enter"), rdescript="Sublime: Go to that"),
+            R(Store() + Key("cs-r") + Retrieve() + Key("enter")),
         "find that in project":
-            R(Store() + Key("cs-f") + Retrieve() + Key("enter"), rdescript="Sublime: Find that in project"),
+            R(Store() + Key("cs-f") + Retrieve() + Key("enter")),
         "find that":
-            R(Store() + Key("c-f") + Retrieve() + Key("enter"), rdescript="Sublime: Find that"),
-
+            R(Store() + Key("c-f") + Retrieve() + Key("enter")),
         "command pallette":
-            R(Key("cs-p"), rdescript="Sublime: Command Pallette"),
+            R(Key("cs-p")),
         #
         "fold":
-            R(Key("cs-lbracket"), rdescript="Sublime: Fold"),
+            R(Key("cs-lbracket")),
         "unfold":
-            R(Key("cs-rbracket"), rdescript="Sublime: Unfold"),
+            R(Key("cs-rbracket")),
         "unfold all":
-            R(Key("c-k, c-j"), rdescript="Sublime: Unfold All"),
+            R(Key("c-k, c-j")),
         "fold [level] <n2>":
-            R(Key("c-k, c-%(n2)s"), rdescript="Sublime: Fold Level 1-9"),
+            R(Key("c-k, c-%(n2)s")),
         #
         "full screen":
-            R(Key("f11"), rdescript="Sublime: Fullscreen"),
+            R(Key("f11")),
         "toggle side bar":
-            R(Key("c-k, c-b"), rdescript="Sublime: Toggle sidebar"),
+            R(Key("c-k, c-b")),
         "show key bindings":
-            Key("f10, p, right, k"),
+            R(Key("f10, p, right, k")),
         "zoom in [<n2>]":
-            R(Key("c-equal"), rdescript="Sublime: Zoom in")*Repeat(extra="n2"),
+            R(Key("c-equal")),
         "zoom out [<n2>]":
-            R(Key("c-minus"), rdescript="Sublime: Zoom out")*Repeat(extra="n2"),
+            R(Key("c-minus")),
         #
         "(set | add) bookmark":
-            R(Key("c-f2"), rdescript="Sublime: Set Bookmark"),
+            R(Key("c-f2")),
         "next bookmark":
-            R(Key("f2"), rdescript="Sublime: Next Bookmark"),
+            R(Key("f2")),
         "previous bookmark":
-            R(Key("s-f2"), rdescript="Sublime: Previous Bookmark"),
+            R(Key("s-f2")),
         "clear bookmarks":
-            R(Key("cs-f2"), rdescript="Sublime: Clear Bookmarks"),
+            R(Key("cs-f2")),
         #
         "build it":
-            R(Key("c-b"), rdescript="Sublime: Build It"),
+            R(Key("c-b")),
         #
         "record macro":
-            R(Key("c-q"), rdescript="Sublime: Record Macro"),
+            R(Key("c-q")),
         "play [back] macro [<n3>]":
-            R(Key("cs-q/10"), rdescript="Sublime: Play Macro")*Repeat(extra="n3"),
+            R(Key("cs-q/10")),
         "(new | create) snippet":
-            R(Key("ac-n"), rdescript="Sublime: New Snippet"),
+            R(Key("ac-n")),
         #
         "close tab":
-            R(Key("c-w"), rdescript="Sublime: Close tab"),
+            R(Key("c-w")),
         "next tab":
-            R(Key("c-pgdown"), rdescript="Sublime: Next tab"),
+            R(Key("c-pgdown")),
         "previous tab":
-            R(Key("c-pgup"), rdescript="Sublime: Previous tab"),
+            R(Key("c-pgup")),
         "<nth> tab":
-            R(Key("a-%(nth)s"), rdescript="Sublime: <nth> tab"),
+            R(Key("a-%(nth)s")),
         "column <cols>":
-            R(Key("as-%(cols)s"), rdescript="Sublime: Column"),
+            R(Key("as-%(cols)s")),
         "focus <panel>":
-            R(Key("c-%(panel)s"), rdescript="Sublime: Focus Panel n"),
+            R(Key("c-%(panel)s")),
         "move <panel>":
-            R(Key("cs-%(panel)s"), rdescript="Sublime: Move File to Panel n"),
+            R(Key("cs-%(panel)s")),
         #
         "open terminal":
-            R(Key("cs-t"), rdescript="Sublime: Open Terminal Here"),
-
+            R(Key("cs-t")),
     }
     extras = [
         Dictation("dict"),
-        IntegerRefST("n", 1, 1000),
-        IntegerRefST("nn", 1, 1000),
+        IntegerRefST("ln1", 1, 1000),
+        IntegerRefST("ln2", 1, 1000),
         IntegerRefST("n2", 1, 9),
         IntegerRefST("n3", 1, 21),
-        Choice("action", {
-            "select": "",
-            "copy": "c-c",
-            "cut": "c-x",
-            "delete": "backspace",
-            "replace": "c-v",
-            }),
-        Choice("nth", {
-            "first"  : "1",
-            "second" : "2",
-            "third"  : "3",
-            "fourth" : "4",
-            "fifth"  : "5",
-            "sixth"  : "6",
-            "seventh": "7",
-            "eighth" : "8",
-            "ninth"  : "9",
+        Choice("action", navigation.actions),
+        Choice(
+            "nth", {
+                "first": "1",
+                "second": "2",
+                "third": "3",
+                "fourth": "4",
+                "fifth": "5",
+                "sixth": "6",
+                "seventh": "7",
+                "eighth": "8",
+                "ninth": "9",
             }),
         Choice("cols", {
             "one": "1",
@@ -206,7 +188,7 @@ class SublimeRule(MergeRule):
         }),
     ]
     defaults = {
-        "nn": None,
+        "ln2": "",
         "n2": 1,
         "n3": 1,
         "filetype": "",
