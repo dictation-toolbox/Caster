@@ -15,4 +15,5 @@ matrix:
         - pip install -vvv --user -e .
       script:
         - python castervoice/lib/tests/testrunner.py
+        - pylint -E _caster.py        
         - pylint -E castervoice

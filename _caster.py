@@ -28,8 +28,7 @@ def _wait_for_wsr_activation():
 
 _NEXUS = None
 from castervoice.lib import settings  # requires nothing
-system_information = settings.get_platform_information()
-if system_information["platform"] != "win32":
+if settings.SYSTEM_INFORMATION["platform"] != "win32":
     raise SystemError("Your platform is not currently supported by Caster.")
 settings.WSR = __name__ == "__main__"
 from castervoice.lib import utilities  # requires settings
@@ -107,6 +106,7 @@ class DependencyCheck(TerminalCommand):
     trusted = True  # Command will execute silently without ConfirmAction
     synchronous = True
 
+    # pylint: disable=method-hidden
     def process_command(self, proc):
         update = False
         for line in iter(proc.stdout.readline, b''):
@@ -119,6 +119,7 @@ class DependencyCheck(TerminalCommand):
 class CasterCheck(DependencyCheck):
     command = [PIP_PATH, "search", "castervoice"]
 
+    # pylint: disable=method-hidden
     def process_command(self, proc):
         if DependencyCheck.process_command(self, proc):
             print("Caster: Caster is up-to-date")
@@ -129,6 +130,7 @@ class CasterCheck(DependencyCheck):
 class DragonflyCheck(DependencyCheck):
     command = [PIP_PATH, "search", "dragonfly2"]
 
+    # pylint: disable=method-hidden
     def process_command(self, proc):
         if DependencyCheck.process_command(self, proc):
             print("Caster: Dragonfly is up-to-date")
@@ -139,6 +141,7 @@ class DragonflyCheck(DependencyCheck):
 class DependencyUpdate(RunCommand):
     synchronous = True
 
+    # pylint: disable=method-hidden
     def process_command(self, proc):
         # Process the output from the command.
         RunCommand.process_command(self, proc)
