@@ -171,6 +171,69 @@ def copypaste_remove_phrase_from_text(phrase, direction, number_of_lines_to_sear
     if direction == "right":
         offset = len(new_text)
         Key("left:%d" %offset).execute()
+
+    
+def delete_until_phrase(text, phrase, direction, before_after, occurrence_number):
+    match_index = get_start_end_position(text, phrase, direction, occurrence_number)
+    if match_index:
+        left_index, right_index = match_index
+    else:
+        return
+    # the spacing below may need to be tweaked
+    if direction == "left":
+        if before_after == "before":
+            # if text[-1] == " ":
+            #     return text[: left_index] + " "
+                return text[: left_index]
+
+        else: # todo: handle before-and-after defaults better
+            if text[-1] == " ":
+                return text[: right_index] + " "
+            else:
+                return text[: right_index]
+    if direction == "right":
+        if before_after == "after":
+            return text[right_index :]
+        else:
+            if text[0] == " ":
+                return " " + text[left_index :]
+            else:
+                return text[left_index :]
+
+def copypaste_delete_until_phrase(direction, phrase, number_of_lines_to_search, before_after, occurrence_number):
+    application = get_application()  
+    if not before_after:
+        # default to delete all the way through the phrase not just up until it
+        if direction == "left":
+            before_after = "before"
+        if direction == "right":
+            before_after = "after"
+
+    selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
+    print("selected_text: {}".format(selected_text))
+    phrase = str(phrase)
+    new_text = delete_until_phrase(selected_text, phrase, direction, before_after, occurrence_number)
+    print("new_text: {}".format(new_text))
+        
+    if new_text is None: 
+        # do NOT use `if not new_text` because that will pick up the case where new_text="" which
+        # occurs if the phrase is at the beginning of the line
+        # phrase not found
+        # deal_with_phrase_not_found(selected_text, temp_for_previous_clipboard_item, application, direction)
+        deal_with_phrase_not_found(selected_text, application, direction)
+        return
+
+    if new_text == "":
+        # phrase is at the beginning of the line
+        Key("del").execute()
+        return
+    else:
+        text_manipulation_paste(new_text, application)
+
+        if direction == "right":
+            offset = len(new_text)
+            Key("left:%d" %offset).execute()
+
     
 
 def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search, occurrence_number):
@@ -370,65 +433,4 @@ def select_until_phrase(direction, phrase, before_after, number_of_lines_to_sear
             Key("s-right:%d" %offset).execute()
 
 
-    
-def delete_until_phrase(text, phrase, direction, before_after, occurrence_number):
-    match_index = get_start_end_position(text, phrase, direction, occurrence_number)
-    if match_index:
-        left_index, right_index = match_index
-    else:
-        return
-    # the spacing below may need to be tweaked
-    if direction == "left":
-        if before_after == "before":
-            # if text[-1] == " ":
-            #     return text[: left_index] + " "
-                return text[: left_index]
-
-        else: # todo: handle before-and-after defaults better
-            if text[-1] == " ":
-                return text[: right_index] + " "
-            else:
-                return text[: right_index]
-    if direction == "right":
-        if before_after == "after":
-            return text[right_index :]
-        else:
-            if text[0] == " ":
-                return " " + text[left_index :]
-            else:
-                return text[left_index :]
-
-def copypaste_delete_until_phrase(direction, phrase, number_of_lines_to_search, before_after, occurrence_number):
-    application = get_application()  
-    if not before_after:
-        # default to delete all the way through the phrase not just up until it
-        if direction == "left":
-            before_after = "before"
-        if direction == "right":
-            before_after = "after"
-
-    selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
-    print("selected_text: {}".format(selected_text))
-    phrase = str(phrase)
-    new_text = delete_until_phrase(selected_text, phrase, direction, before_after, occurrence_number)
-    print("new_text: {}".format(new_text))
-        
-    if new_text is None: 
-        # do NOT use `if not new_text` because that will pick up the case where new_text="" which
-        # occurs if the phrase is at the beginning of the line
-        # phrase not found
-        # deal_with_phrase_not_found(selected_text, temp_for_previous_clipboard_item, application, direction)
-        deal_with_phrase_not_found(selected_text, application, direction)
-        return
-
-    if new_text == "":
-        # phrase is at the beginning of the line
-        Key("del").execute()
-        return
-    else:
-        text_manipulation_paste(new_text, application)
-
-        if direction == "right":
-            offset = len(new_text)
-            Key("left:%d" %offset).execute()
                 

@@ -23,22 +23,26 @@ print("""Check out the new experimental text manipulation commands in castervoic
 
 """ requires a recent version of dragonfly because of recent modification of the Function action
     # I think dragonfly2-0.13.0
-    The wait times should be adjusted depending on the application by changing the numbers in 
-    text_manipulation_copy and text_manipulation_paste as well as the functions they call which are
-    lib.context.read_selected_without_altering_clipboard and lib.context.paste_string_without_altering_clipboard
-    the keypress waittime should probably be made shorter for these commands.
+    The wait times should be adjusted depending on the application by changing the numbers in copy_pause_time_dict
+    and paste_pause_time_dict which are called by the functions text_manipulation_copy and text_manipulation_paste 
+    in text_manipulation_functions.py. The wait times can be further adjusted by adjusting the sleep times in the 
+    functions that those functions call: lib.context.read_selected_without_altering_clipboard 
+    and lib.context.paste_string_without_altering_clipboard
+    the keypress waittime should possibly be made shorter for these commands, though note that the keypress wait time is
+    used by the aforementioned functions and lib.context.
     When these commands are not working in a particular application sometimes the problem is that 
     there is not enough time from when control-c is pressed until the contents of the clipboard are passed into the function
-    The solution is to add a longer pause after pressing control see in the supporting functions in text_manipulation_functions.py
-    For some applications, pauses in the copy and paste commands are unnecessary and should be removed or shortened by the user.
-    and may be removed by the user if they wish to speed up the execution of these commands
-    The functions used by the commands copy text into the clipboard and then return whatever you had there before back onto the clipboard.
-    If you are using the multi clipboard, thins might be annoying because you will have some
-    extra junk put on the second slot on your multi clipboard. If you get the wait times exactly right, in principle this problem can be avoided
-    if you are using the functions lib.context.read_selected_without_altering_clipboard and lib.context.paste_string_without_altering_clipboard
-    Even though those functions use pyperclip, somehow they can sometimes avoid this problem if you get the 
-    right pause time (I think shorter is better), whereas using pure pyperclip 
-    does not seem to avoid this problem.
+    In that case you need to increase the pause time in that application in copy_pause_time_dict
+    
+    The functions in text_manipulation_functions.py copy text into the clipboard and then return whatever
+    you had there before back onto the clipboard. If you are using the multi clipboard (windows-x on Windows 10),
+    this might be annoying because you will have some extra junk put on the second (and sometimes third) 
+    slot on your multi clipboard. If you get the wait times exactly right, in principle
+    this problem can be avoided using the functions lib.context.read_selected_without_altering_clipboard 
+    and lib.context.paste_string_without_altering_clipboard
+    In my experience, often times the paste part doesn't add
+    any junk to the multi-clipboard although the copy (a.k.a. read) part does.
+
 """
 
 class TextManipulation(MergeRule):
@@ -56,6 +60,7 @@ class TextManipulation(MergeRule):
                 
         # PROBLEM: sometimes Dragon thinks the variables are part of dictation.           
         
+        # replace text or character
         "replace <direction> [<number_of_lines_to_search>] [<occurrence_number>] <dictation> with <dictation2>":
             R(Function(text_manipulation_functions.copypaste_replace_phrase_with_phrase,
                        dict(dictation="replaced_phrase", dictation2="replacement_phrase")), 
@@ -65,6 +70,7 @@ class TextManipulation(MergeRule):
                        dict(character="replaced_phrase", character2="replacement_phrase")), 
               rdescript="Text Manipulation: replace character to the left of the cursor"),
         
+        # remove text or character 
         "remove <direction> [<number_of_lines_to_search>] [<occurrence_number>] <dictation>":
             R(Function(text_manipulation_functions.copypaste_remove_phrase_from_text,
                        dict(dictation="phrase")),
@@ -74,15 +80,27 @@ class TextManipulation(MergeRule):
                        dict(character="phrase")), 
               rdescript="Text Manipulation: remove chosen character to the left of the cursor"),
         
-        "go <direction> [<number_of_lines_to_search>] [<before_after>] [<occurrence_number>] <dictation>":
+        # remove until text or character
+        "remove <direction> [<number_of_lines_to_search>] until [<before_after>] [<occurrence_number>] <dictation>":
+            R(Function(text_manipulation_functions.copypaste_delete_until_phrase,
+                       dict(dictation="phrase")), 
+              rdescript="Text Manipulation: delete until chosen phrase"),
+        "remove <direction> [<number_of_lines_to_search>] until [<before_after>] [<occurrence_number>] <character>":
+            R(Function(text_manipulation_functions.copypaste_delete_until_phrase,
+                       dict(character="phrase")),
+              rdescript="Text Manipulation: delete until chosen character"),
+        
+        # move cursor
+        "(go | move) <direction> [<number_of_lines_to_search>] [<before_after>] [<occurrence_number>] <dictation>":
             R(Function(text_manipulation_functions.move_until_phrase,
                        dict(dictation="phrase")), 
                rdescript="Text Manipulation: move to chosen phrase to the left or right of the cursor"),
-        "go <direction> [<before_after>] [<number_of_lines_to_search>] [<occurrence_number>] <character>":
+        "(go | move) <direction> [<before_after>] [<number_of_lines_to_search>] [<occurrence_number>] <character>":
             R(Function(text_manipulation_functions.move_until_phrase,
                        dict(character="phrase")),
               rdescript="Text Manipulation: move to chosen character to the left of the cursor"),
 
+        # select text or character
         "grab <direction> [<number_of_lines_to_search>] [<occurrence_number>] <dictation>":
             R(Function(text_manipulation_functions.select_phrase, 
             dict(dictation="phrase")), 
@@ -92,6 +110,7 @@ class TextManipulation(MergeRule):
             dict(character="phrase")),
             rdescript="Text Manipulation: select chosen character"),
         
+        # select until text or character
         "grab <direction> [<number_of_lines_to_search>] until [<before_after>] [<occurrence_number>] <dictation> ":
             R(Function(text_manipulation_functions.select_until_phrase, 
             dict(dictation="phrase")), 
@@ -101,14 +120,6 @@ class TextManipulation(MergeRule):
             dict(character="phrase")), 
             rdescript="Text Manipulation: select until chosen character"),
         
-        "remove <direction> [<number_of_lines_to_search>] until [<before_after>] [<occurrence_number>] <dictation>":
-            R(Function(text_manipulation_functions.copypaste_delete_until_phrase,
-                       dict(dictation="phrase")), 
-              rdescript="Text Manipulation: delete until chosen phrase"),
-        "remove <direction> [<number_of_lines_to_search>] until [<before_after>] [<occurrence_number>] <character>":
-            R(Function(text_manipulation_functions.copypaste_delete_until_phrase,
-                       dict(character="phrase")),
-              rdescript="Text Manipulation: delete until chosen character"),
         
 
 
