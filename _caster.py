@@ -28,6 +28,9 @@ def _wait_for_wsr_activation():
 
 _NEXUS = None
 from castervoice.lib import settings  # requires nothing
+system_information = settings.get_platform_information()
+if system_information["platform"] != "win32":
+    raise SystemError("Your platform is not currently supported by Caster.")
 settings.WSR = __name__ == "__main__"
 from castervoice.lib import utilities  # requires settings
 if settings.WSR:

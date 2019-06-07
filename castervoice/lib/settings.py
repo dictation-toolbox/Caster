@@ -70,13 +70,7 @@ def get_platform_information():
             {"main binary": os.path.join(sys.exec_prefix, "bin", "python")})
         system_information.update(
             {"hidden console binary": os.path.join(sys.exec_prefix, "bin", "python")})
-    if system_information["platform"] != "win32":
-        raise SystemError("Your platform is not currently supported by Caster.")
     return system_information
-
-
-SYSTEM_INFORMATION = get_platform_information()
-
 
 def get_filename():
     return _SETTINGS_PATH
