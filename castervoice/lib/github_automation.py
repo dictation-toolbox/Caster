@@ -2,6 +2,7 @@
 
 import io
 import os
+from pywinauto import application
 import shutil
 import sys
 import traceback
@@ -48,20 +49,23 @@ def github_checkoutupdate_pull_request(new):
             if repo_url in items:
                 local_directory = items[repo_url][0]
                 local_directory = local_directory.replace("\\", "\\\\")
+                directory_command = "cd " + local_directory
                 TERMINAL_PATH = settings.SETTINGS["paths"]["TERMINAL_PATH"]
                 fetch_command = "git fetch " + repo_url + ".git pull/" + pr_name + "/head"
                 if TERMINAL_PATH != "":
-                    terminal = Popen(TERMINAL_PATH, cwd=local_directory)
+                    app = application.Application()
+                    app.start(TERMINAL_PATH)
+                    # terminal = Popen(TERMINAL_PATH, cwd=local_directory)
                     # This can be improved with a wait command
-                    time.sleep(5)
+                    # time.sleep(5)
                     if new:
                         branch_name_base = repo_url.replace("https://github.com/", "")
                         checkout_command = "git checkout -b " + branch_name_base + "/pull/" + pr_name + " FETCH_HEAD"
-                        Text(fetch_command + " && " + checkout_command).execute()
+                        Text(directory_command + " && " + fetch_command + " && " + checkout_command).execute()
                     else:
                         branch_name_base = repo_url.replace("https://github.com/", "")
                         checkout_command = "git checkout " + branch_name_base + "/pull/" + pr_name
-                        Text(fetch_command + " && " + checkout_command).execute()
+                        Text(directory_command + " && " + fetch_command + " && " + checkout_command).execute()
                         Key("enter").execute() # checkout is safe enough so will run this
                         merge_command = "git merge FETCH_HEAD"
                         time.sleep(3)
