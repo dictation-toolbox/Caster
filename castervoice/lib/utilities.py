@@ -190,6 +190,7 @@ def default_browser_command():
 def clear_log():
     # Function to clear natlink status window
     try:
+        # pylint: disable=import-error
         import natlink
         windows = Window.get_all_windows()
         matching = [w for w in windows

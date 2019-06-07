@@ -80,6 +80,7 @@ class MergeRule(MappingRule):
                 extras = ", %(" + ")s, %(".join(named_extras) + ")s"
             return "%s: %s%s" % (self.name, command, extras)
         for command, action in self.mapping.items():
+            #pylint: disable=no-member
             if hasattr(action, "rdescript") and action.rdescript is None:
                 self.mapping[command].rdescript = create_rdescript(command, action)
 

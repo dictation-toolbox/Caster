@@ -72,6 +72,8 @@ def get_platform_information():
             {"hidden console binary": os.path.join(sys.exec_prefix, "bin", "python")})
     return system_information
 
+SYSTEM_INFORMATION = get_platform_information()
+
 def get_filename():
     return _SETTINGS_PATH
 
@@ -81,6 +83,11 @@ def _validate_engine_path():
     Validates path 'Engine Path' in settings.toml
     '''
     if not sys.platform.startswith('win'):
+        return ''
+    try:
+        # pylint: disable=import-error
+        import natlink
+    except ImportError:
         return ''
     if os.path.isfile(_SETTINGS_PATH):
         with io.open(_SETTINGS_PATH, "rt", encoding="utf-8") as toml_file:
