@@ -123,6 +123,9 @@ def replace_phrase_with_phrase(text, replaced_phrase, replacement_phrase, direct
 def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, direction, number_of_lines_to_search, occurrence_number):
     application = get_application()
     selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
+    if selected_text is None:
+        print("selected_text is None")
+        return 
     replaced_phrase = str(replaced_phrase)
     replacement_phrase = str(replacement_phrase) 
     new_text = replace_phrase_with_phrase(selected_text, replaced_phrase, replacement_phrase, direction, occurrence_number)
@@ -159,6 +162,9 @@ def remove_phrase_from_text(text, phrase, direction, occurrence_number):
 def copypaste_remove_phrase_from_text(phrase, direction, number_of_lines_to_search, occurrence_number):
     application = get_application()
     selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
+    if selected_text is None:
+        print("selected_text is None")
+        return 
     phrase = str(phrase)
     new_text = remove_phrase_from_text(selected_text, phrase, direction, occurrence_number)
     if not new_text:
@@ -210,10 +216,11 @@ def copypaste_delete_until_phrase(direction, phrase, number_of_lines_to_search, 
             before_after = "after"
 
     selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
-    print("selected_text: {}".format(selected_text))
+    if selected_text is None:
+        print("selected_text is None")
+        return
     phrase = str(phrase)
     new_text = delete_until_phrase(selected_text, phrase, direction, before_after, occurrence_number)
-    print("new_text: {}".format(new_text))
         
     if new_text is None: 
         # do NOT use `if not new_text` because that will pick up the case where new_text="" which
@@ -246,6 +253,9 @@ def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search
             before_after = "before"
 
     selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
+    if selected_text is None:
+        print("selected_text is None")
+        return 
     phrase = str(phrase)
     match_index = get_start_end_position(selected_text, phrase, direction, occurrence_number)
     if match_index:
@@ -253,10 +263,8 @@ def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search
     else:
         # phrase not found
         deal_with_phrase_not_found(selected_text, application, direction)
-
         return
-    
-            
+              
     if application == "texstudio":
     # Approach 1: Unselect text by pressing left and then right. A little slower but works in Texstudio
         Key("left, right").execute() # unselect text
@@ -312,6 +320,9 @@ def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search
 def select_phrase(phrase, direction, number_of_lines_to_search, occurrence_number):
     application = get_application()
     selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
+    if selected_text is None:
+        print("selected_text is None")
+        return 
     phrase = str(phrase)
     match_index = get_start_end_position(selected_text, phrase, direction, occurrence_number)
     if match_index:
@@ -370,6 +381,9 @@ def select_until_phrase(direction, phrase, before_after, number_of_lines_to_sear
             before_after = "after"
     
     selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
+    if selected_text is None:
+        print("selected_text is None")
+        return 
     phrase = str(phrase)
     match_index = get_start_end_position(selected_text, phrase, direction, occurrence_number)
     if match_index:
