@@ -125,8 +125,9 @@ class TextManipulation(MergeRule):
 
         
     }
-    text_punc_dict.update(caster_alphabet)
-    character_dict = text_punc_dict
+    new_text_punc_dict = copy.deepcopy(text_punc_dict)
+    new_text_punc_dict.update(caster_alphabet)
+    character_dict = new_text_punc_dict
     
     extras = [
         Dictation("dict"),
