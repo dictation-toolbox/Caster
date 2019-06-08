@@ -58,23 +58,27 @@ def get_start_end_position(text, phrase, direction, occurrence_number):
             print("There aren't that many occurrences of '{}'".format(phrase))
             return 
     left_index, right_index = match
-
-
     return (left_index, right_index)
     
 copy_pause_time_dict = {"standard": "10", "texstudio": "70", "lyx": "60"}
 paste_pause_time_dict = {"standard": "0", "texstudio": "100", "lyx": "20"}
 def text_manipulation_copy(application):
-    # the wait time can also be modified up or down further by going into context.read_selected_without_altering_clipboard 
-    # and changing the sleep time which is apparently slightly different than the pause time.
-    # the sleep time is set to a positive number, so can be reduced
-    # here I am using "wait time" to mean the sum of the sleep and pause time right after pressing control c
+    """ the wait time can also be modified up or down further by going into context.read_selected_without_altering_clipboard 
+    and changing the sleep time which is apparently slightly different than the pause time.
+    the sleep time is set to a positive number, so can be reduced
+    here I am using "wait time" to mean the sum of the sleep and pause time right after pressing control c """
+    # double hashmarks below indicate an alternative to using the functions in lib.context
+    ## previous_item_on_the_clipboard = pyperclip.paste()
+    ## Key("c-c").execute()
+    ## Pause(copy_pause_time_dict[application]).execute()
+    ## selected_text = pyperclip.paste()
     
     err, selected_text = context.read_selected_without_altering_clipboard(pause_time=copy_pause_time_dict[application])
     if err != 0:
         # I'm not discriminating between err = 1 and err = 2
         print("failed to copy text")
         return
+    ## pyperclip.copy(previous_item_on_the_clipboard) 
     return selected_text
 def text_manipulation_paste(text, application):
     
@@ -123,8 +127,8 @@ def replace_phrase_with_phrase(text, replaced_phrase, replacement_phrase, direct
 def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, direction, number_of_lines_to_search, occurrence_number):
     application = get_application()
     selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
-    if selected_text is None:
-        print("selected_text is None")
+    if not selected_text:
+        print("no text to select")
         return 
     replaced_phrase = str(replaced_phrase)
     replacement_phrase = str(replacement_phrase) 
@@ -162,8 +166,8 @@ def remove_phrase_from_text(text, phrase, direction, occurrence_number):
 def copypaste_remove_phrase_from_text(phrase, direction, number_of_lines_to_search, occurrence_number):
     application = get_application()
     selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
-    if selected_text is None:
-        print("selected_text is None")
+    if not selected_text:
+        print("no text to select")
         return 
     phrase = str(phrase)
     new_text = remove_phrase_from_text(selected_text, phrase, direction, occurrence_number)
@@ -216,9 +220,9 @@ def copypaste_delete_until_phrase(direction, phrase, number_of_lines_to_search, 
             before_after = "after"
 
     selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
-    if selected_text is None:
-        print("selected_text is None")
-        return
+    if not selected_text:
+        print("no text to select")
+        return 
     phrase = str(phrase)
     new_text = delete_until_phrase(selected_text, phrase, direction, before_after, occurrence_number)
         
@@ -253,9 +257,9 @@ def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search
             before_after = "before"
 
     selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
-    if selected_text is None:
-        print("selected_text is None")
-        return 
+    if not selected_text:
+        print("no text to select")
+        return
     phrase = str(phrase)
     match_index = get_start_end_position(selected_text, phrase, direction, occurrence_number)
     if match_index:
@@ -320,8 +324,8 @@ def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search
 def select_phrase(phrase, direction, number_of_lines_to_search, occurrence_number):
     application = get_application()
     selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
-    if selected_text is None:
-        print("selected_text is None")
+    if not selected_text:
+        print("no text to select")
         return 
     phrase = str(phrase)
     match_index = get_start_end_position(selected_text, phrase, direction, occurrence_number)
@@ -381,8 +385,8 @@ def select_until_phrase(direction, phrase, before_after, number_of_lines_to_sear
             before_after = "after"
     
     selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
-    if selected_text is None:
-        print("selected_text is None")
+    if not selected_text:
+        print("no text to select")
         return 
     phrase = str(phrase)
     match_index = get_start_end_position(selected_text, phrase, direction, occurrence_number)
