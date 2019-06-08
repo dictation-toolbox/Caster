@@ -146,8 +146,12 @@ class TextManipulation(MergeRule):
         Choice("direction", {
             "lease": "left",
             "ross": "right",
-            "sauce": "left",
-            "dunce": "right",
+            "sauce": "up",
+            "dunce": "down",
+            # note: "sauce" (i.e. "up") will be treated the same as "lease" (i.e. "left") except that
+            # the default number_of_lines_to_search will be set to 3
+            # in the same way, "dunce" (i.e. "down") will be treated the same as
+            # "ross" (i.e. "right")
         }),
         Choice("before_after", {
             "before": "before",
@@ -171,8 +175,11 @@ class TextManipulation(MergeRule):
     defaults = {
 
         "before_after": None,
-        "number_of_lines_to_search": 0,
-        "occurrence_number": 1,}
+        "number_of_lines_to_search": 0, # before changing this default, please read the function deal_with_up_down_directions
+        "occurrence_number": 1,} # if direction is up or down, the default number_of_lines_to_search 
+        # will be 3 instead of zero. 
+        # This can be changed in the function deal_with_up_down_directions 
+        # 'number_of_lines_to_search = zero' means you are searching only on the current line
 
 control.nexus().merger.add_global_rule(TextManipulation())
 
