@@ -1,3 +1,5 @@
+import copy
+
 from dragonfly import Function, Key, Text, Mouse, Pause, Dictation, Choice, Grammar , ContextAction
 
 
