@@ -6,6 +6,7 @@ from __future__ import print_function
 import collections
 import io
 import os
+import platform
 import sys
 import toml
 import _winreg
@@ -53,10 +54,19 @@ HMC_SEPARATOR = "[hmc]"
 
 WSR = False
 
-if os.path.isfile('C:/Program Files/Git/git-bash.exe'):
-    TERMINAL_PATH_DEFAULT = "C:/Program Files/Git/git-bash.exe"
+if platform.architecture()[0] == "32bit":
+    if os.path.isfile('C:/Program Files (x86)/Git/git-bash.exe'):
+        TERMINAL_PATH_DEFAULT = "C:/Program Files (x86)/Git/git-bash.exe"
+    else:
+        TERMINAL_PATH_DEFAULT = ""
+elif platform.architecture()[0] == "64bit":
+    if os.path.isfile('C:/Program Files/Git/git-bash.exe'):
+        TERMINAL_PATH_DEFAULT = "C:/Program Files/Git/git-bash.exe"
+    else:
+        TERMINAL_PATH_DEFAULT = ""
 else:
     TERMINAL_PATH_DEFAULT = ""
+
 
 def get_platform_information():
     """Return a dictionary containing platform-specific information."""
