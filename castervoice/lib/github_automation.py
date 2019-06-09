@@ -68,7 +68,7 @@ def github_checkoutupdate_pull_request(new):
                     #raise Exception("ahk_script=", ahk_script)
                     pattern_match = "MINGW64"
                     # p = call([AHK_PATH, ahk_script, "exists"], stdout=PIPE
-                    p = Popen([AHK_PATH, ahk_script, "exists"], stdout=PIPE)
+                    p = Popen([AHK_PATH, ahk_script, "exists", pattern_match], stdout=PIPE)
                     stdout, stderr = p.communicate()
                     p.terminate()
                     #raise stdout
@@ -80,7 +80,7 @@ def github_checkoutupdate_pull_request(new):
                         fetch_command += directory_command + " && "
                     elif stdout == pattern_match + " does not exist":
                         terminal = Popen(TERMINAL_PATH, cwd=local_directory)
-                        p = Popen([AHK_PATH, ahk_script, "create"], stdout=PIPE)
+                        p = Popen([AHK_PATH, ahk_script, "create", pattern_match], stdout=PIPE)
                         #p = call([AHK_PATH, ahk_script, "create"], stdout=PIPE)
                         stdout, stderr = p.communicate()
                         #raise stdout
