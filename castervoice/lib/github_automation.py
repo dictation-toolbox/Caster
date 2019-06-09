@@ -67,8 +67,8 @@ def github_checkoutupdate_pull_request(new):
                     ahk_script = __file__.replace(".py", ".ahk")
                     #raise Exception("ahk_script=", ahk_script)
                     pattern_match = "MINGW64"
-                    # p = call([AHK_PATH, ahk_script, "exists"], stdout=PIPE)
-                    p = Popen([AHK_PATH, ahk_script," exists "], stdout=PIPE)
+                    # p = call([AHK_PATH, ahk_script, "exists"], stdout=PIPE
+                    p = Popen([AHK_PATH, ahk_script, "exists"], stdout=PIPE)
                     stdout, stderr = p.communicate()
                     p.terminate()
                     #raise stdout
