@@ -3,27 +3,33 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
+check := %1%
+title := %2%
+
+MsgBox , , "check=" . ", title=" . title
 
 SetTitleMatchMode, 2
-if (%1% = "exists")
+if (check == "exists")
 {
-	MsgBox ,, %1%" Exists"
-	if WinExist(%2%)
+	MsgBox ,, check . " Exists"
+	if WinExist(title)
 	{
-		MsgBox , , %1%" Exists_2"
-		WinActivate, %2%
-		FileAppend,  %2%" activated", *
+		MsgBox , , check . " Exists_2"
+		WinActivate, title
+		FileAppend,  title . " activated", *
 	}
 	else
 	{
-		MsgBox , , %1%" Exists_3"
-		FileAppend , %2%" does not exist", *
+		MsgBox , , check . " Exists_3"
+		FileAppend , title . " does not exist", *
 	}
 }
-else if (%1% = "create")
+else if (check = "create")
 {
-	WinWait, %2%
+	MsgBox , , check . " creates_4"
+	
+	WinWait, title
 	{
-		FileAppend , %2%" ready", *
+		FileAppend , title . " ready", *
 	}
 }
