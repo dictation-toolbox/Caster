@@ -7,6 +7,6 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 SetTitleMatchMode, 2
 WinWait, MINGW64
 {
-	WinClose, MINGW64
+	
 }
 Return
