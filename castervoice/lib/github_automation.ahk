@@ -5,8 +5,22 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 
 SetTitleMatchMode, 2
-WinWait, MINGW64
+if (%1 = "exists")
 {
-	
+	if WinExist(%2)
+	{
+		WinActivate, %2
+		FileAppend %2%" activated", *
+	}
+	else
+	{
+		FileAppend %2%" does not exist", *
+	}
 }
-Return
+else if (%1 = "create")
+{
+	WinWait, %2
+	{
+		FileAppend %2%" ready", *
+	}
+}

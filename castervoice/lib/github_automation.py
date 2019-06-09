@@ -7,7 +7,7 @@ import shutil
 import sys
 import traceback
 from __builtin__ import True
-from subprocess import Popen, call
+from subprocess import Popen, call, PIPE
 import toml
 import time
 
@@ -52,17 +52,31 @@ def github_checkoutupdate_pull_request(new):
                 directory_command = "cd " + local_directory
                 TERMINAL_PATH = settings.SETTINGS["paths"]["TERMINAL_PATH"]
                 AHK_PATH = settings.SETTINGS["paths"]["AHK_PATH"]
-                fetch_command = "git fetch " + repo_url + ".git pull/" + pr_name + "/head"
-                if TERMINAL_PATH != "":
+                # fetch_command = "git fetch " + repo_url + ".git pull/" + pr_name + "/head"
+                if TERMINAL_PATH != "" and AHK_PATH != "":
                     #app = application.Application()
                     #app.start(TERMINAL_PATH)
-                    terminal = Popen(TERMINAL_PATH, cwd=local_directory)
+
                     # This can be improved with a wait command
                     # time.sleep(5)
                     #ahk_script = os.path.splitext(os.path.basename(__file__))[0] + ".ahk"
                     ahk_script = __file__.replace(".py",".ahk")
-                    call([AHK_PATH, ahk_script])
-
+                    pattern_match = "MINGW64"
+                    # p = call([AHK_PATH, ahk_script, "exists"], stdout=PIPE)
+                    p = Popen([AHK_PATH, ahk_script, "exists"], stdout=PIPE)
+                    stdout, stderr = p.communicate()
+                    p.terminate()
+                    fetch_command = ""
+                    if stdout == pattern_match + " activated":
+                        fetch_command += directory_command + " && "
+                    elif stdout == pattern_match + " does not exist":
+                        terminal = Popen(TERMINAL_PATH, cwd=local_directory)
+                        p = Popen([AHK_PATH, ahk_script, "create"], stdout=PIPE)
+                        stdout, stderr = p.communicate()
+                        p.terminate()
+                    fetch_command += "git fetch " + repo_url + ".git pull/" + pr_name + "/head"
+                    if stdout != pattern_match + " ready":
+                        raise Exception("Error: git bash terminal was not ready.")
                     if new:
                         branch_name_base = repo_url.replace("https://github.com/", "")
                         checkout_command = "git checkout -b " + branch_name_base + "/pull/" + pr_name + " FETCH_HEAD"
