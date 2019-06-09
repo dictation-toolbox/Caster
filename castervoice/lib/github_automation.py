@@ -64,7 +64,8 @@ def github_checkoutupdate_pull_request(new):
                     # This can be improved with a wait command
                     # time.sleep(5)
                     #ahk_script = os.path.splitext(os.path.basename(__file__))[0] + ".ahk"
-                    ahk_script = __file__.replace(".py",".ahk")
+                    ahk_script = __file__.replace(".py", ".ahk")
+                    raise Exception("ahk_script=", ahk_script)
                     pattern_match = "MINGW64"
                     # p = call([AHK_PATH, ahk_script, "exists"], stdout=PIPE)
                     p = Popen([AHK_PATH, ahk_script, "exists"], stdout=PIPE)
