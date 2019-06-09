@@ -109,4 +109,4 @@ def github_checkoutupdate_pull_request(new):
             else:
                 raise Exception("Repository URL: " + repo_url + " not found in " + settings.SETTINGS["paths"]["GIT_REPO_LOCAL_REMOTE_PATH"])
     except Exception as e:
-        print (e, stdout, ", ", stderr)
+        print (e)
