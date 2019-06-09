@@ -31,6 +31,10 @@ def rebuild_local_remote_items(config):
         for header, section in config.iteritems() for key, value in section.iteritems()
     }
 
+
+stdout = ""
+
+
 def github_checkoutupdate_pull_request(new):
     # Function to fetch a PR
     try:
@@ -104,4 +108,4 @@ def github_checkoutupdate_pull_request(new):
             else:
                 raise Exception("Repository URL: " + repo_url + " not found in " + settings.SETTINGS["paths"]["GIT_REPO_LOCAL_REMOTE_PATH"])
     except Exception as e:
-        print (e)
+        print (e, stdout, ", ", stderr)
