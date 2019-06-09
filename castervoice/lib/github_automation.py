@@ -65,8 +65,11 @@ def github_checkoutupdate_pull_request(new):
                     # p = call([AHK_PATH, ahk_script, "exists"], stdout=PIPE)
                     p = Popen([AHK_PATH, ahk_script, "exists"], stdout=PIPE)
                     stdout, stderr = p.communicate()
-                    raise("exists msg: stdout = " + stdout + ", stderr = " + stderr)
                     p.terminate()
+                    raise stdout
+                    raise stderr
+                    raise("exists msg: stdout = " + stdout + ", stderr = " + stderr)
+
                     fetch_command = ""
                     if stdout == pattern_match + " activated":
                         fetch_command += directory_command + " && "
@@ -75,7 +78,9 @@ def github_checkoutupdate_pull_request(new):
                         p = Popen([AHK_PATH, ahk_script, "create"], stdout=PIPE)
                         #p = call([AHK_PATH, ahk_script, "create"], stdout=PIPE)
                         stdout, stderr = p.communicate()
-                        raise ("create msg: stdout = " + stdout + ", stderr = " + stderr)
+                        raise stdout
+                        raise stderr
+                        raise("create msg: stdout = " + stdout + ", stderr = " + stderr)
                         p.terminate()
                     fetch_command += "git fetch " + repo_url + ".git pull/" + pr_name + "/head"
                     if stdout != pattern_match + " ready":
