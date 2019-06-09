@@ -72,7 +72,7 @@ def github_checkoutupdate_pull_request(new):
                     p.terminate()
                     #raise stdout
                     #raise stderr
-                    raise Exception("exists msg: stdout = " + stdout + ", stderr = " + stderr)
+                    raise Exception("exists msg: stdout = " + str(stdout) + ", stderr = " + str(stderr))
 
                     fetch_command = ""
                     if stdout == pattern_match + " activated":
@@ -84,7 +84,7 @@ def github_checkoutupdate_pull_request(new):
                         stdout, stderr = p.communicate()
                         #raise stdout
                         #raise stderr
-                        raise Exception("create msg: stdout = " + stdout + ", stderr = " + stderr)
+                        raise Exception("create msg: stdout = " + str(stdout) + ", stderr = " + str(stderr))
                         p.terminate()
                     fetch_command += "git fetch " + repo_url + ".git pull/" + pr_name + "/head"
                     if stdout != pattern_match + " ready":
