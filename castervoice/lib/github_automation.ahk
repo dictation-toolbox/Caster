@@ -7,23 +7,23 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 SetTitleMatchMode, 2
 if (%1% = "exists")
 {
-	MsgBox %1%" Exists"
+	MsgBox ,, %1%" Exists"
 	if WinExist(%2%)
 	{
-		MsgBox %1%" Exists_2"
+		MsgBox , , %1%" Exists_2"
 		WinActivate, %2%
-		FileAppend %2%" activated", *
+		FileAppend,  %2%" activated", *
 	}
 	else
 	{
-		MsgBox %1%" Exists_3"
-		FileAppend %2%" does not exist", *
+		MsgBox , , %1%" Exists_3"
+		FileAppend , %2%" does not exist", *
 	}
 }
 else if (%1% = "create")
 {
 	WinWait, %2%
 	{
-		FileAppend %2%" ready", *
+		FileAppend , %2%" ready", *
 	}
 }
