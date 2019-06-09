@@ -59,7 +59,8 @@ def github_checkoutupdate_pull_request(new):
                     terminal = Popen(TERMINAL_PATH, cwd=local_directory)
                     # This can be improved with a wait command
                     # time.sleep(5)
-                    ahk_script = os.path.splitext(os.path.basename(__file__))[0] + ".ahk"
+                    #ahk_script = os.path.splitext(os.path.basename(__file__))[0] + ".ahk"
+                    ahk_script = __file__.replace(".py",".ahk")
                     call([AHK_PATH, ahk_script])
 
                     if new:
