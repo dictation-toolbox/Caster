@@ -73,7 +73,7 @@ def github_checkoutupdate_pull_request(new):
                     p.terminate()
                     #raise stdout
                     #raise stderr
-                    raise Exception("exists msg: stdout = " + str(stdout) + ", stderr = " + str(stderr))
+                    #raise Exception("exists msg: stdout = " + str(stdout) + ", stderr = " + str(stderr))
 
                     fetch_command = ""
                     if stdout == pattern_match + " activated":
@@ -87,9 +87,10 @@ def github_checkoutupdate_pull_request(new):
                         #raise stderr
                         raise Exception("create msg: stdout = " + str(stdout) + ", stderr = " + str(stderr))
                         p.terminate()
+                        if stdout != pattern_match + " ready":
+                            raise Exception("Error: git bash terminal was not ready.")
                     fetch_command += "git fetch " + repo_url + ".git pull/" + pr_name + "/head"
-                    if stdout != pattern_match + " ready":
-                        raise Exception("Error: git bash terminal was not ready.")
+
                     if new:
                         branch_name_base = repo_url.replace("https://github.com/", "")
                         checkout_command = "git checkout -b " + branch_name_base + "/pull/" + pr_name + " FETCH_HEAD"
