@@ -85,10 +85,10 @@ def github_checkoutupdate_pull_request(new):
                         stdout, stderr = p.communicate()
                         #raise stdout
                         #raise stderr
-                        raise Exception("create msg: stdout = " + str(stdout) + ", stderr = " + str(stderr))
+                        #raise Exception("create msg: stdout = " + str(stdout) + ", stderr = " + str(stderr))
                         p.terminate()
                         if stdout != pattern_match + " ready":
-                            raise Exception("Error: git bash terminal was not ready.")
+                            raise Exception("Error: git bash terminal took too long to load.")
                     fetch_command += "git fetch " + repo_url + ".git pull/" + pr_name + "/head"
 
                     if new:
