@@ -175,10 +175,10 @@ class ChromeCcrRule(MergeRule):
     mwith = CCRMerger.CORE
     non = ChromeNonCcrRule
     mapping = {
-        "address bar":
-            R(Key("c-l")),
+        "address [bar]":
+            R(Key("c-l/10")),
         "new tab [<n>]":
-            R(Key("c-t")*Repeat(extra="n")),
+            R(Key("c-t/10")*Repeat(extra="n")),
     }
     extras = [IntegerRefST("n", 1, 10),]
     defaults = {"n": 1}
