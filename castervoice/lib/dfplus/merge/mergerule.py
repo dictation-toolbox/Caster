@@ -35,7 +35,10 @@ class MergeRule(MappingRule):
     '''app MergeRules MUST define `mwith` in order to
     define what else they can merge with -- this is an
     optimization to prevent pointlessly large global
-    CCR copies; mwith is a list of get_pronunciation()s'''
+    CCR copies; mwith is a list of get_pronunciation()s.
+    If a rule is added with no mwith, mwith will be set
+    to CCRMerger.CORE
+    '''
     mwith = None
 
     def __init__(self,
@@ -158,6 +161,9 @@ class MergeRule(MappingRule):
 
     def get_merge_with(self):
         return self._mwith
+
+    def set_merge_with(self, mwith):
+        self._mwith = mwith
 
     def _display_available_commands(self):
         for spec in self.mapping_actual().keys():
