@@ -63,7 +63,8 @@ setuptools.setup(
         "wxpython>=4.0.4",
         "pillow>=5.3.0",
         "toml>=0.10.0",
-        "future"
+        "future",
+        "mock==3.0.5",
     ],
     cmdclass={'install': new_install,
               'develop': dev_install,

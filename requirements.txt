@@ -3,3 +3,4 @@ wxpython>=4.0.3
 pillow>=5.3.0
 toml>=0.10.0
 future
+mock==3.0.5
