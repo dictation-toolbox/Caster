@@ -1,15 +1,15 @@
 #Embedded file name: C:\NatLink\NatLink\MacroSystem\castervoice\lib\tests\unit\mergerule.py
 import unittest
 from castervoice.lib.context import AppContext
-from castervoice.apps.eclipse import EclipseCCR
-from castervoice.lib.ccr.java.java import Java
-from castervoice.lib.ccr.javascript.javascript import Javascript
-from castervoice.lib.ccr.python.python import Python
-from castervoice.lib.ccr.recording.alias import Alias
+from castervoice.lib.tests.mocks import EclipseCCR
+from castervoice.lib.tests.mocks import Java
+from castervoice.lib.tests.mocks import Javascript
+from castervoice.lib.tests.mocks import Python
+from castervoice.lib.tests.mocks import Alias
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
+from castervoice.lib.tests.unit.nexus import TestNexus
 
-
-class TestMergeRule(unittest.TestCase):
+class TestMergeRule(TestNexus):
     def test_name_generation(self):
         size = 10
         names = set()
@@ -52,7 +52,7 @@ class TestMergeRule(unittest.TestCase):
         python_specs = len(python.mapping_actual().keys())
         java = Java()
         java_specs = len(java.mapping_actual().keys())
-        vanilla = Alias(refresh=False)
+        vanilla = Alias(self)
         vanilla_specs = len(vanilla.mapping_actual().keys())
         _merged = python.merge(java)
         self.assertEqual(python_specs, len(python.mapping_actual().keys()))
