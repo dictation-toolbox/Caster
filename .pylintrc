@@ -1,5 +1,6 @@
 [TYPECHECK]
 generated-members=pythoncom.*,wx.*
+ignored-modules=natlink,natlinkstatus
 
 [MASTER]
 extension-pkg-whitelist=pythoncom,wx,pydevd,win32gui

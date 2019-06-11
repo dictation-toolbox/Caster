@@ -159,7 +159,10 @@ def reboot(wsr=False):
     else:
         popen_parameters.append(settings.SETTINGS["paths"]["REBOOT_PATH"])
         popen_parameters.append(settings.SETTINGS["paths"]["ENGINE_PATH"])
-
+        import natlinkstatus
+        status = natlinkstatus.NatlinkStatus()
+        username = status.getUserName()
+        popen_parameters.append(username)
     print(popen_parameters)
     Popen(popen_parameters)
 
