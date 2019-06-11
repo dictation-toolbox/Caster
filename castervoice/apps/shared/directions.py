@@ -4,7 +4,7 @@
 
 RIGHT = "(right|sauce)"
 LEFT = "(left|lease)"
-UP = "(up|sauce|above)"
-DOWN = "(down|dunce|below)"
+UP = "(up|sauce)"
+DOWN = "(down|dunce)"
 FORWARD = "(%s|next|forward)" % RIGHT
 BACK = "(%s|back|prev|previous)" % LEFT
