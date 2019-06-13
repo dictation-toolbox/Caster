@@ -53,15 +53,16 @@ def github_checkoutupdate_pull_request(new):
                 directory_command = "cd " + local_directory
                 TERMINAL_PATH = settings.SETTINGS["paths"]["TERMINAL_PATH"]
                 AHK_PATH = settings.SETTINGS["paths"]["AHK_PATH"]
+                print "AHK_PATH = " + AHK_PATH
                 if TERMINAL_PATH != "":
                     load_terminal = True  # set default value
                     # ready fetch command string to be appended to
                     fetch_command = ""
                     # find the equivalent ahk script with the same name as this one
                     ahk_script = __file__.replace(".py", ".ahk")
+                    pattern_match = "MINGW64"  # the string we expect to find in the title of git bash when loaded
                     # if autohotkey is installed
                     if AHK_PATH != "":
-                        pattern_match = "MINGW64"  # the string we expect to find in the title of git bash when loaded
                         # open the script which checks that git bash window is open or not
                         p = Popen([AHK_PATH, ahk_script, "exists", pattern_match], stdout=PIPE)
                         # retrieve the output from the ahk script
