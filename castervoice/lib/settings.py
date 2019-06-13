@@ -282,6 +282,12 @@ _DEFAULT_SETTINGS = {
         "version": ""
     },
 
+    # gitbash settings
+    "gitbash": {
+        "loading_time": 5,  # the time to initialise the git bash window in seconds
+        "fetching_time": 3  # the time to fetch a github repository in seconds
+    },
+
     # feature switches
     "feature_rules": {
         "hmc": True,

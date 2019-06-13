@@ -53,35 +53,53 @@ def github_checkoutupdate_pull_request(new):
                 directory_command = "cd " + local_directory
                 TERMINAL_PATH = settings.SETTINGS["paths"]["TERMINAL_PATH"]
                 AHK_PATH = settings.SETTINGS["paths"]["AHK_PATH"]
-                if TERMINAL_PATH != "" and AHK_PATH != "":
+                ahk_installed = os.path.isfile(AHK_PATH)
+                print "AHK_PATH = " + AHK_PATH
+                if TERMINAL_PATH != "":
+                    load_terminal = True  # set default value
+                    # ready fetch command string to be appended to
+                    fetch_command = ""
                     # find the equivalent ahk script with the same name as this one
                     ahk_script = __file__.replace(".py", ".ahk")
                     pattern_match = "MINGW64"  # the string we expect to find in the title of git bash when loaded
-                    # open the script which checks that git bash window is open or not
-                    p = Popen([AHK_PATH, ahk_script, "exists", pattern_match], stdout=PIPE)
-                    # retrieve the output from the ahk script
-                    stdout, stderr = p.communicate()
-                    # terminates the ahk script if not already done so
-                    p.terminate()
-                    # ready fetch command string to be appended to
-                    fetch_command = ""
-                    # if an existing git bash window has been activated
-                    if stdout == pattern_match + " activated":
-                        # set the first portion of the fetch command
-                        fetch_command += directory_command + " && "
-                    # if an existing git bash window is not already open
-                    elif stdout == pattern_match + " does not exist":
-                        # open up a new git bash terminal
-                        terminal = Popen(TERMINAL_PATH, cwd=local_directory)
-                        # open the script which checks that git bash windoow is ready or not for input
-                        p = Popen([AHK_PATH, ahk_script, "create", pattern_match], stdout=PIPE)
-                        # retrieve the output from the AHK script
+                    # if autohotkey is installed
+                    if ahk_installed:
+                        # open the script which checks that git bash window is open or not
+                        p = Popen([AHK_PATH, ahk_script, "exists", pattern_match], stdout=PIPE)
+                        # retrieve the output from the ahk script
                         stdout, stderr = p.communicate()
                         # terminates the ahk script if not already done so
                         p.terminate()
-                        # if the git bash terminal is not ready
-                        if stdout != pattern_match + " ready":
-                            raise Exception("Error: git bash terminal took too long to load.")
+
+                        # if an existing git bash window has been activated
+                        if stdout == pattern_match + " activated":
+                            # set the first portion of the fetch command
+                            fetch_command += directory_command + " && "
+                            load_terminal = False
+                            print "Msg:" + ahk_script + " has activated window: " + pattern_match
+                        # if an existing git bash window is not already open
+                        elif stdout == pattern_match + " does not exist":
+                            print "Msg:" + ahk_script + " has found no window: " + pattern_match
+                            print "Load new instance of: " + pattern_match
+                        else:
+                            print "Error:" + ahk_script + " neither returned 'activated' nor 'does not exist'"
+                            print "Fallback: load new instance of :" + pattern_match
+                    if load_terminal:
+                        # open up a new git bash terminal
+                        terminal = Popen(TERMINAL_PATH, cwd=local_directory)
+                        # if autohotkey is installed
+                        if ahk_installed:
+                            # open the script which checks that git bash windoow is ready or not for input
+                            p = Popen([AHK_PATH, ahk_script, "create", pattern_match], stdout=PIPE)
+                            # retrieve the output from the AHK script
+                            stdout, stderr = p.communicate()
+                            # terminates the ahk script if not already done so
+                            p.terminate()
+                            # if the git bash terminal is not ready
+                            if stdout != pattern_match + " ready":
+                                raise Exception("Error: git terminal took too long to load for script:" + ahk_script)
+                        else:  # otherwise await the default number of seconds for the terminal to load
+                            time.sleep(settings.SETTINGS["gitbash"]["loading_time"])
                     # adds to the fetch command string that which will fetch from the particular repository in question
                     fetch_command += "git fetch " + repo_url + ".git pull/" + pr_name + "/head"
                     # if fetching from a new pull request
@@ -97,10 +115,11 @@ def github_checkoutupdate_pull_request(new):
                         Text(fetch_command + " && " + checkout_command).execute()
                         Key("enter").execute()  # checkout is safe enough so will run this
                         merge_command = "git merge FETCH_HEAD"
-                        time.sleep(3)  # allow time for the fetch commands complete before typing in the next one
+                        # allow time for the fetch commands complete before typing in the next one
+                        time.sleep(settings.SETTINGS["gitbash"]["fetching_time"])
                         Text(merge_command).execute()
                 else:
-                    raise Exception('TERMINAL_PATH in <user_dir>/.caster/data/settings.toml is not set, or AHK_PATH in castrvoice/lib/settings.py')
+                    raise Exception('TERMINAL_PATH in <user_dir>/.caster/data/settings.toml is not set')
             else:
                 raise Exception("Repository URL: " + repo_url + " not found in " + settings.SETTINGS["paths"]["GIT_REPO_LOCAL_REMOTE_PATH"])
     except Exception as e:
