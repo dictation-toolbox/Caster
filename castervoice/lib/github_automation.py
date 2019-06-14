@@ -100,6 +100,9 @@ def github_checkoutupdate_pull_request(new):
                                 raise Exception("Error: git terminal took too long to load for script:" + ahk_script)
                         else:  # otherwise await the default number of seconds for the terminal to load
                             time.sleep(settings.SETTINGS["gitbash"]["loading_time"])
+                    else:
+                        # Remove any text that's there in the existing terminal
+                        Key("end/10, c-u/10").execute()
                     # adds to the fetch command string that which will fetch from the particular repository in question
                     fetch_command += "git fetch " + repo_url + ".git pull/" + pr_name + "/head"
                     # if fetching from a new pull request
