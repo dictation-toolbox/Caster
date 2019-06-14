@@ -3,8 +3,7 @@
 from dragonfly import (Grammar, Context, AppContext, Dictation, Repeat, Function, Choice,
                        Mouse, Pause)
 
-from castervoice.lib import control
-from castervoice.lib import settings
+from castervoice.lib import settings, navigation, control
 from castervoice.lib.actions import Key, Text
 from castervoice.lib.context import AppContext
 from castervoice.lib.dfplus.additions import IntegerRefST
@@ -159,51 +158,52 @@ class VSCodeNonCcrRule(MergeRule):
 
         # Moving around a file
         "[(go to | jump | jump to)] line <n>":
-            R(Key("c-g") + Text("%(n)d") + Key("enter"),
-              rdescript="VS Code: Go to Line"),
+            R(Key("c-g") + Text("%(n)d") + Key("enter")),
+        "<action> [line] <ln1> [by <ln2>]":
+            R(Function(navigation.action_lines)),
+
         "go back <n>":
-            R(Key("a-left") * Repeat(extra='n'), rdescript="VS Code: Go Back"),
+            R(Key("a-left") * Repeat(extra='n')),
         "go forward [<n>]":
-            R(Key("a-right"), rdescript="VS Code: Go Forward") *
-            Repeat(extra="n"),
+            R(Key("a-right")) * Repeat(extra="n"),
 
         # Display
         # note that most of these can be turned on/off with the same command
         "[toggle] full screen":
-            R(Key("sa-enter"), rdescript="VS Code: Fullscreen"),
+            R(Key("sa-enter")),
         "toggle orientation":
-            R(Key("sa-0"), rdescript="VS Code: Toggle Orientation"),
+            R(Key("sa-0")),
         "zoom in [<n>]":
-            R(Key("c-equal") * Repeat(extra='n'), rdescript="VS Code: Zoom In"),
+            R(Key("c-equal") * Repeat(extra='n')),
         "zoom out [<n>]":
-            R(Key("c-minus") * Repeat(extra='n'), rdescript="VS Code: Zoom Out"),
+            R(Key("c-minus") * Repeat(extra='n')),
         "sidebar":
-            R(Key("c-b"), rdescript="VS Code: Sidebar"),
+            R(Key("c-b")),
         "explorer":
-            R(Key("cs-e"), rdescript="VS Code: Explorer"),
+            R(Key("cs-e")),
         "source control":
-            R(Key("cs-g"), rdescript="VS Code: Source Control"),
+            R(Key("cs-g")),
         "keyboard shortcuts":
-            R(Key("c-k, c-s"), rdescript="VS Code: Keyboard Shortcuts"),
+            R(Key("c-k, c-s")),
         "key mappings":
-            R(Key("c-k, c-s:2"), rdescript="VS Code: Key Mappings"),
+            R(Key("c-k, c-s:2")),
         "settings":
             R(Key("a-f, p, s, enter"), rdescript="VS Code: User/workspace Settings"),
         "snippets":
             R(Key("a-f, p, s:2, enter"), rdescript="VS Code: User Snippets"),
         "extensions":
-            R(Key("cs-x"), rdescript="VS Code: Extensions"),
+            R(Key("cs-x")),
         "search details":
-            R(Key("cs-j"), rdescript="VS Code: Search Details"),
+            R(Key("cs-j")),
         "output panel":
-            R(Key("cs-u"), rdescript="VS Code: Output Panel"),
+            R(Key("cs-u")),
         "markdown preview":
-            R(Key("cs-v"), rdescript="VS Code: Markdown Preview"),
+            R(Key("cs-v")),
         "markdown preview side":
-            R(Key("c-k, v"), rdescript="VS Code: Open Markdown Preview to the Side"),
+            R(Key("c-k, v")),
         "Zen mode":
             # note: use esc esc to exit
-            R(Key("c-k, z"), rdescript="VS Code: Zen mode"),
+            R(Key("c-k, z")),
 
         # File Management
         "[open] command palette":
@@ -211,66 +211,61 @@ class VSCodeNonCcrRule(MergeRule):
         "(open file | go to [tab]) [<text>]":
             R(Key("c-p") + Text("%(text)s"), rdescript="VS Code: Go to File without using dialogbox"),
         "open dialogue":
-            R(Key("c-o"), rdescript="VS Code: open file dialogbox")
+            R(Key("c-o"), rdescript="VS Code: open file dialogbox"),
         "open folder": 
             R(Key("c-k, c-o"), rdescript="VS Code: Open folder"),
         "Save and close":
-            R(Key("c-s/10, c-w"), rdescript="VS Code: Save And Close File"),
+            R(Key("c-s/10, c-w")),
         "new file":
-            R(Key("c-n"), rdescript="VS Code: New File"),
+            R(Key("c-n")),
         "new window":
-            R(Key("cs-n"), rdescript="VS Code: New Window"),
+            R(Key("cs-n")),
         "close window":
-            R(Key("a-f4"), rdescript="VS Code: Close Window"),
+            R(Key("a-f4")),
         "close workspace":
-            R(Key("c-k, f"), rdescript="VS Code: Close Workspace"),
+            R(Key("c-k, f")),
         "close editor":
-            R(Key("c-f4"), rdescript="VS Code: Close Editor"),
+            R(Key("c-f4")),
         "save as":
-            R(Key("cs-s"), rdescript="VS Code: Save As"),
+            R(Key("cs-s")),
         "save all":
-            R(Key("c-k, s"), rdescript="VS Code: Save all"),
+            R(Key("c-k, s")),
         "next tab [<n>]":
-            R(Key("c-pgdown") * Repeat(extra='n'), rdescript="VS Code: Next Tab"),
+            R(Key("c-pgdown") * Repeat(extra='n')),
         "previous tab [<n>]":
-            R(Key("c-pgup") * Repeat(extra='n'),
-              rdescript="VS Code: Previous Tab"),
+            R(Key("c-pgup") * Repeat(extra='n')),
         "close tab [<n>]":
-            R(Key("c-f4/20") * Repeat(extra='n'),
-              rdescript="VS Code: Close Tab"),
+            R(Key("c-f4/20") * Repeat(extra='n')),
         "(recent | R) tab [<n>]":
-            R(Key("c-tab") * Repeat(extra='n'),
-              rdescript="VS Code: Go to Most Recent Tab"),
+            R(Key("c-tab") * Repeat(extra='n')),
         "reopen tab [<n>]":
-            R(Key("cs-t") * Repeat(extra='n'),
-              rdescript="VS Code: Reopen Most Recently Tab"),
+            R(Key("cs-t") * Repeat(extra='n')),
         "Exit preview":
-            R(Key("space, c-z"), rdescript="VS Code: Exit Preview"),
+            R(Key("space, c-z")),
         "keep preview open":
-            R(Key("c-k, enter"), rdescript="VS Code: Keep Preview Mode Editor Open"),
+            R(Key("c-k, enter")),
         "copy path":
-            R(Key("c-k, p"), rdescript="VS Code: Copy Path of Active File"),
+            R(Key("c-k, p")),
         "windows explorer here":
-            R(Key("c-k, r"),
-              rdescript="VS Code: open Windows Explorer to the Location of Active File"),
+            R(Key("c-k, r")),
         "show active file in new window":
-            R(Key("c-k, o"), rdescript="VS Code: Show Active File in New Window"),
+            R(Key("c-k, o")),
 
         # Search
         "(search | find)":
-            R(Key("c-f"), rdescript="VS Code: Find in File"),
+            R(Key("c-f")),
         "replace":
-            R(Key("c-h"), rdescript="VS Code: Replace"),
+            R(Key("c-h")),
         "find in files":
-            R(Key("cs-f"), rdescript="VS Code: Find in Files"),
+            R(Key("cs-f")),
         "replace in files":
-            R(Key("cs-h"), rdescript="VS Code: Replace in Files"),
+            R(Key("cs-h")),
         "next find":
-            R(Key("f3"), rdescript="VS Code: Go to Next Occurrence"),
+            R(Key("f3")),
         "(prior | previous) find":
-            R(Key("s-f3"), rdescript="VS Code: Go to Previous Occurrence"),
+            R(Key("s-f3")),
         "select all occurrences":
-            R(Key("a-enter"), rdescript="VS Code: Select all Occurrences of Find Match"),
+            R(Key("a-enter")),
 
         "toggle case sensitive":
             R(Key("a-c"), rdescript="VS Code: Toggle Find Case Sensitive"),
@@ -280,27 +275,25 @@ class VSCodeNonCcrRule(MergeRule):
             R(Key("a-w"), rdescript="VS Code: Toggle Find Whole Word"),
 
         "(find | jump [to]) next <text>":
-            R(Function(findNthToken, n=1, direction="forward"),
-              rdescript="VS Code: Find Next"),
+            R(Function(findNthToken, n=1, direction="forward")),
         "(find | jump [to]) previous <text>":
-            R(Function(findNthToken, n=1, direction="reverse"),
-              rdescript="VS Code: Find Previous"),
+            R(Function(findNthToken, n=1, direction="reverse")),
         "show all symbols":
-            R(Key("c-t"), rdescript="VS Code: Show all Symbols"),
+            R(Key("c-t")),
         "go to symbol":
-            R(Key("cs-o"), rdescript="VS Code: Go to Symbol"),
+            R(Key("cs-o")),
 
         # Editor Management
         "close editor":
-            R(Key("c-w"), rdescript="VS Code: Close Editor"),
+            R(Key("c-w")),
         "close folder":
-            R(Key("c-k, f"), rdescript="VS Code: Close Folder"),
+            R(Key("c-k, f")),
         "split editor":
-            R(Key("c-backslash"), rdescript="VS Code: Split Editor into 2 Panes"),
+            R(Key("c-backslash")),
         "next pane":
-            R(Key("c-k, c-right"), rdescript="VS Code: Move to Next Pane"),
+            R(Key("c-k, c-right")),
         "(prior | previous | un) pane":
-            R(Key("c-k, c-right"), rdescript="VS Code: Move to Next Pane"),
+            R(Key("c-k, c-right")),
         "shift group left":
             R(Key("c-k, left"),
               rdescript="VS Code: Shift Current Group of Tabs to the Left E.g. Swap with Pane to the Left"),
@@ -309,46 +302,45 @@ class VSCodeNonCcrRule(MergeRule):
               rdescript="VS Code: Shift Current Group of Tabs to the Right E.g. Swap with Pane to the Right"
               ),
         "<nth> tab":
-            R(Key("c-%(nth)s"), rdescript="VS Code: Go to Nth Pane"),
+            R(Key("c-%(nth)s")),
 
         # Languages Editing
         "go to definition":
-            R(Key("f12"), rdescript="VS Code: Go to Definition"),
+            R(Key("f12")),
         "go to required definition":
-            R(Key("c-f12:2, c-right:5, left/50, f12"),
-              rdescript="VS Code: Go to Required Definition"),
+            R(Key("c-f12:2, c-right:5, left/50, f12")),
         "peak definition":
-            R(Key("a-f12"), rdescript="VS Code: Peak Definition"),
+            R(Key("a-f12")),
         "trigger parameter hints":
-            R(Key("cs-space"), rdescript="VS Code: Trigger Parameter Hints"),
+            R(Key("cs-space")),
         "format that":
-            R(Key("c-k, c-f"), rdescript="VS Code: Format Selection"),
+            R(Key("c-k, c-f")),
         "(definition to side | side def)":
-            R(Key("c-k, f12"), rdescript="VS Code: Open Definition to the Side"),
+            R(Key("c-k, f12")),
         "show references":
-            R(Key("s-f12"), rdescript="VS Code: Show References"),
+            R(Key("s-f12")),
         "rename symbol":
-            R(Key("f2"), rdescript="VS Code: Rename Symbol"),
+            R(Key("f2")),
         "(trim white)":
-            R(Key("c-k, c-x"), rdescript="VS Code: Trim Trailing White Space"),
+            R(Key("c-k, c-x")),
         "change file language":
-            R(Key("c-k, m"), rdescript="VS Code: Change File Language"),
+            R(Key("c-k, m")),
 
         # Debugging
         "debug":
-            R(Key("cs-d"), rdescript="VS Code: Debug"),
+            R(Key("cs-d")),
         "[toggle] breakpoint":
-            R(Key("f9"), rdescript="VS Code: Breakpoint"),
+            R(Key("f9")),
         "step over [<n>]":
-            R(Key("f10/50") * Repeat(extra='n'), rdescript="VS Code: Step Over"),
+            R(Key("f10/50") * Repeat(extra='n')),
         "step into":
-            R(Key("f11"), rdescript="VS Code: Step into"),
+            R(Key("f11")),
         "step out [of]":
-            R(Key("s-f11"), rdescript="VS Code: Step Out"),
+            R(Key("s-f11")),
         "resume":
-            R(Key("f5"), rdescript="VS Code: Resume"),
+            R(Key("f5")),
         "stopper":
-            R(Key("s-f5"), rdescript="VS Code: Debug Stop"),
+            R(Key("s-f5")),
         "continue":
             R(Key("f5"), rdescript="VS Code: Start/Continue"),
         "(show hover|mouse hover|hover mouse)":
@@ -356,72 +348,74 @@ class VSCodeNonCcrRule(MergeRule):
               rdescript="Show the little box as if you are hovering your mouse over the place where the cursor (As opposed to the mouse pointer) currently is"
               ),
         "[show] problems [panel]":
-            R(Key("cs-m"), rdescript="VS Code: Show Problems Panel"),
+            R(Key("cs-m")),
         "next error":
-            R(Key("f8"),
-              rdescript="VS Code: Go to Next Error"),  # doesn't seem to be working properly
+            R(Key("f8")),  # doesn't seem to be working properly
         "(prior | previous) error":
-            R(Key("s-f8"), rdescript="VS Code: Go to Previous Error"),
+            R(Key("s-f8")),
         "toggle tab moves focus":
-            R(Key("c-m"), rdescript="VS Code: Toggle Taboos Focus"),
+            R(Key("c-m")),
 
         # Integrated Terminal
         "[show] terminal":
-            R(Key("c-backtick"), rdescript="VS Code: Show Integrated Terminal"),
+            R(Key("c-backtick")),
         "new terminal":
-            R(Key("cs-backtick"), rdescript="VS Code: New Integrated Terminal"),
+            R(Key("cs-backtick")),
         "terminal scroll up":
-            R(Key("c-up"), rdescript="VS Code: Terminal Scroll Up"),
+            R(Key("c-up")),
         "terminal scroll down":
-            R(Key("c-down"), rdescript="VS Code: Terminal Scroll Down"),
+            R(Key("c-down")),
         "terminal page up":
-            R(Key("s-pgup"), rdescript="VS Code: Terminal Page Up"),
+            R(Key("s-pgup")),
         "terminal page down":
-            R(Key("s-pgdown"), rdescript="VS Code: Terminal Page Down"),
+            R(Key("s-pgdown")),
 
         # Collapsing
         "(fold | collapse) region":
-            R(Key("cs-lbracket"), rdescript="VS Code: Collapse Region"),
+            R(Key("cs-lbracket")),
         "(unfold | uncollapse) region":
-            R(Key("cs-rbracket"), rdescript="VS Code: Uncollapse Region"),
+            R(Key("cs-rbracket")),
         "(fold | collapse) [all] subregions":
-            R(Key("c-k, c-lbracket"), rdescript="VS Code: Collapse all Subregions"),
+            R(Key("c-k, c-lbracket")),
         "(unfold | uncollapse) [all] subregions":
-            R(Key("c-k, c-rbracket"), rdescript="VS Code: Uncollapse all Subregions"),
+            R(Key("c-k, c-rbracket")),
         "(fold | collapse) [all] regions":
-            R(Key("c-k, c-0"), rdescript="VS Code: Safe Collapse all Regions"),
+            R(Key("c-k, c-0")),
         "(unfold | uncollapse) [all] regions":
-            R(Key("c-k, c-j"), rdescript="VS Code: On Collapse all Regions"),
+            R(Key("c-k, c-j")),
         "toggle word wrap":
-            R(Key("a-z"), rdescript="VS Code: Toggle Word Wrap"),
+            R(Key("a-z")),
 
         "run this line":
-            R(Key("csa-l"), rdescript="VS Code: Run This Line"),
+            R(Key("csa-l")),
         "join line":
-            R(Key("csa-j"), rdescript="VS Code: Join Line"),
+            R(Key("csa-j")),
 
         # requires gitlens extension
         "toggle blame":
-            R(Key("cs-g, b"), rdescript="VS Code: Toggle Blame"),
+            R(Key("cs-g, b")),
         "lens commit details":
-            R(Key("cs-g, c"), rdescript="VS Code: Lens Commit Details"),
+            R(Key("cs-g, c")),
         "lens file history":
-            R(Key("cs-g, h"), rdescript="VS Code: Lens File History"),
+            R(Key("cs-g, h")),
         "lens repo status":
-            R(Key("cs-g, s"), rdescript="VS Code: Lens Repo Status"),
+            R(Key("cs-g, s")),
         "toggle git lens":
-            R(Key("cs-g, s-b"), rdescript="VS Code: Toggle Git Lens"),
+            R(Key("cs-g, s-b")),
 
         # requires bookmark extension
         "mark (prev | prior | previous)":
-            R(Key("ca-j"), rdescript="VS Code: Mark Previous"),
+            R(Key("ca-j")),
         "mark next":
-            R(Key("ca-l"), rdescript="VS Code: Mark Next"),
+            R(Key("ca-l")),
     }
     extras = [
         Dictation("text"),
         Dictation("mim"),
+        IntegerRefST("ln1", 1, 1000),
+        IntegerRefST("ln2", 1, 1000),
         IntegerRefST("n", 1, 1000),
+        Choice("action", navigation.actions),
         Choice(
             "nth", {
                 "first": "1",
@@ -432,7 +426,7 @@ class VSCodeNonCcrRule(MergeRule):
                 "sixth": "6",
             }),
     ]
-    defaults = {"n": 1, "mim": "", "text": ""}
+    defaults = {"n": 1, "ln2": "",  "mim": "", "text": ""}
 
 
 # ---------------------------------------------------------------------------

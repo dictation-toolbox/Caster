@@ -85,11 +85,11 @@ class VoiceDevCommands(MergeRule):
 
         # Dragonfly Snippets
         "dev key":
-            R(Text('Key(""),') + Key("left:3"), rdescript="DragonflyDev: Snippet for Key Action"),
+            R(Text('Key("")') + Key("left:3"), rdescript="DragonflyDev: Snippet for Key Action"),
         "dev text":
             R(Text('Text("")') + Key("left:2"), rdescript="DragonflyDev: Snippet for Text Action"),
         "dev pause":
-            R(Text(' + Pause("")') + Key("left:2"), rdescript="DragonflyDev: Snippet for Pause Action"),
+            R(Text('Pause("")') + Key("left:2"), rdescript="DragonflyDev: Snippet for Pause Action"),
         "dev function":
             R(Text("Function()") + Key("left")),
         "dev repeat":
@@ -102,6 +102,8 @@ class VoiceDevCommands(MergeRule):
         "dev mouse current [position]":
             R(Function(type_mouse_current),
               rdescript="DragonflyDev: Snippet for Making a Command for Clicking at the Current Cursor Position"),
+        "dev execute": R(Key("end")+Text(".execute()"), 
+            rdescript="call 'execute' method at end of line"),
 
  # Caster Snippets
         "dev bring app":

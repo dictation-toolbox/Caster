@@ -227,7 +227,7 @@ whiskey \\ x-ray \\ yankee \\ zulu \\
 \command{duple \footnotemark[2]}{duplicate line}
 
 \footnotetext[3]{Takes optional number parameter, which is used to determine a persistent clipboard slot}
-\footnotetext[6]{Takes optional formatting parameters, e.g. "spark tie bow"}
+\footnotetext[6]{Takes optional formatting parameters, e.g. "spark tie"}
 %---------------------------------------------------------------------------------
 \end{minipage} % End the second column of text
 } % End the second division of the page
@@ -299,7 +299,7 @@ value false \\
 
 \footnotetext[2]{gerrish defaults to gum, snake to laws}
 
-Capitalisation and spacing can be combined into a single command. Whether combining or not, they must be suffixed by "bow" and then dictation to format (ex: "tie snake bow some words")
+Capitalisation and spacing can be combined into a single command. Whether combining or not, they must be suffixed by "bow" and then dictation to format (ex: "tie snake some words")
 
 
 \end{minipage} % End the third column of text
@@ -315,7 +315,7 @@ Capitalisation and spacing can be combined into a single command. Whether combin
 
 \sectiontitle{Format setting}
 
-\examplecommand{set [big] format <capitalisation> <spacing> bow}{Set a standard/[secondary] format}
+\examplecommand{set [big] format <capitalisation> <spacing> [bow]}{Set a standard/[secondary] format}
 
 \examplecommand{[big] format <dictation>}{Apply the standard/[secondary] format to dictation}
 %----------------------------------------------------------------------------------------
@@ -329,6 +329,8 @@ Capitalisation and spacing can be combined into a single command. Whether combin
 \command{shift click}{shift click}
 \command{squat}{left button down}
 \command{bench}{left button up}
+\command{lean}{right button down}
+\command{hoist}{right button up}
 \command{colic}{control left click}
 \command{scree \footnotemark[1]}{scroll wheel}
 \command{curse}{move cursor by pixels}
@@ -348,7 +350,7 @@ Capitalisation and spacing can be combined into a single command. Whether combin
 \command{jump in \footnotemark[2]}{move cursor inside next ([\{<}
 \command{jump out \footnotemark[2]}{move cursor past next )]\}>}
 \command{jump back \footnotemark[2]}{move cursor inside prev )]\}>}
-\command{jump in \footnotemark[2]}{highlight <target> in line}
+\command{fill <target> \footnotemark[2]}{highlight <target> in line}
 
 \footnotetext[2]{All of these are asynchronous, and can be cancelled with the word "cancel" if the search is taking too long. See \textit{navigation.py} for a full list of targets.}
 
@@ -367,7 +369,7 @@ Capitalisation and spacing can be combined into a single command. Whether combin
 \command{minimise}{minimise window}
 \command{maximise}{maximise window}
 \command{remax}{force maximise}
-\command{dredge}{alt + tab}
+\command{dredge [<n>]}{alt + tab}
 \command{switch window}{display all windows}
 \command{move window}{move with arrow keys}
 \command{window left}{snap window to left}
@@ -420,13 +422,14 @@ Capitalisation and spacing can be combined into a single command. Whether combin
 \sectiontitle{Dragon}
 
 \command{number/spell/dictation/normal/command mode}{switch dragon modes}
-\command{reboot dragon}{}
 
 \sectiontitle{Update and Caster Management}
 
+\command{clear caster log}{Clears Log Window}
 \command{update caster}{Updates Caster}
 \command{update dragonfly}{Updates Dragonfly}
-\command{reboot caster}{Restarts Caster}
+\command{reboot dragon}{Restarts Caster}
+\command{reboot windows speech recognition}{Restarts Caster}
 
 \end{minipage}
 }
@@ -444,16 +447,10 @@ Capitalisation and spacing can be combined into a single command. Whether combin
 \examplecommand{shackle cut dunce four spark}{Cut the current line, move down four, paste}
 \examplecommand{shin ross wally clear}{Select to the end of the line, delete}
 \examplecommand{ross wally clear four}{Go to the end of the line, backspace four}
-\examplecommand{snake bow variable name}{variable\_name}
+\examplecommand{snake variable name}{variable\_name}
 \examplecommand{curly quotes arch ross deckle quotes brov}{\{"a":"b"\}}
 \examplecommand{backslash format command curly}{\textbackslash command\{\}}
 \examplecommand{(python) tell sink print to console spark three}{new line, print(<third clipboard position>)}
-\sectiontitle{Update and Caster Management}
-
-\command{clear caster log}{Clears Log Window}
-\command{update caster}{Updates Caster}
-\command{update dragonfly}{Updates Dragonfly}
-\command{reboot caster}{Restarts Caster}
 \end{minipage}
 }
 

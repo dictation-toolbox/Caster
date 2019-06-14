@@ -2,12 +2,8 @@
 generated-members=pythoncom.*,wx.*
 
 [MASTER]
-extension-pkg-whitelist=pythoncom,wx,pydevd
+extension-pkg-whitelist=pythoncom,wx,pydevd,win32gui
 
 [MESSAGES CONTROL]
-
-disable=print-statement
-
 disable=all
-
 enable=E

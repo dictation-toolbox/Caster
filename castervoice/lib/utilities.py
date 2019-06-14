@@ -178,8 +178,9 @@ def default_browser_command():
         reg = ConnectRegistry(None,HKEY_CLASSES_ROOT)
         key = OpenKey(reg, '%s\\shell\\open\\command' % value)
         path, t = QueryValueEx(key, None)
-    except WindowsError as e:
-        #logger.warn(e)
+    except WindowsError:
+        # logger.warn(e)
+        traceback.print_exc()
         return ''
     finally:
         CloseKey(key)
@@ -190,6 +191,7 @@ def default_browser_command():
 def clear_log():
     # Function to clear natlink status window
     try:
+        # pylint: disable=import-error
         import natlink
         windows = Window.get_all_windows()
         matching = [w for w in windows
