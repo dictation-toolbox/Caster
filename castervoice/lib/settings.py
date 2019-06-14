@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
@@ -19,8 +18,8 @@ Thank you for using Caster!
 """
 
 SETTINGS = {}
-BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "lib", 1)[0].replace(
-    "\\", "/")
+BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "lib",
+                                              1)[0].replace("\\", "/")
 _USER_DIR = os.path.expanduser("~").replace("\\", "/") + "/.caster"
 _SETTINGS_PATH = _USER_DIR + "/data/settings.toml"
 
@@ -72,24 +71,17 @@ def get_platform_information():
     system_information.update({"python version": sys.version_info})
     if sys.platform == "win32":
         system_information.update({"binary path": sys.exec_prefix})
-        system_information.update({
-            "main binary": os.path.join(sys.exec_prefix, "python.exe")
-        })
-        system_information.update({
-            "hidden console binary": os.path.join(sys.exec_prefix, "pythonw.exe")
-        })
+        system_information.update(
+            {"main binary": os.path.join(sys.exec_prefix, "python.exe")})
+        system_information.update(
+            {"hidden console binary": os.path.join(sys.exec_prefix, "pythonw.exe")})
     else:
         system_information.update({"binary path": os.path.join(sys.exec_prefix, "bin")})
-        system_information.update({
-            "main binary": os.path.join(sys.exec_prefix, "bin", "python")
-        })
-        system_information.update({
-            "hidden console binary": os.path.join(sys.exec_prefix, "bin", "python")
-        })
-    if system_information["platform"] != "win32":
-        raise SystemError("Your platform is not currently supported by Caster.")
+        system_information.update(
+            {"main binary": os.path.join(sys.exec_prefix, "bin", "python")})
+        system_information.update(
+            {"hidden console binary": os.path.join(sys.exec_prefix, "bin", "python")})
     return system_information
-
 
 SYSTEM_INFORMATION = get_platform_information()
 
@@ -101,6 +93,13 @@ def _validate_engine_path():
     '''
     Validates path 'Engine Path' in settings.toml
     '''
+    if not sys.platform.startswith('win'):
+        return ''
+    try:
+        # pylint: disable=import-error
+        import natlink
+    except ImportError:
+        return ''
     if os.path.isfile(_SETTINGS_PATH):
         with io.open(_SETTINGS_PATH, "rt", encoding="utf-8") as toml_file:
             data = toml.loads(toml_file.read())
@@ -114,7 +113,7 @@ def _validate_engine_path():
                     formatted_data = unicode(toml.dumps(data))
                     with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as toml_file:
                         toml_file.write(formatted_data)
-                    print("Setting engine path to ") + engine_path
+                    print("Setting engine path to " + engine_path)
                 except Exception as e:
                     print("Error saving settings file ") + str(e) + _SETTINGS_PATH
                 return engine_path
@@ -307,6 +306,7 @@ _DEFAULT_SETTINGS = {
         "atom_palette_wait": 30,  # hundredths of a second
         "rdp_mode": False,  # Switch app context manually for remote desktop
         "integer_remap_opt_in": False,
+        "short_integer_opt_out": False,
         "integer_remap_crash_fix": False,
         "print_rdescripts": True,
         "history_playback_delay_secs": 1.0,
