@@ -60,7 +60,7 @@ def github_checkoutupdate_pull_request(new):
                     # ready fetch command string to be appended to
                     fetch_command = ""
                     # find the equivalent ahk script with the same name as this one
-                    ahk_script = __file__.replace(".py", ".ahk")
+                    ahk_script = __file__.replace(".pyc", ".ahk").replace(".py", ".ahk")
                     pattern_match = "MINGW64"  # the string we expect to find in the title of git bash when loaded
                     # if autohotkey is installed
                     if ahk_installed:
