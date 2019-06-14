@@ -66,6 +66,12 @@ class VSCodeCcrRule(MergeRule):
             R(Key("csa-pgup"), rdescript="VS Code: Add Cursors All The Way Up"),
         "tall cursor down":
             R(Key("csa-pgdown"), rdescript="VS Code: Add Cursors All The Way Down"),
+        
+        "expand  [<n>]": R(Key("sa-right"), 
+            rdescript="highlight current word(s)") * Repeat(extra='n'),
+        "shrink  [<n>]": R(Key("sa-left"), 
+            rdescript="shrink the previous highlighting range or unhighlight") * Repeat(extra='n'),
+
         # Command below requires "brackets select" extension for VS code
         "select [in] brackets [<n>]":
             R(Key("ca-a") * Repeat(extra='n'),
