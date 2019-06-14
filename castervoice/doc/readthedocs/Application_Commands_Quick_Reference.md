@@ -151,10 +151,10 @@
 | `clear browsing data`                  | `developer tools`                    | `more tools`                              |
 | `google that`                          | `wikipedia that`                     | ``                                        |
 
-| Command                                  | Notes                                                                       |
-|:-----------------------------------------|:----------------------------------------------------------------------------|
-| `checkout [this] pull request [locally]` | Called from any tab of the Github pull request page. ("Conversation", "Commits", "Checks", "Files changed")|
-| `update [this] pull request [locally]`   | Called from any tab of the Github pull request page. ("Conversation", "Commits", "Checks", "Files changed")|
+| Command                                  | Notes                                                                                                                                                                        |
+|:-----------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `checkout [this] pull request [locally]` | Called from any tab of the Github pull request page: ("Conversation", "Commits", "Checks", "Files changed"). Adjust pause times in the `gitbash` section of `settings.toml`. |
+| `update [this] pull request [locally]`   | Called from any tab of the Github pull request page: ("Conversation", "Commits", "Checks", "Files changed"). Adjust pause times in the `gitbash` section of `settings.toml`. |
 
 ## Click by voice plug-in
 Options:
@@ -251,10 +251,10 @@ Options:
 | `new tab [<n>]`                        | `step into`      | `zoom out <n>`                           |
 | `reopen tab [<n>]`                     | `step out`       | ``                                       |
 
-| Command                                  | Notes                                                                       |
-|:-----------------------------------------|:----------------------------------------------------------------------------|
-| `checkout [this] pull request [locally]` | Called from any tab of the Github pull request page. ("Conversation", "Commits", "Checks", "Files changed") |
-| `update [this] pull request [locally]`   | Called from any tab of the Github pull request page. ("Conversation", "Commits", "Checks", "Files changed") |
+| Command                                  | Notes                                                                                                                                                                        |
+|:-----------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `checkout [this] pull request [locally]` | Called from any tab of the Github pull request page: ("Conversation", "Commits", "Checks", "Files changed"). Adjust pause times in the `gitbash` section of `settings.toml`. |
+| `update [this] pull request [locally]`   | Called from any tab of the Github pull request page: ("Conversation", "Commits", "Checks", "Files changed"). Adjust pause times in the `gitbash` section of `settings.toml`. |
 
 # Flash Develop
 
