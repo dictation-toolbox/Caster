@@ -29,7 +29,7 @@ Caster provides powerful text manipulation and navigation features. These functi
 - _grab sauce five until examples_
     - Searches five lines up and selects from the cursor to the first occurrence of the word "examples" above the cursor.
 - _grab ross hello hug quotes_
-    - select the nearest occurrence of "hello" (to the right on the current line) and surrounded by quotes.
+    - select the nearest occurrence of "hello" (to the right on the current line) and surround it by quotes.
     - _hug quotes_ is actually a separate command not part of this module, but you can do this because these commands are CCR.
 - _remove sauce five examples_
     - Searches five lines up and deletes the first occurrence of the word "examples" above the cursor.
@@ -48,10 +48,11 @@ Please feel free to try and implement these and submit a pull request!
 - Use line numbers as location limiters (e.g. go line one fifty nine third right prekris).
 
 ## Known bugs/issues
+- Report bugs and discuss solutions [here](https://github.com/dictation-toolbox/Caster/issues/579) 
 - In RStudio, the underlying Ace text editor automatically navigates through double spaces with a single arrow key press. This feature causes these functions to fail. An RStudio [issue](https://github.com/rstudio/rstudio/issues/4934) is open.
 - Currently, using _sauce/dunce_ includes the current line in the search and _lease/ross_ allows the user to specify a number of lines to search over. To fix this, we would need to adjust the regex for the case when _sauce/dunce_ is specified so that it only matches when it sees a new line character before (for _dunce_) or after (for _sauce_) the target object. The regex is located in the function `select_text_and_return_it` in the file `text_manipulation_functions.py`.
 - Words within a multiword camel case phrase will be ignored, the regex (see above) needs to be adjusted to fix this. 
-- In most situations, if you have two of the same word directly in a row, the regex will match the second one rather than the first. The regex (see above) needs to be adjusted to fix this.
+- In some situations (possibly only when selecting towards the left), if you have two of the same word directly in a row, the regex not match the nearest occurrence but rather start by matching the second nearest one. The regex (see above) needs to be adjusted to fix this (I don't know how).
 - Occasionally the command parameters (e.g. `occurrence_number` or `before_after`) are interpreted as dictation since the parameters are optional. For example, if you say "go ross after hello", once in a while it will think you are searching for the phrase "after hello" and so won't work in which case it would print in the Natlink window "'after hello' not found". I don't understand what determines when this happens and when it doesn't.
 - There is some duplication in the code. It would be great if a python expert was able to help us tidy the code up a bit.
 - These are inconsistent in Microsoft Word. You will want to [disable smart selection](https://superuser.com/questions/962710/how-to-make-microsoft-word-selection-behave-like-it-would-in-a-plain-text-editor) for use in Microsoft Word. You can also try adjusting the pause times (see below). However, you are probably better off using Dragon's native commands in Microsoft Word since these are unreliable there for now. Those commands have some advantages and disadvantages relative to these.
