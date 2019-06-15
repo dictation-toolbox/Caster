@@ -29,7 +29,7 @@ Caster provides powerful text manipulation and navigation features. These functi
 - _grab sauce five until examples_
     - Searches five lines up and selects from the cursor to the first occurrence of the word "examples" above the cursor.
 - _grab ross hello hug quotes_
-    - select the nearest occurrence of "hello" (to the right on the current line) and surround it by quotes.
+    - select the nearest occurrence of "hello" (to the right of the cursor on the current line) and surround it by quotes.
     - _hug quotes_ is actually a separate command not part of this module, but you can do this because these commands are CCR.
 - _remove sauce five examples_
     - Searches five lines up and deletes the first occurrence of the word "examples" above the cursor.
