@@ -38,6 +38,7 @@ Caster provides powerful text manipulation and navigation features. These functi
 
 ## Possible future features
 Please feel free to try and implement these and submit a pull request!
+
 - Supporting Caster numbers as targets (e.g. _go lease before numb one_).
 - Selecting from one element to another element rather than having to move the cursor first (e.g. _grab sauce twenty from third left prekris to second right prekris_).
 - Replacing with Caster-formatted text (e.g. _replace lease caster with gum caster_).
