@@ -47,4 +47,5 @@ Please feel free to try and implement these and submit a pull request!
 ## Known bugs/issues
 - In RStudio, the underlying Ace text editor automatically navigates through double spaces with a single arrow key press. This feature causes these functions to fail. An RStudio [issue](https://github.com/rstudio/rstudio/issues/4934) is open.
 - Currently, using _sauce/dunce_ includes the current line in the search and _lease/ross_ allows the user to specify a number of lines to search over.
+- Words within a multiword camel case phrase will be ignored, the regex needs to be adjusted to fix this.
 - There is some duplication in the code. It would be great if a python expert was able to help us tidy the code up a bit.
