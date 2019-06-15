@@ -5,7 +5,7 @@ Caster provides powerful text manipulation and navigation features. These functi
 ## Common elements
 
 - `direction` _sauce_ (up), _dunce_ (down), _lease_ (left) or _ross_ (right). Direction _must_ be included for all commands.
-- `number_of_lines_to_search` is an integer number of lines to search for the target object. _sauce/lease_ searches up and _dunce/ross_ searches down. _sauce/dunce_ defaults to 3 lines if omitted and _lease/ross_ searches only the current line if omitted.
+- `number_of_lines_to_search` is an integer number of lines to search for the target object. _sauce_ searches up and _dunce_ searches down. _sauce/dunce_ defaults to 3 lines if omitted and _lease/ross_ always searches only the current line.
 - `before_after` can be _before_ or _after_ and indicates whether the cursor should stop to the left (_before_) or the right (_after_) of the target object. Defaults to _before_ for _ross/dunce_ and _after_ for _lease/sauce_. 
 - `occurrence_number` can be _first_ through _ninth_ and indicates which occurrence of the target object you want, counting from the initial position of the cursor in the direction you specify. Defaults to _first_.
 - `target_object` can be a Caster alphabet element (_arch, brov_ etc.), a Caster punctuation element (_left prekris, deckle_ etc.), or arbitrary dictation (e.g. "punctuation element" spoken). Caster numbers are not yet supported.
@@ -41,3 +41,8 @@ Please feel free to try and implement these and submit a pull request!
 - Selecting with Caster-formatted text (e.g. _grab lease tie caster_)
 - Very powerful selection and replacement using Caster-style typing (e.g. _replace lease tie caster minus gum style ace gum typing with tie caster minus laws formatted text_)
 - Quick format switching (e.g. _switch [format of] very powerful to snake_)
+- Limit dictation recognition to only elements that are there. Currently, the voice recognition software provides its best guess at what you mean, rather than Caster limiting the options to what is in the selection.
+
+## Known bugs/issues
+- In RStudio, the underlying Ace text editor automatically navigates through double spaces with a single arrow key press. This feature causes these functions to fail. An RStudio [issue](https://github.com/rstudio/rstudio/issues/4934) is open.
+- Currently, using _sauce/dunce_ includes the current line in the search and _lease/ross_ allows the user to specify a number of lines to search over. 

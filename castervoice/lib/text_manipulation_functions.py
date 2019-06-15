@@ -89,8 +89,7 @@ def text_manipulation_paste(text, application):
 def select_text_and_return_it(direction, number_of_lines_to_search, application):
     if direction == "left":
         Key("s-home, s-up:%d, s-home" %number_of_lines_to_search).execute()
-    if direction == "right":
-        
+    if direction == "right":    
         Key("s-end, s-down:%d, s-end" %number_of_lines_to_search).execute()
     selected_text = text_manipulation_copy(application)
     if selected_text == None:
