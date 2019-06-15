@@ -31,7 +31,7 @@ Caster provides powerful text manipulation and navigation features. These functi
 - _remove sauce five examples_
     - Searches five lines up and deletes the first occurrence of the word "examples" above the cursor.
 - _remove sauce five until examples_
-    - Seacrhes five lines up and deletes from the cursor to the first occurrence of the word "examples" above the cursor.
+    - Searches five lines up and deletes from the cursor to the first occurrence of the word "examples" above the cursor.
 
 ## Possible future features
 Please feel free to try and implement these and submit a pull request!
