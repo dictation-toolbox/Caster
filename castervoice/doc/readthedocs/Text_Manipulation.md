@@ -6,8 +6,8 @@ Caster provides powerful text manipulation and navigation features. These functi
 
 - `direction` _sauce_ (up), _dunce_ (down), _lease_ (left) or _ross_ (right). Direction _must_ be included for all commands.
 - `number_of_lines_to_search` is an integer number of lines to search for the target object. _sauce/lease_ searches up and _dunce/ross_ searches down. _sauce/dunce_ defaults to 3 lines if omitted and _lease/ross_ searches only the current line if omitted.
-- `before_after` can be _before_ or _after_ and indicates whether the cursor should stop to the left (_before_) or the right (_after_) of the target object.
-- `occurrence_number` can be _first_ through _ninth_ and indicates which occurrence of the target object you want, counting from the initial position of the cursor in the direction you specify.
+- `before_after` can be _before_ or _after_ and indicates whether the cursor should stop to the left (_before_) or the right (_after_) of the target object. Defaults to _before_ for _ross/dunce_ and _after_ for _lease/sauce_. 
+- `occurrence_number` can be _first_ through _ninth_ and indicates which occurrence of the target object you want, counting from the initial position of the cursor in the direction you specify. Defaults to _first_.
 - `target_object` can be a Caster alphabet element (_arch, brov_ etc.), a Caster punctuation element (_left prekris, deckle_ etc.), or arbitrary dictation (e.g. "punctuation element" spoken). Caster numbers are not yet supported.
 
 ## Commands
