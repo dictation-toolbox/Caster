@@ -99,7 +99,7 @@ class TextManipulation(MergeRule):
             R(Function(text_manipulation_functions.move_until_phrase,
                        dict(dictation="phrase")), 
                rdescript="Text Manipulation: move to chosen phrase to the left or right of the cursor"),
-        "(go | move) <direction> [<before_after>] [<number_of_lines_to_search>] [<occurrence_number>] <character>":
+        "(go | move) <direction> [<number_of_lines_to_search>] [<before_after>] [<occurrence_number>] <character>":
             R(Function(text_manipulation_functions.move_until_phrase,
                        dict(character="phrase")),
               rdescript="Text Manipulation: move to chosen character to the left of the cursor"),
