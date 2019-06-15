@@ -36,6 +36,7 @@
 \definecolor{mygray}{gray}{.75} % Custom color
 \usepackage{footmisc}
 \usepackage{url} % Required for the \url command to easily display URLs
+\usepackage{textcomp} % Required for literal printing of ` and '
 
 
 \setlength{\unitlength}{1mm} % Set the length that numerical units are measured in
@@ -97,7 +98,7 @@
 %	HEADING TWO
 %----------------------------------------------------------------------------------------
 \vspace{-1em}
-\sectiontitle{Alphabet}  \footnotemark[1]
+\sectiontitle{Alphabet\protect\footnotemark[1]}
 
 \begin{multicols}{5}
 arch \\ brov \\ char \\ delta \\ echo \\
@@ -117,12 +118,12 @@ whiskey \\ x-ray \\ yankee \\ zulu \\
 %----------------------------------------------------------------------------------------
 
 \vspace{-1em}
-\sectiontitle{Punctuation}
+\sectiontitle{Punctuation\protect\footnotemark[4]}
 
 \begin{multicols}{2}
-\command{tabby \footnotemark[4]}{\texttt{TAB}}
-\command{shin tabby \footnotemark[4]}{\texttt{SHIFT-TAB}}
-\command{ace \footnotemark[4]}{\texttt{SPACE}}
+\command{tabby}{\texttt{TAB}}
+\command{shin tabby}{\texttt{SHIFT-TAB}}
+\command{ace}{\texttt{SPACE}}
 \command{clamor}{\texttt{!}}
 \command{chocky}{\texttt{"}}
 \command{quotes \footnotemark[2]}{\texttt{""}}
@@ -130,8 +131,8 @@ whiskey \\ x-ray \\ yankee \\ zulu \\
 \command{dolly}{\texttt{\$}}
 \command{modulo}{\texttt{\%}}
 \command{ampersand}{\texttt{\&}}
-\command{chicky | apostrophe}{\texttt{'}}
-\command{thin quotes \footnotemark[2]}{\texttt{''}}
+\command{chicky | apostrophe}{\texttt{\textquotesingle}}
+\command{thin quotes \footnotemark[2]}{\texttt{\textquotesingle\textquotesingle}}
 \command{prekris \footnotemark[2]\footnotemark[6]}{\texttt{()}}
 \command{starling}{\texttt{*}}
 \command{\footnotemark[5] plus}{\texttt{+}}
@@ -225,7 +226,7 @@ whiskey \\ x-ray \\ yankee \\ zulu \\
 
 \footnotetext[1]{Takes optional direction parameter, one of the direction keys from table (5)}
 \footnotetext[2]{Takes optional number parameter for repetition}
-\footnotetext[5]{Takes prekris, brax, curly, angle, [thin] quotes}
+\footnotetext[5]{Takes prekris, brax, curly, angle, [thin] quotes, tickris}
 
 %----------------------------------------------------------------------------------------
 
@@ -252,7 +253,7 @@ whiskey \\ x-ray \\ yankee \\ zulu \\
 \begin{minipage}[t]{85mm} % Create a box to house tex
 %
 %%----------------------------------------------------------------------------------------
-\sectiontitle{Programming core} \footnotemark[1]
+\sectiontitle{Programming core\protect\footnotemark[1]}
 
 \footnotetext[1]{See the CCR languages quick reference in the docs for details of the language specific commands.}
 
@@ -311,7 +312,7 @@ value false \\
 
 \footnotetext[2]{gerrish defaults to gum, snake to laws}
 
-Capitalisation and spacing can be combined into a single command. Whether combining or not, they must be suffixed by "bow" and then dictation to format (ex: "tie snake some words")
+Capitalisation and spacing can be combined into a single command. They may be suffixed by "bow" and then dictation to format (ex: "tie snake bow some words") to aid recognition.
 
 
 \end{minipage} % End the third column of text
@@ -381,7 +382,7 @@ Capitalisation and spacing can be combined into a single command. Whether combin
 \command{minimise}{minimise window}
 \command{maximise}{maximise window}
 \command{remax}{force maximise}
-\command{dredge [<n>]}{alt + tab}
+\command{dredge \footnotemark[1]}{alt + tab}
 \command{switch window}{display all windows}
 \command{move window}{move with arrow keys}
 \command{window left}{snap window to left}
