@@ -1,10 +1,10 @@
 #
 # __author__ = "lexxish"
 #
-from dragonfly import Key, Mouse, Repeat, Pause
+from dragonfly import Key, Mouse, Repeat, Pause, Function
 
 from castervoice.apps.browser import browser
-from castervoice.lib github_automation
+from castervoice.lib import github_automation
 from castervoice.lib.actions import Text
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
