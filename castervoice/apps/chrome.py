@@ -121,9 +121,9 @@ class ChromeRule(MergeRule):
             R(Store(space="+", remove_cr=True) + Key("c-t") + Text("https://en.wikipedia.org/w/index.php?search=") + Retrieve() + Key("enter")),
 
         "duplicate tab":
-            R(Key("a-d,a-c,c-t/15,c-v/15, enter")),
-        "duplicate window":
-            R(Key("a-d,a-c,c-n/15,c-v/15, enter")),
+            R(Key("a-d,c-c/20,c-t,c-v, enter"), rdescript="make new tab and go to current URL"),
+        "duplicate tab in new window":
+            R(Key("a-d,c-c/20,c-n,c-v, enter"), rdescript="make new window and go to current URL"),             
         "extensions":
             R(Key("a-f/20, l, e/15, enter")),
         "(menu | three dots)":
