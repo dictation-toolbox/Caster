@@ -16,15 +16,16 @@ from castervoice.lib.alphanumeric import caster_alphabet
 
 # Advertisement
 print("""Text Manipulation: Check out the new experimental text 
-    manipulation commands at https://caster.readthedocs.io/en/latest/readthedocs/TextManipulation 
-    You can delete this message in castervoice\lib\ccr\core\\text_manipulation.py. 
-    Enable these commands by saying "enable text manipulation". 
-    You may want to reduce the pause or sleep time in the 
-    functions text_manipulation_copy and text_manipulation_paste 
-    in castervoice\lib\\text_manipulation_functions.py 
-    These are a work in progress; please give feedback and 
-    report bugs on the Caster github page.""")
+manipulation commands at https://caster.readthedocs.io/en/latest/readthedocs/TextManipulation 
+You can delete this message in castervoice\lib\ccr\core\\text_manipulation.py. 
+Enable these commands by saying "enable text manipulation".
+You may want to reduce the pause time in the 
+dictionaries copy_pause_time_dict and paste_pause_time_dict  
+in castervoice\lib\\text_manipulation_functions.py 
+These are a work in progress; please give feedback and 
+report bugs on the Caster Github issue #579.""")
 
+    
 """ requires a recent version of dragonfly because of recent modification of the Function action
     # I think dragonfly2-0.13.0
     The wait times should be adjusted depending on the application by changing the numbers in copy_pause_time_dict
