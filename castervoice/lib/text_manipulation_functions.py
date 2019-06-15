@@ -75,7 +75,7 @@ def text_manipulation_copy(application):
     ## Pause(copy_pause_time_dict[application]).execute()
     ## selected_text = pyperclip.paste()
     
-    err, selected_text = context.read_selected_without_altering_clipboard(pause_time=copy_pause_time_dict[application])
+    err, selected_text = context.read_selected_without_altering_clipboard(same_is_okay=True, pause_time=copy_pause_time_dict[application])
     if err != 0:
         # I'm not discriminating between err = 1 and err = 2
         print("failed to copy text")
