@@ -173,9 +173,10 @@ def remove_phrase_from_text(text, phrase, direction, occurrence_number):
         if left_index == 0:
             # the phrase is at the beginning of the line
             return text[right_index:]  # todo: consider removing extra space
+        elif text[left_index - 1] == " ":
+            return text[: left_index - 1] + text[right_index:]
         else:
-            return text[: left_index - 1] + text[right_index:] 
-
+            return text[: left_index] + text[right_index:]
 
 def copypaste_remove_phrase_from_text(phrase, direction, number_of_lines_to_search, occurrence_number):
     if direction == "up" or direction == "down":
