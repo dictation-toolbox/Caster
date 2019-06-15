@@ -35,8 +35,9 @@ Caster provides powerful text manipulation and navigation features. These functi
 
 ## Possible future features
 Please feel free to try and implement these and submit a pull request!
-- Supporting Caster numbers as targets (e.g. go lease before numb one)
-- Selecting from one element to another element rather than having to move the cursor first (e.g. "grab sauce twenty from third left prekris to second right prekris").
-- Replacing with Caster-formatted text (e.g. replace lease caster with gum caster)
-- Selecting with Caster-formatted text (e.g. grab lease tie caster)
-- Very powerful selection and replacement using Caster-style typing (e.g. replace lease tie caster minus gum style ace gum typing with tie caster minus laws formatted text)
+- Supporting Caster numbers as targets (e.g. _go lease before numb one_)
+- Selecting from one element to another element rather than having to move the cursor first (e.g. _grab sauce twenty from third left prekris to second right prekris_).
+- Replacing with Caster-formatted text (e.g. _replace lease caster with gum caster_)
+- Selecting with Caster-formatted text (e.g. _grab lease tie caster_)
+- Very powerful selection and replacement using Caster-style typing (e.g. _replace lease tie caster minus gum style ace gum typing with tie caster minus laws formatted text_)
+- Quick format switching (e.g. _switch [format of] very powerful to snake_)
