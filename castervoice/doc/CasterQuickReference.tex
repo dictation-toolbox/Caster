@@ -36,6 +36,7 @@
 \definecolor{mygray}{gray}{.75} % Custom color
 \usepackage{footmisc}
 \usepackage{url} % Required for the \url command to easily display URLs
+\usepackage{textcomp} % Required for literal printing of ` and '
 
 
 \setlength{\unitlength}{1mm} % Set the length that numerical units are measured in
@@ -96,10 +97,10 @@
 %----------------------------------------------------------------------------------------
 %	HEADING TWO
 %----------------------------------------------------------------------------------------
+\vspace{-1em}
+\sectiontitle{Alphabet\protect\footnotemark[1]}
 
-\sectiontitle{Alphabet}  \footnotemark[1]
-
-\begin{multicols}{4}
+\begin{multicols}{5}
 arch \\ brov \\ char \\ delta \\ echo \\
 foxy \\ goof \\ hotel \\ india \\ julia \\
 kilo \\ lima \\ mike \\ novakeen \\
@@ -116,54 +117,66 @@ whiskey \\ x-ray \\ yankee \\ zulu \\
 %	HEADING THREE
 %----------------------------------------------------------------------------------------
 
-\sectiontitle{Punctuation}
+\vspace{-1em}
+\sectiontitle{Punctuation\protect\footnotemark[4]}
 
 \begin{multicols}{2}
-\command{ace \footnotemark[4]}{space}
-\command{tabby \footnotemark[4]}{tab}
-\command{prekris \footnotemark[2]}{()}
-\command{brax \footnotemark[2]}{[]}
-\command{curly \footnotemark[2]}{\{\}}
-\command{angle \footnotemark[2]}{<>}
-\command{quotes \footnotemark[2]}{""}
-\command{thin quotes \footnotemark[2]}{' '}
-\command{boom \footnotemark[3]}{, }
-\command{period | dot}{.}
-\command{clamor}{!}
-\command{atty}{@}
-\command{hashtag}{\#}
-\command{dolly}{\$}
-\command{tilde}{\~}
-\command{carrot}{\^}
-\command{questo}{?}
-\command{underscore}{\_}
-\command{modulo}{\%}
-\command{semper}{;}
-\command{deckle}{:}
-\command{pipe (sim | symbol)}{|}
-\command{apostophe}{'}
-\command{slash}{/}
-\command{back slash}{\textbackslash}
-\command{starling}{*}
-\command{\footnotemark[5] equals}{=}
-\command{\footnotemark[5] plus}{+}
-\command{\footnotemark[5] minus}{-}
+\command{tabby}{\texttt{TAB}}
+\command{shin tabby}{\texttt{SHIFT-TAB}}
+\command{ace}{\texttt{SPACE}}
+\command{clamor}{\texttt{!}}
+\command{chocky}{\texttt{"}}
+\command{quotes \footnotemark[2]}{\texttt{""}}
+\command{hashtag}{\texttt{\#}}
+\command{dolly}{\texttt{\$}}
+\command{modulo}{\texttt{\%}}
+\command{ampersand}{\texttt{\&}}
+\command{chicky | apostrophe}{\texttt{\textquotesingle}}
+\command{thin quotes \footnotemark[2]}{\texttt{\textquotesingle\textquotesingle}}
+\command{prekris \footnotemark[2]\footnotemark[6]}{\texttt{()}}
+\command{starling}{\texttt{*}}
+\command{\footnotemark[5] plus}{\texttt{+}}
+\command{comma}{\texttt{,}}
+\command{boom \footnotemark[3]}{\texttt{,}$\,\,$}
+\columnbreak
+\command{\footnotemark[5] minus}{\texttt{-}}
+\command{period | dot}{\texttt{.}}
+\command{bam \footnotemark[3]}{\texttt{.}$\,\,$}
+\command{slash}{\texttt{/}}
+\command{deckle}{\texttt{:}}
+\command{semper}{\texttt{;}}
+\command{angle \footnotemark[2]\footnotemark[6]}{\texttt{<>}}
+\command{\footnotemark[5] equals}{\texttt{=}}
+\command{questo}{\texttt{?}}
+\command{atty}{\texttt{@}}
+\command{brax \footnotemark[2]\footnotemark[6]}{\texttt{[]}}
+\command{backslash}{\texttt{\textbackslash}}
+\command{carrot}{\texttt{\^}}
+\command{underscore}{\texttt{\_}}
+\command{ticky}{\texttt{\textasciigrave}}
+\command{tickris \footnotemark[2]}{\texttt{\textasciigrave\textasciigrave}}
+\command{curly \footnotemark[2]\footnotemark[6]}{\texttt{\{\}}}
+\command{tilde}{\texttt{\~}}
+\command{pipe (sim | symbol)}{\texttt{|}}
 \end{multicols}
 
 \footnotetext[2]{Left key is pressed after}
 \footnotetext[3]{Space bar is pressed after}
 \footnotetext[4]{Repeatable by saying number after}
 \footnotetext[5]{Prefix with "long" to get spaces either side}
+\footnotetext[6]{Left or right available by prefixing with ``left'' or ``right''}
 
 %----------------------------------------------------------------------------------------
 
+\vspace{-1em}
 \sectiontitle{Comparisons}
 
-\command{[is] greater than}{>}
-\command{[is] less than}{<}
-\command{[is] greater [than] [or] equal [to]}{>=}
-\command{[is] less [than] [or] equal [to]}{<=}
-\command{[is] equal to}{==}
+\command{[is] greater than}{\texttt{>}}
+\command{[is] less than}{\texttt{<}}
+\command{[is] greater [than] [or] equal [to]}{\texttt{>=}}
+\command{[is] less [than] [or] equal [to]}{\texttt{<=}}
+\command{[is] equal to}{\texttt{==}}
+\vspace{-1em}
 
 \end{minipage} % End the first column of text
 } % End the first division of the page
@@ -213,7 +226,7 @@ whiskey \\ x-ray \\ yankee \\ zulu \\
 
 \footnotetext[1]{Takes optional direction parameter, one of the direction keys from table (5)}
 \footnotetext[2]{Takes optional number parameter for repetition}
-\footnotetext[5]{Takes prekris, brax, curly, angle, [thin] quotes}
+\footnotetext[5]{Takes prekris, brax, curly, angle, [thin] quotes, tickris}
 
 %----------------------------------------------------------------------------------------
 
@@ -240,7 +253,7 @@ whiskey \\ x-ray \\ yankee \\ zulu \\
 \begin{minipage}[t]{85mm} % Create a box to house tex
 %
 %%----------------------------------------------------------------------------------------
-\sectiontitle{Programming core} \footnotemark[1]
+\sectiontitle{Programming core\protect\footnotemark[1]}
 
 \footnotetext[1]{See the CCR languages quick reference in the docs for details of the language specific commands.}
 
@@ -299,7 +312,7 @@ value false \\
 
 \footnotetext[2]{gerrish defaults to gum, snake to laws}
 
-Capitalisation and spacing can be combined into a single command. Whether combining or not, they must be suffixed by "bow" and then dictation to format (ex: "tie snake some words")
+Capitalisation and spacing can be combined into a single command. They may be suffixed by "bow" and then dictation to format (ex: "tie snake bow some words") to aid recognition.
 
 
 \end{minipage} % End the third column of text
@@ -369,7 +382,7 @@ Capitalisation and spacing can be combined into a single command. Whether combin
 \command{minimise}{minimise window}
 \command{maximise}{maximise window}
 \command{remax}{force maximise}
-\command{dredge [<n>]}{alt + tab}
+\command{dredge \footnotemark[1]}{alt + tab}
 \command{switch window}{display all windows}
 \command{move window}{move with arrow keys}
 \command{window left}{snap window to left}

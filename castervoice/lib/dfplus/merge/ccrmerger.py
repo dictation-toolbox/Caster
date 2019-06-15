@@ -122,9 +122,8 @@ class CCRMerger(object):
         assert rule.get_context(
         ) is not None, "app rules must have contexts, " + rule.get_pronunciation(
         ) + " has no context"
-        assert rule.get_merge_with(
-        ) is not None, "app rules must define mwith, " + rule.get_pronunciation(
-        ) + " has no mwith"
+        if rule.get_merge_with() is None:
+            rule.set_merge_with(CCRMerger.CORE)
         self._add_to(rule, self._app_rules)
 
     def add_selfmodrule(self, rule):

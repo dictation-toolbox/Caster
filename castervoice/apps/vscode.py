@@ -10,7 +10,6 @@ from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
-from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
 
 
 def findNthToken(text, n, direction):
@@ -297,7 +296,6 @@ class VSCodeNonCcrRule(MergeRule):
 
 class VSCodeCcrRule(MergeRule):
     pronunciation = "visual studio code continuous"
-    mwith = CCRMerger.CORE
     non = VSCodeNonCcrRule
 
     mapping = {
