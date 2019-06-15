@@ -1,6 +1,6 @@
 # Text Manipulation and Navigation
 
-Caster provides powerful text manipulation and navigation features. These functions are brand new, experimental, and subject to change (perhaps based on your feedback!).
+Caster provides powerful text manipulation and navigation features. These functions are brand new, experimental, and subject to change (perhaps based on your feedback!). Contributions wanted, discuss first [here](https://github.com/dictation-toolbox/Caster/issues/579) 
 
 ## Common elements
 
