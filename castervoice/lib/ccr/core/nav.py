@@ -175,7 +175,7 @@ class Navigation(MergeRule):
     pronunciation = CCRMerger.CORE[1]
 
     mapping = {
-    # "periodic" repeats whatever comes next at 1-second intervals until "terminate" 
+    # "periodic" repeats whatever comes next at 1-second intervals until "terminate"
     # or "escape" (or your SymbolSpecs.CANCEL) is spoken or 100 tries occur
         "periodic":
             ContextSeeker(forward=[L(S(["cancel"], lambda: None),
@@ -254,9 +254,9 @@ class Navigation(MergeRule):
         "hug <enclosure>":
             R(Function(text_utils.enclose_selected)),
         "dredge [<nnavi10>]":
-            R(Key("alt:down, tab/20:%(nnavi10)d, alt:up"), 
+            R(Key("alt:down, tab/20:%(nnavi10)d, alt:up"),
                rdescript="Core: switch to most recent Windows"),
-        
+
         # Ccr Mouse Commands
         "kick":
             R(Function(navigation.left_click, nexus=_NEXUS)),
@@ -268,7 +268,7 @@ class Navigation(MergeRule):
             R(Function(navigation.left_down, nexus=_NEXUS)),
         "bench":
             R(Function(navigation.left_up, nexus=_NEXUS)),
-        
+
     }
 
     extras = [
@@ -323,7 +323,9 @@ class Navigation(MergeRule):
             "lease": "backspace",
             "ross": "delete",
         }),
+
     ]
+
 
     defaults = {
         "nnavi500": 1,

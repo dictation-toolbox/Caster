@@ -7,8 +7,9 @@ import time
 from ctypes import windll
 from subprocess import Popen
 
+
 import dragonfly
-from dragonfly import Choice, monitors
+from dragonfly import Choice, monitors, Pause
 from castervoice.asynch.mouse.legion import LegionScanner
 from castervoice.lib import control, settings, utilities, textformat
 from castervoice.lib.actions import Key, Text, Mouse
@@ -40,7 +41,6 @@ TARGET_CHOICE = Choice(
         "closers": "}~]~)",
         "token": "TOKEN"
     })
-
 
 def get_direction_choice(name):
     global DIRECTION_STANDARD
