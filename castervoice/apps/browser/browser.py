@@ -49,6 +49,8 @@ SHOW_SETTINGS = "[show] settings"
 SHOW_TASK_MANAGER = "[show chrome] task manager"
 CLEAR_BROWSING_DATA = "(clear history|clear browsing data)"
 SHOW_DEVELOPER_TOOLS = "[show] developer tools"
+CHECKOUT_PR = "checkout [this] pull request [locally]"
+UPDATE_PR = "update [this] pull request [locally]"
 
 DEFAULTS = {"n": 1, "m":"", "nth": ""}
 EXTRAS = [

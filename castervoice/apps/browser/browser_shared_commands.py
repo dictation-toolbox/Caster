@@ -4,6 +4,7 @@
 from dragonfly import Key, Mouse, Repeat, Pause
 
 from castervoice.apps.browser import browser
+from castervoice.lib github_automation
 from castervoice.lib.actions import Text
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
@@ -93,6 +94,10 @@ class BrowserSharedCommands(MergeRule):
             R(Key("cs-del")),
         browser.SHOW_DEVELOPER_TOOLS:
             R(Key("cs-i")),
+        browser.CHECKOUT_PR:
+            R(Function(github_automation.github_checkoutupdate_pull_request, new=True)),
+        browser.UPDATE_PR:
+            R(Function(github_automation.github_checkoutupdate_pull_request, new=False)),
         "IRC identify":
             R(Text("/msg NickServ identify PASSWORD")),
     }

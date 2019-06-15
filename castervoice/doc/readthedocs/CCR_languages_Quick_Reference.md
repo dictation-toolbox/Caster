@@ -114,6 +114,7 @@ A quick reference guide for the language-specific commands included with Caster.
 | `dev descript`                              | ` rdescript="MyGrammar: "`                                                 |
 | `dev mimic [<text>]`                        | `Mimic("")`                                                                |
 | `dev split dictation [<text>]`              | `"this", "is", "an", "example"`                                            |
+| `dev execute`                               | `.execute()`                                                               |
 | `command [<spec>] key`                      | `"example": Key(""),`                                                      |
 | `command [<spec>] key repeat`               | `"example [<n>]": Key("") * Repeat(extra="n"),`                            |
 | `command [<spec>] text`                     | `"example": Text(""),`                                                     |
