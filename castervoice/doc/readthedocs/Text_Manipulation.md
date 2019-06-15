@@ -35,13 +35,14 @@ Caster provides powerful text manipulation and navigation features. These functi
 
 ## Possible future features
 Please feel free to try and implement these and submit a pull request!
-- Supporting Caster numbers as targets (e.g. _go lease before numb one_)
+- Supporting Caster numbers as targets (e.g. _go lease before numb one_).
 - Selecting from one element to another element rather than having to move the cursor first (e.g. _grab sauce twenty from third left prekris to second right prekris_).
-- Replacing with Caster-formatted text (e.g. _replace lease caster with gum caster_)
-- Selecting with Caster-formatted text (e.g. _grab lease tie caster_)
-- Very powerful selection and replacement using Caster-style typing (e.g. _replace lease tie caster minus gum style ace gum typing with tie caster minus laws formatted text_)
-- Quick format switching (e.g. _switch [format of] very powerful to snake_)
+- Replacing with Caster-formatted text (e.g. _replace lease caster with gum caster_).
+- Selecting with Caster-formatted text (e.g. _grab lease tie caster_).
+- Very powerful selection and replacement using Caster-style typing (e.g. _replace lease tie caster minus gum style ace gum typing with tie caster minus laws formatted text_).
+- Quick format switching (e.g. _switch [format of] very powerful to snake_).
 - Limit dictation recognition to only elements that are there. Currently, the voice recognition software provides its best guess at what you mean, rather than Caster limiting the options to what is in the selection.
+- Use line numbers as location limiters (e.g. go line one fifty nine third right prekris).
 
 ## Known bugs/issues
 - In RStudio, the underlying Ace text editor automatically navigates through double spaces with a single arrow key press. This feature causes these functions to fail. An RStudio [issue](https://github.com/rstudio/rstudio/issues/4934) is open.
