@@ -6,7 +6,7 @@ Caster provides powerful text manipulation and navigation features. These functi
 
 - `direction` _sauce_ (up), _dunce_ (down), _lease_ (left) or _ross_ (right). Direction _must_ be included for all commands.
 - `number_of_lines_to_search` is an integer number of lines to search for the target object. _sauce_ searches up and _dunce_ searches down. _sauce/dunce_ defaults to 3 lines if omitted and _lease/ross_ always searches only the current line.
-- `before_after` can be _before_ or _after_ and indicates whether the cursor should stop to the left (_before_) or the right (_after_) of the target object. Defaults to _before_ for _ross/dunce_ and _after_ for _lease/sauce_. 
+- `before_after` can be _before_ or _after_ and indicates whether the cursor should stop to the left (_before_) or the right (_after_) of the target object. Defaults for `before_after` depend on which command is being used. For the "go" commands, `before_after` defaults to whichever one is closer. More explicitly, for "go", _ross/dunce_ defaults to _before_ and _lease/sauce_ defaults to _after_ .  By contrast, for the "grab until" and "remove until" commands it defaults to the one that is farther (i.e. it selects or removes all the way through the phrase). More explicitly, for "grab/remove until", _ross/dunce_ defaults to _after_ and _lease/sauce_ defaults to _before_. 
 - `occurrence_number` can be _first_ through _ninth_ and indicates which occurrence of the target object you want, counting from the initial position of the cursor in the direction you specify. Defaults to _first_.
 - `target_object` can be a Caster alphabet element (_arch, brov_ etc.), a Caster punctuation element (_left prekris, deckle_ etc.), or arbitrary dictation (e.g. "punctuation element" spoken). Caster numbers are not yet supported.
 
@@ -46,6 +46,8 @@ Please feel free to try and implement these and submit a pull request!
 
 ## Known bugs/issues
 - In RStudio, the underlying Ace text editor automatically navigates through double spaces with a single arrow key press. This feature causes these functions to fail. An RStudio [issue](https://github.com/rstudio/rstudio/issues/4934) is open.
-- Currently, using _sauce/dunce_ includes the current line in the search and _lease/ross_ allows the user to specify a number of lines to search over.
+- Currently, using _sauce/dunce_ includes the current line in the search and _lease/ross_ allows the user to specify a number of lines to search over. To fix this, we would need to adjust the regex for the case when _sauce/dunce_ is specified so that it only matches when it sees a new line character before (for _dunce_) or after (for _sauce_) the target object.
 - There is some duplication in the code. It would be great if a python expert was able to help us tidy the code up a bit.
 - You will want to [disable smart selection](https://superuser.com/questions/962710/how-to-make-microsoft-word-selection-behave-like-it-would-in-a-plain-text-editor) for use in Microsoft Word.
+- Words within a multiword camel case phrase will be ignored, the regex needs to be adjusted to fix this.
+- There is some duplication in the code. It would be great if a python expert was able to help us tidy the code up a bit.
