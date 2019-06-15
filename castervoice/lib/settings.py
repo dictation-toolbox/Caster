@@ -52,6 +52,17 @@ HMC_SEPARATOR = "[hmc]"
 
 WSR = False
 
+# set the paths for autohotkey and git bash
+if os.path.isfile('C:/Program Files/Git/git-bash.exe'):
+    TERMINAL_PATH_DEFAULT = "C:/Program Files/Git/git-bash.exe"
+else:
+    TERMINAL_PATH_DEFAULT = ""
+
+if os.path.isfile('C:/Program Files/AutoHotkey/AutoHotkey.exe'):
+    AHK_PATH_DEFAULT = "C:/Program Files/AutoHotkey/AutoHotkey.exe"
+else:
+    AHK_PATH_DEFAULT = ""
+
 
 def get_platform_information():
     """Return a dictionary containing platform-specific information."""
@@ -182,7 +193,10 @@ _DEFAULT_SETTINGS = {
         "RECORDED_MACROS_PATH": _USER_DIR + "/data/recorded_macros.toml",
         "SAVED_CLIPBOARD_PATH": _USER_DIR + "/data/clipboard.toml",
         "SIKULI_SCRIPTS_PATH": _USER_DIR + "/sikuli",
-
+        "GIT_REPO_LOCAL_REMOTE_PATH": _USER_DIR + "/data/git_repo_local_to_remote_match.toml",
+        "GIT_REPO_LOCAL_REMOTE_DEFAULT_PATH": BASE_PATH + "/bin/share/git_repo_local_to_remote_match.toml.defaults",
+        "BRINGME_DEFAULTS_PATH": BASE_PATH + "/bin/share/bringme.toml.defaults",
+        
         # REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
         "REMOTE_DEBUGGER_PATH": "",
 
@@ -191,6 +205,7 @@ _DEFAULT_SETTINGS = {
         "SIKULI_RUNNER": "",
 
         # EXECUTABLES
+        "AHK_PATH": AHK_PATH_DEFAULT,
         "DOUGLAS_PATH": BASE_PATH + "/asynch/mouse/grids.py",
         "ENGINE_PATH": _validate_engine_path(),
         "HOMUNCULUS_PATH": BASE_PATH + "/asynch/hmc/h_launch.py",
@@ -202,6 +217,7 @@ _DEFAULT_SETTINGS = {
         "SETTINGS_WINDOW_PATH": BASE_PATH + "/asynch/settingswindow.py",
         "SIKULI_SERVER_PATH": BASE_PATH + "/asynch/sikuli/server/xmlrpc_server.sikuli",
         "WSR_PATH": "C:/Windows/Speech/Common/sapisvr.exe",
+        "TERMINAL_PATH": TERMINAL_PATH_DEFAULT,
 
         # CCR
         "CONFIGDEBUGTXT_PATH": _USER_DIR + "/data/configdebug.txt",
@@ -263,6 +279,12 @@ _DEFAULT_SETTINGS = {
     "sikuli": {
         "enabled": False,
         "version": ""
+    },
+
+    # gitbash settings
+    "gitbash": {
+        "loading_time": 5,  # the time to initialise the git bash window in seconds
+        "fetching_time": 3  # the time to fetch a github repository in seconds
     },
 
     # feature switches
