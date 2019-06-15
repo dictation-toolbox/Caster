@@ -7,56 +7,10 @@ from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
 
-<<<<<<< HEAD
-text_punc_dict = {
-    "ace":                                  " ",
-    "clamor":                               "!",
-    "chocky":                              "\"",
-    "hash tag":                             "#",
-    "Dolly":                                "$",
-    "modulo":                               "%",
-    "ampersand":                            "&",
-    "apostrophe | single quote | chicky":   "'",
-    "left prekris":                         "(",
-    "right prekris":                        ")",
-    "starling":                             "*",
-    "plus":                                 "+",
-    "comma":                                ",",
-    "minus":                                "-",
-    "period | dot":                         ".",
-    "slash":                                "/",
-    "deckle":                               ":",
-    "semper":                               ";",
-    "[is] less than | left angle":          "<",
-    "[is] less [than] [or] equal [to]":    "<=",
-    "equals":                               "=",
-    "[is] equal to":                       "==",
-    "[is] greater than | right angle":      ">",
-    "[is] greater [than] [or] equal [to]": ">=",
-    "questo":                               "?",
-    "(atty | at symbol)":                   "@",
-    "left brax":                            "[",
-    "lean slash":                          "\\",
-    "right brax":                           "]",
-    "carrot":                               "^",
-    "underscore":                           "_",
-    "ticky":                                "`",
-    "left curly":                           "{",
-    "pipe (sim | symbol)":                  "|",
-    "right curly":                          "}",
-    "tilde":                                "~",
-}
-
-double_text_punc_dict = {
-    "quotes":                            "\"\"",
-    "thin quotes":                         "''",
-    "bakes":                               "``",
-=======
 double_text_punc_dict = {
     "quotes":                            "\"\"",
     "thin quotes":                         "''",
     "tickris":                             "``",
->>>>>>> pure_develop
     "prekris":                             "()",
     "brax":                                "[]",
     "curly":                               "{}",
