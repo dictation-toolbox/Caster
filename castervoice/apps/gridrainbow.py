@@ -25,7 +25,7 @@ def send_input(pre, color, n, action, nexus):
     s = nexus.comm.get_com("grids")
     s.move_mouse(int(pre), int(color), int(n))
     int_a = int(action)
-    if (int_a == 0) | (int_a == 1):
+    if (int_a == 0) | (int_a == 1) | (int_a == -1):
         s.kill()
         grids.wait_for_death(settings.DOUGLAS_TITLE)
         time.sleep(0.1)
@@ -60,18 +60,13 @@ x2 = None
 y1 = None
 y2 = None
 
-def store_point(point):
-    global x1, y1, x2, y2
-    int_p = int(point)
-    if int_p == 1:
-        x1, y1 = win32api.GetCursorPos()
-    elif int_p == 2:
-        x2, y2 = win32api.GetCursorPos()
-    else:
-        raise Exception("Illegal point specified")
+def store_first_point():
+    global x1, y1
+    x1, y1 = win32api.GetCursorPos()
 
 def select_text(nexus):
     global x1, y1, x2, y2
+    x2, y2 = win32api.GetCursorPos()
     s = nexus.comm.get_com("grids")
     s.kill()
     grids.wait_for_death(settings.DOUGLAS_TITLE)
@@ -86,9 +81,9 @@ class GridControlRule(MergeRule):
             R(Function(send_input_select, nexus=_NEXUS), rdescript="Rainbow Grid: Select (long version)"),
         "[<pre1>] <color1> <n1> select <n2>":
             R(Function(send_input_select_short, nexus=_NEXUS), rdescript="Rainbow Grid: Select (short version)"),
-        "point <point>":
-            R(Function(store_point), rdescript="Rainbow Grid: Store point"),
-        "select":
+        "squat":
+            R(Function(store_first_point), rdescript="Rainbow Grid: Store first point"),
+        "bench":
             R(Function(select_text, nexus=_NEXUS), rdescript="Rainbow Grid: Select (point version)"),
         "exit | escape | cancel":
             R(Function(kill, nexus=_NEXUS), rdescript="Rainbow Grid: Exit"),
@@ -141,7 +136,7 @@ class GridControlRule(MergeRule):
         "pre": 0,
         "pre1": 0,
         "pre2": 0,
-        "action": 0,
+        "action": -1,
     }
 
 #---------------------------------------------------------------------------
