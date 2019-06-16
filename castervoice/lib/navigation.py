@@ -7,8 +7,9 @@ import time
 from ctypes import windll
 from subprocess import Popen
 
+
 import dragonfly
-from dragonfly import Choice, monitors
+from dragonfly import Choice, monitors, Pause
 from castervoice.asynch.mouse.legion import LegionScanner
 from castervoice.lib import control, settings, utilities, textformat
 from castervoice.lib.actions import Key, Text, Mouse
@@ -40,7 +41,6 @@ TARGET_CHOICE = Choice(
         "closers": "}~]~)",
         "token": "TOKEN"
     })
-
 
 def get_direction_choice(name):
     global DIRECTION_STANDARD
@@ -248,3 +248,26 @@ def next_line(semi):
     time.sleep(0.25)
     Text(semi).execute()
     Key("enter").execute()
+
+'''
+function for performing an action on one or more lines in a text editor.
+E.g.: "cut 128 by 148"
+
+action: key combination to be pressed once the body of text has been highlighted, could be an empty string
+ln1, ln2: line numbers, usually ShortIntegerRef, the default for ln2 should be an empty string
+go_to_line: key combo to navigate by line number
+select_line_down: key combo to select the line below
+wait: some applications are slow and need a pause between keystrokes, e.g. wait="/10"
+upon_arrival: keystroke to be pressed after arriving at the first line. Should have a comma afterwards, e.g. "home, "
+'''
+def action_lines(action, ln1, ln2, go_to_line="c-g", select_line_down="s-down", wait="", upon_arrival=""):
+    num_lines = max(int(ln2)-int(ln1)+1, int(ln1)-int(ln2)+1) if ln2 else 1
+    top_line = min(int(ln2), int(ln1))                        if ln2 else int(ln1)
+    command = Key(go_to_line) + Text(str(top_line)) + Key("enter%s, %s%s%s:%s, %s" % (wait, upon_arrival, select_line_down, wait, str(num_lines), action))
+    command.execute()
+
+actions = {"select" : "",
+           "copy"   : "c-c",
+           "cut"    : "c-x",
+           "paste"  : "c-v",
+           "delete" : "backspace"}

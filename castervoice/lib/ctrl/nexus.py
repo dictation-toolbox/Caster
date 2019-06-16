@@ -19,17 +19,16 @@ class Nexus:
 
         self.temp = ""
 
-        self.history = RecognitionHistoryForWSR(20)
-        if not settings.WSR:
+        if settings.WSR or not real_merger_config:
+            self.history = RecognitionHistoryForWSR(20)
+            self.timer = TimerForWSR(0.025)
+        else:
+            from dragonfly.timer import _Timer
+            self.timer = _Timer(0.025)
             self.history = RecognitionHistory(20)
             self.history.register()
         self.state.set_stack_history(self.history)
         self.preserved = None
-
-        self.timer = TimerForWSR(0.025)
-        if not settings.WSR:
-            from dragonfly.timer import _Timer
-            self.timer = _Timer(0.025)
 
         self.comm = Communicator()
 

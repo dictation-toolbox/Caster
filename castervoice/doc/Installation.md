@@ -146,6 +146,7 @@ Caster dependencies
 - pillow
 - toml
 - future
+- mock
 
 ## YouTube Videos 
 

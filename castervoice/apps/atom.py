@@ -4,14 +4,14 @@ Command-module for Atom
 Official Site "https://atom.io/"
 """
 
-from castervoice.lib import control, settings
+from castervoice.lib import control, settings, navigation
 from castervoice.lib.actions import Key, Text
 from castervoice.lib.context import AppContext
 from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
-from dragonfly import Choice, Dictation, Grammar, Pause, Repeat
+from dragonfly import Choice, Dictation, Grammar, Pause, Repeat, Function
 
 # How long to wait for the Atom palette to load before hitting the enter key
 atom_palette_wait = 30
@@ -101,10 +101,11 @@ class AtomRule(MergeRule):
             ACK("ac-q", "Atom: Reflow Section"),
         "select encoding":
             ACK("cs-u", "Atom: Select Encoding"),
-        "[go to] line <line_number>":
-            R(Key("c-g") + Pause(str(atom_palette_wait)) + Text("%(line_number)s") +
-              Key("enter"),
-              rdescript="Atom: Go to Line #"),
+        "[go to] line <ln1>":
+            R(Key("c-g") + Pause(str(atom_palette_wait)) + Text("%(ln1)s") +
+              Key("enter")),
+        "<action> [line] <ln1> [by <ln2>]":
+            R(Function(navigation.action_lines)),
         "select grammar":
             ACK("cs-l", "Atom: Select Grammar"),
         #Lines Submenu
@@ -573,8 +574,10 @@ class AtomRule(MergeRule):
         Dictation("text"),
         Dictation("mim"),
         IntegerRefST("n", 1, 50),
-        IntegerRefST("line_number", 1, 50000),
+        IntegerRefST("ln1", 1, 50000),
+        IntegerRefST("ln2", 1, 50000),
         IntegerRefST("n2", 1, 10),
+        Choice("action", navigation.actions),
         Choice(
             "nrw", {
                 "first": 1,
@@ -590,6 +593,7 @@ class AtomRule(MergeRule):
     ]
     defaults = {
         "n": 1,
+        "ln2": "",
         "mim": "",
     }
 

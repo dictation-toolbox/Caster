@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
@@ -19,8 +18,8 @@ Thank you for using Caster!
 """
 
 SETTINGS = {}
-BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "lib", 1)[0].replace(
-    "\\", "/")
+BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "lib",
+                                              1)[0].replace("\\", "/")
 _USER_DIR = os.path.expanduser("~").replace("\\", "/") + "/.caster"
 _SETTINGS_PATH = _USER_DIR + "/data/settings.toml"
 
@@ -53,6 +52,17 @@ HMC_SEPARATOR = "[hmc]"
 
 WSR = False
 
+# set the paths for autohotkey and git bash
+if os.path.isfile('C:/Program Files/Git/git-bash.exe'):
+    TERMINAL_PATH_DEFAULT = "C:/Program Files/Git/git-bash.exe"
+else:
+    TERMINAL_PATH_DEFAULT = ""
+
+if os.path.isfile('C:/Program Files/AutoHotkey/AutoHotkey.exe'):
+    AHK_PATH_DEFAULT = "C:/Program Files/AutoHotkey/AutoHotkey.exe"
+else:
+    AHK_PATH_DEFAULT = ""
+
 
 def get_platform_information():
     """Return a dictionary containing platform-specific information."""
@@ -61,24 +71,17 @@ def get_platform_information():
     system_information.update({"python version": sys.version_info})
     if sys.platform == "win32":
         system_information.update({"binary path": sys.exec_prefix})
-        system_information.update({
-            "main binary": os.path.join(sys.exec_prefix, "python.exe")
-        })
-        system_information.update({
-            "hidden console binary": os.path.join(sys.exec_prefix, "pythonw.exe")
-        })
+        system_information.update(
+            {"main binary": os.path.join(sys.exec_prefix, "python.exe")})
+        system_information.update(
+            {"hidden console binary": os.path.join(sys.exec_prefix, "pythonw.exe")})
     else:
         system_information.update({"binary path": os.path.join(sys.exec_prefix, "bin")})
-        system_information.update({
-            "main binary": os.path.join(sys.exec_prefix, "bin", "python")
-        })
-        system_information.update({
-            "hidden console binary": os.path.join(sys.exec_prefix, "bin", "python")
-        })
-    if system_information["platform"] != "win32":
-        raise SystemError("Your platform is not currently supported by Caster.")
+        system_information.update(
+            {"main binary": os.path.join(sys.exec_prefix, "bin", "python")})
+        system_information.update(
+            {"hidden console binary": os.path.join(sys.exec_prefix, "bin", "python")})
     return system_information
-
 
 SYSTEM_INFORMATION = get_platform_information()
 
@@ -90,6 +93,13 @@ def _validate_engine_path():
     '''
     Validates path 'Engine Path' in settings.toml
     '''
+    if not sys.platform.startswith('win'):
+        return ''
+    try:
+        # pylint: disable=import-error
+        import natlink
+    except ImportError:
+        return ''
     if os.path.isfile(_SETTINGS_PATH):
         with io.open(_SETTINGS_PATH, "rt", encoding="utf-8") as toml_file:
             data = toml.loads(toml_file.read())
@@ -103,7 +113,7 @@ def _validate_engine_path():
                     formatted_data = unicode(toml.dumps(data))
                     with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as toml_file:
                         toml_file.write(formatted_data)
-                    print("Setting engine path to ") + engine_path
+                    print("Setting engine path to " + engine_path)
                 except Exception as e:
                     print("Error saving settings file ") + str(e) + _SETTINGS_PATH
                 return engine_path
@@ -183,7 +193,10 @@ _DEFAULT_SETTINGS = {
         "RECORDED_MACROS_PATH": _USER_DIR + "/data/recorded_macros.toml",
         "SAVED_CLIPBOARD_PATH": _USER_DIR + "/data/clipboard.toml",
         "SIKULI_SCRIPTS_PATH": _USER_DIR + "/sikuli",
-
+        "GIT_REPO_LOCAL_REMOTE_PATH": _USER_DIR + "/data/git_repo_local_to_remote_match.toml",
+        "GIT_REPO_LOCAL_REMOTE_DEFAULT_PATH": BASE_PATH + "/bin/share/git_repo_local_to_remote_match.toml.defaults",
+        "BRINGME_DEFAULTS_PATH": BASE_PATH + "/bin/share/bringme.toml.defaults",
+        
         # REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
         "REMOTE_DEBUGGER_PATH": "",
 
@@ -192,6 +205,7 @@ _DEFAULT_SETTINGS = {
         "SIKULI_RUNNER": "",
 
         # EXECUTABLES
+        "AHK_PATH": AHK_PATH_DEFAULT,
         "DOUGLAS_PATH": BASE_PATH + "/asynch/mouse/grids.py",
         "ENGINE_PATH": _validate_engine_path(),
         "HOMUNCULUS_PATH": BASE_PATH + "/asynch/hmc/h_launch.py",
@@ -203,6 +217,7 @@ _DEFAULT_SETTINGS = {
         "SETTINGS_WINDOW_PATH": BASE_PATH + "/asynch/settingswindow.py",
         "SIKULI_SERVER_PATH": BASE_PATH + "/asynch/sikuli/server/xmlrpc_server.sikuli",
         "WSR_PATH": "C:/Windows/Speech/Common/sapisvr.exe",
+        "TERMINAL_PATH": TERMINAL_PATH_DEFAULT,
 
         # CCR
         "CONFIGDEBUGTXT_PATH": _USER_DIR + "/data/configdebug.txt",
@@ -266,6 +281,12 @@ _DEFAULT_SETTINGS = {
         "version": ""
     },
 
+    # gitbash settings
+    "gitbash": {
+        "loading_time": 5,  # the time to initialise the git bash window in seconds
+        "fetching_time": 3  # the time to fetch a github repository in seconds
+    },
+
     # feature switches
     "feature_rules": {
         "hmc": True,
@@ -285,6 +306,7 @@ _DEFAULT_SETTINGS = {
         "atom_palette_wait": 30,  # hundredths of a second
         "rdp_mode": False,  # Switch app context manually for remote desktop
         "integer_remap_opt_in": False,
+        "short_integer_opt_out": False,
         "integer_remap_crash_fix": False,
         "print_rdescripts": True,
         "history_playback_delay_secs": 1.0,

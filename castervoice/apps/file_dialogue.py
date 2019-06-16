@@ -1,4 +1,4 @@
-from dragonfly import (AppContext, Dictation, Grammar, IntegerRef, Key, MappingRule,
+from dragonfly import (AppContext, Dictation, Grammar, Key, MappingRule,
                        Pause, Repeat, Text)
 from dragonfly.actions.action_mimic import Mimic
 
