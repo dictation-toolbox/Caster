@@ -191,7 +191,7 @@ _DEFAULT_SETTINGS = {
         "FILTER_DEFS_PATH": _USER_DIR + "/data/words.txt",
         "LOG_PATH": _USER_DIR + "/log.txt",
         "RECORDED_MACROS_PATH": _USER_DIR + "/data/recorded_macros.toml",
-        "SAVED_CLIPBOARD_PATH": _USER_DIR + "/data/clipboard.toml",
+        "SAVED_CLIPBOARD_PATH": _USER_DIR + "/data/clipboard.json",
         "SIKULI_SCRIPTS_PATH": _USER_DIR + "/sikuli",
         "GIT_REPO_LOCAL_REMOTE_PATH": _USER_DIR + "/data/git_repo_local_to_remote_match.toml",
         "GIT_REPO_LOCAL_REMOTE_DEFAULT_PATH": BASE_PATH + "/bin/share/git_repo_local_to_remote_match.toml.defaults",
