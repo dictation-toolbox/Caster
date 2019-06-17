@@ -50,7 +50,7 @@ Please feel free to try and implement these and submit a pull request!
 
 ## Known bugs/issues
 - Report bugs and discuss solutions [here](https://github.com/dictation-toolbox/Caster/issues/579).
-- In some applications, the keypress speed is slow such that the cursor takes a long time to move to the desired location (seems to be application dependent).
+- In some applications, the keypress speed is slow such that the cursor takes a long time to move to the desired location (seems to be application dependent). In the background, Caster is just using the left and right keys to move the cursor around after the initial selection. In principle, we could improve this by using the up/down arrows and navigating using Ctrl-left/right.
 - Currently, using _sauce/dunce_ includes the current line in the search (it shouldn't) and _lease/ross_ allows the user to specify a number of lines to search over (it should only search the current line). To fix this, we would need to adjust the regex for the case when _sauce/dunce_ is specified so that it only matches when it sees a new line character before (for _dunce_) or after (for _sauce_) the target object. The regex is located in the function `select_text_and_return_it` in the file `text_manipulation_functions.py`.
 - Words within a multiword camel case phrase will be ignored, the regex (see above) needs to be adjusted to fix this. 
 - In some situations (possibly only when selecting towards the left), if you have two of the same word directly in a row, the regex not match the nearest occurrence but rather start by matching the second nearest one. The regex (see above) needs to be adjusted to fix this (I don't know how).
