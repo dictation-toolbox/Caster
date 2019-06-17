@@ -85,7 +85,7 @@ class VoiceDevCommands(MergeRule):
 
         # Dragonfly Snippets
         "dev key":
-            R(Text('Key("")') + Key("left:3"), rdescript="DragonflyDev: Snippet for Key Action"),
+            R(Text('Key("")') + Key("left:2"), rdescript="DragonflyDev: Snippet for Key Action"),
         "dev text":
             R(Text('Text("")') + Key("left:2"), rdescript="DragonflyDev: Snippet for Text Action"),
         "dev pause":
