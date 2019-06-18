@@ -298,7 +298,9 @@ class Navigation(MergeRule):
         Choice("semi", {
             "dock": ";",
             "doc": ";",
-            "sink": ""
+            "sink": "",
+            "(com | comma)": ",",
+            "(deck | deckle | cole)": ":",
         }),
         Choice("word_limit", {
             "single": 1,
