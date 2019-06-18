@@ -11,7 +11,7 @@ Alternatively use the [master branch](https://github.com/dictation-toolbox/Caste
   - [VimGolf and Project Euler](https://www.youtube.com/watch?v=T1bKAqDhH_E)
   - [Dictating maths into scientific notebook](https://www.youtube.com/watch?v=oq8EoPu0cGY&t=3s) and [Dictating math by voice using Caster](https://www.youtube.com/watch?v=z-iHvPmjcas)
 - [Instructions for installing](https://github.com/dictation-toolbox/Caster/blob/develop/castervoice/doc/Installation.md)
-- Documentation on Caster [[ReadTheDocs](http://caster.readthedocs.org/en/latest/README/)] [[YouTube](https://www.youtube.com/channel/UC2qZzmCj_5ZKkTa3i9X1LCg)] and Dragonfly [[ReadTheDocs](https://dragonfly2.readthedocs.io/en/latest/)] 
+- Documentation on Caster [[ReadTheDocs](https://caster.readthedocs.io/en/latest/)] [[YouTube](https://www.youtube.com/channel/UC2qZzmCj_5ZKkTa3i9X1LCg)] and Dragonfly [[ReadTheDocs](https://dragonfly2.readthedocs.io/en/latest/)] 
 - [How to Speak Code](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/examples/speaking/examples1/) - Example Document
 - Caster Command Reference Guides 
   - [Caster](https://github.com/dictation-toolbox/Caster/blob/develop/CasterQuickReference.pdf) - Universal navigation and editing - These commands are active all the time, and provide input commands for letters, numbers and punctuation, as well as the ability to easily manipulate windows and text. 
