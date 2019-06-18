@@ -8,6 +8,7 @@
     - [Dictating maths into scientific notebook](https://www.youtube.com/watch?v=oq8EoPu0cGY&t=3s) and [Dictating math by voice using Caster](https://www.youtube.com/watch?v=z-iHvPmjcas)
 
 - [Instructions for installing](Installation.md)
+- [Quick reference](CasterQuickReference.pdf): commands to get started with.
 - Documentation on Caster [[ReadTheDocs](http://caster.readthedocs.org/en/latest/)] [[YouTube](https://www.youtube.com/channel/UC2qZzmCj_5ZKkTa3i9X1LCg)] and Dragonfly [[ReadTheDocs](https://dragonfly2.readthedocs.io/en/latest/)] 
 - Caster Command Reference Guides 
     - [Caster](CasterQuickReference.pdf) - Universal navigation and editing - These commands are active all the time, and provide input commands for letters, numbers and punctuation, as well as the ability to easily manipulate windows and text. 
