@@ -17,7 +17,9 @@ from castervoice.lib.dfplus.state.actions2 import UntilCancelled
 from castervoice.lib.dfplus.state.short import L, S, R
 from dragonfly.actions.action_mimic import Mimic
 from castervoice.lib.ccr.standard import SymbolSpecs
-from castervoice.lib.ccr.core.punctuation import double_text_punc_dict
+from castervoice.lib.ccr.core.punctuation import text_punc_dict,  double_text_punc_dict
+from castervoice.lib.alphanumeric import caster_alphabet
+
 
 _NEXUS = control.nexus()
 
@@ -205,7 +207,7 @@ class Navigation(MergeRule):
         'shock [<nnavi50>]':
             R(Key("enter"), rspec="shock")* Repeat(extra="nnavi50"),
         # "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]":
-        #     R(Function(text_utils.master_text_nav)),
+        #     R(Function(text_utils.master_text_nav)), # this is now implemented below
         "shift click":
             R(Key("shift:down") + Mouse("left") + Key("shift:up")),
         "stoosh [<nnavi500>]":
@@ -269,11 +271,11 @@ class Navigation(MergeRule):
         "bench":
             R(Function(navigation.left_up, nexus=_NEXUS)),
         
-        
+        # keystroke commands
         "<direction> [<nnavi500>]": R(Key("%(direction)s") * Repeat(extra='nnavi500'),
             rdescript="arrow keys"),
-        "ross wally [<nnavi10>]": R(Key("end") * Repeat(extra='nnavi10')),
-        "lease wally [<nnavi10>]": R(Key("home") * Repeat(extra='nnavi10')),
+        "lease wally [<nnavi10>]": R(Key("home:%(nnavi10)s")),
+        "ross wally [<nnavi10>]": R(Key("end:%(nnavi10)s")),
         
         "<modifier> <button_dictionary_500> [<nnavi500>]":
               R(Key("%(modifier)s-%(button_dictionary_500)s") * Repeat(extra='nnavi500'), 
@@ -286,10 +288,17 @@ class Navigation(MergeRule):
               rdescript="press modifiers plus buttons from button_dictionary_1, non-repeatable"),
         
         
-
     }
-
-    
+    # I tried to limit which things get repeated how many times in hopes that it will help prevent the bad grammar error
+    # this could definitely be changed. perhaps some of these should be made non-CCR
+    button_dictionary_500 = {"(tab | tabby)": "tab", "backspace": "backspace", "delete": "del", "(escape | cancel)": "escape", "(enter | shock)": "enter",
+    "(left | lease)": "left", "(right | ross)": "right", "(up | sauce)": "up",
+    "(down | dunce)": "down", "page (down | dunce)": "pgdown", "page (up | sauce)": "pgup", "space": "space"}
+    button_dictionary_10 = {}
+    button_dictionary_10.update(caster_alphabet)
+    button_dictionary_10.update(text_punc_dict)
+    button_dictionary_1 = {"home": "(home | lease wally)", "(end | ross wally)": "end", "insert": "insert", "zero": "0",
+    "one": "1", "two": "2", "three": "3", "four": "4", "five": "5", "six":"6", "seven": "7", "eight": "8", "nine": "9"}
 
     extras = [
         
