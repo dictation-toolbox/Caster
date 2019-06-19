@@ -24,8 +24,8 @@ ZOOM_IN_N_TIMES = "zoom in [<n>]"
 ZOOM_OUT_N_TIMES = "zoom out [<n>]"
 ZOOM_RESET_DEFAULT = "zoom reset"
 FORCE_HARD_REFRESH = "(hard refresh|super refresh)"
-FIND_NEXT_MATCH = "find %s [match] [<n>]" % BACK
-FIND_PREVIOUS_MATCH = "find %s [match] [<n>]" % FORWARD
+FIND_NEXT_MATCH = "find %s [match] [<n>]" % FORWARD
+FIND_PREVIOUS_MATCH = "find %s [match] [<n>]" % BACK
 TOGGLE_CARET_BROWSING = "[toggle] caret browsing"
 GO_TO_HOMEPAGE = "[go] home [page]"
 SHOW_HISTORY = "[show] history"
@@ -61,9 +61,4 @@ EXTRAS = [
         "fourth": "4",
         "fifth": "5",
         "sixth": "6",
-        "seventh": "7",
-        "eighth": "8",
-    }),
-    IntegerRefST("n", 1, 100),
-    IntegerRefST("m", 1, 10)
-]
+        "seventh"

@@ -7,4 +7,4 @@ LEFT = "(left|lease)"
 UP = "(up|sauce)"
 DOWN = "(down|dunce)"
 FORWARD = "(%s|next|forward)" % RIGHT
-BACK = "(%s|back|prev|previous)" % LEFT
+BACK = "(%s|back|prev|prior|previous)" % LEFT

@@ -27,10 +27,6 @@ class ChromeRule(BrowserSharedCommands):
     pronunciation = "google chrome"
 
     _mapping = {
-        browser.OPEN_NEW_WINDOW:
-            R(Key("c-n")),
-        browser.OPEN_NEW_INCOGNITO_WINDOW:
-            R(Key("cs-n")),
         browser.PREVIOUS_TAB_N_TIMES:
             R(Key("cs-tab")) * Repeat(extra="n"),
         browser.SWITCH_TO_TAB_N:
