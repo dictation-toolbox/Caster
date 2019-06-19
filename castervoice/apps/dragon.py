@@ -101,7 +101,9 @@ class DragonRule(MergeRule):
              
         "train word": R(Mimic("train", "that") + Key("a-r/200, s"),
              rdescript="Dragon: quickly train word when you have it selected in a Dragon friendly text field"),
-             # Unfortunately, the above command does not seem to work in non-full text control apps
+        "word train": R(Key("c-c/20") + Mimic("edit", "vocabulary") + Pause("100") + 
+            Key("c-v/5, tab, down, up, a-t/50, enter/50, a-r/250, s/50, escape"),
+             rdescript="train word quickly once you have it selected in non-full text control application"),
         "(add train | train from add word)": R(Key("a-a/2, enter/300, a-s"),
             rdescript="Dragon: quickly train word from the add word dialogbox"),
     # Users may want to adjust the way time on the next four commands
