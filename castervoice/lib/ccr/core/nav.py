@@ -270,7 +270,7 @@ class Navigation(MergeRule):
             R(Function(navigation.left_up, nexus=_NEXUS)),
 
     }
-    tell_commands_dict = {"dock": ";", "doc": ";", "sink": ""}
+    tell_commands_dict = {"dock": ";", "doc": ";", "sink": "", "com": ",", "deck": ":"}
     tell_commands_dict.update(text_punc_dict)
 
     extras = [
