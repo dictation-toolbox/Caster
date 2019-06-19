@@ -204,8 +204,8 @@ class Navigation(MergeRule):
             R(Key("c-s"), rspec="save"),
         'shock [<nnavi50>]':
             R(Key("enter"), rspec="shock")* Repeat(extra="nnavi50"),
-        "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]":
-            R(Function(text_utils.master_text_nav)),
+        # "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]":
+        #     R(Function(text_utils.master_text_nav)),
         "shift click":
             R(Key("shift:down") + Mouse("left") + Key("shift:up")),
         "stoosh [<nnavi500>]":
@@ -268,15 +268,55 @@ class Navigation(MergeRule):
             R(Function(navigation.left_down, nexus=_NEXUS)),
         "bench":
             R(Function(navigation.left_up, nexus=_NEXUS)),
+        
+        
+        "<direction> [<nnavi500>]": R(Key("%(direction)s") * Repeat(extra='nnavi500'),
+            rdescript="arrow keys"),
+        "ross wally [<nnavi10>]": R(Key("end") * Repeat(extra='nnavi10')),
+        "lease wally [<nnavi10>]": R(Key("home") * Repeat(extra='nnavi10')),
+        
+        "<modifier> <button_dictionary_500> [<nnavi500>]":
+              R(Key("%(modifier)s-%(button_dictionary_500)s") * Repeat(extra='nnavi500'), 
+              rdescript="press modifier keys plus buttons from button_dictionary_500"),
+        "<modifier> <button_dictionary_10> [<nnavi10>]":
+              R(Key("%(modifier)s-%(button_dictionary_10)s") * Repeat(extra='nnavi10'),
+              rdescript="press modifier keys plus buttons from button_dictionary_10"),
+        "<modifier> <button_dictionary_1>":
+              R(Key("%(modifier)s-%(button_dictionary_1)s"),
+              rdescript="press modifiers plus buttons from button_dictionary_1, non-repeatable"),
+        
+        
 
     }
 
+    
+
     extras = [
+        
         IntegerRefST("nnavi10", 1, 11),
         IntegerRefST("nnavi50", 1, 50),
         IntegerRefST("nnavi500", 1, 500),
         Dictation("textnv"),
         Choice("enclosure", double_text_punc_dict),
+        Choice("direction", {
+            "dunce": "down",
+            "sauce": "up",
+            "lease": "left",
+            "ross": "right",
+        }),
+        
+        Choice("button_dictionary_1", button_dictionary_1),
+        Choice("button_dictionary_10", button_dictionary_10), 
+        Choice("button_dictionary_500", button_dictionary_500), 
+        Choice("modifier", {
+            "(control | fly)": "c",
+            "(shift | shin)": "s",
+            "alt": "a",
+            "(control shift | que)": "cs",
+            "control alt": "ca",
+            "(shift alt | alt shift)": "sa",
+            "(control alt shift | control shift alt)": "csa", # control must go first
+        }),
         Choice("capitalization", {
             "yell": 1,
             "tie": 2,
