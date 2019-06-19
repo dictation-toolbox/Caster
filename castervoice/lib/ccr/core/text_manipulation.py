@@ -14,6 +14,8 @@ from castervoice.lib.dfplus.state.short import R
 from castervoice.lib.ccr.core.punctuation import text_punc_dict,  double_text_punc_dict
 from castervoice.lib.alphanumeric import caster_alphabet
 
+base_number_dict = {"zero": "0", "one": "1", "two": "2", "three": "3", "four": "4", "five": "5", "six": "6", "seven": "7", "eight": "8", "nine": "9" }
+number_dict = {"num "+k:base_number_dict[k] for k in base_number_dict}
 # Advertisement
 print("""Text Manipulation: Check out the new experimental text 
 manipulation commands at https://caster.readthedocs.io/en/latest/readthedocs/TextManipulation 
@@ -132,6 +134,7 @@ class TextManipulation(MergeRule):
     }
     new_text_punc_dict = copy.deepcopy(text_punc_dict)
     new_text_punc_dict.update(caster_alphabet)
+    new_text_punc_dict.update(number_dict)
     character_dict = new_text_punc_dict
     
     extras = [
