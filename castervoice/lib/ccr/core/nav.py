@@ -274,8 +274,14 @@ class Navigation(MergeRule):
         # keystroke commands
         "<direction> [<nnavi500>]": R(Key("%(direction)s") * Repeat(extra='nnavi500'),
             rdescript="arrow keys"),
-        "lease wally [<nnavi10>]": R(Key("home:%(nnavi10)s")),
-        "ross wally [<nnavi10>]": R(Key("end:%(nnavi10)s")),
+        "(lease wally | latch) [<nnavi10>]": R(Key("home:%(nnavi10)s")),
+        "(ross wally | ratch) [<nnavi10>]": R(Key("end:%(nnavi10)s")),
+        "bird [<nnavi500>]": R(Key("c-left:%(nnavi500)s")),
+        "fird [<nnavi500>]": R(Key("c-right:%(nnavi500)s")),
+        "brick [<nnavi500>]": R(Key("s-left:%(nnavi500)s")),
+        "frick [<nnavi500>]": R(Key("s-right:%(nnavi500)s")),
+        "blitch [<nnavi500>]": R(Key("cs-left:%(nnavi500)s")),
+        "flitch [<nnavi500>]": R(Key("cs-right:%(nnavi500)s")),
         
         "<modifier> <button_dictionary_500> [<nnavi500>]":
               R(Key("%(modifier)s-%(button_dictionary_500)s") * Repeat(extra='nnavi500'), 
@@ -297,7 +303,7 @@ class Navigation(MergeRule):
     button_dictionary_10 = {}
     button_dictionary_10.update(caster_alphabet)
     button_dictionary_10.update(text_punc_dict)
-    button_dictionary_1 = {"home": "(home | lease wally)", "(end | ross wally)": "end", "insert": "insert", "zero": "0",
+    button_dictionary_1 = {"home": "(home | lease wally | latch)", "(end | ross wally | ratch)": "end", "insert": "insert", "zero": "0",
     "one": "1", "two": "2", "three": "3", "four": "4", "five": "5", "six":"6", "seven": "7", "eight": "8", "nine": "9"}
 
     extras = [
