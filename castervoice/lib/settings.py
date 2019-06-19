@@ -195,7 +195,6 @@ _DEFAULT_SETTINGS = {
         "SIKULI_SCRIPTS_PATH": _USER_DIR + "/sikuli",
         "GIT_REPO_LOCAL_REMOTE_PATH": _USER_DIR + "/data/git_repo_local_to_remote_match.toml",
         "GIT_REPO_LOCAL_REMOTE_DEFAULT_PATH": BASE_PATH + "/bin/share/git_repo_local_to_remote_match.toml.defaults",
-        "BRINGME_DEFAULTS_PATH": BASE_PATH + "/bin/share/bringme.toml.defaults",
         
         # REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
         "REMOTE_DEBUGGER_PATH": "",
@@ -391,6 +390,21 @@ def _init(path):
         print("\n\n" + repr(e) + " while loading settings file: " + path +
               "\nAttempting to recover...\n\n")
     result, num_default_added = _deep_merge_defaults(result, _DEFAULT_SETTINGS)
+    # Temporary piece of code to seamlessly migrate clipboards to JSON
+    if result["paths"]["SAVED_CLIPBOARD_PATH"].endswith(".toml"):
+        import json
+        clipboard = {}
+        new_path = result["paths"]["SAVED_CLIPBOARD_PATH"][:-4] + "json"
+        print("\n\n Migrating clipboard from {} to {}"
+              .format(result["paths"]["SAVED_CLIPBOARD_PATH"], new_path))
+        with io.open(result["paths"]["SAVED_CLIPBOARD_PATH"], "rt", encoding="utf-8") as f:
+            clipboard = toml.loads(f.read())
+        formatted_data = unicode(json.dumps(clipboard, ensure_ascii=False))
+        with io.open(new_path, "wt", encoding="utf-8") as f:
+            f.write(formatted_data)
+        result["paths"]["SAVED_CLIPBOARD_PATH"] = new_path
+        if not num_default_added:
+            _save(result, _SETTINGS_PATH)
     if num_default_added > 0:
         print("Default settings values added: %d " % num_default_added)
         _save(result, _SETTINGS_PATH)
