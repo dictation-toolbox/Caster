@@ -61,4 +61,9 @@ EXTRAS = [
         "fourth": "4",
         "fifth": "5",
         "sixth": "6",
-        "seventh"
+        "seventh": "7",
+        "eighth": "8",
+    }),
+    IntegerRefST("n", 1, 100),
+    IntegerRefST("m", 1, 10)
+]
