@@ -2,7 +2,7 @@
 
 *How can I help?*
 
-1. **Write code.** There is [a lot which needs to be done](https://github.com/synkarius/caster/issues). If you can program in Python, please write some code. Note that all pull requests should be sent to the "develop" branch (see the [Caster GitHub Workflow](#caster-github-workflow) section below).
+1. **Write code.** There is [a lot which needs to be done](https://github.com/dictation-toolbox/caster/issues). If you can program in Python, please write some code. Note that all pull requests should be sent to the "develop" branch (see the [Caster GitHub Workflow](#caster-github-workflow) section below). There are also a lot of [open pull requests](https://github.com/dictation-toolbox/Caster/pulls) that need changes, testing, or a close review.
 2. **Write documentation.** The [ReadTheDocs page](http://caster.readthedocs.org/en/latest/) is pretty sparse. ReadTheDocs uses [markdown](https://markdown-guide.readthedocs.io/en/latest/) so create new docs as .md files.
 3. **Speak.** Tell others who might be interested in Caster. Join our discussions on the issues page and [Gitter](https://gitter.im/synkarius/caster). The more the merrier, and your thoughts are welcome and encouraged.
 
