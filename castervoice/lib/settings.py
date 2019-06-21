@@ -392,17 +392,20 @@ def _init(path):
     result, num_default_added = _deep_merge_defaults(result, _DEFAULT_SETTINGS)
     # Temporary piece of code to seamlessly migrate clipboards to JSON
     if result["paths"]["SAVED_CLIPBOARD_PATH"].endswith(".toml"):
+        old_clipboard = result["paths"]["SAVED_CLIPBOARD_PATH"]
         import json
         clipboard = {}
-        new_path = result["paths"]["SAVED_CLIPBOARD_PATH"][:-4] + "json"
+        new_path = old_clipboard[:-4] + "json"
         print("\n\n Migrating clipboard from {} to {}"
-              .format(result["paths"]["SAVED_CLIPBOARD_PATH"], new_path))
-        with io.open(result["paths"]["SAVED_CLIPBOARD_PATH"], "rt", encoding="utf-8") as f:
+              .format(old_clipboard, new_path))
+        with io.open(old_clipboard, "rt", encoding="utf-8") as f:
             clipboard = toml.loads(f.read())
         formatted_data = unicode(json.dumps(clipboard, ensure_ascii=False))
         with io.open(new_path, "wt", encoding="utf-8") as f:
             f.write(formatted_data)
         result["paths"]["SAVED_CLIPBOARD_PATH"] = new_path
+        if os.path.exists(old_clipboard):
+            os.remove(old_clipboard)
         if not num_default_added:
             _save(result, _SETTINGS_PATH)
     if num_default_added > 0:
