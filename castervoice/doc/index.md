@@ -1,6 +1,6 @@
 # Caster
 
-[Caster](http://dictation-toolbox.github.io/caster/) is a collection of tools aimed at enabling programming and accessibility entirely by voice built upon the [Dragonfly](https://github.com/dictation-toolbox/dragonfly) API.
+[Caster](http://dictation-toolbox.github.io/caster/) is a collection of tools aimed at enabling programming and accessibility entirely by voice built upon the [Dragonfly](https://github.com/dictation-toolbox/dragonfly) API. Note that the current version of the ReadTheDocs page is based on the [`develop`](https://github.com/dictation-toolbox/Caster/tree/develop) branch so there may be features described here that do not work if you are on the [`master`](https://github.com/dictation-toolbox/Caster/tree/master) branch.
 
 - Videos by the Caster Community.
     - [Caster Demo](https://www.youtube.com/watch?v=oIwh3z2jXD4)
