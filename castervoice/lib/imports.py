@@ -3,7 +3,7 @@ Handles standard imports for creating grammars. Import using:
 from castervoice.lib.imports import *
 '''
 
-from dragonfly import Repeat, Function, Dictation, Choice, MappingRule, ContextAction, ShortIntegerRef, Mimic, Playback, Pause
+from dragonfly import Repeat, Function, Dictation, Choice, MappingRule, ContextAction, ShortIntegerRef, Mimic, Playback, Pause, Clipboard, Window, Compound, Repetition
 
 from castervoice.lib import context, navigation, alphanumeric, textformat, text_utils
 from castervoice.lib import control, utilities
