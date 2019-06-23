@@ -1,11 +1,4 @@
-from dragonfly import Function
-
-from castervoice.lib import control, alphanumeric
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-
+from castervoice.lib.imports import *
 
 class Numbers(MergeRule):
     pronunciation = CCRMerger.CORE[2]

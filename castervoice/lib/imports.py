@@ -5,8 +5,8 @@ from castervoice.lib.imports import *
 
 from dragonfly import Repeat, Function, Dictation, Choice, MappingRule, ContextAction, ShortIntegerRef, Mimic, Playback, Pause, Clipboard, Window, Compound, Repetition, Paste
 
-from castervoice.lib import context, navigation, alphanumeric, textformat, text_utils
-from castervoice.lib import control, utilities
+from castervoice.lib import context, navigation, alphanumeric, textformat, text_utils, settings
+from castervoice.lib import control, utilities, text_manipulation_functions
 
 from castervoice.lib.actions import Key, Text, Mouse
 from castervoice.lib.context import AppContext
@@ -23,4 +23,4 @@ from castervoice.lib.dfplus.state.short import L, S, R
 from castervoice.lib.ccr.standard import SymbolSpecs
 from castervoice.lib.ccr.core.punctuation import double_text_punc_dict, text_punc_dict
 
-import os, sys, re
+import os, sys, re, copy
