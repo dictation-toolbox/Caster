@@ -33,4 +33,4 @@ def global_rule(rule):
     nexus().merger.add_global_rule(rule)
 
 def selfmod_rule(rule):
-    nexus().merger.add_selfmod_rule(rule)
+    nexus().merger.add_selfmodrule(rule)
