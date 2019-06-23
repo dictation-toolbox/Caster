@@ -130,39 +130,33 @@
 \* select / copy / cut / paste / delete
 
 # Google Chrome
-## Non-CCR
-| Command                                | Command                              | Command                      |
-|:---------------------------------------|:-------------------------------------|:-----------------------------|
-| `new window`                           | `(new incognito window / incognito)` | `close all tabs`                       |
-| `reopen tab [<n>]`                     | `close tab [<n>]`                    | `new tab that`               |
-| `next tab [<n>]`                       | `previous tab [<n>]`                 | `second last tab`            |
-| `<nth> tab`                            | `last tab`                           | `zoom in [<n>]`              |
-| `go back [<n>]`                        | `go forward [<n>]`                   | `super refresh`              |
-| `zoom out [<n>]`                       | `zoom reset`                         | `[find] prior match [<n>]`   |
-| `switch focus [<n>]`                   | `[find] next match [<n>]`            | `[show] history`             |
-| `[toggle] caret browsing`              | `home page`                          | `add bookmark`               |
-| `bookmark all tabs`                    | `show downloads`                     | `[show] bookmarks`           |
-| `switch user`                          | `[toggle] bookmark bar`              | `[toggle] full-screen`       |
-| `focus notification`                   | `chrome task manager`                | `deny notification`          |
-| `developer tools`                      | `allow notification`                 | `resume`                     |
-| `step over`                            | `view [page] source`                 | `step out`                   |
-| `IRC identify`                         | `step into`                          | `duplicate tab`              |
-| `duplicate window`                     | `google that`                        | `(menu / three dots)`        |
-| `settings`                             | `extensions`                         | `chrome task manager`        |
-| `clear browsing data`                  | `downloads`                          | `more tools`                 |
-| `google that`                          | `developer tools`                    |    |
-| `wikipedia that`                       |                     | ``                 |
+
+| Command                                | Command                              | Command                                   |
+|:---------------------------------------|:-------------------------------------|:------------------------------------------|
+| `new window`                           | `(new incognito window / incognito)` | `new tab [<n>]`                           |
+| `reopen tab [<n>]`                     | `close tab [<n>]`                    | `close all tabs`                          |
+| `next tab [<n>]`                       | `previous tab [<n>]`                 | `new tab that`                            |
+| `<nth> tab`                            | `last tab`                           | `second last tab`                         |
+| `go back [<n>]`                        | `go forward [<n>]`                   | `zoom in [<n>]`                           |
+| `zoom out [<n>]`                       | `zoom reset`                         | `super refresh`                           |
+| `switch focus [<n>]`                   | `[find] next match [<n>]`            | `[find] prior match [<n>]`                |
+| `[toggle] caret browsing`              | `home page`                          | `[show] history`                          |
+| `address bar`                          | `show downloads`                     | `add bookmark`                            |
+| `bookmark all tabs`                    | `[toggle] bookmark bar`              | `[show] bookmarks`                        |
+| `switch user`                          | `chrome task manager`                | `[toggle] full-screen`                    |
+| `focus notification`                   | `allow notification`                 | `deny notification`                       |
+| `developer tools`                      | `view [page] source`                 | `resume`                                  |
+| `step over`                            | `step into`                          | `step out`                                |
+| `IRC identify`                         | `google that`                        | `duplicate tab`                           |
+| `duplicate window`                     | `extensions`                         | `(menu / three dots)`                     |
+| `settings`                             | `downloads`                          | `chrome task manager`                     |
+| `clear browsing data`                  | `developer tools`                    | `more tools`                              |
+| `google that`                          | `wikipedia that`                     | ``                                        |
 
 | Command                                  | Notes                                                                                                                                                                        |
 |:-----------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `checkout [this] pull request [locally]` | Called from any tab of the Github pull request page: ("Conversation", "Commits", "Checks", "Files changed"). Adjust pause times in the `gitbash` section of `settings.toml`. |
 | `update [this] pull request [locally]`   | Called from any tab of the Github pull request page: ("Conversation", "Commits", "Checks", "Files changed"). Adjust pause times in the `gitbash` section of `settings.toml`. |
-
-## CCR
-| Command
-|:---------------------------------------|
-| `new tab [<n>]`                        |
-| `address [bar]`                        |
 
 # Command prompt
 
