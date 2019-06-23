@@ -17,7 +17,7 @@ from castervoice.lib.dfplus.state.actions2 import UntilCancelled
 from castervoice.lib.dfplus.state.short import L, S, R
 from dragonfly.actions.action_mimic import Mimic
 from castervoice.lib.ccr.standard import SymbolSpecs
-from castervoice.lib.ccr.core.punctuation import double_text_punc_dict
+from castervoice.lib.ccr.core.punctuation import text_punc_dict, double_text_punc_dict
 
 _NEXUS = control.nexus()
 
@@ -270,6 +270,8 @@ class Navigation(MergeRule):
             R(Function(navigation.left_up, nexus=_NEXUS)),
 
     }
+    tell_commands_dict = {"dock": ";", "doc": ";", "sink": "", "com": ",", "deck": ":"}
+    tell_commands_dict.update(text_punc_dict)
 
     extras = [
         IntegerRefST("nnavi10", 1, 11),
@@ -295,11 +297,7 @@ class Navigation(MergeRule):
                 "dissent": 6,
                 "descent": 6
             }),
-        Choice("semi", {
-            "dock": ";",
-            "doc": ";",
-            "sink": ""
-        }),
+        Choice("semi", tell_commands_dict),
         Choice("word_limit", {
             "single": 1,
             "double": 2,
