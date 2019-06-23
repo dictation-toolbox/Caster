@@ -40,8 +40,8 @@ SPLIT_WINDOW_RIGHT = "split [pane] %s" % RIGHT
 SPLIT_WINDOW_LEFT = "split [pane] %s" % LEFT
 SPLIT_MOVE_UP = "pane %s [<n>]" % UP
 SPLIT_MOVE_DOWN = "pane %s [<n>]" % DOWN
-SPLIT_MOVE_RIGHT = "(pane %s|next pane) [<n>]" % RIGHT
-SPLIT_MOVE_LEFT = "(pane %s|(prior|previous) pane) [<n>]" % LEFT
+SPLIT_MOVE_RIGHT = "(pane %s|%s pane) [<n>]" % (RIGHT, RIGHT)
+SPLIT_MOVE_LEFT = "(pane %s|%s pane) [<n>]" % (LEFT, LEFT)
 CLOSE_PANE_N_TIMES = "close pane [<n>]|pane close [<n>]"
 
 # navigation
