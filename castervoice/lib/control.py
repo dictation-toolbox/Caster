@@ -18,10 +18,10 @@ Commands for easily loading different types of rules, e.g.:
 control.non_ccr_app_rule(FirefoxRule(), AppContext("firefox"))
 '''
 def non_ccr_app_rule(rule, context=None):
-    grammar = Grammar(context=context)
     if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
         nexus().merger.add_global_rule(rule)
     else:
+        grammar = Grammar(str(rule), context=context)
         gfilter.run_on(rule)
         grammar.add_rule(rule)
         grammar.load()
