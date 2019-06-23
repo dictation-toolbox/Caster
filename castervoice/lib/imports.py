@@ -3,14 +3,14 @@ Handles standard imports for creating grammars. Import using:
 from castervoice.lib.imports import *
 '''
 
-from dragonfly import Repeat, Function, Dictation, Choice, MappingRule, ContextAction, ShortIntegerRef, Mimic, Playback, Pause, Clipboard, Window, Compound, Repetition
+from dragonfly import Repeat, Function, Dictation, Choice, MappingRule, ContextAction, ShortIntegerRef, Mimic, Playback, Pause, Clipboard, Window, Compound, Repetition, Paste
 
 from castervoice.lib import context, navigation, alphanumeric, textformat, text_utils
 from castervoice.lib import control, utilities
 
 from castervoice.lib.actions import Key, Text, Mouse
 from castervoice.lib.context import AppContext
-from castervoice.lib.dfplus.additions import IntegerRefST
+from castervoice.lib.dfplus.additions import IntegerRefST, SelectiveAction
 
 from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
