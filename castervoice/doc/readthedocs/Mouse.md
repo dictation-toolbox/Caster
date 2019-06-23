@@ -46,9 +46,9 @@ Selecting from one point to another is available including fine adjustment of th
 
 - Invoke: `douglas` or `douglas <monitor_number>`
 - Move to square: `<horizontal_number> by <vertical_number>`
-- Select: `<horizontal_number_1> by <vertical_number_1> select <horizontal_number_2> by <vertical_number_2>`
+- Select: `<horizontal_number_1> by <vertical_number_1> (select | grab) <horizontal_number_2> by <vertical_number_2>`
 - Select horizontally: `<horizontal_number_1> by <vertical_number_1> select <horizontal_number_2>`
-- Fine selection: `<horizontal_number_1> by <vertical_number_1> move` &rightarrow; `curse ...` &rightarrow; `point one` &rightarrow; `<horizontal_number_2> by <vertical_number_2> move` &rightarrow; `curse ...` &rightarrow; `point two` &rightarrow; `select`
+- Fine selection: `<horizontal_number_1> by <vertical_number_1> move` &rightarrow; `curse ...` &rightarrow; `squat` &rightarrow; `<horizontal_number_2> by <vertical_number_2> move` &rightarrow; `curse ...` &rightarrow; `bench`
 
 **Examples**:
 
@@ -56,7 +56,7 @@ Selecting from one point to another is available including fine adjustment of th
 - _5 by 20 kick_
 - _5 by 20 select 10 by 30_
 - _5 by 20 select 10_
-- _5 by 20 move, curse sauce lease 5, point one, 10 by 30 move, curse dunce lease 10, point two, select_
+- _5 by 20 move, curse sauce lease 5, squat, 10 by 30 move, curse dunce lease 10, bench_
 
 ### Rainbow
 
@@ -70,8 +70,8 @@ Selecting from one point to another is available including fine adjustment of th
 - Move to square: `[<number_of_color_palette>] <color> <number>`  
   _number_of_color_palette_ refers to the fact that colors loop when filling the screen.  
   _color_ can be replaced by the following colors: _red_, _orange_, _yellow_, _green_, _blue_, _purple_.
-- Select: `[<number_of_color_palette_1>] <color_1> <number_1>` select `[<number_of_color_palette_2>] <color_2> <number_2>`
-- Fine selection: `[<number_of_color_palette_1>] <color_1> <number_1> move` &rightarrow; `curse ...` &rightarrow; `point one` &rightarrow; `[<number_of_color_palette_2>] <color_2> <number_2> move` &rightarrow; `curse ...` &rightarrow; `point two` &rightarrow; `select`
+- Select: `[<number_of_color_palette_1>] <color_1> <number_1>` (select | grab) `[<number_of_color_palette_2>] <color_2> <number_2>`
+- Fine selection: `[<number_of_color_palette_1>] <color_1> <number_1> move` &rightarrow; `curse ...` &rightarrow; `squat` &rightarrow; `[<number_of_color_palette_2>] <color_2> <number_2> move` &rightarrow; `curse ...` &rightarrow; `bench`
 
 **Examples**:
 
@@ -92,7 +92,7 @@ Selecting from one point to another is available including fine adjustment of th
 - Invoke: `legion or legion [monitor_number]`
 - Move to text area: `<number>`
 - Highlight one text area: `<number> (select | light)`
-- Highlight from one text area to another: `<number_1> (select | light) <number_2>`
+- Highlight from one text area to another: `<number_1> (select | light | grab) <number_2>`
 
 **Examples**:
 
