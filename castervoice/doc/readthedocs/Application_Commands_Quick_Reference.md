@@ -152,6 +152,12 @@
 | `clear browsing data`                  | `downloads`                          | `more tools`                 |
 | `google that`                          | `developer tools`                    |    |
 | `wikipedia that`                       |                     | ``                 |
+
+| Command                                  | Notes                                                                                                                                                                        |
+|:-----------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `checkout [this] pull request [locally]` | Called from any tab of the Github pull request page: ("Conversation", "Commits", "Checks", "Files changed"). Adjust pause times in the `gitbash` section of `settings.toml`. |
+| `update [this] pull request [locally]`   | Called from any tab of the Github pull request page: ("Conversation", "Commits", "Checks", "Files changed"). Adjust pause times in the `gitbash` section of `settings.toml`. |
+
 ## CCR
 | Command
 |:---------------------------------------|
@@ -236,13 +242,18 @@
 
 # Firefox
 
-| Command            | Command          | Command         |
-|:-------------------|:-----------------|:----------------|
-| `IRC identify`     | `resume`         | `step over`     |
-| `[add] bookmark`   | `show downloads` | `super refresh` |
-| `developer tools`  | `show history`   | `zoom in <n>`   |
-| `new tab [<n>]`    | `step into`      | `zoom out <n>`  |
-| `reopen tab [<n>]` | `step out`       |                 |
+| Command                                | Command          | Command                                  |
+|:---------------------------------------|:-----------------|:-----------------------------------------|
+| `IRC identify`                         | `resume`         | `step over`                              |
+| `[add] bookmark`                       | `show downloads` | `super refresh`                          |
+| `developer tools`                      | `show history`   | `zoom in <n>`                            |
+| `new tab [<n>]`                        | `step into`      | `zoom out <n>`                           |
+| `reopen tab [<n>]`                     | `step out`       | ``                                       |
+
+| Command                                  | Notes                                                                                                                                                                        |
+|:-----------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `checkout [this] pull request [locally]` | Called from any tab of the Github pull request page: ("Conversation", "Commits", "Checks", "Files changed"). Adjust pause times in the `gitbash` section of `settings.toml`. |
+| `update [this] pull request [locally]`   | Called from any tab of the Github pull request page: ("Conversation", "Commits", "Checks", "Files changed"). Adjust pause times in the `gitbash` section of `settings.toml`. |
 
 # Flash Develop
 

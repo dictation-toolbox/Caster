@@ -11,7 +11,8 @@ Alternatively use the [master branch](https://github.com/dictation-toolbox/Caste
   - [VimGolf and Project Euler](https://www.youtube.com/watch?v=T1bKAqDhH_E)
   - [Dictating maths into scientific notebook](https://www.youtube.com/watch?v=oq8EoPu0cGY&t=3s) and [Dictating math by voice using Caster](https://www.youtube.com/watch?v=z-iHvPmjcas)
 - [Instructions for installing](https://github.com/dictation-toolbox/Caster/blob/develop/castervoice/doc/Installation.md)
-- Documentation on Caster [[ReadTheDocs](http://caster.readthedocs.org/en/latest/README/)] [[YouTube](https://www.youtube.com/channel/UC2qZzmCj_5ZKkTa3i9X1LCg)] and Dragonfly [[ReadTheDocs](https://dragonfly2.readthedocs.io/en/latest/)] 
+- [Quick reference](CasterQuickReference0.5.8.pdf): commands to get started with.
+- Documentation on Caster [[ReadTheDocs](https://caster.readthedocs.io/en/latest/)] [[YouTube](https://www.youtube.com/channel/UC2qZzmCj_5ZKkTa3i9X1LCg)] and Dragonfly [[ReadTheDocs](https://dragonfly2.readthedocs.io/en/latest/)] 
 - [How to Speak Code](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/examples/speaking/examples1/) - Example Document
 - Caster Command Reference Guides 
   - [Caster](https://github.com/dictation-toolbox/Caster/blob/develop/CasterQuickReference.pdf) - Universal navigation and editing - These commands are active all the time, and provide input commands for letters, numbers and punctuation, as well as the ability to easily manipulate windows and text. 
@@ -71,6 +72,7 @@ Alternatively use the [master branch](https://github.com/dictation-toolbox/Caste
 
   - [Sikulix](http://sikulix.com/) - [Setup](https://github.com/dictation-toolbox/Caster/blob/develop/castervoice/doc/readthedocs/Sikuli.md): Automates anything you see on the screen of your desktop computer. - [Demo](https://youtu.be/RFdsD2OgDzk?list=PLV6JPhkq1x8LHu02YefhUU9rXiB2PK8tc&t=512)
   - [Aenea](https://github.com/dictation-toolbox/aenea) - [Setup](https://github.com/dictation-toolbox/Caster/blob/develop/castervoice/doc/readthedocs/Aenea.md): A client-server library for using voice macros from Dragon NaturallySpeaking and Dragonfly on remote/non-windows hosts.
+  - [Autohotkey](https://www.autohotkey.com/): A scripting language that allows the automation of various tasks in Windows. Simply install the latest version. If installed, it can speed up some commands by a few seconds - e.g. [checking out or updating a pull request from github](https://caster.readthedocs.io/en/latest/readthedocs/Application_Commands_Quick_Reference/#google-chrome).
 
 - Caster extends the Dragonfly API for even more powerful commands.
 

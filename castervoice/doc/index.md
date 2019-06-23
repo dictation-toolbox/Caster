@@ -1,6 +1,6 @@
 # Caster
 
-[Caster](http://dictation-toolbox.github.io/caster/) is a collection of tools aimed at enabling programming and accessibility entirely by voice built upon the [Dragonfly](https://github.com/dictation-toolbox/dragonfly) API.
+[Caster](http://dictation-toolbox.github.io/caster/) is a collection of tools aimed at enabling programming and accessibility entirely by voice built upon the [Dragonfly](https://github.com/dictation-toolbox/dragonfly) API. Note that the current version of the ReadTheDocs page is based on the [`develop`](https://github.com/dictation-toolbox/Caster/tree/develop) branch so there may be features described here that do not work if you are on the [`master`](https://github.com/dictation-toolbox/Caster/tree/master) branch.
 
 - Videos by the Caster Community.
     - [Caster Demo](https://www.youtube.com/watch?v=oIwh3z2jXD4)
@@ -8,6 +8,7 @@
     - [Dictating maths into scientific notebook](https://www.youtube.com/watch?v=oq8EoPu0cGY&t=3s) and [Dictating math by voice using Caster](https://www.youtube.com/watch?v=z-iHvPmjcas)
 
 - [Instructions for installing](Installation.md)
+- [Quick reference](CasterQuickReference.pdf): commands to get started with.
 - Documentation on Caster [[ReadTheDocs](http://caster.readthedocs.org/en/latest/)] [[YouTube](https://www.youtube.com/channel/UC2qZzmCj_5ZKkTa3i9X1LCg)] and Dragonfly [[ReadTheDocs](https://dragonfly2.readthedocs.io/en/latest/)] 
 - Caster Command Reference Guides 
     - [Caster](CasterQuickReference.pdf) - Universal navigation and editing - These commands are active all the time, and provide input commands for letters, numbers and punctuation, as well as the ability to easily manipulate windows and text. 
