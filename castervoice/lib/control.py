@@ -30,7 +30,10 @@ def non_ccr_app_rule(rule, context=None, name=None):
         grammar.load()
 
 def ccr_app_rule(rule, context=None):
-    nexus().merger.add_app_rule(rule, context=context)
+    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
+        nexus().merger.add_global_rule(rule)
+    else:
+        nexus().merger.add_app_rule(rule, context=context)
 
 def global_rule(rule):
     nexus().merger.add_global_rule(rule)
