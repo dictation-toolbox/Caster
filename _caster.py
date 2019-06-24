@@ -8,6 +8,18 @@ import os
 import logging
 logging.basicConfig()
 
+
+def version_minimum():
+    try:
+        import pkg_resources
+        version = "0.15.0"  # Version needs to be manually updated Caster requires a certain version of Dragonfly
+        pkg_resources.require("dragonfly2 >= %s" % (version))
+    except Exception:  # pylint: disable=broad-except
+        print("\nCaster: Requires at least dragonfly2 version %s\n" % (version))
+
+
+version_minimum()
+
 import time, socket, os
 from dragonfly import (Function, Grammar, Playback, Dictation, Choice, Pause, RunCommand)
 from castervoice.lib.ccr.standard import SymbolSpecs
@@ -154,20 +166,10 @@ class DependencyUpdate(RunCommand):
             Playback([(["reboot", "dragon"], 0.0)]).execute()
 
 
-def version_minimum():
-    try:
-        import pkg_resources
-        version = "0.15.0"  # Version needs to be manually updated Caster requires a certain version of Dragonfly
-        pkg_resources.require("dragonfly2 >= %s" % (version))
-    except Exception:  # pylint: disable=broad-except
-        print("\nCaster: Requires at least dragonfly2 version %s\n" % (version))
-
-
 if settings.SETTINGS["miscellaneous"]["online_mode"]:
     if internetcheck():
         if installtype() is False:
             CasterCheck().execute()
-        version_minimum()
         DragonflyCheck().execute()
     else:
         print("\nCaster: Network off-line check network connection\n")
