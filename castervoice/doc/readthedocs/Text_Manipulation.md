@@ -8,7 +8,7 @@ Caster provides powerful text manipulation and navigation features. These functi
 - `number_of_lines_to_search` is an integer number of lines to search for the target object. _sauce/lease_ searches up and _dunce/ross_ searches down. _sauce/dunce_ defaults to 3 lines if omitted and _lease/ross_ defaults to searching only the current line.
 - `before_after` can be _before_ or _after_ and indicates whether the cursor should stop to the left (_before_) or the right (_after_) of the target object. Defaults for `before_after` depend on which command is being used. For the "go" commands, `before_after` defaults to whichever one is closer to the cursor. More explicitly, for "go", _ross/dunce_ defaults to _before_ and _lease/sauce_ defaults to _after_.  By contrast, for the "grab until" and "remove until" commands it defaults to the one that is farther (i.e. it selects or removes all the way through the target object). More explicitly, for "grab/remove until", _ross/dunce_ defaults to _after_ and _lease/sauce_ defaults to _before_. 
 - `occurrence_number` can be _first_ through _ninth_ and indicates which occurrence of the target object you want, counting from the initial position of the cursor in the direction you specify. Defaults to _first_.
-- `target_object` can be a Caster alphabet element (_arch, brov_ etc.), a Caster punctuation element (_left prekris, deckle_ etc.), or arbitrary dictation (e.g. "punctuation element" spoken). Caster numbers are not yet supported.
+- `target_object` can be a Caster alphabet element (_arch, brov_ etc.), a Caster punctuation element (_left prekris, deckle_ etc.), a digit prefixed by _num_ (e.g. _num 6_ ), or arbitrary dictation (e.g. "punctuation element" spoken). 
 
 ## Commands
 
@@ -24,6 +24,7 @@ Caster provides powerful text manipulation and navigation features. These functi
 
 - _go ross before deckle_
 - _go ross after second deckle_
+    - move the cursor after the second occurrence of ":" to the right of the cursor's original position
 - _grab sauce five examples_
     - Searches five lines up and selects the first occurrence of the word "examples" above the cursor.
 - _grab sauce five until examples_
@@ -35,6 +36,8 @@ Caster provides powerful text manipulation and navigation features. These functi
     - Searches five lines up and deletes the first occurrence of the word "examples" above the cursor.
 - _remove sauce five until examples_
     - Searches five lines up and deletes from the cursor to the first occurrence of the word "examples" above the cursor.
+- _replace lease num six with hotel_
+    - replace the nearest occurrence (to the left of the cursor) of the digit "6" with the letter "h"
 
 ## Possible future features
 Please feel free to try and implement these and submit a pull request!

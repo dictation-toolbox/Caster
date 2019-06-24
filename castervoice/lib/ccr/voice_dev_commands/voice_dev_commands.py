@@ -83,7 +83,7 @@ class VoiceDevCommands(MergeRule):
         "dev function":
             R(Text("Function()") + Key("left")),
         "dev repeat":
-            R(Text(" * Repeat(extra='n'),"), rdescript="DragonflyDev: Snippet for Repeat"),
+            R(Text(" * Repeat(extra='n')"), rdescript="DragonflyDev: Snippet for Repeat"),
         "dev choice":
             R(Text('Choice("", {') + Pause("10") + Key("enter, up, right:4"),
               rdescript="DragonflyDev: Snippet for the Choice Extra"),
