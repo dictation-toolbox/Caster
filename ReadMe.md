@@ -1,3 +1,5 @@
+[![Bountysource](https://www.bountysource.com/badge/team?team_id=407907&style=bounties_posted)](https://www.bountysource.com/teams/caster-dictation/bounties?utm_source=Bountysource&utm_medium=shield&utm_campaign=bounties_posted) [![Build Status](https://travis-ci.org/dictation-toolbox/Caster.svg?branch=develop)](https://travis-ci.org/dictation-toolbox/Caster)
+
 # Caster
 
 [Caster](https://github.com/dictation-toolbox/Caster) is a collection of tools aimed at enabling programming and accessibility entirely by voice built upon the [Dragonfly](https://github.com/dictation-toolbox/dragonfly) API.

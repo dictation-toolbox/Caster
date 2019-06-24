@@ -130,39 +130,32 @@
 \* select / copy / cut / paste / delete
 
 # Google Chrome
-## Non-CCR
 | Command                                | Command                              | Command                      |
 |:---------------------------------------|:-------------------------------------|:-----------------------------|
-| `new window`                           | `(new incognito window / incognito)` | `close all tabs`                       |
-| `reopen tab [<n>]`                     | `close tab [<n>]`                    | `new tab that`               |
-| `next tab [<n>]`                       | `previous tab [<n>]`                 | `second last tab`            |
-| `<nth> tab`                            | `last tab`                           | `zoom in [<n>]`              |
-| `go back [<n>]`                        | `go forward [<n>]`                   | `super refresh`              |
-| `zoom out [<n>]`                       | `zoom reset`                         | `[find] prior match [<n>]`   |
-| `switch focus [<n>]`                   | `[find] next match [<n>]`            | `[show] history`             |
-| `[toggle] caret browsing`              | `home page`                          | `add bookmark`               |
-| `bookmark all tabs`                    | `show downloads`                     | `[show] bookmarks`           |
-| `switch user`                          | `[toggle] bookmark bar`              | `[toggle] full-screen`       |
-| `focus notification`                   | `chrome task manager`                | `deny notification`          |
-| `developer tools`                      | `allow notification`                 | `resume`                     |
-| `step over`                            | `view [page] source`                 | `step out`                   |
-| `IRC identify`                         | `step into`                          | `duplicate tab`              |
-| `duplicate window`                     | `google that`                        | `(menu / three dots)`        |
-| `settings`                             | `extensions`                         | `chrome task manager`        |
-| `clear browsing data`                  | `downloads`                          | `more tools`                 |
-| `google that`                          | `developer tools`                    |    |
-| `wikipedia that`                       |                     | ``                 |
+| `new window`                           | `(new incognito window / incognito)` | `new tab [<n>]`              |
+| `reopen tab [<n>]`                     | `close tab [<n>]`                    | `close all tabs`             |
+| `next tab [<n>]`                       | `previous tab [<n>]`                 | `new tab that`               |
+| `<nth> tab`                            | `last tab`                           | `second last tab`            |
+| `go back [<n>]`                        | `go forward [<n>]`                   | `zoom in [<n>]`              |
+| `zoom out [<n>]`                       | `zoom reset`                         | `super refresh`              |
+| `switch focus [<n>]`                   | `[find] next [match] [<n>]`          | `[find] prior [match] [<n>]` |
+| `[toggle] caret browsing`              | `[go home] page`                     | `[show] history`             |
+| `address bar`                          | `[show] downloads`                   | `[add] bookmark`             |
+| `bookmark all tabs`                    | `[toggle] bookmark bar`              | `[show] bookmarks`           |
+| `switch user`                          | `chrome task manager`                | `[toggle] full-screen`       |
+| `focus notification`                   | `allow notification`                 | `deny notification`          |
+| `developer tools`                      | `view [page] source`                 | `resume`                     |
+| `step over`                            | `step into`                          | `step out`                   |
+| `IRC identify`                         | `google that`                        | `duplicate tab`              |
+| `duplicate window`                     | `[show] extensions`                  | `(menu / three dots)`        |
+| `settings`                             | `[show] downloads`                   | `[chrome] task manager`      |
+| `clear browsing data`                  | `[show ]developer tools`             | `more tools`                 |
+| `google that`                          | `wikipedia that`                     |                              |
 
 | Command                                  | Notes                                                                                                                                                                        |
 |:-----------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `checkout [this] pull request [locally]` | Called from any tab of the Github pull request page: ("Conversation", "Commits", "Checks", "Files changed"). Adjust pause times in the `gitbash` section of `settings.toml`. |
 | `update [this] pull request [locally]`   | Called from any tab of the Github pull request page: ("Conversation", "Commits", "Checks", "Files changed"). Adjust pause times in the `gitbash` section of `settings.toml`. |
-
-## CCR
-| Command
-|:---------------------------------------|
-| `new tab [<n>]`                        |
-| `address [bar]`                        |
 
 # Command prompt
 
@@ -242,13 +235,27 @@
 
 # Firefox
 
-| Command                                | Command          | Command                                  |
-|:---------------------------------------|:-----------------|:-----------------------------------------|
-| `IRC identify`                         | `resume`         | `step over`                              |
-| `[add] bookmark`                       | `show downloads` | `super refresh`                          |
-| `developer tools`                      | `show history`   | `zoom in <n>`                            |
-| `new tab [<n>]`                        | `step into`      | `zoom out <n>`                           |
-| `reopen tab [<n>]`                     | `step out`       | ``                                       |
+| Command                                | Command                              | Command                      |
+|:---------------------------------------|:-------------------------------------|:-----------------------------|
+| `new window`                           | `(new incognito window / incognito)` | `new tab [<n>]`              |
+| `reopen tab [<n>]`                     | `close tab [<n>]`                    | `close all tabs`             |
+| `next tab [<n>]`                       | `previous tab [<n>]`                 | `new tab that`               |
+| `<nth> tab`                            | `last tab`                           | `second last tab`            |
+| `go back [<n>]`                        | `go forward [<n>]`                   | `zoom in [<n>]`              |
+| `zoom out [<n>]`                       | `zoom reset`                         | `super refresh`              |
+| `switch focus [<n>]`                   | `[find] next [match] [<n>]`          | `[find] prior [match] [<n>]` |
+| `[toggle] caret browsing`              | `[go home] page`                     | `[show] history`             |
+| `address bar`                          | `[show] downloads`                   | `[add] bookmark`             |
+| `bookmark all tabs`                    | `[toggle] bookmark bar`              | `[show] bookmarks`           |
+| `switch user`                          | `[toggle] full-screen`               | `duplicate tab`              |
+| `focus notification`                   | `allow notification`                 | `deny notification`          |
+| `developer tools`                      | `[show page] source`                 | `resume`                     |
+| `step over`                            | `step into`                          | `step out`                   |
+| `IRC identify`                         | `google that`                        |                              |
+| `duplicate window`                     | `[show] extensions`                  |                              |
+| `[show] settings`                      | `[show] downloads`                   |                              |
+| `clear browsing data`                  | `[show ]developer tools`             |                              |
+| `google that`                          | `wikipedia that`                     |                              |
 
 | Command                                  | Notes                                                                                                                                                                        |
 |:-----------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -328,16 +335,42 @@
 | `emphasize`   | `insert image`   | `mention`     |
 
 # Jetbrains
+| Command                                | Command                              | Command                      |
+|:---------------------------------------|:-------------------------------------|:-----------------------------|
+| `Jen method`                           | `find in current`                    | `search [everywhere]`        |
+| `auto complete`                        | `format code`                        | `find symbol`                |
+| `auto file`                            | `format class`                       | `[find] usage`               |
+| `build`                                | `go to line`                         | `select ex`                  |
+| `build and run`                        | `jump to source`                     | `select ex down`             |
+| `comment [line]`                       | `next tab`                           | `show doc`                   |
+| `delete line`                          | `prior tab`                          | `show param`                 |
+| `duplicate`                            | `quickfix`                           | `uncomment line`             |
+| `expand [selection] [<n>]`             | `smart auto complete`                | `quickfix`                   |
+| `split right`                          | `pane left`                          | `pane right`                 |
+| `split down`                           | `pane down`                          | `pane up`                    |
+| `split `                               | `last tab`                           | `second last tab`            |
+| `go [to] editor`                       | `go [to] project explorer`           | `toggle terminal`            |
+| `new file`                             | `method forward`                     | `method back`                |
+| `[move] line up`                       | `kill forward`                       | `extract method`             |
+| `[move] line down`                     | `kill back`                          | `extract constant`           |
+| `extract param`                        | `kill`                               | `override method `           |
+| `auto indent`                          |
+| GIT Commands (embedded terminal) 
+| `(get push / push)`                    | `fetch`                              | `search recursive filetype`  |
+| `(undo changes / reset hard)`          | `gooey blame`                        | `stash`                      |
+| `CD`                                   | `initialize repository`              | `stash apply [<n>]`          |
+| `CD up`                                | `list`                               | `stash branch`               |
+| `GUI / gooey`                          | `make directory`                     | `stash list`                 |
+| `abort cherry pick`                    | `merge`                              | `status`                     |
+| `add`                                  | `merge tool`                         | `stop tracking [file]`       |
+| `blame`                                | `preview remove untracked`           | `to file`                    |
+| `branch`                               | `pull`                               | `undo [last] commit`         |
+| `bug fix commit <n>`                   | `reference commit <n>`               | `visualize`                  |
+| `checkout`                             | `remote`                             | `visualize all`              |
+| `cherry pick`                          | `remove untracked`                   | `visualize file`             |
+| `commit`                               | `search recursive`                   |                              |
+| `exit`                                 | `search recursive count`             |                              |
 
-| Command         | Command           | Command             |
-|:----------------|:------------------|:--------------------|
-| `Jen method`    | `find in current` | `search everywhere` |
-| `auto complete` | `format code`     | `search symbol`     |
-| `build`         | `go to line`      | `select ex`         |
-| `build and run` | `jump to source`  | `select ex down`    |
-| `comment line`  | `next tab`        | `show doc`          |
-| `delete line`   | `prior tab`       | `show param`        |
-| `duplicate`     | `quickfix`        | `uncomment line`    |
 
 # Microsoft Visual Studio
 
