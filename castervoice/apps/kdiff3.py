@@ -27,13 +27,4 @@ class KDiff3Rule(MergeRule):
 #---------------------------------------------------------------------------
 
 context = AppContext(executable="kdiff3")
-grammar = Grammar("KDiff3", context=context)
-
-if settings.SETTINGS["apps"]["kdiff3"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(KDiff3Rule())
-    else:
-        rule = KDiff3Rule(name="kdiff3")
-        gfilter.run_on(rule)
-        grammar.add_rule(rule)
-        grammar.load()
+control.non_ccr_app_rule(KDiff3Rule(), context=context)

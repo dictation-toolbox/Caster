@@ -3,11 +3,6 @@
 # (c) Copyright 2008 by Christo Butcher
 # Licensed under the LGPL, see <http://www.gnu.org/licenses/>
 #
-"""
-Command-module for Firefox
-
-"""
-#---------------------------------------------------------------------------
 
 from dragonfly import (Grammar, Repeat)
 
@@ -43,13 +38,4 @@ class FirefoxRule(BrowserSharedCommands):
 #---------------------------------------------------------------------------
 
 context = AppContext(executable="firefox")
-grammar = Grammar("firefox", context=context)
-
-if settings.SETTINGS["apps"]["firefox"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(FirefoxRule())
-    else:
-        rule = FirefoxRule(name="firefox")
-        gfilter.run_on(rule)
-        grammar.add_rule(rule)
-        grammar.load()
+control.non_ccr_app_rule(FirefoxRule(), context=context)

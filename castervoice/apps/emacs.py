@@ -93,13 +93,4 @@ class EmacsRule(MergeRule):
 #---------------------------------------------------------------------------
 
 context = AppContext(executable="emacs", title="emacs")
-grammar = Grammar("emacs", context=context)
-
-if settings.SETTINGS["apps"]["emacs"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(EmacsRule())
-    else:
-        rule = EmacsRule(name="emacs")
-        gfilter.run_on(rule)
-        grammar.add_rule(rule)
-        grammar.load()
+control.non_ccr_app_rule(EmacsRule(), context=context)

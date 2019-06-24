@@ -80,12 +80,4 @@ class fmanRule(MergeRule):
 
 
 context = AppContext(executable="fman", title="fman")
-grammar = Grammar("fman", context=context)
-if settings.SETTINGS["apps"]["fman"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(fmanRule())
-    else:
-        rule = fmanRule()
-        gfilter.run_on(rule)
-        grammar.add_rule(fmanRule(name="fman"))
-        grammar.load()
+control.non_ccr_app_rule(fmanRule(), context=context)

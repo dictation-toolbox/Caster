@@ -3,11 +3,6 @@
 # (c) Copyright 2008 by Christo Butcher
 # Licensed under the LGPL, see <http://www.gnu.org/licenses/>
 #
-"""
-Command-module for Chrome
-
-"""
-# ---------------------------------------------------------------------------
 
 from dragonfly import (Grammar, Repeat,
                        Mouse, Pause)
@@ -62,16 +57,5 @@ class ChromeRule(BrowserSharedCommands):
     defaults = browser.DEFAULTS
 
 
-# ---------------------------------------------------------------------------
-
 context = AppContext(executable="chrome")
-grammar = Grammar("chrome", context=context)
-
-if settings.SETTINGS["apps"]["chrome"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(ChromeRule())
-    else:
-        rule = ChromeRule(name="chrome")
-        gfilter.run_on(rule)
-        grammar.add_rule(rule)
-        grammar.load()
+control.non_ccr_app_rule(ChromeRule(), context=context)

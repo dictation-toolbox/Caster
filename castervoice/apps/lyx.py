@@ -51,24 +51,15 @@ class LyxRule(MergeRule):
             "delimiters": "r",
             "matrix": "x",
             "macro": "o",
-            }),  
+            }),
     ]
     defaults = {
         "n": 1,
     }
-    
+
 
 
 #---------------------------------------------------------------------------
 
 context = AppContext(executable="lyx")
-grammar = Grammar("lyx", context=context)
-
-if settings.SETTINGS["apps"]["lyx"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(LyxRule())
-    else:
-        rule = LyxRule(name="lyx")
-        gfilter.run_on(rule)
-        grammar.add_rule(rule)
-        grammar.load()
+control.non_ccr_app_rule(LyxRule(), context=context)

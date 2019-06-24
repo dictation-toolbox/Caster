@@ -48,14 +48,4 @@ class GitterRule(MergeRule):
 #---------------------------------------------------------------------------
 
 context = AppContext(executable="gitter")
-grammar = Grammar("gitter", context=context)
-
-if settings.SETTINGS["apps"]["gitter"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(GitterRule())
-        print("added Gitter")
-    else:
-        rule = GitterRule(name="gitter")
-        gfilter.run_on(rule)
-        grammar.add_rule(rule)
-        grammar.load()
+control.non_ccr_app_rule(GitterRule(), context=context)

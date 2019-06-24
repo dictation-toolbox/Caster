@@ -10,7 +10,7 @@ All text fields are full text control, and all of the menus should be say-what-y
 A good alternative to using Outlook is to use an e-mail website in Chrome or Firefox since these applications
 support Wolfmanstout's accessibility API commands which can replace full text control.
 Outlook users may want to consider purchasing Voice Computer which provides good numbering software
-for the buttons and text fields in Outlook although a free and better alternative 
+for the buttons and text fields in Outlook although a free and better alternative
 to Voice Computer may be coming soon.
 
 
@@ -246,13 +246,4 @@ class OutlookRule(MergeRule):
 #---------------------------------------------------------------------------
 
 context = AppContext(executable="outlook")
-grammar = Grammar("outlook", context=context)
-
-if settings.SETTINGS["apps"]["outlook"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(OutlookRule())
-    else:
-        rule = OutlookRule(name="outlook")
-        gfilter.run_on(rule)
-        grammar.add_rule(rule)
-        grammar.load()
+control.non_ccr_app_rule(OutlookRule(), context=context)

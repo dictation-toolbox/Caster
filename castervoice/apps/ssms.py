@@ -61,13 +61,4 @@ class SSMSRule(MergeRule):
 #---------------------------------------------------------------------------
 
 context = AppContext(executable="ssms")
-grammar = Grammar("SQL Server Management Studio", context=context)
-
-if settings.SETTINGS["apps"]["ssms"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(SSMSRule())
-    else:
-        rule = SSMSRule(name="ssms")
-        gfilter.run_on(rule)
-        grammar.add_rule(rule)
-        grammar.load()
+control.non_ccr_app_rule(SSMSRule(), context=context)

@@ -39,13 +39,4 @@ class SQLDeveloperRule(MergeRule):
 #---------------------------------------------------------------------------
 
 context = AppContext(executable="sqldeveloper64W", title="SQL Developer")
-grammar = Grammar("Sql Developer", context=context)
-
-if settings.SETTINGS["apps"]["sqldeveloper"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(SQLDeveloperRule())
-    else:
-        rule = SQLDeveloperRule(name="sql developer")
-        gfilter.run_on(rule)
-        grammar.add_rule(rule)
-        grammar.load()
+control.non_ccr_app_rule(SQLDeveloperRule(), context=context)

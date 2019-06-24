@@ -198,13 +198,4 @@ class SublimeRule(MergeRule):
 #---------------------------------------------------------------------------
 
 context = AppContext(executable="sublime_text", title="Sublime Text")
-grammar = Grammar("Sublime", context=context)
-
-if settings.SETTINGS["apps"]["sublime"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(SublimeRule())
-    else:
-        rule = SublimeRule(name="sublime")
-        gfilter.run_on(rule)
-        grammar.add_rule(rule)
-        grammar.load()
+control.non_ccr_app_rule(SublimeRule(), context=context)

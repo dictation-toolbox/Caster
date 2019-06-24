@@ -142,10 +142,4 @@ class GridControlRule(MergeRule):
 #---------------------------------------------------------------------------
 
 context = AppContext(title="rainbowgrid")
-grammar = Grammar("rainbowgrid", context=context)
-
-if settings.SETTINGS["apps"]["rainbow"]:
-    rule = GridControlRule(name="rainbow")
-    gfilter.run_on(rule)
-    grammar.add_rule(rule)
-    grammar.load()
+control.non_ccr_app_rule(GridControlRule(), context=context)

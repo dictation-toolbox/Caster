@@ -32,13 +32,4 @@ class FoxitRule(MergeRule):
 #---------------------------------------------------------------------------
 
 context = AppContext(executable="Foxit Reader")
-grammar = Grammar("Foxit Reader", context=context)
-
-if settings.SETTINGS["apps"]["foxitreader"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(FoxitRule())
-    else:
-        rule = FoxitRule(name="Foxit Reader")
-        gfilter.run_on(rule)
-        grammar.add_rule(rule)
-        grammar.load()
+control.non_ccr_app_rule(FoxitRule(), context=context)

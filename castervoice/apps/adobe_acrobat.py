@@ -137,13 +137,4 @@ class AcrobatRule(MergeRule):
 #---------------------------------------------------------------------------
 
 context = AppContext(executable="acrobat")
-grammar = Grammar("acrobat", context=context)
-
-if settings.SETTINGS["apps"]["acrobat"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(AcrobatRule())
-    else:
-        rule = AcrobatRule(name="acrobat")
-        gfilter.run_on(rule)
-        grammar.add_rule(rule)
-        grammar.load()
+control.non_ccr_app_rule(AcrobatRule(), context=context)

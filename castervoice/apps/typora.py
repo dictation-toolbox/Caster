@@ -146,13 +146,4 @@ class TyporaRule(MergeRule):
 # ---------------------------------------------------------------------------
 
 context = AppContext(executable="typora")
-grammar = Grammar("typora", context=context)
-
-if settings.SETTINGS["apps"]["typora"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(TyporaRule())
-    else:
-        rule = TyporaRule(name="typora")
-        gfilter.run_on(rule)
-        grammar.add_rule(rule)
-        grammar.load()
+control.non_ccr_app_rule(TyporaRule(), context=context)

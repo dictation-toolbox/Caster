@@ -110,10 +110,4 @@ class GridControlRule(MergeRule):
 #---------------------------------------------------------------------------
 
 context = AppContext(title="douglasgrid")
-grammar = Grammar("douglasgrid", context=context)
-
-if settings.SETTINGS["apps"]["douglas"]:
-    rule = GridControlRule(name="Douglas")
-    gfilter.run_on(rule)
-    grammar.add_rule(rule)
-    grammar.load()
+control.non_ccr_app_rule(GridControlRule(), context=context)

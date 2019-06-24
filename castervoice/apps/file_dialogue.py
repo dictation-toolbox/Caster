@@ -35,19 +35,8 @@ class FileDialogueRule(MergeRule):
 
 dialogue_names = [
     "open",
+    "save",
     "select",
 ]
-
-context = AppContext(title="save")
-for name in dialogue_names:
-    context = context | AppContext(title=name)
-
-grammar = Grammar("FileDialogue", context=context)
-if settings.SETTINGS["apps"]["filedialogue"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(FileDialogueRule())
-    else:
-        rule = FileDialogueRule()
-        gfilter.run_on(rule)
-        grammar.add_rule(FileDialogueRule(name="filedialogue"))
-        grammar.load()
+context = AppContext(title=dialogue_names)
+control.non_ccr_app_rule(FileDialogueRule(), context=context)

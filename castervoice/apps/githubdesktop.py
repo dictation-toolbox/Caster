@@ -82,13 +82,4 @@ class GitHubDeskRule(MergeRule):
 #---------------------------------------------------------------------------
 
 context = AppContext(executable="GitHubDesktop")
-grammar = Grammar("GitHubDesktop", context=context)
-
-if settings.SETTINGS["apps"]["githubdesktop"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(GitHubDeskRule())
-    else:
-        rule = GitHubDeskRule(name="githubdesktop")
-        gfilter.run_on(rule)
-        grammar.add_rule(rule)
-        grammar.load()
+control.non_ccr_app_rule(GitHubDeskRule(), context=context)

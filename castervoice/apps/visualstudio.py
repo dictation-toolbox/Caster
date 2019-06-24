@@ -97,13 +97,4 @@ class VisualStudioRule(MergeRule):
 #---------------------------------------------------------------------------
 
 context = AppContext(executable="devenv")
-grammar = Grammar("Visual Studio", context=context)
-
-if settings.SETTINGS["apps"]["visualstudio"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(VisualStudioRule())
-    else:
-        rule = VisualStudioRule(name="visualstudio")
-        gfilter.run_on(rule)
-        grammar.add_rule(rule)
-        grammar.load()
+control.non_ccr_app_rule(VisualStudioRule(), context=context)

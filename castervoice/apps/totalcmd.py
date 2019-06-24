@@ -101,21 +101,7 @@ class SyncDirsRule (MergeRule):
     }
 
 context = AppContext(executable="totalcmd") | AppContext(executable="totalcmd64")
-grammar = Grammar("Total Commander", context=context)
-syncdir_context = AppContext(executable="totalcmd", title='Synchronize directories') 
-syncdir_context |= AppContext(executable="totalcmd64", title='Synchronize directories')
-syncdir_grammar = Grammar("Total Commander Sync Dirs", context=syncdir_context)
+control.non_ccr_app_rule(TotalCommanderRule(), context=context)
 
-if settings.SETTINGS["apps"]["totalcmd"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-       control.nexus().merger.add_global_rule(SyncDirsRule())
-       control.nexus().merger.add_global_rule(TotalCommanderRule())
-    else:
-        syncdir_rule = SyncDirsRule(name="totalcmd sync dirs")
-        gfilter.run_on(syncdir_rule)
-        syncdir_grammar.add_rule(syncdir_rule)
-        syncdir_grammar.load()
-        rule = TotalCommanderRule(name="totalcmd")
-        gfilter.run_on(rule)
-        grammar.add_rule(rule)
-        grammar.load()
+syncdir_context = context & AppContext(title='Synchronize directories')
+control.non_ccr_app_rule(SyncDirsRule(), context=syncdir_context)

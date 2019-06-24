@@ -144,13 +144,4 @@ class ExcelRule(MergeRule):
 #---------------------------------------------------------------------------
 
 context = AppContext(executable="excel")
-grammar = Grammar("excel", context=context)
-
-if settings.SETTINGS["apps"]["excel"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(ExcelRule())
-    else:
-        rule = ExcelRule(name="excel")
-        gfilter.run_on(rule)
-        grammar.add_rule(rule)
-        grammar.load()
+control.non_ccr_app_rule(ExcelRule(), context=context)

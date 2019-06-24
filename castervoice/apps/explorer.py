@@ -23,7 +23,7 @@ class IERule(MergeRule):
             R(Key("a-f, w, t"), rdescript="Explorer: New File"),
         "(show | file | folder) properties":
             R(Key("a-enter"), rdescript="Explorer: Properties Dialog"),
-        "get up":                            
+        "get up":
             R(Key("a-up"), rdescript="Explorer: Navigate up"),
         "get back":
             R(Key("a-left"), rdescript="Explorer: Navigate back"),
@@ -39,7 +39,7 @@ class IERule(MergeRule):
             # once you've selected the relevant heading for sorting using the arrow keys, press enter
         "sort [headings]":
             R(Key("a-d, tab:4"), rdescript="Explorer: Sort headings e.g. name, date, etc."),
-        
+
     }
     extras = [
         Dictation("text"),
@@ -51,13 +51,4 @@ class IERule(MergeRule):
 #---------------------------------------------------------------------------
 
 context = AppContext(executable="explorer")
-grammar = Grammar("Windows Explorer", context=context)
-
-if settings.SETTINGS["apps"]["explorer"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(IERule())
-    else:
-        rule = IERule(name="explorer")
-        gfilter.run_on(rule)
-        grammar.add_rule(rule)
-        grammar.load()
+control.non_ccr_app_rule(IERule(), context=context)

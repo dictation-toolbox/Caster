@@ -78,13 +78,4 @@ class MSVCRule(MergeRule):
 #---------------------------------------------------------------------------
 
 context = AppContext(executable="WDExpress")
-grammar = Grammar("WDExpress", context=context)
-
-if settings.SETTINGS["apps"]["msvc"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(MSVCRule())
-    else:
-        rule = MSVCRule(name="M S V C")
-        gfilter.run_on(rule)
-        grammar.add_rule(rule)
-        grammar.load()
+control.non_ccr_app_rule(MSVCRule(), context=context)

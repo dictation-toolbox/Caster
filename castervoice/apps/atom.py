@@ -601,12 +601,4 @@ class AtomRule(MergeRule):
 #---------------------------------------------------------------------------
 
 context = AppContext(executable="atom", title="Atom")
-grammar = Grammar("Atom", context=context)
-if settings.SETTINGS["apps"]["atom"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(AtomRule())
-    else:
-        rule = AtomRule()
-        gfilter.run_on(rule)
-        grammar.add_rule(AtomRule(name="atom"))
-        grammar.load()
+control.non_ccr_app_rule(AtomRule(), context=context)

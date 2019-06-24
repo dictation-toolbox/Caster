@@ -69,7 +69,7 @@ def drag_highlight(n1, n2, nexus):
     x21 = response2["l"] + 2
     x22 = response2["r"]
     y2 = response2["y"]
-    
+
     win32api.SetCursorPos((x11, y1))
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0)
     win32api.SetCursorPos((x22, y2))
@@ -108,10 +108,4 @@ class GridControlRule(MergeRule):
 #---------------------------------------------------------------------------
 
 context = AppContext(title="legiongrid")
-grammar = Grammar("legiongrid", context=context)
-
-if settings.SETTINGS["apps"]["legion"]:
-    rule = GridControlRule(name="legion")
-    gfilter.run_on(rule)
-    grammar.add_rule(rule)
-    grammar.load()
+control.non_ccr_app_rule(GridControlRule(), context=context)

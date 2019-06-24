@@ -19,10 +19,5 @@ class WindowsSpeechRecognitionRule(MergeRule):
 
 #---------------------------------------------------------------------------
 
-grammar = Grammar("Windows Speech Recognition")
-
-if settings.WSR and settings.SETTINGS["apps"]["wsr"]:
-    rule = WindowsSpeechRecognitionRule(name="Windows Speech Recognition")
-    gfilter.run_on(rule)
-    grammar.add_rule(rule)
-    grammar.load()
+if settings.WSR:
+    control.non_ccr_app_rule(WindowsSpeechRecognitionRule())

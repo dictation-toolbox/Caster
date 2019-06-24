@@ -55,13 +55,4 @@ class NPPRule(MergeRule):
 #---------------------------------------------------------------------------
 
 context = AppContext(executable="notepad++")
-grammar = Grammar("Notepad++", context=context)
-
-if settings.SETTINGS["apps"]["notepadplusplus"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(NPPRule())
-    else:
-        rule = NPPRule(name="notepad plus plus")
-        gfilter.run_on(rule)
-        grammar.add_rule(rule)
-        grammar.load()
+control.non_ccr_app_rule(NPPRule(), context=context)
