@@ -3,6 +3,7 @@
 from __future__ import print_function, unicode_literals
 
 import io
+import json
 import os
 import re
 import sys
@@ -120,6 +121,29 @@ def load_toml_file(path):
         simple_log(True)
     return result
 
+def save_json_file(data, path):
+    try:
+        formatted_data = unicode(json.dumps(data, ensure_ascii=False))
+        with io.open(path, "wt", encoding="utf-8") as f:
+            f.write(formatted_data)
+    except Exception:
+        simple_log(True)
+
+
+def load_json_file(path):
+    result = {}
+    try:
+        with io.open(path, "rt", encoding="utf-8") as json_file:
+            result = json.load(json_file)
+    except IOError as e:
+        if e.errno == 2:  # The file doesn't exist.
+            save_json_file(result, path)
+        else:
+            raise
+    except Exception:
+        simple_log(True)
+    return result
+
 
 def list_to_string(l):
     return u"\n".join([unicode(x) for x in l])
@@ -159,7 +183,10 @@ def reboot(wsr=False):
     else:
         popen_parameters.append(settings.SETTINGS["paths"]["REBOOT_PATH"])
         popen_parameters.append(settings.SETTINGS["paths"]["ENGINE_PATH"])
-
+        import natlinkstatus
+        status = natlinkstatus.NatlinkStatus()
+        username = status.getUserName()
+        popen_parameters.append(username)
     print(popen_parameters)
     Popen(popen_parameters)
 
@@ -178,8 +205,9 @@ def default_browser_command():
         reg = ConnectRegistry(None,HKEY_CLASSES_ROOT)
         key = OpenKey(reg, '%s\\shell\\open\\command' % value)
         path, t = QueryValueEx(key, None)
-    except WindowsError as e:
-        #logger.warn(e)
+    except WindowsError:
+        # logger.warn(e)
+        traceback.print_exc()
         return ''
     finally:
         CloseKey(key)
@@ -190,6 +218,7 @@ def default_browser_command():
 def clear_log():
     # Function to clear natlink status window
     try:
+        # pylint: disable=import-error
         import natlink
         windows = Window.get_all_windows()
         matching = [w for w in windows

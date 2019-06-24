@@ -10,6 +10,8 @@ complexity_report*
 *.log
 *.*\#
 *.*~
+*.aux
+*.synctex.gz
 
 # Ignore Rope
 .ropeproject/
@@ -43,3 +45,6 @@ caster/bin/data
 dist
 castervoice.egg-info
 /.stignore
+
+# Ignore Notepad++ backup files
+**/nppBackup

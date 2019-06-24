@@ -64,7 +64,7 @@ Some further explanation:
 - `spec` - the same sort of spec you would use in a Dragonfly MappingRule
 - `SomeDragonflyAction` - Text, Mimic, Key, etc.
 - `<child nodes>` - a list of HintNodes, which may themselves have child nodes, etc.
-- `<extras>` - a list of Dragonfly extras, the same kind you would use in a MappingRule (IntegerRef, Dictation, Choice, etc.)
+- `<extras>` - a list of Dragonfly extras, the same kind you would use in a MappingRule (IntegerRefST, Dictation, Choice, etc.)
 - `<defaults>` - a dict of default values for the extras, again, the same kind you would use in a MappingRule
 
 A few examples:

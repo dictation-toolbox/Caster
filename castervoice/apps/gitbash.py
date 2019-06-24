@@ -7,7 +7,7 @@
 Command-module for git
 
 """
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 from dragonfly import (Grammar, Mimic, Function, Choice)
 
@@ -20,14 +20,12 @@ from castervoice.lib.context import AppContext, paste_string_without_altering_cl
 from castervoice.lib.actions import (Key, Text)
 from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
 
-                        
 CONFIG = utilities.load_toml_file(settings.SETTINGS["paths"]["BRINGME_PATH"])
 if not CONFIG:
     CONFIG = utilities.load_toml_file(settings.SETTINGS["paths"]["BRINGME_DEFAULTS_PATH"])
 if not CONFIG:
     # logger.warn("Could not load bringme defaults")
     print("Could not load bringme defaults")
-
 
 def _apply(n):
     if n != 0:
@@ -37,6 +35,8 @@ def _apply(n):
 class GitBashRule(MergeRule):
     pronunciation = "git bash"
     mwith = CCRMerger.CORE
+    GIT_ADD_ALL = "g, i, t, space, a, d, d, space, minus, A"
+    GIT_COMMIT = "g, i, t, space, c, o, m, m, i, t, space, minus, m, space, quote, quote, left"
     mapping = {
         "(git|get) base":
             Text("git "),
@@ -44,13 +44,16 @@ class GitBashRule(MergeRule):
             Text("git init"),
         "(git|get) add":
             R(Key("g, i, t, space, a, d, d, space, dot"),
-              rdescript="GIT: Add All"),
+              rdescript="GIT: Add all in directory"),
+        "(git|get) add all":
+            R(Key(GIT_ADD_ALL),
+              rdescript="GIT: Add all"),
+        "(git|get) commit all":
+            R(Key("%s, ;, space, %s" % (GIT_ADD_ALL, GIT_COMMIT))),
         "(git|get) status":
             R(Key("g, i, t, space, s, t, a, t, u, s"), rdescript="GIT: Status"),
         "(git|get) commit":
-            R(Key(
-                "g, i, t, space, c, o, m, m, i, t, space, minus, m, space, quote, quote, left"
-            ),
+            R(Key(GIT_COMMIT),
               rdescript="GIT: Commit"),
         "(git|get) bug fix commit <n>":
             R(Mimic("get", "commit") + Text("fixes #%(n)d ") + Key("backspace"),
@@ -129,13 +132,13 @@ class GitBashRule(MergeRule):
               rdescript="GREP: Search Recursive Filetype"),
         "to file":
             R(Text(" > FILENAME"), rdescript="Bash: To File"),
-        
+
         # Folder path commands (not git specific)
-        "[folder] path <folder_path>": 
+        "[folder] path <folder_path>":
             R(Text("%(folder_path)s"), rdescript="GIT: type in folder path"),
-        "(CD | go to | navigate to | [shell] bring me) <folder_path>": 
+        "(CD | go to | navigate to | [shell] bring me) <folder_path>":
             R(Text("cd %(folder_path)s") + Key("enter"), rdescript="GIT: go to folder"),
-            
+
     }
     extras = [
         IntegerRefST("n", 1, 10000),
@@ -144,7 +147,7 @@ class GitBashRule(MergeRule):
     defaults = {"n": 0}
 
 
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 context = AppContext(executable="\\sh.exe") | \
           AppContext(executable="\\bash.exe") | \
