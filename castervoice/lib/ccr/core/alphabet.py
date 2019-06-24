@@ -5,8 +5,7 @@ class Alphabet(MergeRule):
 
     mapping = {
         "[<big>] <letter>":
-            R(Function(alphanumeric.letters2, extra={"big", "letter"}),
-              rdescript="Core: Spell"),
+            R(Function(alphanumeric.letters2, extra={"big", "letter"})),
     }
     extras = [
         alphanumeric.get_alphabet_choice("letter"),
@@ -17,6 +16,5 @@ class Alphabet(MergeRule):
     defaults = {
         "big": False,
     }
-
 
 control.nexus().merger.add_global_rule(Alphabet())

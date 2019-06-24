@@ -4,11 +4,10 @@ class Numbers(MergeRule):
     pronunciation = CCRMerger.CORE[2]
     mapping = {
         "word number <wn>":
-            R(Function(alphanumeric.word_number, extra="wn"), rdescript="Core: Number as Word"),
+            R(Function(alphanumeric.word_number, extra="wn")),
         "numb <wnKK>":
             R(Function(alphanumeric.numbers2, extra="wnKK"),
-              rspec="Number",
-              rdescript="Core: Number"),
+              rspec="Number"),
     }
 
     extras = [
