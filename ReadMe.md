@@ -1,8 +1,6 @@
-Accepting donations through[![Bountysource](https://www.bountysource.com/badge/team?team_id=407907&style=bounties_posted)](https://www.bountysource.com/teams/caster-dictation/bounties?utm_source=Bountysource&utm_medium=shield&utm_campaign=bounties_posted) [![Build Status](https://travis-ci.org/dictation-toolbox/Caster.svg?branch=develop)](https://travis-ci.org/dictation-toolbox/Caster)
+# Caster [![Build Status](https://travis-ci.org/dictation-toolbox/Caster.svg?branch=develop)](https://travis-ci.org/dictation-toolbox/Caster)
 
-# Caster
-
-[Caster](https://github.com/dictation-toolbox/Caster) is a collection of tools aimed at enabling programming and accessibility entirely by voice built upon the [Dragonfly](https://github.com/dictation-toolbox/dragonfly) API.
+[Caster](https://github.com/dictation-toolbox/Caster)  is a collection of tools aimed at enabling programming and accessibility entirely by voice built upon the [Dragonfly](https://github.com/dictation-toolbox/dragonfly) API.
 
 **Note for PyPi Users**: The PIP package is (_Beta_) based on the Caster development branch. Do not use the PIP install before reading these instructions as they contain prerequisites.
 Alternatively use the [master branch](https://github.com/dictation-toolbox/Caster) with classic install for  the best feature experience.
@@ -28,6 +26,8 @@ Alternatively use the [master branch](https://github.com/dictation-toolbox/Caste
     - `print to console` - `print()`
     - `open file` -  `open('filename', 'r') as f:`
 - [Contributing / How can I help?](https://caster.readthedocs.io/en/latest/Contributing/)
+- Do you want to financially support Caster development? 
+Donate at [![Bountysource](https://www.bountysource.com/badge/team?team_id=407907&style=bounties_posted)](https://www.bountysource.com/teams/caster-dictation/bounties?utm_source=Bountysource&utm_medium=shield&utm_campaign=bounties_posted) 
 - [Making your own Dragonfly and Caster rules](https://caster.readthedocs.io/en/latest/readthedocs/Examples/Rule_Construction/) augmented by [Development Commands](https://caster.readthedocs.io/en/latest/readthedocs/CCR_languages_Quick_Reference/#VoiceDevCommands)
 - Need support or just curious? Join our community at [![Join the chat at https://gitter.im/synkarius/caster](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dictation-toolbox/home) and [Discord](https://discord.gg/9eAAsCJ) for voice chat.
 - The [Voice Index](https://caster.readthedocs.io/en/latest/readthedocs/Voice_Index/) is a curated source of information: Videos, Blogs, Repositories, Presentations, etc related to Dragonfly, voice programming, and accessibility.
