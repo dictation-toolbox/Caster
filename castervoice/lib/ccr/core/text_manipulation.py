@@ -2,17 +2,6 @@ from castervoice.lib.imports import *
 
 base_number_dict = {"zero": "0", "one": "1", "two": "2", "three": "3", "four": "4", "five": "5", "six": "6", "seven": "7", "eight": "8", "nine": "9" }
 number_dict = {"numb "+k:base_number_dict[k] for k in base_number_dict}
-# Advertisement
-print("""Text Manipulation: Check out the new experimental text
-manipulation commands at https://caster.readthedocs.io/en/latest/readthedocs/TextManipulation
-You can delete this message in castervoice\lib\ccr\core\\text_manipulation.py.
-Enable these commands by saying "enable text manipulation".
-You may want to reduce the pause time in the
-dictionaries copy_pause_time_dict and paste_pause_time_dict
-in castervoice\lib\\text_manipulation_functions.py
-These are a work in progress; please give feedback and
-report bugs on the Caster Github issue #579.""")
-
 
 """ requires a recent version of dragonfly because of recent modification of the Function action
     # I think dragonfly2-0.13.0
