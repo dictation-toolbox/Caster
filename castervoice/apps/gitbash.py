@@ -20,12 +20,29 @@ from castervoice.lib.context import AppContext, paste_string_without_altering_cl
 from castervoice.lib.actions import (Key, Text)
 from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
 
+import os
+
 CONFIG = utilities.load_toml_file(settings.SETTINGS["paths"]["BRINGME_PATH"])
 if not CONFIG:
     CONFIG = utilities.load_toml_file(settings.SETTINGS["paths"]["BRINGME_DEFAULTS_PATH"])
 if not CONFIG:
-    # logger.warn("Could not load bringme defaults")
     print("Could not load bringme defaults")
+
+def _rebuild_folders():
+    return {
+        key: (os.path.expandvars(value), 'folder') for key, value in CONFIG['folder'].iteritems()
+    }
+
+def navigate_to(desired_item):
+    item, item_type = desired_item
+    if item_type == 'folder':
+        Text("cd " + item.replace("\\", "/")).execute()
+        Key("enter").execute()
+
+def type_path(desired_item):
+    item, item_type = desired_item
+    if item_type == 'folder':
+        Text(item.replace("\\", "/")).execute()
 
 def _apply(n):
     if n != 0:
@@ -134,15 +151,15 @@ class GitBashRule(MergeRule):
             R(Text(" > FILENAME"), rdescript="Bash: To File"),
 
         # Folder path commands (not git specific)
-        "[folder] path <folder_path>":
-            R(Text("%(folder_path)s"), rdescript="GIT: type in folder path"),
-        "(CD | go to | navigate to | [shell] bring me) <folder_path>":
-            R(Text("cd %(folder_path)s") + Key("enter"), rdescript="GIT: go to folder"),
+        "[folder] path <desired_item>":
+            R(Function(type_path), rdescript="GIT: type in folder path"),
+        "(CD | go to | navigate to | [shell] bring me) <desired_item>":
+            R(Function(navigate_to), rdescript="GIT: go to folder"),
 
     }
     extras = [
         IntegerRefST("n", 1, 10000),
-        Choice("folder_path", CONFIG["folder"]),
+        Choice("desired_item", _rebuild_folders()),
     ]
     defaults = {"n": 0}
 
