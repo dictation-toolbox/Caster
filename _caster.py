@@ -20,8 +20,9 @@ def _wait_for_wsr_activation():
             from castervoice.apps.browser import firefox
             break
         except:
-            print("(%d) Attempting to load Caster -- WSR not loaded and listening yet..."
-                  % count)
+            print(
+                "(%d) Attempting to load Caster -- WSR not loaded and listening yet..." %
+                count)
             count += 1
             time.sleep(1)
 
@@ -153,10 +154,20 @@ class DependencyUpdate(RunCommand):
             Playback([(["reboot", "dragon"], 0.0)]).execute()
 
 
+def version_minimum():
+    try:
+        import pkg_resources
+        version = "0.15.0"  # Version needs to be manually updated Caster requires a certain version of Dragonfly
+        pkg_resources.require("dragonfly2 >= %s" % (version))
+    except Exception:  # pylint: disable=broad-except
+        print("\nCaster: Requires at least dragonfly2 version %s\n" % (version))
+
+
 if settings.SETTINGS["miscellaneous"]["online_mode"]:
     if internetcheck():
         if installtype() is False:
             CasterCheck().execute()
+        version_minimum()
         DragonflyCheck().execute()
     else:
         print("\nCaster: Network off-line check network connection\n")
