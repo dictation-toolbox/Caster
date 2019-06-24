@@ -7,8 +7,6 @@
 Command-module for MSVC
 
 """
-#---------------------------------------------------------------------------
-
 from dragonfly import (Grammar, Dictation, Repeat)
 
 from castervoice.lib import control
@@ -74,8 +72,6 @@ class MSVCRule(MergeRule):
     ]
     defaults = {"n": 1}
 
-
-#---------------------------------------------------------------------------
 
 context = AppContext(executable="WDExpress")
 control.non_ccr_app_rule(MSVCRule(), context=context)

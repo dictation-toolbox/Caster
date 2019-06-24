@@ -35,7 +35,5 @@ class FirefoxRule(BrowserSharedCommands):
     defaults = browser.DEFAULTS
 
 
-#---------------------------------------------------------------------------
-
 context = AppContext(executable="firefox")
 control.non_ccr_app_rule(FirefoxRule(), context=context)

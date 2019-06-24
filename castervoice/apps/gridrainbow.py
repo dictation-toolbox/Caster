@@ -139,7 +139,5 @@ class GridControlRule(MergeRule):
         "action": -1,
     }
 
-#---------------------------------------------------------------------------
-
 context = AppContext(title="rainbowgrid")
 control.non_ccr_app_rule(GridControlRule(), context=context)

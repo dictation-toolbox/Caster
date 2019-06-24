@@ -118,8 +118,6 @@ context = AppContext(executable="idea", title="IntelliJ") \
           | AppContext(executable="pycharm")
 
 
-# ---------------------------------------------------------------------------
-
 grammar = Grammar("IntelliJ + Android Studio + PyCharm", context=context)
 if settings.SETTINGS["apps"]["jetbrains"]:
     if settings.SETTINGS["miscellaneous"]["rdp_mode"]:

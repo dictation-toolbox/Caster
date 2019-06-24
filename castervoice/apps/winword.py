@@ -7,8 +7,6 @@
 Command-module for word
 
 """
-#---------------------------------------------------------------------------
-
 from dragonfly import (Grammar, MappingRule, Dictation)
 
 from castervoice.lib import control
@@ -33,8 +31,6 @@ class MSWordRule(MergeRule):
     ]
     defaults = {"n": 1, "dict": "nothing"}
 
-
-#---------------------------------------------------------------------------
 
 context = AppContext(executable="winword")
 control.non_ccr_app_rule(MSWordRule(), context=context)

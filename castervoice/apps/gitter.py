@@ -3,8 +3,6 @@ __author__ = 'LexiconCode'
 Command-module for Gitter
 Official Site "https://gitter.im/"
 """
-#---------------------------------------------------------------------------
-
 from dragonfly import Dictation, Grammar, MappingRule
 
 from castervoice.lib import control, settings
@@ -44,8 +42,6 @@ class GitterRule(MergeRule):
     ]
     Defaults = {}
 
-
-#---------------------------------------------------------------------------
 
 context = AppContext(executable="gitter")
 control.non_ccr_app_rule(GitterRule(), context=context)

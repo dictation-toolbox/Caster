@@ -83,7 +83,5 @@ class FlashDevelopCCR(MergeRule):
     defaults = {"n": 1}
 
 
-#---------------------------------------------------------------------------
-
 context = AppContext(executable="FlashDevelop", title="FlashDevelop")
 control.ccr_app_rule(FlashDevelopCCR(), context=context)

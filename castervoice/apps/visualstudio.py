@@ -94,7 +94,5 @@ class VisualStudioRule(MergeRule):
     defaults = {"n": 1, "mim": ""}
 
 
-#---------------------------------------------------------------------------
-
 context = AppContext(executable="devenv")
 control.non_ccr_app_rule(VisualStudioRule(), context=context)

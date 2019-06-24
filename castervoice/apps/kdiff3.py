@@ -24,7 +24,5 @@ class KDiff3Rule(MergeRule):
     defaults = {"n": 1, "mim": ""}
 
 
-#---------------------------------------------------------------------------
-
 context = AppContext(executable="kdiff3")
 control.non_ccr_app_rule(KDiff3Rule(), context=context)

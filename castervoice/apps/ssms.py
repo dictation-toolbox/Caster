@@ -58,7 +58,5 @@ class SSMSRule(MergeRule):
     defaults = {"n": 1, "mim": ""}
 
 
-#---------------------------------------------------------------------------
-
 context = AppContext(executable="ssms")
 control.non_ccr_app_rule(SSMSRule(), context=context)

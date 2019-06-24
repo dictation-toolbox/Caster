@@ -58,8 +58,5 @@ class LyxRule(MergeRule):
     }
 
 
-
-#---------------------------------------------------------------------------
-
 context = AppContext(executable="lyx")
 control.non_ccr_app_rule(LyxRule(), context=context)

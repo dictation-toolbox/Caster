@@ -7,8 +7,6 @@
 Command-module for git
 
 """
-#---------------------------------------------------------------------------
-
 from dragonfly import (Grammar, MappingRule)
 
 from castervoice.lib import control
@@ -33,8 +31,6 @@ class CMDRule(MergeRule):
     extras = []
     defaults = {}
 
-
-#---------------------------------------------------------------------------
 
 context = AppContext(executable="cmd")
 grammar = Grammar("cmd", context=context)

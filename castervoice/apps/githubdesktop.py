@@ -79,7 +79,5 @@ class GitHubDeskRule(MergeRule):
     defaults = {"n": 1}
 
 
-#---------------------------------------------------------------------------
-
 context = AppContext(executable="GitHubDesktop")
 control.non_ccr_app_rule(GitHubDeskRule(), context=context)

@@ -195,7 +195,5 @@ class SublimeRule(MergeRule):
     }
 
 
-#---------------------------------------------------------------------------
-
 context = AppContext(executable="sublime_text", title="Sublime Text")
 control.non_ccr_app_rule(SublimeRule(), context=context)

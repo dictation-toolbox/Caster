@@ -204,8 +204,6 @@ class EclipseCCR(MergeRule):
     defaults = {"n": 1, "back": False}
 
 
-#---------------------------------------------------------------------------
-
 context = AppContext(
     executable="javaw", title="Eclipse") | AppContext(
         executable="eclipse", title="Eclipse") | AppContext(executable="AptanaStudio3")

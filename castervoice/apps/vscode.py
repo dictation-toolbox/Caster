@@ -401,8 +401,5 @@ class VSCodeCcrRule(MergeRule):
     defaults = {"n": 1, "mim": "", "text": ""}
 
 
-
-# ---------------------------------------------------------------------------
-
 context = AppContext(title="Visual Studio Code", executable="code")
 control.ccr_app_rule(VSCodeCcrRule(), context)

@@ -7,8 +7,6 @@
 Command-module for Sql Developer
 
 """
-#---------------------------------------------------------------------------
-
 from dragonfly import (Grammar, Dictation)
 
 from castervoice.lib import control
@@ -35,8 +33,6 @@ class SQLDeveloperRule(MergeRule):
     ]
     defaults = {"n": 1}
 
-
-#---------------------------------------------------------------------------
 
 context = AppContext(executable="sqldeveloper64W", title="SQL Developer")
 control.non_ccr_app_rule(SQLDeveloperRule(), context=context)

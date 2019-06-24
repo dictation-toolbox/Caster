@@ -7,8 +7,6 @@
 Command-module for git
 
 """
-# ---------------------------------------------------------------------------
-
 from dragonfly import (Grammar, Mimic, Function)
 
 from castervoice.lib import control
@@ -133,8 +131,6 @@ class GitBashRule(MergeRule):
     ]
     defaults = {"n": 0}
 
-
-# ---------------------------------------------------------------------------
 
 context = AppContext(executable="\\sh.exe") | \
           AppContext(executable="\\bash.exe") | \

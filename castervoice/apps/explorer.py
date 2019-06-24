@@ -48,7 +48,5 @@ class IERule(MergeRule):
     defaults = {"n": 1}
 
 
-#---------------------------------------------------------------------------
-
 context = AppContext(executable="explorer")
 control.non_ccr_app_rule(IERule(), context=context)

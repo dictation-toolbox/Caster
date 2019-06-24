@@ -598,7 +598,5 @@ class AtomRule(MergeRule):
     }
 
 
-#---------------------------------------------------------------------------
-
 context = AppContext(executable="atom", title="Atom")
 control.non_ccr_app_rule(AtomRule(), context=context)

@@ -107,7 +107,5 @@ class GridControlRule(MergeRule):
         "action": -1,
     }
 
-#---------------------------------------------------------------------------
-
 context = AppContext(title="douglasgrid")
 control.non_ccr_app_rule(GridControlRule(), context=context)

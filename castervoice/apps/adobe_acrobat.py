@@ -7,8 +7,6 @@
 Command-module for Adobe Acrobat
 
 """
-#---------------------------------------------------------------------------
-
 from dragonfly import (Grammar, Dictation, Repeat, Choice, Mouse, Pause)
 
 from castervoice.lib import control
@@ -133,8 +131,6 @@ class AcrobatRule(MergeRule):
     ]
     defaults = {"n": 1, "dict": "nothing"}
 
-
-#---------------------------------------------------------------------------
 
 context = AppContext(executable="acrobat")
 control.non_ccr_app_rule(AcrobatRule(), context=context)

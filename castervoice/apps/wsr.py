@@ -17,7 +17,5 @@ class WindowsSpeechRecognitionRule(MergeRule):
     defaults = {}
 
 
-#---------------------------------------------------------------------------
-
 if settings.WSR:
     control.non_ccr_app_rule(WindowsSpeechRecognitionRule())

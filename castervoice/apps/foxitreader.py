@@ -29,7 +29,5 @@ class FoxitRule(MergeRule):
     defaults = {"n": 1, "mim": ""}
 
 
-#---------------------------------------------------------------------------
-
 context = AppContext(executable="Foxit Reader")
 control.non_ccr_app_rule(FoxitRule(), context=context)

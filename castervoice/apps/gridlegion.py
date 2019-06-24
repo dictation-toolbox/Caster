@@ -105,7 +105,5 @@ class GridControlRule(MergeRule):
     }
 
 
-#---------------------------------------------------------------------------
-
 context = AppContext(title="legiongrid")
 control.non_ccr_app_rule(GridControlRule(), context=context)

@@ -8,9 +8,7 @@ Command-module for Microsoft Excel
 You also can find some good vocola commands for Excel on Mark Lillibridge's Github:
 https://github.com/mdbridge/bit-bucket/tree/master/voice/my_commands/commands
 Alex Boche 2019
-"""
-#---------------------------------------------------------------------------
-import itertools
+"""import itertools
 
 from dragonfly import (Grammar, Context, AppContext, Dictation, Key, Text, Repeat,
                        Function, Choice)
@@ -140,8 +138,6 @@ class ExcelRule(MergeRule):
     ]
     defaults = {"n": 1, "dict": ""}
 
-
-#---------------------------------------------------------------------------
 
 context = AppContext(executable="excel")
 control.non_ccr_app_rule(ExcelRule(), context=context)

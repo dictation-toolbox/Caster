@@ -15,8 +15,6 @@ to Voice Computer may be coming soon.
 
 
 """
-#---------------------------------------------------------------------------
-
 from dragonfly import (Grammar, Dictation, Repeat, Function, Choice)
 
 from castervoice.lib import control
@@ -242,8 +240,6 @@ class OutlookRule(MergeRule):
     ]
     defaults = {"n": 1, "dict": "", "text": "", "sort_by": ""}
 
-
-#---------------------------------------------------------------------------
 
 context = AppContext(executable="outlook")
 control.non_ccr_app_rule(OutlookRule(), context=context)

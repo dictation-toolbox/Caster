@@ -2,9 +2,7 @@
 __author__ = 'LexiconCode'
 Command-module for Typora
 Official Site "https://typora.io/"
-"""
-# ---------------------------------------------------------------------------
-from dragonfly import Dictation, Grammar, Repeat
+"""from dragonfly import Dictation, Grammar, Repeat
 
 from castervoice.lib import control, settings
 from castervoice.lib.actions import Key, Text
@@ -13,8 +11,6 @@ from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.state.short import R
-# ---------------------------------------------------------------------------
-
 
 class TyporaRule(MergeRule):
     pronunciation = "tie poor a"
@@ -142,8 +138,6 @@ class TyporaRule(MergeRule):
         "h": 1
     }
 
-
-# ---------------------------------------------------------------------------
 
 context = AppContext(executable="typora")
 control.non_ccr_app_rule(TyporaRule(), context=context)

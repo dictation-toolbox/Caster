@@ -90,7 +90,5 @@ class EmacsRule(MergeRule):
     defaults = {"n": 1, "mim": ""}
 
 
-#---------------------------------------------------------------------------
-
 context = AppContext(executable="emacs", title="emacs")
 control.non_ccr_app_rule(EmacsRule(), context=context)

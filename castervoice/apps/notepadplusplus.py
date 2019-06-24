@@ -7,8 +7,6 @@
 Command-module for Notepad++
 
 """
-#---------------------------------------------------------------------------
-
 from dragonfly import (Grammar, Dictation, Repeat)
 
 from castervoice.lib import control
@@ -51,8 +49,6 @@ class NPPRule(MergeRule):
     ]
     defaults = {"n": 1}
 
-
-#---------------------------------------------------------------------------
 
 context = AppContext(executable="notepad++")
 control.non_ccr_app_rule(NPPRule(), context=context)
