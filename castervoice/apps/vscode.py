@@ -404,11 +404,5 @@ class VSCodeCcrRule(MergeRule):
 
 # ---------------------------------------------------------------------------
 
-# initialise the rule.
 context = AppContext(title="Visual Studio Code", executable="code")
-grammar = Grammar("Visual Studio Code", context=context)
-if settings.SETTINGS["apps"]["visualstudiocode"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(VSCodeCcrRule())
-    else:
-        control.nexus().merger.add_app_rule(VSCodeCcrRule(), context)
+control.ccr_app_rule(VSCodeCcrRule(), context)

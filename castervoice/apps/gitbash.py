@@ -141,8 +141,4 @@ context = AppContext(executable="\\sh.exe") | \
           AppContext(executable="\\cmd.exe") | \
           AppContext(executable="\\mintty.exe")
 
-if settings.SETTINGS["apps"]["gitbash"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(GitBashRule())
-    else:
-        control.nexus().merger.add_app_rule(GitBashRule(), context)
+control.ccr_app_rule(GitBashRule(), context)

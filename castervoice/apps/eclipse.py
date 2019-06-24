@@ -177,7 +177,7 @@ class EclipseRule(MergeRule):
 
 class EclipseCCR(MergeRule):
     pronunciation = "eclipse jump"
-
+    non = EclipseRule
     mwith = [Navigation().get_pronunciation()]
 
     mapping = {
@@ -209,4 +209,4 @@ class EclipseCCR(MergeRule):
 context = AppContext(
     executable="javaw", title="Eclipse") | AppContext(
         executable="eclipse", title="Eclipse") | AppContext(executable="AptanaStudio3")
-control.non_ccr_app_rule(EclipseRule(), context=context)
+control.ccr_app_rule(EclipseRule(), context=context)

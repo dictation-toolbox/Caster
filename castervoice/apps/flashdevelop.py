@@ -67,7 +67,8 @@ class FlashDevelopRule(MergeRule):
 
 
 class FlashDevelopCCR(MergeRule):
-    pronunciation = "flash develop test"
+    pronunciation = "flash develop"
+    non = FlashDevelopRule
     mwith = [Navigation().get_pronunciation()]
 
     mapping = {
@@ -85,16 +86,4 @@ class FlashDevelopCCR(MergeRule):
 #---------------------------------------------------------------------------
 
 context = AppContext(executable="FlashDevelop", title="FlashDevelop")
-grammar = Grammar("FlashDevelop", context=context)
-
-if settings.SETTINGS["apps"]["flashdevelop"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(FlashDevelopRule())
-        control.nexus().merger.add_global_rule(FlashDevelopCCR())
-    else:
-        control.nexus().merger.add_app_rule(FlashDevelopCCR(name="FlashDevelop"), context)
-
-        rule = FlashDevelopRule()
-        gfilter.run_on(rule)
-        grammar.add_rule(rule)
-        grammar.load()
+control.ccr_app_rule(FlashDevelopCCR(), context=context)
