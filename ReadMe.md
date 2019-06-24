@@ -54,7 +54,7 @@ Donate at [![Bountysource](https://www.bountysource.com/badge/team?team_id=40790
   - Statistics: RStudio and lyx
   - Browsers: Firefox, Chrome and Internet Explorer
   - Git Client:  Github Desktop 
-  - commands to get started with.Applications: Foxit Reader, Gitter, fman, Total Commander, Typora, Microsoft Word, Outlook, and Excel
+  - Applications: Foxit Reader, Gitter, fman, Total Commander, Typora, Microsoft Word, Outlook, and Excel
 
 - [Editing and Navigation](https://github.com/dictation-toolbox/Caster/blob/develop/CasterQuickReference.pdf)
 
