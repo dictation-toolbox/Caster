@@ -1,19 +1,9 @@
-# Alex Boche 2019
-
-# this file contains commands for more quickly creating dragonfly commands.
-# users may want to make this context-specific to their text editors
-
-
-from dragonfly import (Grammar, MappingRule, Dictation, Function, Choice, Pause, Mouse)
-from dragonfly.actions.action_mouse import get_cursor_position
-
-from castervoice.lib import control
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.ccr.standard import SymbolSpecs
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-
+'''
+Alex Boche 2019
+this file contains commands for more quickly creating dragonfly commands.
+users may want to make this context-specific to their text editors
+'''
+from castervoice.lib.imports import *
 
 def split_dictation(text):
     if text:
@@ -102,7 +92,7 @@ class VoiceDevCommands(MergeRule):
         "dev mouse current [position]":
             R(Function(type_mouse_current),
               rdescript="DragonflyDev: Snippet for Making a Command for Clicking at the Current Cursor Position"),
-        "dev execute": R(Key("end")+Text(".execute()"), 
+        "dev execute": R(Key("end")+Text(".execute()"),
             rdescript="call 'execute' method at end of line"),
 
  # Caster Snippets
@@ -211,6 +201,5 @@ class VoiceDevCommands(MergeRule):
         IntegerRefST("distance_2", 1, 500),
     ]
     defaults = {"spec": "", "dict": "", "text": "", "mouse_button": ""}
-
 
 control.nexus().merger.add_global_rule(VoiceDevCommands())

@@ -4,6 +4,7 @@ from castervoice.lib.imports import *
 '''
 
 from dragonfly import Repeat, Function, Dictation, Choice, MappingRule, ContextAction, ShortIntegerRef, Mimic, Playback, Pause, Window, Compound, Repetition, Paste
+from dragonfly.actions.action_mouse import get_cursor_position
 
 from castervoice.lib import context, navigation, alphanumeric, textformat, text_utils, settings
 from castervoice.lib import control, utilities, text_manipulation_functions
