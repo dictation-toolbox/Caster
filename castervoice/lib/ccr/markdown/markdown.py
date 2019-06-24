@@ -1,12 +1,4 @@
-from dragonfly import Dictation, Choice, Repeat, Function
-
-from castervoice.lib import control
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.ccr.standard import SymbolSpecs
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-from castervoice.lib.dfplus.additions import IntegerRefST
-
+from castervoice.lib.imports import *
 
 class Markdown(MergeRule):
     pronunciation = "mark down"
@@ -14,25 +6,18 @@ class Markdown(MergeRule):
     mapping = {
         "heading [<num>] [<dict>]":
             R(Function(lambda num, dict:
-                Text(("#" * num) + " " + str(dict).capitalize() + "\n").execute()),
-                    rdescript="Markdown: heading [<num>] [<dict>]"),
+                Text(("#" * num) + " " + str(dict).capitalize() + "\n").execute())),
 
         "table row <n>":
-            R(Function(lambda n: Text("|"*(n-1)).execute()) + Key("home"),
-                rdescript="Markdown: table row <n>"),
+            R(Function(lambda n: Text("|"*(n-1)).execute()) + Key("home")),
         "table (break | split) <n>":
-            R(Function(lambda n: Text("---|"*(n-1) + "---").execute()) + Key("enter"),
-                rdescript="Markdown: table (break | split) <n>"),
+            R(Function(lambda n: Text("---|"*(n-1) + "---").execute()) + Key("enter")),
 
         "insert <element>":
-            R(Key("%(element)s"),
-                rdescript="Markdown: insert <element>"),
+            R(Key("%(element)s")),
 
         "insert header":
-            R(Text("---\nauthor: \ntitle: \n---\n"),
-                rdescript="Markdown: insert header"),
-
-
+            R(Text("---\nauthor: \ntitle: \n---\n")),
     }
     extras = [
         Dictation("dict"),
