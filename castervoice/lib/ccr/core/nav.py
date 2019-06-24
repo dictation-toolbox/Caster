@@ -262,7 +262,7 @@ class Navigation(MergeRule):
             R(Function(navigation.left_click, nexus=_NEXUS)),
         "psychic":
             R(Function(navigation.right_click, nexus=_NEXUS)),
-        "(kick double|double kick)":
+        "(kick double|double kick|dick)":
             R(Function(navigation.left_click, nexus=_NEXUS)*Repeat(2)),
         "squat":
             R(Function(navigation.left_down, nexus=_NEXUS)),
