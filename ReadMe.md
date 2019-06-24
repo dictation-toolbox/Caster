@@ -1,4 +1,4 @@
-[![Bountysource](https://www.bountysource.com/badge/team?team_id=caster-dictation&style=bounties_posted)](https://www.bountysource.com/teams/caster-dictation/bounties?utm_source=Bountysource&utm_medium=shield&utm_campaign=bounties_posted) [![Build Status](https://travis-ci.org/dictation-toolbox/Caster.svg?branch=develop)](https://travis-ci.org/dictation-toolbox/Caster)
+[![Bountysource](https://www.bountysource.com/badge/team?team_id=407907&style=bounties_posted)](https://www.bountysource.com/teams/caster-dictation/bounties?utm_source=Bountysource&utm_medium=shield&utm_campaign=bounties_posted) [![Build Status](https://travis-ci.org/dictation-toolbox/Caster.svg?branch=develop)](https://travis-ci.org/dictation-toolbox/Caster)
 
 # Caster
 
