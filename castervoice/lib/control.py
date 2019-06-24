@@ -21,6 +21,8 @@ def non_ccr_app_rule(rule, context=None, name=None):
     if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
         nexus().merger.add_global_rule(rule)
     else:
+        if hasattr(rule, get_context) and rule.get_context() is not None:
+            context = rule.get_context()
         grammar_name = name if name else str(rule)
         grammar = Grammar(grammar_name, context=context)
         gfilter.run_on(rule)
