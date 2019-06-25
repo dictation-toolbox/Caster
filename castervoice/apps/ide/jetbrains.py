@@ -116,21 +116,5 @@ context = AppContext(executable="idea", title="IntelliJ") \
           | AppContext(executable="idea64", title="IntelliJ") \
           | AppContext(executable="studio64") \
           | AppContext(executable="pycharm")
-
-
-grammar = Grammar("IntelliJ + Android Studio + PyCharm", context=context)
-if settings.SETTINGS["apps"]["jetbrains"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(JetbrainsRule())
-    else:
-        jet_brains_rule = JetbrainsRule(name="jet brains")
-        gfilter.run_on(jet_brains_rule)
-        grammar.add_rule(jet_brains_rule)
-
-        # You will need to change your terminal to bash under settings->tools
-        # C:\Program Files\Git\bin\bash.exe
-        git_rule = GitBashRule()
-        gfilter.run_on(git_rule)
-        grammar.add_rule(git_rule)
-
-        grammar.load()
+control.non_ccr_app_rule(JetbrainsRule(), context=context)
+control.non_ccr_app_rule(GitBashRule(), context=context)
