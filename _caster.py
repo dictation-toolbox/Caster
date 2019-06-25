@@ -50,27 +50,22 @@ if settings.WSR:
     SymbolSpecs.set_cancel_word("escape")
 from castervoice.lib import control
 _NEXUS = control.nexus()
+from castervoice.lib import navigation
+navigation.initialize_clipboard(_NEXUS)
 
 from castervoice.apps import __init__
 from castervoice.asynch import *
-from castervoice.lib import context
-from castervoice.lib.actions import Key
-from castervoice.lib.terminal import TerminalCommand
+from castervoice.lib.ccr import *
+from castervoice.lib.ccr.recording import bringme, again, alias, history
 import castervoice.lib.dev.dev
 from castervoice.asynch.sikuli import sikuli
-from castervoice.lib import navigation
-navigation.initialize_clipboard(_NEXUS)
+
+from castervoice.lib.actions import Key
+from castervoice.lib.terminal import TerminalCommand
 from castervoice.lib.dfplus.state.short import R
 from castervoice.lib.dfplus.additions import IntegerRefST
-
 from castervoice.lib.dfplus.merge.mergepair import MergeInf
-from castervoice.lib.ccr import *
-from castervoice.lib.ccr.recording import again, bringme, alias
-from castervoice.lib.ccr.recording import history
-from castervoice.lib.dev import dev
-from castervoice.lib.dfplus.hint.nodes import css
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.merge import gfilter
 
 if not globals().has_key('profile_switch_occurred'):
     # Load user rules
