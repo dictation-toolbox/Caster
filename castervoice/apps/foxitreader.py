@@ -4,12 +4,9 @@ class FoxitRule(MergeRule):
     pronunciation = "fox it reader"
 
     mapping = {
-        "next tab [<n>]":
-            R(Key("c-tab"))*Repeat(extra="n"),
-        "prior tab [<n>]":
-            R(Key("cs-tab"))*Repeat(extra="n"),
-        "close tab [<n>]":
-            R(Key("c-f4/20"))*Repeat(extra="n"),
+        "next tab [<n>]": R(Key("c-tab"))*Repeat(extra="n"),
+        "prior tab [<n>]": R(Key("cs-tab"))*Repeat(extra="n"),
+        "close tab [<n>]": R(Key("c-f4/20"))*Repeat(extra="n"),
     }
     extras = [
         Dictation("text"),

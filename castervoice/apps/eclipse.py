@@ -177,21 +177,17 @@ class EclipseCCR(MergeRule):
     mapping = {
         #Line Ops
         "configure":
-            R(
-                Paste(ec_con.analysis_chars) +
+            R(Paste(ec_con.analysis_chars) +
                 Key("left:2/5, c-f/20, backslash, rbracket, enter") +
                 Function(ec_con.analyze_for_configure)),
         "jump in [<n>]":
-            R(
-                Key("c-f, a-o") + Paste(r"[\(\[\{\<]") + Function(ec_con.regex_on) +
+            R(Key("c-f, a-o") + Paste(r"[\(\[\{\<]") + Function(ec_con.regex_on) +
                 Key("enter:%(n)d/5, escape, right")),
         "jump out [<n>]":
-            R(
-                Key("c-f, a-o") + Paste(r"[\)\] \}\>]") + Function(ec_con.regex_on) +
+            R(Key("c-f, a-o") + Paste(r"[\)\] \}\>]") + Function(ec_con.regex_on) +
                 Key("enter:%(n)d/5, escape, right")),
         "jump back [<n>]":
-            R(
-                Key("c-f/5, a-b") + Paste(r"[\)\]\}\>]") + Function(ec_con.regex_on) +
+            R(Key("c-f/5, a-b") + Paste(r"[\)\]\}\>]") + Function(ec_con.regex_on) +
                 Key("enter:%(n)d/5, escape, left")),
         "[go to] line <n>":
             R(Key("c-l") + Pause("50") + Text("%(n)d") + Key("enter") + Pause("50")),

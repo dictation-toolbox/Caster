@@ -41,7 +41,8 @@ class DragonRule(MergeRule):
     pronunciation = "dragon"
 
     mapping = {
-        "format <text>": Function(cap_dictation, extra={"text"}),
+        "format <text>":
+            Function(cap_dictation, extra={"text"}),
         '(lock Dragon | deactivate)':
             R(Playback([(["go", "to", "sleep"], 0.0)])),
         '(number|numbers) mode':
@@ -68,22 +69,30 @@ class DragonRule(MergeRule):
             R(Playback([(["MouseGrid"], 0.1), (["click"], 0.0)])),
 
 
-        "show windows": R(Mimic("list", "all", "windows")),
+        "show windows":
+            R(Mimic("list", "all", "windows")),
         "cory <text>":
             R(Mimic("correct", extra="text") + WaitWindow(title="spelling window") + Mimic("choose", "one")),
         "cory that":
             R(Mimic("correct", "that") + WaitWindow(title="spelling window") + Mimic("choose", "one")),
 
-        "make that <text>": R(Mimic("scratch", "that") + Mimic(extra="text")),
-        "scratch [<n10>]": R(Playback([(["scratch", "that"], 0.03)])),
+        "make that <text>":
+            R(Mimic("scratch", "that") + Mimic(extra="text")),
+        "scratch [<n10>]":
+            R(Playback([(["scratch", "that"], 0.03)])),
 
-        "train word": R(Mimic("train", "that") + Key("a-r/200, s")),
-        "word train": R(Key("c-c/20") + Mimic("edit", "vocabulary") + Pause("100") +
+        "train word":
+            R(Mimic("train", "that") + Key("a-r/200, s")),
+        "word train":
+            R(Key("c-c/20") + Mimic("edit", "vocabulary") + Pause("100") +
             Key("c-v/5, tab, down, up, a-t/50, enter/50, a-r/250, s/50, escape")),
-        "(add train | train from add word)": R(Key("a-a/2, enter/300, a-s")),
+        "(add train | train from add word)":
+            R(Key("a-a/2, enter/300, a-s")),
     # Users may want to adjust the way time on the next four commands
-        "(train from vocab | cab train)": R(Key("a-t/50, enter/50, a-r/250, s")),
-        "(train from vocab | cab train)": R(Key("a-t/50, enter/50, a-r/250, s")),
+        "(train from vocab | cab train)":
+            R(Key("a-t/50, enter/50, a-r/250, s")),
+        "(train from vocab | cab train)":
+            R(Key("a-t/50, enter/50, a-r/250, s")),
         "remove from vocab":
             R(Key("c-c/5") + Mimic("edit", "vocabulary") + Pause("20") +
             Key("c-v/10, tab, down, up/5, a-d, y, escape/30, right")),
@@ -96,12 +105,12 @@ class DragonRule(MergeRule):
         "peak [recognition] history":
             R(Playback([(["view", "recognition", "history"], 0.03)])
                 + Pause("300") + Key("escape")),
-        "[dictation] sources": R(Mimic("manage", "dictation", "sources")),
+        "[dictation] sources":
+            R(Mimic("manage", "dictation", "sources")),
 
         # A Natlink Command
-        "clear caster log": R(Function(utilities.clear_log)),
-
-
+        "clear caster log":
+            R(Function(utilities.clear_log)),
     }
     # see above
     extras = extras_for_whole_file
@@ -113,9 +122,12 @@ class SpellingWindowRule(MergeRule):
          # todo: make these CCR
          "<first_second_third> word":
             R(Key("home, c-right:%(first_second_third)d, cs-right")),
-         "last [word]": R(Key("right, cs-left")),
-         "second [to] last word": R(Key("right, c-left:1, cs-left")),
-         "<n10>": R(Mimic("choose", extra="n10")),
+         "last [word]":
+            R(Key("right, cs-left")),
+         "second [to] last word":
+            R(Key("right, c-left:1, cs-left")),
+         "<n10>":
+            R(Mimic("choose", extra="n10")),
             # consider making the above command global so that it works when you say something like
             # "insert before 'hello'" where there are multiple instances of 'hello'
             # personally I think it's better just to have the setting where Dragon choose is the closest instance

@@ -1,8 +1,10 @@
 from castervoice.lib.imports import *
 
+
 def _apply(n):
     if n != 0:
         Text("stash@{" + str(int(n)) + "}").execute()
+
 
 class GitBashRule(MergeRule):
     pronunciation = "git bash"
