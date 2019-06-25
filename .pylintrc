@@ -1,13 +1,10 @@
 [TYPECHECK]
 generated-members=pythoncom.*,wx.*
+ignored-modules=natlink,natlinkstatus
 
 [MASTER]
-extension-pkg-whitelist=pythoncom,wx,pydevd
+extension-pkg-whitelist=pythoncom,wx,pydevd,win32gui
 
 [MESSAGES CONTROL]
-
-disable=print-statement
-
 disable=all
-
 enable=E

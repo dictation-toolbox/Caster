@@ -1,5 +1,6 @@
-from dragonfly import (Dictation, Grammar, IntegerRef, Key, MappingRule, Pause, Repeat,
-                       Text)
+from dragonfly import (AppContext, Dictation, Grammar, Key, MappingRule,
+                       Pause, Repeat, Text)
+from dragonfly.actions.action_mimic import Mimic
 
 from castervoice.lib import control, settings
 from castervoice.lib.context import AppContext

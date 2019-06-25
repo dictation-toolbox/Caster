@@ -250,7 +250,7 @@ grammar = Grammar("outlook", context=context)
 
 if settings.SETTINGS["apps"]["outlook"]:
     if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(())
+        control.nexus().merger.add_global_rule(OutlookRule())
     else:
         rule = OutlookRule(name="outlook")
         gfilter.run_on(rule)

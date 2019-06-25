@@ -8,7 +8,19 @@ import os
 import logging
 logging.basicConfig()
 
-import time, socket
+
+def version_minimum():
+    try:
+        import pkg_resources
+        version = "0.15.0"  # Version needs to be manually updated Caster requires a certain version of Dragonfly
+        pkg_resources.require("dragonfly2 >= %s" % (version))
+    except Exception:  # pylint: disable=broad-except
+        print("\nCaster: Requires at least dragonfly2 version %s\n" % (version))
+
+
+version_minimum()
+
+import time, socket, os
 from dragonfly import (Function, Grammar, Playback, Dictation, Choice, Pause, RunCommand)
 from castervoice.lib.ccr.standard import SymbolSpecs
 
@@ -17,17 +29,20 @@ def _wait_for_wsr_activation():
     count = 1
     while True:
         try:
-            from castervoice.apps import firefox
+            from castervoice.apps.browser import firefox
             break
         except:
-            print("(%d) Attempting to load Caster -- WSR not loaded and listening yet..."
-                  % count)
+            print(
+                "(%d) Attempting to load Caster -- WSR not loaded and listening yet..." %
+                count)
             count += 1
             time.sleep(1)
 
 
 _NEXUS = None
 from castervoice.lib import settings  # requires nothing
+if settings.SYSTEM_INFORMATION["platform"] != "win32":
+    raise SystemError("Your platform is not currently supported by Caster.")
 settings.WSR = __name__ == "__main__"
 from castervoice.lib import utilities  # requires settings
 if settings.WSR:
@@ -36,7 +51,7 @@ if settings.WSR:
 from castervoice.lib import control
 _NEXUS = control.nexus()
 
-from castervoice.apps import *
+from castervoice.apps import __init__
 from castervoice.asynch import *
 from castervoice.lib import context
 from castervoice.lib.actions import Key
@@ -59,10 +74,11 @@ from castervoice.lib.dfplus.hint.nodes import css
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.merge import gfilter
 
-# Load user rules
-_NEXUS.process_user_content()
-_NEXUS.merger.update_config()
-_NEXUS.merger.merge(MergeInf.BOOT)
+if not globals().has_key('profile_switch_occurred'):
+    # Load user rules
+    _NEXUS.process_user_content()
+    _NEXUS.merger.update_config()
+    _NEXUS.merger.merge(MergeInf.BOOT)
 
 
 # Checks if install is classic or PIP of caster
@@ -103,6 +119,7 @@ class DependencyCheck(TerminalCommand):
     trusted = True  # Command will execute silently without ConfirmAction
     synchronous = True
 
+    # pylint: disable=method-hidden
     def process_command(self, proc):
         update = False
         for line in iter(proc.stdout.readline, b''):
@@ -115,6 +132,7 @@ class DependencyCheck(TerminalCommand):
 class CasterCheck(DependencyCheck):
     command = [PIP_PATH, "search", "castervoice"]
 
+    # pylint: disable=method-hidden
     def process_command(self, proc):
         if DependencyCheck.process_command(self, proc):
             print("Caster: Caster is up-to-date")
@@ -125,6 +143,7 @@ class CasterCheck(DependencyCheck):
 class DragonflyCheck(DependencyCheck):
     command = [PIP_PATH, "search", "dragonfly2"]
 
+    # pylint: disable=method-hidden
     def process_command(self, proc):
         if DependencyCheck.process_command(self, proc):
             print("Caster: Dragonfly is up-to-date")
@@ -135,6 +154,7 @@ class DragonflyCheck(DependencyCheck):
 class DependencyUpdate(RunCommand):
     synchronous = True
 
+    # pylint: disable=method-hidden
     def process_command(self, proc):
         # Process the output from the command.
         RunCommand.process_command(self, proc)

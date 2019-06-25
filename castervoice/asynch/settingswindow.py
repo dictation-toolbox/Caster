@@ -1,15 +1,11 @@
+from __future__ import print_function
+
+import os
 import signal
-import sys, os
-from threading import Timer
+import sys
 import threading
 from SimpleXMLRPCServer import SimpleXMLRPCServer
-
-
-from wx import Notebook, NB_MULTILINE, Menu, ID_EXIT, EVT_MENU, MenuBar, \
-    BoxSizer, VERTICAL, HORIZONTAL, StaticText, RIGHT, EXPAND, LEFT, TOP, \
-    TextCtrl, Panel, App, Frame, CheckBox, EVT_CLOSE
-
-from wx.lib.scrolledpanel import ScrolledPanel
+from threading import Timer
 
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0]
@@ -19,12 +15,30 @@ finally:
     from castervoice.lib import settings
     from castervoice.lib.dfplus.communication import Communicator
 
+try:
+    from wx import (Notebook, NB_MULTILINE, Menu, ID_EXIT, EVT_MENU, MenuBar, BoxSizer,
+                    VERTICAL, HORIZONTAL, StaticText, RIGHT, EXPAND, LEFT, TOP, TextCtrl,
+                    Panel, App, Frame, CheckBox, EVT_CLOSE)
+
+    from wx.lib.scrolledpanel import ScrolledPanel
+except ImportError:
+    # TODO: Because the console is invisible, this should be handled by some sort of
+    # GUI element like a message box.
+    print(
+        """
+An error was encountered while trying to import the `wxPython` module. Please
+use `pip install --upgrade wxPython` to install the latest version.
+""" + settings.GENERIC_HELP_MESSAGE,
+        file=sys.stderr)
+    raise
+
 DICT_SETTING = 1
 STRING_SETTING = 2
 STRINGLIST_SETTING = 4
 INTEGERLIST_SETTING = 8
 INTEGER_SETTING = 16
 BOOLEAN_SETTING = 32
+
 
 class Field:
     def __init__(self, wx_field, original, text_type=None):
