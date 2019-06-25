@@ -113,4 +113,4 @@ class Haxe(MergeRule):
     defaults = {}
 
 
-control.nexus().merger.add_global_rule(Haxe())
+control.global_rule(Haxe())

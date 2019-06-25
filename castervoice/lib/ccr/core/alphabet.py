@@ -17,4 +17,4 @@ class Alphabet(MergeRule):
         "big": False,
     }
 
-control.nexus().merger.add_global_rule(Alphabet())
+control.global_rule(Alphabet())

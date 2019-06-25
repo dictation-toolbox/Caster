@@ -65,9 +65,7 @@ from castervoice.lib.dfplus.additions import IntegerRefST
 
 from castervoice.lib.dfplus.merge.mergepair import MergeInf
 from castervoice.lib.ccr import *
-from castervoice.lib.ccr.recording.again import Again
-from castervoice.lib.ccr.recording.bringme import bring_rule
-from castervoice.lib.ccr.recording.alias import Alias
+from castervoice.lib.ccr.recording import again, bringme, alias
 from castervoice.lib.ccr.recording import history
 from castervoice.lib.dev import dev
 from castervoice.lib.dfplus.hint.nodes import css
@@ -202,53 +200,43 @@ class MainRule(MergeRule):
     mapping = {
         # update management
         "update caster":
-            R(DependencyUpdate([PIP_PATH, "install", "--upgrade", "castervoice"]),
-              rdescript="Core: Update and restart Caster"),
+            R(DependencyUpdate([PIP_PATH, "install", "--upgrade", "castervoice"])),
         "update dragonfly":
-            R(DependencyUpdate([PIP_PATH, "install", "--upgrade", "dragonfly2"]),
-              rdescript="Core: Update dragonfly2 and restart Caster"),
+            R(DependencyUpdate([PIP_PATH, "install", "--upgrade", "dragonfly2"])),
 
         # hardware management
         "volume <volume_mode> [<n>]":
-            R(Function(navigation.volume_control, extra={'n', 'volume_mode'}),
-              rdescript="Volume Control"),
+            R(Function(navigation.volume_control, extra={'n', 'volume_mode'})),
         "change monitor":
-            R(Key("w-p") + Pause("100") + Function(change_monitor),
-              rdescript="Change Monitor"),
+            R(Key("w-p") + Pause("100") + Function(change_monitor)),
 
         # window management
         'minimize':
-            R(Playback([(["minimize", "window"], 0.0)]), rdescript="Minimize Window"),
+            R(Playback([(["minimize", "window"], 0.0)])),
         'maximize':
-            R(Playback([(["maximize", "window"], 0.0)]), rdescript="Maximize Window"),
+            R(Playback([(["maximize", "window"], 0.0)])),
         "remax":
-            R(Key("a-space/10,r/10,a-space/10,x"), rdescript="Force Maximize Window"),
+            R(Key("a-space/10,r/10,a-space/10,x")),
 
         # passwords
 
         # mouse alternatives
         "legion [<monitor>]":
-            R(Function(navigation.mouse_alternates, mode="legion", nexus=_NEXUS),
-              rdescript="Activate Legion"),
+            R(Function(navigation.mouse_alternates, mode="legion", nexus=_NEXUS)),
         "rainbow [<monitor>]":
-            R(Function(navigation.mouse_alternates, mode="rainbow", nexus=_NEXUS),
-              rdescript="Activate Rainbow Grid"),
+            R(Function(navigation.mouse_alternates, mode="rainbow", nexus=_NEXUS)),
         "douglas [<monitor>]":
-            R(Function(navigation.mouse_alternates, mode="douglas", nexus=_NEXUS),
-              rdescript="Activate Douglas Grid"),
+            R(Function(navigation.mouse_alternates, mode="douglas", nexus=_NEXUS)),
 
         # ccr de/activation
         "<enable> <name>":
-            R(Function(_NEXUS.merger.global_rule_changer(), save=True),
-              rdescript="Toggle CCR Module"),
+            R(Function(_NEXUS.merger.global_rule_changer(), save=True)),
         "<enable> <name2>":
-            R(Function(_NEXUS.merger.selfmod_rule_changer(), save=True),
-              rdescript="Toggle sm-CCR Module"),
+            R(Function(_NEXUS.merger.selfmod_rule_changer(), save=True)),
         "enable caster":
-            R(Function(_NEXUS.merger.merge, time=MergeInf.RUN, name="numbers"),
-              rdescript="Enable CCR rules"),
+            R(Function(_NEXUS.merger.merge, time=MergeInf.RUN, name="numbers")),
         "disable caster":
-            R(Function(_NEXUS.merger.ccr_off), rdescript="Disable CCR rules"),
+            R(Function(_NEXUS.merger.ccr_off)),
     }
     extras = [
         IntegerRefST("n", 1, 50),
@@ -270,26 +258,8 @@ class MainRule(MergeRule):
     ]
     defaults = {"n": 1, "nnv": 1, "text": "", "volume_mode": "setsysvolume", "enable": -1}
 
+control.non_ccr_app_rule(MainRule(), context=None, rdp=False)
 
-grammar = Grammar('general')
-main_rule = MainRule()
-gfilter.run_on(main_rule)
-grammar.add_rule(main_rule)
-
-gfilter.run_on(bring_rule)
-grammar.add_rule(bring_rule)
-
-if settings.SETTINGS["feature_rules"]["again"]:
-    again_rule = Again(_NEXUS)
-    gfilter.run_on(again_rule)
-    grammar.add_rule(again_rule)
-
-if settings.SETTINGS["feature_rules"]["alias"]:
-    alias_rule = Alias(_NEXUS)
-    gfilter.run_on(alias_rule)
-    grammar.add_rule(alias_rule)
-
-grammar.load()
 
 if globals().has_key('profile_switch_occurred'):
     reload(sikuli)

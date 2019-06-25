@@ -171,4 +171,4 @@ class Python(MergeRule):
     defaults = {"unary_meth": "", "binary_meth": "", "exception": ""}
 
 
-control.nexus().merger.add_global_rule(Python(ID=100))
+control.global_rule(Python(ID=100))

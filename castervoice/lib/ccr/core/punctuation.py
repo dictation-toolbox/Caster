@@ -99,4 +99,4 @@ class Punctuation(MergeRule):
         "long": "",
     }
 
-control.nexus().merger.add_global_rule(Punctuation())
+control.global_rule(Punctuation())

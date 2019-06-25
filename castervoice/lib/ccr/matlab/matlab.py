@@ -92,4 +92,4 @@ class Matlab(MergeRule):
     defaults = {}
 
 
-control.nexus().merger.add_global_rule(Matlab())
+control.global_rule(Matlab())

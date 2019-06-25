@@ -126,4 +126,4 @@ class CPP(MergeRule):
     defaults = {}
 
 
-control.nexus().merger.add_global_rule(CPP())
+control.global_rule(CPP())
