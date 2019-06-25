@@ -1,24 +1,4 @@
-''' line ops functions '''
-
-import re
-
-from dragonfly import (Grammar, Dictation, Repeat, Pause)
-from dragonfly.actions.action_function import Function
-from dragonfly.actions.action_paste import Paste
-from dragonfly.grammar.elements import Choice
-
-from castervoice.lib import context as CONTEXT, alphanumeric
-from castervoice.lib import control, utilities
-from castervoice.lib import settings
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.context import AppContext
-from castervoice.lib.ccr.core.nav import Navigation
-from castervoice.lib.dfplus.additions import IntegerRefST, Boolean
-from castervoice.lib.dfplus.merge import gfilter
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.actions2 import UntilCancelled
-from castervoice.lib.dfplus.state.short import R
-
+from castervoice.lib.imports import *
 
 class EclipseController(object):
     def __init__(self):
@@ -40,7 +20,7 @@ class EclipseController(object):
         to see which toggles are active'''
         '''regex toggle check'''
         Key("escape").execute()  # get out of Find
-        result = CONTEXT.read_nmax_tries(10)
+        result = context.read_nmax_tries(10)
         if result == self.analysis_chars:
             self.regex = False
             Key("backspace").execute()
@@ -53,7 +33,7 @@ class EclipseController(object):
     def lines_relative(self, back, n):
         if back:  #backward
             try:
-                num = CONTEXT.read_nmax_tries(10)
+                num = context.read_nmax_tries(10)
                 txt = str(int(num) - int(n) + 1)  # +1 to include current line
                 Text(txt).execute()
             except ValueError:
@@ -178,7 +158,6 @@ class EclipseRule(MergeRule):
 class EclipseCCR(MergeRule):
     pronunciation = "eclipse jump"
     non = EclipseRule
-    mwith = [Navigation().get_pronunciation()]
 
     mapping = {
             #Line Ops

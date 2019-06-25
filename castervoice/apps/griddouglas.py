@@ -1,19 +1,7 @@
-"""
-Command-module for DouglasGrid
-
-"""
-from dragonfly import (Grammar, Function, Playback, Choice, MappingRule, Mouse)
+from castervoice.lib.imports import *
 
 from castervoice.asynch.mouse import grids
-from castervoice.lib import control
-from castervoice.lib import settings
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.merge import gfilter
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-from castervoice.lib.context import AppContext
-
-import win32api, win32con, time
+import win32api, win32con
 
 _NEXUS = control.nexus()
 

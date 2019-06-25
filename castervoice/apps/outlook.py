@@ -1,36 +1,8 @@
-#
-# This file is a command-module for Dragonfly.
-# (c) Copyright 2008 by Christo Butcher
-# Licensed under the LGPL, see <http://www.gnu.org/licenses/>
-#
-"""
-Command-module for Microsoft Outlook
-Note (from Alex Boche 2019): In my opinion, Microsoft Outlook probably most Dragon-friendly email application.
-All text fields are full text control, and all of the menus should be say-what-you-see natively in Dragon.
-A good alternative to using Outlook is to use an e-mail website in Chrome or Firefox since these applications
-support Wolfmanstout's accessibility API commands which can replace full text control.
-Outlook users may want to consider purchasing Voice Computer which provides good numbering software
-for the buttons and text fields in Outlook although a free and better alternative
-to Voice Computer may be coming soon.
-
-
-"""
-from dragonfly import (Grammar, Dictation, Repeat, Function, Choice)
-
-from castervoice.lib import control
-from castervoice.lib import settings
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.context import AppContext
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.merge import gfilter
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-
+from castervoice.lib.imports import *
 
 def capitalize(text):
     output = str(text).title()
     Text(output).execute()
-
 
 class OutlookRule(MergeRule):
     pronunciation = "outlook"
@@ -243,3 +215,14 @@ class OutlookRule(MergeRule):
 
 context = AppContext(executable="outlook")
 control.non_ccr_app_rule(OutlookRule(), context=context)
+
+"""
+Command-module for Microsoft Outlook
+Note (from Alex Boche 2019): In my opinion, Microsoft Outlook probably most Dragon-friendly email application.
+All text fields are full text control, and all of the menus should be say-what-you-see natively in Dragon.
+A good alternative to using Outlook is to use an e-mail website in Chrome or Firefox since these applications
+support Wolfmanstout's accessibility API commands which can replace full text control.
+Outlook users may want to consider purchasing Voice Computer which provides good numbering software
+for the buttons and text fields in Outlook although a free and better alternative
+to Voice Computer may be coming soon.
+"""

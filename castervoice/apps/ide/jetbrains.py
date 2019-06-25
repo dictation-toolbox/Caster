@@ -1,16 +1,7 @@
-from dragonfly import (Grammar, Dictation, Repeat)
+from castervoice.lib.imports import *
 
 import ide
 from castervoice.apps.gitbash import GitBashRule
-from castervoice.lib import control
-from castervoice.lib import settings
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.context import AppContext
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.merge import gfilter
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-
 
 class JetbrainsRule(MergeRule):
     pronunciation = "jet brains"

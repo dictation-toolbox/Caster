@@ -1,16 +1,6 @@
-from dragonfly import (Grammar, Dictation, Repeat)
+from castervoice.lib.imports import *
 
-from castervoice.lib import control
-from castervoice.lib import settings
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.merge import gfilter
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-from castervoice.lib.context import AppContext
-from castervoice.lib.actions import Key
-
-
-class TotalCommanderRule (MergeRule):
+class TotalCommanderRule(MergeRule):
     pronunciation = "total commander"
 
     mapping = {

@@ -1,15 +1,4 @@
-from dragonfly import (Grammar, MappingRule, Dictation, Repeat, Pause)
-
-from castervoice.lib import control
-from castervoice.lib import settings
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.ccr.core.nav import Navigation
-from castervoice.lib.context import AppContext
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.merge import gfilter
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-
+from castervoice.lib.imports import *
 
 class FlashDevelopRule(MergeRule):
     pronunciation = "flash develop"
@@ -69,7 +58,6 @@ class FlashDevelopRule(MergeRule):
 class FlashDevelopCCR(MergeRule):
     pronunciation = "flash develop"
     non = FlashDevelopRule
-    mwith = [Navigation().get_pronunciation()]
 
     mapping = {
         "[go to] line <n>":

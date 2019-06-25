@@ -1,13 +1,4 @@
-from dragonfly import (Grammar, Pause, Choice)
-
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.context import AppContext
-
-from castervoice.lib import control, settings
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.merge import gfilter
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
+from castervoice.lib.imports import *
 
 class fmanRule(MergeRule):
     pronunciation = "F man"

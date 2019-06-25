@@ -1,27 +1,10 @@
-#
-# This file is a command-module for Dragonfly.
-# (c) Copyright 2008 by Christo Butcher
-# Licensed under the LGPL, see <http://www.gnu.org/licenses/>
-#
 """
 Command-module for Microsoft Excel
 You also can find some good vocola commands for Excel on Mark Lillibridge's Github:
 https://github.com/mdbridge/bit-bucket/tree/master/voice/my_commands/commands
 Alex Boche 2019
-"""import itertools
-
-from dragonfly import (Grammar, Context, AppContext, Dictation, Key, Text, Repeat,
-                       Function, Choice)
-
-from castervoice.lib import control
-from castervoice.lib import settings
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.context import AppContext
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.merge import gfilter
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-from castervoice.lib.alphanumeric import caster_alphabet
+"""
+from castervoice.lib.imports import *
 
 # this function takes a dictionary and returns a dictionary whose keys are sequences of keys of the original dictionary
 # and whose values our the corresponding sequences of values of the original dictionary
@@ -133,8 +116,8 @@ class ExcelRule(MergeRule):
         IntegerRefST("row_1", 1, 100),
         IntegerRefST("row_2", 1, 100),
         # when I set the sequence length to 3 I got the grammar too complex Natlink error.
-        Choice("column_1", make_sequence_dict_up_to_length(caster_alphabet, 2)),
-        Choice("column_2", make_sequence_dict_up_to_length(caster_alphabet, 2)),
+        Choice("column_1", make_sequence_dict_up_to_length(alphanumeric.caster_alphabet, 2)),
+        Choice("column_2", make_sequence_dict_up_to_length(alphanumeric.caster_alphabet, 2)),
     ]
     defaults = {"n": 1, "dict": ""}
 

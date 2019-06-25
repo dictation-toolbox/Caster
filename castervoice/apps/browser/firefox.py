@@ -1,20 +1,7 @@
-#
-# This file is a command-module for Dragonfly.
-# (c) Copyright 2008 by Christo Butcher
-# Licensed under the LGPL, see <http://www.gnu.org/licenses/>
-#
-
-from dragonfly import (Grammar, Repeat)
+from castervoice.lib.imports import *
 
 import browser
 from castervoice.apps.browser.browser_shared_commands import BrowserSharedCommands
-from castervoice.lib import control
-from castervoice.lib import settings
-from castervoice.lib.actions import Key
-from castervoice.lib.context import AppContext
-from castervoice.lib.dfplus.merge import gfilter
-from castervoice.lib.dfplus.state.short import R
-
 
 class FirefoxRule(BrowserSharedCommands):
     pronunciation = "fire fox"

@@ -1,10 +1,4 @@
-from dragonfly import (Grammar, Function)
-
-from castervoice.lib import utilities, settings
-from castervoice.lib.dfplus.merge import gfilter
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-
+from castervoice.lib.imports import *
 
 class WindowsSpeechRecognitionRule(MergeRule):
 

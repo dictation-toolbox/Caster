@@ -1,14 +1,6 @@
+from castervoice.lib.imports import *
 
-from dragonfly import (Grammar, Playback, Key, Text, Dictation, Function, Choice, Mimic, WaitWindow, Pause, Repeat, AppContext)
-from castervoice.lib import control
-from castervoice.lib import utilities, settings
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.merge import gfilter
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
 _NEXUS = control.nexus()
-
 
 def fix_dragon_double(nexus):
     try:

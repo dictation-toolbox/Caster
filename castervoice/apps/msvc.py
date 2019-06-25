@@ -1,23 +1,4 @@
-#
-# This file is a command-module for Dragonfly.
-# (c) Copyright 2008 by Christo Butcher
-# Licensed under the LGPL, see <http://www.gnu.org/licenses/>
-#
-"""
-Command-module for MSVC
-
-"""
-from dragonfly import (Grammar, Dictation, Repeat)
-
-from castervoice.lib import control
-from castervoice.lib import settings
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.context import AppContext
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.merge import gfilter
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-
+from castervoice.lib.imports import *
 
 class MSVCRule(MergeRule):
     pronunciation = "Microsoft visual studio"

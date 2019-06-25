@@ -1,13 +1,4 @@
-from dragonfly import (AppContext, Dictation, Grammar, Key, MappingRule,
-                       Pause, Repeat, Text)
-from dragonfly.actions.action_mimic import Mimic
-
-from castervoice.lib import control, settings
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.merge import gfilter
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-
+from castervoice.lib.imports import *
 
 class FileDialogueRule(MergeRule):
     pronunciation = "file dialogue"
