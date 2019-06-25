@@ -4,8 +4,7 @@ class WindowsSpeechRecognitionRule(MergeRule):
 
     mapping = {
         "reboot windows speech recognition":
-            R(Function(utilities.reboot, wsr=True),
-              rdescript="Reboot Windows Speech Recognition"),
+            R(Function(utilities.reboot, wsr=True)),
     }
     extras = []
     defaults = {}

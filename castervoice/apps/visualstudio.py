@@ -5,76 +5,75 @@ class VisualStudioRule(MergeRule):
 
     mapping = {
         "next tab [<n>]":
-            R(Key("ca-pgdown"), rdescript="Visual Studio: Next Tab")*Repeat(extra="n"),
+            R(Key("ca-pgdown"))*Repeat(extra="n"),
         "prior tab [<n>]":
-            R(Key("ca-pgup"), rdescript="Visual Studio: Previous Tab")*Repeat(extra="n"),
+            R(Key("ca-pgup"))*Repeat(extra="n"),
         "close tab [<n>]":
-            R(Key("c-f4/20"), rdescript="Visual Studio: Close Tab")*Repeat(extra="n"),
+            R(Key("c-f4/20"))*Repeat(extra="n"),
         "(list | show) documents":
-            R(Key("a-w, w"), rdescript="Visual Studio: List Documents"),
+            R(Key("a-w, w")),
         "[focus] document (window | pane)":
-            R(Key("a-w, w, enter"), rdescript="Visual Studio: Focus Document Pane"),
+            R(Key("a-w, w, enter")),
         "solution explorer":
-            R(Key("ca-l"), rdescript="Visual Studio: Solution Explorer"),
+            R(Key("ca-l")),
         "team explorer":
-            R(Key("c-backslash, c-m"), rdescript="Visual Studio: Team Explorer"),
+            R(Key("c-backslash, c-m")),
         "source control explorer":
-            R(Key("c-q") + Text("Source Control Explorer") + Key("enter"),
-              rdescript="Visual Studio: Source Control Explorer"),
+            R(Key("c-q") + Text("Source Control Explorer") + Key("enter")),
         "quick launch":
-            R(Key("c-q"), rdescript="Visual Studio: Quick Launch"),
+            R(Key("c-q")),
         "go to line":
-            R(Key("c-g"), rdescript="Visual Studio: Go To Line"),
+            R(Key("c-g")),
         "comment line":
-            R(Key("c-k, c-c"), rdescript="Visual Studio: Comment Selection"),
+            R(Key("c-k, c-c")),
         "comment block":
-            R(Key("c-k, c-c"), rdescript="Visual Studio: Comment Block"),
+            R(Key("c-k, c-c")),
         "(un | on) comment line":
-            R(Key("c-k/50, c-u"), rdescript="Visual Studio: Uncomment Selection"),
+            R(Key("c-k/50, c-u")),
         "(un | on) comment block":
-            R(Key("c-k/50, c-u"), rdescript="Visual Studio: Uncomment Block"),
+            R(Key("c-k/50, c-u")),
         "[toggle] full screen":
-            R(Key("sa-enter"), rdescript="Visual Studio: Fullscreen"),
+            R(Key("sa-enter")),
         "(set | toggle) bookmark":
-            R(Key("c-k, c-k"), rdescript="Visual Studio: Toggle Bookmark"),
+            R(Key("c-k, c-k")),
         "next bookmark":
-            R(Key("c-k, c-n"), rdescript="Visual Studio: Next Bookmark"),
+            R(Key("c-k, c-n")),
         "prior bookmark":
-            R(Key("c-k, c-p"), rdescript="Visual Studio: Previous Bookmark"),
+            R(Key("c-k, c-p")),
         "collapse to definitions":
-            R(Key("c-m, c-o"), rdescript="Visual Studio: Collapse To Definitions"),
+            R(Key("c-m, c-o")),
         "toggle [section] outlining":
-            R(Key("c-m, c-m"), rdescript="Visual Studio: Toggle Section Outlining"),
+            R(Key("c-m, c-m")),
         "toggle all outlining":
-            R(Key("c-m, c-l"), rdescript="Visual Studio: Toggle All Outlining"),
+            R(Key("c-m, c-l")),
         "[toggle] breakpoint":
-            R(Key("f9"), rdescript="Visual Studio: Breakpoint"),
+            R(Key("f9")),
         "step over [<n>]":
-            R(Key("f10/50")*Repeat(extra="n"), rdescript="Visual Studio: Step Over"),
+            R(Key("f10/50")*Repeat(extra="n")),
         "step into":
-            R(Key("f11"), rdescript="Visual Studio: Step Into"),
+            R(Key("f11")),
         "step out [of]":
-            R(Key("s-f11"), rdescript="Visual Studio: Step Out"),
+            R(Key("s-f11")),
         "resume":
-            R(Key("f5"), rdescript="Visual Studio: Resume"),
+            R(Key("f5")),
         "run tests":
-            R(Key("c-r, t"), rdescript="Visual Studio: Run test(s)"),
+            R(Key("c-r, t")),
         "run all tests":
-            R(Key("c-r, a"), rdescript="Visual Studio: Run all tests"),
+            R(Key("c-r, a")),
         "build solution":
-            R(Key("cs-b"), rdescript="Visual Studio: Build solution"),
+            R(Key("cs-b")),
         "get latest [version]":
-            R(Key("a-f, r, l"), rdescript="Visual Studio: Get Latest"),
+            R(Key("a-f, r, l")),
         "(show | view) history":
-            R(Key("a-f, r, h"), rdescript="Visual Studio: Show History"),
+            R(Key("a-f, r, h")),
         "compare (files | versions)":
-            R(Key("a-f, r, h"), rdescript="Visual Studio: Compare..."),
+            R(Key("a-f, r, h")),
         "undo (checkout | pending changes)":
-            R(Key("a-f, r, u"), rdescript="Visual Studio: Undo Pending Changes"),
+            R(Key("a-f, r, u")),
         "[open] [go to] work item":
-            R(Key("a-m, g"), rdescript="Visual Studio: Open Work Item"),
+            R(Key("a-m, g")),
         "[add] [new] linked work item":
-            R(Key("sa-l"), rdescript="Visual Studio: New Linked Work Item"),
+            R(Key("sa-l")),
     }
     extras = [
         Dictation("text"),

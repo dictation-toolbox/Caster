@@ -5,18 +5,17 @@ class FileDialogueRule(MergeRule):
 
     mapping = {
         "up [<n>]":
-            R(Key("a-up"), rdescript="File Dialogue: Navigate up")*Repeat(extra="n"),
+            R(Key("a-up"))*Repeat(extra="n"),
         "back [<n>]":
-            R(Key("a-left"), rdescript="File Dialogue: Navigate back")*Repeat(extra="n"),
+            R(Key("a-left"))*Repeat(extra="n"),
         "forward [<n>]":
-            R(Key("a-right"), rdescript="File Dialogue: Navigate forward")*
-            Repeat(extra="n"),
+            R(Key("a-right"))*Repeat(extra="n"),
         "(files | file list)":
-            R(Key("a-d, f6:3"), rdescript="File Dialogue: Files list"),
+            R(Key("a-d, f6:3")),
         "navigation [pane]":
-            R(Key("a-d, f6:2"), rdescript="File Dialogue: Navigation pane"),
+            R(Key("a-d, f6:2")),
         "[file] name":
-            R(Key("a-d, f6:5"), rdescript="File Dialogue: File name"),
+            R(Key("a-d, f6:5")),
     }
     extras = [IntegerRefST("n", 1, 10)]
     defaults = {

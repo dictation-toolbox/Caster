@@ -62,18 +62,17 @@ def drag_highlight(n1, n2, nexus):
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0)
 
 
-class GridControlRule(MergeRule):
+class LegionGridRule(MergeRule):
 
     mapping = {
         "<n> [<action>]":
-            R(Function(send_input, nexus=_NEXUS), rdescript="Legion: Action"),
+            R(Function(send_input, nexus=_NEXUS)),
         "refresh":
-            R(Function(navigation.mouse_alternates, mode="legion", nexus=_NEXUS),
-              rdescript="Legion: Refresh"),
+            R(Function(navigation.mouse_alternates, mode="legion", nexus=_NEXUS)),
         "exit | escape | cancel":
-            R(Function(kill, nexus=_NEXUS), rdescript="Legion: Exit Legion"),
+            R(Function(kill, nexus=_NEXUS)),
         "<n1> (select | light) <n2>":
-            R(Function(drag_highlight, nexus=_NEXUS), rdescript="Legion: Highlight Between Two Words"),
+            R(Function(drag_highlight, nexus=_NEXUS)),
     }
     extras = [
         Choice("action", {
@@ -91,4 +90,4 @@ class GridControlRule(MergeRule):
 
 
 context = AppContext(title="legiongrid")
-control.non_ccr_app_rule(GridControlRule(), context=context)
+control.non_ccr_app_rule(LegionGridRule(), context=context)

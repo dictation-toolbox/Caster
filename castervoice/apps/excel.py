@@ -33,54 +33,48 @@ class ExcelRule(MergeRule):
 
     mapping = {
         "next sheet [<n>]":
-            R(Key("c-pgdown"), rdescript="Excel: Next Sheet")*Repeat(extra='n'),
+            R(Key("c-pgdown"))*Repeat(extra='n'),
         "(prior | previous) sheet [<n>]":
-            R(Key("c-pgup"), rdescript="Excel: Prior Sheet")*Repeat(extra='n'),
+            R(Key("c-pgup"))*Repeat(extra='n'),
         "[select] cell <column_1> <row_1>":
-            R(Key("c-g") + Text("%(column_1)s%(row_1)s") + Key("enter"),
-              rdescript="Excel: Select Cell with Given Coordinates e.g. Alpha Hotel 7"),
+            R(Key("c-g") + Text("%(column_1)s%(row_1)s") + Key("enter")),
         "select <column_1> <row_1> through <column_2> <row_2>":
             R(Key("c-g") + Text("%(column_1)s%(row_1)s:%(column_2)s%(row_2)s") +
-              Key("enter"),
-              rdescript="Excel: Selects Range of Cells e.g. Bravo 5 Through Golf Yankee 10"),
+              Key("enter")),
         "go to cell":
-            R(Key("c-g"), rdescript="Excel:Open 'go to' Dialogbox"),
+            R(Key("c-g")),
         "select current column":
-            R(Key("c-space"), rdescript="Excel: Select Current Column"),
+            R(Key("c-space")),
         "select current row":
-            R(Key("s-space"), rdescript="Excel: Select Current Row"),
+            R(Key("s-space")),
         "top of column":
-            R(Key("c-up"), rdescript="Excel: Go to Top of Column"),
+            R(Key("c-up")),
         "beginning of row":
-            R(Key("c-left"), rdescript="Excel: Go to Beginning of Row"),
+            R(Key("c-left")),
         "insert stuff":
-            R(Key("cs-plus"), rdescript="Excel: Insert Stuff"),
+            R(Key("cs-plus")),
         "insert row":
-            R(Key("cs-plus, a-r, enter"),
-              rdescript="Excel: Inserts Entire Row Above Current Row"),
+            R(Key("cs-plus, a-r, enter")),
         "insert column":
-            R(Key("cs-plus, a-c, enter"),
-              rdescript="Excel: Inserts Entire Column to The Left of Current Column"),
+            R(Key("cs-plus, a-c, enter")),
         "insert cell [to the] left":
-            R(Key("cs-plus, a-i, enter"),
-              rdescript="Excel: Insert Single Cell to The Left of Current Cell"),
+            R(Key("cs-plus, a-i, enter")),
         "insert cell above":
-            R(Key("cs-plus, a-d, enter"),
-              rdescript="Excel: Insert Single Cell above Current Cell"),
+            R(Key("cs-plus, a-d, enter")),
         "insert pivot table":
-            R(Key("a-n, v"), rdescript="Excel: Insert Pivot Table"),
+            R(Key("a-n, v")),
         "insert pivot chart":
-            R(Key("a-n, s, z, c"), rdescript="Excel: Insert Pivot Chart"),
+            R(Key("a-n, s, z, c")),
         "add-ins":
-            R(Key("a-t, i"), rdescript="Excel: Go to Add Ins"),
+            R(Key("a-t, i")),
         "add border":
-            R(Key("cs-ampersand"), rdescript="Excel: Add Border"),
+            R(Key("cs-ampersand")),
         "arrange Windows":
-            R(Key("a-w/10, a"), rdescript="Excel: Arrange Windows"),
+            R(Key("a-w/10, a")),
         "auto sum":
-            R(Key("a-equal"), rdescript="Excel: Auto Sum"),
+            R(Key("a-equal")),
         "freeze panes":
-            R(Key("a-w, f"), rdescript="Excel: Freeze Panes"),
+            R(Key("a-w, f")),
 
         # From Mark Lillibridge regarding the edit cell command below:
         # There are at least two modes, edit (blue background) and enter (yellow background).
@@ -106,7 +100,7 @@ class ExcelRule(MergeRule):
         # First time, edits current cell via formula bar.  Unlike with
         # editing directly in a cell, this highlights ranges and cells used.
         "toggle edit cell":
-            R(Key("f2"), rdescript="Edits The Cell Rather Than Fully Replacing; Also Toggles Between Edit and Enter Mode"),
+            R(Key("f2")),
     }
     extras = [
         Dictation("dict"),

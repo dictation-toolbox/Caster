@@ -5,47 +5,47 @@ class FlashDevelopRule(MergeRule):
 
     mapping = {
         "prior tab [<n>]":
-            R(Key("c-pgup"), rdescript="FlashDevelop: Previous Tab")*Repeat(extra="n"),
+            R(Key("c-pgup"))*Repeat(extra="n"),
         "next tab [<n>]":
-            R(Key("c-pgdown"), rdescript="FlashDevelop: Next Tab")*Repeat(extra="n"),
+            R(Key("c-pgdown"))*Repeat(extra="n"),
         "open resource":
-            R(Key("c-r"), rdescript="FlashDevelop: Open Resource"),
+            R(Key("c-r")),
         "jump to source":
-            R(Key("f4"), rdescript="FlashDevelop: Jump To Source"),
+            R(Key("f4")),
         "jump away":
-            R(Key("s-f4"), rdescript="FlashDevelop: Jump Away"),
+            R(Key("s-f4")),
         "step over [<n>]":
-            R(Key("f10")*Repeat(extra="n"), rdescript="FlashDevelop: Step Over"),
+            R(Key("f10")*Repeat(extra="n")),
         "step into":
-            R(Key("f11"), rdescript="FlashDevelop: Step Into"),
+            R(Key("f11")),
         "step out [of]":
-            R(Key("s-f11"), rdescript="FlashDevelop: Step Out"),
+            R(Key("s-f11")),
         "resume":
-            R(Key("a-d, c"), rdescript="FlashDevelop: Resume"),
+            R(Key("a-d, c")),
         "terminate":
-            R(Key("s-f5"), rdescript="FlashDevelop: Terminate Running Program"),
+            R(Key("s-f5")),
         "find everywhere":
-            R(Key("cs-f"), rdescript="FlashDevelop: Search Project"),
+            R(Key("cs-f")),
         "refractor symbol":
-            R(Key("a-r, r"), rdescript="FlashDevelop: Re-Factor Symbol"),
+            R(Key("a-r, r")),
         "symbol next [<n>]":
-            R(Key("f3"), rdescript="FlashDevelop: Symbol Next")*Repeat(extra="n"),
+            R(Key("f3"))*Repeat(extra="n"),
         "symbol prior [<n>]":
-            R(Key("s-f3"), rdescript="FlashDevelop: Symbol Prior")*Repeat(extra="n"),
+            R(Key("s-f3"))*Repeat(extra="n"),
         "format code":
-            R(Key("cs-2"), rdescript="FlashDevelop: Format Code"),
+            R(Key("cs-2")),
         "comment line":
-            R(Key("c-q"), rdescript="FlashDevelop: Comment Line"),
+            R(Key("c-q")),
         "clean it":
-            R(Key("s-f8"), rdescript="FlashDevelop: Clean"),
+            R(Key("s-f8")),
         "build it":
-            R(Key("f8"), rdescript="FlashDevelop: Build"),
+            R(Key("f8")),
         "(debug | run) last":
-            R(Key("f5"), rdescript="FlashDevelop: Run"),
+            R(Key("f5")),
         "split view horizontal":
-            R(Key("cs-enter"), rdescript="FlashDevelop: Split View (H)"),
+            R(Key("cs-enter")),
         "auto complete":
-            R(Key("cs-1"), rdescript="FlashDevelop: Auto Complete"),
+            R(Key("cs-1")),
     }
     extras = [
         Dictation("text"),
@@ -61,8 +61,7 @@ class FlashDevelopCCR(MergeRule):
 
     mapping = {
         "[go to] line <n>":
-            R(Key("c-g") + Pause("50") + Text("%(n)d") + Key("enter"),
-              rdescript="FlashDevelop: Go To Line"),
+            R(Key("c-g") + Pause("50") + Text("%(n)d") + Key("enter")),
     }
     extras = [
         Dictation("text"),

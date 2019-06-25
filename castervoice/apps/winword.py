@@ -4,7 +4,7 @@ class MSWordRule(MergeRule):
     pronunciation = "Microsoft Word"
 
     mapping = {
-        "insert image": R(Key("alt, n, p"), rdescript="Word: Insert Image"),
+        "insert image": R(Key("alt, n, p")),
     }
     extras = [
         Dictation("dict"),

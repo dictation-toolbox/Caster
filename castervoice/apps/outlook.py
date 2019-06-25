@@ -10,189 +10,170 @@ class OutlookRule(MergeRule):
     mapping = {
     # create new thing
         "new (appointment | event)":
-            R(Key("sc-a"), rdescript="Outlook: New Appointment"),
+            R(Key("sc-a")),
         "new contact":
-            R(Key("cs-c"), rdescript="Outlook: New Contact"),
+            R(Key("cs-c")),
         "new folder":
-            R(Key("cs-e"), rdescript="Outlook: New Folder"),
+            R(Key("cs-e")),
         "advanced (search| find)":
-            R(Key("cs-f"), rdescript="Outlook: Advanced Search"),
+            R(Key("cs-f")),
         "new office document":
-            R(Key("cs-h"), rdescript="Outlook: New Office Document"),
+            R(Key("cs-h")),
         "(inbox | go to inbox)":
-            R(Key("cs-i"), rdescript="Outlook: Go to Inbox"),
+            R(Key("cs-i")),
         "new journal entry":
-            R(Key("cs-j"), rdescript="Outlook: New Journal Entry"),
+            R(Key("cs-j")),
         "new task":
-            R(Key("cs-k"), rdescript="Outlook: New Task"),
+            R(Key("cs-k")),
         "new contact group":
-            R(Key("cs-l"), rdescript="Outlook: New Contact Group"),
+            R(Key("cs-l")),
         "(new message| new mail)":
-            R(Key("cs-m"), rdescript="Outlook: Compose New Message"),
+            R(Key("cs-m")),
         "new note":
-            R(Key("cs-n"), rdescript="Outlook: New Note"),
+            R(Key("cs-n")),
         "open the new search folder window":
-            R(Key("cs-p"), rdescript="Outlook: Open the New Search Folder Window"),
+            R(Key("cs-p")),
         "new meeting request":
-            R(Key("cs-q"), rdescript="Outlook: New Meeting Request"),
+            R(Key("cs-q")),
         "new task request":
-            R(Key("cs-u"), rdescript="Outlook: New Task Request"),
+            R(Key("cs-u")),
 
     # new message window
         "to field":
-            R(Key("a-dot"), rdescript="Outlook: Go to to Field"),
+            R(Key("a-dot")),
         "c c field":
-            R(Key("a-c"), rdescript="Outlook: Go to Cc Field"),
+            R(Key("a-c")),
         "subject [field]":
-            R(Key("a-u"), rdescript="Outlook: Go to Subject Field"),
+            R(Key("a-u")),
         "subject <text>":
-            R(Key("a-u") + Function(capitalize) + Key("tab"),
-              rdescript=
-              "Outlook: Puts Capitalized Text in the Subject Field Then Moves to the Body Field"),
+            R(Key("a-u") + Function(capitalize) + Key("tab")),
         "attach file":
-            R(Key("n, a, f"), rdescript="Outlook: Attach File"),
+            R(Key("n, a, f")),
         "add to dictionary":
-            R(Key("s-f10/2, a"), rdescript="Outlook: Add to Dictionary"),
+            R(Key("s-f10/2, a")),
         "click send message":
-            R(Key("a-s"), rdescript="Outlook: Click Send Message"),  # be careful
+            R(Key("a-s")),  # be careful
         "find and replace":
-            R(Key("c-h"), rdescript="Outlook: Find And Replace"),
+            R(Key("c-h")),
         "check names":
-            R(Key("c-k"), rdescript="Outlook: Check Names Against Address Book"),
+            R(Key("c-k")),
         "spell check":
-            R(Key("f7"), rdescript="Outlook: Spell Check"),
+            R(Key("f7")),
         "save as":
-            R(Key("f12"), rdescript="Outlook: Save As"),  # only in mail view
+            R(Key("f12")),  # only in mail view
 
     # folders pane
         "expand [that]":
-            R(Key("asterisk"), rdescript="Outlook: Expand Collapsible List"),
+            R(Key("asterisk")),
         "collapse [that]":
-            R(Key("minus"), rdescript="Outlook: Collapse Collapsible List"),
+            R(Key("minus")),
 
     # folders navigation
         # some of these may be user dependent, depends on the order of your folders
         # which you can inspect by pressing control y
         # also I think some of these are built into Dragon
         "[go to] sent mail":
-            R(Key("c-y/10, s, enter"), rdescript="Outlook: Go to Sent Mail Folder"),
+            R(Key("c-y/10, s, enter")),
         "go to drafts":
-            R(Key("c-y/10, d, enter"), rdescript="Outlook: Go to Drafts Folder"),
+            R(Key("c-y/10, d, enter")),
         "go to trash":
-            R(Key("c-y/10, t, enter"), rdescript="Outlook: Go to Trash Folder"),
+            R(Key("c-y/10, t, enter")),
         "go to spam":
-            R(Key("c-y/10, s:2, enter"), rdescript="Outlook: Go to Spam Folder"),
+            R(Key("c-y/10, s:2, enter")),
         "go to starred":
-            R(Key("c-y/10, s:3, enter"), rdescript="Outlook: Go to Starred"),
+            R(Key("c-y/10, s:3, enter")),
         "go to important":
-            R(Key("c-y/10, i:2, enter"), rdescript="Outlook: Go to Important Folder"),
+            R(Key("c-y/10, i:2, enter")),
         "go to outbox":
-            R(Key("cs-o"), rdescript="Outlook: Go to Outbox"),
+            R(Key("cs-o")),
 
     # center pane
         "sort by [<sort_by>]":
-            R(Key("a-v/5, a, b/5, %(sort_by)s"),
-              rdescript="Outlook: Sort By Blank, e.g. Sort By Date"),
+            R(Key("a-v/5, a, b/5, %(sort_by)s")),
         "reverse sort":
-            R(Key("a-v, r, s"), rdescript="Outlook: Sort in Reverse Order"),
+            R(Key("a-v, r, s")),
         "block sender":
-            R(Key("a-h/3, j/3, b"), rdescript="Outlook: Block Sender"),
+            R(Key("a-h/3, j/3, b")),
         "search [bar] [<dict>]":
-            R(Key("c-e") + Text("%(dict)s"), rdescript="Outlook:Puts Text in the Search Bar"),
+            R(Key("c-e") + Text("%(dict)s")),
         "(message list | messages)":
-            R(Key("tab:3"),
-              rdescript="Outlook: Moves the Focus From the Search Bar to the Messages List"),
+            R(Key("tab:3")),
         "(empty | clear) search [bar]":
-            R(Key("c-e, c-a, del/3, escape"), rdescript="Outlook: Clear Search Bar"),
+            R(Key("c-e, c-a, del/3, escape")),
             # from the search bar to get the focus into the messages is three tabs
             # pressing escape also seems to work.
         "refresh [mail]":
-            R(Key("f9"), rdescript="Outlook: Refresh"),
+            R(Key("f9")),
 
     # reading pane
         "open attachment":
-            R(Key("s-tab, enter"),
-              rdescript=
-              "Opens Attachment if You Haven't Already Pressed Tab; Otherwise You Have to Get the Right Amount Of Tabs"
-              ),
+            R(Key("s-tab, enter")),
         "[open] attachment menu":
-            R(Key("s-tab, right"),
-              rdescript=
-              "Opens Attachment if You Haven't Already Pressed Tab; Otherwise You Have to Get the Right Amount Of Tabs"
-              ),
+            R(Key("s-tab, right")),
         "next message [<n>]":
-            R(Key("s-f6/10, down"),
-              rdescript="Outlook: Goes to Next Message While in the Reading Pane")*
-            Repeat(extra='n'),
+            R(Key("s-f6/10, down"))*Repeat(extra='n'),
         "(prior | previous) message [<n>]":
-            R(Key("s-f6/20, up"),
-              rdescript="Outlook: Goes to Previous Message While in the Reading Pane")*
-            Repeat(extra='n'),
+            R(Key("s-f6/20, up"))*Repeat(extra='n'),
         "[select] next link":
-            R(Key("tab"), rdescript="Outlook: Highlight Next Link"),
+            R(Key("tab")),
         "[select] (previous | prior) link":
-            R(Key("s-tab"), rdescript="Outlook: Highlight Previous Link"),
+            R(Key("s-tab")),
 
     # calendar
         "workweek [view]":
-            R(Key("ca-2"), rdescript="Outlook: Show Work Week View"),
+            R(Key("ca-2")),
         "full week [view]":
-            R(Key("ca-3"), rdescript="OutloOk: Show Full Week View"),
+            R(Key("ca-3")),
         "month view":
-            R(Key("ca-4"), rdescript="OutloOk: Show Month View"),
+            R(Key("ca-4")),
 
     # message shortcuts
         "reply [<dict>]":
-            R(Key("c-r") + Text("%(dict)s"), rdescript="Outlook: Reply"),
+            R(Key("c-r") + Text("%(dict)s")),
         "reply all [<dict>]":
-            R(Key("cs-r") + Text("%(dict)s"), rdescript="Outlook:Reply All"),
+            R(Key("cs-r") + Text("%(dict)s")),
         "forward":
-            R(Key("c-f"), rdescript="Outlook: Forward"),
+            R(Key("c-f")),
         "Mark as read":
-            R(Key("c-q"), rdescript="Outlook: Mark as Read"),
+            R(Key("c-q")),
         "Mark as unread":
-            R(Key("c-u"), rdescript="Outlook: Mark as Unread"),
+            R(Key("c-u")),
         "(folder | go to folder)":
-            R(Key("c-y"), rdescript="Outlook: Go to Folder List"),
+            R(Key("c-y")),
 
     # navigation
         "next pane [<n>]":
-            R(Key("f6"), rdescript="Outlook: Go to Next Pane of Outlook")*Repeat(extra='n'),
+            R(Key("f6"))*Repeat(extra='n'),
         "(un|prior|previous) pane [<n>]":
-            R(Key("s-f6"), rdescript="Outlook: Go to Previous Pane of Outlook")*Repeat(extra='n'),
+            R(Key("s-f6"))*Repeat(extra='n'),
         "mail view":
-            R(Key("c-1"), rdescript="Outlook: E-mail View"),
+            R(Key("c-1")),
         "calendar":
-            R(Key("c-2"), rdescript="Outlook: Calendar View"),
+            R(Key("c-2")),
         "contacts":
-            R(Key("c-3"), rdescript="Outlook: Contacts View"),
+            R(Key("c-3")),
         "tasks":
-            R(Key("c-4"), rdescript="Outlook: Tasks View"),
+            R(Key("c-4")),
         "go to notes":
-            R(Key("c-5"), rdescript="Outlook: Notes View"),
+            R(Key("c-5")),
         "folder list":
-            R(Key("c-6"), rdescript="Outlook: Go to Folder List"),
+            R(Key("c-6")),
         "find contact":
-            R(Key("f11"), rdescript="Outlook: Find Contact"),
+            R(Key("f11")),
         "address book":
-            R(Key("cs-a"), rdescript="Outlook: Address Book"),
+            R(Key("cs-a")),
         "next open message":
-            R(Key("c-dot"),
-              rdescript=
-              "Goes to Next Message That You Currently Have Open in a Separate Window"),
+            R(Key("c-dot")),
         "(prior | previous) open message":
-            R(Key("c-comma"),
-              rdescript=
-              "Goes to Previous Message That You Currently Have Open in a Separate Window"
-              ),
+            R(Key("c-comma")),
         "previous view":
-            R(Key("a-left"), rdescript="Outlook: Go to Previous View in the Main Outlook window"),
+            R(Key("a-left")),
         "next view":
-            R(Key("a-right"), rdescript="Outlook: Go to Next View in the Main Outlook Window"),
+            R(Key("a-right")),
 
     # misc
         "[go] back":
-            R(Key("a-left"), rdescript="Outlook: Go Back"),
+            R(Key("a-left")),
     }
     extras = [
         Dictation("dict"),

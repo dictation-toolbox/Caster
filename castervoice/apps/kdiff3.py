@@ -4,7 +4,7 @@ class KDiff3Rule(MergeRule):
     pronunciation = "K diff"
 
     mapping = {
-        "refresh": R(Key("f5"), rdescript="Kdiff3: Refresh"),
+        "refresh": R(Key("f5")),
     }
     extras = [
         Dictation("text"),

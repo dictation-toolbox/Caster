@@ -5,63 +5,63 @@ class GitHubDeskRule(MergeRule):
 
     mapping = {
             "new repository":
-                R(Key("c-n"), rdescript="GitHub: New Repository"),
+                R(Key("c-n")),
             "add local repository":
-                R(Key("c-o"), rdescript="GitHub: Add Local Repository"),
+                R(Key("c-o")),
             "clone repository":
-                R(Key("c-o"), rdescript="GitHub: Clone Repository"),
+                R(Key("c-o")),
             "options":
-                R(Key("c-comma"), rdescript="GitHub: Options"),
+                R(Key("c-comma")),
 
             "changes":
-                R(Key("c-1"), rdescript="GitHub: Changes"),
+                R(Key("c-1")),
             "history":
-                R(Key("c-2"), rdescript="GitHub: History"),
+                R(Key("c-2")),
             "(repositories | repository list)":
-                R(Key("c-t"), rdescript="GitHub: (repositories | Repository List)"),
+                R(Key("c-t")),
             "branches [list]":
-                R(Key("c-b"), rdescript="GitHub: Branches [list]"),
+                R(Key("c-b")),
 
             "zoom in [<n>]":
-                R(Key("c-equals"), rdescript="GitHub: Zoom In [<n>]")*Repeat(extra="n"),
+                R(Key("c-equals"))*Repeat(extra="n"),
             "zoom out [<n>]":
-                R(Key("c-minus"), rdescript="GitHub: Zoom Out [<n>]")*Repeat(extra="n"),
+                R(Key("c-minus"))*Repeat(extra="n"),
             "reset zoom":
-                R(Key("c-0"), rdescript="GitHub: Reset Zoom"),
+                R(Key("c-0")),
 
             "push [repository]":
-                R(Key("c-p"), rdescript="GitHub: Push [repository]"),
+                R(Key("c-p")),
             "pull [repository]":
-                R(Key("cs-p"), rdescript="GitHub: Pull [repository]"),
+                R(Key("cs-p")),
             "remove repository":
-                R(Key("c-delete"), rdescript="GitHub: Remove Repository"),
+                R(Key("c-delete")),
             "view on github":
-                R(Key("cs-g"), rdescript="GitHub: View On Github"),
+                R(Key("cs-g")),
             "(terminal | command prompt)":
-                R(Key("c-backtick"), rdescript="GitHub: (terminal | Command Prompt)"),
+                R(Key("c-backtick")),
             "explorer":
-                R(Key("cs-f"), rdescript="GitHub: Explorer"),
+                R(Key("cs-f")),
             "edit":
-                R(Key("cs-a"), rdescript="GitHub: Edit"),
+                R(Key("cs-a")),
 
             "new branch":
-                R(Key("cs-n"), rdescript="GitHub: New Branch"),
+                R(Key("cs-n")),
             "rename branch":
-                R(Key("cs-r"), rdescript="GitHub: Rename Branch"),
+                R(Key("cs-r")),
             "delete branch":
-                R(Key("cs-d"), rdescript="GitHub: Delete Branch"),
+                R(Key("cs-d")),
 
             "update from master":
-                R(Key("cs-u"), rdescript="GitHub: Update From Master"),
+                R(Key("cs-u")),
             "compare to branch":
-                R(Key("cs-b"), rdescript="GitHub: Compare To Branch"),
+                R(Key("cs-b")),
             "merge into current [branch]":
-                R(Key("cs-m"), rdescript="GitHub: Merge Into Current [branch]"),
+                R(Key("cs-m")),
 
             "compare on github":
-                R(Key("cs-c"), rdescript="GitHub: Compare On Github"),
+                R(Key("cs-c")),
             "[create] pull request":
-                R(Key("c-r"), rdescript="GitHub: [create] Pull Request"),
+                R(Key("c-r")),
         }
     extras = [
         IntegerRefST("n", 1, 10),

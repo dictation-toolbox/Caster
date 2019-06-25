@@ -4,9 +4,9 @@ class SQLDeveloperRule(MergeRule):
     pronunciation = "sequel developer"
 
     mapping = {
-        "run this query": R(Key("f9"), rdescript="SQL Dev: Run Query"),
-        "format code": R(Key("c-f7"), rdescript="SQL Dev: Format Code"),
-        "comment line": R(Key("c-slash"), rdescript="SQL Dev: Comment Line"),
+        "run this query": R(Key("f9")),
+        "format code": R(Key("c-f7")),
+        "comment line": R(Key("c-slash")),
     }
     extras = [
         Dictation("text"),

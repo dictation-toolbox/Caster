@@ -5,47 +5,47 @@ class MSVCRule(MergeRule):
 
     mapping = {
         "cursor prior":
-            R(Key("c-minus"), rdescript="MSVC: Cursor Prior"),
+            R(Key("c-minus")),
         "cursor next":
-            R(Key("cs-minus"), rdescript="MSVC: Cursor Next"),
+            R(Key("cs-minus")),
         "toggle fullscreen":
-            R(Key("sa-enter"), rdescript="MSVC: Toggle Fullscreen"),
+            R(Key("sa-enter")),
         "resolve":
-            R(Key("c-dot"), rdescript="MSVC: Resolve"),
+            R(Key("c-dot")),
         "jump to source":
-            R(Key("f12"), rdescript="MSVC: Jump To Source"),
+            R(Key("f12")),
         "snippet":
-            R(Key("tab"), rdescript="MSVC: Snippet"),
+            R(Key("tab")),
         "step over [<n>]":
-            R(Key("f10/50")*Repeat(extra="n"), rdescript="MSVC: Step Over"),
+            R(Key("f10/50")*Repeat(extra="n")),
         "step into":
-            R(Key("f11"), rdescript="MSVC: Step Into"),
+            R(Key("f11")),
         "step out [of]":
-            R(Key("s-f11"), rdescript="MSVC: Step Out"),
+            R(Key("s-f11")),
         "resume":
-            R(Key("f8"), rdescript="MSVC: Resume"),
+            R(Key("f8")),
         "build [last]":
-            R(Key("ca-f7"), rdescript="MSVC: Build"),
+            R(Key("ca-f7")),
         "debug [last]":
-            R(Key("f5"), rdescript="MSVC: Debug"),
+            R(Key("f5")),
         "comment out":
-            R(Key("c-k/50, c-c"), rdescript="MSVC: Comment Out"),
+            R(Key("c-k/50, c-c")),
         "on comment out":
-            R(Key("c-k/50, c-u"), rdescript="MSVC: Uncomment Out"),
+            R(Key("c-k/50, c-u")),
         "set bookmark":
-            R(Key("c-k, c-k"), rdescript="MSVC: Set Bookmark"),
+            R(Key("c-k, c-k")),
         "next bookmark":
-            R(Key("c-k, c-n"), rdescript="MSVC: Next Bookmark"),
+            R(Key("c-k, c-n")),
         "breakpoint":
-            R(Key("f9"), rdescript="MSVC: Breakpoint"),
+            R(Key("f9")),
         "format code":
-            R(Key("cs-f"), rdescript="MSVC: Format Code"),
+            R(Key("cs-f")),
         "(do imports | import all)":
-            R(Key("cs-o"), rdescript="MSVC: Do Imports"),
+            R(Key("cs-o")),
         "comment line":
-            R(Key("c-slash"), rdescript="MSVC: Comment Line"),
+            R(Key("c-slash")),
         "go to line":
-            R(Key("c-g"), rdescript="MSVC: Go To Line"),
+            R(Key("c-g")),
     }
     extras = [
         Dictation("text"),

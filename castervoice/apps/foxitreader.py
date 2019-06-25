@@ -5,11 +5,11 @@ class FoxitRule(MergeRule):
 
     mapping = {
         "next tab [<n>]":
-            R(Key("c-tab"), rdescript="Foxit Reader: Next Tab")*Repeat(extra="n"),
+            R(Key("c-tab"))*Repeat(extra="n"),
         "prior tab [<n>]":
-            R(Key("cs-tab"), rdescript="Foxit Reader: Previous Tab")*Repeat(extra="n"),
+            R(Key("cs-tab"))*Repeat(extra="n"),
         "close tab [<n>]":
-            R(Key("c-f4/20"), rdescript="Foxit Reader: Close Tab")*Repeat(extra="n"),
+            R(Key("c-f4/20"))*Repeat(extra="n"),
     }
     extras = [
         Dictation("text"),

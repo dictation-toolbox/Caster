@@ -6,39 +6,39 @@ class SSMSRule(MergeRule):
     mapping = {
         # There doesn't seem to be a hotkey for sequential tab navigation in SSMS, but something is better than nothing...
         "next tab [<n>]":
-            R(Key("c-tab"), rdescript="SSMS: Next Tab")*Repeat(extra="n"),
+            R(Key("c-tab"))*Repeat(extra="n"),
         "prior tab [<n>]":
-            R(Key("cs-tab"), rdescript="SSMS: Previous Tab")*Repeat(extra="n"),
+            R(Key("cs-tab"))*Repeat(extra="n"),
         "close tab [<n>]":
-            R(Key("c-f4/20"), rdescript="SSMS: Close Tab")*Repeat(extra="n"),
+            R(Key("c-f4/20"))*Repeat(extra="n"),
         "go to line":
-            R(Key("c-g"), rdescript="SSMS: Go to Line"),
+            R(Key("c-g")),
         "comment line":
-            R(Key("c-k, c-c"), rdescript="SSMS: Comment Selection"),
+            R(Key("c-k, c-c")),
         "comment block":
-            R(Key("c-k, c-c"), rdescript="SSMS: Comment Block"),
+            R(Key("c-k, c-c")),
         "(un | on) comment line":
-            R(Key("c-k/50, c-u"), rdescript="SSMS: Uncomment Selection"),
+            R(Key("c-k/50, c-u")),
         "(un | on) comment block":
-            R(Key("c-k/50, c-u"), rdescript="SSMS: Uncomment Block"),
+            R(Key("c-k/50, c-u")),
         "[toggle] full screen":
-            R(Key("sa-enter"), rdescript="SSMS: Fullscreen"),
+            R(Key("sa-enter")),
         "(set | toggle) bookmark":
-            R(Key("c-k, c-k"), rdescript="SSMS: Toggle Bookmark"),
+            R(Key("c-k, c-k")),
         "next bookmark":
-            R(Key("c-k, c-n"), rdescript="SSMS: Next Bookmark"),
+            R(Key("c-k, c-n")),
         "prior bookmark":
-            R(Key("c-k, c-p"), rdescript="SSMS: Previous Bookmark"),
+            R(Key("c-k, c-p")),
         "[toggle] breakpoint":
-            R(Key("f9"), rdescript="SSMS: Breakpoint"),
+            R(Key("f9")),
         "step over [<n>]":
-            R(Key("f10/50")*Repeat(extra="n"), rdescript="SSMS: Step Over"),
+            R(Key("f10/50")*Repeat(extra="n")),
         "step into":
-            R(Key("f11"), rdescript="SSMS: Step Into"),
+            R(Key("f11")),
         "step out [of]":
-            R(Key("s-f11"), rdescript="SSMS: Step Out"),
+            R(Key("s-f11")),
         "resume":
-            R(Key("f5"), rdescript="SSMS: Resume"),
+            R(Key("f5")),
     }
     extras = [
         Dictation("text"),

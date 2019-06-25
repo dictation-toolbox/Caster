@@ -10,24 +10,24 @@ class GitterRule(MergeRule):
 
     mapping = {
         "bold":
-            R(Text("****") + Key("left:2"), rdescript="Gitter: Bold"),
+            R(Text("****") + Key("left:2")),
         "emphasize":
-            R(Text("**") + Key("left"), rdescript="Gitter: Italicize"),
-        # "header":           R(Text( "" ), rdescript="Gitter: Header"), # H1 ## H2 ### H3
+            R(Text("**") + Key("left")),
+        # "header":           R(Text( "" )), # H1 ## H2 ### H3
         "insert item":
-            R(Text("* "), rdescript="Gitter: Insert Item"),
+            R(Text("* ")),
         "block quote":
-            R(Text("> "), rdescript="Gitter: Block Quote"),
+            R(Text("> ")),
         "mention":
-            R(Text("@"), rdescript="Gitter: Mention"),
+            R(Text("@")),
         "insert link":
-            R(Text("[]()") + Key("left:3"), rdescript="Gitter: Insert Link"),
+            R(Text("[]()") + Key("left:3")),
         "insert image":
-            R(Text("![]()") + Key("left:3"), rdescript="Gitter: Insert Image"),
+            R(Text("![]()") + Key("left:3")),
         "insert code":
-            R(Text("``") + Key("left"), rdescript="Gitter: Insert Code"),
+            R(Text("``") + Key("left")),
         "formatted code":
-            R(Text("```") + Key("s-enter"), rdescript="Gitter: Formatted Code"),
+            R(Text("```") + Key("s-enter")),
     }
     extras = [
         Dictation("text"),

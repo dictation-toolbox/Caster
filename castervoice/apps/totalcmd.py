@@ -5,65 +5,45 @@ class TotalCommanderRule(MergeRule):
 
     mapping = {
         "find [in] files":
-            R(Key('a-f7'),
-              rdescript="Total Commander: Find"),
+            R(Key('a-f7')),
         "view":
-            R(Key('f3'),
-              rdescript="Total Commander: Find Next/View File"),
+            R(Key('f3')),
         "edit":
-            R(Key('f4'),
-              rdescript="Total Commander: Edit File"),
+            R(Key('f4')),
         "copy":
-            R(Key('f5'),
-              rdescript="Total Commander: Copy"),
+            R(Key('f5')),
         "move":
-            R(Key('f6'),
-              rdescript="Total Commander: Move File"),
+            R(Key('f6')),
         "new directory":
-            R(Key('f7'),
-              rdescript="Total Commander: Create Directory"),
+            R(Key('f7')),
         "wipe":
-            R(Key('s-delete'),
-              rdescript="Total Commander: Really Delete File"),
+            R(Key('s-delete')),
         "FTP":
-            R(Key('c-f'),
-              rdescript="Total Commander: Connect to FTP"),
+            R(Key('c-f')),
         "synchronize":
-            R(Key('a-c') + Key('y'),
-              rdescript="Total Commander: Synchronize Dirs"),
+            R(Key('a-c, y')),
         "sort by name":
-            R(Key('c-f3'),
-              rdescript="Total Commander: Sort Files by Name"),
+            R(Key('c-f3')),
         "sort by extension":
-            R(Key('c-f4'),
-              rdescript="Total Commander: Sort Files by Extension"),
+            R(Key('c-f4')),
         "sort by date":
-            R(Key('c-f5'),
-              rdescript="Total Commander: Sort Files by Date"),
+            R(Key('c-f5')),
         "sort by size":
-            R(Key('c-f6'),
-              rdescript="Total Commander: Sort Files by Size"),
+            R(Key('c-f6')),
         "file filter":
-            R(Key('c-f12'),
-              rdescript="Total Commander: Filter Files"),
+            R(Key('c-f12')),
         "new tab":
-            R(Key('c-t'),
-              rdescript="Total Commander: New Tab"),
+            R(Key('c-t')),
         "multi rename":
-            R(Key('c-m'),
-              rdescript="Total Commander: Batch Rename Files"),
+            R(Key('c-m')),
         "display thumbnails":
-            R(Key('cs-f1'),
-              rdescript="Total Commander: Display Thumbnails in Panel"),
+            R(Key('cs-f1')),
         "display list":
-            R(Key('c-f1'),
-              rdescript="Total Commander: Display Plain File List in Panel"),
+            R(Key('c-f1')),
         "display details":
-            R(Key('c-f2'),
-              rdescript="Total Commander: Display Details in Panel"),
+            R(Key('c-f2')),
         "display file tree":
-            R(Key('c-f8'),
-              rdescript="Total Commander: Display File Tree in Panel"),
+            R(Key('c-f8')),
     }
 
 class SyncDirsRule (MergeRule):
@@ -71,23 +51,17 @@ class SyncDirsRule (MergeRule):
 
     mapping = {
         "compare files":
-            R(Key('c-f3'),
-              rdescript="Sync Dirs: compare right and left"),
+            R(Key('c-f3')),
         "copy left":
-            R(Key('c-l'),
-              rdescript="Sync Dirs: select for copying left"),
+            R(Key('c-l')),
         "copy right":
-            R(Key('c-r'),
-              rdescript="Sync Dirs: select for copying right"),
+            R(Key('c-r')),
         "view right":
-            R(Key('s-f3'),
-              rdescript="Sync Dirs: view right"),
+            R(Key('s-f3')),
         "remove selection":
-            R(Key('c-m'),
-              rdescript="Sync Dirs: remove selection"),
+            R(Key('c-m')),
         "synchronize":
-            R(Key('a-c'),
-              rdescript="Total Commander: synchronize button"),
+            R(Key('a-c')),
     }
 
 context = AppContext(executable="totalcmd") | AppContext(executable="totalcmd64")

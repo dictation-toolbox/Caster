@@ -538,28 +538,23 @@ class AtomRule(MergeRule):
         #"":                                     ACP(""),
         #Atom Shortcut Snippets
         "dev keys [input] [<n>]":
-            R(Text('#"": ACK("-", "Atom: "),') + Key("enter"),
-              rdescript="Macro: Dev Keys #")*Repeat(extra="n"),
+            R(Text('#"": ACK("-", "Atom: "),') + Key("enter"))*Repeat(extra="n"),
         "dev [command] palette [<n>]":
-            R(Text('#"": ACP("", "Atom: "),') + Key("enter"),
-              rdescript="Macro: Dev Command Palette #")*Repeat(extra="n"),
+            R(Text('#"": ACP("", "Atom: "),') + Key("enter"))*Repeat(extra="n"),
         #Repeatable Snippets
         "dev numb keys [input] [<n>]":
-            R(Text('#" [<n>]": ACK("-", "Atom: ") * Repeat(extra="n"),') + Key("enter"),
-              rdescript="Macro: Numb Dev Keys #")*Repeat(extra="n"),
+            R(Text('#" [<n>]": ACK("-", "Atom: ") * Repeat(extra="n"),') + Key("enter"))*Repeat(extra="n"),
         "dev numb [command] palette [<n>]":
-            R(Text('#" [<n>]": ACP("", "Atom: ") * Repeat(extra="n"),') + Key("enter"),
-              rdescript="Macro: Dev Numb Command Palette #")*Repeat(extra="n"),
+            R(Text('#" [<n>]": ACP("", "Atom: ") * Repeat(extra="n"),') + Key("enter"))*Repeat(extra="n"),
         #Basic Dragonfly Snippets
         "dev key [<n>]":
-            R(Text('"": Key(""),'), rdescript="Dragonfly: Print Dev Key #")*
+            R(Text('"": Key(""),'))*
             Repeat(extra="n"),
         "dev text [<n>]":
-            R(Text('"": Text(""),'), rdescript="Dragonfly: Print Dev Text #")*
+            R(Text('"": Text(""),'))*
             Repeat(extra="n"),
         "send command [<n>]":
-            R(Text('"": R(Function(SendJsonCommands, a_command=""), rdescript=""),'),
-              rdescript="Macro: Print SendJsonCommands Template #")*Repeat(extra="n"),
+            R(Text('"": R(Function(SendJsonCommands, a_command=""), rdescript=""),'))*Repeat(extra="n"),
     }
 
     extras = [

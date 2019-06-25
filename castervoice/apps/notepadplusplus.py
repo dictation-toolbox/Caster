@@ -6,22 +6,19 @@ class NPPRule(MergeRule):
     mapping = {
         "stylize <n2>":
             R(Mouse("right") + Key("down:6/5, right") +
-              (Key("down")*Repeat(extra="n2")) + Key("enter"),
-              rdescript="Notepad++: Stylize"),
+              (Key("down")*Repeat(extra="n2")) + Key("enter")),
         "remove style":
-            R(Mouse("right") + Key("down:6/5, right/5, down:5/5, enter"),
-              rdescript="Notepad++: Remove Style"),
+            R(Mouse("right") + Key("down:6/5, right/5, down:5/5, enter")),
         "preview in browser":
-            R(Key("cas-r"), rdescript="Notepad++: Preview In Browser"),
+            R(Key("cas-r")),
 
         # requires function list plug-in:
         "function list":
-            R(Key("cas-l"), rdescript="Notepad++: Function List"),
+            R(Key("cas-l")),
         "open":
-            R(Key("c-o"), rdescript="Notepad++: Open"),
+            R(Key("c-o")),
         "go [to] line <n>":
-            R(Key("c-g/10") + Text("%(n)s") + Key("enter"),
-              rdescript="Notepad++: Go to Line #"),
+            R(Key("c-g/10") + Text("%(n)s") + Key("enter")),
     }
     extras = [
         Dictation("text"),

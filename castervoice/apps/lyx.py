@@ -4,20 +4,20 @@ class LyxRule(MergeRule):
     pronunciation = "lyx"
 
     mapping = {
-        "new file": R(Key("c-n"), rdescript="LyX: new file"),
-        "open file": R(Key("c-o"), rdescript="LyX: open file"),
-        "save as": R(Key("cs-s"), rdescript="LyX: save as"),
+        "new file": R(Key("c-n")),
+        "open file": R(Key("c-o")),
+        "save as": R(Key("cs-s")),
 
-        "math mode": R(Key("c-m"), rdescript="LyX: math mode"),
-        "display mode": R(Key("cs-m"), rdescript="LyX: display mode"),
+        "math mode": R(Key("c-m")),
+        "display mode": R(Key("cs-m")),
 
-        "view PDF": R(Key("c-r"), rdescript="LyX: view PDF"),
-        "update PDF": R(Key("cs-r"), rdescript="LyX: update PDF"),
+        "view PDF": R(Key("c-r")),
+        "update PDF": R(Key("cs-r")),
 
-        "move line up [<n>]": R(Key("a-up"), rdescript="LyX: move line up")*Repeat(extra="n"),
-        "move line down [<n>]": R(Key("a-down"), rdescript="LyX: move line down")*Repeat(extra="n"),
+        "move line up [<n>]": R(Key("a-up"))*Repeat(extra="n"),
+        "move line down [<n>]": R(Key("a-down"))*Repeat(extra="n"),
 
-        "insert <environment>": R(Key("a-i, h, %(environment)s"), rdescript="LyX: insert environment"),
+        "insert <environment>": R(Key("a-i, h, %(environment)s")),
         }
     extras = [
         IntegerRefST("n", 1, 10),

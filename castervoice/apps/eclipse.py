@@ -1,5 +1,6 @@
 from castervoice.lib.imports import *
 
+
 class EclipseController(object):
     def __init__(self):
         self.regex = False
@@ -86,52 +87,66 @@ class EclipseRule(MergeRule):
     pronunciation = "eclipse"
 
     mapping = {
+        "prior tab [<n>]":
+            R(Key("cs-f6"))*
+            Repeat(extra="n"),  # these two must be set up in the eclipse preferences
+        "next tab [<n>]":
+            R(Key("c-f6"))*Repeat(extra="n"),
+        "open resource":
+            R(Key("cs-r")),
+        "open type":
+            R(Key("cs-t")),
+        "jump to source":
+            R(Key("f3")),
+        "editor select":
+            R(Key("c-e")),
+        "step over [<n>]":
+            R(Key("f6/50")*Repeat(extra="n")),
+        "step into":
+            R(Key("f5")),
+        "step out [of]":
+            R(Key("f7")),
+        "resume":
+            R(Key("f8")),
+        "(debug | run) last":
+            R(Key("f11")),
+        "mark occurrences":
+            R(Key("as-o")),
 
-            "prior tab [<n>]":                          R(Key("cs-f6"), rdescript="Eclipse: Previous Tab") * Repeat(extra="n"),  # these two must be set up in the eclipse preferences
-            "next tab [<n>]":                           R(Key("c-f6"), rdescript="Eclipse: Next Tab") * Repeat(extra="n"),
-            "open resource":                            R(Key("cs-r"), rdescript="Eclipse: Open Resource"),
-            "open type":                                R(Key("cs-t"), rdescript="Eclipse: Open Type"),
+        # "terminate" changes to the settings for this hotkey: (when: in dialogs and windows)
+        "terminate":
+            R(Key("c-f2")),
+        "refractor symbol":
+            R(Key("sa-r")),
+        "symbol next [<n>]":
+            R(Key("c-k"))*Repeat(extra="n"),
+        "symbol prior [<n>]":
+            R(Key("cs-k"))*Repeat(extra="n"),
+        "format code":
+            R(Key("cs-f")),
+        "do imports":
+            R(Key("cs-o")),
+        "comment line":
+            R(Key("c-slash")),
+        "build it":
+            R(Key("c-b")),
+        "split view horizontal":
+            R(Key("cs-underscore")),
+        "split view vertical":
+            R(Key("cs-lbrace")),
 
-            "jump to source":                           R(Key("f3"), rdescript="Eclipse: Jump To Source"),
-            "editor select":                            R(Key("c-e"), rdescript="Eclipse: Editor Select"),
-
-            "step over [<n>]":                          R(Key("f6/50") * Repeat(extra="n"), rdescript="Eclipse: Step Over"),
-            "step into":                                R(Key("f5"), rdescript="Eclipse: Step Into"),
-            "step out [of]":                            R(Key("f7"), rdescript="Eclipse: Step Out"),
-            "resume":                                   R(Key("f8"), rdescript="Eclipse: Resume"),
-            "(debug | run) last":                       R(Key("f11"), rdescript="Eclipse: Run Last"),
-            "mark occurrences":                         R(Key("as-o"), rdescript="Eclipse: Mark Occurrences"),
-
-            # "terminate" changes to the settings for this hotkey: (when: in dialogs and windows)
-            "terminate":                                R(Key("c-f2"), rdescript="Eclipse: Terminate Running Program"),
-
-            "refractor symbol":                         R(Key("sa-r"), rdescript="Eclipse: Re-Factor Symbol"),
-
-            "symbol next [<n>]":                        R(Key("c-k"), rdescript="Eclipse: Symbol Next") * Repeat(extra="n"),
-            "symbol prior [<n>]":                       R(Key("cs-k"), rdescript="Eclipse: Symbol Prior") * Repeat(extra="n"),
-
-            "format code":                              R(Key("cs-f"), rdescript="Eclipse: Format Code"),
-            "do imports":                               R(Key("cs-o"), rdescript="Eclipse: Do Imports"),
-            "comment line":                             R(Key("c-slash"), rdescript="Eclipse: Comment Line"),
-
-            "build it":                                 R(Key("c-b"), rdescript="Eclipse: Build"),
-
-            "split view horizontal":                    R(Key("cs-underscore"), rdescript="Eclipse: Split View (H)"),
-            "split view vertical":                      R(Key("cs-lbrace"), rdescript="Eclipse: Split View (V)"),
-
-            #Line Ops
-            "find everywhere":                          R(Key("ca-g"), rdescript="Eclipse: Search Project"),
-            "find word <text> [<back>] [<go>]":         R(Key("c-f")+Function(ec_con.regex_off)+Function(ec_con.find),\
-                                                          rdescript="Eclipse: Find Word"),
-            "find regex <text> [<back>] [<go>]":        R(Key("c-f")+Function(ec_con.regex_on)+Function(ec_con.find),\
-                                                          rdescript="Eclipse: Find Regex"),
-            "find <a> [<b> [<c>]] [<back>] [<go>]":     R(Key("c-f")+Function(ec_con.find),\
-                                                          rdescript="Eclipse: Find Alpha"),
-            "find <punctuation> [<back>] [<go>]":       R(Key("c-f")+Function(ec_con.find),\
-                                                          rdescript="Eclipse: Find Character(s)"),
-
-
-        }
+        #Line Ops
+        "find everywhere":
+            R(Key("ca-g")),
+        "find word <text> [<back>] [<go>]":
+            R(Key("c-f") + Function(ec_con.regex_off) + Function(ec_con.find)),
+        "find regex <text> [<back>] [<go>]":
+            R(Key("c-f") + Function(ec_con.regex_on) + Function(ec_con.find)),
+        "find <a> [<b> [<c>]] [<back>] [<go>]":
+            R(Key("c-f") + Function(ec_con.find)),
+        "find <punctuation> [<back>] [<go>]":
+            R(Key("c-f") + Function(ec_con.find)),
+    }
     extras = [
         Dictation("text"),
         Dictation("mim"),
@@ -160,21 +175,29 @@ class EclipseCCR(MergeRule):
     non = EclipseRule
 
     mapping = {
-            #Line Ops
-            "configure":                                R(Paste(ec_con.analysis_chars)+Key("left:2/5, c-f/20, backslash, rbracket, enter") + \
-                                                          Function(ec_con.analyze_for_configure), rdescript="Eclipse: Configure"),
-            "jump in [<n>]":                            R(Key("c-f, a-o")+Paste(r"[\(\[\{\<]")+Function(ec_con.regex_on)+ \
-                                                          Key("enter:%(n)d/5, escape, right") , rdescript="Eclipse: Jump In"),
-            "jump out [<n>]":                           R(Key("c-f, a-o")+Paste(r"[\)\] \}\>]")+Function(ec_con.regex_on)+ \
-                                                          Key("enter:%(n)d/5, escape, right") , rdescript="Eclipse: Jump Out"),
-            "jump back [<n>]":                          R(Key("c-f/5, a-b")+Paste(r"[\)\]\}\>]")+Function(ec_con.regex_on)+ \
-                                                          Key("enter:%(n)d/5, escape, left") , rdescript="Eclipse: Jump Back"),
-            "[go to] line <n>":                         R(Key("c-l") + Pause("50") + Text("%(n)d") + Key("enter")+ Pause("50"),
-                                                          rdescript="Eclipse: Go To Line"),
-            "shackle <n> [<back>]":                     R(Key("c-l")+Key("right, cs-left")+ \
-                                                          Function(ec_con.lines_relative), rdescript="Eclipse: Select Relative Lines"),
-
-        }
+        #Line Ops
+        "configure":
+            R(
+                Paste(ec_con.analysis_chars) +
+                Key("left:2/5, c-f/20, backslash, rbracket, enter") +
+                Function(ec_con.analyze_for_configure)),
+        "jump in [<n>]":
+            R(
+                Key("c-f, a-o") + Paste(r"[\(\[\{\<]") + Function(ec_con.regex_on) +
+                Key("enter:%(n)d/5, escape, right")),
+        "jump out [<n>]":
+            R(
+                Key("c-f, a-o") + Paste(r"[\)\] \}\>]") + Function(ec_con.regex_on) +
+                Key("enter:%(n)d/5, escape, right")),
+        "jump back [<n>]":
+            R(
+                Key("c-f/5, a-b") + Paste(r"[\)\]\}\>]") + Function(ec_con.regex_on) +
+                Key("enter:%(n)d/5, escape, left")),
+        "[go to] line <n>":
+            R(Key("c-l") + Pause("50") + Text("%(n)d") + Key("enter") + Pause("50")),
+        "shackle <n> [<back>]":
+            R(Key("c-l") + Key("right, cs-left") + Function(ec_con.lines_relative)),
+    }
     extras = [
         Dictation("text"),
         IntegerRefST("n", 1, 1000),

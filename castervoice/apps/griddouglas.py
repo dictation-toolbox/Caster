@@ -58,21 +58,20 @@ def select_text(nexus):
     grids.wait_for_death(settings.DOUGLAS_TITLE)
     drag_from_to(x1,y1,x2,y2)
 
-class GridControlRule(MergeRule):
-
+class DouglasGridRule(MergeRule):
     mapping = {
         "<x> [by] <y> [<action>]":
-            R(Function(send_input, nexus=_NEXUS), rdescript="Douglas Grid: Action"),
+            R(Function(send_input, nexus=_NEXUS)),
         "<x1> [by] <y1> select <x2> [by] <y2>":
-            R(Function(send_input_select, nexus=_NEXUS), rdescript="Douglas Grid: Select (long version)"),
+            R(Function(send_input_select, nexus=_NEXUS)),
         "<x1> [by] <y1> select <x2>":
-            R(Function(send_input_select_short, nexus=_NEXUS), rdescript="Douglas Grid: Select (short version)"),
+            R(Function(send_input_select_short, nexus=_NEXUS)),
         "squat":
-            R(Function(store_first_point), rdescript="Douglas Grid: Store first point"),
+            R(Function(store_first_point)),
         "bench":
-            R(Function(select_text, nexus=_NEXUS), rdescript="Douglas Grid: Select (point version)"),
+            R(Function(select_text, nexus=_NEXUS)),
         "exit | escape | cancel":
-            R(Function(kill, nexus=_NEXUS), rdescript="Douglas Grid: Exit"),
+            R(Function(kill, nexus=_NEXUS)),
     }
     extras = [
         IntegerRefST("x", 0, 300),
@@ -96,4 +95,4 @@ class GridControlRule(MergeRule):
     }
 
 context = AppContext(title="douglasgrid")
-control.non_ccr_app_rule(GridControlRule(), context=context)
+control.non_ccr_app_rule(DouglasGridRule(), context=context)
