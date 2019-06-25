@@ -49,7 +49,7 @@ class FileDialogueRule(MergeRule):
             R(Key("a-d, f6:5"), rdescript="File Dialogue: File name"),
         "(child | dialogue | same) bring me <folder_path>":
             R(Function(dialogue_bring_it),
-            rdescript="go to preconfigured folder within currently open Windows Explorer child window"),
+            rdescript="File Dialogue: go to preconfigured folder within currently open Windows Explorer child window"),
     }
     extras = [IntegerRefST("n", 1, 10),
         Choice("folder_path", CONFIG["folder"]),
