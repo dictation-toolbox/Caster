@@ -1,16 +1,5 @@
 # thanks to Casper for contributing commands to this.
-
-from dragonfly import (Grammar, Context, AppContext, Dictation, Repeat, Function, Choice,
-                       Mouse, Pause)
-
-from castervoice.lib import settings, navigation, control
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.context import AppContext
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.merge import gfilter
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-
+from castervoice.lib.imports import *
 
 def findNthToken(text, n, direction):
     Key("c-f").execute()
@@ -23,12 +12,9 @@ def findNthToken(text, n, direction):
         print("no? %(n)d")
     Key('escape').execute()
 
-
 class VSCodeNonCcrRule(MergeRule):
-
     pronunciation = "Visual Studio Code Non Continuous"
     mapping = {
-
         # Moving around a file
         "[(go to | jump | jump to)] line <n>":
             R(Key("c-g") + Text("%(n)d") + Key("enter")),
@@ -401,14 +387,5 @@ class VSCodeCcrRule(MergeRule):
     defaults = {"n": 1, "mim": "", "text": ""}
 
 
-
-# ---------------------------------------------------------------------------
-
-# initialise the rule.
 context = AppContext(title="Visual Studio Code", executable="code")
-grammar = Grammar("Visual Studio Code", context=context)
-if settings.SETTINGS["apps"]["visualstudiocode"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(VSCodeCcrRule())
-    else:
-        control.nexus().merger.add_app_rule(VSCodeCcrRule(), context)
+control.ccr_app_rule(VSCodeCcrRule(), context)

@@ -1,14 +1,4 @@
-from dragonfly import (Choice, Dictation, Grammar, Repeat, Function)
-
-from castervoice.lib import settings, navigation, control
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.temporary import Store, Retrieve
-from castervoice.lib.context import AppContext
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.merge import gfilter
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-
+from castervoice.lib.imports import *
 
 class SublimeRule(MergeRule):
     pronunciation = "sublime"
@@ -195,16 +185,5 @@ class SublimeRule(MergeRule):
     }
 
 
-#---------------------------------------------------------------------------
-
 context = AppContext(executable="sublime_text", title="Sublime Text")
-grammar = Grammar("Sublime", context=context)
-
-if settings.SETTINGS["apps"]["sublime"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(SublimeRule())
-    else:
-        rule = SublimeRule(name="sublime")
-        gfilter.run_on(rule)
-        grammar.add_rule(rule)
-        grammar.load()
+control.non_ccr_app_rule(SublimeRule(), context=context)
