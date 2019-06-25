@@ -1,7 +1,5 @@
 from castervoice.lib.imports import *
-
 import ide
-from castervoice.apps.gitbash import GitBashRule
 
 class JetbrainsRule(MergeRule):
     pronunciation = "jet brains"
@@ -108,4 +106,3 @@ context = AppContext(executable="idea", title="IntelliJ") \
           | AppContext(executable="studio64") \
           | AppContext(executable="pycharm")
 control.non_ccr_app_rule(JetbrainsRule(), context=context)
-control.non_ccr_app_rule(GitBashRule(), context=context, rdp=False)
