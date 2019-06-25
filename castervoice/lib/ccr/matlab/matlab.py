@@ -3,19 +3,11 @@ Created on May 26, 2017
 
 @author: shippy
 '''
-
-from dragonfly import Dictation, MappingRule
-
-from castervoice.lib import control
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.ccr.standard import SymbolSpecs
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-
+from castervoice.lib.imports import *
 
 class MatlabNon(MappingRule):
     mapping = {
-        "section": R(Key("percent, percent, enter"), rdescript="Matlab: Section"),
+        "section": R(Key("percent, percent, enter")),
     }
 
 
@@ -26,74 +18,72 @@ class Matlab(MergeRule):
 
     mapping = {
         SymbolSpecs.IF:
-            R(Text("if "), rdescript="Matlab: If"),
+            R(Text("if ")),
         SymbolSpecs.ELSE:
-            R(Text("else ") + Key("enter"), rdescript="Matlab: Else"),
+            R(Text("else ") + Key("enter")),
         #
         # (no switch in Matlab)
         SymbolSpecs.BREAK:
-            R(Text("break"), rdescript="Matlab: Break"),
+            R(Text("break")),
         #
         SymbolSpecs.FOR_EACH_LOOP:
-            R(Text("for m = 1:"), rdescript="Matlab: For Each Loop"),
+            R(Text("for m = 1:")),
         SymbolSpecs.FOR_LOOP:
-            R(Text("for "), rdescript="Matlab: For i Loop"),
+            R(Text("for ")),
         SymbolSpecs.WHILE_LOOP:
-            R(Text("while "), rdescript="Matlab: While"),
+            R(Text("while ")),
         # (no do-while in Matlab)
         #
         SymbolSpecs.TO_INTEGER:
-            R(Text("str2num()") + Key("left"), rdescript="Matlab: Convert To Integer"),
+            R(Text("str2num()") + Key("left")),
         SymbolSpecs.TO_FLOAT:
-            R(Text("str2num()") + Key("left"),
-              rdescript="Matlab: Convert To Floating-Point"),
+            R(Text("str2num()") + Key("left")),
         SymbolSpecs.TO_STRING:
-            R(Text("num2str()") + Key("left"), rdescript="Matlab: Convert To String"),
+            R(Text("num2str()") + Key("left")),
         #
         SymbolSpecs.AND:
-            R(Text(" && "), rdescript="Matlab: And"),
+            R(Text(" && ")),
         SymbolSpecs.OR:
-            R(Text(" || "), rdescript="Matlab: Or"),
+            R(Text(" || ")),
         SymbolSpecs.NOT:
-            R(Text("~"), rdescript="Matlab: Not"),
+            R(Text("~")),
         #
         SymbolSpecs.SYSOUT:
-            R(Text("disp()") + Key("left"), rdescript="Matlab: Print"),
+            R(Text("disp()") + Key("left")),
         #
         SymbolSpecs.IMPORT:
-            R(Text("library()") + Key("left"), rdescript="Matlab: Import"),
+            R(Text("library()") + Key("left")),
         #
         SymbolSpecs.FUNCTION:
-            R(Text("function [] = ") + Key("left:4"), rdescript="Matlab: Function"),
+            R(Text("function [] = ") + Key("left:4")),
         SymbolSpecs.CLASS:
-            R(Text("classdef "), rdescript="Matlab: Class"),
+            R(Text("classdef ")),
         #
         SymbolSpecs.COMMENT:
-            R(Key("percent"), rdescript="Matlab: Add Comment"),
+            R(Key("percent")),
         SymbolSpecs.LONG_COMMENT:
-            R(Key('percent, lbracket, enter:2, percent, rbracket') + Key("up"),
-              rdescript="Matlab: Long Comment"),
+            R(Key('percent, lbracket, enter:2, percent, rbracket') + Key("up")),
         #
         SymbolSpecs.NULL:
-            R(Text("NaN"), rdescript="Matlab: Null"),
+            R(Text("NaN")),
         #
         SymbolSpecs.RETURN:
-            R(Text("return "), rdescript="Matlab: Return"),
+            R(Text("return ")),
         #
         SymbolSpecs.TRUE:
-            R(Text("true"), rdescript="Matlab: True"),
+            R(Text("true")),
         SymbolSpecs.FALSE:
-            R(Text("false"), rdescript="Matlab: False"),
+            R(Text("false")),
 
         # Matlab specific
         "assign":
-            R(Text(" = "), rdescript="Matlab: Assignment"),
+            R(Text(" = ")),
         "shell iffae | LFA":
-            R(Text("elseif "), rdescript="Matlab: Else If"),
+            R(Text("elseif ")),
         "length of":
-            R(Text("length()") + Key("left"), rdescript="Matlab: Length"),
+            R(Text("length()") + Key("left")),
         "sprint F":
-            R(Text("sprintf()") + Key("left"), rdescript="Matlab: Length"),
+            R(Text("sprintf()") + Key("left")),
     }
 
     extras = [

@@ -3,22 +3,14 @@ Created on Sep 2, 2015
 
 @author: Gerrish
 '''
-from dragonfly import Dictation, MappingRule
-
-from castervoice.lib import control
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-from castervoice.lib.ccr.standard import SymbolSpecs
-
+from castervoice.lib.imports import *
 
 class PrologNon(MappingRule):
     mapping = {
         "Rule":
-            R(Text("() :-.") + Key("left/6"), rdescript="Prolog: rule"),
+            R(Text("() :-.") + Key("left/6")),
         SymbolSpecs.IF:
-            R(Text("( ") + Key("enter") + Text(";") + Key("enter") + Text(")"),
-              rdescript="Prolog: IF"),
+            R(Text("( ") + Key("enter") + Text(";") + Key("enter") + Text(")")),
     }
 
 
@@ -28,15 +20,15 @@ class Prolog(MergeRule):
     non = PrologNon
 
     mapping = {
-        "implies": R(Text(":-"), rdescript="Prolog: Select"),
-        "comment": R(Text("%"), rdescript="Prolog: Line Comment"),
-        "Open Block comment": R(Text("/* "), rdescript="Prolog: Line Comment"),
-        "Close Block comment": R(Text("*\ "), rdescript="Prolog: Line Comment"),
-        "Anonymous": R(Text("_"), rdescript="Prolog: Anonymous"),
-        "Not": R(Text("\+"), rdescript="Prolog: Not"),
-        "cut": R(Text("!"), rdescript="Prolog: cut "),
-        "Or": R(Text(";"), rdescript="Prolog: Or"),
-        "Fail": R(Text("Fail"), rdescript="Prolog: Fail")
+        "implies": R(Text(":-")),
+        "comment": R(Text("%")),
+        "Open Block comment": R(Text("/* ")),
+        "Close Block comment": R(Text("*\ ")),
+        "Anonymous": R(Text("_")),
+        "Not": R(Text("\+")),
+        "cut": R(Text("!")),
+        "Or": R(Text(";")),
+        "Fail": R(Text("Fail"))
     }
 
     extras = []

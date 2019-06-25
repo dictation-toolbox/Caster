@@ -3,23 +3,17 @@ Created on Sep 1, 2015
 
 @author: synkarius
 '''
-from dragonfly import Repeat, Function, Dictation, Choice, MappingRule, ContextAction
-
-from castervoice.lib import context, navigation, alphanumeric, textformat, text_utils
-from castervoice.lib import control, utilities
-from castervoice.lib.actions import Key, Mouse
-from castervoice.lib.context import AppContext
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.actions import AsynchronousAction, ContextSeeker
-from castervoice.lib.dfplus.state.actions2 import UntilCancelled
-from castervoice.lib.dfplus.state.short import L, S, R
-from dragonfly.actions.action_mimic import Mimic
-from castervoice.lib.ccr.standard import SymbolSpecs
+from castervoice.lib.imports import *
 
 _NEXUS = control.nexus()
 
+for key, value in double_text_punc_dict.items():
+    if len(value) == 2:
+        double_text_punc_dict[key] = value[0] + "~" + value[1]
+    elif len(value) == 4:
+        double_text_punc_dict[key] = value[0:1] + "~" + value[2:3]
+    else:
+        raise Exception("Need to deal with nonstandard pair length in double_text_punc_dict.")
 
 class NavigationNon(MergeRule):
     mapping = {
@@ -167,7 +161,7 @@ class Navigation(MergeRule):
     pronunciation = CCRMerger.CORE[1]
 
     mapping = {
-    # "periodic" repeats whatever comes next at 1-second intervals until "terminate" 
+    # "periodic" repeats whatever comes next at 1-second intervals until "terminate"
     # or "escape" (or your SymbolSpecs.CANCEL) is spoken or 100 tries occur
         "periodic":
             ContextSeeker(forward=[L(S(["cancel"], lambda: None),
@@ -246,9 +240,9 @@ class Navigation(MergeRule):
         "hug <enclosure>":
             R(Function(text_utils.enclose_selected)),
         "dredge [<nnavi10>]":
-            R(Key("alt:down, tab/20:%(nnavi10)d, alt:up"), 
+            R(Key("alt:down, tab/20:%(nnavi10)d, alt:up"),
                rdescript="Core: switch to most recent Windows"),
-        
+
         # Ccr Mouse Commands
         "kick":
             R(Function(navigation.left_click, nexus=_NEXUS)),
@@ -260,7 +254,7 @@ class Navigation(MergeRule):
             R(Function(navigation.left_down, nexus=_NEXUS)),
         "bench":
             R(Function(navigation.left_up, nexus=_NEXUS)),
-        
+
     }
 
     extras = [
@@ -268,15 +262,7 @@ class Navigation(MergeRule):
         IntegerRefST("nnavi50", 1, 50),
         IntegerRefST("nnavi500", 1, 500),
         Dictation("textnv"),
-        Choice(
-            "enclosure", {
-                "prekris": "(~)",
-                "angle": "<~>",
-                "curly": "{~}",
-                "brax": "[~]",
-                "thin quotes": "'~'",
-                'quotes': '"~"',
-            }),
+        Choice("enclosure", double_text_punc_dict),
         Choice("capitalization", {
             "yell": 1,
             "tie": 2,
@@ -323,7 +309,9 @@ class Navigation(MergeRule):
             "lease": "backspace",
             "ross": "delete",
         }),
+
     ]
+
 
     defaults = {
         "nnavi500": 1,

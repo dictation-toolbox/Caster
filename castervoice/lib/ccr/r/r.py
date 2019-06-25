@@ -3,15 +3,7 @@ Created on May 23, 2017
 
 @author: shippy
 '''
-
-from dragonfly import Dictation, MappingRule, Choice
-
-from castervoice.lib import control
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.ccr.standard import SymbolSpecs
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-
+from castervoice.lib.imports import *
 
 class Rlang(MergeRule):
     auto = [".R", ".r"]
@@ -19,85 +11,82 @@ class Rlang(MergeRule):
 
     mapping = {
         SymbolSpecs.IF:
-            R(Text("if ()") + Key("left"), rdescript="Rlang: If"),
+            R(Text("if ()") + Key("left")),
         SymbolSpecs.ELSE:
-            R(Text("else ") + Key("enter"), rdescript="Rlang: Else"),
+            R(Text("else ") + Key("enter")),
         #
         # (no switch in Rlang)
         SymbolSpecs.BREAK:
-            R(Text("break"), rdescript="Rlang: Break"),
+            R(Text("break")),
         #
         SymbolSpecs.FOR_EACH_LOOP:
-            R(Text("for ( in ):") + Key("left:6"), rdescript="Rlang: For Each Loop"),
+            R(Text("for ( in ):") + Key("left:6")),
         SymbolSpecs.FOR_LOOP:
-            R(Text("for (i in 1:)") + Key("left"), rdescript="Rlang: For i Loop"),
+            R(Text("for (i in 1:)") + Key("left")),
         SymbolSpecs.WHILE_LOOP:
-            R(Text("while ()") + Key("left"), rdescript="Rlang: While"),
+            R(Text("while ()") + Key("left")),
         # (no do-while in Rlang)
         #
         SymbolSpecs.AND:
-            R(Text(" & "), rdescript="Rlang: And"),
+            R(Text(" & ")),
         SymbolSpecs.OR:
-            R(Text(" | "), rdescript="Rlang: Or"),
+            R(Text(" | ")),
         SymbolSpecs.NOT:
-            R(Text("!"), rdescript="Rlang: Not"),
+            R(Text("!")),
         #
         SymbolSpecs.SYSOUT:
-            R(Text("print()") + Key("left"), rdescript="Rlang: Print"),
+            R(Text("print()") + Key("left")),
         #
         SymbolSpecs.IMPORT:
-            R(Text("library()") + Key("left"), rdescript="Rlang: Import"),
+            R(Text("library()") + Key("left")),
         #
         SymbolSpecs.FUNCTION:
-            R(Text("function()") + Key("left"), rdescript="Rlang: Function"),
-        # SymbolSpecs.CLASS:          R(Text("setClass()") + Key("left"), rdescript="Rlang: Class"),
+            R(Text("function()") + Key("left")),
+        # SymbolSpecs.CLASS:          R(Text("setClass()") + Key("left")),
         #
         SymbolSpecs.COMMENT:
-            R(Text("#"), rdescript="Rlang: Add Comment"),
+            R(Text("#")),
         #
         SymbolSpecs.NULL:
-            R(Text("NULL"), rdescript="Rlang: Null"),
+            R(Text("NULL")),
         #
         SymbolSpecs.RETURN:
-            R(Text("return()") + Key("left"), rdescript="Rlang: Return"),
+            R(Text("return()") + Key("left")),
         #
         SymbolSpecs.TRUE:
-            R(Text("TRUE"), rdescript="Rlang: True"),
+            R(Text("TRUE")),
         SymbolSpecs.FALSE:
-            R(Text("FALSE"), rdescript="Rlang: False"),
+            R(Text("FALSE")),
 
         # Rlang specific
         "assign":
-            R(Text(" <- "), rdescript="Rlang: Assignment"),
+            R(Text(" <- ")),
         "contained in":
-            R(Key('space, percent, i, n, percent, space'),
-              rdescript="Rlang: In operator"),
+            R(Key('space, percent, i, n, percent, space')),
         "slurp | chain":
-            R(Key('space, percent, rangle, percent, space'), rdescript="Rlang: Pipe"),
+            R(Key('space, percent, rangle, percent, space')),
         "tell (slurp | chain)":
-            R(Key('end, space, percent, rangle, percent, enter'),
-              rdescript="Rlang: Pipe at end"),
+            R(Key('end, space, percent, rangle, percent, enter')),
         "tell add":
-            R(Key('end, space, plus, enter'), rdescript="Rlang: plus at end"),
+            R(Key('end, space, plus, enter')),
         "NA":
-            R(Text("NA"), rdescript="Rlang: Not Available"),
+            R(Text("NA")),
         "shell iffae | LFA":
-            R(Text("elseif ()") + Key("left"), rdescript="Rlang: Else If"),
+            R(Text("elseif ()") + Key("left")),
         "dot (our|are)":
-            R(Text(".R"), rdescript="Rlang: .py"),
+            R(Text(".R")),
         "see as vee":
-            R(Text("csv"), rdescript="Rlang: csv"),
+            R(Text("csv")),
 
 
         "tidy verse":
-            R(Text("tidyverse"), rdescript="Rlang: tidyverse"),
+            R(Text("tidyverse")),
         "<function>":
-            R(Text("%(function)s()") + Key("left"), rdescript="Rlang: insert a function"),
+            R(Text("%(function)s()") + Key("left")),
         "graph <ggfun>":
-            R(Text("%(ggfun)s()") + Key("left"),
-              rdescript="Rlang: insert a ggplot function"),
+            R(Text("%(ggfun)s()") + Key("left")),
         "pack <pacfun>":
-            R(Text("%(pacfun)s()") + Key("left"), rdescript="Rlang: insert a pacman function"),
+            R(Text("%(pacfun)s()") + Key("left")),
     }
 
     extras = [

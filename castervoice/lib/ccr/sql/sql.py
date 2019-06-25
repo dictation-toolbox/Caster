@@ -3,86 +3,80 @@ Created on Sep 2, 2015
 
 @author: synkarius
 '''
-
-from castervoice.lib import control
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-
+from castervoice.lib.imports import *
 
 class SQL(MergeRule):
     pronunciation = "sequel"
 
     mapping = {
         "select":
-            R(Text(" SELECT "), rdescript="SQL: Select"),
+            R(Text(" SELECT ")),
         "select (all | every)":
-            R(Text(" SELECT * "), rdescript="SQL: Select All"),
+            R(Text(" SELECT * ")),
         "from":
-            R(Text(" FROM "), rdescript="SQL: From"),
+            R(Text(" FROM ")),
         "where":
-            R(Text(" WHERE "), rdescript="SQL: Where"),
+            R(Text(" WHERE ")),
         "between":
-            R(Text(" BETWEEN "), rdescript="SQL: Between"),
+            R(Text(" BETWEEN ")),
         "lodge and ":
-            R(Text(" AND "), rdescript="SQL: And"),
+            R(Text(" AND ")),
         "lodge or":
-            R(Text(" OR "), rdescript="SQL: Or"),
+            R(Text(" OR ")),
         "it are in":
-            R(Text(" IN "), rdescript="SQL: In"),
+            R(Text(" IN ")),
         "equals | equal to":
-            R(Text(" = "), rdescript="SQL: Equals"),
+            R(Text(" = ")),
         "not equals | not equal to":
-            R(Text(" <> "), rdescript="SQL: Not Equal To"),
+            R(Text(" <> ")),
         "group by":
-            R(Text(" GROUP BY "), rdescript="SQL: Group By"),
+            R(Text(" GROUP BY ")),
         "order by":
-            R(Text(" ORDER BY "), rdescript="Order By"),
+            R(Text(" ORDER BY ")),
         "ascending":
-            R(Text(" ASC "), rdescript="SQL: Ascending"),
+            R(Text(" ASC ")),
         "descending":
-            R(Text(" DESC "), rdescript="SQL: Descending"),
+            R(Text(" DESC ")),
         "left join":
-            R(Text(" LEFT JOIN "), rdescript="SQL: Left Join"),
+            R(Text(" LEFT JOIN ")),
         "inner join":
-            R(Text(" INNER JOIN "), rdescript="SQL: Inner Join"),
+            R(Text(" INNER JOIN ")),
         "right join":
-            R(Text(" RIGHT JOIN "), rdescript="SQL: Right Join"),
+            R(Text(" RIGHT JOIN ")),
         "full join":
-            R(Text(" FULL JOIN "), rdescript="SQL: Full Join"),
+            R(Text(" FULL JOIN ")),
         "join":
-            R(Text(" JOIN "), rdescript="SQL: Join"),
+            R(Text(" JOIN ")),
         "on columns":
-            R(Text(" ON "), rdescript="SQL: On"),
+            R(Text(" ON ")),
         "using":
-            R(Text(" USING () ") + Key("left/5:2"), rdescript="SQL: Using"),
+            R(Text(" USING () ") + Key("left/5:2")),
         "insert into":
-            R(Text(" INSERT INTO "), rdescript="SQL: Insert"),
+            R(Text(" INSERT INTO ")),
         "update":
-            R(Text(" UPDATE TOKEN SET "), rdescript="SQL: Update"),
+            R(Text(" UPDATE TOKEN SET ")),
         "delete":
-            R(Text(" DELETE "), rdescript="SQL: Delete"),
+            R(Text(" DELETE ")),
         "like":
-            R(Text(" LIKE '%%'") + Key("left/5:2"), rdescript="SQL: Like"),
+            R(Text(" LIKE '%%'") + Key("left/5:2")),
         "union":
-            R(Text(" UNION "), rdescript="SQL: Union"),
+            R(Text(" UNION ")),
         "alias as":
-            R(Text(" AS "), rdescript="SQL: Alias As"),
+            R(Text(" AS ")),
         "is null":
-            R(Text(" IS NULL "), rdescript="SQL: Is Null"),
+            R(Text(" IS NULL ")),
         "is not null":
-            R(Text(" IS NOT NULL "), rdescript="SQL: Is Not Null"),
+            R(Text(" IS NOT NULL ")),
         "fun max":
-            R(Text(" MAX() ") + Key("left/5:2"), rdescript="SQL: Max"),
+            R(Text(" MAX() ") + Key("left/5:2")),
         "fun min":
-            R(Text(" MIN() ") + Key("left/5:2"), rdescript="SQL: Min"),
+            R(Text(" MIN() ") + Key("left/5:2")),
         "fun count":
-            R(Text(" COUNT() ") + Key("left/5:2"), rdescript="SQL: Count"),
+            R(Text(" COUNT() ") + Key("left/5:2")),
         "fun average":
-            R(Text(" AVG() ") + Key("left/5:2"), rdescript="SQL: Average"),
+            R(Text(" AVG() ") + Key("left/5:2")),
         "over partition by":
-            R(Text(" OVER (PARTITION BY ) ") + Key("left/5:2"),
-              rdescript="SQL: Over Partition By"),
+            R(Text(" OVER (PARTITION BY ) ") + Key("left/5:2")),
     }
 
     extras = []
