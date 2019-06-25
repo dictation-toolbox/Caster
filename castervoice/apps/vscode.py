@@ -1,17 +1,5 @@
 # thanks to Casper for contributing commands to this.
-
-from dragonfly import (Grammar, Context, AppContext, Dictation, Repeat, Function, Choice,
-                       Mouse, Pause)
-
-from castervoice.lib import settings, navigation, control
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.context import AppContext
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.merge import gfilter
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
-
+from castervoice.lib.imports import *
 
 def findNthToken(text, n, direction):
     Key("c-f").execute()
@@ -24,12 +12,9 @@ def findNthToken(text, n, direction):
         print("no? %(n)d")
     Key('escape').execute()
 
-
 class VSCodeNonCcrRule(MergeRule):
-
     pronunciation = "Visual Studio Code Non Continuous"
     mapping = {
-
         # Moving around a file
         "[(go to | jump | jump to)] line <n>":
             R(Key("c-g") + Text("%(n)d") + Key("enter")),
@@ -310,10 +295,9 @@ class VSCodeCcrRule(MergeRule):
     mapping = {
         # Note: If you get the bad grammar grammar too complex error, move some of these commands into the non-CCR rule
         # cursor/line navigation
-        "comment": Key("c-slash"),
         "scroll up [<n>]":
             R(Key("c-up") * Repeat(extra='n'),
-              rdescript="VS Code: Scroll Up One Line at a Time"),
+            rdescript="VS Code: Scroll Up One Line at a Time"),
         "scroll down [<n>]":
             R(Key("c-down") * Repeat(extra='n'),
               rdescript="VS Code: Scroll Down One Line at a Time"),
@@ -324,8 +308,8 @@ class VSCodeCcrRule(MergeRule):
             R(Key("a-pgdown") * Repeat(extra='n'),
               rdescript="VS Code: Scroll Down One Page Down At a Time"),
         "(unindent|outdent) [<n>]":
-            R(Key("s-tab") * Repeat(extra='n'), rdescript="VS Code: Unindent"),
-        "comment line":
+            R(Key("home, s-tab:%(n)s"), rdescript="VS Code: Unindent"),
+        "comment [line]":
             R(Key("c-slash"), rdescript="VS Code: Line Comment"),
         "block comment":
             R(Key("sa-a"), rdescript="VS Code: Block Comment"),
@@ -383,7 +367,7 @@ class VSCodeCcrRule(MergeRule):
             R(Key("c-d") * Repeat(extra='n'),
               rdescript="VS Code: Add Cursor to Next Occurrence of Current Selection"),
         "indent [<n>]":
-            R(Key("tab") * Repeat(extra='n'), rdescript="VS Code: Indent"),
+            R(Key("home, tab:%(n)s"), rdescript="VS Code: Indent"),
         "hard delete [<n>]":
             R(Key("s-del"), rdescript="VS Code: Eliminates Line not Just the Text on it"),
         "copy line up [<n>]":
@@ -436,15 +420,5 @@ class VSCodeCcrRule(MergeRule):
     defaults = {"n": 1, "mim": "", "text": ""}
 
 
-
-
-# ---------------------------------------------------------------------------
-
-# initialise the rule.
 context = AppContext(title="Visual Studio Code", executable="code")
-grammar = Grammar("Visual Studio Code", context=context)
-if settings.SETTINGS["apps"]["visualstudiocode"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(VSCodeCcrRule())
-    else:
-        control.nexus().merger.add_app_rule(VSCodeCcrRule(), context)
+control.ccr_app_rule(VSCodeCcrRule(), context)
