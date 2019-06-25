@@ -108,4 +108,4 @@ context = AppContext(executable="idea", title="IntelliJ") \
           | AppContext(executable="studio64") \
           | AppContext(executable="pycharm")
 control.non_ccr_app_rule(JetbrainsRule(), context=context)
-control.non_ccr_app_rule(GitBashRule(), context=context)
+control.non_ccr_app_rule(GitBashRule(), context=context, rdp=False)
