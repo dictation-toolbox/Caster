@@ -1,10 +1,12 @@
-from dragonfly import Key, Pause, AppContext, Window
+import itertools
 import pyperclip
 import re 
 import copy
+from dragonfly import Key, Pause, AppContext, Window
 from castervoice.lib import context
 from castervoice.lib.ccr.core.punctuation import text_punc_dict,  double_text_punc_dict
 from castervoice.lib.alphanumeric import caster_alphabet
+
 
 
 new_text_punc_dict = copy.deepcopy(text_punc_dict)
@@ -13,6 +15,13 @@ character_dict = new_text_punc_dict
 character_list = character_dict.values()
 digits_list = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 character_list.extend(digits_list)
+def make_list_of_permutations_up_to_length(base_list, max_length):
+    result = []
+    for i in range(1, max_length + 1):
+        list_of_permutations_of_fixed_length = ["".join(permutation) for permutation in itertools.product(base_list, repeat=i)]
+        result.extend(list_of_permutations_of_fixed_length)
+    return result
+character_list = make_list_of_permutations_up_to_length(character_list, 3)
 
 
 contexts = {
