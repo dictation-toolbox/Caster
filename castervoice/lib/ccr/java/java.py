@@ -1,28 +1,19 @@
-from dragonfly import Paste, MappingRule
-
-from castervoice.lib import control
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.ccr.standard import SymbolSpecs
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-
+from castervoice.lib.imports import *
 
 class JavaNon(MappingRule):
     mapping = {
         "try catch":
-            R(Text("try{}catch(Exception e){}"), rdescript="Java: Try Catch"),
+            R(Text("try{}catch(Exception e){}")),
         "deco override":
-            R(Text("@Override"), rdescript="Java: Override Decorator"),
+            R(Text("@Override")),
         "iterate and remove":
             R(Paste(
                 "for (Iterator<TOKEN> iterator = TOKEN.iterator(); iterator.hasNext();) {\n\tString string = iterator.next();\nif (CONDITION) {\niterator.remove();\n}\n}"
-            ),
-              rdescript="Java: Iterate And Remove"),
+            )),
         "string builder":
             R(Paste(
                 "StringBuilder builder = new StringBuilder(); builder.append(orgStr); builder.deleteCharAt(orgStr.length()-1);"
-            ),
-              rdescript="Java: String Builder"),
+            )),
     }
 
     ncextras = []
@@ -34,133 +25,128 @@ class Java(MergeRule):
 
     mapping = {
         SymbolSpecs.IF:
-            R(Text("if() {") + Key("enter,up,left"), rdescript="Java: If"),
+            R(Text("if() {") + Key("enter,up,left")),
         SymbolSpecs.ELSE:
-            R(Text("else {") + Key("enter"), rdescript="Java: Else"),
+            R(Text("else {") + Key("enter")),
         #
         SymbolSpecs.SWITCH:
-            R(Text("switch(){\ncase : break;\ndefault: break;") + Key("up,up,left,left"),
-              rdescript="Java: Switch"),
+            R(Text("switch(){\ncase : break;\ndefault: break;") + Key("up,up,left,left")),
         SymbolSpecs.CASE:
-            R(Text("case :") + Key("left"), rdescript="Java: Case"),
+            R(Text("case :") + Key("left")),
         SymbolSpecs.BREAK:
-            R(Text("break;"), rdescript="Java: Break"),
+            R(Text("break;")),
         SymbolSpecs.DEFAULT:
-            R(Text("default: "), rdescript="Java: Default"),
+            R(Text("default: ")),
         #
         SymbolSpecs.DO_LOOP:
-            R(Text("do {}") + Key("left, enter:2"), rdescript="Java: Do Loop"),
+            R(Text("do {}") + Key("left, enter:2")),
         SymbolSpecs.WHILE_LOOP:
-            R(Text("while ()") + Key("left"), rdescript="Java: While"),
+            R(Text("while ()") + Key("left")),
         SymbolSpecs.FOR_LOOP:
-            R(Text("for (int i=0; i<TOKEN; i++)"), rdescript="Java: For i Loop"),
+            R(Text("for (int i=0; i<TOKEN; i++)")),
         SymbolSpecs.FOR_EACH_LOOP:
-            R(Text("for (TOKEN TOKEN : TOKEN)"), rdescript="Java: For Each Loop"),
+            R(Text("for (TOKEN TOKEN : TOKEN)")),
         #
         SymbolSpecs.TO_INTEGER:
-            R(Text("Integer.parseInt()") + Key("left"),
-              rdescript="Java: Convert To Integer"),
+            R(Text("Integer.parseInt()") + Key("left")),
         SymbolSpecs.TO_FLOAT:
-            R(Text("Double.parseDouble()") + Key("left"),
-              rdescript="Java: Convert To Floating-Point"),
+            R(Text("Double.parseDouble()") + Key("left")),
         SymbolSpecs.TO_STRING:
-            R(Key("dquote, dquote, plus"), rdescript="Java: Convert To String"),
+            R(Key("dquote, dquote, plus")),
         #
         SymbolSpecs.AND:
-            R(Text(" && "), rdescript="Java: And"),
+            R(Text(" && ")),
         SymbolSpecs.OR:
-            R(Text(" || "), rdescript="Java: Or"),
+            R(Text(" || ")),
         SymbolSpecs.NOT:
-            R(Text("!"), rdescript="Java: Not"),
+            R(Text("!")),
         #
         SymbolSpecs.SYSOUT:
-            R(Text("java.lang.System.out.println()") + Key("left"),
-              rdescript="Java: Print"),
+            R(Text("java.lang.System.out.println()") + Key("left")),
         #
         SymbolSpecs.IMPORT:
-            R(Text("import "), rdescript="Java: Import"),
+            R(Text("import ")),
         #
         SymbolSpecs.FUNCTION:
-            R(Text("TOKEN() {}") + Key("left"), rdescript="Java: Function"),
+            R(Text("TOKEN() {}") + Key("left")),
         SymbolSpecs.CLASS:
-            R(Text("class {}") + Key("left/5:2"), rdescript="Java: Class"),
+            R(Text("class {}") + Key("left/5:2")),
         #
         SymbolSpecs.COMMENT:
-            R(Text("//"), rdescript="Java: Add Comment"),
+            R(Text("//")),
         SymbolSpecs.LONG_COMMENT:
-            R(Text("/**/") + Key("left,left"), rdescript="Java: Long Comment"),
+            R(Text("/**/") + Key("left,left")),
         #
         SymbolSpecs.NULL:
-            R(Text("null"), rdescript="Java: Null"),
+            R(Text("null")),
         #
         SymbolSpecs.RETURN:
-            R(Text("return "), rdescript="Java: Return"),
+            R(Text("return ")),
         #
         SymbolSpecs.TRUE:
-            R(Text("true"), rdescript="Java: True"),
+            R(Text("true")),
         SymbolSpecs.FALSE:
-            R(Text("false"), rdescript="Java: False"),
+            R(Text("false")),
 
         # Java specific
         "it are in":
-            R(Text("Arrays.asList(TOKEN).contains(TOKEN)"), rdescript="Java: In"),
+            R(Text("Arrays.asList(TOKEN).contains(TOKEN)")),
         "try states":
-            R(Text("try"), rdescript="Java: Try"),
+            R(Text("try")),
         "arrow":
-            R(Text("->"), rdescript="Java: Lambda Arrow"),
+            R(Text("->")),
         "public":
-            R(Text("public "), rdescript="Java: Public"),
+            R(Text("public ")),
         "private":
-            R(Text("private "), rdescript="Java: Private"),
+            R(Text("private ")),
         "static":
-            R(Text("static "), rdescript="Java: Static"),
+            R(Text("static ")),
         "final":
-            R(Text("final "), rdescript="Java: Final"),
+            R(Text("final ")),
         "void":
-            R(Text("void "), rdescript="Java: Void"),
+            R(Text("void ")),
         "cast to double":
-            R(Text("(double)()") + Key("left"), rdescript="Java: Cast To Double"),
+            R(Text("(double)()") + Key("left")),
         "cast to integer":
-            R(Text("(int)()") + Key("left"), rdescript="Java: Cast To Integer"),
+            R(Text("(int)()") + Key("left")),
         "new new":
-            R(Text("new "), rdescript="Java: New"),
+            R(Text("new ")),
         "integer":
-            R(Text("int "), rdescript="Java: Integer"),
+            R(Text("int ")),
         "big integer":
-            R(Text("Integer "), rdescript="Java: Big Integer"),
+            R(Text("Integer ")),
         "double tie":
-            R(Text("double "), rdescript="Java: Double"),
+            R(Text("double ")),
         "big double":
-            R(Text("Double "), rdescript="Java: Big Double"),
+            R(Text("Double ")),
         "string":
-            R(Text("String "), rdescript="Java: String"),
+            R(Text("String ")),
         "boolean":
-            R(Text("boolean "), rdescript="Java: Boolean"),
+            R(Text("boolean ")),
         "substring":
-            R(Text("substring"), rdescript="Java: Substring Method"),
+            R(Text("substring")),
         "ternary":
-            R(Text("()?:") + Key("left:3"), rdescript="Java: Ternary"),
+            R(Text("()?:") + Key("left:3")),
         "this":
-            R(Text("this"), rdescript="Java: This"),
+            R(Text("this")),
         "array list":
-            R(Text("ArrayList"), rdescript="Java: ArrayList"),
+            R(Text("ArrayList")),
         "continue":
-            R(Text("continue"), rdescript="Java: Continue"),
+            R(Text("continue")),
         "sue iffae":
-            R(Text("if ()") + Key("left"), rdescript="Java: Short If"),
+            R(Text("if ()") + Key("left")),
         "sue shells":
-            R(Text("else") + Key("enter"), rdescript="Java: Short Else"),
+            R(Text("else") + Key("enter")),
         "shell iffae":
-            R(Text("else if ()") + Key("left"), rdescript="Java: Else If"),
+            R(Text("else if ()") + Key("left")),
         "throw exception":
-            R(Text("throw new Exception()") + Key("left"),
-              rdescript="Java: Throw Exception"),
+            R(Text("throw new Exception()") + Key("left")),
         "character at":
-            R(Text("charAt"), rdescript="Java: Character At Method"),
+            R(Text("charAt")),
         "is instance of":
-            R(Text(" instanceof "), rdescript="Java: Instance Of"),
+            R(Text(" instanceof ")),
         "dock string":
-            R(Text("/***/")+ Key("left,left,enter"), rdescript="Java: Docstring"),
+            R(Text("/***/")+ Key("left,left,enter")),
     }
 
     extras = []

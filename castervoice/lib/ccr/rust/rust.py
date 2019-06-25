@@ -1,28 +1,19 @@
-from dragonfly import Choice, MappingRule
-
-from castervoice.lib import control, alphanumeric
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.ccr.standard import SymbolSpecs
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-
+from castervoice.lib.imports import *
 
 class RustNon(MappingRule):
     mapping = {
         "macro format string":
-            R(Text("format!()") + Key("left"), rdescript="Rust: Format String"),
+            R(Text("format!()") + Key("left")),
         "macro panic":
-            R(Text("panic!()") + Key("left"), rdescript="Rust: Panic"),
+            R(Text("panic!()") + Key("left")),
         "macro assertion":
-            R(Text("assert_eq!()") + Key("left"), rdescript="Rust: Assertion"),
+            R(Text("assert_eq!()") + Key("left")),
         "ternary":
-            R(Text("if TOKEN == TOKEN { TOKEN } else { TOKEN }"),
-              rdescript="Rust: Ternary"),
+            R(Text("if TOKEN == TOKEN { TOKEN } else { TOKEN }")),
         "function [<return>]":
-            R(Text("fn TOKEN(TOKEN)%(return)s{}"), rdescript="Rust: Function"),
+            R(Text("fn TOKEN(TOKEN)%(return)s{}")),
         "infinite loop":
-            R(Text("loop {}") + Key("left"), rdescript="Rust: Infinite Loop"),
+            R(Text("loop {}") + Key("left")),
     }
     extras = [
         Choice("return", {"return": " -> TOKEN "}),
@@ -35,107 +26,101 @@ class Rust(MergeRule):
 
     mapping = {
         SymbolSpecs.IF:
-            R(Text("if  {}") + Key("left/5:3"), rdescript="Rust: If"),
+            R(Text("if  {}") + Key("left/5:3")),
         SymbolSpecs.ELSE:
-            R(Text("else {}") + Key("left/5:3"), rdescript="Rust: Else"),
+            R(Text("else {}") + Key("left/5:3")),
         #
         SymbolSpecs.SWITCH:
-            R(Text("match"), rdescript="Rust: Switch (match)"),
+            R(Text("match")),
         SymbolSpecs.CASE:
-            R(Text(" => ") + Key("left"), rdescript="Rust: Case"),
+            R(Text(" => ") + Key("left")),
         SymbolSpecs.BREAK:
-            R(Text("break;"), rdescript="Rust: Break"),
+            R(Text("break;")),
         SymbolSpecs.DEFAULT:
-            R(Text("_"), rdescript="Rust: Default"),
+            R(Text("_")),
         #
         SymbolSpecs.DO_LOOP:
-            R(Text("while {TOKEN;TOKEN}{}"), rdescript="Rust: Do Loop"),
+            R(Text("while {TOKEN;TOKEN}{}")),
         SymbolSpecs.WHILE_LOOP:
-            R(Text("while TOKEN {}") + Key("left"), rdescript="Rust: While"),
+            R(Text("while TOKEN {}") + Key("left")),
         "for loop [of <a> [in <n>]]":
-            R(Text("for %(a)s in 0..%(n)d {}") + Key("left"),
-              rdescript="Rust: For i Loop"),
+            R(Text("for %(a)s in 0..%(n)d {}") + Key("left")),
         SymbolSpecs.FOR_EACH_LOOP:
-            R(Text("for TOKEN in TOKEN {}") + Key("left"),
-              rdescript="Rust: For Each Loop"),
+            R(Text("for TOKEN in TOKEN {}") + Key("left")),
         #
         SymbolSpecs.TO_INTEGER:
-            R(Text("parse::<i32>().unwrap()"), rdescript="Rust: Convert To Integer"),
+            R(Text("parse::<i32>().unwrap()")),
         SymbolSpecs.TO_FLOAT:
-            R(Text("parse::<f64>().unwrap()"),
-              rdescript="Rust: Convert To Floating-Point"),
+            R(Text("parse::<f64>().unwrap()")),
         SymbolSpecs.TO_STRING:
-            R(Text("to_string()"), rdescript="Rust: Convert To String"),
+            R(Text("to_string()")),
         #
         SymbolSpecs.AND:
-            R(Text(" && "), rdescript="Rust: And"),
+            R(Text(" && ")),
         SymbolSpecs.OR:
-            R(Text(" || "), rdescript="Rust: Or"),
+            R(Text(" || ")),
         SymbolSpecs.NOT:
-            R(Text("!"), rdescript="Rust: Not"),
+            R(Text("!")),
         #
         SymbolSpecs.SYSOUT:
-            R(Text("println!()") + Key("left"), rdescript="Rust: Print"),
+            R(Text("println!()") + Key("left")),
         #
         SymbolSpecs.IMPORT:
-            R(Text("use "), rdescript="Rust: Import (use)"),
+            R(Text("use ")),
         #
         # function moved to ncmap
         SymbolSpecs.CLASS:
-            R(Text("struct "), rdescript="Rust: Class (struct)"),
+            R(Text("struct ")),
         #
         SymbolSpecs.COMMENT:
-            R(Text("//"), rdescript="Rust: Add Comment"),
+            R(Text("//")),
         SymbolSpecs.LONG_COMMENT:
-            R(Text("///"), rdescript="Rust: Doc Comment"),
+            R(Text("///")),
         #
         SymbolSpecs.NULL:
-            R(Text("None"), rdescript="Rust: None"),
+            R(Text("None")),
         #
         SymbolSpecs.RETURN:
-            R(Text("return "), rdescript="Rust: Early Return"),
+            R(Text("return ")),
         #
         SymbolSpecs.TRUE:
-            R(Text("true"), rdescript="Rust: True"),
+            R(Text("true")),
         SymbolSpecs.FALSE:
-            R(Text("false"), rdescript="Rust: False"),
+            R(Text("false")),
 
         # Rust specific
         "value some":
-            R(Text("Some()") + Key("left"), rdescript="Rust: Some"),
+            R(Text("Some()") + Key("left")),
         "enumerate for loop [of <a> [in <n>]]":
-            R(Text("for (%(a)s, TOKEN) in (0..%(n)d).enumerate() {}") + Key("left"),
-              rdescript="Rust: Enumerated For i Loop"),
+            R(Text("for (%(a)s, TOKEN) in (0..%(n)d).enumerate() {}") + Key("left")),
         "enumerate for each [<a> <b>]":
-            R(Text("for (%(a)s, %(b)s) in TOKEN.enumerate() {}") + Key("left"),
-              rdescript="Rust: Enumerated For Each Loop"),
+            R(Text("for (%(a)s, %(b)s) in TOKEN.enumerate() {}") + Key("left")),
         "bind [<mutability>]":
-            R(Text("let %(mutability)s"), rdescript="Rust: Bind Variable"),
+            R(Text("let %(mutability)s")),
         "of type":
-            R(Text(": "), rdescript="Rust: Set Type"),
+            R(Text(": ")),
         "[<signed>] integer [<ibits>]":
-            R(Text("%(signed)s%(bits)s "), rdescript="Rust: Integer"),
+            R(Text("%(signed)s%(bits)s ")),
         "float [<fbits>]":
-            R(Text("f%(fbits)s "), rdescript="Rust: Float"),
+            R(Text("f%(fbits)s ")),
         "boolean":
-            R(Text("bool "), rdescript="Rust: Boolean"),
+            R(Text("bool ")),
         "string":
-            R(Text("String "), rdescript="Rust: String"),
+            R(Text("String ")),
         "array [of] size <n>":
-            R(Text("[TOKEN; %(n)d]"), rdescript="Rust: Array"),
+            R(Text("[TOKEN; %(n)d]")),
         "macro vector":
-            R(Text("vec![]") + Key("left"), rdescript="Rust: Vector"),
+            R(Text("vec![]") + Key("left")),
         "refer to [<mutability>]":
-            R(Text("&%(mutability)s"), rdescript="Rust: Borrow"),
+            R(Text("&%(mutability)s")),
         "lifetime":
-            R(Text("'"), rdescript="Rust: Lifetime"),
+            R(Text("'")),
         "static":
-            R(Text("static "), rdescript="Rust: Static"),
+            R(Text("static ")),
         "brace pan":
-            R(Key("escape, escape, end, left, enter, enter, up, tab"),
-              rdescript="Rust: Expand Curly Braces"),
+            R(Key("escape, escape, end, left, enter, enter, up, tab")),
         "namespace":
-            R(Key("colon, colon"), rdescript="Rust: Namespace"),
+            R(Key("colon, colon")),
     }
 
     extras = [

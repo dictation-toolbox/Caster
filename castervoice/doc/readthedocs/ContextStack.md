@@ -114,7 +114,7 @@ AsynchronousAction optional parameters:
 - `rdescript` - same as RegisteredAction
 - `blocking` - does it block other context stack actions until it completes
 
-AsynchronousAction also has the special property that you can use `time_in_seconds` and `repetitions` as IntegerRef extras in the spec, and they will override the defaults or whatever is set in the constructor.
+AsynchronousAction also has the special property that you can use `time_in_seconds` and `repetitions` as IntegerRefST extras in the spec, and they will override the defaults or whatever is set in the constructor.
 
 Example AsynchronousActions:
 

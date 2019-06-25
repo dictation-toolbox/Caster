@@ -3,27 +3,19 @@ Created on Sep 1, 2015
 
 @author: synkarius
 '''
-from dragonfly import Dictation, MappingRule, Choice, Pause
-
-from castervoice.lib import control
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.ccr.standard import SymbolSpecs
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-
+from castervoice.lib.imports import *
 
 class PythonNon(MappingRule):
     mapping = {
         "with":
-            R(Text("with "), rdescript="Python: With"),
+            R(Text("with ")),
         "open file":
-            R(Text("open('filename','r') as f:"), rdescript="Python: Open File"),
+            R(Text("open('filename','r') as f:")),
         "read lines":
-            R(Text("content = f.readlines()"), rdescript="Python: Read Lines"),
+            R(Text("content = f.readlines()")),
         "try catch":
             R(Text("try:") + Key("enter:2/10, backspace") + Text("except Exception:") +
-              Key("enter"),
-              rdescript="Python: Try Catch"),
+              Key("enter")),
     }
 
 
@@ -32,91 +24,88 @@ class Python(MergeRule):
 
     mapping = {
         SymbolSpecs.IF:
-            R(Key("i,f,space,colon,left"), rdescript="Python: If"),
+            R(Key("i,f,space,colon,left")),
         SymbolSpecs.ELSE:
-            R(Text("else:") + Key("enter"), rdescript="Python: Else"),
+            R(Text("else:") + Key("enter")),
         # (no switch in Python)
         SymbolSpecs.BREAK:
-            R(Text("break"), rdescript="Python: Break"),
+            R(Text("break")),
         SymbolSpecs.FOR_EACH_LOOP:
-            R(Text("for  in :") + Key("left:5"), rdescript="Python: For Each Loop"),
+            R(Text("for  in :") + Key("left:5")),
         SymbolSpecs.FOR_LOOP:
-            R(Text("for i in range(0, ):") + Key("left:2"),
-              rdescript="Python: For i Loop"),
+            R(Text("for i in range(0, ):") + Key("left:2")),
         SymbolSpecs.WHILE_LOOP:
-            R(Text("while :") + Key("left"), rdescript="Python: While"),
+            R(Text("while :") + Key("left")),
         # (no do-while in Python)
         SymbolSpecs.TO_INTEGER:
-            R(Text("int()") + Key("left"), rdescript="Python: Convert To Integer"),
+            R(Text("int()") + Key("left")),
         SymbolSpecs.TO_FLOAT:
-            R(Text("float()") + Key("left"),
-              rdescript="Python: Convert To Floating-Point"),
+            R(Text("float()") + Key("left")),
         SymbolSpecs.TO_STRING:
-            R(Text("str()") + Key("left"), rdescript="Python: Convert To String"),
+            R(Text("str()") + Key("left")),
         SymbolSpecs.AND:
-            R(Text(" and "), rdescript="Python: And"),
+            R(Text(" and ")),
         SymbolSpecs.OR:
-            R(Text(" or "), rdescript="Python: Or"),
+            R(Text(" or ")),
         SymbolSpecs.NOT:
-            R(Text("!"), rdescript="Python: Not"),
+            R(Text("!")),
         SymbolSpecs.SYSOUT:
-            R(Text("print()") + Key("left"), rdescript="Python: Print"),
+            R(Text("print()") + Key("left")),
         SymbolSpecs.IMPORT:
-            R(Text("import "), rdescript="Python: Import"),
+            R(Text("import ")),
         SymbolSpecs.FUNCTION:
-            R(Text("def ():") + Key("left:3"), rdescript="Python: Function"),
+            R(Text("def ():") + Key("left:3")),
         SymbolSpecs.CLASS:
-            R(Text("class :") + Key("left"), rdescript="Python: Class"),
+            R(Text("class :") + Key("left")),
         SymbolSpecs.COMMENT:
-            R(Text("#"), rdescript="Python: Add Comment"),
+            R(Text("#")),
         SymbolSpecs.LONG_COMMENT:
-            R(Text("''''''") + Key("left:3"), rdescript="Python: Long Comment"),
+            R(Text("''''''") + Key("left:3")),
         SymbolSpecs.NULL:
-            R(Text("None"), rdescript="Python: Null"),
+            R(Text("None")),
         SymbolSpecs.RETURN:
-            R(Text("return "), rdescript="Python: Return"),
+            R(Text("return ")),
         SymbolSpecs.TRUE:
-            R(Text("True"), rdescript="Python: True"),
+            R(Text("True")),
         SymbolSpecs.FALSE:
-            R(Text("False"), rdescript="Python: False"),
+            R(Text("False")),
 
         # Python specific
         "sue iffae":
-            R(Text("if "), rdescript="Python: Short If"),
+            R(Text("if ")),
         "sue shells":
-            R(Text("else "), rdescript="Python: Short Else"),
+            R(Text("else ")),
         "from":
-            R(Text("from "), rdescript="Python: From"),
+            R(Text("from ")),
         "self":
-            R(Text("self"), rdescript="Python: Self"),
+            R(Text("self")),
         "long not":
-            R(Text(" not "), rdescript="Python: Long Not"),
+            R(Text(" not ")),
         "it are in":
-            R(Text(" in "), rdescript="Python: In"),  #supposed to sound like "iter in"
+            R(Text(" in ")),
         "shell iffae | LFA":
-            R(Key("e,l,i,f,space,colon,left"), rdescript="Python: Else If"),
+            R(Key("e,l,i,f,space,colon,left")),
         "convert to character":
-            R(Text("chr()") + Key("left"), rdescript="Python: Convert To Character"),
+            R(Text("chr()") + Key("left")),
         "length of":
-            R(Text("len()") + Key("left"), rdescript="Python: Length"),
+            R(Text("len()") + Key("left")),
         "global":
-            R(Text("global "), rdescript="Python: Global"),
+            R(Text("global ")),
         "make assertion":
-            R(Text("assert "), rdescript="Python: Assert"),
+            R(Text("assert ")),
         "list (comprehension | comp)":
-            R(Text("[x for x in TOKEN if TOKEN]"),
-              rdescript="Python: List Comprehension"),
+            R(Text("[x for x in TOKEN if TOKEN]")),
 
         "[dot] (pie | pi)":
-            R(Text(".py"), rdescript="Python: .py"),
+            R(Text(".py")),
         "toml":
-            R(Text("toml"), rdescript="Python: toml"),
+            R(Text("toml")),
         "jason":
-            R(Text("toml"), rdescript="Python: json"),
+            R(Text("toml")),
         "identity is":
-            R(Text(" is "), rdescript="Python: is"),
+            R(Text(" is ")),
         "yield":
-            R(Text("yield "), rdescript="Python: Yield"),
+            R(Text("yield ")),
 
         # Essentially an improved version of the try catch command above
             # probably a better option than this is to use snippets with tab stops
@@ -126,20 +115,17 @@ class Python(MergeRule):
             # you can also make your own snippets.
         "try [<exception>]":
             R(Text("try : ") + Pause("10") + Key("enter/2")
-            + Text("except %(exception)s:") + Pause("10") + Key("enter/2"),
-                rdescript="create 'try catch' block with given exception"),
+            + Text("except %(exception)s:") + Pause("10") + Key("enter/2")),
         "try [<exception>] as":
             R(Text("try :") + Pause("10") + Key("enter/2") + Text("except %(exception)s as :")
-            + Pause("10") + Key("enter/2"),  rdescript="create 'try catch as' block with given exception"),
+            + Pause("10") + Key("enter/2")),
 
         # class and class methods
-        "subclass": R(Text("class ():") + Key("left:3"), rdescript="Python: Subclass"),
-        "dunder": R(Text("____()") + Key("left:4"),  rdescript="Python: Special Method"),
-        "init": R(Text("__init__()") + Key("left"),  rdescript="Python: Init"),
-        "meth [<binary_meth>]": R(Text("__%(binary_meth)s__(self, other):"),
-            rdescript="Python: Binary Special Method"),
-        "meth [<unary_meth>]": R(Text("__%(unary_meth)s__(self):"),
-            rdescript="Python: Unary Special Method"),
+        "subclass": R(Text("class ():") + Key("left:3")),
+        "dunder": R(Text("____()") + Key("left:4")),
+        "init": R(Text("__init__()") + Key("left")),
+        "meth [<binary_meth>]": R(Text("__%(binary_meth)s__(self, other):")),
+        "meth [<unary_meth>]": R(Text("__%(unary_meth)s__(self):")),
     }
 
     extras = [

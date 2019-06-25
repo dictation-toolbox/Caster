@@ -3,131 +3,119 @@ Created on Sep 26, 2015
 
 @author: synkarius
 '''
-
-from dragonfly import Mimic
-
-from castervoice.lib import control
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.ccr.standard import SymbolSpecs
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-
+from castervoice.lib.imports import *
 
 class CSharp(MergeRule):
     pronunciation = "C sharp"
 
     mapping = {
         SymbolSpecs.IF:
-            R(Key("i, f, lparen, rparen, leftbrace, enter,up,left"), rdescript="C#: If"),
+            R(Key("i, f, lparen, rparen, leftbrace, enter,up,left")),
         SymbolSpecs.ELSE:
-            R(Key("e, l, s, e, leftbrace, enter"), rdescript="C#: Else"),
+            R(Key("e, l, s, e, leftbrace, enter")),
         #
         SymbolSpecs.SWITCH:
-            R(Text("switch(){\ncase : break;\ndefault: break;") + Key("up,up,left,left"),
-              rdescript="C#: Switch"),
+            R(Text("switch(){\ncase : break;\ndefault: break;") + Key("up,up,left,left")),
         SymbolSpecs.CASE:
-            R(Text("case :") + Key("left"), rdescript="C#: Case"),
+            R(Text("case :") + Key("left")),
         SymbolSpecs.BREAK:
-            R(Text("break;"), rdescript="C#: Break"),
+            R(Text("break;")),
         SymbolSpecs.DEFAULT:
-            R(Text("default: "), rdescript="C#: Default"),
+            R(Text("default: ")),
         #
         SymbolSpecs.DO_LOOP:
-            R(Text("do {}") + Key("left, enter:2"), rdescript="C#: Do Loop"),
+            R(Text("do {}") + Key("left, enter:2")),
         SymbolSpecs.WHILE_LOOP:
-            R(Text("while ()") + Key("left"), rdescript="C#: While"),
+            R(Text("while ()") + Key("left")),
         SymbolSpecs.FOR_LOOP:
-            R(Text("for (int i=0; i<TOKEN; i++)"), rdescript="C#: For i Loop"),
+            R(Text("for (int i=0; i<TOKEN; i++)")),
         SymbolSpecs.FOR_EACH_LOOP:
-            R(Text("foreach (TOKEN in Collection)"), rdescript="C#: For Each Loop"),
+            R(Text("foreach (TOKEN in Collection)")),
         #
         SymbolSpecs.TO_INTEGER:
-            R(Text("Convert.ToInt32()") + Key("left"),
-              rdescript="C#: Convert To Integer"),
+            R(Text("Convert.ToInt32()") + Key("left")),
         SymbolSpecs.TO_FLOAT:
-            R(Text("Convert.ToDouble()") + Key("left"),
-              rdescript="C#: Convert To Floating-Point"),
+            R(Text("Convert.ToDouble()") + Key("left")),
         SymbolSpecs.TO_STRING:
-            R(Text("Convert.ToString()") + Key("left"),
-              rdescript="C#: Convert To String"),
+            R(Text("Convert.ToString()") + Key("left")),
         #
         SymbolSpecs.AND:
-            R(Text("&&"), rdescript="C#: And"),
+            R(Text("&&")),
         SymbolSpecs.OR:
-            R(Text("||"), rdescript="C#: Or"),
+            R(Text("||")),
         SymbolSpecs.NOT:
-            R(Text("!"), rdescript="C# Not"),
+            R(Text("!")),
         #
         SymbolSpecs.SYSOUT:
-            R(Text("Console.WriteLine()") + Key("left"), rdescript="C#: Print"),
+            R(Text("Console.WriteLine()") + Key("left")),
 
         #
         SymbolSpecs.FUNCTION:
-            R(Text("TOKEN TOKEN(){}") + Key("left"), rdescript="C#: Function"),
+            R(Text("TOKEN TOKEN(){}") + Key("left")),
         SymbolSpecs.CLASS:
-            R(Text("class TOKEN{}") + Key("left"), rdescript="C#: Class"),
+            R(Text("class TOKEN{}") + Key("left")),
         #
         SymbolSpecs.COMMENT:
-            R(Text("//"), rdescript="C#: Add Comment"),
+            R(Text("//")),
         SymbolSpecs.LONG_COMMENT:
-            R(Text("/**/") + Key("left, left"), rdescript="C#: Long Comment"),
+            R(Text("/**/") + Key("left, left")),
         #
         SymbolSpecs.NULL:
-            R(Text("null"), rdescript="C#: Null Value"),
+            R(Text("null")),
         #
         SymbolSpecs.RETURN:
-            R(Text("return"), rdescript="C#: Return"),
+            R(Text("return")),
         #
         SymbolSpecs.TRUE:
-            R(Text("true"), rdescript="C#: True"),
+            R(Text("true")),
         SymbolSpecs.FALSE:
-            R(Text("false"), rdescript="C#: False"),
+            R(Text("false")),
 
         # C# specific
         "using":
-            R(Text("using"), rdescript="C#: Using"),
+            R(Text("using")),
         "enum":
-            R(Text("enum TOKEN {}") + Key("left"), rdescript="C#: Enum"),
+            R(Text("enum TOKEN {}") + Key("left")),
         "struct":
-            R(Text("struct TOKEN {}") + Key("left"), rdescript="C#: Struct"),
+            R(Text("struct TOKEN {}") + Key("left")),
         "interface":
-            R(Text("interface TOKEN {}") + Key("left"), rdescript="C#: Struct"),
+            R(Text("interface TOKEN {}") + Key("left")),
         "public":
-            R(Text("public "), rdescript="C#: Public"),
+            R(Text("public ")),
         "private":
-            R(Text("private "), rdescript="C#: Private"),
+            R(Text("private ")),
         "static":
-            R(Text("static "), rdescript="C#: Static"),
+            R(Text("static ")),
         "internal":
-            R(Text("internal "), rdescript="C#: Internal"),
+            R(Text("internal ")),
         "cast integer":
-            R(Text("(int)") + Key("left"), rdescript="C#:  Cast Integer"),
+            R(Text("(int)") + Key("left")),
         "cast double":
-            R(Text("(double)") + Key("left"), rdescript="C#: Cast Double"),
+            R(Text("(double)") + Key("left")),
         "constant":
-            R(Text("const"), rdescript="C#: Constant"),
+            R(Text("const")),
         "array":
-            R(Mimic("brackets"), rdescript="C#: Array"),
+            R(Mimic("brackets")),
         "list":
-            R(Text("List<>") + Key("left"), rdescript="C# List"),
+            R(Text("List<>") + Key("left")),
         "var":
-            R(Text("var TOKEN = TOKEN;"), rdescript="C# variable"),
+            R(Text("var TOKEN = TOKEN;")),
         "(lambda|goes to)":
-            R(Text("=>"), rdescript="C#: lambda"),
+            R(Text("=>")),
         "new new":
-            R(Text("new "), rdescript="C#: New"),
+            R(Text("new ")),
         "integer":
-            R(Text("int "), rdescript="C#: Integer"),
+            R(Text("int ")),
         "double":
-            R(Text("double "), rdescript="C#: Double"),
+            R(Text("double ")),
         "character":
-            R(Text("char "), rdescript="C#: Character"),
+            R(Text("char ")),
         "big integer":
-            R(Text("Integer"), rdescript="C#: Big Integer"),
+            R(Text("Integer")),
         "string":
-            R(Text("string "), rdescript="C#: String"),
+            R(Text("string ")),
         "ternary":
-            R(Text("()?t:f") + (Key("left")*5), rdescript="C#: Ternary"),
+            R(Text("()?t:f") + (Key("left")*5)),
     }
 
     extras = []

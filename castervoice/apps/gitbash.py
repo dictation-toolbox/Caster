@@ -7,7 +7,7 @@
 Command-module for git
 
 """
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 from dragonfly import (Grammar, Mimic, Function)
 
@@ -19,6 +19,7 @@ from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
 from castervoice.lib.context import AppContext
 from castervoice.lib.actions import (Key, Text)
+from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
 
 
 def _apply(n):
@@ -28,7 +29,9 @@ def _apply(n):
 
 class GitBashRule(MergeRule):
     pronunciation = "git bash"
-
+    mwith = CCRMerger.CORE
+    GIT_ADD_ALL = "g, i, t, space, a, d, d, space, minus, A"
+    GIT_COMMIT = "g, i, t, space, c, o, m, m, i, t, space, minus, m, space, quote, quote, left"
     mapping = {
         "(git|get) base":
             Text("git "),
@@ -36,13 +39,16 @@ class GitBashRule(MergeRule):
             Text("git init"),
         "(git|get) add":
             R(Key("g, i, t, space, a, d, d, space, dot"),
-              rdescript="GIT: Add All"),
+              rdescript="GIT: Add all in directory"),
+        "(git|get) add all":
+            R(Key(GIT_ADD_ALL),
+              rdescript="GIT: Add all"),
+        "(git|get) commit all":
+            R(Key("%s, ;, space, %s" % (GIT_ADD_ALL, GIT_COMMIT))),
         "(git|get) status":
             R(Key("g, i, t, space, s, t, a, t, u, s"), rdescript="GIT: Status"),
         "(git|get) commit":
-            R(Key(
-                "g, i, t, space, c, o, m, m, i, t, space, minus, m, space, quote, quote, left"
-            ),
+            R(Key(GIT_COMMIT),
               rdescript="GIT: Commit"),
         "(git|get) bug fix commit <n>":
             R(Mimic("get", "commit") + Text("fixes #%(n)d ") + Key("backspace"),
@@ -128,20 +134,15 @@ class GitBashRule(MergeRule):
     defaults = {"n": 0}
 
 
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
-context = AppContext(executable="\\sh.exe")
-context2 = AppContext(executable="\\bash.exe")
-context3 = AppContext(executable="\\cmd.exe")
-context4 = AppContext(executable="\\mintty.exe")
-
-grammar = Grammar("MINGW32", context=(context | context2 | context3 | context4))
+context = AppContext(executable="\\sh.exe") | \
+          AppContext(executable="\\bash.exe") | \
+          AppContext(executable="\\cmd.exe") | \
+          AppContext(executable="\\mintty.exe")
 
 if settings.SETTINGS["apps"]["gitbash"]:
     if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
         control.nexus().merger.add_global_rule(GitBashRule())
     else:
-        rule = GitBashRule(name="git bash")
-        gfilter.run_on(rule)
-        grammar.add_rule(rule)
-        grammar.load()
+        control.nexus().merger.add_app_rule(GitBashRule(), context)

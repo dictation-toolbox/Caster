@@ -88,11 +88,11 @@ class ContextStack:
                 seeker.satisfy_level(index, True, prior_stack_item)
                 seeker.get_parameters(index, prior_stack_item)
         ''' case: there are forward seekers in the stack --
-            -- every incomplete seeker has the reach to 
+            -- every incomplete seeker has the reach to
                get a level from this stack item, so make
-               a list of incomplete forward seekers, feed 
-               the new stack item to each of them in order, 
-               then check them each for completeness in order 
+               a list of incomplete forward seekers, feed
+               the new stack item to each of them in order,
+               then check them each for completeness in order
                and if they are complete, execute them in FIFO order'''
         incomplete = self.get_incomplete_seekers()
         number_incomplete = len(incomplete)
@@ -118,9 +118,9 @@ class ContextStack:
         stack_item_is_forward_seeker = stack_item.type == StackItemSeeker.TYPE and stack_item.forward is not None
         stack_item_is_continuer = ContextStack.is_asynchronous(stack_item.type)
         if not stack_item.consumed and not stack_item_is_forward_seeker and not stack_item_is_continuer:
-            stack_item.execute()
             stack_item.put_time_action(
             )  # this is where display window information will happen
+            stack_item.execute()
         elif stack_item_is_continuer:
             stack_item.begin()
             stack_item.put_time_action()

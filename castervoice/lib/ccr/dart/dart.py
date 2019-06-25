@@ -3,126 +3,114 @@ Created on 2018-05-27 from javascript.py
 
 @author: comodoro
 '''
-
-from castervoice.lib import control
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.ccr.standard import SymbolSpecs
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-
+from castervoice.lib.imports import *
 
 class Dart(MergeRule):
-
     mapping = {
 
         # CCR PROGRAMMING STANDARD
         SymbolSpecs.IF:
-            R(Text("if () {}") + Key("left, enter:2, up"), rdescript="Dart: If"),
+            R(Text("if () {}") + Key("left, enter:2, up")),
         SymbolSpecs.ELSE:
-            R(Text("else {}") + Key("left, enter:2, up"), rdescript="Dart: Else"),
+            R(Text("else {}") + Key("left, enter:2, up")),
         #
         SymbolSpecs.SWITCH:
-            R(Text("switch () {}") + Key("left, enter:2, up"),
-              rdescript="Dart: Switch"),
+            R(Text("switch () {}") + Key("left, enter:2, up")),
         SymbolSpecs.CASE:
-            R(Text("case :") + Key("left"), rdescript="Dart: Case"),
+            R(Text("case :") + Key("left")),
         SymbolSpecs.BREAK:
-            R(Text("break;"), rdescript="Dart: Break"),
+            R(Text("break;")),
         SymbolSpecs.DEFAULT:
-            R(Text("default: "), rdescript="Dart: Default"),
+            R(Text("default: ")),
         #
         SymbolSpecs.DO_LOOP:
-            R(Text("do {}") + Key("left, enter:2"), rdescript="Dart: Do Loop"),
+            R(Text("do {}") + Key("left, enter:2")),
         SymbolSpecs.WHILE_LOOP:
-            R(Text("while ()") + Key("left"), rdescript="Dart: While"),
+            R(Text("while ()") + Key("left")),
         SymbolSpecs.FOR_LOOP:
-            R(Text("for (var i = 0; i < TOKEN; i++)"), rdescript="Dart: For i Loop"),
+            R(Text("for (var i = 0; i < TOKEN; i++)")),
         SymbolSpecs.FOR_EACH_LOOP:
-            R(Text("for (TOKEN in TOKEN)"), rdescript="Dart: For Each Loop"),
+            R(Text("for (TOKEN in TOKEN)")),
         #
         SymbolSpecs.TO_INTEGER:
-            R(Text("int.parse()") + Key("left"),
-              rdescript="Dart: Convert To Integer"),
+            R(Text("int.parse()") + Key("left")),
         SymbolSpecs.TO_FLOAT:
-            R(Text("double.parse()") + Key("left"),
-              rdescript="Dart: Convert To Floating-Point (double)"),
+            R(Text("double.parse()") + Key("left")),
         SymbolSpecs.TO_STRING:
-            R(Text(".toString()"), rdescript="Dart: Convert To String"),
+            R(Text(".toString()")),
         #
         SymbolSpecs.AND:
-            R(Text(" && "), rdescript="Dart: And"),
+            R(Text(" && ")),
         SymbolSpecs.OR:
-            R(Text(" || "), rdescript="Dart: Or"),
+            R(Text(" || ")),
         SymbolSpecs.NOT:
-            R(Text("!"), rdescript="Dart: Not"),
+            R(Text("!")),
         #
         SymbolSpecs.SYSOUT:
-            R(Text("print()") + Key("left"), rdescript="Dart: Print"),
+            R(Text("print()") + Key("left")),
 
         SymbolSpecs.IMPORT:
-            R(Text("import ''") + Key("left"), rdescript="Dart: Import"),
+            R(Text("import ''") + Key("left")),
 
         SymbolSpecs.FUNCTION:
-            R(Text("TOKEN() {}") + Key("left, enter"), rdescript="Dart: Function"),
+            R(Text("TOKEN() {}") + Key("left, enter")),
 
         SymbolSpecs.CLASS:
-            R(Text("class {}") + Key("left/5:2"), rdescript="Dart: Class"),
+            R(Text("class {}") + Key("left/5:2")),
         #
         SymbolSpecs.COMMENT:
-            R(Text("//"), rdescript="Dart: Add Comment"),
+            R(Text("//")),
         SymbolSpecs.LONG_COMMENT:
-            R(Text("/**/") + Key("left,left"), rdescript="Dart: Long Comment"),
+            R(Text("/**/") + Key("left,left")),
         #
         SymbolSpecs.NULL:
-            R(Text("null"), rdescript="Dart: Null"),
+            R(Text("null")),
         #
         SymbolSpecs.RETURN:
-            R(Text("return "), rdescript="Dart: Return"),
+            R(Text("return ")),
         #
         SymbolSpecs.TRUE:
-            R(Text("true"), rdescript="Dart: True"),
+            R(Text("true")),
         SymbolSpecs.FALSE:
-            R(Text("false"), rdescript="Dart: False"),
+            R(Text("false")),
 
         # Dart specific
         "anon funk":
-            R(Text("() => {}") + Key("left:1, enter"),
-              rdescript="Dart: Anonymous Function"),
+            R(Text("() => {}") + Key("left:1, enter")),
         "length":
-            R(Text("length"), rdescript="Dart: Length"),
+            R(Text("length")),
         "self":
-            R(Text("self"), rdescript="Dart: Self"),
+            R(Text("self")),
         "new new":
-            R(Text("new "), rdescript="Dart: New"),
+            R(Text("new ")),
         "continue":
-            R(Text("continue"), rdescript="Dart: Continue"),
+            R(Text("continue")),
         "this":
-            R(Text("this"), rdescript="Dart: This"),
+            R(Text("this")),
         "try":
-            R(Text("try {}") + Key("left, enter:2, up"), rdescript="Dart: Try"),
+            R(Text("try {}") + Key("left, enter:2, up")),
         "catch":
-            R(Text("catch(e) {}") + Key("left, enter:2, up"),
-              rdescript="Dart: Catch"),
+            R(Text("catch(e) {}") + Key("left, enter:2, up")),
         "throw":
-            R(Text("throw "), rdescript="Dart: Throw"),
+            R(Text("throw ")),
         "instance of":
-            R(Text("instanceof "), rdescript="Dart: Instance Of"),
+            R(Text("instanceof ")),
         "const":
-            R(Text("const "), rdescript=" Dart: Const"),
+            R(Text("const ")),
         "equals if null":
-            R(Text(" ??= "), rdescript=" Dart: Assign if null"),
+            R(Text(" ??= ")),
         "a sink":
-            R(Text("async "), rdescript="Dart: Async"),
+            R(Text("async ")),
         "await":
-            R(Text("await "), rdescript="Dart: Await"),
+            R(Text("await ")),
         "yield":
-            R(Text("yield "), rdescript="Dart: Yield"),
+            R(Text("yield ")),
         "cascade":
-            R(Key("enter") + Text(".."), rdescript="Dart: Cascade operator"),
+            R(Key("enter") + Text("..")),
         "dock string":
-            R(Text("/// "), rdescript="Dart: Docomentation string"),
+            R(Text("/// ")),
         "var":
-            R(Text("var TOKEN = "), rdescript="Dart: Var"),
+            R(Text("var TOKEN = ")),
     }
 
     extras = []

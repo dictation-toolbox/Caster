@@ -47,12 +47,19 @@ class FileDialogueRule(MergeRule):
             R(Key("a-d, f6:2"), rdescript="File Dialogue: Navigation pane"),
         "[file] name":
             R(Key("a-d, f6:5"), rdescript="File Dialogue: File name"),
+        "search [<text>]":
+            R(Key("a-d, tab:1") + Text("%(text)s"), rdescript="File Dialogue: Search"),
+
+        
+        # if you just say "bring me", it will open the folder in a new window.
+        # if you say "(child | dialogue | same) bring me", it will open the folder in the same window
         "(child | dialogue | same) bring me <folder_path>":
             R(Function(dialogue_bring_it),
             rdescript="File Dialogue: go to preconfigured folder within currently open Windows Explorer child window"),
     }
     extras = [IntegerRefST("n", 1, 10),
         Choice("folder_path", CONFIG["folder"]),
+        Dictation("text"),
         ]
     defaults = {
         "n": 1,

@@ -48,9 +48,24 @@ class IERule(MergeRule):
             R(Key("a-left"), rdescript="Explorer: Navigate back"),
         "get forward":
             R(Key("a-right"), rdescript="Explorer: Navigate forward"),
-        "(explorer|explore|same) bring me <folder_path>":
+  
+        "search [<text>]":
+            R(Key("a-d, tab:1") + Text("%(text)s"), rdescript="Explorer: Search"),
+        "(navigation | nav | left) pane":
+            R(Key("a-d, tab:2"), rdescript="Explorer: navigation pane"),
+        "(center pane | (file | folder) (pane | list))":
+            R(Key("a-d, tab:3"), rdescript="Explorer: Center Pane"),
+            # for the sort command below,
+            # once you've selected the relevant heading for sorting using the arrow keys, press enter
+        "sort [headings]":
+            R(Key("a-d, tab:4"), rdescript="Explorer: Sort headings e.g. name, date, etc."),
+        
+            # if you just say "bring me", it will open the folder in a new window.
+            # if you say "(explorer|explore|same) bring me", it will open the folder in the same window
+            "(explorer|explore|same) bring me <folder_path>":
             R(Function(explorer_bring_it),
             rdescript="Explorer: Go to preconfigured folder within currently open Windows Explorer main window"),
+        
     }
     extras = [
         Dictation("text"),

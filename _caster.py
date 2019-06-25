@@ -8,7 +8,19 @@ import os
 import logging
 logging.basicConfig()
 
-import time, socket
+
+def version_minimum():
+    try:
+        import pkg_resources
+        version = "0.15.0"  # Version needs to be manually updated Caster requires a certain version of Dragonfly
+        pkg_resources.require("dragonfly2 >= %s" % (version))
+    except Exception:  # pylint: disable=broad-except
+        print("\nCaster: Requires at least dragonfly2 version %s\n" % (version))
+
+
+version_minimum()
+
+import time, socket, os
 from dragonfly import (Function, Grammar, Playback, Dictation, Choice, Pause, RunCommand)
 from castervoice.lib.ccr.standard import SymbolSpecs
 
@@ -17,17 +29,20 @@ def _wait_for_wsr_activation():
     count = 1
     while True:
         try:
-            from castervoice.apps import firefox
+            from castervoice.apps.browser import firefox
             break
         except:
-            print("(%d) Attempting to load Caster -- WSR not loaded and listening yet..."
-                  % count)
+            print(
+                "(%d) Attempting to load Caster -- WSR not loaded and listening yet..." %
+                count)
             count += 1
             time.sleep(1)
 
 
 _NEXUS = None
 from castervoice.lib import settings  # requires nothing
+if settings.SYSTEM_INFORMATION["platform"] != "win32":
+    raise SystemError("Your platform is not currently supported by Caster.")
 settings.WSR = __name__ == "__main__"
 from castervoice.lib import utilities  # requires settings
 if settings.WSR:
@@ -36,7 +51,7 @@ if settings.WSR:
 from castervoice.lib import control
 _NEXUS = control.nexus()
 
-from castervoice.apps import *
+from castervoice.apps import __init__
 from castervoice.asynch import *
 from castervoice.lib import context
 from castervoice.lib.actions import Key
@@ -59,6 +74,20 @@ from castervoice.lib.dfplus.hint.nodes import css
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.merge import gfilter
 
+if not globals().has_key('profile_switch_occurred'):
+    # Load user rules
+    _NEXUS.process_user_content()
+    _NEXUS.merger.update_config()
+    _NEXUS.merger.merge(MergeInf.BOOT)
+
+
+# Checks if install is classic or PIP of caster
+def installtype():
+    directory = os.path.join(os.getcwd(), "castervoice")
+    if os.path.isdir(directory):
+        return
+
+
 def internetcheck(host="1.1.1.1", port=53, timeout=3):
     """
     Checks for network connection via DNS resolution.
@@ -72,7 +101,7 @@ def internetcheck(host="1.1.1.1", port=53, timeout=3):
         socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))
         return True
     except Exception as error:
-        print (error.message)
+        print(error.message)
         return False
 
 
@@ -90,6 +119,7 @@ class DependencyCheck(TerminalCommand):
     trusted = True  # Command will execute silently without ConfirmAction
     synchronous = True
 
+    # pylint: disable=method-hidden
     def process_command(self, proc):
         update = False
         for line in iter(proc.stdout.readline, b''):
@@ -102,26 +132,29 @@ class DependencyCheck(TerminalCommand):
 class CasterCheck(DependencyCheck):
     command = [PIP_PATH, "search", "castervoice"]
 
+    # pylint: disable=method-hidden
     def process_command(self, proc):
         if DependencyCheck.process_command(self, proc):
-            print ("Caster: Caster is up-to-date")
+            print("Caster: Caster is up-to-date")
         else:
-            print ("Caster: Say 'Update Caster' to update.")
+            print("Caster: Say 'Update Caster' to update.")
 
 
 class DragonflyCheck(DependencyCheck):
     command = [PIP_PATH, "search", "dragonfly2"]
 
+    # pylint: disable=method-hidden
     def process_command(self, proc):
         if DependencyCheck.process_command(self, proc):
-            print ("Caster: Dragonfly is up-to-date")
+            print("Caster: Dragonfly is up-to-date")
         else:
-            print ("Caster: Say 'Update Dragonfly' to update.")
+            print("Caster: Say 'Update Dragonfly' to update.")
 
 
 class DependencyUpdate(RunCommand):
     synchronous = True
 
+    # pylint: disable=method-hidden
     def process_command(self, proc):
         # Process the output from the command.
         RunCommand.process_command(self, proc)
@@ -135,7 +168,8 @@ class DependencyUpdate(RunCommand):
 
 if settings.SETTINGS["miscellaneous"]["online_mode"]:
     if internetcheck():
-        CasterCheck().execute()
+        if installtype() is False:
+            CasterCheck().execute()
         DragonflyCheck().execute()
     else:
         print("\nCaster: Network off-line check network connection\n")
@@ -167,50 +201,54 @@ class MainRule(MergeRule):
 
     mapping = {
         # update management
-        "update caster":    R(DependencyUpdate([PIP_PATH, "install", "--upgrade", "castervoice"]),
-                        rdescript="Core: Update and restart Caster"),
-
-        "update dragonfly":    R(DependencyUpdate([PIP_PATH, "install", "--upgrade", "dragonfly2"]),
-                        rdescript="Core: Update dragonfly2 and restart Caster"),
+        "update caster":
+            R(DependencyUpdate([PIP_PATH, "install", "--upgrade", "castervoice"]),
+              rdescript="Core: Update and restart Caster"),
+        "update dragonfly":
+            R(DependencyUpdate([PIP_PATH, "install", "--upgrade", "dragonfly2"]),
+              rdescript="Core: Update dragonfly2 and restart Caster"),
 
         # hardware management
         "volume <volume_mode> [<n>]":
-            R(Function(navigation.volume_control, 
-              extra={'n', 'volume_mode'}),
+            R(Function(navigation.volume_control, extra={'n', 'volume_mode'}),
               rdescript="Volume Control"),
-
-        "change monitor":   R(Key("w-p") + Pause("100") + Function(change_monitor),
-                        rdescript="Change Monitor"),
-
+        "change monitor":
+            R(Key("w-p") + Pause("100") + Function(change_monitor),
+              rdescript="Change Monitor"),
 
         # window management
-        'minimize':   R(Playback([(["minimize", "window"], 0.0)]), 
-                        rdescript="Minimize Window"),
-        'maximize':   R(Playback([(["maximize", "window"], 0.0)]), 
-                        rdescript="Maximize Window"),
-        "remax":   R(Key("a-space/10,r/10,a-space/10,x"), 
-                        rdescript="Force Maximize Window"),
+        'minimize':
+            R(Playback([(["minimize", "window"], 0.0)]), rdescript="Minimize Window"),
+        'maximize':
+            R(Playback([(["maximize", "window"], 0.0)]), rdescript="Maximize Window"),
+        "remax":
+            R(Key("a-space/10,r/10,a-space/10,x"), rdescript="Force Maximize Window"),
 
         # passwords
 
         # mouse alternatives
-        "legion [<monitor>]":   R(Function(navigation.mouse_alternates, mode="legion", nexus=_NEXUS),
-                        rdescript="Activate Legion"),
-
-        "rainbow [<monitor>]":   R(Function(navigation.mouse_alternates, mode="rainbow", nexus=_NEXUS),
-                        rdescript="Activate Rainbow Grid"),
-
-        "douglas [<monitor>]":  R(Function(navigation.mouse_alternates, mode="douglas", nexus=_NEXUS),
-                        rdescript="Activate Douglas Grid"),
-
+        "legion [<monitor>]":
+            R(Function(navigation.mouse_alternates, mode="legion", nexus=_NEXUS),
+              rdescript="Activate Legion"),
+        "rainbow [<monitor>]":
+            R(Function(navigation.mouse_alternates, mode="rainbow", nexus=_NEXUS),
+              rdescript="Activate Rainbow Grid"),
+        "douglas [<monitor>]":
+            R(Function(navigation.mouse_alternates, mode="douglas", nexus=_NEXUS),
+              rdescript="Activate Douglas Grid"),
 
         # ccr de/activation
-        "<enable> <name>":   R(Function(_NEXUS.merger.global_rule_changer(), save=True),
-                        rdescript="Toggle CCR Module"),
-
-        "<enable> <name2>":   R(Function(_NEXUS.merger.selfmod_rule_changer(), save=True),
-                        rdescript="Toggle sm-CCR Module"),
-
+        "<enable> <name>":
+            R(Function(_NEXUS.merger.global_rule_changer(), save=True),
+              rdescript="Toggle CCR Module"),
+        "<enable> <name2>":
+            R(Function(_NEXUS.merger.selfmod_rule_changer(), save=True),
+              rdescript="Toggle sm-CCR Module"),
+        "enable caster":
+            R(Function(_NEXUS.merger.merge, time=MergeInf.RUN, name="numbers"),
+              rdescript="Enable CCR rules"),
+        "disable caster":
+            R(Function(_NEXUS.merger.ccr_off), rdescript="Disable CCR rules"),
     }
     extras = [
         IntegerRefST("n", 1, 50),
@@ -232,6 +270,7 @@ class MainRule(MergeRule):
     ]
     defaults = {"n": 1, "nnv": 1, "text": "", "volume_mode": "setsysvolume", "enable": -1}
 
+
 grammar = Grammar('general')
 main_rule = MainRule()
 gfilter.run_on(main_rule)
@@ -252,10 +291,10 @@ if settings.SETTINGS["feature_rules"]["alias"]:
 
 grammar.load()
 
-_NEXUS.process_user_content()
-_NEXUS.merger.update_config()
-_NEXUS.merger.merge(MergeInf.BOOT)
-
+if globals().has_key('profile_switch_occurred'):
+    reload(sikuli)
+else:
+    profile_switch_occurred = None
 
 print("\n*- Starting " + settings.SOFTWARE_NAME + " -*")
 
