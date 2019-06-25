@@ -1,9 +1,9 @@
-# import pyperclip
+
 from dragonfly import (Grammar, MappingRule, Dictation, IntegerRef,
                        Repeat, Pause, Function, Choice)
 
 from castervoice.lib import control, context, utilities, settings
-from castervoice.lib.context import AppContext, paste_string_without_altering_clipboard
+from castervoice.lib.context import AppContext
 from castervoice.lib import settings
 from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge import gfilter
@@ -28,14 +28,6 @@ if not CONFIG:
 def explorer_bring_it(folder_path):
     Key("c-l/5").execute()
     Text("{}".format(folder_path)).execute()
-    # Alternate method: is faster but somewhat inconsistent.
-        # if not paste_string_without_altering_clipboard(folder_path):
-        #     print("failed to paste {}".format(folder_path))
-        # Pause("10").execute()
-    # Second alternate method: is both fast and consistent, but alters the clipboard
-        # pyperclip.copy(folder_path)
-        # Pause("5").execute()
-        # Key("c-v/30").execute()
     Key("enter/20, a-d/5, tab:3").execute() 
 
 class IERule(MergeRule):
@@ -56,9 +48,9 @@ class IERule(MergeRule):
             R(Key("a-left"), rdescript="Explorer: Navigate back"),
         "get forward":
             R(Key("a-right"), rdescript="Explorer: Navigate forward"),
-        "[explorer] bring me <folder_path>":
+        "(explorer|explore|same) bring me <folder_path>":
             R(Function(explorer_bring_it),
-            rdescript="go to preconfigured folder within currently open Windows Explorer main window"),
+            rdescript="Explorer: Go to preconfigured folder within currently open Windows Explorer main window"),
     }
     extras = [
         Dictation("text"),
