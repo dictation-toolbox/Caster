@@ -91,7 +91,7 @@ class ChainAlias(AliasRule):
 _NEXUS = control.nexus()
 
 if settings.SETTINGS["feature_rules"]["alias"]:
-    control.non_ccr_app_rule(Alias(_NEXUS), context=None, rdp=False)
+    control.non_ccr_app_rule(Alias(_NEXUS), context=None, rdp=False, filter=False)
 
 if settings.SETTINGS["feature_rules"]["chainalias"]:
     control.selfmod_rule(ChainAlias(_NEXUS))
