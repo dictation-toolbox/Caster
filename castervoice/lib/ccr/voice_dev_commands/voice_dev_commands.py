@@ -202,4 +202,4 @@ class VoiceDevCommands(MergeRule):
     ]
     defaults = {"spec": "", "dict": "", "text": "", "mouse_button": ""}
 
-control.nexus().merger.add_global_rule(VoiceDevCommands())
+control.global_rule(VoiceDevCommands())

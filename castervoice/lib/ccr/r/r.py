@@ -169,4 +169,4 @@ class Rlang(MergeRule):
     defaults = {}
 
 
-control.nexus().merger.add_global_rule(Rlang())
+control.global_rule(Rlang())

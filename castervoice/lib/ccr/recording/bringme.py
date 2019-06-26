@@ -1,16 +1,4 @@
-import os
-import shutil
-import threading
-import subprocess
-import time
-import shlex
-# import dragonfly
-from dragonfly import Choice, Function, Dictation
-
-from castervoice.lib import control, context, utilities, settings
-from castervoice.lib.actions import Text, Key
-from castervoice.lib.dfplus.merge.selfmodrule import SelfModifyingRule
-from castervoice.lib.dfplus.state.short import R
+from castervoice.lib.imports import *
 
 if os.path.isfile(settings.SETTINGS["paths"]["BRINGME_PATH"]) is False:
     bringme_default = settings.SETTINGS["paths"]["BRINGME_DEFAULTS_PATH"]
@@ -30,7 +18,7 @@ def refresh():
 # module functions
 def bring_it(desired_item):
     '''
-    Currently simply invoke os.startfile. New thread keeps Dragon from crashing. 
+    Currently simply invoke os.startfile. New thread keeps Dragon from crashing.
     '''
     item, item_type = desired_item
     if item_type == "website":
@@ -115,18 +103,13 @@ class BringRule(SelfModifyingRule):
 
     mapping = {
         "bring me <desired_item>":
-            R(Function(bring_it),
-              rdescript="BringMe: Launch preconfigured program, folder or website"),
+            R(Function(bring_it)),
         "<launch> to bring me as <key>":
-            R(Function(bring_add, extra={"launch", "key"}),
-              rdescript="BringMe: Add program, folder or website to the bring me list"),
+            R(Function(bring_add, extra={"launch", "key"})),
         "remove <key> from bring me":
-            R(Function(bring_remove, extra="key"),
-              rdescript="BringMe: Remove program, folder or website from the bring me list"
-              ),
+            R(Function(bring_remove, extra="key")),
         "restore bring me defaults":
-            R(Function(bring_restore),
-              rdescript="BringMe: Delete bring me list and put defaults in its place"),
+            R(Function(bring_restore)),
     }
 
     extras = [
@@ -143,7 +126,6 @@ class BringRule(SelfModifyingRule):
 
     defaults = {'desired_item': ('', ""), 'launch': 'program', 'key': ''}
 
-
 bring_rule = BringRule()
-# Does not work
-# control.nexus().merger.add_selfmodrule(bring_rule)
+
+control.non_ccr_app_rule(bring_rule, context=None, rdp=False)

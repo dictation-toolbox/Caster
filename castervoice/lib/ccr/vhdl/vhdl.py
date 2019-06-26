@@ -163,4 +163,4 @@ class VHDL(MergeRule):
     ]
     defaults = {}
 
-control.nexus().merger.add_global_rule(VHDL())
+control.global_rule(VHDL())

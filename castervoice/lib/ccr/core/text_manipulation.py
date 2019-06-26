@@ -155,7 +155,7 @@ class TextManipulation(MergeRule):
         # This can be changed in the function deal_with_up_down_directions
         # 'number_of_lines_to_search = zero' means you are searching only on the current line
 
-control.nexus().merger.add_global_rule(TextManipulation())
+control.global_rule(TextManipulation())
 
 
 

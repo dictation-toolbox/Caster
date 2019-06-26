@@ -1,14 +1,5 @@
-from dragonfly import (Function, Grammar, AppContext)
-
+from castervoice.lib.imports import *
 from castervoice.asynch.hmc import h_launch
-from castervoice.lib import control
-from castervoice.lib import settings, utilities
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.merge import gfilter
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.actions import AsynchronousAction
-from castervoice.lib.dfplus.state.short import R, L, S
-from castervoice.lib.context import AppContext
 
 _NEXUS = control.nexus()
 
@@ -58,103 +49,50 @@ def hmc_settings_complete(nexus):
 class HMCRule(MergeRule):
     mapping = {
         "kill homunculus":
-            R(Function(kill, nexus=_NEXUS), rdescript="Kill Helper Window"),
+            R(Function(kill, nexus=_NEXUS)),
         "complete":
-            R(Function(complete, nexus=_NEXUS), rdescript="Complete Input")
+            R(Function(complete, nexus=_NEXUS))
     }
-
-
-grammar = Grammar("hmc", context=AppContext(title=settings.HOMUNCULUS_VERSION))
-r1 = HMCRule()
-gfilter.run_on(r1)
-grammar.add_rule(r1)
-if settings.SETTINGS["feature_rules"]["hmc"]:
-    grammar.load()
-
 
 class HMCHistoryRule(MergeRule):
     mapping = {
         # specific to macro recorder
         "check <n>":
-            R(Function(hmc_checkbox, nexus=_NEXUS), rdescript="Check Checkbox"),
+            R(Function(hmc_checkbox, nexus=_NEXUS)),
         "check from <n> to <n2>":
-            R(Function(hmc_recording_check_range, nexus=_NEXUS), rdescript="Check Range"),
+            R(Function(hmc_recording_check_range, nexus=_NEXUS)),
         "exclude <n>":
-            R(Function(hmc_recording_exclude, nexus=_NEXUS),
-              rdescript="Uncheck Checkbox"),
+            R(Function(hmc_recording_exclude, nexus=_NEXUS)),
         "[make] repeatable":
-            R(Function(hmc_recording_repeatable, nexus=_NEXUS),
-              rdescript="Make Macro Repeatable")
+            R(Function(hmc_recording_repeatable, nexus=_NEXUS))
     }
     extras = [
         IntegerRefST("n", 1, 25),
         IntegerRefST("n2", 1, 25),
     ]
 
-
-grammar_history = Grammar(
-    "hmc history", context=AppContext(title=settings.HMC_TITLE_RECORDING))
-r2 = HMCHistoryRule()
-gfilter.run_on(r2)
-grammar_history.add_rule(r2)
-if settings.SETTINGS["feature_rules"]["hmc"]:
-    grammar_history.load()
-
-
 class HMCDirectoryRule(MergeRule):
     mapping = {
         # specific to directory browser
         "browse":
-            R(Function(hmc_directory_browse, nexus=_NEXUS), rdescript="Browse Computer")
+            R(Function(hmc_directory_browse, nexus=_NEXUS))
     }
-
-
-grammar_directory = Grammar(
-    "hmc directory", context=AppContext(title=settings.HMC_TITLE_DIRECTORY))
-r3 = HMCDirectoryRule()
-gfilter.run_on(r3)
-grammar_directory.add_rule(r3)
-if settings.SETTINGS["feature_rules"]["hmc"]:
-    grammar_directory.load()
-
 
 class HMCConfirmRule(MergeRule):
     mapping = {
         # specific to confirm
         "confirm":
-            R(Function(hmc_confirm, value=True, nexus=_NEXUS),
-              rdescript="HMC: Confirm Action"),
+            R(Function(hmc_confirm, value=True, nexus=_NEXUS)),
         "disconfirm":
             R(Function(hmc_confirm, value=False, nexus=_NEXUS),
-              rspec="hmc_cancel",
-              rdescript="HMC: Cancel Action")
+              rspec="hmc_cancel")
     }
-
-
-grammar_confirm = Grammar(
-    "hmc confirm", context=AppContext(title=settings.HMC_TITLE_CONFIRM))
-r4 = HMCConfirmRule()
-gfilter.run_on(r4)
-grammar_confirm.add_rule(r4)
-if settings.SETTINGS["feature_rules"]["hmc"]:
-    grammar_confirm.load()
-
 
 class HMCSettingsRule(MergeRule):
     mapping = {
-        "kill homunculus": R(Function(kill), rdescript="Kill Settings Window"),
-        "complete": R(Function(hmc_settings_complete), rdescript="Complete Input"),
+        "kill homunculus": R(Function(kill)),
+        "complete": R(Function(hmc_settings_complete)),
     }
-
-
-grammar_settings = Grammar(
-    "hmc settings", context=AppContext(title=settings.SETTINGS_WINDOW_TITLE))
-r5 = HMCSettingsRule()
-gfilter.run_on(r5)
-grammar_settings.add_rule(r5)
-if settings.SETTINGS["feature_rules"]["hmc"]:
-    grammar_settings.load()
-
 
 def receive_settings(data):
     settings.SETTINGS = data
@@ -176,17 +114,16 @@ def settings_window(nexus):
 class LaunchRule(MergeRule):
     mapping = {
         "launch settings window":
-            R(Function(settings_window, nexus=_NEXUS),
-              rdescript="Launch Settings Window"),
+            R(Function(settings_window, nexus=_NEXUS)),
     }
 
-
-grammarw = Grammar("Caster Windows")
-r6 = LaunchRule()
-gfilter.run_on(r6)
-grammarw.add_rule(r6)
 if settings.SETTINGS["feature_rules"]["hmc"]:
-    grammarw.load()
+    control.non_ccr_app_rule(HMCRule(), AppContext(title=settings.HOMUNCULUS_VERSION), rdp=False)
+    control.non_ccr_app_rule(HMCHistoryRule(), AppContext(title=settings.HMC_TITLE_RECORDING), rdp=False)
+    control.non_ccr_app_rule(HMCDirectoryRule(), AppContext(title=settings.HMC_TITLE_DIRECTORY), rdp=False)
+    control.non_ccr_app_rule(HMCConfirmRule(), AppContext(title=settings.HMC_TITLE_CONFIRM), rdp=False)
+    control.non_ccr_app_rule(HMCSettingsRule(), AppContext(title=settings.SETTINGS_WINDOW_TITLE), rdp=False)
+    control.non_ccr_app_rule(LaunchRule(), context=None, rdp=False)
 
 if not settings.SETTINGS["feature_rules"]["hmc"]:
     print("WARNING: Tk Window controls have been disabled -- this is not advised!")
