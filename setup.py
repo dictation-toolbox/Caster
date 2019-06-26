@@ -59,7 +59,7 @@ setuptools.setup(
         "Operating System :: OS Independent"
     ],
     install_requires=[
-        "dragonfly2>=0.14.2",
+        "dragonfly2>=0.14.1",
         "wxpython",
         "pillow",
         "toml",
