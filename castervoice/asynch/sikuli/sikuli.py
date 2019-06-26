@@ -1,3 +1,4 @@
+from castervoice.lib.imports import *
 from subprocess import Popen
 import traceback
 import socket
@@ -101,16 +102,13 @@ class SikuliControlCommandsRule(MergeRule):
     pronunciation = "sikuli"
 
     mapping = {
-        "launch sick IDE":       R(Function(sikuli.launch_IDE),
-                rdescript="Sikulix: Launch Sikulix IDE"),
-        "launch sick server":    R(Function(sikuli.bootstrap_start_server_proxy),
-                rdescript="Sikulix: Launch Sikulix Server"),
-        "terminate sick server": R(Function(sikuli.terminate_sick_command),
-                rdescript="Sikulix: Terminate Sikulix server"),
+        "launch sick IDE":       R(Function(sikuli.launch_IDE)),
+        "launch sick server":    R(Function(sikuli.bootstrap_start_server_proxy)),
+        "terminate sick server": R(Function(sikuli.terminate_sick_command)),
     }
 
 if settings.SETTINGS["sikuli"]["enabled"]:
-    rule = SikuliControlCommandsRule(name="sikuli control commands")
-    gfilter.run_on(rule)
+    rule = SikuliControlCommandsRule()
     sikuli.grammar.add_rule(rule)
+    control.non_ccr_app_rule(rule, context=None, rdp=False)
     sikuli.bootstrap_start_server_proxy()

@@ -3,137 +3,127 @@ Created on Sep 1, 2015
 
 @author: synkarius
 '''
-from dragonfly import Mimic
-
-from castervoice.lib import control
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.ccr.standard import SymbolSpecs
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-
+from castervoice.lib.imports import *
 
 class CPP(MergeRule):
     pronunciation = "C plus plus"
 
     mapping = {
         SymbolSpecs.IF:
-            R(Key("i, f, lparen, rparen, leftbrace, enter,up,left"), rdescript="C++: If"),
+            R(Key("i, f, lparen, rparen, leftbrace, enter,up,left")),
         SymbolSpecs.ELSE:
-            R(Key("e, l, s, e, leftbrace, enter"), rdescript="C++: Else"),
+            R(Key("e, l, s, e, leftbrace, enter")),
         #
         SymbolSpecs.SWITCH:
-            R(Text("switch(){\ncase : break;\ndefault: break;") + Key("up,up,left,left"),
-              rdescript="C++: Switch"),
+            R(Text("switch(){\ncase : break;\ndefault: break;") + Key("up,up,left,left")),
         SymbolSpecs.CASE:
-            R(Text("case :") + Key("left"), rdescript="C++: Case"),
+            R(Text("case :") + Key("left")),
         SymbolSpecs.BREAK:
-            R(Text("break;"), rdescript="C++: Break"),
+            R(Text("break;")),
         SymbolSpecs.DEFAULT:
-            R(Text("default: "), rdescript="C++: Default"),
+            R(Text("default: ")),
         #
         SymbolSpecs.DO_LOOP:
-            R(Text("do {}") + Key("left, enter:2"), rdescript="C++: Do Loop"),
+            R(Text("do {}") + Key("left, enter:2")),
         SymbolSpecs.WHILE_LOOP:
-            R(Text("while ()") + Key("left"), rdescript="C++: While"),
+            R(Text("while ()") + Key("left")),
         SymbolSpecs.FOR_LOOP:
-            R(Text("for (int i=0; i<TOKEN; i++)"), rdescript="C++: For i Loop"),
+            R(Text("for (int i=0; i<TOKEN; i++)")),
         SymbolSpecs.FOR_EACH_LOOP:
-            R(Text("for_each (TOKEN, TOKEN, TOKEN);"), rdescript="C++: For Each Loop"),
+            R(Text("for_each (TOKEN, TOKEN, TOKEN);")),
         #
         SymbolSpecs.TO_INTEGER:
-            R(Text("(int)"), rdescript="C++: Convert To Integer"),
+            R(Text("(int)")),
         SymbolSpecs.TO_FLOAT:
-            R(Text("(double)"), rdescript="C++: Convert To Floating-Point"),
+            R(Text("(double)")),
         SymbolSpecs.TO_STRING:
-            R(Text("std::to_string()") + Key("left"), rdescript="C++: Convert To String"),
+            R(Text("std::to_string()") + Key("left")),
         #
         SymbolSpecs.AND:
-            R(Text("&&"), rdescript="C++: And"),
+            R(Text("&&")),
         SymbolSpecs.OR:
-            R(Text("||"), rdescript="C++: Or"),
+            R(Text("||")),
         SymbolSpecs.NOT:
-            R(Text("!"), rdescript="Not"),
+            R(Text("!")),
         #
         SymbolSpecs.SYSOUT:
-            R(Text("cout <<"), rdescript="C++: Print"),
+            R(Text("cout <<")),
         #
         SymbolSpecs.IMPORT:
-            R(Text("#include"), rdescript="C++: Import"),
+            R(Text("#include")),
         #
         SymbolSpecs.FUNCTION:
-            R(Text("TOKEN TOKEN(){}") + Key("left"), rdescript="C++: Function"),
+            R(Text("TOKEN TOKEN(){}") + Key("left")),
         SymbolSpecs.CLASS:
-            R(Text("class TOKEN{}") + Key("left"), rdescript="C++: Class"),
+            R(Text("class TOKEN{}") + Key("left")),
         #
         SymbolSpecs.COMMENT:
-            R(Text("//"), rdescript="C++: Add Comment"),
+            R(Text("//")),
         SymbolSpecs.LONG_COMMENT:
-            R(Text("/**/") + Key("left, left"), rdescript="C++: Long Comment"),
+            R(Text("/**/") + Key("left, left")),
         #
         SymbolSpecs.NULL:
-            R(Text("null"), rdescript="C++: Null Value"),
+            R(Text("null")),
         #
         SymbolSpecs.RETURN:
-            R(Text("return"), rdescript="C++: Return"),
+            R(Text("return")),
         #
         SymbolSpecs.TRUE:
-            R(Text("true"), rdescript="C++: True"),
+            R(Text("true")),
         SymbolSpecs.FALSE:
-            R(Text("false"), rdescript="C++: False"),
+            R(Text("false")),
 
         # C++ specific
         "public":
-            R(Text("public "), rdescript="C++: Public"),
+            R(Text("public ")),
         "private":
-            R(Text("private "), rdescript="C++: Private"),
+            R(Text("private ")),
         "static":
-            R(Text("static "), rdescript="C++: Static"),
+            R(Text("static ")),
         "final":
-            R(Text("final "), rdescript="C++: Final"),
+            R(Text("final ")),
         "static cast integer":
-            R(Text("static_cast<int>()") + Key("left"),
-              rdescript="C++: Static Cast Integer"),
+            R(Text("static_cast<int>()") + Key("left")),
         "static cast double":
-            R(Text("static_cast<double>()") + Key("left"),
-              rdescript="C++: Static Cast Double"),
+            R(Text("static_cast<double>()") + Key("left")),
         "([global] scope | name)":
-            R(Text("::"), rdescript="C++: ::"),
+            R(Text("::")),
         "Vic":
-            R(Text("vector"), rdescript="C++: Vector"),
+            R(Text("vector")),
         "pushback":
-            R(Text("push_back"), rdescript="C++: Pushback"),
+            R(Text("push_back")),
         "standard":
-            R(Text("std"), rdescript="C++: Standard"),
+            R(Text("std")),
         "constant":
-            R(Text("const"), rdescript="C++: Constant"),
+            R(Text("const")),
         "array":
-            R(Mimic("brackets"), rdescript="C++: Array"),
+            R(Mimic("brackets")),
 
         #http://www.learncpp.com/cpp-tutorial/67-introduction-to-pointers/
         "(reference to | address of)":
-            R(Text("&"), rdescript="C++: Reference"),
+            R(Text("&")),
         "(pointer | D reference)":
-            R(Text("*"), rdescript="C++: Dereference"),
+            R(Text("*")),
         "member":
-            R(Text("->"), rdescript="C++: Member"),
+            R(Text("->")),
         "new new":
-            R(Text("new "), rdescript="C++: New"),
+            R(Text("new ")),
         "integer":
-            R(Text("int "), rdescript="C++: Integer"),
+            R(Text("int ")),
         "double":
-            R(Text("double "), rdescript="C++: Double"),
+            R(Text("double ")),
         "character":
-            R(Text("char "), rdescript="C++: Character"),
+            R(Text("char ")),
         "big integer":
-            R(Text("Integer"), rdescript="C++: Big Integer"),
+            R(Text("Integer")),
         "string":
-            R(Text("string "), rdescript="C++: String"),
+            R(Text("string ")),
         "ternary":
-            R(Text("()?;") + (Key("left")*3), rdescript="C++: Ternary"),
+            R(Text("()?;") + (Key("left")*3)),
     }
 
     extras = []
     defaults = {}
 
 
-control.nexus().merger.add_global_rule(CPP())
+control.global_rule(CPP())

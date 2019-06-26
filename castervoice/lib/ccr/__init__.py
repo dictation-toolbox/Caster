@@ -8,6 +8,7 @@ command_sets = {
     "core.nav": ("Navigation", ),
     "core.numbers": ("Numbers", ),
     "core.punctuation": ("Punctuation", ),
+    "core.text_manipulation": ("TextManipulation", ),
     "cpp.cpp": ("CPP", ),
     "csharp.csharp": ("CSharp", ),
     "dart.dart": ("Dart", ),
