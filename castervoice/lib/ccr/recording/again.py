@@ -3,16 +3,7 @@ Created on Sep 6, 2015
 
 @author: synkarius
 '''
-
-from dragonfly.actions.action_function import Function
-from dragonfly.actions.action_playback import Playback
-
-from castervoice.lib import settings
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.state.actions import AsynchronousAction
-from castervoice.lib.dfplus.state.short import L, S, R
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-
+from castervoice.lib.imports import *
 
 class Again(MergeRule):
     def __init__(self, nexus):
@@ -52,3 +43,8 @@ class Again(MergeRule):
             time_in_seconds=0.2,
             repetitions=int(n),
             blocking=False).execute()
+
+_NEXUS = control.nexus()
+
+if settings.SETTINGS["feature_rules"]["again"]:
+    control.non_ccr_app_rule(Again(_NEXUS), context=None, rdp=False)

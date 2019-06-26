@@ -93,4 +93,4 @@ class Bash(MergeRule):
     defaults = {}
 
 
-control.nexus().merger.add_global_rule(Bash())
+control.global_rule(Bash())

@@ -127,4 +127,4 @@ class Javascript(MergeRule):
     defaults = {}
 
 
-control.nexus().merger.add_global_rule(Javascript(ID=200))
+control.global_rule(Javascript(ID=200))

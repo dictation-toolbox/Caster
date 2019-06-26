@@ -35,4 +35,4 @@ class Prolog(MergeRule):
     defaults = {}
 
 
-control.nexus().merger.add_global_rule(Prolog())
+control.global_rule(Prolog())

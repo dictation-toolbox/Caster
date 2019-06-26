@@ -117,4 +117,4 @@ class Dart(MergeRule):
     defaults = {}
 
 
-control.nexus().merger.add_global_rule(Dart())
+control.global_rule(Dart())

@@ -153,4 +153,4 @@ class Java(MergeRule):
     defaults = {}
 
 
-control.nexus().merger.add_global_rule(Java())
+control.global_rule(Java())
