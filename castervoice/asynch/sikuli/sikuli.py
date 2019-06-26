@@ -3,14 +3,6 @@ from subprocess import Popen
 import traceback
 import socket
 
-from dragonfly import Grammar, MappingRule, Function, get_engine
-
-from castervoice.lib import control
-from castervoice.lib import settings, utilities
-from castervoice.lib.dfplus.merge import gfilter
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-
 
 class SikuliController():
     grammar = Grammar("sikuli")
@@ -85,6 +77,8 @@ class SikuliController():
                 self.timer.stop()
                 self.timer = None
         except socket.error:
+            pass
+        except Exception:
             traceback.print_exc()
 
     def bootstrap_start_server_proxy(self):
