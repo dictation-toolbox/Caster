@@ -9,7 +9,7 @@ Alternatively use the [master branch](https://github.com/dictation-toolbox/Caste
   - [Caster Demo](https://www.youtube.com/watch?v=oIwh3z2jXD4)
   - [VimGolf and Project Euler](https://www.youtube.com/watch?v=T1bKAqDhH_E)
   - [Dictating maths into scientific notebook](https://www.youtube.com/watch?v=oq8EoPu0cGY&t=3s) and [Dictating math by voice using Caster](https://www.youtube.com/watch?v=z-iHvPmjcas)
-- [Instructions for installing](https://github.com/dictation-toolbox/Caster/blob/develop/castervoice/doc/Installation.md)
+- [Instructions for installing](https://caster.readthedocs.io/en/latest/Installation/)
 - Documentation on Caster [[ReadTheDocs](https://caster.readthedocs.io/en/latest/)] [[YouTube](https://www.youtube.com/channel/UC2qZzmCj_5ZKkTa3i9X1LCg)] and Dragonfly [[ReadTheDocs](https://dragonfly2.readthedocs.io/en/latest/)] 
 - [How to Speak Code](https://caster.readthedocs.io/en/latest/readthedocs/Examples/Speaking/Examples/) - Example Document
 - Caster Command Reference Guides 
