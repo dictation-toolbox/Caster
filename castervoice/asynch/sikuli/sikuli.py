@@ -1,13 +1,5 @@
-from subprocess import Popen
+from castervoice.lib.imports import *
 import xmlrpclib
-
-from dragonfly import (Grammar, MappingRule, Function)
-
-from castervoice.lib import control
-from castervoice.lib import settings, utilities
-from castervoice.lib.dfplus.merge import gfilter
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
 
 grammar = None
 custom_rule = None
@@ -27,12 +19,12 @@ def launch_server():
     else:
         command = [] if settings.SETTINGS["sikuli"]["version"] == "1.1.3" else ["java", "-jar"]
         command.extend([
-            settings.SETTINGS["paths"]["SIKULI_RUNNER"], 
+            settings.SETTINGS["paths"]["SIKULI_RUNNER"],
             "-r", settings.SETTINGS["paths"]["SIKULI_SERVER_PATH"],
             "--args", settings.SETTINGS["paths"]["SIKULI_SCRIPTS_PATH"]
         ])
         Popen(command)
-#     
+#
 #     Popen([
 #         settings.SETTINGS["paths"]["SIKULI_COMPATIBLE_JAVA_EXE_PATH"], "-jar",
 #         settings.SETTINGS["paths"]["SIKULI_SCRIPTS_JAR_PATH"], "-r",
@@ -106,14 +98,11 @@ class SikuliControlCommandsRule(MergeRule):
     pronunciation = "sikuli"
 
     mapping = {
-        "launch sick IDE":       R(Function(launch_IDE), rdescript="Sikulix: Launch Sikulix IDE"),
-        "launch sick server":    R(Function(bootstrap_start_server_proxy), rdescript="Sikulix: Launch Sikulix Server"),
-        "terminate sick server": R(Function(terminate_sick_command), rdescript="Sikulix: Terminate Sikulix server"),
+        "launch sick IDE":       R(Function(launch_IDE)),
+        "launch sick server":    R(Function(bootstrap_start_server_proxy)),
+        "terminate sick server": R(Function(terminate_sick_command)),
     }
 
 if settings.SETTINGS["sikuli"]["enabled"]:
-    grammar = Grammar("sikuli")
-    rule = SikuliControlCommandsRule(name="sikuli control commands")
-    gfilter.run_on(rule)
-    grammar.add_rule(rule)
+    control.non_ccr_app_rule(SikuliControlCommandsRule(), context=None, rdp=False)
     bootstrap_start_server_proxy()

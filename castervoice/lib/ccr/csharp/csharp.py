@@ -122,4 +122,4 @@ class CSharp(MergeRule):
     defaults = {}
 
 
-control.nexus().merger.add_global_rule(CSharp())
+control.global_rule(CSharp())

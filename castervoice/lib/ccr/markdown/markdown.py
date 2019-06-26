@@ -48,4 +48,4 @@ class Markdown(MergeRule):
     }
 
 
-control.nexus().merger.add_global_rule(Markdown())
+control.global_rule(Markdown())

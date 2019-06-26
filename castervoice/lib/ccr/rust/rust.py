@@ -143,4 +143,4 @@ class Rust(MergeRule):
     defaults = {"bits": "32", "signed": "i", "mutability": "", "a": "i", "b": "j", "n": 1}
 
 
-control.nexus().merger.add_global_rule(Rust())
+control.global_rule(Rust())

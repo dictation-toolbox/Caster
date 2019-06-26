@@ -328,4 +328,4 @@ class Navigation(MergeRule):
     }
 
 
-control.nexus().merger.add_global_rule(Navigation())
+control.global_rule(Navigation())

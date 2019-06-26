@@ -88,4 +88,4 @@ class Go(MergeRule):
     defaults = {}
 
 
-control.nexus().merger.add_global_rule(Go())
+control.global_rule(Go())
