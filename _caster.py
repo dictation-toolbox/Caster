@@ -19,7 +19,7 @@ def version_minimum():
         print("\nCaster will not start! \
             \nCaster: Requires at least Dragonfly version %s\
             \nUpdate Dragonfly 'pip install --upgrade dragonfly2' from cmd\
-            \n\nThis window will close in 60 seconds" % (version))
+            \n\nThis window will close in 30 seconds" % (version))
         time.sleep(30)
         os._exit(1)
 
