@@ -1,45 +1,12 @@
 from castervoice.lib.imports import *
+from castervoice.apps.gitbash import terminal_context
 
-class BringRule(SelfModifyingRule):
-    pronunciation = "bring me"
-
-    def refresh(self, *args):
-        mapping = {
-            "bring me <desired_item>":
-                R(Function(self.bring_it)),
-            "<launch> to bring me as <key>":
-                R(Function(self.bring_add, extra={"launch", "key"})),
-            "remove <key> from bring me":
-                R(Function(self.bring_remove, extra="key")),
-            "restore bring me defaults":
-                R(Function(self.bring_restore)),
-        }
-        self.extras[0] = Choice('desired_item', self._rebuild_items())
-        self.reset(mapping)
-
-    extras = [
-        Choice("desired_item", {}),
-        Choice(
-            "launch", {
-                "[current] program": "program",
-                "website": "website",
-                "folder": "folder",
-                "file": "file",
-            }),
-        Dictation("key"),
-    ]
-
-    defaults = {'desired_item': ('', ""), 'launch': 'program', 'key': ''}
-
+class BringController:
     def __init__(self):
-
         self.config_path = settings.SETTINGS["paths"]["BRINGME_PATH"]
         self.defaults_path = settings.SETTINGS["paths"]["BRINGME_DEFAULTS_PATH"]
         self.config = {}
         self.load_config()
-
-        SelfModifyingRule.__init__(self)
-        self.refresh()
 
     # module functions
     def bring_it(self, desired_item):
@@ -51,7 +18,12 @@ class BringRule(SelfModifyingRule):
             browser = utilities.default_browser_command()
             subprocess.Popen(shlex.split(browser.replace('%1', item)))
         elif item_type == 'folder':
-            subprocess.Popen([r'C:\Windows\explorer.exe', item])
+            ContextAction(
+                Function(lambda: subprocess.Popen([r'C:\Windows\explorer.exe', item])),
+                [(terminal_context, Text("cd \"%s\"\n" % item)),
+                (AppContext("explorer.exe"), Key("c-l/5") + Text("%s\n" % item))
+                ]).execute()
+
         elif item_type == 'program':
             subprocess.Popen(item)
         else:
@@ -108,7 +80,6 @@ class BringRule(SelfModifyingRule):
             for key, value in section.iteritems()
         }
 
-
     def load_config(self):
         if os.path.isfile(self.config_path) is False:
             shutil.copy(self.defaults_path, self.config_path)
@@ -120,5 +91,39 @@ class BringRule(SelfModifyingRule):
     def save_config(self):
         utilities.save_toml_file(self.config, self.config_path)
 
+controller = BringController()
 
-# control.non_ccr_app_rule(BringRule(), context=None, rdp=False)
+class BringRule(SelfModifyingRule):
+    pronunciation = "bring me"
+
+    def refresh(self, *args):
+        self.extras[0] = Choice('desired_item', controller._rebuild_items())
+        self.reset(self.mapping)
+
+    mapping = {
+            "bring me <desired_item>":
+                R(Function(controller.bring_it)),
+            "<launch> to bring me as <key>":
+                R(Function(controller.bring_add, extra={"launch", "key"})),
+            "remove <key> from bring me":
+                R(Function(controller.bring_remove, extra="key")),
+            "restore bring me defaults":
+                R(Function(controller.bring_restore)),
+        }
+
+    extras = [
+        Choice("desired_item", controller._rebuild_items()),
+        Choice(
+            "launch", {
+                "[current] program": "program",
+                "website": "website",
+                "folder": "folder",
+                "file": "file",
+            }),
+        Dictation("key"),
+    ]
+
+    defaults = {'desired_item': ('', ""), 'launch': 'program', 'key': ''}
+
+
+control.non_ccr_app_rule(BringRule(), context=None, rdp=False)
