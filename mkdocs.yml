@@ -32,7 +32,6 @@ nav:
         - 'Mouse': readthedocs/Mouse.md
         - 'Node Rule': readthedocs/NodeRule.md
         - 'Record Macros': readthedocs/Record_Macros.md
-        - 'Setup': readthedocs/Setup.md
         - 'Sikuli': readthedocs/Sikuli.md
         - 'Taxonomy of a Rule': readthedocs/Taxonomy_of_a_Rule.md
         - 'Text Manipulation and Navigation': readthedocs/Text_Manipulation.md

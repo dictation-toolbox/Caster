@@ -119,4 +119,4 @@ class BringRule(SelfModifyingRule):
     def save_config(self):
         utilities.save_toml_file(self.config, self.config_path)
 
-control.non_ccr_app_rule(BringRule(), context=None, rdp=False)
+control.non_ccr_app_rule(BringRule(), context=None, rdp=False, filter=True)
