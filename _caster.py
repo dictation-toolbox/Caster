@@ -76,9 +76,11 @@ if not globals().has_key('profile_switch_occurred'):
 
 # Checks if install is classic or PIP of caster
 def installtype():
-    directory = os.path.join(os.getcwd(), "castervoice")
+    directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), "castervoice")
     if os.path.isdir(directory):
-        return
+        return "classic"
+    else:
+        return "pip"
 
 
 def internetcheck(host="1.1.1.1", port=53, timeout=3):
@@ -161,7 +163,7 @@ class DependencyUpdate(RunCommand):
 
 if settings.SETTINGS["miscellaneous"]["online_mode"]:
     if internetcheck():
-        if installtype() is False:
+        if installtype() is "pip":
             CasterCheck().execute()
         DragonflyCheck().execute()
     else:
@@ -253,8 +255,8 @@ class MainRule(MergeRule):
     ]
     defaults = {"n": 1, "nnv": 1, "text": "", "volume_mode": "setsysvolume", "enable": -1}
 
-control.non_ccr_app_rule(MainRule(), context=None, rdp=False)
 
+control.non_ccr_app_rule(MainRule(), context=None, rdp=False)
 
 if globals().has_key('profile_switch_occurred'):
     reload(sikuli)
