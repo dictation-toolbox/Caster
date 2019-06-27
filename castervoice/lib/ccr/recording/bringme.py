@@ -1,12 +1,40 @@
 from castervoice.lib.imports import *
 from castervoice.apps.gitbash import terminal_context
 
-class BringController:
+class BringRule(SelfModifyingRule):
+    pronunciation = "bring me"
+
+    def refresh(self):
+        self.mapping = {
+            "bring me <desired_item>":
+                R(Function(self.bring_it)),
+            "<launch> to bring me as <key>":
+                R(Function(self.bring_add, extra={"launch", "key"})),
+            "remove <key> from bring me":
+                R(Function(self.bring_remove, extra="key")),
+            "restore bring me defaults":
+                R(Function(self.bring_restore)),
+        }
+        self.extras = [
+            Choice("desired_item", self._rebuild_items()),
+            Choice(
+                "launch", {
+                    "[current] program": "program",
+                    "website": "website",
+                    "folder": "folder",
+                    "file": "file",
+                }),
+            Dictation("key"),
+        ]
+        self.reset(self.mapping)
+
     def __init__(self):
         self.config_path = settings.SETTINGS["paths"]["BRINGME_PATH"]
         self.defaults_path = settings.SETTINGS["paths"]["BRINGME_DEFAULTS_PATH"]
         self.config = {}
         self.load_config()
+        SelfModifyingRule.__init__(self)
+
 
     # module functions
     def bring_it(self, desired_item):
@@ -90,40 +118,5 @@ class BringController:
 
     def save_config(self):
         utilities.save_toml_file(self.config, self.config_path)
-
-controller = BringController()
-
-class BringRule(SelfModifyingRule):
-    pronunciation = "bring me"
-
-    def refresh(self, *args):
-        self.extras[0] = Choice('desired_item', controller._rebuild_items())
-        self.reset(self.mapping)
-
-    mapping = {
-            "bring me <desired_item>":
-                R(Function(controller.bring_it)),
-            "<launch> to bring me as <key>":
-                R(Function(controller.bring_add, extra={"launch", "key"})),
-            "remove <key> from bring me":
-                R(Function(controller.bring_remove, extra="key")),
-            "restore bring me defaults":
-                R(Function(controller.bring_restore)),
-        }
-
-    extras = [
-        Choice("desired_item", controller._rebuild_items()),
-        Choice(
-            "launch", {
-                "[current] program": "program",
-                "website": "website",
-                "folder": "folder",
-                "file": "file",
-            }),
-        Dictation("key"),
-    ]
-
-    defaults = {'desired_item': ('', ""), 'launch': 'program', 'key': ''}
-
 
 control.non_ccr_app_rule(BringRule(), context=None, rdp=False)
