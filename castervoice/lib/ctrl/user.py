@@ -15,29 +15,33 @@ class UserContentManager(object):
         self.caster_dir = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0].replace("\\", "/") + "/"
         self.user_dir = settings.SETTINGS["paths"]["USER_DIR"] + "/"
         path.append(self.user_dir)
-        self.user_rules_loaded = []
+        self.ignore = ["__init__"]
         self.search_depth = 3
 
     def load_rules(self):
-        self.import_dir(self.user_dir + "rules/", "rules")
+        self.import_dir(self.user_dir + "rules/", "rules", user=True)
         self.import_dir(self.user_dir + "filters/", "filters")
         self.import_dir(self.caster_dir + "castervoice/apps/", "castervoice.apps")
         self.import_dir(self.caster_dir + "castervoice/lib/ccr/", "castervoice.lib.ccr")
 
-    def import_dir(self, path, namespace):
-        modules = self.find_files(path)
+    def import_dir(self, path, namespace, user=False):
+        modules = self.find_files(path, user)
         for lib_name in modules:
             self.import_module(namespace, lib_name)
 
-    def find_files(self, path):
+    def find_files(self, path, user=False):
         #returns a list of Python files
         python_files = []
         for i in range(self.search_depth):
             python_files.extend(glob.glob(path + ("*/"*i) + "*.py"))
-        return [
+        modules = [
             f.replace("\\", "/").replace(path, "").replace(".py", "").replace("/", ".")
             for f in python_files
-            if not f.endswith('__init__.py')]
+            if not self.should_ignore(f)]
+        if user:
+            names = [f.rsplit(".", 1)[-1] for f in modules]
+            self.ignore.extend(names)
+        return modules
 
     def import_module(self, namespace, lib_name):
         try:
@@ -45,6 +49,13 @@ class UserContentManager(object):
             lib = importlib.import_module(full_name)
         except Exception as e:
             print("Could not load '{}'. Module has errors: {}".format(lib_name, traceback.format_exc()))
+
+    def should_ignore(self, filename):
+        for match in self.ignore:
+            if filename.endswith("%s.py" % match):
+                return True
+        else:
+            return False
 
     # def import_user_dir(self, fn_name, fpath):
     #     result = []
