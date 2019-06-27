@@ -126,4 +126,4 @@ class BringRule(SelfModifyingRule):
     defaults = {'desired_item': ('', ""), 'launch': 'program', 'key': ''}
 
 
-control.non_ccr_app_rule(BringRule(), context=None, rdp=False)
+control.non_ccr_app_rule(BringRule(), context=None, rdp=False, filter=False)
