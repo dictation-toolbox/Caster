@@ -53,11 +53,11 @@ _NEXUS = control.nexus()
 from castervoice.lib import navigation
 navigation.initialize_clipboard(_NEXUS)
 
-from castervoice.apps import __init__
-from castervoice.asynch import *
-from castervoice.lib.ccr import *
-from castervoice.lib.ccr.recording import bringme, again, alias, history
-import castervoice.lib.dev.dev
+# from castervoice.apps import __init__
+# from castervoice.asynch import *
+# from castervoice.lib.ccr import *
+# from castervoice.lib.ccr.recording import bringme, again, alias, history
+# import castervoice.lib.dev.dev
 from castervoice.asynch.sikuli import sikuli
 
 from castervoice.lib.actions import Key
@@ -69,7 +69,7 @@ from castervoice.lib.dfplus.merge.mergerule import MergeRule
 
 if not globals().has_key('profile_switch_occurred'):
     # Load user rules
-    _NEXUS.process_user_content()
+    _NEXUS.content_manager.load_rules()
     _NEXUS.merger.update_config()
     _NEXUS.merger.merge(MergeInf.BOOT)
 

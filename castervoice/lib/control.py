@@ -13,21 +13,26 @@ def nexus():
     return _NEXUS
 
 
+rules_added = []
 '''
 Commands for easily loading different types of rules, e.g.:
 control.non_ccr_app_rule(FirefoxRule(), AppContext("firefox"))
 '''
 def non_ccr_app_rule(rule, context=None, name=None, rdp=True, filter=True):
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"] and rdp:
-        nexus().merger.add_global_rule(rule)
+    if rule.get_pronunciation() in rules_added:
+        print("Ignoring default %s, a rule with that pronunciation has already been added" % rule.get_pronunciation())
     else:
-        if hasattr(rule, "get_context") and rule.get_context() is not None:
-            context = rule.get_context()
-        grammar_name = name if name else str(rule)
-        grammar = Grammar(grammar_name, context=context)
-        if filter: gfilter.run_on(rule)
-        grammar.add_rule(rule)
-        grammar.load()
+        rules_added.append(rule.get_pronunciation())
+        if settings.SETTINGS["miscellaneous"]["rdp_mode"] and rdp:
+            nexus().merger.add_global_rule(rule)
+        else:
+            if hasattr(rule, "get_context") and rule.get_context() is not None:
+                context = rule.get_context()
+            grammar_name = name if name else str(rule)
+            grammar = Grammar(grammar_name, context=context)
+            if filter: gfilter.run_on(rule)
+            grammar.add_rule(rule)
+            grammar.load()
 
 def ccr_app_rule(rule, context=None, rdp=True):
     if settings.SETTINGS["miscellaneous"]["rdp_mode"] and rdp:

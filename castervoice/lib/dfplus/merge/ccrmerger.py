@@ -139,19 +139,14 @@ class CCRMerger(object):
         if not filter in self._filters:
             self._filters.append(filter)
 
-    def add_user_content(self, user_content_manager):
-        for rule in user_content_manager.rules:
-            self.add_global_rule(rule)
-        for filter_ in user_content_manager.filters:
-            self.add_filter(filter_)
-
     def _add_to(self, rule, group):
         if rule.get_pronunciation() in \
         self.global_rule_names()+\
         self.app_rule_names()+\
         self.selfmod_rule_names():
-            raise Exception("Rule Naming Conflict: " + rule.get_pronunciation())
-        if isinstance(rule, MergeRule):
+            # raise Exception("Rule Naming Conflict: " + rule.get_pronunciation())
+            print("Ignoring default %s, a rule with that pronunciation has already been added" % rule.get_pronunciation())
+        elif isinstance(rule, MergeRule):
             for name in group.keys():
                 group[name].compatibility_check(
                     rule)  # calculate compatibility for uncombined rules at boot time
