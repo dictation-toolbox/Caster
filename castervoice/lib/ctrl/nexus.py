@@ -36,9 +36,12 @@ class Nexus:
 
         self.macros_grammar = Grammar("recorded_macros")
 
-        self.merger = CCRMerger(real_merger_config)
+        self.merger = CCRMerger()
 
         self.user_content_manager = None
+        
+    def set_merger(self, merger):
+        self.merger = merger
 
     def process_user_content(self):
         self.user_content_manager = UserContentManager()

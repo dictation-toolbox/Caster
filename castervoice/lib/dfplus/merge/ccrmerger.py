@@ -408,6 +408,7 @@ class CCRMerger(object):
             result[rulename] = specs
         return result
 
+    ''' Runs all registered filter functions over a single pair of rules. '''
     def _run_filters(self, merge_pair):
         for filter_fn in self._filters:
             try:
@@ -416,12 +417,13 @@ class CCRMerger(object):
                 utilities.simple_log()
                 print("Filter function '" + filter_fn.__name__ + "' failed.")
 
+    ''' From Dragonfly.  '''
     def _create_repeat_rule(self, rule):
         ORIGINAL, SEQ, TERMINAL = "original", "caster_base_sequence", "terminal"
         alts = [RuleRef(rule=rule)]  #+[RuleRef(rule=sm) for sm in selfmod]
         single_action = Alternative(alts)
-        max = settings.SETTINGS["miscellaneous"]["max_ccr_repetitions"]
-        sequence = Repetition(single_action, min=1, max=max, name=SEQ)
+        sequence = Repetition(single_action, min=1, \
+                              max=settings.SETTINGS["miscellaneous"]["max_ccr_repetitions"], name=SEQ)
         original = Alternative(alts, name=ORIGINAL)
         terminal = Alternative(alts, name=TERMINAL)
 

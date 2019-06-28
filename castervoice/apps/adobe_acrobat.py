@@ -1,22 +1,16 @@
-#
-# This file is a command-module for Dragonfly.
-# (c) Copyright 2008 by Christo Butcher
-# Licensed under the LGPL, see <http://www.gnu.org/licenses/>
-#
 """
 Command-module for Adobe Acrobat
 
 """
-#---------------------------------------------------------------------------
 
-from dragonfly import (Grammar, Dictation, Repeat, Choice, Mouse, Pause)
+from dragonfly import (Dictation, Repeat, Mouse, Pause)
 
-from castervoice.lib import control
+import os
+from castervoice.lib.ctrl.mgr.grammar_manager import GrammarManager
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib import settings
 from castervoice.lib.actions import Key, Text
-from castervoice.lib.context import AppContext
 from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
 
@@ -133,17 +127,9 @@ class AcrobatRule(MergeRule):
     ]
     defaults = {"n": 1, "dict": "nothing"}
 
-
-#---------------------------------------------------------------------------
-
-context = AppContext(executable="acrobat")
-grammar = Grammar("acrobat", context=context)
-
-if settings.SETTINGS["apps"]["acrobat"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(AcrobatRule())
-    else:
-        rule = AcrobatRule(name="acrobat")
-        gfilter.run_on(rule)
-        grammar.add_rule(rule)
-        grammar.load()
+details = RuleDetails(rule_path = os.path.realpath(__file__), 
+                      name = "acrobat",
+                      executable = "acrobat",
+                      grammar_name = "acrobat",
+                      enabled = settings.SETTINGS["apps"]["acrobat"])
+GrammarManager.get_instance().load(AcrobatRule, details)

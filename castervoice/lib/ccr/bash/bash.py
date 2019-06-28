@@ -3,12 +3,13 @@ Created on Sep 1, 2015
 
 @author: synkarius
 '''
-
-from castervoice.lib import control
+import os
 from castervoice.lib.actions import Key, Text
 from castervoice.lib.ccr.standard import SymbolSpecs
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
+from castervoice.lib.ctrl.mgr.grammar_manager import GrammarManager
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 
 
 class Bash(MergeRule):
@@ -99,5 +100,4 @@ class Bash(MergeRule):
     extras = []
     defaults = {}
 
-
-control.nexus().merger.add_global_rule(Bash())
+GrammarManager.get_instance().load(Bash, RuleDetails(os.path.realpath(__file__), ccr=True))

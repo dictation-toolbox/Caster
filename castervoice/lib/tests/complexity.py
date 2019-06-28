@@ -169,8 +169,6 @@ class Result(object):
 
 def test(specs, choices, ccr_max):
     broke = False
-    elements = None
-    report = None
 
     print("creating complexity test: \n"\
                      +str(specs)+" specs \n"\
