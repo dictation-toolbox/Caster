@@ -9,9 +9,11 @@ class BringRule(SelfModifyingRule):
             "bring me <desired_item>":
                 R(Function(self.bring_it)),
             "<launch> to bring me as <key>":
-                R(Function(self.bring_add, extra={"launch", "key"})),
+                R(Function(self.bring_add)),
+            "to bring me as <key>":
+                R(Function(self.bring_add_auto)),
             "remove <key> from bring me":
-                R(Function(self.bring_remove, extra="key")),
+                R(Function(self.bring_remove)),
             "restore bring me defaults":
                 R(Function(self.bring_restore)),
         }
@@ -47,7 +49,7 @@ class BringRule(SelfModifyingRule):
             subprocess.Popen(shlex.split(browser.replace('%1', item)))
         elif item_type == 'folder':
             ContextAction(
-                Function(lambda: subprocess.Popen([r'C:\Windows\explorer.exe', item])),
+                Function(lambda: Popen([r'C:\Windows\explorer.exe', item])),
                 [(terminal_context, Text("cd \"%s\"\n" % item)),
                 (AppContext("explorer.exe"), Key("c-l/5") + Text("%s\n" % item))
                 ]).execute()
@@ -56,6 +58,22 @@ class BringRule(SelfModifyingRule):
             subprocess.Popen(item)
         else:
             threading.Thread(target=os.startfile, args=(item, )).start()
+
+    def bring_add_auto(self, key):
+        browser_context = AppContext(["chrome", "firefox"])
+        explorer_context = AppContext("explorer.exe")
+        def add(launch):
+            return Function(lambda: self.bring_add(launch, key))
+        ContextAction(
+            # Function(self.bring_add, launch="program", key=key),
+            # [(browser_context, Function(self.bring_add, launch="website", key=key)),
+            # (explorer_context, Function(self.bring_add, launch="folder", key=key)),
+            # ]).execute()
+            add("program"),
+            [(browser_context, add("website")),
+            (explorer_context, add("folder")),
+            ]).execute()
+
 
     def bring_add(self, launch, key):
         # Add current program or highlighted text to bring me
