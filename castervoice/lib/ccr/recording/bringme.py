@@ -65,10 +65,6 @@ class BringRule(SelfModifyingRule):
         def add(launch):
             return Function(lambda: self.bring_add(launch, key))
         ContextAction(
-            # Function(self.bring_add, launch="program", key=key),
-            # [(browser_context, Function(self.bring_add, launch="website", key=key)),
-            # (explorer_context, Function(self.bring_add, launch="folder", key=key)),
-            # ]).execute()
             add("program"),
             [(browser_context, add("website")),
             (explorer_context, add("folder")),
