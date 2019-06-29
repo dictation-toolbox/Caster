@@ -9,7 +9,7 @@
 % Original author:
 % Michael Müller (https://github.com/cmichi/latex-template-collection) with
 % extensive modifications by Vel (vel@LaTeXTemplates.com)
-%
+% 
 % License:
 % The MIT License (see included LICENSE file)
 %
@@ -200,6 +200,7 @@ whiskey \\ x-ray \\ yankee \\ zulu \\
 \footnotetext[4]{Repeatable by saying number after}
 %----------------------------------------------------------------------------------------
 
+
 \sectiontitle{Editing}
 
 \command{clear \footnotemark[4]}{bkspc}
@@ -227,8 +228,33 @@ whiskey \\ x-ray \\ yankee \\ zulu \\
 \footnotetext[1]{Takes optional direction parameter, one of the direction keys from table (5)}
 \footnotetext[2]{Takes optional number parameter for repetition}
 \footnotetext[5]{Takes prekris, brax, curly, angle, [thin] quotes, tickris}
+%----------------------------------------------------------------------------------------
+
+\sectiontitle{Selection, movement (shorter words)}
+\command{latch}{end}
+\command{ratch}{home}
+\command{bird}{ctrl-left}
+\command{fird}{ctrl-right}
+\command{brick}{shift-left}
+\command{frick}{shift-right}
+\command{blitch}{ctrl shift - left}
+\command{flitch}{ctrl shift - left}
+
+
 
 %----------------------------------------------------------------------------------------
+\sectiontitle{Modifier Keys} \footnotemark[4] 
+
+(control | fly) <Key> \\
+(shift | shin) <Key>  \\
+alt <Key>  \\
+(control shift | que) <Key> \\
+(control alt | culter) <Key>  \\
+(shift alt | alt shift) <Key> \\
+
+\footnotetext[4]{<Key> can be just about any key including things like ampersand. Most are repeatable by saying a number after, see nav.py for details}
+%----------------------------------------------------------------------------------------
+
 
 \sectiontitle{Copy and paste}
 
@@ -358,6 +384,14 @@ Capitalisation and spacing can be combined into a single command. They may be su
 
 %----------------------------------------------------------------------------------------
 
+\end{minipage}
+} % End the first division of the page
+
+\put(105,200){ % Divide the page
+\begin{minipage}[t]{85mm} % Create a box to house text
+
+%----------------------------------------------------------------------------------------
+
 \sectiontitle{Template-based navigation}
 
 \command{jump in \footnotemark[2]}{move cursor inside next ([\{<}
@@ -369,13 +403,6 @@ Capitalisation and spacing can be combined into a single command. They may be su
 
 %----------------------------------------------------------------------------------------
 
-\end{minipage}
-} % End the first division of the page
-
-%----------------------------------------------------------------------------------------
-
-\put(105,200){ % Divide the page
-\begin{minipage}[t]{85mm} % Create a box to house text
 
 \sectiontitle{Window management}
 
@@ -398,6 +425,14 @@ Capitalisation and spacing can be combined into a single command. They may be su
 \command{move work <n>}{move the current window to workspace n}
 
 \footnotetext[1]{Takes an optional number parameter for repetition}
+%----------------------------------------------------------------------------------------
+
+\end{minipage}
+}
+
+\put(200, 200){
+\begin{minipage}[t]{85mm}
+
 %----------------------------------------------------------------------------------------
 
 \sectiontitle{Repetition}
@@ -424,13 +459,6 @@ Capitalisation and spacing can be combined into a single command. They may be su
 \command{remove <key> from bring me}{}
 \command{restore bring me defaults}{}
 
-%----------------------------------------------------------------------------------------
-
-\end{minipage}
-}
-
-\put(200, 200){
-\begin{minipage}[t]{85mm}
 
 \sectiontitle{Dragon}
 
