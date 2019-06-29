@@ -95,11 +95,6 @@ class BringRule(SelfModifyingRule):
                 self.refresh()
                 return
 
-    def bring_restore(self):
-        # Restore bring me list to defaults
-        self.config = utilities.load_toml_file(self.defaults_path)
-        self.refresh()
-
     def _rebuild_items(self):
         # logger.debug('Bring me rebuilding extras')
         return {
@@ -110,13 +105,52 @@ class BringRule(SelfModifyingRule):
 
     def load_config(self):
         if os.path.isfile(self.config_path) is False:
-            shutil.copy(self.defaults_path, self.config_path)
-
-        self.config = utilities.load_toml_file(self.config_path)
+            self.bring_restore(startup=True)
+        else:
+            self.config = utilities.load_toml_file(self.config_path)
         if not self.config:
             print("Could not load bringme defaults")
 
     def save_config(self):
         utilities.save_toml_file(self.config, self.config_path)
+
+    def bring_restore(self, startup=False):
+        # Restore bring me list to defaults
+        self.config = self.bm_defaults
+        self.save_config()
+        if not startup:
+            self.refresh()
+
+    bm_defaults = {
+        "website": {
+            "dragonfly": "https://dragonfly2.readthedocs.io/en/latest/",
+            "dragonfly gitter": "https://gitter.im/sphinx-dragonfly",
+            "caster": "https://caster.readthedocs.io/en/latest/",
+            "google": "https://www.google.com",
+            "caster gitter": "https://gitter.im/synkarius/caster",
+            "caster discord": "https://discord.gg/9eAAsCJr",
+        },
+        "folder": {
+            "libraries": "%USERPROFILE%",
+            "my pictures": "%USERPROFILE%\\Pictures",
+            "my documents": "%USERPROFILE%\\Documents",
+            "caster user": "%USERPROFILE%\\.caster",
+            "caster filters": "%USERPROFILE%\\.caster\\filters",
+            "caster rules": "%USERPROFILE%\\.caster\\rules",
+            "caster data": "%USERPROFILE%\\.caster\\data",
+            "sick you lee": "%USERPROFILE%\\.caster\\sikuli",
+        },
+        "program": {
+            "notepad": "C:\\Windows\\notepad.exe",
+        },
+        "file": {
+            "caster settings": "%USERPROFILE%\\.caster\\data\\settings.toml",
+            "caster alias": "%USERPROFILE%\\.caster\\data\\aliases.toml",
+            "caster bring me": "%USERPROFILE%\\.caster\\data\\bringme.toml",
+            "caster ccr": "%USERPROFILE%\\.caster\\data\\ccr.toml",
+            "caster config debug": "%USERPROFILE%\\.caster\\data\\configdebug.txt",
+            "caster words": "%USERPROFILE%\\.caster\\data\\words.txt",
+            "caster log": "%USERPROFILE%\\.caster\\data\\log.txt",
+        }}
 
 control.non_ccr_app_rule(BringRule(), context=None, rdp=False, filter=True)
