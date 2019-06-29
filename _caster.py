@@ -8,24 +8,6 @@ import os, time, sys
 import logging
 logging.basicConfig()
 
-
-def version_minimum():
-    try:
-        import pkg_resources
-        version = "0.15.0"  # Minimum Version of Dragonfly2 need for Caster
-        pkg_resources.require("dragonfly2 >= %s" % (version))
-    except Exception:  # pylint: disable=broad-except
-        pass
-        print("\nCaster will not start! \
-            \nCaster: Requires at least Dragonfly version %s\
-            \nUpdate Dragonfly 'pip install --upgrade dragonfly2' from cmd\
-            \n\nThis window will close in 30 seconds" % (version))
-        time.sleep(30)
-        os._exit(1)
-
-
-version_minimum()
-
 import time, socket, os
 from dragonfly import (Function, Grammar, Playback, Dictation, Choice, Pause, RunCommand)
 from castervoice.lib.ccr.standard import SymbolSpecs

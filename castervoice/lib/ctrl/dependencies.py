@@ -4,6 +4,22 @@ Created on Oct 7, 2015
 @author: synkarius
 '''
 from castervoice.lib import settings
+import time
+
+
+def version_minimum():
+    try:
+        import pkg_resources
+        version = "0.15.0"  # Minimum Version of Dragonfly2 need for Caster
+        pkg_resources.require("dragonfly2 >= %s" % (version))
+    except Exception:  # pylint: disable=broad-except
+        pass
+        print("\nCaster: Requires at least Dragonfly version %s" \
+            "\n Update Dragonfly 'pip install --upgrade dragonfly2' from cmd.\n" % (version))
+        time.sleep(15)
+
+
+version_minimum()
 
 
 class DependencyMan:
