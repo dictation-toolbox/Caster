@@ -8,6 +8,8 @@ class BringRule(SelfModifyingRule):
         self.mapping = {
             "bring me <desired_item>":
                 R(Function(self.bring_it)),
+            "refresh bring me":
+                R(Function(self.load_and_refresh)),
             "<launch> to bring me as <key>":
                 R(Function(self.bring_add)),
             "to bring me as <key>":
@@ -116,6 +118,10 @@ class BringRule(SelfModifyingRule):
             for header, section in self.config.iteritems()
             for key, value in section.iteritems()
         }
+
+    def load_and_refresh(self):
+        self.load_config()
+        self.refresh()
 
     def load_config(self):
         if os.path.isfile(self.config_path) is False:
