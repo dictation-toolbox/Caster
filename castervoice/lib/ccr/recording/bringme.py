@@ -1,16 +1,26 @@
 from castervoice.lib.imports import *
 from castervoice.apps.gitbash import terminal_context
+from castervoice.apps.file_dialogue import dialogue_context
 
 class BringRule(SelfModifyingRule):
     pronunciation = "bring me"
 
     def refresh(self):
         self.mapping = {
-            "bring me <desired_item>":
-                R(Function(self.bring_it)),
+            # "bring me <desired_item>":
+                # R(Function(self.bring_it)),
+            "bring me <program>":
+                R(Function(self.bring_program)),
+            "bring me <website>":
+                R(Function(self.bring_website)),
+            "bring me <folder> [in <app>]":
+                R(Function(self.bring_folder)),
+            "bring me <file>":
+                R(Function(self.bring_file)),
+
             "refresh bring me":
                 R(Function(self.load_and_refresh)),
-            "<launch> to bring me as <key>":
+            "<program> to bring me as <key>":
                 R(Function(self.bring_add)),
             "to bring me as <key>":
                 R(Function(self.bring_add_auto)),
@@ -20,7 +30,6 @@ class BringRule(SelfModifyingRule):
                 R(Function(self.bring_restore)),
         }
         self.extras = [
-            Choice("desired_item", self._rebuild_items()),
             Choice(
                 "launch", {
                     "[current] program": "program",
@@ -28,50 +37,51 @@ class BringRule(SelfModifyingRule):
                     "folder": "folder",
                     "file": "file",
                 }),
+            Choice("app", {
+                "terminal": "terminal",
+                "explorer": "explorer",
+                }),
             Dictation("key"),
         ]
+        self.extras.extend(self._rebuild_items())
+        self.defaults = {"app": None}
         self.reset(self.mapping)
 
     def __init__(self):
-        self.config_path = settings.SETTINGS["paths"]["BRINGME_PATH"]
+        # Contexts
+        self.browser_context  = AppContext(["chrome", "firefox"])
+        self.explorer_context = AppContext("explorer.exe") | dialogue_context
+        # Paths
+        self.config_path   = settings.SETTINGS["paths"]["BRINGME_PATH"]
         self.defaults_path = settings.SETTINGS["paths"]["BRINGME_DEFAULTS_PATH"]
+        self.terminal_path = settings.SETTINGS["paths"]["TERMINAL_PATH"]
+        self.explorer_path = "C:\\Windows\\explorer.exe"
+        # Get things set up
         self.config = {}
         self.load_config()
         SelfModifyingRule.__init__(self)
 
+    def bring_website(self, website):
+        browser = utilities.default_browser_command()
+        subprocess.Popen(shlex.split(browser.replace('%1', website)))
 
-    # module functions
-    def bring_it(self, desired_item):
-        '''
-        Currently simply invoke os.startfile. New thread keeps Dragon from crashing.
-        '''
-        item, item_type = desired_item
-        if item_type == "website":
-            browser = utilities.default_browser_command()
-            subprocess.Popen(shlex.split(browser.replace('%1', item)))
-        elif item_type == 'folder':
+    def bring_folder(self, folder, app):
+        if not app:
             ContextAction(
-                Function(lambda: Popen([r'C:\Windows\explorer.exe', item])),
-                [(terminal_context, Text("cd \"%s\"\n" % item)),
-                (AppContext("explorer.exe"), Key("c-l/5") + Text("%s\n" % item))
+                Function(lambda: Popen([self.explorer_path, folder])),
+                [(terminal_context, Text("cd \"%s\"\n" % folder)),
+                (AppContext("explorer.exe"), Key("c-l/5") + Text("%s\n" % folder))
                 ]).execute()
+        elif app == "terminal":
+            Popen([self.terminal_path, "--cd=" + folder.replace("\\", "/")])
+        elif app == "explorer":
+            Popen([self.explorer_path, folder])
 
-        elif item_type == 'program':
-            subprocess.Popen(item)
-        else:
-            threading.Thread(target=os.startfile, args=(item, )).start()
+    def bring_program(self, program):
+        subprocess.Popen(program)
 
-    def bring_add_auto(self, key):
-        browser_context = AppContext(["chrome", "firefox"])
-        explorer_context = AppContext("explorer.exe")
-        def add(launch):
-            return Function(lambda: self.bring_add(launch, key))
-        ContextAction(
-            add("program"),
-            [(browser_context, add("website")),
-            (explorer_context, add("folder")),
-            ]).execute()
-
+    def bring_file(self, file):
+        threading.Thread(target=os.startfile, args=(file, )).start()
 
     def bring_add(self, launch, key):
         # Add current program or highlighted text to bring me
@@ -101,6 +111,15 @@ class BringRule(SelfModifyingRule):
         self.save_config()
         self.refresh()
 
+    def bring_add_auto(self, key):
+        def add(launch):
+            return Function(lambda: self.bring_add(launch, key))
+        ContextAction(
+            add("program"),
+            [(self.browser_context, add("website")),
+            (self.explorer_context, add("folder")),
+            ]).execute()
+
     def bring_remove(self, key):
         # Remove item from bring me
         key = str(key)
@@ -112,12 +131,11 @@ class BringRule(SelfModifyingRule):
                 return
 
     def _rebuild_items(self):
-        # logger.debug('Bring me rebuilding extras')
-        return {
-            key: (os.path.expandvars(value), header)
+        return [
+            Choice(header, {key: os.path.expandvars(value)
+            for key, value in section.iteritems()})
             for header, section in self.config.iteritems()
-            for key, value in section.iteritems()
-        }
+        ]
 
     def load_and_refresh(self):
         self.load_config()
