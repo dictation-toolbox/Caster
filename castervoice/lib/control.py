@@ -17,7 +17,7 @@ def nexus():
 Commands for easily loading different types of rules, e.g.:
 control.non_ccr_app_rule(FirefoxRule(), AppContext("firefox"))
 '''
-def non_ccr_app_rule(rule, context=None, name=None, rdp=True):
+def non_ccr_app_rule(rule, context=None, name=None, rdp=True, filter=True):
     if settings.SETTINGS["miscellaneous"]["rdp_mode"] and rdp:
         nexus().merger.add_global_rule(rule)
     else:
@@ -25,7 +25,7 @@ def non_ccr_app_rule(rule, context=None, name=None, rdp=True):
             context = rule.get_context()
         grammar_name = name if name else str(rule)
         grammar = Grammar(grammar_name, context=context)
-        gfilter.run_on(rule)
+        if filter: gfilter.run_on(rule)
         grammar.add_rule(rule)
         grammar.load()
 

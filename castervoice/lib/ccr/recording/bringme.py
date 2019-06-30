@@ -128,4 +128,4 @@ class BringRule(SelfModifyingRule):
 
 bring_rule = BringRule()
 
-control.non_ccr_app_rule(bring_rule, context=None, rdp=False)
+control.non_ccr_app_rule(bring_rule, context=None, rdp=False, filter=False)
