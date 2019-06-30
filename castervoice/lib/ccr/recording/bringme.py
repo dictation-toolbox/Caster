@@ -51,6 +51,7 @@ class BringRule(SelfModifyingRule):
         # Contexts
         self.browser_context  = AppContext(["chrome", "firefox"])
         self.explorer_context = AppContext("explorer.exe") | dialogue_context
+        self.terminal_context = terminal_context
         # Paths
         self.config_path   = settings.SETTINGS["paths"]["BRINGME_PATH"]
         self.defaults_path = settings.SETTINGS["paths"]["BRINGME_DEFAULTS_PATH"]
