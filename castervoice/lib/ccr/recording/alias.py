@@ -1,16 +1,7 @@
-from dragonfly.actions.action_function import Function
-
+from castervoice.lib.imports import *
 from castervoice.asynch.hmc import h_launch
-from castervoice.lib import context, utilities, settings
-from castervoice.lib import control
-from castervoice.lib.actions import Text
-from castervoice.lib.dfplus.merge.selfmodrule import SelfModifyingRule
-from castervoice.lib.dfplus.state.actions import AsynchronousAction
-from castervoice.lib.dfplus.state.actions2 import NullAction
-from castervoice.lib.dfplus.state.short import R, L, S
 
 _NEXUS = control.nexus()
-
 
 def read_highlighted(max_tries):
     for i in range(0, max_tries):
@@ -97,6 +88,10 @@ class ChainAlias(AliasRule):
             rdescript="Delete Aliases")
         self.reset(mapping)
 
-if settings.SETTINGS["feature_rules"]["chainalias"]:
-    control.nexus().merger.add_selfmodrule(ChainAlias(_NEXUS))
+_NEXUS = control.nexus()
 
+if settings.SETTINGS["feature_rules"]["alias"]:
+    control.non_ccr_app_rule(Alias(_NEXUS), context=None, rdp=False, filter=False)
+
+if settings.SETTINGS["feature_rules"]["chainalias"]:
+    control.selfmod_rule(ChainAlias(_NEXUS))

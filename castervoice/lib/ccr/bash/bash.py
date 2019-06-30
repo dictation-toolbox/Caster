@@ -3,101 +3,94 @@ Created on Sep 1, 2015
 
 @author: synkarius
 '''
-
-from castervoice.lib import control
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.ccr.standard import SymbolSpecs
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-
+from castervoice.lib.imports import *
 
 class Bash(MergeRule):
     mapping = {
         SymbolSpecs.IF:
-            R(Text("if [[  ]]; ") + Key("left/5:5"), rdescript="Bash: If"),
+            R(Text("if [[  ]]; ") + Key("left/5:5")),
         SymbolSpecs.ELSE:
-            R(Text("else"), rdescript="Bash: Else"),
+            R(Text("else")),
         #
         SymbolSpecs.SWITCH:
-            R(Text("case TOKEN in"), rdescript="Bash: Switch"),
+            R(Text("case TOKEN in")),
         SymbolSpecs.CASE:
-            R(Text("TOKEN)  ;;") + Key("left/5:2"), rdescript="Bash: Case"),
+            R(Text("TOKEN)  ;;") + Key("left/5:2")),
         SymbolSpecs.BREAK:
-            R(Text("break"), rdescript="Bash: Break"),
+            R(Text("break")),
         SymbolSpecs.DEFAULT:
-            R(Text("*)  ;;"), rdescript="Bash: Default"),
+            R(Text("*)  ;;")),
         #
         SymbolSpecs.DO_LOOP:
-            R(Text("until [  ]; do") + Key("left/5:7"), rdescript="Bash: Do Loop"),
+            R(Text("until [  ]; do") + Key("left/5:7")),
         SymbolSpecs.WHILE_LOOP:
-            R(Text("while [  ]; do") + Key("left/5:7"), rdescript="Bash: While"),
+            R(Text("while [  ]; do") + Key("left/5:7")),
         SymbolSpecs.FOR_LOOP:
-            R(Text("for (( i=0; i<=TOKEN; i++ )); do"), rdescript="Bash: For i Loop"),
+            R(Text("for (( i=0; i<=TOKEN; i++ )); do")),
         SymbolSpecs.FOR_EACH_LOOP:
-            R(Text("for TOKEN in TOKEN; do"), rdescript="Bash: For Each Loop"),
+            R(Text("for TOKEN in TOKEN; do")),
         #
         # integers?
         # strings?
         # floats?
         #
         SymbolSpecs.AND:
-            R(Text(" && "), rdescript="Bash: And"),
+            R(Text(" && ")),
         SymbolSpecs.OR:
-            R(Text(" || "), rdescript="Bash: Or"),
+            R(Text(" || ")),
         SymbolSpecs.NOT:
-            R(Text("!"), rdescript="Bash: Not"),
+            R(Text("!")),
         #
         SymbolSpecs.SYSOUT:
-            R(Text("echo "), rdescript="Bash: Print"),
+            R(Text("echo ")),
         #
         SymbolSpecs.IMPORT:
-            R(Text(". /path/to/functions"),
-              rdescript="Bash: Import"),  # (top of file, under #!/bin/bash)
+            R(Text(". /path/to/functions")),  # (top of file, under #!/bin/bash)
         #
         SymbolSpecs.FUNCTION:
-            R(Text("TOKEN(){}") + Key("left, enter/5:2"), rdescript="Bash: Function"),
+            R(Text("TOKEN(){}") + Key("left, enter/5:2")),
         # classes?
         #
         SymbolSpecs.COMMENT:
-            R(Text("# "), rdescript="Bash: Add Comment"),
+            R(Text("# ")),
         # no multiline comment in bash
         #
         SymbolSpecs.NULL:
-            R(Text('-z "$var"') + Key("left/5:1"), rdescript="Bash: Null"),
+            R(Text('-z "$var"') + Key("left/5:1")),
         #
         SymbolSpecs.RETURN:
-            R(Text("return "), rdescript="Bash: Return"),
+            R(Text("return ")),
         #
         SymbolSpecs.TRUE:
-            R(Text("true"), rdescript="Bash: True"),
+            R(Text("true")),
         SymbolSpecs.FALSE:
-            R(Text("false"), rdescript="Bash: False"),
+            R(Text("false")),
 
         # Bash specific
         "key do":
-            R(Text("do"), rdescript="Bash: Do"),
+            R(Text("do")),
         "key done":
-            R(Text("done"), rdescript="Bash: Done"),
+            R(Text("done")),
         "key fee":
-            R(Text("fi"), rdescript="Bash: End If"),
+            R(Text("fi")),
         "shell iffae":
-            R(Text("elif [[  ]]; ") + Key("left/5:5"), rdescript="Bash: Else If"),
+            R(Text("elif [[  ]]; ") + Key("left/5:5")),
         "sue iffae":
-            R(Text("[[  ]]") + Key("left/5:3"), rdescript="Bash: Short If"),
+            R(Text("[[  ]]") + Key("left/5:3")),
         "length of":
-            R(Text("${#TOKEN[@]}"), rdescript="Bash: Length"),
+            R(Text("${#TOKEN[@]}")),
         "push":
-            R(Text("TOKEN+=()"), rdescript="Bash: Push"),
+            R(Text("TOKEN+=()")),
         "continue":
-            R(Text("continue"), rdescript="Bash: Continue"),
+            R(Text("continue")),
         "she bang":
-            R(Text("#!/bin/bash"), rdescript="Bash: Shebang"),
+            R(Text("#!/bin/bash")),
         "end switch":
-            R(Text("esac"), rdescript="Bash: End Switch"),
+            R(Text("esac")),
     }
 
     extras = []
     defaults = {}
 
 
-control.nexus().merger.add_global_rule(Bash())
+control.global_rule(Bash())

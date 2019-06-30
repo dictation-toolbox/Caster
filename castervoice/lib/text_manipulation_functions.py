@@ -11,6 +11,9 @@ new_text_punc_dict = copy.deepcopy(text_punc_dict)
 new_text_punc_dict.update(caster_alphabet)
 character_dict = new_text_punc_dict
 character_list = character_dict.values()
+digits_list = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+character_list.extend(digits_list)
+
 
 contexts = {
     "texstudio": AppContext(executable="texstudio"),
