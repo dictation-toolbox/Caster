@@ -63,7 +63,7 @@ class BringRule(SelfModifyingRule):
 
     def bring_website(self, website):
         browser = utilities.default_browser_command()
-        subprocess.Popen(shlex.split(browser.replace('%1', website)))
+        Popen(shlex.split(browser.replace('%1', website)))
 
     def bring_folder(self, folder, app):
         if not app:
@@ -78,7 +78,7 @@ class BringRule(SelfModifyingRule):
             Popen([self.explorer_path, folder])
 
     def bring_program(self, program):
-        subprocess.Popen(program)
+        Popen(program)
 
     def bring_file(self, file):
         threading.Thread(target=os.startfile, args=(file, )).start()
