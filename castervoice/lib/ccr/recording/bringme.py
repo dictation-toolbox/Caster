@@ -131,7 +131,7 @@ class BringRule(SelfModifyingRule):
                 return
 
     def _rebuild_items(self):
-        E.g. [Choice("folder", {"my pictures": ...}), ...]
+        # E.g. [Choice("folder", {"my pictures": ...}), ...]
         return [
             Choice(header, {key: os.path.expandvars(value)
             for key, value in section.iteritems()})
