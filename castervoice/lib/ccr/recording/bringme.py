@@ -69,8 +69,8 @@ class BringRule(SelfModifyingRule):
         if not app:
             ContextAction(
                 Function(lambda: Popen([self.explorer_path, folder])),
-                [(terminal_context, Text("cd \"%s\"\n" % folder)),
-                (AppContext("explorer.exe"), Key("c-l/5") + Text("%s\n" % folder))
+                [(self.terminal_context, Text("cd \"%s\"\n" % folder)),
+                (self.explorer_context, Key("c-l/5") + Text("%s\n" % folder))
                 ]).execute()
         elif app == "terminal":
             Popen([self.terminal_path, "--cd=" + folder.replace("\\", "/")])
@@ -131,6 +131,7 @@ class BringRule(SelfModifyingRule):
                 return
 
     def _rebuild_items(self):
+        E.g. [Choice("folder", {"my pictures": ...}), ...]
         return [
             Choice(header, {key: os.path.expandvars(value)
             for key, value in section.iteritems()})
