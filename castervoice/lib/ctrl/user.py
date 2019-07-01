@@ -20,6 +20,16 @@ def copy_filters():
 copy_filters()
 
 
+def copy_rules():
+    rules_user = os.path.join(settings.SETTINGS["paths"]["USER_DIR"], "rules/examples")
+    if os.path.isdir(os.path.join(rules_user)) is False:
+        rules_example = settings.SETTINGS["paths"]["RULES_RULES_DEFAULTS_PATH"]
+        shutil.copytree(rules_example, rules_user)
+
+
+copy_rules()
+
+
 class UserContentManager(object):
     def __init__(self):
         self.rules = self.import_user_dir(
