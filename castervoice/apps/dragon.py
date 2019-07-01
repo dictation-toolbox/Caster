@@ -75,12 +75,10 @@ class DragonRule(MergeRule):
         "show windows":
             R(Mimic("list", "all", "windows")),
         "cory <text>":
-            R(
-                Mimic("correct", extra="text") + WaitWindow(title="spelling window") +
+            R(Mimic("correct", extra="text") + WaitWindow(title="spelling window") +
                 Mimic("choose", "one")),
         "cory that":
-            R(
-                Mimic("correct", "that") + WaitWindow(title="spelling window") +
+            R(Mimic("correct", "that") + WaitWindow(title="spelling window") +
                 Mimic("choose", "one")),
         "make that <text>":
             R(Mimic("scratch", "that") + Mimic(extra="text")),
@@ -89,8 +87,7 @@ class DragonRule(MergeRule):
         "train word":
             R(Mimic("train", "that") + Key("a-r/200, s")),
         "word train":
-            R(
-                Key("c-c/20") + Mimic("edit", "vocabulary") + Pause("100") +
+            R(Key("c-c/20") + Mimic("edit", "vocabulary") + Pause("100") +
                 Key("c-v/5, tab, down, up, a-t/50, enter/50, a-r/250, s/50, escape")),
         "(add train | train from add word)":
             R(Key("a-a/2, enter/300, a-s")),
@@ -100,18 +97,15 @@ class DragonRule(MergeRule):
         "(train from vocab | cab train)":
             R(Key("a-t/50, enter/50, a-r/250, s")),
         "remove from vocab":
-            R(
-                Key("c-c/5") + Mimic("edit", "vocabulary") + Pause("20") +
+            R(Key("c-c/5") + Mimic("edit", "vocabulary") + Pause("20") +
                 Key("c-v/10, tab, down, up/5, a-d, y, escape/30, right")),
         "(add to vocab | vocab that)":
-            R(
-                Key("c-c/5") + Mimic("add", "word") + Pause("20") +
+            R(Key("c-c/5") + Mimic("add", "word") + Pause("20") +
                 Key("c-v, a-a/2, enter/300, a-s/30, right")),
         "recognition history":
             R(Playback([(["view", "recognition", "history"], 0.03)])),
         "peak [recognition] history":
-            R(
-                Playback([(["view", "recognition", "history"], 0.03)]) + Pause("300") +
+            R(Playback([(["view", "recognition", "history"], 0.03)]) + Pause("300") +
                 Key("escape")),
         "[dictation] sources":
             R(Mimic("manage", "dictation", "sources")),
