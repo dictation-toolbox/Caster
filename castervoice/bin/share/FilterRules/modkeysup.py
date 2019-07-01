@@ -4,9 +4,9 @@ Created on Sep 27, 2015
 @author: synkarius
 '''
 
-from caster.lib.actions import Key
-from caster.lib.dfplus.merge.mergepair import MergeInf
-from caster.lib.dfplus.state.short import R
+from castervoice.lib.actions import Key
+from castervoice.lib.dfplus.merge.mergepair import MergeInf
+from castervoice.lib.dfplus.state.short import R
 
 
 def add_modkeys(rule):

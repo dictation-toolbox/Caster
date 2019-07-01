@@ -4,9 +4,9 @@ Created on Sep 27, 2015
 @author: synkarius
 '''
 
-from caster.lib.actions import Text
-from caster.lib.dfplus.merge.mergepair import MergeInf
-from caster.lib.dfplus.state.short import R
+from castervoice.lib.actions import Text
+from castervoice.lib.dfplus.merge.mergepair import MergeInf
+from castervoice.lib.dfplus.state.short import R
 
 
 def scenario_1(mp):
