@@ -1,4 +1,16 @@
 @echo off
+goto check_Permissions
+
+:check_Permissions
+    echo Caster: Administrative permissions required to setup Natlink. Detecting permissions...
+
+    net session >nul 2>&1
+    if %errorLevel% == 0 (
+        echo Success: Administrative permissions confirmed.
+    ) else (
+        echo Failure: Current permissions inadequate restart install.bat with administrator privileges...
+	pause >nul
+    )
 
 set currentpath=%~dp0
 echo Installation path: %currentpath%
