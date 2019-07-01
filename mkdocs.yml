@@ -18,7 +18,6 @@ theme:
 
 nav:
     - Home: index.md
-    - ReadMe: ../../ReadMe.md
     - License: LICENSE.md
     - Contributing: Contributing.md
     - Installation: Installation.md
