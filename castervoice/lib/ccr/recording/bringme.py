@@ -7,8 +7,6 @@ class BringRule(SelfModifyingRule):
 
     def refresh(self):
         self.mapping = {
-            # "bring me <desired_item>":
-                # R(Function(self.bring_it)),
             "bring me <program>":
                 R(Function(self.bring_program)),
             "bring me <website>":
