@@ -1,4 +1,4 @@
-# Caster [![Build Status](https://travis-ci.org/dictation-toolbox/Caster.svg?branch=develop)](https://travis-ci.org/dictation-toolbox/Caster)
+# Caster [![Build Status](https://travis-ci.org/dictation-toolbox/Caster.svg?branch=master)](https://travis-ci.org/dictation-toolbox/Caster)
 
 [Caster](https://github.com/dictation-toolbox/Caster)  is a collection of tools aimed at enabling programming and accessibility entirely by voice built upon the [Dragonfly](https://github.com/dictation-toolbox/dragonfly) API.
 
@@ -12,7 +12,7 @@
 - Documentation on Caster [[ReadTheDocs](https://caster.readthedocs.io/en/latest/)] and Dragonfly [[ReadTheDocs](https://dragonfly2.readthedocs.io/en/latest/)] 
 - [How to Speak Code](https://caster.readthedocs.io/en/latest/readthedocs/Examples/Speaking/Examples/) - Example Document
 - Caster Command Reference Guides 
-  - [Caster](https://github.com/dictation-toolbox/Caster/blob/develop/CasterQuickReference.pdf) - commands to get started with. Universal navigation and editing - These commands are active all the time, and provide input commands for letters, numbers and punctuation, as well as the ability to easily manipulate windows and text. 
+  - [Caster](https://github.com/dictation-toolbox/Caster/blob/master/CasterQuickReference.pdf) - commands to get started with. Universal navigation and editing - These commands are active all the time, and provide input commands for letters, numbers and punctuation, as well as the ability to easily manipulate windows and text. 
     - `window right` moves the active window to the right-hand side of the screen.
     - `prekris` inserts a pair of brackets `()` and moves the cursor inside them.
     - `shackle` selects the current line.
@@ -55,7 +55,7 @@ Donate at [![Bountysource](https://www.bountysource.com/badge/team?team_id=40790
   - Git Client:  Github Desktop 
   - Applications: Foxit Reader, Gitter, fman, Total Commander, Typora, Microsoft Word, Outlook, and Excel
 
-- [Editing and Navigation](https://github.com/dictation-toolbox/Caster/blob/develop/CasterQuickReference.pdf)
+- [Editing and Navigation](https://github.com/dictation-toolbox/Caster/blob/master/CasterQuickReference.pdf)
 
   - Four additional [mouse navigation modes](https://caster.readthedocs.io/en/latest/readthedocs/Mouse/): curse, douglas, legion, and rainbow - [Demo](https://www.youtube.com/watch?v=UISjQBMmQ-I&feature=youtu.be)
   - [Text navigation commands](https://caster.readthedocs.io/en/latest/readthedocs/Text_Manipulation/) - [Demo](https://www.youtube.com/watch?v=xj8IzNlfM70), Text formatting commands
