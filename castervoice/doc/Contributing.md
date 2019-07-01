@@ -31,7 +31,7 @@ Fetch the latest from the upstream (dictation-toolbox) repo:
 
 Create a new branch for your PR:
 
-    git checkout --no-track -b pr-feature-name upstream/develop
+    git checkout --no-track -b pr-feature-name upstream/master
 
 Where **`pr-feature-name`** is the name you want to give to your new feature branch.
 
