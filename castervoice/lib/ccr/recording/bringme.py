@@ -163,12 +163,12 @@ class BringRule(SelfModifyingRule):
 
     bm_defaults = {
         "website": {
-            "dragonfly": "https://dragonfly2.readthedocs.io/en/latest/",
-            "dragonfly gitter": "https://gitter.im/sphinx-dragonfly",
-            "caster": "https://caster.readthedocs.io/en/latest/",
-            "google": "https://www.google.com",
-            "caster gitter": "https://gitter.im/synkarius/caster",
+            "caster documentation": "https://caster.readthedocs.io/en/latest/",
+            "dragonfly documentation": "https://dragonfly2.readthedocs.io/en/latest/",
+            "dragonfly gitter": "https://gitter.im/dictation-toolbox/dragonfly",
+            "caster gitter": "https://gitter.im/dictation-toolbox/Caster",
             "caster discord": "https://discord.gg/9eAAsCJr",
+            "google": "https://www.google.com",
         },
         "folder": {
             "libraries": "%USERPROFILE%",
