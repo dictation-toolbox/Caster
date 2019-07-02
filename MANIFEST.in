@@ -3,7 +3,7 @@ include _caster.py
 include post_setup.py
 include ReadMe.md
 include castervoice/bin/data/configdebug.txt
-include castervoice/bin/share/bringme.toml.defaults
+include castervoice/bin/share/FilterRules/words.txt
 include castervoice/bin/share/git_repo_local_to_remote_match.toml.defaults
 include castervoice/bin/VirtualDesktopAccessor.dll
 include castervoice/bin/reboot.bat
