@@ -8,6 +8,8 @@ from castervoice.lib.actions import Text
 from castervoice.lib.dfplus.merge.mergepair import MergeInf
 from castervoice.lib.dfplus.state.short import R
 
+# Uncomment a function and place this file in your '.caster\filters' folder to activate filter.
+
 
 def scenario_1(mp):
     '''manually handle a conflicting spec'''
@@ -21,7 +23,8 @@ def scenario_1(mp):
                 del mp.rule2.mapping_actual()[spec]
 
 
-# control.nexus().merger.add_filter(scenario_1)
+# def get_filter():
+#     return scenario_1()
 
 
 def replace_spec(rule, target, replacement):
@@ -43,7 +46,8 @@ def scenario_2(mp):
         replace_spec(mp.rule2, target, replacement)
 
 
-# control.nexus().merger.add_filter(scenario_2)
+# def get_filter():
+#     return scenario_2()
 
 
 def update_python(rule):
@@ -63,7 +67,8 @@ def scenario_3(mp):
             update_python(mp.rule2)
 
 
-# control.nexus().merger.add_filter(scenario_3)
+# def get_filter():
+#     return scenario_3()
 
 
 def add_is_to_python(rule):
@@ -79,4 +84,5 @@ def scenario_4(mp):
         add_is_to_python(mp.rule2)
 
 
-# control.nexus().merger.add_filter(scenario_4)
+# def get_filter():
+#     return scenario_4()

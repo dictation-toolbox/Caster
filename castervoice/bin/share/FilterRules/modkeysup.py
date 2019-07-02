@@ -26,4 +26,7 @@ def modkeysup(mp):
         add_modkeys(mp.rule2)
 
 
-# control.nexus().merger.add_filter(modkeysup)
+# Uncomment the function and place this file in your '.caster\filters' folder to activate filter.
+
+# def get_filter():
+#    return modkeysup
