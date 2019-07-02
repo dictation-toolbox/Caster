@@ -30,7 +30,7 @@
 
 * [Easy Setup](caster/doc/Installation.md) and Configurable Settings
 
-* Customize commands(Specs) and their actions via [simplified filter rules](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/CCR/#simplified-rule-filters) and [filter rules](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/examples/rules/Caster%20Rules/#rule-filters)([code](https://github.com/dictation-toolbox/caster/tree/master/caster/user/filters/examples)).
+* Customize commands(Specs) and their actions via [simplified filter rules](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/CCR/#simplified-filter-rules) and [filter rules](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/examples/rules/Caster%20Rules/#rule-filters)([code](https://github.com/dictation-toolbox/caster/tree/master/caster/user/filters/examples)).
 
 * Compatible Speech Recognition Engines
 

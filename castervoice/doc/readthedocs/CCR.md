@@ -9,7 +9,7 @@
   - [Types of Rules](#types-of-rules)
   - [How to Add and Modify Rules](#how-to-add-and-modify-rules)
   - [Rule Filters](#rule-filters)
-    - [Simplified Rule Filters](#simplified-rule-filters)
+    - [Simplified Filter Rules](#simplified-filter-rules)
   - [Other Features of MergeRule](#other-features-of-mergerule)
   - [How to Register Caster CCR Rules](#how-to-register-caster-ccr-rules)
 
@@ -65,7 +65,7 @@ Let's go through these.
 
 What rule filters do is expose pairs of rules to the user, allowing the user to change the rules' mapping as they see fit, and/or enable/disable compatibility checking which follows the rule filters. 
 
-#### Simplified Rule Filters
+#### Simplified Filter Rules
 
 Though rule filters are very powerful, setting one up for the first time is not trivial. Therefore, a simplified method for common use cases has been created. Create the file `.caster\filters\words.txt` and it will be read at boot time, and a rule filter created from it and added to Caster's list of rule filters. The following is an example `words.txt`:
 
