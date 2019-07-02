@@ -122,10 +122,11 @@ class GlobalFilterDefs(object):
 
 DEFS = None
 
-if os.path.isfile(settings.SETTINGS["paths"]["FILTER_DEFS_PATH"]):
+if os.path.isfile(settings.SETTINGS["paths"]["FILTER_WORDS_DEFS_PATH"]):
     '''user must create castervoice/user/fdefs.txt for it to get picked up here'''
-    with io.open(
-            settings.SETTINGS["paths"]["FILTER_DEFS_PATH"], "rt", encoding="utf-8") as f:
+    with io.open(settings.SETTINGS["paths"]["FILTER_WORDS_DEFS_PATH"],
+                 "rt",
+                 encoding="utf-8") as f:
         lines = f.readlines()
         try:
             DEFS = GlobalFilterDefs(lines)

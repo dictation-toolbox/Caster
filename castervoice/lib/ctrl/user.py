@@ -4,9 +4,30 @@ Created on Jan 26, 2019
 @author: synkarius
 '''
 from sys import path
-import importlib, os, glob
+import importlib, os, glob, shutil
 from castervoice.lib import settings
 import traceback
+
+
+def copy_filters():
+    filter_user = os.path.join(settings.SETTINGS["paths"]["USER_DIR"], "filters/examples")
+    if os.path.isdir(os.path.join(filter_user)) is False:
+        filter_example = settings.SETTINGS["paths"]["FILTER_RULES_DEFAULTS_PATH"]
+        shutil.copytree(filter_example, filter_user)
+
+
+copy_filters()
+
+
+def copy_rules():
+    rules_user = os.path.join(settings.SETTINGS["paths"]["USER_DIR"], "rules/examples")
+    if os.path.isdir(os.path.join(rules_user)) is False:
+        rules_example = settings.SETTINGS["paths"]["RULES_RULES_DEFAULTS_PATH"]
+        shutil.copytree(rules_example, rules_user)
+
+
+copy_rules()
+
 
 class UserContentManager(object):
     def __init__(self):
