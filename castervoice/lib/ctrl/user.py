@@ -8,6 +8,8 @@ import importlib, os, glob, shutil
 from castervoice.lib import settings
 import traceback
 
+from os.path import isdir, walk, join
+
 
 def copy_filters():
     filter_user = os.path.join(settings.SETTINGS["paths"]["USER_DIR"], "filters/examples")
@@ -46,6 +48,8 @@ class UserContentManager(object):
         self.import_dir(self.caster_dir + "castervoice/lib/ccr/", "castervoice.lib.ccr")
 
     def import_dir(self, path, namespace, user=False):
+        if user:
+            walk(path, self.gen_inits, None)
         modules = self.find_files(path, user)
         for lib_name in modules:
             self.import_module(namespace, lib_name)
@@ -75,8 +79,18 @@ class UserContentManager(object):
         for match in self.ignore:
             if filename.endswith("%s.py" % match):
                 return True
+        if "\\examples\\" in filename:
+            return True
         else:
             return False
+
+    def gen_inits(self, arg, dirname, fnames):
+        print(fnames)
+        if not "__init__.py" in fnames:
+            print "Created __init__.py in : %s" % dirname
+            with open(join(dirname, "__init__.py"), 'a+') as f:
+                    f.write('')
+
 
     # def import_user_dir(self, fn_name, fpath):
     #     result = []
