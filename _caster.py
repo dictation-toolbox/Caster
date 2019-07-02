@@ -53,11 +53,6 @@ _NEXUS = control.nexus()
 from castervoice.lib import navigation
 navigation.initialize_clipboard(_NEXUS)
 
-# from castervoice.apps import __init__
-# from castervoice.asynch import *
-# from castervoice.lib.ccr import *
-# from castervoice.lib.ccr.recording import bringme, again, alias, history
-# import castervoice.lib.dev.dev
 from castervoice.asynch.sikuli import sikuli
 
 from castervoice.lib.actions import Key
