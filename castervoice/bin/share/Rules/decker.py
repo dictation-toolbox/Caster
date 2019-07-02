@@ -10,7 +10,10 @@ from castervoice.lib.imports import *
 class Decker(MergeRule):
     pronunciation = "decker"
 
-    mapping = {"hit the deck": R(Text("shipwrecked")), "explosion": R(Text("cannonball"))}
+    mapping = {
+        "hit the deck": R(Text("shipwrecked")), 
+        "explosion": R(Text("cannonball"))
+    }
 
 
 # def get_rule():
