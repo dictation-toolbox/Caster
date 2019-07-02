@@ -12,9 +12,7 @@ from os.path import isdir, walk, join
 
 class UserContentManager(object):
     def __init__(self):
-        # self.rules = self.import_user_dir("get_rule", settings.SETTINGS["paths"]["USER_DIR"] + "/rules")
-        # self.filters = self.import_user_dir("get_filter", settings.SETTINGS["paths"]["USER_DIR"] + "/filters")
-        self.caster_dir = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0].replace("\\", "/")
+        self.caster_dir = settings.SETTINGS["paths"]["BASE_PATH"]
         self.user_dir = settings.SETTINGS["paths"]["USER_DIR"]
         path.append(self.user_dir)
         self.ignore = ["__init__"]
@@ -24,8 +22,8 @@ class UserContentManager(object):
     def load_rules(self):
         self.import_dir(join(self.user_dir, "rules"), "rules", user=True)
         self.import_dir(join(self.user_dir, "filters"), "filters")
-        self.import_dir(join(self.caster_dir, "castervoice", "apps"), "castervoice.apps")
-        self.import_dir(join(self.caster_dir, "castervoice", "lib", "ccr"), "castervoice.lib.ccr")
+        self.import_dir(join(self.caster_dir, "apps"), "castervoice.apps")
+        self.import_dir(join(self.caster_dir, "lib", "ccr"), "castervoice.lib.ccr")
 
     def import_dir(self, path, namespace, user=False):
         if user:
