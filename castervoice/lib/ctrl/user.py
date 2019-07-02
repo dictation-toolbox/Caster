@@ -24,6 +24,7 @@ class UserContentManager(object):
         self.import_dir(join(self.user_dir, "filters"), "filters")
         self.import_dir(join(self.caster_dir, "apps"), "castervoice.apps")
         self.import_dir(join(self.caster_dir, "lib", "ccr"), "castervoice.lib.ccr")
+        self.import_dir(join(self.caster_dir, "lib", "dev"), "castervoice.lib.dev")
 
     def import_dir(self, path, namespace, user=False):
         if user:
