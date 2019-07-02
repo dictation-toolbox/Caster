@@ -102,10 +102,13 @@ class GitBashRule(MergeRule):
     defaults = {"n": 0}
 
 
-terminal_context = AppContext(executable="\\sh.exe") | \
-          AppContext(executable="\\bash.exe") | \
-          AppContext(executable="\\cmd.exe") | \
-          AppContext(executable="\\mintty.exe")
+terminal_context = AppContext(executable=[
+    "\\sh.exe",
+    "\\bash.exe",
+    "\\cmd.exe",
+    "\\mintty.exe",
+    "\\powershell.exe"
+    ])
 
 jetbrains_context = AppContext(executable="idea", title="IntelliJ") \
           | AppContext(executable="idea64", title="IntelliJ") \

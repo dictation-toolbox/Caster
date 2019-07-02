@@ -1,131 +1,194 @@
 from castervoice.lib.imports import *
-
-if os.path.isfile(settings.SETTINGS["paths"]["BRINGME_PATH"]) is False:
-    bringme_default = settings.SETTINGS["paths"]["BRINGME_DEFAULTS_PATH"]
-    bringme_user = settings.SETTINGS["paths"]["BRINGME_PATH"]
-    shutil.copy(bringme_default, bringme_user)
-
-CONFIG = utilities.load_toml_file(settings.SETTINGS["paths"]["BRINGME_PATH"])
-if not CONFIG:
-    # logger.warn("Could not load bringme defaults")
-    print("Could not load bringme defaults")
-
-
-def refresh():
-    bring_rule.refresh()
-
-
-# module functions
-def bring_it(desired_item):
-    '''
-    Currently simply invoke os.startfile. New thread keeps Dragon from crashing.
-    '''
-    item, item_type = desired_item
-    if item_type == "website":
-        browser = utilities.default_browser_command()
-        subprocess.Popen(shlex.split(browser.replace('%1', item)))
-    elif item_type == 'folder':
-        subprocess.Popen([r'C:\Windows\explorer.exe', item])
-    elif item_type == 'program':
-        subprocess.Popen(item)
-    else:
-        threading.Thread(target=os.startfile, args=(item, )).start()
-
-
-def bring_add(launch, key):
-    '''
-    Add current program or highlighted text to bring me
-    '''
-    key = str(key)
-    if launch == "program":
-        path = utilities.get_active_window_path()
-        if not path:
-            # dragonfly.get_engine().speak("program not detected")
-            print("Program path for bring me not found ")
-    # elif launch == 'file':
-    # no way to add file via pyperclip
-    else:
-        Key("a-d/5").execute()
-        fail, path = context.read_selected_without_altering_clipboard()
-        if fail == 2:
-            # FIXME
-            time.sleep(0.1)
-            _, path = context.read_selected_without_altering_clipboard()
-            if not path:
-                # dragonfly.get_engine().speak("nothing selected")
-                print("Selection for bring me not found ")
-        Key("escape").execute()
-    if not path:
-        # logger.warn('Cannot add %s as %s to bringme: cannot get path', launch, key)
-        return
-    CONFIG[launch][key] = path
-    utilities.save_toml_file(CONFIG, settings.SETTINGS["paths"]["BRINGME_PATH"])
-    refresh()
-
-
-def bring_remove(key):
-    '''
-    Remove item from bring me
-    '''
-    key = str(key)
-    for section in CONFIG.keys():
-        if key in CONFIG[section]:
-            del CONFIG[section][key]
-            utilities.save_toml_file(CONFIG, settings.SETTINGS["paths"]["BRINGME_PATH"])
-            refresh()
-            return
-
-
-def bring_restore():
-    '''
-    Restore bring me list to defaults
-    '''
-    global CONFIG
-    CONFIG = utilities.load_toml_file(settings.SETTINGS["paths"]["BRINGME_DEFAULTS_PATH"])
-    refresh()
-
-
-def _rebuild_items():
-    # logger.debug('Bring me rebuilding extras')
-    return {
-        key: (os.path.expandvars(value), header)
-        for header, section in CONFIG.iteritems() for key, value in section.iteritems()
-    }
-
+from castervoice.apps.gitbash import terminal_context
+from castervoice.apps.file_dialogue import dialogue_context
 
 class BringRule(SelfModifyingRule):
     pronunciation = "bring me"
 
-    def refresh(self, *args):
-        # logger.debug('Bring me refresh')
-        self.extras[0] = Choice('desired_item', _rebuild_items())
+    def refresh(self):
+        self.mapping = {
+            "bring me <program>":
+                R(Function(self.bring_program)),
+            "bring me <website>":
+                R(Function(self.bring_website)),
+            "bring me <folder> [in <app>]":
+                R(Function(self.bring_folder)),
+            "bring me <file>":
+                R(Function(self.bring_file)),
+
+            "refresh bring me":
+                R(Function(self.load_and_refresh)),
+            "<program> to bring me as <key>":
+                R(Function(self.bring_add)),
+            "to bring me as <key>":
+                R(Function(self.bring_add_auto)),
+            "remove <key> from bring me":
+                R(Function(self.bring_remove)),
+            "restore bring me defaults":
+                R(Function(self.bring_restore)),
+        }
+        self.extras = [
+            Choice(
+                "launch", {
+                    "[current] program": "program",
+                    "website": "website",
+                    "folder": "folder",
+                    "file": "file",
+                }),
+            Choice("app", {
+                "terminal": "terminal",
+                "explorer": "explorer",
+                }),
+            Dictation("key"),
+        ]
+        self.extras.extend(self._rebuild_items())
+        self.defaults = {"app": None}
         self.reset(self.mapping)
 
-    mapping = {
-        "bring me <desired_item>":
-            R(Function(bring_it)),
-        "<launch> to bring me as <key>":
-            R(Function(bring_add, extra={"launch", "key"})),
-        "remove <key> from bring me":
-            R(Function(bring_remove, extra="key")),
-        "restore bring me defaults":
-            R(Function(bring_restore)),
-    }
+    def __init__(self):
+        # Contexts
+        self.browser_context  = AppContext(["chrome", "firefox"])
+        self.explorer_context = AppContext("explorer.exe") | dialogue_context
+        self.terminal_context = terminal_context
+        # Paths
+        self.config_path   = settings.SETTINGS["paths"]["BRINGME_PATH"]
+        self.defaults_path = settings.SETTINGS["paths"]["BRINGME_DEFAULTS_PATH"]
+        self.terminal_path = settings.SETTINGS["paths"]["TERMINAL_PATH"]
+        self.explorer_path = "C:\\Windows\\explorer.exe"
+        # Get things set up
+        self.config = {}
+        self.load_config()
+        SelfModifyingRule.__init__(self)
 
-    extras = [
-        Choice("desired_item", _rebuild_items()),
-        Choice(
-            "launch", {
-                "[current] program": "program",
-                "website": "website",
-                "folder": "folder",
-                "file": "file",
-            }),
-        Dictation("key"),
-    ]
+    def bring_website(self, website):
+        browser = utilities.default_browser_command()
+        Popen(shlex.split(browser.replace('%1', website)))
 
-    defaults = {'desired_item': ('', ""), 'launch': 'program', 'key': ''}
+    def bring_folder(self, folder, app):
+        if not app:
+            ContextAction(
+                Function(lambda: Popen([self.explorer_path, folder])),
+                [(self.terminal_context, Text("cd \"%s\"\n" % folder)),
+                (self.explorer_context, Key("c-l/5") + Text("%s\n" % folder))
+                ]).execute()
+        elif app == "terminal":
+            Popen([self.terminal_path, "--cd=" + folder.replace("\\", "/")])
+        elif app == "explorer":
+            Popen([self.explorer_path, folder])
 
-bring_rule = BringRule()
+    def bring_program(self, program):
+        Popen(program)
 
-control.non_ccr_app_rule(bring_rule, context=None, rdp=False, filter=False)
+    def bring_file(self, file):
+        threading.Thread(target=os.startfile, args=(file, )).start()
+
+    def bring_add(self, launch, key):
+        # Add current program or highlighted text to bring me
+        key = str(key)
+        if launch == "program":
+            path = utilities.get_active_window_path()
+            if not path:
+                # dragonfly.get_engine().speak("program not detected")
+                print("Program path for bring me not found ")
+        # elif launch == 'file':
+        # no way to add file via pyperclip
+        else:
+            Key("a-d/5").execute()
+            fail, path = context.read_selected_without_altering_clipboard()
+            if fail == 2:
+                # FIXME
+                time.sleep(0.1)
+                _, path = context.read_selected_without_altering_clipboard()
+                if not path:
+                    # dragonfly.get_engine().speak("nothing selected")
+                    print("Selection for bring me not found ")
+            Key("escape").execute()
+        if not path:
+            # logger.warn('Cannot add %s as %s to bringme: cannot get path', launch, key)
+            return
+        self.config[launch][key] = path
+        self.save_config()
+        self.refresh()
+
+    def bring_add_auto(self, key):
+        def add(launch):
+            return Function(lambda: self.bring_add(launch, key))
+        ContextAction(
+            add("program"),
+            [(self.browser_context, add("website")),
+            (self.explorer_context, add("folder")),
+            ]).execute()
+
+    def bring_remove(self, key):
+        # Remove item from bring me
+        key = str(key)
+        for section in self.config.keys():
+            if key in self.config[section]:
+                del self.config[section][key]
+                self.save_config()
+                self.refresh()
+                return
+
+    def _rebuild_items(self):
+        # E.g. [Choice("folder", {"my pictures": ...}), ...]
+        return [
+            Choice(header, {key: os.path.expandvars(value)
+            for key, value in section.iteritems()})
+            for header, section in self.config.iteritems()
+        ]
+
+    def load_and_refresh(self):
+        self.load_config()
+        self.refresh()
+
+    def load_config(self):
+        if os.path.isfile(self.config_path) is False:
+            self.bring_restore(startup=True)
+        else:
+            self.config = utilities.load_toml_file(self.config_path)
+        if not self.config:
+            print("Could not load bringme defaults")
+
+    def save_config(self):
+        utilities.save_toml_file(self.config, self.config_path)
+
+    def bring_restore(self, startup=False):
+        # Restore bring me list to defaults
+        self.config = self.bm_defaults
+        self.save_config()
+        if not startup:
+            self.refresh()
+
+    bm_defaults = {
+        "website": {
+            "caster documentation": "https://caster.readthedocs.io/en/latest/",
+            "dragonfly documentation": "https://dragonfly2.readthedocs.io/en/latest/",
+            "dragonfly gitter": "https://gitter.im/dictation-toolbox/dragonfly",
+            "caster gitter": "https://gitter.im/dictation-toolbox/Caster",
+            "caster discord": "https://discord.gg/9eAAsCJr",
+            "google": "https://www.google.com",
+        },
+        "folder": {
+            "libraries": "%USERPROFILE%",
+            "my pictures": "%USERPROFILE%\\Pictures",
+            "my documents": "%USERPROFILE%\\Documents",
+            "caster user": "%USERPROFILE%\\.caster",
+            "caster filters": "%USERPROFILE%\\.caster\\filters",
+            "caster rules": "%USERPROFILE%\\.caster\\rules",
+            "caster data": "%USERPROFILE%\\.caster\\data",
+            "sick you lee": "%USERPROFILE%\\.caster\\sikuli",
+        },
+        "program": {
+            "notepad": "C:\\Windows\\notepad.exe",
+        },
+        "file": {
+            "caster settings": "%USERPROFILE%\\.caster\\data\\settings.toml",
+            "caster alias": "%USERPROFILE%\\.caster\\data\\aliases.toml",
+            "caster bring me": "%USERPROFILE%\\.caster\\data\\bringme.toml",
+            "caster ccr": "%USERPROFILE%\\.caster\\data\\ccr.toml",
+            "caster config debug": "%USERPROFILE%\\.caster\\data\\configdebug.txt",
+            "caster words": "%USERPROFILE%\\.caster\\data\\words.txt",
+            "caster log": "%USERPROFILE%\\.caster\\data\\log.txt",
+        }}
+
+control.non_ccr_app_rule(BringRule(), context=None, rdp=False, filter=True)
