@@ -191,13 +191,17 @@ _DEFAULT_SETTINGS = {
             _USER_DIR + "/data/bringme.toml",
         "BRINGME_DEFAULTS_PATH":
             BASE_PATH + "/bin/share/bringme.toml.defaults",
+        "FILTER_RULES_DEFAULTS_PATH":
+            BASE_PATH + "/bin/share/FilterRules",
+        "RULES_RULES_DEFAULTS_PATH":
+            BASE_PATH + "/bin/share/Rules",
         "ALIAS_PATH":
             _USER_DIR + "/data/aliases.toml",
         "CCR_CONFIG_PATH":
             _USER_DIR + "/data/ccr.toml",
         "DLL_PATH":
             BASE_PATH + "/lib/dll/",
-        "FILTER_DEFS_PATH":
+        "FILTER_WORDS_DEFS_PATH":
             _USER_DIR + "/data/words.txt",
         "LOG_PATH":
             _USER_DIR + "/log.txt",
