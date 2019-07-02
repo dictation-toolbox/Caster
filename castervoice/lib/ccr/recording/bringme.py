@@ -52,7 +52,6 @@ class BringRule(SelfModifyingRule):
         self.terminal_context = terminal_context
         # Paths
         self.config_path   = settings.SETTINGS["paths"]["BRINGME_PATH"]
-        self.defaults_path = settings.SETTINGS["paths"]["BRINGME_DEFAULTS_PATH"]
         self.terminal_path = settings.SETTINGS["paths"]["TERMINAL_PATH"]
         self.explorer_path = "C:\\Windows\\explorer.exe"
         # Get things set up

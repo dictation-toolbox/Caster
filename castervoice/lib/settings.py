@@ -189,11 +189,9 @@ _DEFAULT_SETTINGS = {
         # DATA
         "BRINGME_PATH":
             _USER_DIR + "/data/bringme.toml",
-        "BRINGME_DEFAULTS_PATH":
-            BASE_PATH + "/bin/share/bringme.toml.defaults",
-        "FILTER_RULES_DEFAULTS_PATH":
+        "FILTER_EXAMPLES_PATH":
             BASE_PATH + "/bin/share/FilterRules",
-        "RULES_RULES_DEFAULTS_PATH":
+        "RULE_EXAMPLES_PATH":
             BASE_PATH + "/bin/share/Rules",
         "ALIAS_PATH":
             _USER_DIR + "/data/aliases.toml",

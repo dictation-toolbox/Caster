@@ -10,27 +10,6 @@ import traceback
 
 from os.path import isdir, walk, join
 
-
-def copy_filters():
-    filter_user = os.path.join(settings.SETTINGS["paths"]["USER_DIR"], "filters/examples")
-    if os.path.isdir(os.path.join(filter_user)) is False:
-        filter_example = settings.SETTINGS["paths"]["FILTER_RULES_DEFAULTS_PATH"]
-        shutil.copytree(filter_example, filter_user)
-
-
-copy_filters()
-
-
-def copy_rules():
-    rules_user = os.path.join(settings.SETTINGS["paths"]["USER_DIR"], "rules/examples")
-    if os.path.isdir(os.path.join(rules_user)) is False:
-        rules_example = settings.SETTINGS["paths"]["RULES_RULES_DEFAULTS_PATH"]
-        shutil.copytree(rules_example, rules_user)
-
-
-copy_rules()
-
-
 class UserContentManager(object):
     def __init__(self):
         # self.rules = self.import_user_dir("get_rule", settings.SETTINGS["paths"]["USER_DIR"] + "/rules")
@@ -40,6 +19,7 @@ class UserContentManager(object):
         path.append(self.user_dir)
         self.ignore = ["__init__"]
         self.search_depth = 4
+        self.copy_examples()
 
     def load_rules(self):
         self.import_dir(join(self.user_dir, "rules"), "rules", user=True)
@@ -90,43 +70,13 @@ class UserContentManager(object):
             with open(join(dirname, "__init__.py"), 'a+') as f:
                     f.write('')
 
+    def copy_examples(self):
+        filter_target = os.path.join(self.user_dir, "filters", "examples")
+        if not isdir(filter_target):
+            filter_source = settings.SETTINGS["paths"]["FILTER_EXAMPLES_PATH"]
+            shutil.copytree(filter_source, filter_target)
 
-    # def import_user_dir(self, fn_name, fpath):
-    #     result = []
-
-    #     # check for existence of user dir
-    #     if not os.path.isdir(fpath):
-    #         msg = "No directory '{}' was found. Did you configure your USER_DIR correctly in {}?"
-    #         print(msg.format(fpath, settings.get_filename()))
-    #         return result
-    #     path.append(fpath)
-
-    #     # get names of all python files in dir
-    #     python_files = glob.glob(fpath + "/*.py")
-    #     modules = [
-    #         os.path.basename(f)[:-3]
-    #         for f in python_files
-    #         if not f.endswith('__init__.py')
-    #     ]
-    #     for lib_name in modules:
-    #         # try to import the user rules one by one
-    #         lib = None
-    #         try:
-    #             lib = importlib.import_module(lib_name)
-    #         except Exception as e:
-    #             print("Could not load '{}'. Module has errors: {}".format(lib_name, traceback.format_exc()))
-    #             continue
-
-    #         # get them and add them to nexus
-    #         fn = None
-    #         try:
-    #             fn = getattr(lib, fn_name)
-    #         except AttributeError:
-    #             msg = "No method named '{}' was found on '{}'. Did you forget to implement it?"
-    #             print(msg.format(fn_name, lib_name))
-    #             continue
-
-
-    #         result.append(fn())
-
-    #     return result
+        rule_target = os.path.join(self.user_dir, "rules", "examples")
+        if not isdir(rule_target):
+            rules_source = settings.SETTINGS["paths"]["RULE_EXAMPLES_PATH"]
+            shutil.copytree(rules_source, rule_target)
