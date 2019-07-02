@@ -122,9 +122,9 @@ class GlobalFilterDefs(object):
 
 DEFS = None
 
-if os.path.isfile(settings.SETTINGS["paths"]["FILTER_WORDS_DEFS_PATH"]):
-    '''user must create castervoice/user/fdefs.txt for it to get picked up here'''
-    with io.open(settings.SETTINGS["paths"]["FILTER_WORDS_DEFS_PATH"],
+if os.path.isfile(settings.SETTINGS["paths"]["SIMPLIFIED_FILTER_RULES_PATH"]):
+    '''User must create or place words.txt in '.caster\filters' folder for it to get picked up here'''
+    with io.open(settings.SETTINGS["paths"]["SIMPLIFIED_FILTER_RULES_PATH"],
                  "rt",
                  encoding="utf-8") as f:
         lines = f.readlines()
@@ -223,7 +223,7 @@ def spec_override_from_config(mp):
 
 
 if DEFS is not None:
-    print("Global rule filter from file 'words.txt' activated ...")
+    print("Global simplified rule filter 'words.txt' activated...")
 
 
 def run_on(rule):
