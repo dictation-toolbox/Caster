@@ -2,30 +2,21 @@ from castervoice.lib.imports import *
 from castervoice.apps.gitbash import terminal_context
 from castervoice.apps.file_dialogue import dialogue_context
 
+
 class BringRule(SelfModifyingRule):
     pronunciation = "bring me"
 
     def refresh(self):
         self.mapping = {
-            "bring me <program>":
-                R(Function(self.bring_program)),
-            "bring me <website>":
-                R(Function(self.bring_website)),
-            "bring me <folder> [in <app>]":
-                R(Function(self.bring_folder)),
-            "bring me <file>":
-                R(Function(self.bring_file)),
-
-            "refresh bring me":
-                R(Function(self.load_and_refresh)),
-            "<program> to bring me as <key>":
-                R(Function(self.bring_add)),
-            "to bring me as <key>":
-                R(Function(self.bring_add_auto)),
-            "remove <key> from bring me":
-                R(Function(self.bring_remove)),
-            "restore bring me defaults":
-                R(Function(self.bring_restore)),
+            "bring me <program>": R(Function(self.bring_program)),
+            "bring me <website>": R(Function(self.bring_website)),
+            "bring me <folder> [in <app>]": R(Function(self.bring_folder)),
+            "bring me <file>": R(Function(self.bring_file)),
+            "refresh bring me": R(Function(self.load_and_refresh)),
+            "<program> to bring me as <key>": R(Function(self.bring_add)),
+            "to bring me as <key>": R(Function(self.bring_add_auto)),
+            "remove <key> from bring me": R(Function(self.bring_remove)),
+            "restore bring me defaults": R(Function(self.bring_restore)),
         }
         self.extras = [
             Choice(
@@ -38,7 +29,7 @@ class BringRule(SelfModifyingRule):
             Choice("app", {
                 "terminal": "terminal",
                 "explorer": "explorer",
-                }),
+            }),
             Dictation("key"),
         ]
         self.extras.extend(self._rebuild_items())
@@ -47,11 +38,11 @@ class BringRule(SelfModifyingRule):
 
     def __init__(self):
         # Contexts
-        self.browser_context  = AppContext(["chrome", "firefox"])
+        self.browser_context = AppContext(["chrome", "firefox"])
         self.explorer_context = AppContext("explorer.exe") | dialogue_context
         self.terminal_context = terminal_context
         # Paths
-        self.config_path   = settings.SETTINGS["paths"]["BRINGME_PATH"]
+        self.config_path = settings.SETTINGS["paths"]["BRINGME_PATH"]
         self.defaults_path = settings.SETTINGS["paths"]["BRINGME_DEFAULTS_PATH"]
         self.terminal_path = settings.SETTINGS["paths"]["TERMINAL_PATH"]
         self.explorer_path = "C:\\Windows\\explorer.exe"
@@ -66,11 +57,10 @@ class BringRule(SelfModifyingRule):
 
     def bring_folder(self, folder, app):
         if not app:
-            ContextAction(
-                Function(lambda: Popen([self.explorer_path, folder])),
-                [(self.terminal_context, Text("cd \"%s\"\n" % folder)),
+            ContextAction(Function(lambda: Popen([self.explorer_path, folder])), [
+                (self.terminal_context, Text("cd \"%s\"\n" % folder)),
                 (self.explorer_context, Key("c-l/5") + Text("%s\n" % folder))
-                ]).execute()
+            ]).execute()
         elif app == "terminal":
             Popen([self.terminal_path, "--cd=" + folder.replace("\\", "/")])
         elif app == "explorer":
@@ -113,11 +103,11 @@ class BringRule(SelfModifyingRule):
     def bring_add_auto(self, key):
         def add(launch):
             return Function(lambda: self.bring_add(launch, key))
-        ContextAction(
-            add("program"),
-            [(self.browser_context, add("website")),
+
+        ContextAction(add("program"), [
+            (self.browser_context, add("website")),
             (self.explorer_context, add("folder")),
-            ]).execute()
+        ]).execute()
 
     def bring_remove(self, key):
         # Remove item from bring me
@@ -132,8 +122,9 @@ class BringRule(SelfModifyingRule):
     def _rebuild_items(self):
         # E.g. [Choice("folder", {"my pictures": ...}), ...]
         return [
-            Choice(header, {key: os.path.expandvars(value)
-            for key, value in section.iteritems()})
+            Choice(header,
+                   {key: os.path.expandvars(value)
+                    for key, value in section.iteritems()})
             for header, section in self.config.iteritems()
         ]
 
@@ -187,8 +178,10 @@ class BringRule(SelfModifyingRule):
             "caster bring me": "%USERPROFILE%\\.caster\\data\\bringme.toml",
             "caster ccr": "%USERPROFILE%\\.caster\\data\\ccr.toml",
             "caster config debug": "%USERPROFILE%\\.caster\\data\\configdebug.txt",
-            "caster words": "%USERPROFILE%\\.caster\\data\\words.txt",
+            "caster words": "%USERPROFILE%\\.caster\\filter\\words.txt",
             "caster log": "%USERPROFILE%\\.caster\\data\\log.txt",
-        }}
+        }
+    }
+
 
 control.non_ccr_app_rule(BringRule(), context=None, rdp=False, filter=True)
