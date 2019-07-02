@@ -26,7 +26,7 @@
     - `open file` -  `open('filename', 'r') as f:`
 - [Contributing / How can I help?](https://caster.readthedocs.io/en/latest/Contributing/)
 - Do you want to financially support Caster development? 
-Donate at [![Bountysource](https://www.bountysource.com/badge/team?team_id=407907&style=bounties_posted)](https://www.bountysource.com/teams/caster-dictation/bounties?utm_source=Bountysource&utm_medium=shield&utm_campaign=bounties_posted) 
+  Donate at [![Bountysource](https://www.bountysource.com/badge/team?team_id=407907&style=bounties_posted)](https://www.bountysource.com/teams/caster-dictation/bounties?utm_source=Bountysource&utm_medium=shield&utm_campaign=bounties_posted) 
 - [Making your own Dragonfly and Caster rules](https://caster.readthedocs.io/en/latest/readthedocs/Examples/Rule_Construction/) augmented by [Development Commands](https://caster.readthedocs.io/en/latest/readthedocs/CCR_languages_Quick_Reference/#VoiceDevCommands)
 - Need support or just curious? Join our community at [![Join the chat at https://gitter.im/synkarius/caster](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dictation-toolbox/home) and [Discord](https://discord.gg/9eAAsCJ) for voice chat.
 - The [Voice Index](https://caster.readthedocs.io/en/latest/readthedocs/Voice_Index/) is a curated source of information: Videos, Blogs, Repositories, Presentations, etc related to Dragonfly, voice programming, and accessibility.
@@ -35,7 +35,7 @@ Donate at [![Bountysource](https://www.bountysource.com/badge/team?team_id=40790
 
 - Configurable Settings in `C:\Users\%USERNAME%\.caster`
 
-- Customize Commands aka `Specs` and their actions via [simplified filter rules](https://caster.readthedocs.io/en/latest/readthedocs/CCR/#rule-filters-simplified) and [filter rules](https://caster.readthedocs.io/en/latest/readthedocs/CCR/#Rule-Filters)[code](https://github.com/dictation-toolbox/caster/tree/master/caster/user/filters/examples) (WIP).
+- Customize Commands aka `Specs` and their actions via [simplified filter rules](https://caster.readthedocs.io/en/latest/readthedocs/CCR/#rule-filters-simplified) and [filter rules](https://caster.readthedocs.io/en/latest/readthedocs/CCR/#Rule-Filters), Filter examples can be found in `.caster\filters\examples`(WIP).
 
 - Compatible Speech Recognition Engines
 
