@@ -12,11 +12,6 @@ from dragonfly.grammar.grammar_base import Grammar
 
 from castervoice.lib import settings
 from castervoice.lib.actions import Text
-from castervoice.lib.ccr.core.alphabet import Alphabet
-from castervoice.lib.ccr.core.nav import Navigation
-from castervoice.lib.ccr.core.numbers import Numbers
-from castervoice.lib.ccr.core.punctuation import Punctuation
-from castervoice.lib.ccr.python.python import Python
 from castervoice.lib.dfplus.hint.hintnode import NodeRule
 from castervoice.lib.dfplus.hint.nodes import css
 from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
@@ -139,6 +134,11 @@ class ComplexityTestRule(MergeRule):
 
 
 def core_and_python():
+    from castervoice.lib.ccr.core.alphabet import Alphabet
+    from castervoice.lib.ccr.core.nav import Navigation
+    from castervoice.lib.ccr.core.numbers import Numbers
+    from castervoice.lib.ccr.core.punctuation import Punctuation
+    from castervoice.lib.ccr.python.python import Python
     '''intended to mimic the average use case: '''
     return [Alphabet(), Navigation(), Numbers(), Punctuation(), Python()]
 
