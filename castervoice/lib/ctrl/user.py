@@ -35,17 +35,17 @@ class UserContentManager(object):
     def __init__(self):
         # self.rules = self.import_user_dir("get_rule", settings.SETTINGS["paths"]["USER_DIR"] + "/rules")
         # self.filters = self.import_user_dir("get_filter", settings.SETTINGS["paths"]["USER_DIR"] + "/filters")
-        self.caster_dir = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0].replace("\\", "/") + "/"
-        self.user_dir = settings.SETTINGS["paths"]["USER_DIR"] + "/"
+        self.caster_dir = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0].replace("\\", "/")
+        self.user_dir = settings.SETTINGS["paths"]["USER_DIR"]
         path.append(self.user_dir)
         self.ignore = ["__init__"]
-        self.search_depth = 3
+        self.search_depth = 4
 
     def load_rules(self):
-        self.import_dir(self.user_dir + "rules/", "rules", user=True)
-        self.import_dir(self.user_dir + "filters/", "filters")
-        self.import_dir(self.caster_dir + "castervoice/apps/", "castervoice.apps")
-        self.import_dir(self.caster_dir + "castervoice/lib/ccr/", "castervoice.lib.ccr")
+        self.import_dir(join(self.user_dir, "rules"), "rules", user=True)
+        self.import_dir(join(self.user_dir, "filters"), "filters")
+        self.import_dir(join(self.caster_dir, "castervoice", "apps"), "castervoice.apps")
+        self.import_dir(join(self.caster_dir, "castervoice", "lib", "ccr"), "castervoice.lib.ccr")
 
     def import_dir(self, path, namespace, user=False):
         if user:
@@ -58,9 +58,9 @@ class UserContentManager(object):
         #returns a list of Python files
         python_files = []
         for i in range(self.search_depth):
-            python_files.extend(glob.glob(path + ("*/"*i) + "*.py"))
+            python_files.extend(glob.glob(join(path, (("*" + os.path.sep)*i), "*.py")))
         modules = [
-            f.replace("\\", "/").replace(path, "").replace(".py", "").replace("/", ".")
+            f.replace(path + os.path.sep, "").replace(".py", "").replace(os.path.sep, ".")
             for f in python_files
             if not self.should_ignore(f)]
         if user:
@@ -79,13 +79,12 @@ class UserContentManager(object):
         for match in self.ignore:
             if filename.endswith("%s.py" % match):
                 return True
-        if "\\examples\\" in filename:
+        if os.path.sep + "examples" in filename:
             return True
         else:
             return False
 
     def gen_inits(self, arg, dirname, fnames):
-        print(fnames)
         if not "__init__.py" in fnames:
             print "Created __init__.py in : %s" % dirname
             with open(join(dirname, "__init__.py"), 'a+') as f:
