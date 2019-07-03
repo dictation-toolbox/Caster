@@ -25,6 +25,8 @@ class UserContentManager(object):
         self.import_dir(join(self.caster_dir, "apps"), "castervoice.apps")
         self.import_dir(join(self.caster_dir, "lib", "ccr"), "castervoice.lib.ccr")
         self.import_dir(join(self.caster_dir, "lib", "dev"), "castervoice.lib.dev")
+        self.import_module("castervoice.asynch.sikuli", "sikuli")
+        self.import_module("castervoice.asynch", "_hmc")
 
     def import_dir(self, path, namespace, user=False):
         if user:
