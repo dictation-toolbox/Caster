@@ -1,7 +1,4 @@
 from castervoice.lib.imports import *
-from castervoice.apps.gitbash import terminal_context
-from castervoice.apps.file_dialogue import dialogue_context
-
 
 class BringRule(SelfModifyingRule):
     pronunciation = "bring me"
@@ -39,8 +36,8 @@ class BringRule(SelfModifyingRule):
     def __init__(self):
         # Contexts
         self.browser_context = AppContext(["chrome", "firefox"])
-        self.explorer_context = AppContext("explorer.exe") | dialogue_context
-        self.terminal_context = terminal_context
+        self.explorer_context = AppContext("explorer.exe") | context.dialogue_context
+        self.terminal_context = context.terminal_context
         # Paths
         self.config_path   = settings.SETTINGS["paths"]["BRINGME_PATH"]
         self.terminal_path = settings.SETTINGS["paths"]["TERMINAL_PATH"]

@@ -3,7 +3,7 @@ import time
 from dragonfly import AppContext, Pause
 
 from castervoice.lib import utilities, settings
-from castervoice.lib.actions import Key 
+from castervoice.lib.actions import Key
 from castervoice.lib.clipboard import Clipboard
 
 # Override dragonfly.AppContext with aenea.ProxyAppContext if the 'use_aenea'
@@ -15,6 +15,21 @@ if settings.SETTINGS["miscellaneous"]["use_aenea"]:
         print("Unable to import aenea.ProxyAppContext. dragonfly.AppContext "
               "will be used instead.")
 
+terminal_context = AppContext(executable="\\sh.exe") | \
+    AppContext(executable="\\bash.exe") | \
+    AppContext(executable="\\cmd.exe") | \
+    AppContext(executable="\\mintty.exe") | \
+    AppContext(executable="\\powershell.exe")
+
+
+dialogue_context = AppContext(title="open") | \
+    AppContext(title="save") | \
+    AppContext(title="select")
+
+jetbrains_context = AppContext(executable="idea", title="IntelliJ") \
+          | AppContext(executable="idea64", title="IntelliJ") \
+          | AppContext(executable="studio64") \
+          | AppContext(executable="pycharm")
 
 def _target_is_character(target):
     '''determines if the target is a single character'''
@@ -110,7 +125,7 @@ def read_selected_without_altering_clipboard(same_is_okay=False, pause_time="0")
     (1, None) - indicates no change
     (2, None) - indicates clipboard error
     '''
-    
+
     time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/
                1000.)  # time for previous keypress to execute
     cb = Clipboard(from_system=True)
