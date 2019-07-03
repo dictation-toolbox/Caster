@@ -18,6 +18,7 @@ theme:
 
 nav:
     - Home: README.md
+    - Getting Started: CasterQuickReference.md
     - License: LICENSE.md
     - Contributing: Contributing.md
     - Code of Conduct: CODE_OF_CONDUCT.md
