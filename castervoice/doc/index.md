@@ -35,7 +35,7 @@ Donate at [![Bountysource](https://www.bountysource.com/badge/team?team_id=40790
 
 - Configurable Settings in `C:\Users\%USERNAME%\.caster`
 
-- Customize Commands aka `Specs` and their actions via [simplified filter rules](https://caster.readthedocs.io/en/latest/readthedocs/CCR/#rule-filters-simplified) and [filter rules](https://caster.readthedocs.io/en/latest/readthedocs/CCR/#Rule-Filters)[code](https://github.com/dictation-toolbox/caster/tree/master/caster/user/filters/examples) (WIP).
+- Customize Commands aka `Specs` and their actions via [simplified filter rules](https://caster.readthedocs.io/en/latest/readthedocs/CCR/#simplified-filter-rules) and [filter rules](https://caster.readthedocs.io/en/latest/readthedocs/CCR/#Rule-Filters)[code](https://github.com/dictation-toolbox/caster/tree/master/caster/user/filters/examples) (WIP).
 
 - Compatible Speech Recognition Engines
 
