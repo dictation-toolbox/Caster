@@ -127,7 +127,7 @@ At the end of the PIP install instructions a CMD window will guide you of what t
   Recognition control panel under Advanced Options.
   ```
 
-  - To fix go to: [Speech Recognition” Shows “Change Recognizer Language”](https://www.askvg.com/fix-speech-recognition-shows-change-recognizer-language-error-in-windows-vista-and-7/) and follow the instructions.
+  - To fix go to: [Windows Seven and Vista”](https://www.askvg.com/fix-speech-recognition-shows-change-recognizer-language-error-in-windows-vista-and-7/), [Windows 10](https://www.tenforums.com/tutorials/120631-change-speech-recognition-language-windows-10-a.html) and follow the instructions.
 
 **Dragonfly**
 
@@ -177,8 +177,6 @@ The following install videos are a out of date but remain for reference.
 - [Dragonfly](https://www.youtube.com/watch?v=iNAsV4pcnEA) 
 
 - [Caster](https://www.youtube.com/watch?v=wjSwB4cpMDI)
-
-  
 
 **Alternative Speech Secognition Engines.**
 
