@@ -6,13 +6,24 @@ This compatibility checker mostly works the way Caster's legacy checker did:
 it looks for a single incompatibility and then returns early. This has
 the benefit of being faster than DetailCompatibilityChecker.
 '''
+
 class SimpleCompatibilityChecker(BaseCompatibilityChecker):
     
-    def compatibility_check(self, current_rules, new_rule):
-        new_specs = new_rule.mapping_copy().keys()
-        for current_rule in current_rules:
-            current_rule_specs = current_rule.mapping_copy().keys()
-            for new_spec in new_specs:
-                if new_spec in current_rule_specs:
-                    return CompatibilityResult(False)
-        return CompatibilityResult(True)
+    def _check(self, mergerules):
+        results = []
+        specs_set = set()
+        for new_rule in mergerules:
+            new_specs = new_rule.mapping_copy().keys()
+            incompatible_spec = self._find_first_incompatible_spec(specs_set, new_specs)
+            if incompatible_spec is not None:
+                results.append(CompatibilityResult(new_rule, False, [incompatible_spec]))
+            else:
+                results.append(CompatibilityResult(new_rule, True))
+                specs_set.update(new_specs)
+        return results
+        
+    def _find_first_incompatible_spec(self, specs_set, new_specs):
+        for new_spec in new_specs:
+            if new_spec in specs_set:
+                return new_spec
+        return None

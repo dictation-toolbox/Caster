@@ -191,29 +191,32 @@ class CCRMerger(object):
                 for rule in self._global_rules.values() \
                 if rule.ID in composite]
 
-    def _compatibility_merge(self, merge_pair, base, rule):
-        '''MergeRule.merge always returns a copy, so there's
-        no need to worry about the originals getting modified'''
-        if merge_pair.check_compatibility==False or \
-        base is None or \
-        base.compatibility_check(rule):
-            base = rule if base is None else base.merge(rule)
-        else:
-            # figure out which MergeRules aren't compatible
-            composite = base.composite.copy(
-            )  # composite is a set of the ids of the rules which make up this rule
-            for ID in rule.compatible:
-                if not rule.compatible[ID]: composite.discard(ID)
-            # rebuild a base from remaining MergeRules
-            base = None
-            for _rule in self._get_rules_by_composite(composite):
-                base = _rule if base is None else base.merge(_rule)
-            # merge in the new rule
-            if base is not None:
-                base = base.merge(rule)
-            else:
-                base = rule
-        return base
+    '''
+    This (_compatibility_merge) is now handled by ClassicMergingStrategy
+    '''
+#     def _compatibility_merge(self, merge_pair, base, rule):
+#         '''MergeRule.merge always returns a copy, so there's
+#         no need to worry about the originals getting modified'''
+#         if merge_pair.check_compatibility==False or \
+#         base is None or \
+#         base.compatibility_check(rule):
+#             base = rule if base is None else base.merge(rule)
+#         else:
+#             # figure out which MergeRules aren't compatible
+#             composite = base.composite.copy(
+#             )  # composite is a set of the ids of the rules which make up this rule
+#             for ID in rule.compatible:
+#                 if not rule.compatible[ID]: composite.discard(ID)
+#             # rebuild a base from remaining MergeRules
+#             base = None
+#             for _rule in self._get_rules_by_composite(composite):
+#                 base = _rule if base is None else base.merge(_rule)
+#             # merge in the new rule
+#             if base is not None:
+#                 base = base.merge(rule)
+#             else:
+#                 base = rule
+#         return base
 
     def _add_grammar(self, rule, ccr=False, context=None):
         name = str(rule)

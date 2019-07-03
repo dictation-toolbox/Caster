@@ -5,9 +5,13 @@ TODO: --- this needs to be reworked so that it works with merging an ordered gro
 
 '''
 class CompatibilityResult(object):
-    def __init__(self, compatible, incompatible_specs=None):
+    def __init__(self, mergerule, compatible, incompatible_specs=None):
+        self._mergerule = mergerule
         self._compatible = compatible
         self._incompatible_specs = incompatible_specs
+    
+    def rule(self):
+        return self._mergerule
     
     def is_compatible(self):
         return self._compatible
