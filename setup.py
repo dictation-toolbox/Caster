@@ -39,7 +39,7 @@ class dev_install(develop):
     def run(self):
         develop.run(self)
 
-with open("ReadMe.md", "r") as fh:
+with open("docs/README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
