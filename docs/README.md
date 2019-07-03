@@ -2,7 +2,7 @@
 
 [Caster](https://github.com/dictation-toolbox/Caster)  is a collection of tools aimed at enabling programming and accessibility entirely by voice built upon the [Dragonfly](https://github.com/dictation-toolbox/dragonfly) API.
 
-**Note for PyPi Users**: The PIP package is (_Alpha_). Do not use the PIP install. Alternatively use the [this commit](https://github.com/dictation-toolbox/Caster/tree/744f2bbc27834de03f4a38d38f2e64eed4a2fc15) with classic install for the best feature experience.
+**Note for PyPi Users**: The PIP package is (_Alpha_). Do not use the PIP install. Alternatively use the [Master Branch](https://gihttps://github.com/dictation-toolbox/Caster) with classic install for the best feature experience.
 
 - Videos by the Caster Community.
   - [Caster Demo](https://www.youtube.com/watch?v=oIwh3z2jXD4)
@@ -26,7 +26,7 @@
     - `open file` -  `open('filename', 'r') as f:`
 - [Contributing / How can I help?](https://caster.readthedocs.io/en/latest/Contributing/)
 - Do you want to financially support Caster development? 
-Donate at [![Bountysource](https://www.bountysource.com/badge/team?team_id=407907&style=bounties_posted)](https://www.bountysource.com/teams/caster-dictation/bounties?utm_source=Bountysource&utm_medium=shield&utm_campaign=bounties_posted) 
+  Donate at [![Bountysource](https://www.bountysource.com/badge/team?team_id=407907&style=bounties_posted)](https://www.bountysource.com/teams/caster-dictation/bounties?utm_source=Bountysource&utm_medium=shield&utm_campaign=bounties_posted) 
 - [Making your own Dragonfly and Caster rules](https://caster.readthedocs.io/en/latest/readthedocs/Examples/Rule_Construction/) augmented by [Development Commands](https://caster.readthedocs.io/en/latest/readthedocs/CCR_languages_Quick_Reference/#VoiceDevCommands)
 - Need support or just curious? Join our community at [![Join the chat at https://gitter.im/synkarius/caster](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dictation-toolbox/home) and [Discord](https://discord.gg/9eAAsCJ) for voice chat.
 - The [Voice Index](https://caster.readthedocs.io/en/latest/readthedocs/Voice_Index/) is a curated source of information: Videos, Blogs, Repositories, Presentations, etc related to Dragonfly, voice programming, and accessibility.
@@ -35,7 +35,7 @@ Donate at [![Bountysource](https://www.bountysource.com/badge/team?team_id=40790
 
 - Configurable Settings in `C:\Users\%USERNAME%\.caster`
 
-- Customize Commands aka `Specs` and their actions via [simplified filter rules](https://caster.readthedocs.io/en/latest/readthedocs/CCR/#rule-filters-simplified) and [filter rules](https://caster.readthedocs.io/en/latest/readthedocs/CCR/#Rule-Filters)[code](https://github.com/dictation-toolbox/caster/tree/master/caster/user/filters/examples) (WIP).
+- Customize Commands aka `Specs` and their actions via [Simplified Filter Rules](https://caster.readthedocs.io/en/latest/readthedocs/CCR/#rule-filters-simplified) and [Filter Rules](https://caster.readthedocs.io/en/latest/readthedocs/CCR/#Rule-Filters) (WIP). Filter Rules code examples can be found in `.caster\filters\examples`.
 
 - Compatible Speech Recognition Engines
 
@@ -77,5 +77,3 @@ Donate at [![Bountysource](https://www.bountysource.com/badge/team?team_id=40790
 
   - The [Context Stack](https://caster.readthedocs.io/en/latest/readthedocs/ContextStack/) - Create asynchronous and context seeking commands
   - Spec reduction via [NodeRule](https://caster.readthedocs.io/en/latest/readthedocs/NodeRule/) (WIP)
-
-  

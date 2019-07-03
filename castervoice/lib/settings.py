@@ -199,8 +199,8 @@ _DEFAULT_SETTINGS = {
             _USER_DIR + "/data/ccr.toml",
         "DLL_PATH":
             BASE_PATH + "/lib/dll/",
-        "FILTER_WORDS_DEFS_PATH":
-            _USER_DIR + "/data/words.txt",
+        "SIMPLIFIED_FILTER_RULES_PATH":
+            _USER_DIR + "/filters/words.txt",
         "LOG_PATH":
             _USER_DIR + "/log.txt",
         "RECORDED_MACROS_PATH":

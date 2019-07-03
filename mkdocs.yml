@@ -9,17 +9,18 @@ google_analytics: null
 site_name: Caster
 site_author: dictation-toolbox
 site_url: https://caster.readthedocs.io
-docs_dir: castervoice/doc
+docs_dir: docs
 repo_url: https://github.com/dictation-toolbox/Caster/
-edit_uri: tree/develop/castervoice/doc
+edit_uri: tree/master/docs
 
 theme:
     name: readthedocs
 
 nav:
-    - Home: index.md
+    - Home: README.md
     - License: LICENSE.md
     - Contributing: Contributing.md
+    - Code of Conduct: CODE_OF_CONDUCT.md
     - Installation: Installation.md
     - Documentation:
         - Aenea: readthedocs/Aenea.md
