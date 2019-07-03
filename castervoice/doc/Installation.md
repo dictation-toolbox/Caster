@@ -113,6 +113,22 @@ At the end of the PIP install instructions a CMD window will guide you of what t
 
 - The [qh.antenna troubleshooting guide](https://qh.antenna.nl/unimacro/installation/problemswithinstallation.html) has further solutions for NatLink Issues.
 
+**Windows Speech Recognition (WSR)** 
+
+- The WSR User interface does not show up just a terminal window and WSR commands do not work.
+
+  This [Issue]() changed how WSR was loaded in dragonfly `Sapi5SharedEngine containing rules with <n> do not load (-2147352567, 'Exception occurred.', (0, None, None, None, 0, -2147200940), None)` As a workaround  `Sapi5InProcEngine ` was used which does not load the user interface or built-in WSR commands. 
+
+- When starting up or setting up WSR you receive the following error message. 
+
+  ```
+  The recognizer language must match the language of the user 
+  interface. Please change the recognizer language in the Speech 
+  Recognition control panel under Advanced Options.
+  ```
+
+  - To fix go to: [Speech Recognition” Shows “Change Recognizer Language”](https://www.askvg.com/fix-speech-recognition-shows-change-recognizer-language-error-in-windows-vista-and-7/) and follow the instructions.
+
 **Dragonfly**
 
 - Fix TypeError: command must be a non-empty string, not ['C:\\Python27\\Scripts\\pip.exe', 'search', 'castervoice']
