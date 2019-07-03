@@ -12,7 +12,7 @@ class FileDialogueRule(MergeRule):
         "organize": R(Key("c-l, tab:2")),
         "(left | navigation) pane": R(Key("c-l, tab:3")),
         "(center|file|files|folder) (list | pane)": R(Key("c-l, tab:4")),
-        "sort [headings]": R(Key("c-l, tab:5")), 
+        "sort [headings]": R(Key("c-l, tab:5")),
         "[file] name": R(Key("a-n")),
         "file type": R(Key("c-l, tab:7")),
 
@@ -24,10 +24,9 @@ class FileDialogueRule(MergeRule):
     }
 
 
-dialogue_names = [
-    "open",
-    "save",
-    "select",
-]
-context = AppContext(title=dialogue_names)
-control.non_ccr_app_rule(FileDialogueRule(), context=context)
+dialogue_context = AppContext(title=[
+        "open",
+        "save",
+        "select",
+    ])
+control.non_ccr_app_rule(FileDialogueRule(), context=dialogue_context)

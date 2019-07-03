@@ -11,7 +11,7 @@ site_author: dictation-toolbox
 site_url: https://caster.readthedocs.io
 docs_dir: castervoice/doc
 repo_url: https://github.com/dictation-toolbox/Caster/
-edit_uri: tree/develop/castervoice/doc
+edit_uri: tree/master/castervoice/doc
 
 theme:
     name: readthedocs

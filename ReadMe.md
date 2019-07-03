@@ -1,19 +1,18 @@
-# Caster [![Build Status](https://travis-ci.org/dictation-toolbox/Caster.svg?branch=develop)](https://travis-ci.org/dictation-toolbox/Caster)
+# Caster [![Build Status](https://travis-ci.org/dictation-toolbox/Caster.svg?branch=master)](https://travis-ci.org/dictation-toolbox/Caster)
 
 [Caster](https://github.com/dictation-toolbox/Caster)  is a collection of tools aimed at enabling programming and accessibility entirely by voice built upon the [Dragonfly](https://github.com/dictation-toolbox/dragonfly) API.
 
-**Note for PyPi Users**: The PIP package is (_Beta_) based on the Caster development branch. Do not use the PIP install before reading these instructions as they contain prerequisites.
-Alternatively use the [master branch](https://github.com/dictation-toolbox/Caster) with classic install for  the best feature experience.
+**Note for PyPi Users**: The PIP package is (_Alpha_). Do not use the PIP install. Alternatively use the [Master Branch](https://gihttps://github.com/dictation-toolbox/Caster) with classic install for the best feature experience.
 
 - Videos by the Caster Community.
   - [Caster Demo](https://www.youtube.com/watch?v=oIwh3z2jXD4)
   - [VimGolf and Project Euler](https://www.youtube.com/watch?v=T1bKAqDhH_E)
   - [Dictating maths into scientific notebook](https://www.youtube.com/watch?v=oq8EoPu0cGY&t=3s) and [Dictating math by voice using Caster](https://www.youtube.com/watch?v=z-iHvPmjcas)
 - [Instructions for installing](https://caster.readthedocs.io/en/latest/Installation/)
-- Documentation on Caster [[ReadTheDocs](https://caster.readthedocs.io/en/latest/)] [[YouTube](https://www.youtube.com/channel/UC2qZzmCj_5ZKkTa3i9X1LCg)] and Dragonfly [[ReadTheDocs](https://dragonfly2.readthedocs.io/en/latest/)] 
+- Documentation on Caster [[ReadTheDocs](https://caster.readthedocs.io/en/latest/)] and Dragonfly [[ReadTheDocs](https://dragonfly2.readthedocs.io/en/latest/)] 
 - [How to Speak Code](https://caster.readthedocs.io/en/latest/readthedocs/Examples/Speaking/Examples/) - Example Document
 - Caster Command Reference Guides 
-  - [Caster](https://github.com/dictation-toolbox/Caster/blob/develop/CasterQuickReference.pdf) - commands to get started with. Universal navigation and editing - These commands are active all the time, and provide input commands for letters, numbers and punctuation, as well as the ability to easily manipulate windows and text. 
+  - [Caster](https://github.com/dictation-toolbox/Caster/blob/master/CasterQuickReference.pdf) - commands to get started with. Universal navigation and editing - These commands are active all the time, and provide input commands for letters, numbers and punctuation, as well as the ability to easily manipulate windows and text. 
     - `window right` moves the active window to the right-hand side of the screen.
     - `prekris` inserts a pair of brackets `()` and moves the cursor inside them.
     - `shackle` selects the current line.
@@ -27,7 +26,7 @@ Alternatively use the [master branch](https://github.com/dictation-toolbox/Caste
     - `open file` -  `open('filename', 'r') as f:`
 - [Contributing / How can I help?](https://caster.readthedocs.io/en/latest/Contributing/)
 - Do you want to financially support Caster development? 
-Donate at [![Bountysource](https://www.bountysource.com/badge/team?team_id=407907&style=bounties_posted)](https://www.bountysource.com/teams/caster-dictation/bounties?utm_source=Bountysource&utm_medium=shield&utm_campaign=bounties_posted) 
+  Donate at [![Bountysource](https://www.bountysource.com/badge/team?team_id=407907&style=bounties_posted)](https://www.bountysource.com/teams/caster-dictation/bounties?utm_source=Bountysource&utm_medium=shield&utm_campaign=bounties_posted) 
 - [Making your own Dragonfly and Caster rules](https://caster.readthedocs.io/en/latest/readthedocs/Examples/Rule_Construction/) augmented by [Development Commands](https://caster.readthedocs.io/en/latest/readthedocs/CCR_languages_Quick_Reference/#VoiceDevCommands)
 - Need support or just curious? Join our community at [![Join the chat at https://gitter.im/synkarius/caster](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dictation-toolbox/home) and [Discord](https://discord.gg/9eAAsCJ) for voice chat.
 - The [Voice Index](https://caster.readthedocs.io/en/latest/readthedocs/Voice_Index/) is a curated source of information: Videos, Blogs, Repositories, Presentations, etc related to Dragonfly, voice programming, and accessibility.
@@ -36,7 +35,7 @@ Donate at [![Bountysource](https://www.bountysource.com/badge/team?team_id=40790
 
 - Configurable Settings in `C:\Users\%USERNAME%\.caster`
 
-- Customize Commands aka `Specs` and their actions via [simplified filter rules](https://caster.readthedocs.io/en/latest/readthedocs/CCR/#rule-filters-simplified) and [filter rules](https://caster.readthedocs.io/en/latest/readthedocs/CCR/#Rule-Filters)[code](https://github.com/dictation-toolbox/caster/tree/master/caster/user/filters/examples) (WIP).
+- Customize Commands aka `Specs` and their actions via [Simplified Filter Rules](https://caster.readthedocs.io/en/latest/readthedocs/CCR/#rule-filters-simplified) and [Filter Rules](https://caster.readthedocs.io/en/latest/readthedocs/CCR/#Rule-Filters) (WIP). Filter Rules code examples can be found in `.caster\filters\examples`.
 
 - Compatible Speech Recognition Engines
 
@@ -56,7 +55,7 @@ Donate at [![Bountysource](https://www.bountysource.com/badge/team?team_id=40790
   - Git Client:  Github Desktop 
   - Applications: Foxit Reader, Gitter, fman, Total Commander, Typora, Microsoft Word, Outlook, and Excel
 
-- [Editing and Navigation](https://github.com/dictation-toolbox/Caster/blob/develop/CasterQuickReference.pdf)
+- [Editing and Navigation](https://github.com/dictation-toolbox/Caster/blob/master/CasterQuickReference.pdf)
 
   - Four additional [mouse navigation modes](https://caster.readthedocs.io/en/latest/readthedocs/Mouse/): curse, douglas, legion, and rainbow - [Demo](https://www.youtube.com/watch?v=UISjQBMmQ-I&feature=youtu.be)
   - [Text navigation commands](https://caster.readthedocs.io/en/latest/readthedocs/Text_Manipulation/) - [Demo](https://www.youtube.com/watch?v=xj8IzNlfM70), Text formatting commands
@@ -78,5 +77,3 @@ Donate at [![Bountysource](https://www.bountysource.com/badge/team?team_id=40790
 
   - The [Context Stack](https://caster.readthedocs.io/en/latest/readthedocs/ContextStack/) - Create asynchronous and context seeking commands
   - Spec reduction via [NodeRule](https://caster.readthedocs.io/en/latest/readthedocs/NodeRule/) (WIP)
-
-  
