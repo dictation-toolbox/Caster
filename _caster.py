@@ -53,6 +53,8 @@ _NEXUS = control.nexus()
 from castervoice.lib import navigation
 navigation.initialize_clipboard(_NEXUS)
 
+from castervoice.asynch.sikuli import sikuli
+
 from castervoice.lib.actions import Key
 from castervoice.lib.terminal import TerminalCommand
 from castervoice.lib.dfplus.state.short import R

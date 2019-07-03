@@ -63,7 +63,6 @@ class TestMerger(TestNexus):
         self.assertEqual(len(self.nexus.merger.global_rule_names()), 3)
         self.assertEqual(len(self.nexus.merger.selfmod_rule_names()), 1)
         self.assertEqual(len(self.nexus.merger.app_rule_names()), 1)
-        self.assertRaises(Exception, lambda: self.nexus.merger.add_global_rule(Java()))
 
     def test_rule_activation(self):
         bash = Bash()
