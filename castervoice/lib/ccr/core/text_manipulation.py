@@ -70,15 +70,11 @@ class TextManipulation(MergeRule):
             R(Function(text_manipulation_functions.move_until_phrase,
                        dict(dictation="phrase")),
                rdescript="Text Manipulation: move to chosen phrase to the left or right of the cursor"),
-        "(go | move) <direction> [<before_after>] [<number_of_lines_to_search>] [<occurrence_number>] <character_sequence> over":
+        "(go | move) <direction> [<before_after>] [<number_of_lines_to_search>] [<occurrence_number>] <character_sequence> [over]":
             Function(lambda direction, before_after, number_of_lines_to_search, occurrence_number, character_sequence:
              text_manipulation_functions.move_until_phrase(direction, before_after,
              "".join(character_sequence), number_of_lines_to_search, occurrence_number)),
-        "(go | move) <direction> [<number_of_lines_to_search>] [<before_after>] [<occurrence_number>] <single_character>":
-            R(Function(text_manipulation_functions.move_until_phrase,
-                       dict(single_character="phrase")),
-               rdescript="Text Manipulation: move to chosen phrase to the left or right of the cursor"),
-        
+
         # select text or character
         "grab <direction> [<number_of_lines_to_search>] [<occurrence_number>] <dictation>":
             R(Function(text_manipulation_functions.select_phrase,
@@ -106,7 +102,7 @@ class TextManipulation(MergeRule):
     character_choice_object = Choice("character_choice", character_dict)
 
     extras = [
-        Repetition(character_choice_object, min=2, max=3, name="character_sequence"),
+        Repetition(character_choice_object, min=1, max=3, name="character_sequence"),
         Dictation("dict"),
         Dictation("dictation"),
         Dictation("dictation2"),

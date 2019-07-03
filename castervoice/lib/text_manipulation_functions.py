@@ -8,7 +8,6 @@ from castervoice.lib.ccr.core.punctuation import text_punc_dict,  double_text_pu
 from castervoice.lib.alphanumeric import caster_alphabet
 
 
-
 new_text_punc_dict = copy.deepcopy(text_punc_dict)
 new_text_punc_dict.update(caster_alphabet)
 character_dict = new_text_punc_dict
@@ -21,8 +20,7 @@ def make_list_of_permutations_up_to_length(base_list, max_length):
         list_of_permutations_of_fixed_length = ["".join(permutation) for permutation in itertools.product(base_list, repeat=i)]
         result.extend(list_of_permutations_of_fixed_length)
     return result
-character_list = make_list_of_permutations_up_to_length(character_list, 2)
-
+character_list = make_list_of_permutations_up_to_length(character_list, 3)
 
 contexts = {
     "texstudio": AppContext(executable="texstudio"),
@@ -104,9 +102,14 @@ def text_manipulation_paste(text, application):
 
 def select_text_and_return_it(direction, number_of_lines_to_search, application):
     if direction == "left":
-        Key("s-home, s-up:%d, s-home" %number_of_lines_to_search).execute()
+        if number_of_lines_to_search > 0:
+            Key("s-up:%d" %number_of_lines_to_search).execute()
+        Key("s-home").execute()
     if direction == "right":    
-        Key("s-end, s-down:%d, s-end" %number_of_lines_to_search).execute()
+        if number_of_lines_to_search > 0:
+            Key("s-down:%d" %number_of_lines_to_search).execute()
+        Key("s-end").execute()
+        
     selected_text = text_manipulation_copy(application)
     if selected_text == None:
         # failed to copy
@@ -289,7 +292,7 @@ def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search
             before_after = "after"
         if direction == "right":
             before_after = "before"
-
+    
     selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
     if not selected_text:
         return
