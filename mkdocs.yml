@@ -20,6 +20,7 @@ nav:
     - Home: README.md
     - License: LICENSE.md
     - Contributing: Contributing.md
+    - Code of Conduct: CODE_OF_CONDUCT.md
     - Installation: Installation.md
     - Documentation:
         - Aenea: readthedocs/Aenea.md
