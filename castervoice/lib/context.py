@@ -15,22 +15,6 @@ if settings.SETTINGS["miscellaneous"]["use_aenea"]:
         print("Unable to import aenea.ProxyAppContext. dragonfly.AppContext "
               "will be used instead.")
 
-terminal_context = AppContext(executable="\\sh.exe") | \
-    AppContext(executable="\\bash.exe") | \
-    AppContext(executable="\\cmd.exe") | \
-    AppContext(executable="\\mintty.exe") | \
-    AppContext(executable="\\powershell.exe")
-
-
-dialogue_context = AppContext(title="open") | \
-    AppContext(title="save") | \
-    AppContext(title="select")
-
-jetbrains_context = AppContext(executable="idea", title="IntelliJ") \
-          | AppContext(executable="idea64", title="IntelliJ") \
-          | AppContext(executable="studio64") \
-          | AppContext(executable="pycharm")
-
 def _target_is_character(target):
     '''determines if the target is a single character'''
     if len(target) == 1:

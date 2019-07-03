@@ -100,9 +100,9 @@ class JetbrainsRule(MergeRule):
 
     defaults = {"n": 1, "mim": ""}
 
-
 context = AppContext(executable="idea", title="IntelliJ") \
           | AppContext(executable="idea64", title="IntelliJ") \
           | AppContext(executable="studio64") \
           | AppContext(executable="pycharm")
+
 control.non_ccr_app_rule(JetbrainsRule(), context=context)

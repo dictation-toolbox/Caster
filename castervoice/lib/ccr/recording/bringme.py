@@ -36,8 +36,8 @@ class BringRule(SelfModifyingRule):
     def __init__(self):
         # Contexts
         self.browser_context = AppContext(["chrome", "firefox"])
-        self.explorer_context = AppContext("explorer.exe") | context.dialogue_context
-        self.terminal_context = context.terminal_context
+        self.explorer_context = AppContext("explorer.exe") | dialogue_context
+        self.terminal_context = terminal_context
         # Paths
         self.config_path   = settings.SETTINGS["paths"]["BRINGME_PATH"]
         self.terminal_path = settings.SETTINGS["paths"]["TERMINAL_PATH"]
@@ -179,5 +179,19 @@ class BringRule(SelfModifyingRule):
         }
     }
 
+
+terminal_context = AppContext(executable=[
+    "\\sh.exe",
+    "\\bash.exe",
+    "\\cmd.exe",
+    "\\mintty.exe",
+    "\\powershell.exe"
+    ])
+
+dialogue_context = AppContext(title=[
+        "open",
+        "save",
+        "select",
+    ])
 
 control.non_ccr_app_rule(BringRule(), context=None, rdp=False, filter=True)
