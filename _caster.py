@@ -50,7 +50,6 @@ navigation.initialize_clipboard(_NEXUS)
 from castervoice.lib.dfplus.state.short import R
 from castervoice.lib.dfplus.additions import IntegerRefST
 
-from castervoice.lib.dfplus.merge.mergepair import MergeInf
 from castervoice.lib.ccr import *
 from castervoice.lib.ccr.recording.again import Again
 from castervoice.lib.ccr.recording.bringme import bring_rule
@@ -232,7 +231,7 @@ class MainRule(MergeRule):
             R(Function(_NEXUS.merger.selfmod_rule_changer(), save=True),
               rdescript="Toggle sm-CCR Module"),
         "enable caster":
-            R(Function(_NEXUS.merger.merge, time=MergeInf.RUN, name="numbers"),
+            R(Function(_NEXUS.merger.merge, time=None, name="numbers"),
               rdescript="Enable CCR rules"),
         "disable caster":
             R(Function(_NEXUS.merger.ccr_off), rdescript="Disable CCR rules"),

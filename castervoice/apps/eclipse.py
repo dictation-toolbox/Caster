@@ -8,7 +8,7 @@ from dragonfly.actions.action_paste import Paste
 from dragonfly.grammar.elements import Choice
 
 from castervoice.lib import context as CONTEXT, alphanumeric
-from castervoice.lib import control, utilities
+from castervoice.lib import utilities
 from castervoice.lib import settings
 from castervoice.lib.actions import Key, Text
 from castervoice.lib.context import AppContext

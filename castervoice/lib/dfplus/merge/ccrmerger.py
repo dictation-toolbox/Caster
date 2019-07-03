@@ -250,21 +250,22 @@ class CCRMerger(object):
             if self._config[CCRMerger._GLOBAL].get(r)][-100:]
         self._config[CCRMerger._ORDER] = OrderedDict(izip_longest(enabled, [])).keys()
 
-    def _apply_format(self, name):
-        if name in settings.SETTINGS["formats"]:
-            if 'text_format' in settings.SETTINGS["formats"][name]:
-                cap, spacing = settings.SETTINGS["formats"][name]['text_format']
-                textformat.format.set_text_format(cap, spacing)
-            else:
-                textformat.format.clear_text_format()
-            if 'secondary_format' in settings.SETTINGS["formats"][name]:
-                cap, spacing = settings.SETTINGS["formats"][name]['secondary_format']
-                textformat.secondary_format.set_text_format(cap, spacing)
-            else:
-                textformat.secondary_format.clear_text_format()
-        else:
-            textformat.format.clear_text_format()
-            textformat.secondary_format.clear_text_format()
+    '''_apply_format now handled via NonTransformingGlobalFormatHook'''
+#     def _apply_format(self, name):
+#         if name in settings.SETTINGS["formats"]:
+#             if 'text_format' in settings.SETTINGS["formats"][name]:
+#                 cap, spacing = settings.SETTINGS["formats"][name]['text_format']
+#                 textformat.format.set_text_format(cap, spacing)
+#             else:
+#                 textformat.format.clear_text_format()
+#             if 'secondary_format' in settings.SETTINGS["formats"][name]:
+#                 cap, spacing = settings.SETTINGS["formats"][name]['secondary_format']
+#                 textformat.secondary_format.set_text_format(cap, spacing)
+#             else:
+#                 textformat.secondary_format.clear_text_format()
+#         else:
+#             textformat.format.clear_text_format()
+#             textformat.secondary_format.clear_text_format()
 
     def merge(self, time, name=None, enable=True, save=False):
         '''combines MergeRules, SelfModifyingRules;

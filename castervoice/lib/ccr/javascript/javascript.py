@@ -6,7 +6,6 @@ Created on Sep 2, 2015
 from castervoice.lib import control
 from castervoice.lib.actions import Key, Text
 from castervoice.lib.ccr.standard import SymbolSpecs
-from castervoice.lib.dfplus.additions import SelectiveAction
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
 
@@ -62,8 +61,7 @@ class Javascript(MergeRule):
         # (no imports in javascript)
         #
         SymbolSpecs.FUNCTION:
-            R(Text("function TOKEN() {};") + Key("left:2, enter") +
-              SelectiveAction(Key("enter, up"), ["AptanaStudio3.exe"]),
+            R(Text("function TOKEN() {};") + Key("left:2, enter"),
               rdescript="Javascript: Function"),
 	    SymbolSpecs.CLASS:
             R(Text("class  {}") + Key("left/5:3"), rdescript="Javascript: Class"),
