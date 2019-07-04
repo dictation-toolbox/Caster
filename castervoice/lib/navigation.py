@@ -172,42 +172,18 @@ def kill_grids_and_wait(nexus):
         time.sleep(0.1)
 
 
-def left_click(nexus):
+def mouse_click(nexus, button):
     kill_grids_and_wait(nexus)
-    windll.user32.mouse_event(0x00000002, 0, 0, 0, 0)
-    windll.user32.mouse_event(0x00000004, 0, 0, 0, 0)
+    Mouse(button).execute()
 
 
-def right_click(nexus):
-    kill_grids_and_wait(nexus)
-    windll.user32.mouse_event(0x00000008, 0, 0, 0, 0)
-    windll.user32.mouse_event(0x00000010, 0, 0, 0, 0)
-
-
-def middle_click(nexus):
-    kill_grids_and_wait(nexus)
-    windll.user32.mouse_event(0x00000020, 0, 0, 0, 0)
-    windll.user32.mouse_event(0x00000040, 0, 0, 0, 0)
-
-
-def left_down(nexus):
-    kill_grids_and_wait(nexus)
-    windll.user32.mouse_event(0x00000002, 0, 0, 0, 0)
-
-
-def left_up(nexus):
-    kill_grids_and_wait(nexus)
-    windll.user32.mouse_event(0x00000004, 0, 0, 0, 0)
-
-
-def right_down(nexus):
-    kill_grids_and_wait(nexus)
-    windll.user32.mouse_event(0x00000008, 0, 0, 0, 0)
-
-
-def right_up(nexus):
-    kill_grids_and_wait(nexus)
-    windll.user32.mouse_event(0x00000010, 0, 0, 0, 0)
+left_click   = lambda nexus: mouse_click(nexus, "left")
+right_click  = lambda nexus: mouse_click(nexus, "right")
+middle_click = lambda nexus: mouse_click(nexus, "middle")
+left_down    = lambda nexus: mouse_click(nexus, "left:down")
+left_up      = lambda nexus: mouse_click(nexus, "left:up")
+right_down   = lambda nexus: mouse_click(nexus, "right:down")
+right_up     = lambda nexus: mouse_click(nexus, "right:up")
 
 
 def wheel_scroll(direction, nnavi500):
