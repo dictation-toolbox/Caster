@@ -1,6 +1,6 @@
-from castervoice.lib.dfplus.ccrmerging2.validation.base_validator import BaseRuleValidator
+from castervoice.lib.ctrl.mgr.validation.rules.base_validator import BaseRuleValidator
 
-class NotNodeRule(BaseRuleValidator):
+class NotNodeRuleValidator(BaseRuleValidator):
     def _is_valid(self, rule, params):
         return not hasattr(rule, "master_node")
     def _invalid_message(self):

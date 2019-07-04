@@ -5,7 +5,6 @@ Created on May 27, 2015
 '''
 from dragonfly import ActionBase
 
-from castervoice.lib import utilities
 from castervoice.lib.dfplus.merge.selfmodrule import SelfModifyingRule
 from castervoice.lib.dfplus.state.actions import ContextSeeker
 from castervoice.lib.dfplus.state.short import L, S
@@ -34,15 +33,39 @@ class HintNode(object):
     def all_possibilities(self):
         p = []
         for child in self.children:
-            p += [x[0] for x in child.explode_children(0, True)]
+            p += [x[0] for x in child.flatten(0, True)]
         return p
+    
+    '''
+    Returns a set of all specs for all nodes of this tree.
+    '''
+    def all_specs(self):
+        specs = set()
+        for triple in self.flatten(0, True):
+            spec = triple[2].spec
+            specs.add(spec)
+        return specs
 
-    def explode_children(self, depth, max=False):
+    '''
+    Returns a 2d array representing the tree structure flattened. For instance, with
+     ___A___
+     |     |
+     B     C
+           |
+           D
+    the result of this method (called with depth=2 or max_depth=True) would be:
+    [[A.spec, A.action, A], [A.spec+B.spec, A.action+B.action, B], 
+     [A.spec+C.spec, A.action+C.action, C], [A.spec+C.spec+D.spec, A.action+C.action+D.action, D]]  
+     
+    This is useful for enabling multiple levels of nodes simultaneously.
+    '''
+    def flatten(self, depth, max_depth=False):
+        '''results = [this node's spec, this node's action, this node itself]'''
         results = [self.get_spec_and_base_and_node()]
         depth -= 1
-        if depth >= 0 or max:
+        if depth >= 0 or max_depth:
             for child in self.children:
-                e = child.explode_children(depth, max)
+                e = child.flatten(depth, max_depth)
                 for t in e:
                     results.append((results[0][0] + " " + t[0], results[0][1] + t[1],
                                     t[2]))
@@ -55,7 +78,7 @@ class HintNode(object):
         ''' each child node up to the relevant depth gets a 
         BaseAction + NodeChange + ContextSeeker (for cancels)
         in the new mapping'''
-        specs = self.explode_children(self.explode_depth)
+        specs = self.flatten(self.explode_depth)
         if len(specs) > 1:
             specs.append(self.get_spec_and_base_and_node())
 

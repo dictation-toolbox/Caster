@@ -1,9 +1,3 @@
-'''
-compatible: a boolean
-
-TODO: --- this needs to be reworked so that it works with merging an ordered group of rules 
-
-'''
 class CompatibilityResult(object):
     def __init__(self, mergerule, compatible, incompatible_specs=None):
         self._mergerule = mergerule

@@ -1,4 +1,4 @@
-from castervoice.lib.dfplus.ccrmerging2.validation.base_validator import BaseRuleValidator
+from castervoice.lib.ctrl.mgr.validation.rules.base_validator import BaseRuleValidator
 
 class HasNoContextValidator(BaseRuleValidator):
     def _is_valid(self, rule, params):

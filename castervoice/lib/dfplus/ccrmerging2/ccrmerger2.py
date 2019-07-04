@@ -2,23 +2,39 @@
 Created on Jun 24, 2019
 
 @author: synkarius
+
+1. Run all transformers over all rules.
+2. Use a rule set sorter to sort rules.
+3. Use a compatibility checker to calculate incompatibility.
+4. Pass the transformed/sorted/checked rules to the merging strategy.
+---
+5. Return the merged rule.
 '''
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 
 class CCRMerger2(object):
     
-    '''
-    validators:
-        global = mergerule + no_context + pronunciation
-        app    = context + pronunciation
-        selfmod= selfmod + not_noderule + pronunciation
     
-    '''
-    def __init__(self, ccr_config, global_rule_validator, 
-                 app_rule_validator, selfmod_rule_validator):
+    def __init__(self, ccr_config, 
+                 transformers, rule_sorter, compatibility_checker,
+                 merging_strategy, grammar_manager_class):
         self._config = ccr_config
-        self._global_rule_validator = global_rule_validator
-        self._app_rule_validator = app_rule_validator
-        self._selfmod_rule_validator = selfmod_rule_validator
+        #
+        self._transformers = transformers
+        self._rule_sorter = rule_sorter
+        self._compatibility_checker = compatibility_checker
+        self._merging_strategy = merging_strategy
+        # D.I. gm module so can defer loading grammars 
+        self._grammar_manager_class = grammar_manager_class
+
+    '''
+    Consideration: should the CCRMerger be in charge of saving the
+    config and storing copies of the rules anymore? That seems like
+    the GrammarManager's job.
+    
+    Rather, it seems like the CCRMerger should just be handed a group
+    of unordered, unvalidated rules
+    '''
 
     '''saves the current ccr config for next dragon reboot'''
     def save_config(self):
@@ -49,12 +65,16 @@ class CCRMerger2(object):
     
     save to GLOBAL hashmap of {pronunciation: rule}
     '''
+    '''
+    This method is deprecated. It now simply defers 
+    rule storage to GrammarManager. This is a temporary measure.
+    Ultimately, each module should call GrammarManager.get_instance
+    to configure its loading.
+    '''
     def add_global_rule(self, rule):
-        self._validate_rule(
-            rule, 
-            self._global_rule_validator, 
-            self._get_all_rule_names())
-        pass
+        rule_class = rule.__class__
+        details = RuleDetails(ccr=True)
+        self._grammar_manager_class.get_instance().load(rule_class, details)
 
     '''
     X validates that rule has context

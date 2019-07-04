@@ -8,3 +8,5 @@ class BaseRuleValidator(object):
             return self._invalid_message()
         else:
             return None
+    def is_applicable(self, details):
+        return False

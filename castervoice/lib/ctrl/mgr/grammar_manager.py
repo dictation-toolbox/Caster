@@ -38,14 +38,18 @@ class GrammarManager(object):
     '''should be used by Nexus or other suitable controller'''
 
     @staticmethod
-    def set_instance(merger, settings_module, appcontext_class, grammar_class, filter_method):
+    def set_instance(merger, settings_module, appcontext_class, grammar_class, transformers,
+                     global_validator, app_validator, selfmod_validator):
         global _INSTANCE, _PRE
         if _INSTANCE is None:
-            _INSTANCE = GrammarManager(merger, settings_module, appcontext_class, grammar_class, filter_method)
+            _INSTANCE = GrammarManager(merger, settings_module, appcontext_class,
+                                       grammar_class, transformers, global_validator, 
+                                       app_validator, selfmod_validator)
             _INSTANCE._convert(_PRE)
             _PRE = None
     
-    def __init__(self, merger, settings_module, appcontext_class, grammar_class, filter_method):
+    def __init__(self, merger, settings_module, appcontext_class, grammar_class, transformers,
+                 global_validator, app_validator, selfmod_validator):
         # rule path to loaded rule
         self._rule_map = {}
         # merger is necessary to unload ccr rules and their nons
@@ -58,6 +62,10 @@ class GrammarManager(object):
         self._filter_method = filter_method
         # DI settings module
         self._settings_module = settings_module
+        # DI validators
+        self._global_validator = global_validator
+        self._app_validator = app_validator
+        self._selfmod_validator = selfmod_validator
     
     def load(self, rule_class, details):
         if details.ccr:
