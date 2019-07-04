@@ -44,3 +44,12 @@
 - [ ] I have updated the documentation accordingly.
 - [ ] I have added tests to cover my changes.
 - [ ] All new and existing tests passed.
+
+## Maintainer/Reviewer Checklist
+
+!--- Please leave these unchecked and add any other specific tasks you would like a --
+!--- reviewer or maintainer to do. --
+
+- [ ] Basic functionality has been tested and works as claimed.
+- [ ] New documentation is clear and complete.
+- [ ] Code is clear and readable.
