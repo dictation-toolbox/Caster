@@ -23,6 +23,7 @@
 ## Types of changes
 
 !--- What types of changes does your code introduce Put an `x` in all the boxes that apply --
+!--- and delete the options that do not apply. --
 
 - [ ] Docs change / refactoring / dependency upgrade
 - [ ] Bug fix (non-breaking change which fixes an issue or bug)
@@ -34,6 +35,8 @@
 !--- Go over all the following points, and put an `x` in all the boxes that apply. --
 !--- You DO NOT NEED TO FINISH all of these to submit a pull request to Caster. --
 !--- You may submit a pull request at any stage of completion to get feedback. --
+!--- Please add further items to this checklist as appropriate and delete any items --
+!--- that do not apply. --
 
 - [ ] I have read the CONTRIBUTING document.
 - [ ] My code follows the code style of this project.
