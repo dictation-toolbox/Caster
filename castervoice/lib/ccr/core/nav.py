@@ -7,7 +7,7 @@ from dragonfly import Repeat, Function, Dictation, Choice, MappingRule, ContextA
 
 from castervoice.lib import context, navigation, alphanumeric, textformat, text_utils
 from castervoice.lib import control, utilities
-from castervoice.lib.actions import Key, Mouse
+from castervoice.lib.actions import Key, Text, Mouse
 from castervoice.lib.context import AppContext
 from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
@@ -284,27 +284,34 @@ class Navigation(MergeRule):
         "flitch [<nnavi500>]": R(Key("cs-right:%(nnavi500)s")),
         
         "<modifier> <button_dictionary_500> [<nnavi500>]":
-              R(Key("%(modifier)s-%(button_dictionary_500)s") * Repeat(extra='nnavi500'), 
+              R(Key("%(modifier)s%(button_dictionary_500)s") * Repeat(extra='nnavi500'), 
               rdescript="press modifier keys plus buttons from button_dictionary_500"),
         "<modifier> <button_dictionary_10> [<nnavi10>]":
-              R(Key("%(modifier)s-%(button_dictionary_10)s") * Repeat(extra='nnavi10'),
+              R(Key("%(modifier)s%(button_dictionary_10)s") * Repeat(extra='nnavi10'),
               rdescript="press modifier keys plus buttons from button_dictionary_10"),
         "<modifier> <button_dictionary_1>":
-              R(Key("%(modifier)s-%(button_dictionary_1)s"),
+              R(Key("%(modifier)s%(button_dictionary_1)s"),
               rdescript="press modifiers plus buttons from button_dictionary_1, non-repeatable"),
         
+        "key stroke [<modifier>] <combined_button_dictionary>": 
+            R(Text('Key("%(modifier)s%(combined_button_dictionary)s")')),
+
         
     }
     # I tried to limit which things get repeated how many times in hopes that it will help prevent the bad grammar error
     # this could definitely be changed. perhaps some of these should be made non-CCR
-    button_dictionary_500 = {"(tab | tabby)": "tab", "backspace": "backspace", "delete": "del", "(escape | cancel)": "escape", "(enter | shock)": "enter",
+    button_dictionary_500 = {"(tab | tabby)": "tab", "(backspace | clear)": "backspace", "(delete|deli)": "del", "(escape | cancel)": "escape", "(enter | shock)": "enter",
     "(left | lease)": "left", "(right | ross)": "right", "(up | sauce)": "up",
     "(down | dunce)": "down", "page (down | dunce)": "pgdown", "page (up | sauce)": "pgup", "space": "space"}
     button_dictionary_10 = {}
     button_dictionary_10.update(caster_alphabet)
     button_dictionary_10.update(text_punc_dict)
-    button_dictionary_1 = {"home": "(home | lease wally | latch)", "(end | ross wally | ratch)": "end", "insert": "insert", "zero": "0",
+    button_dictionary_1 = {"(home | lease wally | latch)": "home", "(end | ross wally | ratch)": "end", "insert": "insert", "zero": "0",
     "one": "1", "two": "2", "three": "3", "four": "4", "five": "5", "six":"6", "seven": "7", "eight": "8", "nine": "9"}
+    combined_button_dictionary = {}
+    for dictionary in [button_dictionary_1, button_dictionary_10, button_dictionary_500]:
+        combined_button_dictionary.update(dictionary)
+    
 
     extras = [
         
@@ -322,15 +329,16 @@ class Navigation(MergeRule):
         
         Choice("button_dictionary_1", button_dictionary_1),
         Choice("button_dictionary_10", button_dictionary_10), 
-        Choice("button_dictionary_500", button_dictionary_500), 
+        Choice("button_dictionary_500", button_dictionary_500),
+        Choice("combined_button_dictionary", combined_button_dictionary),
         Choice("modifier", {
-            "(control | fly)": "c",
-            "(shift | shin)": "s",
-            "alt": "a",
-            "(control shift | que)": "cs",
-            "control alt": "ca",
-            "(shift alt | alt shift)": "sa",
-            "(control alt shift | control shift alt)": "csa", # control must go first
+            "(control | fly)": "c-",
+            "(shift | shin)": "s-",
+            "alt": "a-",
+            "(control shift | que)": "cs-",
+            "control alt": "ca-",
+            "(shift alt | alt shift)": "sa-",
+            "(control alt shift | control shift alt)": "csa-", # control must go first
         }),
         Choice("capitalization", {
             "yell": 1,
@@ -394,6 +402,7 @@ class Navigation(MergeRule):
         "extreme": None,
         "big": False,
         "splatdir": "backspace",
+        "modifier": "",
     }
 
 
