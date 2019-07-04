@@ -80,7 +80,7 @@ class VoiceDevCommands(MergeRule):
 
         # Dragonfly Snippets
         # this first command is probably the most useful one
-        "key stroke [<modifier>] <combined_button_dictionary>": 
+        "dev key [<modifier>] <combined_button_dictionary>": 
             R(Text('Key("%(modifier)s%(combined_button_dictionary)s")'),
             rdescript="DragonflyDev: Snippet for creating a full Key action"),
         "dev key":
