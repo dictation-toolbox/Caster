@@ -281,8 +281,8 @@ class Navigation(MergeRule):
               R(Key("%(modifier)s%(button_dictionary_1)s"),
               rdescript="press modifiers plus buttons from button_dictionary_1, non-repeatable"),
         
-        "key stroke [<modifier>] <combined_button_dictionary>": 
-            R(Text('Key("%(modifier)s%(combined_button_dictionary)s")')),
+        # "key stroke [<modifier>] <combined_button_dictionary>": 
+        #     R(Text('Key("%(modifier)s%(combined_button_dictionary)s")')),
 
         
     }
@@ -300,7 +300,15 @@ class Navigation(MergeRule):
     for dictionary in [button_dictionary_1, button_dictionary_10, button_dictionary_500]:
         combined_button_dictionary.update(dictionary)
     
-
+    modifier_choice_object = Choice("modifier", {
+            "(control | fly)": "c-",
+            "(shift | shin)": "s-",
+            "alt": "a-",
+            "(control shift | que)": "cs-",
+            "control alt": "ca-",
+            "(shift alt | alt shift)": "sa-",
+            "(control alt shift | control shift alt)": "csa-", # control must go first
+        })
     extras = [
         
         IntegerRefST("nnavi10", 1, 11),
@@ -314,20 +322,12 @@ class Navigation(MergeRule):
             "lease": "left",
             "ross": "right",
         }),
-        
+        modifier_choice_object,
         Choice("button_dictionary_1", button_dictionary_1),
         Choice("button_dictionary_10", button_dictionary_10), 
         Choice("button_dictionary_500", button_dictionary_500),
         Choice("combined_button_dictionary", combined_button_dictionary),
-        Choice("modifier", {
-            "(control | fly)": "c-",
-            "(shift | shin)": "s-",
-            "alt": "a-",
-            "(control shift | que)": "cs-",
-            "control alt": "ca-",
-            "(shift alt | alt shift)": "sa-",
-            "(control alt shift | control shift alt)": "csa-", # control must go first
-        }),
+        
         Choice("capitalization", {
             "yell": 1,
             "tie": 2,
