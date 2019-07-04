@@ -106,7 +106,7 @@ A quick reference guide for the language-specific commands included with Caster.
 | `dev text`                                  | `Text("")`                                                                 |
 | `dev pause`                                 | ` + Pause("")`                                                             |
 | `dev function`                              | `Function()`                                                               |
-| `dev repeat`                                | ` * Repeat(extra='n'),`                                                    |
+| `dev repeat`                                | ` * Repeat(extra='n')`                                                    |
 | `dev choice`                                | `Choice("", {}) `                                                          |
 | `dev mouse [<mouse_button>]`                | `Mouse("left")`                                                            |
 | `dev mouse current [position]`              | `Mouse("[1003, 537]")`                                                     |

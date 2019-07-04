@@ -66,19 +66,19 @@ class Punctuation(MergeRule):
             R(Text("%(long)s" + "%(text_punc)s" + "%(long)s"))*Repeat(extra="npunc"),
         # For some reason, this one doesn't work through the other function
         "[<long>] backslash [<npunc>]":
-            R(Text("%(long)s" + "\\" + "%(long)s"), rdescript="Core: Back Slash")*Repeat(extra="npunc"),
+            R(Text("%(long)s" + "\\" + "%(long)s")),
         "<double_text_punc> [<npunc>]":
             R(Text("%(double_text_punc)s") + Key("left"))*Repeat(extra="npunc"),
         "tabby [<npunc>]":
-            R(Key("tab"), rdescript="Core: Tab")*Repeat(extra="npunc"),
+            R(Key("tab")),
         "(back | shin) tabby [<npunc>]":
-            R(Key("s-tab"), rdescript="Core: Shift Tab")*Repeat(extra="npunc"),
+            R(Key("s-tab")),
         "boom [<npunc>]":
-            R(Text(", "), rdescript="Core: Comma + Space")*Repeat(extra="npunc"),
+            R(Text(", ")),
         "bam [<npunc>]":
-            R(Text(". "), rdescript="Core: Comma + Space")*Repeat(extra="npunc"),
+            R(Text(". ")),
         "ace [<npunc100>]":
-            R(Text(" "), rdescript="Core: Space")*Repeat(extra="npunc100"),
+            R(Text(" ")),
     }
 
     extras = [
@@ -99,4 +99,4 @@ class Punctuation(MergeRule):
         "long": "",
     }
 
-control.nexus().merger.add_global_rule(Punctuation())
+control.global_rule(Punctuation())

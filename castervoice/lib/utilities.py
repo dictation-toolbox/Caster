@@ -3,6 +3,7 @@
 from __future__ import print_function, unicode_literals
 
 import io
+import json
 import os
 import re
 import sys
@@ -114,6 +115,29 @@ def load_toml_file(path):
     except IOError as e:
         if e.errno == 2:  # The file doesn't exist.
             save_toml_file(result, path)
+        else:
+            raise
+    except Exception:
+        simple_log(True)
+    return result
+
+def save_json_file(data, path):
+    try:
+        formatted_data = unicode(json.dumps(data, ensure_ascii=False))
+        with io.open(path, "wt", encoding="utf-8") as f:
+            f.write(formatted_data)
+    except Exception:
+        simple_log(True)
+
+
+def load_json_file(path):
+    result = {}
+    try:
+        with io.open(path, "rt", encoding="utf-8") as json_file:
+            result = json.load(json_file)
+    except IOError as e:
+        if e.errno == 2:  # The file doesn't exist.
+            save_json_file(result, path)
         else:
             raise
     except Exception:
