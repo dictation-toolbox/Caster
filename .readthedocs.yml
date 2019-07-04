@@ -16,4 +16,4 @@ mkdocs:
 python:
   version: 2.7
   install:
-    - requirements: castervoice/doc/build/requirements.txt
+    - requirements: docs/build/requirements.txt
