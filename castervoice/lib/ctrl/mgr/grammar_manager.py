@@ -1,10 +1,3 @@
-'''
-Created on Jun 23, 2019
-
-@author: synkarius
-'''
-
-
 class _PreInstantiatedGrammarManager(object):
     '''a stand-in for the real grammar manager for until the real singleton is instantiated
     -- it holds the rules which are to be loaded and then when the singleton is instantiated,
@@ -13,7 +6,7 @@ class _PreInstantiatedGrammarManager(object):
     def __init__(self):
         self._pending_rules = []
     
-    def load(self, rule_class, details):
+    def register(self, rule_class, details):
         self._pending_rules.append((rule_class, details))
 
         
@@ -21,14 +14,22 @@ _PRE = _PreInstantiatedGrammarManager()
 _INSTANCE = None
 
 
-class _LoadedRule(object):
+class _ManagedRule(object):
 
-    def __init__(self, rule, grammar, details):
-        self.rule = rule
-        self.grammar = grammar
+    def __init__(self, rule_class, details, grammar=None):
+        self.rule_class = rule_class
         self.details = details
+        self.grammar = grammar
 
 
+'''
+Jobs of the grammar manager:
+1. Keep a copy of the latest stable version of a rule.
+2. Know when a rule has changed (make an observer class to compose with this?)
+3. Be in charge of loading/unloading via an internal loading grammar 
+        -- this also applies to non-CCR grammars
+        MappingRules should be enabled with 'enable' + (their name, else their Grammar's 'name', else executable)
+'''
 class GrammarManager(object):
     
     @staticmethod
@@ -49,9 +50,7 @@ class GrammarManager(object):
             _PRE = None
     
     def __init__(self, merger, settings_module, appcontext_class, grammar_class, transformers,
-                 global_validator, app_validator, selfmod_validator):
-        # rule path to loaded rule
-        self._rule_map = {}
+                 validator):
         # merger is necessary to unload ccr rules and their nons
         self._merger = merger
         # DI AppContext class, instantiated later
@@ -62,24 +61,63 @@ class GrammarManager(object):
         self._filter_method = filter_method
         # DI settings module
         self._settings_module = settings_module
-        # DI validators
-        self._global_validator = global_validator
-        self._app_validator = app_validator
-        self._selfmod_validator = selfmod_validator
+        # DI validator
+        self._validator = validator
+        # rules: (class name : _ManagedRule}
+        self._managed_rules = {}
     
-    def load(self, rule_class, details):
-        if details.ccr:
-            self._load_via_merger(rule_class(), details)
-        else:
-            self._load_dragonfly_style(rule_class, details)
-        '''TODO: get the grammar back from merger for unload??'''
+    
+    '''
+    If a rule is registered a second time, 
+    A. The new version should be attempted to be loaded.
+    B. If it loads, the old version should
+        1. have its grammar unloaded if there is a grammar
+        2. be deleted from the _managed_rules map
+    
+    TODO:
+    Okay, so instantiation errors are one thing, but what if we never make it to
+    the "register" call? That is going to have to be handled, maybe in the "loading"
+    package.
+    '''
+    def register(self, rule_class, details):
+        name = rule_class.__name__
+        
+        '''attempt to instantiate the rule'''
+        test_instance = None 
+        try:
+            test_instance = rule_class()
+        except:
+            print(name + " rejected due to instantiation errors")
+            return
+        
+        '''if ccr, validate the rule'''
+        if details.declared_ccrtype is not None:
+            error = self._validator.validate(test_instance, details.declared_ccrtype)
+            if error is not None:
+                print(name + " rejected due to validation errors: " + error)
+                return
+        
+        '''if already registered, unregister it'''
+        if name in self._managed_rules:
+            self._unregister(name)
+        
+        '''
+        rule should be safe for loading at this point: register it
+        but do not load here -- this method only registers
+        '''
+        managed_rule = _ManagedRule(rule_class, details)
+        self._managed_rules[name] = managed_rule
+    
+    def _unregister(self, rule_class_name):
+        managed_rule = self._managed_rules[rule_class_name]
+        if managed_rule.grammar is not None:
+            managed_rule.grammar.unload()
+        del self._managed_rules[rule_class_name]
             
-    def unload(self, rule_class):
-        '''TODO'''
             
     def _convert(self, pre):
         for t in pre._pending_rules:
-            self.load(t[0], t[1])
+            self.register(t[0], t[1])
     
     def _load_dragonfly_style(self, rule_class, details):
         if details.enabled:
@@ -97,6 +135,4 @@ class GrammarManager(object):
     def _load_via_merger(self, rule, details):
         self._merger.add_global_rule(rule)
     
-    def _add_to_map(self, rule, grammar, details):    
-        self._rule_map[str(rule)] = _LoadedRule(rule, grammar, details) 
     

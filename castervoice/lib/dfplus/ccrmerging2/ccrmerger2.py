@@ -11,6 +11,7 @@ Created on Jun 24, 2019
 5. Return the merged rule.
 '''
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.ctrl.mgr.consts import CCRType
 
 class CCRMerger2(object):
     
@@ -88,11 +89,9 @@ class CCRMerger2(object):
     save to APP hashmap of {pronunciation: rule}
     '''
     def add_app_rule(self, rule, context):
-        self._validate_rule(
-            rule, 
-            self._app_rule_validator, 
-            self._get_all_rule_names())
-        pass
+        rule_class = rule.__class__
+        details = RuleDetails(ccr=True)
+        self._grammar_manager_class.get_instance().load(rule_class, details)
 
     '''
     X validates that is selfmod rule

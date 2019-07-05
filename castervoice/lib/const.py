@@ -1,11 +1,7 @@
-'''
-Created on Jun 24, 2019
-
-@author: synkarius
-'''
-GLOBAL = "global"
-APP = "app"
-SELFMOD = "selfmod"
+class CCRType(object):
+    GLOBAL = "global"
+    APP = "app"
+    SELFMOD = "selfmod"
 
 #
 CCR_ON = "ccr_on"

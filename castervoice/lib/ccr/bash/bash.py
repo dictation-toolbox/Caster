@@ -10,6 +10,7 @@ from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
 from castervoice.lib.ctrl.mgr.grammar_manager import GrammarManager
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.ctrl.mgr.consts import CCRType
 
 
 class Bash(MergeRule):
@@ -100,4 +101,4 @@ class Bash(MergeRule):
     extras = []
     defaults = {}
 
-GrammarManager.get_instance().load(Bash, RuleDetails(os.path.realpath(__file__), ccr=True))
+GrammarManager.get_instance().load(Bash, RuleDetails(ccr=True))

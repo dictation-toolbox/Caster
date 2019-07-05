@@ -10,13 +10,6 @@ from dragonfly.grammar.grammar_base import Grammar
 from dragonfly.grammar.recobs import RecognitionHistory
 
 from castervoice.lib.ctrl.mgr.grammar_manager import GrammarManager
-from castervoice.lib.ctrl.mgr.validation.rules.composite_validator import CompositeValidator
-from castervoice.lib.ctrl.mgr.validation.rules.context_validator import HasContextValidator
-from castervoice.lib.ctrl.mgr.validation.rules.mergerule_validator import IsMergeRuleValidator
-from castervoice.lib.ctrl.mgr.validation.rules.no_context_validator import HasNoContextValidator
-from castervoice.lib.ctrl.mgr.validation.rules.not_noderule_validator import NotNodeRuleValidator
-from castervoice.lib.ctrl.mgr.validation.rules.pronunciation_validator import PronunciationAvailableValidator
-from castervoice.lib.ctrl.mgr.validation.rules.selfmod_validator import SelfModifyingRuleValidator
 from castervoice.lib.dfplus.ccrmerging2.ccrmerger2 import CCRMerger2
 from castervoice.lib.dfplus.ccrmerging2.config.config_toml import TomlCCRConfig
 from castervoice.lib.dfplus.ccrmerging2.sorting.config_ruleset_sorter import ConfigRuleSetSorter
@@ -78,20 +71,20 @@ class Nexus:
                             merge_strategy, GrammarManager)
 
     def create_grammar_manager(self, merger, transformers):
-        global_validator = CompositeValidator([
-                IsMergeRuleValidator(),
-                HasNoContextValidator(),
-                PronunciationAvailableValidator()
-            ])
-        app_validator = CompositeValidator([
-            HasContextValidator(),
-            PronunciationAvailableValidator()
-            ])
-        sm_validator = CompositeValidator([
-            SelfModifyingRuleValidator(),
-            NotNodeRuleValidator(),
-            PronunciationAvailableValidator()
-            ])
+#         global_validator = CompositeValidator([
+#                 IsMergeRuleValidator(),
+#                 HasNoContextValidator(),
+#                 PronunciationAvailableValidator()
+#             ])
+#         app_validator = CompositeValidator([
+#             HasContextValidator(),
+#             PronunciationAvailableValidator()
+#             ])
+#         sm_validator = CompositeValidator([
+#             SelfModifyingRuleValidator(),
+#             NotNodeRuleValidator(),
+#             PronunciationAvailableValidator()
+#             ])
         GrammarManager.set_instance(merger, settings, AppContext, Grammar, transformers,
                                     global_validator, app_validator, sm_validator)
 
