@@ -244,8 +244,8 @@ class Navigation(MergeRule):
                rdescript="Core: switch to most recent Windows"),
 
         # Ccr Mouse Commands
-        "kick":
-            R(Function(navigation.left_click, nexus=_NEXUS)),
+        "kick [<nnavi3>]":
+            R(Function(navigation.left_click, nexus=_NEXUS))*Repeat(extra="nnavi3"),
         "psychic":
             R(Function(navigation.right_click, nexus=_NEXUS)),
         "(kick double|double kick)":
@@ -259,6 +259,7 @@ class Navigation(MergeRule):
 
     extras = [
         IntegerRefST("nnavi10", 1, 11),
+        IntegerRefST("nnavi3", 1, 4),
         IntegerRefST("nnavi50", 1, 50),
         IntegerRefST("nnavi500", 1, 500),
         Dictation("textnv"),
@@ -317,6 +318,7 @@ class Navigation(MergeRule):
         "nnavi500": 1,
         "nnavi50": 1,
         "nnavi10": 1,
+        "nnavi3": 1,
         "textnv": "",
         "capitalization": 0,
         "spacing": 0,
