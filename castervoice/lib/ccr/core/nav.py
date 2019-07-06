@@ -259,7 +259,7 @@ class Navigation(MergeRule):
 
     extras = [
         IntegerRefST("nnavi10", 1, 11),
-        IntegerRefST("nnavi3", 1, 3),
+        IntegerRefST("nnavi3", 1, 4),
         IntegerRefST("nnavi50", 1, 50),
         IntegerRefST("nnavi500", 1, 500),
         Dictation("textnv"),
