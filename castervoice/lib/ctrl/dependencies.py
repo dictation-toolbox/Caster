@@ -13,7 +13,7 @@ pip_path = None
 update = None
 
 
-def findpip():
+def find_pip():
     # Find the pip.exe script for Python 2.7. Fallback on pip.exe.
     global pip_path
     python_scripts = os.path.join("Python27", "Scripts")
@@ -24,8 +24,8 @@ def findpip():
             break
 
 
-# Checks if install is Classic or PIP of caster
-def installtype():
+def install_type():
+    # Checks if install is Classic or PIP of caster
     try:
         pkg_resources.require("castervoice")
     except VersionConflict:
@@ -35,7 +35,7 @@ def installtype():
     return "pip"
 
 
-def internetcheck(host="1.1.1.1", port=53, timeout=3):
+def internet_check(host="1.1.1.1", port=53, timeout=3):
     """
     Checks for network connection via DNS resolution.
     :param host: CloudFire DNS
@@ -52,16 +52,15 @@ def internetcheck(host="1.1.1.1", port=53, timeout=3):
         return False
 
 
-def DependencyCheck(command=None):
+def dependency_check(command=None):
+    # For classic/pip: Check for updates Caster and Dragonfly
     com = [pip_path, "search", command]
     startupinfo = None
-    # print com
     global update
     try:
         if os.name == 'nt':
             startupinfo = subprocess.STARTUPINFO()
             startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-
         p = subprocess.Popen(com,
                              stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE,
@@ -80,7 +79,8 @@ def DependencyCheck(command=None):
         print("Exception from starting subprocess {0}: " "{1}".format(com, e))
 
 
-def DepMissing():
+def dep_missing():
+    # For classic: Parsesrequirements.txt checking for missing pip packages
     with open('D:\\Backup\\Library\\Documents\\Caster\\requirements.txt') as f:
         requirements = f.read().splitlines()
     for dep in requirements:
@@ -93,10 +93,9 @@ def DepMissing():
             time.sleep(15)
 
 
-def DepMinVersion():
+def dep_min_version():
+    # For classic: Checks for Maintainer specified to packages.
     # Dependencies needs to be manually resolved if Caster requires a certain version of dependency
-    # Restart Dragon between tests so pkg_resources.require can find packages
-    # DepMinVersion Assumes only one package will have "=="
     upgradelist = []
     listdependency = ([
         ["dragonfly2", ">=", "0.13.0", None],
@@ -124,17 +123,18 @@ def DepMinVersion():
 
 
 class DependencyMan:
+    # Initializes functions
     def __init__(self):
-        install = installtype()
-        findpip()
+        install = install_type()
+        find_pip()
         if install is "classic":
-            DepMinVersion()
-            DepMissing()
+            dep_min_version()
+            dep_missing()
         if settings.SETTINGS["miscellaneous"]["online_mode"]:
-            if internetcheck():
+            if internet_check():
                 if install is "pip":
-                    DependencyCheck(command="castervoice")
-                DependencyCheck(command="dragonfly2")
+                    dependency_check(command="castervoice")
+                dependency_check(command="dragonfly2")
             else:
                 print("\nCaster: Network off-line check network connection\n")
         else:
