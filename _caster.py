@@ -36,7 +36,7 @@ from castervoice.lib import utilities  # requires settings
 if settings.WSR:
     _wait_for_wsr_activation()
     SymbolSpecs.set_cancel_word("escape")
-from castervoice.lib.ctrl.dependencies import pip_path
+from castervoice.lib.ctrl.dependencies import pip_path, update
 from castervoice.lib import control
 _NEXUS = control.nexus()
 from castervoice.lib import navigation
@@ -72,7 +72,7 @@ class DependencyUpdate(RunCommand):
         RunCommand.process_command(self, proc)
         # Only reboot dragon if the command was successful and online_mode is true
         # 'pip install ...' may exit successfully even if there were connection errors.
-        if proc.wait() == 0 and settings.SETTINGS["miscellaneous"]["online_mode"]:
+        if proc.wait() == 0 and update:
             Playback([(["reboot", "dragon"], 0.0)]).execute()
 
 

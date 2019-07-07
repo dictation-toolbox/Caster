@@ -69,11 +69,11 @@ def dependency_check(command=None):
         out = p.communicate('')
         for line in out:
             if "INSTALLED" and "latest" in line:
-                print("Caster: {0} is up-to-date".format(command))
+                print("Caster: {0} is up-to-date".format(command.strip('2')))
                 update = False
                 break
             else:
-                print("Caster: Say 'Update {0}' to update.".format(command))
+                print("Caster: Say 'Update {0}' to update.".format(command.strip('2')))
                 update = True
                 break
     except Exception as e:
@@ -81,8 +81,9 @@ def dependency_check(command=None):
 
 
 def dep_missing():
-    # For classic: Parsesrequirements.txt checking for missing pip packages
-    with open('D:\\Backup\\Library\\Documents\\Caster\\requirements.txt') as f:
+    base = os.path.normpath(settings.SETTINGS["paths"]["BASE_PATH"] + os.sep + os.pardir)
+    requirements = os.path.join(base, "requirements.txt")
+    with open(requirements) as f:
         requirements = f.read().splitlines()
     for dep in requirements:
         try:
@@ -95,11 +96,11 @@ def dep_missing():
 
 
 def dep_min_version():
-    # For classic: Checks for Maintainer specified to packages.
-    # Dependencies needs to be manually resolved if Caster requires a certain version of dependency
+    # For classic: Checks for Maintainer specified package requirements.
+    # Needs to be manually resolved if Caster requires a specific version of dependency
     upgradelist = []
     listdependency = ([
-        ["dragonfly2", ">=", "0.13.0", None],
+        ["dragonfly2", ">=", "0.14.1", None],
     ])
     for dep in listdependency:
         package = dep[0]
