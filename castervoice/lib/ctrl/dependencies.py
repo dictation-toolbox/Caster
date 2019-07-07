@@ -68,13 +68,14 @@ def dependency_check(command=None):
                              startupinfo=startupinfo)
         out = p.communicate('')
         for line in out:
-            if "INSTALLED" and "(latest)":
+            if "INSTALLED" and "latest" in line:
                 print("Caster: {0} is up-to-date".format(command))
                 update = False
                 break
             else:
                 print("Caster: Say 'Update {0}' to update.".format(command))
                 update = True
+                break
     except Exception as e:
         print("Exception from starting subprocess {0}: " "{1}".format(com, e))
 
