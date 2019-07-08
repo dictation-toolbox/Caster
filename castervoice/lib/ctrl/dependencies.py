@@ -25,7 +25,7 @@ def find_pip():
 
 
 def install_type():
-    # Checks if install is Classic or PIP of caster
+    # Checks if Caster install is Classic or PIP.
     try:
         pkg_resources.require("castervoice")
     except VersionConflict:
@@ -53,7 +53,7 @@ def internet_check(host="1.1.1.1", port=53, timeout=3):
 
 
 def dependency_check(command=None):
-    # For classic/pip: Check for updates Caster and Dragonfly
+    # Check for updates pip packages castervoice/dragonfly2
     com = [pip_path, "search", command]
     startupinfo = None
     global update
@@ -81,6 +81,7 @@ def dependency_check(command=None):
 
 
 def dep_missing():
+    # For classic: Checks for missing dependencies parsing requirements.txt
     base = os.path.normpath(settings.SETTINGS["paths"]["BASE_PATH"] + os.sep + os.pardir)
     requirements = os.path.join(base, "requirements.txt")
     with open(requirements) as f:
@@ -98,6 +99,7 @@ def dep_missing():
 def dep_min_version():
     # For classic: Checks for Maintainer specified package requirements.
     # Needs to be manually resolved if Caster requires a specific version of dependency
+    # A GitHub Issue URL needed to explain the change to version specific '==' dependency.
     upgradelist = []
     listdependency = ([
         ["dragonfly2", ">=", "0.14.1", None],
@@ -106,14 +108,16 @@ def dep_min_version():
         package = dep[0]
         operator = dep[1]
         version = dep[2]
-        url = dep[3]
+        issueurl = dep[3]
         try:
             pkg_resources.require('{0} {1} {2}'.format(package, operator, version))
         except VersionConflict as e:
             if operator is ">=":
                 upgradelist.append('{0}'.format(package))
             if operator is "==":
-                print("\nCaster: Requires an exact version of dependencies")
+                print(
+                    "\nCaster: Requires an exact version of dependencies. Issue reference: {0} \n"
+                    .format(issueurl))
                 print("Install the exact version: 'pip install {0}'".format(e.req))
     if not upgradelist:
         pass
