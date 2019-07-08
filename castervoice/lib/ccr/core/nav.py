@@ -8,7 +8,6 @@ from dragonfly.actions.action_mimic import Mimic
 from castervoice.lib.alphanumeric import caster_alphabet
 
 
-
 _NEXUS = control.nexus()
 
 for key, value in double_text_punc_dict.items():
@@ -19,7 +18,7 @@ for key, value in double_text_punc_dict.items():
     else:
         raise Exception("Need to deal with nonstandard pair length in double_text_punc_dict.")
 
-class NavigationNon(MergeRule):
+class NavigationNon(MergeRule): 
     mapping = {
         "<direction> <time_in_seconds>":
             AsynchronousAction(
@@ -284,6 +283,8 @@ class Navigation(MergeRule):
         # "key stroke [<modifier>] <combined_button_dictionary>": 
         #     R(Text('Key("%(modifier)s%(combined_button_dictionary)s")')),
 
+
+        
         
     }
     # I tried to limit which things get repeated how many times in hopes that it will help prevent the bad grammar error
@@ -291,7 +292,7 @@ class Navigation(MergeRule):
     button_dictionary_500 = {"(tab | tabby)": "tab", "(backspace | clear)": "backspace", "(delete|deli)": "del", "(escape | cancel)": "escape", "(enter | shock)": "enter",
     "(left | lease)": "left", "(right | ross)": "right", "(up | sauce)": "up",
     "(down | dunce)": "down", "page (down | dunce)": "pgdown", "page (up | sauce)": "pgup", "space": "space"}
-    button_dictionary_10 = {}
+    button_dictionary_10 = {"function {}".format(i):"f{}".format(i) for i in range(1, 10)}
     button_dictionary_10.update(caster_alphabet)
     button_dictionary_10.update(text_punc_dict)
     button_dictionary_1 = {"(home | lease wally | latch)": "home", "(end | ross wally | ratch)": "end", "insert": "insert", "zero": "0",
@@ -308,6 +309,7 @@ class Navigation(MergeRule):
             "control alt": "ca-",
             "(shift alt | alt shift)": "sa-",
             "(control alt shift | control shift alt)": "csa-", # control must go first
+            "hit": "", 
         })
     extras = [
         
