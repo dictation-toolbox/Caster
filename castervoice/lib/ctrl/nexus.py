@@ -1,6 +1,5 @@
 from castervoice.lib import settings
 from castervoice.lib.ctrl.dependencies import DependencyMan
-from castervoice.lib.ctrl.user import UserContentManager
 from castervoice.lib.ctrl.wsrdf import TimerForWSR, RecognitionHistoryForWSR
 from castervoice.lib.dfplus.communication import Communicator
 from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
@@ -10,11 +9,17 @@ from dragonfly.grammar.grammar_base import Grammar
 from dragonfly.grammar.recobs import RecognitionHistory
 
 from castervoice.lib.ctrl.mgr.grammar_manager import GrammarManager
+from castervoice.lib.ctrl.mgr.loading.content_loader import ContentLoader
+from castervoice.lib.ctrl.mgr.loading.user_content_loader import UserContentManager
+from castervoice.lib.ctrl.mgr.validation.rules.validation_delegator import CCRValidationDelegator
 from castervoice.lib.dfplus.ccrmerging2.ccrmerger2 import CCRMerger2
-from castervoice.lib.dfplus.ccrmerging2.config.config_toml import TomlCCRConfig
-from castervoice.lib.dfplus.ccrmerging2.sorting.config_ruleset_sorter import ConfigRuleSetSorter
 from castervoice.lib.dfplus.ccrmerging2.compatibility.simple_compat_checker import SimpleCompatibilityChecker
+from castervoice.lib.dfplus.ccrmerging2.config.config_toml import TomlCCRConfig
 from castervoice.lib.dfplus.ccrmerging2.merging.classic_merging_strategy import ClassicMergingStrategy
+from castervoice.lib.dfplus.ccrmerging2.sorting.config_ruleset_sorter import ConfigRuleSetSorter
+from __builtin__ import True
+from castervoice.lib.ctrl.mgr.loading.file_watcher_observable import FileWatcherObservable
+from castervoice.lib.ctrl.mgr.loading.manual_reload_observable import ManualReloadObservable
 
 
 class Nexus:
@@ -45,10 +50,28 @@ class Nexus:
 
         self.merger = CCRMerger()
 
-        self.user_content_manager = None
+        self.content_loader = None
         
     def set_merger(self, merger):
         self.merger = merger
+        
+    def load_and_register_all_content(self):
+        self.content_loader = ContentLoader()
+        content = self.content_loader.load_everything()
+        
+        '''
+        all rules go to grammar_manager
+        all transformers and hooks go to merger
+        '''
+        validator = CCRValidationDelegator()
+        some_setting = True
+        observable = FileWatcherObservable()
+        if some_setting:
+            observable = ManualReloadObservable()
+        
+        GrammarManager.set_instance(self.merger, settings, AppContext, Grammar, [],
+                                    validator, content.rules, observable)
+        
 
     def process_user_content(self):
         self.user_content_manager = UserContentManager()
@@ -71,6 +94,7 @@ class Nexus:
                             merge_strategy, GrammarManager)
 
     def create_grammar_manager(self, merger, transformers):
+        pass
 #         global_validator = CompositeValidator([
 #                 IsMergeRuleValidator(),
 #                 HasNoContextValidator(),
@@ -85,8 +109,7 @@ class Nexus:
 #             NotNodeRuleValidator(),
 #             PronunciationAvailableValidator()
 #             ])
-        GrammarManager.set_instance(merger, settings, AppContext, Grammar, transformers,
-                                    global_validator, app_validator, sm_validator)
+        
 
 
 _NEXUS = None

@@ -127,9 +127,8 @@ class AcrobatRule(MergeRule):
     ]
     defaults = {"n": 1, "dict": "nothing"}
 
-details = RuleDetails(rule_path = os.path.realpath(__file__), 
-                      name = "acrobat",
+details = RuleDetails(name = "acrobat",
                       executable = "acrobat",
                       grammar_name = "acrobat",
                       enabled = settings.SETTINGS["apps"]["acrobat"])
-GrammarManager.get_instance().load(AcrobatRule, details)
+GrammarManager.get_instance().register_rule(AcrobatRule, details)

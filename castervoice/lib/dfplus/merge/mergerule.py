@@ -21,7 +21,7 @@ class MergeRule(MappingRule):
     pronunciation = None
 #     '''MergeRules which define `non` will instantiate
 #     their paired non-CCR MergeRule and activate it
-#     alongside themselves'''
+#     alongside themselves''' -- replaced by "companion" in Details
 #     non = None
     '''MergeRules which define `mcontext` with a
     Dragonfly AppContext become non-global; this

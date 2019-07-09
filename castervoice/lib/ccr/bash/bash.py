@@ -1,9 +1,3 @@
-'''
-Created on Sep 1, 2015
-
-@author: synkarius
-'''
-import os
 from castervoice.lib.actions import Key, Text
 from castervoice.lib.ccr.standard import SymbolSpecs
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
@@ -101,4 +95,4 @@ class Bash(MergeRule):
     extras = []
     defaults = {}
 
-GrammarManager.get_instance().load(Bash, RuleDetails(ccr=True))
+GrammarManager.get_instance().register_rule(Bash, RuleDetails(ccr=True))

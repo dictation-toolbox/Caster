@@ -4,17 +4,18 @@ main Caster module
 Created on Jun 29, 2014
 '''
 
-import os
+
 import logging
 logging.basicConfig()
 
-import time, socket, os
+import time, socket
 from dragonfly import (Function, Grammar, Playback, Dictation, Choice, Pause, RunCommand)
 from castervoice.lib.ccr.standard import SymbolSpecs
 
 
 def _wait_for_wsr_activation():
     count = 1
+    # TODO: fix this mess
     while True:
         try:
             from castervoice.apps.browser import firefox
@@ -31,14 +32,13 @@ from castervoice.lib import settings  # requires nothing
 if settings.SYSTEM_INFORMATION["platform"] != "win32":
     raise SystemError("Your platform is not currently supported by Caster.")
 settings.WSR = __name__ == "__main__"
-from castervoice.lib import utilities  # requires settings
 if settings.WSR:
     _wait_for_wsr_activation()
     SymbolSpecs.set_cancel_word("escape")
 from castervoice.lib import control
 _NEXUS = control.nexus()
 
-from castervoice.apps import __init__
+#from castervoice.apps import __init__
 from castervoice.asynch import *
 from castervoice.lib import context
 from castervoice.lib.actions import Key
@@ -50,15 +50,15 @@ navigation.initialize_clipboard(_NEXUS)
 from castervoice.lib.dfplus.state.short import R
 from castervoice.lib.dfplus.additions import IntegerRefST
 
-from castervoice.lib.ccr import *
+#from castervoice.lib.ccr import *
 from castervoice.lib.ccr.recording.again import Again
 from castervoice.lib.ccr.recording.bringme import bring_rule
 from castervoice.lib.ccr.recording.alias import Alias
 from castervoice.lib.ccr.recording import history
-from castervoice.lib.dev import dev
+# from castervoice.lib.dev import dev
 from castervoice.lib.dfplus.hint.nodes import css
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.merge import gfilter
+#from castervoice.lib.dfplus.merge import gfilter
 
 if not globals().has_key('profile_switch_occurred'):
     # Load user rules
