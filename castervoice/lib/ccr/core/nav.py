@@ -3,21 +3,12 @@ Created on Sep 1, 2015
 
 @author: synkarius
 '''
-from dragonfly import Repeat, Function, Dictation, Choice, MappingRule, ContextAction
-
-from castervoice.lib import context, navigation, alphanumeric, textformat, text_utils
-from castervoice.lib import control, utilities
-from castervoice.lib.actions import Key, Mouse
-from castervoice.lib.context import AppContext
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.actions import AsynchronousAction, ContextSeeker
-from castervoice.lib.dfplus.state.actions2 import UntilCancelled
-from castervoice.lib.dfplus.state.short import L, S, R
+from castervoice.lib.imports import *
 from dragonfly.actions.action_mimic import Mimic
 from castervoice.lib.ccr.standard import SymbolSpecs
 from castervoice.lib.ccr.core.punctuation import text_punc_dict, double_text_punc_dict
+from castervoice.lib.alphanumeric import caster_alphabet
+
 
 _NEXUS = control.nexus()
 
@@ -29,7 +20,7 @@ for key, value in double_text_punc_dict.items():
     else:
         raise Exception("Need to deal with nonstandard pair length in double_text_punc_dict.")
 
-class NavigationNon(MergeRule):
+class NavigationNon(MergeRule): 
     mapping = {
         "<direction> <time_in_seconds>":
             AsynchronousAction(
@@ -204,8 +195,8 @@ class Navigation(MergeRule):
             R(Key("c-s"), rspec="save"),
         'shock [<nnavi50>]':
             R(Key("enter"), rspec="shock")* Repeat(extra="nnavi50"),
-        "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]":
-            R(Function(text_utils.master_text_nav)),
+        # "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]":
+        #     R(Function(text_utils.master_text_nav)), # this is now implemented below
         "shift click":
             R(Key("shift:down") + Mouse("left") + Key("shift:up")),
         "stoosh [<nnavi500>]":
@@ -258,8 +249,8 @@ class Navigation(MergeRule):
                rdescript="Core: switch to most recent Windows"),
 
         # Ccr Mouse Commands
-        "kick":
-            R(Function(navigation.left_click, nexus=_NEXUS)),
+        "kick [<nnavi3>]":
+            R(Function(navigation.left_click, nexus=_NEXUS))*Repeat(extra="nnavi3"),
         "psychic":
             R(Function(navigation.right_click, nexus=_NEXUS)),
         "(kick double|double kick)":
@@ -268,17 +259,89 @@ class Navigation(MergeRule):
             R(Function(navigation.left_down, nexus=_NEXUS)),
         "bench":
             R(Function(navigation.left_up, nexus=_NEXUS)),
+        
+        # keystroke commands
+        "<direction> [<nnavi500>]": R(Key("%(direction)s") * Repeat(extra='nnavi500'),
+            rdescript="arrow keys"),
+        "(lease wally | latch) [<nnavi10>]": R(Key("home:%(nnavi10)s")),
+        "(ross wally | ratch) [<nnavi10>]": R(Key("end:%(nnavi10)s")),
+        "bird [<nnavi500>]": R(Key("c-left:%(nnavi500)s")),
+        "fird [<nnavi500>]": R(Key("c-right:%(nnavi500)s")),
+        "brick [<nnavi500>]": R(Key("s-left:%(nnavi500)s")),
+        "frick [<nnavi500>]": R(Key("s-right:%(nnavi500)s")),
+        "blitch [<nnavi500>]": R(Key("cs-left:%(nnavi500)s")),
+        "flitch [<nnavi500>]": R(Key("cs-right:%(nnavi500)s")),
+        
+        "<modifier> <button_dictionary_500> [<nnavi500>]":
+              R(Key("%(modifier)s%(button_dictionary_500)s") * Repeat(extra='nnavi500'), 
+              rdescript="press modifier keys plus buttons from button_dictionary_500"),
+        "<modifier> <button_dictionary_10> [<nnavi10>]":
+              R(Key("%(modifier)s%(button_dictionary_10)s") * Repeat(extra='nnavi10'),
+              rdescript="press modifier keys plus buttons from button_dictionary_10"),
+        "<modifier> <button_dictionary_1>":
+              R(Key("%(modifier)s%(button_dictionary_1)s"),
+              rdescript="press modifiers plus buttons from button_dictionary_1, non-repeatable"),
+        
+        # "key stroke [<modifier>] <combined_button_dictionary>": 
+        #     R(Text('Key("%(modifier)s%(combined_button_dictionary)s")')),
 
     }
     tell_commands_dict = {"dock": ";", "doc": ";", "sink": "", "com": ",", "deck": ":"}
     tell_commands_dict.update(text_punc_dict)
 
+    # I tried to limit which things get repeated how many times in hopes that it will help prevent the bad grammar error
+    # this could definitely be changed. perhaps some of these should be made non-CCR
+    button_dictionary_500 = {"(tab | tabby)": "tab", "(backspace | clear)": "backspace", "(delete|deli)": "del", "(escape | cancel)": "escape", "(enter | shock)": "enter",
+    "(left | lease)": "left", "(right | ross)": "right", "(up | sauce)": "up",
+    "(down | dunce)": "down", "page (down | dunce)": "pgdown", "page (up | sauce)": "pgup", "space": "space"}
+    button_dictionary_10 = {"function {}".format(i):"f{}".format(i) for i in range(1, 10)}
+    button_dictionary_10.update(caster_alphabet)
+    button_dictionary_10.update(text_punc_dict)
+    button_dictionary_1 = {"(home | lease wally | latch)": "home", "(end | ross wally | ratch)": "end", "insert": "insert", "zero": "0",
+    "one": "1", "two": "2", "three": "3", "four": "4", "five": "5", "six":"6", "seven": "7", "eight": "8", "nine": "9"}
+    combined_button_dictionary = {}
+    for dictionary in [button_dictionary_1, button_dictionary_10, button_dictionary_500]:
+        combined_button_dictionary.update(dictionary)
+    
+    modifier_choice_object = Choice("modifier", {
+            "(control | fly)": "c-", #TODO: make DRY
+            "(shift | shin)": "s-",
+            "alt": "a-",
+            "(control shift | que)": "cs-",
+            "control alt": "ca-",
+            "(shift alt | alt shift)": "sa-",
+            "(control alt shift | control shift alt)": "csa-", # control must go first
+            "windows": "w-", # windows should go before alt/shift
+            "control windows": "cw-",
+            "control windows alt": "cwa-",
+            "control windows shift": "cws-",
+            "windows shift alt": "wsa-",
+            "windows alt shift": "was-",
+            "windows shift": "ws-",
+            "windows alt": "wa-",
+            "control windows alt shift": "cwas-",
+            "hit": "", 
+        })
     extras = [
+        
         IntegerRefST("nnavi10", 1, 11),
+        IntegerRefST("nnavi3", 1, 4),
         IntegerRefST("nnavi50", 1, 50),
         IntegerRefST("nnavi500", 1, 500),
         Dictation("textnv"),
         Choice("enclosure", double_text_punc_dict),
+        Choice("direction", {
+            "dunce": "down",
+            "sauce": "up",
+            "lease": "left",
+            "ross": "right",
+        }),
+        modifier_choice_object,
+        Choice("button_dictionary_1", button_dictionary_1),
+        Choice("button_dictionary_10", button_dictionary_10), 
+        Choice("button_dictionary_500", button_dictionary_500),
+        Choice("combined_button_dictionary", combined_button_dictionary),
+        
         Choice("capitalization", {
             "yell": 1,
             "tie": 2,
@@ -329,6 +392,7 @@ class Navigation(MergeRule):
         "nnavi500": 1,
         "nnavi50": 1,
         "nnavi10": 1,
+        "nnavi3": 1,
         "textnv": "",
         "capitalization": 0,
         "spacing": 0,
@@ -337,7 +401,8 @@ class Navigation(MergeRule):
         "extreme": None,
         "big": False,
         "splatdir": "backspace",
+        "modifier": "",
     }
 
 
-control.nexus().merger.add_global_rule(Navigation())
+control.global_rule(Navigation())

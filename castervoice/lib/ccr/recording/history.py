@@ -36,11 +36,10 @@ class HistoryRule(SelfModifyingRule):
         h_launch.launch(settings.QTYPE_RECORDING, data=formatted)
         on_complete = AsynchronousAction.hmc_complete(
             lambda data: self.add_recorded_macro(data), self.nexus)
-        AsynchronousAction(
-            [L(S(["cancel"], on_complete))],
-            time_in_seconds=0.5,
-            repetitions=300,
-            blocking=False).execute()
+        AsynchronousAction([L(S(["cancel"], on_complete))],
+                           time_in_seconds=0.5,
+                           repetitions=300,
+                           blocking=False).execute()
 
     def add_recorded_macro(self, data):
         spec = data["word"]
@@ -82,11 +81,11 @@ class HistoryRule(SelfModifyingRule):
             # It appears that the associative string (ascii_str) must be ascii, but the sequences within Playback must be Unicode.
             mapping[ascii_str] = R(
                 Playback([(sequence, delay) for sequence in sequences]),
-                rdescript="Recorded Macro: " + ascii_str)
-        mapping["record from history"] = R(
-            Function(self.record_from_history), rdescript="Record From History")
-        mapping["delete recorded macros"] = R(
-            Function(self.delete_recorded_macros), rdescript="Delete Recorded Macros")
+                rdescript="Recorded Macro: " + ascii_str)*Repeat(extra="n")
+        mapping["record from history"] = R(Function(self.record_from_history),
+                                           rdescript="Record From History")
+        mapping["delete recorded macros"] = R(Function(self.delete_recorded_macros),
+                                              rdescript="Delete Recorded Macros")
         # reload with new mapping
         self.reset(mapping)
 

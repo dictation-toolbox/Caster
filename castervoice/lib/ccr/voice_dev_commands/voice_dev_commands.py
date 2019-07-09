@@ -1,19 +1,14 @@
-# Alex Boche 2019
-
-# this file contains commands for more quickly creating dragonfly commands.
-# users may want to make this context-specific to their text editors
-
-
-from dragonfly import (Grammar, MappingRule, Dictation, Function, Choice, Pause, Mouse)
-from dragonfly.actions.action_mouse import get_cursor_position
-
-from castervoice.lib import control
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.ccr.standard import SymbolSpecs
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-
+'''
+Alex Boche 2019
+this file contains commands for more quickly creating dragonfly commands.
+users may want to make this context-specific to their text editors
+'''
+from castervoice.lib.imports import *
+from castervoice.lib.ccr.core.nav import Navigation
+# combined_button_dictionary = Navigation.combined_button_dictionary
+# modifier_choice_object = Navigation.modifier_choice_object
+# print(combined_button_dictionary)
+# del Navigation
 
 def split_dictation(text):
     if text:
@@ -84,6 +79,10 @@ class VoiceDevCommands(MergeRule):
     mapping = {
 
         # Dragonfly Snippets
+        # this first command is probably the most useful one
+        "dev key [<modifier>] <combined_button_dictionary>": 
+            R(Text('Key("%(modifier)s%(combined_button_dictionary)s")'),
+            rdescript="DragonflyDev: Snippet for creating a full Key action"),
         "dev key":
             R(Text('Key("")') + Key("left:2"), rdescript="DragonflyDev: Snippet for Key Action"),
         "dev text":
@@ -93,7 +92,7 @@ class VoiceDevCommands(MergeRule):
         "dev function":
             R(Text("Function()") + Key("left")),
         "dev repeat":
-            R(Text(" * Repeat(extra='n'),"), rdescript="DragonflyDev: Snippet for Repeat"),
+            R(Text(" * Repeat(extra='n')"), rdescript="DragonflyDev: Snippet for Repeat"),
         "dev choice":
             R(Text('Choice("", {') + Pause("10") + Key("enter, up, right:4"),
               rdescript="DragonflyDev: Snippet for the Choice Extra"),
@@ -102,7 +101,7 @@ class VoiceDevCommands(MergeRule):
         "dev mouse current [position]":
             R(Function(type_mouse_current),
               rdescript="DragonflyDev: Snippet for Making a Command for Clicking at the Current Cursor Position"),
-        "dev execute": R(Key("end")+Text(".execute()"), 
+        "dev execute": R(Key("end")+Text(".execute()"),
             rdescript="call 'execute' method at end of line"),
 
  # Caster Snippets
@@ -191,6 +190,8 @@ class VoiceDevCommands(MergeRule):
     }
 
     extras = [
+        Navigation.modifier_choice_object,
+        Choice("combined_button_dictionary", Navigation.combined_button_dictionary),
         Dictation("text"),
         Dictation("dict"),
         Dictation("spec"),
@@ -212,5 +213,4 @@ class VoiceDevCommands(MergeRule):
     ]
     defaults = {"spec": "", "dict": "", "text": "", "mouse_button": ""}
 
-
-control.nexus().merger.add_global_rule(VoiceDevCommands())
+control.global_rule(VoiceDevCommands())

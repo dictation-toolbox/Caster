@@ -83,7 +83,9 @@ def get_platform_information():
             {"hidden console binary": os.path.join(sys.exec_prefix, "bin", "python")})
     return system_information
 
+
 SYSTEM_INFORMATION = get_platform_information()
+
 
 def get_filename():
     return _SETTINGS_PATH
@@ -179,90 +181,86 @@ def _find_natspeak():
 # The defaults for every setting. Could be moved out into its own file.
 _DEFAULT_SETTINGS = {
     "paths": {
-        "BASE_PATH": BASE_PATH,
-        "USER_DIR": _USER_DIR,
+        "BASE_PATH":
+            BASE_PATH,
+        "USER_DIR":
+            _USER_DIR,
 
         # DATA
-        "BRINGME_PATH": _USER_DIR + "/data/bringme.toml",
-        "BRINGME_DEFAULTS_PATH": BASE_PATH + "/bin/share/bringme.toml.defaults",
-        "ALIAS_PATH": _USER_DIR + "/data/aliases.toml",
-        "CCR_CONFIG_PATH": _USER_DIR + "/data/ccr.toml",
-        "DLL_PATH": BASE_PATH + "/lib/dll/",
-        "FILTER_DEFS_PATH": _USER_DIR + "/data/words.txt",
-        "LOG_PATH": _USER_DIR + "/log.txt",
-        "RECORDED_MACROS_PATH": _USER_DIR + "/data/recorded_macros.toml",
-        "SAVED_CLIPBOARD_PATH": _USER_DIR + "/data/clipboard.json",
-        "SIKULI_SCRIPTS_PATH": _USER_DIR + "/sikuli",
-        "GIT_REPO_LOCAL_REMOTE_PATH": _USER_DIR + "/data/git_repo_local_to_remote_match.toml",
-        "GIT_REPO_LOCAL_REMOTE_DEFAULT_PATH": BASE_PATH + "/bin/share/git_repo_local_to_remote_match.toml.defaults",
-        
+        "BRINGME_PATH":
+            _USER_DIR + "/data/bringme.toml",
+        "BRINGME_DEFAULTS_PATH":
+            BASE_PATH + "/bin/share/bringme.toml.defaults",
+        "FILTER_RULES_DEFAULTS_PATH":
+            BASE_PATH + "/bin/share/FilterRules",
+        "RULES_RULES_DEFAULTS_PATH":
+            BASE_PATH + "/bin/share/Rules",
+        "ALIAS_PATH":
+            _USER_DIR + "/data/aliases.toml",
+        "CCR_CONFIG_PATH":
+            _USER_DIR + "/data/ccr.toml",
+        "DLL_PATH":
+            BASE_PATH + "/lib/dll/",
+        "SIMPLIFIED_FILTER_RULES_PATH":
+            _USER_DIR + "/filters/words.txt",
+        "LOG_PATH":
+            _USER_DIR + "/log.txt",
+        "RECORDED_MACROS_PATH":
+            _USER_DIR + "/data/recorded_macros.toml",
+        "SAVED_CLIPBOARD_PATH":
+            _USER_DIR + "/data/clipboard.json",
+        "SIKULI_SCRIPTS_PATH":
+            _USER_DIR + "/sikuli",
+        "GIT_REPO_LOCAL_REMOTE_PATH":
+            _USER_DIR + "/data/git_repo_local_to_remote_match.toml",
+        "GIT_REPO_LOCAL_REMOTE_DEFAULT_PATH":
+            BASE_PATH + "/bin/share/git_repo_local_to_remote_match.toml.defaults",
+
         # REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
-        "REMOTE_DEBUGGER_PATH": "",
+        "REMOTE_DEBUGGER_PATH":
+            "",
 
         # SIKULIX EXECUTABLES
-        "SIKULI_IDE": "",
-        "SIKULI_RUNNER": "",
+        "SIKULI_IDE":
+            "",
+        "SIKULI_RUNNER":
+            "",
 
         # EXECUTABLES
-        "AHK_PATH": AHK_PATH_DEFAULT,
-        "DOUGLAS_PATH": BASE_PATH + "/asynch/mouse/grids.py",
-        "ENGINE_PATH": _validate_engine_path(),
-        "HOMUNCULUS_PATH": BASE_PATH + "/asynch/hmc/h_launch.py",
-        "LEGION_PATH": BASE_PATH + "/asynch/mouse/legion.py",
-        "MEDIA_PATH": BASE_PATH + "/bin/media",
-        "RAINBOW_PATH": BASE_PATH + "/asynch/mouse/grids.py",
-        "REBOOT_PATH": BASE_PATH + "/bin/reboot.bat",
-        "REBOOT_PATH_WSR": BASE_PATH + "/bin/reboot_wsr.bat",
-        "SETTINGS_WINDOW_PATH": BASE_PATH + "/asynch/settingswindow.py",
-        "SIKULI_SERVER_PATH": BASE_PATH + "/asynch/sikuli/server/xmlrpc_server.sikuli",
-        "WSR_PATH": "C:/Windows/Speech/Common/sapisvr.exe",
-        "TERMINAL_PATH": TERMINAL_PATH_DEFAULT,
+        "AHK_PATH":
+            AHK_PATH_DEFAULT,
+        "DOUGLAS_PATH":
+            BASE_PATH + "/asynch/mouse/grids.py",
+        "ENGINE_PATH":
+            _validate_engine_path(),
+        "HOMUNCULUS_PATH":
+            BASE_PATH + "/asynch/hmc/h_launch.py",
+        "LEGION_PATH":
+            BASE_PATH + "/asynch/mouse/legion.py",
+        "MEDIA_PATH":
+            BASE_PATH + "/bin/media",
+        "RAINBOW_PATH":
+            BASE_PATH + "/asynch/mouse/grids.py",
+        "REBOOT_PATH":
+            BASE_PATH + "/bin/reboot.bat",
+        "REBOOT_PATH_WSR":
+            BASE_PATH + "/bin/reboot_wsr.bat",
+        "SETTINGS_WINDOW_PATH":
+            BASE_PATH + "/asynch/settingswindow.py",
+        "SIKULI_SERVER_PATH":
+            BASE_PATH + "/asynch/sikuli/server/xmlrpc_server.sikuli",
+        "WSR_PATH":
+            "C:/Windows/Speech/Common/sapisvr.exe",
+        "TERMINAL_PATH":
+            TERMINAL_PATH_DEFAULT,
 
         # CCR
-        "CONFIGDEBUGTXT_PATH": _USER_DIR + "/data/configdebug.txt",
+        "CONFIGDEBUGTXT_PATH":
+            _USER_DIR + "/data/configdebug.txt",
 
         # PYTHON
-        "PYTHONW": SYSTEM_INFORMATION["hidden console binary"],
-    },
-
-    # Apps Section
-    "apps": {
-        "acrobat": True,
-        "atom": True,
-        "chrome": True,
-        "cmd": True,
-        "dragon": True,
-        "eclipse": True,
-        "emacs": True,
-        "excel": True,
-        "explorer": True,
-        "filedialogue": True,
-        "firefox": True,
-        "flashdevelop": True,
-        "fman": True,
-        "foxitreader": True,
-        "gitbash": True,
-        "githubdesktop": True,
-        "gitter": True,
-        "kdiff3": True,
-        "douglas": True,
-        "legion": True,
-        "lyx": True,
-        "jetbrains": True,
-        "msvc": True,
-        "notepadplusplus": True,
-        "outlook": True,
-        "rainbow": True,
-        "rstudio": True,
-        "sqldeveloper": True,
-        "ssms": True,
-        "sublime": True,
-        "totalcmd": True,
-        "typora": True,
-        "visualstudio": True,
-        "visualstudiocode": True,
-        "winword": True,
-        "wsr": True,
+        "PYTHONW":
+            SYSTEM_INFORMATION["hidden console binary"],
     },
 
     # python settings
@@ -396,8 +394,7 @@ def _init(path):
         import json
         clipboard = {}
         new_path = old_clipboard[:-4] + "json"
-        print("\n\n Migrating clipboard from {} to {}"
-              .format(old_clipboard, new_path))
+        print("\n\n Migrating clipboard from {} to {}".format(old_clipboard, new_path))
         with io.open(old_clipboard, "rt", encoding="utf-8") as f:
             clipboard = toml.loads(f.read())
         formatted_data = unicode(json.dumps(clipboard, ensure_ascii=False))
