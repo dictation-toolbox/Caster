@@ -5,6 +5,8 @@ Created on Sep 1, 2015
 '''
 from castervoice.lib.imports import *
 from dragonfly.actions.action_mimic import Mimic
+from castervoice.lib.ccr.standard import SymbolSpecs
+from castervoice.lib.ccr.core.punctuation import text_punc_dict, double_text_punc_dict
 from castervoice.lib.alphanumeric import caster_alphabet
 
 
@@ -283,10 +285,10 @@ class Navigation(MergeRule):
         # "key stroke [<modifier>] <combined_button_dictionary>": 
         #     R(Text('Key("%(modifier)s%(combined_button_dictionary)s")')),
 
-
-        
-        
     }
+    tell_commands_dict = {"dock": ";", "doc": ";", "sink": "", "com": ",", "deck": ":"}
+    tell_commands_dict.update(text_punc_dict)
+
     # I tried to limit which things get repeated how many times in hopes that it will help prevent the bad grammar error
     # this could definitely be changed. perhaps some of these should be made non-CCR
     button_dictionary_500 = {"(tab | tabby)": "tab", "(backspace | clear)": "backspace", "(delete|deli)": "del", "(escape | cancel)": "escape", "(enter | shock)": "enter",
@@ -358,11 +360,7 @@ class Navigation(MergeRule):
                 "dissent": 6,
                 "descent": 6
             }),
-        Choice("semi", {
-            "dock": ";",
-            "doc": ";",
-            "sink": ""
-        }),
+        Choice("semi", tell_commands_dict),
         Choice("word_limit", {
             "single": 1,
             "double": 2,
