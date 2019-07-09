@@ -302,13 +302,22 @@ class Navigation(MergeRule):
         combined_button_dictionary.update(dictionary)
     
     modifier_choice_object = Choice("modifier", {
-            "(control | fly)": "c-",
+            "(control | fly)": "c-", #TODO: make DRY
             "(shift | shin)": "s-",
             "alt": "a-",
             "(control shift | que)": "cs-",
             "control alt": "ca-",
             "(shift alt | alt shift)": "sa-",
             "(control alt shift | control shift alt)": "csa-", # control must go first
+            "windows": "w-", # windows should go before alt/shift
+            "control windows": "cw-",
+            "control windows alt": "cwa-",
+            "control windows shift": "cws-",
+            "windows shift alt": "wsa-",
+            "windows alt shift": "was-",
+            "windows shift": "ws-",
+            "windows alt": "wa-",
+            "control windows alt shift": "cwas-",
             "hit": "", 
         })
     extras = [
