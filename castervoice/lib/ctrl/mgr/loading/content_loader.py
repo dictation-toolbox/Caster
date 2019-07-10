@@ -1,89 +1,115 @@
-'''
-Attempts to de-import and re-import a Python file with
-a MappingRule or MergeRule in it.
-'''
-import importlib, os, glob
+import importlib
+from sys import modules as MODULES
 from sys import path
 import traceback
+
 from castervoice.lib import settings
+
+from castervoice.lib.ctrl.mgr.loading.content_type import ContentType
 from castervoice.lib.ctrl.mgr.loading.initial_content import FullContentSet
+
 
 class ContentLoader(object):
     
-    '''
-    Load all once when Caster starts. Afterwards, unload/reload only what is requested.
-    Pass result off to GrammarManager.
-    '''
+    def __init__(self, content_request_generator):
+        self._content_request_generator = content_request_generator
+    
     def load_everything(self):
-        rules = []
-        transformers = []
-        hooks = []
+        '''
+        ContentLoader loads all starter and user content when Caster starts.
+        It can also reload modules by name.
+        -
+        Load all once when Caster starts. Afterwards, unload/reload only what is requested.
+        Pass result off to GrammarManager.
+        '''
         
-        '''
-        Starter Caster Content
-        '''
+        '''Generate all requests for both starter and user locations'''
         base_path = settings.SETTINGS["paths"]["BASE_PATH"]
-        
-        rules.extend(self.import_directory("get_rule", base_path + "/TODO_THIS_PATH --- the CCR RULES path"))
-        rules.extend(self.import_directory("get_rule", base_path + "/TODO_THIS_PATH --- the APP rules path"))
-        transformers.extend(self.import_directory("get_transformer", base_path + "/TODO_THIS_PATH"))
-        hooks.extend(self.import_directory("get_hook", base_path + "/TODO_THIS_PATH"))
-        
-        '''
-        User Content -- should come later to override starter content
-        '''
         user_dir = settings.SETTINGS["paths"]["USER_DIR"]
         
-        rules.extend(self.import_directory("get_rule", user_dir + "/rules"))
-        transformers.extend(self.import_directory("get_transformer", user_dir + "/transformers"))
-        hooks.extend(self.import_directory("get_hook", user_dir + "/hooks"))
+        rule_requests = self._content_request_generator.generate(ContentType.GET_RULE,
+            base_path + "/TODO_THIS_PATH --- the CCR RULES path",
+            base_path + "/TODO_THIS_PATH --- the APP rules path",
+            user_dir + "/user_rules")
+        transformer_requests = self._content_request_generator.generate(ContentType.GET_TRANSFORMER,
+            base_path + "/TODO_THIS_PATH",
+            user_dir + "/user_transformers")
+        hook_requests = self._content_request_generator.generate(ContentType.GET_HOOK,
+            base_path + "/TODO_THIS_PATH",
+            user_dir + "/user_hooks")
+        
+        '''Attempt loading all content'''
+        rules = self._process_requests(rule_requests)
+        transformers = self._process_requests(transformer_requests)
+        hooks = self._process_requests(hook_requests)
         
         return FullContentSet(rules, transformers, hooks)
+
+    def idem_import_module(self, module_name, fn_name):
+        '''
+        Returns the content requested from the specified module.
+        '''
+        module = None
+        if module_name in MODULES:
+            module = MODULES[module_name]
+            module = self._reimport_module(module)
+        else:
+            module = self._import_module(module_name, fn_name)
         
-    def import_file(self, lib_name, fn_name):
-        lib = None
-        try:
-            lib = importlib.import_module(lib_name)
-        except Exception as e:
-            print("Could not load '{}'. Module has errors: {}".format(lib_name, traceback.format_exc()))
+        if module is None:
             return None
         
         # get them and add them to nexus
         fn = None
         try:
-            fn = getattr(lib, fn_name)
+            fn = getattr(module, fn_name)
         except AttributeError:
             msg = "No method named '{}' was found on '{}'. Did you forget to implement it?"
-            print(msg.format(fn_name, lib_name))
+            print(msg.format(fn_name, module_name))
             return None
         
         return fn()
     
-    '''TODO'''
-    def unimport_file(self, lib_name):
-        pass
-    
-    def import_directory(self, fn_name, fpath):
+    def _process_requests(self, requests):
         result = []
         
-        # check for existence of user dir
-        if not os.path.isdir(fpath):
-            msg = "No directory '{}' was found. Did you configure your USER_DIR correctly in {}?"
-            print(msg.format(fpath, settings.get_filename()))
-            return result
-        path.append(fpath)
+        for request in requests:
+            if request.directory not in path:
+                path.append(request.directory)
+            content_item = self.idem_import_module(request.module_name, request.content_type)
+            if content_item is not None:
+                result.append(content_item)
         
-        # get names of all python files in dir
-        python_files = glob.glob(fpath + "/*.py")
-        modules = [
-            os.path.basename(f)[:-3]
-            for f in python_files
-            if not f.endswith('__init__.py')
-        ]
-        for lib_name in modules:
-            # try to import the user rules one by one
-            lib = self.import_file(lib_name, fn_name)
-            if lib is not None:
-                result.append(lib)
-    
         return result
+    
+    def _import_module(self, module_name):
+        '''
+        Imports a module for the first time.
+        '''
+        try:
+            return importlib.import_module(module_name)
+        except Exception as e:
+            print("Could not import '{}'. Module has errors: {}".format(module_name, traceback.format_exc()))
+            return None
+    
+    def _reimport_module(self, module):
+        '''
+        Reimports an already imported module. Python 2/3 compatible method.
+        '''
+        try:
+            reload
+        except NameError:
+            # Python 3
+            from imp import reload
+        
+        reloaded_module = None
+        try:
+            reloaded_module = reload(module)
+        except:
+            msg = "An error occurred while importing '{}': {}"
+            print(msg.format(str(module), traceback.format_exc()))
+            return None
+        
+        return reloaded_module
+    
+    

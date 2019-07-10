@@ -12,6 +12,7 @@ complexity_report*
 *.*~
 *.aux
 *.synctex.gz
+_test/
 
 # Ignore Rope
 .ropeproject/

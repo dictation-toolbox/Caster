@@ -11,7 +11,6 @@ Created on Jun 24, 2019
 5. Return the merged rule.
 '''
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.ctrl.mgr.consts import CCRType
 
 class CCRMerger2(object):
     
