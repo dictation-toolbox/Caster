@@ -45,6 +45,16 @@
 - [ ] I have added tests to cover my changes.
 - [ ] All new and existing tests passed.
 
+
+## Pull Request Status as defined by Contributor.
+!--- Please check one of the following boxes to indicate the status of the pull request --
+!--- Marking 'Complete' states that you believe the pull request is ready to be merged and feature complete --
+!--- Marking 'Work in progress (WIP)' means you are still developing features. Code Review upon request only. --
+!--- Once the status is is checked as complete the pull request is ready review by a Maintainer--
+
+- [ ] Work in progress (WIP)
+- [ ] Complete
+
 ## Maintainer/Reviewer Checklist
 
 !--- Please leave these unchecked and add any other specific tasks you would like a --
