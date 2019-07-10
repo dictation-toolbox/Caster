@@ -26,6 +26,7 @@ nav:
     - Documentation:
         - Aenea: readthedocs/Aenea.md
         - Alias: readthedocs/Alias.md
+        - Bring me: readthedocs/Bringme.md
         - Application Commands Quick Reference: readthedocs/Application_Commands_Quick_Reference.md
         - Auto CCR and Cmd Mode: readthedocs/Auto_CCR_and_Cmd-Mode.md
         - CCR: readthedocs/CCR.md
