@@ -7,6 +7,9 @@ import os, time, sys
 import logging
 logging.basicConfig()
 
+import time, socket, os
+from dragonfly import (get_engine, Function, Grammar, Playback, Dictation, Choice, Pause,
+                       RunCommand)
 from castervoice.lib.ccr.standard import SymbolSpecs
 
 
@@ -60,5 +63,4 @@ if settings.WSR:
     print("Windows Speech Recognition is garbage; it is " \
         +"recommended that you not run Caster this way. ")
     while True:
-        pythoncom.PumpWaitingMessages()  # @UndefinedVariable
-        time.sleep(.1)
+        get_engine().recognize_forever()
