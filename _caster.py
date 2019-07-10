@@ -3,11 +3,10 @@
 main Caster module
 Created on Jun 29, 2014
 '''
-
+import os, time, sys
 import logging
 logging.basicConfig()
 
-import time
 from castervoice.lib.ccr.standard import SymbolSpecs
 
 
@@ -39,6 +38,7 @@ _NEXUS = control.nexus()
 from castervoice.lib import navigation
 navigation.initialize_clipboard(_NEXUS)
 from castervoice.apps import __init__
+import castervoice.lib.dev.dev
 from castervoice.asynch.sikuli import sikuli
 from castervoice.lib.dfplus.merge.mergepair import MergeInf
 
