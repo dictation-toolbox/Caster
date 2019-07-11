@@ -7,6 +7,7 @@ of deterministic order. This behavior should be customizable.
 Hence ruleset sorters. 
 '''
 
+
 class BaseRuleSetSorter(object):
     def sort_ruleset(self, ruleset):
         return list(ruleset)

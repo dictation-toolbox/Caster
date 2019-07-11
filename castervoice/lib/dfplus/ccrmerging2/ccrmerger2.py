@@ -12,10 +12,10 @@ Created on Jun 24, 2019
 '''
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 
+
 class CCRMerger2(object):
-    
-    
-    def __init__(self, ccr_config, 
+
+    def __init__(self, ccr_config,
                  transformers, rule_sorter, compatibility_checker,
                  merging_strategy, grammar_manager_class):
         self._config = ccr_config
@@ -37,10 +37,12 @@ class CCRMerger2(object):
     '''
 
     '''saves the current ccr config for next dragon reboot'''
+
     def save_config(self):
         self._config.save()
 
     '''loads the ccr config from disk'''
+
     def load_config(self):
         self._config.load()
 
@@ -51,11 +53,10 @@ class CCRMerger2(object):
        also adds "ccr_on" to the config  if not exists
        also saves config if anything changed
     '''
+
     def update_config(self):
         pass
 
-
-    
     '''
     X validates that rule has no context
     X validates that rule is a MergeRule
@@ -71,6 +72,7 @@ class CCRMerger2(object):
     Ultimately, each module should call GrammarManager.get_instance
     to configure its loading.
     '''
+
     def add_global_rule(self, rule):
         rule_class = rule.__class__
         details = RuleDetails(ccr=True)
@@ -87,6 +89,7 @@ class CCRMerger2(object):
     
     save to APP hashmap of {pronunciation: rule}
     '''
+
     def add_app_rule(self, rule, context):
         rule_class = rule.__class__
         details = RuleDetails(ccr=True)
@@ -101,43 +104,46 @@ class CCRMerger2(object):
     
     save to SELFMOD hashmap
     '''
+
     def add_selfmodrule(self, rule):
         self._validate_rule(
-            rule, 
-            self._selfmod_rule_validator, 
+            rule,
+            self._selfmod_rule_validator,
             self._get_all_rule_names())
         pass
 
     '''adds filter to list of filters if not already added'''
+
     def add_filter(self, filter_fn):
         pass
 
     '''adds all user-created rules and filters'''
+
     def add_user_content(self, user_content_manager):
         pass
 
     '''disable and delete all grammars'''
+
     def wipe(self):
         pass
 
     '''turns off all ccr grammars, sets 'ccr_on'=False and saves'''
+
     def ccr_off(self):
         pass
 
     '''does merging -- see the original for details/notes'''
+
     def merge(self, time, name=None, enable=True, save=False):
         pass
 
-
-    
-    
     '''IMPLEMENTATION DETAILS'''
+
     def _validate_rule(self, rule, validator):
         error_message = validator.validate(rule)
         if error_message is not None:
-            raise Exception(rule.get_pronunciation() + " " + error_message) 
-    
+            raise Exception(rule.get_pronunciation() + " " + error_message)
+
     def _get_all_rule_names(self):
         '''TODO: this'''
         return []
-

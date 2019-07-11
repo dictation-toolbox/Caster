@@ -1,13 +1,16 @@
 import io
 import os
-from castervoice.lib import settings
+
 from dragonfly.grammar.elements import Choice
+
+from castervoice.lib import settings
 from castervoice.lib.dfplus.ccrmerging2.transformers.base_transformer import BaseRuleTransformer
 
 '''
 This module defines a global transformer, the parameters of
 which are defined in settings.SETTINGS["paths"]["FILTER_DEFS_PATH"]
 '''
+
 
 class _PreservedSpec(object):
     def __init__(self):
@@ -59,7 +62,6 @@ class _PreservedSpec(object):
 
 
 class _GlobalFilterDefs(object):
-
     P = "<?>"
 
     @staticmethod
@@ -122,6 +124,7 @@ class _GlobalFilterDefs(object):
 
 _DEFS = None
 
+
 def _load_definitions():
     if os.path.isfile(settings.SETTINGS["paths"]["FILTER_DEFS_PATH"]):
         '''user must create castervoice/user/fdefs.txt for it to get picked up here'''
@@ -170,9 +173,9 @@ def _spec_override_from_config(mergerule):
                 choices = extra._choices
                 replace = False
                 for s in choices.keys(
-                ):  #ex: "dunce make" is key, some int or whatever is the value
+                ):  # ex: "dunce make" is key, some int or whatever is the value
                     for ns in _DEFS.extras.keys(
-                    ):  #ex: "dunce" is key, "down" is the value
+                    ):  # ex: "dunce" is key, "down" is the value
                         if ns in s:  # ex: "dunce" is in "dunce make"
                             replace = True
                             val = choices[s]
@@ -213,10 +216,9 @@ def _spec_override_from_config(mergerule):
 
     if specs_changed or extras_changed or defaults_changed:
         mergerule.__init__(mergerule._name, mergerule.mapping_actual(), extras, defaults,
-                      mergerule._exported, mergerule.ID, mergerule.composite, mergerule.compatible,
-                      mergerule._mcontext, mergerule._mwith)
+                           mergerule._exported, mergerule.ID, mergerule.composite, mergerule.compatible,
+                           mergerule._mcontext, mergerule._mwith)
     return mergerule
-
 
 
 _load_definitions()
@@ -224,8 +226,11 @@ if _DEFS is not None:
     print("Global rule filter from file 'words.txt' activated ...")
 
 '''TODO: make sure this finds its way into both modes of the new merger'''
+
+
 class GlobalDefinitionsRuleTransformer(BaseRuleTransformer):
     def _transform(self, mergerule):
         return _spec_override_from_config(mergerule)
+
     def _is_applicable(self, mergerule):
         return True

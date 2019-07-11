@@ -3,8 +3,10 @@ from castervoice.lib.dfplus.ccrmerging2.merging.base_merging_strategy import Bas
 '''
 This strategy KOs any incompatible rules.
 '''
+
+
 class ClassicMergingStrategy(BaseMergingStrategy):
-    
+
     def merge(self, sorted_checked_rules):
         merged_rule = None
         for compat_result in sorted_checked_rules:

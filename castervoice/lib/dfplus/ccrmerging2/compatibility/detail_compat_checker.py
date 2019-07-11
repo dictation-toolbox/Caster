@@ -8,8 +8,8 @@ It is slower than SimpleCompatibilityChecker but can be used to
 enable alternate merge collision strategies. 
 '''
 
+
 class DetailCompatibilityChecker(BaseCompatibilityChecker):
-    
     '''
     If 'count_against_all' is true, incompatibility for a given
     rule will be calculated against all prior rules, whether or not
@@ -17,10 +17,10 @@ class DetailCompatibilityChecker(BaseCompatibilityChecker):
     scenarios, but the default behavior will be to only check
     compatibility against prior non-conflicting rules.
     '''
+
     def __init__(self, count_against_all=False):
         self._count_against_all = count_against_all
-        
-    
+
     def _check(self, mergerules):
         results = []
         specs_set = set()
@@ -33,7 +33,7 @@ class DetailCompatibilityChecker(BaseCompatibilityChecker):
             if is_compatible or self._count_against_all:
                 specs_set.update(new_specs)
         return results
-        
+
     def _find_all_incompatible_specs(self, specs_set, new_specs):
         results = []
         for new_spec in new_specs:

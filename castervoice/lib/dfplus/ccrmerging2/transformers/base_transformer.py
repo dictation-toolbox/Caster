@@ -7,18 +7,22 @@ them are that:
 3. transformers enforce immutability
 4. transformers have no concept of "time" or "order"
 '''
+
+
 class BaseRuleTransformer(object):
-    
     '''do not override'''
+
     def get_transformed_rule(self, mergerule):
         if self._is_applicable(mergerule):
             return self._transform(mergerule.copy())
         return mergerule
-    
+
     '''override this'''
+
     def _transform(self, mergerule):
         return mergerule
-    
+
     '''override this'''
+
     def _is_applicable(self, mergerule):
-        return False 
+        return False

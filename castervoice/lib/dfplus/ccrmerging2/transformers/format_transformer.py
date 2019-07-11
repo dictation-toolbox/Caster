@@ -10,6 +10,7 @@ based on the name of the mergerule being merged. Should probably rework this,
 but porting it as-is to preserve existing functionality for now.
 '''
 
+
 def _apply_format(rule_pronunciation):
     if rule_pronunciation in settings.SETTINGS["formats"]:
         if 'text_format' in settings.SETTINGS["formats"][rule_pronunciation]:
@@ -26,14 +27,16 @@ def _apply_format(rule_pronunciation):
         textformat.format.clear_text_format()
         textformat.secondary_format.clear_text_format()
 
+
 class NonTransformingGlobalFormatHook(BaseRuleTransformer):
-    
     '''abuse the _transform method so can use this transformer
     as a "merge hook" for global state '''
+
     def _transform(self, mergerule):
         _apply_format(mergerule.get_pronunciation())
         return mergerule
-    
+
     '''This used to only run on MergeRules in ccrmerger.merge'''
+
     def _is_applicable(self, rule):
         return isinstance(rule, MergeRule)

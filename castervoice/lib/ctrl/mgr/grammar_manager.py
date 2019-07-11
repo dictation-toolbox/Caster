@@ -5,11 +5,11 @@ class _PreInstantiatedGrammarManager(object):
 
     def __init__(self):
         self._pending_rules = []
-    
+
     def register_rule(self, rule_class, details):
         self._pending_rules.append((rule_class, details))
 
-        
+
 _PRE = _PreInstantiatedGrammarManager()
 _INSTANCE = None
 
@@ -30,12 +30,14 @@ Jobs of the grammar manager:
         -- this also applies to non-CCR grammars
         MappingRules should be enabled with 'enable' + (their name, else their Grammar's 'name', else executable)
 '''
+
+
 class GrammarManager(object):
-    
+
     @staticmethod
     def get_instance():
         return _INSTANCE if _INSTANCE is not None else _PRE
-    
+
     '''should be used by Nexus or other suitable controller'''
 
     @staticmethod
@@ -48,7 +50,7 @@ class GrammarManager(object):
                                        rule_sets, reload_observable)
             _INSTANCE._convert(_PRE)
             _PRE = None
-    
+
     def __init__(self, merger, settings_module, appcontext_class, grammar_class, transformers,
                  validator, rule_sets, reload_observable):
         # merger is necessary to unload ccr rules and their nons
@@ -71,34 +73,35 @@ class GrammarManager(object):
         self._reload_observable = reload_observable
         self._reload_observable.register_listener(self)
         [self._register_rules_from_content_manager(rs) for rs in rule_sets]
-        
+
     '''
     Do not call this manually. Should only be called by the reload observable.
     '''
+
     def receive(self, file_path_changed):
         '''
         TODO: this
         '''
         pass
-    
+
     def _register_rules_from_content_manager(self, rule_set):
         for rd in rule_set:
             rule_class = rd[0]
             rule_details = rd[1]
             self.register_rule(rule_class, rule_details)
             self._reload_observable.register_watched_file(rule_details.path)
-    
+
     def load(self, rule_class_name):
         '''defer to loaders
         '''
         pass
-    
+
     def unload(self, rule_class_name):
         '''defer to loaders
         
         '''
         pass
-    
+
     '''
     If a rule is registered a second time, 
     A. The new version should be attempted to be loaded.
@@ -113,28 +116,29 @@ class GrammarManager(object):
     -- can't recover if it fails on reboot
     -- can recover afterwards -- if it fails importlib, the crash will not deregister the old version
     '''
+
     def register_rule(self, rule_class, details):
         name = rule_class.__name__
-        
+
         '''attempt to instantiate the rule'''
-        test_instance = None 
+        test_instance = None
         try:
             test_instance = rule_class()
         except:
             print(name + " rejected due to instantiation errors")
             return
-        
+
         '''if ccr, validate the rule'''
         if details.declared_ccrtype is not None:
             error = self._validator.validate(test_instance, details.declared_ccrtype)
             if error is not None:
                 print(name + " rejected due to validation errors: " + error)
                 return
-        
+
         '''if already registered, unregister it'''
         if name in self._managed_rules:
             self._unregister(name)
-        
+
         '''
         rule should be safe for loading at this point: register it
         but do not load here -- this method only registers
@@ -142,33 +146,32 @@ class GrammarManager(object):
         managed_rule = _ManagedRule(rule_class, details)
         self._managed_rules[name] = managed_rule
 
-    
     '''
     Both rules must be registered before registering the companion.
         self._companion_rules is {rule: [companions]}
     '''
+
     def register_companion_rule(self, rule_class, companion_rule_class):
         rule_class_name = rule_class.__name__
         companion_rule_class_name = companion_rule_class.__name__
-        
+
         if rule_class_name in self._managed_rules and \
-            companion_rule_class_name in self._managed_rules:
+                companion_rule_class_name in self._managed_rules:
             companions_list = [] if not rule_class_name in self._companion_rules \
                 else self._companion_rules[rule_class_name]
             companions_list.append(companion_rule_class_name)
             self._companion_rules[rule_class_name] = companions_list
-    
+
     def _unregister(self, rule_class_name):
         managed_rule = self._managed_rules[rule_class_name]
         if managed_rule.grammar is not None:
             managed_rule.grammar.unload()
         del self._managed_rules[rule_class_name]
-            
-            
+
     def _convert(self, pre):
         for t in pre._pending_rules:
             self.register(t[0], t[1])
-    
+
     def _load_dragonfly_style(self, rule_class, details):
         if details.enabled:
             if self._settings_module["miscellaneous"]["rdp_mode"]:
@@ -176,13 +179,11 @@ class GrammarManager(object):
             else:
                 rule_instance = rule_class(name=details.name)
                 self._filter_method(rule_instance)
-                
+
                 context = self._appcontext_class(executable=details.executable)
                 grammar = self._grammar_class(details.grammar_name, context=context)
                 grammar.add_rule(rule_instance)
                 grammar.load()
-    
+
     def _load_via_merger(self, rule, details):
         self._merger.add_global_rule(rule)
-    
-    

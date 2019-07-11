@@ -10,21 +10,22 @@ from castervoice.lib.ctrl.mgr.validation.rules.selfmod_validator import SelfModi
 class CCRValidationDelegator(object):
     def __init__(self):
         self._global_validator = CompositeValidator([
-                IsMergeRuleValidator(),
-                HasNoContextValidator()
-            ])
+            IsMergeRuleValidator(),
+            HasNoContextValidator()
+        ])
         self._app_validator = HasContextValidator()
-        
+
         self._selfmod_validator = CompositeValidator([
             SelfModifyingRuleValidator(),
             NotNodeRuleValidator()
-            ])
-    
+        ])
+
     '''
     if it has a context, it's an app rule
     else if its a selfmod, then selfmod
     else global
-    '''    
+    '''
+
     def validate(self, rule, declared_ccrtype):
         error_message = None
         if declared_ccrtype == CCRType.GLOBAL:
@@ -34,4 +35,3 @@ class CCRValidationDelegator(object):
         elif declared_ccrtype == CCRType.SELFMOD:
             error_message = self._selfmod_validator.validate(rule)
         return error_message
-        

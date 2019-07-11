@@ -3,5 +3,3 @@ class ContentRequest(object):
         self.content_type = content_type
         self.directory = directory
         self.module_name = module_name
-        
-        

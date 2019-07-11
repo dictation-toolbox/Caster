@@ -7,8 +7,9 @@ it looks for a single incompatibility and then returns early. This has
 the benefit of being faster than DetailCompatibilityChecker.
 '''
 
+
 class SimpleCompatibilityChecker(BaseCompatibilityChecker):
-    
+
     def _check(self, mergerules):
         results = []
         specs_set = set()
@@ -21,7 +22,7 @@ class SimpleCompatibilityChecker(BaseCompatibilityChecker):
                 results.append(CompatibilityResult(new_rule, True))
                 specs_set.update(new_specs)
         return results
-        
+
     def _find_first_incompatible_spec(self, specs_set, new_specs):
         for new_spec in new_specs:
             if new_spec in specs_set:
