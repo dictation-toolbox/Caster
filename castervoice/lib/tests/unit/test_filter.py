@@ -4,7 +4,7 @@ from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
 from castervoice.lib.dfplus.merge.filter import (make_filter, there_is_spec_overlap,
         incoming_gets_priority)
 from castervoice.lib.dfplus.merge.mergepair import MergeInf
-from castervoice.lib.tests.unit.state import TestNexus
+from castervoice.lib.tests.unit.nexus import TestNexus
 
 
 class TestFilterFunctions(TestNexus):
