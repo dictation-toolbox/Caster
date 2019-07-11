@@ -3,7 +3,7 @@
 
 [Caster](https://github.com/dictation-toolbox/Caster)  is a collection of tools aimed at enabling programming and accessibility entirely by voice built upon the [Dragonfly](https://github.com/dictation-toolbox/dragonfly) API.
 
-**Note for PyPi Users**: The PIP package is (_Alpha_). Do not use the PIP install. Alternatively use the [Master Branch](https://gihttps://github.com/dictation-toolbox/Caster) with classic install for the best feature experience.
+**Note for PyPi Users**: The PIP package is (_Alpha_). Do not use the PIP install. Alternatively use this [Commit](https://github.com/dictation-toolbox/Caster/tree/54e7777027fe68ca880a14d8b234e86e52b7f5b0) with classic install for the best feature experience.
 
 - Videos by the Caster Community.
   - [Caster Demo](https://www.youtube.com/watch?v=oIwh3z2jXD4)
