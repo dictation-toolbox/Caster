@@ -3,7 +3,6 @@ from dragonfly.grammar.recobs import RecognitionHistory
 
 from castervoice.lib import settings
 from castervoice.lib.ctrl.dependencies import DependencyMan
-from castervoice.lib.ctrl.wsrdf import RecognitionHistoryForWSR
 from castervoice.lib.dfplus.communication import Communicator
 from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
 from castervoice.lib.dfplus.state.stack import CasterState
@@ -19,10 +18,8 @@ class Nexus:
 
         self.temp = ""
 
-        if settings.WSR or not real_merger_config:
-            self.history = RecognitionHistoryForWSR(20)
-        else:
-            self.history = RecognitionHistory(20)
+        self.history = RecognitionHistory(20)
+        if real_merger_config:
             self.history.register()
         self.state.set_stack_history(self.history)
         self.preserved = None
