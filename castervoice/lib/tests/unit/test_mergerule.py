@@ -1,15 +1,16 @@
-#Embedded file name: C:\NatLink\NatLink\MacroSystem\castervoice\lib\tests\unit\mergerule.py
 import unittest
+
 from castervoice.lib.context import AppContext
-from castervoice.lib.tests.mocks import EclipseCCR
-from castervoice.lib.tests.mocks import Java
-from castervoice.lib.tests.mocks import Javascript
-from castervoice.lib.tests.mocks import Python
-from castervoice.lib.tests.mocks import Alias
+from castervoice.lib.tests.mocks import EclipseCCR, Java, Javascript, Python, Alias
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.tests.unit.nexus import TestNexus
 
+
 class TestMergeRule(TestNexus):
+
+    def setUp(self):
+        TestNexus.setUp(self)
+
     def test_name_generation(self):
         size = 10
         names = set()
@@ -62,3 +63,6 @@ class TestMergeRule(TestNexus):
         del _merged.mapping_actual()["display available commands"]
         self.assertEqual(vanilla_specs + java_specs, len(_merged.mapping_actual().keys()))
         self.assertEqual(vanilla_specs, len(vanilla.mapping_actual().keys()))
+
+if __name__ == '__main__':
+    unittest.main()
