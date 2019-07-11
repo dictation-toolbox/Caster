@@ -171,8 +171,6 @@ else:
 print("\n*- Starting " + settings.SOFTWARE_NAME + " -*")
 
 if settings.WSR:
-    import pythoncom
     print("Windows Speech Recognition is garbage; it is " \
         +"recommended that you not run Caster this way. ")
-    while True:
-        get_engine().recognize_forever()
+    get_engine().recognize_forever()
