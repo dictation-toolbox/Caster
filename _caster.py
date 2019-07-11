@@ -36,9 +36,10 @@ from castervoice.lib import utilities  # requires settings
 if settings.WSR:
     _wait_for_wsr_activation()
     SymbolSpecs.set_cancel_word("escape")
-from castervoice.lib.ctrl.dependencies import pip_path, update
 from castervoice.lib import control
 _NEXUS = control.nexus()
+_NEXUS.dep.initialize()
+from castervoice.lib.ctrl.dependencies import pip_path, update
 from castervoice.lib import navigation
 navigation.initialize_clipboard(_NEXUS)
 

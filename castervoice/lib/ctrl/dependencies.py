@@ -130,7 +130,7 @@ def dep_min_version():
 
 class DependencyMan:
     # Initializes functions
-    def __init__(self):
+    def initialize(self):
         install = install_type()
         find_pip()
         if install is "classic":
