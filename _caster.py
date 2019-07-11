@@ -13,21 +13,6 @@ from dragonfly import (get_engine, Function, Grammar, Playback, Dictation, Choic
                        RunCommand)
 from castervoice.lib.ccr.standard import SymbolSpecs
 
-
-def _wait_for_wsr_activation():
-    count = 1
-    while True:
-        try:
-            from castervoice.apps.browser import firefox
-            break
-        except:
-            print(
-                "(%d) Attempting to load Caster -- WSR not loaded and listening yet..." %
-                count)
-            count += 1
-            time.sleep(1)
-
-
 _NEXUS = None
 from castervoice.lib import settings  # requires nothing
 if settings.SYSTEM_INFORMATION["platform"] != "win32":
