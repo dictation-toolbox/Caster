@@ -3,7 +3,7 @@ Created on Jun 7, 2015
 
 @author: dave
 '''
-from dragonfly import Pause, ActionBase
+from dragonfly import Pause, ActionBase, get_engine
 
 from castervoice.lib import settings
 
@@ -180,6 +180,7 @@ class StackItemAsynchronous(StackItemSeeker):
 
         self.time_in_seconds = continuer.time_in_seconds
         self.blocking = continuer.blocking
+        self.timer = None
 
     def satisfy_level(
             self, level_index, is_back, stack_item
@@ -214,7 +215,8 @@ class StackItemAsynchronous(StackItemSeeker):
 
     def clean(self):
         StackItemSeeker.clean(self)
-        self.nexus.timer.remove_callback(self.closure)
+        self.timer.stop()
+        self.timer = None
         self.closure = None
 
     def begin(self):
@@ -236,7 +238,7 @@ class StackItemAsynchronous(StackItemSeeker):
                     execute(False)
 
         self.closure = closure
-        self.nexus.timer.add_callback(self.closure, self.time_in_seconds)
+        self.timer = get_engine().create_timer(self.closure, self.time_in_seconds)
         self.closure()
 
 

@@ -9,21 +9,24 @@ google_analytics: null
 site_name: Caster
 site_author: dictation-toolbox
 site_url: https://caster.readthedocs.io
-docs_dir: castervoice/doc
+docs_dir: docs
 repo_url: https://github.com/dictation-toolbox/Caster/
-edit_uri: tree/develop/castervoice/doc
+edit_uri: tree/master/docs
 
 theme:
     name: readthedocs
 
 nav:
-    - Home: index.md
+    - Home: README.md
+    - Getting Started: CasterQuickReference.md
     - License: LICENSE.md
     - Contributing: Contributing.md
+    - Code of Conduct: CODE_OF_CONDUCT.md
     - Installation: Installation.md
     - Documentation:
         - Aenea: readthedocs/Aenea.md
         - Alias: readthedocs/Alias.md
+        - Bring me: readthedocs/Bringme.md
         - Application Commands Quick Reference: readthedocs/Application_Commands_Quick_Reference.md
         - Auto CCR and Cmd Mode: readthedocs/Auto_CCR_and_Cmd-Mode.md
         - CCR: readthedocs/CCR.md
@@ -32,7 +35,6 @@ nav:
         - 'Mouse': readthedocs/Mouse.md
         - 'Node Rule': readthedocs/NodeRule.md
         - 'Record Macros': readthedocs/Record_Macros.md
-        - 'Setup': readthedocs/Setup.md
         - 'Sikuli': readthedocs/Sikuli.md
         - 'Taxonomy of a Rule': readthedocs/Taxonomy_of_a_Rule.md
         - 'Text Manipulation and Navigation': readthedocs/Text_Manipulation.md

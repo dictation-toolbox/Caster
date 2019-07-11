@@ -1,123 +1,116 @@
-from castervoice.lib import control
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.ccr.standard import SymbolSpecs
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-
+from castervoice.lib.imports import *
 
 class Haxe(MergeRule):
     pronunciation = "hacks"
 
     mapping = {
         SymbolSpecs.IF:
-            R(Key("i, f, lparen, rparen, left"), rdescript="Haxe: If"),
+            R(Key("i, f, lparen, rparen, left")),
         SymbolSpecs.ELSE:
-            R(Key("e, l, s, e"), rdescript="Haxe: Else"),
+            R(Key("e, l, s, e")),
         #
         SymbolSpecs.SWITCH:
-            R(Text("switch(){\ncase : TOKEN;\ndefault: TOKEN;") + Key("up,up,left,left"),
-              rdescript="Haxe: Switch"),
+            R(Text("switch(){\ncase : TOKEN;\ndefault: TOKEN;") + Key("up,up,left,left")),
         SymbolSpecs.CASE:
-            R(Text("case :") + Key("left"), rdescript="Haxe: Case"),
+            R(Text("case :") + Key("left")),
         SymbolSpecs.BREAK:
-            R(Text("break;"), rdescript="Haxe: Break"),
+            R(Text("break;")),
         SymbolSpecs.DEFAULT:
-            R(Text("default: "), rdescript="Haxe: Default"),
+            R(Text("default: ")),
         #
         SymbolSpecs.DO_LOOP:
-            R(Text("do TOKEN while()") + Key("left, enter:2"), rdescript="Haxe: Do Loop"),
+            R(Text("do TOKEN while()") + Key("left, enter:2")),
         SymbolSpecs.WHILE_LOOP:
-            R(Text("while ()") + Key("left"), rdescript="Haxe: While"),
+            R(Text("while ()") + Key("left")),
         SymbolSpecs.FOR_LOOP:
-            R(Text("for (i in 0...TOKEN)"), rdescript="Haxe: For i Loop"),
+            R(Text("for (i in 0...TOKEN)")),
         SymbolSpecs.FOR_EACH_LOOP:
-            R(Text("for (TOKEN in TOKEN)"), rdescript="Haxe: For Each Loop"),
+            R(Text("for (TOKEN in TOKEN)")),
         #
         SymbolSpecs.TO_INTEGER:
-            R(Text("Std.int()") + Key("left"), rdescript="Haxe: Convert To Integer"),
+            R(Text("Std.int()") + Key("left")),
         SymbolSpecs.TO_FLOAT:
-            R(Text("Std.parseFloat()") + Key("left"),
-              rdescript="Haxe: Convert To Floating-Point"),
+            R(Text("Std.parseFloat()") + Key("left")),
         SymbolSpecs.TO_STRING:
-            R(Text("Std.string()") + Key("left"), rdescript="Haxe: Convert To String"),
+            R(Text("Std.string()") + Key("left")),
         #
         SymbolSpecs.AND:
-            R(Text("&&"), rdescript="Haxe: And"),
+            R(Text("&&")),
         SymbolSpecs.OR:
-            R(Text("||"), rdescript="Haxe: Or"),
+            R(Text("||")),
         SymbolSpecs.NOT:
-            R(Text("!"), rdescript="Haxe Not"),
+            R(Text("!")),
         #
         SymbolSpecs.SYSOUT:
-            R(Text("trace()") + Key("left"), rdescript="Haxe: Print"),
+            R(Text("trace()") + Key("left")),
 
         #
         SymbolSpecs.FUNCTION:
-            R(Text("function "), rdescript="Haxe: Function"),
+            R(Text("function ")),
         SymbolSpecs.CLASS:
-            R(Text("class "), rdescript="Haxe: Class"),
+            R(Text("class ")),
         #
         SymbolSpecs.COMMENT:
-            R(Text("//"), rdescript="Haxe: Add Comment"),
+            R(Text("//")),
         SymbolSpecs.LONG_COMMENT:
-            R(Text("/**/") + Key("left, left"), rdescript="Haxe: Long Comment"),
+            R(Text("/**/") + Key("left, left")),
         #
         SymbolSpecs.NULL:
-            R(Text("null"), rdescript="Haxe: Null Value"),
+            R(Text("null")),
         #
         SymbolSpecs.RETURN:
-            R(Text("return "), rdescript="Haxe: Return"),
+            R(Text("return ")),
         #
         SymbolSpecs.TRUE:
-            R(Text("true"), rdescript="Haxe: True"),
+            R(Text("true")),
         SymbolSpecs.FALSE:
-            R(Text("false"), rdescript="Haxe: False"),
+            R(Text("false")),
 
         # Haxe specific
         "import":
-            R(Text("import "), rdescript="Haxe: Import"),
+            R(Text("import ")),
         "new new":
-            R(Text("new "), rdescript="Haxe: New"),
+            R(Text("new ")),
         "instance of":
-            R(Text("Std.is()") + Key("left"), rdescript="Haxe: Infer Type"),
+            R(Text("Std.is()") + Key("left")),
         "anon funk":
-            R(Text("->"), rdescript="Haxe: Lambda"),
+            R(Text("->")),
         "map of":
-            R(Text("Map<TOKEN, TOKEN>()"), rdescript="Haxe: Map"),
+            R(Text("Map<TOKEN, TOKEN>()")),
         "array of":
-            R(Text("Array<TOKEN>()") + Key("left"), rdescript="Haxe: Array"),
+            R(Text("Array<TOKEN>()") + Key("left")),
         "far | variable":
-            R(Text("var "), rdescript="Haxe: Variable"),
+            R(Text("var ")),
         "boolean":
-            R(Text("Bool "), rdescript="Haxe: Boolean"),
+            R(Text("Bool ")),
         "integer":
-            R(Text("Int "), rdescript="Haxe: Big Integer"),
+            R(Text("Int ")),
         "double":
-            R(Text("Float "), rdescript="Haxe: Float"),
+            R(Text("Float ")),
         "dynamic":
-            R(Text("Dynamic"), rdescript="Haxe: Dynamic"),
+            R(Text("Dynamic")),
         "void":
-            R(Text("Void"), rdescript="Haxe: Void"),
+            R(Text("Void")),
         "string":
-            R(Text("String "), rdescript="Haxe: String"),
+            R(Text("String ")),
         "public":
-            R(Text("public "), rdescript="Haxe: Public"),
+            R(Text("public ")),
         "private":
-            R(Text("private "), rdescript="Haxe: Private"),
+            R(Text("private ")),
         "static":
-            R(Text("static "), rdescript="Haxe: Static"),
+            R(Text("static ")),
         "this":
-            R(Text("this"), rdescript="Haxe: This"),
+            R(Text("this")),
         "safe cast":
-            R(Text("cast (TOKEN, TOKEN)"), rdescript="Haxe: Safe Cast"),
+            R(Text("cast (TOKEN, TOKEN)")),
         "get class":
-            R(Text("Type.getClass()") + Key("left"), rdescript="Haxe: Get Class"),
+            R(Text("Type.getClass()") + Key("left")),
         "get name":
-            R(Text("Type.getClassName()") + Key("left"), rdescript="Haxe: Get Class Name")
+            R(Text("Type.getClassName()") + Key("left"))
     }
 
     extras = []
     defaults = {}
 
 
-control.nexus().merger.add_global_rule(Haxe())
+control.global_rule(Haxe())

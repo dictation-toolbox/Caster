@@ -59,18 +59,23 @@ class MergeRule(MappingRule):
         location = os.path.realpath(filename)
         return location
 
-    '''Generates an "rdescript" for actions in this rule which don't have them.'''
-    def _format_actions(self):
-        def create_rdescript(spec, raction):
+    def create_rdescript(self, command, raction):
+            rule_name = self.name
+            for unnecessary in ["Non", "Rule", "Ccr", "CCR"]:
+                rule_name = rule_name.replace(unnecessary, "")
             extras = ""
-            named_extras = re.findall(r"<(.*?)>", spec)
+            named_extras = re.findall(r"<(.*?)>", command)
             if named_extras:
                 extras = ", %(" + ")s, %(".join(named_extras) + ")s"
-            return "%s: %s%s" % (self.name, spec, extras)
-        for spec, action in self.mapping.items():
+            return "%s: %s%s" % (rule_name, command, extras)
+
+    '''Generates an "rdescript" for actions in this rule which don't have them.'''
+    def format_actions(self):
+        for command, action in self.mapping.items():
+        for command, action in self.mapping.items():
             #pylint: disable=no-member
             if hasattr(action, "rdescript") and action.rdescript is None:
-                self.mapping[spec].rdescript = create_rdescript(spec, action)
+                self.mapping[command].rdescript = self.create_rdescript(command, action)
 
 
     ''' "copy" getters used for safe merging;

@@ -6,7 +6,8 @@ Demonstration [here](https://youtu.be/UISjQBMmQ-I).
 
 ### Clicking
 
-- Left click: `kick`
+- Left click: `kick [<number>]`
+    - Can use an optional `<number>` to double ("two") or triple ("three") click.
 - Right click: `psychic`
 
 ### Moving

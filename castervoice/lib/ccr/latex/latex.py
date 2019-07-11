@@ -3,14 +3,7 @@ Created on Sep 4, 2018
 
 @author: Mike Roberts
 '''
-from dragonfly import Function, Choice
-
-from castervoice.lib import control
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-from castervoice.lib.ccr.standard import SymbolSpecs
-
+from castervoice.lib.imports import *
 
 # Return \first{second}, if second is empty then end inside the brackets for user input
 def back_curl(first, second):
@@ -32,39 +25,33 @@ class LaTeX(MergeRule):
 
     mapping = {
         SymbolSpecs.COMMENT:
-            R(Text("%"), rdescript="LaTeX: Add Comment"),
+            R(Text("%")),
         "begin <element>":
             R(back_curl("begin", "%(element)s") + Key("enter:2") + back_curl(
-                "end", "%(element)s") + Key("up"),
-              rdescript="LaTeX: Define beginning and end of an element"),
+                "end", "%(element)s") + Key("up")),
         #
         "[use] package [<packages>]":
-            R(back_curl("usepackage", "%(packages)s"), rdescript="LaTeX: Import packages"),
+            R(back_curl("usepackage", "%(packages)s")),
         "[use] package bib latex":
-            R(back_curl("usepackage[style=authoryear]", "biblatex"),
-              rdescript="LaTeX: Import biblatex package"),
+            R(back_curl("usepackage[style=authoryear]", "biblatex")),
         #
         "symbol [<big>] <symbol>":
-            R(Text("\\") + Function(symbol_letters, extra={"big", "symbol"}) + Text(" "),
-              rdescript="LaTeX: Insert symbols"),
+            R(Text("\\") + Function(symbol_letters, extra={"big", "symbol"}) + Text(" ")),
         #
         "insert <command>":
-            R(back_curl("%(command)s", ""),
-            rdescript="LaTeX: Insert command requiring an argument"),
+            R(back_curl("%(command)s", "")),
         "insert <commandnoarg>":
-            R(Text("\\%(commandnoarg)s "),
-            rdescript="LaTeX: Insert command not requiring an argument"),
+            R(Text("\\%(commandnoarg)s ")),
         "insert quote":
-            R(Text("``\'\'") + Key("left:2"), rdescript="LaTeX: Insert a quote"),
+            R(Text("``\'\'") + Key("left:2")),
         #
         "superscript":
-            R(Text("^") + Key("lbrace, rbrace, left"), rdescript="LaTeX: Superscript"),
+            R(Text("^") + Key("lbrace, rbrace, left")),
         "subscript":
-            R(Text("_") + Key("lbrace, rbrace, left"), rdescript="LaTeX: Subscript"),
+            R(Text("_") + Key("lbrace, rbrace, left")),
         "math fraction":
             R(Text("\\") + Text("frac") +
-                Key("lbrace, rbrace, lbrace, rbrace, space, left:4"),
-                rdescript="LaTeX: Fraction"),
+                Key("lbrace, rbrace, lbrace, rbrace, space, left:4")),
     }
 
     extras = [
@@ -193,4 +180,4 @@ class LaTeX(MergeRule):
     }
 
 
-control.nexus().merger.add_global_rule(LaTeX())
+control.global_rule(LaTeX())

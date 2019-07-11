@@ -1,53 +1,32 @@
-from dragonfly import (AppContext, Dictation, Grammar, Key, MappingRule,
-                       Pause, Repeat, Text)
-from dragonfly.actions.action_mimic import Mimic
-
-from castervoice.lib import control, settings
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.merge import gfilter
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
+from castervoice.lib.imports import *
 
 
 class FileDialogueRule(MergeRule):
     pronunciation = "file dialogue"
 
     mapping = {
-        "up [<n>]":
-            R(Key("a-up"), rdescript="File Dialogue: Navigate up")*Repeat(extra="n"),
-        "back [<n>]":
-            R(Key("a-left"), rdescript="File Dialogue: Navigate back")*Repeat(extra="n"),
-        "forward [<n>]":
-            R(Key("a-right"), rdescript="File Dialogue: Navigate forward")*
-            Repeat(extra="n"),
-        "(files | file list)":
-            R(Key("a-d, f6:3"), rdescript="File Dialogue: Files list"),
-        "navigation [pane]":
-            R(Key("a-d, f6:2"), rdescript="File Dialogue: Navigation pane"),
-        "[file] name":
-            R(Key("a-d, f6:5"), rdescript="File Dialogue: File name"),
+        "up [<n>]": R(Key("a-up"))*Repeat(extra="n"),
+        "back [<n>]": R(Key("a-left"))*Repeat(extra="n"),
+        "forward [<n>]": R(Key("a-right"))*Repeat(extra="n"),
+        "search [<text>]": R(Key("c-l, tab") + Text("%(text)s")),
+        "organize": R(Key("c-l, tab:2")),
+        "(left | navigation) pane": R(Key("c-l, tab:3")),
+        "(center|file|files|folder) (list | pane)": R(Key("c-l, tab:4")),
+        "sort [headings]": R(Key("c-l, tab:5")),
+        "[file] name": R(Key("a-n")),
+        "file type": R(Key("c-l, tab:7")),
+
     }
-    extras = [IntegerRefST("n", 1, 10)]
+    extras = [IntegerRefST("n", 1, 10),
+    Dictation("text"),]
     defaults = {
         "n": 1,
     }
 
 
-dialogue_names = [
-    "open",
-    "select",
-]
-
-context = AppContext(title="save")
-for name in dialogue_names:
-    context = context | AppContext(title=name)
-
-grammar = Grammar("FileDialogue", context=context)
-if settings.SETTINGS["apps"]["filedialogue"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(FileDialogueRule())
-    else:
-        rule = FileDialogueRule()
-        gfilter.run_on(rule)
-        grammar.add_rule(FileDialogueRule(name="filedialogue"))
-        grammar.load()
+dialogue_context = AppContext(title=[
+        "open",
+        "save",
+        "select",
+    ])
+control.non_ccr_app_rule(FileDialogueRule(), context=dialogue_context)

@@ -3,14 +3,7 @@ Created on Sep 1, 2015
 
 @author: synkarius
 '''
-from dragonfly import Dictation, MappingRule, Choice, Pause
-
-from castervoice.lib import control
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.ccr.standard import SymbolSpecs
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-
+from castervoice.lib.imports import *
 
 class PythonNon(MappingRule):
     mapping = {
@@ -178,4 +171,4 @@ class Python(MergeRule):
     defaults = {"unary_meth": "", "binary_meth": "", "exception": ""}
 
 
-control.nexus().merger.add_global_rule(Python(ID=100))
+control.global_rule(Python(ID=100))
