@@ -3,12 +3,7 @@ Created on Sep 2, 2015
 
 @author: synkarius
 '''
-from castervoice.lib import control
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.ccr.standard import SymbolSpecs
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-
+from castervoice.lib.imports import *
 
 class Javascript(MergeRule):
 
@@ -16,126 +11,120 @@ class Javascript(MergeRule):
 
         # CCR PROGRAMMING STANDARD
         SymbolSpecs.IF:
-            R(Text("if () {}") + Key("left, enter:2, up"), rdescript="Javascript: If"),
+            R(Text("if () {}") + Key("left, enter:2, up")),
         SymbolSpecs.ELSE:
-            R(Text("else {}") + Key("left, enter:2, up"), rdescript="Javascript: Else"),
+            R(Text("else {}") + Key("left, enter:2, up")),
         #
         SymbolSpecs.SWITCH:
-            R(Text("switch () {}") + Key("left, enter:2, up"),
-              rdescript="Javascript: Switch"),
+            R(Text("switch () {}") + Key("left, enter:2, up")),
         SymbolSpecs.CASE:
-            R(Text("case :") + Key("left"), rdescript="Javascript: Case"),
+            R(Text("case :") + Key("left")),
         SymbolSpecs.BREAK:
-            R(Text("break;"), rdescript="Break"),
+            R(Text("break;")),
         SymbolSpecs.DEFAULT:
-            R(Text("default: "), rdescript="Javascript: Default"),
+            R(Text("default: ")),
         #
         SymbolSpecs.DO_LOOP:
-            R(Text("do {}") + Key("left, enter:2"), rdescript="Javascript: Do Loop"),
+            R(Text("do {}") + Key("left, enter:2")),
         SymbolSpecs.WHILE_LOOP:
-            R(Text("while ()") + Key("left"), rdescript="Javascript: While"),
+            R(Text("while ()") + Key("left")),
         SymbolSpecs.FOR_LOOP:
-            R(Text("for (var i=0; i<TOKEN; i++)"), rdescript="Javascript: For i Loop"),
+            R(Text("for (var i=0; i<TOKEN; i++)")),
         SymbolSpecs.FOR_EACH_LOOP:
-            R(Text("for (TOKEN in TOKEN)"), rdescript="Javascript: For Each Loop"),
+            R(Text("for (TOKEN in TOKEN)")),
         #
         SymbolSpecs.TO_INTEGER:
-            R(Text("parseInt()") + Key("left"),
-              rdescript="Javascript: Convert To Integer"),
+            R(Text("parseInt()") + Key("left")),
         SymbolSpecs.TO_FLOAT:
-            R(Text("parseFloat()") + Key("left"),
-              rdescript="Javascript: Convert To Floating-Point"),
+            R(Text("parseFloat()") + Key("left")),
         SymbolSpecs.TO_STRING:
-            R(Key("dquote, dquote, plus"), rdescript="Javascript: Convert To String"),
+            R(Key("dquote, dquote, plus")),
         #
         SymbolSpecs.AND:
-            R(Text(" && "), rdescript="Javascript: And"),
+            R(Text(" && ")),
         SymbolSpecs.OR:
-            R(Text(" || "), rdescript="Javascript: Or"),
+            R(Text(" || ")),
         SymbolSpecs.NOT:
-            R(Text("!"), rdescript="Javascript: Not"),
+            R(Text("!")),
         #
         SymbolSpecs.SYSOUT:
-            R(Text("console.log()") + Key("left"), rdescript="Javascript: Print"),
+            R(Text("console.log()") + Key("left")),
         #
         # (no imports in javascript)
         #
         SymbolSpecs.FUNCTION:
-            R(Text("function TOKEN() {};") + Key("left:2, enter"),
-              rdescript="Javascript: Function"),
+            R(Text("function TOKEN() {};") + Key("left:2, enter") +
+              SelectiveAction(Key("enter, up"), ["AptanaStudio3.exe"])),
 	    SymbolSpecs.CLASS:
-            R(Text("class  {}") + Key("left/5:3"), rdescript="Javascript: Class"),
+            R(Text("class  {}") + Key("left/5:3")),
         #
         SymbolSpecs.COMMENT:
-            R(Text("//"), rdescript="Javascript: Add Comment"),
+            R(Text("//")),
         SymbolSpecs.LONG_COMMENT:
-            R(Text("/**/") + Key("left,left"), rdescript="Javascript: Long Comment"),
+            R(Text("/**/") + Key("left,left")),
         #
         SymbolSpecs.NULL:
-            R(Text("null"), rdescript="Javascript: Null"),
+            R(Text("null")),
         #
         SymbolSpecs.RETURN:
-            R(Text("return "), rdescript="Javascript: Return"),
+            R(Text("return ")),
         #
         SymbolSpecs.TRUE:
-            R(Text("true"), rdescript="Javascript: True"),
+            R(Text("true")),
         SymbolSpecs.FALSE:
-            R(Text("false"), rdescript="Javascript: False"),
+            R(Text("false")),
 
         # JavaScript specific
         "anon funk":
-            R(Text("() => {}") + Key("left:1, enter"),
-              rdescript="Javascript: Anonymous Function"),
+            R(Text("() => {}") + Key("left:1, enter")),
         "timer":
-            R(Text("setInterval()") + Key("left"), rdescript="Javascript: Timer"),
+            R(Text("setInterval()") + Key("left")),
         "timeout":
-            R(Text("setTimeout()") + Key("left"), rdescript="Javascript: Timeout"),
+            R(Text("setTimeout()") + Key("left")),
         "document":
-            R(Text("document"), rdescript="Javascript: Document"),
+            R(Text("document")),
         "index of":
-            R(Text("indexOf()") + Key("left"), rdescript="Javascript: Index Of"),
+            R(Text("indexOf()") + Key("left")),
         "has own property":
-            R(Text("hasOwnProperty()") + Key("left"),
-              rdescript="Javascript: Has Own Property"),
+            R(Text("hasOwnProperty()") + Key("left")),
         "length":
-            R(Text("length"), rdescript="Javascript: Length"),
+            R(Text("length")),
         "self":
-            R(Text("self"), rdescript="Javascript: Self"),
+            R(Text("self")),
         "push":
-            R(Text("push"), rdescript="Javascript: Push"),
+            R(Text("push")),
         "inner HTML":
-            R(Text("innerHTML"), rdescript="Javascript: InnerHTML"),
+            R(Text("innerHTML")),
         "new new":
-            R(Text("new "), rdescript="Javascript: New"),
+            R(Text("new ")),
         "continue":
-            R(Text("continue"), rdescript="Javascript: Continue"),
+            R(Text("continue")),
         "this":
-            R(Text("this"), rdescript="Javascript: This"),
+            R(Text("this")),
         "try":
-            R(Text("try {}") + Key("left, enter:2, up"), rdescript="Javascript: Try"),
+            R(Text("try {}") + Key("left, enter:2, up")),
         "catch":
-            R(Text("catch(e) {}") + Key("left, enter:2, up"),
-              rdescript="Javascript: Catch"),
+            R(Text("catch(e) {}") + Key("left, enter:2, up")),
         "throw":
-            R(Text("throw "), rdescript="Javascript: Throw"),
+            R(Text("throw ")),
         "instance of":
-            R(Text("instanceof "), rdescript="Javascript: Instance Of"),
+            R(Text("instanceof ")),
         "var":
-            R(Text("var "), rdescript="Javascript: Var"),
+            R(Text("var ")),
         "const":
-            R(Text("const "), rdescript=" JavaScript: Const"),
+            R(Text("const ")),
         "Let":
-            R(Text("let "), rdescript=" JavaScript: Let"),
+            R(Text("let ")),
         "shell iffae":
-            R(Text("else if ()") + Key("left"), rdescript="Javascript: Else If"),
+            R(Text("else if ()") + Key("left")),
         "a sink":
-            R(Text("async "), rdescript="Javascript: Async"),
+            R(Text("async ")),
         "await":
-            R(Text("await "), rdescript="Javascript: Await"),
+            R(Text("await ")),
     }
 
     extras = []
     defaults = {}
 
 
-control.nexus().merger.add_global_rule(Javascript(ID=200))
+control.global_rule(Javascript(ID=200))
