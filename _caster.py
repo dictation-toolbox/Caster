@@ -20,7 +20,6 @@ if settings.SYSTEM_INFORMATION["platform"] != "win32":
 settings.WSR = __name__ == "__main__"
 from castervoice.lib import utilities  # requires settings
 if settings.WSR:
-    _wait_for_wsr_activation()
     SymbolSpecs.set_cancel_word("escape")
 from castervoice.lib.ctrl.dependencies import pip_path, update
 from castervoice.lib import control
