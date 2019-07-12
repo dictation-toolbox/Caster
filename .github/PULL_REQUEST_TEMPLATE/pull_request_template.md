@@ -49,12 +49,12 @@
 - [ ] My change requires a change to the documentation.
 - [ ] I have updated the documentation accordingly.
 - [ ] I have added tests to cover my changes.
-- [ ] All new and existing tests passed.
+- [ ] All new and existing tests pass.
 
 ## Maintainer/Reviewer Checklist
 
 !--- Please leave these unchecked and add any other specific tasks you would like a --
-!--- reviewer or maintainer to do. --
+!--- reviewer or maintainer to complete. --
 
 - [ ] Basic functionality has been tested and works as claimed.
 - [ ] New documentation is clear and complete.
