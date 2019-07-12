@@ -29,6 +29,7 @@
 - [ ] Bug fix (non-breaking change which fixes an issue or bug)
 - [ ] New feature (non-breaking change which adds functionality)
 - [ ] Breaking change (fix or feature that would cause existing functionality to change)
+- [ ] Renamed existing command phrases (we discourage this without a strong rationale).
 
 ## Checklist
 
@@ -42,6 +43,8 @@
 
 - [ ] I have read the CONTRIBUTING document.
 - [ ] My code follows the code style of this project.
+- [ ] I have checked that my code does not duplicate functionality elsewhere in Caster.
+- [ ] I have checked for and utilized existing command phrases from within Caster (delete if not applicable). 
 - [ ] My code implements all the features I wish to merge in this pull request.
 - [ ] My change requires a change to the documentation.
 - [ ] I have updated the documentation accordingly.
