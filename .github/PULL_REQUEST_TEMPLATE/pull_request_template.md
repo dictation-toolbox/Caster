@@ -36,24 +36,17 @@
 !--- You DO NOT NEED TO FINISH all of these to submit a pull request to Caster. --
 !--- You may submit a pull request at any stage of completion to get feedback. --
 !--- Please add further items to this checklist as appropriate and delete any items --
-!--- that do not apply. --
+!--- that do not apply. If you leave the "My code implements all the features -- 
+!--- I wish to merge in this pull request." box unchecked we will not review the code --
+!--- unless requested. --
 
 - [ ] I have read the CONTRIBUTING document.
 - [ ] My code follows the code style of this project.
+- [ ] My code implements all the features I wish to merge in this pull request.
 - [ ] My change requires a change to the documentation.
 - [ ] I have updated the documentation accordingly.
 - [ ] I have added tests to cover my changes.
 - [ ] All new and existing tests passed.
-
-
-## Pull Request Status as defined by Contributor.
-!--- Please check one of the following boxes to indicate the status of the pull request --
-!--- Marking 'Complete' states that you believe the pull request is ready to be merged and feature complete --
-!--- Marking 'Work in progress (WIP)' means you are still developing features. Code Review upon request only. --
-!--- Once the status is is checked as complete the pull request is ready review by a Maintainer--
-
-- [ ] Work in progress (WIP)
-- [ ] Complete
 
 ## Maintainer/Reviewer Checklist
 
