@@ -70,7 +70,7 @@ class TextManipulation(MergeRule):
             R(Function(text_manipulation_functions.move_until_phrase,
                        dict(dictation="phrase")),
                rdescript="Text Manipulation: move to chosen phrase to the left or right of the cursor"),
-        "(go | move) <direction> [<before_after>] [<number_of_lines_to_search>] [<occurrence_number>] <character_sequence> [over]":
+        "(go | move) <direction> [<number_of_lines_to_search>] [<before_after>] [<occurrence_number>] <character_sequence> [over]":
             Function(lambda direction, before_after, number_of_lines_to_search, occurrence_number, character_sequence:
              text_manipulation_functions.move_until_phrase(direction, before_after,
              "".join(character_sequence), number_of_lines_to_search, occurrence_number)),
