@@ -66,19 +66,19 @@ class Punctuation(MergeRule):
             R(Text("%(long)s" + "%(text_punc)s" + "%(long)s"))*Repeat(extra="npunc"),
         # For some reason, this one doesn't work through the other function
         "[<long>] backslash [<npunc>]":
-            R(Text("%(long)s" + "\\" + "%(long)s")),
+            R(Text("%(long)s" + "\\" + "%(long)s"))*Repeat(extra="npunc"),
         "<double_text_punc> [<npunc>]":
             R(Text("%(double_text_punc)s") + Key("left"))*Repeat(extra="npunc"),
         "tabby [<npunc>]":
-            R(Key("tab")),
+            R(Key("tab"))*Repeat(extra="npunc"),
         "(back | shin) tabby [<npunc>]":
-            R(Key("s-tab")),
+            R(Key("s-tab"))*Repeat(extra="npunc"),
         "boom [<npunc>]":
-            R(Text(", ")),
+            R(Text(", "))*Repeat(extra="npunc"),
         "bam [<npunc>]":
-            R(Text(". ")),
+            R(Text(". "))*Repeat(extra="npunc"),
         "ace [<npunc100>]":
-            R(Text(" ")),
+            R(Text(" "))*Repeat(extra="npunc100"),
     }
 
     extras = [
