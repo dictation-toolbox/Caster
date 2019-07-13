@@ -8,12 +8,7 @@ Caster provides powerful text manipulation and navigation features. These functi
 - `number_of_lines_to_search` is an integer number of lines to search for the target object. _sauce/lease_ searches up and _dunce/ross_ searches down. _sauce/dunce_ defaults to 3 lines if omitted and _lease/ross_ defaults to searching only the current line.
 - `before_after` can be _before_ or _after_ and indicates whether the cursor should stop to the left (_before_) or the right (_after_) of the target object. Defaults for `before_after` depend on which command is being used. For the "go" commands, `before_after` defaults to whichever one is closer to the cursor. More explicitly, for "go", _ross/dunce_ defaults to _before_ and _lease/sauce_ defaults to _after_.  By contrast, for the "grab until" and "remove until" commands it defaults to the one that is farther (i.e. it selects or removes all the way through the target object). More explicitly, for "grab/remove until", _ross/dunce_ defaults to _after_ and _lease/sauce_ defaults to _before_. 
 - `occurrence_number` can be _first_ through _ninth_ and indicates which occurrence of the target object you want, counting from the initial position of the cursor in the direction you specify. Defaults to _first_.
-- `target_object` can be a Caster alphabet element (_arch, brov_ etc.), a Caster punctuation element (_left prekris, deckle_ etc.), a digit prefixed by _num_ (e.g. _num 6_ ), a sequence of up to three of the previous types of targets (sequences are currently only available for "go/move"), or arbitrary dictation (e.g. "punctuation element" spoken). For "go/move", if you wish to use the individual character targets in a CCR sequence with another character insertion 
-
-
-
-
-(alphabet, punctuation, or digit) immediately following, you must terminate the command using "over" (see the examples).
+- `target_object` can be a Caster alphabet element (_arch, brov_ etc.), a Caster punctuation element (_left prekris, deckle_ etc.), a digit prefixed by _num_ (e.g. _num 6_ ), a sequence of up to three of the previous types of targets (sequences are currently only available for "go/move"), or arbitrary dictation (e.g. "punctuation element" spoken). For "go/move", if you wish to use the individual character targets in a CCR sequence with another character insertion (alphabet, punctuation, or digit) immediately following, you must terminate the command using "over" (see the examples).
 
 ## Commands
 
