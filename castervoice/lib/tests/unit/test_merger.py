@@ -1,15 +1,11 @@
+import unittest
+
 from dragonfly.grammar.rule_mapping import MappingRule
-import castervoice.lib.tests.mocks
-from castervoice.lib.tests.mocks import eclipse_context
-from castervoice.lib.tests.mocks import EclipseCCR
-from castervoice.lib.tests.mocks import Key
-from castervoice.lib.tests.mocks import Bash
-from castervoice.lib.tests.mocks import Java
-from castervoice.lib.tests.mocks import Python
-from castervoice.lib.tests.mocks import ChainAlias
+from castervoice.lib.tests.mocks import (eclipse_context, EclipseCCR,
+    Key, Bash, Java, Python, ChainAlias)
 from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
 from castervoice.lib.dfplus.merge.mergepair import MergeInf
-from castervoice.lib.tests.unit.state import TestNexus
+from castervoice.lib.tests.unit.nexus import TestNexus
 
 
 def demo_filter(_):
@@ -29,6 +25,7 @@ class DemoMappingRule(MappingRule):
 
 
 class TestMerger(TestNexus):
+
     def setUp(self):
         TestNexus.setUp(self)
         self.PYTHON_ID = 100
@@ -45,7 +42,6 @@ class TestMerger(TestNexus):
 
     def tearDown(self):
         self.nexus.merger.wipe()
-        TestNexus.tearDown(self)
 
     def test_config_defaults(self):
         '''make sure the config is set up correctly'''
@@ -90,3 +86,6 @@ class TestMerger(TestNexus):
                         == bash.mapping_actual()["iffae"])
         self.set_selfmod(ChainAlias.pronunciation, False, True)
         self.assertFalse("chain alias" in self.nexus.merger._base_global.mapping_actual())
+
+if __name__ == '__main__':
+    unittest.main()
