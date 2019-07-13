@@ -9,7 +9,7 @@ _Bring me_ is a set of commands that allow the user to quickly invoke an item fr
 - Bring up the item: `bring me <item>`
     - For websites, this launches the default browser and opens the desired site.
     - This launches programs.
-    - Folders are either opened or navigated to depending on the context. If in a terminal, File/Windows Explorer or a Save/Open dialog the program will navigate to the folder.
+    - Folders are either opened or navigated to depending on the context. If in a terminal, File/Windows Explorer, or a Save/Open dialog the program will navigate to the folder.
         - Use `bring me <item> in <terminal_explorer>` to open in a new window. `<terminal_explorer>` can be _terminal_ or _explorer_.
     - Files are opened using the system-default program for that file type.
 - Refresh bring me after editing `bringme.toml` directly: `refresh bring me`
