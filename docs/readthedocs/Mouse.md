@@ -71,7 +71,7 @@ Selecting from one point to another is available including fine adjustment of th
 - Invoke: `rainbow` or `rainbow <monitor_number>` 
 - Move to square: `[<number_of_color_palette>] <color> <number>`  
     - `<number_of_color_palette>` is an integer that refers to which chunk of that color you want as colors loop when filling the screen.
-    - _color_ can be replaced by the following colors: _red_, _orange_, _yellow_, _green_, _blue_, _purple_.
+    - `<color>` can be the following: _red_, _orange_, _yellow_, _green_, _blue_, or _purple_.
 - Select: `[<number_of_color_palette_1>] <color_1> <number_1> (select | grab) [<number_of_color_palette_2>] <color_2> <number_2>`
 - Fine selection: `[<number_of_color_palette_1>] <color_1> <number_1> move` &rightarrow; `curse ...` &rightarrow; `squat` &rightarrow; `[<number_of_color_palette_2>] <color_2> <number_2> move` &rightarrow; `curse ...` &rightarrow; `bench`
 
