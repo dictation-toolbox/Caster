@@ -34,7 +34,7 @@ Approach the desired position by sequentially selecting tiles on the screen. Pro
 
 - Invoke: `mousegrid`
 - Select tile: `<tile_number>`  
-    - _tile_number_ can be anything from 1 to 9. This function is currently only supported by Dragon for a single monitor.
+    - `<tile_number>` is an integer from 1 to 9. This function is currently only supported by Dragon for a single monitor.
 
 ### Douglas
 
