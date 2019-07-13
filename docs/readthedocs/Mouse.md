@@ -7,13 +7,13 @@ A video demonstration [here](https://youtu.be/UISjQBMmQ-I). Note that this demon
 ### Clicking
 
 - Left click: `kick [<number>]`
-    - Can use an optional `<number>` to double ("two") or triple ("three") click.
+    - Can use an optional `<number>` to double (_two_) or triple (_three_) click.
 - Right click: `psychic`
 
 ### Moving
 
 - Move around: `curse <direction> [[E] <direction>] <distance_in_pixel>`  
-    - _direction_ can be _sauce_ (up), _dunce_ (down), _lease_ (left), or _ross_ (right).
+    - `<direction>` can be _sauce_ (up), _dunce_ (down), _lease_ (left), or _ross_ (right).
 
 **Examples**:
 
