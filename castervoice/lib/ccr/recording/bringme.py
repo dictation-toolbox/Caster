@@ -13,7 +13,7 @@ class BringRule(SelfModifyingRule):
             "bring me <folder> [in <app>]": R(Function(self.bring_folder)),
             "bring me <file>": R(Function(self.bring_file)),
             "refresh bring me": R(Function(self.load_and_refresh)),
-            "<program> to bring me as <key>": R(Function(self.bring_add)),
+            "<launch> to bring me as <key>": R(Function(self.bring_add)),
             "to bring me as <key>": R(Function(self.bring_add_auto)),
             "remove <key> from bring me": R(Function(self.bring_remove)),
             "restore bring me defaults": R(Function(self.bring_restore)),
@@ -80,8 +80,12 @@ class BringRule(SelfModifyingRule):
             if not path:
                 # dragonfly.get_engine().speak("program not detected")
                 print("Program path for bring me not found ")
-        # elif launch == 'file':
-        # no way to add file via pyperclip
+        elif launch == 'file':
+            files = utilities.get_selected_files(folders=False)
+            path = files[0] if files else None # or allow adding multiple files
+        elif launch == 'folder':
+            files = utilities.get_selected_files(folders=True)
+            path = files[0] if files else None # or allow adding multiple folders
         else:
             Key("a-d/5").execute()
             fail, path = context.read_selected_without_altering_clipboard()

@@ -417,35 +417,31 @@ Capitalisation and spacing can be combined into a single command. They may be su
 
 %----------------------------------------------------------------------------------------
 
+\sectiontitle{Bring me}
+
+\command{program/website/folder/file to bring me as <key>}{create a new bring me binding}
+\command{bring me <key>}{open bring me binding}
+\command{remove <key> from bring me}{}
+\command{restore bring me defaults}{}
+
+%----------------------------------------------------------------------------------------
+
 \end{minipage}
 }
 
 \put(200, 200){
 \begin{minipage}[t]{85mm}
 
-\sectiontitle{Bring me}
-
-\command{program/website/folder/file to bring me as <key>}{manually create bring me binding}
-\command{to bring me as <key>}{automatically create  bring me binding}
-\command{bring me <key>}{open bring me binding}
-\command{bring me <key> in explorer/terminal}{open bring me binding in a new window}
-\command{remove <key> from bring me}{}
-\command{restore bring me defaults}{}
-
-%----------------------------------------------------------------------------------------
-
 \sectiontitle{Dragon}
 
 \command{number/spell/dictation/normal/command mode}{switch dragon modes}
-\command{reboot dragon}{Restarts DNS}
-
-%----------------------------------------------------------------------------------------
 
 \sectiontitle{Update and Caster Management}
 
 \command{clear caster log}{Clears Log Window}
 \command{update caster}{Updates Caster}
 \command{update dragonfly}{Updates Dragonfly}
+\command{reboot dragon}{Restarts Caster}
 \command{reboot windows speech recognition}{Restarts Caster}
 
 \end{minipage}
@@ -468,17 +464,6 @@ Capitalisation and spacing can be combined into a single command. They may be su
 \examplecommand{curly quotes arch ross deckle quotes brov}{\{"a":"b"\}}
 \examplecommand{backslash format command curly}{\textbackslash command\{\}}
 \examplecommand{(python) tell sink print to console spark three}{new line, print(<third clipboard position>)}
-\end{minipage}
-}
-
-\put(105,200){ % Divide the page
-\begin{minipage}[t]{85mm} % Create a box to house text
-\examplecommand{window ross}{Snap the current window to the right hand side of the screen}
-\examplecommand{new work}{Create a new workspace}
-\examplecommand{go work three}{Switch to the third workspace}
-\examplecommand{move work one}{Move the current window to the first workspace}
-
-\examplecommand{bring me my pictures in terminal}{Open a terminal window and cd to my pictures}
 \end{minipage}
 }
 

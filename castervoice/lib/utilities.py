@@ -7,6 +7,7 @@ import json
 import os
 import re
 import sys
+import time
 import traceback
 from __builtin__ import True
 from subprocess import Popen
@@ -14,6 +15,9 @@ import toml
 
 import win32gui
 import win32ui
+import win32clipboard
+
+from castervoice.lib.clipboard import Clipboard
 
 from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,
     HKEY_CURRENT_USER, OpenKey, QueryValueEx)
@@ -230,3 +234,49 @@ def clear_log():
             return
     except Exception as e:
         print (e)
+
+def get_clipboard_formats():
+    '''
+    Return list of all data formats currently in the clipboard
+    '''
+    formats = []
+    f = win32clipboard.EnumClipboardFormats(0)
+    while f:
+        formats.append(f)
+        f = win32clipboard.EnumClipboardFormats(f)
+    return formats
+
+def get_selected_files(folders=False):
+    '''
+    Copy selected (text or file is subsequently of interest) to a fresh clipboard
+    '''
+    cb = Clipboard(from_system=True)
+    cb.clear_clipboard()
+    Key("c-c").execute()
+    time.sleep(0.1)
+    files = get_clipboard_files(folders)
+    cb.copy_to_system()
+    return files
+
+def get_clipboard_files(folders=False):
+    '''
+    Enumerate clipboard content and return files either directly copied or
+    highlighted path copied
+    '''
+    files = None
+    win32clipboard.OpenClipboard()
+    f = get_clipboard_formats()
+    if win32clipboard.CF_HDROP in f:
+        files = win32clipboard.GetClipboardData(win32clipboard.CF_HDROP)
+    elif win32clipboard.CF_UNICODETEXT in f:
+        files = [win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)]
+    elif win32clipboard.CF_TEXT in f:
+        files = [win32clipboard.GetClipboardData(win32clipboard.CF_TEXT)]
+    elif win32clipboard.CF_OEMTEXT in f:
+        files = [win32clipboard.GetClipboardData(win32clipboard.CF_OEMTEXT)]
+    if folders:
+        files = [f for f in files if os.path.isdir(f)] if files else None
+    else:
+        files = [f for f in files if os.path.isfile(f)] if files else None
+    win32clipboard.CloseClipboard()
+    return files

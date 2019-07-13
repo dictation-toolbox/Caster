@@ -4,24 +4,13 @@ main Caster module
 Created on Jun 29, 2014
 '''
 
-import os
+import os, time, sys
 import logging
 logging.basicConfig()
 
-
-def version_minimum():
-    try:
-        import pkg_resources
-        version = "0.15.0"  # Version needs to be manually updated Caster requires a certain version of Dragonfly
-        pkg_resources.require("dragonfly2 >= %s" % (version))
-    except Exception:  # pylint: disable=broad-except
-        print("\nCaster: Requires at least dragonfly2 version %s\n" % (version))
-
-
-version_minimum()
-
 import time, socket, os
-from dragonfly import (Function, Grammar, Playback, Dictation, Choice, Pause, RunCommand)
+from dragonfly import (get_engine, Function, Grammar, Playback, Dictation, Choice, Pause,
+                       RunCommand)
 from castervoice.lib.ccr.standard import SymbolSpecs
 
 
@@ -48,6 +37,7 @@ from castervoice.lib import utilities  # requires settings
 if settings.WSR:
     _wait_for_wsr_activation()
     SymbolSpecs.set_cancel_word("escape")
+from castervoice.lib.ctrl.dependencies import pip_path, update
 from castervoice.lib import control
 _NEXUS = control.nexus()
 from castervoice.lib import navigation
@@ -74,78 +64,6 @@ if not globals().has_key('profile_switch_occurred'):
     _NEXUS.merger.merge(MergeInf.BOOT)
 
 
-# Checks if install is classic or PIP of caster
-def installtype():
-    directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), "castervoice")
-    if os.path.isdir(directory):
-        return "classic"
-    else:
-        return "pip"
-
-
-def internetcheck(host="1.1.1.1", port=53, timeout=3):
-    """
-    Checks for network connection via DNS resolution.
-    :param host: CloudFire DNS
-    :param port: 53/tcp
-    :param timeout: An integer
-    :return: True or False
-    """
-    try:
-        socket.setdefaulttimeout(timeout)
-        socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))
-        return True
-    except Exception as error:
-        print(error.message)
-        return False
-
-
-# Find the pip.exe script for Python 2.7. Fallback on pip.exe.
-PIP_PATH = "pip.exe"
-python_scripts = os.path.join("Python27", "Scripts")
-for path in os.environ["PATH"].split(";"):
-    pip = os.path.join(path, "pip.exe")
-    if path.endswith(python_scripts) and os.path.isfile(pip):
-        PIP_PATH = pip
-        break
-
-
-class DependencyCheck(TerminalCommand):
-    trusted = True  # Command will execute silently without ConfirmAction
-    synchronous = True
-
-    # pylint: disable=method-hidden
-    def process_command(self, proc):
-        update = False
-        for line in iter(proc.stdout.readline, b''):
-            if "INSTALLED" and "latest" in line:
-                update = True
-
-        return update
-
-
-class CasterCheck(DependencyCheck):
-    command = [PIP_PATH, "search", "castervoice"]
-
-    # pylint: disable=method-hidden
-    def process_command(self, proc):
-        if DependencyCheck.process_command(self, proc):
-            print("Caster: Caster is up-to-date")
-        else:
-            print("Caster: Say 'Update Caster' to update.")
-
-
-class DragonflyCheck(DependencyCheck):
-    command = [PIP_PATH, "search", "dragonfly2"]
-
-    # pylint: disable=method-hidden
-    def process_command(self, proc):
-        if DependencyCheck.process_command(self, proc):
-            print("Caster: Dragonfly is up-to-date")
-        else:
-            print("Caster: Say 'Update Dragonfly' to update.")
-
-
 class DependencyUpdate(RunCommand):
     synchronous = True
 
@@ -153,23 +71,10 @@ class DependencyUpdate(RunCommand):
     def process_command(self, proc):
         # Process the output from the command.
         RunCommand.process_command(self, proc)
-
-        # Only reboot dragon if the command was successful and there is an
-        # internet connection; 'pip install ...' may exit successfully even
-        # if there were connection errors.
-        if proc.wait() == 0 and internetcheck():
+        # Only reboot dragon if the command was successful and online_mode is true
+        # 'pip install ...' may exit successfully even if there were connection errors.
+        if proc.wait() == 0 and update:
             Playback([(["reboot", "dragon"], 0.0)]).execute()
-
-
-if settings.SETTINGS["miscellaneous"]["online_mode"]:
-    if internetcheck():
-        if installtype() is "pip":
-            CasterCheck().execute()
-        DragonflyCheck().execute()
-    else:
-        print("\nCaster: Network off-line check network connection\n")
-else:
-    print("\nCaster: Off-line mode is enabled\n")
 
 
 def change_monitor():
@@ -197,9 +102,9 @@ class MainRule(MergeRule):
     mapping = {
         # update management
         "update caster":
-            R(DependencyUpdate([PIP_PATH, "install", "--upgrade", "castervoice"])),
+            R(DependencyUpdate([pip_path, "install", "--upgrade", "castervoice"])),
         "update dragonfly":
-            R(DependencyUpdate([PIP_PATH, "install", "--upgrade", "dragonfly2"])),
+            R(DependencyUpdate([pip_path, "install", "--upgrade", "dragonfly2"])),
 
         # hardware management
         "volume <volume_mode> [<n>]":
@@ -270,5 +175,4 @@ if settings.WSR:
     print("Windows Speech Recognition is garbage; it is " \
         +"recommended that you not run Caster this way. ")
     while True:
-        pythoncom.PumpWaitingMessages()  # @UndefinedVariable
-        time.sleep(.1)
+        get_engine().recognize_forever()
