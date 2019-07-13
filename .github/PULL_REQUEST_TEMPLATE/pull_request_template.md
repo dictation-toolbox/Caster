@@ -1,6 +1,6 @@
 # Title
 
-!--- Provide a title for this pull request above --
+!--- Provide a title for this pull request above. Is this a trivial change fixing a typo or an obvious code error? If so, insert "Trivial change" as the title and delete the remainder of the template.--
 
 ## Description
 
