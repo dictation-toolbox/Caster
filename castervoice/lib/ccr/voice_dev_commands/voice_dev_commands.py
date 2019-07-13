@@ -5,10 +5,8 @@ users may want to make this context-specific to their text editors
 '''
 from castervoice.lib.imports import *
 from castervoice.lib.ccr.core.nav import Navigation
-# combined_button_dictionary = Navigation.combined_button_dictionary
-# modifier_choice_object = Navigation.modifier_choice_object
-# print(combined_button_dictionary)
-# del Navigation
+
+new_modifier_choice_object = copy.deepcopy(Navigation.modifier_choice_object)
 
 def split_dictation(text):
     if text:
@@ -190,7 +188,7 @@ class VoiceDevCommands(MergeRule):
     }
 
     extras = [
-        Navigation.modifier_choice_object,
+        new_modifier_choice_object,
         Choice("combined_button_dictionary", Navigation.combined_button_dictionary),
         Dictation("text"),
         Dictation("dict"),

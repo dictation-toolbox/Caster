@@ -62,9 +62,9 @@ class DouglasGridRule(MergeRule):
     mapping = {
         "<x> [by] <y> [<action>]":
             R(Function(send_input, nexus=_NEXUS)),
-        "<x1> [by] <y1> select <x2> [by] <y2>":
+        "<x1> [by] <y1> (grab | select) <x2> [by] <y2>":
             R(Function(send_input_select, nexus=_NEXUS)),
-        "<x1> [by] <y1> select <x2>":
+        "<x1> [by] <y1> (grab | select) <x2>":
             R(Function(send_input_select_short, nexus=_NEXUS)),
         "squat":
             R(Function(store_first_point)),
