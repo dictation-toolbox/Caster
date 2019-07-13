@@ -5,7 +5,7 @@ _Bring me_ is a set of commands that allow the user to quickly invoke an item fr
 ## Commands
 
 - Add current element: `<target> to bring me as <key>`
-    - `<target>` may be a website, program, folder, or file. `key` is the phrase you wish to use to invoke it later. You can usually omit `<target>` and it will be detected automatically based on the context. If in a browser, `<target>` defaults to _website_ if omitted. If in File/Windows Explorer or a Save/Open dialog, `<target>` defaults to _file_ or _folder_ if omitted depending on which item is selected in the file list. Otherwise, `<target>` defaults to _program_ if omitted.
+    - `<target>` may be _website_, _program_, _folder_, or _file_. `key` is the phrase you wish to use to invoke it later. You can usually omit `<target>` and it will be detected automatically based on the context. If in a browser, `<target>` defaults to _website_ if omitted. If in File/Windows Explorer or a Save/Open dialog, `<target>` defaults to _file_ or _folder_ if omitted depending on which item is selected in the file list. Otherwise, `<target>` defaults to _program_ if omitted.
 - Bring up the item: `bring me <item>`
     - For websites, this launches the default browser and opens the desired site.
     - This launches programs.
