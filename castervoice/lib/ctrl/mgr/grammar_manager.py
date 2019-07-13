@@ -42,17 +42,17 @@ class GrammarManager(object):
 
     @staticmethod
     def set_instance(merger, settings_module, appcontext_class, grammar_class, transformers,
-                     delegating_validator, rule_sets, reload_observable):
+                     ccr_rules_validator, details_validator, rule_sets, reload_observable):
         global _INSTANCE, _PRE
         if _INSTANCE is None:
             _INSTANCE = GrammarManager(merger, settings_module, appcontext_class,
-                                       grammar_class, transformers, delegating_validator,
-                                       rule_sets, reload_observable)
+                                       grammar_class, transformers, ccr_rules_validator,
+                                       details_validator, rule_sets, reload_observable)
             _INSTANCE._convert(_PRE)
             _PRE = None
 
     def __init__(self, merger, settings_module, appcontext_class, grammar_class, transformers,
-                 validator, rule_sets, reload_observable):
+                 ccr_rules_validator, details_validator, rule_sets, reload_observable):
         # merger is necessary to unload ccr rules and their nons
         self._merger = merger
         # DI AppContext class, instantiated later
@@ -63,8 +63,9 @@ class GrammarManager(object):
         self._filter_method = filter_method
         # DI settings module
         self._settings_module = settings_module
-        # DI validator
-        self._validator = validator
+        # DI validators
+        self._ccr_rules_validator = ccr_rules_validator
+        self._details_validator = details_validator
         # rules: (class name : _ManagedRule}
         self._managed_rules = {}
         # companion rules -- when a rule is activated, it can have 0-n companion rules auto activated with it
@@ -120,6 +121,12 @@ class GrammarManager(object):
     def register_rule(self, rule_class, details):
         name = rule_class.__name__
 
+        '''validate details configuration before anything else'''
+        details_invalidation = self._details_validator.validate_details(details)
+        if details_invalidation is not None:
+            print(name + " rejected due to detail validation errors: " + details_invalidation)
+            return
+
         '''attempt to instantiate the rule'''
         test_instance = None
         try:
@@ -130,9 +137,9 @@ class GrammarManager(object):
 
         '''if ccr, validate the rule'''
         if details.declared_ccrtype is not None:
-            error = self._validator.validate(test_instance, details.declared_ccrtype)
+            error = self._ccr_rules_validator.validate(test_instance, details.declared_ccrtype)
             if error is not None:
-                print(name + " rejected due to validation errors: " + error)
+                print(name + " rejected due to rule validation errors: " + error)
                 return
 
         '''if already registered, unregister it'''

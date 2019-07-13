@@ -3,6 +3,10 @@ from castervoice.lib.dfplus.merge.mergerule import MergeRule
 
 
 class IsMergeRuleValidator(BaseRuleValidator):
+
+    def is_applicable(self, declared_ccrtype):
+        return declared_ccrtype is not None
+
     def _is_valid(self, rule):
         return isinstance(rule, MergeRule)
 

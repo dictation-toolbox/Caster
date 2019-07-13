@@ -1,4 +1,8 @@
 class BaseRuleValidator(object):
+
+    def is_applicable(self, declared_ccrtype):
+        return False
+
     def _is_valid(self, rule):
         return True
 

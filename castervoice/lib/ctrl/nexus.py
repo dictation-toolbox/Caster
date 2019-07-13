@@ -1,5 +1,15 @@
 from castervoice.lib import settings
 from castervoice.lib.ctrl.dependencies import DependencyMan
+from castervoice.lib.ctrl.mgr.validation.details.ccr_app_validator import AppCCRDetailsValidator
+from castervoice.lib.ctrl.mgr.validation.details.ccr_validator import CCRDetailsValidator
+from castervoice.lib.ctrl.mgr.validation.details.details_validation_delegator import DetailsValidationDelegator
+from castervoice.lib.ctrl.mgr.validation.details.non_ccr_validator import NonCCRDetailsValidator
+from castervoice.lib.ctrl.mgr.validation.rules.context_validator import HasContextValidator
+from castervoice.lib.ctrl.mgr.validation.rules.mergerule_validator import IsMergeRuleValidator
+from castervoice.lib.ctrl.mgr.validation.rules.no_context_validator import HasNoContextValidator
+from castervoice.lib.ctrl.mgr.validation.rules.not_noderule_validator import NotNodeRuleValidator
+from castervoice.lib.ctrl.mgr.validation.rules.pronunciation_validator import PronunciationAvailableValidator
+from castervoice.lib.ctrl.mgr.validation.rules.selfmod_validator import SelfModifyingRuleValidator
 from castervoice.lib.ctrl.wsrdf import RecognitionHistoryForWSR
 from castervoice.lib.dfplus.communication import Communicator
 from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
@@ -10,8 +20,7 @@ from dragonfly.grammar.recobs import RecognitionHistory
 
 from castervoice.lib.ctrl.mgr.grammar_manager import GrammarManager
 from castervoice.lib.ctrl.mgr.loading.content_loader import ContentLoader
-from castervoice.lib.ctrl.mgr.loading.user_content_loader import UserContentManager
-from castervoice.lib.ctrl.mgr.validation.rules.validation_delegator import CCRValidationDelegator
+from castervoice.lib.ctrl.mgr.validation.rules.rule_validation_delegator import CCRRuleValidationDelegator
 from castervoice.lib.dfplus.ccrmerging2.ccrmerger2 import CCRMerger2
 from castervoice.lib.dfplus.ccrmerging2.compatibility.simple_compat_checker import SimpleCompatibilityChecker
 from castervoice.lib.dfplus.ccrmerging2.config.config_toml import TomlCCRConfig
@@ -58,16 +67,30 @@ class Nexus:
         
         '''
         all rules go to grammar_manager
-        all transformers and hooks go to merger
+        all transformers go to merger
+        TODO: hooks go to both? depends on where we want hook events, eh?
         '''
-        validator = CCRValidationDelegator()
+        ccr_rule_validator = CCRRuleValidationDelegator(
+            IsMergeRuleValidator(),
+            HasNoContextValidator(),
+            HasContextValidator(),
+            SelfModifyingRuleValidator(),
+            NotNodeRuleValidator(),
+            PronunciationAvailableValidator()
+        )
+        details_validator = DetailsValidationDelegator(
+            CCRDetailsValidator(),
+            AppCCRDetailsValidator(),
+            NonCCRDetailsValidator()
+        )
         some_setting = True
         observable = FileWatcherObservable()
         if some_setting:
             observable = ManualReloadObservable()
         
         GrammarManager.set_instance(self.merger, settings, AppContext, Grammar, [],
-                                    validator, content.rules, observable)
+                                    ccr_rule_validator, details_validator,
+                                    content.rules, observable)
         
 
     def process_user_content(self):
