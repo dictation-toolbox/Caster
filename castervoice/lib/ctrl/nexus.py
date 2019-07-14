@@ -1,3 +1,5 @@
+from castervoice.lib.dfplus.merge.mergerule import MergeRule
+
 from castervoice.lib import settings
 from castervoice.lib.ctrl.dependencies import DependencyMan
 from castervoice.lib.ctrl.mgr.activation.grammar_activator import GrammarActivator
@@ -102,7 +104,8 @@ class Nexus:
             AppCCRDetailsValidator(),
             NonCCRDetailsValidator()
         )
-        activator = GrammarActivator()
+
+        activator = GrammarActivator(lambda rule: isinstance(rule, MergeRule))
         some_setting = True
         observable = FileWatcherObservable()
         if some_setting:
@@ -122,8 +125,8 @@ class Nexus:
         '''
 
         gm = GrammarManager(config, merger, settings, AppContext, Grammar, [],
-                                    ccr_rule_validator, details_validator,
-                                    observable, activator)
+                            ccr_rule_validator, details_validator,
+                            observable, activator)
         return gm
 
     @staticmethod
@@ -132,5 +135,5 @@ class Nexus:
         sorter = ConfigRuleSetSorter()
         compat_checker = SimpleCompatibilityChecker()
         merge_strategy = ClassicMergingStrategy()
-        
+
         return CCRMerger2(transformers, sorter, compat_checker, merge_strategy)

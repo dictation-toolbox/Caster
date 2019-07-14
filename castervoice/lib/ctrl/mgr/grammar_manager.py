@@ -1,3 +1,5 @@
+from dragonfly import Grammar
+
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.managed_rule import ManagedRule
 from castervoice.lib.ctrl.mgr.managed_rule_multidict import ManagedRuleMultiDict
@@ -72,7 +74,6 @@ class GrammarManager(object):
 
         managed_rule = self._managed_rules.get_by_class_name(class_name)
 
-
         ccrtype = managed_rule.details.declared_ccrtype
         ''' 
         This setting controls "RDP Mode". Using "RDP Mode" is not recommended. 
@@ -97,39 +98,35 @@ class GrammarManager(object):
             global stuff.
             '''
             ccr_rules = self.merger.merge(active_ccr_rules)
-            # TODO make Grammar(s)
-            '''
-            new_managed_rule = ManagedRule(ccr_rule, grammar?, ) --- no, managed rules are the pieces
-            -- ccr_rules are the result
-            '''
-            # TODO: activate grammar
+            grammars = []
+            for rule in ccr_rules:
+                grammar = Grammar(name="ccr-" + GrammarManager._get_next_id())
+                grammar.add_rule(rule)
+                grammar.load()
+                grammars.append(grammar)
+            self._grammars_container.set_ccr(grammars)
         else:
-            # TODO: activate grammar
-            '''if activating, have df_maker make it'''
             if active:
                 grammar = self._mapping_rule_maker.create_non_ccr_grammar(
                     managed_rule.get_rule_class(), managed_rule.get_details())
                 self._grammars_container.set_non_ccr(self, managed_rule.get_rule_class_name(), grammar)
+                grammar.load()
             else:
                 self._grammars_container.set_non_ccr(self, managed_rule.get_rule_class_name(), None)
 
-
-    """
-    Do not call this manually. Should only be called by the reload observable.
-    """
     def receive(self, file_path_changed):
-        '''
-        TODO: this
-        1. match path to class name -- all rules will have both
-        2. call ---... the content loader is in the nexus but not here
-            --but call "idem_import_module(module_name, "get_rule")
-        3. then take result and send it to self._register_rules_from_content_manager(rs)
-        '''
+        """
+        This being called indicates that the file at file_path_changed has been updated
+        and that there is a TODO: is it loaded already at this point or no?
+
+        Do not call this manually. Should only be called by the reload observable.
+        :param file_path_changed: str
+        :return:
+        """
+
         managed_rule = self._managed_rules.get_by_file_path(file_path_changed)
-
-
-
-        pass
+        new_tuple = [None] # TODO, get it via content_loader.idem_import_module(module_name, "get_rule")
+        self._register_rules_from_content_manager(new_tuple)
 
     """
     rule_sets: a list of tuples
@@ -155,25 +152,25 @@ class GrammarManager(object):
         if self._always_global_ccr_mode:
             return None
 
-        name = rule_class.__name__
+        class_name = rule_class.__name__
 
         '''validate details configuration before anything else'''
         details_invalidation = self._details_validator.validate_details(details)
         if details_invalidation is not None:
-            return name + " rejected due to detail validation errors: " + details_invalidation
+            return class_name + " rejected due to detail validation errors: " + details_invalidation
 
         '''attempt to instantiate the rule'''
         test_instance = None
         try:
             test_instance = rule_class()
         except: #ignore warnings on this line-- it's supposed to be broad
-            return name + " rejected due to instantiation errors"
+            return class_name + " rejected due to instantiation errors"
 
         '''if ccr, validate the rule'''
         if details.declared_ccrtype is not None:
             error = self._ccr_rules_validator.validate(test_instance, details.declared_ccrtype)
             if error is not None:
-                return name + " rejected due to rule validation errors: " + error
+                return class_name + " rejected due to rule validation errors: " + error
 
         return None
 
@@ -194,18 +191,40 @@ class GrammarManager(object):
     '''
 
     def register_rule(self, rule_class, details):
-        name = rule_class.__name__
+        class_name = rule_class.__name__
 
         '''if already registered, unregister it'''
-        if name in self._managed_rules:
-            self._unregister(name)
+        if class_name in self._managed_rules:
+            self._unregister(class_name)
 
         '''
         rule should be safe for loading at this point: register it
         but do not load here -- this method only registers
         '''
         managed_rule = ManagedRule(rule_class, details)
-        self._managed_rules[name] = managed_rule
+        self._managed_rules[class_name] = managed_rule
+
+    def _unregister(self, rule_class_name):
+        """
+
+
+        :param rule_class_name:
+        :return:
+        """
+        if rule_class_name in self._managed_rules:
+            managed_rule = self._managed_rules[rule_class_name]
+
+            self._grammars_container
+
+            if managed_rule.grammar is not None:
+                # disable all rules
+                for rule in managed_rule.grammar.rules:
+                    rule.disable()
+                # disable / unload / delete grammar
+                managed_rule.grammar.disable()
+                managed_rule.grammar.unload()
+            # TODO: need to be able to remove from multimap??
+            del self._managed_rules[rule_class_name]
 
     """
     Both rules must be registered before registering the companion.
@@ -224,18 +243,12 @@ class GrammarManager(object):
             companions_list.append(companion_rule_class_name)
             self._companion_rules[rule_class_name] = companions_list
 
-    """
-    
-    """
-    def _unregister(self, rule_class_name):
-        if rule_class_name in self._managed_rules:
-            managed_rule = self._managed_rules[rule_class_name]
-            if managed_rule.grammar is not None:
-                # disable all rules
-                for rule in managed_rule.grammar.rules:
-                    rule.disable()
-                # disable / unload / delete grammar
-                managed_rule.grammar.disable()
-                managed_rule.grammar.unload()
-            del self._managed_rules[rule_class_name]
+
+
+    @staticmethod
+    def _get_next_id():
+        if not hasattr(GrammarManager._get_next_id, "id"):
+            GrammarManager._get_next_id.id = 0
+        GrammarManager._get_next_id.id += 1
+        return str(GrammarManager._get_next_id.id)
 

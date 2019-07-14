@@ -1,10 +1,7 @@
-'''
-Created on Sep 1, 2015
-
-@author: synkarius
-'''
 from dragonfly import MappingRule, Pause, Function
 import re, os, sys
+from castervoice.lib import printer
+
 
 class MergeRule(MappingRule):
     @staticmethod
@@ -19,14 +16,6 @@ class MergeRule(MappingRule):
     the pronunciation string rather than their class name
     for their respective enable/disable commands'''
     pronunciation = None
-#     '''MergeRules which define `non` will instantiate
-#     their paired non-CCR MergeRule and activate it
-#     alongside themselves''' -- replaced by "companion" in Details
-#     non = None
-    '''MergeRules which define `mcontext` with a
-    Dragonfly AppContext become non-global; this
-    is the same as adding a context to a Grammar'''
-    mcontext = None
 
     def __init__(self,
                  name=None,
@@ -34,17 +23,14 @@ class MergeRule(MappingRule):
                  extras=None,
                  defaults=None,
                  exported=None,
-                 mcontext=None,
                  location=None):
-
-        self._mcontext = self.__class__.mcontext
-        if self._mcontext is None: self._mcontext = mcontext
 
         if mapping is not None:
             mapping["display available commands"] = Function(
                 lambda: self._display_available_commands())
 
         MappingRule.__init__(self, name, mapping, extras, defaults, exported)
+
         self._format_actions()
         
         if location is None:
@@ -72,7 +58,6 @@ class MergeRule(MappingRule):
     '''Generates an "rdescript" for actions in this rule which don't have them.'''
     def format_actions(self):
         for command, action in self.mapping.items():
-        for command, action in self.mapping.items():
             #pylint: disable=no-member
             if hasattr(action, "rdescript") and action.rdescript is None:
                 self.mapping[command].rdescript = self.create_rdescript(command, action)
@@ -99,7 +84,6 @@ class MergeRule(MappingRule):
     def defaults_actual(self):
         return self._defaults
 
-
     def merge(self, other):
         mapping = self.mapping_copy()
         mapping.update(other.mapping_copy())
@@ -116,9 +100,8 @@ class MergeRule(MappingRule):
             mapping,
             extras,
             defaults,
-            self._exported and other._exported,  # no ID
-            composite=self.composite.union(other.composite),
-            mcontext=context,
+            self._exported and other._exported,
+            context,
             "no location for merged rules")
 
     def get_pronunciation(self):
@@ -126,12 +109,8 @@ class MergeRule(MappingRule):
 
     def copy(self):
         return MergeRule(self.name, self._mapping.copy(), self._extras.values(),
-                         self._defaults.copy(), self._exported, self.ID, self.composite,
-                         self.compatible, self._mcontext, self._mwith)
-
-    def get_context(self):
-        return self._mcontext
+                         self._defaults.copy(), self._exported, self._mcontext, self.location)
 
     def _display_available_commands(self):
         for spec in self.mapping_actual().keys():
-            print(spec)  # do something fancier when the ui is better
+            printer.out(spec)
