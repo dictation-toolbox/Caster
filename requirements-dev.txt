@@ -5,4 +5,4 @@ toml==0.10.0
 future==0.17.1
 mock==3.0.5
 pylint==1.9.3
-pywinauto=0.6.7
+pywinauto==0.6.7
