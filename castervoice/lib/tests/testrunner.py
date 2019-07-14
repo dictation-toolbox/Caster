@@ -1,4 +1,6 @@
-# import comtypes
+import sys
+sys.coinit_flags = 2
+import pywinauto
 import unittest
 from dragonfly.engines import _engines_by_name, get_engine
 
