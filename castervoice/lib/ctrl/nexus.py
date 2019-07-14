@@ -1,7 +1,7 @@
 from castervoice.lib import settings
 from castervoice.lib.ctrl.dependencies import DependencyMan
 from castervoice.lib.ctrl.mgr.activation.grammar_activator import GrammarActivator
-from castervoice.lib.ctrl.mgr.config.config_toml import TomlCCRConfig
+from castervoice.lib.ctrl.mgr.config.config_toml import TomlConfig
 from castervoice.lib.ctrl.mgr.validation.details.ccr_app_validator import AppCCRDetailsValidator
 from castervoice.lib.ctrl.mgr.validation.details.ccr_validator import CCRDetailsValidator
 from castervoice.lib.ctrl.mgr.validation.details.details_validation_delegator import DetailsValidationDelegator
@@ -107,7 +107,19 @@ class Nexus:
         observable = FileWatcherObservable()
         if some_setting:
             observable = ManualReloadObservable()
-        config = TomlCCRConfig()
+        config = TomlConfig()
+
+        '''
+        config,
+                 merger,
+                 ccr_rules_validator,
+                 details_validator,
+                 reload_observable,
+                 activator,
+                 mapping_rule_maker,
+                 grammars_container,
+                 always_global_ccr_mode
+        '''
 
         gm = GrammarManager(config, merger, settings, AppContext, Grammar, [],
                                     ccr_rule_validator, details_validator,

@@ -68,12 +68,12 @@ class CCRMerger(object):
     def save_config(self):
         if self.use_real_config:
             utilities.save_toml_file(self._config,
-                                     settings.SETTINGS["paths"]["CCR_CONFIG_PATH"])
+                                     settings.SETTINGS["paths"]["CONFIG_PATH"])
 
     def load_config(self):
         if self.use_real_config:
             self._config = utilities.load_toml_file(
-                settings.SETTINGS["paths"]["CCR_CONFIG_PATH"])
+                settings.SETTINGS["paths"]["CONFIG_PATH"])
         else:
             self._config = {}
 

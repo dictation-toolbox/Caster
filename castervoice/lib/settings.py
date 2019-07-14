@@ -197,8 +197,8 @@ _DEFAULT_SETTINGS = {
             BASE_PATH + "/bin/share/Rules",
         "ALIAS_PATH":
             _USER_DIR + "/data/aliases.toml",
-        "CCR_CONFIG_PATH":
-            _USER_DIR + "/data/ccr.toml",
+        "CONFIG_PATH":
+            _USER_DIR + "/data/grammars.toml",
         "DLL_PATH":
             BASE_PATH + "/lib/dll/",
         "SIMPLIFIED_FILTER_RULES_PATH":

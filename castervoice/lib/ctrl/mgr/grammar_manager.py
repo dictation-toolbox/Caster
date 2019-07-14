@@ -1,4 +1,6 @@
+from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.managed_rule import ManagedRule
+from castervoice.lib.ctrl.mgr.managed_rule_multidict import ManagedRuleMultiDict
 
 """
 Jobs of the grammar manager:
@@ -18,61 +20,99 @@ class GrammarManager(object):
                  details_validator,
                  reload_observable,
                  activator,
-                 mapping_rule_maker):
-        #
+                 mapping_rule_maker,
+                 grammars_container,
+                 always_global_ccr_mode):
+        """
+        Holds both the current merged ccr rules and the most recently instantiated/validated
+        copies of all ccr and non-ccr rules.
+        Loads all previously acti TODO this description
+        :param config: config impl which externally tracks which rules are activated
+        :param merger: The CCRMerger TODO: consider just passing in a method reference
+        :param ccr_rules_validator: validation for ccr rules
+        :param details_validator: validation of rule details configuration objects
+        :param reload_observable: the thing that signals that a file or files have changed
+        :param activator: manages the "enable/disable X" grammar
+        :param mapping_rule_maker: instantiates (TODO and clears?) mapping rules
+        :param grammars_container: holds and destroys grammars
+        :param always_global_ccr_mode: an option which forces every rule to be treated as a global ccr rule
+        """
         self._config = config
-        # merger is necessary to unload ccr rules and their companion rules
         self._merger = merger
-        # DI filter method, used later (default impl = castervoice.lib.dfplus.merge.gfilter.run_on)
-        '''
-        This is on df_rule_maker now for non-ccr rules, just need to make sure it gets into the merger
-        '''
-        self._filter_method = filter_method
-        # DI validators
         self._ccr_rules_validator = ccr_rules_validator
         self._details_validator = details_validator
+        self._reload_observable = reload_observable
+        self._activator = activator
+        self._mapping_rule_maker = mapping_rule_maker
+        self._grammars_container = grammars_container
+        self._always_global_ccr_mode = always_global_ccr_mode
+
         # rules: (class name : ManagedRule}
-        self._managed_rules = {}
+        self._managed_rules = ManagedRuleMultiDict()
         # companion rules -- when a rule is activated, it can have 0-n companion rules auto activated with it
         self._companion_rules = {}
-        # 
-        self._reload_observable = reload_observable
+        #
         self._reload_observable.register_listener(self)
         #
-        self._activator = activator
         self._activator.set_activation_fn(self._change_rule_active)
-        #
-        self._mapping_rule_maker = mapping_rule_maker
 
-
-
-    """Either creates a standalone Dragonfly rule or delegates to the CCRMerger to create the merged rule(s)"""
     def _change_rule_active(self, class_name, active):
-        managed_rule = self._managed_rules[class_name]
+        """
+        Either creates a standalone Dragonfly rule or
+        delegates to the CCRMerger to create the merged rule(s)
+
+        :param class_name:
+        :param active:
+        :return:
+        """
+
+        # update config, save
+        self._config.update(class_name, active)
+        self._config.save()
+
+        managed_rule = self._managed_rules.get_by_class_name(class_name)
 
 
+        ccrtype = managed_rule.details.declared_ccrtype
+        ''' 
+        This setting controls "RDP Mode". Using "RDP Mode" is not recommended. 
+        It forces any rule to load as a global ccr rule and ignores validation.
+        '''
+        if self._always_global_ccr_mode:
+            ccrtype = CCRType.GLOBAL
 
-        if managed_rule.details.declared_ccrtype is not None:
-            '''have merger make new rule with/without '''
-            pronunciation = get_pronunciation(class_name) # TODO: write that goddamn multimap
-            ccrtype = get_config_ccrtype(details)
-            self._config[pronunciation][ccrtype] = active
+        if ccrtype is not None:
+            '''
+            handle CCR:
+            get all active ccr rules after de/activating one'''
+            active_rule_class_names = self._config.get_active_rule_class_names()
+            active_rules = [self._managed_rules.get_by_class_name(rcn) for rcn in active_rule_class_names]
+            active_ccr_rules = [mr for mr in active_rules if mr.details.declared_ccrtype is not None]
 
-            ccr_rules = get_active_rules(self._config)
-
-            ccr_rule(s) = self.merger.merge(ccr_rules)
-            # TODO make Grammar?
+            '''
+            The merge may result in 1 to n+1 rules where n is the number of ccr app rules
+            which are in the active rules list.
+            For instance, if you have 1 app rule, you'll end up with two ccr rules. This is because
+            the merger has to make the global one, plus an app rule with the app stuff plus all the
+            global stuff.
+            '''
+            ccr_rules = self.merger.merge(active_ccr_rules)
+            # TODO make Grammar(s)
             '''
             new_managed_rule = ManagedRule(ccr_rule, grammar?, ) --- no, managed rules are the pieces
             -- ccr_rules are the result
             '''
-
+            # TODO: activate grammar
         else:
+            # TODO: activate grammar
             '''if activating, have df_maker make it'''
+            if active:
+                grammar = self._mapping_rule_maker.create_non_ccr_grammar(
+                    managed_rule.get_rule_class(), managed_rule.get_details())
+                self._grammars_container.set_non_ccr(self, managed_rule.get_rule_class_name(), grammar)
+            else:
+                self._grammars_container.set_non_ccr(self, managed_rule.get_rule_class_name(), None)
 
-
-        # who cares if there were changes?
-        self._config.save()
 
     """
     Do not call this manually. Should only be called by the reload observable.
@@ -85,7 +125,7 @@ class GrammarManager(object):
             --but call "idem_import_module(module_name, "get_rule")
         3. then take result and send it to self._register_rules_from_content_manager(rs)
         '''
-
+        managed_rule = self._managed_rules.get_by_file_path(file_path_changed)
 
 
 
@@ -112,6 +152,9 @@ class GrammarManager(object):
     attempts to find a reason to invalidate the rule
     """
     def _get_invalidation(self, rule_class, details):
+        if self._always_global_ccr_mode:
+            return None
+
         name = rule_class.__name__
 
         '''validate details configuration before anything else'''

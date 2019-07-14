@@ -35,21 +35,21 @@ class GrammarActivator(object):
     """
     def register_rule(self, managed_rule):
         trigger = self._get_best_trigger(managed_rule)
-        self._class_name_to_trigger[managed_rule.rule_class.__name__] = trigger
+        self._class_name_to_trigger[managed_rule.get_rule_class_name()] = trigger
 
     """
     Ideally we're dealing with a MergeRule and the trigger is its pronunciation. But since
     GrammarManager also manages pure Dragonfly rules, we might need to derive the name otherwise.
     """
     def _get_best_trigger(self, managed_rule):
-        rule_instance = managed_rule.rule_class()
+        rule_instance = managed_rule.get_rule_instance()
         if isinstance(rule_instance, self._merge_rule_class):
             return rule_instance.get_pronunciation()
         if managed_rule.details.name is not None:
             return managed_rule.details.name
         if managed_rule.details.grammar_name is not None:
             return managed_rule.details.grammar_name
-        return managed_rule.rule_class.__name__
+        return managed_rule.get_rule_class_name()
 
     def reconstruct_activation_rule(self):
         """construct new rule and grammar"""
