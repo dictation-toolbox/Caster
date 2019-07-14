@@ -1,10 +1,6 @@
 from dragonfly import MappingRule, Function
 from dragonfly.grammar.grammar_base import Grammar
-
-
-class TooEarlyGrammarActivatorError(Exception):
-    def __init__(self):
-        super("Do not attempt to build the activation rule before setting the de/activator functions.")
+from castervoice.lib.ctrl.mgr.errors.too_early_grammar_activation import TooEarlyGrammarActivatorError
 
 
 class GrammarActivator(object):

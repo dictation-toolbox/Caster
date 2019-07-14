@@ -1,8 +1,12 @@
+import os
+
 from dragonfly import Grammar
 
+from castervoice.lib import printer
 from castervoice.lib.const import CCRType
+from castervoice.lib.ctrl.mgr.errors.not_a_module import NotAModuleError
+from castervoice.lib.ctrl.mgr.loading.content_type import ContentType
 from castervoice.lib.ctrl.mgr.managed_rule import ManagedRule
-from castervoice.lib.ctrl.mgr.managed_rule_multidict import ManagedRuleMultiDict
 
 """
 Jobs of the grammar manager:
@@ -18,6 +22,7 @@ class GrammarManager(object):
 
     def __init__(self, config,
                  merger,
+                 content_loader,
                  ccr_rules_validator,
                  details_validator,
                  reload_observable,
@@ -29,6 +34,9 @@ class GrammarManager(object):
         Holds both the current merged ccr rules and the most recently instantiated/validated
         copies of all ccr and non-ccr rules.
         Loads all previously acti TODO this description
+
+        TODO: this is a god object; it should be broken apart
+
         :param config: config impl which externally tracks which rules are activated
         :param merger: The CCRMerger TODO: consider just passing in a method reference
         :param ccr_rules_validator: validation for ccr rules
@@ -41,6 +49,7 @@ class GrammarManager(object):
         """
         self._config = config
         self._merger = merger
+        self._content_loader = content_loader
         self._ccr_rules_validator = ccr_rules_validator
         self._details_validator = details_validator
         self._reload_observable = reload_observable
@@ -50,13 +59,76 @@ class GrammarManager(object):
         self._always_global_ccr_mode = always_global_ccr_mode
 
         # rules: (class name : ManagedRule}
-        self._managed_rules = ManagedRuleMultiDict()
+        self._managed_rules = {}
         # companion rules -- when a rule is activated, it can have 0-n companion rules auto activated with it
         self._companion_rules = {}
         #
         self._reload_observable.register_listener(self)
         #
         self._activator.set_activation_fn(self._change_rule_active)
+        #
+        '''
+        TODO: shouldn't put the content loader inside of here b/c it's hard to 
+        disentangle the merger from the grammar manager 
+        '''
+
+    '''TODO: this needs to be reworked w/ regards to _managed_rules'''
+    def register_rule(self, rule_class, details):
+        class_name = rule_class.__name__
+
+        '''
+        rule should be safe for loading at this point: register it
+        but do not load here -- this method only registers
+        '''
+        managed_rule = ManagedRule(rule_class, details)
+        self._managed_rules[class_name] = managed_rule
+
+    """
+    TODO: get the first load set of rules in the constructor and then make this private
+    
+    TODO: introduce the idea of a Core ?
+
+    rule_sets: a list of tuples
+    """
+    def _register_rules(self, rs):
+        """
+
+        :param rs:
+        :return:
+        """
+        for rd in rs:
+            rule_class = rd[0]
+            rule_details = rd[1]
+
+            invalidation = self._get_invalidation(rule_class, rule_details)
+            if invalidation is not None:
+                printer.out(invalidation)
+                continue
+
+            # add copy of this rule to the pool of rules available for activation
+            self.register_rule(rule_class, rule_details)
+            # watch this file for future changes
+            '''TODO: rule_details.file_path isn't right --- need to either use mergerule's path or rule_details.file_path'''
+            self._reload_observable.register_watched_file(rule_details.file_path)
+
+    """
+        THIS IS COMPLETELY UNUSED SO FAR
+
+        Both rules must be registered before registering the companion.
+        self._companion_rules is {rule: [companions]}
+
+        TODO: -- should this just happen in a config file???
+    """
+    def _register_companion_rule(self, rule_class, companion_rule_class):
+        rule_class_name = rule_class.__name__
+        companion_rule_class_name = companion_rule_class.__name__
+
+        if rule_class_name in self._managed_rules and \
+                companion_rule_class_name in self._managed_rules:
+            companions_list = [] if rule_class_name not in self._companion_rules \
+                else self._companion_rules[rule_class_name]
+            companions_list.append(companion_rule_class_name)
+            self._companion_rules[rule_class_name] = companions_list
 
     def _change_rule_active(self, class_name, active):
         """
@@ -72,7 +144,7 @@ class GrammarManager(object):
         self._config.update(class_name, active)
         self._config.save()
 
-        managed_rule = self._managed_rules.get_by_class_name(class_name)
+        managed_rule = self._managed_rules[class_name]
 
         ccrtype = managed_rule.details.declared_ccrtype
         ''' 
@@ -87,7 +159,7 @@ class GrammarManager(object):
             handle CCR:
             get all active ccr rules after de/activating one'''
             active_rule_class_names = self._config.get_active_rule_class_names()
-            active_rules = [self._managed_rules.get_by_class_name(rcn) for rcn in active_rule_class_names]
+            active_rules = [self._managed_rules[rcn] for rcn in active_rule_class_names]
             active_ccr_rules = [mr for mr in active_rules if mr.details.declared_ccrtype is not None]
 
             '''
@@ -117,38 +189,26 @@ class GrammarManager(object):
     def receive(self, file_path_changed):
         """
         This being called indicates that the file at file_path_changed has been updated
-        and that there is a TODO: is it loaded already at this point or no?
+        and that it should be reloaded and potentially replace the old copy.
 
         Do not call this manually. Should only be called by the reload observable.
         :param file_path_changed: str
         :return:
         """
 
-        managed_rule = self._managed_rules.get_by_file_path(file_path_changed)
-        new_tuple = [None] # TODO, get it via content_loader.idem_import_module(module_name, "get_rule")
-        self._register_rules_from_content_manager(new_tuple)
+        module_name = GrammarManager._get_module_name_from_file_path(file_path_changed)
+        reloaded_module = self._content_loader.idem_import_module(module_name, ContentType.GET_RULE)
+        self._register_rules(reloaded_module)
 
-    """
-    rule_sets: a list of tuples
-    """
-    def register_rules_from_content_manager(self, rule_sets):
-        for rule_set in rule_sets:
-            for rd in rule_set:
-                rule_class = rd[0]
-                rule_details = rd[1]
-
-                invalidation = self._get_invalidation(rule_class, rule_details)
-                if invalidation is not None:
-                    print(invalidation)
-                    continue
-
-                self.register_rule(rule_class, rule_details)
-                self._reload_observable.register_watched_file(rule_details.path)
-
-    """
-    attempts to find a reason to invalidate the rule
-    """
     def _get_invalidation(self, rule_class, details):
+        """
+        Attempts to find a reason to invalidate the rule. Return reason if can find one.
+        :param rule_class:
+        :param details: RuleDetails
+        :return:
+        """
+
+        '''skip validations if forcing everything to be global ccr:'''
         if self._always_global_ccr_mode:
             return None
 
@@ -174,79 +234,23 @@ class GrammarManager(object):
 
         return None
 
-
-    '''
-    If a rule is registered a second time, 
-    A. The new version should be attempted to be loaded.
-    B. If it loads, the old version should
-        1. have its grammar unloaded if there is a grammar
-        2. be deleted from the _managed_rules map
-    
-    TODO:
-    Okay, so instantiation errors are one thing, but what if we never make it to
-    the "register" call? That is going to have to be handled, maybe in the "loading"
-    package.
-    -- can't recover if it fails on reboot
-    -- can recover afterwards -- if it fails importlib, the crash will not deregister the old version
-    '''
-
-    def register_rule(self, rule_class, details):
-        class_name = rule_class.__name__
-
-        '''if already registered, unregister it'''
-        if class_name in self._managed_rules:
-            self._unregister(class_name)
-
-        '''
-        rule should be safe for loading at this point: register it
-        but do not load here -- this method only registers
-        '''
-        managed_rule = ManagedRule(rule_class, details)
-        self._managed_rules[class_name] = managed_rule
-
-    def _unregister(self, rule_class_name):
+    @staticmethod
+    def _get_module_name_from_file_path(file_path):
         """
-
-
-        :param rule_class_name:
-        :return:
+        Used by receive(), converts full file path to module name.
+        :param file_path: str
+        :return: str
         """
-        if rule_class_name in self._managed_rules:
-            managed_rule = self._managed_rules[rule_class_name]
-
-            self._grammars_container
-
-            if managed_rule.grammar is not None:
-                # disable all rules
-                for rule in managed_rule.grammar.rules:
-                    rule.disable()
-                # disable / unload / delete grammar
-                managed_rule.grammar.disable()
-                managed_rule.grammar.unload()
-            # TODO: need to be able to remove from multimap??
-            del self._managed_rules[rule_class_name]
-
-    """
-    Both rules must be registered before registering the companion.
-        self._companion_rules is {rule: [companions]}
-        
-        TODO: -- should this just happen in a config file???
-    """
-    def _register_companion_rule(self, rule_class, companion_rule_class):
-        rule_class_name = rule_class.__name__
-        companion_rule_class_name = companion_rule_class.__name__
-
-        if rule_class_name in self._managed_rules and \
-                companion_rule_class_name in self._managed_rules:
-            companions_list = [] if not rule_class_name in self._companion_rules \
-                else self._companion_rules[rule_class_name]
-            companions_list.append(companion_rule_class_name)
-            self._companion_rules[rule_class_name] = companions_list
-
-
+        if file_path.startswith("__") or not file_path.endswith(".py"):
+            raise NotAModuleError(file_path)
+        return os.path.basename(file_path).replace(".py", "")
 
     @staticmethod
     def _get_next_id():
+        """
+        Returns a unique id for grammar names. Used to name new CCR grammars.
+        :return: str
+        """
         if not hasattr(GrammarManager._get_next_id, "id"):
             GrammarManager._get_next_id.id = 0
         GrammarManager._get_next_id.id += 1

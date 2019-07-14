@@ -70,10 +70,10 @@ class Nexus:
 
         '''unified loading mechanism for [rules, transformers, hooks] 
         from [caster starter locations, user dir]'''
-        self.content_loader = ContentLoader()
+        self._content_loader = ContentLoader()
 
         '''the grammar manager -- probably needs to get broken apart more'''
-        self._grammar_manager = Nexus._create_grammar_manager(self.merger)
+        self._grammar_manager = Nexus._create_grammar_manager(self.merger, self._content_loader)
 
         '''ACTION TIME:'''
         self._load_and_register_all_content()
@@ -90,7 +90,7 @@ class Nexus:
         [self.merger.add_transformer(t) for t in content.transformers]
 
     @staticmethod
-    def _create_grammar_manager(merger):
+    def _create_grammar_manager(merger, content_loader):
         ccr_rule_validator = CCRRuleValidationDelegator(
             IsMergeRuleValidator(),
             HasNoContextValidator(),
