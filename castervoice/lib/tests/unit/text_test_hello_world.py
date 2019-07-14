@@ -12,6 +12,7 @@ class TestHelloWord(unittest.TestCase):
         app = Application().start("notepad.exe " + test_out_path)
         
         Text("Hello world").execute()
+        time.sleep(0.1)
         app.Notepad.type_keys("^S")
         while not os.path.exists(os.path.abspath(test_out_path)):
             time.sleep(0.1)
