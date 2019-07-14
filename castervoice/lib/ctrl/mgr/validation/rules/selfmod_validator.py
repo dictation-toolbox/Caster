@@ -7,7 +7,7 @@ class SelfModifyingRuleValidator(BaseRuleValidator):
     def is_applicable(self, declared_ccrtype):
         return declared_ccrtype == CCRType.SELFMOD
 
-    def _is_valid(self, rule):
+    def _is_valid(self, rule): # TODO: not the merger which should be set anymore
         return hasattr(rule, "set_merger")
 
     def _invalid_message(self):

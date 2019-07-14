@@ -225,12 +225,10 @@ _load_definitions()
 if _DEFS is not None:
     print("Global rule filter from file 'words.txt' activated ...")
 
-'''TODO: make sure this finds its way into both modes of the new merger'''
-
 
 class GlobalDefinitionsRuleTransformer(BaseRuleTransformer):
-    def _transform(self, mergerule):
-        return _spec_override_from_config(mergerule)
+    def _transform(self, rule):
+        return _spec_override_from_config(rule)
 
-    def _is_applicable(self, mergerule):
+    def _is_applicable(self, rule):
         return True

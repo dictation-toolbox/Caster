@@ -14,4 +14,4 @@ class TestNexus(unittest.TestCase):
     def setUp(self):
         unittest.TestCase.setUp(self)
         self.nexus = Nexus(False)
-        self.nexus.set_merger(NoSaveCCRMerger())
+        self.nexus.merger = NoSaveCCRMerger()

@@ -83,9 +83,12 @@ class ContentLoader(object):
         return result
 
     def _import_module(self, module_name):
-        '''
-        Imports a module for the first time.
-        '''
+        """
+        Attempts to import a module by name.
+        :param module_name: string
+        :return: (module) module
+        """
+
         try:
             return importlib.import_module(module_name)
         except Exception as e:

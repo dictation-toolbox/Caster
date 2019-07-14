@@ -280,3 +280,7 @@ def get_clipboard_files(folders=False):
         files = [f for f in files if os.path.isfile(f)] if files else None
     win32clipboard.CloseClipboard()
     return files
+
+def copy_dragonfly_mapping_rule(mapping_rule):
+    # TODO this
+    return mapping_rule

@@ -7,15 +7,21 @@ them are that:
 3. transformers enforce immutability
 4. transformers have no concept of "time" or "order"
 '''
+from castervoice.lib import utilities
 
 
 class BaseRuleTransformer(object):
     '''do not override'''
 
-    def get_transformed_rule(self, mergerule):
-        if self._is_applicable(mergerule):
-            return self._transform(mergerule.copy())
-        return mergerule
+    def get_transformed_rule(self, rule):
+        if self._is_applicable(rule):
+            rule_copy = None
+            if hasattr(rule, "copy"):
+                rule_copy = rule.copy()
+            else:
+                rule_copy = utilities.copy_dragonfly_mapping_rule(rule)
+            return self._transform(rule_copy)
+        return rule
 
     '''override this'''
 

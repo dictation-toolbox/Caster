@@ -1,5 +1,5 @@
 from dragonfly import ActionBase
-from castervoice.lib import context, control
+from castervoice.lib import context
 from castervoice.lib.actions import Text, Key
 
 '''
@@ -35,6 +35,8 @@ If the highlighted text is the same as what is currently on the
 clipboard, an empty string will be stored. This is a necessary
 side-effect of being able to detect when no text is highlighted.
 '''
+_TEMP = ""
+
 
 class Store(ActionBase):
     def __init__(self, space=" ", remove_cr=False):
@@ -43,9 +45,10 @@ class Store(ActionBase):
         self.remove_cr = remove_cr
 
     def _execute(self, data=None):
+        global _TEMP
         _, orig = context.read_selected_without_altering_clipboard(False)
         text = orig.replace(" ", self.space) if orig else ""
-        control.nexus().temp = text.replace("\n", "") if self.remove_cr else text
+        _TEMP = text.replace("\n", "") if self.remove_cr else text
         return True
 
 
@@ -57,10 +60,10 @@ class Retrieve(ActionBase):
 
     @classmethod
     def text(cls):
-        return control.nexus().temp
+        return _TEMP
 
     def _execute(self, data=None):
-        output = control.nexus().temp
+        output = _TEMP
         Text(output).execute()
         if output:
             Key(self.action_if_text).execute()
