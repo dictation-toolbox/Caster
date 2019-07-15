@@ -18,17 +18,17 @@ _Bring me_ is a set of commands that allow the user to quickly invoke an item fr
 
 ## Examples
 
-- _to bring me as caster github_
+- _to bring me as **caster github**_
     - Automatically detected as a website if in the browser.
-- _bring me caster github_
+- _bring me **caster github**_
     - Opens the caster GitHub web page in your default browser.
-- _program to bring me as my favorite browser_
+- _**program** to bring me as **my favorite browser**_
     - If in Google Chrome, this saves Google Chrome as a program.
-- _bring me my favorite browser_
+- _bring me **my favorite browser**_
     - Opens Google Chrome (after the user runs the previous example).
-- _bring me caster bring me_
+- _bring me **caster bring me**_
     - Opens `bringme.toml` in your system default `.toml` editor.
-- _bring me my documents_
+- _bring me **my documents**_
     - If in a terminal, File/Windows Explorer, or a Save/Open dialog, this navigates to your Documents folder. If not, this opens a new Explorer window at that folder.
-- _bring me caster user in terminal_
+- _bring me **caster user** in **terminal**_
     - Opens a new terminal at the user's `.caster` folder.
