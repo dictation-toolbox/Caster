@@ -16,12 +16,11 @@ class GitterRule(MergeRule):
         "emphasize":
             R(Store() + Text("**") + Key("left:1") + Retrieve(action_if_text="right:1")),
         "<header_size> header":
-            R(Store() + Text("%(header_size)s ") +
-              Retrieve(action_if_text="spaces-enter")),
+            R(Store() + Text("%(header_size)s ") + Retrieve(action_if_text="s-enter")),
         "insert item":
-            R(Store() + Text("* ") + Retrieve(action_if_text="s-enter")),
+            R(Store() + Text("*") + Key("space") + Retrieve(action_if_text="s-enter")),
         "block quote":
-            R(Store() + Text("> ") + Retrieve(action_if_text="s-enter:2")),
+            R(Store() + Text(">") + Key("space") + Retrieve(action_if_text="s-enter")),
         "mention":
             R(Store() + Text("@") + Retrieve(action_if_text="right, space")),
         "insert link":
