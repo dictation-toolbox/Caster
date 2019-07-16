@@ -15,7 +15,9 @@ class GitterRule(MergeRule):
               Retrieve(action_if_text="right:2")),
         "emphasize":
             R(Store() + Text("**") + Key("left:1") + Retrieve(action_if_text="right:1")),
-        #"header":  R(Text( "" )), # H1 ## H2 ### H3
+        "<header_size> header":
+            R(Store() + Text("%(header_size)s ") +
+              Retrieve(action_if_text="spaces-enter")),
         "insert item":
             R(Store() + Text("* ") + Retrieve(action_if_text="s-enter")),
         "block quote":
@@ -35,7 +37,11 @@ class GitterRule(MergeRule):
               Retrieve()),
     }
     extras = [
-        Dictation("text"),
+        Choice("header_size", {
+            "small": "###",
+            "medium": "##",
+            "large": "#",
+        }),
     ]
     Defaults = {}
 
