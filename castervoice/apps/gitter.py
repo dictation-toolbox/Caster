@@ -11,24 +11,28 @@ class GitterRule(MergeRule):
 
     mapping = {
         "bold":
-            R(Store() + Text("**") + Retrieve() + Text("**")),
+            R(Store() + Text("****") + Key("left:2") +
+              Retrieve(action_if_text="right:2")),
         "emphasize":
-            R(Store() + Text("*") + Retrieve() + Text("*")),
-        # "header":  R(Text( "" )), # H1 ## H2 ### H3
+            R(Store() + Text("**") + Key("left:1") + Retrieve(action_if_text="right:1")),
+        #"header":  R(Text( "" )), # H1 ## H2 ### H3
         "insert item":
-            R(Text("* ")),
+            R(Store() + Text("* ") + Retrieve(action_if_text="s-enter")),
         "block quote":
-            R(Text("> ")),
+            R(Store() + Text("> ") + Retrieve(action_if_text="s-enter:2")),
         "mention":
-            R(Store() + Text("@") + Retrieve()),
+            R(Store() + Text("@") + Retrieve(action_if_text="right, space")),
         "insert link":
-            R(Store() + Text("[") + Retrieve() + Text("]()") + Key("left:2")),
+            R(Store() + Text("[]()") + Key("left:3") +
+              Retrieve(action_if_text="right:2")),
         "insert image":
-            R(Store() + Text("![") + Retrieve() + Text("]()") + Key("left:2")),
+            R(Store() + Text("![]()") + Key("left:3") +
+              Retrieve(action_if_text="right:2")),
         "insert code":
-            R(Store() + Text("`") + Retrieve() + Text("`")),
+            R(Store() + Text("``") + Key("left") + Retrieve(action_if_text="right")),
         "formatted code":
-            R(Text("```") + Key("s-enter")),
+            R(Store() + Text("``````") + Pause("0.5") + Key("left:3,s-enter:2,up") +
+              Retrieve()),
     }
     extras = [
         Dictation("text"),
