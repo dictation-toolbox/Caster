@@ -3,9 +3,11 @@
 from __future__ import print_function, unicode_literals
 
 import io
+import json
 import os
 import re
 import sys
+import time
 import traceback
 from __builtin__ import True
 from subprocess import Popen
@@ -13,6 +15,9 @@ import toml
 
 import win32gui
 import win32ui
+import win32clipboard
+
+from castervoice.lib.clipboard import Clipboard
 
 from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,
     HKEY_CURRENT_USER, OpenKey, QueryValueEx)
@@ -120,6 +125,29 @@ def load_toml_file(path):
         simple_log(True)
     return result
 
+def save_json_file(data, path):
+    try:
+        formatted_data = unicode(json.dumps(data, ensure_ascii=False))
+        with io.open(path, "wt", encoding="utf-8") as f:
+            f.write(formatted_data)
+    except Exception:
+        simple_log(True)
+
+
+def load_json_file(path):
+    result = {}
+    try:
+        with io.open(path, "rt", encoding="utf-8") as json_file:
+            result = json.load(json_file)
+    except IOError as e:
+        if e.errno == 2:  # The file doesn't exist.
+            save_json_file(result, path)
+        else:
+            raise
+    except Exception:
+        simple_log(True)
+    return result
+
 
 def list_to_string(l):
     return u"\n".join([unicode(x) for x in l])
@@ -159,7 +187,10 @@ def reboot(wsr=False):
     else:
         popen_parameters.append(settings.SETTINGS["paths"]["REBOOT_PATH"])
         popen_parameters.append(settings.SETTINGS["paths"]["ENGINE_PATH"])
-
+        import natlinkstatus
+        status = natlinkstatus.NatlinkStatus()
+        username = status.getUserName()
+        popen_parameters.append(username)
     print(popen_parameters)
     Popen(popen_parameters)
 
@@ -178,8 +209,9 @@ def default_browser_command():
         reg = ConnectRegistry(None,HKEY_CLASSES_ROOT)
         key = OpenKey(reg, '%s\\shell\\open\\command' % value)
         path, t = QueryValueEx(key, None)
-    except WindowsError as e:
-        #logger.warn(e)
+    except WindowsError:
+        # logger.warn(e)
+        traceback.print_exc()
         return ''
     finally:
         CloseKey(key)
@@ -190,6 +222,7 @@ def default_browser_command():
 def clear_log():
     # Function to clear natlink status window
     try:
+        # pylint: disable=import-error
         import natlink
         windows = Window.get_all_windows()
         matching = [w for w in windows
@@ -201,3 +234,49 @@ def clear_log():
             return
     except Exception as e:
         print (e)
+
+def get_clipboard_formats():
+    '''
+    Return list of all data formats currently in the clipboard
+    '''
+    formats = []
+    f = win32clipboard.EnumClipboardFormats(0)
+    while f:
+        formats.append(f)
+        f = win32clipboard.EnumClipboardFormats(f)
+    return formats
+
+def get_selected_files(folders=False):
+    '''
+    Copy selected (text or file is subsequently of interest) to a fresh clipboard
+    '''
+    cb = Clipboard(from_system=True)
+    cb.clear_clipboard()
+    Key("c-c").execute()
+    time.sleep(0.1)
+    files = get_clipboard_files(folders)
+    cb.copy_to_system()
+    return files
+
+def get_clipboard_files(folders=False):
+    '''
+    Enumerate clipboard content and return files either directly copied or
+    highlighted path copied
+    '''
+    files = None
+    win32clipboard.OpenClipboard()
+    f = get_clipboard_formats()
+    if win32clipboard.CF_HDROP in f:
+        files = win32clipboard.GetClipboardData(win32clipboard.CF_HDROP)
+    elif win32clipboard.CF_UNICODETEXT in f:
+        files = [win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)]
+    elif win32clipboard.CF_TEXT in f:
+        files = [win32clipboard.GetClipboardData(win32clipboard.CF_TEXT)]
+    elif win32clipboard.CF_OEMTEXT in f:
+        files = [win32clipboard.GetClipboardData(win32clipboard.CF_OEMTEXT)]
+    if folders:
+        files = [f for f in files if os.path.isdir(f)] if files else None
+    else:
+        files = [f for f in files if os.path.isfile(f)] if files else None
+    win32clipboard.CloseClipboard()
+    return files

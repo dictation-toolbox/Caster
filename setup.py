@@ -4,6 +4,8 @@ import codecs
 import re
 import atexit
 from setuptools.command.install import install
+from setuptools.command.develop import develop
+
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -27,13 +29,17 @@ def _post_install():
     runpostinstall()
 
 
-class new_install(install, object):
-    def __init__(self, *args, **kwargs):
-        super(new_install, self).__init__(*args, **kwargs)
+class new_install(install):
+    def run(self):
         atexit.register(_post_install)
+        install.run(self)
 
 
-with open("ReadMe.md", "r") as fh:
+class dev_install(develop):
+    def run(self):
+        develop.run(self)
+
+with open("docs/README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
@@ -53,12 +59,14 @@ setuptools.setup(
         "Operating System :: OS Independent"
     ],
     install_requires=[
-        "dragonfly2>=0.11.1",
-        "wxpython>=4.0.4",
-        "pillow>=5.3.0",
-        "toml>=0.10.0",
-        "future"
+        "dragonfly2>=0.14.1",
+        "wxpython",
+        "pillow",
+        "toml",
+        "future",
+        "mock",
     ],
-    cmdclass={'install': new_install
+    cmdclass={'install': new_install,
+              'develop': dev_install,
               },
 )

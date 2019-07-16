@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
@@ -13,14 +12,14 @@ import version
 
 GENERIC_HELP_MESSAGE = """
 If you continue having problems with this or any other issue you can contact
-us through Gitter at <https://gitter.im/dictation-toolbox/caster> or on our GitHub
-issue tracker at <https://github.com/dictation-toolbox/caster/issues>.
+us through Gitter at <https://gitter.im/synkarius/caster> or on our GitHub
+issue tracker at <https://github.com/synkarius/caster/issues>.
 Thank you for using Caster!
 """
 
 SETTINGS = {}
-BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "lib", 1)[0].replace(
-    "\\", "/")
+BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "lib",
+                                              1)[0].replace("\\", "/")
 _USER_DIR = os.path.expanduser("~").replace("\\", "/") + "/.caster"
 _SETTINGS_PATH = _USER_DIR + "/data/settings.toml"
 
@@ -53,6 +52,17 @@ HMC_SEPARATOR = "[hmc]"
 
 WSR = False
 
+# set the paths for autohotkey and git bash
+if os.path.isfile('C:/Program Files/Git/git-bash.exe'):
+    TERMINAL_PATH_DEFAULT = "C:/Program Files/Git/git-bash.exe"
+else:
+    TERMINAL_PATH_DEFAULT = ""
+
+if os.path.isfile('C:/Program Files/AutoHotkey/AutoHotkey.exe'):
+    AHK_PATH_DEFAULT = "C:/Program Files/AutoHotkey/AutoHotkey.exe"
+else:
+    AHK_PATH_DEFAULT = ""
+
 
 def get_platform_information():
     """Return a dictionary containing platform-specific information."""
@@ -61,26 +71,21 @@ def get_platform_information():
     system_information.update({"python version": sys.version_info})
     if sys.platform == "win32":
         system_information.update({"binary path": sys.exec_prefix})
-        system_information.update({
-            "main binary": os.path.join(sys.exec_prefix, "python.exe")
-        })
-        system_information.update({
-            "hidden console binary": os.path.join(sys.exec_prefix, "pythonw.exe")
-        })
+        system_information.update(
+            {"main binary": os.path.join(sys.exec_prefix, "python.exe")})
+        system_information.update(
+            {"hidden console binary": os.path.join(sys.exec_prefix, "pythonw.exe")})
     else:
         system_information.update({"binary path": os.path.join(sys.exec_prefix, "bin")})
-        system_information.update({
-            "main binary": os.path.join(sys.exec_prefix, "bin", "python")
-        })
-        system_information.update({
-            "hidden console binary": os.path.join(sys.exec_prefix, "bin", "python")
-        })
-    if system_information["platform"] != "win32":
-        raise SystemError("Your platform is not currently supported by Caster.")
+        system_information.update(
+            {"main binary": os.path.join(sys.exec_prefix, "bin", "python")})
+        system_information.update(
+            {"hidden console binary": os.path.join(sys.exec_prefix, "bin", "python")})
     return system_information
 
 
 SYSTEM_INFORMATION = get_platform_information()
+
 
 def get_filename():
     return _SETTINGS_PATH
@@ -90,6 +95,13 @@ def _validate_engine_path():
     '''
     Validates path 'Engine Path' in settings.toml
     '''
+    if not sys.platform.startswith('win'):
+        return ''
+    try:
+        # pylint: disable=import-error
+        import natlink
+    except ImportError:
+        return ''
     if os.path.isfile(_SETTINGS_PATH):
         with io.open(_SETTINGS_PATH, "rt", encoding="utf-8") as toml_file:
             data = toml.loads(toml_file.read())
@@ -103,7 +115,7 @@ def _validate_engine_path():
                     formatted_data = unicode(toml.dumps(data))
                     with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as toml_file:
                         toml_file.write(formatted_data)
-                    print("Setting engine path to ") + engine_path
+                    print("Setting engine path to " + engine_path)
                 except Exception as e:
                     print("Error saving settings file ") + str(e) + _SETTINGS_PATH
                 return engine_path
@@ -169,86 +181,86 @@ def _find_natspeak():
 # The defaults for every setting. Could be moved out into its own file.
 _DEFAULT_SETTINGS = {
     "paths": {
-        "BASE_PATH": BASE_PATH,
-        "USER_DIR": _USER_DIR,
+        "BASE_PATH":
+            BASE_PATH,
+        "USER_DIR":
+            _USER_DIR,
 
         # DATA
-        "BRINGME_PATH": _USER_DIR + "/data/bringme.toml",
-        "BRINGME_DEFAULTS_PATH": BASE_PATH + "/bin/share/bringme.toml.defaults",
-        "ALIAS_PATH": _USER_DIR + "/data/aliases.toml",
-        "CCR_CONFIG_PATH": _USER_DIR + "/data/ccr.toml",
-        "DLL_PATH": BASE_PATH + "/lib/dll/",
-        "FILTER_DEFS_PATH": _USER_DIR + "/data/words.txt",
-        "LOG_PATH": _USER_DIR + "/log.txt",
-        "RECORDED_MACROS_PATH": _USER_DIR + "/data/recorded_macros.toml",
-        "SAVED_CLIPBOARD_PATH": _USER_DIR + "/data/clipboard.toml",
-        "SIKULI_SCRIPTS_PATH": _USER_DIR + "/sikuli",
+        "BRINGME_PATH":
+            _USER_DIR + "/data/bringme.toml",
+        "BRINGME_DEFAULTS_PATH":
+            BASE_PATH + "/bin/share/bringme.toml.defaults",
+        "FILTER_RULES_DEFAULTS_PATH":
+            BASE_PATH + "/bin/share/FilterRules",
+        "RULES_RULES_DEFAULTS_PATH":
+            BASE_PATH + "/bin/share/Rules",
+        "ALIAS_PATH":
+            _USER_DIR + "/data/aliases.toml",
+        "CCR_CONFIG_PATH":
+            _USER_DIR + "/data/ccr.toml",
+        "DLL_PATH":
+            BASE_PATH + "/lib/dll/",
+        "SIMPLIFIED_FILTER_RULES_PATH":
+            _USER_DIR + "/filters/words.txt",
+        "LOG_PATH":
+            _USER_DIR + "/log.txt",
+        "RECORDED_MACROS_PATH":
+            _USER_DIR + "/data/recorded_macros.toml",
+        "SAVED_CLIPBOARD_PATH":
+            _USER_DIR + "/data/clipboard.json",
+        "SIKULI_SCRIPTS_PATH":
+            _USER_DIR + "/sikuli",
+        "GIT_REPO_LOCAL_REMOTE_PATH":
+            _USER_DIR + "/data/git_repo_local_to_remote_match.toml",
+        "GIT_REPO_LOCAL_REMOTE_DEFAULT_PATH":
+            BASE_PATH + "/bin/share/git_repo_local_to_remote_match.toml.defaults",
 
         # REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
-        "REMOTE_DEBUGGER_PATH": "",
+        "REMOTE_DEBUGGER_PATH":
+            "",
 
         # SIKULIX EXECUTABLES
-        "SIKULI_IDE": "",
-        "SIKULI_RUNNER": "",
+        "SIKULI_IDE":
+            "",
+        "SIKULI_RUNNER":
+            "",
 
         # EXECUTABLES
-        "DOUGLAS_PATH": BASE_PATH + "/asynch/mouse/grids.py",
-        "ENGINE_PATH": _validate_engine_path(),
-        "HOMUNCULUS_PATH": BASE_PATH + "/asynch/hmc/h_launch.py",
-        "LEGION_PATH": BASE_PATH + "/asynch/mouse/legion.py",
-        "MEDIA_PATH": BASE_PATH + "/bin/media",
-        "RAINBOW_PATH": BASE_PATH + "/asynch/mouse/grids.py",
-        "REBOOT_PATH": BASE_PATH + "/bin/reboot.bat",
-        "REBOOT_PATH_WSR": BASE_PATH + "/bin/reboot_wsr.bat",
-        "SETTINGS_WINDOW_PATH": BASE_PATH + "/asynch/settingswindow.py",
-        "SIKULI_SERVER_PATH": BASE_PATH + "/asynch/sikuli/server/xmlrpc_server.sikuli",
-        "WSR_PATH": "C:/Windows/Speech/Common/sapisvr.exe",
+        "AHK_PATH":
+            AHK_PATH_DEFAULT,
+        "DOUGLAS_PATH":
+            BASE_PATH + "/asynch/mouse/grids.py",
+        "ENGINE_PATH":
+            _validate_engine_path(),
+        "HOMUNCULUS_PATH":
+            BASE_PATH + "/asynch/hmc/h_launch.py",
+        "LEGION_PATH":
+            BASE_PATH + "/asynch/mouse/legion.py",
+        "MEDIA_PATH":
+            BASE_PATH + "/bin/media",
+        "RAINBOW_PATH":
+            BASE_PATH + "/asynch/mouse/grids.py",
+        "REBOOT_PATH":
+            BASE_PATH + "/bin/reboot.bat",
+        "REBOOT_PATH_WSR":
+            BASE_PATH + "/bin/reboot_wsr.bat",
+        "SETTINGS_WINDOW_PATH":
+            BASE_PATH + "/asynch/settingswindow.py",
+        "SIKULI_SERVER_PATH":
+            BASE_PATH + "/asynch/sikuli/server/xmlrpc_server.sikuli",
+        "WSR_PATH":
+            "C:/Windows/Speech/Common/sapisvr.exe",
+        "TERMINAL_PATH":
+            TERMINAL_PATH_DEFAULT,
 
         # CCR
-        "CONFIGDEBUGTXT_PATH": _USER_DIR + "/data/configdebug.txt",
+        "CONFIGDEBUGTXT_PATH":
+            _USER_DIR + "/data/configdebug.txt",
 
         # PYTHON
-        "PYTHONW": SYSTEM_INFORMATION["hidden console binary"],
-    },
-
-    # Apps Section
-    "apps": {
-        "acrobat": True,
-        "atom": True,
-        "chrome": True,
-        "cmd": True,
-        "dragon": True,
-        "eclipse": True,
-        "emacs": True,
-        "excel": True,
-        "explorer": True,
-        "filedialogue": True,
-        "firefox": True,
-        "flashdevelop": True,
-        "fman": True,
-        "foxitreader": True,
-        "gitbash": True,
-        "githubdesktop": True,
-        "gitter": True,
-        "kdiff3": True,
-        "douglas": True,
-        "legion": True,
-        "lyx": True,
-        "jetbrains": True,
-        "msvc": True,
-        "notepadplusplus": True,
-        "outlook": True,
-        "rainbow": True,
-        "rstudio": True,
-        "sqldeveloper": True,
-        "ssms": True,
-        "sublime": True,
-        "totalcmd": True,
-        "typora": True,
-        "visualstudio": True,
-        "visualstudiocode": True,
-        "winword": True,
-        "wsr": True,
+        "PYTHONW":
+            SYSTEM_INFORMATION["hidden console binary"],
     },
 
     # python settings
@@ -264,6 +276,12 @@ _DEFAULT_SETTINGS = {
     "sikuli": {
         "enabled": False,
         "version": ""
+    },
+
+    # gitbash settings
+    "gitbash": {
+        "loading_time": 5,  # the time to initialise the git bash window in seconds
+        "fetching_time": 3  # the time to fetch a github repository in seconds
     },
 
     # feature switches
@@ -370,6 +388,23 @@ def _init(path):
         print("\n\n" + repr(e) + " while loading settings file: " + path +
               "\nAttempting to recover...\n\n")
     result, num_default_added = _deep_merge_defaults(result, _DEFAULT_SETTINGS)
+    # Temporary piece of code to seamlessly migrate clipboards to JSON
+    if result["paths"]["SAVED_CLIPBOARD_PATH"].endswith(".toml"):
+        old_clipboard = result["paths"]["SAVED_CLIPBOARD_PATH"]
+        import json
+        clipboard = {}
+        new_path = old_clipboard[:-4] + "json"
+        print("\n\n Migrating clipboard from {} to {}".format(old_clipboard, new_path))
+        with io.open(old_clipboard, "rt", encoding="utf-8") as f:
+            clipboard = toml.loads(f.read())
+        formatted_data = unicode(json.dumps(clipboard, ensure_ascii=False))
+        with io.open(new_path, "wt", encoding="utf-8") as f:
+            f.write(formatted_data)
+        result["paths"]["SAVED_CLIPBOARD_PATH"] = new_path
+        if os.path.exists(old_clipboard):
+            os.remove(old_clipboard)
+        if not num_default_added:
+            _save(result, _SETTINGS_PATH)
     if num_default_added > 0:
         print("Default settings values added: %d " % num_default_added)
         _save(result, _SETTINGS_PATH)

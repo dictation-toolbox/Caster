@@ -1,0 +1,51 @@
+extra_css:
+- https://assets.readthedocs.org/static/css/badge_only.css
+- https://assets.readthedocs.org/static/css/readthedocs-doc-embed.css
+extra_javascript:
+- readthedocs-data.js
+- https://assets.readthedocs.org/static/core/js/readthedocs-doc-embed.js
+- https://assets.readthedocs.org/static/javascript/readthedocs-analytics.js
+google_analytics: null
+site_name: Caster
+site_author: dictation-toolbox
+site_url: https://caster.readthedocs.io
+docs_dir: docs
+repo_url: https://github.com/dictation-toolbox/Caster/
+edit_uri: tree/master/docs
+
+theme:
+    name: readthedocs
+
+nav:
+    - Home: README.md
+    - Getting Started: CasterQuickReference.md
+    - License: LICENSE.md
+    - Contributing: Contributing.md
+    - Code of Conduct: CODE_OF_CONDUCT.md
+    - Installation: Installation.md
+    - Documentation:
+        - Aenea: readthedocs/Aenea.md
+        - Alias: readthedocs/Alias.md
+        - Bring me: readthedocs/Bringme.md
+        - Application Commands Quick Reference: readthedocs/Application_Commands_Quick_Reference.md
+        - Auto CCR and Cmd Mode: readthedocs/Auto_CCR_and_Cmd-Mode.md
+        - CCR: readthedocs/CCR.md
+        - 'Languages Quick_Reference': readthedocs/CCR_languages_Quick_Reference.md
+        - 'Context Stack': readthedocs/ContextStack.md
+        - 'Mouse': readthedocs/Mouse.md
+        - 'Node Rule': readthedocs/NodeRule.md
+        - 'Record Macros': readthedocs/Record_Macros.md
+        - 'Sikuli': readthedocs/Sikuli.md
+        - 'Taxonomy of a Rule': readthedocs/Taxonomy_of_a_Rule.md
+        - 'Text Manipulation and Navigation': readthedocs/Text_Manipulation.md
+        - 'Voice Index': readthedocs/Voice_Index.md
+        - 'Windows Speech Recognition': readthedocs/Windows_Speech_Recognition.md
+    - 'Examples':
+        - 'How to Speak Code': readthedocs/Examples/How_to_Speak_Code.md
+        - 'Rule Construction': readthedocs/Examples/Rule_Construction.md
+        - Rules:
+            - 'Caster Rules': readthedocs/Examples/rules/Caster_Rules.md
+            - 'Dragonfly Rules': readthedocs/Examples/rules/Dragonfly_Rules.md
+            - 'Old Sample File': readthedocs/Examples/rules/Old_Sample_File.md
+        - Speaking Examples: readthedocs/Examples/Speaking/Examples.md
+    - Undocumented features: readthedocs/meta/Undocumented_Features.md

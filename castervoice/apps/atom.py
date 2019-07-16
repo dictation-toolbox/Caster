@@ -3,45 +3,25 @@ __author__ = 'LexiconCode'
 Command-module for Atom
 Official Site "https://atom.io/"
 """
-
-from castervoice.lib import control, settings
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.context import AppContext
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.merge import gfilter
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-from dragonfly import Choice, Dictation, Grammar, Pause, Repeat
+from castervoice.lib.imports import *
 
 # How long to wait for the Atom palette to load before hitting the enter key
 atom_palette_wait = 30
 if settings.SETTINGS["miscellaneous"]["atom_palette_wait"]:
     atom_palette_wait = int(settings.SETTINGS["miscellaneous"]["atom_palette_wait"])
 
-
-def ACP(command, label=None):
+def ACP(command):
     """Utilize the Palette UI to execute commands."""
-    if not label:
-        label = "Atom: Unlabeled Palette Command: " + command
     return R(
-        Key("cs-p") + Pause(str(atom_palette_wait)) + Text(command) + Key("enter"),
-        rdescript=label)
-
-
-def ACK(command, label=None):
-    """Generate a keyboard shortcut."""
-    if not label:
-        label = "Atom: Unlabeled Keyboard Shortcut: " + command
-    return R(Key(command), rdescript=label)
-
+        Key("cs-p") + Pause(str(atom_palette_wait)) + Text(command) + Key("enter"))
 
 class AtomRule(MergeRule):
     """
     Commands for the Atom editor.
 
-    `ACK("command keys", "label text")`
+    `R(Key("command keys"))`
         Registers a key and label combination for use in a voice commands.
-    `ACP("command name", "label text")`
+    `ACP("command name")`
         Registers an Atom Palette Command and label combination for use in voice commands.
 
     Spoken commands that are commented out do not have assigned default shortcut keys or
@@ -56,351 +36,340 @@ class AtomRule(MergeRule):
         # Menu UI------------------------------------------------------------------------
         #File Menu
         "[open] new window":
-            ACK("cs-n", "Atom: New Window"),
+            R(Key("cs-n")),
         "new file":
-            ACK("c-n", "Atom: New File"),
+            R(Key("c-n")),
         "open file":
-            ACK("c-o", "Atom: Open File"),
+            R(Key("c-o")),
         "open folder":
-            ACK("cs-o", "Atom: Open Folder"),
+            R(Key("cs-o")),
         "add project folder":
-            ACK("ac-o", "Atom: Add Project Folder"),
+            R(Key("ac-o")),
         "open settings":
-            ACK("c-comma", "Atom: Open Settings"),
+            R(Key("c-comma")),
         "reopen closed item":
-            ACP("Reopen Closed Item", "Atom: Reopen Last File or Tab"),
+            ACP("Reopen Closed Item"),
         "open [your] config":
-            ACP("Open Your Config", "Atom: Open Your Config"),
+            ACP("Open Your Config"),
         "open [your] int script":
-            ACP("Open Your Int Script", "Atom: Open Your Int Script"),
+            ACP("Open Your Int Script"),
         "open [your] key map":
-            ACP("Open Your Key Map", "Atom: Open Your Key Map"),
+            ACP("Open Your Key Map"),
         "open [your] snippet":
-            ACP("Open Your Snippet", "Atom: Open Your Snippet"),
+            ACP("Open Your Snippet"),
         "open [your] stylesheet":
-            ACP("Open your Stylesheet", "Atom: Open Your Stylesheet"),
+            ACP("Open your Stylesheet"),
         "save as":
-            ACK("cs-s", "Atom: Save As"),
+            R(Key("cs-s")),
         "save all":
-            ACP("Save All", "Atom: Save All"),
+            ACP("Save All"),
         "close pane":
-            ACK("c-k, c-w", "Atom: Close Pane"),
+            R(Key("c-k, c-w")),
         "close pane others":
-            ACK("c-k, ca-w", "Atom: Close Pane"),
+            R(Key("c-k, ca-w")),
         "close window":
-            ACK("cs-w", "Atom: Close Window"),
+            R(Key("cs-w")),
         #Extra
         #Edit Menu
         "copy path":
-            ACK("cs-c", "Atom: Copy Path"),
+            R(Key("cs-c")),
         "select all":
-            ACK("c-a", "Atom: Select All"),
+            R(Key("c-a")),
         "[toggle] (comments | comment line)":
-            ACK("c-slash", "Atom: Toggle Comments"),
+            R(Key("c-slash")),
         "reflow section":
-            ACK("ac-q", "Atom: Reflow Section"),
+            R(Key("ac-q")),
         "select encoding":
-            ACK("cs-u", "Atom: Select Encoding"),
-        "[go to] line <line_number>":
-            R(Key("c-g") + Pause(str(atom_palette_wait)) + Text("%(line_number)s") +
-              Key("enter"),
-              rdescript="Atom: Go to Line #"),
+            R(Key("cs-u")),
+        "[go to] line <ln1>":
+            R(Key("c-g") + Pause(str(atom_palette_wait)) + Text("%(ln1)s") +
+              Key("enter")),
+        "<action> [line] <ln1> [by <ln2>]":
+            R(Function(navigation.action_lines)),
         "select grammar":
-            ACK("cs-l", "Atom: Select Grammar"),
+            R(Key("cs-l")),
         #Lines Submenu
         "toggle outdent":
-            ACK("c-rightbrace", "Atom: Toggle Auto Outdent"),
+            R(Key("c-rightbrace")),
         "auto indent windows":
-            ACP("Window Auto Indent", "Atom: Auto Indent"),
+            ACP("Window Auto Indent"),
         "[move] line up [<n>]":
-            ACK("c-up", "Atom: Move Line Up #")*Repeat(extra="n"),
+            R(Key("c-up")*Repeat(extra="n")),
         "[move] line down [<n>]":
-            ACK("c-down", "Atom: Move Line Down #")*Repeat(extra="n"),
+            R(Key("c-down")*Repeat(extra="n")),
         "delete line [<n>]":
-            ACK("cs-k", "Atom: Delete Line or # Lines Below")*Repeat(extra="n"),
+            R(Key("cs-k")*Repeat(extra="n")),
         "join line":
-            ACK("c-j", "Atom: Join Line"),
+            R(Key("c-j")),
         #Text Submenu
         "uppercase":
-            ACP("Editor Upper Case", "Atom: Convert Uppercase"),
+            ACP("Editor Upper Case"),
         "lowercase":
-            ACP("Editor Lower Case", "Atom: Convert lowercase"),
+            ACP("Editor Lower Case"),
         "delete sub [word] [<n>]":
-            ACK("a-backspace", "Atom: Delete to End of Subword")*Repeat(extra="n"),
+            R(Key("a-backspace")*Repeat(extra="n")),
         "delete [to] previous [word] [<n>]":
-            ACP("Delete to Previous Word boundary",
-                "Atom: Delete to previous word boundary")*Repeat(extra="n"),
+            ACP("Delete to Previous Word boundary")*Repeat(extra="n"),
         "delete [to] next [word] [<n>]":
-            ACP("Delete to Next Word Boundary", "Atom: Delete to next word boundary")*
-            Repeat(extra="n"),
+            ACP("Delete to Next Word Boundary")*Repeat(extra="n"),
         "transpose":
-            ACP("Transpose", "Atom: Transpose"),
+            ACP("Transpose"),
         #Folding Submenu
         "fold":
-            ACK("ac-lbrace", "Atom: Fold"),
+            R(Key("ac-lbrace")),
         "unfold":
-            ACK("ac-rightbrace", "Atom: Unfold"),
+            R(Key("ac-rightbrace")),
         "unfold all":
-            ACK("c-k, c-0, acs-rightbrace", "Atom: Unfold All"),
+            R(Key("c-k, c-0, acs-rightbrace")),
         "fold [level] <n2>":
-            ACK("c-k, c-%(n2)s", "Atom: Fold Level 1-9"),
+            R(Key("c-k, c-%(n2)s")),
         #Bookmarks Submenu
         "view (all | [all] bookmarks)":
-            ACK("c-f2", "Atom: View All Bookmarks"),
+            R(Key("c-f2")),
         "bookmark | book":
-            ACK("ca-f2", "Atom: Toggle Bookmark"),
+            R(Key("ca-f2")),
         "next (bookmark | book)":
-            ACK("f2", "Atom: Jump to Next Bookmark"),
+            R(Key("f2")),
         "previous (bookmark | book)":
-            ACK("s-f2", "Atom: Jump to Previous Bookwork"),
+            R(Key("s-f2")),
         #View Menu
         "reload file":
-            ACK("ac-r", "Atom: Reload File"),
+            R(Key("ac-r")),
         "fullscreen":
-            ACK("f11", "Atom: Toggle Fullscreen"),
+            R(Key("f11")),
         "toggle menubar":
-            ACP("Toggle Menu Bar", "Atom: Toggle Menubar"),
+            ACP("Toggle Menu Bar"),
         "increase font [size] [<n>]":
-            ACK("cs-equals", "Atom: Increase Font Size")*Repeat(extra="n"),
+            R(Key("cs-equals")*Repeat(extra="n")),
         "decrease font [size] [<n>]":
-            ACK("cs-minus", "Atom: Decrease Font size")*Repeat(extra="n"),
+            R(Key("cs-minus")*Repeat(extra="n")),
         "reset font [size]":
-            ACK("c-0", "Atom: Reset Font Size"),
+            R(Key("c-0")),
         "toggle soft wrap":
-            ACP("Toggle Soft Wrap", "Atom: Toggle Soft Wrap"),
+            ACP("Toggle Soft Wrap"),
         "[toggle] treeview":
-            ACK("c-backslash", "Atom: Toggle Treeview"),
+            R(Key("c-backslash")),
         #Panes Submenu
         "split [pane] above":
-            ACK("c-k, up", "Atom: Split Up"),
+            R(Key("c-k, up")),
         "split [pane] below":
-            ACK("c-k, down", "Atom: Split Down"),
+            R(Key("c-k, down")),
         "split [pane] left":
-            ACK("c-k, left", "Atom: Split Left"),
+            R(Key("c-k, left")),
         "split [pane] right":
-            ACK("c-k, right", "Atom: Split Right"),
+            R(Key("c-k, right")),
         "[focus [on]] next pane":
-            ACK("c-k, c-n", "Atom: Focus Next Pane"),
+            R(Key("c-k, c-n")),
         "[focus [on]] previous pane":
-            ACK("c-k, c-p", "Atom: Focus Previous Pane"),
+            R(Key("c-k, c-p")),
         "(focus [on] [pane] | pane) above":
-            ACK("c-k, c-up", "Atom: Focused Pane Above"),
+            R(Key("c-k, c-up")),
         "(focus [on] [pane] | pane) below":
-            ACK("c-k, c-down", "Atom: Focus Pane Below"),
+            R(Key("c-k, c-down")),
         "(focus [on] [pane] | pane) left":
-            ACK("c-k, c-left", "Atom: Focus On left"),
+            R(Key("c-k, c-left")),
         "(focus [on] [pane] | pane) right":
-            ACK("c-k, c-right", "Atom: Focus Pane on Right"),
+            R(Key("c-k, c-right")),
         #extras
         "[go to] pane [item] <n2>":
-            ACK("a-%(n2)s", "Atom: Go to Pane 1-9"),
+            R(Key("a-%(n2)s")),
         "[go to] <nrw> (tab | pane [item])":
-            ACK("a-%(nrw)s", "Atom: Go to Pane 1-9"),
+            R(Key("a-%(nrw)s")),
         #Developer Submenu
-        #"open in development mode":    ACK("", "Open in Development Mode"),
+        #"open in development mode":    R(Key("", "Open in Development Mode")),
         "run atom [specs]":
-            ACK("ac-s", "Atom: Run Atoms Specs"),
+            R(Key("ac-s")),
         "run package [specs]":
-            ACK("ac-p", "Atom: Run Package Specs"),
+            R(Key("ac-p")),
         "[toggle] developer tools":
-            ACK("ac-i", "Atom: Toggle Developer Tools"),
+            R(Key("ac-i")),
         #Selection Menu
         "[add] select above [<n>]":
-            ACK("ac-up", "Atom: Add Selection Above #")*Repeat(extra="n"),
+            R(Key("ac-up")*Repeat(extra="n")),
         "[add] select below [<n>]":
-            ACK("ac-down", "Atom: Add Selection Below #")*Repeat(extra="n"),
+            R(Key("ac-down")*Repeat(extra="n")),
         "split into lines":
-            ACP("Split Into Lines", "Atom: Split Into lines"),
+            ACP("Split Into Lines"),
         "select line":
-            ACK("c-l", "Atom: Select Line"),
+            R(Key("c-l")),
         "[select] [to] (begin | beginning) [of] line":
-            ACP("Editor: Select to Beginning of Line",
-                "Atom: Select to Beginning of line"),
+            ACP("Editor: Select to Beginning of Line"),
         "[select] inside brackets":
-            ACK("ac-comma", "Atom: Select Inside Brackets"),
+            R(Key("ac-comma")),
         #Find Menu
         "find (selection | selected)":
-            ACK("c-e", "Atom: Replacing in Buffer"),
+            R(Key("c-e")),
         "find [and] select all":
-            ACK("a-f3", "Atom: Select All"),
+            R(Key("a-f3")),
         "[find] select next [<n>]":
-            ACK("c-d", "Atom: Select Next")*Repeat(extra="n"),
+            R(Key("c-d")*Repeat(extra="n")),
         "[find] select skip [this] [<n>]":
-            ACK("c-k, c-d", "Atom: Select Skip")*Repeat(extra="n"),
+            R(Key("c-k, c-d")*Repeat(extra="n")),
         "[find] select skip next [<n>]":
-            ACK("c-d", "Atom: Select Skip") +
-            ACK("c-k, c-d", "Atom: Select Skip")*Repeat(extra="n"),
+            R(Key("c-d")) +
+            R(Key("c-k, c-d")*Repeat(extra="n")),
         "find replace next":
-            ACP("Find and Replace: Replace Next", "Atom: Replace Next"),
+            ACP("Find and Replace: Replace Next"),
         "find replace all":
-            ACP("Find and Replace: Replace All", "Atom: Replace All"),
+            ACP("Find and Replace: Replace All"),
         "find buffer":
-            ACK("c-b", "Atom: Find Buffer"),
+            R(Key("c-b")),
         "(find | go to) file":
-            ACK("c-p", "Atom: Find File"),
+            R(Key("c-p")),
         "find modified file":
-            ACK("cs-b", "Atom: Find Modified File"),
+            R(Key("cs-b")),
         #Packages Menu
         #Bracket Matcher Submenu
         "bracket [go to] match":
-            ACK("c-m", "Atom: Go To Matching Bracket"),
+            R(Key("c-m")),
         "bracket remove [from] selection":
-            ACK("c-lbrace", "Atom: Remove Bracket from Selection"),
+            R(Key("c-lbrace")),
         "close [current] tag":
-            ACP("Bracket Matcher: Close Tag", "Atom: Close current tag"),
+            ACP("Bracket Matcher: Close Tag"),
         "bracket remove matching":
-            ACK("ac-backspace", "Atom: Remove matching brackets"),
+            R(Key("ac-backspace")),
         #Command Palette Submenu
         "[toggle] [command] palette":
-            ACK("cs-p", "Atom: Toggle Command Palette"),
+            R(Key("cs-p")),
         #Dev Live Reload Submenu
         "reload [all] styles":
-            ACK("acs-r", "Atom: Reload All Styles"),
+            R(Key("acs-r")),
         #Git Diff Submenu
         "move to next diff [different]":
-            ACP("Move to Next Diff", "Atom: Move to Next Diff"),
+            ACP("Move to Next Diff"),
         "move to previous diff [different]":
-            ACP("Move to Previous Diff", "Atom: Move to Previous Different"),
+            ACP("Move to Previous Diff"),
         "[toggle] diff List":
-            ACP("Toggle Diff List", "Atom: Toggle Diff List"),
+            ACP("Toggle Diff List"),
         #Keybinding Resolver Submenu
         "toggle key [binding] resolver":
-            ACP("Key Binding Resolver: Toggle", "Atom: Toggle Keybinding Resolver"),
+            ACP("Key Binding Resolver: Toggle"),
         #Markdown Preview Submenu
         "markdown preview":
-            ACK("cs-m", "Atom: Markdown Toggle Preview"),
+            R(Key("cs-m")),
         #Extras
         "markdown copy html":
-            ACP("Markdown Preview: Copy HTML", "Atom: Markdown Preview: Copy HTML"),
+            ACP("Markdown Preview: Copy HTML"),
         "markdown toggle break on newline":
-            ACP("Markdown Preview: Toggle Break On Single Newline",
-                "Atom: Markdown Preview: Toggle Break On Single Newline"),
+            ACP("Markdown Preview: Toggle Break On Single Newline"),
         #Package Generator Submenu
         "(make|generate) package":
-            ACP("Package Generator: Generate Package", "Atom: Generate Atom Package"),
+            ACP("Package Generator: Generate Package"),
         "(make|generate) syntax theme":
-            ACP("Package Generator: Generate Syntax Theme",
-                "Atom: Generate Atom Syntax Theme"),
+            ACP("Package Generator: Generate Syntax Theme"),
         #Settings View Submenu
-        ##"open setting":                             ACK("c-comma", "Atom: Open Setting"),
+        ##"open setting":                             R(Key("c-comma")),
         "show key bindings":
-            ACP("Settings View: Show Key Bindings", "Atom: Show Keybindings"),
+            ACP("Settings View: Show Key Bindings"),
         "installed themes":
-            ACP("Settings View: Installed Themes", "Atom: Install Themes"),
+            ACP("Settings View: Installed Themes"),
         "uninstalled themes":
-            ACP("Settings View: Uninstall Themes", "Atom: Uninstall Themes"),
+            ACP("Settings View: Uninstall Themes"),
         "installed packages":
-            ACP("Settings View: Installed Packages", "Atom: Install Packages"),
+            ACP("Settings View: Installed Packages"),
         "uninstalled packages":
-            ACP("Settings View: Uninstalled Packages", "Atom: Uninstall packages/themes"),
+            ACP("Settings View: Uninstalled Packages"),
         "search (packages|themes)":
-            ACP("Settings View: Install Packages and Themes",
-                "Atom: Install Packages/Themes"),
+            ACP("Settings View: Install Packages and Themes"),
         "update packages":
-            ACP("Settings View: Check for Package Update", "Atom: Check for Packages"),
+            ACP("Settings View: Check for Package Update"),
         #Snippets Submenu
         "expand snippets":
-            ACP("Snippets: Expand", "Atom: Expand Snippets"),
+            ACP("Snippets: Expand"),
         "next snippet":
-            ACK("tab", "Atom: Next Stop|Snippet"),
+            R(Key("tab")),
         "previous snippet":
-            ACK("a-tab", "Atom: Previous Stop|Snippet"),
+            R(Key("a-tab")),
         "available snippet":
-            ACK("as-tab", "Atom: Available Snippets"),
+            R(Key("as-tab")),
         #Styleguide Submenu
         "show style [guide]":
-            ACK("cs-g", "Atom: Show Styleguide"),
+            R(Key("cs-g")),
         #Symbol
         "find symbol":
-            ACK("c-r", "Atom: Find Symbol"),
+            R(Key("c-r")),
         "project symbol":
-            ACK("cs-r", "Atom: Project Symbol"),
+            R(Key("cs-r")),
         #Timecop Submenu
         "timecop":
-            ACP("Timecop: View", "Atom: Show Timecop"),
+            ACP("Timecop: View"),
         #Tree View Submenu
         "tree focus":
-            ACK("c-0", "Atom: Toggle Focus on TreeView"),
+            R(Key("c-0")),
         "tree [View] [toggle] view":
-            ACK("c-backslash", "Atom: Toggle"),
+            R(Key("c-backslash")),
         "tree [View] [reveal] active file":
-            ACK("cs-backslash", "Atom: Reveal Active File"),
+            R(Key("cs-backslash")),
         "tree [View] [toggle] side":
-            ACP("Tree View: show", "Atom: Toggle Tree Side"),
+            ACP("Tree View: show"),
         #Extras
         "tree show":
-            ACP("Tree View: Show", "Atom: Tree View: Show"),
+            ACP("Tree View: Show"),
         "tree rename":
-            ACP("Tree View: Rename", "Atom: Tree View: Rename"),
+            ACP("Tree View: Rename"),
         "tree remove":
-            ACP("Tree View: Remove", "Atom: Tree View: Remove"),
+            ACP("Tree View: Remove"),
         "tree add file":
-            ACP("Tree View: Add File", "Atom: Tree View: Add File"),
+            ACP("Tree View: Add File"),
         "tree duplicate":
-            ACP("Tree View: Duplicate", "Atom: Tree View: Duplicate"),
+            ACP("Tree View: Duplicate"),
         "tree add folder":
-            ACP("Tree View: Add Folder", "Atom: Tree View: Add Folder"),
+            ACP("Tree View: Add Folder"),
         #Whitespaces Submenu
         "remove trailing [white] spaces":
-            ACP("Whitespace: Remove Trailing Whitespace",
-                "Atom: Remove Trailing White Spaces"),
+            ACP("Whitespace: Remove Trailing Whitespace"),
         "convert tabs [to] spaces":
-            ACP("Whitespace: Convert Tabs to Spaces", "Atom: Convert Tabs to Spaces"),
+            ACP("Whitespace: Convert Tabs to Spaces"),
         "convert spaces [to] tabs":
-            ACP("Whitespace: Convert Spaces to Tabs", "Atom: Convert Spaces to Tabs"),
+            ACP("Whitespace: Convert Spaces to Tabs"),
         #Open on GitHub
         "github [open] blame":
-            ACP("Open on GitHub: Blame", "Atom: Open On Github @ Blame"),
+            ACP("Open on GitHub: Blame"),
         "github [open] [branch] compare":
-            ACP("Open on GitHub: Branch Compare",
-                "Atom: Open On Github @ Branch Compare"),
+            ACP("Open on GitHub: Branch Compare"),
         "github [open] [copy] URL":
-            ACP("Open on GitHub: Copy URL", "Atom: Open On Github @ Copy URL"),
+            ACP("Open on GitHub: Copy URL"),
         "github [open] file":
-            ACP("Open on GitHub: File", "Atom: Open On Github @ File"),
+            ACP("Open on GitHub: File"),
         "github [open] history":
-            ACP("Open on GitHub: History", "Atom: Open On Github @ History"),
+            ACP("Open on GitHub: History"),
         "github [open] issues":
-            ACP("Open on GitHub: Issues", "Atom: Open On Github @ Issues"),
+            ACP("Open on GitHub: Issues"),
         "github [open] repository":
-            ACP("Open on GitHub: Repository", "Atom: Open On Github @ Repository"),
+            ACP("Open on GitHub: Repository"),
         #Open on GitHub
         "github close different":
-            ACP("GitHub: Close All Diff Views", "Atom: GitHub Close All Diff Views"),
+            ACP("GitHub: Close All Diff Views"),
         "github empty different":
-            ACP("GitHub: Close Empty Diff Views", "Atom: GitHub Close Empty Diff Views"),
+            ACP("GitHub: Close Empty Diff Views"),
         "github [show waterfall] diagnostics":
-            ACP("GitHub:Okay Show Waterfall Diagnostics",
-                "Atom: GitHub Show Waterfall Diagnostics"),
+            ACP("GitHub:Okay Show Waterfall Diagnostics"),
         "github [open] (issues | pull request)":
-            ACP("GitHub: Open Issue or Pull Request",
-                "Atom: GitHub Open Issue or Pull Request"),
+            ACP("GitHub: Open Issue or Pull Request"),
         "github view staged changes [for current file]":
-            ACP("GitHub: View Staged Changes for Current File",
-                "Atom: GitHub View Staged Changes for Current File"),
+            ACP("GitHub: View Staged Changes for Current File"),
         "github view unstaged changes [for current file]":
-            ACP("GitHub: View Unstaged Changes for Current File",
-                "Atom: GitHub View Unstaged Changes for Current File"),
+            ACP("GitHub: View Unstaged Changes for Current File"),
         #Open on GitHub
         "github pull":
-            ACK("a-g, s-f", "Atom: GitHub Pull"),
+            R(Key("a-g, s-f")),
         "github push":
-            ACK("a-g, p", "Atom: GitHub Push"),
+            R(Key("a-g, p")),
         "github clone":
-            ACK("a-g, equal", "Atom: GitHub Clone"),
+            R(Key("a-g, equal")),
         "github fetch":
-            ACK("a-g, f", "Atom: GitHub Fetch"),
+            R(Key("a-g, f")),
         "github logout":
-            ACP("GitHub: Logout", "Atom: GitHub Logout"),
+            ACP("GitHub: Logout"),
         "github force push":
-            ACK("a-g, s-p", "Atom: GitHub Force Push"),
+            R(Key("a-g, s-p")),
         "github tab [toggle]":
-            ACK("c-8", "Atom: Github Toggle Github Tab"),
+            R(Key("c-8")),
         "github focus [tab]":
-            ACK("c-9", "Atom:Toggle Github Focus"),
+            R(Key("c-9")),
         # Atom Development
         "dev (restart | reload) [atom]":
-            ACP("Window: Reload", "Atom: Restart/Reload Atom"),
+            ACP("Window: Reload"),
 
         # ----Atom Optional Third-Party Packages and Dependencies-----------------------------------------------------------------------------
         #Install through command prompt, Atom install manager or a .bat file at http://tinyurl.com/Atom-Dependencies
@@ -423,158 +392,153 @@ class AtomRule(MergeRule):
         #Atom Third-Party Package Commands-------------------------------------------------------------------------------------------------
         #Atom Beautify
         "beautify editor":
-            ACP("Atom Beautify: Beautify Editor", "Atom : Beautify Editor"),
+            ACP("Atom Beautify: Beautify Editor"),
         "beautify migrate settings":
-            ACP("Atom Beautify: Migrate Settings", "Atom: Beautify: Migrate Settings"),
+            ACP("Atom Beautify: Migrate Settings"),
         "beautify debug editor":
-            ACP("Atom Beautify: Help Debug Editor", "Atom: Beautify: Debug Editor"),
+            ACP("Atom Beautify: Help Debug Editor"),
         #Toggle Quotes
         "toggle quotes":
-            ACK("cs-apostrophe", "Atom: Toggle Quotes: Single or Double"),
+            R(Key("cs-apostrophe")),
         #Script
         "script run":
-            ACP("Script: Run", "Atom: Script: run"),
+            ACP("Script: Run"),
         "script [run] options":
-            ACP("Script: Run Options", "Atom: Script: Run Options or Configure"),
+            ACP("Script: Run Options"),
         "script [run] profile":
-            ACP("Script: Run With Profile", "Atom: Script: Run With Profile"),
+            ACP("Script: Run With Profile"),
         "script run [by] line":
-            ACP("Script: Run By Line Number", "Atom: Script: Run Script by Line"),
+            ACP("Script: Run By Line Number"),
         "script kill [process]":
-            ACP("Script: Kill Process", "Atom: Script: Kill Process"),
+            ACP("Script: Kill Process"),
         "script close view":
-            ACP("Script: Close View", "Atom: Script: Close View"),
+            ACP("Script: Close View"),
         "script copy [run] [results]":
-            ACP("Script: Copy Run Results", "Atom: Script: Copy Run Results"),
-        #"script close window and stop script":     ACP("Script: Close Window and Stop Script", "Atom: Script: Close Window and Stop Script"),
+            ACP("Script: Copy Run Results"),
+        #"script close window and stop script":     ACP("Script: Close Window and Stop Script"),
         #Delete Plus
         "delete words":
-            ACP("Delete Plus: Delete", "Atom: Delete Plus"),
+            ACP("Delete Plus: Delete"),
         #Last Edit
         "back edit":
-            ACK("c-i", "Atom: Previous Edit"),
+            R(Key("c-i")),
         "next edit":
-            ACK("ca-i", "Atom: Next Last Edit"),
+            R(Key("ca-i")),
         #Looper
-        #"cursor loud|capitalize [<n3>]":           ACK("a-down", "Atom: Looper Capitalize") * Repeat(extra="n"), # Not fully implemented
-        #"cursor camel [<n4>]":                     ACK("a-down", "Atom: Looper Camelcase") * Repeat(extra="n"), # Not fully implemented
-        #"cursor lowercase [<n5>]":                 ACK("a-down", "Atom: Looper Lowercase") * Repeat(extra="n"), # Not fully implemented
+        #"cursor loud|capitalize [<n3>]":           R(Key("a-down") * Repeat(extra="n")), # Not fully implemented
+        #"cursor camel [<n4>]":                     R(Key("a-down") * Repeat(extra="n")), # Not fully implemented
+        #"cursor lowercase [<n5>]":                 R(Key("a-down") * Repeat(extra="n")), # Not fully implemented
         "looping down cursor":
-            ACK("a-down", "Atom: Looping Down at Cursor"),
+            R(Key("a-down")),
         "looping up cursor":
-            ACK("a-up", "Atom: Looping Up at Cursor"),
+            R(Key("a-up")),
         "looping up":
-            ACK("wa-up", "Atom: Looping Up"),
+            R(Key("wa-up")),
         #Git Plus
         "git (custom|run)":
-            ACP("Git Plus: Run", "Atom: Git Run"),
+            ACP("Git Plus: Run"),
         "git log":
-            ACP("Git Plus: Log", "Atom: Git Log"),
+            ACP("Git Plus: Log"),
         "git log current [file]":
-            ACP("Git Plus: Log Current File", "Atom: Git Current File"),
+            ACP("Git Plus: Log Current File"),
         "git status":
-            ACP("Git Plus: Status", "Atom: Git Status"),
+            ACP("Git Plus: Status"),
         "git show":
-            ACP("Git Plus: Show", "Atom: Git Show"),
+            ACP("Git Plus: Show"),
         "git tags":
-            ACP("Git Plus: Tags", "Atom: Git Tags"),
+            ACP("Git Plus: Tags"),
         "git open changed files":
-            ACP("Git Plus: Git Open Changed Files", "Atom: Git Open Changed Files"),
+            ACP("Git Plus: Git Open Changed Files"),
         "git checkout [branch|tag]":
-            ACP("Git Plus: Checkout", "Atom: Git Checkout Branch|Tag"),
+            ACP("Git Plus: Checkout"),
         "git menu":
-            ACP("Git Plus: Menu", "Atom: Git Menu"),
+            ACP("Git Plus: Menu"),
         "git pull":
-            ACP("Git Plus: Pull", "Atom: Git Pull"),
+            ACP("Git Plus: Pull"),
         "git pull [using] rebase":
-            ACP("Git Plus: Pull Using Rebase", "Atom: Git Pull Using Rebase"),
+            ACP("Git Plus: Pull Using Rebase"),
         "git push":
-            ACP("Git Plus: Push", "Atom: Git Push"),
+            ACP("Git Plus: Push"),
         "git commit":
-            ACP("Git Plus: Commit", "Atom: Git Commit"),
+            ACP("Git Plus: Commit"),
         "git commit amend":
-            ACP("Git Plus: Commit Amend", "Atom: Git Commit Amend"),
+            ACP("Git Plus: Commit Amend"),
         "git merge":
-            ACP("Git Plus: Merge", "Atom: Git Merge"),
+            ACP("Git Plus: Merge"),
         "git merge remote":
-            ACP("Git Plus: Merge Remote", "Atom: Git Merge Remote"),
+            ACP("Git Plus: Merge Remote"),
         "git diff":
-            ACP("Git Plus: Diff", "Atom: Git Diff"),
+            ACP("Git Plus: Diff"),
         "git diff all":
-            ACP("Git Plus: Diff All", "Atom: Git Diff All"),
+            ACP("Git Plus: Diff All"),
         "git add":
-            ACP("Git Plus: Add", "Atom: Git Add"),
+            ACP("Git Plus: Add"),
         "git add all":
-            ACP("Git plus: Add All", "Atom: Git Add All"),
+            ACP("Git plus: Add All"),
         "git add [and] commit":
-            ACP("Git Plus: Add And Commit", "Atom: Git Add And Commit"),
+            ACP("Git Plus: Add And Commit"),
         "git add all [and] commit":
-            ACP("Git Plus: Add All and Commit", "Atom: Git Add All and Commit"),
+            ACP("Git Plus: Add All and Commit"),
         "git add all commit [and] push":
-            ACP("Git Plus: Add All Commit And Push", "Atom: Git Add All Commit Push"),
+            ACP("Git Plus: Add All Commit And Push"),
         "git new branch":
-            ACP("Git Plus: New Branch", "Atom: Git New Branch"),
+            ACP("Git Plus: New Branch"),
         "git (rm|remove)":
-            ACP("Git Plus: Remove", "Atom: Git Remove"),
+            ACP("Git Plus: Remove"),
         #Project Manager
         "project manager [list]":
-            ACP("Project Manager:List", "Atom: Project Manager: Toggle"),
+            ACP("Project Manager:List"),
         "project manager save":
-            ACP("Project Manager:Save Project", "Atom: Project Manager: Save Project"),
+            ACP("Project Manager:Save Project"),
         "project manager edit":
-            ACP("Project Manager:Edit Project", "Atom: Project Manager: Edit Project"),
+            ACP("Project Manager:Edit Project"),
         #Menu Sidebar
         "[project manager] sidebar":
-            ACP("Project Sidebar: Toggle", "Atom: Project Sidebar: Toggle"),
+            ACP("Project Sidebar: Toggle"),
         #Expand Selection to Quotes
         "(expand|fill) quotes":
-            ACK("c-apostrophe", "Atom: Expand Selection to Quotes"),
+            R(Key("c-apostrophe")),
         #Auto Complete
         "auto [complete]":
-            ACK("c-space", "Atom: Show Auto Complete Menu"),
+            R(Key("c-space")),
         #Highlight Selected---- #Placeholder
         #Sublime Style Column Selection---- #Placeholder
 
         #Atom | Dragonfly Development--------------------------------------------------------------------------------------------------------------------------------------------------------
         # Template to create more commands. Documentation: https://dragonfly.readthedocs.org/en/latest/actions.html and http://castervoice.readthedocs.io/en/latest/castervoice/doc/Intro/
         # Used for basic key shortcuts
-        #"text for voice command":               ACK("modifier-key", "program name: command name/description"),
-        #"":                                     ACK("", "Atom: "),
+        #"text for voice command":               R(Key("modifier-key", "program name: command name/description")),
+        #"":                                     R(Key("")),
         # Used for command that utilizes the "command palette" shortcut in the absence of assigned keyboard shortcut.
         #"text for voice command":               ACP("text as described in command palette", "command name/description"),
         #"":                                     ACP(""),
         #Atom Shortcut Snippets
         "dev keys [input] [<n>]":
-            R(Text('#"": ACK("-", "Atom: "),') + Key("enter"),
-              rdescript="Macro: Dev Keys #")*Repeat(extra="n"),
+            R(Text('#"": R(Key("-"),') + Key("enter"))*Repeat(extra="n"),
         "dev [command] palette [<n>]":
-            R(Text('#"": ACP("", "Atom: "),') + Key("enter"),
-              rdescript="Macro: Dev Command Palette #")*Repeat(extra="n"),
+            R(Text('#"": ACP(""),') + Key("enter"))*Repeat(extra="n"),
         #Repeatable Snippets
         "dev numb keys [input] [<n>]":
-            R(Text('#" [<n>]": ACK("-", "Atom: ") * Repeat(extra="n"),') + Key("enter"),
-              rdescript="Macro: Numb Dev Keys #")*Repeat(extra="n"),
+            R(Text('#" [<n>]": R(Key("-") * Repeat(extra="n"),') + Key("enter"))*Repeat(extra="n"),
         "dev numb [command] palette [<n>]":
-            R(Text('#" [<n>]": ACP("", "Atom: ") * Repeat(extra="n"),') + Key("enter"),
-              rdescript="Macro: Dev Numb Command Palette #")*Repeat(extra="n"),
+            R(Text('#" [<n>]": ACP("") * Repeat(extra="n"),') + Key("enter"))*Repeat(extra="n"),
         #Basic Dragonfly Snippets
         "dev key [<n>]":
-            R(Text('"": Key(""),'), rdescript="Dragonfly: Print Dev Key #")*
-            Repeat(extra="n"),
+            R(Text('"": Key(""),'))*Repeat(extra="n"),
         "dev text [<n>]":
-            R(Text('"": Text(""),'), rdescript="Dragonfly: Print Dev Text #")*
-            Repeat(extra="n"),
+            R(Text('"": Text(""),'))*Repeat(extra="n"),
         "send command [<n>]":
-            R(Text('"": R(Function(SendJsonCommands, a_command=""), rdescript=""),'),
-              rdescript="Macro: Print SendJsonCommands Template #")*Repeat(extra="n"),
+            R(Text('"": R(Function(SendJsonCommands, a_command=""), rdescript=""),'))*Repeat(extra="n"),
     }
 
     extras = [
         Dictation("text"),
         Dictation("mim"),
         IntegerRefST("n", 1, 50),
-        IntegerRefST("line_number", 1, 50000),
+        IntegerRefST("ln1", 1, 50000),
+        IntegerRefST("ln2", 1, 50000),
         IntegerRefST("n2", 1, 10),
+        Choice("action", navigation.actions),
         Choice(
             "nrw", {
                 "first": 1,
@@ -590,19 +554,10 @@ class AtomRule(MergeRule):
     ]
     defaults = {
         "n": 1,
+        "ln2": "",
         "mim": "",
     }
 
 
-#---------------------------------------------------------------------------
-
 context = AppContext(executable="atom", title="Atom")
-grammar = Grammar("Atom", context=context)
-if settings.SETTINGS["apps"]["atom"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(AtomRule())
-    else:
-        rule = AtomRule()
-        gfilter.run_on(rule)
-        grammar.add_rule(AtomRule(name="atom"))
-        grammar.load()
+control.non_ccr_app_rule(AtomRule(), context=context)
