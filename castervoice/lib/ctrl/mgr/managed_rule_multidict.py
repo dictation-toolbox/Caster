@@ -111,11 +111,7 @@ class ManagedRuleMultiDict(object):
         exists_but_not_found = exists and search_result is None
         return "'" + property_name + "' was changed or removed" if exists_but_not_found else None
 
-    def _get_file_path(self, managed_rule, instance):
-        if managed_rule.details.declared_ccrtype is not None:
-            return instance.location
-        else:
-            return managed_rule.details.file_path
+
 
     def _get_pronunciation(self, managed_rule, instance):
         return None if managed_rule.declared_ccrtype is None else instance.get_pronunciation()

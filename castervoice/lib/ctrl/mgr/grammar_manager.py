@@ -38,12 +38,12 @@ class GrammarManager(object):
         TODO: this is a god object; it should be broken apart
 
         :param config: config impl which externally tracks which rules are activated
-        :param merger: The CCRMerger TODO: consider just passing in a method reference
+        :param merger: The CCRMerger
         :param ccr_rules_validator: validation for ccr rules
         :param details_validator: validation of rule details configuration objects
         :param reload_observable: the thing that signals that a file or files have changed
         :param activator: manages the "enable/disable X" grammar
-        :param mapping_rule_maker: instantiates (TODO and clears?) mapping rules
+        :param mapping_rule_maker: instantiates
         :param grammars_container: holds and destroys grammars
         :param always_global_ccr_mode: an option which forces every rule to be treated as a global ccr rule
         """
@@ -72,9 +72,23 @@ class GrammarManager(object):
         disentangle the merger from the grammar manager 
         '''
 
-    '''TODO: this needs to be reworked w/ regards to _managed_rules'''
     def register_rule(self, rule_class, details):
+        """
+        Takes a newly loaded copy of a rule (MappingRule or MergeRule),
+        validates it, stores it for later instantiation, and adds it to the
+        file tracking list.
+
+        :param rule_class:
+        :param details:
+        :return:
+        """
         class_name = rule_class.__name__
+
+        # do not load or watch invalid rules
+        invalidation = self._get_invalidation(rule_class, details)
+        if invalidation is not None:
+            printer.out(invalidation)
+            return
 
         '''
         rule should be safe for loading at this point: register it
@@ -82,34 +96,12 @@ class GrammarManager(object):
         '''
         managed_rule = ManagedRule(rule_class, details)
         self._managed_rules[class_name] = managed_rule
+        # set up de/activation command
+        self._activator.register_rule(managed_rule)
+        # watch this file for future changes
+        file_path = self._get_file_path(rule_class, details)
+        self._reload_observable.register_watched_file(file_path)
 
-    """
-    TODO: get the first load set of rules in the constructor and then make this private
-    
-    TODO: introduce the idea of a Core ?
-
-    rule_sets: a list of tuples
-    """
-    def _register_rules(self, rs):
-        """
-
-        :param rs:
-        :return:
-        """
-        for rd in rs:
-            rule_class = rd[0]
-            rule_details = rd[1]
-
-            invalidation = self._get_invalidation(rule_class, rule_details)
-            if invalidation is not None:
-                printer.out(invalidation)
-                continue
-
-            # add copy of this rule to the pool of rules available for activation
-            self.register_rule(rule_class, rule_details)
-            # watch this file for future changes
-            '''TODO: rule_details.file_path isn't right --- need to either use mergerule's path or rule_details.file_path'''
-            self._reload_observable.register_watched_file(rule_details.file_path)
 
     """
         THIS IS COMPLETELY UNUSED SO FAR
@@ -132,24 +124,39 @@ class GrammarManager(object):
 
     def _change_rule_active(self, class_name, active):
         """
-        Either creates a standalone Dragonfly rule or
-        delegates to the CCRMerger to create the merged rule(s)
+        This is called by the GrammarActivator.
 
-        :param class_name:
-        :param active:
+        :param class_name: str
+        :param active: boolean
         :return:
         """
-
         # update config, save
         self._config.update(class_name, active)
         self._config.save()
+
+        # load it
+        self._load_rule(class_name, active)
+
+    def _load_rule(self, class_name, active):
+        """
+        Either creates a standalone Dragonfly rule or
+        delegates to the CCRMerger to create the merged rule(s).
+
+        The created rule is then loaded and its grammar saved in the GrammarContainer.
+        If a rule of the same class name was already in the GrammarContainer, that
+        rule and its grammar are destroyed first, by the GrammarContainer.
+
+        :param class_name: str
+        :param active: boolean
+        :return:
+        """
 
         managed_rule = self._managed_rules[class_name]
 
         ccrtype = managed_rule.details.declared_ccrtype
         ''' 
-        This setting controls "RDP Mode". Using "RDP Mode" is not recommended. 
-        It forces any rule to load as a global ccr rule and ignores validation.
+        This setting controls "RDP Mode". "RDP Mode" forces any rule 
+        to load as a global ccr rule and ignore validation.
         '''
         if self._always_global_ccr_mode:
             ccrtype = CCRType.GLOBAL
@@ -174,9 +181,10 @@ class GrammarManager(object):
             for rule in ccr_rules:
                 grammar = Grammar(name="ccr-" + GrammarManager._get_next_id())
                 grammar.add_rule(rule)
-                grammar.load()
                 grammars.append(grammar)
             self._grammars_container.set_ccr(grammars)
+            for grammar in grammars:
+                grammar.load()
         else:
             if active:
                 grammar = self._mapping_rule_maker.create_non_ccr_grammar(
@@ -191,14 +199,19 @@ class GrammarManager(object):
         This being called indicates that the file at file_path_changed has been updated
         and that it should be reloaded and potentially replace the old copy.
 
-        Do not call this manually. Should only be called by the reload observable.
+        DO NOT CALL THIS MANUALLY. Should only be called by the reload observable.
+
         :param file_path_changed: str
         :return:
         """
 
         module_name = GrammarManager._get_module_name_from_file_path(file_path_changed)
-        reloaded_module = self._content_loader.idem_import_module(module_name, ContentType.GET_RULE)
-        self._register_rules(reloaded_module)
+        rule_class, details = self._content_loader.idem_import_module(module_name, ContentType.GET_RULE)
+        self.register_rule(rule_class, details)
+
+        class_name = rule_class.__name__
+        if class_name in self._config.get_active_rule_class_names():
+            self._load_rule(class_name, True)
 
     def _get_invalidation(self, rule_class, details):
         """
@@ -233,6 +246,17 @@ class GrammarManager(object):
                 return class_name + " rejected due to rule validation errors: " + error
 
         return None
+
+    def load_activation_grammar(self):
+        self._activator.construct_activation_rule()
+
+    @staticmethod
+    def _get_file_path(rule_class, details):
+        if details.declared_ccrtype is not None:
+            instance = rule_class()
+            return instance.location
+        else:
+            return details.file_path
 
     @staticmethod
     def _get_module_name_from_file_path(file_path):

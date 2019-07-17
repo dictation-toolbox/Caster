@@ -1,8 +1,8 @@
+from castervoice.lib.ctrl.mgr.grammar_activator import GrammarActivator
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 
 from castervoice.lib import settings
 from castervoice.lib.ctrl.dependencies import DependencyMan
-from castervoice.lib.ctrl.mgr.activation.grammar_activator import GrammarActivator
 from castervoice.lib.ctrl.mgr.config.config_toml import TomlConfig
 from castervoice.lib.ctrl.mgr.validation.details.ccr_app_validator import AppCCRDetailsValidator
 from castervoice.lib.ctrl.mgr.validation.details.ccr_validator import CCRDetailsValidator
@@ -85,12 +85,12 @@ class Nexus:
         TODO: hooks go to both? depends on where we want hook events, eh?
         """
         content = self.content_loader.load_everything()
-        self._grammar_manager.register_rules_from_content_manager(content.rules)
-
+        [self._grammar_manager.register_rule(rc, d) for rc, d in content.rules]
+        self._grammar_manager.load_activation_grammar()
         [self.merger.add_transformer(t) for t in content.transformers]
 
     @staticmethod
-    def _create_grammar_manager(merger, content_loader):
+    def _create_grammar_manager(merger):
         ccr_rule_validator = CCRRuleValidationDelegator(
             IsMergeRuleValidator(),
             HasNoContextValidator(),
