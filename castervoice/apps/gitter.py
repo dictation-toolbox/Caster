@@ -14,7 +14,13 @@ class GitterRule(MergeRule):
             R(Store() + Text("****") + Key("left:2") +
               Retrieve(action_if_text="right:2")),
         "emphasize":
-            R(Store() + Text("**") + Key("left:1") + Retrieve(action_if_text="right:1")),
+            R(Store() + Text("**") + Key("left") + Retrieve(action_if_text="right")),
+        "strikethrough":
+            R(Store() + Text("~~~~") + Key("left:2") +
+              Retrieve(action_if_text="right:2")),
+        "latex":
+            R(Store() + Text("$$$$") + Key("left:2") +
+              Retrieve(action_if_text="right:2")),
         "<header_size> header":
             R(Store() + Text("%(header_size)s ") + Retrieve(action_if_text="s-enter")),
         "insert item":
