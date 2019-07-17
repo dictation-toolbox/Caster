@@ -1,10 +1,10 @@
-'''
-Hooks are merge-time events which, unlike transformers,
-do NOT mutate mergerules. They may be run at various 
-points throughout the merge process.
-'''
-
-
 class BaseHook(object):
-    def run(self, event):
+
+    def __init__(self, event_type):
+        self._type = event_type
+
+    def run(self):
         pass
+
+    def match(self, event_type):
+        return self._type == event_type

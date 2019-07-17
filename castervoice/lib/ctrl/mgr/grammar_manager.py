@@ -7,6 +7,7 @@ from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.errors.not_a_module import NotAModuleError
 from castervoice.lib.ctrl.mgr.loading.content_type import ContentType
 from castervoice.lib.ctrl.mgr.managed_rule import ManagedRule
+from castervoice.lib.dfplus.ccrmerging2.hooks.events.activation_event import RuleActivationEvent
 
 """
 Jobs of the grammar manager:
@@ -29,6 +30,7 @@ class GrammarManager(object):
                  activator,
                  mapping_rule_maker,
                  grammars_container,
+                 hooks_runner,
                  always_global_ccr_mode):
         """
         Holds both the current merged ccr rules and the most recently instantiated/validated
@@ -45,6 +47,7 @@ class GrammarManager(object):
         :param activator: manages the "enable/disable X" grammar
         :param mapping_rule_maker: instantiates
         :param grammars_container: holds and destroys grammars
+        :param hooks_runner: runs all hooks at different events
         :param always_global_ccr_mode: an option which forces every rule to be treated as a global ccr rule
         """
         self._config = config
@@ -56,6 +59,7 @@ class GrammarManager(object):
         self._activator = activator
         self._mapping_rule_maker = mapping_rule_maker
         self._grammars_container = grammars_container
+        self._hooks_runner = hooks_runner
         self._always_global_ccr_mode = always_global_ccr_mode
 
         # rules: (class name : ManagedRule}
@@ -104,7 +108,7 @@ class GrammarManager(object):
 
 
     """
-        THIS IS COMPLETELY UNUSED SO FAR
+        THIS IS COMPLETELY UNUSED SO FAR --- moved to companion_rule_hook.py
 
         Both rules must be registered before registering the companion.
         self._companion_rules is {rule: [companions]}
@@ -136,6 +140,8 @@ class GrammarManager(object):
 
         # load it
         self._load_rule(class_name, active)
+        # run activation hooks
+        self._hooks_runner.execute(RuleActivationEvent(class_name, active, ))
 
     def _load_rule(self, class_name, active):
         """

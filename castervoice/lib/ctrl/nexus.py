@@ -1,4 +1,7 @@
+from castervoice.lib.ctrl.grammar_container import GrammarContainer
 from castervoice.lib.ctrl.mgr.grammar_activator import GrammarActivator
+from castervoice.lib.ctrl.mgr.rule_maker.mapping_rule_maker import MappingRuleMaker
+from castervoice.lib.dfplus.ccrmerging2.hooks.hooks_runner import HooksRunner
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 
 from castervoice.lib import settings
@@ -18,10 +21,8 @@ from castervoice.lib.ctrl.wsrdf import RecognitionHistoryForWSR
 from castervoice.lib.dfplus.ccrmerging2.transformers.gdef_transformer import GlobalDefinitionsRuleTransformer
 from castervoice.lib.dfplus.communication import Communicator
 from castervoice.lib.dfplus.state.stack import CasterState
-from dragonfly.grammar.context import AppContext
 from dragonfly.grammar.grammar_base import Grammar
 from dragonfly.grammar.recobs import RecognitionHistory
-
 from castervoice.lib.ctrl.mgr.grammar_manager import GrammarManager
 from castervoice.lib.ctrl.mgr.loading.content_loader import ContentLoader
 from castervoice.lib.ctrl.mgr.validation.rules.rule_validation_delegator import CCRRuleValidationDelegator
@@ -68,29 +69,33 @@ class Nexus:
         '''the ccrmerger -- only merges MergeRules'''
         self.merger = Nexus._create_merger()
 
-        '''unified loading mechanism for [rules, transformers, hooks] 
+        '''unified loading mechanism for [rules, transformers, examples] 
         from [caster starter locations, user dir]'''
         self._content_loader = ContentLoader()
 
+        '''receives and runs events'''
+        hooks_runner = HooksRunner()
+
         '''the grammar manager -- probably needs to get broken apart more'''
-        self._grammar_manager = Nexus._create_grammar_manager(self.merger, self._content_loader)
+        self._grammar_manager = Nexus._create_grammar_manager(self.merger, self._content_loader, hooks_runner)
 
         '''ACTION TIME:'''
-        self._load_and_register_all_content()
+        self._load_and_register_all_content(hooks_runner)
 
-    def _load_and_register_all_content(self):
+    def _load_and_register_all_content(self, hooks_runner):
         """
         all rules go to grammar_manager
         all transformers go to merger
-        TODO: hooks go to both? depends on where we want hook events, eh?
+        TODO: examples go to both? depends on where we want hook events, eh?
         """
         content = self.content_loader.load_everything()
         [self._grammar_manager.register_rule(rc, d) for rc, d in content.rules]
         self._grammar_manager.load_activation_grammar()
         [self.merger.add_transformer(t) for t in content.transformers]
+        [hooks_runner.add_hook(h) for h in content.hooks]
 
     @staticmethod
-    def _create_grammar_manager(merger):
+    def _create_grammar_manager(merger, content_loader, hooks_runner):
         ccr_rule_validator = CCRRuleValidationDelegator(
             IsMergeRuleValidator(),
             HasNoContextValidator(),
@@ -111,23 +116,26 @@ class Nexus:
         if some_setting:
             observable = ManualReloadObservable()
         config = TomlConfig()
+        mapping_rule_maker = MappingRuleMaker()
+        grammars_container = GrammarContainer()
 
         '''
-        config,
-                 merger,
-                 ccr_rules_validator,
-                 details_validator,
-                 reload_observable,
-                 activator,
-                 mapping_rule_maker,
-                 grammars_container,
-                 always_global_ccr_mode
+            config,
+            merger,
+            content_loader,
+            ccr_rules_validator,
+            details_validator,
+            reload_observable,
+            activator,
+            mapping_rule_maker,
+            grammars_container,
+            hooks_runner,
+            always_global_ccr_mode
         '''
 
-        gm = GrammarManager(config, merger, settings, AppContext, Grammar, [],
-                            ccr_rule_validator, details_validator,
-                            observable, activator)
-        return gm
+        # TODO: need to take care of rdp_mode_exclusion and transformer_exclusion
+        return GrammarManager(config, merger, content_loader, ccr_rule_validator, details_validator,
+            observable, activator, mapping_rule_maker, grammars_container, hooks_runner, always_global_ccr_mode)
 
     @staticmethod
     def _create_merger():

@@ -28,7 +28,7 @@ class CCRMerger2(object):
 
     def merge(self, rule_classes):
         """
-        does 4-step merging, runs hooks, returns a merged rule
+        does 4-step merging, runs examples, returns a merged rule
         :param rule_classes: collection of MergeRule
         :return: MergeRule
         """

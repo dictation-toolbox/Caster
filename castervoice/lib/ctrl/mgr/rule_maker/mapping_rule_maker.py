@@ -3,6 +3,10 @@ from castervoice.lib.ctrl.mgr.rule_maker.base_rule_maker import BaseRuleMaker
 
 
 class MappingRuleMaker(BaseRuleMaker):
+    """
+    Creates a MappingRule instance from the rule's class and a RuleDetails
+    object, then runs the "words.txt" transformer over it.
+    """
 
     def __init__(self, gdef_transformer):
         self._gdef_transformer = gdef_transformer
