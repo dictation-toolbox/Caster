@@ -8,20 +8,6 @@ from castervoice.lib.ccr.core.punctuation import text_punc_dict,  double_text_pu
 from castervoice.lib.alphanumeric import caster_alphabet
 
 
-new_text_punc_dict = copy.deepcopy(text_punc_dict)
-new_text_punc_dict.update(caster_alphabet)
-character_dict = new_text_punc_dict
-character_list = character_dict.values()
-digits_list = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-character_list.extend(digits_list)
-def make_list_of_permutations_up_to_length(base_list, max_length):
-    result = []
-    for i in range(1, max_length + 1):
-        list_of_permutations_of_fixed_length = ["".join(permutation) for permutation in itertools.product(base_list, repeat=i)]
-        result.extend(list_of_permutations_of_fixed_length)
-    return result
-character_list = make_list_of_permutations_up_to_length(character_list, 3)
-
 contexts = {
     "texstudio": AppContext(executable="texstudio"),
     "lyx": AppContext(executable="lyx"),
@@ -37,11 +23,11 @@ def get_application():
             return name
     return "standard"
 
-def get_start_end_position(text, phrase, direction, occurrence_number):
+def get_start_end_position(text, phrase, direction, occurrence_number, dictation_versus_character):
 # def get_start_end_position(text, phrase, direction):
-    if phrase in character_list:
+    if dictation_versus_character == "character":
         pattern = re.escape(phrase)
-    else:
+    if dictation_versus_character == "dictation":
         # avoid e.g. matching 'and' in 'land' but allow e.g. matching 'and' in 'hello.and'
         # for matching purposes use lowercase
         # PROBLEM: this will not match words in class names like "Class" in "ClassName"
@@ -53,9 +39,9 @@ def get_start_end_position(text, phrase, direction, occurrence_number):
         print("'{}' not found".format(phrase))
         return
     match_iter = re.finditer(pattern, text.lower())
-    if phrase in character_list: # consider changing this to if len(phrase) == 1 or something
+    if dictation_versus_character == "character":
         match_index_list = [(m.start(), m.end()) for m in match_iter] 
-    else:
+    if dictation_versus_character == "dictation":
         match_index_list = [(m.start(1), m.end(1)) for m in match_iter] # first group
     
     if direction == "left":
@@ -144,8 +130,8 @@ def deal_with_up_down_directions(direction, number_of_lines_to_search):
         direction = "right"
     return (number_of_lines_to_search, direction)
         
-def replace_phrase_with_phrase(text, replaced_phrase, replacement_phrase, direction, occurrence_number):
-    match_index = get_start_end_position(text, replaced_phrase, direction, occurrence_number)
+def replace_phrase_with_phrase(text, replaced_phrase, replacement_phrase, direction, occurrence_number, dictation_versus_character):
+    match_index = get_start_end_position(text, replaced_phrase, direction, occurrence_number, dictation_versus_character)
     if match_index:
         left_index, right_index = match_index
     else:
@@ -153,7 +139,7 @@ def replace_phrase_with_phrase(text, replaced_phrase, replacement_phrase, direct
     return text[: left_index] + replacement_phrase + text[right_index:] 
     
 
-def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, direction, number_of_lines_to_search, occurrence_number):
+def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, direction, number_of_lines_to_search, occurrence_number, dictation_versus_character):
     if direction == "up" or direction == "down":
         # "up" and "down" get treated just as the "left" and "right" 
         # except that the default number of lines to search get set to three instead of zero
@@ -164,7 +150,7 @@ def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, di
         return 
     replaced_phrase = str(replaced_phrase)
     replacement_phrase = str(replacement_phrase) 
-    new_text = replace_phrase_with_phrase(selected_text, replaced_phrase, replacement_phrase, direction, occurrence_number)
+    new_text = replace_phrase_with_phrase(selected_text, replaced_phrase, replacement_phrase, direction, occurrence_number, dictation_versus_character)
     if not new_text:
         # replaced_phrase not found
         deal_with_phrase_not_found(selected_text, application, direction)
@@ -177,15 +163,15 @@ def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, di
             offset = len(new_text)
             Key("left:%d" %offset).execute()
     
-def remove_phrase_from_text(text, phrase, direction, occurrence_number):
-    match_index = get_start_end_position(text, phrase, direction, occurrence_number)
+def remove_phrase_from_text(text, phrase, direction, occurrence_number, dictation_versus_character):
+    match_index = get_start_end_position(text, phrase, direction, occurrence_number, dictation_versus_character)
     if match_index:
         left_index, right_index = match_index
     else:
         return
         
     # if the "phrase" is punctuation, just remove it, but otherwise remove an extra space adjacent to the phrase
-    if phrase in character_list:
+    if dictation_versus_character == "character":
         return text[: left_index] + text[right_index:] 
     else:
         if left_index == 0:
@@ -196,7 +182,7 @@ def remove_phrase_from_text(text, phrase, direction, occurrence_number):
         else:
             return text[: left_index] + text[right_index:]
 
-def copypaste_remove_phrase_from_text(phrase, direction, number_of_lines_to_search, occurrence_number):
+def copypaste_remove_phrase_from_text(phrase, direction, number_of_lines_to_search, occurrence_number, dictation_versus_character):
     if direction == "up" or direction == "down":
         number_of_lines_to_search, direction = deal_with_up_down_directions(direction, number_of_lines_to_search)
     application = get_application()
@@ -204,7 +190,7 @@ def copypaste_remove_phrase_from_text(phrase, direction, number_of_lines_to_sear
     if not selected_text:
         return 
     phrase = str(phrase)
-    new_text = remove_phrase_from_text(selected_text, phrase, direction, occurrence_number)
+    new_text = remove_phrase_from_text(selected_text, phrase, direction, occurrence_number, dictation_versus_character)
     if not new_text:
         # phrase not found
         deal_with_phrase_not_found(selected_text, application, direction)
@@ -217,8 +203,8 @@ def copypaste_remove_phrase_from_text(phrase, direction, number_of_lines_to_sear
         Key("left:%d" %offset).execute()
 
     
-def delete_until_phrase(text, phrase, direction, before_after, occurrence_number):
-    match_index = get_start_end_position(text, phrase, direction, occurrence_number)
+def delete_until_phrase(text, phrase, direction, before_after, occurrence_number, dictation_versus_character):
+    match_index = get_start_end_position(text, phrase, direction, occurrence_number, dictation_versus_character)
     if match_index:
         left_index, right_index = match_index
     else:
@@ -244,7 +230,7 @@ def delete_until_phrase(text, phrase, direction, before_after, occurrence_number
             else:
                 return text[left_index :]
 
-def copypaste_delete_until_phrase(direction, phrase, number_of_lines_to_search, before_after, occurrence_number):
+def copypaste_delete_until_phrase(direction, phrase, number_of_lines_to_search, before_after, occurrence_number, dictation_versus_character):
     if direction == "up" or direction == "down":
         number_of_lines_to_search, direction = deal_with_up_down_directions(direction, number_of_lines_to_search)
     application = get_application()  
@@ -259,7 +245,7 @@ def copypaste_delete_until_phrase(direction, phrase, number_of_lines_to_search, 
     if not selected_text:
         return 
     phrase = str(phrase)
-    new_text = delete_until_phrase(selected_text, phrase, direction, before_after, occurrence_number)
+    new_text = delete_until_phrase(selected_text, phrase, direction, before_after, occurrence_number, dictation_versus_character)
         
     if new_text is None: 
         # do NOT use `if not new_text` because that will pick up the case where new_text="" which
@@ -282,7 +268,7 @@ def copypaste_delete_until_phrase(direction, phrase, number_of_lines_to_search, 
 
     
 
-def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search, occurrence_number):
+def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search, occurrence_number, dictation_versus_character):
     if direction == "up" or direction == "down":
         number_of_lines_to_search, direction = deal_with_up_down_directions(direction, number_of_lines_to_search)
     application = get_application()
@@ -297,7 +283,7 @@ def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search
     if not selected_text:
         return
     phrase = str(phrase)
-    match_index = get_start_end_position(selected_text, phrase, direction, occurrence_number)
+    match_index = get_start_end_position(selected_text, phrase, direction, occurrence_number, dictation_versus_character)
     if match_index:
         left_index, right_index = match_index
     else:
@@ -357,7 +343,7 @@ def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search
     
             
     
-def select_phrase(phrase, direction, number_of_lines_to_search, occurrence_number):
+def select_phrase(phrase, direction, number_of_lines_to_search, occurrence_number, dictation_versus_character):
     if direction == "up" or direction == "down":
         number_of_lines_to_search, direction = deal_with_up_down_directions(direction, number_of_lines_to_search)
     application = get_application()
@@ -365,7 +351,7 @@ def select_phrase(phrase, direction, number_of_lines_to_search, occurrence_numbe
     if not selected_text:
         return 
     phrase = str(phrase)
-    match_index = get_start_end_position(selected_text, phrase, direction, occurrence_number)
+    match_index = get_start_end_position(selected_text, phrase, direction, occurrence_number, dictation_versus_character)
     if match_index:
         left_index, right_index = match_index
     else:
@@ -412,7 +398,7 @@ def select_phrase(phrase, direction, number_of_lines_to_search, occurrence_numbe
     
 
 
-def select_until_phrase(direction, phrase, before_after, number_of_lines_to_search, occurrence_number):
+def select_until_phrase(direction, phrase, before_after, number_of_lines_to_search, occurrence_number, dictation_versus_character):
     if direction == "up" or direction == "down":
         number_of_lines_to_search, direction = deal_with_up_down_directions(direction, number_of_lines_to_search)
     application = get_application()  
@@ -427,7 +413,7 @@ def select_until_phrase(direction, phrase, before_after, number_of_lines_to_sear
     if not selected_text:
         return 
     phrase = str(phrase)
-    match_index = get_start_end_position(selected_text, phrase, direction, occurrence_number)
+    match_index = get_start_end_position(selected_text, phrase, direction, occurrence_number, dictation_versus_character)
     if match_index:
         left_index, right_index = match_index
     else:
