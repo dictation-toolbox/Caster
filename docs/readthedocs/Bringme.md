@@ -1,27 +1,34 @@
 # Bring me
 
-_Bring me_ is a function that allows the user to quickly invoke an item from a list of previously saved items. Currently these items are: programs, websites, folders, and files. The list of items is saved to the Caster user directory to the file bringme.toml. On first installation, if no list of items exists yet, default list is created with some documentation websites, common computer folders and some Caster settings files.
+_Bring me_ is a set of commands that allow the user to quickly invoke an item from a list of previously-saved items. Currently, these items are: programs, websites, folders, and files. The list of items is saved to the Caster user directory (`.caster`) in the file `data/bringme.toml`. On first installation, if no list of items exists yet, a default list is created with some documentation websites, common computer folders and some Caster settings files. Say "bring me caster bring me" to bring up the `data/bringme.toml` file.
 
-`<launch> to bring me as <key>`: adds current element, which may be a website, program, folder, or file, to the list of items to be able to invoke it later by uttering `key`
+## Commands
 
-`to bring me as <key>`: same as above, but the "launch" is detected automatically, based on if you are in a web browser, Windows Explorer, or the terminal
+- Add current element: `<target> to bring me as <key>`
+    - `<target>` may be _website_, _program_, _folder_, or _file_. `key` is the phrase you wish to use to invoke it later. You can usually omit `<target>` and it will be detected automatically based on the context. If in a browser, `<target>` defaults to _website_ if omitted. If in File/Windows Explorer or a Save/Open dialog, `<target>` defaults to _file_ or _folder_ if omitted depending on which item is selected in the file list. Otherwise, `<target>` defaults to _program_ if omitted.
+- Bring up the item: `bring me <item>`
+    - For websites, this launches the default browser and opens the desired site.
+    - This launches programs.
+    - Folders are either opened or navigated to depending on the context. If in a terminal, File/Windows Explorer, or a Save/Open dialog the program will navigate to the folder.
+        - Use `bring me <item> in <terminal_explorer>` to open in a new window. `<terminal_explorer>` can be _terminal_ or _explorer_.
+    - Files are opened using the system-default program for that file type.
+- Refresh bring me after editing `bringme.toml` directly: `refresh bring me`
+- Remove a key: `remove <key> from bring me`
+- Restore default keys: `restore bring me defaults`
 
-`bring me <item>` : brings up the `item` in a way dependent on the type of the item. It can be:
+## Examples
 
-- a website: launches the default system browser opening the desired site
-- a program: launches the program
-- a folder: opens the desired folder; if `in terminal` or `in explorer` is appended, opens the folder explicitly in this. Default is opening in the Windows Explorer.
-- a file: opens the file with its default associated program
-
-`refresh bring me`: refreshes the bring me grammar and synchronizes it with its settings. This is useful if you edit the bringme.toml file directly.
-
-`remove <key> from bring me`: removes the utterance `key` from the list of items to launch
-            "restore bring me defaults": R(Function(self.bring_restore)),
-
-`restore bring me defaults`: clears the list of items and restores its default values
-
-## Example
-
-When in Google Chrome, saying "program to bring me as my favorite browser" saves Google Chrome as a program, which can be launched by saying "bring me my favorite browser".
-
-When in a browser (currently Google Chrome and Firefox are supported), saying "Website to bring me as my little pony" will save the current website so that it can be brought up later by saying "my little pony" in a new tab, if the default system browser is already running, or in a new browser window.
+- _to bring me as **caster github**_
+    - Automatically detected as a website if in the browser.
+- _bring me **caster github**_
+    - Opens the caster GitHub web page in your default browser.
+- _**program** to bring me as **my favorite browser**_
+    - If in Google Chrome, this saves Google Chrome as a program.
+- _bring me **my favorite browser**_
+    - Opens Google Chrome (after the user runs the previous example).
+- _bring me **caster bring me**_
+    - Opens `bringme.toml` in your system default `.toml` editor.
+- _bring me **my documents**_
+    - If in a terminal, File/Windows Explorer, or a Save/Open dialog, this navigates to your Documents folder. If not, this opens a new Explorer window at that folder.
+- _bring me **caster user** in **terminal**_
+    - Opens a new terminal at the user's `.caster` folder.

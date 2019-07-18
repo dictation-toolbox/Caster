@@ -1,7 +1,6 @@
-from dragonfly import ActionBase
+from dragonfly import ActionBase, Paste
 from castervoice.lib import context, control
 from castervoice.lib.actions import Text, Key
-
 '''
 Stores the currently highlighted text in a temporary variable,
 to be Retrieved after some other action. If no text was
@@ -36,6 +35,7 @@ clipboard, an empty string will be stored. This is a necessary
 side-effect of being able to detect when no text is highlighted.
 '''
 
+
 class Store(ActionBase):
     def __init__(self, space=" ", remove_cr=False):
         ActionBase.__init__(self)
@@ -61,7 +61,7 @@ class Retrieve(ActionBase):
 
     def _execute(self, data=None):
         output = control.nexus().temp
-        Text(output).execute()
+        Paste(output).execute()
         if output:
             Key(self.action_if_text).execute()
         else:

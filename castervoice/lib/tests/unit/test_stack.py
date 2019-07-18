@@ -1,7 +1,6 @@
 from dragonfly.actions.action_function import Function
 
-
-from castervoice.lib import utilities
+import unittest
 from castervoice.lib.actions import Text
 from castervoice.lib.dfplus.state.actions import AsynchronousAction, ContextSeeker, \
     RegisteredAction
@@ -14,6 +13,7 @@ from castervoice.lib.tests.unit.nexus import TestNexus
 
 
 class TestStack(TestNexus):
+
     def setUp(self):
         TestNexus.setUp(self)
 
@@ -475,3 +475,6 @@ class TestStack(TestNexus):
         self.nexus.state.add(stack_seeker_f2)
         self.nexus.state.add(sira4)
         self.assertEqual(mutable_integer["value"], 4)
+
+if __name__ == '__main__':
+    unittest.main()

@@ -333,11 +333,12 @@
 
 # Gitter
 
-| Command       | Command          | Command       |
-|:--------------|:-----------------|:--------------|
-| `block quote` | `formatted code` | `insert item` |
-| `bold`        | `insert code`    | `insert link` |
-| `emphasize`   | `insert image`   | `mention`     |
+| Command        | Command          | Command       |
+|:---------------|:-----------------|:--------------|
+| `block quote`  | `formatted code` | `insert item` |
+| `bold`         | `insert code`    | `insert link` |
+| `emphasize`    | `insert image`   | `mention`     |
+| `<size> header`| `strikethrough`  | `latex`       |
 
 # Jetbrains
 | Command                                | Command                              | Command                      |

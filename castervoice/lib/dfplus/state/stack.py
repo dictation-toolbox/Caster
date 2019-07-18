@@ -63,8 +63,6 @@ class ContextStack:
 
     def add(self, stack_item):
         stack_item.preserve()
-        if settings.WSR:
-            self._history.on_recognition(stack_item.get_preserved())
         ''' case: the new item is has backward seeking --
             -- satisfy levels, then move on to other logic'''
         if stack_item.type == StackItemSeeker.TYPE and stack_item.back is not None:
@@ -135,7 +133,8 @@ class ContextStack:
     def get_incomplete_seekers(self):
         incomplete = []
         for i in range(0, len(self.list)):
-            if not self.list[i].complete:  # no need to check type because only forward seekers will be incomplete
+            if not self.list[
+                    i].complete:  # no need to check type because only forward seekers will be incomplete
                 incomplete.append(self.list[i])
         return incomplete
 
