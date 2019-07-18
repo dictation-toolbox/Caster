@@ -6,8 +6,8 @@ class BaseConfig(object):
     def __init__(self):
         self._config = {}
 
-    def update(self, rule_class_name, active):
-        self._config[rule_class_name] = active
+    def get(self, key):
+        return None if key not in self._config else self._config[key]
 
-    def get_active_rule_class_names(self):
-        return [rcn for rcn in self._config if self._config[rcn]]
+    def put(self, key, value):
+        self._config[key] = value

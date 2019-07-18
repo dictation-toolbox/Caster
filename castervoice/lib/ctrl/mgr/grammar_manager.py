@@ -141,7 +141,7 @@ class GrammarManager(object):
         # load it
         self._load_rule(class_name, active)
         # run activation hooks
-        self._hooks_runner.execute(RuleActivationEvent(class_name, active, ))
+        self._hooks_runner.execute(RuleActivationEvent(class_name, active))
 
     def _load_rule(self, class_name, active):
         """

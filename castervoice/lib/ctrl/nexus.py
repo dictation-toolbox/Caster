@@ -1,4 +1,5 @@
 from castervoice.lib.ctrl.grammar_container import GrammarContainer
+from castervoice.lib.ctrl.mgr.config.rules_config import RulesActivationConfig
 from castervoice.lib.ctrl.mgr.grammar_activator import GrammarActivator
 from castervoice.lib.ctrl.mgr.rule_maker.mapping_rule_maker import MappingRuleMaker
 from castervoice.lib.dfplus.ccrmerging2.hooks.hooks_runner import HooksRunner
@@ -6,7 +7,6 @@ from castervoice.lib.dfplus.merge.mergerule import MergeRule
 
 from castervoice.lib import settings
 from castervoice.lib.ctrl.dependencies import DependencyMan
-from castervoice.lib.ctrl.mgr.config.config_toml import TomlConfig
 from castervoice.lib.ctrl.mgr.validation.details.ccr_app_validator import AppCCRDetailsValidator
 from castervoice.lib.ctrl.mgr.validation.details.ccr_validator import CCRDetailsValidator
 from castervoice.lib.ctrl.mgr.validation.details.details_validation_delegator import DetailsValidationDelegator
@@ -115,7 +115,7 @@ class Nexus:
         observable = FileWatcherObservable()
         if some_setting:
             observable = ManualReloadObservable()
-        config = TomlConfig()
+        rule_activation_config = RulesActivationConfig()
         mapping_rule_maker = MappingRuleMaker()
         grammars_container = GrammarContainer()
 
@@ -134,7 +134,7 @@ class Nexus:
         '''
 
         # TODO: need to take care of rdp_mode_exclusion and transformer_exclusion
-        return GrammarManager(config, merger, content_loader, ccr_rule_validator, details_validator,
+        return GrammarManager(rule_activation_config, merger, content_loader, ccr_rule_validator, details_validator,
             observable, activator, mapping_rule_maker, grammars_container, hooks_runner, always_global_ccr_mode)
 
     @staticmethod
