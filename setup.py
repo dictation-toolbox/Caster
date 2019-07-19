@@ -50,7 +50,7 @@ setuptools.setup(
     description="Dragonfly-Based Voice Programming Toolkit",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/dictation-toolbox/castervoice",
+    url="https://github.com/dictation-toolbox/Caster",
     packages=setuptools.find_packages(),
     include_package_data=True,
     zip_safe=False,
