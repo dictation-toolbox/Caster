@@ -6,6 +6,7 @@ matrix:
     - os: windows
       language: sh
       python: "2.7"
+      cache: pip
       before_install:
         - choco install python2
         - export PATH="/c/Python27:/c/Python27/Scripts:$PATH"
