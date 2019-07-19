@@ -42,9 +42,9 @@ class Python(MergeRule):
             R(Store() + Text("while :") + Key("left") + Retrieve(action_if_text="right")),
         # (no do-while in Python)
         SymbolSpecs.TO_INTEGER:
-            R(Store() + Text("str()") + Key("left") + Retrieve(action_if_text="right")),
+            R(Store() + Text("int()") + Key("left") + Retrieve(action_if_text="right")),
         SymbolSpecs.TO_FLOAT:
-            R(Store() + Text("str()") + Key("left") + Retrieve(action_if_text="right")),
+            R(Store() + Text("float()") + Key("left") + Retrieve(action_if_text="right")),
         SymbolSpecs.TO_STRING:
             R(Store() + Text("str()") + Key("left") + Retrieve(action_if_text="right")),
         SymbolSpecs.AND:
