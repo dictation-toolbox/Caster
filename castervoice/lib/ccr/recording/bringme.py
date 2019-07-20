@@ -168,7 +168,7 @@ class BringRule(SelfModifyingRule):
             "my pictures": "%USERPROFILE%\\Pictures",
             "my documents": "%USERPROFILE%\\Documents",
             "caster user": "%USERPROFILE%\\.caster",
-            "caster filters": "%USERPROFILE%\\.caster\\filters",
+            "caster transformers": "%USERPROFILE%\\.caster\\transformers",
             "caster rules": "%USERPROFILE%\\.caster\\rules",
             "caster data": "%USERPROFILE%\\.caster\\data",
             "sick you lee": "%USERPROFILE%\\.caster\\sikuli",

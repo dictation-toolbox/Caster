@@ -15,7 +15,7 @@ from castervoice.lib.clipboard import Clipboard
 from castervoice.lib.context import AppContext
 from castervoice.lib.dfplus.additions import IntegerRefST, SelectiveAction, Boolean
 
-from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
+from castervoice.lib.dfplus.merge.ccrmerger_legacy import CCRMerger
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.merge.selfmodrule import SelfModifyingRule
 

@@ -19,7 +19,7 @@ from castervoice.lib.ccr.core.punctuation import Punctuation
 from castervoice.lib.ccr.python.python import Python
 from castervoice.lib.dfplus.hint.hintnode import NodeRule
 from castervoice.lib.dfplus.hint.nodes import css
-from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
+from castervoice.lib.dfplus.merge.ccrmerger_legacy import CCRMerger
 from castervoice.lib.dfplus.merge.mergepair import MergeInf
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R

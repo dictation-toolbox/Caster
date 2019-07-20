@@ -7,7 +7,7 @@ from castervoice.lib.tests.mocks import Bash
 from castervoice.lib.tests.mocks import Java
 from castervoice.lib.tests.mocks import Python
 from castervoice.lib.tests.mocks import ChainAlias
-from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
+from castervoice.lib.dfplus.merge.ccrmerger_legacy import CCRMerger
 from castervoice.lib.dfplus.merge.mergepair import MergeInf
 from castervoice.lib.tests.unit.state import TestNexus
 

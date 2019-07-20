@@ -106,26 +106,6 @@ class GrammarManager(object):
         file_path = self._get_file_path(rule_class, details)
         self._reload_observable.register_watched_file(file_path)
 
-
-    """
-        THIS IS COMPLETELY UNUSED SO FAR --- moved to companion_rule_hook.py
-
-        Both rules must be registered before registering the companion.
-        self._companion_rules is {rule: [companions]}
-
-        TODO: -- should this just happen in a config file???
-    """
-    def _register_companion_rule(self, rule_class, companion_rule_class):
-        rule_class_name = rule_class.__name__
-        companion_rule_class_name = companion_rule_class.__name__
-
-        if rule_class_name in self._managed_rules and \
-                companion_rule_class_name in self._managed_rules:
-            companions_list = [] if rule_class_name not in self._companion_rules \
-                else self._companion_rules[rule_class_name]
-            companions_list.append(companion_rule_class_name)
-            self._companion_rules[rule_class_name] = companions_list
-
     def _change_rule_active(self, class_name, active):
         """
         This is called by the GrammarActivator.

@@ -23,7 +23,7 @@ BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "lib",
 _USER_DIR = os.path.expanduser("~").replace("\\", "/") + "/.caster"
 _SETTINGS_PATH = _USER_DIR + "/data/settings.toml"
 
-for directory in ["data", "rules", "filters", "sikuli"]:
+for directory in ["data", "rules", "transformers", "hooks", "sikuli"]:
     d = _USER_DIR + "/" + directory
     if not os.path.exists(d):
         os.makedirs(d)
@@ -201,8 +201,8 @@ _DEFAULT_SETTINGS = {
             _USER_DIR + "/data/grammars.toml",
         "DLL_PATH":
             BASE_PATH + "/lib/dll/",
-        "SIMPLIFIED_FILTER_RULES_PATH":
-            _USER_DIR + "/filters/words.txt",
+        "GDEF_FILE":
+            _USER_DIR + "/transformers/words.txt",
         "LOG_PATH":
             _USER_DIR + "/log.txt",
         "RECORDED_MACROS_PATH":

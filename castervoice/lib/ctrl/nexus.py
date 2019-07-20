@@ -30,7 +30,7 @@ from castervoice.lib.dfplus.ccrmerging2.ccrmerger2 import CCRMerger2
 from castervoice.lib.dfplus.ccrmerging2.compatibility.simple_compat_checker import SimpleCompatibilityChecker
 from castervoice.lib.dfplus.ccrmerging2.merging.classic_merging_strategy import ClassicMergingStrategy
 from castervoice.lib.dfplus.ccrmerging2.sorting.config_ruleset_sorter import ConfigRuleSetSorter
-from castervoice.lib.ctrl.mgr.loading.file_watcher_observable import FileWatcherObservable
+from castervoice.lib.ctrl.mgr.loading.timer_reload_observable import TimerFileWatcherObservable
 from castervoice.lib.ctrl.mgr.loading.manual_reload_observable import ManualReloadObservable
 
 
@@ -112,30 +112,25 @@ class Nexus:
 
         activator = GrammarActivator(lambda rule: isinstance(rule, MergeRule))
         some_setting = True
-        observable = FileWatcherObservable()
+        observable = TimerFileWatcherObservable()
         if some_setting:
             observable = ManualReloadObservable()
+
         rule_activation_config = RulesActivationConfig()
         mapping_rule_maker = MappingRuleMaker()
         grammars_container = GrammarContainer()
 
-        '''
-            config,
-            merger,
-            content_loader,
-            ccr_rules_validator,
-            details_validator,
-            reload_observable,
-            activator,
-            mapping_rule_maker,
-            grammars_container,
-            hooks_runner,
-            always_global_ccr_mode
-        '''
+        always_global_ccr_mode = settings.SETTINGS["miscellaneous"]["rdp_mode"]
 
         # TODO: need to take care of rdp_mode_exclusion and transformer_exclusion
-        return GrammarManager(rule_activation_config, merger, content_loader, ccr_rule_validator, details_validator,
+        gm = GrammarManager(rule_activation_config, merger, content_loader, ccr_rule_validator, details_validator,
             observable, activator, mapping_rule_maker, grammars_container, hooks_runner, always_global_ccr_mode)
+
+        if some_setting:
+            loadable = observable.get_loadable()
+            gm.register_rule(loadable[0], loadable[1])
+
+        return gm
 
     @staticmethod
     def _create_merger():

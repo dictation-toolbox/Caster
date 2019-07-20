@@ -1,7 +1,7 @@
 import unittest
 
 from castervoice.lib.ctrl.nexus import Nexus
-from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
+from castervoice.lib.dfplus.merge.ccrmerger_legacy import CCRMerger
 
 class NoSaveCCRMerger(CCRMerger):
     def save_config(self):

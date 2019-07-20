@@ -8,7 +8,7 @@ from castervoice.lib.dfplus.ccrmerging2.transformers.base_transformer import Bas
 
 '''
 This module defines a global transformer, the parameters of
-which are defined in settings.SETTINGS["paths"]["FILTER_DEFS_PATH"]
+which are defined in settings.SETTINGS["paths"]["GDEF_FILE"]
 '''
 
 
@@ -126,10 +126,10 @@ _DEFS = None
 
 
 def _load_definitions():
-    if os.path.isfile(settings.SETTINGS["paths"]["FILTER_DEFS_PATH"]):
-        '''user must create castervoice/user/fdefs.txt for it to get picked up here'''
+    if os.path.isfile(settings.SETTINGS["paths"]["GDEF_FILE"]):
+        '''user must create castervoice/user/words.txt for it to get picked up here'''
         with io.open(
-                settings.SETTINGS["paths"]["FILTER_DEFS_PATH"], "rt", encoding="utf-8") as f:
+                settings.SETTINGS["paths"]["GDEF_FILE"], "rt", encoding="utf-8") as f:
             lines = f.readlines()
             try:
                 _DEFS = _GlobalFilterDefs(lines)
