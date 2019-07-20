@@ -5,23 +5,48 @@ Official Site "https://gitter.im/"
 """
 from castervoice.lib.imports import *
 
+
 class GitterRule(MergeRule):
     pronunciation = "Gitter"
 
     mapping = {
-        "bold": R(Text("****") + Key("left:2")),
-        "emphasize": R(Text("**") + Key("left")),
-        # "header":           R(Text( "" )), # H1 ## H2 ### H3
-        "insert item": R(Text("* ")),
-        "block quote": R(Text("> ")),
-        "mention": R(Text("@")),
-        "insert link": R(Text("[]()") + Key("left:3")),
-        "insert image": R(Text("![]()") + Key("left:3")),
-        "insert code": R(Text("``") + Key("left")),
-        "formatted code": R(Text("```") + Key("s-enter")),
+        "bold":
+            R(Store() + Text("****") + Key("left:2") +
+              Retrieve(action_if_text="right:2")),
+        "emphasize":
+            R(Store() + Text("**") + Key("left") + Retrieve(action_if_text="right")),
+        "strikethrough":
+            R(Store() + Text("~~~~") + Key("left:2") +
+              Retrieve(action_if_text="right:2")),
+        "latex":
+            R(Store() + Text("$$$$") + Key("left:2") +
+              Retrieve(action_if_text="right:2")),
+        "<header_size> header":
+            R(Store() + Text("%(header_size)s ") + Retrieve(action_if_text="s-enter")),
+        "insert item":
+            R(Store() + Text("*") + Key("space") + Retrieve(action_if_text="s-enter")),
+        "block quote":
+            R(Store() + Text(">") + Key("space") + Retrieve(action_if_text="s-enter")),
+        "mention":
+            R(Store() + Text("@") + Retrieve(action_if_text="right, space")),
+        "insert link":
+            R(Store() + Text("[]()") + Key("left:3") +
+              Retrieve(action_if_text="right:2")),
+        "insert image":
+            R(Store() + Text("![]()") + Key("left:3") +
+              Retrieve(action_if_text="right:2")),
+        "insert code":
+            R(Store() + Text("``") + Key("left") + Retrieve(action_if_text="right")),
+        "formatted code":
+            R(Store() + Text("``````") + Pause("0.5") + Key("left:3,s-enter:2,up") +
+              Retrieve()),
     }
     extras = [
-        Dictation("text"),
+        Choice("header_size", {
+            "small": "###",
+            "medium": "##",
+            "large": "#",
+        }),
     ]
     Defaults = {}
 

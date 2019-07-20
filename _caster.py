@@ -13,21 +13,6 @@ from dragonfly import (get_engine, Function, Grammar, Playback, Dictation, Choic
                        RunCommand)
 from castervoice.lib.ccr.standard import SymbolSpecs
 
-
-def _wait_for_wsr_activation():
-    count = 1
-    while True:
-        try:
-            from castervoice.apps.browser import firefox
-            break
-        except:
-            print(
-                "(%d) Attempting to load Caster -- WSR not loaded and listening yet..." %
-                count)
-            count += 1
-            time.sleep(1)
-
-
 _NEXUS = None
 from castervoice.lib import settings  # requires nothing
 if settings.SYSTEM_INFORMATION["platform"] != "win32":
@@ -35,11 +20,11 @@ if settings.SYSTEM_INFORMATION["platform"] != "win32":
 settings.WSR = __name__ == "__main__"
 from castervoice.lib import utilities  # requires settings
 if settings.WSR:
-    _wait_for_wsr_activation()
     SymbolSpecs.set_cancel_word("escape")
-from castervoice.lib.ctrl.dependencies import pip_path, update
 from castervoice.lib import control
 _NEXUS = control.nexus()
+_NEXUS.dep.initialize()
+from castervoice.lib.ctrl.dependencies import pip_path, update
 from castervoice.lib import navigation
 navigation.initialize_clipboard(_NEXUS)
 
@@ -171,8 +156,6 @@ else:
 print("\n*- Starting " + settings.SOFTWARE_NAME + " -*")
 
 if settings.WSR:
-    import pythoncom
     print("Windows Speech Recognition is garbage; it is " \
         +"recommended that you not run Caster this way. ")
-    while True:
-        get_engine().recognize_forever()
+    get_engine().recognize_forever()

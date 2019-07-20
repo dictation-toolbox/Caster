@@ -1,16 +1,14 @@
-from castervoice.lib.tests.mocks import eclipse_context
-from castervoice.lib.tests.mocks import EclipseCCR
-from castervoice.lib.tests.mocks import Text
-from castervoice.lib.tests.mocks import Bash
-from castervoice.lib.tests.mocks import Java
-from castervoice.lib.tests.mocks import Python
+from castervoice.lib.tests.mocks import (eclipse_context, EclipseCCR, Text, Bash,
+        Java, Python)
 from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
-from castervoice.lib.dfplus.merge.filter import make_filter, there_is_spec_overlap, incoming_gets_priority
+from castervoice.lib.dfplus.merge.filter import (make_filter, there_is_spec_overlap,
+        incoming_gets_priority)
 from castervoice.lib.dfplus.merge.mergepair import MergeInf
-from castervoice.lib.tests.unit.state import TestNexus
+from castervoice.lib.tests.unit.nexus import TestNexus
 
 
 class TestFilterFunctions(TestNexus):
+
     def setUp(self):
         TestNexus.setUp(self)
         self.nexus.merger.add_global_rule(Python())
