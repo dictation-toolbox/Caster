@@ -1,9 +1,5 @@
-'''
-Created on Sep 6, 2015
-
-@author: synkarius
-'''
 from castervoice.lib.imports import *
+
 
 class Again(MergeRule):
     def __init__(self, nexus):
@@ -18,7 +14,8 @@ class Again(MergeRule):
                     R(Function(lambda n: self._create_asynchronous(n)), show=False)
             })
 
-    def _repeat(self, utterance):
+    @staticmethod
+    def _repeat(utterance):
         Playback([(utterance, 0.0)]).execute()
         return False
 
@@ -36,7 +33,7 @@ class Again(MergeRule):
                                                         - last_utterance_index]).split()
         ]
         if utterance[0] == "again": return
-        forward = [L(S(["cancel"], lambda: self._repeat(utterance)))]
+        forward = [L(S(["cancel"], lambda: Again._repeat(utterance)))]
         AsynchronousAction(
             forward,
             rdescript="Repeat Last Action",

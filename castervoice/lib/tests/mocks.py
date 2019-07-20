@@ -57,7 +57,7 @@ class Alias(AliasRule):
     def __init__(self, nexus):
         SelfModifyingRule.__init__(self)
 
-    def refresh(self, *args):
+    def _refresh(self, *args):
         mapping = {}
         mapping["alias"] = Function(lambda : None)
         mapping["delete aliases"] = Function(lambda: None)

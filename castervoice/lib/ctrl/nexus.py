@@ -1,6 +1,7 @@
 from castervoice.lib.ctrl.grammar_container import GrammarContainer
 from castervoice.lib.ctrl.mgr.config.rules_config import RulesActivationConfig
 from castervoice.lib.ctrl.mgr.grammar_activator import GrammarActivator
+from castervoice.lib.ctrl.mgr.loading.timer_reload_observable import TimerReloadObservable
 from castervoice.lib.ctrl.mgr.rule_maker.mapping_rule_maker import MappingRuleMaker
 from castervoice.lib.dfplus.ccrmerging2.hooks.hooks_runner import HooksRunner
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
@@ -30,7 +31,6 @@ from castervoice.lib.dfplus.ccrmerging2.ccrmerger2 import CCRMerger2
 from castervoice.lib.dfplus.ccrmerging2.compatibility.simple_compat_checker import SimpleCompatibilityChecker
 from castervoice.lib.dfplus.ccrmerging2.merging.classic_merging_strategy import ClassicMergingStrategy
 from castervoice.lib.dfplus.ccrmerging2.sorting.config_ruleset_sorter import ConfigRuleSetSorter
-from castervoice.lib.ctrl.mgr.loading.timer_reload_observable import TimerFileWatcherObservable
 from castervoice.lib.ctrl.mgr.loading.manual_reload_observable import ManualReloadObservable
 
 
@@ -94,6 +94,18 @@ class Nexus:
 
     @staticmethod
     def _create_grammar_manager(merger, content_loader, hooks_runner):
+        """
+        This is where settings should be used to alter the dependency injection being done.
+        Setting things to alternate implementations can live here.
+
+        :param merger:
+        :param content_loader:
+        :param hooks_runner:
+        :return:
+        """
+
+        always_global_ccr_mode = settings.SETTINGS["miscellaneous"]["rdp_mode"]
+
         ccr_rule_validator = CCRRuleValidationDelegator(
             IsMergeRuleValidator(),
             HasNoContextValidator(),
@@ -110,17 +122,14 @@ class Nexus:
 
         activator = GrammarActivator(lambda rule: isinstance(rule, MergeRule))
         some_setting = True
-        observable = TimerFileWatcherObservable()
+        observable = TimerReloadObservable()
         if some_setting:
             observable = ManualReloadObservable()
-
         rule_activation_config = RulesActivationConfig()
         mapping_rule_maker = MappingRuleMaker()
         grammars_container = GrammarContainer()
 
-        always_global_ccr_mode = settings.SETTINGS["miscellaneous"]["rdp_mode"]
 
-        # TODO: need to take care of rdp_mode_exclusion and transformer_exclusion
         gm = GrammarManager(rule_activation_config, merger, content_loader, ccr_rule_validator, details_validator,
             observable, activator, mapping_rule_maker, grammars_container, hooks_runner, always_global_ccr_mode)
 

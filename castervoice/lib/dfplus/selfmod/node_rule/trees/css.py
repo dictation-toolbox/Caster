@@ -8,11 +8,11 @@ from dragonfly.grammar.grammar_base import Grammar
 
 from castervoice.lib import control
 from castervoice.lib.actions import Text
-from castervoice.lib.dfplus.hint import hintnode
-from castervoice.lib.dfplus.hint.hintnode import NodeRule
+from castervoice.lib.dfplus.node_rule import node_rule
+from castervoice.lib.dfplus.node_rule.node_rule import NodeRule
 from castervoice.lib.dfplus.state.actions2 import NullAction
 
-H = hintnode.HintNode
+H = node_rule.HintNode
 _style = H("style", Text("-style: "), [
     H("none", Text("none")),
     H("hidden", Text("hidden")),
@@ -28,7 +28,7 @@ _style = H("style", Text("-style: "), [
 
 
 def get_css_node():
-    H = hintnode.HintNode
+    H = node_rule.HintNode
     css_sections = []
     css_sections.append(_get_background())
     css_sections.append(_get_border())
@@ -131,7 +131,7 @@ def _get_speech():
 
 
 def _get_column():
-    H = hintnode.HintNode
+    H = node_rule.HintNode
     global _style
     return H("column", Text("column"), [
         H("count", Text("-count: "), [H("auto", Text("auto"))]),
@@ -155,7 +155,7 @@ def _get_column():
 
 
 def _get_text():
-    H = hintnode.HintNode
+    H = node_rule.HintNode
     _align = [
         H("start", Text("start")),
         H("end", Text("end")),
@@ -211,7 +211,7 @@ def _get_text():
 
 
 def _get_miscellaneous():
-    H = hintnode.HintNode
+    H = node_rule.HintNode
     _sides = [
         H("top", Text("top")),
         H("bottom", Text("bottom")),
@@ -277,7 +277,7 @@ def _get_miscellaneous():
 
 def _get_box_model(
 ):  # display can be optimized by doing more nesting, this whole section is to be moved somewhere else
-    H = hintnode.HintNode
+    H = node_rule.HintNode
     _auto = [H("auto", Text("auto"))]
     _height = H("height", Text("height: "), _auto)
     _width = H("width", Text("width: "), _auto)
@@ -368,7 +368,7 @@ def _get_box_model(
 
 
 def _get_font():
-    H = hintnode.HintNode
+    H = node_rule.HintNode
     return H("font", Text("font"), [
         H("family", Text("-family: "), [H("inherit", Text("inherit"))]),
         H("size", Text("-size: "), [
@@ -424,7 +424,7 @@ def _get_font():
 
 
 def _get_box():
-    H = hintnode.HintNode
+    H = node_rule.HintNode
     return H("box", Text("box"), [
         H("shadow", Text("-shadow: "),
           [H("inset", Text("inset")),
@@ -464,7 +464,7 @@ def _get_box():
 
 
 def _get_border():
-    H = hintnode.HintNode
+    H = node_rule.HintNode
     _width = H(
         "width", Text("-width: "),
         [H("thin", Text("thin")),
@@ -497,7 +497,7 @@ def _get_border():
 
 
 def _get_background():
-    H = hintnode.HintNode
+    H = node_rule.HintNode
     halign = [
         H("left", Text("left")),
         H("center", Text("center")),

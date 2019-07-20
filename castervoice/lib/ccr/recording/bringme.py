@@ -6,7 +6,7 @@ from castervoice.apps.file_dialogue import dialogue_context
 class BringRule(SelfModifyingRule):
     pronunciation = "bring me"
 
-    def refresh(self):
+    def _refresh(self):
         self.mapping = {
             "bring me <program>": R(Function(self.bring_program)),
             "bring me <website>": R(Function(self.bring_website)),
@@ -102,7 +102,7 @@ class BringRule(SelfModifyingRule):
             return
         self.config[launch][key] = path
         self.save_config()
-        self.refresh()
+        self._refresh()
 
     def bring_add_auto(self, key):
         def add(launch):
@@ -120,7 +120,7 @@ class BringRule(SelfModifyingRule):
             if key in self.config[section]:
                 del self.config[section][key]
                 self.save_config()
-                self.refresh()
+                self._refresh()
                 return
 
     def _rebuild_items(self):
@@ -134,7 +134,7 @@ class BringRule(SelfModifyingRule):
 
     def load_and_refresh(self):
         self.load_config()
-        self.refresh()
+        self._refresh()
 
     def load_config(self):
         if os.path.isfile(self.config_path) is False:
@@ -152,7 +152,7 @@ class BringRule(SelfModifyingRule):
         self.config = self.bm_defaults
         self.save_config()
         if not startup:
-            self.refresh()
+            self._refresh()
 
     bm_defaults = {
         "website": {

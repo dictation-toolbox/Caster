@@ -10,8 +10,6 @@ from castervoice.lib.dfplus.state.actions import AsynchronousAction
 from castervoice.lib.dfplus.state.actions2 import NullAction
 from castervoice.lib.dfplus.state.short import R, L, S
 
-_NEXUS = control.nexus()
-
 
 class HistoryRule(SelfModifyingRule):
     def __init__(self, nexus):
@@ -60,9 +58,9 @@ class HistoryRule(SelfModifyingRule):
         if spec != "" and len(word_sequences) > 0:
             if data["repeatable"]:
                 spec += " [times <n>]"
-            self.refresh(spec, word_sequences)
+            self._refresh(spec, word_sequences)
 
-    def refresh(self, *args):
+    def _refresh(self, *args):
         '''args: spec, list of lists of strings'''
 
         # get mapping
@@ -90,11 +88,12 @@ class HistoryRule(SelfModifyingRule):
         self.reset(mapping)
 
     def load_recorded_macros(self):
-        self.refresh()
+        self._refresh()
 
     def delete_recorded_macros(self):
         utilities.save_toml_file({}, settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
-        self.refresh()
+        self._refresh()
 
 
+_NEXUS = control.nexus()
 _NEXUS.merger.add_selfmodrule(HistoryRule(_NEXUS))

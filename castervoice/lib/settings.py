@@ -293,7 +293,7 @@ _DEFAULT_SETTINGS = {
     },
 
     # node rules
-    "nodes": {},
+    "trees": {},
 
     # miscellaneous section
     "miscellaneous": {

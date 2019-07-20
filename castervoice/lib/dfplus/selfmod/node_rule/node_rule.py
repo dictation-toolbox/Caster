@@ -1,8 +1,3 @@
-'''
-Created on May 27, 2015
-
-@author: dave
-'''
 from dragonfly import ActionBase
 
 from castervoice.lib.dfplus.merge.selfmodrule import SelfModifyingRule
@@ -14,9 +9,9 @@ class HintNode(object):
     def __init__(self, spec, base, children=[], extras=[], defaults={}):
         err = str(spec) + ", " + str(base) + ", " + str(children)
         assert isinstance(spec, basestring), "Node spec must be string: " + err
-        assert isinstance(base, ActionBase), "Node base must be actionbase: " + err
+        assert isinstance(base, ActionBase), "Node base must be ActionBase: " + err
         assert len(children) == 0 or isinstance(
-            children[0], HintNode), "Children must be nodes: " + err
+            children[0], HintNode), "Children must be trees: " + err
 
         self.base = base
         self.children = children
@@ -37,7 +32,7 @@ class HintNode(object):
         return p
     
     '''
-    Returns a set of all specs for all nodes of this tree.
+    Returns a set of all specs for all trees of this tree.
     '''
     def all_specs(self):
         specs = set()
@@ -57,7 +52,7 @@ class HintNode(object):
     [[A.spec, A.action, A], [A.spec+B.spec, A.action+B.action, B], 
      [A.spec+C.spec, A.action+C.action, C], [A.spec+C.spec+D.spec, A.action+C.action+D.action, D]]  
      
-    This is useful for enabling multiple levels of nodes simultaneously.
+    This is useful for enabling multiple levels of trees simultaneously.
     '''
     def flatten(self, depth, max_depth=False):
         '''results = [this node's spec, this node's action, this node itself]'''
@@ -121,12 +116,12 @@ class NodeRule(SelfModifyingRule):
             first = True
             SelfModifyingRule.__init__(self, self.master_node.spec, refresh=False)
 
-        self.refresh(node, first, is_reset)
+        self._refresh(node, first, is_reset)
 
     def get_pronunciation(self):
         return self.master_node.spec
 
-    def refresh(self, *args):
+    def _refresh(self, *args):
         self.node = args[0]
         first = args[1]
         is_reset = args[2]
@@ -152,7 +147,7 @@ class NodeRule(SelfModifyingRule):
         self.reset(mapping)
 
     def change_node(self, node, reset=False):
-        self.refresh(node, False, reset)
+        self._refresh(node, False, reset)
 
     def reset_node(self):
         if self.node is not self.master_node:
