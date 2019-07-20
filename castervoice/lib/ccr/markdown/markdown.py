@@ -1,21 +1,20 @@
 from castervoice.lib.imports import *
 
+
 class Markdown(MergeRule):
     pronunciation = "mark down"
 
     mapping = {
         "heading [<num>] [<dict>]":
-            R(Function(lambda num, dict:
-                Text(("#" * num) + " " + str(dict).capitalize() + "\n").execute())),
-
+            R(Store() + Function(lambda num, dict: Text(
+                ("#"*num) + " " + str(dict).capitalize()).execute()) + Retrieve() +
+              Key("enter")),
         "table row <n>":
-            R(Function(lambda n: Text("|"*(n-1)).execute()) + Key("home")),
+            R(Function(lambda n: Text("|"*(n - 1)).execute()) + Key("home")),
         "table (break | split) <n>":
-            R(Function(lambda n: Text("---|"*(n-1) + "---").execute()) + Key("enter")),
-
+            R(Function(lambda n: Text("---|"*(n - 1) + "---").execute()) + Key("enter")),
         "insert <element>":
-            R(Key("%(element)s")),
-
+            R(Store() + Key("%(element)s") + Retrieve(action_if_text="c-right")),
         "insert header":
             R(Text("---\nauthor: \ntitle: \n---\n")),
     }
