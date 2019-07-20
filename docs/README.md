@@ -3,7 +3,7 @@
 
 [Caster](https://github.com/dictation-toolbox/Caster)  is a collection of tools aimed at enabling programming and accessibility entirely by voice built upon the [Dragonfly](https://github.com/dictation-toolbox/dragonfly) API.
 
-**Note for PyPi Users**: The PIP package is (_Alpha_). Do not use the PIP install. Alternatively use this [Commit](https://github.com/dictation-toolbox/Caster/tree/54e7777027fe68ca880a14d8b234e86e52b7f5b0) with classic install for the best feature experience.
+**Note for PyPi Users**: The PIP package is (_Alpha_). Do not use the PIP install. Alternatively use this [Master Branch](https://github.com/dictation-toolbox/Caster) with classic install for the best feature experience.
 
 - Videos by the Caster Community.
   - [Caster Demo](https://www.youtube.com/watch?v=oIwh3z2jXD4)
@@ -30,7 +30,7 @@
   Donate at [![Bountysource](https://www.bountysource.com/badge/team?team_id=407907&style=bounties_posted)](https://www.bountysource.com/teams/caster-dictation/bounties?utm_source=Bountysource&utm_medium=shield&utm_campaign=bounties_posted) 
 - [Making your own Dragonfly and Caster rules](https://caster.readthedocs.io/en/latest/readthedocs/Examples/Rule_Construction/) augmented by [Development Commands](https://caster.readthedocs.io/en/latest/readthedocs/CCR_languages_Quick_Reference/#VoiceDevCommands)
 - Need support or just curious? Join our community at [![Join the chat at https://gitter.im/synkarius/caster](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dictation-toolbox/home) and [Discord](https://discord.gg/9eAAsCJ) for voice chat.
-- The [Voice Index](https://caster.readthedocs.io/en/latest/readthedocs/Voice_Index/) is a curated source of information: Videos, Blogs, Repositories, Presentations, etc related to Dragonfly, voice programming, and accessibility.
+- The [DictationToolbox.org](https://dictation-toolbox.github.io/dictation-toolbox.org/) is a curated webpage of information related to voice programming and accessibility. Content Includes: User Tips, Hardware, Videos, Blogs, Repositories, Presentations, and etc. Pull requests welcome!
 
 # Feature List
 

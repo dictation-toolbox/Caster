@@ -1,3 +1,5 @@
+import unittest
+
 from dragonfly.actions.action_base import ActionBase
 
 from castervoice.lib.dfplus.hint.hintnode import HintNode, NodeRule
@@ -47,6 +49,7 @@ def get_test_node():
 
 
 class TestNode(TestNexus):
+
     def setUp(self):
         TestNexus.setUp(self)
         self.node = get_test_node()
@@ -93,3 +96,6 @@ class TestNodeRule(TestNode):
         ''' the noderule should default here and reset '''
         defaulter.execute()
         self.assertIn("align", self.noderule.mapping_actual())
+
+if __name__ == '__main__':
+    unittest.main()

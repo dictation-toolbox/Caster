@@ -7,6 +7,7 @@ from castervoice.lib.dfplus.merge.mergerule import MergeRule
 
 from castervoice.lib import settings
 from castervoice.lib.ctrl.dependencies import DependencyMan
+<<<<<<< HEAD
 from castervoice.lib.ctrl.mgr.validation.details.ccr_app_validator import AppCCRDetailsValidator
 from castervoice.lib.ctrl.mgr.validation.details.ccr_validator import CCRDetailsValidator
 from castervoice.lib.ctrl.mgr.validation.details.details_validation_delegator import DetailsValidationDelegator
@@ -19,6 +20,8 @@ from castervoice.lib.ctrl.mgr.validation.rules.pronunciation_validator import Pr
 from castervoice.lib.ctrl.mgr.validation.rules.selfmod_validator import SelfModifyingRuleValidator
 from castervoice.lib.ctrl.wsrdf import RecognitionHistoryForWSR
 from castervoice.lib.dfplus.ccrmerging2.transformers.gdef_transformer import GlobalDefinitionsRuleTransformer
+=======
+>>>>>>> master
 from castervoice.lib.dfplus.communication import Communicator
 from castervoice.lib.dfplus.state.stack import CasterState
 from dragonfly.grammar.grammar_base import Grammar
@@ -48,10 +51,19 @@ class Nexus:
         '''clipboard dict: used for multi-clipboard in navigation module'''
         self.clip = {}
 
+<<<<<<< HEAD
+        '''recognition history: for rules which require "lookback"'''
+        if settings.WSR:
+            self.history = RecognitionHistoryForWSR(20)
+        else:
+            self.history = RecognitionHistory(20)
+=======
         self.temp = ""
 
         self.history = RecognitionHistory(20)
-        self.history.register()
+        if real_merger_config:
+>>>>>>> master
+            self.history.register()
         self.state.set_stack_history(self.history)
         self.preserved = None
 

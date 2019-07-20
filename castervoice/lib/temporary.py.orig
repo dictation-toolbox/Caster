@@ -1,5 +1,10 @@
-from dragonfly import ActionBase, Paste
+<<<<<<< HEAD
+from dragonfly import ActionBase
 from castervoice.lib import context
+=======
+from dragonfly import ActionBase, Paste
+from castervoice.lib import context, control
+>>>>>>> master
 from castervoice.lib.actions import Text, Key
 '''
 Stores the currently highlighted text in a temporary variable,
@@ -37,6 +42,7 @@ side-effect of being able to detect when no text is highlighted.
 _TEMP = ""
 
 
+
 class Store(ActionBase):
     def __init__(self, space=" ", remove_cr=False):
         ActionBase.__init__(self)
@@ -62,8 +68,13 @@ class Retrieve(ActionBase):
         return _TEMP
 
     def _execute(self, data=None):
+<<<<<<< HEAD
         output = _TEMP
+        Text(output).execute()
+=======
+        output = control.nexus().temp
         Paste(output).execute()
+>>>>>>> master
         if output:
             Key(self.action_if_text).execute()
         else:
