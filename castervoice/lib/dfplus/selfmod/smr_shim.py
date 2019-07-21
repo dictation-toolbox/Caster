@@ -12,7 +12,25 @@ traversed, etc.
 
 """
 
+
 class SelfModReloadingShim(object):
 
     def __init__(self):
-        self._qu
+        pass
+
+    def signal_reload(self, rule_class):
+        """
+        TODO: this
+        :return:
+        """
+        pass
+
+
+_SINGLETON = None
+
+
+def get_instance():
+    global _SINGLETON
+    if _SINGLETON is None:
+        _SINGLETON = SelfModReloadingShim()
+    return _SINGLETON

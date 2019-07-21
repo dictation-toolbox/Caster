@@ -100,10 +100,9 @@ def receive_settings(data):
     # TODO: apply new settings
 
 
-def settings_window(nexus):
+def settings_window():
     h_launch.launch(settings.WXTYPE_SETTINGS)
-    on_complete = AsynchronousAction.hmc_complete(lambda data: receive_settings(data),
-                                                  nexus)
+    on_complete = AsynchronousAction.hmc_complete(lambda data: receive_settings(data))
     AsynchronousAction(
         [L(S(["cancel"], on_complete))],
         time_in_seconds=1,
@@ -114,10 +113,11 @@ def settings_window(nexus):
 class LaunchRule(MergeRule):
     mapping = {
         "launch settings window":
-            R(Function(settings_window, nexus=_NEXUS)),
+            R(Function(settings_window)),
     }
 
-if settings.SETTINGS["feature_rules"]["hmc"]:
+
+if settings.SETTINGS["miscellaneous"]["hmc"]:
     control.non_ccr_app_rule(HMCRule(), AppContext(title=settings.HOMUNCULUS_VERSION), rdp=False)
     control.non_ccr_app_rule(HMCHistoryRule(), AppContext(title=settings.HMC_TITLE_RECORDING), rdp=False)
     control.non_ccr_app_rule(HMCDirectoryRule(), AppContext(title=settings.HMC_TITLE_DIRECTORY), rdp=False)
@@ -125,5 +125,5 @@ if settings.SETTINGS["feature_rules"]["hmc"]:
     control.non_ccr_app_rule(HMCSettingsRule(), AppContext(title=settings.SETTINGS_WINDOW_TITLE), rdp=False)
     control.non_ccr_app_rule(LaunchRule(), context=None, rdp=False)
 
-if not settings.SETTINGS["feature_rules"]["hmc"]:
+if not settings.SETTINGS["miscellaneous"]["hmc"]:
     print("WARNING: Tk Window controls have been disabled -- this is not advised!")

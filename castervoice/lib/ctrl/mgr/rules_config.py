@@ -1,5 +1,5 @@
 from castervoice.lib import settings
-from castervoice.lib.ctrl.mgr.config.config_toml import TomlConfig
+from castervoice.lib.config.config_toml import TomlConfig
 
 
 class RulesActivationConfig(TomlConfig):

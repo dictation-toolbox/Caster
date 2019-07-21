@@ -197,6 +197,8 @@ _DEFAULT_SETTINGS = {
             BASE_PATH + "/bin/share/Rules",
         "ALIAS_PATH":
             _USER_DIR + "/data/aliases.toml",
+        "CHAIN_ALIAS_PATH":
+            _USER_DIR + "/data/chain_aliases.toml",
         "CONFIG_PATH":
             _USER_DIR + "/data/grammars.toml",
         "DLL_PATH":
@@ -284,14 +286,6 @@ _DEFAULT_SETTINGS = {
         "fetching_time": 3  # the time to fetch a github repository in seconds
     },
 
-    # feature switches
-    "feature_rules": {
-        "hmc": True,
-        "again": True,
-        "alias": True,
-        "chainalias": True,
-    },
-
     # node rules
     "trees": {},
 
@@ -310,6 +304,7 @@ _DEFAULT_SETTINGS = {
         "legion_vertical_columns": 30,
         "use_aenea": False,
         "online_mode": True,
+        "hmc": True,
     },
     "pronunciations": {
         "c++": "C plus plus",

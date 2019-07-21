@@ -32,8 +32,7 @@ class HistoryRule(SelfModifyingRule):
 
         # use a response window to get a spec and word sequences for the new macro
         h_launch.launch(settings.QTYPE_RECORDING, data=formatted)
-        on_complete = AsynchronousAction.hmc_complete(
-            lambda data: self.add_recorded_macro(data), self.nexus)
+        on_complete = AsynchronousAction.hmc_complete(lambda data: self.add_recorded_macro(data))
         AsynchronousAction([L(S(["cancel"], on_complete))],
                            time_in_seconds=0.5,
                            repetitions=300,

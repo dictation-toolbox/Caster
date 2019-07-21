@@ -1,5 +1,5 @@
 from castervoice.lib import utilities
-from castervoice.lib.ctrl.mgr.config.config_base import BaseConfig
+from castervoice.lib.config.config_base import BaseConfig
 
 
 class TomlConfig(BaseConfig):

@@ -101,8 +101,7 @@ class ConfirmAction(AsynchronousAction):
                  instructions="instructions missing",
                  nexus=None):
         self.set_nexus(nexus)
-        on_complete = AsynchronousAction.hmc_complete(lambda data: receive_response(data),
-                                                      self.nexus())
+        on_complete = AsynchronousAction.hmc_complete(lambda data: receive_response(data))
         AsynchronousAction.__init__(
             self, [L(S(["cancel"], on_complete))], 1, 60, rdescript,
             False)  # cannot block, if it does, it'll block its own confirm command

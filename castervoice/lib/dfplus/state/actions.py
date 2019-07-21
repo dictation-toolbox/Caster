@@ -93,7 +93,7 @@ class AsynchronousAction(ContextSeeker):
         self.nexus().state.add(StackItemAsynchronous(self, data))
 
     @staticmethod
-    def hmc_complete(data_function, nexus):
+    def hmc_complete(data_function):
         ''' returns a function which applies the passed in function to
         the data returned by the pop-up window - the returned function
         will be called by AsynchronousAction's timer repeatedly,
@@ -102,7 +102,7 @@ class AsynchronousAction(ContextSeeker):
         def check_complete():
             data = None
             try:
-                data = nexus.comm.get_com("hmc").get_message()
+                data = _NEXUS.comm.get_com("hmc").get_message()
                 if data is None:
                     return False
             except Exception:
