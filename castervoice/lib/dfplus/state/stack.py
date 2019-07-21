@@ -5,6 +5,8 @@ Created on Jun 7, 2015
 '''
 import Queue
 
+from dragonfly import RecognitionHistory
+
 from castervoice.lib import settings, utilities
 from castervoice.lib.dfplus.state.stackitems import StackItemSeeker, \
     StackItemRegisteredAction, StackItemAsynchronous, StackItemConfirm
@@ -15,10 +17,6 @@ class CasterState:
         self.stack = ContextStack(self)
         self.blocker = None
         self.waiting = Queue.Queue()
-
-    def set_stack_history(self, history):
-        '''used for WSR repetition command'''
-        self.stack.set_history(history)
 
     def add(self, stack_item):
         if self.blocker is None:
@@ -57,9 +55,6 @@ class ContextStack:
         self.list = []
         self.max_list_size = 30
         self.state = state
-
-    def set_history(self, history):
-        self._history = history
 
     def add(self, stack_item):
         stack_item.preserve()

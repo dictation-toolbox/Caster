@@ -195,10 +195,12 @@ _DEFAULT_SETTINGS = {
             BASE_PATH + "/bin/share/FilterRules",
         "RULES_RULES_DEFAULTS_PATH":
             BASE_PATH + "/bin/share/Rules",
-        "ALIAS_PATH":
-            _USER_DIR + "/data/aliases.toml",
-        "CHAIN_ALIAS_PATH":
-            _USER_DIR + "/data/chain_aliases.toml",
+        "SM_ALIAS_PATH":
+            _USER_DIR + "/data/sm_aliases.toml",
+        "SM_CHAIN_ALIAS_PATH":
+            _USER_DIR + "/data/sm_chain_aliases.toml",
+        "SM_HISTORY_PATH":
+            _USER_DIR + "/data/sm_history.toml",
         "CONFIG_PATH":
             _USER_DIR + "/data/grammars.toml",
         "DLL_PATH":

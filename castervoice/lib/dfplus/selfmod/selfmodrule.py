@@ -59,6 +59,9 @@ class BaseSelfModifyingRule(MergeRule):
         Serialize ALL state, save to self._config.
 
         Child classes should implement this.
+
+        ... may not end up needing this. It seems like _refresh will mostly be doing this
+        and then calling reset()
         """
         pass
 

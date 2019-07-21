@@ -50,11 +50,6 @@ class Nexus:
 
         self.temp = ""
 
-        self.history = RecognitionHistory(20)
-        self.history.register()
-        self.state.set_stack_history(self.history)
-        self.preserved = None
-
         '''rpc class for interacting with Caster UI elements via xmlrpclib'''
         self.comm = Communicator()
 
