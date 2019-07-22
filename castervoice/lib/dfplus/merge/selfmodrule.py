@@ -8,8 +8,6 @@ from dragonfly.grammar.elements import Dictation
 from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge.mergepair import MergeInf
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.actions2 import NullAction
-
 
 class SelfModifyingRule(MergeRule):
     '''
@@ -31,7 +29,7 @@ class SelfModifyingRule(MergeRule):
 
     def refresh(self, *args):
         '''Does stuff to get mapping, then calls self.reset()'''
-        self.reset({"default record rule spec": NullAction()})
+        raise NotImplementedError()
 
     def set_merger(self, merger):
         '''only set for CCR SelfModifyingRules'''
