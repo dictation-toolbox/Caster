@@ -266,7 +266,7 @@ class Navigation(MergeRule):
         "(lease wally | latch) [<nnavi10>]": R(Key("home:%(nnavi10)s")),
         "(ross wally | ratch) [<nnavi10>]": R(Key("end:%(nnavi10)s")),
         "bird [<nnavi500>]": R(Key("c-left:%(nnavi500)s")),
-        "fird [<nnavi500>]": R(Key("c-right:%(nnavi500)s")),
+        "firch [<nnavi500>]": R(Key("c-right:%(nnavi500)s")),
         "brick [<nnavi500>]": R(Key("s-left:%(nnavi500)s")),
         "frick [<nnavi500>]": R(Key("s-right:%(nnavi500)s")),
         "blitch [<nnavi500>]": R(Key("cs-left:%(nnavi500)s")),
