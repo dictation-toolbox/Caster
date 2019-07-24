@@ -1,6 +1,6 @@
 # Text Manipulation and Navigation
 
-Caster provides powerful text manipulation and navigation features. These functions are brand new, experimental, and subject to change (perhaps based on your feedback!). We encourage contributions; please discuss your ideas [here](https://github.com/dictation-toolbox/Caster/issues/579). These commands are "CCR" so are able to be combined with other CCR commands. Enable these commands by saying "Enable text manipulation".
+Caster provides powerful text manipulation and navigation features. These functions are experimental and subject to change (perhaps based on your feedback!). We encourage contributions; please discuss your ideas [here](https://github.com/dictation-toolbox/Caster/issues/579). These commands are "CCR" so are able to be combined with other CCR commands. Enable these commands by saying "Enable text manipulation".
 
 ## Common elements
 
@@ -8,36 +8,40 @@ Caster provides powerful text manipulation and navigation features. These functi
 - `number_of_lines_to_search` is an integer number of lines to search for the target object. _sauce/lease_ searches up and _dunce/ross_ searches down. _sauce/dunce_ defaults to 3 lines if omitted and _lease/ross_ defaults to searching only the current line.
 - `before_after` can be _before_ or _after_ and indicates whether the cursor should stop to the left (_before_) or the right (_after_) of the target object. Defaults for `before_after` depend on which command is being used. For the "go" commands, `before_after` defaults to whichever one is closer to the cursor. More explicitly, for "go", _ross/dunce_ defaults to _before_ and _lease/sauce_ defaults to _after_.  By contrast, for the "grab until" and "remove until" commands it defaults to the one that is farther (i.e. it selects or removes all the way through the target object). More explicitly, for "grab/remove until", _ross/dunce_ defaults to _after_ and _lease/sauce_ defaults to _before_. 
 - `occurrence_number` can be _first_ through _ninth_ and indicates which occurrence of the target object you want, counting from the initial position of the cursor in the direction you specify. Defaults to _first_.
-- `target_object` can be a Caster alphabet element (_arch, brov_ etc.), a Caster punctuation element (_left prekris, deckle_ etc.), a digit prefixed by _num_ (e.g. _num 6_ ), or arbitrary dictation (e.g. "punctuation element" spoken). 
+- `target_object` can be a Caster alphabet element (_arch, brov_ etc.), a Caster punctuation element (_left prekris, deckle_ etc.), a digit prefixed by _num_ (e.g. _num 6_ ), a sequence of up to three of the previous types of targets (sequences are currently only available for "go/move"), or arbitrary dictation (e.g. "punctuation element" spoken). For "go/move", if you wish to use the individual character targets in a CCR sequence with another character insertion (alphabet, punctuation, or digit) immediately following, you must terminate the command using "over" (see the examples).
 
 ## Commands
 
-- Move the cursor: `(go | move) <direction> [<number_of_lines_to_search>] [<before_after>] [<occurrence_number>] <target_object>` 
-- Selecting a single element: `grab <direction> [<number_of_lines_to_search>] [<occurrence_number>] <dictation>`
-- Selecting from the cursor to a target: `grab <direction> [<number_of_lines_to_search>] until [<before_after>] [<occurrence_number>] <dictation>`
-- Deleting a single element: `remove <direction> [<number_of_lines_to_search>] [<occurrence_number>] <dictation>`
-- Deleting from the cursor to a target: `remove <direction> [<number_of_lines_to_search>] until [<before_after>] [<occurrence_number>] <dictation>`
+- Move the cursor: `(go | move) <direction> [<number_of_lines_to_search>] [<before_after>] [<occurrence_number>] <target_object> [over]` 
+- Selecting a single element: `grab <direction> [<number_of_lines_to_search>] [<occurrence_number>] <target_object>`
+- Selecting from the cursor to a target: `grab <direction> [<number_of_lines_to_search>] until [<before_after>] [<occurrence_number>] <target_object>`
+- Deleting a single element: `remove <direction> [<number_of_lines_to_search>] [<occurrence_number>] <target_object>`
+- Deleting from the cursor to a target: `remove <direction> [<number_of_lines_to_search>] until [<before_after>] [<occurrence_number>] <target_object>`
+    - This command will also remove a space immediately preceding the target object.
 - Replacing a single element: `replace <direction>  [<number_of_lines_to_search>] [<occurrence_number>] <target_object> with <replacement_object>`
-    - Note: `<replacement_object>` must be dictation if `<target_object>` is dictation. As in, you can't yet replace dictation with a Caster alphabet element.
+    - Note: `<replacement_object>` must be dictation if `<target_object>` is dictation and likewise for character targets. As in, you can't yet replace dictation with a Caster alphabet element.
 
 **Examples**:
 
 - _go ross before deckle_
+- _go ross before deckle char_
+- _go ross before deckle char over oscar_
+    - Moves the cursor before ":c" then inserts "o" before the ":".
 - _go ross after second deckle_
-    - move the cursor after the second occurrence of ":" to the right of the cursor's original position
-- _grab sauce five examples_
-    - Searches five lines up and selects the first occurrence of the word "examples" above the cursor.
-- _grab sauce five until examples_
-    - Searches five lines up and selects from the cursor to the first occurrence of the word "examples" above the cursor.
+    - Moves the cursor after the second occurrence of ":" to the right of the cursor's original position.
+- _grab sauce eight examples_
+    - Searches eight lines up and selects the first occurrence of the word "examples" above the cursor.
+- _grab sauce eight until examples_
+    - Searches eight lines up and selects from the cursor to the first occurrence of the word "examples" above the cursor.
 - _grab ross hello hug quotes_
-    - select the nearest occurrence of "hello" (to the right of the cursor on the current line) and surround it by quotes.
-    - _hug quotes_ is actually a separate command not part of this module, but you can do this because these commands are CCR.
-- _remove sauce five examples_
-    - Searches five lines up and deletes the first occurrence of the word "examples" above the cursor.
-- _remove sauce five until examples_
-    - Searches five lines up and deletes from the cursor to the first occurrence of the word "examples" above the cursor.
+    - Selects the nearest occurrence of "hello" (to the right of the cursor on the current line) and surrounds it by quotes.
+    - Note that _hug quotes_ is a separate command not part of this module, but you can do this because these commands are CCR.
+- _remove sauce eight examples_
+    - Searches eight lines up and deletes the first occurrence of the word "examples" above the cursor.
+- _remove sauce eight until examples_
+    - Searches eight lines up and deletes from the cursor to the first occurrence of the word "examples" above the cursor.
 - _replace lease num six with hotel_
-    - replace the nearest occurrence (to the left of the cursor) of the digit "6" with the letter "h"
+    - Replaces the nearest occurrence (to the left of the cursor) of the digit "6" with the letter "h".
 
 ## Possible future features
 Please feel free to try and implement these and submit a pull request!
@@ -66,3 +70,4 @@ Please feel free to try and implement these and submit a pull request!
 - Sometimes these commands don't work properly in certain apps because those apps take a very long time for text to be added into the clipboard after pressing Ctrl-C. The current solution is to have a dictionary called `copy_pause_time_dict` that lets the user set different pause times (for after pressing Ctrl-C) for different apps. (`copy_pause_time_dict` and the other dictionaries described here are in `text_manipulation_functions.py` for now). In order to add a custom pause time for an application, the user must first add that application into the dictionary `contexts`.
     - In the future, a better solution might be the following:  if the text that is passed into the function is the same as what was on the clipboard before, then have the command try copying again (with an increased pause time afterwards). The tools for doing something like this alternative solution are already available in caster's `lib/context.py`, see for example the function `read_nmax_tries` and the parameter `same_is_okay` in the function `read_selected_without_altering_clipboard`. One problem with this solution seems to be that sometimes you might want to use the commands on the same text multiple times in a row (e.g. for moving the cursor) in which case what was on the first slot of the clipboard wouldn't change so the command would try to copy again unnecessarily. That problem could possibly be avoided by adjusting the function `read_selected_without_altering_clipboard`. 
     - In addition to the `copy_pause_time_dict`, there is also a dictionary called `paste_pause_time_dict` that adjusts the pause time between putting text onto the clipboard and pressing `Ctrl-V`, since this seems (but not totally sure) to be application dependent.
+- Character sequences as target objects is only implemented for "go/move".
