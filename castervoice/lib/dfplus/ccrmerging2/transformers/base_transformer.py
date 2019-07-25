@@ -11,9 +11,14 @@ from castervoice.lib import utilities
 
 
 class BaseRuleTransformer(object):
-    '''do not override'''
 
     def get_transformed_rule(self, rule):
+        """
+
+
+        :param rule:
+        :return: a transformer copy of the
+        """
         if self._is_applicable(rule):
             rule_copy = None
             if hasattr(rule, "copy"):
@@ -25,10 +30,10 @@ class BaseRuleTransformer(object):
 
     '''override this'''
 
-    def _transform(self, mergerule):
-        return mergerule
+    def _transform(self, rule):
+        return rule
 
     '''override this'''
 
-    def _is_applicable(self, mergerule):
+    def _is_applicable(self, rule):
         return False

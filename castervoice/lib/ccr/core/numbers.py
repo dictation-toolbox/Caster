@@ -1,7 +1,9 @@
+from castervoice.lib import const
 from castervoice.lib.imports import *
 
+
 class Numbers(MergeRule):
-    pronunciation = CCRMerger.CORE[2]
+    pronunciation = const.CORE[2]
     mapping = {
         "word number <wn>":
             R(Function(alphanumeric.word_number, extra="wn")),

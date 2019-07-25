@@ -1,7 +1,9 @@
+from castervoice.lib import const
 from castervoice.lib.imports import *
 
+
 class Alphabet(MergeRule):
-    pronunciation = CCRMerger.CORE[0]
+    pronunciation = const.CORE[0]
 
     mapping = {
         "[<big>] <letter>":

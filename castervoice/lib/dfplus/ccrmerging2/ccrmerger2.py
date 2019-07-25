@@ -28,12 +28,32 @@ class CCRMerger2(object):
 
     def merge(self, rule_classes):
         """
+        TODO: it is in fact NOT rule classes being passed in, but ManagedRules
+        ... this is good. This method needs to
+        A) for each contexted rule in the sorted list, make a copy of the list with no other contexted rules in it
+            (also need a no-contexts copy)
+        B) compat-check each of these lists
+        c) merge each of these lists and then
+            c-1) add a "not-any" context to the main merged rule
+            c-2) add an "only" (normal) context to each of the contexted merged rules
+
         does 4-step merging, runs examples, returns a merged rule
         :param rule_classes: collection of MergeRule
         :return: MergeRule
         """
 
+        # TODO: make sure that test instantiations are done even on selfmod rules before this
+        instantiated_rules = [r() for r in rule_classes]
+
+        transformed_rules = []
+        for rule in instantiated_rules:
+            for transformer in self._transformers:
+                rule = transformer.get_transformed_rule(rule)
+            transformed_rules.append(rule)
+
+        sorted_rules = self._rule_sorter.sort_rules(transformed_rules)
+
+        compat_results = [self._compatibility_checker.compatibility_check(r) for r in sorted_rules]
 
 
-        pass
 

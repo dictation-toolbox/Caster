@@ -115,7 +115,7 @@ class GrammarManager(object):
         :return:
         """
         # update config, save
-        self._config.update(class_name, active)
+        self._config.put(class_name, active)
         self._config.save()
 
         # load it

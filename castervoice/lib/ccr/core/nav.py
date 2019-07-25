@@ -1,8 +1,4 @@
-'''
-Created on Sep 1, 2015
-
-@author: synkarius
-'''
+from castervoice.lib import const
 from castervoice.lib.imports import *
 from dragonfly.actions.action_mimic import Mimic
 from castervoice.lib.ccr.standard import SymbolSpecs
@@ -163,7 +159,7 @@ class NavigationNon(MergeRule):
 
 class Navigation(MergeRule):
     non = NavigationNon
-    pronunciation = CCRMerger.CORE[1]
+    pronunciation = const.CORE[1]
 
     mapping = {
     # "periodic" repeats whatever comes next at 1-second intervals until "terminate"

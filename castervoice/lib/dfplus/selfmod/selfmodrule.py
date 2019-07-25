@@ -7,20 +7,6 @@ from castervoice.lib.dfplus.selfmod import smr_shim
 from castervoice.lib.dfplus.selfmod.sm_config import SelfModStateSavingConfig
 from castervoice.lib.dfplus.state.actions2 import NullAction
 
-'''
-Rather than being "self modifying", SelfModifyingRule should become
-"RuleFactoryRule", have a backing data structure of some sort that gets mutated,
-and then be allowed to call "register_rule" on the GM with the new versions of
-itself periodically.
-
-
-- RFR should create MergeRules.
-- RFR should be allowed to modify its base mappings, , then use those to generate a new rule,
-    new rule always having the same name so GM handles it right.
-    
-Too much for now, shim it instead.
-'''
-
 
 class BaseSelfModifyingRule(MergeRule):
 

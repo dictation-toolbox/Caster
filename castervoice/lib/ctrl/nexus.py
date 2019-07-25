@@ -1,9 +1,11 @@
 from castervoice.lib.ctrl.grammar_container import GrammarContainer
-from castervoice.lib.ctrl.mgr.config.rules_config import RulesActivationConfig
 from castervoice.lib.ctrl.mgr.grammar_activator import GrammarActivator
 from castervoice.lib.ctrl.mgr.loading.timer_reload_observable import TimerReloadObservable
 from castervoice.lib.ctrl.mgr.rule_maker.mapping_rule_maker import MappingRuleMaker
+from castervoice.lib.ctrl.mgr.rules_config import RulesActivationConfig
 from castervoice.lib.dfplus.ccrmerging2.hooks.hooks_runner import HooksRunner
+from castervoice.lib.dfplus.ccrmerging2.sorting.config_ruleset_sorter import CyclingConfigRuleSetSorter, \
+    ConfigBasedRuleSetSorter
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 
 from castervoice.lib import settings
@@ -18,19 +20,16 @@ from castervoice.lib.ctrl.mgr.validation.rules.no_context_validator import HasNo
 from castervoice.lib.ctrl.mgr.validation.rules.not_noderule_validator import NotNodeRuleValidator
 from castervoice.lib.ctrl.mgr.validation.rules.pronunciation_validator import PronunciationAvailableValidator
 from castervoice.lib.ctrl.mgr.validation.rules.selfmod_validator import SelfModifyingRuleValidator
-from castervoice.lib.ctrl.wsrdf import RecognitionHistoryForWSR
 from castervoice.lib.dfplus.ccrmerging2.transformers.gdef_transformer import GlobalDefinitionsRuleTransformer
 from castervoice.lib.dfplus.communication import Communicator
 from castervoice.lib.dfplus.state.stack import CasterState
 from dragonfly.grammar.grammar_base import Grammar
-from dragonfly.grammar.recobs import RecognitionHistory
 from castervoice.lib.ctrl.mgr.grammar_manager import GrammarManager
 from castervoice.lib.ctrl.mgr.loading.content_loader import ContentLoader
 from castervoice.lib.ctrl.mgr.validation.rules.rule_validation_delegator import CCRRuleValidationDelegator
 from castervoice.lib.dfplus.ccrmerging2.ccrmerger2 import CCRMerger2
 from castervoice.lib.dfplus.ccrmerging2.compatibility.simple_compat_checker import SimpleCompatibilityChecker
 from castervoice.lib.dfplus.ccrmerging2.merging.classic_merging_strategy import ClassicMergingStrategy
-from castervoice.lib.dfplus.ccrmerging2.sorting.config_ruleset_sorter import ConfigRuleSetSorter
 from castervoice.lib.ctrl.mgr.loading.manual_reload_observable import ManualReloadObservable
 
 
@@ -59,8 +58,11 @@ class Nexus:
         '''grammar for recording macros -- should be moved elsewhere'''
         self.macros_grammar = Grammar("recorded_macros")
 
+        '''tracks both which rules are active and the activation order'''
+        rule_activation_config = RulesActivationConfig()
+
         '''the ccrmerger -- only merges MergeRules'''
-        self.merger = Nexus._create_merger()
+        self.merger = Nexus._create_merger(rule_activation_config.get_active_rules_order)
 
         '''unified loading mechanism for [rules, transformers, examples] 
         from [caster starter locations, user dir]'''
@@ -70,7 +72,8 @@ class Nexus:
         hooks_runner = HooksRunner()
 
         '''the grammar manager -- probably needs to get broken apart more'''
-        self._grammar_manager = Nexus._create_grammar_manager(self.merger, self._content_loader, hooks_runner)
+        self._grammar_manager = Nexus._create_grammar_manager(
+            self.merger, self._content_loader, hooks_runner, rule_activation_config)
 
         '''ACTION TIME:'''
         self._load_and_register_all_content(hooks_runner)
@@ -79,7 +82,7 @@ class Nexus:
         """
         all rules go to grammar_manager
         all transformers go to merger
-        TODO: examples go to both? depends on where we want hook events, eh?
+        TODO: hooks go to both? depends on where we want hook events, eh?
         """
         content = self.content_loader.load_everything()
         [self._grammar_manager.register_rule(rc, d) for rc, d in content.rules]
@@ -88,7 +91,7 @@ class Nexus:
         [hooks_runner.add_hook(h) for h in content.hooks]
 
     @staticmethod
-    def _create_grammar_manager(merger, content_loader, hooks_runner):
+    def _create_grammar_manager(merger, content_loader, hooks_runner, rule_activation_config):
         """
         This is where settings should be used to alter the dependency injection being done.
         Setting things to alternate implementations can live here.
@@ -96,6 +99,7 @@ class Nexus:
         :param merger:
         :param content_loader:
         :param hooks_runner:
+        :param rule_activation_config
         :return:
         """
 
@@ -120,10 +124,9 @@ class Nexus:
         observable = TimerReloadObservable()
         if some_setting:
             observable = ManualReloadObservable()
-        rule_activation_config = RulesActivationConfig()
+
         mapping_rule_maker = MappingRuleMaker()
         grammars_container = GrammarContainer()
-
 
         gm = GrammarManager(rule_activation_config, merger, content_loader, ccr_rule_validator, details_validator,
             observable, activator, mapping_rule_maker, grammars_container, hooks_runner, always_global_ccr_mode)
@@ -135,9 +138,9 @@ class Nexus:
         return gm
 
     @staticmethod
-    def _create_merger():
+    def _create_merger(rules_order_fn):
         transformers = [GlobalDefinitionsRuleTransformer()]
-        sorter = ConfigRuleSetSorter()
+        sorter = ConfigBasedRuleSetSorter(rules_order_fn)
         compat_checker = SimpleCompatibilityChecker()
         merge_strategy = ClassicMergingStrategy()
 

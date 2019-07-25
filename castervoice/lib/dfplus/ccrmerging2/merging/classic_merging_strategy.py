@@ -1,11 +1,12 @@
 from castervoice.lib.dfplus.ccrmerging2.merging.base_merging_strategy import BaseMergingStrategy
 
-'''
-This strategy KOs any incompatible rules.
-'''
-
 
 class ClassicMergingStrategy(BaseMergingStrategy):
+    """
+    This strategy KOs any incompatible rules.
+
+    TODO: handle CCR app rules
+    """
 
     def merge(self, sorted_checked_rules):
         merged_rule = None
@@ -14,4 +15,4 @@ class ClassicMergingStrategy(BaseMergingStrategy):
                 merged_rule = compat_result.rule()
             elif compat_result.is_compatible():
                 merged_rule = merged_rule.merge(compat_result.rule())
-        return merged_rule
+        return [merged_rule]

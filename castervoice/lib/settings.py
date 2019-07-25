@@ -187,30 +187,22 @@ _DEFAULT_SETTINGS = {
             _USER_DIR,
 
         # DATA
-        "BRINGME_PATH":
-            _USER_DIR + "/data/bringme.toml",
-        "BRINGME_DEFAULTS_PATH":
-            BASE_PATH + "/bin/share/bringme.toml.defaults",
-        "FILTER_RULES_DEFAULTS_PATH":
-            BASE_PATH + "/bin/share/FilterRules",
-        "RULES_RULES_DEFAULTS_PATH":
-            BASE_PATH + "/bin/share/Rules",
+        "SM_BRINGME_PATH":
+            _USER_DIR + "/data/sm_bringme.toml",
         "SM_ALIAS_PATH":
             _USER_DIR + "/data/sm_aliases.toml",
         "SM_CHAIN_ALIAS_PATH":
             _USER_DIR + "/data/sm_chain_aliases.toml",
         "SM_HISTORY_PATH":
             _USER_DIR + "/data/sm_history.toml",
-        "CONFIG_PATH":
-            _USER_DIR + "/data/grammars.toml",
+        "ACTIVATED_RULES_CONFIG_PATH":
+            _USER_DIR + "/data/activated_rules.toml",
         "DLL_PATH":
             BASE_PATH + "/lib/dll/",
         "GDEF_FILE":
             _USER_DIR + "/transformers/words.txt",
         "LOG_PATH":
             _USER_DIR + "/log.txt",
-        "RECORDED_MACROS_PATH":
-            _USER_DIR + "/data/recorded_macros.toml",
         "SAVED_CLIPBOARD_PATH":
             _USER_DIR + "/data/clipboard.json",
         "SIKULI_SCRIPTS_PATH":

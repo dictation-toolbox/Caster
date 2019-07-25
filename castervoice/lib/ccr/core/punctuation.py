@@ -1,6 +1,6 @@
 from dragonfly import Choice, Repeat
 
-from castervoice.lib import control
+from castervoice.lib import control, const
 from castervoice.lib.actions import Key, Text
 from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge.ccrmerger_legacy import CCRMerger
@@ -59,7 +59,7 @@ text_punc_dict = {
 }
 
 class Punctuation(MergeRule):
-    pronunciation = CCRMerger.CORE[3]
+    pronunciation = const.CORE[3]
 
     mapping = {
         "[<long>] <text_punc> [<npunc>]":

@@ -5,16 +5,16 @@ from dragonfly.actions.action_playback import Playback
 
 from castervoice.asynch.hmc import h_launch
 from castervoice.lib import settings
-from castervoice.lib.dfplus.merge.selfmodrule import SelfModifyingRule
 
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.dfplus.selfmod.selfmodrule import BaseSelfModifyingRule
 from castervoice.lib.dfplus.state.actions import AsynchronousAction
 from castervoice.lib.dfplus.state.actions2 import NullAction
 from castervoice.lib.dfplus.state.short import R, L, S
 
 
-class HistoryRule(SelfModifyingRule):
+class HistoryRule(BaseSelfModifyingRule):
 
     pronunciation = "history"
     mapping = {"default sequence": NullAction()}

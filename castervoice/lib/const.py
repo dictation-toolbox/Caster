@@ -7,4 +7,4 @@ class CCRType(object):
 CCR_ON = "ccr_on"
 
 # default-on ccr modules
-CORE = ["alphabet", "navigation", "numbers", "punctuation"]
+CORE = ["Alphabet", "Navigation", "Numbers", "Punctuation"]

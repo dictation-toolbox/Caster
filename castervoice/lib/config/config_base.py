@@ -1,7 +1,3 @@
-# from castervoice.lib import const
-# TODO: delete castervoice.lib.const if not used, or parts of it which are not
-
-
 class BaseConfig(object):
     def __init__(self):
         self._config = {}

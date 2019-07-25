@@ -289,7 +289,6 @@ class VSCodeNonCcrRule(MergeRule):
 
 class VSCodeCcrRule(MergeRule):
     pronunciation = "visual studio code continuous"
-    mwith = CCRMerger.CORE
     non = VSCodeNonCcrRule
 
     mapping = {
