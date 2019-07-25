@@ -64,12 +64,14 @@ class Alias(AliasRule):
 
 class ChainAlias(AliasRule):
     pronunciation = "chain alias"
-    mapping = {
-        "alias":
-            Function(lambda: None),
-        "delete aliases":
-            Function(lambda: None),
-    }
+
+    def refresh(self, *args):
+        mapping = {
+            "alias":
+                Function(lambda: None),
+            "delete aliases":
+                Function(lambda: None),
+        }
 
 class EclipseRule(MergeRule):
     pronunciation = "eclipse"
