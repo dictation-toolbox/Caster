@@ -15,9 +15,7 @@ matrix:
         - pip install -U -r requirements-dev.txt
         - pip install -vvv --user -e .
       script:
-        - python -m unittest discover
-        - pylint -E _caster.py        
-        - pylint -E castervoice
+        - python castervoice/lib/tests/testrunner.py && pylint -E _caster.py && pylint -E castervoice
 deploy:
   provider: pypi
   user: CasterVoice@protonmail.com
