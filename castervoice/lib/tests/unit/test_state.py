@@ -1,5 +1,6 @@
-from dragonfly.actions.action_function import Function
+import unittest
 
+from dragonfly.actions.action_function import Function
 from castervoice.lib.dfplus.state.actions import AsynchronousAction
 from castervoice.lib.dfplus.state.actions2 import NullAction
 from castervoice.lib.dfplus.state.short import S, L, R
@@ -10,11 +11,13 @@ from castervoice.lib.tests.unit.nexus import TestNexus
 
 
 class TestState(TestNexus):
+
     def setUp(self):
         TestNexus.setUp(self)
 
     def test_blocking(self):
-        '''tests:
+        '''
+        Tests:
         1 - successful termination (queued actions execute immediately)
         2 - unsuccessful termination (queued actions are dropped)
         3 - cancellation (queued actions are dropped)
@@ -68,3 +71,6 @@ class TestState(TestNexus):
                 self.nexus.state.add(sira2)
                 '''incrementing gets dropped'''
                 self.assertEqual(mutable_integer["value"], 0)
+
+if __name__ == '__main__':
+    unittest.main()

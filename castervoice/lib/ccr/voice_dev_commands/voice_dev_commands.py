@@ -4,6 +4,9 @@ this file contains commands for more quickly creating dragonfly commands.
 users may want to make this context-specific to their text editors
 '''
 from castervoice.lib.imports import *
+from castervoice.lib.ccr.core.nav import Navigation
+
+new_modifier_choice_object = copy.deepcopy(Navigation.modifier_choice_object)
 
 def split_dictation(text):
     if text:
@@ -74,6 +77,10 @@ class VoiceDevCommands(MergeRule):
     mapping = {
 
         # Dragonfly Snippets
+        # this first command is probably the most useful one
+        "dev key [<modifier>] <combined_button_dictionary>": 
+            R(Text('Key("%(modifier)s%(combined_button_dictionary)s")'),
+            rdescript="DragonflyDev: Snippet for creating a full Key action"),
         "dev key":
             R(Text('Key("")') + Key("left:2"), rdescript="DragonflyDev: Snippet for Key Action"),
         "dev text":
@@ -181,6 +188,8 @@ class VoiceDevCommands(MergeRule):
     }
 
     extras = [
+        new_modifier_choice_object,
+        Choice("combined_button_dictionary", Navigation.combined_button_dictionary),
         Dictation("text"),
         Dictation("dict"),
         Dictation("spec"),

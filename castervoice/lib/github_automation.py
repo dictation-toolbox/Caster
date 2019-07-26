@@ -14,7 +14,6 @@ from castervoice.lib.actions import Key, Text
 from castervoice.lib.context import read_selected_without_altering_clipboard
 from castervoice.lib.utilities import load_toml_file
 from castervoice.lib import settings
-from castervoice.lib.ccr.recording.bringme import _rebuild_items
 
 _USER_DIR = os.path.expanduser("~").replace("\\", "/") + "/.caster"
 

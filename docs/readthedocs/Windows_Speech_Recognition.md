@@ -10,9 +10,7 @@ In order to create a runnable Dragonfly .py file, you should create a Grammar ob
 if __name__ == "__main__":
     import pythoncom, time
     # Ignore this if you're using Dragon
-    while True:
-        pythoncom.PumpWaitingMessages()  # @UndefinedVariable
-        time.sleep(.1)
+    get_engine().recognize_forever()
 ```
 
 ##Running Caster with WSR

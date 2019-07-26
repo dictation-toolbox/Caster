@@ -166,13 +166,18 @@
 
 # Dragon
 
-| Command                      | Command             | Command       |
-|:-----------------------------|:--------------------|:--------------|
-| `(lock Dragon / deactivate)` | `dictation mode`    | `right point` |
-| `(number/numbers) mode`      | `fix dragon double` | `scratch`     |
-| `center point`               | `left point`        | `spell mode`  |
-| `com off`                    | `normal mode`       |               |
-| `com on`                     | `reboot dragon`     |               |
+| Command                      | Command              | Command                          |
+|:-----------------------------|:---------------------|:---------------------------------|
+| `(lock Dragon / deactivate)` | `dictation mode`     | `right point`                    |
+| `(number/numbers) mode`      | `fix dragon double`  | `scratch`                        |
+| `center point`               | `left point`         | `spell mode`                     |
+| `com off`                    | `normal mode`        | `make that`                      |
+| `com on`                     | `reboot dragon`      | `train word`                     |
+| `left point`                 | `show windows`       | `word train`                     |
+| `right point`                | `cory <text>"`       | `add train / train from add word`|
+| `center point`               | `cory that`          | `dictation sources`              |
+| `add to vocab`               | `train from vocab`   | `recognition history`            |
+| `peak recognition history`   | `remove from vocab`  |                                  |
 
 # Eclipse
 
@@ -328,11 +333,12 @@
 
 # Gitter
 
-| Command       | Command          | Command       |
-|:--------------|:-----------------|:--------------|
-| `block quote` | `formatted code` | `insert item` |
-| `bold`        | `insert code`    | `insert link` |
-| `emphasize`   | `insert image`   | `mention`     |
+| Command        | Command          | Command       |
+|:---------------|:-----------------|:--------------|
+| `block quote`  | `formatted code` | `insert item` |
+| `bold`         | `insert code`    | `insert link` |
+| `emphasize`    | `insert image`   | `mention`     |
+| `<size> header`| `strikethrough`  | `latex`       |
 
 # Jetbrains
 | Command                                | Command                              | Command                      |

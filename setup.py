@@ -39,7 +39,7 @@ class dev_install(develop):
     def run(self):
         develop.run(self)
 
-with open("ReadMe.md", "r") as fh:
+with open("docs/README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
@@ -50,7 +50,7 @@ setuptools.setup(
     description="Dragonfly-Based Voice Programming Toolkit",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/dictation-toolbox/castervoice",
+    url="https://github.com/dictation-toolbox/Caster",
     packages=setuptools.find_packages(),
     include_package_data=True,
     zip_safe=False,
