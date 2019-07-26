@@ -15,4 +15,4 @@ class ClassicMergingStrategy(BaseMergingStrategy):
                 merged_rule = compat_result.rule()
             elif compat_result.is_compatible():
                 merged_rule = merged_rule.merge(compat_result.rule())
-        return [merged_rule]
+        return merged_rule

@@ -5,4 +5,4 @@ class BaseMergingStrategy(object):
     """
 
     def merge(self, sorted_checked_rules):
-        return []
+        return None
