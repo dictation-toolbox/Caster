@@ -5,29 +5,44 @@ from castervoice.apps.file_dialogue import dialogue_context
 
 
 class BringRule(BaseSelfModifyingRule):
+    """
+    BringRule adds entries to a 2-layered map which can be described as
+    {type: {extra: target}}
+    type: used for internal organization; types include website, file, folder, etc.
+    extra: the word or words used to label the target
+    target: a url or file/folder location
+    """
+
     pronunciation = "bring me"
 
-    def __init__(self):
-        # Contexts
-        self._browser_context = AppContext(["chrome", "firefox"])
-        self._explorer_context = AppContext("explorer.exe") | dialogue_context
-        self._terminal_context = terminal_context
-        # Paths
-        self._config_path = settings.SETTINGS["paths"]["BRINGME_PATH"]
-        self._terminal_path = settings.SETTINGS["paths"]["TERMINAL_PATH"]
-        self._explorer_path = "C:\\Windows\\explorer.exe"
-        # Get things set up
-        self._config = {}
-        self._load_config()
-        SelfModifyingRule.__init__(self)
+    # Contexts
+    _browser_context = AppContext(["chrome", "firefox"])
+    _explorer_context = AppContext("explorer.exe") | dialogue_context
+    _terminal_context = terminal_context
+    # Paths
+    _terminal_path = settings.SETTINGS["paths"]["TERMINAL_PATH"]
+    _explorer_path = "C:\\Windows\\explorer.exe"
 
-    def _refresh(self):
+    def __init__(self):
+        super(settings.SETTINGS["paths"]["SM_BRINGME_PATH"])
+        self._initialize()
+
+    def _initialize(self):
+        """
+        Sets up defaults for first time only.
+        """
+        if len(self._config.get_copy()) == 0:
+            self._bring_reset_defaults()
+
+    def _deserialize(self):
+        """
+        This _deserialize creates mapping which uses the user-made extras.
+        """
         self._smr_mapping = {
             "bring me <program>": R(Function(self._bring_program)),
             "bring me <website>": R(Function(self._bring_website)),
             "bring me <folder> [in <app>]": R(Function(self._bring_folder)),
             "bring me <file>": R(Function(self._bring_file)),
-            "refresh bring me": R(Function(self._load_and_refresh)),
             "<launch> to bring me as <key>": R(Function(self._bring_add)),
             "to bring me as <key>": R(Function(self._bring_add_auto)),
             "remove <key> from bring me": R(Function(self._bring_remove)),
@@ -49,7 +64,87 @@ class BringRule(BaseSelfModifyingRule):
         ]
         self._smr_extras.extend(self._rebuild_items())
         self._smr_defaults = {"app": None}
+
+    def _rebuild_items(self):
+        # E.g. [Choice("folder", {"my pictures": ...}), ...]
+        config_copy = self._config.get_copy()
+        return [
+            Choice(header,
+                   {key: os.path.expandvars(value)
+                    for key, value in section.iteritems()})
+            for header, section in config_copy.iteritems()
+        ]
+
+    def _refresh(self, *args):
+        """
+        :param args: in this case, args is the pre-altered copy of the state map to replace the current map with
+        """
+        self._config.replace(args[0])
         self.reset()
+
+    def _bring_add(self, launch_type, key):
+        # Add current program or highlighted text to bring me
+        if launch_type == "program":
+            path = utilities.get_active_window_path()
+            if not path:
+                # dragonfly.get_engine().speak("program not detected")
+                print("Program path for bring me not found ")
+        elif launch_type == 'file':
+            files = utilities.get_selected_files(folders=False)
+            path = files[0] if files else None # or allow adding multiple files
+        elif launch_type == 'folder':
+            files = utilities.get_selected_files(folders=True)
+            path = files[0] if files else None # or allow adding multiple folders
+        else:
+            Key("a-d/5").execute()
+            fail, path = context.read_selected_without_altering_clipboard()
+            if fail == 2:
+                # FIXME: A better solution would be to specify a number of retries and the time interval.
+                time.sleep(0.1)
+                _, path = context.read_selected_without_altering_clipboard()
+                if not path:
+                    print("Selection for bring me not found ")
+            Key("escape").execute()
+        if not path:
+            # logger.warn('Cannot add %s as %s to bringme: cannot get path', launch, key)
+            return
+
+        config_copy = self._config.get_copy()
+        config_copy[launch_type][str(key)] = path
+        self._refresh(config_copy)
+
+    def _bring_remove(self, key):
+        # Remove item from bring me
+        config_copy = self._config.get_copy()
+        deleted = False
+        for section in config_copy.keys():
+            if key in config_copy[section]:
+                del config_copy[section][str(key)]
+                deleted = True
+                break
+        if deleted:
+            self._refresh(config_copy)
+
+    def _bring_reset_defaults(self):
+        """
+        Restore bring me list to defaults
+        """
+        self._refresh(BringRule._bm_defaults)
+
+    def _bring_add_auto(self, key):
+        """
+        Adds an entry for EITHER a website or a folder (without specifying),
+        depending on which context get detected (if either).
+        """
+        def add(launch_type):
+            return Function(lambda: self._bring_add(launch_type, key))
+
+        ContextAction(add("program"), [
+            (BringRule._browser_context, add("website")),
+            (BringRule._explorer_context, add("folder")),
+        ]).execute()
+
+    # =================== BringMe executors --> do not change state
 
     def _bring_website(self, website):
         browser = utilities.default_browser_command()
@@ -57,14 +152,14 @@ class BringRule(BaseSelfModifyingRule):
 
     def _bring_folder(self, folder, app):
         if not app:
-            ContextAction(Function(lambda: Popen([self._explorer_path, folder])), [
-                (self._terminal_context, Text("cd \"%s\"\n" % folder)),
-                (self._explorer_context, Key("c-l/5") + Text("%s\n" % folder))
+            ContextAction(Function(lambda: Popen([BringRule._explorer_path, folder])), [
+                (BringRule._terminal_context, Text("cd \"%s\"\n" % folder)),
+                (BringRule._explorer_context, Key("c-l/5") + Text("%s\n" % folder))
             ]).execute()
         elif app == "terminal":
-            Popen([self._terminal_path, "--cd=" + folder.replace("\\", "/")])
+            Popen([BringRule._terminal_path, "--cd=" + folder.replace("\\", "/")])
         elif app == "explorer":
-            Popen([self._explorer_path, folder])
+            Popen([BringRule._explorer_path, folder])
 
     def _bring_program(self, program):
         Popen(program)
@@ -72,88 +167,7 @@ class BringRule(BaseSelfModifyingRule):
     def _bring_file(self, file):
         threading.Thread(target=os.startfile, args=(file, )).start()
 
-    def _bring_add(self, launch, key):
-        # Add current program or highlighted text to bring me
-        key = str(key)
-        if launch == "program":
-            path = utilities.get_active_window_path()
-            if not path:
-                # dragonfly.get_engine().speak("program not detected")
-                print("Program path for bring me not found ")
-        elif launch == 'file':
-            files = utilities.get_selected_files(folders=False)
-            path = files[0] if files else None # or allow adding multiple files
-        elif launch == 'folder':
-            files = utilities.get_selected_files(folders=True)
-            path = files[0] if files else None # or allow adding multiple folders
-        else:
-            Key("a-d/5").execute()
-            fail, path = context.read_selected_without_altering_clipboard()
-            if fail == 2:
-                # FIXME
-                time.sleep(0.1)
-                _, path = context.read_selected_without_altering_clipboard()
-                if not path:
-                    # dragonfly.get_engine().speak("nothing selected")
-                    print("Selection for bring me not found ")
-            Key("escape").execute()
-        if not path:
-            # logger.warn('Cannot add %s as %s to bringme: cannot get path', launch, key)
-            return
-        self._config[launch][key] = path
-        self._save_config()
-        self._refresh()
-
-    def _bring_add_auto(self, key):
-        def add(launch):
-            return Function(lambda: self._bring_add(launch, key))
-
-        ContextAction(add("program"), [
-            (self._browser_context, add("website")),
-            (self._explorer_context, add("folder")),
-        ]).execute()
-
-    def _bring_remove(self, key):
-        # Remove item from bring me
-        key = str(key)
-        for section in self._config.keys():
-            if key in self._config[section]:
-                del self._config[section][key]
-                self._save_config()
-                self._refresh()
-                return
-
-    def _rebuild_items(self):
-        # E.g. [Choice("folder", {"my pictures": ...}), ...]
-        return [
-            Choice(header,
-                   {key: os.path.expandvars(value)
-                    for key, value in section.iteritems()})
-            for header, section in self._config.iteritems()
-        ]
-
-    def _load_and_refresh(self):
-        self._load_config()
-        self._refresh()
-
-    def _load_config(self):
-        """
-        Guarantees that the config file exists.
-        If it doesn't, it saves it as BringRule._bm_defaults.
-        """
-        if os.path.isfile(self._config_path) is False:
-            self._bring_reset_defaults(startup=True)
-        else:
-            self._config = utilities.load_toml_file(self._config_path)
-        if not self._config:
-            print("Could not load bringme defaults")
-
-    def _bring_reset_defaults(self, startup=False):
-        # Restore bring me list to defaults
-        self._config = self._bm_defaults
-        self._save_config()
-        if not startup:
-            self._refresh()
+    # =================== BringMe default setup:
 
     _bm_defaults = {
         "website": {
