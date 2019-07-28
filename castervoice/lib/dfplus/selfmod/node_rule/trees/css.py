@@ -1,18 +1,11 @@
-'''
-Created on May 30, 2015
-
-@author: dave
-'''
-
 from dragonfly.grammar.grammar_base import Grammar
 
 from castervoice.lib import control
 from castervoice.lib.actions import Text
-from castervoice.lib.dfplus.node_rule import node_rule
-from castervoice.lib.dfplus.node_rule.node_rule import NodeRule
+from castervoice.lib.dfplus.selfmod.node_rule.node_rule import TreeNode, TreeRule
 from castervoice.lib.dfplus.state.actions2 import NullAction
 
-H = node_rule.HintNode
+H = TreeNode
 _style = H("style", Text("-style: "), [
     H("none", Text("none")),
     H("hidden", Text("hidden")),
@@ -28,7 +21,7 @@ _style = H("style", Text("-style: "), [
 
 
 def get_css_node():
-    H = node_rule.HintNode
+    H = TreeNode
     css_sections = []
     css_sections.append(_get_background())
     css_sections.append(_get_border())
@@ -131,7 +124,7 @@ def _get_speech():
 
 
 def _get_column():
-    H = node_rule.HintNode
+    H = TreeNode
     global _style
     return H("column", Text("column"), [
         H("count", Text("-count: "), [H("auto", Text("auto"))]),
@@ -155,7 +148,7 @@ def _get_column():
 
 
 def _get_text():
-    H = node_rule.HintNode
+    H = TreeNode
     _align = [
         H("start", Text("start")),
         H("end", Text("end")),
@@ -211,7 +204,7 @@ def _get_text():
 
 
 def _get_miscellaneous():
-    H = node_rule.HintNode
+    H = TreeNode
     _sides = [
         H("top", Text("top")),
         H("bottom", Text("bottom")),
@@ -277,7 +270,7 @@ def _get_miscellaneous():
 
 def _get_box_model(
 ):  # display can be optimized by doing more nesting, this whole section is to be moved somewhere else
-    H = node_rule.HintNode
+    H = TreeNode
     _auto = [H("auto", Text("auto"))]
     _height = H("height", Text("height: "), _auto)
     _width = H("width", Text("width: "), _auto)
@@ -368,7 +361,7 @@ def _get_box_model(
 
 
 def _get_font():
-    H = node_rule.HintNode
+    H = TreeNode
     return H("font", Text("font"), [
         H("family", Text("-family: "), [H("inherit", Text("inherit"))]),
         H("size", Text("-size: "), [
@@ -424,7 +417,7 @@ def _get_font():
 
 
 def _get_box():
-    H = node_rule.HintNode
+    H = TreeNode
     return H("box", Text("box"), [
         H("shadow", Text("-shadow: "),
           [H("inset", Text("inset")),
@@ -464,7 +457,7 @@ def _get_box():
 
 
 def _get_border():
-    H = node_rule.HintNode
+    H = TreeNode
     _width = H(
         "width", Text("-width: "),
         [H("thin", Text("thin")),
@@ -497,7 +490,7 @@ def _get_border():
 
 
 def _get_background():
-    H = node_rule.HintNode
+    H = TreeNode
     halign = [
         H("left", Text("left")),
         H("center", Text("center")),
@@ -552,7 +545,7 @@ def _get_background():
     ])
 
 
-css = NodeRule(get_css_node(), control.nexus())
+css = TreeRule(get_css_node(), control.nexus())
 grammar = Grammar("node css")
 grammar.add_rule(css)
 # nothing to activate this right now, it's not even done

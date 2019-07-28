@@ -133,7 +133,7 @@ class BringRule(BaseSelfModifyingRule):
 
     def _bring_add_auto(self, key):
         """
-        Adds an entry for EITHER a website or a folder (without specifying),
+        Adds an entry for a program, a website, or a folder (without specifying),
         depending on which context get detected (if either).
         """
         def add(launch_type):
@@ -144,7 +144,7 @@ class BringRule(BaseSelfModifyingRule):
             (BringRule._explorer_context, add("folder")),
         ]).execute()
 
-    # =================== BringMe executors --> do not change state
+    # =================== BringMe actions --> these do not change state
 
     def _bring_website(self, website):
         browser = utilities.default_browser_command()
