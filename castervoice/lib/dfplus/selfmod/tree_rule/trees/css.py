@@ -1,8 +1,8 @@
-from dragonfly.grammar.grammar_base import Grammar
-
-from castervoice.lib import control
 from castervoice.lib.actions import Text
-from castervoice.lib.dfplus.selfmod.node_rule.node_rule import TreeNode, TreeRule
+from castervoice.lib.const import CCRType
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.dfplus.selfmod.tree_rule.tree_node import TreeNode
+from castervoice.lib.dfplus.selfmod.tree_rule.tree_rule import TreeRule
 from castervoice.lib.dfplus.state.actions2 import NullAction
 
 H = TreeNode
@@ -545,7 +545,11 @@ def _get_background():
     ])
 
 
-css = TreeRule(get_css_node(), control.nexus())
-grammar = Grammar("node css")
-grammar.add_rule(css)
-# nothing to activate this right now, it's not even done
+class CSSTreeRule(TreeRule):
+    def __init__(self):
+        super("CSS", get_css_node())
+
+
+def get_rule():
+    return [CSSTreeRule, RuleDetails(ccrtype=CCRType.SELFMOD)]
+

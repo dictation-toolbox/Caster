@@ -1,5 +1,6 @@
 from dragonfly import ActionBase
-from castervoice.lib.dfplus.selfmod.node_rule.invalid_tree_node_path_error import InvalidTreeNodePathError
+
+from castervoice.lib.dfplus.selfmod.tree_rule.invalid_tree_node_path_error import InvalidTreeNodePathError
 
 
 class TreeNode(object):
@@ -45,6 +46,7 @@ class TreeNode(object):
     def navigate_to_active_children(self, active_path):
         """
         Follows the active path through the tree, returns the children
+        of the last-activated node.
 
         :param active_path: (array of strings) the path to the active node
         :return: (array of FlattenedTreeNode)
