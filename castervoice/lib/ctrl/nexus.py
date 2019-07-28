@@ -22,6 +22,7 @@ from castervoice.lib.ctrl.mgr.validation.rules.pronunciation_validator import Pr
 from castervoice.lib.ctrl.mgr.validation.rules.selfmod_validator import SelfModifyingRuleValidator
 from castervoice.lib.dfplus.ccrmerging2.transformers.gdef_transformer import GlobalDefinitionsRuleTransformer
 from castervoice.lib.dfplus.communication import Communicator
+from castervoice.lib.dfplus.selfmod.smr_configurer import SelfModRuleConfigurer
 from castervoice.lib.dfplus.state.stack import CasterState
 from dragonfly.grammar.grammar_base import Grammar
 from castervoice.lib.ctrl.mgr.grammar_manager import GrammarManager
@@ -47,8 +48,6 @@ class Nexus:
         '''clipboard dict: used for multi-clipboard in navigation module'''
         self.clip = {}
 
-        self.temp = ""
-
         '''rpc class for interacting with Caster UI elements via xmlrpclib'''
         self.comm = Communicator()
 
@@ -61,19 +60,23 @@ class Nexus:
         '''tracks both which rules are active and the activation order'''
         rule_activation_config = RulesActivationConfig()
 
-        '''the ccrmerger -- only merges MergeRules'''
-        self.merger = Nexus._create_merger(rule_activation_config.get_active_rules_order)
+        '''does post-instantiation configuration on selfmodrules'''
+        smrc = SelfModRuleConfigurer()
 
-        '''unified loading mechanism for [rules, transformers, examples] 
+        '''the ccrmerger -- only merges MergeRules'''
+        self.merger = Nexus._create_merger(rule_activation_config.get_active_rules_order, smrc)
+
+        '''unified loading mechanism for [rules, transformers, hooks] 
         from [caster starter locations, user dir]'''
         self._content_loader = ContentLoader()
 
         '''receives and runs events'''
         hooks_runner = HooksRunner()
+        smrc.set_hooks_runner(hooks_runner)
 
         '''the grammar manager -- probably needs to get broken apart more'''
         self._grammar_manager = Nexus._create_grammar_manager(
-            self.merger, self._content_loader, hooks_runner, rule_activation_config)
+            self.merger, self._content_loader, hooks_runner, rule_activation_config, smrc)
 
         '''ACTION TIME:'''
         self._load_and_register_all_content(hooks_runner)
@@ -91,7 +94,7 @@ class Nexus:
         [hooks_runner.add_hook(h) for h in content.hooks]
 
     @staticmethod
-    def _create_grammar_manager(merger, content_loader, hooks_runner, rule_activation_config):
+    def _create_grammar_manager(merger, content_loader, hooks_runner, rule_activation_config, smrc):
         """
         This is where settings should be used to alter the dependency injection being done.
         Setting things to alternate implementations can live here.
@@ -100,6 +103,7 @@ class Nexus:
         :param content_loader:
         :param hooks_runner:
         :param rule_activation_config
+        :param smrc
         :return:
         """
 
@@ -125,11 +129,12 @@ class Nexus:
         if some_setting:
             observable = ManualReloadObservable()
 
-        mapping_rule_maker = MappingRuleMaker()
+        mapping_rule_maker = MappingRuleMaker(GlobalDefinitionsRuleTransformer(), smrc)
         grammars_container = GrammarContainer()
 
         gm = GrammarManager(rule_activation_config, merger, content_loader, ccr_rule_validator, details_validator,
-            observable, activator, mapping_rule_maker, grammars_container, hooks_runner, always_global_ccr_mode)
+                            observable, activator, mapping_rule_maker, grammars_container, hooks_runner,
+                            always_global_ccr_mode, smrc)
 
         if some_setting:
             loadable = observable.get_loadable()
@@ -138,11 +143,11 @@ class Nexus:
         return gm
 
     @staticmethod
-    def _create_merger(rules_order_fn):
+    def _create_merger(rules_order_fn, smrc):
         transformers = [GlobalDefinitionsRuleTransformer()]
         sorter = ConfigBasedRuleSetSorter(rules_order_fn)
         compat_checker = SimpleCompatibilityChecker()
         merge_strategy = ClassicMergingStrategy()
         max_repetitions = settings.SETTINGS["miscellaneous"]["max_ccr_repetitions"]
 
-        return CCRMerger2(transformers, sorter, compat_checker, merge_strategy, max_repetitions)
+        return CCRMerger2(transformers, sorter, compat_checker, merge_strategy, max_repetitions, smrc)

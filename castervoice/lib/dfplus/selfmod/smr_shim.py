@@ -1,36 +1,21 @@
-"""
-
-The idea here is to create a thing which is not the nexus, but which has
-the ability to re-register and reload rule classes via the GrammarManager.
-
-This should be a TEMPORARY solution. The real solution is to do away with
-SelfModifyingRule and create something like "RuleFactoryRule" to take its
-place. This replacement thing would have a backing data structure, and have
-the ability to both mutate the backing data structure and send new copies of
-a rule to the GrammarManager when the backing data structure is mutated,
-traversed, etc.
-
-"""
+from castervoice.lib import printer
+from castervoice.lib.dfplus.selfmod.tree_rule.invalid_tree_node_path_error import InvalidTreeNodePathError
 
 
 class SelfModReloadingShim(object):
+    """
+    SelfModReloadingShim adds a safety net around reloading selfmodrules
+    from disk, as well as limiting access to the nexus / gm functionality.
+    """
 
-    def __init__(self):
-        pass
+    def __init__(self, reload_fn):
+        self._reload_fn = reload_fn
 
-    def signal_reload(self, rule_class):
-        """
-        TODO: this
-        :return:
-        """
-        pass
-
-
-_SINGLETON = None
-
-
-def get_instance():
-    global _SINGLETON
-    if _SINGLETON is None:
-        _SINGLETON = SelfModReloadingShim()
-    return _SINGLETON
+    def signal_reload(self, rule_class_name):
+        printer.out("Reloading {}...".format(rule_class_name))
+        try:
+            self._reload_fn(rule_class_name)
+        except InvalidTreeNodePathError:
+            printer.out("{} reload failed: tree path was invalidated.".format(rule_class_name))
+            return
+        printer.out("{} reloaded.".format(rule_class_name))

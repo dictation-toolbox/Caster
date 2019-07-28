@@ -30,9 +30,6 @@ class BaseAliasRule(BaseSelfModifyingRule):
             Function(lambda: self._delete_all()), rdescript="Delete {}".format(pronunciation))
         self._smr_mapping = mapping
 
-    def _serialize(self):
-        pass
-
     def _refresh(self, *args):
         if len(args) > 1 and args[0] != "":
             spec = str(args[0])

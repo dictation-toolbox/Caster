@@ -1,5 +1,6 @@
 from castervoice.lib import printer
 from castervoice.lib.dfplus.ccrmerging2.hooks.base_hook import BaseHook
+from castervoice.lib.dfplus.ccrmerging2.hooks.events.event_types import EventType
 
 
 class PrinterHook(BaseHook):
@@ -8,7 +9,7 @@ class PrinterHook(BaseHook):
     """
 
     def __init__(self):
-        super("activation")
+        super(EventType.ACTIVATION)
 
     def run(self, event):
         state = "active" if event.active else "inactive"

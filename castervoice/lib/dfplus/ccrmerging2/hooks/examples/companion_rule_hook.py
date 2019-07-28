@@ -1,3 +1,4 @@
+from castervoice.lib.dfplus.ccrmerging2.hooks.events.event_types import EventType
 from castervoice.lib.dfplus.state.actions2 import NullAction
 from dragonfly import Playback, Pause
 
@@ -31,7 +32,7 @@ class CompanionRuleHook(BaseHook):
     """
 
     def __init__(self):
-        super("activation")
+        super(EventType.ACTIVATION)
         self._companion_rules = CompanionConfig()
 
     def run(self, event):

@@ -6,7 +6,8 @@ from castervoice.lib.const import CCRType
 
 class CCRMerger2(object):
 
-    def __init__(self, transformers, rule_sorter, compatibility_checker, merging_strategy, max_repetitions):
+    def __init__(self, transformers, rule_sorter, compatibility_checker, merging_strategy, max_repetitions,
+                 smr_configurer):
         """
         5-Step Merge Process
         ====================
@@ -20,21 +21,20 @@ class CCRMerger2(object):
         :param rule_sorter: BaseRuleSetSorter impl
         :param compatibility_checker: BaseCompatibilityChecker impl
         :param merging_strategy: BaseMergingStrategy impl
+        :param max_repetitions
+        :param smr_configurer
         """
         self._transformers = transformers
         self._rule_sorter = rule_sorter
         self._compatibility_checker = compatibility_checker
         self._merging_strategy = merging_strategy
-        self._hooks = []
         #
         self._sequence = 0
         self._max_repetitions = max_repetitions
+        self._smr_configurer = smr_configurer
 
     def add_transformer(self, transformer):
         self._transformers.append(transformer)
-
-    def add_hook(self, hook):
-        self._hooks.append(hook)
 
     def merge(self, managed_rules):
         """
@@ -59,8 +59,11 @@ class CCRMerger2(object):
             app_ccr_rules = self._get_app_rule_clones(non_app_managed_rules, app_managed_rules)
             result.extend(app_ccr_rules)
 
-        # TODO: make sure that test instantiations are done even on selfmod rules before this
         instantiated_rules = [mr.get_rule_instance() for mr in non_app_managed_rules]
+
+        # selfmodrule configuration
+        for rule in instantiated_rules:
+            self._smr_configurer.configure(rule)
 
         # 1
         transformed_rules = []

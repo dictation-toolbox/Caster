@@ -8,12 +8,15 @@ class MappingRuleMaker(BaseRuleMaker):
     object, then runs the "words.txt" transformer over it.
     """
 
-    def __init__(self, gdef_transformer):
+    def __init__(self, gdef_transformer, smr_configurer):
         self._gdef_transformer = gdef_transformer
+        self._smr_configurer = smr_configurer
 
     def create_non_ccr_grammar(self, rule_class, details):
         rule_instance = rule_class(name=details.name)
         rule_instance = self._gdef_transformer.get_transformed_rule(rule_instance)
+
+        self._smr_configurer.configure(rule_instance)
 
         context = None
         if details.executable is not None:

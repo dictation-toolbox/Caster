@@ -122,9 +122,6 @@ class HistoryRule(BaseSelfModifyingRule):
             Function(lambda: self._delete_recorded_macros()), rdescript="Delete Recorded Macros")
         self._smr_mapping = mapping
 
-    def _serialize(self):
-        pass
-
 
 def get_rule():
     return [HistoryRule, RuleDetails(ccrtype=CCRType.SELFMOD)]

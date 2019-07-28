@@ -1,5 +1,6 @@
 from dragonfly import Function
 from castervoice.lib import settings
+from castervoice.lib.dfplus.ccrmerging2.hooks.events.node_change_event import NodeChangeEvent
 from castervoice.lib.dfplus.selfmod.selfmodrule import BaseSelfModifyingRule
 
 
@@ -41,6 +42,11 @@ class TreeRule(BaseSelfModifyingRule):
         # cancel by TreeRule name: resets tree to root node
         self._smr_mapping["cancel {}".format(self._tree_name)] = Function(lambda: self._refresh())
 
+        # run node change hooks, if configured
+        if self._hooks_runner is not None:
+            event = NodeChangeEvent(self._tree_name, active_path, [n.get_spec() for n in active_nodes])
+            self._hooks_runner.execute(event)
+
     def _refresh(self, *args):
         config_copy = self._config.get_copy()
         active_path = []
@@ -57,4 +63,4 @@ class TreeRule(BaseSelfModifyingRule):
         self.reset()
 
     def get_pronunciation(self):
-        return self._root_node.spec
+        return self._root_node.get_spec()

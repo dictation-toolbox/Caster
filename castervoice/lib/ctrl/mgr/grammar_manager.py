@@ -31,7 +31,8 @@ class GrammarManager(object):
                  mapping_rule_maker,
                  grammars_container,
                  hooks_runner,
-                 always_global_ccr_mode):
+                 always_global_ccr_mode,
+                 smr_configurer):
         """
         Holds both the current merged ccr rules and the most recently instantiated/validated
         copies of all ccr and non-ccr rules.
@@ -49,6 +50,7 @@ class GrammarManager(object):
         :param grammars_container: holds and destroys grammars
         :param hooks_runner: runs all hooks at different events
         :param always_global_ccr_mode: an option which forces every rule to be treated as a global ccr rule
+        :param smr_configurer: grants limited access to other parts of framework to selfmod rules- don't keep reference
         """
         self._config = config
         self._merger = merger
@@ -68,13 +70,11 @@ class GrammarManager(object):
         self._companion_rules = {}
         #
         self._reload_observable.register_listener(self)
+        '''The passed method references below would be a good place to start splitting the GM apart.'''
         #
         self._activator.set_activation_fn(self._change_rule_active)
         #
-        '''
-        TODO: shouldn't put the content loader inside of here b/c it's hard to 
-        disentangle the merger from the grammar manager 
-        '''
+        smr_configurer.set_reload_fn(lambda rcn: self._load_rule(rcn, True))
 
     def register_rule(self, rule_class, details):
         """
@@ -148,9 +148,7 @@ class GrammarManager(object):
             ccrtype = CCRType.GLOBAL
 
         if ccrtype is not None:
-            '''
-            handle CCR:
-            get all active ccr rules after de/activating one'''
+            # handle CCR: get all active ccr rules after de/activating one
             active_rule_class_names = self._config.get_active_rule_class_names()
             active_rules = [self._managed_rules[rcn] for rcn in active_rule_class_names]
             active_ccr_rules = [mr for mr in active_rules if mr.details.declared_ccrtype is not None]

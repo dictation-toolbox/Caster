@@ -1,5 +1,6 @@
 from castervoice.lib import settings, textformat
 from castervoice.lib.dfplus.ccrmerging2.hooks.base_hook import BaseHook
+from castervoice.lib.dfplus.ccrmerging2.hooks.events.event_types import EventType
 
 
 def _apply_format(rule_pronunciation):
@@ -25,7 +26,7 @@ class FormatHook(BaseHook):
     """
 
     def __init__(self):
-        super("activation")
+        super(EventType.ACTIVATION)
 
     def run(self, event_content):
         pronunciation = event_content["pronunciation"]
