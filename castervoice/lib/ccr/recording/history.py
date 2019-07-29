@@ -8,10 +8,10 @@ from castervoice.lib import settings
 
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.dfplus.selfmod.selfmodrule import BaseSelfModifyingRule
-from castervoice.lib.dfplus.state.actions import AsynchronousAction
-from castervoice.lib.dfplus.state.actions2 import NullAction
-from castervoice.lib.dfplus.state.short import R, L, S
+from castervoice.lib.merge.selfmod.selfmodrule import BaseSelfModifyingRule
+from castervoice.lib.merge.state.actions import AsynchronousAction
+from castervoice.lib.merge.state.actions2 import NullAction
+from castervoice.lib.merge.state.short import R, L, S
 
 
 class HistoryRule(BaseSelfModifyingRule):

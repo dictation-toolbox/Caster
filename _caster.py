@@ -4,12 +4,10 @@ main Caster module
 Created on Jun 29, 2014
 '''
 
-import os, time, sys
 import logging
 logging.basicConfig()
 
-import time, socket, os
-from dragonfly import (get_engine, Function, Grammar, Playback, Dictation, Choice, Pause,
+from dragonfly import (get_engine, Function, Playback, Dictation, Choice, Pause,
                        RunCommand)
 from castervoice.lib.ccr.standard import SymbolSpecs
 
@@ -18,7 +16,6 @@ from castervoice.lib import settings  # requires nothing
 if settings.SYSTEM_INFORMATION["platform"] != "win32":
     raise SystemError("Your platform is not currently supported by Caster.")
 settings.WSR = __name__ == "__main__"
-from castervoice.lib import utilities  # requires settings
 if settings.WSR:
     SymbolSpecs.set_cancel_word("escape")
 from castervoice.lib import control
@@ -28,19 +25,13 @@ from castervoice.lib.ctrl.dependencies import pip_path, update
 from castervoice.lib import navigation
 navigation.initialize_clipboard(_NEXUS)
 
-from castervoice.apps import __init__
-from castervoice.asynch import *
-from castervoice.lib.ccr import *
-from castervoice.lib.ccr.recording import bringme, again, alias, history
-import castervoice.lib.dev.dev
 from castervoice.asynch.sikuli import sikuli
 
 from castervoice.lib.actions import Key
-from castervoice.lib.terminal import TerminalCommand
-from castervoice.lib.dfplus.state.short import R
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.merge.mergepair import MergeInf
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.merge.mergepair import MergeInf
+from castervoice.lib.merge.mergerule import MergeRule
 
 if not globals().has_key('profile_switch_occurred'):
     # Load user rules

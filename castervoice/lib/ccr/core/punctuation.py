@@ -2,10 +2,9 @@ from dragonfly import Choice, Repeat
 
 from castervoice.lib import control, const
 from castervoice.lib.actions import Key, Text
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.merge.ccrmerger_legacy import CCRMerger
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
 
 double_text_punc_dict = {
     "quotes":                            "\"\"",

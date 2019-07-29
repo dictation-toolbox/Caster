@@ -2,11 +2,11 @@ from dragonfly.actions.action_function import Function
 
 import unittest
 from castervoice.lib.actions import Text
-from castervoice.lib.dfplus.state.actions import AsynchronousAction, ContextSeeker, \
+from castervoice.lib.merge.state.actions import AsynchronousAction, ContextSeeker, \
     RegisteredAction
-from castervoice.lib.dfplus.state.actions2 import NullAction
-from castervoice.lib.dfplus.state.short import L, S, R
-from castervoice.lib.dfplus.state.stackitems import StackItemAsynchronous, \
+from castervoice.lib.merge.state.actions2 import NullAction
+from castervoice.lib.merge.state.short import L, S, R
+from castervoice.lib.merge.state.stackitems import StackItemAsynchronous, \
     StackItemRegisteredAction, StackItemSeeker
 from castervoice.lib.tests.testutils import MockAlternative
 from castervoice.lib.tests.unit.nexus import TestNexus

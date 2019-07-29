@@ -7,7 +7,7 @@ from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.errors.not_a_module import NotAModuleError
 from castervoice.lib.ctrl.mgr.loading.content_type import ContentType
 from castervoice.lib.ctrl.mgr.managed_rule import ManagedRule
-from castervoice.lib.dfplus.ccrmerging2.hooks.events.activation_event import RuleActivationEvent
+from castervoice.lib.merge.ccrmerging2.hooks.events.activation_event import RuleActivationEvent
 
 """
 Jobs of the grammar manager:

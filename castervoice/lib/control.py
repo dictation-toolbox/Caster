@@ -2,7 +2,7 @@ from dragonfly import Grammar
 
 from castervoice.lib.ctrl.nexus import Nexus
 from castervoice.lib import settings
-from castervoice.lib.dfplus.merge import gfilter
+from castervoice.lib.merge.merge import gfilter
 
 _NEXUS = None
 

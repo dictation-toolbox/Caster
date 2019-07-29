@@ -13,7 +13,7 @@ try:  # Style C -- may be imported into Caster, or externally
         sys.path.append(BASE_PATH)
 finally:
     from castervoice.lib import settings
-    from castervoice.lib.dfplus.communication import Communicator
+    from castervoice.lib.merge.communication import Communicator
 
 try:
     from wx import (Notebook, NB_MULTILINE, Menu, ID_EXIT, EVT_MENU, MenuBar, BoxSizer,

@@ -12,7 +12,7 @@
 from dragonfly import (BringApp, Key, Function, Grammar, Playback, Dictation,
                        Choice, WaitWindow, MappingRule, Text)
 
-from castervoice.lib.dfplus.additions import IntegerRefST
+from castervoice.lib.merge.additions import IntegerRefST
 
 def my_function(n, text):
     print("put some Python logic here: " + str(text))

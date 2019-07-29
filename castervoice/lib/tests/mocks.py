@@ -14,8 +14,8 @@ for module_name, imports in module_tree.iteritems():
 
 from dragonfly.os_dependent_mock import MockAction
 from dragonfly import AppContext
-from castervoice.lib.dfplus.merge.selfmodrule import SelfModifyingRule
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
+from castervoice.lib.merge.merge.selfmodrule import SelfModifyingRule
+from castervoice.lib.merge.mergerule import MergeRule
 
 Text = MockAction
 Key = MockAction

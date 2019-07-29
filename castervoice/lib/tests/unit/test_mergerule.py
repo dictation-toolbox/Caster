@@ -2,7 +2,7 @@ import unittest
 
 from castervoice.lib.context import AppContext
 from castervoice.lib.tests.mocks import EclipseCCR, Java, Javascript, Python, Alias
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
+from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.tests.unit.nexus import TestNexus
 
 

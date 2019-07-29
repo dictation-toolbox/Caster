@@ -1,10 +1,10 @@
 import unittest
 
 from dragonfly.actions.action_function import Function
-from castervoice.lib.dfplus.state.actions import AsynchronousAction
-from castervoice.lib.dfplus.state.actions2 import NullAction
-from castervoice.lib.dfplus.state.short import S, L, R
-from castervoice.lib.dfplus.state.stackitems import StackItemAsynchronous, \
+from castervoice.lib.merge.state.actions import AsynchronousAction
+from castervoice.lib.merge.state.actions2 import NullAction
+from castervoice.lib.merge.state.short import S, L, R
+from castervoice.lib.merge.state.stackitems import StackItemAsynchronous, \
     StackItemRegisteredAction
 from castervoice.lib.tests.testutils import MockAlternative
 from castervoice.lib.tests.unit.nexus import TestNexus

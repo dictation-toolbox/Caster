@@ -11,13 +11,13 @@ from dragonfly import (Function, BringApp, WaitWindow, Dictation, Choice, Gramma
 from castervoice.lib import utilities, settings, context, control
 from castervoice.lib.dev import devgen
 from castervoice.lib.actions import Key, Text
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.state.actions import ContextSeeker, AsynchronousAction, \
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.state.actions import ContextSeeker, AsynchronousAction, \
     RegisteredAction
-from castervoice.lib.dfplus.state.actions2 import NullAction, ConfirmAction, \
+from castervoice.lib.merge.state.actions2 import NullAction, ConfirmAction, \
     BoxAction
-from castervoice.lib.dfplus.state.short import L, S, R
-from castervoice.lib.dfplus.state.stackitems import StackItemRegisteredAction
+from castervoice.lib.merge.state.short import L, S, R
+from castervoice.lib.merge.state.stackitems import StackItemRegisteredAction
 from castervoice.lib.tests import testrunner
 from castervoice.lib.tests.complexity import run_tests
 from castervoice.lib.tests.testutils import MockAlternative

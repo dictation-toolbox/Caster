@@ -1,4 +1,4 @@
-from castervoice.lib.dfplus.selfmod.selfmodrule import BaseSelfModifyingRule
+from castervoice.lib.merge.selfmod.selfmodrule import BaseSelfModifyingRule
 from castervoice.lib.imports import *
 from castervoice.asynch.hmc import h_launch
 

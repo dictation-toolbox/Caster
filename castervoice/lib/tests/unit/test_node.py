@@ -2,8 +2,8 @@ import unittest
 
 from dragonfly.actions.action_base import ActionBase
 
-from castervoice.lib.dfplus.node_rule.node_rule import HintNode, NodeRule
-from castervoice.lib.dfplus.state.actions2 import NullAction
+from castervoice.lib.merge.node_rule.node_rule import HintNode, NodeRule
+from castervoice.lib.merge.state.actions2 import NullAction
 from castervoice.lib.tests.unit.nexus import TestNexus
 
 

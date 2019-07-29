@@ -3,8 +3,8 @@ import unittest
 from dragonfly.grammar.rule_mapping import MappingRule
 from castervoice.lib.tests.mocks import (eclipse_context, EclipseCCR,
     Key, Bash, Java, Python, ChainAlias)
-from castervoice.lib.dfplus.merge.ccrmerger_legacy import CCRMerger
-from castervoice.lib.dfplus.merge.mergepair import MergeInf
+from castervoice.lib.merge.ccrmerger_legacy import CCRMerger
+from castervoice.lib.merge.merge.mergepair import MergeInf
 from castervoice.lib.tests.unit.nexus import TestNexus
 
 

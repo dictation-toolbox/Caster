@@ -1,5 +1,5 @@
 from dragonfly import RunCommand, Function
-from castervoice.lib.dfplus.state.actions2 import ConfirmAction
+from castervoice.lib.merge.state.actions2 import ConfirmAction
 
 class TerminalCommand(RunCommand):
     '''

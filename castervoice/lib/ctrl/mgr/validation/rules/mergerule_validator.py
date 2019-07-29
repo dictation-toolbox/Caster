@@ -1,5 +1,5 @@
 from castervoice.lib.ctrl.mgr.validation.rules.base_validator import BaseRuleValidator
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
+from castervoice.lib.merge.mergerule import MergeRule
 
 
 class IsMergeRuleValidator(BaseRuleValidator):
