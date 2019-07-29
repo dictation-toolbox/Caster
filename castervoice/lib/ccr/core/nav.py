@@ -298,14 +298,10 @@ class Navigation(MergeRule):
     "(left | lease)": "left", "(right | ross)": "right", "(up | sauce)": "up",
     "(down | dunce)": "down", "page (down | dunce)": "pgdown", "page (up | sauce)": "pgup", "space": "space"}
     button_dictionary_10 = {"function {}".format(i):"f{}".format(i) for i in range(1, 10)}
-    # symbols = {"ampersand": "ampersand", "apostrophe": "apostrophe", "asterisk": "astersk", "(at | atty): at",
-        # "backslash": "backslash", "(backtick | ticky)": "backtick", "bar": "bar", "caret":"caret", ""}
-    
-    # button_dictionary_10.update(symbols)
     button_dictionary_10.update(caster_alphabet)
     button_dictionary_10.update(text_punc_dict)
     longhand_punctuation_names = {"minus": "hyphen", "hyphen":"hyphen", "comma": "comma",
-        "deckle": "colon", "colon": "colon", "slash": "slash"}
+        "deckle": "colon", "colon": "colon", "slash": "slash", "backslash": "backslash"}
     button_dictionary_10.update(longhand_punctuation_names)
     button_dictionary_1 = {"(home | lease wally | latch)": "home", "(end | ross wally | ratch)": "end", "insert": "insert", "zero": "0",
     "one": "1", "two": "2", "three": "3", "four": "4", "five": "5", "six":"6", "seven": "7", "eight": "8", "nine": "9"}
