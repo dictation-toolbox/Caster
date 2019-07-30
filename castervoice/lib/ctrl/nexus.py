@@ -19,7 +19,7 @@ from castervoice.lib.ctrl.mgr.validation.rules.no_context_validator import HasNo
 from castervoice.lib.ctrl.mgr.validation.rules.not_noderule_validator import NotNodeRuleValidator
 from castervoice.lib.ctrl.mgr.validation.rules.pronunciation_validator import PronunciationAvailableValidator
 from castervoice.lib.ctrl.mgr.validation.rules.selfmod_validator import SelfModifyingRuleValidator
-from castervoice.lib.merge.ccrmerging2.transformers.gdef_transformer import GlobalDefinitionsRuleTransformer
+from castervoice.lib.merge.ccrmerging2.transformers.standard_transformers.gdef_transformer import GlobalDefinitionsRuleTransformer
 from castervoice.lib.merge.communication import Communicator
 from castervoice.lib.merge.selfmod.smr_configurer import SelfModRuleConfigurer
 from castervoice.lib.merge.state.stack import CasterState

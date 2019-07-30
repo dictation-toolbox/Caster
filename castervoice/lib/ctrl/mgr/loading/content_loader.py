@@ -26,16 +26,19 @@ class ContentLoader(object):
         # Generate all requests for both starter and user locations
         base_path = settings.SETTINGS["paths"]["BASE_PATH"]
         user_dir = settings.SETTINGS["paths"]["USER_DIR"]
+        standard_transformers_path = base_path + "/lib/merge/ccrmerging2/transformers/standard_transformers"
+        standard_hooks_path = base_path + "/lib/merge/ccrmerging2/hooks/standard_hooks"
 
+        # TODO: does the path actually start at /lib, or does it start at /castervoice?
         rule_requests = self._content_request_generator.generate(ContentType.GET_RULE,
-                                                                 base_path + "/TODO_THIS_PATH --- the CCR RULES path",
-                                                                 base_path + "/TODO_THIS_PATH --- the APP rules path",
+                                                                 base_path + "/lib/ccr",
+                                                                 base_path + "/apps",
                                                                  user_dir + "/user_rules")
         transformer_requests = self._content_request_generator.generate(ContentType.GET_TRANSFORMER,
-                                                                        base_path + "/TODO_THIS_PATH",
+                                                                        standard_transformers_path,
                                                                         user_dir + "/user_transformers")
         hook_requests = self._content_request_generator.generate(ContentType.GET_HOOK,
-                                                                 base_path + "/TODO_THIS_PATH",
+                                                                 standard_hooks_path,
                                                                  user_dir + "/user_hooks")
 
         '''Attempt loading all content'''
