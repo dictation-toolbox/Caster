@@ -32,16 +32,6 @@ class MergeRule(MappingRule):
         MappingRule.__init__(self, name, mapping, extras, defaults, exported)
 
         self._format_actions()
-        
-        if location is None:
-            location = self._determine_file_location()
-        self.location = location
-    
-    '''TODO: unit test this
-    Should get the location on disk of the child class which calls this method.
-    '''
-    def _determine_file_location(self):
-        return os.path.realpath(sys.modules[self.__module__].__file__)
 
     def _create_rdescript(self, spec):
         rule_name = self.name

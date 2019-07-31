@@ -144,7 +144,7 @@ class GrammarManager(object):
         This setting controls "RDP Mode". "RDP Mode" forces any rule 
         to load as a global ccr rule and ignore validation.
         '''
-        if self._always_global_ccr_mode:
+        if self._always_global_ccr_mode and not managed_rule.details.rdp_mode_exclusion:
             ccrtype = CCRType.GLOBAL
 
         if ccrtype is not None:
@@ -206,7 +206,7 @@ class GrammarManager(object):
         """
 
         '''skip validations if forcing everything to be global ccr:'''
-        if self._always_global_ccr_mode:
+        if self._always_global_ccr_mode and not details.rdp_mode_exclusion:
             return None
 
         class_name = rule_class.__name__
@@ -220,7 +220,7 @@ class GrammarManager(object):
         test_instance = None
         try:
             test_instance = rule_class()
-        except: #ignore warnings on this line-- it's supposed to be broad
+        except:  # ignore warnings on this line-- it's supposed to be broad
             return class_name + " rejected due to instantiation errors"
 
         '''if ccr, validate the rule'''

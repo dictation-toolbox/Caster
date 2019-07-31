@@ -14,7 +14,8 @@ class MappingRuleMaker(BaseRuleMaker):
 
     def create_non_ccr_grammar(self, rule_class, details):
         rule_instance = rule_class(name=details.name)
-        rule_instance = self._gdef_transformer.get_transformed_rule(rule_instance)
+        if not details.transformer_exclusion:
+            rule_instance = self._gdef_transformer.get_transformed_rule(rule_instance)
 
         self._smr_configurer.configure(rule_instance)
 

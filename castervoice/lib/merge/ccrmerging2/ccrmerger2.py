@@ -2,6 +2,7 @@ from dragonfly.grammar.elements import RuleRef, Alternative, Repetition
 from dragonfly.grammar.rule_compound import CompoundRule
 
 from castervoice.lib.const import CCRType
+from castervoice.lib.ctrl.mgr.managed_rule import ManagedRule
 
 
 class CCRMerger2(object):
@@ -51,6 +52,7 @@ class CCRMerger2(object):
         :param managed_rules: ManagedRules
         :return: MergeRule
         """
+        class_name_dict = CCRMerger2._managed_rules_dict(managed_rules)
         result = []
 
         # TODO: something needs to happen here in the recursive version of the call
@@ -68,8 +70,9 @@ class CCRMerger2(object):
         # 1
         transformed_rules = []
         for rule in instantiated_rules:
-            for transformer in self._transformers:
-                rule = transformer.get_transformed_rule(rule)
+            if not class_name_dict[CCRMerger2._instance_class_name(rule)].transformer_exclusion:
+                for transformer in self._transformers:
+                    rule = transformer.get_transformed_rule(rule)
             transformed_rules.append(rule)
         # 2
         sorted_rules = self._rule_sorter.sort_rules(transformed_rules)
@@ -83,6 +86,21 @@ class CCRMerger2(object):
         result.append(ccr_rule)
         '''TODO: This current setup assumes no app rules -- have to correct that, see above notes.'''
         return result
+
+    @staticmethod
+    def _managed_rules_dict(managed_rules):
+        """
+        :param managed_rules: list of ManagedRule
+        :return: dict of {class name (str): RuleDetails}
+        """
+        result = {}
+        for managed_rule in managed_rules:
+            result.put(managed_rule.get_rule_class_name(), managed_rule.get_details())
+        return result
+
+    @staticmethod
+    def _instance_class_name(rule):
+        return rule.__class__.__name__
 
     def _separate_app_rules(self, managed_rules):
         non_app_managed_rules = []
@@ -140,3 +158,13 @@ class CCRMerger2(object):
     def _get_new_rule_name(self):
         self._sequence += 1
         return "Repeater{}".format(str(self._sequence))
+
+
+class _ManagedInstance(ManagedRule):
+    def __init__(self, rule_class, details):
+        super(rule_class, details)
+        self._instance = self.get_rule_instance()
+
+    @staticmethod
+    def of(mr):
+        return _ManagedInstance(mr._get_rule_class())
