@@ -148,6 +148,9 @@ class MainRule(MergeRule):
 
 control.non_ccr_app_rule(MainRule(), context=None, rdp=False)
 
+from castervoice.lib.rules.doc_rule import DocumentationRule
+control.non_ccr_app_rule(DocumentationRule(), context=None, rdp=False)
+
 if globals().has_key('profile_switch_occurred'):
     reload(sikuli)
 else:
