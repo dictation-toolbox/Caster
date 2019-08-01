@@ -4,44 +4,51 @@ from sys import modules as MODULES
 from sys import path
 
 from castervoice.lib import settings
-from castervoice.lib.ctrl.mgr.loading.content_type import ContentType
-from castervoice.lib.ctrl.mgr.loading.initial_content import FullContentSet
+from castervoice.lib.ctrl.mgr.loading.load.content_type import ContentType
+from castervoice.lib.ctrl.mgr.loading.load.initial_content import FullContentSet
 
 
 class ContentLoader(object):
-
-    def __init__(self, content_request_generator):
-        self._content_request_generator = content_request_generator
-
-    '''
+    """
     ContentLoader loads all starter and user content when Caster starts.
     It can also reload modules by name.
     -
     Load all once when Caster starts. Afterwards, unload/reload only what is requested.
     Pass result off to GrammarManager.
-    '''
+    """
+
+    def __init__(self, content_request_generator):
+        self._content_request_generator = content_request_generator
 
     def load_everything(self):
-
         # Generate all requests for both starter and user locations
         base_path = settings.SETTINGS["paths"]["BASE_PATH"]
         user_dir = settings.SETTINGS["paths"]["USER_DIR"]
-        standard_transformers_path = base_path + "/lib/merge/ccrmerging2/transformers/standard_transformers"
-        standard_hooks_path = base_path + "/lib/merge/ccrmerging2/hooks/standard_hooks"
 
-        # TODO: does the path actually start at /lib, or does it start at /castervoice?
-        rule_requests = self._content_request_generator.generate(ContentType.GET_RULE,
-                                                                 base_path + "/lib/ccr",
-                                                                 base_path + "/apps",
-                                                                 user_dir + "/user_rules")
-        transformer_requests = self._content_request_generator.generate(ContentType.GET_TRANSFORMER,
-                                                                        standard_transformers_path,
-                                                                        user_dir + "/user_transformers")
-        hook_requests = self._content_request_generator.generate(ContentType.GET_HOOK,
-                                                                 standard_hooks_path,
-                                                                 user_dir + "/user_hooks")
+        starter_content_requests = self._content_request_generator.get_all_content_modules(base_path)
+        user_content_requests = self._content_request_generator.get_all_content_modules(user_dir)
 
-        '''Attempt loading all content'''
+        # user content should trump starter content
+        requests = {}
+        for item in starter_content_requests:
+            requests[item.module_name] = item
+        for item in user_content_requests:
+            requests[item.module_name] = item
+
+        # categorize requests
+        rule_requests = []
+        transformer_requests = []
+        hook_requests = []
+        for module_name in requests:
+            request = requests[module_name]
+            if request.content_type == ContentType.GET_RULE:
+                rule_requests.append(request)
+            elif request.content_type == ContentType.GET_TRANSFORMER:
+                transformer_requests.append(request)
+            elif request.content_type == ContentType.GET_HOOK:
+                hook_requests.append(request)
+
+        # attempt to load all content
         rules = self._process_requests(rule_requests)
         transformers = self._process_requests(transformer_requests)
         hooks = self._process_requests(hook_requests)

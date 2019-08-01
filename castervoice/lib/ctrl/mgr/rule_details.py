@@ -1,6 +1,3 @@
-import inspect
-
-
 class RuleDetails(object):
     """
     A per-rule instantiation configuration.
@@ -15,11 +12,3 @@ class RuleDetails(object):
         self.declared_ccrtype = ccrtype
         self.rdp_mode_exclusion = rdp_mode_exclusion
         self.transformer_exclusion = transformer_exclusion
-
-        # Python black magic to determine which file to track:
-        frame = inspect.stack()[1]
-        module = inspect.getmodule(frame[0])
-        self._filepath = module.__file__
-
-    def get_filepath(self):
-        return self._filepath
