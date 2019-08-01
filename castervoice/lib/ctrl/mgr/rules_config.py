@@ -3,11 +3,6 @@ from castervoice.lib.config.config_toml import TomlConfig
 
 
 class RulesActivationConfig(TomlConfig):
-    """
-    This needs to extend JsonConfig rather than TomlConfig
-    b/c TomlConfig does not preserve order.
-    """
-
     _ACTIVE = "active"
     _ORDER = "order"
 

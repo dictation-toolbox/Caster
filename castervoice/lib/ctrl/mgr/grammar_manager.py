@@ -5,7 +5,7 @@ from dragonfly import Grammar
 from castervoice.lib import printer
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.errors.not_a_module import NotAModuleError
-from castervoice.lib.ctrl.mgr.loading.content_type import ContentType
+from castervoice.lib.ctrl.mgr.loading.load.content_type import ContentType
 from castervoice.lib.ctrl.mgr.managed_rule import ManagedRule
 from castervoice.lib.merge.ccrmerging2.hooks.events.activation_event import RuleActivationEvent
 
@@ -103,8 +103,7 @@ class GrammarManager(object):
         # set up de/activation command
         self._activator.register_rule(managed_rule)
         # watch this file for future changes
-        file_path = self._get_file_path(rule_class, details)
-        self._reload_observable.register_watched_file(file_path)
+        self._reload_observable.register_watched_file(details.get_filepath())
 
     def _change_rule_active(self, class_name, active):
         """
@@ -233,14 +232,6 @@ class GrammarManager(object):
 
     def load_activation_grammar(self):
         self._activator.construct_activation_rule()
-
-    @staticmethod
-    def _get_file_path(rule_class, details):
-        if details.declared_ccrtype is not None:
-            instance = rule_class()
-            return instance.location
-        else:
-            return details.file_path
 
     @staticmethod
     def _get_module_name_from_file_path(file_path):
