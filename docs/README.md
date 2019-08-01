@@ -49,12 +49,13 @@
 
 - Supported [Applications](https://caster.readthedocs.io/en/latest/readthedocs/Application_Commands_Quick_Reference/)
 
-  - IDEs/Editors: Microsoft Visual C++, Visual Studio, Eclipse, Jetbrains IDEs, Emacs, Sublime, Atom, Visual Studio Code, Notepad++, FlashDevelop, Sql Developer, and SQL Server Management Studio
+  - IDEs/Editors: Microsoft Visual C++, Visual Studio, Eclipse, Jetbrains IDEs, Emacs, Sublime, Atom, Visual Studio Code, Notepad++, FlashDevelop, Sql Developer, SQL Server Management Studio
   - Development Tools: Command Prompt, GitBash, KDiff3
-  - Statistics: RStudio and lyx
-  - Browsers: Firefox, Chrome and Internet Explorer
+  - Statistics: RStudio 
+  - Word Processor: lyx, Microsoft Word, Typora
+  - Browsers: Firefox, Chrome, Internet Explorer
   - Git Client:  Github Desktop 
-  - Applications: Foxit Reader, Gitter, fman, Total Commander, Typora, Microsoft Word, Outlook, and Excel
+  - Applications: Foxit Reader, Gitter, fman, Total Commander, Outlook, Excel
 
 - [Editing and Navigation](https://github.com/dictation-toolbox/Caster/blob/master/CasterQuickReference.pdf)
 

@@ -231,6 +231,7 @@ class CCRMerger(object):
             for rule in grammar.rules:
                 rule.disable()
             grammar.disable()
+            grammar.unload()
             del grammar
 
     def ccr_off(self):

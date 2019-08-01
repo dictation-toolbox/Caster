@@ -17,53 +17,11 @@ Make sure to select `Add python to path`. This can be done manually by searching
 
 - Download and install [Natlink](https://sourceforge.net/projects/natlink/files/natlink/natlinktest4.1/). Use `Natlink-4.1 whiskey3` or newer.
 
-- Open [command prompt](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows) (CMD) and type the following then press enter.
-
-  - `python -m pip install future six wxPython pywin32` 
-
-- Create a new folder in your Documents `C:\Users\<YourUsername>\Documents` called `Caster` with a capital C.
-
-  1. Open the start menu and search for `natlink`, click the file called `Configure NatLink via GUI`.
-
-     ![Configure start](https://mathfly.org/images/configure_start.png)
-
-  2. Ensure that the details of your DNS setup are correct in the “info” tab.
-
-  3. In the “configure” tab, under “NatLink” and “UserDirectory” click  enable. When you are prompted for a folder, give it the location of the empty folder folder (`C:\Users\<YourUsername>\Documents\Caster`).
-
-     ![Caster-Natlink.jpg](https://i.postimg.cc/d1jN4xcw/Caster-Natlink.jpg)
-
 ### 3. Caster
-
-- Download Caster and install dependencies. Choose **PIP** or **Classic** Install.
-
-**PIP** install is convenient way to install Caster and uses it's development branch. **Classic** install enables the user to track changes with Caster code using git. Git allows users to contribute their own code to the Caster project. 
-
-- **PIP Install** (Beta) - If you're using DNS make sure you've installed and configured NatLink first! Open [command prompt](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows) (CMD) and type the following then press enter.
-
-`pip install castervoice` 
-
-At the end of the PIP install instructions a CMD window will guide you of what to expect for WSR or DNS. Setup complete. **Note** If a window does not appear please refer to the troubleshooting section.  
-
-- **Classic Install**
-
- The classic install is for Caster development or as an alternative install method.  **Note**: If you wish to contribute Castor code instructions for creating your own fork can be found in [Contributing.md](https://github.com/dictation-toolbox/Caster/blob/develop/castervoice/doc/Contributing.md) and you can skip to step 3.
-
-1. Download and Install [git](https://git-scm.com/downloads)
-
-2. Open [command prompt](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows) (CMD)  `cd C:\Users\<YourUsername>\Documents` 
-
-3. `git clone https://github.com/dictation-toolbox/Caster.git` then run one of the following command
-
-   `git checkout develop` Development branch
-
-   `git checkout master` Master branch
-
-4. Check and install Caster dependencies from CMD. Change the directory to the install directory selected in this step 
-
-5. Change directory example `cd C:\Users\<YourUsername>\Documents\Caster`
-
-   Then `pip install -r requirements.txt`
+1. Download Caster from the [master branch](https://github.com/dictation-toolbox/Caster/archive/master.zip).
+2. Open up the zip file downloaded
+3. Extract the `Caster-master` folder, you can put it anywhere but it is common to use `user\Documents\Caster`.
+4. Install dependencies and set up Natlink by running `Caster-master/Install.bat` as administrator. *Note that for this to work correctly Python must be installed to `C:/Python27` and Natlink installed to `C:/NatLink`, their default locations. If this is not the case or if the installation script fails for some other reason then see below for instructions on manual configuration.*
 
 ### 4. Setup and launch for Classic Install.
 
@@ -73,6 +31,29 @@ At the end of the PIP install instructions a CMD window will guide you of what t
   1. In  `C:\Users\<YourUsername>\Documents\Caster`
   2. Start caster by double click on `_caster.py`. 
   3. To test open Window's Notepad and try saying `arch brov char delta` producing `abcd` text. Set up complete!
+
+### Manual configuration
+
+1. Open [command prompt](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows) (CMD) and type the following then press enter.
+
+  - `python -m pip install future six wxPython pywin32`
+
+2. Open the start menu and search for `natlink`, click the file called `Configure NatLink via GUI`.
+
+     ![Configure start](https://mathfly.org/images/configure_start.png)
+
+3. Ensure that the details of your DNS setup are correct in the “info” tab.
+
+4. In the “configure” tab, under “NatLink” and “UserDirectory” click enable. When you are prompted for a folder, give it the folder containing `install.bat` (`C:\Users\<YourUsername>\Documents\Caster`).
+
+     ![Caster-Natlink.jpg](https://i.postimg.cc/d1jN4xcw/Caster-Natlink.jpg)
+
+###  **PIP Install** (Beta) 
+If you're using DNS make sure you've installed and configured NatLink first! Open [command prompt](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows) (CMD) and type the following then press enter.
+
+`pip install castervoice` 
+
+At the end of the PIP install instructions a CMD window will guide you of what to expect for WSR or DNS. Setup complete. **Note** If a window does not appear please refer to the troubleshooting section.  
 
 ### Troubleshooting FAQ
 
@@ -139,11 +120,9 @@ At the end of the PIP install instructions a CMD window will guide you of what t
 - To fix `ImportError: No module named win32con`
   Package win32con is out of date or not installed. Try `pip install pywin32`  Alternatively if the error persists use the [Windows installer](https://sourceforge.net/projects/pywin32/files/pywin32/Build%20221/pywin32-221.win32-py2.7.exe/download)
 - To fix `lost sys.stder` use `pywin32` for `system wide` features, such as registering COM objects or implementing Windows Services. So you **must** run the following command from an elevated CMD:
-
-> python C:\Python27\Scripts\pywin32_postinstall.py -install
+  - `python C:\Python27\Scripts\pywin32_postinstall.py -install`
 
 - To fix `ImportError: cannot import name RuleWrap`
-
   You likely either have the wrong version of Dragonfly installed, or don't have it installed at all.  RuleWrap is a Dragonfly import. Try `pip uninstall dragonfly` (it's okay if it doesn't find the package) then `pip install dragonfly2`.
 
 ### Extra information
