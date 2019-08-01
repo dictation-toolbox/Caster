@@ -31,78 +31,78 @@ class TextManipulation(MergeRule):
     pronunciation = "text manipulation"
 
     mapping = {
-    # Todo: Find way to to better consolidate these context actions.
-    # Todo: Put context actions for different apps based on pause time requirements
-    # Todo: Consolidate command definitions for left character versus right character; handle defaults in the functions, rather than choice objects.
-
+    
         # PROBLEM: sometimes Dragon thinks the variables are part of dictation.
 
         # replace text or character
         "replace <direction> [<number_of_lines_to_search>] [<occurrence_number>] <dictation> with <dictation2>":
             R(Function(text_manipulation_functions.copypaste_replace_phrase_with_phrase,
-                       dict(dictation="replaced_phrase", dictation2="replacement_phrase")),
+                       dict(dictation="replaced_phrase", dictation2="replacement_phrase"), dictation_versus_character="dictation"),
               rdescript="Text Manipulation: replace text to the left or right of the cursor"),
         "replace <direction>  [<number_of_lines_to_search>] [<occurrence_number>] <character> with <character2>":
             R(Function(text_manipulation_functions.copypaste_replace_phrase_with_phrase,
-                       dict(character="replaced_phrase", character2="replacement_phrase")),
+                       dict(character="replaced_phrase", character2="replacement_phrase"), dictation_versus_character="character"),
               rdescript="Text Manipulation: replace character to the left of the cursor"),
 
         # remove text or character
         "remove <direction> [<number_of_lines_to_search>] [<occurrence_number>] <dictation>":
             R(Function(text_manipulation_functions.copypaste_remove_phrase_from_text,
-                       dict(dictation="phrase")),
+                       dict(dictation="phrase"), dictation_versus_character="dictation"),
                         rdescript="Text Manipulation: remove chosen phrase to the left or right of the cursor"),
+        
         "remove <direction> [<number_of_lines_to_search>] [<occurrence_number>] <character>":
             R(Function(text_manipulation_functions.copypaste_remove_phrase_from_text,
-                       dict(character="phrase")),
+                       dict(character="phrase"), dictation_versus_character="character"),
               rdescript="Text Manipulation: remove chosen character to the left of the cursor"),
 
         # remove until text or character
         "remove <direction> [<number_of_lines_to_search>] until [<before_after>] [<occurrence_number>] <dictation>":
             R(Function(text_manipulation_functions.copypaste_delete_until_phrase,
-                       dict(dictation="phrase")),
+                       dict(dictation="phrase"), dictation_versus_character="dictation"),
               rdescript="Text Manipulation: delete until chosen phrase"),
         "remove <direction> [<number_of_lines_to_search>] until [<before_after>] [<occurrence_number>] <character>":
             R(Function(text_manipulation_functions.copypaste_delete_until_phrase,
-                       dict(character="phrase")),
+                       dict(character="phrase"), dictation_versus_character="character"),
               rdescript="Text Manipulation: delete until chosen character"),
 
         # move cursor
         "(go | move) <direction> [<number_of_lines_to_search>] [<before_after>] [<occurrence_number>] <dictation>":
             R(Function(text_manipulation_functions.move_until_phrase,
-                       dict(dictation="phrase")),
+                       dict(dictation="phrase"), dictation_versus_character="dictation"),
                rdescript="Text Manipulation: move to chosen phrase to the left or right of the cursor"),
-        "(go | move) <direction> [<number_of_lines_to_search>] [<before_after>] [<occurrence_number>] <character>":
-            R(Function(text_manipulation_functions.move_until_phrase,
-                       dict(character="phrase")),
-              rdescript="Text Manipulation: move to chosen character to the left of the cursor"),
+        "(go | move) <direction> [<number_of_lines_to_search>] [<before_after>] [<occurrence_number>] <character_sequence> [over]":
+            Function(lambda direction, before_after, number_of_lines_to_search, occurrence_number, character_sequence:
+             text_manipulation_functions.move_until_phrase(direction, before_after,
+             "".join(character_sequence), number_of_lines_to_search, occurrence_number, "character")),
 
         # select text or character
         "grab <direction> [<number_of_lines_to_search>] [<occurrence_number>] <dictation>":
             R(Function(text_manipulation_functions.select_phrase,
-            dict(dictation="phrase")),
+            dict(dictation="phrase"), dictation_versus_character="dictation"),
                  rdescript="Text Manipulation: select chosen phrase"),
         "grab <direction> [<number_of_lines_to_search>] [<occurrence_number>] <character>":
             R(Function(text_manipulation_functions.select_phrase,
-            dict(character="phrase")),
+            dict(character="phrase", dictation_versus_character="character")),
             rdescript="Text Manipulation: select chosen character"),
 
         # select until text or character
         "grab <direction> [<number_of_lines_to_search>] until [<before_after>] [<occurrence_number>] <dictation> ":
             R(Function(text_manipulation_functions.select_until_phrase,
-            dict(dictation="phrase")),
+            dict(dictation="phrase"), dictation_versus_character="dictation"),
                  rdescript="Text Manipulation: select until chosen phrase"),
         "grab <direction> [<number_of_lines_to_search>] until [<before_after>] [<occurrence_number>] <character>":
             R(Function(text_manipulation_functions.select_until_phrase,
-            dict(character="phrase")),
+            dict(character="phrase"), dictation_versus_character="character"),
             rdescript="Text Manipulation: select until chosen character"),
     }
     new_text_punc_dict = copy.deepcopy(text_punc_dict)
     new_text_punc_dict.update(alphanumeric.caster_alphabet)
     new_text_punc_dict.update(number_dict)
     character_dict = new_text_punc_dict
+    character_choice_object = Choice("character_choice", character_dict)
 
     extras = [
+        Repetition(character_choice_object, min=1, max=3, name="character_sequence"),
         Dictation("dict"),
         Dictation("dictation"),
         Dictation("dictation2"),
@@ -115,7 +115,7 @@ class TextManipulation(MergeRule):
 
         Choice("character", character_dict),
         Choice("character2", character_dict),
-
+        Choice("single_character", character_dict),
 
         Choice("direction", {
             "lease": "left",
