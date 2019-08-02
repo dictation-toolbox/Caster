@@ -11,5 +11,6 @@ class CompatibilityResult(object):
         return self._compatible
 
     def incompatible_specs(self):
-        if self._incompatible_specs is None: return []
+        if self._incompatible_specs is None:
+            return []
         return list(self._incompatible_specs)

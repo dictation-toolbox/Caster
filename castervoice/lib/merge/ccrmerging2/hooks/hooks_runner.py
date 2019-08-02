@@ -1,3 +1,6 @@
+from castervoice.lib import printer
+
+
 class HooksRunner(object):
     def __init__(self):
         self._hooks = []
@@ -8,4 +11,8 @@ class HooksRunner(object):
     def execute(self, event):
         for hook in self._hooks:
             if hook.match(event.get_type()):
-                hook.run(event)
+                try:
+                    hook.run(event)
+                except:
+                    err = "Error while running hook {} with {} event."
+                    printer.out(err.format(hook, event.get_type()))

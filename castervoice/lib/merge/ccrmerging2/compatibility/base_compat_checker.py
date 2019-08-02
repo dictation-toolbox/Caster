@@ -1,23 +1,10 @@
-from castervoice.lib.merge.ccrmerging2.compatibility.compat_result import CompatibilityResult
+from castervoice.lib.ctrl.mgr.errors.base_class_error import DontUseBaseClassError
 
 
 class BaseCompatibilityChecker(object):
+    """
+    Implementors of new compat checkers should override the "compatibility_check" method.
+    """
 
     def compatibility_check(self, mergerules):
-        """
-        Do not override this.
-
-        :param mergerules: a sorted iterable of MergeRules
-        :return:
-        """
-        return self._check(mergerules)
-
-    def _check(self, mergerules):
-        """
-        Override this.
-        This method should always return a CompatibilityResult array.
-
-        :param mergerules:
-        :return:
-        """
-        [CompatibilityResult(None, False, [])]
+        raise DontUseBaseClassError(self)

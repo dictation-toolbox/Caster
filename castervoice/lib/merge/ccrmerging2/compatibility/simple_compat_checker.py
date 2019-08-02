@@ -1,16 +1,15 @@
 from castervoice.lib.merge.ccrmerging2.compatibility.base_compat_checker import BaseCompatibilityChecker
 from castervoice.lib.merge.ccrmerging2.compatibility.compat_result import CompatibilityResult
 
-'''
-This compatibility checker mostly works the way Caster's legacy checker did:
-it looks for a single incompatibility and then returns early. This has
-the benefit of being faster than DetailCompatibilityChecker.
-'''
-
 
 class SimpleCompatibilityChecker(BaseCompatibilityChecker):
+    """
+    This compatibility checker mostly works the way Caster's legacy checker did:
+    it looks for a single incompatibility and then returns early. This has
+    the benefit of being faster than DetailCompatibilityChecker.
+    """
 
-    def _check(self, mergerules):
+    def compatibility_check(self, mergerules):
         results = []
         specs_set = set()
         for new_rule in mergerules:

@@ -1,27 +1,26 @@
 from castervoice.lib.merge.ccrmerging2.compatibility.base_compat_checker import BaseCompatibilityChecker
 from castervoice.lib.merge.ccrmerging2.compatibility.compat_result import CompatibilityResult
 
-'''
-This compatibility checker reports back both the compatibility
-verdict, and the conflicting specs if there is incompatibility.
-It is slower than SimpleCompatibilityChecker but can be used to 
-enable alternate merge collision strategies. 
-'''
-
 
 class DetailCompatibilityChecker(BaseCompatibilityChecker):
-    '''
-    If 'count_against_all' is true, incompatibility for a given
-    rule will be calculated against all prior rules, whether or not
-    they were compatible. This may make sense for some compatibility
-    scenarios, but the default behavior will be to only check
-    compatibility against prior non-conflicting rules.
-    '''
+    """
+    This compatibility checker reports back both the compatibility
+    verdict, and the conflicting specs if there is incompatibility.
+    It is slower than SimpleCompatibilityChecker but can be used to
+    enable alternate merge collision strategies.
+    """
 
     def __init__(self, count_against_all=False):
+        """
+        If 'count_against_all' is true, incompatibility for a given
+        rule will be calculated against all prior rules, whether or not
+        they were compatible.
+
+        :param count_against_all: boolean
+        """
         self._count_against_all = count_against_all
 
-    def _check(self, mergerules):
+    def compatibility_check(self, mergerules):
         results = []
         specs_set = set()
         for new_rule in mergerules:

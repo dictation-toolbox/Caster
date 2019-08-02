@@ -7,33 +7,33 @@ them are that:
 3. transformers enforce immutability
 4. transformers have no concept of "time" or "order"
 '''
-from castervoice.lib import utilities
+from castervoice.lib import utilities, printer
+from castervoice.lib.ctrl.mgr.errors.base_class_error import DontUseBaseClassError
 
 
 class BaseRuleTransformer(object):
+    """
+    Authors of new transformers should override the following methods:
+    _transform
+    _is_applicable methods
+    """
 
     def get_transformed_rule(self, rule):
-        """
-
-
-        :param rule:
-        :return: a transformer copy of the
-        """
-        if self._is_applicable(rule):
-            rule_copy = None
-            if hasattr(rule, "copy"):
-                rule_copy = rule.copy()
-            else:
-                rule_copy = utilities.copy_dragonfly_mapping_rule(rule)
-            return self._transform(rule_copy)
+        try:
+            if self._is_applicable(rule):
+                rule_copy = None
+                if hasattr(rule, "copy"):
+                    rule_copy = rule.copy()
+                else:
+                    rule_copy = utilities.copy_dragonfly_mapping_rule(rule)
+                return self._transform(rule_copy)
+        except:
+            err = "Error while running transformer {} with {} rule."
+            printer.out(err.format(self, rule))
         return rule
-
-    '''override this'''
 
     def _transform(self, rule):
-        return rule
-
-    '''override this'''
+        raise DontUseBaseClassError(self)
 
     def _is_applicable(self, rule):
-        return False
+        raise DontUseBaseClassError(self)
