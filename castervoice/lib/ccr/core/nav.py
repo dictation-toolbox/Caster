@@ -235,20 +235,28 @@ class Navigation(MergeRule):
             R(Function(textformat.prior_text_format)),
         "<word_limit> [<big>] format <textnv>":
             R(Function(textformat.partial_format_text)),
-        "<enclosure> [<textnv>] [(over | brunt)]":
-            R(Function(enclose_format)),
-        "((<enclosure> [<capitalization>] [<spacing>]) | (<capitalization> <spacing> | <capitalization> | <spacing>)) [(bow|bowel)] <textnv> [brunt]": 
-            R(Function(enclose_format)),
-        "bound [<enclosure>] [<capitalization>] [<spacing>] [<textnv>] [brunt]":
-            R(Text(" ") + Function(enclose_format) + Text(" ")), 
-        "spay [<enclosure>] [<capitalization>] [<spacing>] <textnv> [brunt]":
-            R(Text(" ") + Function(enclose_format)), 
-        "skay [<enclosure>] [<capitalization>] [<spacing>] <textnv> [brunt]":
-            R(Function(enclose_format) + Text(" ")),    
-        "phrase <textnv> [brunt]": R(Function(enclose_format)),
         "hug <enclosure> [<capitalization>] [<spacing>]":
             R(Function(enclose_format, hug=True)),
-            # R(Function(text_utils.enclose_selected)),
+        "[<enclosure>] (<capitalization> <spacing> | <capitalization> | <spacing>) [(bow|bowel)] <textnv> [brunt]": 
+            R(Function(enclose_format)),
+        "bound [<enclosure>] (<capitalization> <spacing> | <capitalization> | <spacing>) [<textnv>] [brunt]":
+            R(Text(" ") + Function(enclose_format) + Text(" ")), 
+        "spay [<enclosure>] (<capitalization> <spacing> | <capitalization> | <spacing>) <textnv> [brunt]":
+            R(Text(" ") + Function(enclose_format)), 
+        "skay [<enclosure>] (<capitalization> <spacing> | <capitalization> | <spacing>) <textnv> [brunt]":
+            R(Function(enclose_format) + Text(" ")),    
+        # when inner_formatting=False, we can say "cap" to capitalize words within dictation.
+        # that is the purpose of the repeated commands below
+        "<enclosure> [<textnv>] [(over | brunt)]":
+            R(Function(enclose_format, inner_formatting=False)),
+        "bound [<enclosure>] [<textnv>] [brunt]":
+            R(Text(" ") + Function(enclose_format, inner_formatting=False) + Text(" ")), 
+        "spay [<enclosure>] <textnv> [brunt]":
+            R(Text(" ") + Function(enclose_format, inner_formatting=False)), 
+        "skay [<enclosure>] <textnv> [brunt]":
+            R(Function(enclose_format, inner_formatting=False) + Text(" ")),    
+        "phrase <textnv> [brunt]": R(Function(enclose_format, inner_formatting=False)),
+                   
 
         "dredge [<nnavi10>]":
             R(Key("alt:down, tab/20:%(nnavi10)d, alt:up"),

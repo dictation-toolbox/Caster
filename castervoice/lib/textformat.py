@@ -71,10 +71,8 @@ class TextFormat():
 
     @classmethod
     def normalize_text_format(cls, capitalization, spacing):
-        # What is the purpose of this? I commented this out because it is causing
-        # problems when trying to use "cap" with dictation
-        # if capitalization == 0:
-        #     capitalization = 5
+        if capitalization == 0:
+            capitalization = 5
         if spacing == 0 and capitalization == 3:
             spacing = 1
         return (capitalization, spacing)
@@ -162,8 +160,13 @@ def enclose_format(enclosure, capitalization, spacing, textnv, hug=False, inner_
         offset = len(right_side)
         Key("left:%d" %offset).execute()
     else: # dictation has been provided
-        capitalization, spacing = TextFormat.normalize_text_format(capitalization, spacing)
-        inner_text = TextFormat.formatted_text(capitalization, spacing, str(textnv))
+        
+        if inner_formatting == True:
+            capitalization, spacing = TextFormat.normalize_text_format(capitalization, spacing)
+            inner_text = TextFormat.formatted_text(capitalization, spacing, str(textnv))
+        else:
+            inner_text = str(textnv)
+        
         output_text = left_side + inner_text + right_side
         Text(output_text).execute()
         # Alternate method: faster but not as reliable
