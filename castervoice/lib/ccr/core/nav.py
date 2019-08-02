@@ -236,7 +236,9 @@ class Navigation(MergeRule):
         "<word_limit> [<big>] format <textnv>":
             R(Function(textformat.partial_format_text)),
         "<enclosure> [<capitalization>] [<spacing>] [(bow|bowel)] [<textnv>] [(over | brunt)]":
-            R(Function(enclose_format)),    
+            R(Function(enclose_format)),
+        "long <enclosure> [<capitalization>] [<spacing>] [(bow|bowel)] [<textnv>] [(over | brunt)]":
+            R(Text(" ") + Function(enclose_format) + Text(" ")),    
         "hug <enclosure> [<capitalization>] [<spacing>] [(bow|bowel)] [<textnv>] [(over | brunt)]":
             R(Function(enclose_format, hug=True)),
             # R(Function(text_utils.enclose_selected)),
