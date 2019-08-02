@@ -55,17 +55,21 @@ class CCRMerger2(object):
         class_name_dict = CCRMerger2._managed_rules_dict(managed_rules)
         result = []
 
-        # TODO: something needs to happen here in the recursive version of the call
-        non_app_managed_rules, app_managed_rules = self._separate_app_rules(managed_rules)
-        if len(app_managed_rules) > 0:
-            app_ccr_rules = self._get_app_rule_clones(non_app_managed_rules, app_managed_rules)
-            result.extend(app_ccr_rules)
+        # # NOPE: this approach is garbage
+        # non_app_managed_rules, app_managed_rules = self._separate_app_rules(managed_rules)
+        # if len(app_managed_rules) > 0:
+        #     app_ccr_rules = self._get_app_rule_clones(non_app_managed_rules, app_managed_rules)
+        #     result.extend(app_ccr_rules)
 
         instantiated_rules = [mr.get_rule_instance() for mr in non_app_managed_rules]
 
         # selfmodrule configuration
         for rule in instantiated_rules:
             self._smr_configurer.configure(rule)
+
+        '''
+        See notes on how to change the compat results.
+        '''
 
         # 1
         transformed_rules = []

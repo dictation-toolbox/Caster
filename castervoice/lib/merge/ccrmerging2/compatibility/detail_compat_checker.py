@@ -14,7 +14,15 @@ class DetailCompatibilityChecker(BaseCompatibilityChecker):
         """
         If 'count_against_all' is true, incompatibility for a given
         rule will be calculated against all prior rules, whether or not
-        they were compatible.
+        they were compatible. You want this False in case you have a
+        scenario like:
+        [A, B, C]
+        A -> B = False
+        B -> C = False
+        C -> A = True
+        If B's specs get dumped into the "pool" despite the fact that B
+        will be KO'd by A, C will get KO'd by the "ghost" of B, even though
+        it could have coexisted with A.
 
         :param count_against_all: boolean
         """
@@ -22,20 +30,36 @@ class DetailCompatibilityChecker(BaseCompatibilityChecker):
 
     def compatibility_check(self, mergerules):
         results = []
-        specs_set = set()
-        for new_rule in mergerules:
-            new_specs = new_rule.mapping_copy().keys()
-            incompatible_specs = self._find_all_incompatible_specs(specs_set, new_specs)
-            is_compatible = len(incompatible_specs) == 0
-            result = CompatibilityResult(new_rule, is_compatible, incompatible_specs)
+        specs_to_rules = {}
+        for rule in mergerules:
+            rule_specs = rule.mapping_copy().keys()
+            incompatible_rules = self._find_all_incompatible_rules(specs_to_rules, rule_specs)
+
+            is_compatible = len(incompatible_rules) == 0
+
+            result = CompatibilityResult(rule, is_compatible, incompatible_rules)
+
             results.append(result)
+
             if is_compatible or self._count_against_all:
-                specs_set.update(new_specs)
+                self._invert_mapping(rule, rule_specs, specs_to_rules)
         return results
 
-    def _find_all_incompatible_specs(self, specs_set, new_specs):
+    def _invert_mapping(self, rule, rule_specs, specs_to_rules):
+        """
+        Given a rule and its specs, associates each spec with its rule in
+        'specs_to_rules'. This is so that later on, if there is a spec conflict,
+        it's easy to pinpoint the rules it came from.
+        """
+
+        for spec in rule_specs:
+            if spec not in specs_to_rules:
+                specs_to_rules[spec] = []
+            specs_to_rules[spec].append(rule)
+
+    def _find_all_incompatible_rules(self, specs_to_rules, rule_specs):
         results = []
-        for new_spec in new_specs:
-            if new_spec in specs_set:
-                results.append(new_spec)
+        for rule_spec in rule_specs:
+            if rule_spec in specs_to_rules:
+                results.extend(specs_to_rules[rule_spec])
         return results

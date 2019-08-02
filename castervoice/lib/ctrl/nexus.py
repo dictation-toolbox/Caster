@@ -5,6 +5,7 @@ from castervoice.lib.ctrl.mgr.loading.reload.manual_reload_observable import Man
 from castervoice.lib.ctrl.mgr.loading.reload.timer_reload_observable import TimerReloadObservable
 from castervoice.lib.ctrl.mgr.rule_maker.mapping_rule_maker import MappingRuleMaker
 from castervoice.lib.ctrl.mgr.rules_config import RulesActivationConfig
+from castervoice.lib.merge.ccrmerging2.compatibility.detail_compat_checker import DetailCompatibilityChecker
 from castervoice.lib.merge.ccrmerging2.hooks.hooks_runner import HooksRunner
 from castervoice.lib.merge.ccrmerging2.sorting.config_ruleset_sorter import ConfigBasedRuleSetSorter
 from castervoice.lib.merge.mergerule import MergeRule
@@ -28,7 +29,6 @@ from dragonfly.grammar.grammar_base import Grammar
 from castervoice.lib.ctrl.mgr.grammar_manager import GrammarManager
 from castervoice.lib.ctrl.mgr.validation.rules.rule_validation_delegator import CCRRuleValidationDelegator
 from castervoice.lib.merge.ccrmerging2.ccrmerger2 import CCRMerger2
-from castervoice.lib.merge.ccrmerging2.compatibility.simple_compat_checker import SimpleCompatibilityChecker
 from castervoice.lib.merge.ccrmerging2.merging.classic_merging_strategy import ClassicMergingStrategy
 
 
@@ -144,7 +144,7 @@ class Nexus:
     def _create_merger(rules_order_fn, smrc):
         transformers = [GlobalDefinitionsRuleTransformer()]
         sorter = ConfigBasedRuleSetSorter(rules_order_fn)
-        compat_checker = SimpleCompatibilityChecker()
+        compat_checker = DetailCompatibilityChecker()
         merge_strategy = ClassicMergingStrategy()
         max_repetitions = settings.SETTINGS["miscellaneous"]["max_ccr_repetitions"]
 

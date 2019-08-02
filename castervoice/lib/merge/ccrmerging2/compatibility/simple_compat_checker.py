@@ -16,7 +16,7 @@ class SimpleCompatibilityChecker(BaseCompatibilityChecker):
             new_specs = new_rule.mapping_copy().keys()
             incompatible_spec = self._find_first_incompatible_spec(specs_set, new_specs)
             if incompatible_spec is not None:
-                results.append(CompatibilityResult(new_rule, False, [incompatible_spec]))
+                results.append(CompatibilityResult(new_rule, False))
             else:
                 results.append(CompatibilityResult(new_rule, True))
                 specs_set.update(new_specs)
