@@ -6,19 +6,12 @@ Created on Sep 1, 2015
 from castervoice.lib.imports import *
 from dragonfly.actions.action_mimic import Mimic
 from castervoice.lib.ccr.standard import SymbolSpecs
-from castervoice.lib.ccr.core.punctuation import text_punc_dict, double_text_punc_dict
+from castervoice.lib.ccr.core.punctuation import text_punc_dict, enclosure
 from castervoice.lib.alphanumeric import caster_alphabet
+from castervoice.lib.textformat import master_format_text, enclose_format
 
 
 _NEXUS = control.nexus()
-
-for key, value in double_text_punc_dict.items():
-    if len(value) == 2:
-        double_text_punc_dict[key] = value[0] + "~" + value[1]
-    elif len(value) == 4:
-        double_text_punc_dict[key] = value[0:1] + "~" + value[2:3]
-    else:
-        raise Exception("Need to deal with nonstandard pair length in double_text_punc_dict.")
 
 class NavigationNon(MergeRule): 
     mapping = {
@@ -161,6 +154,8 @@ class NavigationNon(MergeRule):
     }
 
 
+
+
 class Navigation(MergeRule):
     non = NavigationNon
     pronunciation = CCRMerger.CORE[1]
@@ -235,15 +230,17 @@ class Navigation(MergeRule):
             R(Function(textformat.clear_text_format)),
         "peek [<big>] format":
             R(Function(textformat.peek_text_format)),
-        "(<capitalization> <spacing> | <capitalization> | <spacing>) [(bow|bowel)] <textnv> [brunt]":
-            R(Function(textformat.master_format_text)),
+       
         "[<big>] format <textnv>":
             R(Function(textformat.prior_text_format)),
         "<word_limit> [<big>] format <textnv>":
             R(Function(textformat.partial_format_text)),
+        "<enclosure> [<capitalization>] [<spacing>] [(bow|bowel)] [<textnv>] [(over | brunt)]":
+            R(Function(enclose_format)),    
+        "hug <enclosure> [<capitalization>] [<spacing>] [(bow|bowel)] [<textnv>] [(over | brunt)]":
+            R(Function(enclose_format, hug=True)),
+            # R(Function(text_utils.enclose_selected)),
 
-        "hug <enclosure>":
-            R(Function(text_utils.enclose_selected)),
         "dredge [<nnavi10>]":
             R(Key("alt:down, tab/20:%(nnavi10)d, alt:up"),
                rdescript="Core: switch to most recent Windows"),
@@ -287,7 +284,9 @@ class Navigation(MergeRule):
         # "key stroke [<modifier>] <combined_button_dictionary>": 
         #     R(Text('Key("%(modifier)s%(combined_button_dictionary)s")')),
 
+      
     }
+    
     tell_commands_dict = {"dock": ";", "doc": ";", "sink": "", "com": ",", "deck": ":"}
     tell_commands_dict.update(text_punc_dict)
 
@@ -324,14 +323,16 @@ class Navigation(MergeRule):
             "control windows alt shift": "cwas-",
             "hit": "", 
         })
+
+    
     extras = [
-        
+        Choice("enclosure", copy.deepcopy(enclosure)),
         IntegerRefST("nnavi10", 1, 11),
         IntegerRefST("nnavi3", 1, 4),
         IntegerRefST("nnavi50", 1, 50),
         IntegerRefST("nnavi500", 1, 500),
         Dictation("textnv"),
-        Choice("enclosure", double_text_punc_dict),
+        
         Choice("direction", {
             "dunce": "down",
             "sauce": "up",

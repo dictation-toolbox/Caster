@@ -24,7 +24,7 @@ from castervoice.lib.dfplus.state.actions2 import UntilCancelled, NullAction, Bo
 from castervoice.lib.dfplus.state.short import L, S, R
 
 from castervoice.lib.ccr.standard import SymbolSpecs
-from castervoice.lib.ccr.core.punctuation import double_text_punc_dict, text_punc_dict
+from castervoice.lib.ccr.core.punctuation import enclosure, text_punc_dict
 
 import os, sys, re, copy, itertools, time
 import shutil, threading, subprocess, shlex

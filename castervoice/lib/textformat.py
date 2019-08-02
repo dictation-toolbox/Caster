@@ -1,7 +1,7 @@
 from builtins import str
 
-from castervoice.lib import settings
-from castervoice.lib.actions import Text
+from castervoice.lib import settings, context
+from castervoice.lib.actions import Text, Key
 
 
 class TextFormat():
@@ -133,3 +133,25 @@ def prior_text_format(big, textnv):
 def master_format_text(capitalization, spacing, textnv):
     capitalization, spacing = TextFormat.normalize_text_format(capitalization, spacing)
     Text(TextFormat.formatted_text(capitalization, spacing, str(textnv))).execute()
+
+def enclose_format(enclosure, capitalization, spacing, textnv, hug=False):
+    if isinstance(enclosure, tuple):
+        left_side, right_side = enclosure
+    else:
+        left_side = enclosure; right_side = enclosure
+    if hug==True: # we are enclosing something that is already there
+        (err, selected_text) = context.read_selected_without_altering_clipboard(True)
+        if err == 0:
+            textnv = selected_text
+    if textnv == "": # no dictation has been provided
+        Text(left_side + right_side).execute()
+        offset = len(right_side)
+        Key("left:%d" %offset).execute()
+    else: # dictation has been provided
+        capitalization, spacing = TextFormat.normalize_text_format(capitalization, spacing)
+        inner_text = TextFormat.formatted_text(capitalization, spacing, str(textnv))
+        output_text = left_side + inner_text + right_side
+        Text(output_text).execute()
+        # Alternate method: faster but not as reliable
+        # if not context.paste_string_without_altering_clipboard(enclosed_text):
+        #     print("failed to paste {}".format(enclosed_text))

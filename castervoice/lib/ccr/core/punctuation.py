@@ -7,17 +7,29 @@ from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
 
-double_text_punc_dict = {
-    "quotes":                            "\"\"",
-    "thin quotes":                         "''",
-    "tickris":                             "``",
-    "prekris":                             "()",
-    "brax":                                "[]",
-    "curly":                               "{}",
-    "angle":                               "<>",
-}
+enclosure = {
+    "quotes": "\"",
+    "thin quotes": "'",
+    "tickris": "`",
+    "dunder": "__",
+    "starry": "**",
+    "spacer": " ",
+    "dollz": "$",
+    "(bling | blinger)": "$$",
+    "prekris": ("(",")"),
+    "precoat": ("(\"", "\""),
+    "brax": ("[","]"),
+    "curly": ("{","}"),
+    "angle": ("<", ">"),
+    "triple tick": ("```\n", "\n```"),
+    }
 
-inv_dtpb = {v: k for k, v in double_text_punc_dict.iteritems()}
+def make_2tuple_into_string(input):
+    if isinstance(input, tuple):
+        return input[0] + input[1]
+    else:
+        return input
+inv_dtpb = {make_2tuple_into_string(v): k for k, v in enclosure.iteritems()}
 
 text_punc_dict = {
     "ace":                                                " ",
@@ -51,7 +63,7 @@ text_punc_dict = {
     "right " + inv_dtpb["[]"]:                            "]",
     "carrot":                                             "^",
     "underscore":                                         "_",
-    "ticky | ((left | right) " +  inv_dtpb["``"] + " )":  "`",
+    "ticky | ((left | right) " +  inv_dtpb["`"] + " )":  "`",
     "left " + inv_dtpb["{}"]:                             "{",
     "pipe (sim | symbol)":                                "|",
     "right " + inv_dtpb["{}"]:                            "}",
@@ -67,8 +79,7 @@ class Punctuation(MergeRule):
         # For some reason, this one doesn't work through the other function
         "[<long>] backslash [<npunc>]":
             R(Text("%(long)s" + "\\" + "%(long)s"))*Repeat(extra="npunc"),
-        "<double_text_punc> [<npunc>]":
-            R(Text("%(double_text_punc)s") + Key("left"))*Repeat(extra="npunc"),
+        
         "tabby [<npunc>]":
             R(Key("tab"))*Repeat(extra="npunc"),
         "(back | shin) tabby [<npunc>]":
@@ -90,8 +101,7 @@ class Punctuation(MergeRule):
             }),
         Choice(
             "text_punc", text_punc_dict),
-        Choice(
-            "double_text_punc", double_text_punc_dict)
+       
     ]
     defaults = {
         "npunc": 1,
