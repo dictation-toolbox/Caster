@@ -12,16 +12,6 @@ def fix_dragon_double(nexus):
         utilities.simple_log(False)
 
 
-def cap_dictation(dictation):
-    input_list = str(dictation).split(" ")
-    output_list = []
-    for i in range(len(input_list)):
-        if input_list[i] == "cap":
-            input_list[i + 1] = input_list[i + 1].title()
-        else:
-            output_list.append(input_list[i])
-    Text(" ".join(output_list)).execute()
-
 
 # extras are common to both classes in this file
 extras_for_whole_file = [
@@ -47,7 +37,6 @@ class DragonRule(MergeRule):
     pronunciation = "dragon"
 
     mapping = {
-        "format <text>": Function(cap_dictation, extra={"text"}),
         '(lock Dragon | deactivate)':
             R(Playback([(["go", "to", "sleep"], 0.0)])),
         '(number|numbers) mode':
