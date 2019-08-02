@@ -235,11 +235,18 @@ class Navigation(MergeRule):
             R(Function(textformat.prior_text_format)),
         "<word_limit> [<big>] format <textnv>":
             R(Function(textformat.partial_format_text)),
-        "(<enclosure> [<capitalization>] [<spacing>] | (<capitalization> | <spacing> | <capitalization> <spacing>)) [(bow|bowel)] [<textnv>] [(over | brunt)]":
+        "<enclosure> [<textnv>] [(over | brunt)]":
             R(Function(enclose_format)),
-        "long [<enclosure>] [<capitalization>] [<spacing>] [(bow|bowel)] [<textnv>] [(over | brunt)]":
-            R(Text(" ") + Function(enclose_format) + Text(" ")),    
-        "hug <enclosure> [<capitalization>] [<spacing>] [(bow|bowel)] [<textnv>] [(over | brunt)]":
+        "((<enclosure> [<capitalization>] [<spacing>]) | (<capitalization> <spacing> | <capitalization> | <spacing>)) [(bow|bowel)] <textnv> [brunt]": 
+            R(Function(enclose_format)),
+        "bound [<enclosure>] [<capitalization>] [<spacing>] [<textnv>] [brunt]":
+            R(Text(" ") + Function(enclose_format) + Text(" ")), 
+        "spay [<enclosure>] [<capitalization>] [<spacing>] <textnv> [brunt]":
+            R(Text(" ") + Function(enclose_format)), 
+        "skay [<enclosure>] [<capitalization>] [<spacing>] <textnv> [brunt]":
+            R(Function(enclose_format) + Text(" ")),    
+        "phrase <textnv> [brunt]": R(Function(enclose_format)),
+        "hug <enclosure> [<capitalization>] [<spacing>]":
             R(Function(enclose_format, hug=True)),
             # R(Function(text_utils.enclose_selected)),
 
@@ -408,6 +415,7 @@ class Navigation(MergeRule):
         "splatdir": "backspace",
         "modifier": "",
         "enclosure": "",
+        
     }
 
 

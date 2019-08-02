@@ -71,8 +71,10 @@ class TextFormat():
 
     @classmethod
     def normalize_text_format(cls, capitalization, spacing):
-        if capitalization == 0:
-            capitalization = 5
+        # What is the purpose of this? I commented this out because it is causing
+        # problems when trying to use "cap" with dictation
+        # if capitalization == 0:
+        #     capitalization = 5
         if spacing == 0 and capitalization == 3:
             spacing = 1
         return (capitalization, spacing)
@@ -134,12 +136,24 @@ def master_format_text(capitalization, spacing, textnv):
     capitalization, spacing = TextFormat.normalize_text_format(capitalization, spacing)
     Text(TextFormat.formatted_text(capitalization, spacing, str(textnv))).execute()
 
-def enclose_format(enclosure, capitalization, spacing, textnv, hug=False):
+# def cap_dictation(dictation):
+#     input_list = str(dictation).split(" ")
+#     print(input_list)
+#     output_list = []
+#     for i in range(len(input_list)):
+#         if input_list[i] == "cap":
+#             input_list[i + 1] = input_list[i + 1].title()
+#         else:
+#             output_list.append(input_list[i])
+    
+#     return " ".join(output_list) 
+
+def enclose_format(enclosure, capitalization, spacing, textnv, hug=False, inner_formatting=True):
     if isinstance(enclosure, tuple):
         left_side, right_side = enclosure
     else:
         left_side = enclosure; right_side = enclosure
-    if hug==True: # we are enclosing something that is already there
+    if hug == True: # we are enclosing something that is already there
         (err, selected_text) = context.read_selected_without_altering_clipboard(True)
         if err == 0:
             textnv = selected_text
