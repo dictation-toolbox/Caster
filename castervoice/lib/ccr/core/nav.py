@@ -1,3 +1,4 @@
+
 '''
 Created on Sep 1, 2015
 
@@ -237,25 +238,15 @@ class Navigation(MergeRule):
             R(Function(textformat.partial_format_text)),
         "hug <enclosure> [<capitalization>] [<spacing>]":
             R(Function(enclose_format, hug=True)),
-        "[<enclosure>] (<capitalization> <spacing> | <capitalization> | <spacing>) [(bow|bowel)] <textnv> [brunt]": 
+        "([<enclosure>] (<capitalization> <spacing> | <capitalization> | <spacing>) | <enclosure> [<capitalization>] [<spacing>]) [bow] <textnv> [(brunt | over)]": 
             R(Function(enclose_format)),
-        "bound [<enclosure>] (<capitalization> <spacing> | <capitalization> | <spacing>) [<textnv>] [brunt]":
+        "bound ([<enclosure>] (<capitalization> <spacing> | <capitalization> | <spacing>) | <enclosure> [<capitalization>] [<spacing>]) [bow] <textnv> [(brunt | over)]": 
             R(Text(" ") + Function(enclose_format) + Text(" ")), 
-        "spay [<enclosure>] (<capitalization> <spacing> | <capitalization> | <spacing>) <textnv> [brunt]":
+        "spay ([<enclosure>] (<capitalization> <spacing> | <capitalization> | <spacing>) | <enclosure> [<capitalization>] [<spacing>]) [bow] <textnv> [(brunt | over)]": 
             R(Text(" ") + Function(enclose_format)), 
-        "skay [<enclosure>] (<capitalization> <spacing> | <capitalization> | <spacing>) <textnv> [brunt]":
+        "skay ([<enclosure>] (<capitalization> <spacing> | <capitalization> | <spacing>) | <enclosure> [<capitalization>] [<spacing>]) [bow] <textnv> [(brunt | over)]": 
             R(Function(enclose_format) + Text(" ")),    
-        # when inner_formatting=False, we can say "cap" to capitalize words within dictation.
-        # that is the purpose of the repeated commands below
-        "<enclosure> [<textnv>] [(over | brunt)]":
-            R(Function(enclose_format, inner_formatting=False)),
-        "bound [<enclosure>] [<textnv>] [brunt]":
-            R(Text(" ") + Function(enclose_format, inner_formatting=False) + Text(" ")), 
-        "spay [<enclosure>] <textnv> [brunt]":
-            R(Text(" ") + Function(enclose_format, inner_formatting=False)), 
-        "skay [<enclosure>] <textnv> [brunt]":
-            R(Function(enclose_format, inner_formatting=False) + Text(" ")),    
-        "phrase <textnv> [brunt]": R(Function(enclose_format, inner_formatting=False)),
+        "phrase <textnv> [brunt]": R(Function(enclose_format)),
                    
 
         "dredge [<nnavi10>]":
@@ -363,6 +354,7 @@ class Navigation(MergeRule):
         Choice("combined_button_dictionary", combined_button_dictionary),
         
         Choice("capitalization", {
+            "rarb": -1,
             "yell": 1,
             "tie": 2,
             "Gerrish": 3,

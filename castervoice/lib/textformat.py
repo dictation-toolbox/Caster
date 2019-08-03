@@ -9,11 +9,17 @@ class TextFormat():
     Represents text formatting (capitalization and spacing) rules
 
     Commands for capitalization:
+    -1 rarb - capitals determined by Dragon vocabulary and by the use of the prefix "cap"
+        (ideally "cap" would override any capitalization commands by default but that is tricky 
+        so this is a temporary solution. it may not work perfectly with the "set format" command.) 
+    0 - (default) if word spacing is specified, then alllower (5), but
+        if word spacing is not specified, then capitals are determined by engine
+        vocabulary and by the use of the prefix "cap"
     1 yell - ALLCAPS
     2 tie - TitleCase
     3 Gerrish - camelCase
     4 sing - Sentencecase
-    5 laws (default) - alllower
+    5 laws - alllower
     Commands for word spacing:
     0 (default except Gerrish) - words with spaces
     1 gum (default for Gerrish)  - wordstogether
@@ -25,7 +31,7 @@ class TextFormat():
 
     @classmethod
     def formatted_text(cls, capitalization, spacing, t):
-        if capitalization != 0:
+        if capitalization != 0 and capitalization != -1:
             if capitalization == 1:
                 t = t.upper()
             elif capitalization == 2:
@@ -71,7 +77,11 @@ class TextFormat():
 
     @classmethod
     def normalize_text_format(cls, capitalization, spacing):
-        if capitalization == 0:
+        if capitalization == 0 and not spacing == 0:
+            # capitalization defaults to lower unless no spacing is provided
+            # in which case capitalization is determined by the engine vocabulary
+            # and by "cap" prefixes 
+            
             capitalization = 5
         if spacing == 0 and capitalization == 3:
             spacing = 1
@@ -134,17 +144,6 @@ def master_format_text(capitalization, spacing, textnv):
     capitalization, spacing = TextFormat.normalize_text_format(capitalization, spacing)
     Text(TextFormat.formatted_text(capitalization, spacing, str(textnv))).execute()
 
-# def cap_dictation(dictation):
-#     input_list = str(dictation).split(" ")
-#     print(input_list)
-#     output_list = []
-#     for i in range(len(input_list)):
-#         if input_list[i] == "cap":
-#             input_list[i + 1] = input_list[i + 1].title()
-#         else:
-#             output_list.append(input_list[i])
-    
-#     return " ".join(output_list) 
 
 def enclose_format(enclosure, capitalization, spacing, textnv, hug=False, inner_formatting=True):
     if isinstance(enclosure, tuple):
@@ -159,14 +158,10 @@ def enclose_format(enclosure, capitalization, spacing, textnv, hug=False, inner_
         Text(left_side + right_side).execute()
         offset = len(right_side)
         Key("left:%d" %offset).execute()
-    else: # dictation has been provided
+    else: # dictation has been provided 
         
-        if inner_formatting == True:
-            capitalization, spacing = TextFormat.normalize_text_format(capitalization, spacing)
-            inner_text = TextFormat.formatted_text(capitalization, spacing, str(textnv))
-        else:
-            inner_text = str(textnv)
-        
+        capitalization, spacing = TextFormat.normalize_text_format(capitalization, spacing)
+        inner_text = TextFormat.formatted_text(capitalization, spacing, str(textnv))
         output_text = left_side + inner_text + right_side
         Text(output_text).execute()
         # Alternate method: faster but not as reliable
