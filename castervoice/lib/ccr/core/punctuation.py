@@ -22,6 +22,7 @@ enclosure = {
     "curly": ("{","}"),
     "angle": ("<", ">"),
     "triple tick": ("```\n", "\n```"),
+    "varib": ("`<", ">`"),
     }
 
 def make_2tuple_into_string(input):
