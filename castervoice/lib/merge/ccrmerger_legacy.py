@@ -10,8 +10,6 @@ from dragonfly.grammar.grammar_base import Grammar
 from dragonfly.grammar.rule_compound import CompoundRule
 
 from castervoice.lib import utilities, settings
-from castervoice.lib.merge.merge import gfilter
-from castervoice.lib.merge.merge.mergepair import MergePair, MergeInf
 from castervoice.lib.merge.mergerule import MergeRule
 
 

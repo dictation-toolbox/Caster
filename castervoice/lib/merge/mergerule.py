@@ -1,5 +1,5 @@
 from dragonfly import MappingRule, Pause, Function
-import re, os, sys
+import re
 from castervoice.lib import printer
 
 
@@ -22,8 +22,7 @@ class MergeRule(MappingRule):
                  mapping=None,
                  extras=None,
                  defaults=None,
-                 exported=None,
-                 location=None):
+                 exported=None):
 
         if mapping is not None:
             mapping["display available commands"] = Function(
@@ -106,3 +105,6 @@ class MergeRule(MappingRule):
     def _display_available_commands(self):
         for spec in self.mapping_actual().keys():
             printer.out(spec)
+
+    def get_rule_class_name(self):
+        return self.__class__.__name__

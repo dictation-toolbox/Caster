@@ -1,14 +1,13 @@
 class CompatibilityResult(object):
-    def __init__(self, mergerule, compatible, incompatible_rules=[]):
+    def __init__(self, mergerule, incompatible_rule_class_names=[]):
         self._mergerule = mergerule
-        self._compatible = compatible
-        self._incompatible_rules = incompatible_rules
+        self._incompatible_rule_class_names = incompatible_rule_class_names
 
     def rule(self):
         return self._mergerule
 
     def is_compatible(self):
-        return self._compatible
+        return len(self._incompatible_rule_class_names) > 0
 
-    def incompatible_rules(self):
-        return list(self._incompatible_rules)
+    def incompatible_rule_class_names(self):
+        return list(self._incompatible_rule_class_names)

@@ -1,65 +1,94 @@
 from castervoice.lib.merge.ccrmerging2.compatibility.base_compat_checker import BaseCompatibilityChecker
 from castervoice.lib.merge.ccrmerging2.compatibility.compat_result import CompatibilityResult
+from castervoice.lib.util.bidi_graph import BiDiGraph
+from castervoice.lib.util.hashable_list import HashableList
 
 
 class DetailCompatibilityChecker(BaseCompatibilityChecker):
-    """
-    This compatibility checker reports back both the compatibility
-    verdict, and the conflicting specs if there is incompatibility.
-    It is slower than SimpleCompatibilityChecker but can be used to
-    enable alternate merge collision strategies.
-    """
-
-    def __init__(self, count_against_all=False):
-        """
-        If 'count_against_all' is true, incompatibility for a given
-        rule will be calculated against all prior rules, whether or not
-        they were compatible. You want this False in case you have a
-        scenario like:
-        [A, B, C]
-        A -> B = False
-        B -> C = False
-        C -> A = True
-        If B's specs get dumped into the "pool" despite the fact that B
-        will be KO'd by A, C will get KO'd by the "ghost" of B, even though
-        it could have coexisted with A.
-
-        :param count_against_all: boolean
-        """
-        self._count_against_all = count_against_all
-
+    # TODO: unit test the hell out of this method
     def compatibility_check(self, mergerules):
-        results = []
-        specs_to_rules = {}
+        """
+         For each rule found in a list of size > 1 (there are no zeros),
+        make its name the key in a map of
+        {rule-name: <set-of-incompat-rule-names>}
+        Optimize this for super-similar rules by also having a set of joint
+        rule names. So for instance, if we have:
+        [
+            s1: [A,B],
+            s2: [B,C],
+            s3: [A,B],
+            s4: [A,B],
+            s5: [C,D],
+            s6: [A,D]
+        ]
+        Then we only need to loop over an array once per combo.
+
+        :param mergerules: collection of MergeRule
+        :return: collection of CompatibilityResult
+        """
+
+        '''
+        "RCN" = rule class name
+        
+        1. Invert the mapping. Rules are usually one to many with specs.
+           Here, we want to get a mapping of spec to RCNs, where the 
+           attached RCNs are all the rules which include that spec.
+           This is O(n) for total specs processed.
+        '''
+        specs_to_lists_of_rcns = {}
+        rcns_to_rules = {}
         for rule in mergerules:
-            rule_specs = rule.mapping_copy().keys()
-            incompatible_rules = self._find_all_incompatible_rules(specs_to_rules, rule_specs)
+            DetailCompatibilityChecker._invert_mapping(
+                rule,
+                rule.mapping_copy().keys(),
+                specs_to_lists_of_rcns)
+            rcns_to_rules[rule.get_rule_class_name()] = rule
 
-            is_compatible = len(incompatible_rules) == 0
+        '''
+        2. Now we take the dict of spec to RCNs and discard the specs.
+           Any list of RCNs larger than size 1 represents an incompatibility.
+           However, the RCN lists need further grouping. At this point, they
+           are grouped by spec. What we want is a graph, with each RCN
+           pointing to its incompatible RCNs.
+           
+           Still O(n) for the total number of specs since this part is O(log n)
+           for the number of rules, which is >= than the number of specs.
+        '''
+        previously_computed_groups = set()
+        graph = BiDiGraph()
+        # gomir = "group of mutually incompatible rules"
+        for gomir in specs_to_lists_of_rcns.values():
+            if len(gomir) == 1:
+                continue
 
-            result = CompatibilityResult(rule, is_compatible, incompatible_rules)
+            if gomir.get_string() in previously_computed_groups:
+                continue
+            previously_computed_groups.add(gomir.get_string())
 
-            results.append(result)
+            graph.add(*gomir.get_list())
 
-            if is_compatible or self._count_against_all:
-                self._invert_mapping(rule, rule_specs, specs_to_rules)
+        '''
+        3. Convert the incompatibility graph to a list of compat results.
+        '''
+        results = []
+        for rcn in rcns_to_rules:
+            rule = rcns_to_rules[rcn]
+            incompats = graph.get_node(rcn)
+            results.append(CompatibilityResult(rule, incompats))
         return results
 
-    def _invert_mapping(self, rule, rule_specs, specs_to_rules):
+    @staticmethod
+    def _invert_mapping(rule, rule_specs, specs_to_rules):
         """
         Given a rule and its specs, associates each spec with its rule in
-        'specs_to_rules'. This is so that later on, if there is a spec conflict,
-        it's easy to pinpoint the rules it came from.
+        'specs_to_rules'. This (A) groups incompatible rules together for
+        further processing and (B) preserves which specs are responsible,
+        in case we want a hook in here or something like that.
+
+        Format is a space delimited string with a leading space
         """
 
         for spec in rule_specs:
             if spec not in specs_to_rules:
-                specs_to_rules[spec] = []
-            specs_to_rules[spec].append(rule)
-
-    def _find_all_incompatible_rules(self, specs_to_rules, rule_specs):
-        results = []
-        for rule_spec in rule_specs:
-            if rule_spec in specs_to_rules:
-                results.extend(specs_to_rules[rule_spec])
-        return results
+                specs_to_rules[spec] = HashableList()
+            specs_to_rules[spec].add(rule.get_rule_class_name())
