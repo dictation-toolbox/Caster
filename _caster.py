@@ -4,17 +4,31 @@ main Caster module
 Created on Jun 29, 2014
 '''
 
-import os, time, sys
+import datetime
+start_time = datetime.datetime.now()
+
+import os, time, sys, subprocess
+from castervoice.lib import settings
+from castervoice.lib import message_window
+subprocess.Popen([settings.SETTINGS["paths"]["PYTHONW"], message_window.__file__])
+from socket import socket, AF_INET, SOCK_STREAM
+sock = socket(AF_INET, SOCK_STREAM)
+sock.connect(('localhost', 10011))
+file = sock.makefile('w', 0)
+sys.stdout = file
+sys.stderr = file
+
 import logging
 logging.basicConfig()
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO )
+logger.info("Starting Caster")
 
-import time, socket, os
 from dragonfly import (get_engine, Function, Grammar, Playback, Dictation, Choice, Pause,
                        RunCommand)
 from castervoice.lib.ccr.standard import SymbolSpecs
 
 _NEXUS = None
-from castervoice.lib import settings  # requires nothing
 if settings.SYSTEM_INFORMATION["platform"] != "win32":
     raise SystemError("Your platform is not currently supported by Caster.")
 settings.WSR = __name__ == "__main__"
@@ -47,7 +61,6 @@ if not globals().has_key('profile_switch_occurred'):
     _NEXUS.process_user_content()
     _NEXUS.merger.update_config()
     _NEXUS.merger.merge(MergeInf.BOOT)
-
 
 class DependencyUpdate(RunCommand):
     synchronous = True
@@ -156,9 +169,9 @@ if globals().has_key('profile_switch_occurred'):
 else:
     profile_switch_occurred = None
 
-print("\n*- Starting " + settings.SOFTWARE_NAME + " -*")
-
+logger.info('Caster startup in {} s'.format(datetime.datetime.now() - start_time))
 if settings.WSR:
     print("Windows Speech Recognition is garbage; it is " \
         +"recommended that you not run Caster this way. ")
     get_engine().recognize_forever()
+
