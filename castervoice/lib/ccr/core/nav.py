@@ -232,22 +232,24 @@ class Navigation(MergeRule):
         "peek [<big>] format":
             R(Function(textformat.peek_text_format)),
        
-        "[<big>] format <textnv>":
+  
+        # the next three commands put a space at the end
+        "([<enclosure>] (<capitalization> <spacing> | <capitalization> | <spacing>) | <enclosure> [<capitalization>] [<spacing>]) [bow] <textnv> [(brunt | over)]": 
+            R(Function(enclose_format)), # combination enclosure, spacing, and capitalization command
+        "spay ([<enclosure>] (<capitalization> <spacing> | <capitalization> | <spacing>) | <enclosure> [<capitalization>] [<spacing>]) [bow] <textnv> [(brunt | over)]": 
+            R(Text(" ") + Function(enclose_format)), # same as above, puts space at the beginning
+        "phrase <textnv> [(brunt | over)]": R(Function(enclose_format)), # mid utterance dictation command like "format"
+        # the next four commands do not put a space at the end
+        "nay ([<enclosure>] (<capitalization> <spacing> | <capitalization> | <spacing>) | <enclosure> [<capitalization>] [<spacing>]) [bow] <textnv> [(brunt | over)]": 
+            R(Function(enclose_format) + Key("backspace")), # combination enclosure, spacing, and capitalization command  
+        "<enclosure>": R(Function(enclose_format)), # this is to e.g. type a pair of parentheses and put the cursor in between them
+        "[<big>] format <textnv> [(brunt | over)]":
             R(Function(textformat.prior_text_format)),
-        "<word_limit> [<big>] format <textnv>":
+        "<word_limit> [<big>] format <textnv> [(brunt | over)]":
             R(Function(textformat.partial_format_text)),
         "hug <enclosure> [<capitalization>] [<spacing>]":
             R(Function(enclose_format, hug=True)),
-        "([<enclosure>] (<capitalization> <spacing> | <capitalization> | <spacing>) | <enclosure> [<capitalization>] [<spacing>]) [bow] <textnv> [(brunt | over)]": 
-            R(Function(enclose_format)),
-        "bound ([<enclosure>] (<capitalization> <spacing> | <capitalization> | <spacing>) | <enclosure> [<capitalization>] [<spacing>]) [bow] <textnv> [(brunt | over)]": 
-            R(Text(" ") + Function(enclose_format) + Text(" ")), 
-        "spay ([<enclosure>] (<capitalization> <spacing> | <capitalization> | <spacing>) | <enclosure> [<capitalization>] [<spacing>]) [bow] <textnv> [(brunt | over)]": 
-            R(Text(" ") + Function(enclose_format)), 
-        "skay ([<enclosure>] (<capitalization> <spacing> | <capitalization> | <spacing>) | <enclosure> [<capitalization>] [<spacing>]) [bow] <textnv> [(brunt | over)]": 
-            R(Function(enclose_format) + Text(" ")),    
-        "phrase <textnv> [brunt]": R(Function(enclose_format)),
-                   
+
 
         "dredge [<nnavi10>]":
             R(Key("alt:down, tab/20:%(nnavi10)d, alt:up"),

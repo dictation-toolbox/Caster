@@ -145,7 +145,7 @@ def master_format_text(capitalization, spacing, textnv):
     Text(TextFormat.formatted_text(capitalization, spacing, str(textnv))).execute()
 
 
-def enclose_format(enclosure, capitalization, spacing, textnv, hug=False, inner_formatting=True):
+def enclose_format(enclosure, capitalization, spacing, textnv, hug=False):
     if isinstance(enclosure, tuple):
         left_side, right_side = enclosure
     else:
@@ -164,6 +164,8 @@ def enclose_format(enclosure, capitalization, spacing, textnv, hug=False, inner_
         inner_text = TextFormat.formatted_text(capitalization, spacing, str(textnv))
         output_text = left_side + inner_text + right_side
         Text(output_text).execute()
-        # Alternate method: faster but not as reliable
-        # if not context.paste_string_without_altering_clipboard(enclosed_text):
-        #     print("failed to paste {}".format(enclosed_text))
+        if hug == False and textnv != "":
+            Text(" ").execute()
+
+
+
