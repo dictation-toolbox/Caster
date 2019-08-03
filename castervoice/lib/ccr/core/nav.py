@@ -232,17 +232,20 @@ class Navigation(MergeRule):
         "peek [<big>] format":
             R(Function(textformat.peek_text_format)),
        
-  
+
         # the next three commands put a space at the end
         "([<enclosure>] (<capitalization> <spacing> | <capitalization> | <spacing>) | <enclosure> [<capitalization>] [<spacing>]) [bow] <textnv> [(brunt | over)]": 
             R(Function(enclose_format)), # combination enclosure, spacing, and capitalization command
-        "spay ([<enclosure>] (<capitalization> <spacing> | <capitalization> | <spacing>) | <enclosure> [<capitalization>] [<spacing>]) [bow] <textnv> [(brunt | over)]": 
-            R(Text(" ") + Function(enclose_format)), # same as above, puts space at the beginning
+        "spay ([<enclosure>] [<capitalization>] [<spacing>] | [<enclosure>] (<capitalization> <spacing> | <capitalization> | <spacing>) | <enclosure> [<capitalization>] [<spacing>]) [bow] [<textnv>] [(brunt | over)]": 
+            R(Text(" ") + Function(enclose_format)), # same as above, but puts a space at the beginning
         "phrase <textnv> [(brunt | over)]": R(Function(enclose_format)), # mid utterance dictation command like "format"
         # the next four commands do not put a space at the end
-        "nay ([<enclosure>] (<capitalization> <spacing> | <capitalization> | <spacing>) | <enclosure> [<capitalization>] [<spacing>]) [bow] <textnv> [(brunt | over)]": 
-            R(Function(enclose_format) + Key("backspace")), # combination enclosure, spacing, and capitalization command  
+        "nurk ([<enclosure>] [<capitalization>] [<spacing>] | [<enclosure>] (<capitalization> <spacing> | <capitalization> | <spacing>) | <enclosure> [<capitalization>] [<spacing>]) [bow] [<textnv>] [(brunt | over)]": 
+            R(Function(enclose_format) + Key("backspace")), # same combination command but no space at the end
+        "spurk ([<enclosure>] [<capitalization>] [<spacing>] | [<enclosure>] (<capitalization> <spacing> | <capitalization> | <spacing>) | <enclosure> [<capitalization>] [<spacing>]) [bow] [<textnv>] [(brunt | over)]": 
+            R(Text(" ") + Function(enclose_format) + Key("backspace")), # same as above, but puts a space at the beginning
         "<enclosure>": R(Function(enclose_format)), # this is to e.g. type a pair of parentheses and put the cursor in between them
+        # to dictate in between enclosures and keep the cursor inside, say "<enclosure>" + "phrase <textnv>" which is a sequence of two commands
         "[<big>] format <textnv> [(brunt | over)]":
             R(Function(textformat.prior_text_format)),
         "<word_limit> [<big>] format <textnv> [(brunt | over)]":
