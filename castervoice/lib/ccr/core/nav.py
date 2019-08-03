@@ -301,6 +301,9 @@ class Navigation(MergeRule):
     button_dictionary_10 = {"function {}".format(i):"f{}".format(i) for i in range(1, 10)}
     button_dictionary_10.update(caster_alphabet)
     button_dictionary_10.update(text_punc_dict)
+    longhand_punctuation_names = {"minus": "hyphen", "hyphen":"hyphen", "comma": "comma",
+        "deckle": "colon", "colon": "colon", "slash": "slash", "backslash": "backslash"}
+    button_dictionary_10.update(longhand_punctuation_names)
     button_dictionary_1 = {"(home | lease wally | lairch)": "home", "(end | ross wally | rairch)": "end", "insert": "insert", "zero": "0",
     "one": "1", "two": "2", "three": "3", "four": "4", "five": "5", "six":"6", "seven": "7", "eight": "8", "nine": "9"}
     combined_button_dictionary = {}
@@ -308,7 +311,7 @@ class Navigation(MergeRule):
         combined_button_dictionary.update(dictionary)
     
     modifier_choice_object = Choice("modifier", {
-            "(control | fly)": "c-", #TODO: make DRY
+            "(control | fly)": "c-", #TODO: make DRY 
             "(shift | shin)": "s-",
             "alt": "a-",
             "(control shift | que)": "cs-",
