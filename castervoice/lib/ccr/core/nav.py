@@ -301,7 +301,8 @@ class Navigation(MergeRule):
     longhand_punctuation_names = {"minus": "hyphen", "hyphen":"hyphen", "comma": "comma",
         "deckle": "colon", "colon": "colon", "slash": "slash", "backslash": "backslash"}
     button_dictionary_10.update(longhand_punctuation_names)
-    button_dictionary_1 = {"(home | lease wally | lairch)": "home", "(end | ross wally | rairch)": "end", "insert": "insert", "zero": "0",
+    button_dictionary_10.update({"(home | lease wally | lairch)": "home", "(end | ross wally | rairch)": "end"})
+    button_dictionary_1 = {"insert": "insert", "zero": "0",
     "one": "1", "two": "2", "three": "3", "four": "4", "five": "5", "six":"6", "seven": "7", "eight": "8", "nine": "9"}
     combined_button_dictionary = {}
     for dictionary in [button_dictionary_1, button_dictionary_10, button_dictionary_500]:
