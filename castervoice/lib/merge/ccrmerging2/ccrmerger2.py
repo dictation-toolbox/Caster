@@ -1,6 +1,7 @@
 from dragonfly.grammar.elements import RuleRef, Alternative, Repetition
 from dragonfly.grammar.rule_compound import CompoundRule
 from castervoice.lib.const import CCRType
+from castervoice.lib.context import AppContext
 
 
 class CCRMerger2(object):
@@ -37,18 +38,8 @@ class CCRMerger2(object):
 
     def merge(self, managed_rules):
         """
-        TODO: it is in fact NOT rule classes being passed in, but ManagedRules
-        ... this is good. This method needs to
-        A) for each contexted rule in the sorted list, make a copy of the list with no other contexted rules in it
-            (also need a no-contexts copy)
-        B) compat-check each of these lists
-        c) merge each of these lists and then
-            c-1) add a "not-any" context to the main merged rule
-            c-2) add an "only" (normal) context to each of the contexted merged rules
-
-        does 4-step merging, runs examples, returns a merged rule
-        :param managed_rules: ManagedRules
-        :return: MergeRule
+        :param managed_rules: list of ManagedRules
+        :return: list of tuples: (repeat-rule, context)
         """
         rcns_to_details = CCRMerger2._rule_details_dict(managed_rules)
         instantiated_rules = [mr.get_rule_instance() for mr in managed_rules]
@@ -90,12 +81,38 @@ class CCRMerger2(object):
             with_one_app = list(non_app_crs)
             with_one_app.append(app_cr)
             merged_rules.append(self._merging_strategy.merge(with_one_app))
-            # TODO: attach the AppContext to this rule, build up the negation context for the global rule
+        contexts = CCRMerger2._create_contexts(app_crs)
 
         # 5
         ccr_rules = [self._create_repeat_rule(merged_rule) for merged_rule in merged_rules]
 
-        return ccr_rules
+        return zip(ccr_rules, contexts)
+
+    @staticmethod
+    def _create_contexts(app_crs, rcns_to_details):
+        """
+        Returns a list of AppContexts, based on 'executable', one for each
+        app rule, and if more than zero app rules, the negation context for the
+        global ccr rule. (Global rule should be active when none of the other
+        contexts are.) If there are zero app rules, [None] will be returned
+        so the result can be zipped.
+
+        :param app_crs: list of CompatibilityResult for app rules
+        :param rcns_to_details: map of {rule class name: rule details}
+        :return:
+        """
+        contexts = []
+        negation_context = None
+        for cr in app_crs:
+            details = rcns_to_details[cr.rule_class_name()]
+            context = AppContext(executable=details.executable)
+            contexts.append(context)
+            if negation_context is None:
+                negation_context = ~context
+            else:
+                negation_context += ~context
+        contexts.insert(0, negation_context)
+        return contexts
 
     @staticmethod
     def _rule_details_dict(managed_rules):
@@ -107,17 +124,6 @@ class CCRMerger2(object):
         for managed_rule in managed_rules:
             result.put(managed_rule.get_rule_class_name(), managed_rule.get_details())
         return result
-
-    @staticmethod
-    def _separate_app_rules(managed_rules):
-        non_app_managed_rules = []
-        app_managed_rules = []
-        for managed_rule in managed_rules:
-            if managed_rule.details.declared_ccrtype == CCRType.APP:
-                app_managed_rules.append(managed_rule)
-            else:
-                non_app_managed_rules.append(managed_rule)
-        return non_app_managed_rules, app_managed_rules
 
     def _create_repeat_rule(self, rule):
         ORIGINAL, SEQ, TERMINAL = "original", "caster_base_sequence", "terminal"

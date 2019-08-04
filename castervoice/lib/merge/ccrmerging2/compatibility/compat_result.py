@@ -17,4 +17,4 @@ class CompatibilityResult(object):
         return len(self._incompatible_rule_class_names) > 0
 
     def incompatible_rule_class_names(self):
-        return list(self._incompatible_rule_class_names)
+        return set(self._incompatible_rule_class_names)
