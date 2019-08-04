@@ -8,21 +8,6 @@ class DetailCompatibilityChecker(BaseCompatibilityChecker):
     # TODO: unit test the hell out of this method
     def compatibility_check(self, mergerules):
         """
-         For each rule found in a list of size > 1 (there are no zeros),
-        make its name the key in a map of
-        {rule-name: <set-of-incompat-rule-names>}
-        Optimize this for super-similar rules by also having a set of joint
-        rule names. So for instance, if we have:
-        [
-            s1: [A,B],
-            s2: [B,C],
-            s3: [A,B],
-            s4: [A,B],
-            s5: [C,D],
-            s6: [A,D]
-        ]
-        Then we only need to loop over an array once per combo.
-
         :param mergerules: collection of MergeRule
         :return: collection of CompatibilityResult
         """
@@ -51,8 +36,7 @@ class DetailCompatibilityChecker(BaseCompatibilityChecker):
            are grouped by spec. What we want is a graph, with each RCN
            pointing to its incompatible RCNs.
            
-           Still O(n) for the total number of specs since this part is O(log n)
-           for the number of rules, which is >= than the number of specs.
+           Still O(n) for the total number of specs.
         '''
         previously_computed_groups = set()
         graph = BiDiGraph()

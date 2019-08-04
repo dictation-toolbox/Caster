@@ -84,23 +84,19 @@ class MergeRule(MappingRule):
         extras = extras_dict.values()
         defaults = self.defaults_copy()
         defaults.update(other.defaults_copy())
-        context = self._mcontext if self._mcontext is not None else other.get_context(
-        )  # one of these should always be None; contexts don't mix here
         return MergeRule(
             "Merged" + str(MergeRule._get_next_id()),
             mapping,
             extras,
             defaults,
-            self._exported and other._exported,
-            context,
-            "no location for merged rules")
+            self._exported and other._exported)
 
     def get_pronunciation(self):
         return self.pronunciation if self.pronunciation is not None else self.name
 
     def copy(self):
         return MergeRule(self.name, self._mapping.copy(), self._extras.values(),
-                         self._defaults.copy(), self._exported, self._mcontext, self.location)
+                         self._defaults.copy(), self._exported)
 
     def _display_available_commands(self):
         for spec in self.mapping_actual().keys():

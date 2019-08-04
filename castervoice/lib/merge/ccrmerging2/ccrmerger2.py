@@ -1,8 +1,6 @@
 from dragonfly.grammar.elements import RuleRef, Alternative, Repetition
 from dragonfly.grammar.rule_compound import CompoundRule
-
 from castervoice.lib.const import CCRType
-from castervoice.lib.ctrl.mgr.managed_rule import ManagedRule
 
 
 class CCRMerger2(object):
@@ -52,29 +50,18 @@ class CCRMerger2(object):
         :param managed_rules: ManagedRules
         :return: MergeRule
         """
-        class_name_dict = CCRMerger2._managed_rules_dict(managed_rules)
-        result = []
-
-        # # NOPE: this approach is garbage
-        # non_app_managed_rules, app_managed_rules = self._separate_app_rules(managed_rules)
-        # if len(app_managed_rules) > 0:
-        #     app_ccr_rules = self._get_app_rule_clones(non_app_managed_rules, app_managed_rules)
-        #     result.extend(app_ccr_rules)
-
-        instantiated_rules = [mr.get_rule_instance() for mr in non_app_managed_rules]
+        rcns_to_details = CCRMerger2._rule_details_dict(managed_rules)
+        instantiated_rules = [mr.get_rule_instance() for mr in managed_rules]
 
         # selfmodrule configuration
         for rule in instantiated_rules:
             self._smr_configurer.configure(rule)
 
-        '''
-        See notes on how to change the compat results.
-        '''
-
         # 1
         transformed_rules = []
         for rule in instantiated_rules:
-            if not class_name_dict[CCRMerger2._instance_class_name(rule)].transformer_exclusion:
+            has_exclusion = rcns_to_details[rule.get_rule_class_name()].transformer_exclusion
+            if not has_exclusion:
                 for transformer in self._transformers:
                     rule = transformer.get_transformed_rule(rule)
             transformed_rules.append(rule)
@@ -82,17 +69,36 @@ class CCRMerger2(object):
         sorted_rules = self._rule_sorter.sort_rules(transformed_rules)
         # 3
         compat_results = [self._compatibility_checker.compatibility_check(r) for r in sorted_rules]
-        # 4
-        merged_rule = self._merging_strategy.merge(compat_results)
-        # 5
-        ccr_rule = self._create_repeat_rule(merged_rule)
 
-        result.append(ccr_rule)
-        '''TODO: This current setup assumes no app rules -- have to correct that, see above notes.'''
-        return result
+        '''
+        Here given M non-app rules and N app rules, we want to produce
+        N+1 merged rules, where one of them has no app rules and the rest
+        each have one app rule.
+        '''
+        app_crs = []
+        non_app_crs = []
+        for cr in compat_results:
+            details = rcns_to_details[cr.rule_class_name()]
+            if details.declared_ccrtype == CCRType.APP:
+                app_crs.append(cr)
+            else:
+                non_app_crs.append(cr)
+
+        # 4
+        merged_rules = [self._merging_strategy.merge(non_app_crs)]
+        for app_cr in app_crs:
+            with_one_app = list(non_app_crs)
+            with_one_app.append(app_cr)
+            merged_rules.append(self._merging_strategy.merge(with_one_app))
+            # TODO: attach the AppContext to this rule, build up the negation context for the global rule
+
+        # 5
+        ccr_rules = [self._create_repeat_rule(merged_rule) for merged_rule in merged_rules]
+
+        return ccr_rules
 
     @staticmethod
-    def _managed_rules_dict(managed_rules):
+    def _rule_details_dict(managed_rules):
         """
         :param managed_rules: list of ManagedRule
         :return: dict of {class name (str): RuleDetails}
@@ -103,10 +109,7 @@ class CCRMerger2(object):
         return result
 
     @staticmethod
-    def _instance_class_name(rule):
-        return rule.__class__.__name__
-
-    def _separate_app_rules(self, managed_rules):
+    def _separate_app_rules(managed_rules):
         non_app_managed_rules = []
         app_managed_rules = []
         for managed_rule in managed_rules:
@@ -115,25 +118,6 @@ class CCRMerger2(object):
             else:
                 non_app_managed_rules.append(managed_rule)
         return non_app_managed_rules, app_managed_rules
-
-    def _get_app_rule_clones(self, non_app_managed_rules, app_managed_rules):
-        """
-        TODO: for each app managed rule,
-        1. add it in to a clone of the non-app list
-        2. call merge() on that list
-        3. hmmm.... how to return a context with each clone?
-
-        TODO:
-        HERE'S ANOTHER COMPLICATION: if you're calling merge() on each group, you'll
-        also need some signal to skip checking for contexts -- a new merge() parameter which is only true from
-        inside the merger
-
-        :param non_app_managed_rules:
-        :param app_managed_rules:
-        :return:
-        """
-
-        return []
 
     def _create_repeat_rule(self, rule):
         ORIGINAL, SEQ, TERMINAL = "original", "caster_base_sequence", "terminal"
@@ -162,13 +146,3 @@ class CCRMerger2(object):
     def _get_new_rule_name(self):
         self._sequence += 1
         return "Repeater{}".format(str(self._sequence))
-
-
-class _ManagedInstance(ManagedRule):
-    def __init__(self, rule_class, details):
-        super(rule_class, details)
-        self._instance = self.get_rule_instance()
-
-    @staticmethod
-    def of(mr):
-        return _ManagedInstance(mr._get_rule_class())
