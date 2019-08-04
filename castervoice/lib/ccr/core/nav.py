@@ -271,10 +271,7 @@ class Navigation(MergeRule):
         "(shin | que) dunce wally [<nnavi10>]": R(Key("cs-end:%(nnavi10)s")),
         "bird [<nnavi500>]": R(Key("c-left:%(nnavi500)s")),
         "firch [<nnavi500>]": R(Key("c-right:%(nnavi500)s")),
-        "brick [<nnavi500>]": R(Key("s-left:%(nnavi500)s")),
-        "frick [<nnavi500>]": R(Key("s-right:%(nnavi500)s")),
-        "blitch [<nnavi500>]": R(Key("cs-left:%(nnavi500)s")),
-        "flitch [<nnavi500>]": R(Key("cs-right:%(nnavi500)s")),
+
         
         "<modifier> <button_dictionary_500> [<nnavi500>]":
               R(Key("%(modifier)s%(button_dictionary_500)s") * Repeat(extra='nnavi500'), 
