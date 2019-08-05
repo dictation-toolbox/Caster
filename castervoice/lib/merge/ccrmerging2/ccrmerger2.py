@@ -42,13 +42,33 @@ class CCRMerger2(object):
         :return: list of tuples: (repeat-rule, context)
         """
         rcns_to_details = CCRMerger2._rule_details_dict(managed_rules)
-        instantiated_rules = [mr.get_rule_instance() for mr in managed_rules]
+        instantiated_rules = self._instantiate_and_configure_rules(managed_rules)
 
-        # selfmodrule configuration
-        for rule in instantiated_rules:
-            self._smr_configurer.configure(rule)
+        # 1: run transformers over rules
+        transformed_rules = self._run_transformers(instantiated_rules, rcns_to_details)
+        # 2: sort rules into the order they'll be merged in
+        sorted_rules = self._rule_sorter.sort_rules(transformed_rules)
+        # 3: compute compatibility results for all rules vs all rules in O(n) for total specs
+        compat_results = [self._compatibility_checker.compatibility_check(r) for r in sorted_rules]
+        # 4: create one merged rule for each context, plus the no-contexts merged rule
+        app_crs, non_app_crs = self._separate_app_rules(compat_results, rcns_to_details)
+        merged_rules = self._create_merged_rules(app_crs, non_app_crs)
+        # 5: turn the merged rules into repeat rules
+        ccr_rules = [self._create_repeat_rule(merged_rule) for merged_rule in merged_rules]
+        contexts = CCRMerger2._create_contexts(app_crs)
 
-        # 1
+        return zip(ccr_rules, contexts)
+
+    def _instantiate_and_configure_rules(self, managed_rules):
+        instantiated_rules = []
+        for mr in managed_rules:
+            mergerule = mr.get_rule_instance()
+            # smr configurer only configures selfmodrules, but checks all
+            self._smr_configurer.configure(mergerule)
+            instantiated_rules.append(mergerule)
+        return instantiated_rules
+
+    def _run_transformers(self, instantiated_rules, rcns_to_details):
         transformed_rules = []
         for rule in instantiated_rules:
             has_exclusion = rcns_to_details[rule.get_rule_class_name()].transformer_exclusion
@@ -56,16 +76,14 @@ class CCRMerger2(object):
                 for transformer in self._transformers:
                     rule = transformer.get_transformed_rule(rule)
             transformed_rules.append(rule)
-        # 2
-        sorted_rules = self._rule_sorter.sort_rules(transformed_rules)
-        # 3
-        compat_results = [self._compatibility_checker.compatibility_check(r) for r in sorted_rules]
+        return transformed_rules
 
-        '''
-        Here given M non-app rules and N app rules, we want to produce
+    def _separate_app_rules(self, compat_results, rcns_to_details):
+        """
+        Given M non-app rules and N app rules, we want to produce
         N+1 merged rules, where one of them has no app rules and the rest
         each have one app rule.
-        '''
+        """
         app_crs = []
         non_app_crs = []
         for cr in compat_results:
@@ -74,19 +92,15 @@ class CCRMerger2(object):
                 app_crs.append(cr)
             else:
                 non_app_crs.append(cr)
+        return app_crs, non_app_crs
 
-        # 4
+    def _create_merged_rules(self, app_crs, non_app_crs):
         merged_rules = [self._merging_strategy.merge(non_app_crs)]
         for app_cr in app_crs:
             with_one_app = list(non_app_crs)
             with_one_app.append(app_cr)
             merged_rules.append(self._merging_strategy.merge(with_one_app))
-        contexts = CCRMerger2._create_contexts(app_crs)
-
-        # 5
-        ccr_rules = [self._create_repeat_rule(merged_rule) for merged_rule in merged_rules]
-
-        return zip(ccr_rules, contexts)
+        return merged_rules
 
     @staticmethod
     def _create_contexts(app_crs, rcns_to_details):

@@ -20,7 +20,7 @@ class RuleDetails(object):
         self.name = name
         self.executable = executable
         self.grammar_name = grammar_name
-        self.enabled = enabled
+        self.enabled = enabled  # TODO: handle this -- during the Initial Load setup?
         self.declared_ccrtype = ccrtype
         self.rdp_mode_exclusion = rdp_mode_exclusion
         self.transformer_exclusion = transformer_exclusion
