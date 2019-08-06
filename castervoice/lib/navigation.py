@@ -9,7 +9,7 @@ from subprocess import Popen
 
 
 import dragonfly
-from dragonfly import Choice, monitors, Pause
+from dragonfly import Choice, monitors
 from castervoice.asynch.mouse.legion import LegionScanner
 from castervoice.lib import control, settings, utilities, textformat
 from castervoice.lib.actions import Key, Text, Mouse
@@ -41,16 +41,18 @@ TARGET_CHOICE = Choice(
         "closers": "}~]~)",
         "token": "TOKEN"
     })
+_CLIP = {}
+
 
 def get_direction_choice(name):
     global DIRECTION_STANDARD
     return Choice(name, DIRECTION_STANDARD)
 
 
-def initialize_clipboard(nexus):
-    if len(nexus.clip) == 0:
-        nexus.clip = utilities.load_json_file(
-            settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
+def initialize_clipboard():
+    global _CLIP
+    if len(_CLIP) == 0:
+        _CLIP = utilities.load_json_file(settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
 
 
 def mouse_alternates(mode, nexus, monitor=1):
@@ -86,7 +88,7 @@ def mouse_alternates(mode, nexus, monitor=1):
     else:
         utilities.availability_message(mode.title(), "PIL")
 
-def _text_to_clipboard(keystroke, nnavi500, nexus):
+def _text_to_clipboard(keystroke, nnavi500):
     if nnavi500 == 1:
         Key(keystroke).execute()
     else:
@@ -94,14 +96,15 @@ def _text_to_clipboard(keystroke, nnavi500, nexus):
         cb = Clipboard(from_system=True)
         Key(keystroke).execute()
         key = str(nnavi500)
+        global _CLIP
         for i in range(0, max_tries):
             failure = False
             try:
                 # time for keypress to execute
                 time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
-                nexus.clip[key] = unicode(Clipboard.get_system_text())
+                _CLIP[key] = unicode(Clipboard.get_system_text())
                 utilities.save_json_file(
-                    nexus.clip, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
+                    _CLIP, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
             except Exception:
                 failure = True
                 utilities.simple_log()
@@ -109,13 +112,16 @@ def _text_to_clipboard(keystroke, nnavi500, nexus):
                 break
         cb.copy_to_system()
 
-def stoosh_keep_clipboard(nnavi500, nexus):
-    _text_to_clipboard("c-c", nnavi500, nexus)
+
+def stoosh_keep_clipboard(nnavi500):
+    _text_to_clipboard("c-c", nnavi500)
+
 
 def cut_keep_clipboard(nnavi500, nexus):
-    _text_to_clipboard("c-x", nnavi500, nexus)
+    _text_to_clipboard("c-x", nnavi500)
 
-def drop_keep_clipboard(nnavi500, nexus, capitalization, spacing):
+
+def drop_keep_clipboard(nnavi500, capitalization, spacing):
     # Maintain standard spark functionality for non-strings
     if capitalization == 0 and spacing == 0 and nnavi500 == 1:
         Key("c-v").execute()
@@ -123,8 +129,8 @@ def drop_keep_clipboard(nnavi500, nexus, capitalization, spacing):
     # Get clipboard text
     if nnavi500 > 1:
         key = str(nnavi500)
-        if key in nexus.clip:
-            text = nexus.clip[key]
+        if key in _CLIP:
+            text = _CLIP[key]
         else:
             dragonfly.get_engine().speak("slot empty")
             text = None
@@ -153,9 +159,10 @@ def duple_keep_clipboard(nnavi50):
     cb.copy_to_system()
 
 
-def erase_multi_clipboard(nexus):
-    nexus.clip = {}
-    utilities.save_json_file(nexus.clip,
+def erase_multi_clipboard():
+    global _CLIP
+    _CLIP = {}
+    utilities.save_json_file(_CLIP,
                              settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
 
 

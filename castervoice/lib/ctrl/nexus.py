@@ -43,9 +43,6 @@ class Nexus:
         '''CasterState is used for impl of the asynchronous actions'''
         self.state = CasterState()
 
-        '''clipboard dict: used for multi-clipboard in navigation module'''
-        self.clip = {}
-
         '''rpc class for interacting with Caster UI elements via xmlrpclib'''
         self.comm = Communicator()
 
@@ -62,7 +59,7 @@ class Nexus:
         smrc = SelfModRuleConfigurer()
 
         '''the ccrmerger -- only merges MergeRules'''
-        self.merger = Nexus._create_merger(rule_activation_config.get_active_rules_order, smrc)
+        self._merger = Nexus._create_merger(rule_activation_config.get_active_rules_order, smrc)
 
         '''unified loading mechanism for [rules, transformers, hooks] 
         from [caster starter locations, user dir]'''
@@ -74,7 +71,7 @@ class Nexus:
 
         '''the grammar manager -- probably needs to get broken apart more'''
         self._grammar_manager = Nexus._create_grammar_manager(
-            self.merger, self._content_loader, hooks_runner, rule_activation_config, smrc)
+            self._merger, self._content_loader, hooks_runner, rule_activation_config, smrc)
 
         '''ACTION TIME:'''
         self._load_and_register_all_content(hooks_runner)
@@ -88,7 +85,7 @@ class Nexus:
         content = self.content_loader.load_everything()
         [self._grammar_manager.register_rule(rc, d) for rc, d in content.rules]
         self._grammar_manager.load_activation_grammar()
-        [self.merger.add_transformer(t) for t in content.transformers]
+        [self._merger.add_transformer(t) for t in content.transformers]
         [hooks_runner.add_hook(h) for h in content.hooks]
 
     @staticmethod

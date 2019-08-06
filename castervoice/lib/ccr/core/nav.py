@@ -1,12 +1,15 @@
-from castervoice.lib import const
-from castervoice.lib.imports import *
+from dragonfly import Key, Function, Repeat, Mouse, Dictation, Choice
+
+from castervoice.lib import const, navigation, utilities, context
 from dragonfly.actions.action_mimic import Mimic
 from castervoice.lib.ccr.standard import SymbolSpecs
 from castervoice.lib.ccr.core.punctuation import text_punc_dict, double_text_punc_dict
 from castervoice.lib.alphanumeric import caster_alphabet
-
-
-_NEXUS = control.nexus()
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.actions import AsynchronousAction, ContextSeeker
+from castervoice.lib.merge.state.actions2 import UntilCancelled
+from castervoice.lib.merge.state.short import S, L, R
 
 for key, value in double_text_punc_dict.items():
     if len(value) == 2:
@@ -16,6 +19,7 @@ for key, value in double_text_punc_dict.items():
     else:
         raise Exception("Need to deal with nonstandard pair length in double_text_punc_dict.")
 
+
 class NavigationNon(MergeRule): 
     mapping = {
         "<direction> <time_in_seconds>":
@@ -24,7 +28,7 @@ class NavigationNon(MergeRule):
                 repetitions=1000,
                 blocking=False),
         "erase multi clipboard":
-            R(Function(navigation.erase_multi_clipboard, nexus=_NEXUS)),
+            R(Function(navigation.erase_multi_clipboard)),
         "find":
             R(Key("c-f")),
         "find next [<n>]":
@@ -44,11 +48,11 @@ class NavigationNon(MergeRule):
         "[show] context menu":
             R(Key("s-f10")),
         "lean":
-            R(Function(navigation.right_down, nexus=_NEXUS)),
+            R(Function(navigation.right_down)),
         "hoist":
-            R(Function(navigation.right_up, nexus=_NEXUS)),
+            R(Function(navigation.right_up)),
         "kick mid":
-            R(Function(navigation.middle_click, nexus=_NEXUS)),
+            R(Function(navigation.middle_click)),
         "shift right click":
             R(Key("shift:down") + Mouse("right") + Key("shift:up")),
         "curse <direction> [<direction2>] [<nnavi500>] [<dokick>]":
@@ -59,12 +63,10 @@ class NavigationNon(MergeRule):
             R(Key("control:down") + Mouse("left") + Key("control:up")),
         "garb [<nnavi500>]":
             R(Mouse("left") + Mouse("left") + Function(
-                navigation.stoosh_keep_clipboard,
-                nexus=_NEXUS)),
+                navigation.stoosh_keep_clipboard)),
         "drop [<nnavi500>]":
             R(Mouse("left") + Mouse("left") + Function(
                 navigation.drop_keep_clipboard,
-                nexus=_NEXUS,
                 capitalization=0,
                 spacing=0)),
         "sure stoosh":

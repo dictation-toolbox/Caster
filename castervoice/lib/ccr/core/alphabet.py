@@ -1,5 +1,10 @@
-from castervoice.lib import const
-from castervoice.lib.imports import *
+from dragonfly import Function, Choice
+
+from castervoice.lib import const, alphanumeric
+from castervoice.lib.const import CCRType
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
 
 
 class Alphabet(MergeRule):
@@ -19,4 +24,6 @@ class Alphabet(MergeRule):
         "big": False,
     }
 
-control.global_rule(Alphabet())
+
+def get_rule():
+    return Alphabet, RuleDetails(ccrtype=CCRType.GLOBAL)
