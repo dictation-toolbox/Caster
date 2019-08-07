@@ -1,7 +1,8 @@
 from dragonfly import Choice, Repeat
 
-from castervoice.lib import control, const
+from castervoice.lib import const
 from castervoice.lib.actions import Key, Text
+from castervoice.lib.ctrl.mgr import rdcommon
 from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
@@ -57,6 +58,7 @@ text_punc_dict = {
     "tilde":                                              "~",
 }
 
+
 class Punctuation(MergeRule):
     pronunciation = const.CORE[3]
 
@@ -98,4 +100,6 @@ class Punctuation(MergeRule):
         "long": "",
     }
 
-control.global_rule(Punctuation())
+
+def get_rule():
+    return Punctuation, rdcommon.ccr_global()

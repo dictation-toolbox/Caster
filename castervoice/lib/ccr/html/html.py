@@ -1,4 +1,11 @@
-from castervoice.lib.imports import *
+from dragonfly import AppContext, Key
+
+from castervoice.lib import settings
+from castervoice.lib.ctrl.mgr import rdcommon
+
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
+
 
 # HTML auto complete workaround for Jetbrains Products
 # If more applications have issues with auto complete may be moved to actions.py
@@ -293,4 +300,5 @@ class HTML(MergeRule):
     defaults = {}
 
 
-control.global_rule(HTML())
+def get_rule():
+    return HTML, rdcommon.ccr_global()

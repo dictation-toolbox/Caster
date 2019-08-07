@@ -1,9 +1,10 @@
-'''
-Created on Sep 2, 2015
+from dragonfly import Key
 
-@author: synkarius
-'''
-from castervoice.lib.imports import *
+from castervoice.lib.actions import Text
+from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
+
 
 class SQL(MergeRule):
     pronunciation = "sequel"
@@ -83,4 +84,5 @@ class SQL(MergeRule):
     defaults = {}
 
 
-control.global_rule(SQL())
+def get_rule():
+    return SQL, rdcommon.ccr_global()

@@ -48,6 +48,7 @@ class Nexus:
 
         '''dependency checker/manager'''
         self.dep = DependencyMan()
+        self.dep.initialize()
 
         '''grammar for recording macros -- should be moved elsewhere'''
         self.macros_grammar = Grammar("recorded_macros")

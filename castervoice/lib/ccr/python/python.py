@@ -3,26 +3,17 @@ Created on Sep 1, 2015
 
 @author: synkarius
 '''
-from castervoice.lib.imports import *
+from dragonfly import Key, Pause, Dictation, Choice
 
-
-class PythonNon(MappingRule):
-    mapping = {
-        "with":
-            R(Text("with ")),
-        "open file":
-            R(Text("open('filename','r') as f:")),
-        "read lines":
-            R(Text("content = f.readlines()")),
-        "try catch":
-            R(
-                Text("try:") + Key("enter:2/10, backspace") + Text("except Exception:") +
-                Key("enter")),
-    }
+from castervoice.lib.actions import Text
+from castervoice.lib.ccr.standard import SymbolSpecs
+from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
+from castervoice.lib.temporary import Store, Retrieve
 
 
 class Python(MergeRule):
-    non = PythonNon
 
     mapping = {
         SymbolSpecs.IF:
@@ -187,4 +178,5 @@ class Python(MergeRule):
     defaults = {"unary_meth": "", "binary_meth": "", "exception": ""}
 
 
-control.global_rule(Python(ID=100))
+def get_rule():
+    return Python, rdcommon.ccr_global()

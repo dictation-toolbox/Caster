@@ -1,5 +1,10 @@
-from castervoice.lib import const
-from castervoice.lib.imports import *
+from dragonfly import Function
+
+from castervoice.lib import const, alphanumeric
+from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
 
 
 class Numbers(MergeRule):
@@ -19,4 +24,5 @@ class Numbers(MergeRule):
     defaults = {}
 
 
-control.global_rule(Numbers())
+def get_rule():
+    return Numbers, rdcommon.ccr_global()

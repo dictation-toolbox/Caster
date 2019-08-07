@@ -1,27 +1,15 @@
-from castervoice.lib.imports import *
+from dragonfly import Key
 
-class JavaNon(MappingRule):
-    mapping = {
-        "try catch":
-            R(Text("try{}catch(Exception e){}")),
-        "deco override":
-            R(Text("@Override")),
-        "iterate and remove":
-            R(Paste(
-                "for (Iterator<TOKEN> iterator = TOKEN.iterator(); iterator.hasNext();) {\n\tString string = iterator.next();\nif (CONDITION) {\niterator.remove();\n}\n}"
-            )),
-        "string builder":
-            R(Paste(
-                "StringBuilder builder = new StringBuilder(); builder.append(orgStr); builder.deleteCharAt(orgStr.length()-1);"
-            )),
-    }
-
-    ncextras = []
-    ncdefaults = {}
+from castervoice.lib.actions import Text
+from castervoice.lib.ccr.standard import SymbolSpecs
+from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
 
 
 class Java(MergeRule):
-    non = JavaNon
+
+    pronunciation = "java"
 
     mapping = {
         SymbolSpecs.IF:
@@ -153,4 +141,5 @@ class Java(MergeRule):
     defaults = {}
 
 
-control.global_rule(Java())
+def get_rule():
+    return Java, rdcommon.ccr_global()

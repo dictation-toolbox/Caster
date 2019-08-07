@@ -55,7 +55,8 @@ def initialize_clipboard():
         _CLIP = utilities.load_json_file(settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
 
 
-def mouse_alternates(mode, nexus, monitor=1):
+def mouse_alternates(mode, monitor=1):
+    nexus = control.nexus()
     if nexus.dep.PIL:
         if mode == "legion" and not utilities.window_exists(None, "legiongrid"):
             r = monitors[int(monitor) - 1].rectangle
@@ -117,7 +118,7 @@ def stoosh_keep_clipboard(nnavi500):
     _text_to_clipboard("c-c", nnavi500)
 
 
-def cut_keep_clipboard(nnavi500, nexus):
+def cut_keep_clipboard(nnavi500):
     _text_to_clipboard("c-x", nnavi500)
 
 
@@ -171,26 +172,26 @@ def volume_control(n, volume_mode):
         Key("volume" + str(volume_mode)).execute()
 
 
-def kill_grids_and_wait(nexus):
+def kill_grids_and_wait():
     window_title = utilities.get_active_window_title()
     if (window_title == settings.RAINBOW_TITLE or window_title == settings.DOUGLAS_TITLE
             or window_title == settings.LEGION_TITLE):
-        nexus.comm.get_com("grids").kill()
+        control.nexus().comm.get_com("grids").kill()
         time.sleep(0.1)
 
 
-def mouse_click(nexus, button):
-    kill_grids_and_wait(nexus)
+def mouse_click(button):
+    kill_grids_and_wait(control.nexus())
     Mouse(button).execute()
 
 
-left_click   = lambda nexus: mouse_click(nexus, "left")
-right_click  = lambda nexus: mouse_click(nexus, "right")
-middle_click = lambda nexus: mouse_click(nexus, "middle")
-left_down    = lambda nexus: mouse_click(nexus, "left:down")
-left_up      = lambda nexus: mouse_click(nexus, "left:up")
-right_down   = lambda nexus: mouse_click(nexus, "right:down")
-right_up     = lambda nexus: mouse_click(nexus, "right:up")
+left_click   = lambda: mouse_click("left")
+right_click  = lambda: mouse_click("right")
+middle_click = lambda: mouse_click("middle")
+left_down    = lambda: mouse_click("left:down")
+left_up      = lambda: mouse_click("left:up")
+right_down   = lambda: mouse_click("right:down")
+right_up     = lambda: mouse_click("right:up")
 
 
 def wheel_scroll(direction, nnavi500):

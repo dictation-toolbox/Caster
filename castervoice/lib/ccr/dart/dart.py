@@ -1,9 +1,15 @@
 '''
 Created on 2018-05-27 from javascript.py
-
 @author: comodoro
 '''
-from castervoice.lib.imports import *
+from dragonfly import Key
+
+from castervoice.lib.actions import Text
+from castervoice.lib.ccr.standard import SymbolSpecs
+from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
+
 
 class Dart(MergeRule):
     mapping = {
@@ -117,4 +123,5 @@ class Dart(MergeRule):
     defaults = {}
 
 
-control.global_rule(Dart())
+def get_rule():
+    return Dart, rdcommon.ccr_global()

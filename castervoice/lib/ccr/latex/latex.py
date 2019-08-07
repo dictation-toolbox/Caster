@@ -1,12 +1,18 @@
 '''
 Created on Sep 4, 2018
-
 @author: Mike Roberts
 '''
-from castervoice.lib.imports import *
+from dragonfly import Key, Function, Choice
 
-# Return \first{second}, if second is empty then end inside the brackets for user input
+from castervoice.lib.actions import Text
+from castervoice.lib.ccr.standard import SymbolSpecs
+from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
+
+
 def back_curl(first, second):
+    # Return \first{second}, if second is empty then end inside the brackets for user input
     if str(second) != "":
         return (Text("\\") + Text(str(first)) + Key("lbrace, rbrace, left") + Text(
             str(second)) + Key("right"))
@@ -180,4 +186,5 @@ class LaTeX(MergeRule):
     }
 
 
-control.global_rule(LaTeX())
+def get_rule():
+    return LaTeX, rdcommon.ccr_global()

@@ -3,39 +3,25 @@ Created on 18 Mar 2018
 
 @author: gerrish
 '''
+from dragonfly import Function, Choice
+
+from castervoice.lib.ccr.standard import SymbolSpecs
+from castervoice.lib.ctrl.mgr import rdcommon
 from castervoice.lib.imports import *
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
 from vhdl_strings import *
 
 def binary_string(digit, amount):
     return Text(str(digit)*amount).execute()
 
-class VHDLnon(MappingRule):
-    mapping = {
-        "entity":
-            R(entity_string),
-        "Architecture":
-            R(architecture_string),
-        "component":
-            R(component_string),
-        "component declaration":
-            R(component_declaration_string),
-        SymbolSpecs.SWITCH:
-            R(case_string),
-        SymbolSpecs.CASE:
-            R(Text("case TOKEN is")),
-        "process":
-            R(process_string),
-        "generate components":
-            R(for_generate_string),
-        "conditional component":
-            R(if_generate_string),
-    }
+
 
 
 class VHDL(MergeRule):
 
     pronunciation = "VHDL"
-    non = VHDLnon
 
     mapping = {
         SymbolSpecs.COMMENT:
@@ -163,4 +149,6 @@ class VHDL(MergeRule):
     ]
     defaults = {}
 
-control.global_rule(VHDL())
+
+def get_rule():
+    return VHDL, rdcommon.ccr_global()

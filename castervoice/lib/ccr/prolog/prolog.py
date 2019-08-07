@@ -3,21 +3,15 @@ Created on Sep 2, 2015
 
 @author: Gerrish
 '''
-from castervoice.lib.imports import *
 
-class PrologNon(MappingRule):
-    mapping = {
-        "Rule":
-            R(Text("() :-.") + Key("left/6")),
-        SymbolSpecs.IF:
-            R(Text("( ") + Key("enter") + Text(";") + Key("enter") + Text(")")),
-    }
+from castervoice.lib.actions import Text
+from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
 
 
 class Prolog(MergeRule):
     pronunciation = "prolog"
-
-    non = PrologNon
 
     mapping = {
         "implies": R(Text(":-")),
@@ -35,4 +29,5 @@ class Prolog(MergeRule):
     defaults = {}
 
 
-control.global_rule(Prolog())
+def get_rule():
+    return Prolog, rdcommon.ccr_global()

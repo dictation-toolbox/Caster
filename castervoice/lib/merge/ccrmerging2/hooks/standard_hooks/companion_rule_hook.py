@@ -1,9 +1,9 @@
+from castervoice.lib.config.config_toml import TomlConfig
 from castervoice.lib.merge.ccrmerging2.hooks.events.event_types import EventType
 from castervoice.lib.merge.state.actions2 import NullAction
 from dragonfly import Playback, Pause
 
-from castervoice.lib import settings
-from castervoice.lib.ctrl.mgr.config.config_toml import TomlConfig
+from castervoice.lib import settings, const
 from castervoice.lib.merge.ccrmerging2.hooks.base_hook import BaseHook
 
 
@@ -21,6 +21,12 @@ class CompanionConfig(TomlConfig):
     def __init__(self):
         super(self, settings.SETTINGS["paths"]["COMPANION_CONFIG_PATH"])
         self.load()
+        self._initialize()
+
+    def _initialize(self):
+        if len(self._config) == 0:
+            self._config = const.COMPANION_STARTER
+            self.save()
 
     def expose_config(self):
         return self._config

@@ -1,20 +1,18 @@
 '''
 Created on May 26, 2017
-
 @author: shippy
 '''
-from castervoice.lib.imports import *
+from dragonfly import Key, Dictation
 
-class MatlabNon(MappingRule):
-    mapping = {
-        "section": R(Key("percent, percent, enter")),
-    }
+from castervoice.lib.actions import Text
+from castervoice.lib.ccr.standard import SymbolSpecs
+from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
 
 
 class Matlab(MergeRule):
-    auto = [".M", ".m"]
     pronunciation = "matlab"
-    non = MatlabNon
 
     mapping = {
         SymbolSpecs.IF:
@@ -92,4 +90,5 @@ class Matlab(MergeRule):
     defaults = {}
 
 
-control.global_rule(Matlab())
+def get_rule():
+    return Matlab, rdcommon.ccr_global()

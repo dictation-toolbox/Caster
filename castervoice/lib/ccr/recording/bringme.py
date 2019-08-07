@@ -1,7 +1,19 @@
+import os
+import shlex
+import threading
+import time
+from subprocess import Popen
+
+from dragonfly import AppContext, Function, Choice, Dictation, Key, ContextAction
+
+from castervoice.lib import settings, utilities, context
+from castervoice.lib.actions import Text
+from castervoice.lib.const import CCRType
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.selfmod.selfmodrule import BaseSelfModifyingRule
-from castervoice.lib.imports import *
 from castervoice.apps.gitbash import terminal_context
 from castervoice.apps.file_dialogue import dialogue_context
+from castervoice.lib.merge.state.short import R
 
 
 class BringRule(BaseSelfModifyingRule):
@@ -203,12 +215,6 @@ class BringRule(BaseSelfModifyingRule):
     }
 
 
-control.non_ccr_app_rule(BringRule(), context=None, rdp=False, filter=True)
-
 def get_rule():
-    '''
-    TODO: make a 'Paths' object which auto-finds modules --
-    it should be first-find, and only need a module name and whether this file is in the .caster dir (default False)
-    this saves the user from having to use os.realpath--- that ugly mess everywhere
-    -- also, get rid of location in MergeRule so the behavior can be consistent
-    '''
+    details = RuleDetails(ccrtype=CCRType.SELFMOD, rdp_mode_exclusion=True)
+    return BringRule, details

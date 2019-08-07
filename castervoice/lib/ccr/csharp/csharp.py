@@ -1,9 +1,11 @@
-'''
-Created on Sep 26, 2015
+from dragonfly import Key, Mimic
 
-@author: synkarius
-'''
-from castervoice.lib.imports import *
+from castervoice.lib.actions import Text
+from castervoice.lib.ccr.standard import SymbolSpecs
+from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
+
 
 class CSharp(MergeRule):
     pronunciation = "C sharp"
@@ -122,4 +124,5 @@ class CSharp(MergeRule):
     defaults = {}
 
 
-control.global_rule(CSharp())
+def get_rule():
+    return CSharp, rdcommon.ccr_global()

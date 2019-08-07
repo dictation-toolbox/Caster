@@ -3,9 +3,15 @@ __author__ = 'LexiconCode'
 Command-module for Atom
 Official Site "https://atom.io/"
 """
-from castervoice.lib.imports import *
 
 # How long to wait for the Atom palette to load before hitting the enter key
+from dragonfly import Key, Pause, Function, Repeat, AppContext
+
+from castervoice.lib import settings, navigation
+from castervoice.lib.actions import Text
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
+
 atom_palette_wait = 30
 if settings.SETTINGS["miscellaneous"]["atom_palette_wait"]:
     atom_palette_wait = int(settings.SETTINGS["miscellaneous"]["atom_palette_wait"])

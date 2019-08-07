@@ -1,4 +1,13 @@
-from castervoice.lib.imports import *
+import copy
+
+from dragonfly import Function, Choice, Repetition, Dictation
+
+from castervoice.lib import text_manipulation_functions, alphanumeric
+from castervoice.lib.ccr.core.punctuation import text_punc_dict
+from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
 
 base_number_dict = {"zero": "0", "one": "1", "two": "2", "three": "3", "four": "4", "five": "5", "six": "6", "seven": "7", "eight": "8", "nine": "9" }
 number_dict = {"numb "+k:base_number_dict[k] for k in base_number_dict}
@@ -26,6 +35,7 @@ number_dict = {"numb "+k:base_number_dict[k] for k in base_number_dict}
     any junk to the multi-clipboard although the copy (a.k.a. read) part does.
 
 """
+
 
 class TextManipulation(MergeRule):
     pronunciation = "text manipulation"
@@ -155,7 +165,9 @@ class TextManipulation(MergeRule):
         # This can be changed in the function deal_with_up_down_directions
         # 'number_of_lines_to_search = zero' means you are searching only on the current line
 
-control.global_rule(TextManipulation())
+
+def get_rule():
+    return TextManipulation, rdcommon.ccr_global()
 
 
 

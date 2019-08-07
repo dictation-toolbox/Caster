@@ -1,9 +1,11 @@
-'''
-Created on Sep 2, 2015
+from dragonfly import Key
 
-@author: synkarius
-'''
-from castervoice.lib.imports import *
+from castervoice.lib.actions import Text
+from castervoice.lib.ccr.standard import SymbolSpecs
+from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
+
 
 class Javascript(MergeRule):
 
@@ -53,8 +55,7 @@ class Javascript(MergeRule):
         # (no imports in javascript)
         #
         SymbolSpecs.FUNCTION:
-            R(Text("function TOKEN() {};") + Key("left:2, enter") +
-              SelectiveAction(Key("enter, up"), ["AptanaStudio3.exe"])),
+            R(Text("function TOKEN() {};") + Key("left:2, enter")),
 	    SymbolSpecs.CLASS:
             R(Text("class  {}") + Key("left/5:3")),
         #
@@ -127,4 +128,5 @@ class Javascript(MergeRule):
     defaults = {}
 
 
-control.global_rule(Javascript(ID=200))
+def get_rule():
+    return Javascript, rdcommon.ccr_global()

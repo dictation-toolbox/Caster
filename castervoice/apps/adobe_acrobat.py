@@ -1,4 +1,10 @@
-from castervoice.lib.imports import *
+from dragonfly import Dictation, Key, Repeat, Mouse, Pause
+
+from castervoice.lib.actions import Text
+from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
 
 ShowHideMenu = Key("a-v, s")
 
@@ -102,5 +108,5 @@ class AcrobatRule(MergeRule):
     defaults = {"n": 1, "dict": "nothing"}
 
 
-context = AppContext(executable="acrobat")
-control.non_ccr_app_rule(AcrobatRule(), context=context)
+def get_rule():
+    return AcrobatRule, rdcommon.app_executable("acrobat")

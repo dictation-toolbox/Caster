@@ -1,9 +1,12 @@
+'''
+Created on Sep 1, 2015
+@author: synkarius
+'''
 from dragonfly import Key
 
 from castervoice.lib.actions import Text
 from castervoice.lib.ccr.standard import SymbolSpecs
-from castervoice.lib.const import CCRType
-from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.ctrl.mgr import rdcommon
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
@@ -97,4 +100,4 @@ class Bash(MergeRule):
 
 
 def get_rule():
-    return Bash, RuleDetails(ccrtype=CCRType.GLOBAL)
+    return Bash, rdcommon.ccr_global()

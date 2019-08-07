@@ -3,7 +3,14 @@ Created on May 23, 2017
 
 @author: shippy
 '''
-from castervoice.lib.imports import *
+from dragonfly import Key, Dictation, Choice
+
+from castervoice.lib.actions import Text
+from castervoice.lib.ccr.standard import SymbolSpecs
+from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
+
 
 class Rlang(MergeRule):
     auto = [".R", ".r"]
@@ -169,4 +176,5 @@ class Rlang(MergeRule):
     defaults = {}
 
 
-control.global_rule(Rlang())
+def get_rule():
+    return Rlang, rdcommon.ccr_global()

@@ -66,8 +66,6 @@ class GrammarManager(object):
 
         # rules: (class name : ManagedRule}
         self._managed_rules = {}
-        # companion rules -- when a rule is activated, it can have 0-n companion rules auto activated with it
-        self._companion_rules = {}
         #
         self._reload_observable.register_listener(self)
         '''The passed method references below would be a good place to start splitting the GM apart.'''

@@ -1,28 +1,17 @@
-from castervoice.lib.imports import *
+from dragonfly import Key, Choice
 
-class RustNon(MappingRule):
-    mapping = {
-        "macro format string":
-            R(Text("format!()") + Key("left")),
-        "macro panic":
-            R(Text("panic!()") + Key("left")),
-        "macro assertion":
-            R(Text("assert_eq!()") + Key("left")),
-        "ternary":
-            R(Text("if TOKEN == TOKEN { TOKEN } else { TOKEN }")),
-        "function [<return>]":
-            R(Text("fn TOKEN(TOKEN)%(return)s{}")),
-        "infinite loop":
-            R(Text("loop {}") + Key("left")),
-    }
-    extras = [
-        Choice("return", {"return": " -> TOKEN "}),
-    ]
-    defaults = {"return": " "}
+from castervoice.lib import alphanumeric
+from castervoice.lib.actions import Text
+from castervoice.lib.ccr.standard import SymbolSpecs
+from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
 
 
 class Rust(MergeRule):
-    non = RustNon
+
+    pronunciation = "rust"
 
     mapping = {
         SymbolSpecs.IF:
@@ -143,4 +132,5 @@ class Rust(MergeRule):
     defaults = {"bits": "32", "signed": "i", "mutability": "", "a": "i", "b": "j", "n": 1}
 
 
-control.global_rule(Rust())
+def get_rule():
+    return Rust, rdcommon.ccr_global()

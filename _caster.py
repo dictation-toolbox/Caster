@@ -12,7 +12,7 @@ from dragonfly import (get_engine, Function, Playback, Dictation, Choice, Pause,
 from castervoice.lib.ccr.standard import SymbolSpecs
 
 _NEXUS = None
-from castervoice.lib import settings  # requires nothing
+from castervoice.lib import settings, navigation  # requires nothing
 if settings.SYSTEM_INFORMATION["platform"] != "win32":
     raise SystemError("Your platform is not currently supported by Caster.")
 settings.WSR = __name__ == "__main__"
@@ -20,17 +20,15 @@ if settings.WSR:
     SymbolSpecs.set_cancel_word("escape")
 from castervoice.lib import control
 _NEXUS = control.nexus()
-_NEXUS.dep.initialize()
+
 from castervoice.lib.ctrl.dependencies import pip_path, update
-from castervoice.lib import navigation
-navigation.initialize_clipboard(_NEXUS)
 
 from castervoice.asynch.sikuli import sikuli
 
 from castervoice.lib.actions import Key
 from castervoice.lib.merge.state.short import R
 from castervoice.lib.merge.additions import IntegerRefST
-from castervoice.lib.merge.merge.mergepair import MergeInf
+
 from castervoice.lib.merge.mergerule import MergeRule
 
 if not globals().has_key('profile_switch_occurred'):

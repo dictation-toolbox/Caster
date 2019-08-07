@@ -32,3 +32,7 @@ class RuleDetails(object):
 
     def get_filepath(self):
         return self._filepath
+
+    @staticmethod
+    def global_ccr():
+        return RuleDetails(ccr)

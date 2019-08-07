@@ -1,4 +1,11 @@
-from castervoice.lib.imports import *
+from dragonfly import Function, Key, Dictation, Choice
+
+from castervoice.lib.actions import Text
+from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
+from castervoice.lib.temporary import Store, Retrieve
 
 
 class Markdown(MergeRule):
@@ -47,4 +54,5 @@ class Markdown(MergeRule):
     }
 
 
-control.global_rule(Markdown())
+def get_rule():
+    return Markdown, rdcommon.ccr_global()
