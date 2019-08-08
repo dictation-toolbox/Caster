@@ -18,5 +18,7 @@ COMPANION_STARTER = {
     "Prolog": "PrologNon",
     "Python": "PythonNon",
     "Rust": "RustNon",
-    "VHDL": "VHDLnon"
+    "VHDL": "VHDLnon",
+    "EclipseCCR": "EclipseRule",
+    "FlashDevelopCCR": "FlashDevelopRule"
 }

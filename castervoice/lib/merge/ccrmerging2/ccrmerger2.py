@@ -119,7 +119,7 @@ class CCRMerger2(object):
         negation_context = None
         for cr in app_crs:
             details = rcns_to_details[cr.rule_class_name()]
-            context = AppContext(executable=details.executable)
+            context = AppContext(executable=details.executable, title=details.title)
             contexts.append(context)
             if negation_context is None:
                 negation_context = ~context

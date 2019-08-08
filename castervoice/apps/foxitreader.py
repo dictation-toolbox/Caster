@@ -1,4 +1,10 @@
-from castervoice.lib.imports import *
+from dragonfly import Key, Repeat, Dictation
+
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
+
 
 class FoxitRule(MergeRule):
     pronunciation = "fox it reader"
@@ -16,5 +22,5 @@ class FoxitRule(MergeRule):
     defaults = {"n": 1, "mim": ""}
 
 
-context = AppContext(executable="Foxit Reader")
-control.non_ccr_app_rule(FoxitRule(), context=context)
+def get_rule():
+    return FoxitRule, RuleDetails(title="Foxit Reader")

@@ -21,7 +21,7 @@ class MappingRuleMaker(BaseRuleMaker):
 
         context = None
         if details.executable is not None:
-            context = AppContext(executable=details.executable)
+            context = AppContext(executable=details.executable, title=details.title)
         grammar = Grammar(details.grammar_name, context=context)
         grammar.add_rule(rule_instance)
         return grammar

@@ -5,10 +5,12 @@ Official Site "https://atom.io/"
 """
 
 # How long to wait for the Atom palette to load before hitting the enter key
-from dragonfly import Key, Pause, Function, Repeat, AppContext
+from dragonfly import Key, Pause, Function, Repeat, AppContext, Dictation, Choice
 
 from castervoice.lib import settings, navigation
 from castervoice.lib.actions import Text
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
@@ -565,5 +567,5 @@ class AtomRule(MergeRule):
     }
 
 
-context = AppContext(executable="atom", title="Atom")
-control.non_ccr_app_rule(AtomRule(), context=context)
+def get_rule():
+    return AtomRule, RuleDetails(executable="atom", title="Atom")

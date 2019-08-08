@@ -1,4 +1,10 @@
-from castervoice.lib.imports import *
+from dragonfly import Key, Repeat, Dictation
+
+from castervoice.lib.actions import Text
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
 
 
 class FileDialogueRule(MergeRule):
@@ -17,16 +23,11 @@ class FileDialogueRule(MergeRule):
         "file type": R(Key("c-l, tab:7")),
 
     }
-    extras = [IntegerRefST("n", 1, 10),
-    Dictation("text"),]
+    extras = [IntegerRefST("n", 1, 10), Dictation("text")]
     defaults = {
         "n": 1,
     }
 
 
-dialogue_context = AppContext(title=[
-        "open",
-        "save",
-        "select",
-    ])
-control.non_ccr_app_rule(FileDialogueRule(), context=dialogue_context)
+def get_rule():
+    return FileDialogueRule, RuleDetails(title=["open, save, select"])

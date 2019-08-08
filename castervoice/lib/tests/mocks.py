@@ -2,6 +2,8 @@ import mock
 import sys
 import types
 
+from castervoice.lib.merge.selfmod.selfmodrule import BaseSelfModifyingRule
+
 module_tree = {'win32con': [], 'win32ui': [], 'win32gui': ["GetForegroundWindow"],
         '_winreg': ['CloseKey', 'ConnectRegistry', 'HKEY_CLASSES_ROOT',
         'HKEY_CURRENT_USER', 'OpenKey', 'QueryValueEx'], 'dragonfly.windows.window':
@@ -14,53 +16,53 @@ for module_name, imports in module_tree.iteritems():
 
 from dragonfly.os_dependent_mock import MockAction
 from dragonfly import AppContext
-from castervoice.lib.merge.merge.selfmodrule import SelfModifyingRule
+
 from castervoice.lib.merge.mergerule import MergeRule
 
-Text = MockAction
-Key = MockAction
-Function = MockAction
-Pause = MockAction
+MockText = MockAction
+MockKey = MockAction
+MockFunction = MockAction
+MockPause = MockAction
 
 class Python(MergeRule):
     mapping = {
-        "iffae": Text("if :") + Key("left"),
-        "yield": Text("yield "),
+        "iffae": MockText("if :") + MockKey("left"),
+        "yield": MockText("yield "),
 
     }
 
 class Java(MergeRule):
     mapping = {
-        "iffae": Text("if () {") + Key("enter,up,left"),
-        "dock string": Text("/***/") + Key("left,left,enter"),
+        "iffae": MockText("if () {") + MockKey("enter,up,left"),
+        "dock string": MockText("/***/") + MockKey("left,left,enter"),
     }
 
 class Javascript(MergeRule):
     mapping = {
-        "iffae": Text("if () {") + Key("enter,up,left"),
-        "tick string": Text("``") + Key("left"),
+        "iffae": MockText("if () {") + MockKey("enter,up,left"),
+        "tick string": MockText("``") + MockKey("left"),
     }
 
 class Bash(MergeRule):
     mapping = {
         "iffae":
-            Text("if [[  ]]; ") + Key("left/5:5"),
+            MockText("if [[  ]]; ") + MockKey("left/5:5"),
         "key do":
-            Text("do"),
+            MockText("do"),
     }
 
-class AliasRule(SelfModifyingRule):
-    def __init__(self, nexus):
-        SelfModifyingRule.__init__(self)
+class AliasRule(BaseSelfModifyingRule):
+    def __init__(self):
+        BaseSelfModifyingRule.__init__(self)
 
 class Alias(AliasRule):
-    def __init__(self, nexus):
-        SelfModifyingRule.__init__(self)
+    def __init__(self):
+        BaseSelfModifyingRule.__init__(self)
 
     def _refresh(self, *args):
         mapping = {}
-        mapping["alias"] = Function(lambda : None)
-        mapping["delete aliases"] = Function(lambda: None)
+        mapping["alias"] = MockFunction(lambda : None)
+        mapping["delete aliases"] = MockFunction(lambda: None)
 
 class ChainAlias(AliasRule):
     pronunciation = "chain alias"
@@ -68,25 +70,25 @@ class ChainAlias(AliasRule):
     def refresh(self, *args):
         mapping = {
             "alias":
-                Function(lambda: None),
+                MockFunction(lambda: None),
             "delete aliases":
-                Function(lambda: None),
+                MockFunction(lambda: None),
         }
 
 class EclipseRule(MergeRule):
     pronunciation = "eclipse"
 
     mapping = {
-            "open resource":                            Key("cs-r"),
-            "open type":                                Key("cs-t"),
+            "open resource":                            MockKey("cs-r"),
+            "open type":                                MockKey("cs-t"),
     }
 
 class EclipseCCR(MergeRule):
     pronunciation = "eclipse jump"
     mwith = []
     mapping = {
-            "Test 1":                         Key("c-l") + Pause("50"),
-            "Test 2":                     Key("c-l")+Key("right, cs-left"),
+            "Test 1": MockKey("c-l") + MockPause("50"),
+            "Test 2": MockKey("c-l") + MockKey("right, cs-left"),
 
         }
 

@@ -1,46 +1,11 @@
-from castervoice.lib.imports import *
+from dragonfly import Key, Function, Playback, Mimic, WaitWindow, Repeat, Pause
 
-_NEXUS = control.nexus()
-
-
-def fix_dragon_double(nexus):
-    try:
-        lr = nexus.history[len(nexus.history) - 1]
-        lu = " ".join(lr)
-        Key("left/5:" + str(len(lu)) + ", del").execute()
-    except Exception:
-        utilities.simple_log(False)
-
-
-def cap_dictation(dictation):
-    input_list = str(dictation).split(" ")
-    output_list = []
-    for i in range(len(input_list)):
-        if input_list[i] == "cap":
-            input_list[i + 1] = input_list[i + 1].title()
-        else:
-            output_list.append(input_list[i])
-    Text(" ".join(output_list)).execute()
-
-
-# extras are common to both classes in this file
-extras_for_whole_file = [
-    Dictation("text"),
-    IntegerRefST("n10", 1, 10),
-    Choice("first_second_third", {
-        "first": 0,
-        "second": 1,
-        "third": 2,
-        "fourth": 3,
-        "fifth": 4,
-        "six": 5,
-        "seventh": 6
-    }),
-]
-defaults_for_whole_file = {
-    "n10": 1,
-    "text": "",
-}
+from castervoice.apps.dragon_support import cap_dictation, fix_dragon_double, extras_for_whole_file, \
+    defaults_for_whole_file
+from castervoice.lib import utilities
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
 
 
 class DragonRule(MergeRule):
@@ -65,7 +30,7 @@ class DragonRule(MergeRule):
         "reboot dragon":
             R(Function(utilities.reboot)),
         "fix dragon double":
-            R(Function(fix_dragon_double, nexus=_NEXUS)),
+            R(Function(fix_dragon_double)),
         "left point":
             R(Playback([(["MouseGrid"], 0.1), (["four", "four"], 0.1),
                         (["click"], 0.0)])),
@@ -132,29 +97,5 @@ class DragonRule(MergeRule):
     defaults = defaults_for_whole_file
 
 
-class SpellingWindowRule(MergeRule):
-    mapping = {
-        # todo: make these CCR
-        
-         "<first_second_third> word": 
-            R(Key("home, c-right:%(first_second_third)d, cs-right"), 
-            rdescript="Dragon: select the first second or third etc. word"),
-         "last [word]": R(Key("right, cs-left"), rdescript="Dragon: select the last word"),
-         "second [to] last word": R(Key("right, c-left:1, cs-left"), rdescript="Dragon: select the second to last word"), 
-         "<n10>": R(Mimic("choose", extra="n10"), rdescript="Dragon: e.g. instead of having to say 'choose two' you can just say 'two'"),
-            # consider making the above command global so that it works when you say something like 
-            # "insert before 'hello'" where there are multiple instances of 'hello'
-            # personally I think it's better just to have the setting where Dragon choose is the closest instance
-        
-    }
-
-    # see above
-    extras = extras_for_whole_file
-    defaults = defaults_for_whole_file
-
-
-if not settings.WSR:
-    control.non_ccr_app_rule(DragonRule())
-
-    context = AppContext(executable="natspeak")
-    control.non_ccr_app_rule(SpellingWindowRule(), context=context)
+def get_rule():
+    return DragonRule, RuleDetails(name="dragon")

@@ -4,10 +4,21 @@ You also can find some good vocola commands for Excel on Mark Lillibridge's Gith
 https://github.com/mdbridge/bit-bucket/tree/master/voice/my_commands/commands
 Alex Boche 2019
 """
-from castervoice.lib.imports import *
+import itertools
+
 
 # this function takes a dictionary and returns a dictionary whose keys are sequences of keys of the original dictionary
 # and whose values our the corresponding sequences of values of the original dictionary
+from dragonfly import Key, Repeat, Dictation, Choice
+
+from castervoice.lib import alphanumeric
+from castervoice.lib.actions import Text
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
+
+
 def make_sequence_dict_fixed_length(dictionary, fixed_sequence_length):
     mapping = {}
     for tup in itertools.product(dictionary.keys(), repeat=fixed_sequence_length):
@@ -116,5 +127,5 @@ class ExcelRule(MergeRule):
     defaults = {"n": 1, "dict": ""}
 
 
-context = AppContext(executable="excel")
-control.non_ccr_app_rule(ExcelRule(), context=context)
+def get_rule():
+    return ExcelRule, RuleDetails(executable="excel")

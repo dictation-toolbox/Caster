@@ -21,7 +21,8 @@ from castervoice.lib.ctrl.mgr.validation.rules.no_context_validator import HasNo
 from castervoice.lib.ctrl.mgr.validation.rules.not_noderule_validator import NotNodeRuleValidator
 from castervoice.lib.ctrl.mgr.validation.rules.pronunciation_validator import PronunciationAvailableValidator
 from castervoice.lib.ctrl.mgr.validation.rules.selfmod_validator import SelfModifyingRuleValidator
-from castervoice.lib.merge.ccrmerging2.transformers.standard_transformers.gdef_transformer import GlobalDefinitionsRuleTransformer
+from castervoice.lib.merge.ccrmerging2.transformers.standard_transformers.gdef_transformer \
+    import GlobalDefinitionsRuleTransformer
 from castervoice.lib.merge.communication import Communicator
 from castervoice.lib.merge.selfmod.smr_configurer import SelfModRuleConfigurer
 from castervoice.lib.merge.state.stack import CasterState
@@ -76,6 +77,7 @@ class Nexus:
 
         '''ACTION TIME:'''
         self._load_and_register_all_content(hooks_runner)
+        self._grammar_manager.initialize()
 
     def _load_and_register_all_content(self, hooks_runner):
         """
@@ -104,6 +106,7 @@ class Nexus:
         """
 
         always_global_ccr_mode = settings.SETTINGS["miscellaneous"]["rdp_mode"]
+        ccr_on = settings.SETTINGS["miscellaneous"]["ccr_on"]
 
         ccr_rule_validator = CCRRuleValidationDelegator(
             IsMergeRuleValidator(),
@@ -125,12 +128,13 @@ class Nexus:
         if some_setting:
             observable = ManualReloadObservable()
 
+        # mrm is a special case, gets a single transformer, expansion possible to all transformers
         mapping_rule_maker = MappingRuleMaker(GlobalDefinitionsRuleTransformer(), smrc)
         grammars_container = GrammarContainer()
 
         gm = GrammarManager(rule_activation_config, merger, content_loader, ccr_rule_validator, details_validator,
                             observable, activator, mapping_rule_maker, grammars_container, hooks_runner,
-                            always_global_ccr_mode, smrc)
+                            always_global_ccr_mode, ccr_on, smrc)
 
         if some_setting:
             loadable = observable.get_loadable()

@@ -299,6 +299,7 @@ _DEFAULT_SETTINGS = {
         "use_aenea": False,
         "online_mode": True,
         "hmc": True,
+        "ccr_on": True
     },
     "pronunciations": {
         "c++": "C plus plus",

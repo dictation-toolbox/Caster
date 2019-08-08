@@ -2,7 +2,7 @@ import unittest
 
 from dragonfly.grammar.rule_mapping import MappingRule
 from castervoice.lib.tests.mocks import (eclipse_context, EclipseCCR,
-    Key, Bash, Java, Python, ChainAlias)
+                                         MockKey, Bash, Java, Python, ChainAlias)
 from castervoice.lib.merge.ccrmerger_legacy import CCRMerger
 from castervoice.lib.merge.merge.mergepair import MergeInf
 from castervoice.lib.tests.unit.nexus import TestNexus
@@ -20,7 +20,7 @@ def demo_filter(_):
 
 class DemoMappingRule(MappingRule):
     mapping = {
-        "test": Key("a"),
+        "test": MockKey("a"),
     }
 
 

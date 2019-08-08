@@ -6,11 +6,12 @@ class RuleDetails(object):
     A per-rule instantiation configuration.
     """
 
-    def __init__(self, name=None, executable=None, grammar_name=None,
+    def __init__(self, name=None, executable=None, title=None, grammar_name=None,
                  enabled=True, ccrtype=None, rdp_mode_exclusion=False, transformer_exclusion=False):
         """
         :param name: Dragonfly rule name
         :param executable: Dragonfly AppContext executable
+        :param title: Dragonfly AppContext title
         :param grammar_name: Dragonfly grammar name
         :param enabled: settings.py toggle
         :param ccrtype: global, app, selfmod, or none
@@ -19,6 +20,7 @@ class RuleDetails(object):
         """
         self.name = name
         self.executable = executable
+        self.title = title
         self.grammar_name = grammar_name
         self.enabled = enabled  # TODO: handle this -- during the Initial Load setup?
         self.declared_ccrtype = ccrtype
@@ -32,7 +34,3 @@ class RuleDetails(object):
 
     def get_filepath(self):
         return self._filepath
-
-    @staticmethod
-    def global_ccr():
-        return RuleDetails(ccr)

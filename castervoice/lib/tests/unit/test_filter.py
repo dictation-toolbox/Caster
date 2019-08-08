@@ -1,5 +1,5 @@
-from castervoice.lib.tests.mocks import (eclipse_context, EclipseCCR, Text, Bash,
-        Java, Python)
+from castervoice.lib.tests.mocks import (eclipse_context, EclipseCCR, MockText, Bash,
+                                         Java, Python)
 from castervoice.lib.merge.ccrmerger_legacy import CCRMerger
 from castervoice.lib.merge.merge.filter import (make_filter, there_is_spec_overlap,
                                                 incoming_gets_priority)
@@ -55,8 +55,8 @@ class TestFilterNonBootTime(TestFilterFunctions):
     def test_runtime_global_action_replace(self):
         def replace_if_action(mp):
             if mp.rule1 is not None:
-                mp.rule1.mapping_actual()["iffae"] = Text("test")
-            mp.rule2.mapping_actual()["iffae"] = Text("test")
+                mp.rule1.mapping_actual()["iffae"] = MockText("test")
+            mp.rule2.mapping_actual()["iffae"] = MockText("test")
 
         ff = make_filter(lambda mp: replace_if_action(mp), None, MergeInf.RUN,
                          MergeInf.GLOBAL)
@@ -67,7 +67,7 @@ class TestFilterNonBootTime(TestFilterFunctions):
 
         self.assertTrue(
             isinstance(self.nexus.merger._base_global.mapping_actual()["iffae"],
-                       Text))
+                       MockText))
 
         self.nexus.merger._filters = []
 
@@ -76,4 +76,4 @@ class TestFilterNonBootTime(TestFilterFunctions):
         '''make sure originals weren't changed'''
         self.assertFalse(
             isinstance(self.nexus.merger._base_global.mapping_actual()["iffae"],
-                       Text))
+                       MockText))
