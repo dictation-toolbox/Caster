@@ -31,7 +31,7 @@ class HistoryRule(SelfModifyingRule):
             for w in t:
                 formatted += w.split("\\")[0] + "[w]"
             formatted += "[s]"
-
+        formatted = formatted.encode("unicode_escape")
         # use a response window to get a spec and word sequences for the new macro
         h_launch.launch(settings.QTYPE_RECORDING, data=formatted)
         on_complete = AsynchronousAction.hmc_complete(
@@ -75,7 +75,7 @@ class HistoryRule(SelfModifyingRule):
         mapping = {}
         for spec in recorded_macros:
             # Create a copy of the string without Unicode characters.
-            ascii_str = str(spec)
+            ascii_str = spec#str(spec)
             sequences = recorded_macros[spec]
             delay = settings.SETTINGS["miscellaneous"]["history_playback_delay_secs"]
             # It appears that the associative string (ascii_str) must be ascii, but the sequences within Playback must be Unicode.
