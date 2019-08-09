@@ -1,5 +1,13 @@
+from dragonfly import Dictation, Key, Repeat
+
+from castervoice.lib.actions import Text
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.imports import *
 import ide
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
+
 
 class JetbrainsRule(MergeRule):
     pronunciation = "jet brains"
@@ -101,8 +109,5 @@ class JetbrainsRule(MergeRule):
     defaults = {"n": 1, "mim": ""}
 
 
-context = AppContext(executable="idea", title="IntelliJ") \
-          | AppContext(executable="idea64", title="IntelliJ") \
-          | AppContext(executable="studio64") \
-          | AppContext(executable="pycharm")
-control.non_ccr_app_rule(JetbrainsRule(), context=context)
+def get_rule():
+    return JetbrainsRule, RuleDetails(executable=["idea", "idea64", "studio64", "pycharm"])

@@ -1,9 +1,10 @@
 #
 # __author__ = "lexxish"
 #
-from castervoice.lib.imports import *
+from dragonfly import Choice
 
 from castervoice.apps.shared.directions import FORWARD, RIGHT, BACK, LEFT
+from castervoice.lib.merge.additions import IntegerRefST
 
 OPEN_NEW_WINDOW = "(new window|win new)"
 OPEN_NEW_INCOGNITO_WINDOW = "(new incognito window | incognito)"

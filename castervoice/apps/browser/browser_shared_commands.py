@@ -1,10 +1,13 @@
 #
 # __author__ = "lexxish"
 #
-from castervoice.lib.imports import *
+from dragonfly import Key, Repeat, Mouse, Pause, Function
 
 from castervoice.apps.browser import browser
 from castervoice.lib import github_automation
+from castervoice.lib.actions import Text
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
 
 
 class BrowserSharedCommands(MergeRule):

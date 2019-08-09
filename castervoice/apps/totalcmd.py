@@ -35,6 +35,3 @@ class TotalCommanderRule(MergeRule):
 def get_rule():
     return TotalCommanderRule, RuleDetails(executable=["totalcmd", "totalcmd64"])
 
-
-syncdir_context = context & AppContext(title='Synchronize directories')
-control.non_ccr_app_rule(SyncDirsRule(), context=syncdir_context)

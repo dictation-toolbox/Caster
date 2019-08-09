@@ -6,6 +6,9 @@ class MappingRuleMaker(BaseRuleMaker):
     """
     Creates a MappingRule instance from the rule's class and a RuleDetails
     object, then runs the "words.txt" transformer over it.
+
+    TODO: does this need to get ALL of the transformers, not just the one?
+    Transformers
     """
 
     def __init__(self, gdef_transformer, smr_configurer):

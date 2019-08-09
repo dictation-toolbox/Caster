@@ -1,7 +1,10 @@
-from castervoice.lib.imports import *
+from dragonfly import Key, Repeat
 
 import browser
 from castervoice.apps.browser.browser_shared_commands import BrowserSharedCommands
+from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.merge.state.short import R
+
 
 class FirefoxRule(BrowserSharedCommands):
     pronunciation = "fire fox"
@@ -22,5 +25,5 @@ class FirefoxRule(BrowserSharedCommands):
     defaults = browser.DEFAULTS
 
 
-context = AppContext(executable="firefox")
-control.non_ccr_app_rule(FirefoxRule(), context=context)
+def get_rule():
+    return FirefoxRule, rdcommon.app_executable("firefox")

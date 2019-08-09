@@ -1,7 +1,11 @@
-from castervoice.lib.imports import *
+from dragonfly import Key, Repeat
 
 import browser
 from castervoice.apps.browser.browser_shared_commands import BrowserSharedCommands
+from castervoice.lib.actions import Text
+from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.merge.state.short import R
+from castervoice.lib.temporary import Store, Retrieve
 
 
 class ChromeRule(BrowserSharedCommands):
@@ -43,5 +47,5 @@ class ChromeRule(BrowserSharedCommands):
     defaults = browser.DEFAULTS
 
 
-context = AppContext(executable="chrome")
-control.non_ccr_app_rule(ChromeRule(), context=context)
+def get_rule():
+    return ChromeRule, rdcommon.app_executable("chrome")
