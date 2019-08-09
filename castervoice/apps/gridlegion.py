@@ -1,17 +1,23 @@
-from castervoice.lib.imports import *
+import time
 
+from dragonfly import Playback, Function, Choice
+
+from castervoice.lib import control, settings, navigation
 from castervoice.asynch.mouse import grids
 import win32api, win32con
 
-_NEXUS = control.nexus()
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
 
 
-def kill(nexus):
-    nexus.comm.get_com("grids").kill()
+def kill():
+    control.nexus().comm.get_com("grids").kill()
 
 
-def send_input(n, action, nexus):
-    s = nexus.comm.get_com("grids")
+def send_input(n, action):
+    s = control.nexus().comm.get_com("grids")
 
     int_a = int(action)
     response = None
@@ -39,8 +45,9 @@ def send_input(n, action, nexus):
         time.sleep(0.1)
         win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0)
 
-def drag_highlight(n1, n2, nexus):
-    s = nexus.comm.get_com("grids")
+
+def drag_highlight(n1, n2):
+    s = control.nexus().comm.get_com("grids")
 
     response1 = s.retrieve_data_for_highlight(str(int(n1)))
     response2 = s.retrieve_data_for_highlight(str(int(n2)))
@@ -66,13 +73,13 @@ class LegionGridRule(MergeRule):
 
     mapping = {
         "<n> [<action>]":
-            R(Function(send_input, nexus=_NEXUS)),
+            R(Function(send_input)),
         "refresh":
-            R(Function(navigation.mouse_alternates, mode="legion", nexus=_NEXUS)),
+            R(Function(navigation.mouse_alternates, mode="legion")),
         "exit | escape | cancel":
-            R(Function(kill, nexus=_NEXUS)),
+            R(Function(kill)),
         "<n1> (select | light) <n2>":
-            R(Function(drag_highlight, nexus=_NEXUS)),
+            R(Function(drag_highlight)),
     }
     extras = [
         Choice("action", {
@@ -89,5 +96,5 @@ class LegionGridRule(MergeRule):
     }
 
 
-context = AppContext(title="legiongrid")
-control.non_ccr_app_rule(LegionGridRule(), context=context)
+def get_rule():
+    return LegionGridRule, RuleDetails(title="legiongrid")

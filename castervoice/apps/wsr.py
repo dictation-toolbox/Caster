@@ -1,4 +1,10 @@
-from castervoice.lib.imports import *
+from dragonfly import Function
+
+from castervoice.lib import utilities
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
+
 
 class WindowsSpeechRecognitionRule(MergeRule):
 
@@ -10,5 +16,5 @@ class WindowsSpeechRecognitionRule(MergeRule):
     defaults = {}
 
 
-if settings.WSR:
-    control.non_ccr_app_rule(WindowsSpeechRecognitionRule())
+def get_rule():
+    return WindowsSpeechRecognitionRule, RuleDetails(name="w s r")

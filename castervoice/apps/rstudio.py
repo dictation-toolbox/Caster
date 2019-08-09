@@ -1,4 +1,13 @@
-from castervoice.lib.imports import *
+from dragonfly import Key, Pause, Function, Choice
+
+from castervoice.lib import navigation
+from castervoice.lib.actions import Text
+from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
+from castervoice.lib.temporary import Store, Retrieve
+
 
 class RStudioRule(MergeRule):
     pronunciation = "are studio"
@@ -68,5 +77,6 @@ class RStudioRule(MergeRule):
     ]
     defaults = {"ln2": ""}
 
-context = AppContext(executable="rstudio")
-control.non_ccr_app_rule(RStudioRule(), context=context)
+
+def get_rule():
+    return RStudioRule, rdcommon.app_executable("rstudio")

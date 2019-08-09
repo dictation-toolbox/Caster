@@ -20,5 +20,6 @@ COMPANION_STARTER = {
     "Rust": "RustNon",
     "VHDL": "VHDLnon",
     "EclipseCCR": "EclipseRule",
-    "FlashDevelopCCR": "FlashDevelopRule"
+    "FlashDevelopCCR": "FlashDevelopRule",
+    "VSCodeCcrRule": "VSCodeNonCcrRule"
 }

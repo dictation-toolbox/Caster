@@ -1,4 +1,10 @@
-from castervoice.lib.imports import *
+from dragonfly import Key, Function, Repeat, Dictation, Choice, AppContext
+
+from castervoice.lib.actions import Text
+from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
 
 
 def capitalize(text):
@@ -125,15 +131,5 @@ class OutlookRule(MergeRule):
     defaults = {"n": 1, "dict": "", "text": "", "sort_by": ""}
 
 
-context = AppContext(executable="outlook")
-control.non_ccr_app_rule(OutlookRule(), context=context)
-"""
-Command-module for Microsoft Outlook
-Note (from Alex Boche 2019): In my opinion, Microsoft Outlook probably most Dragon-friendly email application.
-All text fields are full text control, and all of the menus should be say-what-you-see natively in Dragon.
-A good alternative to using Outlook is to use an e-mail website in Chrome or Firefox since these applications
-support Wolfmanstout's accessibility API commands which can replace full text control.
-Outlook users may want to consider purchasing Voice Computer which provides good numbering software
-for the buttons and text fields in Outlook although a free and better alternative
-to Voice Computer may be coming soon.
-"""
+def get_rule():
+    return OutlookRule, rdcommon.app_executable("outlook")

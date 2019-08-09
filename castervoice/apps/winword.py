@@ -1,4 +1,10 @@
-from castervoice.lib.imports import *
+from dragonfly import Key, Dictation
+
+from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
+
 
 class MSWordRule(MergeRule):
     pronunciation = "Microsoft Word"
@@ -13,5 +19,5 @@ class MSWordRule(MergeRule):
     defaults = {"n": 1, "dict": "nothing"}
 
 
-context = AppContext(executable="winword")
-control.non_ccr_app_rule(MSWordRule(), context=context)
+def get_rule():
+    return MSWordRule, rdcommon.app_executable("winword")

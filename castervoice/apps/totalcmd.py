@@ -1,4 +1,8 @@
-from castervoice.lib.imports import *
+from dragonfly import Key
+
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
 
 
 class TotalCommanderRule(MergeRule):
@@ -28,21 +32,9 @@ class TotalCommanderRule(MergeRule):
     }
 
 
-class SyncDirsRule(MergeRule):
-    pronunciation = "total commander synchronize directories"
+def get_rule():
+    return TotalCommanderRule, RuleDetails(executable=["totalcmd", "totalcmd64"])
 
-    mapping = {
-        "compare files": R(Key('c-f3')),
-        "copy left": R(Key('c-l')),
-        "copy right": R(Key('c-r')),
-        "view right": R(Key('s-f3')),
-        "remove selection": R(Key('c-m')),
-        "synchronize": R(Key('a-c')),
-    }
-
-
-context = AppContext(executable="totalcmd") | AppContext(executable="totalcmd64")
-control.non_ccr_app_rule(TotalCommanderRule(), context=context)
 
 syncdir_context = context & AppContext(title='Synchronize directories')
 control.non_ccr_app_rule(SyncDirsRule(), context=syncdir_context)

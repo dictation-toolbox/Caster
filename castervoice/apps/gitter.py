@@ -3,7 +3,13 @@ __author__ = 'LexiconCode'
 Command-module for Gitter
 Official Site "https://gitter.im/"
 """
-from castervoice.lib.imports import *
+from dragonfly import Key, Pause, Choice
+
+from castervoice.lib.actions import Text
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
+from castervoice.lib.temporary import Store, Retrieve
 
 
 class GitterRule(MergeRule):
@@ -51,5 +57,5 @@ class GitterRule(MergeRule):
     Defaults = {}
 
 
-context = AppContext(executable="gitter")
-control.non_ccr_app_rule(GitterRule(), context=context)
+def get_rule():
+    return GitterRule, RuleDetails(executable="gitter")

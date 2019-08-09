@@ -1,4 +1,10 @@
-from castervoice.lib.imports import *
+from dragonfly import Key, Repeat, Choice
+
+from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
+
 
 class LyxRule(MergeRule):
     pronunciation = "lyx"
@@ -46,5 +52,5 @@ class LyxRule(MergeRule):
     }
 
 
-context = AppContext(executable="lyx")
-control.non_ccr_app_rule(LyxRule(), context=context)
+def get_rule():
+    return LyxRule, rdcommon.app_executable("lyx")

@@ -1,4 +1,11 @@
-from castervoice.lib.imports import *
+from dragonfly import Key, Repeat, Dictation
+
+from castervoice.lib.actions import Text
+from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
+
 
 class VisualStudioRule(MergeRule):
     pronunciation = "visual studio"
@@ -83,5 +90,5 @@ class VisualStudioRule(MergeRule):
     defaults = {"n": 1, "mim": ""}
 
 
-context = AppContext(executable="devenv")
-control.non_ccr_app_rule(VisualStudioRule(), context=context)
+def get_rule():
+    return VisualStudioRule, rdcommon.app_executable("devenv")

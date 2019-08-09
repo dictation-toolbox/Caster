@@ -1,4 +1,9 @@
-from castervoice.lib.imports import *
+from dragonfly import Key, Repeat
+
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
 
 
 class GitHubDeskRule(MergeRule):
@@ -44,5 +49,5 @@ class GitHubDeskRule(MergeRule):
     defaults = {"n": 1}
 
 
-context = AppContext(executable="GitHubDesktop")
-control.non_ccr_app_rule(GitHubDeskRule(), context=context)
+def get_rule():
+    return GitHubDeskRule, RuleDetails(executable="GitHubDesktop")

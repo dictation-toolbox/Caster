@@ -1,4 +1,11 @@
-from castervoice.lib.imports import *
+from dragonfly import Mouse, Key, Repeat, Dictation
+
+from castervoice.lib.actions import Text
+from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
+
 
 class NPPRule(MergeRule):
     pronunciation = "notepad plus plus"
@@ -28,5 +35,5 @@ class NPPRule(MergeRule):
     defaults = {"n": 1}
 
 
-context = AppContext(executable="notepad++")
-control.non_ccr_app_rule(NPPRule(), context=context)
+def get_rule():
+    return NPPRule, rdcommon.app_executable("notepad++")

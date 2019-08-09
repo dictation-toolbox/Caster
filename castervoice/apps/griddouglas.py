@@ -1,15 +1,25 @@
-from castervoice.lib.imports import *
+import time
 
+from dragonfly import Mouse, Function, Choice
+
+from castervoice.lib import settings, control
 from castervoice.asynch.mouse import grids
 import win32api, win32con
 
-_NEXUS = control.nexus()
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
 
-def kill(nexus):
-    nexus.comm.get_com("grids").kill()
+control.nexus()
 
-def send_input(x, y, action, nexus):
-    s = nexus.comm.get_com("grids")
+
+def kill():
+    control.nexus().comm.get_com("grids").kill()
+
+
+def send_input(x, y, action):
+    s = control.nexus().comm.get_com("grids")
     s.move_mouse(int(x), int(y))
     int_a = int(action)
     if (int_a == 0) | (int_a == 1) | (int_a == -1):
@@ -20,8 +30,9 @@ def send_input(x, y, action, nexus):
     elif int_a == 1:
         Mouse("right").execute()
 
-def send_input_select(x1, y1, x2, y2, nexus):
-    s = nexus.comm.get_com("grids")
+
+def send_input_select(x1, y1, x2, y2):
+    s = control.nexus().comm.get_com("grids")
     s.move_mouse(int(x1), int(y1))
     _x1, _y1 = win32api.GetCursorPos()
     s.move_mouse(int(x2), int(y2))
@@ -30,8 +41,10 @@ def send_input_select(x1, y1, x2, y2, nexus):
     grids.wait_for_death(settings.DOUGLAS_TITLE)
     drag_from_to(_x1,_y1,_x2,_y2)
 
-def send_input_select_short(x1, y1, x2, nexus):
-    send_input_select(x1, y1, x2, y1, nexus)
+
+def send_input_select_short(x1, y1, x2):
+    send_input_select(x1, y1, x2, y1)
+
 
 def drag_from_to(x1, y1, x2, y2):
     win32api.SetCursorPos((x1,y1))
@@ -41,37 +54,41 @@ def drag_from_to(x1, y1, x2, y2):
     time.sleep(0.1)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,0,0)
 
+
 x1 = None
 x2 = None
 y1 = None
 y2 = None
 
+
 def store_first_point():
     global x1, y1
     x1, y1 = win32api.GetCursorPos()
 
-def select_text(nexus):
+
+def select_text():
     global x1, y1, x2, y2
     x2, y2 = win32api.GetCursorPos()
-    s = nexus.comm.get_com("grids")
+    s = control.nexus().comm.get_com("grids")
     s.kill()
     grids.wait_for_death(settings.DOUGLAS_TITLE)
     drag_from_to(x1,y1,x2,y2)
 
+
 class DouglasGridRule(MergeRule):
     mapping = {
         "<x> [by] <y> [<action>]":
-            R(Function(send_input, nexus=_NEXUS)),
+            R(Function(send_input)),
         "<x1> [by] <y1> (grab | select) <x2> [by] <y2>":
-            R(Function(send_input_select, nexus=_NEXUS)),
+            R(Function(send_input_select)),
         "<x1> [by] <y1> (grab | select) <x2>":
-            R(Function(send_input_select_short, nexus=_NEXUS)),
+            R(Function(send_input_select_short)),
         "squat":
             R(Function(store_first_point)),
         "bench":
-            R(Function(select_text, nexus=_NEXUS)),
+            R(Function(select_text)),
         "exit | escape | cancel":
-            R(Function(kill, nexus=_NEXUS)),
+            R(Function(kill)),
     }
     extras = [
         IntegerRefST("x", 0, 300),
@@ -94,5 +111,6 @@ class DouglasGridRule(MergeRule):
         "action": -1,
     }
 
-context = AppContext(title="douglasgrid")
-control.non_ccr_app_rule(DouglasGridRule(), context=context)
+
+def get_rule():
+    return DouglasGridRule, RuleDetails(title="douglasgrid")
