@@ -35,53 +35,6 @@ def experiment():
     '''This function is for test'''
 
 
-#     try:
-#         for i in range(0, 10000):
-#             action = NullAction(rdescript="test_"+str(i))
-#             action.show = True
-#             action.set_nexus(control.nexus())
-#             alt = MockAlternative(u"my", u"spoken", u"words")
-#             sia = StackItemRegisteredAction(action, {"_node":alt})
-#             control.nexus().state.add(sia)
-#     except Exception:
-#         utilities.simple_log()
-
-#     from Levenshtein.StringMatcher import StringMatcher
-#     try:
-#         spoken = "issue certificate shares"
-#         for item in ["isctsh", # actual answer, rated worst with sift4
-#                      "Issue",
-#                      "issue_list",
-#                      "issues",
-#                      "isbksh",
-#                      "cert",
-#                      "ctshrs",
-#                      "certificate",
-#                      "Certificate",
-#                      spoken #for reference
-#                       ]:
-#             s = SequenceMatcher(None, item, spoken) # difflib
-#             caster_abbrev = selector._abbreviated_string(spoken).lower() # castervoice
-#
-#             l = StringMatcher()
-#             l.set_seqs(spoken, item)
-#
-#
-#             print("castervoice", item, selector._phrase_to_symbol_similarity_score(caster_abbrev, item))
-#             print("difflib: ", item, s.ratio())
-#             print("levenshtein: ", item, l.ratio())
-#             print("sift4: ", item, sift4(item, spoken, None, None))
-#             print("\n")
-#
-#
-#         print(str(text), str(text2), sift4(str(text), str(text2), None, None))
-#     except Exception:
-#         utilities.simple_log()
-
-#     comm = Communicator()
-#     comm.get_com("status").error(0)
-
-
 def run_remote_debugger():
     utilities.remote_debug("dev.py")
 
