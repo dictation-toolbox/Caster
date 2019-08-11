@@ -3,8 +3,17 @@ Alex Boche 2019
 this file contains commands for more quickly creating dragonfly commands.
 users may want to make this context-specific to their text editors
 '''
-from castervoice.lib.imports import *
+import copy
+
+from dragonfly import Key, Pause, Choice, Dictation, Function
+from dragonfly.actions.action_mouse import get_cursor_position
+
+from castervoice.lib.actions import Text
 from castervoice.lib.ccr.core.nav import Navigation
+from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.short import R
 
 new_modifier_choice_object = copy.deepcopy(Navigation.modifier_choice_object)
 
@@ -211,4 +220,6 @@ class VoiceDevCommands(MergeRule):
     ]
     defaults = {"spec": "", "dict": "", "text": "", "mouse_button": ""}
 
-control.global_rule(VoiceDevCommands())
+
+def get_rule():
+    return VoiceDevCommands, rdcommon.ccr_global()
