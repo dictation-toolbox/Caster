@@ -12,8 +12,8 @@ import version
 
 GENERIC_HELP_MESSAGE = """
 If you continue having problems with this or any other issue you can contact
-us through Gitter at <https://gitter.im/synkarius/caster> or on our GitHub
-issue tracker at <https://github.com/synkarius/caster/issues>.
+us through Gitter at <https://gitter.im/dictation-toolbox/Caster> or on our GitHub
+issue tracker at <https://github.com/dictation-toolbox/Caster/issues>.
 Thank you for using Caster!
 """
 
