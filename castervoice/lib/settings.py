@@ -299,13 +299,10 @@ _DEFAULT_SETTINGS = {
         "use_aenea": False,
         "online_mode": True,
         "hmc": True,
-        "ccr_on": True
+        "ccr_on": True,
+        "reload_trigger": "timer"
     },
-    "pronunciations": {
-        "c++": "C plus plus",
-        "jquery": "J query",
-    },
-    "one time warnings": {},
+
     "formats": {
         "_default": {
             "text_format": [5, 0],

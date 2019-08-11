@@ -3,7 +3,7 @@ import unittest
 from castervoice.lib.context import AppContext
 from castervoice.lib.tests.mocks import EclipseCCR, Java, Javascript, Python, Alias
 from castervoice.lib.merge.mergerule import MergeRule
-from castervoice.lib.tests.unit.nexus import TestNexus
+from castervoice.lib.tests.unit.test_nexus import TestNexus
 
 
 class TestMergeRule(TestNexus):

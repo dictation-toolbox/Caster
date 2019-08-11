@@ -5,20 +5,21 @@ from castervoice.lib.ctrl.mgr.rule_maker.base_rule_maker import BaseRuleMaker
 class MappingRuleMaker(BaseRuleMaker):
     """
     Creates a MappingRule instance from the rule's class and a RuleDetails
-    object, then runs the "words.txt" transformer over it.
-
-    TODO: does this need to get ALL of the transformers, not just the one?
-    Transformers
+    object, then runs all transformers over it.
     """
 
-    def __init__(self, gdef_transformer, smr_configurer):
-        self._gdef_transformer = gdef_transformer
+    def __init__(self, smr_configurer):
+        self._transformers = []
         self._smr_configurer = smr_configurer
+
+    def add_transformer(self, transformer):
+        self._transformers.append(transformer)
 
     def create_non_ccr_grammar(self, rule_class, details):
         rule_instance = rule_class(name=details.name)
         if not details.transformer_exclusion:
-            rule_instance = self._gdef_transformer.get_transformed_rule(rule_instance)
+            for transformer in self._transformers:
+                rule_instance = transformer.get_transformed_rule(rule_instance)
 
         self._smr_configurer.configure(rule_instance)
 

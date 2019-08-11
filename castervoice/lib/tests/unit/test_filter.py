@@ -4,7 +4,7 @@ from castervoice.lib.merge.ccrmerger_legacy import CCRMerger
 from castervoice.lib.merge.merge.filter import (make_filter, there_is_spec_overlap,
                                                 incoming_gets_priority)
 from castervoice.lib.merge.merge.mergepair import MergeInf
-from castervoice.lib.tests.unit.nexus import TestNexus
+from castervoice.lib.tests.unit.test_nexus import TestNexus
 
 
 class TestFilterFunctions(TestNexus):

@@ -67,28 +67,34 @@ class Nexus:
         hooks_runner = HooksRunner()
         smrc.set_hooks_runner(hooks_runner)
 
+        '''mapping rule maker: like the ccrmerger, but doesn't merge and isn't ccr'''
+        mapping_rule_maker = MappingRuleMaker(GlobalDefinitionsRuleTransformer(), smrc)
+
         '''the grammar manager -- probably needs to get broken apart more'''
-        self._grammar_manager = Nexus._create_grammar_manager(
-            self._merger, self._content_loader, hooks_runner, rule_activation_config, smrc)
+        self._grammar_manager = Nexus._create_grammar_manager(self._merger,
+            self._content_loader, hooks_runner, rule_activation_config, smrc, mapping_rule_maker)
 
         '''ACTION TIME:'''
-        self._load_and_register_all_content(hooks_runner)
+        self._load_and_register_all_content(hooks_runner, mapping_rule_maker)
         self._grammar_manager.initialize()
 
-    def _load_and_register_all_content(self, hooks_runner):
+    def _load_and_register_all_content(self, hooks_runner, mapping_rule_maker):
         """
         all rules go to grammar_manager
-        all transformers go to merger
+        all transformers go to merger, mapping_rule_maker
         all hooks go to hooks runner
         """
         content = self.content_loader.load_everything()
         [self._grammar_manager.register_rule(rc, d) for rc, d in content.rules]
         self._grammar_manager.load_activation_grammar()
-        [self._merger.add_transformer(t) for t in content.transformers]
+        for transformer in content.transformers:
+            self._merger.add_transformer(transformer)
+            mapping_rule_maker.add_transformer(transformer)
         [hooks_runner.add_hook(h) for h in content.hooks]
 
     @staticmethod
-    def _create_grammar_manager(merger, content_loader, hooks_runner, rule_activation_config, smrc):
+    def _create_grammar_manager(merger, content_loader, hooks_runner, rule_activation_config, smrc,
+                                mapping_rule_maker):
         """
         This is where settings should be used to alter the dependency injection being done.
         Setting things to alternate implementations can live here.
@@ -98,6 +104,7 @@ class Nexus:
         :param hooks_runner:
         :param rule_activation_config
         :param smrc
+        :param mapping_rule_maker
         :return:
         """
 
@@ -121,11 +128,9 @@ class Nexus:
         activator = GrammarActivator(lambda rule: isinstance(rule, MergeRule))
         some_setting = True
         observable = TimerReloadObservable()
-        if some_setting:
+        if settings.SETTINGS["reload_trigger"]["timer"] == "manual":
             observable = ManualReloadObservable()
 
-        # mrm is a special case, gets a single transformer, expansion possible to all transformers
-        mapping_rule_maker = MappingRuleMaker(GlobalDefinitionsRuleTransformer(), smrc)
         grammars_container = GrammarContainer()
 
         gm = GrammarManager(rule_activation_config, merger, content_loader, ccr_rule_validator, details_validator,

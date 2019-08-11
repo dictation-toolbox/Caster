@@ -5,7 +5,7 @@ from castervoice.lib.tests.mocks import (eclipse_context, EclipseCCR,
                                          MockKey, Bash, Java, Python, ChainAlias)
 from castervoice.lib.merge.ccrmerger_legacy import CCRMerger
 from castervoice.lib.merge.merge.mergepair import MergeInf
-from castervoice.lib.tests.unit.nexus import TestNexus
+from castervoice.lib.tests.unit.test_nexus import TestNexus
 
 
 def demo_filter(_):

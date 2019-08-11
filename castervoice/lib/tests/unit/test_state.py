@@ -7,7 +7,7 @@ from castervoice.lib.merge.state.short import S, L, R
 from castervoice.lib.merge.state.stackitems import StackItemAsynchronous, \
     StackItemRegisteredAction
 from castervoice.lib.tests.testutils import MockAlternative
-from castervoice.lib.tests.unit.nexus import TestNexus
+from castervoice.lib.tests.unit.test_nexus import TestNexus
 
 
 class TestState(TestNexus):
