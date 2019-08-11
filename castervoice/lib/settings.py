@@ -19,7 +19,9 @@ Thank you for using Caster!
 """
 
 SETTINGS = {}
-BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "lib", 1)[0].replace("\\", "/")
+BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "lib",
+                                              1)[0].replace("\\", "/")
+
 
 def set_user_dir():
     user_dir = 'empty_path'
@@ -33,13 +35,15 @@ def set_user_dir():
                 user_dir = directory
     except IOError as e:
         if e.errno == errno.EACCES:
-            print("Caster does not have read/write for a user directory. \n" + errno.EACCES)
+            print("Caster does not have read/write for a user directory. \n" +
+                  errno.EACCES)
     finally:
         if os.path.exists(user_dir):
             return user_dir
         else:
             print("Caster could not find a valid user directory at: " + str(user_dir))
             raise NameError('UserPathException')
+
 
 _USER_DIR = os.path.normpath(os.path.join(set_user_dir(), ".caster"))
 _SETTINGS_PATH = os.path.normpath(os.path.join(_USER_DIR, "/data/settings.toml"))
