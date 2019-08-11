@@ -4,9 +4,6 @@ class CCRType(object):
     SELFMOD = "selfmod"
 
 
-#
-CCR_ON = "ccr_on"
-
 # default-on ccr modules
 CORE = ["Alphabet", "Navigation", "Numbers", "Punctuation"]
 
