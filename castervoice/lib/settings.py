@@ -29,10 +29,11 @@ def set_user_dir():
         directory = os.path.expanduser("~")
         if os.access(directory, os.W_OK) and os.access(directory, os.R_OK) is True:
             user_dir = directory
-        if os.name == 'nt':
-            directory = os.path.expandvars(r'%APPDATA%')
-            if os.access(directory, os.W_OK) and os.access(directory, os.R_OK) is True:
-                user_dir = directory
+        else:
+            if os.name == 'nt':
+                directory = os.path.expandvars(r'%APPDATA%')
+                if os.access(directory, os.W_OK) and os.access(directory, os.R_OK) is True:
+                    user_dir = directory
     except IOError as e:
         if e.errno == errno.EACCES:
             print("Caster does not have read/write for a user directory. \n" +
@@ -44,9 +45,10 @@ def set_user_dir():
             print("Caster could not find a valid user directory at: " + str(user_dir))
             raise NameError('UserPathException')
 
+print(set_user_dir())
 
 _USER_DIR = os.path.normpath(os.path.join(set_user_dir(), ".caster"))
-_SETTINGS_PATH = os.path.normpath(os.path.join(_USER_DIR, "/data/settings.toml"))
+_SETTINGS_PATH = os.path.normpath(os.path.join(_USER_DIR, "data/settings.toml"))
 
 print("Caster user directory: " + _USER_DIR)
 
