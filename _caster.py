@@ -18,7 +18,7 @@ if settings.WSR:
 from castervoice.lib import control
 _NEXUS = control.nexus()
 
-from castervoice.asynch.sikuli import sikuli
+from castervoice.asynch.sikuli import sikuli_controller
 
 if not globals().has_key('profile_switch_occurred'):
     # Load user rules
@@ -27,9 +27,12 @@ if not globals().has_key('profile_switch_occurred'):
     # _NEXUS.merger.merge(MergeInf.BOOT)
 
 if globals().has_key('profile_switch_occurred'):
-    reload(sikuli)
+    reload(sikulixx)
 else:
     profile_switch_occurred = None
+
+if settings.SETTINGS["sikuli"]["enabled"]:
+    sikuli_controller.get_instance().bootstrap_start_server_proxy()
 
 print("\n*- Starting " + settings.SOFTWARE_NAME + " -*")
 

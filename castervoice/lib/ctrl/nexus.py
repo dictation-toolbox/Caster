@@ -26,7 +26,6 @@ from castervoice.lib.merge.ccrmerging2.transformers.standard_transformers.gdef_t
 from castervoice.lib.merge.communication import Communicator
 from castervoice.lib.merge.selfmod.smr_configurer import SelfModRuleConfigurer
 from castervoice.lib.merge.state.stack import CasterState
-from dragonfly.grammar.grammar_base import Grammar
 from castervoice.lib.ctrl.mgr.grammar_manager import GrammarManager
 from castervoice.lib.ctrl.mgr.validation.rules.rule_validation_delegator import CCRRuleValidationDelegator
 from castervoice.lib.merge.ccrmerging2.ccrmerger2 import CCRMerger2
@@ -50,9 +49,6 @@ class Nexus:
         '''dependency checker/manager'''
         self.dep = DependencyMan()
         self.dep.initialize()
-
-        '''grammar for recording macros -- should be moved elsewhere'''
-        self.macros_grammar = Grammar("recorded_macros")
 
         '''tracks both which rules are active and the activation order'''
         rule_activation_config = RulesActivationConfig()

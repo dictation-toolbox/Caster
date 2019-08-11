@@ -6,7 +6,11 @@ class Communicator:
 
     def __init__(self):
         self.coms = {}
-        self.com_registry = {"hmc": 1338, "grids": 1339, "sikuli": 8000}
+        self.com_registry = {
+            "hmc": 1338,
+            "grids": 1339,
+            "sikuli": 8000
+        }
 
     def get_com(self, name):
         try:  # try a ping

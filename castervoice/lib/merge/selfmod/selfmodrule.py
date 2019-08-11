@@ -1,6 +1,7 @@
 from dragonfly.grammar.elements import Dictation
 
 from castervoice.lib import printer
+from castervoice.lib.ctrl.mgr.errors.base_class_error import DontUseBaseClassError
 from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.selfmod.sm_config import SelfModStateSavingConfig
@@ -68,8 +69,7 @@ class BaseSelfModifyingRule(MergeRule):
 
         Child classes should implement this.
         """
-        # TODO: throw error if this base method is called
-        pass
+        raise DontUseBaseClassError(self)
 
     def _refresh(self, *args):
         """
@@ -80,5 +80,4 @@ class BaseSelfModifyingRule(MergeRule):
         :param args: any
         :return:
         """
-        # TODO: throw error if this base method is called
-        pass
+        raise DontUseBaseClassError(self)
