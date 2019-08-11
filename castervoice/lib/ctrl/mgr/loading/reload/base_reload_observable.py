@@ -1,4 +1,7 @@
 import hashlib
+import os
+
+from castervoice.lib import printer
 
 
 class BaseReloadObservable(object):
@@ -21,7 +24,10 @@ class BaseReloadObservable(object):
 
     def _update(self):
         for file_path in self._file_hashes:
-            '''TODO: check if file still exists, print if not'''
+            if not os.path.exists(file_path):
+                printer.out(
+                    "{} appears to have been deleted or renamed. Please reboot Caster to re-track.".format(file_path))
+                continue
 
             known_file_hash = self._file_hashes[file_path]
             current_file_hash = BaseReloadObservable._get_hash_of_file(file_path)

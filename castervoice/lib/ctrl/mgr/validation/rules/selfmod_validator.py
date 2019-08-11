@@ -1,5 +1,6 @@
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.validation.rules.base_validator import BaseRuleValidator
+from castervoice.lib.merge.selfmod.selfmodrule import BaseSelfModifyingRule
 
 
 class SelfModifyingRuleValidator(BaseRuleValidator):
@@ -7,8 +8,8 @@ class SelfModifyingRuleValidator(BaseRuleValidator):
     def is_applicable(self, declared_ccrtype):
         return declared_ccrtype == CCRType.SELFMOD
 
-    def _is_valid(self, rule): # TODO: not the merger which should be set anymore
-        return hasattr(rule, "set_merger")
+    def _is_valid(self, rule):
+        return isinstance(rule, BaseSelfModifyingRule)
 
     def _invalid_message(self):
-        return "must be or inherit SelfModifyingRule"
+        return "must inherit BaseSelfModifyingRule"
