@@ -48,6 +48,8 @@ def set_user_dir():
 _USER_DIR = os.path.normpath(os.path.join(set_user_dir(), ".caster"))
 _SETTINGS_PATH = os.path.normpath(os.path.join(_USER_DIR, "/data/settings.toml"))
 
+print("Caster user directory: " + _USER_DIR)
+
 for directory in ["data", "rules", "filters", "sikuli"]:
     d = _USER_DIR + "/" + directory
     if not os.path.exists(d):
