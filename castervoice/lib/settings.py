@@ -9,6 +9,7 @@ import sys
 import toml
 import _winreg
 import version
+import errno
 
 GENERIC_HELP_MESSAGE = """
 If you continue having problems with this or any other issue you can contact
@@ -18,10 +19,30 @@ Thank you for using Caster!
 """
 
 SETTINGS = {}
-BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "lib",
-                                              1)[0].replace("\\", "/")
-_USER_DIR = os.path.expanduser("~").replace("\\", "/") + "/.caster"
-_SETTINGS_PATH = _USER_DIR + "/data/settings.toml"
+BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "lib", 1)[0].replace("\\", "/")
+
+def set_user_dir():
+    user_dir = 'empty_path'
+    try:
+        directory = os.path.expanduser("~")
+        if os.access(directory, os.W_OK) and os.access(directory, os.R_OK) is True:
+            user_dir = directory
+        if os.name == 'nt':
+            directory = os.path.expandvars(r'%APPDATA%')
+            if os.access(directory, os.W_OK) and os.access(directory, os.R_OK) is True:
+                user_dir = directory
+    except IOError as e:
+        if e.errno == errno.EACCES:
+            print("Caster does not have read/write for a user directory. \n" + errno.EACCES)
+    finally:
+        if os.path.exists(user_dir):
+            return user_dir
+        else:
+            print("Caster could not find a valid user directory at: " + str(user_dir))
+            raise NameError('UserPathException')
+
+_USER_DIR = os.path.normpath(os.path.join(set_user_dir(), ".caster"))
+_SETTINGS_PATH = os.path.normpath(os.path.join(_USER_DIR, "/data/settings.toml"))
 
 for directory in ["data", "rules", "filters", "sikuli"]:
     d = _USER_DIR + "/" + directory
