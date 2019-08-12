@@ -87,11 +87,11 @@ class Nexus:
         """
         content = self.content_loader.load_everything()
         [self._grammar_manager.register_rule(rc, d) for rc, d in content.rules]
-        self._grammar_manager.load_activation_grammar()
         for transformer in content.transformers:
             self._merger.add_transformer(transformer)
             mapping_rule_maker.add_transformer(transformer)
         [hooks_runner.add_hook(h) for h in content.hooks]
+        self._grammar_manager.load_activation_grammar()
 
     @staticmethod
     def _create_grammar_manager(merger, content_loader, hooks_runner, rule_activation_config, smrc,
