@@ -7,7 +7,7 @@ from castervoice.lib.merge.state.short import R
 
 
 class Alphabet(MergeRule):
-    pronunciation = const.CORE[0]
+    pronunciation = "alphabet"
 
     mapping = {
         "[<big>] <letter>":

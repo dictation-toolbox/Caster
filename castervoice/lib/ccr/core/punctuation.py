@@ -60,7 +60,7 @@ text_punc_dict = {
 
 
 class Punctuation(MergeRule):
-    pronunciation = const.CORE[3]
+    pronunciation = "punctuation"
 
     mapping = {
         "[<long>] <text_punc> [<npunc>]":

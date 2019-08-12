@@ -4,8 +4,9 @@ class CCRType(object):
     SELFMOD = "selfmod"
 
 
-# default-on ccr modules
-CORE = ["Alphabet", "Navigation", "Numbers", "Punctuation"]
+# default-on modules
+CORE = ["Alphabet", "Navigation", "Numbers", "Punctuation",
+        "CasterRule", "HardwareRule", "MouseAlternativesRule", "WindowManagementRule"]
 
 # default companion rules
 COMPANION_STARTER = {

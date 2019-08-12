@@ -22,7 +22,7 @@ for key, value in double_text_punc_dict.items():
 
 
 class Navigation(MergeRule):
-    pronunciation = const.CORE[1]
+    pronunciation = "navigation"
 
     mapping = {
     # "periodic" repeats whatever comes next at 1-second intervals until "terminate"

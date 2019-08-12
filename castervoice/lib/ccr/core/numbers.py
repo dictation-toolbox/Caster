@@ -8,7 +8,7 @@ from castervoice.lib.merge.state.short import R
 
 
 class Numbers(MergeRule):
-    pronunciation = const.CORE[2]
+    pronunciation = "numbers"
     mapping = {
         "word number <wn>":
             R(Function(alphanumeric.word_number, extra="wn")),
