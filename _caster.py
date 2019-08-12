@@ -24,7 +24,7 @@ if settings.WSR:
 from castervoice.lib import control
 _NEXUS = control.nexus()
 _NEXUS.dep.initialize()
-from castervoice.lib.ctrl.dependencies import pip_path, update
+from castervoice.lib.ctrl.dependencies import find_pip, update
 from castervoice.lib import navigation
 navigation.initialize_clipboard(_NEXUS)
 
@@ -68,6 +68,7 @@ def change_monitor():
     else:
         print("This command requires SikuliX to be enabled in the settings file")
 
+pip = find_pip()
 
 class MainRule(MergeRule):
     @staticmethod
@@ -84,12 +85,13 @@ class MainRule(MergeRule):
             choices[ccr_choice] = ccr_choice
         return Choice("name2", choices)
 
+
     mapping = {
         # update management
         "update caster":
-            R(DependencyUpdate([pip_path, "install", "--upgrade", "castervoice"])),
+            R(DependencyUpdate([pip, "install", "--upgrade", "castervoice"])),
         "update dragonfly":
-            R(DependencyUpdate([pip_path, "install", "--upgrade", "dragonfly2"])),
+            R(DependencyUpdate([pip, "install", "--upgrade", "dragonfly2"])),
 
         # hardware management
         "volume <volume_mode> [<n>]":

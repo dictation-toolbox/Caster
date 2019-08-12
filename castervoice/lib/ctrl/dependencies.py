@@ -4,24 +4,23 @@ Created on Oct 7, 2015
 @author: synkarius
 '''
 
-import os, socket, time, pkg_resources, subprocess
+import os, sys, socket, time, pkg_resources, subprocess
 from pkg_resources import VersionConflict, DistributionNotFound
 from subprocess import Popen
 from castervoice.lib import settings
 
-pip_path = None
 update = None
 
 
 def find_pip():
-    # Find the pip.exe script for Python 2.7. Fallback on pip.exe.
-    global pip_path
-    python_scripts = os.path.join("Python27", "Scripts")
-    for path in os.environ["PATH"].split(";"):
-        pip = os.path.join(path, "pip.exe")
-        if path.endswith(python_scripts) and os.path.isfile(pip):
-            pip_path = pip
-            break
+    # Find the pip script for Python.
+    python_scripts = os.path.join(sys.exec_prefix, "Scripts")
+    if sys.platform == "win32":
+        pip = os.path.join(python_scripts, "pip.exe")
+        return pip
+    if sys.platform == "linux" or "linux2":
+        pip = os.path.join(python_scripts, "pip")
+        return pip
 
 
 def install_type():
@@ -54,7 +53,7 @@ def internet_check(host="1.1.1.1", port=53, timeout=3):
 
 def dependency_check(command=None):
     # Check for updates pip packages castervoice/dragonfly2
-    com = [pip_path, "search", command]
+    com = [find_pip(), "search", command]
     startupinfo = None
     global update
     try:
@@ -132,7 +131,6 @@ class DependencyMan:
     # Initializes functions
     def initialize(self):
         install = install_type()
-        find_pip()
         if install is "classic":
             dep_min_version()
             dep_missing()
