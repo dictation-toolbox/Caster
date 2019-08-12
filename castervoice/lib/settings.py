@@ -52,7 +52,7 @@ def set_user_dir():
 
 def validate_user_dir():
     '''
-    Checks for existing Caster's user directory path. Returns existing path.
+    Checks for existing Caster's user directory path. Returns path.
     '''
     user_dir = os.path.join(os.path.expanduser("~"), ".caster")
     if os.path.exists(user_dir) is True:
