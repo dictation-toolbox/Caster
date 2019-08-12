@@ -31,7 +31,7 @@ class HistoryRule(SelfModifyingRule):
             for w in t:
                 formatted += w.split("\\")[0] + "[w]"
             formatted += "[s]"
-
+        formatted = formatted.encode("unicode_escape")
         # use a response window to get a spec and word sequences for the new macro
         h_launch.launch(settings.QTYPE_RECORDING, data=formatted)
         on_complete = AsynchronousAction.hmc_complete(
@@ -74,14 +74,11 @@ class HistoryRule(SelfModifyingRule):
                                      settings.SETTINGS["paths"]["RECORDED_MACROS_PATH"])
         mapping = {}
         for spec in recorded_macros:
-            # Create a copy of the string without Unicode characters.
-            ascii_str = str(spec)
             sequences = recorded_macros[spec]
             delay = settings.SETTINGS["miscellaneous"]["history_playback_delay_secs"]
-            # It appears that the associative string (ascii_str) must be ascii, but the sequences within Playback must be Unicode.
-            mapping[ascii_str] = R(
-                Playback([(sequence, delay) for sequence in sequences]),
-                rdescript="Recorded Macro: " + ascii_str)*Repeat(extra="n")
+            play = Playback([(sequence, delay) for sequence in sequences])
+            command = play * Repeat(extra="n") if spec.endswith("[times <n>]") else play
+            mapping[spec] = R(command, rdescript="Recorded Macro: " + spec)
         mapping["record from history"] = R(Function(self.record_from_history),
                                            rdescript="Record From History")
         mapping["delete recorded macros"] = R(Function(self.delete_recorded_macros),
