@@ -7,13 +7,12 @@ class RuleDetails(object):
     """
 
     def __init__(self, name=None, executable=None, title=None, grammar_name=None,
-                 enabled=True, ccrtype=None, rdp_mode_exclusion=False, transformer_exclusion=False):
+                 ccrtype=None, rdp_mode_exclusion=False, transformer_exclusion=False):
         """
         :param name: Dragonfly rule name
         :param executable: Dragonfly AppContext executable
         :param title: Dragonfly AppContext title
         :param grammar_name: Dragonfly grammar name
-        :param enabled: settings.py toggle
         :param ccrtype: global, app, selfmod, or none
         :param rdp_mode_exclusion: exclude from rdp mode
         :param transformer_exclusion: exclude from transformations
@@ -22,7 +21,6 @@ class RuleDetails(object):
         self.executable = executable
         self.title = title
         self.grammar_name = grammar_name
-        self.enabled = enabled  # TODO: handle this -- during the Initial Load setup?
         self.declared_ccrtype = ccrtype
         self.rdp_mode_exclusion = rdp_mode_exclusion
         self.transformer_exclusion = transformer_exclusion

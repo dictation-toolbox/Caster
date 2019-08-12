@@ -77,10 +77,6 @@ class GrammarManager(object):
             is_ccr = self._managed_rules[rcn].declared_ccrtype is not None
             if is_ccr and not self._ccr_toggle.is_active():
                 continue
-
-
-
-
             self._activate_rule(rcn, True)
 
         self._initial_activations_complete = True
