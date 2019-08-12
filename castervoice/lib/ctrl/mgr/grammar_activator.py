@@ -1,6 +1,8 @@
 from dragonfly import MappingRule, Function
 from dragonfly.grammar.grammar_base import Grammar
 
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+
 
 class GrammarActivator(object):
     """
@@ -10,7 +12,7 @@ class GrammarActivator(object):
 
     def __init__(self, merge_rule_checker_fn):
         self._class_name_to_trigger = {}
-        self._activation_grammar = None
+        self._activation_rule_class = None
         self._activation_fn = None
         self._merge_rule_checker_fn = merge_rule_checker_fn
 
@@ -47,22 +49,24 @@ class GrammarActivator(object):
 
     def construct_activation_rule(self):
         """
-        Construct new rule and grammar for activation.
+        Construct new rule and for activation.
         Should be called once only, after initial content loading.
         Rule reloading does not watch for new files, so no need to ever call this again.
         """
-        if self._activation_grammar is not None:
+        if self._activation_rule_class is not None:
             return
 
-        mapping = {}
+        _mapping = {}
         for class_name in self._class_name_to_trigger.keys():
             trigger = self._class_name_to_trigger[class_name]
-            mapping["enable " + trigger] = Function(lambda: self._activation_fn(class_name, True))
-            mapping["disable " + trigger] = Function(lambda: self._activation_fn(class_name, False))
-        rule = MappingRule(mapping, [], {})
-        grammar = Grammar("grammar_activator_grammar")
-        grammar.add_rule(rule)
+            _mapping["enable " + trigger] = Function(lambda: self._activation_fn(class_name, True))
+            _mapping["disable " + trigger] = Function(lambda: self._activation_fn(class_name, False))
 
-        '''set references and activate'''
-        self._activation_grammar = grammar
-        self._activation_grammar.enable()
+        class GrammarActivatorRule(MappingRule):
+            mapping = _mapping
+        self._activation_rule_class = GrammarActivatorRule
+
+        # name that should be pretty difficult to say by mistake:
+        details = RuleDetails(name="grammar manager grammar activator grammar")
+
+        return self._activation_rule_class, details
