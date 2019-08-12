@@ -9,11 +9,21 @@ A video demonstration [here](https://youtu.be/UISjQBMmQ-I). Note that this demon
 - Left click: `kick [<number>]`
     - Can use an optional `<number>` to double (_two_) or triple (_three_) click.
 - Right click: `psychic`
+- Hold down left mouse: `squat`
+- Release left mouse: `bench`
+- Hold down right mouse: `lean`
+- Release right mouse: `hoist`
+- Control left click: `colic`
+- Middle click: `kick mid`
+- Shift click: `shift click`
+- Shift right click: `shift right click`
 
 ### Moving
 
 - Move around: `curse <direction> [[E] <direction>] <distance_in_pixel>`  
     - `<direction>` can be _sauce_ (up), _dunce_ (down), _lease_ (left), or _ross_ (right).
+- Scroll mouse wheel: `scree <direction> [number_of_scrolls]`
+    - `<direction>` can be _sauce_ (up) or _dunce_ (down).
 
 **Examples**:
 
@@ -28,13 +38,16 @@ A video demonstration [here](https://youtu.be/UISjQBMmQ-I). Note that this demon
 
 **Description**:
 
-Approach the desired position by sequentially selecting tiles on the screen. Provided by Dragon Naturally Speaking.
+Approach the desired position by sequentially selecting tiles on the screen. Provided by Dragon Naturally Speaking and only available for the main monitor.
 
 **Usage**:
 
 - Invoke: `mousegrid`
 - Select tile: `<tile_number>`  
-    - `<tile_number>` is an integer from 1 to 9. This function is currently only supported by Dragon for a single monitor.
+    - `<tile_number>` is an integer from 1 to 9.
+- Click on left on screen: `left point`
+- Click on center on screen: `center point`
+- Click on right on screen: `right point`
 
 ### Douglas
 
