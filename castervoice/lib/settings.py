@@ -24,6 +24,9 @@ BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "lib",
 
 
 def set_user_dir():
+    '''
+    Sets Caster's user directory path. Returns "user_dir" with valid path for Home directory or AppData.
+    '''
     user_dir = 'empty_path'
     try:
         directory = os.path.expanduser("~")
@@ -32,7 +35,8 @@ def set_user_dir():
         else:
             if os.name == 'nt':
                 directory = os.path.expandvars(r'%APPDATA%')
-                if os.access(directory, os.W_OK) and os.access(directory, os.R_OK) is True:
+                if os.access(directory,
+                             os.W_OK) and os.access(directory, os.R_OK) is True:
                     user_dir = directory
     except IOError as e:
         if e.errno == errno.EACCES:
@@ -40,17 +44,33 @@ def set_user_dir():
                   errno.EACCES)
     finally:
         if os.path.exists(user_dir):
-            return user_dir
+            return os.path.normpath(os.path.join(user_dir, ".caster"))
         else:
             print("Caster could not find a valid user directory at: " + str(user_dir))
             raise NameError('UserPathException')
 
-print(set_user_dir())
 
-_USER_DIR = os.path.normpath(os.path.join(set_user_dir(), ".caster"))
+def validate_user_dir():
+    '''
+    Checks for existing Caster's user directory path. Returns existing path.
+    '''
+    user_dir = os.path.join(os.path.expanduser("~"), ".caster")
+    if os.path.exists(user_dir) is True:
+        return user_dir
+    if os.name == 'nt':
+        app_data = os.path.join(os.path.expandvars(r'%APPDATA%'), ".caster")
+        if os.path.exists(app_data) is True:
+            return app_data
+        else:
+            return set_user_dir()
+    else:
+        return set_user_dir()
+
+
+_USER_DIR = validate_user_dir()
 _SETTINGS_PATH = os.path.normpath(os.path.join(_USER_DIR, "data/settings.toml"))
 
-print("Caster user directory: " + _USER_DIR)
+print("Caster User Directory: " + _USER_DIR)
 
 for directory in ["data", "rules", "filters", "sikuli"]:
     d = _USER_DIR + "/" + directory
