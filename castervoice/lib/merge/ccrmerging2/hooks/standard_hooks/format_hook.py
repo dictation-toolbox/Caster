@@ -20,13 +20,13 @@ def _apply_format(rule_pronunciation):
         textformat.secondary_format.clear_text_format()
 
 
-class FormatHook(BaseHook):
-    """
-    Copying this into the .caster dir enables the global format hook.
-    """
+class FormattingHook(BaseHook):
 
     def __init__(self):
         super(EventType.ACTIVATION)
+
+    def get_pronunciation(self):
+        return "formatting"
 
     def run(self, event_content):
         pronunciation = event_content["pronunciation"]
@@ -34,4 +34,4 @@ class FormatHook(BaseHook):
 
 
 def get_hook():
-    return FormatHook()
+    return FormattingHook

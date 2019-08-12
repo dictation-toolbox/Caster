@@ -1,9 +1,10 @@
 from dragonfly import MappingRule, Pause, Function
 import re
 from castervoice.lib import printer
+from castervoice.lib.merge.ccrmerging2.pronounceable import Pronounceable
 
 
-class MergeRule(MappingRule):
+class MergeRule(MappingRule, Pronounceable):
     @staticmethod
     def _get_next_id():
         if not hasattr(MergeRule._get_next_id, "id"):

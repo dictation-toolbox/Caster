@@ -246,9 +246,10 @@ class GrammarManager(object):
         else. This should lead to much greater consistency, but also the
         ability to shut off core Caster mechanisms.
         """
-        rc, d = self._activator.construct_activation_rule()
-        self.register_rule(rc, d)
-        self._change_rule_active(rc.__name__, True)
+        for rc, d in [self._activator.construct_activation_rule(),
+                      self._hooks_runner.construct_activation_rule()]:
+            self.register_rule(rc, d)
+            self._change_rule_active(rc.__name__, True)
 
     def set_ccr_active(self, active):
         self._ccr_toggle.set_active(active)

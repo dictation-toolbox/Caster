@@ -54,7 +54,7 @@ class GrammarActivator(object):
         Rule reloading does not watch for new files, so no need to ever call this again.
         """
         if self._activation_rule_class is not None:
-            return
+            return None
 
         _mapping = {}
         for class_name in self._class_name_to_trigger.keys():
@@ -67,6 +67,6 @@ class GrammarActivator(object):
         self._activation_rule_class = GrammarActivatorRule
 
         # name that should be pretty difficult to say by mistake:
-        details = RuleDetails(name="grammar manager grammar activator grammar")
+        details = RuleDetails(name="grammar manager grammar activator rule")
 
         return self._activation_rule_class, details

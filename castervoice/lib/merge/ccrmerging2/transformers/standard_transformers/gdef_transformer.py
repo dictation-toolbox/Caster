@@ -227,8 +227,16 @@ if _DEFS is not None:
 
 
 class GlobalDefinitionsRuleTransformer(BaseRuleTransformer):
+
+    def get_pronunciation(self):
+        return "global definitions"
+
     def _transform(self, rule):
         return _spec_override_from_config(rule)
 
     def _is_applicable(self, rule):
         return True
+
+
+def get_transformer():
+    return GlobalDefinitionsRuleTransformer

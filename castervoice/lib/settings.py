@@ -197,6 +197,10 @@ _DEFAULT_SETTINGS = {
             _USER_DIR + "/data/sm_history.toml",
         "ACTIVATED_RULES_CONFIG_PATH":
             _USER_DIR + "/data/activated_rules.toml",
+        "ACTIVATED_TRANSFORMERS_CONFIG_PATH":
+            _USER_DIR + "/data/activated_transformers.toml",
+        "ACTIVATED_HOOKS_CONFIG_PATH":
+            _USER_DIR + "/data/activated_hooks.toml",
         "DLL_PATH":
             BASE_PATH + "/lib/dll/",
         "GDEF_FILE":

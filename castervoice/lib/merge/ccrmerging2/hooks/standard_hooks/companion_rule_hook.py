@@ -33,13 +33,13 @@ class CompanionConfig(TomlConfig):
 
 
 class CompanionRuleHook(BaseHook):
-    """
-    Copying this into the .caster dir enables companion rules.
-    """
 
     def __init__(self):
         super(EventType.ACTIVATION)
         self._companion_rules = CompanionConfig()
+
+    def get_pronunciation(self):
+        return "companion"
 
     def run(self, event):
         change = "enable" if event.active else "disable"
@@ -70,4 +70,4 @@ class CompanionRuleHook(BaseHook):
 
 
 def get_hook():
-    return CompanionRuleHook()
+    return CompanionRuleHook

@@ -3,7 +3,7 @@ import traceback
 from sys import modules as MODULES
 from sys import path
 
-from castervoice.lib import settings
+from castervoice.lib import settings, printer
 from castervoice.lib.ctrl.mgr.loading.load.content_type import ContentType
 from castervoice.lib.ctrl.mgr.loading.load.initial_content import FullContentSet
 
@@ -75,7 +75,11 @@ class ContentLoader(object):
             fn = getattr(module, fn_name)
         except AttributeError:
             msg = "No method named '{}' was found on '{}'. Did you forget to implement it?"
-            print(msg.format(fn_name, module_name))
+            printer.out(msg.format(fn_name, module_name))
+            return None
+        except:
+            msg = "Error loading module '{}'."
+            printer.out(msg.format(module_name))
             return None
 
         return fn()

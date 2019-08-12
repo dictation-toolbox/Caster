@@ -9,13 +9,15 @@ them are that:
 '''
 from castervoice.lib import utilities, printer
 from castervoice.lib.ctrl.mgr.errors.base_class_error import DontUseBaseClassError
+from castervoice.lib.merge.ccrmerging2.pronounceable import Pronounceable
 
 
-class BaseRuleTransformer(object):
+class BaseRuleTransformer(Pronounceable):
     """
     Authors of new transformers should override the following methods:
     _transform
     _is_applicable methods
+    get_pronunciation
     """
 
     def get_transformed_rule(self, rule):
