@@ -1,4 +1,5 @@
 from castervoice.lib.ctrl.grammar_container import GrammarContainer
+from castervoice.lib.ctrl.mgr.ccr_toggle import CCRToggle
 from castervoice.lib.ctrl.mgr.grammar_activator import GrammarActivator
 from castervoice.lib.ctrl.mgr.loading.load.content_loader import ContentLoader
 from castervoice.lib.ctrl.mgr.loading.reload.manual_reload_observable import ManualReloadObservable
@@ -109,7 +110,7 @@ class Nexus:
         """
 
         always_global_ccr_mode = settings.SETTINGS["miscellaneous"]["rdp_mode"]
-        ccr_on = settings.SETTINGS["miscellaneous"]["ccr_on"]
+        ccr_toggle = CCRToggle()
 
         ccr_rule_validator = CCRRuleValidationDelegator(
             IsMergeRuleValidator(),
@@ -135,7 +136,7 @@ class Nexus:
 
         gm = GrammarManager(rule_activation_config, merger, content_loader, ccr_rule_validator, details_validator,
                             observable, activator, mapping_rule_maker, grammars_container, hooks_runner,
-                            always_global_ccr_mode, ccr_on, smrc)
+                            always_global_ccr_mode, ccr_toggle, smrc)
 
         if some_setting:
             loadable = observable.get_loadable()
@@ -152,3 +153,6 @@ class Nexus:
         max_repetitions = settings.SETTINGS["miscellaneous"]["max_ccr_repetitions"]
 
         return CCRMerger2(transformers, sorter, compat_checker, merge_strategy, max_repetitions, smrc)
+
+    def set_ccr_active(self, active):
+        self._grammar_manager.set_ccr_active(active)

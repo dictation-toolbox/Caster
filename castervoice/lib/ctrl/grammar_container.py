@@ -27,6 +27,9 @@ class GrammarContainer(object):
             GrammarContainer._empty_grammar(ccr_grammar)
         self._ccr_grammars = ccr_grammars
 
+    def wipe_ccr(self):
+        self.set_ccr([])
+
     @staticmethod
     def _empty_grammar(grammar):
         # disable all of the grammar's rules

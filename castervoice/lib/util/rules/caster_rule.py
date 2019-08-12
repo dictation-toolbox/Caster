@@ -1,5 +1,6 @@
 from dragonfly import MappingRule, Function, RunCommand, Playback
 
+from castervoice.lib import control
 from castervoice.lib.ctrl.dependencies import pip_path, update
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.short import R
@@ -27,10 +28,10 @@ class CasterRule(MappingRule):
             R(_DependencyUpdate([pip_path, "install", "--upgrade", "dragonfly2"])),
 
         # ccr de/activation
-        "enable caster":
-            R(Function(_NEXUS.merger.merge, time=MergeInf.RUN, name="numbers")),
-        "disable caster":
-            R(Function(_NEXUS.merger.ccr_off)),
+        "enable c c r":
+            R(Function(lambda: control.nexus().set_ccr_active(True))),
+        "disable c c r":
+            R(Function(lambda: control.nexus().set_ccr_active(False))),
     }
 
 

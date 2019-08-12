@@ -10,7 +10,6 @@ from castervoice.lib.ctrl.mgr.managed_rule import ManagedRule
 from castervoice.lib.merge.ccrmerging2.hooks.events.activation_event import RuleActivationEvent
 
 
-
 class GrammarManager(object):
 
     def __init__(self, config,
@@ -24,7 +23,7 @@ class GrammarManager(object):
                  grammars_container,
                  hooks_runner,
                  always_global_ccr_mode,
-                 ccr_on,
+                 ccr_toggle,
                  smrc):
         """
         Holds both the current merged ccr rules and the most recently instantiated/validated
@@ -56,7 +55,7 @@ class GrammarManager(object):
         self._grammars_container = grammars_container
         self._hooks_runner = hooks_runner
         self._always_global_ccr_mode = always_global_ccr_mode
-        self._ccr_on = ccr_on
+        self._ccr_toggle = ccr_toggle
 
         # rules: (class name : ManagedRule}
         self._managed_rules = {}
@@ -75,6 +74,13 @@ class GrammarManager(object):
             return
 
         for rcn in self._config.get_active_rule_class_names():
+            is_ccr = self._managed_rules[rcn].declared_ccrtype is not None
+            if is_ccr and not self._ccr_toggle.is_active():
+                continue
+
+
+
+
             self._activate_rule(rcn, True)
 
         self._initial_activations_complete = True
@@ -142,9 +148,7 @@ class GrammarManager(object):
         managed_rule = self._managed_rules[class_name]
 
         ccrtype = managed_rule.details.declared_ccrtype
-        if not self._ccr_on:
-            ccrtype = None
-        elif self._always_global_ccr_mode and not managed_rule.details.rdp_mode_exclusion:
+        if self._always_global_ccr_mode and not managed_rule.details.rdp_mode_exclusion:
             ''' 
             This setting controls "RDP Mode". "RDP Mode" forces any rule 
             to load as a global ccr rule and ignore validation.
@@ -152,6 +156,9 @@ class GrammarManager(object):
             ccrtype = CCRType.GLOBAL
 
         if ccrtype is not None:
+            # if the global ccr toggle was off, activating a ccr rule turns it back on
+            self._ccr_toggle.set_active(True)
+
             # handle CCR: get all active ccr rules after de/activating one
             active_rule_class_names = self._config.get_active_rule_class_names()
             active_mrs = [self._managed_rules[rcn] for rcn in active_rule_class_names]
@@ -239,6 +246,13 @@ class GrammarManager(object):
 
     def load_activation_grammar(self):
         self._activator.construct_activation_rule()
+
+    def set_ccr_active(self, active):
+        self._ccr_toggle.set_active(active)
+        if not self._ccr_toggle.is_active():
+            self._grammars_container.wipe_ccr()
+        else:
+            self._change_rule_active("Numbers", True)
 
     @staticmethod
     def _get_module_name_from_file_path(file_path):
