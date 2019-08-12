@@ -11,6 +11,7 @@ from castervoice.lib import settings
 
 update = None
 
+
 def find_pip():
     # Find the pip script for Python.
     python_scripts = os.path.join(sys.exec_prefix, "Scripts")
