@@ -24,7 +24,8 @@ class GrammarManager(object):
                  hooks_runner,
                  always_global_ccr_mode,
                  ccr_toggle,
-                 smrc):
+                 smrc,
+                 t_runner):
         """
         Holds both the current merged ccr rules and the most recently instantiated/validated
         copies of all ccr and non-ccr rules.
@@ -43,6 +44,7 @@ class GrammarManager(object):
         :param hooks_runner: runs all hooks at different events
         :param always_global_ccr_mode: an option which forces every rule to be treated as a global ccr rule
         :param smrc: grants limited access to other parts of framework to selfmod rules- don't keep reference
+        :param t_runner: a reference is kept to it so can instantly activate its activation rule
         """
         self._config = config
         self._merger = merger
@@ -56,6 +58,7 @@ class GrammarManager(object):
         self._hooks_runner = hooks_runner
         self._always_global_ccr_mode = always_global_ccr_mode
         self._ccr_toggle = ccr_toggle
+        self._transformers_runner = t_runner
 
         # rules: (class name : ManagedRule}
         self._managed_rules = {}
@@ -240,14 +243,15 @@ class GrammarManager(object):
 
         return None
 
-    def load_activation_grammar(self):
+    def load_activation_grammars(self):
         """
         Caster core mechanisms should follow the same process as everything
         else. This should lead to much greater consistency, but also the
         ability to shut off core Caster mechanisms.
         """
         for rc, d in [self._activator.construct_activation_rule(),
-                      self._hooks_runner.construct_activation_rule()]:
+                      self._hooks_runner.construct_activation_rule(),
+                      self._transformers_runner.construct_activation_rule()]:
             self.register_rule(rc, d)
             self._change_rule_active(rc.__name__, True)
 

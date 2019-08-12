@@ -7,8 +7,11 @@ from castervoice.lib.ctrl.mgr.loading.reload.timer_reload_observable import Time
 from castervoice.lib.ctrl.mgr.rule_maker.mapping_rule_maker import MappingRuleMaker
 from castervoice.lib.ctrl.mgr.rules_config import RulesActivationConfig
 from castervoice.lib.merge.ccrmerging2.compatibility.detail_compat_checker import DetailCompatibilityChecker
+from castervoice.lib.merge.ccrmerging2.hooks.hooks_config import HooksConfig
 from castervoice.lib.merge.ccrmerging2.hooks.hooks_runner import HooksRunner
 from castervoice.lib.merge.ccrmerging2.sorting.config_ruleset_sorter import ConfigBasedRuleSetSorter
+from castervoice.lib.merge.ccrmerging2.transformers.transformers_config import TransformersConfig
+from castervoice.lib.merge.ccrmerging2.transformers.transformers_runner import TransformersRunner
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib import settings
 from castervoice.lib.ctrl.dependencies import DependencyMan
@@ -57,45 +60,50 @@ class Nexus:
         '''does post-instantiation configuration on selfmodrules'''
         smrc = SelfModRuleConfigurer()
 
+        '''hooks runner: receives and runs events, manages its hooks'''
+        hooks_config = HooksConfig()
+        hooks_runner = HooksRunner(hooks_config)
+        smrc.set_hooks_runner(hooks_runner)
+
+        '''does transformations on rules when rules are activated'''
+        transformers_config = TransformersConfig()
+        transformers_runner = TransformersRunner(transformers_config)
+
         '''the ccrmerger -- only merges MergeRules'''
-        self._merger = Nexus._create_merger(rule_activation_config.get_active_rules_order, smrc)
+        self._merger = Nexus._create_merger(rule_activation_config.get_active_rules_order, smrc,
+                                            transformers_runner)
 
         '''unified loading mechanism for [rules, transformers, hooks] 
         from [caster starter locations, user dir]'''
         self._content_loader = ContentLoader()
 
-        '''receives and runs events'''
-        hooks_runner = HooksRunner()
-        smrc.set_hooks_runner(hooks_runner)
-
         '''mapping rule maker: like the ccrmerger, but doesn't merge and isn't ccr'''
-        mapping_rule_maker = MappingRuleMaker(GlobalDefinitionsRuleTransformer(), smrc)
+        mapping_rule_maker = MappingRuleMaker(transformers_runner, smrc)
 
         '''the grammar manager -- probably needs to get broken apart more'''
         self._grammar_manager = Nexus._create_grammar_manager(self._merger,
-            self._content_loader, hooks_runner, rule_activation_config, smrc, mapping_rule_maker)
+            self._content_loader, hooks_runner, rule_activation_config, smrc, mapping_rule_maker,
+            transformers_runner)
 
         '''ACTION TIME:'''
-        self._load_and_register_all_content(hooks_runner, mapping_rule_maker)
+        self._load_and_register_all_content(hooks_runner, transformers_runner)
         self._grammar_manager.initialize()
 
-    def _load_and_register_all_content(self, hooks_runner, mapping_rule_maker):
+    def _load_and_register_all_content(self, hooks_runner, transformers_runner):
         """
         all rules go to grammar_manager
-        all transformers go to merger, mapping_rule_maker
+        all transformers go to transformers runner
         all hooks go to hooks runner
         """
         content = self.content_loader.load_everything()
         [self._grammar_manager.register_rule(rc, d) for rc, d in content.rules]
-        for transformer in content.transformers:
-            self._merger.add_transformer(transformer)
-            mapping_rule_maker.add_transformer(transformer)
+        [transformers_runner.add_transformer(t) for t in content.transformers]
         [hooks_runner.add_hook(h) for h in content.hooks]
-        self._grammar_manager.load_activation_grammar()
+        self._grammar_manager.load_activation_grammars()
 
     @staticmethod
     def _create_grammar_manager(merger, content_loader, hooks_runner, rule_activation_config, smrc,
-                                mapping_rule_maker):
+                                mapping_rule_maker, transformers_runner):
         """
         This is where settings should be used to alter the dependency injection being done.
         Setting things to alternate implementations can live here.
@@ -106,6 +114,7 @@ class Nexus:
         :param rule_activation_config
         :param smrc
         :param mapping_rule_maker
+        :param transformers_runner
         :return:
         """
 
@@ -136,7 +145,7 @@ class Nexus:
 
         gm = GrammarManager(rule_activation_config, merger, content_loader, ccr_rule_validator, details_validator,
                             observable, activator, mapping_rule_maker, grammars_container, hooks_runner,
-                            always_global_ccr_mode, ccr_toggle, smrc)
+                            always_global_ccr_mode, ccr_toggle, smrc, transformers_runner)
 
         if some_setting:
             loadable = observable.get_loadable()
@@ -145,14 +154,13 @@ class Nexus:
         return gm
 
     @staticmethod
-    def _create_merger(rules_order_fn, smrc):
-        transformers = [GlobalDefinitionsRuleTransformer()]
+    def _create_merger(rules_order_fn, smrc, transformers_runner):
         sorter = ConfigBasedRuleSetSorter(rules_order_fn)
         compat_checker = DetailCompatibilityChecker()
         merge_strategy = ClassicMergingStrategy()
         max_repetitions = settings.SETTINGS["miscellaneous"]["max_ccr_repetitions"]
 
-        return CCRMerger2(transformers, sorter, compat_checker, merge_strategy, max_repetitions, smrc)
+        return CCRMerger2(transformers_runner, sorter, compat_checker, merge_strategy, max_repetitions, smrc)
 
     def set_ccr_active(self, active):
         self._grammar_manager.set_ccr_active(active)

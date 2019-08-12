@@ -8,18 +8,14 @@ class MappingRuleMaker(BaseRuleMaker):
     object, then runs all transformers over it.
     """
 
-    def __init__(self, smr_configurer):
-        self._transformers = []
+    def __init__(self, t_runner, smr_configurer):
+        self._transformers_runner = t_runner
         self._smr_configurer = smr_configurer
-
-    def add_transformer(self, transformer):
-        self._transformers.append(transformer)
 
     def create_non_ccr_grammar(self, rule_class, details):
         rule_instance = rule_class(name=details.name)
         if not details.transformer_exclusion:
-            for transformer in self._transformers:
-                rule_instance = transformer.get_transformed_rule(rule_instance)
+            rule_instance = self._transformers_runner.transform_rule(rule_instance)
 
         self._smr_configurer.configure(rule_instance)
 

@@ -6,7 +6,7 @@ from castervoice.lib.context import AppContext
 
 class CCRMerger2(object):
 
-    def __init__(self, transformers, rule_sorter, compatibility_checker, merging_strategy, max_repetitions,
+    def __init__(self, transformers_runner, rule_sorter, compatibility_checker, merging_strategy, max_repetitions,
                  smr_configurer):
         """
         5-Step Merge Process
@@ -17,14 +17,14 @@ class CCRMerger2(object):
         4. Pass the transformed/sorted/checked rules to the merging strategy.
         5. Use the old trick from _multiedit.py to turn a MappingRule into a CCR rule.
         ====================
-        :param transformers: collection of Transformers
+        :param transformers_runner: runs Transformers on generated rules
         :param rule_sorter: BaseRuleSetSorter impl
         :param compatibility_checker: BaseCompatibilityChecker impl
         :param merging_strategy: BaseMergingStrategy impl
         :param max_repetitions
         :param smr_configurer
         """
-        self._transformers = transformers
+        self._transformers_runner = transformers_runner
         self._rule_sorter = rule_sorter
         self._compatibility_checker = compatibility_checker
         self._merging_strategy = merging_strategy
@@ -32,9 +32,6 @@ class CCRMerger2(object):
         self._sequence = 0
         self._max_repetitions = max_repetitions
         self._smr_configurer = smr_configurer
-
-    def add_transformer(self, transformer):
-        self._transformers.append(transformer)
 
     def merge(self, managed_rules):
         """
@@ -73,8 +70,7 @@ class CCRMerger2(object):
         for rule in instantiated_rules:
             has_exclusion = rcns_to_details[rule.get_rule_class_name()].transformer_exclusion
             if not has_exclusion:
-                for transformer in self._transformers:
-                    rule = transformer.get_transformed_rule(rule)
+                rule = self._transformers_runner.transform_rule(rule)
             transformed_rules.append(rule)
         return transformed_rules
 

@@ -2,16 +2,16 @@ from castervoice.lib import settings
 from castervoice.lib.config.config_toml import TomlConfig
 
 
-class HooksConfig(TomlConfig):
+class TransformersConfig(TomlConfig):
 
     def __init__(self):
-        super(self, settings.SETTINGS["paths"]["ACTIVATED_HOOKS_CONFIG_PATH"])
+        super(self, settings.SETTINGS["paths"]["ACTIVATED_TRANSFORMERS_CONFIG_PATH"])
         self.load()
 
-    def set_hook_active(self, hcn, active):
+    def set_transformer_active(self, hcn, active):
         self._config[hcn] = active
 
-    def is_hook_active(self, hcn):
+    def is_transformer_active(self, hcn):
         return self._config[hcn]
 
     def __contains__(self, hcn):

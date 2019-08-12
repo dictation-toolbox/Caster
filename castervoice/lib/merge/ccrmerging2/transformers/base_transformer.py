@@ -21,17 +21,13 @@ class BaseRuleTransformer(Pronounceable):
     """
 
     def get_transformed_rule(self, rule):
-        try:
-            if self._is_applicable(rule):
-                rule_copy = None
-                if hasattr(rule, "copy"):
-                    rule_copy = rule.copy()
-                else:
-                    rule_copy = utilities.copy_dragonfly_mapping_rule(rule)
-                return self._transform(rule_copy)
-        except:
-            err = "Error while running transformer {} with {} rule."
-            printer.out(err.format(self, rule))
+        if self._is_applicable(rule):
+            rule_copy = None
+            if hasattr(rule, "copy"):
+                rule_copy = rule.copy()
+            else:
+                rule_copy = utilities.copy_dragonfly_mapping_rule(rule)
+            return self._transform(rule_copy)
         return rule
 
     def _transform(self, rule):
@@ -39,3 +35,6 @@ class BaseRuleTransformer(Pronounceable):
 
     def _is_applicable(self, rule):
         raise DontUseBaseClassError(self)
+
+    def get_class_name(self):
+        return self.__class__.__name__
