@@ -11,7 +11,7 @@ import time
 import traceback
 from __builtin__ import True
 from subprocess import Popen
-import toml
+import tomlkit
 
 import win32gui
 import win32ui
@@ -104,7 +104,7 @@ def get_window_title_info():
 
 def save_toml_file(data, path):
     try:
-        formatted_data = unicode(toml.dumps(data))
+        formatted_data = unicode(tomlkit.dumps(data))
         with io.open(path, "wt", encoding="utf-8") as f:
             f.write(formatted_data)
     except Exception:
@@ -115,7 +115,7 @@ def load_toml_file(path):
     result = {}
     try:
         with io.open(path, "rt", encoding="utf-8") as f:
-            result = toml.loads(f.read())
+            result = tomlkit.loads(f.read())
     except IOError as e:
         if e.errno == 2:  # The file doesn't exist.
             save_toml_file(result, path)

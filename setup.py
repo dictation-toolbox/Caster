@@ -63,7 +63,7 @@ setuptools.setup(
         "dragonfly2>=0.14.1",
         "wxpython",
         "pillow",
-        "toml",
+        "tomlkit",
         "future",
         "mock",
     ],

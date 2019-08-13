@@ -7,7 +7,7 @@ import sys
 import traceback
 from __builtin__ import True
 from subprocess import Popen, PIPE
-import toml
+import tomlkit
 import time
 
 from castervoice.lib.actions import Key, Text
