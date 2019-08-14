@@ -3,7 +3,7 @@ import time
 from dragonfly import AppContext, Pause
 
 from castervoice.lib import utilities, settings
-from castervoice.lib.actions import Key 
+from castervoice.lib.actions import Key
 from castervoice.lib.clipboard import Clipboard
 
 # Override dragonfly.AppContext with aenea.ProxyAppContext if the 'use_aenea'
@@ -110,27 +110,33 @@ def read_selected_without_altering_clipboard(same_is_okay=False, pause_time="0")
     (1, None) - indicates no change
     (2, None) - indicates clipboard error
     '''
-    
+
     time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/
                1000.)  # time for previous keypress to execute
     cb = Clipboard(from_system=True)
     temporary = None
     prior_content = None
-    try:
+    max_tries = 20
 
-        prior_content = Clipboard.get_system_text()
-        Clipboard.set_system_text("")
-
-        Key("c-c").execute()
-        Pause(pause_time).execute()
-        time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/
-                   1000.)  # time for keypress to execute
-        temporary = Clipboard.get_system_text()
-        cb.copy_to_system()
-
-    except Exception:
-        utilities.simple_log(False)
-        return 2, None
+    for i in range(0, max_tries):
+        failure = False
+        try:
+            prior_content = Clipboard.get_system_text()
+            Clipboard.set_system_text("")
+            Key("c-c").execute()
+            Pause(pause_time).execute()
+            time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/
+                       1000.)  # time for keypress to execute
+            temporary = Clipboard.get_system_text()
+            cb.copy_to_system()
+        except Exception:
+            print("Clipboard Read Attempts " + str(i))  # Debugging
+            failure = True
+            utilities.simple_log(False)
+            if i is max_tries:
+                return 2, None
+        if not failure:
+            break
     if prior_content == temporary and not same_is_okay:
         return 1, None
     return 0, temporary
@@ -144,18 +150,25 @@ def paste_string_without_altering_clipboard(content, pause_time="1"):
     time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/
                1000.)  # time for previous keypress to execute
     cb = Clipboard(from_system=True)
+    max_tries = 20
 
-    try:
-        Clipboard.set_system_text(unicode(content))
-        Pause(pause_time).execute()
-        Key("c-v").execute()
-        time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/
-                   1000.)  # time for keypress to execute
-        cb.copy_to_system()
-
-    except Exception:
-        utilities.simple_log(False)
-        return False
+    for i in range(0, max_tries):
+        failure = False
+        try:
+            Clipboard.set_system_text(unicode(content))
+            Pause(pause_time).execute()
+            Key("c-v").execute()
+            time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/
+                       1000.)  # time for keypress to execute
+            cb.copy_to_system()
+        except Exception:
+            print("Clipboard Write Attempts " + str(i))  # Debugging
+            failure = True
+            utilities.simple_log(False)
+            if i is max_tries:
+                return False
+        if not failure:
+            break
     return True
 
 
