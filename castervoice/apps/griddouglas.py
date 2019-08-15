@@ -70,7 +70,7 @@ class DouglasGridRule(MergeRule):
             R(Function(store_first_point)),
         "bench":
             R(Function(select_text, nexus=_NEXUS)),
-        "exit | escape | cancel":
+        SymbolSpecs.CANCEL:
             R(Function(kill, nexus=_NEXUS)),
     }
     extras = [

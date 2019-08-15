@@ -69,7 +69,7 @@ class LegionGridRule(MergeRule):
             R(Function(send_input, nexus=_NEXUS)),
         "refresh":
             R(Function(navigation.mouse_alternates, mode="legion", nexus=_NEXUS)),
-        "exit | escape | cancel":
+        SymbolSpecs.CANCEL:
             R(Function(kill, nexus=_NEXUS)),
         "<n1> (select | light) <n2>":
             R(Function(drag_highlight, nexus=_NEXUS)),
