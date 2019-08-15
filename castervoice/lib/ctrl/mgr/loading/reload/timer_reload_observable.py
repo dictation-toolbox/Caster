@@ -1,6 +1,6 @@
 from dragonfly import get_engine
 
-from castervoice.lib.ctrl.mgr.loading.base_reload_observable import BaseReloadObservable
+from castervoice.lib.ctrl.mgr.loading.reload.base_reload_observable import BaseReloadObservable
 
 
 class TimerReloadObservable(BaseReloadObservable):

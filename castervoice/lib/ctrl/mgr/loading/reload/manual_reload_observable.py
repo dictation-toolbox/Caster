@@ -1,5 +1,6 @@
 from dragonfly import Function, MappingRule
-from castervoice.lib.ctrl.mgr.loading.base_reload_observable import BaseReloadObservable
+
+from castervoice.lib.ctrl.mgr.loading.reload.base_reload_observable import BaseReloadObservable
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 
 

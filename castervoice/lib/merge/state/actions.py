@@ -3,7 +3,6 @@ from dragonfly import ActionBase
 from castervoice.lib import control
 from castervoice.lib.merge.state.stackitems import StackItemRegisteredAction, \
     StackItemSeeker, StackItemAsynchronous
-_NEXUS = control.nexus()
 
 
 class RegisteredAction(ActionBase):
@@ -33,7 +32,7 @@ class RegisteredAction(ActionBase):
         self._nexus = nexus
 
     def nexus(self):
-        return self._nexus or _NEXUS
+        return self._nexus or control.nexus()
 
 
 class ContextSeeker(RegisteredAction):
@@ -102,7 +101,7 @@ class AsynchronousAction(ContextSeeker):
         def check_complete():
             data = None
             try:
-                data = _NEXUS.comm.get_com("hmc").get_message()
+                data = control.nexus().comm.get_com("hmc").get_message()
                 if data is None:
                     return False
             except Exception:

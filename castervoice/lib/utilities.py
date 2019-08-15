@@ -14,7 +14,6 @@ from subprocess import Popen
 import toml
 
 import win32gui
-import win32ui
 import win32clipboard
 
 from castervoice.lib.clipboard import Clipboard
@@ -66,6 +65,7 @@ def close_all_workspaces():
 
 def window_exists(classname, windowname):
     try:
+        import win32ui
         win32ui.FindWindow(classname, windowname)
     except win32ui.error:
         return False

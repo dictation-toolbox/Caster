@@ -6,7 +6,6 @@ Created on Oct 7, 2015
 
 import os, socket, time, pkg_resources, subprocess
 from pkg_resources import VersionConflict, DistributionNotFound
-from subprocess import Popen
 from castervoice.lib import settings
 
 pip_path = None
