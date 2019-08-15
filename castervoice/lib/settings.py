@@ -153,7 +153,7 @@ def _validate_engine_path():
         return ''
     if os.path.isfile(_SETTINGS_PATH):
         with io.open(_SETTINGS_PATH, "rt", encoding="utf-8") as toml_file:
-            data = tomlkit.loads(toml_file.read())
+            data = tomlkit.loads(toml_file.read()).value
             engine_path = data["paths"]["ENGINE_PATH"]
             if os.path.isfile(engine_path):
                 return engine_path
@@ -429,7 +429,7 @@ def _init(path):
     result = {}
     try:
         with io.open(path, "rt", encoding="utf-8") as f:
-            result = tomlkit.loads(f.read())
+            result = tomlkit.loads(f.read()).value
     except ValueError as e:
         print("\n\n" + repr(e) + " while loading settings file: " + path + "\n\n")
         print(sys.exc_info())
@@ -445,7 +445,7 @@ def _init(path):
         new_path = old_clipboard[:-4] + "json"
         print("\n\n Migrating clipboard from {} to {}".format(old_clipboard, new_path))
         with io.open(old_clipboard, "rt", encoding="utf-8") as f:
-            clipboard = tomlkit.loads(f.read())
+            clipboard = tomlkit.loads(f.read()).value
         formatted_data = unicode(json.dumps(clipboard, ensure_ascii=False))
         with io.open(new_path, "wt", encoding="utf-8") as f:
             f.write(formatted_data)

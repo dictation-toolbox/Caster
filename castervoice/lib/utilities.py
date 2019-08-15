@@ -115,7 +115,7 @@ def load_toml_file(path):
     result = {}
     try:
         with io.open(path, "rt", encoding="utf-8") as f:
-            result = tomlkit.loads(f.read())
+            result = tomlkit.loads(f.read()).value
     except IOError as e:
         if e.errno == 2:  # The file doesn't exist.
             save_toml_file(result, path)
