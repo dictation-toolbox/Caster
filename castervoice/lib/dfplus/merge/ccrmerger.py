@@ -421,7 +421,7 @@ class CCRMerger(object):
         ORIGINAL, SEQ, TERMINAL = "original", "caster_base_sequence", "terminal"
         alts = [RuleRef(rule=rule)]  #+[RuleRef(rule=sm) for sm in selfmod]
         single_action = Alternative(alts)
-        max = settings.SETTINGS["miscellaneous"]["max_ccr_repetitions"]
+        max = int(settings.SETTINGS["miscellaneous"]["max_ccr_repetitions"])
         sequence = Repetition(single_action, min=1, max=max, name=SEQ)
         original = Alternative(alts, name=ORIGINAL)
         terminal = Alternative(alts, name=TERMINAL)
