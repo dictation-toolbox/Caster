@@ -1,7 +1,8 @@
+import os.path as path
 from castervoice.lib.imports import *
 from castervoice.apps.gitbash import terminal_context
 from castervoice.apps.file_dialogue import dialogue_context
-
+from castervoice.lib import settings
 
 class BringRule(SelfModifyingRule):
     pronunciation = "bring me"
@@ -154,6 +155,10 @@ class BringRule(SelfModifyingRule):
         if not startup:
             self.refresh()
 
+
+    userdir = settings.SETTINGS["paths"]["USER_DIR"] # Caster User Directory
+    osuserdir = path.expanduser("~") # OS User directory
+    
     bm_defaults = {
         "website": {
             "caster documentation": "https://caster.readthedocs.io/en/latest/",
@@ -164,26 +169,26 @@ class BringRule(SelfModifyingRule):
             "google": "https://www.google.com",
         },
         "folder": {
-            "libraries": "%USERPROFILE%",
-            "my pictures": "%USERPROFILE%\\Pictures",
-            "my documents": "%USERPROFILE%\\Documents",
-            "caster user": "%USERPROFILE%\\.caster",
-            "caster filters": "%USERPROFILE%\\.caster\\filters",
-            "caster rules": "%USERPROFILE%\\.caster\\rules",
-            "caster data": "%USERPROFILE%\\.caster\\data",
-            "sick you lee": "%USERPROFILE%\\.caster\\sikuli",
+            "libraries": path.expanduser("~"),
+            "my pictures": path.join(osuserdir, "Pictures"),
+            "my documents": path.join(osuserdir, "Documents"),
+            "caster user":  userdir,
+            "caster filters": path.join(userdir, "filters"),
+            "caster rules":  path.join(userdir, "rules"),
+            "caster data":  path.join(userdir, "data"),
+            "sick you lee":  path.join(userdir, "sikuli"),
         },
         "program": {
             "notepad": "C:\\Windows\\notepad.exe",
         },
         "file": {
-            "caster settings": "%USERPROFILE%\\.caster\\data\\settings.toml",
-            "caster alias": "%USERPROFILE%\\.caster\\data\\aliases.toml",
-            "caster bring me": "%USERPROFILE%\\.caster\\data\\bringme.toml",
-            "caster ccr": "%USERPROFILE%\\.caster\\data\\ccr.toml",
-            "caster config debug": "%USERPROFILE%\\.caster\\data\\configdebug.txt",
-            "caster words": "%USERPROFILE%\\.caster\\filter\\words.txt",
-            "caster log": "%USERPROFILE%\\.caster\\data\\log.txt",
+            "caster settings":  path.normpath(path.join(userdir, "data\\settings.toml")),
+            "caster alias":  path.normpath(path.join(userdir, "data\\aliases.toml")),
+            "caster bring me":  path.normpath(path.join(userdir, "data\\bringme.toml")),
+            "caster ccr":  path.normpath(path.join(userdir, "data\\ccr.toml")),
+            "caster config debug":  path.normpath(path.join(userdir, "data\\configdebug.txt")),
+            "caster words":  path.normpath(path.join(userdir, "filter\\words.txt")),
+            "caster log":  path.normpath(path.join(userdir, "data\\log.txt")),
         }
     }
 
