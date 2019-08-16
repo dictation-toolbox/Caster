@@ -112,7 +112,7 @@ class SettingsFrame(Frame):
                 elif field.text_type == INTEGER_SETTING:
                     d[field.original] = int(value)
                 else:
-                    d[field.original] = value.replace("\\", "/")
+                    d[field.original] = os.path.normpath(value)
             elif isinstance(field.wx_field, (Panel, ScrolledPanel)):
                 d[field.original] = self.tree_to_dictionary(field)
             elif isinstance(field.wx_field, CheckBox):

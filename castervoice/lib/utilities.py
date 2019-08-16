@@ -88,7 +88,7 @@ def get_window_title_info():
     will be needed to look up collection of symbols
     in scanner data'''
     global FILENAME_PATTERN
-    title = get_active_window_title().replace("\\", "/")
+    title = os.path.normpath(get_active_window_title())
     match_object = FILENAME_PATTERN.findall(title)
     filename = None
     if len(match_object) > 0:

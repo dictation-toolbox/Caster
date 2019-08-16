@@ -19,8 +19,8 @@ Thank you for using Caster!
 """
 
 SETTINGS = {}
-BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "lib",
-                                              1)[0].replace("\\", "/")
+BASE_PATH = os.path.normpath(os.path.realpath(__file__).rsplit(os.path.sep + "lib",
+                                              1)[0])
 
 
 def set_user_dir():
