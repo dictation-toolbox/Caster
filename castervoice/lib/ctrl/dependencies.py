@@ -18,7 +18,7 @@ def find_pip():
     if sys.platform == "win32":
         pip = os.path.join(python_scripts, "pip.exe")
         return pip
-    if sys.platform == "linux" or "linux2":
+    if sys.platform.startswith("linux"):
         pip = os.path.join(python_scripts, "pip")
         return pip
 
