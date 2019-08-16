@@ -4,6 +4,7 @@ from castervoice.apps.gitbash import terminal_context
 from castervoice.apps.file_dialogue import dialogue_context
 from castervoice.lib import settings
 
+
 class BringRule(SelfModifyingRule):
     pronunciation = "bring me"
 
@@ -83,10 +84,10 @@ class BringRule(SelfModifyingRule):
                 print("Program path for bring me not found ")
         elif launch == 'file':
             files = utilities.get_selected_files(folders=False)
-            path = files[0] if files else None # or allow adding multiple files
+            path = files[0] if files else None  # or allow adding multiple files
         elif launch == 'folder':
             files = utilities.get_selected_files(folders=True)
-            path = files[0] if files else None # or allow adding multiple folders
+            path = files[0] if files else None  # or allow adding multiple folders
         else:
             Key("a-d/5").execute()
             fail, path = context.read_selected_without_altering_clipboard()
@@ -155,10 +156,9 @@ class BringRule(SelfModifyingRule):
         if not startup:
             self.refresh()
 
+    userdir = settings.SETTINGS["paths"]["USER_DIR"]  # Caster User Directory
+    osuserdir = path.expanduser("~")  # OS User directory
 
-    userdir = settings.SETTINGS["paths"]["USER_DIR"] # Caster User Directory
-    osuserdir = path.expanduser("~") # OS User directory
-    
     bm_defaults = {
         "website": {
             "caster documentation": "https://caster.readthedocs.io/en/latest/",
@@ -172,25 +172,24 @@ class BringRule(SelfModifyingRule):
             "libraries": path.expanduser("~"),
             "my pictures": path.join(osuserdir, "Pictures"),
             "my documents": path.join(osuserdir, "Documents"),
-            "caster user":  userdir,
+            "caster user": userdir,
             "caster filters": path.join(userdir, "filters"),
-            "caster rules":  path.join(userdir, "rules"),
-            "caster data":  path.join(userdir, "data"),
-            "sick you lee":  path.join(userdir, "sikuli"),
+            "caster rules": path.join(userdir, "rules"),
+            "caster data": path.join(userdir, "data"),
+            "sick you lee": path.join(userdir, "sikuli"),
         },
         "program": {
             "notepad": "C:\\Windows\\notepad.exe",
         },
         "file": {
-            "caster settings":  path.normpath(path.join(userdir, "data\\settings.toml")),
-            "caster alias":  path.normpath(path.join(userdir, "data\\aliases.toml")),
-            "caster bring me":  path.normpath(path.join(userdir, "data\\bringme.toml")),
+            "caster settings": path.normpath(path.join(userdir, "data\\settings.toml")),
+            "caster alias": path.normpath(path.join(userdir, "data\\aliases.toml")),
+            "caster bring me": path.normpath(path.join(userdir, "data\\bringme.toml")),
             "caster ccr":  path.normpath(path.join(userdir, "data\\ccr.toml")),
-            "caster config debug":  path.normpath(path.join(userdir, "data\\configdebug.txt")),
-            "caster words":  path.normpath(path.join(userdir, "filter\\words.txt")),
-            "caster log":  path.normpath(path.join(userdir, "data\\log.txt")),
+            "caster config debug": path.normpath(path.join(userdir, "data\\configdebug.txt")),
+            "caster words": path.normpath(path.join(userdir, "filter\\words.txt")),
+            "caster log": path.normpath(path.join(userdir, "data\\log.txt")),
         }
     }
-
 
 control.non_ccr_app_rule(BringRule(), context=None, rdp=False, filter=True)
