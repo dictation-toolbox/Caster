@@ -64,7 +64,7 @@ class BringRule(SelfModifyingRule):
                 (self.explorer_context, Key("c-l/5") + Text("%s\n" % folder))
             ]).execute()
         elif app == "terminal":
-            Popen([self.terminal_path, "--cd=" + folder.replace("\\", "/")])
+            Popen([self.terminal_path, "--cd=" + os.path.normpath(folder)])
         elif app == "explorer":
             Popen([self.explorer_path, folder])
 
