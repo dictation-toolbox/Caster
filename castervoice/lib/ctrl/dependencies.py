@@ -4,7 +4,13 @@ Created on Oct 7, 2015
 @author: synkarius
 '''
 
-import os, sys, socket, time, pkg_resources, subprocess
+try:
+    import mock
+except ImportError:
+    from unittest import mock
+
+import os, sys, socket, time, pkg_resources, subprocess, inspect
+import setuptools
 from pkg_resources import VersionConflict, DistributionNotFound
 from subprocess import Popen
 from castervoice.lib import settings
@@ -86,11 +92,13 @@ def dependency_check(command=None):
 
 
 def dep_missing():
-    # For classic: Checks for missing dependencies parsing requirements.txt
-    base = os.path.normpath(settings.SETTINGS["paths"]["BASE_PATH"] + os.sep + os.pardir)
-    requirements = os.path.join(base, "requirements.txt")
-    with open(requirements) as f:
-        requirements = f.read().splitlines()
+    with mock.patch.object(setuptools, 'setup') as mock_setup:
+        import setup  # This is setup.py which calls setuptools.setup
+
+    # called arguments are in `mock_setup.call_args`
+    args, kwargs = mock_setup.call_args
+    requirements = kwargs.get('install_requires', [])
+    
     for dep in requirements:
         try:
             pkg_resources.require("{}".format(dep))
@@ -98,7 +106,6 @@ def dep_missing():
             pass
         except DistributionNotFound as e:
             print("\n Caster: A Dependency is missing 'pip install {0}'".format(e.req))
-            time.sleep(15)
 
 
 def dep_min_version():
