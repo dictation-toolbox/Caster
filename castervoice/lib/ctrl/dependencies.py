@@ -42,12 +42,18 @@ def internet_check(host="1.1.1.1", port=53, timeout=3):
     :param timeout: An integer
     :return: True or False
     """
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
-        socket.setdefaulttimeout(timeout)
-        socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))
+        s.settimeout(timeout)
+        s.connect((host, port))
         return True
-    except Exception as error:
-        print(error.message)
+    except socket.error as e:
+        if e.errno == 11001:
+            print ("Caster: Internet check failed to resolve CloudFire DNS")
+        if e.errno == 10051: # Unreachable Network
+            pass
+        if e.errno not in (10051, 11001): # Unknown Error
+            print (e.errno)
         return False
 
 
