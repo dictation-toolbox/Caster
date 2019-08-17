@@ -106,6 +106,7 @@ def dep_missing():
             pass
         except DistributionNotFound as e:
             print("\n Caster: A Dependency is missing 'pip install {0}'".format(e.req))
+            time.sleep(15)
 
 
 def dep_min_version():
