@@ -161,9 +161,9 @@ class DependencyMan:
             dep_missing()
         if online_mode() == True:
             if internet_check() == True:
+                dependency_check(command="dragonfly2")
                 if install is "pip":
                     dependency_check(command="castervoice")
-                dependency_check(command="dragonfly2")
             else:
                 print("\nCaster: Network off-line check network connection\n")
         else:
