@@ -11,7 +11,6 @@ logging.basicConfig()
 import time, socket, os
 from dragonfly import (get_engine, Function, Grammar, Playback, Dictation, Choice, Pause,
                        RunCommand)
-from castervoice.lib.ccr.standard import SymbolSpecs
 
 _NEXUS = None
 from castervoice.lib import settings  # requires nothing
@@ -19,6 +18,7 @@ if settings.SYSTEM_INFORMATION["platform"] != "win32":
     raise SystemError("Your platform is not currently supported by Caster.")
 settings.WSR = __name__ == "__main__"
 from castervoice.lib import utilities  # requires settings
+from castervoice.lib.ccr.standard import SymbolSpecs
 if settings.WSR:
     SymbolSpecs.set_cancel_word("escape")
 from castervoice.lib import control
@@ -68,7 +68,9 @@ def change_monitor():
     else:
         print("This command requires SikuliX to be enabled in the settings file")
 
+
 pip = find_pip()
+
 
 class MainRule(MergeRule):
     @staticmethod
@@ -84,7 +86,6 @@ class MainRule(MergeRule):
         for ccr_choice in nexus.merger.selfmod_rule_names():
             choices[ccr_choice] = ccr_choice
         return Choice("name2", choices)
-
 
     mapping = {
         # update management
