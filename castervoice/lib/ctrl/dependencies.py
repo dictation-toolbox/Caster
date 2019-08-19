@@ -13,7 +13,6 @@ import os, sys, socket, time, pkg_resources, subprocess, inspect
 import setuptools
 from pkg_resources import VersionConflict, DistributionNotFound
 from subprocess import Popen
-from castervoice.lib import settings
 
 update = None
 
@@ -55,11 +54,11 @@ def internet_check(host="1.1.1.1", port=53, timeout=3):
         return True
     except socket.error as e:
         if e.errno == 11001:
-            print ("Caster: Internet check failed to resolve CloudFire DNS")
-        if e.errno == 10051: # Unreachable Network
+            print("Caster: Internet check failed to resolve CloudFire DNS")
+        if e.errno == 10051:  # Unreachable Network
             pass
-        if e.errno not in (10051, 11001): # Unknown Error
-            print (e.errno)
+        if e.errno not in (10051, 11001):  # Unknown Error
+            print(e.errno)
         return False
 
 
@@ -98,7 +97,7 @@ def dep_missing():
     # called arguments are in `mock_setup.call_args`
     args, kwargs = mock_setup.call_args
     requirements = kwargs.get('install_requires', [])
-    
+
     for dep in requirements:
         try:
             pkg_resources.require("{}".format(dep))
@@ -141,6 +140,17 @@ def dep_min_version():
             .format(pippackages))
 
 
+def online_mode():
+    try:
+        from castervoice.lib import settings
+        if settings.SETTINGS["miscellaneous"]["online_mode"] is True:
+            return True
+        else:
+            return False
+    except ImportError:
+        return True
+
+
 class DependencyMan:
     # Initializes functions
     def initialize(self):
@@ -148,8 +158,8 @@ class DependencyMan:
         if install is "classic":
             dep_min_version()
             dep_missing()
-        if settings.SETTINGS["miscellaneous"]["online_mode"]:
-            if internet_check():
+        if online_mode() == True:
+            if internet_check() == True:
                 if install is "pip":
                     dependency_check(command="castervoice")
                 dependency_check(command="dragonfly2")
