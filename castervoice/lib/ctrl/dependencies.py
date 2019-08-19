@@ -141,6 +141,7 @@ def dep_min_version():
 
 
 def online_mode():
+    # Tries to import settings on failure online_mode is true
     try:
         from castervoice.lib import settings
         if settings.SETTINGS["miscellaneous"]["online_mode"] is True:
