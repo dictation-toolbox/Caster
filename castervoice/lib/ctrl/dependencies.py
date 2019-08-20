@@ -92,14 +92,12 @@ def dependency_check(command=None):
 
 def dep_missing():
     # Checks for missing dependencies with the classic install
-    with mock.patch.object(setuptools, 'setup') as mock_setup:
-        import setup  # This is setup.py which calls setuptools.setup
-
-    # called arguments are in `mock_setup.call_args`
-    args, kwargs = mock_setup.call_args
-    requirements = kwargs.get('install_requires', [])
-
+    uppath = lambda _path, n: os.sep.join(_path.split(os.sep)[:-n])
+    requirements = os.path.join(uppath(__file__, 4), "requirements.txt")
+    with open(requirements) as f:
+        requirements = f.read().splitlines()
     for dep in requirements:
+        dep = dep.split("==", 1)[0]
         try:
             pkg_resources.require("{}".format(dep))
         except VersionConflict:
