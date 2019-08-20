@@ -6,13 +6,11 @@ from subprocess import Popen
 
 from dragonfly import AppContext, Function, Choice, Dictation, Key, ContextAction
 
-from castervoice.lib import settings, utilities, context
+from castervoice.lib import settings, utilities, context, contexts
 from castervoice.lib.actions import Text
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.selfmod.selfmodrule import BaseSelfModifyingRule
-from castervoice.apps.gitbash import terminal_context
-from castervoice.apps.file_dialogue import dialogue_context
 from castervoice.lib.merge.state.short import R
 
 
@@ -29,8 +27,8 @@ class BringRule(BaseSelfModifyingRule):
 
     # Contexts
     _browser_context = AppContext(["chrome", "firefox"])
-    _explorer_context = AppContext("explorer.exe") | dialogue_context
-    _terminal_context = terminal_context
+    _explorer_context = AppContext("explorer.exe") | contexts.DIALOGUE_CONTEXT
+    _terminal_context = contexts.TERMINAL_CONTEXT
     # Paths
     _terminal_path = settings.SETTINGS["paths"]["TERMINAL_PATH"]
     _explorer_path = "C:\\Windows\\explorer.exe"

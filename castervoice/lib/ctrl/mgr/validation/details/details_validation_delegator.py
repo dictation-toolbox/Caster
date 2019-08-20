@@ -1,6 +1,6 @@
 class DetailsValidationDelegator(object):
 
-    def __init__(self, validator_delegates):
+    def __init__(self, *validator_delegates):
         self._validator_delegates = validator_delegates
 
     def validate_details(self, details):

@@ -1,3 +1,6 @@
+from castervoice.lib.ctrl.mgr.errors.base_class_error import DontUseBaseClassError
+
+
 class BaseDetailsValidator(object):
 
     def validate(self, details):
@@ -12,4 +15,4 @@ class BaseDetailsValidator(object):
         :param details: RuleDetails
         :return: str
         """
-        return None
+        raise DontUseBaseClassError(self)

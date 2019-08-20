@@ -2,6 +2,7 @@ from castervoice.lib.ctrl.grammar_container import GrammarContainer
 from castervoice.lib.ctrl.mgr.ccr_toggle import CCRToggle
 from castervoice.lib.ctrl.mgr.grammar_activator import GrammarActivator
 from castervoice.lib.ctrl.mgr.loading.load.content_loader import ContentLoader
+from castervoice.lib.ctrl.mgr.loading.load.content_request_generator import ContentRequestGenerator
 from castervoice.lib.ctrl.mgr.loading.reload.manual_reload_observable import ManualReloadObservable
 from castervoice.lib.ctrl.mgr.loading.reload.timer_reload_observable import TimerReloadObservable
 from castervoice.lib.ctrl.mgr.rule_maker.mapping_rule_maker import MappingRuleMaker
@@ -23,10 +24,7 @@ from castervoice.lib.ctrl.mgr.validation.rules.context_validator import HasConte
 from castervoice.lib.ctrl.mgr.validation.rules.mergerule_validator import IsMergeRuleValidator
 from castervoice.lib.ctrl.mgr.validation.rules.no_context_validator import HasNoContextValidator
 from castervoice.lib.ctrl.mgr.validation.rules.not_noderule_validator import NotNodeRuleValidator
-from castervoice.lib.ctrl.mgr.validation.rules.pronunciation_validator import PronunciationAvailableValidator
 from castervoice.lib.ctrl.mgr.validation.rules.selfmod_validator import SelfModifyingRuleValidator
-from castervoice.lib.merge.ccrmerging2.transformers.standard_transformers.gdef_transformer \
-    import GlobalDefinitionsRuleTransformer
 from castervoice.lib.merge.communication import Communicator
 from castervoice.lib.merge.selfmod.smr_configurer import SelfModRuleConfigurer
 from castervoice.lib.merge.state.stack import CasterState
@@ -75,7 +73,8 @@ class Nexus:
 
         '''unified loading mechanism for [rules, transformers, hooks] 
         from [caster starter locations, user dir]'''
-        self._content_loader = ContentLoader()
+        crg = ContentRequestGenerator()
+        self._content_loader = ContentLoader(crg)
 
         '''mapping rule maker: like the ccrmerger, but doesn't merge and isn't ccr'''
         mapping_rule_maker = MappingRuleMaker(transformers_runner, smrc)
@@ -95,7 +94,7 @@ class Nexus:
         all transformers go to transformers runner
         all hooks go to hooks runner
         """
-        content = self.content_loader.load_everything()
+        content = self._content_loader.load_everything()
         [self._grammar_manager.register_rule(rc, d) for rc, d in content.rules]
         [transformers_runner.add_transformer(t) for t in content.transformers]
         [hooks_runner.add_hook(h) for h in content.hooks]
@@ -126,8 +125,7 @@ class Nexus:
             HasNoContextValidator(),
             HasContextValidator(),
             SelfModifyingRuleValidator(),
-            NotNodeRuleValidator(),
-            PronunciationAvailableValidator()
+            NotNodeRuleValidator()
         )
         details_validator = DetailsValidationDelegator(
             CCRDetailsValidator(),
@@ -136,9 +134,8 @@ class Nexus:
         )
 
         activator = GrammarActivator(lambda rule: isinstance(rule, MergeRule))
-        some_setting = True
-        observable = TimerReloadObservable()
-        if settings.SETTINGS["reload_trigger"]["timer"] == "manual":
+        observable = TimerReloadObservable(5)
+        if settings.SETTINGS["miscellaneous"]["reload_trigger"] == "manual":
             observable = ManualReloadObservable()
 
         grammars_container = GrammarContainer()
@@ -146,11 +143,6 @@ class Nexus:
         gm = GrammarManager(rule_activation_config, merger, content_loader, ccr_rule_validator, details_validator,
                             observable, activator, mapping_rule_maker, grammars_container, hooks_runner,
                             always_global_ccr_mode, ccr_toggle, smrc, transformers_runner)
-
-        if some_setting:
-            loadable = observable.get_loadable()
-            gm.register_rule(loadable[0], loadable[1])
-
         return gm
 
     @staticmethod

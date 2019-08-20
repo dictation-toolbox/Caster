@@ -7,7 +7,7 @@ class RulesActivationConfig(TomlConfig):
     _ORDER = "order"
 
     def __init__(self):
-        super(self, settings.SETTINGS["paths"]["ACTIVATED_RULES_CONFIG_PATH"])
+        super(RulesActivationConfig, self).__init__(settings.SETTINGS["paths"]["ACTIVATED_RULES_CONFIG_PATH"])
         self.load()
         self._initialize()
 

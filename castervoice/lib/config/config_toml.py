@@ -5,7 +5,7 @@ from castervoice.lib.config.config_base import BaseConfig
 class TomlConfig(BaseConfig):
 
     def __init__(self, config_path):
-        super(self)
+        super(BaseConfig, self)
         self._config_path = config_path
 
     def save(self):

@@ -82,6 +82,9 @@ def dependency_check(command=None):
 def dep_missing():
     # For classic: Checks for missing dependencies parsing requirements.txt
     base = os.path.normpath(settings.SETTINGS["paths"]["BASE_PATH"] + os.sep + os.pardir)
+    if not base.endswith("caster"):
+        # if not running w/ Dragon, this path doesn't get calculated the same way
+        base = os.path.join(base, "caster")
     requirements = os.path.join(base, "requirements.txt")
     with open(requirements) as f:
         requirements = f.read().splitlines()

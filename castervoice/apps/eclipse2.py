@@ -1,5 +1,6 @@
 from dragonfly import Key, Repeat, Dictation, Function, Choice, Paste, Pause
 
+from castervoice.apps.eclipse_support import ec_con
 from castervoice.lib import alphanumeric
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST, Boolean

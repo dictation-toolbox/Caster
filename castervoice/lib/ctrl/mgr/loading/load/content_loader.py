@@ -56,15 +56,15 @@ class ContentLoader(object):
         return FullContentSet(rules, transformers, hooks)
 
     def idem_import_module(self, module_name, fn_name):
-        '''
+        """
         Returns the content requested from the specified module.
-        '''
+        """
         module = None
         if module_name in MODULES:
             module = MODULES[module_name]
             module = self._reimport_module(module)
         else:
-            module = self._import_module(module_name, fn_name)
+            module = self._import_module(module_name)  # , fn_name
 
         if module is None:
             return None

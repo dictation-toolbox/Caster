@@ -5,7 +5,7 @@ from castervoice.lib.config.config_toml import TomlConfig
 class HooksConfig(TomlConfig):
 
     def __init__(self):
-        super(self, settings.SETTINGS["paths"]["ACTIVATED_HOOKS_CONFIG_PATH"])
+        super(HooksConfig, self).__init__(settings.SETTINGS["paths"]["ACTIVATED_HOOKS_CONFIG_PATH"])
         self.load()
 
     def set_hook_active(self, hcn, active):
