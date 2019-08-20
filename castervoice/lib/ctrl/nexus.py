@@ -2,7 +2,6 @@ from dragonfly.grammar.grammar_base import Grammar
 from dragonfly.grammar.recobs import RecognitionHistory
 
 from castervoice.lib import settings
-from castervoice.lib.ctrl.dependencies import DependencyMan
 from castervoice.lib.dfplus.communication import Communicator
 from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
 from castervoice.lib.dfplus.state.stack import CasterState
@@ -25,8 +24,6 @@ class Nexus:
         self.preserved = None
 
         self.comm = Communicator()
-
-        self.dep = DependencyMan()
 
         self.macros_grammar = Grammar("recorded_macros")
 

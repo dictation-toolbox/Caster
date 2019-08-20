@@ -4,10 +4,15 @@ Created on Oct 7, 2015
 @author: synkarius
 '''
 
-import os, sys, socket, time, pkg_resources, subprocess
+try:
+    import mock
+except ImportError:
+    from unittest import mock
+
+import os, sys, socket, time, pkg_resources, subprocess, inspect
+import setuptools
 from pkg_resources import VersionConflict, DistributionNotFound
 from subprocess import Popen
-from castervoice.lib import settings
 
 update = None
 
@@ -49,11 +54,11 @@ def internet_check(host="1.1.1.1", port=53, timeout=3):
         return True
     except socket.error as e:
         if e.errno == 11001:
-            print ("Caster: Internet check failed to resolve CloudFire DNS")
-        if e.errno == 10051: # Unreachable Network
+            print("Caster: Internet check failed to resolve CloudFire DNS")
+        if e.errno == 10051:  # Unreachable Network
             pass
-        if e.errno not in (10051, 11001): # Unknown Error
-            print (e.errno)
+        if e.errno not in (10051, 11001):  # Unknown Error
+            print(e.errno)
         return False
 
 
@@ -86,11 +91,13 @@ def dependency_check(command=None):
 
 
 def dep_missing():
-    # For classic: Checks for missing dependencies parsing requirements.txt
-    base = os.path.normpath(settings.SETTINGS["paths"]["BASE_PATH"] + os.sep + os.pardir)
-    requirements = os.path.join(base, "requirements.txt")
-    with open(requirements) as f:
-        requirements = f.read().splitlines()
+    with mock.patch.object(setuptools, 'setup') as mock_setup:
+        import setup  # This is setup.py which calls setuptools.setup
+
+    # called arguments are in `mock_setup.call_args`
+    args, kwargs = mock_setup.call_args
+    requirements = kwargs.get('install_requires', [])
+
     for dep in requirements:
         try:
             pkg_resources.require("{}".format(dep))
@@ -133,6 +140,18 @@ def dep_min_version():
             .format(pippackages))
 
 
+def online_mode():
+    # Tries to import settings on failure online_mode is true
+    try:
+        from castervoice.lib import settings
+        if settings.SETTINGS["miscellaneous"]["online_mode"] is True:
+            return True
+        else:
+            return False
+    except ImportError:
+        return True
+
+
 class DependencyMan:
     # Initializes functions
     def initialize(self):
@@ -140,11 +159,11 @@ class DependencyMan:
         if install is "classic":
             dep_min_version()
             dep_missing()
-        if settings.SETTINGS["miscellaneous"]["online_mode"]:
-            if internet_check():
+        if online_mode() == True:
+            if internet_check() == True:
+                dependency_check(command="dragonfly2")
                 if install is "pip":
                     dependency_check(command="castervoice")
-                dependency_check(command="dragonfly2")
             else:
                 print("\nCaster: Network off-line check network connection\n")
         else:

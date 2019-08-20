@@ -7,13 +7,13 @@ import time
 from ctypes import windll
 from subprocess import Popen
 
-
 import dragonfly
 from dragonfly import Choice, monitors, Pause
 from castervoice.asynch.mouse.legion import LegionScanner
 from castervoice.lib import control, settings, utilities, textformat
 from castervoice.lib.actions import Key, Text, Mouse
 from castervoice.lib.clipboard import Clipboard
+from castervoice.lib.ctrl.dependencies import DependencyMan
 
 DIRECTION_STANDARD = {
     "sauce [E]": "up",
@@ -42,6 +42,7 @@ TARGET_CHOICE = Choice(
         "token": "TOKEN"
     })
 
+
 def get_direction_choice(name):
     global DIRECTION_STANDARD
     return Choice(name, DIRECTION_STANDARD)
@@ -54,7 +55,7 @@ def initialize_clipboard(nexus):
 
 
 def mouse_alternates(mode, nexus, monitor=1):
-    if nexus.dep.PIL:
+    if DependencyMan.PIL:
         if mode == "legion" and not utilities.window_exists(None, "legiongrid"):
             r = monitors[int(monitor) - 1].rectangle
             bbox = [
@@ -86,6 +87,7 @@ def mouse_alternates(mode, nexus, monitor=1):
     else:
         utilities.availability_message(mode.title(), "PIL")
 
+
 def _text_to_clipboard(keystroke, nnavi500, nexus):
     if nnavi500 == 1:
         Key(keystroke).execute()
@@ -109,11 +111,14 @@ def _text_to_clipboard(keystroke, nnavi500, nexus):
                 break
         cb.copy_to_system()
 
+
 def stoosh_keep_clipboard(nnavi500, nexus):
     _text_to_clipboard("c-c", nnavi500, nexus)
 
+
 def cut_keep_clipboard(nnavi500, nexus):
     _text_to_clipboard("c-x", nnavi500, nexus)
+
 
 def drop_keep_clipboard(nnavi500, nexus, capitalization, spacing):
     # Maintain standard spark functionality for non-strings
@@ -177,13 +182,13 @@ def mouse_click(nexus, button):
     Mouse(button).execute()
 
 
-left_click   = lambda nexus: mouse_click(nexus, "left")
-right_click  = lambda nexus: mouse_click(nexus, "right")
+left_click = lambda nexus: mouse_click(nexus, "left")
+right_click = lambda nexus: mouse_click(nexus, "right")
 middle_click = lambda nexus: mouse_click(nexus, "middle")
-left_down    = lambda nexus: mouse_click(nexus, "left:down")
-left_up      = lambda nexus: mouse_click(nexus, "left:up")
-right_down   = lambda nexus: mouse_click(nexus, "right:down")
-right_up     = lambda nexus: mouse_click(nexus, "right:up")
+left_down = lambda nexus: mouse_click(nexus, "left:down")
+left_up = lambda nexus: mouse_click(nexus, "left:up")
+right_down = lambda nexus: mouse_click(nexus, "right:down")
+right_up = lambda nexus: mouse_click(nexus, "right:up")
 
 
 def wheel_scroll(direction, nnavi500):
@@ -225,6 +230,7 @@ def next_line(semi):
     Text(semi).execute()
     Key("enter").execute()
 
+
 '''
 function for performing an action on one or more lines in a text editor.
 E.g.: "cut 128 by 148"
@@ -236,14 +242,27 @@ select_line_down: key combo to select the line below
 wait: some applications are slow and need a pause between keystrokes, e.g. wait="/10"
 upon_arrival: keystroke to be pressed after arriving at the first line. Should have a comma afterwards, e.g. "home, "
 '''
-def action_lines(action, ln1, ln2, go_to_line="c-g", select_line_down="s-down", wait="", upon_arrival=""):
-    num_lines = max(int(ln2)-int(ln1)+1, int(ln1)-int(ln2)+1) if ln2 else 1
-    top_line = min(int(ln2), int(ln1))                        if ln2 else int(ln1)
-    command = Key(go_to_line) + Text(str(top_line)) + Key("enter%s, %s%s%s:%s, %s" % (wait, upon_arrival, select_line_down, wait, str(num_lines), action))
+
+
+def action_lines(action,
+                 ln1,
+                 ln2,
+                 go_to_line="c-g",
+                 select_line_down="s-down",
+                 wait="",
+                 upon_arrival=""):
+    num_lines = max(int(ln2) - int(ln1) + 1, int(ln1) - int(ln2) + 1) if ln2 else 1
+    top_line = min(int(ln2), int(ln1)) if ln2 else int(ln1)
+    command = Key(go_to_line) + Text(str(top_line)) + Key(
+        "enter%s, %s%s%s:%s, %s" %
+        (wait, upon_arrival, select_line_down, wait, str(num_lines), action))
     command.execute()
 
-actions = {"select" : "",
-           "copy"   : "c-c",
-           "cut"    : "c-x",
-           "paste"  : "c-v",
-           "delete" : "backspace"}
+
+actions = {
+    "select": "",
+    "copy": "c-c",
+    "cut": "c-x",
+    "paste": "c-v",
+    "delete": "backspace"
+}
