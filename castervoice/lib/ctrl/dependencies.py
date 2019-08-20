@@ -91,6 +91,7 @@ def dependency_check(command=None):
 
 
 def dep_missing():
+    # Checks for missing dependencies with the classic install
     with mock.patch.object(setuptools, 'setup') as mock_setup:
         import setup  # This is setup.py which calls setuptools.setup
 
@@ -104,7 +105,9 @@ def dep_missing():
         except VersionConflict:
             pass
         except DistributionNotFound as e:
-            print("\n Caster: A Dependency is missing 'pip install {0}'".format(e.req))
+            print(
+                "\n Caster: {0} dependency is missing. Use 'pip install {0}' in CMD or Terminal to install"
+                .format(e.req))
             time.sleep(15)
 
 
