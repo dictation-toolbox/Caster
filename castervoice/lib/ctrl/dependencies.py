@@ -3,14 +3,7 @@ Created on Oct 7, 2015
 
 @author: synkarius
 '''
-
-try:
-    import mock
-except ImportError:
-    from unittest import mock
-
-import os, sys, socket, time, pkg_resources, subprocess, inspect
-import setuptools
+import os, sys, socket, time, pkg_resources, subprocess
 from pkg_resources import VersionConflict, DistributionNotFound
 from subprocess import Popen
 
