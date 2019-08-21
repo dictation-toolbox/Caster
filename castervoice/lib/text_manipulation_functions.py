@@ -1,4 +1,3 @@
-import itertools
 import pyperclip
 import re 
 import copy
