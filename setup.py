@@ -39,7 +39,8 @@ class dev_install(develop):
     def run(self):
         develop.run(self)
 
-with open("docs/README.md", "r") as fh:
+readmepath = os.path.normpath(os.path.join(here, "docs/README.md"))
+with open(readmepath, "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
@@ -62,7 +63,7 @@ setuptools.setup(
         "dragonfly2>=0.14.1",
         "wxpython",
         "pillow",
-        "toml",
+        "tomlkit",
         "future",
         "mock",
     ],

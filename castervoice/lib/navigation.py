@@ -7,13 +7,13 @@ import time
 from ctypes import windll
 from subprocess import Popen
 
-
 import dragonfly
 from dragonfly import Choice, monitors
 from castervoice.asynch.mouse.legion import LegionScanner
 from castervoice.lib import control, settings, utilities, textformat
 from castervoice.lib.actions import Key, Text, Mouse
 from castervoice.lib.clipboard import Clipboard
+from castervoice.lib.ctrl.dependencies import DependencyMan
 
 DIRECTION_STANDARD = {
     "sauce [E]": "up",
@@ -57,7 +57,7 @@ def initialize_clipboard():
 
 def mouse_alternates(mode, monitor=1):
     nexus = control.nexus()
-    if nexus.dep.PIL:
+    if DependencyMan.PIL:
         if mode == "legion" and not utilities.window_exists(None, "legiongrid"):
             r = monitors[int(monitor) - 1].rectangle
             bbox = [
@@ -233,6 +233,7 @@ def next_line(semi):
     Text(semi).execute()
     Key("enter").execute()
 
+
 '''
 function for performing an action on one or more lines in a text editor.
 E.g.: "cut 128 by 148"
@@ -244,14 +245,27 @@ select_line_down: key combo to select the line below
 wait: some applications are slow and need a pause between keystrokes, e.g. wait="/10"
 upon_arrival: keystroke to be pressed after arriving at the first line. Should have a comma afterwards, e.g. "home, "
 '''
-def action_lines(action, ln1, ln2, go_to_line="c-g", select_line_down="s-down", wait="", upon_arrival=""):
-    num_lines = max(int(ln2)-int(ln1)+1, int(ln1)-int(ln2)+1) if ln2 else 1
-    top_line = min(int(ln2), int(ln1))                        if ln2 else int(ln1)
-    command = Key(go_to_line) + Text(str(top_line)) + Key("enter%s, %s%s%s:%s, %s" % (wait, upon_arrival, select_line_down, wait, str(num_lines), action))
+
+
+def action_lines(action,
+                 ln1,
+                 ln2,
+                 go_to_line="c-g",
+                 select_line_down="s-down",
+                 wait="",
+                 upon_arrival=""):
+    num_lines = max(int(ln2) - int(ln1) + 1, int(ln1) - int(ln2) + 1) if ln2 else 1
+    top_line = min(int(ln2), int(ln1)) if ln2 else int(ln1)
+    command = Key(go_to_line) + Text(str(top_line)) + Key(
+        "enter%s, %s%s%s:%s, %s" %
+        (wait, upon_arrival, select_line_down, wait, str(num_lines), action))
     command.execute()
 
-actions = {"select" : "",
-           "copy"   : "c-c",
-           "cut"    : "c-x",
-           "paste"  : "c-v",
-           "delete" : "backspace"}
+
+actions = {
+    "select": "",
+    "copy": "c-c",
+    "cut": "c-x",
+    "paste": "c-v",
+    "delete": "backspace"
+}

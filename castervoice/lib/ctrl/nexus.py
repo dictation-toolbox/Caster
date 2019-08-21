@@ -15,7 +15,6 @@ from castervoice.lib.merge.ccrmerging2.transformers.transformers_config import T
 from castervoice.lib.merge.ccrmerging2.transformers.transformers_runner import TransformersRunner
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib import settings
-from castervoice.lib.ctrl.dependencies import DependencyMan
 from castervoice.lib.ctrl.mgr.validation.details.ccr_app_validator import AppCCRDetailsValidator
 from castervoice.lib.ctrl.mgr.validation.details.ccr_validator import CCRDetailsValidator
 from castervoice.lib.ctrl.mgr.validation.details.details_validation_delegator import DetailsValidationDelegator
@@ -47,10 +46,6 @@ class Nexus:
 
         '''rpc class for interacting with Caster UI elements via xmlrpclib'''
         self.comm = Communicator()
-
-        '''dependency checker/manager'''
-        self.dep = DependencyMan()
-        self.dep.initialize()
 
         '''tracks both which rules are active and the activation order'''
         rule_activation_config = RulesActivationConfig()

@@ -6,22 +6,71 @@ import collections
 import io
 import os
 import sys
-import toml
+import tomlkit
 import _winreg
 import version
+import errno
 
 GENERIC_HELP_MESSAGE = """
 If you continue having problems with this or any other issue you can contact
-us through Gitter at <https://gitter.im/synkarius/caster> or on our GitHub
-issue tracker at <https://github.com/synkarius/caster/issues>.
+us through Gitter at <https://gitter.im/dictation-toolbox/Caster> or on our GitHub
+issue tracker at <https://github.com/dictation-toolbox/Caster/issues>.
 Thank you for using Caster!
 """
 
 SETTINGS = {}
 BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "lib",
                                               1)[0].replace("\\", "/")
-_USER_DIR = os.path.expanduser("~").replace("\\", "/") + "/.caster"
-_SETTINGS_PATH = _USER_DIR + "/data/settings.toml"
+
+
+def set_user_dir():
+    '''
+    Sets Caster's user directory path. Returns "user_dir" with valid path for Home directory or AppData.
+    '''
+    user_dir = 'empty_path'
+    try:
+        directory = os.path.expanduser("~")
+        if os.access(directory, os.W_OK) and os.access(directory, os.R_OK) is True:
+            user_dir = directory
+        else:
+            if os.name == 'nt':
+                directory = os.path.expandvars(r'%APPDATA%')
+                if os.access(directory,
+                             os.W_OK) and os.access(directory, os.R_OK) is True:
+                    user_dir = directory
+    except IOError as e:
+        if e.errno == errno.EACCES:
+            print("Caster does not have read/write for a user directory. \n" +
+                  errno.EACCES)
+    finally:
+        if os.path.exists(user_dir):
+            return os.path.normpath(os.path.join(user_dir, ".caster"))
+        else:
+            print("Caster could not find a valid user directory at: " + str(user_dir))
+            raise NameError('UserPathException')
+
+
+def validate_user_dir():
+    '''
+    Checks for existing Caster's user directory path. Returns path.
+    '''
+    user_dir = os.path.join(os.path.expanduser("~"), ".caster")
+    if os.path.exists(user_dir) is True:
+        return user_dir
+    if os.name == 'nt':
+        app_data = os.path.join(os.path.expandvars(r'%APPDATA%'), ".caster")
+        if os.path.exists(app_data) is True:
+            return app_data
+        else:
+            return set_user_dir()
+    else:
+        return set_user_dir()
+
+
+_USER_DIR = validate_user_dir()
+_SETTINGS_PATH = os.path.normpath(os.path.join(_USER_DIR, "data/settings.toml"))
+
+print("Caster User Directory: " + _USER_DIR)
 
 for directory in ["data", "rules", "transformers", "hooks", "sikuli"]:
     d = _USER_DIR + "/" + directory
@@ -104,7 +153,7 @@ def _validate_engine_path():
         return ''
     if os.path.isfile(_SETTINGS_PATH):
         with io.open(_SETTINGS_PATH, "rt", encoding="utf-8") as toml_file:
-            data = toml.loads(toml_file.read())
+            data = tomlkit.loads(toml_file.read()).value
             engine_path = data["paths"]["ENGINE_PATH"]
             if os.path.isfile(engine_path):
                 return engine_path
@@ -112,7 +161,7 @@ def _validate_engine_path():
                 engine_path = _find_natspeak()
                 data["paths"]["ENGINE_PATH"] = engine_path
                 try:
-                    formatted_data = unicode(toml.dumps(data))
+                    formatted_data = unicode(tomlkit.dumps(data))
                     with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as toml_file:
                         toml_file.write(formatted_data)
                     print("Setting engine path to " + engine_path)
@@ -360,7 +409,7 @@ _DEFAULT_SETTINGS = {
 def _save(data, path):
     '''only to be used for settings file'''
     try:
-        formatted_data = unicode(toml.dumps(data))
+        formatted_data = unicode(tomlkit.dumps(data))
         with io.open(path, "wt", encoding="utf-8") as f:
             f.write(formatted_data)
     except Exception as e:
@@ -371,7 +420,7 @@ def _init(path):
     result = {}
     try:
         with io.open(path, "rt", encoding="utf-8") as f:
-            result = toml.loads(f.read())
+            result = tomlkit.loads(f.read()).value
     except ValueError as e:
         print("\n\n" + repr(e) + " while loading settings file: " + path + "\n\n")
         print(sys.exc_info())
@@ -387,7 +436,7 @@ def _init(path):
         new_path = old_clipboard[:-4] + "json"
         print("\n\n Migrating clipboard from {} to {}".format(old_clipboard, new_path))
         with io.open(old_clipboard, "rt", encoding="utf-8") as f:
-            clipboard = toml.loads(f.read())
+            clipboard = tomlkit.loads(f.read()).value
         formatted_data = unicode(json.dumps(clipboard, ensure_ascii=False))
         with io.open(new_path, "wt", encoding="utf-8") as f:
             f.write(formatted_data)

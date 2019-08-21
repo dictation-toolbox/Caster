@@ -87,7 +87,7 @@ class RainbowGridRule(MergeRule):
             R(Function(store_first_point)),
         "bench":
             R(Function(select_text)),
-        "exit | escape | cancel":
+        SymbolSpecs.CANCEL:
             R(Function(kill)),
     }
     extras = [

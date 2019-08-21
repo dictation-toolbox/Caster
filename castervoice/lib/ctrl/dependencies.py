@@ -3,24 +3,21 @@ Created on Oct 7, 2015
 
 @author: synkarius
 '''
-
-import os, socket, time, pkg_resources, subprocess
+import os, sys, socket, time, pkg_resources, subprocess
 from pkg_resources import VersionConflict, DistributionNotFound
-from castervoice.lib import settings
 
-pip_path = None
 update = None
 
 
 def find_pip():
-    # Find the pip.exe script for Python 2.7. Fallback on pip.exe.
-    global pip_path
-    python_scripts = os.path.join("Python27", "Scripts")
-    for path in os.environ["PATH"].split(";"):
-        pip = os.path.join(path, "pip.exe")
-        if path.endswith(python_scripts) and os.path.isfile(pip):
-            pip_path = pip
-            break
+    # Find the pip script for Python.
+    python_scripts = os.path.join(sys.exec_prefix, "Scripts")
+    if sys.platform == "win32":
+        pip = os.path.join(python_scripts, "pip.exe")
+        return pip
+    if sys.platform.startswith("linux"):
+        pip = os.path.join(python_scripts, "pip")
+        return pip
 
 
 def install_type():
@@ -42,18 +39,24 @@ def internet_check(host="1.1.1.1", port=53, timeout=3):
     :param timeout: An integer
     :return: True or False
     """
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
-        socket.setdefaulttimeout(timeout)
-        socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))
+        s.settimeout(timeout)
+        s.connect((host, port))
         return True
-    except Exception as error:
-        print(error.message)
+    except socket.error as e:
+        if e.errno == 11001:
+            print("Caster: Internet check failed to resolve CloudFire DNS")
+        if e.errno == 10051:  # Unreachable Network
+            pass
+        if e.errno not in (10051, 11001):  # Unknown Error
+            print(e.errno)
         return False
 
 
 def dependency_check(command=None):
     # Check for updates pip packages castervoice/dragonfly2
-    com = [pip_path, "search", command]
+    com = [find_pip(), "search", command]
     startupinfo = None
     global update
     try:
@@ -80,22 +83,40 @@ def dependency_check(command=None):
 
 
 def dep_missing():
-    # For classic: Checks for missing dependencies parsing requirements.txt
-    base = os.path.normpath(settings.SETTINGS["paths"]["BASE_PATH"] + os.sep + os.pardir)
-    if not base.endswith("caster"):
-        # if not running w/ Dragon, this path doesn't get calculated the same way
-        base = os.path.join(base, "caster")
-    requirements = os.path.join(base, "requirements.txt")
+    uppath = lambda _path, n: os.sep.join(_path.split(os.sep)[:-n])
+    requirements = os.path.join(uppath(__file__, 4), "requirements.txt")
     with open(requirements) as f:
         requirements = f.read().splitlines()
     for dep in requirements:
+        dep = dep.split("==", 1)[0]
         try:
             pkg_resources.require("{}".format(dep))
         except VersionConflict:
             pass
         except DistributionNotFound as e:
-            print("\n Caster: A Dependency is missing 'pip install {0}'".format(e.req))
+            print("\n Caster: {0} dependency is missing. Use 'pip install {0}' in CMD or Terminal to install"
+                .format(e.req))
             time.sleep(15)
+# def dep_missing():
+#     # For classic: Checks for missing dependencies parsing requirements.txt
+#     base = os.path.normpath(settings.SETTINGS["paths"]["BASE_PATH"] + os.sep + os.pardir)
+#     if not base.endswith("caster"):
+#         # if not running w/ Dragon, this path doesn't get calculated the same way
+#         base = os.path.join(base, "caster")
+#     requirements = os.path.join(base, "requirements.txt")
+#     with open(requirements) as f:
+#         requirements = f.read().splitlines()
+#     for dep in requirements:
+#         dep = dep.split("==", 1)[0]
+#         try:
+#             pkg_resources.require("{}".format(dep))
+#         except VersionConflict:
+#             pass
+#         except DistributionNotFound as e:
+#             print(
+#                 "\n Caster: {0} dependency is missing. Use 'pip install {0}' in CMD or Terminal to install"
+#                 .format(e.req))
+#             time.sleep(15)
 
 
 def dep_min_version():
@@ -130,19 +151,30 @@ def dep_min_version():
             .format(pippackages))
 
 
+def online_mode():
+    # Tries to import settings on failure online_mode is true
+    try:
+        from castervoice.lib import settings
+        if settings.SETTINGS["miscellaneous"]["online_mode"] is True:
+            return True
+        else:
+            return False
+    except ImportError:
+        return True
+
+
 class DependencyMan:
     # Initializes functions
     def initialize(self):
         install = install_type()
-        find_pip()
         if install is "classic":
             dep_min_version()
             dep_missing()
-        if settings.SETTINGS["miscellaneous"]["online_mode"]:
-            if internet_check():
+        if online_mode() == True:
+            if internet_check() == True:
+                dependency_check(command="dragonfly2")
                 if install is "pip":
                     dependency_check(command="castervoice")
-                dependency_check(command="dragonfly2")
             else:
                 print("\nCaster: Network off-line check network connection\n")
         else:

@@ -54,7 +54,7 @@ class HomunculusRecording(Homunculus):
         for sentence in sentences:
             sentence_words = sentence.split("[w]")
             sentence_words.pop()
-            display_sentence = " ".join(sentence_words)
+            display_sentence = " ".join(sentence_words).decode("unicode_escape")
 
             cb_row = 0  # self.get_row()
             cb_col = 0

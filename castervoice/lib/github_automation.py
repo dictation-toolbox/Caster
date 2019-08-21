@@ -7,7 +7,7 @@ import sys
 import traceback
 from __builtin__ import True
 from subprocess import Popen, PIPE
-import toml
+import tomlkit
 import time
 
 from castervoice.lib.actions import Key, Text
@@ -15,7 +15,7 @@ from castervoice.lib.context import read_selected_without_altering_clipboard
 from castervoice.lib.utilities import load_toml_file
 from castervoice.lib import settings
 
-_USER_DIR = os.path.expanduser("~").replace("\\", "/") + "/.caster"
+_USER_DIR = settings.SETTINGS["paths"]["USER_DIR"]
 
 if os.path.isfile(settings.SETTINGS["paths"]["GIT_REPO_LOCAL_REMOTE_PATH"]) is False:
     git_match_default = settings.SETTINGS["paths"]["GIT_REPO_LOCAL_REMOTE_DEFAULT_PATH"]

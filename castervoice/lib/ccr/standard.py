@@ -45,7 +45,7 @@ class SymbolSpecs(object):
     FALSE = "value false"
 
     # not part of the programming standard:
-    CANCEL = "(terminate | escape)"
+    CANCEL = "(terminate | escape | exit | cancel)"
 
     @staticmethod
     def set_cancel_word(spec):

@@ -6,6 +6,7 @@ from castervoice.lib import control, settings, navigation
 from castervoice.asynch.mouse import grids
 import win32api, win32con
 
+from castervoice.lib.ccr.standard import SymbolSpecs
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.mergerule import MergeRule
@@ -76,7 +77,7 @@ class LegionGridRule(MergeRule):
             R(Function(send_input)),
         "refresh":
             R(Function(navigation.mouse_alternates, mode="legion")),
-        "exit | escape | cancel":
+        SymbolSpecs.CANCEL:
             R(Function(kill)),
         "<n1> (select | light) <n2>":
             R(Function(drag_highlight)),
