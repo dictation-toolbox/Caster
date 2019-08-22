@@ -9,7 +9,7 @@ class PrinterHook(BaseHook):
     """
 
     def __init__(self):
-        super(EventType.ACTIVATION)
+        super(PrinterHook, self).__init(EventType.ACTIVATION)
 
     def run(self, event):
         state = "active" if event.active else "inactive"
@@ -17,4 +17,4 @@ class PrinterHook(BaseHook):
 
 
 def get_hook():
-    return PrinterHook()
+    return PrinterHook

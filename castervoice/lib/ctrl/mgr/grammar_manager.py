@@ -148,8 +148,8 @@ class GrammarManager(object):
 
         managed_rule = self._managed_rules[class_name]
 
-        ccrtype = managed_rule.details.declared_ccrtype
-        if self._always_global_ccr_mode and not managed_rule.details.rdp_mode_exclusion:
+        ccrtype = managed_rule.get_details().declared_ccrtype
+        if self._always_global_ccr_mode and not managed_rule.get_details().rdp_mode_exclusion:
             ''' 
             This setting controls "RDP Mode". "RDP Mode" forces any rule 
             to load as a global ccr rule and ignore validation.
@@ -163,7 +163,7 @@ class GrammarManager(object):
             # handle CCR: get all active ccr rules after de/activating one
             active_rule_class_names = self._config.get_active_rule_class_names()
             active_mrs = [self._managed_rules[rcn] for rcn in active_rule_class_names]
-            active_ccr_mrs = [mr for mr in active_mrs if mr.details.declared_ccrtype is not None]
+            active_ccr_mrs = [mr for mr in active_mrs if mr.get_details().declared_ccrtype is not None]
 
             print("_activate_rule: " + str(len(active_ccr_mrs)))
 

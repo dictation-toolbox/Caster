@@ -7,7 +7,7 @@ class Alias(BaseAliasRule):
     pronunciation = "alias"
 
     def __init__(self):
-        super(settings.SETTINGS["paths"]["SM_ALIAS_PATH"])
+        super(Alias, self).__init(settings.SETTINGS["paths"]["SM_ALIAS_PATH"])
 
     def get_pronunciation(self):
         return Alias.pronunciation

@@ -23,7 +23,7 @@ def _apply_format(rule_pronunciation):
 class FormattingHook(BaseHook):
 
     def __init__(self):
-        super(EventType.ACTIVATION)
+        super(FormattingHook, self).__init(EventType.ACTIVATION)
 
     def get_pronunciation(self):
         return "formatting"

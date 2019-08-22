@@ -1,6 +1,6 @@
 from dragonfly import Function
 
-from castervoice.lib import const, alphanumeric
+from castervoice.lib import alphanumeric
 from castervoice.lib.ctrl.mgr import rdcommon
 from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.mergerule import MergeRule

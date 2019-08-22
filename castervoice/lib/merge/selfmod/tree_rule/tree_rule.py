@@ -11,7 +11,7 @@ class TreeRule(BaseSelfModifyingRule):
     def __init__(self, tree_name, tree_root):
         self._root_node = tree_root
         self._tree_name = tree_name
-        super(settings.SETTINGS["paths"]["SM_{}_TREE_PATH_".format(tree_name.upper())])
+        super(TreeRule, self).__init(settings.SETTINGS["paths"]["SM_{}_TREE_PATH_".format(tree_name.upper())])
 
     def _deserialize(self):
         # get active path from config

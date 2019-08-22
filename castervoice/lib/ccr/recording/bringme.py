@@ -34,7 +34,7 @@ class BringRule(BaseSelfModifyingRule):
     _explorer_path = "C:\\Windows\\explorer.exe"
 
     def __init__(self):
-        super(settings.SETTINGS["paths"]["SM_BRINGME_PATH"])
+        super(BringRule, self).__init(settings.SETTINGS["paths"]["SM_BRINGME_PATH"])
         self._initialize()
 
     def _initialize(self):

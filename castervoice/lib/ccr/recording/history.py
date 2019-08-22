@@ -20,7 +20,7 @@ class HistoryRule(BaseSelfModifyingRule):
     mapping = {"default sequence": NullAction()}
 
     def __init__(self):
-        super(settings.SETTINGS["paths"]["SM_HISTORY_PATH"])
+        super(HistoryRule, self).__init(settings.SETTINGS["paths"]["SM_HISTORY_PATH"])
         self._history = RecognitionHistory(20)
         self._history.register()
         self._preserved = None

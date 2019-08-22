@@ -41,10 +41,10 @@ class GrammarActivator(object):
         rule_instance = managed_rule.get_rule_instance()
         if self._merge_rule_checker_fn(rule_instance):
             return rule_instance.get_pronunciation()
-        if managed_rule.details.name is not None:
-            return managed_rule.details.name
-        if managed_rule.details.grammar_name is not None:
-            return managed_rule.details.grammar_name
+        if managed_rule.get_details().name is not None:
+            return managed_rule.get_details().name
+        if managed_rule.get_details().grammar_name is not None:
+            return managed_rule.get_details().grammar_name
         return managed_rule.get_rule_class_name()
 
     def construct_activation_rule(self):

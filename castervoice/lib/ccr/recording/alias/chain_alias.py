@@ -8,7 +8,7 @@ class ChainAlias(BaseAliasRule):
     pronunciation = "chain alias"
 
     def __init__(self):
-        super(settings.SETTINGS["paths"]["SM_CHAIN_ALIAS_PATH"])
+        super(ChainAlias, self).__init(settings.SETTINGS["paths"]["SM_CHAIN_ALIAS_PATH"])
 
     def get_pronunciation(self):
         return ChainAlias.pronunciation
