@@ -1,3 +1,5 @@
+import datetime
+
 from castervoice.lib.ctrl.grammar_container import GrammarContainer
 from castervoice.lib.ctrl.mgr.ccr_toggle import CCRToggle
 from castervoice.lib.ctrl.mgr.grammar_activator import GrammarActivator
@@ -34,7 +36,7 @@ from castervoice.lib.merge.ccrmerging2.merging.classic_merging_strategy import C
 
 
 class Nexus:
-    def __init__(self):
+    def __init__(self, content_loader):
         """
         The Nexus is the 'glue code' of Caster. It is where the things reside which
         manage global state. It is also an access point to those things for other
@@ -42,6 +44,7 @@ class Nexus:
         """
 
         '''CasterState is used for impl of the asynchronous actions'''
+
         self.state = CasterState()
 
         '''rpc class for interacting with Caster UI elements via xmlrpclib'''
@@ -68,8 +71,7 @@ class Nexus:
 
         '''unified loading mechanism for [rules, transformers, hooks] 
         from [caster starter locations, user dir]'''
-        crg = ContentRequestGenerator()
-        self._content_loader = ContentLoader(crg)
+        self._content_loader = content_loader
 
         '''mapping rule maker: like the ccrmerger, but doesn't merge and isn't ccr'''
         mapping_rule_maker = MappingRuleMaker(transformers_runner, smrc)

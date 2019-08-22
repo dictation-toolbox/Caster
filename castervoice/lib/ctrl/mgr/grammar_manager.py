@@ -77,9 +77,11 @@ class GrammarManager(object):
             return
 
         for rcn in self._config.get_active_rule_class_names():
+            print("initialize:rcn: " + rcn)
             is_ccr = self._managed_rules[rcn].declared_ccrtype is not None
             if is_ccr and not self._ccr_toggle.is_active():
                 continue
+            print("initialize:rcn:activate: " + rcn)
             self._activate_rule(rcn, True)
 
         self._initial_activations_complete = True
@@ -162,6 +164,8 @@ class GrammarManager(object):
             active_rule_class_names = self._config.get_active_rule_class_names()
             active_mrs = [self._managed_rules[rcn] for rcn in active_rule_class_names]
             active_ccr_mrs = [mr for mr in active_mrs if mr.details.declared_ccrtype is not None]
+
+            print("_activate_rule: " + str(len(active_ccr_mrs)))
 
             '''
             The merge may result in 1 to n+1 rules where n is the number of ccr app rules

@@ -1,3 +1,4 @@
+import datetime
 import importlib
 import traceback
 from sys import modules as MODULES
@@ -88,11 +89,13 @@ class ContentLoader(object):
         result = []
 
         for request in requests:
+            print("log {} {} {}".format(1, datetime.datetime.today(), request.module_name))
             if request.directory not in path:
                 path.append(request.directory)
             content_item = self.idem_import_module(request.module_name, request.content_type)
             if content_item is not None:
                 result.append(content_item)
+            print("log {} {} {}".format(2, datetime.datetime.today(), request.module_name))
 
         return result
 
