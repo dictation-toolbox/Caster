@@ -2,17 +2,15 @@ from castervoice.lib.ctrl.mgr.validation.details.base_validator import BaseDetai
 
 
 class CCRDetailsValidator(BaseDetailsValidator):
-
-    '''
+    """
     Validates any CCR Details
-    '''
+    """
+
     def validate(self, details):
         invalidations = []
         if details.declared_ccrtype is not None:
             if details.name is not None:
                 invalidations.append("ccr types must not have 'name'")
-            if details.rule_path is not None:
-                invalidations.append("ccr types must not have 'rule_path'")
             if details.grammar_name is not None:
                 invalidations.append("ccr types must not have 'grammar_name'")
 

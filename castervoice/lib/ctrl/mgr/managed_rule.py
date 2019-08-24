@@ -8,7 +8,7 @@ class ManagedRule(object):
         return self._rule_class.__name__
 
     def get_rule_instance(self):
-        return self._rule_class()
+        return self._rule_class(name=self._details.name)
 
     def get_details(self):
         return self._details

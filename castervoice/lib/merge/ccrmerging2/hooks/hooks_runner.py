@@ -20,6 +20,7 @@ class HooksRunner(ActivationRuleGenerator):
         except:
             err = "Error instantiating {}.".format(hook_class.__name__)
             printer.out(err)
+            return
 
         # register it
         if hook.get_class_name() not in self._hooks_config:

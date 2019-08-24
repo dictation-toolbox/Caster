@@ -21,10 +21,11 @@ class TransformersRunner(ActivationRuleGenerator):
         except:
             err = "Error instantiating {}.".format(transformer_class.__name__)
             printer.out(err)
+            return
 
         # register it
         if transformer.get_class_name() not in self._transformers_config:
-            self._transformers_config.set_active(transformer.get_class_name(), False)
+            self._transformers_config.set_transformer_active(transformer.get_class_name(), False)
             self._transformers_config.save()
             printer.out("New transformer added: {}".format(transformer.get_class_name()))
 

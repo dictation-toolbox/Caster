@@ -77,11 +77,10 @@ class GrammarManager(object):
             return
 
         for rcn in self._config.get_active_rule_class_names():
-            print("initialize:rcn: " + rcn)
-            is_ccr = self._managed_rules[rcn].declared_ccrtype is not None
+            rd = self._managed_rules[rcn].get_details()
+            is_ccr = rd.declared_ccrtype is not None
             if is_ccr and not self._ccr_toggle.is_active():
                 continue
-            print("initialize:rcn:activate: " + rcn)
             self._activate_rule(rcn, True)
 
         self._initial_activations_complete = True
@@ -187,12 +186,11 @@ class GrammarManager(object):
                 grammar.load()
         else:
             if active:
-                grammar = self._mapping_rule_maker.create_non_ccr_grammar(
-                    managed_rule.get_rule_class(), managed_rule.get_details())
-                self._grammars_container.set_non_ccr(self, managed_rule.get_rule_class_name(), grammar)
+                grammar = self._mapping_rule_maker.create_non_ccr_grammar(managed_rule)
+                self._grammars_container.set_non_ccr(managed_rule.get_rule_class_name(), grammar)
                 grammar.load()
             else:
-                self._grammars_container.set_non_ccr(self, managed_rule.get_rule_class_name(), None)
+                self._grammars_container.set_non_ccr(managed_rule.get_rule_class_name(), None)
 
     def receive(self, file_path_changed):
         """

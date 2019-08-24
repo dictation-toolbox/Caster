@@ -9,4 +9,4 @@ class DetailsValidationDelegator(object):
             invalidation = delegate.validate(details)
             if invalidation is not None:
                 invalidations.append(invalidation)
-        return None if len(invalidations) == 0 else ", ".join(invalidation)
+        return None if len(invalidations) == 0 else ", ".join(invalidations)

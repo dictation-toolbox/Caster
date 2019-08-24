@@ -12,15 +12,17 @@ class MappingRuleMaker(BaseRuleMaker):
         self._transformers_runner = t_runner
         self._smr_configurer = smr_configurer
 
-    def create_non_ccr_grammar(self, rule_class, details):
-        rule_instance = rule_class(name=details.name)
+    def create_non_ccr_grammar(self, managed_rule):
+        rule_instance = managed_rule.get_rule_instance()
+        details = managed_rule.get_details()
+
         if not details.transformer_exclusion:
             rule_instance = self._transformers_runner.transform_rule(rule_instance)
 
         self._smr_configurer.configure(rule_instance)
 
         context = None
-        if details.executable is not None:
+        if details.executable is not None or details.title is not None:
             context = AppContext(executable=details.executable, title=details.title)
         grammar = Grammar(details.grammar_name, context=context)
         grammar.add_rule(rule_instance)

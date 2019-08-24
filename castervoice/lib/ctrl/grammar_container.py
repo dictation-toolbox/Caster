@@ -12,14 +12,14 @@ class GrammarContainer(object):
         self._ccr_grammars = []
         self._non_ccr_grammars = {}
 
-    def set_non_ccr(self, rule_class_name, grammar):
-        if rule_class_name in self._non_ccr_grammars:
-            grammar = self._non_ccr_grammars[rule_class_name]
+    def set_non_ccr(self, rcn, grammar):
+        if rcn in self._non_ccr_grammars:
+            grammar = self._non_ccr_grammars[rcn]
             GrammarContainer._empty_grammar(grammar)
-            del self._non_ccr_grammars[rule_class_name]
+            del self._non_ccr_grammars[rcn]
 
         if grammar is not None:
-            self._non_ccr_grammars[rule_class_name] = grammar
+            self._non_ccr_grammars[rcn] = grammar
 
     def set_ccr(self, ccr_grammars):
         # first, wipe out old ccr rules

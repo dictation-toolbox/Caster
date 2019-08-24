@@ -140,7 +140,7 @@ def _load_definitions():
 def _spec_override_from_config(mergerule):
     '''redundant safety check'''
     if _DEFS is None:
-        return
+        return mergerule
 
     '''SPECS'''
     specs_changed = False
