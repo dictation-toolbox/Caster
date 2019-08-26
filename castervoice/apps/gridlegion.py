@@ -1,6 +1,6 @@
 import time
 
-from dragonfly import Playback, Function, Choice
+from dragonfly import Playback, Function, Choice, MappingRule
 
 from castervoice.lib import control, settings, navigation
 from castervoice.asynch.mouse import grids
@@ -9,7 +9,6 @@ import win32api, win32con
 from castervoice.lib.ccr.standard import SymbolSpecs
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
-from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
 
@@ -70,7 +69,7 @@ def drag_highlight(n1, n2):
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0)
 
 
-class LegionGridRule(MergeRule):
+class LegionGridRule(MappingRule):
 
     mapping = {
         "<n> [<action>]":
@@ -98,4 +97,4 @@ class LegionGridRule(MergeRule):
 
 
 def get_rule():
-    return LegionGridRule, RuleDetails(title="legiongrid")
+    return LegionGridRule, RuleDetails(name="legion grid rule", title="legiongrid")

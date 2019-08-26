@@ -1,14 +1,11 @@
-from dragonfly import Key, Dictation
+from dragonfly import Key, Dictation, MappingRule
 
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
-from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
 
-class KDiff3Rule(MergeRule):
-    pronunciation = "K diff"
-
+class KDiff3Rule(MappingRule):
     mapping = {
         "refresh": R(Key("f5")),
     }
@@ -21,4 +18,4 @@ class KDiff3Rule(MergeRule):
 
 
 def get_rule():
-    return KDiff3Rule, RuleDetails(executable="kdiff3")
+    return KDiff3Rule, RuleDetails(name="K diff", executable="kdiff3")

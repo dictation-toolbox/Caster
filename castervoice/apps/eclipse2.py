@@ -1,16 +1,13 @@
-from dragonfly import Key, Repeat, Dictation, Function, Choice, Paste, Pause
+from dragonfly import Key, Repeat, Dictation, Function, Choice, Paste, Pause, MappingRule
 
 from castervoice.apps.eclipse_support import ec_con
 from castervoice.lib import alphanumeric
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST, Boolean
-from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
 
-class EclipseRule(MergeRule):
-    pronunciation = "eclipse"
-
+class EclipseRule(MappingRule):
     mapping = {
         "prior tab [<n>]":
             R(Key("cs-f6"))*
@@ -96,4 +93,4 @@ class EclipseRule(MergeRule):
 
 
 def get_rule():
-    return EclipseRule, RuleDetails(executable="eclipse", title="Eclipse")
+    return EclipseRule, RuleDetails(name="eclipse", executable="eclipse", title="Eclipse")

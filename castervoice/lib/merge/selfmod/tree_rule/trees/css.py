@@ -547,7 +547,7 @@ def _get_background():
 
 class CSSTreeRule(TreeRule):
     def __init__(self):
-        super(CSSTreeRule, self).__init("CSS", get_css_node())
+        super(CSSTreeRule, self).__init__("CSS", get_css_node())
 
 
 def get_rule():

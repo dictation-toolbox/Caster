@@ -1,14 +1,11 @@
-from dragonfly import Key, Repeat, Choice
+from dragonfly import Key, Repeat, Choice, MappingRule
 
-from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
-from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
 
-class LyxRule(MergeRule):
-    pronunciation = "lyx"
-
+class LyxRule(MappingRule):
     mapping = {
         "new file": R(Key("c-n")),
         "open file": R(Key("c-o")),
@@ -53,4 +50,4 @@ class LyxRule(MergeRule):
 
 
 def get_rule():
-    return LyxRule, rdcommon.app_executable("lyx")
+    return LyxRule, RuleDetails(name="lyx", executable="lyx")

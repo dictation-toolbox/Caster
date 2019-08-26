@@ -1,10 +1,9 @@
-from dragonfly import Key, Function, Repeat, Choice, Dictation
+from dragonfly import Key, Function, Repeat, Choice, Dictation, MappingRule
 
 from castervoice.lib import navigation
 from castervoice.lib.actions import Text
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
-from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
 
@@ -20,8 +19,7 @@ def _find_nth_token(text, n, direction):
     Key('escape').execute()
 
 
-class VSCodeNonCcrRule(MergeRule):
-    pronunciation = "Visual Studio Code Non Continuous"
+class VSCodeNonCcrRule(MappingRule):
     mapping = {
         # Moving around a file
         "[(go to | jump | jump to)] line <n>":
@@ -297,6 +295,7 @@ class VSCodeNonCcrRule(MergeRule):
 
 
 def get_rule():
-    details = RuleDetails(executable="code",
+    details = RuleDetails(name="Visual Studio Code Non Continuous",
+                          executable="code",
                           title="Visual Studio Code")
     return VSCodeNonCcrRule, details

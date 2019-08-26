@@ -51,11 +51,11 @@ class Bash(MergeRule):
             MockText("do"),
     }
 
-class AliasRule(BaseSelfModifyingRule):
+class AliasTestRule(BaseSelfModifyingRule):
     def __init__(self):
         BaseSelfModifyingRule.__init__(self)
 
-class Alias(AliasRule):
+class AliasTest(AliasTestRule):
     def __init__(self):
         BaseSelfModifyingRule.__init__(self)
 
@@ -64,7 +64,7 @@ class Alias(AliasRule):
         mapping["alias"] = MockFunction(lambda : None)
         mapping["delete aliases"] = MockFunction(lambda: None)
 
-class ChainAlias(AliasRule):
+class ChainTestAlias(AliasTestRule):
     pronunciation = "chain alias"
 
     def refresh(self, *args):
@@ -75,7 +75,7 @@ class ChainAlias(AliasRule):
                 MockFunction(lambda: None),
         }
 
-class EclipseRule(MergeRule):
+class EclipseTestRule(MergeRule):
     pronunciation = "eclipse"
 
     mapping = {

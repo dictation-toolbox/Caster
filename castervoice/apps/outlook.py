@@ -1,7 +1,7 @@
 from dragonfly import Key, Function, Repeat, Dictation, Choice, AppContext
 
 from castervoice.lib.actions import Text
-from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
@@ -13,8 +13,6 @@ def capitalize(text):
 
 
 class OutlookRule(MergeRule):
-    pronunciation = "outlook"
-
     mapping = {
         # create new thing
         "new (appointment | event)": R(Key("sc-a")),
@@ -132,4 +130,4 @@ class OutlookRule(MergeRule):
 
 
 def get_rule():
-    return OutlookRule, rdcommon.app_executable("outlook")
+    return OutlookRule, RuleDetails(name="outlook", executable="outlook")

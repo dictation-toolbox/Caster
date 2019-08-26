@@ -5,13 +5,12 @@ Official Site "https://atom.io/"
 """
 
 # How long to wait for the Atom palette to load before hitting the enter key
-from dragonfly import Key, Pause, Function, Repeat, AppContext, Dictation, Choice
+from dragonfly import Key, Pause, Function, Repeat, AppContext, Dictation, Choice, MappingRule
 
 from castervoice.lib import settings, navigation
 from castervoice.lib.actions import Text
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
-from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
 atom_palette_wait = 30
@@ -23,7 +22,7 @@ def ACP(command):
     return R(
         Key("cs-p") + Pause(str(atom_palette_wait)) + Text(command) + Key("enter"))
 
-class AtomRule(MergeRule):
+class AtomRule(MappingRule):
     """
     Commands for the Atom editor.
 
@@ -37,8 +36,6 @@ class AtomRule(MergeRule):
     the category but are not displayed by the menu or UI Legend: '#' for not assigned,
     '##' for shortcut or functional duplicate.
     """
-
-    pronunciation = "atom"
 
     mapping = {
         # Menu UI------------------------------------------------------------------------
@@ -568,4 +565,4 @@ class AtomRule(MergeRule):
 
 
 def get_rule():
-    return AtomRule, RuleDetails(executable="atom", title="Atom")
+    return AtomRule, RuleDetails(name="atom", executable="atom", title="Atom")

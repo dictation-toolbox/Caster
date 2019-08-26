@@ -15,6 +15,4 @@ class ChainAlias(BaseAliasRule):
 
 
 def get_rule():
-    details = RuleDetails(name="alias",
-                          ccrtype=CCRType.SELFMOD)
-    return [ChainAlias, details]
+    return ChainAlias, RuleDetails(ccrtype=CCRType.SELFMOD)

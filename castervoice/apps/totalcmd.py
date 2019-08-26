@@ -1,13 +1,10 @@
-from dragonfly import Key
+from dragonfly import Key, MappingRule
 
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
 
-class TotalCommanderRule(MergeRule):
-    pronunciation = "total commander"
-
+class TotalCommanderRule(MappingRule):
     mapping = {
         "find [in] files": R(Key('a-f7')),
         "view": R(Key('f3')),
@@ -33,5 +30,5 @@ class TotalCommanderRule(MergeRule):
 
 
 def get_rule():
-    return TotalCommanderRule, RuleDetails(executable=["totalcmd", "totalcmd64"])
+    return TotalCommanderRule, RuleDetails(name="total commander", executable=["totalcmd", "totalcmd64"])
 

@@ -9,13 +9,12 @@ import itertools
 
 # this function takes a dictionary and returns a dictionary whose keys are sequences of keys of the original dictionary
 # and whose values our the corresponding sequences of values of the original dictionary
-from dragonfly import Key, Repeat, Dictation, Choice
+from dragonfly import Key, Repeat, Dictation, Choice, MappingRule
 
 from castervoice.lib import alphanumeric
 from castervoice.lib.actions import Text
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
-from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
 
@@ -39,9 +38,7 @@ def make_sequence_dict_up_to_length(dictionary, highest_length):
     return output
 
 
-class ExcelRule(MergeRule):
-    pronunciation = "excel"
-
+class ExcelRule(MappingRule):
     mapping = {
         "next sheet [<n>]":
             R(Key("c-pgdown"))*Repeat(extra='n'),
@@ -128,4 +125,4 @@ class ExcelRule(MergeRule):
 
 
 def get_rule():
-    return ExcelRule, RuleDetails(executable="excel")
+    return ExcelRule, RuleDetails(name="excel", executable="excel")

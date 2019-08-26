@@ -1,14 +1,11 @@
-from dragonfly import Key, Repeat
+from dragonfly import Key, Repeat, MappingRule
 
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
-from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
 
-class GitHubDeskRule(MergeRule):
-    pronunciation = "github desktop"
-
+class GitHubDeskRule(MappingRule):
     mapping = {
         "new repository": R(Key("c-n")),
         "add local repository": R(Key("c-o")),
@@ -50,4 +47,4 @@ class GitHubDeskRule(MergeRule):
 
 
 def get_rule():
-    return GitHubDeskRule, RuleDetails(executable="GitHubDesktop")
+    return GitHubDeskRule, RuleDetails(name="github desktop", executable="GitHubDesktop")

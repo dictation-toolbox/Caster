@@ -1,13 +1,10 @@
-from dragonfly import Key
+from dragonfly import Key, MappingRule
 
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
 
-class SyncDirsRule(MergeRule):
-    pronunciation = "total commander synchronize directories"
-
+class SyncDirsRule(MappingRule):
     mapping = {
         "compare files": R(Key('c-f3')),
         "copy left": R(Key('c-l')),
@@ -19,5 +16,7 @@ class SyncDirsRule(MergeRule):
 
 
 def get_rule():
-    details = RuleDetails(executable=["totalcmd", "totalcmd64"], title='Synchronize directories')
+    details = RuleDetails(name="total commander synchronize directories",
+                          executable=["totalcmd", "totalcmd64"],
+                          title='Synchronize directories')
     return SyncDirsRule, details

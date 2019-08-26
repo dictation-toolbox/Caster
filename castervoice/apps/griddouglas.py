@@ -1,6 +1,6 @@
 import time
 
-from dragonfly import Mouse, Function, Choice
+from dragonfly import Mouse, Function, Choice, MappingRule
 
 from castervoice.lib import settings, control
 from castervoice.asynch.mouse import grids
@@ -9,7 +9,6 @@ import win32api, win32con
 from castervoice.lib.ccr.standard import SymbolSpecs
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
-from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
 control.nexus()
@@ -76,7 +75,7 @@ def select_text():
     drag_from_to(x1,y1,x2,y2)
 
 
-class DouglasGridRule(MergeRule):
+class DouglasGridRule(MappingRule):
     mapping = {
         "<x> [by] <y> [<action>]":
             R(Function(send_input)),
@@ -114,4 +113,4 @@ class DouglasGridRule(MergeRule):
 
 
 def get_rule():
-    return DouglasGridRule, RuleDetails(title="douglasgrid")
+    return DouglasGridRule, RuleDetails(name="legion grid rule", title="douglasgrid")

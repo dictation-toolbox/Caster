@@ -1,14 +1,11 @@
-from dragonfly import Key, Repeat, Dictation
+from dragonfly import Key, Repeat, Dictation, MappingRule
 
-from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
-from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
 
-class SSMSRule(MergeRule):
-    pronunciation = "sequel server management studio"
-
+class SSMSRule(MappingRule):
     mapping = {
         # There doesn't seem to be a hotkey for sequential tab navigation in SSMS, but something is better than nothing...
         "next tab [<n>]": R(Key("c-tab"))*Repeat(extra="n"),
@@ -38,4 +35,4 @@ class SSMSRule(MergeRule):
 
 
 def get_rule():
-    return SSMSRule, rdcommon.app_executable("ssms")
+    return SSMSRule, RuleDetails(name="sequel server management studio", executable="ssms")

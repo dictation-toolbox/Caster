@@ -1,9 +1,8 @@
-from dragonfly import Function
+from dragonfly import Function, MappingRule
 
 from castervoice.lib import control, settings
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
-from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
 
@@ -24,7 +23,7 @@ def hmc_checkbox(n):
     control.nexus().comm.get_com("hmc").do_action("check", [int(n)])
 
 
-class HMCHistoryRule(MergeRule):
+class HMCHistoryRule(MappingRule):
     mapping = {
         # specific to macro recorder
         "check <n>":
@@ -43,5 +42,7 @@ class HMCHistoryRule(MergeRule):
 
 
 def get_rule():
-    details = RuleDetails(title=settings.HMC_TITLE_RECORDING, rdp_mode_exclusion=True)
+    details = RuleDetails(name="h m c history rule",
+                          title=settings.HMC_TITLE_RECORDING,
+                          rdp_mode_exclusion=True)
     return HMCHistoryRule, details

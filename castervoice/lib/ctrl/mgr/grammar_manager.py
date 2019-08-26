@@ -1,4 +1,4 @@
-import os
+import os, traceback
 
 from dragonfly import Grammar
 
@@ -235,11 +235,12 @@ class GrammarManager(object):
         try:
             test_instance = rule_class()
         except:  # ignore warnings on this line-- it's supposed to be broad
+            traceback.print_exc()
             return class_name + " rejected due to instantiation errors"
 
         '''if ccr, validate the rule'''
         if details.declared_ccrtype is not None:
-            error = self._ccr_rules_validator.validate(test_instance, details.declared_ccrtype)
+            error = self._ccr_rules_validator.validate_rule(test_instance, details.declared_ccrtype)
             if error is not None:
                 return class_name + " rejected due to rule validation errors: " + error
 

@@ -1,13 +1,11 @@
-from dragonfly import Key, Dictation
+from dragonfly import Key, Dictation, MappingRule
 
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
-from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
 
-class SQLDeveloperRule(MergeRule):
-    pronunciation = "sequel developer"
+class SQLDeveloperRule(MappingRule):
 
     mapping = {
         "run this query": R(Key("f9")),
@@ -22,4 +20,7 @@ class SQLDeveloperRule(MergeRule):
 
 
 def get_rule():
-    return SQLDeveloperRule, RuleDetails(executable="sqldeveloper64W", title="SQL Developer")
+    details = RuleDetails(name="sequel developer",
+                          executable="sqldeveloper64W",
+                          title="SQL Developer")
+    return SQLDeveloperRule, details

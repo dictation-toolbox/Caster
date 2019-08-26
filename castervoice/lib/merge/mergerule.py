@@ -44,7 +44,7 @@ class MergeRule(MappingRule, Pronounceable):
         return "%s: %s%s" % (rule_name, spec, extras)
 
     '''Generates an "rdescript" for actions in this rule which don't have them.'''
-    def format_actions(self):
+    def _format_actions(self):
         for spec, action in self.mapping.items():
             #pylint: disable=no-member
             if hasattr(action, "rdescript") and action.rdescript is None:

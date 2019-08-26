@@ -1,6 +1,6 @@
 import time
 
-from dragonfly import Mouse, Function, Choice
+from dragonfly import Mouse, Function, Choice, MappingRule
 
 from castervoice.asynch.mouse import grids
 import win32api, win32con
@@ -9,7 +9,6 @@ from castervoice.lib import control, settings
 from castervoice.lib.ccr.standard import SymbolSpecs
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
-from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
 
@@ -75,7 +74,7 @@ def select_text():
     drag_from_to(x1,y1,x2,y2)
 
 
-class RainbowGridRule(MergeRule):
+class RainbowGridRule(MappingRule):
 
     mapping = {
         "[<pre>] <color> <n> [<action>]":
@@ -144,4 +143,4 @@ class RainbowGridRule(MergeRule):
 
 
 def get_rule():
-    return RainbowGridRule, RuleDetails(title="rainbowgrid")
+    return RainbowGridRule, RuleDetails(name="rainbow grid rule", title="rainbowgrid")

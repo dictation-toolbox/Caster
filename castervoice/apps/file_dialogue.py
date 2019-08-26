@@ -1,15 +1,12 @@
-from dragonfly import Key, Repeat, Dictation
+from dragonfly import Key, Repeat, Dictation, MappingRule
 
 from castervoice.lib.actions import Text
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
-from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
 
-class FileDialogueRule(MergeRule):
-    pronunciation = "file dialogue"
-
+class FileDialogueRule(MappingRule):
     mapping = {
         "up [<n>]": R(Key("a-up"))*Repeat(extra="n"),
         "back [<n>]": R(Key("a-left"))*Repeat(extra="n"),
@@ -30,4 +27,4 @@ class FileDialogueRule(MergeRule):
 
 
 def get_rule():
-    return FileDialogueRule, RuleDetails(title=["open, save, select"])
+    return FileDialogueRule, RuleDetails(name="file dialogue", title=["open, save, select"])

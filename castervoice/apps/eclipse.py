@@ -2,6 +2,7 @@ from dragonfly import Key, Repeat, Dictation, Function, Choice, Paste, Pause
 
 from castervoice.apps.eclipse_support import ec_con
 from castervoice.lib.actions import Text
+from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST, Boolean
 from castervoice.lib.merge.mergerule import MergeRule
@@ -40,4 +41,4 @@ class EclipseCCR(MergeRule):
 
 
 def get_rule():
-    return EclipseCCR, RuleDetails(executable="eclipse", title="Eclipse")
+    return EclipseCCR, RuleDetails(ccrtype=CCRType.APP, executable="eclipse", title="Eclipse")

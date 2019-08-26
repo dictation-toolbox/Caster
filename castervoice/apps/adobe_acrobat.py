@@ -1,16 +1,14 @@
-from dragonfly import Dictation, Key, Repeat, Mouse, Pause
+from dragonfly import Dictation, Key, Repeat, Mouse, Pause, MappingRule
 
 from castervoice.lib.actions import Text
-from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
-from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
-ShowHideMenu = Key("a-v, s")
+_SHOW_HIDE_MENU = Key("a-v, s")
 
-class AcrobatRule(MergeRule):
-    pronunciation = "acrobat"
 
+class AcrobatRule(MappingRule):
     mapping = {
         "[go to] page <n>":
             R(Key("a-v, n, g/15") + Text("%(n)s") + Key("enter")),
@@ -63,15 +61,15 @@ class AcrobatRule(MergeRule):
         "up it [<n>]":
             R(Key("pgup:%(n)s, down:4")),
         "tools pane":
-            R(ShowHideMenu + Key("t")),
+            R(_SHOW_HIDE_MENU + Key("t")),
         "menu bar":
-            R(ShowHideMenu + Key("m")),
+            R(_SHOW_HIDE_MENU + Key("m")),
         "model tree":
-            R(ShowHideMenu + Key("n, e")),
+            R(_SHOW_HIDE_MENU + Key("n, e")),
         "bookmarks":
-            R(ShowHideMenu + Key("n, b")),
+            R(_SHOW_HIDE_MENU + Key("n, b")),
         "[page] thumbnails":
-            R(ShowHideMenu + Key("n, b")),
+            R(_SHOW_HIDE_MENU + Key("n, b")),
         "rotate [<n>]":
             R(Key("c-plus"))*Repeat(extra='n'),
 
@@ -109,4 +107,4 @@ class AcrobatRule(MergeRule):
 
 
 def get_rule():
-    return AcrobatRule, rdcommon.app_executable("acrobat")
+    return AcrobatRule, RuleDetails(name="acrobat", executable="acrobat")

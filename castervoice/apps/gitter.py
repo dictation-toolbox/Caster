@@ -3,18 +3,15 @@ __author__ = 'LexiconCode'
 Command-module for Gitter
 Official Site "https://gitter.im/"
 """
-from dragonfly import Key, Pause, Choice
+from dragonfly import Key, Pause, Choice, MappingRule
 
 from castervoice.lib.actions import Text
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 from castervoice.lib.temporary import Store, Retrieve
 
 
-class GitterRule(MergeRule):
-    pronunciation = "Gitter"
-
+class GitterRule(MappingRule):
     mapping = {
         "bold":
             R(Store() + Text("****") + Key("left:2") +
@@ -58,4 +55,4 @@ class GitterRule(MergeRule):
 
 
 def get_rule():
-    return GitterRule, RuleDetails(executable="gitter")
+    return GitterRule, RuleDetails(name="Gitter", executable="gitter")

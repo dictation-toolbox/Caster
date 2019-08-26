@@ -1,15 +1,12 @@
-from dragonfly import Key, Pause, Choice
+from dragonfly import Key, Pause, Choice, MappingRule
 
 from castervoice.lib.actions import Text
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
-from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
 
-class fmanRule(MergeRule):
-    pronunciation = "F man"
-
+class fmanRule(MappingRule):
     mapping = {
         "copy": R(Key("f5")),
         "deselect": R(Key("c-d")),
@@ -51,4 +48,4 @@ class fmanRule(MergeRule):
 
 
 def get_rule():
-    return fmanRule, RuleDetails(executable="fman", title="fman")
+    return fmanRule, RuleDetails(name="F man", executable="fman", title="fman")

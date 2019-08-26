@@ -1,9 +1,8 @@
-from dragonfly import Key, Mimic, Function
+from dragonfly import Key, Mimic, Function, MappingRule
 
 from castervoice.lib.actions import Text
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
-from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
 
@@ -12,8 +11,7 @@ def _apply(n):
         Text("stash@{" + str(int(n)) + "}").execute()
 
 
-class GitBashRule(MergeRule):
-    pronunciation = "git bash"
+class GitBashRule(MappingRule):
     GIT_ADD_ALL = "g, i, t, space, a, d, d, space, minus, A"
     GIT_COMMIT = "g, i, t, space, c, o, m, m, i, t, space, minus, m, space, quote, quote, left"
     mapping = {
@@ -122,5 +120,5 @@ _executables = [
 
 
 def get_rule():
-    return GitBashRule, RuleDetails(executable=_executables)
+    return GitBashRule, RuleDetails(name="git bash", executable=_executables)
 

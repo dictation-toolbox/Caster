@@ -10,8 +10,6 @@ from castervoice.lib.temporary import Store, Retrieve
 
 
 class SublimeRule(MergeRule):
-    pronunciation = "sublime"
-
     mapping = {
         "new file":
             R(Key("c-n")),
@@ -195,4 +193,4 @@ class SublimeRule(MergeRule):
 
 
 def get_rule():
-    return SublimeRule, RuleDetails(executable="sublime_text", title="Sublime Text")
+    return SublimeRule, RuleDetails(name="sublime", executable="sublime_text", title="Sublime Text")

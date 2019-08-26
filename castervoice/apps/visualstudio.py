@@ -1,15 +1,12 @@
-from dragonfly import Key, Repeat, Dictation
+from dragonfly import Key, Repeat, Dictation, MappingRule
 
 from castervoice.lib.actions import Text
-from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
-from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
 
-class VisualStudioRule(MergeRule):
-    pronunciation = "visual studio"
-
+class VisualStudioRule(MappingRule):
     mapping = {
         "next tab [<n>]":
             R(Key("ca-pgdown"))*Repeat(extra="n"),
@@ -91,4 +88,4 @@ class VisualStudioRule(MergeRule):
 
 
 def get_rule():
-    return VisualStudioRule, rdcommon.app_executable("devenv")
+    return VisualStudioRule, RuleDetails(name="visual studio", executable="devenv")

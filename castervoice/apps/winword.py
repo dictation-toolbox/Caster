@@ -1,14 +1,11 @@
-from dragonfly import Key, Dictation
+from dragonfly import Key, Dictation, MappingRule
 
-from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
-from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
 
-class MSWordRule(MergeRule):
-    pronunciation = "Microsoft Word"
-
+class MSWordRule(MappingRule):
     mapping = {
         "insert image": R(Key("alt, n, p")),
     }
@@ -20,4 +17,5 @@ class MSWordRule(MergeRule):
 
 
 def get_rule():
-    return MSWordRule, rdcommon.app_executable("winword")
+    details = RuleDetails(name="Microsoft Word", executable="winword")
+    return MSWordRule, details
