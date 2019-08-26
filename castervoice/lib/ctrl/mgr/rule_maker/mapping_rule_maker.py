@@ -13,8 +13,8 @@ class MappingRuleMaker(BaseRuleMaker):
         self._smr_configurer = smr_configurer
 
     def create_non_ccr_grammar(self, managed_rule):
-        rule_instance = managed_rule.get_rule_instance()
         details = managed_rule.get_details()
+        rule_instance = managed_rule.get_rule_class()(name=details.name)
 
         if not details.transformer_exclusion:
             rule_instance = self._transformers_runner.transform_rule(rule_instance)

@@ -1,4 +1,5 @@
 from dragonfly import Function, MappingRule
+import traceback
 
 from castervoice.lib import printer
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
@@ -19,6 +20,7 @@ class HooksRunner(ActivationRuleGenerator):
             self._hooks.append(hook)
         except:
             err = "Error instantiating {}.".format(hook_class.__name__)
+            traceback.print_exc()
             printer.out(err)
             return
 

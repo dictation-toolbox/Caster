@@ -19,7 +19,7 @@ class CompanionConfig(TomlConfig):
     """
 
     def __init__(self):
-        super(CompanionConfig, self).__init(settings.SETTINGS["paths"]["COMPANION_CONFIG_PATH"])
+        super(CompanionConfig, self).__init__(settings.SETTINGS["paths"]["COMPANION_CONFIG_PATH"])
         self.load()
         self._initialize()
 
@@ -35,7 +35,7 @@ class CompanionConfig(TomlConfig):
 class CompanionRuleHook(BaseHook):
 
     def __init__(self):
-        super(CompanionRuleHook, self).__init(EventType.ACTIVATION)
+        super(CompanionRuleHook, self).__init__(EventType.ACTIVATION)
         self._companion_rules = CompanionConfig()
 
     def get_pronunciation(self):
