@@ -52,18 +52,23 @@ SHOW_DEVELOPER_TOOLS = "[show] developer tools"
 CHECKOUT_PR = "checkout [this] pull request [locally]"
 UPDATE_PR = "update [this] pull request [locally]"
 
-DEFAULTS = {"n": 1, "m":"", "nth": ""}
-EXTRAS = [
-    Choice("nth", {
-        "first": "1",
-        "second": "2",
-        "third": "3",
-        "fourth": "4",
-        "fifth": "5",
-        "sixth": "6",
-        "seventh": "7",
-        "eighth": "8",
-    }),
-    IntegerRefST("n", 1, 100),
-    IntegerRefST("m", 1, 10)
-]
+
+def get_defaults():
+    return {"n": 1, "m":"", "nth": ""}
+
+
+def get_extras():
+    return [
+        Choice("nth", {
+            "first": "1",
+            "second": "2",
+            "third": "3",
+            "fourth": "4",
+            "fifth": "5",
+            "sixth": "6",
+            "seventh": "7",
+            "eighth": "8",
+        }),
+        IntegerRefST("n", 1, 100),
+        IntegerRefST("m", 1, 10)
+    ]
