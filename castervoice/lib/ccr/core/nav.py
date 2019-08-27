@@ -1,9 +1,10 @@
 from dragonfly import Key, Function, Repeat, Mouse, Dictation, Choice, ContextAction, AppContext
 
-from castervoice.lib import const, navigation, context, textformat, text_utils
+from castervoice.lib import navigation, context, textformat, text_utils
 from dragonfly.actions.action_mimic import Mimic
+
+from castervoice.lib.ccr.core.punctuation_support import double_text_punc_dict, text_punc_dict
 from castervoice.lib.ccr.standard import SymbolSpecs
-from castervoice.lib.ccr.core.punctuation import text_punc_dict, double_text_punc_dict
 from castervoice.lib.alphanumeric import caster_alphabet
 from castervoice.lib.ctrl.mgr import rdcommon
 from castervoice.lib.merge.additions import IntegerRefST
@@ -12,13 +13,19 @@ from castervoice.lib.merge.state.actions import AsynchronousAction, ContextSeeke
 from castervoice.lib.merge.state.actions2 import UntilCancelled
 from castervoice.lib.merge.state.short import S, L, R
 
-for key, value in double_text_punc_dict.items():
+
+_tpd = text_punc_dict()
+_dtpd = double_text_punc_dict()
+
+
+for key, value in _dtpd.items():
     if len(value) == 2:
-        double_text_punc_dict[key] = value[0] + "~" + value[1]
+        _dtpd[key] = value[0] + "~" + value[1]
     elif len(value) == 4:
-        double_text_punc_dict[key] = value[0:1] + "~" + value[2:3]
+        _dtpd[key] = value[0:1] + "~" + value[2:3]
     else:
-        raise Exception("Need to deal with nonstandard pair length in double_text_punc_dict.")
+        msg = "Need to deal with nonstandard pair length in double_text_punc_dict: {}"
+        raise Exception(msg.format(str(value)))
 
 
 class Navigation(MergeRule):
@@ -148,7 +155,7 @@ class Navigation(MergeRule):
 
     }
     tell_commands_dict = {"dock": ";", "doc": ";", "sink": "", "com": ",", "deck": ":"}
-    tell_commands_dict.update(text_punc_dict)
+    tell_commands_dict.update(_tpd)
 
     # I tried to limit which things get repeated how many times in hopes that it will help prevent the bad grammar error
     # this could definitely be changed. perhaps some of these should be made non-CCR
@@ -156,8 +163,8 @@ class Navigation(MergeRule):
     "(left | lease)": "left", "(right | ross)": "right", "(up | sauce)": "up",
     "(down | dunce)": "down", "page (down | dunce)": "pgdown", "page (up | sauce)": "pgup", "space": "space"}
     button_dictionary_10 = {"function {}".format(i):"f{}".format(i) for i in range(1, 10)}
-    button_dictionary_10.update(caster_alphabet)
-    button_dictionary_10.update(text_punc_dict)
+    button_dictionary_10.update(caster_alphabet())
+    button_dictionary_10.update(_tpd)
     longhand_punctuation_names = {"minus": "hyphen", "hyphen":"hyphen", "comma": "comma",
         "deckle": "colon", "colon": "colon", "slash": "slash", "backslash": "backslash"}
     button_dictionary_10.update(longhand_punctuation_names)
@@ -193,7 +200,7 @@ class Navigation(MergeRule):
         IntegerRefST("nnavi50", 1, 50),
         IntegerRefST("nnavi500", 1, 500),
         Dictation("textnv"),
-        Choice("enclosure", double_text_punc_dict),
+        Choice("enclosure", _dtpd),
         Choice("direction", {
             "dunce": "down",
             "sauce": "up",

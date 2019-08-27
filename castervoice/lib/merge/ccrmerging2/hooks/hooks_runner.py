@@ -26,15 +26,15 @@ class HooksRunner(ActivationRuleGenerator):
 
         # register it
         if hook.get_class_name() not in self._hooks_config:
-            self._hooks_config.set_active(hook.get_class_name(), False)
+            self._hooks_config.set_hook_active(hook.get_class_name(), False)
             self._hooks_config.save()
             printer.out("New hook added: {}".format(hook.get_class_name()))
 
     def construct_activation_rule(self):
         m = {}
         for hook in self._hooks:
-            enable_action = Function(lambda: self._hooks_config.set_active(hook.get_class_name(), True))
-            disable_action = Function(lambda: self._hooks_config.set_active(hook.get_class_name(), False))
+            enable_action = Function(lambda: self._hooks_config.set_hook_active(hook.get_class_name(), True))
+            disable_action = Function(lambda: self._hooks_config.set_hook_active(hook.get_class_name(), False))
             m["enable {} hook".format(hook.get_pronunciation())] = enable_action
             m["disable {} hook".format(hook.get_pronunciation())] = disable_action
 
@@ -46,7 +46,7 @@ class HooksRunner(ActivationRuleGenerator):
 
     def execute(self, event):
         for hook in self._hooks:
-            if not self._hooks_config.is_active(hook.get_class_name()):
+            if not self._hooks_config.is_hook_active(hook.get_class_name()):
                 continue
             if hook.match(event.get_type()):
                 try:

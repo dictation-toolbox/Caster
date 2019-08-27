@@ -4,37 +4,38 @@ from castervoice.lib import settings
 from castervoice.lib.actions import Key, Text
 
 
-caster_alphabet = {
-            "arch"    : "a",
-            "brov"    : "b",
-            "char"    : "c",
-            "delta"   : "d",
-            "echo"    : "e",
-            "foxy"    : "f",
-            "goof"    : "g",
-            "hotel"   : "h",
-            "India"   : "i",
-            "julia"   : "j",
-            "kilo"    : "k",
-            "Lima"    : "l",
-            "Mike"    : "m",
-            "Novakeen": "n",
-            "oscar"   : "o",
-            "prime"   : "p",
-            "Quebec"  : "q",
-            "Romeo"   : "r",
-            "Sierra"  : "s",
-            "tango"   : "t",
-            "uniform" : "u",
-            "victor"  : "v",
-            "whiskey" : "w",
-            "x-ray"   : "x",
-            "yankee"  : "y",
-            "Zulu"    : "z",
-        }
+def caster_alphabet():
+    return {
+        "arch"    : "a",
+        "brov"    : "b",
+        "char"    : "c",
+        "delta"   : "d",
+        "echo"    : "e",
+        "foxy"    : "f",
+        "goof"    : "g",
+        "hotel"   : "h",
+        "India"   : "i",
+        "julia"   : "j",
+        "kilo"    : "k",
+        "Lima"    : "l",
+        "Mike"    : "m",
+        "Novakeen": "n",
+        "oscar"   : "o",
+        "prime"   : "p",
+        "Quebec"  : "q",
+        "Romeo"   : "r",
+        "Sierra"  : "s",
+        "tango"   : "t",
+        "uniform" : "u",
+        "victor"  : "v",
+        "whiskey" : "w",
+        "x-ray"   : "x",
+        "yankee"  : "y",
+        "Zulu"    : "z",
+    }
 
 def get_alphabet_choice(spec):
-    return Choice(spec, caster_alphabet)
+    return Choice(spec, caster_alphabet())
 
 
 def word_number(wn):

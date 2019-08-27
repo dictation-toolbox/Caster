@@ -88,7 +88,9 @@ class SikuliController(object):
             utilities.simple_log()
 
     def generate_commands(self):
-        list_of_functions = self._server_proxy.list_functions()
+        list_of_functions = []
+        if self._server_proxy is not None:
+            list_of_functions = self._server_proxy.list_functions()
         mapping = {}
         for fname in list_of_functions:
             spec = " ".join(fname.split("_"))

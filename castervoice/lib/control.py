@@ -1,5 +1,5 @@
 _NEXUS = None
-print(" HERE IMPORTING NEXUS ... ")
+
 
 def init_nexus(content_loader):
     global _NEXUS

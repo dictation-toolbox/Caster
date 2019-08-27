@@ -9,13 +9,7 @@ from castervoice.lib.merge.ccrmerging2.hooks.base_hook import BaseHook
 
 class CompanionConfig(TomlConfig):
     """
-    COMPANION_CONFIG_PATH is a dict of {rule_class_name: [companion_pronunciations...]}
-
-    In order to enable this feature, you need to:
-    1. Copy this file into the .caster directory.
-    2. Provide both ["paths"]["COMPANION_CONFIG_PATH"] and a path in the settings config file.
-        This mechanism allows for feature expansion purely in the user space without growing
-        the settings file for everyone.
+    Controls companion rules. It is possible to make a circular companion rule relationship. Do not do this.
     """
 
     def __init__(self):

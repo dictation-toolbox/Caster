@@ -32,8 +32,10 @@ class TransformersRunner(ActivationRuleGenerator):
     def construct_activation_rule(self):
         m = {}
         for t in self._transformers:
-            enable_action = Function(lambda: self._transformers_config.set_active(t.get_class_name(), True))
-            disable_action = Function(lambda: self._transformers_config.set_active(t.get_class_name(), False))
+            enable_action = \
+                Function(lambda: self._transformers_config.set_transformer_active(t.get_class_name(), True))
+            disable_action = \
+                Function(lambda: self._transformers_config.set_transformer_active(t.get_class_name(), False))
             m["enable {} transformer".format(t.get_pronunciation())] = enable_action
             m["disable {} transformer".format(t.get_pronunciation())] = disable_action
 
@@ -45,6 +47,8 @@ class TransformersRunner(ActivationRuleGenerator):
 
     def transform_rule(self, rule):
         for transformer in self._transformers:
+            if not self._transformers_config.is_transformer_active(transformer.get_class_name()):
+                continue
             try:
                 rule = transformer.get_transformed_rule(rule)
             except:

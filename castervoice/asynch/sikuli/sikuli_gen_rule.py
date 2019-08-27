@@ -9,8 +9,8 @@ _CONTROLLER = sikuli_controller.get_instance()
 class SikuliRule(MappingRule):
 
     def __init__(self):
-        MappingRule.__init__(name="sikuli custom",
-                             mapping=_CONTROLLER.generate_commands())
+        super(SikuliRule, self).__init__(name="sikuli custom",
+                                         mapping=_CONTROLLER.generate_commands())
 
 
 def get_rule():

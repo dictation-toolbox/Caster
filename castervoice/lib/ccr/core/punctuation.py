@@ -1,62 +1,11 @@
 from dragonfly import Choice, Repeat
 
-from castervoice.lib import const
 from castervoice.lib.actions import Key, Text
+from castervoice.lib.ccr.core.punctuation_support import text_punc_dict, double_text_punc_dict
 from castervoice.lib.ctrl.mgr import rdcommon
 from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
-
-double_text_punc_dict = {
-    "quotes":                            "\"\"",
-    "thin quotes":                         "''",
-    "tickris":                             "``",
-    "prekris":                             "()",
-    "brax":                                "[]",
-    "curly":                               "{}",
-    "angle":                               "<>",
-}
-
-inv_dtpb = {v: k for k, v in double_text_punc_dict.iteritems()}
-
-text_punc_dict = {
-    "ace":                                                " ",
-    "clamor":                                             "!",
-    "chocky":                                            "\"",
-    "hash tag":                                           "#",
-    "Dolly":                                              "$",
-    "modulo":                                             "%",
-    "ampersand":                                          "&",
-    "apostrophe | single quote | chicky":                 "'",
-    "left " + inv_dtpb["()"]:                             "(",
-    "right " + inv_dtpb["()"]:                            ")",
-    "starling":                                           "*",
-    "plus":                                               "+",
-    "comma":                                              ",",
-    "minus":                                              "-",
-    "period | dot":                                       ".",
-    "slash":                                              "/",
-    "deckle":                                             ":",
-    "semper":                                             ";",
-    "[is] less than | left " + inv_dtpb["<>"]:            "<",
-    "[is] less [than] [or] equal [to]":                  "<=",
-    "equals":                                             "=",
-    "[is] equal to":                                     "==",
-    "[is] greater than | right " + inv_dtpb["<>"]:        ">",
-    "[is] greater [than] [or] equal [to]":               ">=",
-    "questo":                                             "?",
-    "(atty | at symbol)":                                 "@",
-    "left " + inv_dtpb["[]"]:                             "[",
-    "backslash":                                         "\\",
-    "right " + inv_dtpb["[]"]:                            "]",
-    "carrot":                                             "^",
-    "underscore":                                         "_",
-    "ticky | ((left | right) " +  inv_dtpb["``"] + " )":  "`",
-    "left " + inv_dtpb["{}"]:                             "{",
-    "pipe (sim | symbol)":                                "|",
-    "right " + inv_dtpb["{}"]:                            "}",
-    "tilde":                                              "~",
-}
 
 
 class Punctuation(MergeRule):
@@ -90,9 +39,9 @@ class Punctuation(MergeRule):
                 "long": " ",
             }),
         Choice(
-            "text_punc", text_punc_dict),
+            "text_punc", text_punc_dict()),
         Choice(
-            "double_text_punc", double_text_punc_dict)
+            "double_text_punc", double_text_punc_dict())
     ]
     defaults = {
         "npunc": 1,

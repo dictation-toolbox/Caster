@@ -1,11 +1,6 @@
-import itertools
-import pyperclip
-import re 
-import copy
-from dragonfly import Key, Pause, AppContext, Window
+import re
+from dragonfly import Key, AppContext, Window
 from castervoice.lib import context
-from castervoice.lib.ccr.core.punctuation import text_punc_dict,  double_text_punc_dict
-from castervoice.lib.alphanumeric import caster_alphabet
 
 
 contexts = {
@@ -13,6 +8,7 @@ contexts = {
     "lyx": AppContext(executable="lyx"),
     "winword": AppContext(executable="winword")
 }
+
 
 def get_application():
     window = Window.get_foreground()
@@ -23,8 +19,9 @@ def get_application():
             return name
     return "standard"
 
+
 def get_start_end_position(text, phrase, direction, occurrence_number, dictation_versus_character):
-# def get_start_end_position(text, phrase, direction):
+    # def get_start_end_position(text, phrase, direction):
     if dictation_versus_character == "character":
         pattern = re.escape(phrase)
     if dictation_versus_character == "dictation":
@@ -58,11 +55,13 @@ def get_start_end_position(text, phrase, direction, occurrence_number, dictation
             return 
     left_index, right_index = match
     return (left_index, right_index)
-    
+
+
 copy_pause_time_dict = {"standard": "10", "texstudio": "70", "lyx": "60", "winword": "90"}
 paste_pause_time_dict = {"standard": "0", "texstudio": "100", "lyx": "20", "winword": "20"} 
 # winword (a.k.a. Microsoft Word) pause times may need some tweaking, 
 # people are probably better off just using the native Dragon commands in winword.
+
 
 def text_manipulation_copy(application):
     """ the wait time can also be modified up or down further by going into context.read_selected_without_altering_clipboard 
@@ -83,8 +82,10 @@ def text_manipulation_copy(application):
     return selected_text
     ## pyperclip.copy(previous_item_on_the_clipboard) 
 
+
 def text_manipulation_paste(text, application):
     context.paste_string_without_altering_clipboard(text, pause_time=copy_pause_time_dict[application])
+
 
 def select_text_and_return_it(direction, number_of_lines_to_search, application):
     if direction == "left":
@@ -106,6 +107,7 @@ def select_text_and_return_it(direction, number_of_lines_to_search, application)
     
     return selected_text
 
+
 def deal_with_phrase_not_found(selected_text, application, direction):
         # Approach 1: unselect text by pressing left and then right, works in Tex studio
         if application == "texstudio":
@@ -119,6 +121,7 @@ def deal_with_phrase_not_found(selected_text, application, direction):
             if direction == "right":
                 Key("left").execute()
 
+
 def deal_with_up_down_directions(direction, number_of_lines_to_search):
     # note that zero is the default number of lines to search, so if you change that you will may want to change this
     if number_of_lines_to_search == 0 and (direction == "up" or direction == "down"):
@@ -129,7 +132,8 @@ def deal_with_up_down_directions(direction, number_of_lines_to_search):
     if direction == "down":    
         direction = "right"
     return (number_of_lines_to_search, direction)
-        
+
+
 def replace_phrase_with_phrase(text, replaced_phrase, replacement_phrase, direction, occurrence_number, dictation_versus_character):
     match_index = get_start_end_position(text, replaced_phrase, direction, occurrence_number, dictation_versus_character)
     if match_index:
@@ -162,7 +166,8 @@ def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, di
         if direction == "right":
             offset = len(new_text)
             Key("left:%d" %offset).execute()
-    
+
+
 def remove_phrase_from_text(text, phrase, direction, occurrence_number, dictation_versus_character):
     match_index = get_start_end_position(text, phrase, direction, occurrence_number, dictation_versus_character)
     if match_index:
@@ -181,6 +186,7 @@ def remove_phrase_from_text(text, phrase, direction, occurrence_number, dictatio
             return text[: left_index - 1] + text[right_index:]
         else:
             return text[: left_index] + text[right_index:]
+
 
 def copypaste_remove_phrase_from_text(phrase, direction, number_of_lines_to_search, occurrence_number, dictation_versus_character):
     if direction == "up" or direction == "down":
@@ -202,7 +208,7 @@ def copypaste_remove_phrase_from_text(phrase, direction, number_of_lines_to_sear
         offset = len(new_text)
         Key("left:%d" %offset).execute()
 
-    
+
 def delete_until_phrase(text, phrase, direction, before_after, occurrence_number, dictation_versus_character):
     match_index = get_start_end_position(text, phrase, direction, occurrence_number, dictation_versus_character)
     if match_index:
@@ -229,6 +235,7 @@ def delete_until_phrase(text, phrase, direction, before_after, occurrence_number
                 return " " + text[left_index :]
             else:
                 return text[left_index :]
+
 
 def copypaste_delete_until_phrase(direction, phrase, number_of_lines_to_search, before_after, occurrence_number, dictation_versus_character):
     if direction == "up" or direction == "down":
@@ -266,7 +273,6 @@ def copypaste_delete_until_phrase(direction, phrase, number_of_lines_to_search, 
             offset = len(new_text)
             Key("left:%d" %offset).execute()
 
-    
 
 def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search, occurrence_number, dictation_versus_character):
     if direction == "up" or direction == "down":
@@ -341,8 +347,7 @@ def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search
                 offset = len(selected_text) - right_index - offset_correction
             Key("left:%d" %offset).execute()
     
-            
-    
+
 def select_phrase(phrase, direction, number_of_lines_to_search, occurrence_number, dictation_versus_character):
     if direction == "up" or direction == "down":
         number_of_lines_to_search, direction = deal_with_up_down_directions(direction, number_of_lines_to_search)
@@ -396,7 +401,6 @@ def select_phrase(phrase, direction, number_of_lines_to_search, occurrence_numbe
             selection_offset = len(phrase) - multiline_selection_offset_correction
             Key("s-right:%d" %selection_offset).execute()
     
-
 
 def select_until_phrase(direction, phrase, before_after, number_of_lines_to_search, occurrence_number, dictation_versus_character):
     if direction == "up" or direction == "down":
@@ -474,5 +478,3 @@ def select_until_phrase(direction, phrase, before_after, number_of_lines_to_sear
                 offset = right_index - multiline_correction
             Key("s-right:%d" %offset).execute()
 
-
-                

@@ -250,6 +250,8 @@ _DEFAULT_SETTINGS = {
             _USER_DIR + "/data/activated_transformers.toml",
         "ACTIVATED_HOOKS_CONFIG_PATH":
             _USER_DIR + "/data/activated_hooks.toml",
+        "COMPANION_CONFIG_PATH":
+            _USER_DIR + "/data/companion_config.toml",
         "DLL_PATH":
             BASE_PATH + "/lib/dll/",
         "GDEF_FILE":
