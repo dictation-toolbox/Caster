@@ -5,7 +5,10 @@ Created on Sep 1, 2015
 '''
 from castervoice.lib.imports import *
 
+
 class Bash(MergeRule):
+    pronunciation = "bash"
+
     mapping = {
         SymbolSpecs.IF:
             R(Text("if [[  ]]; ") + Key("left/5:5")),
