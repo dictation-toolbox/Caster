@@ -19,7 +19,11 @@ class BaseSelfModifyingRule(MergeRule):
 
         :param name: str
         """
-        self._smr_mapping = {"spec which gets replaced": NullAction()}
+        self._reload_shim = None
+        self._hooks_runner = None
+
+        default_smr_mapping = {"spec which gets replaced": NullAction()}
+        self._smr_mapping = default_smr_mapping
         # extras and defaults may not get replaced:
         self._smr_extras = [IntegerRefST("n", 1, 50), Dictation("s")]
         self._smr_defaults = {"n": 1, "s": ""}
@@ -29,9 +33,6 @@ class BaseSelfModifyingRule(MergeRule):
         self._deserialize()
 
         MergeRule.__init__(self, name, self._smr_mapping, self._smr_extras, self._smr_defaults)
-
-        self._reload_shim = None
-        self._hooks_runner = None
 
     def set_reload_shim(self, reload_shim):
         """

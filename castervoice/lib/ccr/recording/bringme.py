@@ -35,7 +35,6 @@ class BringRule(BaseSelfModifyingRule):
 
     def __init__(self):
         super(BringRule, self).__init__(settings.SETTINGS["paths"]["SM_BRINGME_PATH"])
-        self._initialize()
 
     def _initialize(self):
         """
@@ -48,6 +47,9 @@ class BringRule(BaseSelfModifyingRule):
         """
         This _deserialize creates mapping which uses the user-made extras.
         """
+
+        self._initialize()
+
         self._smr_mapping = {
             "bring me <program>": R(Function(self._bring_program)),
             "bring me <website>": R(Function(self._bring_website)),
