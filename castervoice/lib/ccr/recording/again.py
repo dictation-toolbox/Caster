@@ -15,8 +15,8 @@ class Again(MappingRule):
         "again (<n> [(times|time)] | do)":
             R(Function(lambda n: Again._create_asynchronous(n)), show=False)
     }
-    extras = [IntegerRefST("n", 1, 50)],
-    defaults = {"n": 1},
+    extras = [IntegerRefST("n", 1, 50)]
+    defaults = {"n": 1}
 
     @staticmethod
     def _repeat(utterance):
