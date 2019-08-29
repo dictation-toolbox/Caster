@@ -164,8 +164,6 @@ class GrammarManager(object):
             active_mrs = [self._managed_rules[rcn] for rcn in active_rule_class_names]
             active_ccr_mrs = [mr for mr in active_mrs if mr.get_details().declared_ccrtype is not None]
 
-            print("_activate_rule: " + str(len(active_ccr_mrs)))
-
             '''
             The merge may result in 1 to n+1 rules where n is the number of ccr app rules
             which are in the active rules list.
@@ -173,7 +171,7 @@ class GrammarManager(object):
             the merger has to make the global one, plus an app rule with the app stuff plus all the
             global stuff.
             '''
-            ccr_rules_and_contexts = self.merger.merge(active_ccr_mrs)
+            ccr_rules_and_contexts = self._merger.merge(active_ccr_mrs)
             grammars = []
             for rule_and_context in ccr_rules_and_contexts:
                 rule = rule_and_context[0]

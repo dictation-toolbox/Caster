@@ -28,20 +28,24 @@ def cap_dictation(dictation):
 
 
 # extras are common to both classes in this file
-extras_for_whole_file = [
-    Dictation("text"),
-    IntegerRefST("n10", 1, 10),
-    Choice("first_second_third", {
-        "first": 0,
-        "second": 1,
-        "third": 2,
-        "fourth": 3,
-        "fifth": 4,
-        "six": 5,
-        "seventh": 6
-    }),
-]
-defaults_for_whole_file = {
-    "n10": 1,
-    "text": "",
-}
+def extras_for_whole_file():
+    return [
+        Dictation("text"),
+        IntegerRefST("n10", 1, 10),
+        Choice("first_second_third", {
+            "first": 0,
+            "second": 1,
+            "third": 2,
+            "fourth": 3,
+            "fifth": 4,
+            "six": 5,
+            "seventh": 6
+        }),
+    ]
+
+
+def defaults_for_whole_file():
+    return {
+        "n10": 1,
+        "text": "",
+    }

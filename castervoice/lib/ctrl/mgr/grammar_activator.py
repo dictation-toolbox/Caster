@@ -1,5 +1,4 @@
 from dragonfly import MappingRule, Function
-from dragonfly.grammar.grammar_base import Grammar
 
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 

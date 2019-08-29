@@ -21,7 +21,8 @@ class RulesActivationConfig(TomlConfig):
 
     def put(self, rule_class_name, active):
         self._config[RulesActivationConfig._ACTIVE_DICT][rule_class_name] = active
-        if rule_class_name in self._config[RulesActivationConfig._ORDER_LIST]:
+        # this 'while' will take care of any duplicates that might end up in this list
+        while rule_class_name in self._config[RulesActivationConfig._ORDER_LIST]:
             self._config[RulesActivationConfig._ORDER_LIST].remove(rule_class_name)
         if active:
             self._config[RulesActivationConfig._ORDER_LIST].append(rule_class_name)

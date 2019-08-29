@@ -24,8 +24,8 @@ class SpellingWindowRule(MergeRule):
     }
 
     # see above
-    extras = extras_for_whole_file
-    defaults = defaults_for_whole_file
+    extras = extras_for_whole_file()
+    defaults = defaults_for_whole_file()
 
 
 def get_rule():

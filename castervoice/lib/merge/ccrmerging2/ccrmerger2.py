@@ -46,7 +46,7 @@ class CCRMerger2(object):
         # 2: sort rules into the order they'll be merged in
         sorted_rules = self._rule_sorter.sort_rules(transformed_rules)
         # 3: compute compatibility results for all rules vs all rules in O(n) for total specs
-        compat_results = [self._compatibility_checker.compatibility_check(r) for r in sorted_rules]
+        compat_results = self._compatibility_checker.compatibility_check(sorted_rules)
         # 4: create one merged rule for each context, plus the no-contexts merged rule
         app_crs, non_app_crs = self._separate_app_rules(compat_results, rcns_to_details)
         merged_rules = self._create_merged_rules(app_crs, non_app_crs)
@@ -132,7 +132,7 @@ class CCRMerger2(object):
         """
         result = {}
         for managed_rule in managed_rules:
-            result.put(managed_rule.get_rule_class_name(), managed_rule.get_details())
+            result[managed_rule.get_rule_class_name()] = managed_rule.get_details()
         return result
 
     def _create_repeat_rule(self, rule):

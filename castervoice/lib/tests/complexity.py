@@ -14,7 +14,7 @@ from castervoice.lib import settings
 from castervoice.lib.actions import Text
 from castervoice.lib.ccr.core.alphabet import Alphabet
 from castervoice.lib.ccr.core.nav import Navigation
-from castervoice.lib.ccr.core.numbers import Numbers
+from castervoice.lib.ccr.core.numeric import Numbers
 from castervoice.lib.ccr.core.punctuation import Punctuation
 from castervoice.lib.ccr.python.python import Python
 from castervoice.lib.merge.ccrmerger_legacy import CCRMerger
