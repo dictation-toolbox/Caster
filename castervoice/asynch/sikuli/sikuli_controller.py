@@ -2,7 +2,7 @@ from subprocess import Popen
 import traceback
 import socket
 
-from dragonfly import get_engine, Function, MappingRule, Playback
+from dragonfly import get_engine, Function, Playback
 
 from castervoice.lib import settings, utilities, control
 

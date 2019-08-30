@@ -30,7 +30,7 @@ class CCRMerger2(object):
         self._merging_strategy = merging_strategy
         #
         self._sequence = 0
-        self._max_repetitions = max_repetitions
+        self._max_repetitions = int(max_repetitions)
         self._smr_configurer = smr_configurer
 
     def merge(self, managed_rules):
@@ -52,7 +52,7 @@ class CCRMerger2(object):
         merged_rules = self._create_merged_rules(app_crs, non_app_crs)
         # 5: turn the merged rules into repeat rules
         ccr_rules = [self._create_repeat_rule(merged_rule) for merged_rule in merged_rules]
-        contexts = CCRMerger2._create_contexts(app_crs)
+        contexts = CCRMerger2._create_contexts(app_crs, rcns_to_details)
 
         return zip(ccr_rules, contexts)
 
