@@ -103,14 +103,6 @@ class MainRule(MergeRule):
         "change monitor":
             R(Key("w-p") + Pause("100") + Function(change_monitor)),
 
-        # window management
-        'minimize':
-            R(Playback([(["minimize", "window"], 0.0)])),
-        'maximize':
-            R(Playback([(["maximize", "window"], 0.0)])),
-        "remax":
-            R(Key("a-space/10,r/10,a-space/10,x")),
-
         # passwords
 
         # mouse alternatives

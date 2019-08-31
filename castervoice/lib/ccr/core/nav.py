@@ -79,8 +79,17 @@ class NavigationNon(MergeRule):
             R(Key("c-v")),
         "refresh":
             R(Key("c-r")),
-        "max win":
+        # window management
+        "minimize":
+            R(Function(lambda: Window.get_foreground().minimize())),
+        "maximize":
+            R(Function(lambda: Window.get_foreground().maximize())),
+        "remax":
+            R(Key("a-space/10,r/10,a-space/10,x")),
+        "maxiwin":
             R(Key("w-up")),
+        "close window":
+            R(Key("a-f4")),
         "move window":
             R(Key("a-space, r, a-space, m")),
         "window (left | lease) [<n>]":
@@ -303,9 +312,11 @@ class Navigation(MergeRule):
             R(Key("%(modifier)s%(button_dictionary_10)s")*Repeat(extra='nnavi10'),
               rdescript="press modifier keys plus buttons from button_dictionary_10"),
         "<modifier> <button_dictionary_1>":
-            R(Key("%(modifier)s%(button_dictionary_1)s"),
-              rdescript=
-              "press modifiers plus buttons from button_dictionary_1, non-repeatable"),
+              R(Key("%(modifier)s%(button_dictionary_1)s"),
+              rdescript="press modifiers plus buttons from button_dictionary_1, non-repeatable"),
+
+        # "key stroke [<modifier>] <combined_button_dictionary>":
+        #     R(Text('Key("%(modifier)s%(combined_button_dictionary)s")')),
 
         # "key stroke [<modifier>] <combined_button_dictionary>":
         #     R(Text('Key("%(modifier)s%(combined_button_dictionary)s")')),
@@ -364,10 +375,8 @@ class Navigation(MergeRule):
     for dictionary in [button_dictionary_1, button_dictionary_10, button_dictionary_500]:
         combined_button_dictionary.update(dictionary)
 
-    modifier_choice_object = Choice(
-        "modifier",
-        {
-            "(control | fly)": "c-",  #TODO: make DRY
+    modifier_choice_object = Choice("modifier", {
+            "(control | fly)": "c-", #TODO: make DRY
             "(shift | shin)": "s-",
             "alt": "a-",
             "(control shift | que)": "cs-",
@@ -403,6 +412,7 @@ class Navigation(MergeRule):
         Choice("button_dictionary_10", button_dictionary_10),
         Choice("button_dictionary_500", button_dictionary_500),
         Choice("combined_button_dictionary", combined_button_dictionary),
+
         Choice("capitalization", {
             "yell": 1,
             "tie": 2,
