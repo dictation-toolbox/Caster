@@ -22,8 +22,7 @@ from castervoice.lib.clipboard import Clipboard
 from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,
     HKEY_CURRENT_USER, OpenKey, QueryValueEx)
 
-from dragonfly.windows.window import Window
-from dragonfly import Key
+from dragonfly import Window, Key
 
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0]
@@ -36,30 +35,26 @@ finally:
 # checked to see when a new file name had appeared
 FILENAME_PATTERN = re.compile(r"[/\\]([\w_ ]+\.[\w]+)")
 
+import struct
 from ctypes import cdll
-from win32gui import GetForegroundWindow
 
-def load_vda():
-    # https://github.com/reckoner/pyVirtualDesktopAccessor
-    # provides a 32-bit python implementation (this one).
-    # there is a 64-bit implementation at
-    # https://github.com/Ciantic/VirtualDesktopAccessor
-    vda = cdll.LoadLibrary(BASE_PATH + "/castervoice/bin/VirtualDesktopAccessor.dll")
-    return vda
+# https://github.com/mrob95/pyVirtualDesktopAccessor
+# Source: https://github.com/Ciantic/VirtualDesktopAccessor
+if struct.calcsize("P")*8 == 32:
+    vda = cdll.LoadLibrary(BASE_PATH + "/castervoice/bin/VirtualDesktopAccessor32.dll")
+else:
+    vda = cdll.LoadLibrary(BASE_PATH + "/castervoice/bin/VirtualDesktopAccessor64.dll")
 
 def move_current_window_to_desktop(n=0, follow=False):
-    vda = load_vda()
-    wndh = GetForegroundWindow()
+    wndh = Window.get_foreground().handle
     vda.MoveWindowToDesktopNumber(wndh, n-1)
     if follow:
         vda.GoToDesktopNumber(n-1)
 
 def go_to_desktop_number(n):
-    vda = load_vda()
-    return vda.GoToDesktopNumber(n-1)
+    vda.GoToDesktopNumber(n-1)
 
 def close_all_workspaces():
-    vda = load_vda()
     total = vda.GetDesktopCount()
     go_to_desktop_number(total)
     Key("wc-f4/10:" + str(total-1)).execute()
