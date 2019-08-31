@@ -76,7 +76,7 @@ class GrammarManager(object):
         if self._initial_activations_complete:
             return
 
-        for rcn in self._config.get_active_rule_class_names():
+        for rcn in self._config.get_active_rcns_ordered():
             rd = self._managed_rules[rcn].get_details()
             is_ccr = rd.declared_ccrtype is not None
             if is_ccr and not self._ccr_toggle.is_active():
@@ -160,7 +160,7 @@ class GrammarManager(object):
             self._ccr_toggle.set_active(True)
 
             # handle CCR: get all active ccr rules after de/activating one
-            active_rule_class_names = self._config.get_active_rule_class_names()
+            active_rule_class_names = self._config.get_active_rcns_ordered()
             active_mrs = [self._managed_rules[rcn] for rcn in active_rule_class_names]
             active_ccr_mrs = [mr for mr in active_mrs if mr.get_details().declared_ccrtype is not None]
 
@@ -203,10 +203,11 @@ class GrammarManager(object):
 
         module_name = GrammarManager._get_module_name_from_file_path(file_path_changed)
         rule_class, details = self._content_loader.idem_import_module(module_name, ContentType.GET_RULE)
+        # re-register:
         self.register_rule(rule_class, details)
 
         class_name = rule_class.__name__
-        if class_name in self._config.get_active_rule_class_names():
+        if class_name in self._config.get_active_rcns_ordered():
             self._activate_rule(class_name, True)
 
     def _get_invalidation(self, rule_class, details):
