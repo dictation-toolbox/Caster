@@ -15,8 +15,9 @@ from castervoice.lib.ctrl.dependencies import DependencyMan  # requires nothing
 DependencyMan().initialize()
 _NEXUS = None
 from castervoice.lib import settings  # requires toml
-if settings.SYSTEM_INFORMATION["platform"] != "win32":
-    raise SystemError("Your platform is not currently supported by Caster.")
+if settings.SYSTEM_INFORMATION["platform"] not in ["win32", "win-amd64"] :
+    msg = "Your platform ({}) is not currently supported by Caster."
+    raise SystemError(msg.format(settings.SYSTEM_INFORMATION["platform"]))
 settings.WSR = __name__ == "__main__"
 
 if settings.WSR:
