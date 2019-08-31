@@ -1,5 +1,6 @@
 from castervoice.lib.imports import *
 
+
 class VisualStudioRule(MergeRule):
     pronunciation = "visual studio"
 
@@ -46,7 +47,7 @@ class VisualStudioRule(MergeRule):
             R(Key("c-m, c-m")),
         "toggle all outlining":
             R(Key("c-m, c-l")),
-        "[toggle] breakpoint":
+        "[toggle] break point":
             R(Key("f9")),
         "step over [<n>]":
             R(Key("f10/50")*Repeat(extra="n")),

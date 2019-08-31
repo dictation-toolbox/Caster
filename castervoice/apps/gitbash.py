@@ -91,7 +91,7 @@ class GitBashRule(MergeRule):
             R(Text("grep -rinH \"PATTERN\" *")),
         "search recursive count":
             R(Text("grep -rinH \"PATTERN\" * | wc -l")),
-        "search recursive filetype":
+        "search recursive file type":
             R(Text("find . -name \"*.java\" -exec grep -rinH \"PATTERN\" {} \\;")),
         "to file":
             R(Text(" > FILENAME")),
@@ -103,12 +103,8 @@ class GitBashRule(MergeRule):
 
 
 terminal_context = AppContext(executable=[
-    "\\sh.exe",
-    "\\bash.exe",
-    "\\cmd.exe",
-    "\\mintty.exe",
-    "\\powershell.exe"
-    ])
+    "\\sh.exe", "\\bash.exe", "\\cmd.exe", "\\mintty.exe", "\\powershell.exe"
+])
 
 jetbrains_context = AppContext(executable="idea", title="IntelliJ") \
           | AppContext(executable="idea64", title="IntelliJ") \

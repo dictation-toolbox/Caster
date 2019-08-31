@@ -37,7 +37,7 @@ class Markdown(MergeRule):
                 "strike through [text]": "tilde:4, left:2",
                 "horizontal rule": "asterisk, asterisk, asterisk, enter",
                 "R code": "backtick:3, lbrace, r, rbrace, enter:2, backtick:3, up",
-                "in-line code": "backtick:2, left",
+                "in line code": "backtick:2, left",
                 "code [block]": "backtick:6, left:3, enter:2, up",
             }),
     ]

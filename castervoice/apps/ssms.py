@@ -18,7 +18,7 @@ class SSMSRule(MergeRule):
         "(set | toggle) bookmark": R(Key("c-k, c-k")),
         "next bookmark": R(Key("c-k, c-n")),
         "prior bookmark": R(Key("c-k, c-p")),
-        "[toggle] breakpoint": R(Key("f9")),
+        "[toggle] break point": R(Key("f9")),
         "step over [<n>]": R(Key("f10/50")*Repeat(extra="n")),
         "step into": R(Key("f11")),
         "step out [of]": R(Key("s-f11")),

@@ -5,11 +5,12 @@ Created on Sep 4, 2018
 '''
 from castervoice.lib.imports import *
 
+
 # Return \first{second}, if second is empty then end inside the brackets for user input
 def back_curl(first, second):
     if str(second) != "":
-        return (Text("\\") + Text(str(first)) + Key("lbrace, rbrace, left") + Text(
-            str(second)) + Key("right"))
+        return (Text("\\") + Text(str(first)) + Key("lbrace, rbrace, left") +
+                Text(str(second)) + Key("right"))
     if str(second) == "":
         return (Text("\\") + Text(str(first)) + Key("lbrace, rbrace, left"))
 
@@ -27,8 +28,9 @@ class LaTeX(MergeRule):
         SymbolSpecs.COMMENT:
             R(Text("%")),
         "begin <element>":
-            R(back_curl("begin", "%(element)s") + Key("enter:2") + back_curl(
-                "end", "%(element)s") + Key("up")),
+            R(
+                back_curl("begin", "%(element)s") + Key("enter:2") +
+                back_curl("end", "%(element)s") + Key("up")),
         #
         "[use] package [<packages>]":
             R(back_curl("usepackage", "%(packages)s")),
@@ -45,12 +47,13 @@ class LaTeX(MergeRule):
         "insert quote":
             R(Text("``\'\'") + Key("left:2")),
         #
-        "superscript":
+        "super script":
             R(Text("^") + Key("lbrace, rbrace, left")),
         "subscript":
             R(Text("_") + Key("lbrace, rbrace, left")),
         "math fraction":
-            R(Text("\\") + Text("frac") +
+            R(
+                Text("\\") + Text("frac") +
                 Key("lbrace, rbrace, lbrace, rbrace, space, left:4")),
     }
 

@@ -34,7 +34,7 @@ ADD_BOOKMARK = "[add] bookmark"
 BOOKMARK_ALL_TABS = "bookmark all [tabs]"
 TOGGLE_BOOKMARK_TOOLBAR = "[toggle] bookmark bar"
 SHOW_BOOKMARKS = "[show] bookmarks"
-TOGGLE_FULL_SCREEN = "[toggle] full-screen"
+TOGGLE_FULL_SCREEN = "[toggle] full screen"
 SHOW_PAGE_SOURCE = "(show|view) page source"
 DEBUG_RESUME = "resume"
 DEBUG_STEP_OVER = "step over"
@@ -51,18 +51,19 @@ SHOW_DEVELOPER_TOOLS = "[show] developer tools"
 CHECKOUT_PR = "checkout [this] pull request [locally]"
 UPDATE_PR = "update [this] pull request [locally]"
 
-DEFAULTS = {"n": 1, "m":"", "nth": ""}
+DEFAULTS = {"n": 1, "m": "", "nth": ""}
 EXTRAS = [
-    Choice("nth", {
-        "first": "1",
-        "second": "2",
-        "third": "3",
-        "fourth": "4",
-        "fifth": "5",
-        "sixth": "6",
-        "seventh": "7",
-        "eighth": "8",
-    }),
+    Choice(
+        "nth", {
+            "first": "1",
+            "second": "2",
+            "third": "3",
+            "fourth": "4",
+            "fifth": "5",
+            "sixth": "6",
+            "seventh": "7",
+            "eighth": "8",
+        }),
     IntegerRefST("n", 1, 100),
     IntegerRefST("m", 1, 10)
 ]

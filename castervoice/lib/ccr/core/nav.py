@@ -9,7 +9,6 @@ from castervoice.lib.ccr.standard import SymbolSpecs
 from castervoice.lib.ccr.core.punctuation import text_punc_dict, double_text_punc_dict
 from castervoice.lib.alphanumeric import caster_alphabet
 
-
 _NEXUS = control.nexus()
 
 for key, value in double_text_punc_dict.items():
@@ -18,15 +17,16 @@ for key, value in double_text_punc_dict.items():
     elif len(value) == 4:
         double_text_punc_dict[key] = value[0:1] + "~" + value[2:3]
     else:
-        raise Exception("Need to deal with nonstandard pair length in double_text_punc_dict.")
+        raise Exception(
+            "Need to deal with nonstandard pair length in double_text_punc_dict.")
+
 
 class NavigationNon(MergeRule):
     mapping = {
         "<direction> <time_in_seconds>":
-            AsynchronousAction(
-                [L(S(["cancel"], Key("%(direction)s"), consume=False))],
-                repetitions=1000,
-                blocking=False),
+            AsynchronousAction([L(S(["cancel"], Key("%(direction)s"), consume=False))],
+                               repetitions=1000,
+                               blocking=False),
         "erase multi clipboard":
             R(Function(navigation.erase_multi_clipboard, nexus=_NEXUS)),
         "find":
@@ -62,15 +62,15 @@ class NavigationNon(MergeRule):
         "colic":
             R(Key("control:down") + Mouse("left") + Key("control:up")),
         "garb [<nnavi500>]":
-            R(Mouse("left") + Mouse("left") + Function(
-                navigation.stoosh_keep_clipboard,
-                nexus=_NEXUS)),
+            R(
+                Mouse("left") + Mouse("left") +
+                Function(navigation.stoosh_keep_clipboard, nexus=_NEXUS)),
         "drop [<nnavi500>]":
-            R(Mouse("left") + Mouse("left") + Function(
-                navigation.drop_keep_clipboard,
-                nexus=_NEXUS,
-                capitalization=0,
-                spacing=0)),
+            R(
+                Mouse("left") + Mouse("left") + Function(navigation.drop_keep_clipboard,
+                                                         nexus=_NEXUS,
+                                                         capitalization=0,
+                                                         spacing=0)),
         "sure stoosh":
             R(Key("c-c")),
         "sure cut":
@@ -126,7 +126,6 @@ class NavigationNon(MergeRule):
             R(Key("wc-right"))*Repeat(extra="n"),
         "(previous | prior) work [space] [<n>]":
             R(Key("wc-left"))*Repeat(extra="n"),
-
         "go work [space] <n>":
             R(Function(lambda n: utilities.go_to_desktop_number(n))),
         "send work [space] <n>":
@@ -175,35 +174,47 @@ class Navigation(MergeRule):
     pronunciation = CCRMerger.CORE[1]
 
     mapping = {
-    # "periodic" repeats whatever comes next at 1-second intervals until "terminate"
-    # or "escape" (or your SymbolSpecs.CANCEL) is spoken or 100 tries occur
+        # "periodic" repeats whatever comes next at 1-second intervals until "terminate"
+        # or "escape" (or your SymbolSpecs.CANCEL) is spoken or 100 tries occur
         "periodic":
-            ContextSeeker(forward=[L(S(["cancel"], lambda: None),
-            S(["*"], lambda fnparams: UntilCancelled(Mimic(*filter(lambda s: s != "periodic", fnparams)), 1).execute(),
-            use_spoken=True))]),
-    # VoiceCoder-inspired -- these should be done at the IDE level
+            ContextSeeker(forward=[
+                L(
+                    S(["cancel"], lambda: None),
+                    S(["*"],
+                      lambda fnparams: UntilCancelled(
+                          Mimic(*filter(lambda s: s != "periodic", fnparams)), 1).execute(
+                          ),
+                      use_spoken=True))
+            ]),
+        # VoiceCoder-inspired -- these should be done at the IDE level
         "fill <target>":
-            R(Key("escape, escape, end"), show=False) +
-            AsynchronousAction([L(S(["cancel"], Function(context.fill_within_line, nexus=_NEXUS)))],
-            time_in_seconds=0.2, repetitions=50 ),
+            R(Key("escape, escape, end"), show=False) + AsynchronousAction(
+                [L(S(["cancel"], Function(context.fill_within_line, nexus=_NEXUS)))],
+                time_in_seconds=0.2,
+                repetitions=50),
         "jump in":
             AsynchronousAction([L(S(["cancel"], context.nav, ["right", "(~[~{~<"]))],
-            time_in_seconds=0.1, repetitions=50),
+                               time_in_seconds=0.1,
+                               repetitions=50),
         "jump out":
             AsynchronousAction([L(S(["cancel"], context.nav, ["right", ")~]~}~>"]))],
-            time_in_seconds=0.1, repetitions=50),
+                               time_in_seconds=0.1,
+                               repetitions=50),
         "jump back":
             AsynchronousAction([L(S(["cancel"], context.nav, ["left", "(~[~{~<"]))],
-            time_in_seconds=0.1, repetitions=50),
+                               time_in_seconds=0.1,
+                               repetitions=50),
         "jump back in":
             AsynchronousAction([L(S(["cancel"], context.nav, ["left", "(~[~{~<"]))],
-            finisher=Key("right"), time_in_seconds=0.1, repetitions=50 ),
+                               finisher=Key("right"),
+                               time_in_seconds=0.1,
+                               repetitions=50),
 
-    # keyboard shortcuts
+        # keyboard shortcuts
         'save':
             R(Key("c-s"), rspec="save"),
         'shock [<nnavi50>]':
-            R(Key("enter"), rspec="shock")* Repeat(extra="nnavi50"),
+            R(Key("enter"), rspec="shock")*Repeat(extra="nnavi50"),
         # "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]":
         #     R(Function(text_utils.master_text_nav)), # this is now implemented below
         "shift click":
@@ -215,9 +226,9 @@ class Navigation(MergeRule):
         "spark [<nnavi500>] [(<capitalization> <spacing> | <capitalization> | <spacing>) [(bow|bowel)]]":
             R(Function(navigation.drop_keep_clipboard, nexus=_NEXUS), rspec="spark"),
         "splat [<splatdir>] [<nnavi10>]":
-            R(Key("c-%(splatdir)s"), rspec="splat") * Repeat(extra="nnavi10"),
+            R(Key("c-%(splatdir)s"), rspec="splat")*Repeat(extra="nnavi10"),
         "deli [<nnavi50>]":
-            R(Key("del/5"), rspec="deli") * Repeat(extra="nnavi50"),
+            R(Key("del/5"), rspec="deli")*Repeat(extra="nnavi50"),
         "clear [<nnavi50>]":
             R(Key("backspace/5:%(nnavi50)d"), rspec="clear"),
         SymbolSpecs.CANCEL:
@@ -233,11 +244,14 @@ class Navigation(MergeRule):
         "undo [<nnavi10>]":
             R(Key("c-z"))*Repeat(extra="nnavi10"),
         "redo [<nnavi10>]":
-            R(ContextAction(default=Key("c-y")*Repeat(extra="nnavi10"), actions=[
-                (AppContext(executable=["rstudio", "foxitreader"]), Key("cs-z")*Repeat(extra="nnavi10")),
-                ])),
+            R(
+                ContextAction(default=Key("c-y")*Repeat(extra="nnavi10"),
+                              actions=[
+                                  (AppContext(executable=["rstudio", "foxitreader"]),
+                                   Key("cs-z")*Repeat(extra="nnavi10")),
+                              ])),
 
-    # text formatting
+        # text formatting
         "set [<big>] format (<capitalization> <spacing> | <capitalization> | <spacing>) [(bow|bowel)]":
             R(Function(textformat.set_text_format)),
         "clear castervoice [<big>] formatting":
@@ -250,12 +264,11 @@ class Navigation(MergeRule):
             R(Function(textformat.prior_text_format)),
         "<word_limit> [<big>] format <textnv>":
             R(Function(textformat.partial_format_text)),
-
         "hug <enclosure>":
             R(Function(text_utils.enclose_selected)),
         "dredge [<nnavi10>]":
             R(Key("alt:down, tab/20:%(nnavi10)d, alt:up"),
-               rdescript="Core: switch to most recent Windows"),
+              rdescript="Core: switch to most recent Windows"),
 
         # Ccr Mouse Commands
         "kick [<nnavi3>]":
@@ -270,24 +283,33 @@ class Navigation(MergeRule):
             R(Function(navigation.left_up, nexus=_NEXUS)),
 
         # keystroke commands
-        "<direction> [<nnavi500>]": R(Key("%(direction)s") * Repeat(extra='nnavi500'),
-            rdescript="arrow keys"),
-        "(lease wally | latch) [<nnavi10>]": R(Key("home:%(nnavi10)s")),
-        "(ross wally | ratch) [<nnavi10>]": R(Key("end:%(nnavi10)s")),
-        "sauce wally [<nnavi10>]": R(Key("c-home:%(nnavi10)s")),
-        "dunce wally [<nnavi10>]": R(Key("c-end:%(nnavi10)s")),
-        "bird [<nnavi500>]": R(Key("c-left:%(nnavi500)s")),
-        "firch [<nnavi500>]": R(Key("c-right:%(nnavi500)s")),
-        "brick [<nnavi500>]": R(Key("s-left:%(nnavi500)s")),
-        "frick [<nnavi500>]": R(Key("s-right:%(nnavi500)s")),
-        "blitch [<nnavi500>]": R(Key("cs-left:%(nnavi500)s")),
-        "flitch [<nnavi500>]": R(Key("cs-right:%(nnavi500)s")),
-
+        "<direction> [<nnavi500>]":
+            R(Key("%(direction)s")*Repeat(extra='nnavi500'), rdescript="arrow keys"),
+        "(lease wally | latch) [<nnavi10>]":
+            R(Key("home:%(nnavi10)s")),
+        "(ross wally | ratch) [<nnavi10>]":
+            R(Key("end:%(nnavi10)s")),
+        "sauce wally [<nnavi10>]":
+            R(Key("c-home:%(nnavi10)s")),
+        "dunce wally [<nnavi10>]":
+            R(Key("c-end:%(nnavi10)s")),
+        "bird [<nnavi500>]":
+            R(Key("c-left:%(nnavi500)s")),
+        "firch [<nnavi500>]":
+            R(Key("c-right:%(nnavi500)s")),
+        "brick [<nnavi500>]":
+            R(Key("s-left:%(nnavi500)s")),
+        "frick [<nnavi500>]":
+            R(Key("s-right:%(nnavi500)s")),
+        "blitch [<nnavi500>]":
+            R(Key("cs-left:%(nnavi500)s")),
+        "flitch [<nnavi500>]":
+            R(Key("cs-right:%(nnavi500)s")),
         "<modifier> <button_dictionary_500> [<nnavi500>]":
-              R(Key("%(modifier)s%(button_dictionary_500)s") * Repeat(extra='nnavi500'),
+            R(Key("%(modifier)s%(button_dictionary_500)s")*Repeat(extra='nnavi500'),
               rdescript="press modifier keys plus buttons from button_dictionary_500"),
         "<modifier> <button_dictionary_10> [<nnavi10>]":
-              R(Key("%(modifier)s%(button_dictionary_10)s") * Repeat(extra='nnavi10'),
+            R(Key("%(modifier)s%(button_dictionary_10)s")*Repeat(extra='nnavi10'),
               rdescript="press modifier keys plus buttons from button_dictionary_10"),
         "<modifier> <button_dictionary_1>":
               R(Key("%(modifier)s%(button_dictionary_1)s"),
@@ -296,23 +318,59 @@ class Navigation(MergeRule):
         # "key stroke [<modifier>] <combined_button_dictionary>":
         #     R(Text('Key("%(modifier)s%(combined_button_dictionary)s")')),
 
+        # "key stroke [<modifier>] <combined_button_dictionary>":
+        #     R(Text('Key("%(modifier)s%(combined_button_dictionary)s")')),
     }
     tell_commands_dict = {"dock": ";", "doc": ";", "sink": "", "com": ",", "deck": ":"}
     tell_commands_dict.update(text_punc_dict)
 
     # I tried to limit which things get repeated how many times in hopes that it will help prevent the bad grammar error
     # this could definitely be changed. perhaps some of these should be made non-CCR
-    button_dictionary_500 = {"(tab | tabby)": "tab", "(backspace | clear)": "backspace", "(delete|deli)": "del", "(escape | cancel)": "escape", "(enter | shock)": "enter",
-    "(left | lease)": "left", "(right | ross)": "right", "(up | sauce)": "up",
-    "(down | dunce)": "down", "page (down | dunce)": "pgdown", "page (up | sauce)": "pgup", "space": "space"}
-    button_dictionary_10 = {"function {}".format(i):"f{}".format(i) for i in range(1, 10)}
+    button_dictionary_500 = {
+        "(tab | tabby)": "tab",
+        "(backspace | clear)": "backspace",
+        "(delete|deli)": "del",
+        "(escape | cancel)": "escape",
+        "(enter | shock)": "enter",
+        "(left | lease)": "left",
+        "(right | ross)": "right",
+        "(up | sauce)": "up",
+        "(down | dunce)": "down",
+        "page (down | dunce)": "pgdown",
+        "page (up | sauce)": "pgup",
+        "space": "space"
+    }
+    button_dictionary_10 = {
+        "function {}".format(i): "f{}".format(i)
+        for i in range(1, 10)
+    }
     button_dictionary_10.update(caster_alphabet)
     button_dictionary_10.update(text_punc_dict)
-    longhand_punctuation_names = {"minus": "hyphen", "hyphen":"hyphen", "comma": "comma",
-        "deckle": "colon", "colon": "colon", "slash": "slash", "backslash": "backslash"}
+    longhand_punctuation_names = {
+        "minus": "hyphen",
+        "hyphen": "hyphen",
+        "comma": "comma",
+        "deckle": "colon",
+        "colon": "colon",
+        "slash": "slash",
+        "backslash": "backslash"
+    }
     button_dictionary_10.update(longhand_punctuation_names)
-    button_dictionary_1 = {"(home | lease wally | latch)": "home", "(end | ross wally | ratch)": "end", "insert": "insert", "zero": "0",
-    "one": "1", "two": "2", "three": "3", "four": "4", "five": "5", "six":"6", "seven": "7", "eight": "8", "nine": "9"}
+    button_dictionary_1 = {
+        "(home | lease wally | latch)": "home",
+        "(end | ross wally | ratch)": "end",
+        "insert": "insert",
+        "zero": "0",
+        "one": "1",
+        "two": "2",
+        "three": "3",
+        "four": "4",
+        "five": "5",
+        "six": "6",
+        "seven": "7",
+        "eight": "8",
+        "nine": "9"
+    }
     combined_button_dictionary = {}
     for dictionary in [button_dictionary_1, button_dictionary_10, button_dictionary_500]:
         combined_button_dictionary.update(dictionary)
@@ -324,8 +382,8 @@ class Navigation(MergeRule):
             "(control shift | que)": "cs-",
             "control alt": "ca-",
             "(shift alt | alt shift)": "sa-",
-            "(control alt shift | control shift alt)": "csa-", # control must go first
-            "windows": "w-", # windows should go before alt/shift
+            "(control alt shift | control shift alt)": "csa-",  # control must go first
+            "windows": "w-",  # windows should go before alt/shift
             "control windows": "cw-",
             "control windows alt": "cwa-",
             "control windows shift": "cws-",
@@ -337,7 +395,6 @@ class Navigation(MergeRule):
             "hit": "",
         })
     extras = [
-
         IntegerRefST("nnavi10", 1, 11),
         IntegerRefST("nnavi3", 1, 4),
         IntegerRefST("nnavi50", 1, 50),
@@ -398,9 +455,7 @@ class Navigation(MergeRule):
             "lease": "backspace",
             "ross": "delete",
         }),
-
     ]
-
 
     defaults = {
         "nnavi500": 1,

@@ -2,7 +2,8 @@ from castervoice.lib.imports import *
 
 # HTML auto complete workaround for Jetbrains Products
 # If more applications have issues with auto complete may be moved to actions.py
-context = AppContext(executable=["idea", "idea64", "studio64", "pycharm", "webstorm64", "webstorm"])
+context = AppContext(
+    executable=["idea", "idea64", "studio64", "pycharm", "webstorm64", "webstorm"])
 
 if context:
     from dragonfly.actions.action_paste import Paste as Text
@@ -11,9 +12,10 @@ if context:
             from aenea import Paste as Text
         except ImportError:
             print("Unable to import aenea Paste actions. Dragonfly actions will be used "
-            "instead.")
+                  "instead.")
 else:
     from castervoice.lib.actions import Text
+
 
 class HTML(MergeRule):
     mapping = {
@@ -22,10 +24,11 @@ class HTML(MergeRule):
         "make link":
             R(Text("<a href=''></a>") + Key("left/10:6")),
         "table macro":
-            R(Text("<table>") + Key("enter") + Text("<tr>") + Key("enter") +
-            Text("<td></td>") + Key("enter") + Text("</tr>") + Key("enter") +
-            Text("</table>")),
-        "checkbox":
+            R(
+                Text("<table>") + Key("enter") + Text("<tr>") + Key("enter") +
+                Text("<td></td>") + Key("enter") + Text("</tr>") + Key("enter") +
+                Text("</table>")),
+        "check box":
             R(Text("<input type=\"checkbox\">")),
         #HTML elements
         #Basic or Root elements
@@ -100,7 +103,7 @@ class HTML(MergeRule):
             R(Text("<ol>") + Key("enter") + Text("</ol>") + Key("up")),
         "paragraph":
             R(Text("<p>") + Key("enter") + Text("</p>") + Key("up")),
-        "pre-format":
+        "pre format":
             R(Text("<pre>") + Key("enter") + Text("</pre>") + Key("up")),
         "unordered list | UL":
             R(Text("<ul>") + Key("enter") + Text("</ul>") + Key("up")),
@@ -113,7 +116,7 @@ class HTML(MergeRule):
             R(Text("<b></b>") + Key("left/10:4")),
         "override":
             R(Text("<bdo></bdo>") + Key("left/10:6")),
-        "isolate | bi-directional isolation":
+        "isolate | bi directional isolation":
             R(Text("<bdi></bdi>") + Key("left/10:6")),
         "break | be are | BR":
             R(Text("<br>") + Key("enter")),
@@ -133,7 +136,7 @@ class HTML(MergeRule):
             R(Text("<mark></mark>") + Key("left/10:7")),
         "quote":
             R(Text("<q></q>") + Key("left/10:4")),
-        "fall-back parenthesis | RP":
+        "fall back parenthesis | RP":
             R(Text("<rp></rp>") + Key("left/10:5")),
         "embraces pronunciation | RT":
             R(Text("<rt></rt>") + Key("left/10:5")),
@@ -152,7 +155,7 @@ class HTML(MergeRule):
             R(Text("<strong></strong>") + Key("left/10:9")),
         "subscript":
             R(Text("<sub></sub>") + Key("left/10:6")),
-        "superscript":
+        "super script":
             R(Text("<sup></sup>") + Key("left/10:6")),
         "time":
             R(Text("<time></time>") + Key("left/10:7")),
@@ -236,7 +239,7 @@ class HTML(MergeRule):
             R(Text("<form>") + Key("enter") + Text("</form>") + Key("up")),
         "input":
             R(Text("<input >") + Key("left/10:1")),
-        "keygen":
+        "key gen":
             R(Text("<keygen >") + Key("left/10:1")),
         "label":
             R(Text("<label>")),

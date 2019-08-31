@@ -93,7 +93,7 @@ class MainRule(MergeRule):
     mapping = {
         # update management
         "update caster":
-            R(DependencyUpdate([pip, "install", "--upgrade", "castervoice"])),
+            R(DependencyUpdate([pip, "install", "--upgrade", "caster voice"])),
         "update dragonfly":
             R(DependencyUpdate([pip, "install", "--upgrade", "dragonfly2"])),
 

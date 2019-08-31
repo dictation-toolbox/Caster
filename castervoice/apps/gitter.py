@@ -15,7 +15,7 @@ class GitterRule(MergeRule):
               Retrieve(action_if_text="right:2")),
         "emphasize":
             R(Store() + Text("**") + Key("left") + Retrieve(action_if_text="right")),
-        "strikethrough":
+        "strike through":
             R(Store() + Text("~~~~") + Key("left:2") +
               Retrieve(action_if_text="right:2")),
         "latex":

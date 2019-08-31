@@ -1,5 +1,6 @@
 from castervoice.lib.imports import *
 
+
 class SublimeRule(MergeRule):
     pronunciation = "sublime"
 
@@ -181,7 +182,7 @@ class SublimeRule(MergeRule):
         "ln2": "",
         "n2": 1,
         "n3": 1,
-        "filetype": "",
+        "file type": "",
     }
 
 
