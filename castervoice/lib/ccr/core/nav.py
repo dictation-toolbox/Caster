@@ -20,7 +20,7 @@ for key, value in double_text_punc_dict.items():
     else:
         raise Exception("Need to deal with nonstandard pair length in double_text_punc_dict.")
 
-class NavigationNon(MergeRule): 
+class NavigationNon(MergeRule):
     mapping = {
         "<direction> <time_in_seconds>":
             AsynchronousAction(
@@ -79,8 +79,17 @@ class NavigationNon(MergeRule):
             R(Key("c-v")),
         "refresh":
             R(Key("c-r")),
+        # window management
+        "minimize":
+            R(Function(lambda: Window.get_foreground().minimize())),
+        "maximize":
+            R(Function(lambda: Window.get_foreground().maximize())),
+        "remax":
+            R(Key("a-space/10,r/10,a-space/10,x")),
         "maxiwin":
             R(Key("w-up")),
+        "close window":
+            R(Key("a-f4")),
         "move window":
             R(Key("a-space, r, a-space, m")),
         "window (left | lease) [<n>]":
@@ -259,7 +268,7 @@ class Navigation(MergeRule):
             R(Function(navigation.left_down, nexus=_NEXUS)),
         "bench":
             R(Function(navigation.left_up, nexus=_NEXUS)),
-        
+
         # keystroke commands
         "<direction> [<nnavi500>]": R(Key("%(direction)s") * Repeat(extra='nnavi500'),
             rdescript="arrow keys"),
@@ -273,9 +282,9 @@ class Navigation(MergeRule):
         "frick [<nnavi500>]": R(Key("s-right:%(nnavi500)s")),
         "blitch [<nnavi500>]": R(Key("cs-left:%(nnavi500)s")),
         "flitch [<nnavi500>]": R(Key("cs-right:%(nnavi500)s")),
-        
+
         "<modifier> <button_dictionary_500> [<nnavi500>]":
-              R(Key("%(modifier)s%(button_dictionary_500)s") * Repeat(extra='nnavi500'), 
+              R(Key("%(modifier)s%(button_dictionary_500)s") * Repeat(extra='nnavi500'),
               rdescript="press modifier keys plus buttons from button_dictionary_500"),
         "<modifier> <button_dictionary_10> [<nnavi10>]":
               R(Key("%(modifier)s%(button_dictionary_10)s") * Repeat(extra='nnavi10'),
@@ -283,8 +292,8 @@ class Navigation(MergeRule):
         "<modifier> <button_dictionary_1>":
               R(Key("%(modifier)s%(button_dictionary_1)s"),
               rdescript="press modifiers plus buttons from button_dictionary_1, non-repeatable"),
-        
-        # "key stroke [<modifier>] <combined_button_dictionary>": 
+
+        # "key stroke [<modifier>] <combined_button_dictionary>":
         #     R(Text('Key("%(modifier)s%(combined_button_dictionary)s")')),
 
     }
@@ -307,7 +316,7 @@ class Navigation(MergeRule):
     combined_button_dictionary = {}
     for dictionary in [button_dictionary_1, button_dictionary_10, button_dictionary_500]:
         combined_button_dictionary.update(dictionary)
-    
+
     modifier_choice_object = Choice("modifier", {
             "(control | fly)": "c-", #TODO: make DRY
             "(shift | shin)": "s-",
@@ -325,10 +334,10 @@ class Navigation(MergeRule):
             "windows shift": "ws-",
             "windows alt": "wa-",
             "control windows alt shift": "cwas-",
-            "hit": "", 
+            "hit": "",
         })
     extras = [
-        
+
         IntegerRefST("nnavi10", 1, 11),
         IntegerRefST("nnavi3", 1, 4),
         IntegerRefST("nnavi50", 1, 50),
@@ -343,10 +352,10 @@ class Navigation(MergeRule):
         }),
         modifier_choice_object,
         Choice("button_dictionary_1", button_dictionary_1),
-        Choice("button_dictionary_10", button_dictionary_10), 
+        Choice("button_dictionary_10", button_dictionary_10),
         Choice("button_dictionary_500", button_dictionary_500),
         Choice("combined_button_dictionary", combined_button_dictionary),
-        
+
         Choice("capitalization", {
             "yell": 1,
             "tie": 2,
