@@ -128,7 +128,7 @@ class Python(MergeRule):
                 Text("except %(exception)s as :") + Pause("10") + Key("enter/2")),
 
         # class and class methods
-        "subclass":
+        "sub class":
             R(Store() + Text("class ():") + Key("left:3") +
               Retrieve(action_if_text="right:3")),
         "dunder":
@@ -162,7 +162,7 @@ class Python(MergeRule):
                 "standard": "StandardError",
                 "arithmetic": "ArithmeticError",
                 "overflow": "OverflowError",
-                "floating-point": "FloatingPointError",
+                "floating point": "FloatingPointError",
                 "zero division": "ZeroDivisionError",
                 "assertion": "AssertionError",
                 "EOF": "EOFError",
@@ -180,7 +180,7 @@ class Python(MergeRule):
                 "system exit": "SystemExit",
                 "type": "TypeError",
                 "value": "ValueError",
-                "runtime": "RuntimeError",
+                "run time": "RuntimeError",
                 "not implemented": "NotImplementedError",
             })
     ]

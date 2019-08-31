@@ -70,7 +70,7 @@
 | `[toggle] comments`                   | `git merge remote`                                | `replacing in buffer`               |
 | `[toggle] developer tools`            | `git new branch`                                  | `reset font [size]`                 |
 | `[toggle] diff List`                  | `git open changed files`                          | `right [<n>]`                       |
-| `[toggle] treeview`                   | `git pull`                                        | `run atom [specs]`                  |
+| `[toggle] tree view`                   | `git pull`                                        | `run atom [specs]`                  |
 | `add project folder`                  | `git pull [using] rebase`                         | `run package [specs]`               |
 | `auto [complete]`                     | `git push`                                        | `save all`                          |
 | `auto indent windows`                 | `git rm/remove`                                   | `save as`                           |
@@ -99,9 +99,9 @@
 | `delete line [<n>]`                   | `github view staged changes [for current file]`   | `split left`                        |
 | `delete sub [word] [<n>]`             | `github view unstaged changes [for current file]` | `split right`                       |
 | `delete words`                        | `increase font [size] [<n>]`                      | `tab/indent [<n>]`                  |
-| `dev [command] palette [<n>]`         | `installed packages`                              | `timecop`                           |
+| `dev [command] palette [<n>]`         | `installed packages`                              | `time cop`                           |
 | `dev key [<n>]`                       | `installed themes`                                | `toggle key [binding] resolver`     |
-| `dev keys [input] [<n>]`              | `join line`                                       | `toggle menubar`                    |
+| `dev keys [input] [<n>]`              | `join line`                                       | `toggle menu bar`                    |
 | `dev numb [command] palette [<n>]`    | `left [<n>]`                                      | `toggle outdent`                    |
 | `dev numb keys [input] [<n>]`         | `looping down cursor`                             | `toggle quotes`                     |
 | `dev restart / reload [atom]`         | `looping up`                                      | `toggle soft wrap`                  |
@@ -125,7 +125,7 @@
 | `focus previous`                      | `open [your] key map`                             | `uppercase`                         |
 | `fold`                                | `open [your] snippet`                             | `view all`                          |
 | `fold [level] [<n2>]`                 | `open [your] stylesheet`                          | `<action>* [line] <ln1> [by <ln2>]` |
-| `fullscreen`                          | `open file`                                       |                                     |
+| `full screen`                          | `open file`                                       |                                     |
 
 \* select / copy / cut / paste / delete
 
@@ -142,7 +142,7 @@
 | `[toggle] caret browsing`              | `[go home] page`                     | `[show] history`             |
 | `address bar`                          | `[show] downloads`                   | `[add] bookmark`             |
 | `bookmark all tabs`                    | `[toggle] bookmark bar`              | `[show] bookmarks`           |
-| `switch user`                          | `chrome task manager`                | `[toggle] full-screen`       |
+| `switch user`                          | `chrome task manager`                | `[toggle] full screen`       |
 | `focus notification`                   | `allow notification`                 | `deny notification`          |
 | `developer tools`                      | `view [page] source`                 | `resume`                     |
 | `step over`                            | `step into`                          | `step out`                   |
@@ -252,7 +252,7 @@
 | `[toggle] caret browsing`              | `[go home] page`                     | `[show] history`             |
 | `address bar`                          | `[show] downloads`                   | `[add] bookmark`             |
 | `bookmark all tabs`                    | `[toggle] bookmark bar`              | `[show] bookmarks`           |
-| `switch user`                          | `[toggle] full-screen`               | `duplicate tab`              |
+| `switch user`                          | `[toggle] full screen`               | `duplicate tab`              |
 | `focus notification`                   | `allow notification`                 | `deny notification`          |
 | `developer tools`                      | `[show page] source`                 | `resume`                     |
 | `step over`                            | `step into`                          | `step out`                   |
@@ -350,8 +350,8 @@
 | `build and run`                        | `jump to source`                     | `select ex down`             |
 | `comment [line]`                       | `next tab`                           | `show doc`                   |
 | `delete line`                          | `prior tab`                          | `show param`                 |
-| `duplicate`                            | `quickfix`                           | `uncomment line`             |
-| `expand [selection] [<n>]`             | `smart auto complete`                | `quickfix`                   |
+| `duplicate`                            | `quick fix`                          | `uncomment line`             |
+| `expand [selection] [<n>]`             | `smart auto complete`                | `quick fix`                  |
 | `split right`                          | `pane left`                          | `pane right`                 |
 | `split down`                           | `pane down`                          | `pane up`                    |
 | `split `                               | `last tab`                           | `second last tab`            |
@@ -383,12 +383,12 @@
 | Command                     | Command          | Command             |
 |:----------------------------|:-----------------|:--------------------|
 | `(do imports / import all)` | `debug [last]`   | `resume`            |
-| `breakpoint`                | `format code`    | `set bookmark`      |
+| `break point`               | `format code`    | `set bookmark`      |
 | `build [last]`              | `go to line`     | `snippet`           |
 | `comment line`              | `jump to source` | `step into`         |
 | `comment out`               | `next bookmark`  | `step out [of]`     |
 | `cursor next`               | `on comment out` | `step over [<n>]`   |
-| `cursor prior`              | `resolve`        | `toggle fullscreen` |
+| `cursor prior`              | `resolve`        | `toggle full screen`|
 
 # Notepad++
 
@@ -455,7 +455,7 @@
 | `(set / toggle) bookmark` | `comment block`  | `prior tab [<n>]` |
 | `(un / on) comment block` | `comment line`   | `resume`          |
 | `(un / on) comment line`  | `go to line`     | `step into`       |
-| `[toggle] breakpoint`     | `next bookmark`  | `step out [of]`   |
+| `[toggle] break point`    | `next bookmark`  | `step out [of]`   |
 | `[toggle] full screen`    | `next tab [<n>]` | `step over [<n>]` |
 | `close tab [<n>]`         | `prior bookmark` |                   |
 
@@ -502,7 +502,7 @@
 | `hyperlink`          | `image`                        | `clear [format]`               |
 | `[toggle] sidebar`   | `outline`                      | `articles`                     |
 | `file tree`          | `source code [mode]`           | `focus mode`                   |
-| `typewriter [mode]`  | `[toggle] fullscreen`          | `actual size`                  |
+| `typewriter [mode]`  | `[toggle] full screen`         | `actual size`                  |
 | `zoom in <n>`        | `zoom out <n>`                 | `switch documnets`             |
 | `toggle [dev] tools` | ` `                            | ` `                            |
 
@@ -518,7 +518,7 @@
 | `[add] [new] linked work item`     | `go to line`                 | `step out [of]`                     |
 | `[focus] document (window / pane)` | `next bookmark`              | `step over [<n>]`                   |
 | `[open] [go to] work item`         | `next tab [<n>]`             | `team explorer`                     |
-| `[toggle] breakpoint`              | `prior bookmark`             | `toggle [section] outlining`        |
+| `[toggle] break point`             | `prior bookmark`             | `toggle [section] outlining`        |
 | `[toggle] full screen`             | `prior tab [<n>]`            | `toggle all outlining`              |
 | `build solution`                   | `quick launch`               | `undo (checkout / pending changes)` |
 | `close tab [<n>]`                  | `resume`                     |                                     |
@@ -564,7 +564,7 @@
 | `Go to definition`                     | `Go to required definition`           | `peak definition`                        |
 | `trigger parameter hints`              | `format that`                         | `(definition to side / side def)`        |
 | `show references`                      | `rename symbol`                       | `(trim white)`                           |
-| `change file language`                 | `debug`                               | `[toggle] breakpoint`                    |
+| `change file language`                 | `debug`                               | `[toggle] break point`                   |
 | `step over [<n>]`                      | `step into`                           | `step out [of]`                          |
 | `resume`                               | `stopper`                             | `continue`                               |
 | `show hover`                           | `[show] problems [panel]`             | `next error`                             |

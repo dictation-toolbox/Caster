@@ -106,7 +106,7 @@ A quick reference guide for the language-specific commands included with Caster.
 | `dev text`                                  | `Text("")`                                                                 |
 | `dev pause`                                 | ` + Pause("")`                                                             |
 | `dev function`                              | `Function()`                                                               |
-| `dev repeat`                                | ` * Repeat(extra='n')`                                                    |
+| `dev repeat`                                | ` * Repeat(extra='n')`                                                     |
 | `dev choice`                                | `Choice("", {}) `                                                          |
 | `dev mouse [<mouse_button>]`                | `Mouse("left")`                                                            |
 | `dev mouse current [position]`              | `Mouse("[1003, 537]")`                                                     |
@@ -206,7 +206,7 @@ A quick reference guide for the language-specific commands included with Caster.
 | button                             | `<button></button>`            | override                       | `<bdo></bdo>`                                                   |
 | canvas                             | `<canvas >`                    | paragraph                      | `<p>`<br/>`</p>`                                                |
 | canvas close                       | `</canvas>`                    | parameter                      | `<param >`                                                      |
-| checkbox                           | `<input type="checkbox">`      | pre-format                     | `<pre>`<br/>`</pre>`                                            |
+| check box                          | `<input type="checkbox">`      | pre format                     | `<pre>`<br/>`</pre>`                                            |
 | close article                      | `</article>`                   | progress                       | `<progress >`                                                   |
 | close tag                          | `/`                            | quote                          | `<q></q>`                                                       |
 | code                               | `<code></code>`                | ruby / pronounce asian         | `<ruby></ruby>`                                                 |
@@ -223,8 +223,8 @@ A quick reference guide for the language-specific commands included with Caster.
 | element                            | `<element>`                    | style close                    | `</style>`                                                      |
 | embedded                           | `<embed >`                     | subscript                      | `<sub></sub>`                                                   |
 | embraces pronunciation / RT        | `<rt></rt>`                    | summary                        | `<summary>`                                                     |
-| emphasis / EM                      | `<em></em>`                    | superscript                    | `<sup></sup>`                                                   |
-| fall-back parenthesis / RP         | `<rp></rp>`                    | table                          | `<table>`                                                       |
+| emphasis / EM                      | `<em></em>`                    | super script                   | `<sup></sup>`                                                   |
+| fall back parenthesis / RP         | `<rp></rp>`                    | table                          | `<table>`                                                       |
 | field set                          | `<fieldset>`<br/>`</fieldset>` | table body                     | `<tbody>`                                                       |
 | field set close                    | `</fieldset>`                  | table caption / tee caption    | `<caption>`                                                     |
 | fig caption                        | `<figcaption>`                 | table cell / TD / tee D        | `<td></td>`                                                     |
@@ -238,9 +238,9 @@ A quick reference guide for the language-specific commands included with Caster.
 | inline frame close                 | `</iframe>`                    | template                       | `<template>`                                                    |
 | input                              | `<input >`                     | text area                      | `<textarea >`                                                   |
 | inserted text / inserted           | `<ins></ins>`                  | text area close                | `</textarea>`                                                   |
-| isolate / bi-directional isolation | `<bdi></bdi>`                  | title                          | `<title></title>`                                               |
+| isolate / bi directional isolation | `<bdi></bdi>`                  | title                          | `<title></title>`                                               |
 | keyboard input                     | `<kbd></kbd>`                  | track                          | `<track >`                                                      |
-| keygen                             | `<keygen >`                    | underline                      | `<u></u>`                                                       |
+| key gen                            | `<keygen >`                    | underline                      | `<u></u>`                                                       |
 | label                              | `<label>`                      | unordered list / UL            | `<ul>`<br/>`</ul>`                                              |
 | label close                        | `</label>`                     | variable                       | `<var></var>`                                                   |
 | legend                             | `<legend>`                     | video                          | `<video >`                                                      |
@@ -299,7 +299,7 @@ Commands are designed to follow LaTeX syntax as closely as possible, for example
 | `[use] package [<packages>]` | `\usepackage{<packages>}`                         | insert quote              | \`\`''      |
 | `[use] package bib latex`    | `\usepackage[style=authoryear]{biblatex}`         | math fraction             | `\frac{}{}` |
 | add comment                  | `%`                                               | subscript                 | `_{}`       |
-| `begin <element>`            | `\begin{<element>}` </br> </br> `\end{<element>}` | superscript               | `^{}`       |
+| `begin <element>`            | `\begin{<element>}` </br> </br> `\end{<element>}` | super script              | `^{}`       |
 | `insert <command>`           | `\<command>{}`                                    | `symbol [<big>] <symbol>` | `\<symbol>` |
 | `insert <commandnoarg>`      | `\<commandnoarg>`                                 |                           |             |
 
@@ -334,7 +334,7 @@ Commands are designed to follow LaTeX syntax as closely as possible, for example
 | `insert equation`                | `insert math`            |
 | `insert (italics / italic text)` | `insert bold [text]`     |
 | `insert strike through [text]`   | `insert horizontal rule` |
-| `insert R code`                  | `insert in-line code`    |
+| `insert R code`                  | `insert in line code`    |
 | `insert code [block]`            | ` `                      |
 
 
@@ -460,7 +460,7 @@ Should all be prefixed with `pack`
 | brace pan                              | ` `                                      | macro format string| `format!()`                                  |
 | breaker                                | `break;`                                 | macro panic        | `panic!()`                                   |
 | case of                                | `=>`                                     | macro vector       | `vec![]`                                     |
-| class                                  | `+`                                      | namespace          | `::`                                         |
+| class                                  | `+`                                      | name space         | `::`                                         |
 | convert to floating point              | `parse::<f64>().unwrap()`                | of type            | `:`                                          |
 | convert to integer                     | `parse::<i32>().unwrap()`                | print to console   | `println!()`                                 |
 | convert to string                      | `to_string()`                            | `refer to [mute]`  | `&[mut ]`                                    |

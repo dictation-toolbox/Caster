@@ -1,6 +1,7 @@
 # thanks to Casper for contributing commands to this.
 from castervoice.lib.imports import *
 
+
 def findNthToken(text, n, direction):
     Key("c-f").execute()
     Text("%(text)s").execute({"text": text})
@@ -12,6 +13,7 @@ def findNthToken(text, n, direction):
         print("no? %(n)d")
     Key('escape').execute()
 
+
 class VSCodeNonCcrRule(MergeRule):
     pronunciation = "Visual Studio Code Non Continuous"
     mapping = {
@@ -20,11 +22,10 @@ class VSCodeNonCcrRule(MergeRule):
             R(Key("c-g") + Text("%(n)d") + Key("enter")),
         "<action> [line] <ln1> [by <ln2>]":
             R(Function(navigation.action_lines)),
-
         "go back <n>":
-            R(Key("a-left") * Repeat(extra='n')),
+            R(Key("a-left")*Repeat(extra='n')),
         "go forward [<n>]":
-            R(Key("a-right")) * Repeat(extra="n"),
+            R(Key("a-right"))*Repeat(extra="n"),
 
         # Display
         # note that most of these can be turned on/off with the same command
@@ -33,9 +34,9 @@ class VSCodeNonCcrRule(MergeRule):
         "toggle orientation":
             R(Key("sa-0")),
         "zoom in [<n>]":
-            R(Key("c-equal") * Repeat(extra='n')),
+            R(Key("c-equal")*Repeat(extra='n')),
         "zoom out [<n>]":
-            R(Key("c-minus") * Repeat(extra='n')),
+            R(Key("c-minus")*Repeat(extra='n')),
         "sidebar":
             R(Key("c-b")),
         "explorer":
@@ -60,8 +61,7 @@ class VSCodeNonCcrRule(MergeRule):
             R(Key("cs-v")),
         "markdown preview side":
             R(Key("c-k, v")),
-        "Zen mode":
-            # note: use esc esc to exit
+        "Zen mode":  # note: use esc esc to exit
             R(Key("c-k, z")),
 
         # File Management
@@ -70,10 +70,11 @@ class VSCodeNonCcrRule(MergeRule):
         "[open] command palette":
             R(Key("cs-p"), rdescript="VS Code: Command Palette"),
         "(open file | go to [tab]) [<text>]":
-            R(Key("c-p") + Text("%(text)s"), rdescript="VS Code: Go to File without using dialogbox"),
+            R(Key("c-p") + Text("%(text)s"),
+              rdescript="VS Code: Go to File without using dialogbox"),
         "open dialogue":
             R(Key("c-o"), rdescript="VS Code: open file dialogbox"),
-        "open folder": 
+        "open folder":
             R(Key("c-k, c-o"), rdescript="VS Code: Open folder"),
         "Save and close":
             R(Key("c-s/10, c-w")),
@@ -92,15 +93,15 @@ class VSCodeNonCcrRule(MergeRule):
         "save all":
             R(Key("c-k, s")),
         "next tab [<n>]":
-            R(Key("c-pgdown") * Repeat(extra='n')),
+            R(Key("c-pgdown")*Repeat(extra='n')),
         "previous tab [<n>]":
-            R(Key("c-pgup") * Repeat(extra='n')),
+            R(Key("c-pgup")*Repeat(extra='n')),
         "close tab [<n>]":
-            R(Key("c-f4/20") * Repeat(extra='n')),
+            R(Key("c-f4/20")*Repeat(extra='n')),
         "(recent | R) tab [<n>]":
-            R(Key("c-tab") * Repeat(extra='n')),
+            R(Key("c-tab")*Repeat(extra='n')),
         "reopen tab [<n>]":
-            R(Key("cs-t") * Repeat(extra='n')),
+            R(Key("cs-t")*Repeat(extra='n')),
         "Exit preview":
             R(Key("space, c-z")),
         "keep preview open":
@@ -125,14 +126,12 @@ class VSCodeNonCcrRule(MergeRule):
             R(Key("s-f3")),
         "select all occurrences":
             R(Key("a-enter")),
-
         "toggle case sensitive":
             R(Key("a-c"), rdescript="VS Code: Toggle Find Case Sensitive"),
         "toggle regex":
             R(Key("a-r"), rdescript="VS Code: Toggle Find Regular Expressions"),
         "toggle whole word":
             R(Key("a-w"), rdescript="VS Code: Toggle Find Whole Word"),
-
         "(find | jump [to]) next <text>":
             R(Function(findNthToken, n=1, direction="forward")),
         "(find | jump [to]) previous <text>":
@@ -155,10 +154,13 @@ class VSCodeNonCcrRule(MergeRule):
             R(Key("c-k, c-right")),
         "shift group left":
             R(Key("c-k, left"),
-              rdescript="VS Code: Shift Current Group of Tabs to the Left E.g. Swap with Pane to the Left"),
+              rdescript=
+              "VS Code: Shift Current Group of Tabs to the Left E.g. Swap with Pane to the Left"
+              ),
         "shift group right":
             R(Key("c-k, right"),
-              rdescript="VS Code: Shift Current Group of Tabs to the Right E.g. Swap with Pane to the Right"
+              rdescript=
+              "VS Code: Shift Current Group of Tabs to the Right E.g. Swap with Pane to the Right"
               ),
         "<nth> tab":
             R(Key("c-%(nth)s")),
@@ -188,10 +190,10 @@ class VSCodeNonCcrRule(MergeRule):
         # Debugging
         "debug":
             R(Key("cs-d")),
-        "[toggle] breakpoint":
+        "[toggle] break point":
             R(Key("f9")),
         "step over [<n>]":
-            R(Key("f10/50") * Repeat(extra='n')),
+            R(Key("f10/50")*Repeat(extra='n')),
         "step into":
             R(Key("f11")),
         "step out [of]":
@@ -204,7 +206,8 @@ class VSCodeNonCcrRule(MergeRule):
             R(Key("f5"), rdescript="VS Code: Start/Continue"),
         "(show hover|mouse hover|hover mouse)":
             R(Key("c-k, c-i"),
-              rdescript="Show the little box as if you are hovering your mouse over the place where the cursor (As opposed to the mouse pointer) currently is"
+              rdescript=
+              "Show the little box as if you are hovering your mouse over the place where the cursor (As opposed to the mouse pointer) currently is"
               ),
         "[show] problems [panel]":
             R(Key("cs-m")),
@@ -244,7 +247,6 @@ class VSCodeNonCcrRule(MergeRule):
             R(Key("c-k, c-j")),
         "toggle word wrap":
             R(Key("a-z")),
-
         "run this line":
             R(Key("csa-l")),
         "join line":
@@ -285,7 +287,8 @@ class VSCodeNonCcrRule(MergeRule):
                 "sixth": "6",
             }),
     ]
-    defaults = {"n": 1, "ln2": "",  "mim": "", "text": ""}
+    defaults = {"n": 1, "ln2": "", "mim": "", "text": ""}
+
 
 class VSCodeCcrRule(MergeRule):
     pronunciation = "visual studio code continuous"
@@ -296,18 +299,18 @@ class VSCodeCcrRule(MergeRule):
         # Note: If you get the bad grammar grammar too complex error, move some of these commands into the non-CCR rule
         # cursor/line navigation
         "scroll up [<n>]":
-            R(Key("c-up") * Repeat(extra='n'),
-            rdescript="VS Code: Scroll Up One Line at a Time"),
+            R(Key("c-up")*Repeat(extra='n'),
+              rdescript="VS Code: Scroll Up One Line at a Time"),
         "scroll down [<n>]":
-            R(Key("c-down") * Repeat(extra='n'),
+            R(Key("c-down")*Repeat(extra='n'),
               rdescript="VS Code: Scroll Down One Line at a Time"),
         "scroll page up [<n>]":
-            R(Key("a-pgup") * Repeat(extra='n'),
+            R(Key("a-pgup")*Repeat(extra='n'),
               rdescript="VS Code: Scroll Up One Page Up at a Time"),
         "scroll page down [<n>]":
-            R(Key("a-pgdown") * Repeat(extra='n'),
+            R(Key("a-pgdown")*Repeat(extra='n'),
               rdescript="VS Code: Scroll Down One Page Down At a Time"),
-        "(unindent|outdent) [<n>]":
+        "(unindent|out dent) [<n>]":
             R(Key("home, s-tab:%(n)s"), rdescript="VS Code: Unindent"),
         "comment [line]":
             R(Key("c-slash"), rdescript="VS Code: Line Comment"),
@@ -315,40 +318,41 @@ class VSCodeCcrRule(MergeRule):
             R(Key("sa-a"), rdescript="VS Code: Block Comment"),
         # Multi-cursor and selection
         "cursor above [<n>]":
-            R(Key("ca-up") * Repeat(extra='n'),
-              rdescript="VS Code: Insert Cursor Above"),
+            R(Key("ca-up")*Repeat(extra='n'), rdescript="VS Code: Insert Cursor Above"),
         "cursor below [<n>]":
-            R(Key("ca-down") * Repeat(extra='n'),
-              rdescript="VS Code: Insert Cursor Above"),
+            R(Key("ca-down")*Repeat(extra='n'), rdescript="VS Code: Insert Cursor Above"),
         "remove cursor":
-            R(Key("csa-down"),
-              rdescript="VS Code: Remove Cursor"),  # not sure if this command works always; also try csa-up
+            R(Key("csa-down"), rdescript="VS Code: Remove Cursor"
+              ),  # not sure if this command works always; also try csa-up
         # csa-down/up seems to work sometimes to remove 1 of the cursors
         # but I don't really understand how this works
         "tall cursor up":
             R(Key("csa-pgup"), rdescript="VS Code: Add Cursors All The Way Up"),
         "tall cursor down":
             R(Key("csa-pgdown"), rdescript="VS Code: Add Cursors All The Way Down"),
-        
-        "expand  [<n>]": R(Key("sa-right"), 
-            rdescript="highlight current word(s)") * Repeat(extra='n'),
-        "shrink  [<n>]": R(Key("sa-left"), 
-            rdescript="shrink the previous highlighting range or unhighlight") * Repeat(extra='n'),
+        "expand  [<n>]":
+            R(Key("sa-right"), rdescript="highlight current word(s)")*Repeat(extra='n'),
+        "shrink  [<n>]":
+            R(Key("sa-left"),
+              rdescript="shrink the previous highlighting range or unhighlight")*
+            Repeat(extra='n'),
 
         # Command below requires "brackets select" extension for VS code
         "select [in] brackets [<n>]":
-            R(Key("ca-a") * Repeat(extra='n'),
-              rdescript="VS Code: Select in between parable punctuation inclusive using 'brackets select' extension"
+            R(Key("ca-a")*Repeat(extra='n'),
+              rdescript=
+              "VS Code: Select in between parable punctuation inclusive using 'brackets select' extension"
               )*Repeat(extra='n'),
         "all current selection":
-            R(Key("c-l"), rdescript="VS Code: Select All Occurrences of Current Selection"),
+            R(Key("c-l"),
+              rdescript="VS Code: Select All Occurrences of Current Selection"),
         "all current word":
             R(Key("c-f2"), rdescript="VS Code: Select All Occurrences of Current Word"),
         "select next [<n>]":
-            R(Key("c-f3") * Repeat(extra='n'),
+            R(Key("c-f3")*Repeat(extra='n'),
               rdescript="VS Code: Select Next Occurrence of Current Word"),
         "go to next [<n>]":
-            R(Key("sa-right/2, c-f3, c-left/2, escape") * Repeat(extra='n'),
+            R(Key("sa-right/2, c-f3, c-left/2, escape")*Repeat(extra='n'),
               rdescript="VS Code: Go to Next Occurrence of Current Word"),
         # may or may not want the escape afterwards to close the find box
         # note the above command might sometimes be off by one so you have to say one higher
@@ -357,30 +361,29 @@ class VSCodeCcrRule(MergeRule):
         "select prior [<n>]":
             R(Key("cs-f3"), rdescript="VS Code: Select Prior Occurrence of Current Word"),
         "go to prior [<n>]":
-            R(Key("sa-right/2, cs-f3, c-left/2, escape") * Repeat(extra='n'),
+            R(Key("sa-right/2, cs-f3, c-left/2, escape")*Repeat(extra='n'),
               rdescript="VS Code: Go to Prior Occurrence of Current Word"),
         # may or may not want the escape afterwards to close the find box
         "cursor all":
             R(Key("cs-l"),
               rdescript="VS Code: Add Cursor to All Occurrences of Current Selection"),
         "next cursor [<n>]":
-            R(Key("c-d") * Repeat(extra='n'),
+            R(Key("c-d")*Repeat(extra='n'),
               rdescript="VS Code: Add Cursor to Next Occurrence of Current Selection"),
         "indent [<n>]":
             R(Key("home, tab:%(n)s"), rdescript="VS Code: Indent"),
         "hard delete [<n>]":
             R(Key("s-del"), rdescript="VS Code: Eliminates Line not Just the Text on it"),
         "copy line up [<n>]":
-            R(Key("sa-up") * Repeat(extra='n'),
-              rdescript="VS Code: Duplicate Line Above"),
+            R(Key("sa-up")*Repeat(extra='n'), rdescript="VS Code: Duplicate Line Above"),
         "copy line up [<n>]":
-            R(Key("sa-down") * Repeat(extra='n'),
+            R(Key("sa-down")*Repeat(extra='n'),
               rdescript="VS Code: Duplicate Line Below"),
         "switch line down [<n>]":
-            R(Key("a-down") * Repeat(extra='n'),
+            R(Key("a-down")*Repeat(extra='n'),
               rdescript="VS Code: Switch Line With the One Below it"),
         "switch line up [<n>]":
-            R(Key("a-up") * Repeat(extra='n'),
+            R(Key("a-up")*Repeat(extra='n'),
               rdescript="VS Code: Switch Line With the One Above it"),
         "match bracket":
             R(Key("cs-backslash"), rdescript="VS Code: Jump to Matching Bracket"),
@@ -388,12 +391,14 @@ class VSCodeCcrRule(MergeRule):
         # commands for selecting between parable characters using "quick and simple text selection" VScode extension (required)
         # repetition of these commands by saying the number expands the selection to include the text between the next (i.e. outer) set of parable characters of the given type
         "select between <between_parables> [<n>]":
-            R(Key("c-k, %(between_parables)s") * Repeat(extra='n'),
-              rdescript="VS Code: Select between parentheses noninclusive using 'quick and simple text selection' VScode extension"
+            R(Key("c-k, %(between_parables)s")*Repeat(extra='n'),
+              rdescript=
+              "VS Code: Select between parentheses noninclusive using 'quick and simple text selection' VScode extension"
               ),
         "select around <around_parables> [<n>]":
-            R(Key("c-k, %(around_parables)s") * Repeat(extra='n'),
-              rdescript="VS Code: Select between parentheses inclusive using 'quick and simple text selection' VScode extension"
+            R(Key("c-k, %(around_parables)s")*Repeat(extra='n'),
+              rdescript=
+              "VS Code: Select between parentheses inclusive using 'quick and simple text selection' VScode extension"
               ),
     }
     extras = [
@@ -401,14 +406,15 @@ class VSCodeCcrRule(MergeRule):
         Dictation("mim"),
         IntegerRefST("n", 1, 100),
         IntegerRefST("m", 1, 10),
-        Choice("between_parables", {
-            "prekris": "lparen",
-            "brax": "lbracket",
-            "curly": "lbrace",
-            "angle": "langle",
-            "single": "squote",
-            "quote": "dquote",
-        }),
+        Choice(
+            "between_parables", {
+                "prekris": "lparen",
+                "brax": "lbracket",
+                "curly": "lbrace",
+                "angle": "langle",
+                "single": "squote",
+                "quote": "dquote",
+            }),
         Choice("around_parables", {
             "prekris": "rparen",
             "brax": "rbracket",

@@ -1,19 +1,14 @@
 from castervoice.lib.imports import *
 
+
 class RustNon(MappingRule):
     mapping = {
-        "macro format string":
-            R(Text("format!()") + Key("left")),
-        "macro panic":
-            R(Text("panic!()") + Key("left")),
-        "macro assertion":
-            R(Text("assert_eq!()") + Key("left")),
-        "ternary":
-            R(Text("if TOKEN == TOKEN { TOKEN } else { TOKEN }")),
-        "function [<return>]":
-            R(Text("fn TOKEN(TOKEN)%(return)s{}")),
-        "infinite loop":
-            R(Text("loop {}") + Key("left")),
+        "macro format string": R(Text("format!()") + Key("left")),
+        "macro panic": R(Text("panic!()") + Key("left")),
+        "macro assertion": R(Text("assert_eq!()") + Key("left")),
+        "ternary": R(Text("if TOKEN == TOKEN { TOKEN } else { TOKEN }")),
+        "function [<return>]": R(Text("fn TOKEN(TOKEN)%(return)s{}")),
+        "infinite loop": R(Text("loop {}") + Key("left")),
     }
     extras = [
         Choice("return", {"return": " -> TOKEN "}),
@@ -119,7 +114,7 @@ class Rust(MergeRule):
             R(Text("static ")),
         "brace pan":
             R(Key("escape, escape, end, left, enter, enter, up, tab")),
-        "namespace":
+        "name space":
             R(Key("colon, colon")),
     }
 

@@ -1,5 +1,6 @@
 from castervoice.lib.imports import *
 
+
 class JavaNon(MappingRule):
     mapping = {
         "try catch":
@@ -7,13 +8,15 @@ class JavaNon(MappingRule):
         "deco override":
             R(Text("@Override")),
         "iterate and remove":
-            R(Paste(
-                "for (Iterator<TOKEN> iterator = TOKEN.iterator(); iterator.hasNext();) {\n\tString string = iterator.next();\nif (CONDITION) {\niterator.remove();\n}\n}"
-            )),
+            R(
+                Paste(
+                    "for (Iterator<TOKEN> iterator = TOKEN.iterator(); iterator.hasNext();) {\n\tString string = iterator.next();\nif (CONDITION) {\niterator.remove();\n}\n}"
+                )),
         "string builder":
-            R(Paste(
-                "StringBuilder builder = new StringBuilder(); builder.append(orgStr); builder.deleteCharAt(orgStr.length()-1);"
-            )),
+            R(
+                Paste(
+                    "StringBuilder builder = new StringBuilder(); builder.append(orgStr); builder.deleteCharAt(orgStr.length()-1);"
+                )),
     }
 
     ncextras = []
@@ -123,7 +126,7 @@ class Java(MergeRule):
             R(Text("String ")),
         "boolean":
             R(Text("boolean ")),
-        "substring":
+        "sub string":
             R(Text("substring")),
         "ternary":
             R(Text("()?:") + Key("left:3")),
@@ -146,7 +149,7 @@ class Java(MergeRule):
         "is instance of":
             R(Text(" instanceof ")),
         "dock string":
-            R(Text("/***/")+ Key("left,left,enter")),
+            R(Text("/***/") + Key("left,left,enter")),
     }
 
     extras = []

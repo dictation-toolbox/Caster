@@ -10,7 +10,7 @@ EXPAND_SELECTION = "expand [selection] [<n>]"
 SHRINK_SELECTION = "shrink [selection] [<n>]"
 SMART_AUTO_COMPLETE = "(skraken|smart kraken)"
 GENERATE_CODE = "jen code"
-QUICK_FIX = "quickfix"
+QUICK_FIX = "quick fix"
 FORMAT_ALL_CODE = "format [code]"
 BUILD_PROJECT = "build"
 RUN_PROJECT = "run"
@@ -90,5 +90,3 @@ EXTRACT_PARAMETER = "%s (param|parameter)" % extract
 IMPLEMENT_METHODS = "implement (%s|%ss)" % (method, method)
 OVERRIDE_METHOD = "override %s" % method
 AUTO_INDENT = "auto indent"
-
-
