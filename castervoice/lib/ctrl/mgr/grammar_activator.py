@@ -66,6 +66,7 @@ class GrammarActivator(object):
         self._activation_rule_class = GrammarActivatorRule
 
         # name that should be pretty difficult to say by mistake:
-        details = RuleDetails(name="grammar manager grammar activator rule")
+        details = RuleDetails(name="grammar manager grammar activator rule",
+                              watch_exclusion=True)
 
         return self._activation_rule_class, details

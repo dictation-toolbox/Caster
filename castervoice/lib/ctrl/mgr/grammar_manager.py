@@ -112,7 +112,8 @@ class GrammarManager(object):
         # set up de/activation command
         self._activator.register_rule(managed_rule)
         # watch this file for future changes
-        self._reload_observable.register_watched_file(details.get_filepath())
+        if not details.watch_exclusion:
+            self._reload_observable.register_watched_file(details.get_filepath())
 
     def _change_rule_active(self, class_name, active):
         """
@@ -249,11 +250,15 @@ class GrammarManager(object):
         """
         Caster core mechanisms should follow the same process as everything
         else. This should lead to much greater consistency, but also the
-        ability to shut off core Caster mechanisms.
+        ability to shut off core Caster mechanisms more easily if desired.
         """
-        for rc, d in [self._activator.construct_activation_rule(),
-                      self._hooks_runner.construct_activation_rule(),
-                      self._transformers_runner.construct_activation_rule()]:
+        rules = [self._activator.construct_activation_rule(),
+                 self._hooks_runner.construct_activation_rule(),
+                 self._transformers_runner.construct_activation_rule()]
+        if hasattr(self._reload_observable, "get_loadable"):
+            rules.append(self._reload_observable.get_loadable())
+
+        for rc, d in rules:
             self.register_rule(rc, d)
             self._change_rule_active(rc.__name__, True)
 

@@ -10,7 +10,7 @@ class ManualReloadObservable(BaseReloadObservable):
     """
 
     def __init__(self):
-        BaseReloadObservable.__init__(self)
+        super(ManualReloadObservable, self).__init__()
 
         '''
         This class itself will never be reloaded, but it can
@@ -25,5 +25,6 @@ class ManualReloadObservable(BaseReloadObservable):
         self._rule_class = ManualGrammarReloadRule
 
     def get_loadable(self):
-        details = RuleDetails()
-        return [self._rule_class, details]
+        details = RuleDetails(name="caster manual grammars reload command rule",
+                              watch_exclusion=True)
+        return self._rule_class, details

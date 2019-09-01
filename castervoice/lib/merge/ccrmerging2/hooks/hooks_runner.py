@@ -40,7 +40,8 @@ class HooksRunner(ActivationRuleGenerator):
 
         class HooksActivationRule(MappingRule):
             mapping = m
-        details = RuleDetails(name="hooks runner hooks activator rule")
+        details = RuleDetails(name="hooks runner hooks activator rule",
+                              watch_exclusion=True)
 
         return HooksActivationRule, details
 

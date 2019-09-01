@@ -7,7 +7,8 @@ class RuleDetails(object):
     """
 
     def __init__(self, name=None, executable=None, title=None, grammar_name=None,
-                 ccrtype=None, rdp_mode_exclusion=False, transformer_exclusion=False):
+                 ccrtype=None, rdp_mode_exclusion=False, transformer_exclusion=False,
+                 watch_exclusion=False):
         """
         :param name: Dragonfly rule name
         :param executable: Dragonfly AppContext executable
@@ -16,6 +17,7 @@ class RuleDetails(object):
         :param ccrtype: global, app, selfmod, or none
         :param rdp_mode_exclusion: exclude from rdp mode
         :param transformer_exclusion: exclude from transformations
+        :param watch_exclusion: should not be watched for changes ("system" rules)
         """
         self.name = name
         self.executable = executable
@@ -24,11 +26,14 @@ class RuleDetails(object):
         self.declared_ccrtype = ccrtype
         self.rdp_mode_exclusion = rdp_mode_exclusion
         self.transformer_exclusion = transformer_exclusion
+        self.watch_exclusion = watch_exclusion
 
         # Python black magic to determine which file to track:
         frame = inspect.stack()[1]
         module = inspect.getmodule(frame[0])
         self._filepath = module.__file__
+        if self._filepath.endswith("pyc"):
+            self._filepath = self._filepath[:-1]
 
     def get_filepath(self):
         return self._filepath

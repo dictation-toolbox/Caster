@@ -41,7 +41,8 @@ class TransformersRunner(ActivationRuleGenerator):
 
         class TransformersActivationRule(MappingRule):
             mapping = m
-        details = RuleDetails(name="transformers runner transformers activator rule")
+        details = RuleDetails(name="transformers runner transformers activator rule",
+                              watch_exclusion=True)
 
         return TransformersActivationRule, details
 

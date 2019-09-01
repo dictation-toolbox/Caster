@@ -20,11 +20,10 @@ class RulesActivationConfig(TomlConfig):
         :return:
         """
         active_rules = self._config[RulesActivationConfig._ORDER_LIST]
-        # this 'while' will take care of any duplicates that might end up in this list
-        while rule_class_name in active_rules:
-            active_rules.remove(rule_class_name)
+        active_rules = [rcn for rcn in active_rules if rcn != rule_class_name]
         if active:
             active_rules.append(rule_class_name)
+        self._config[RulesActivationConfig._ORDER_LIST] = active_rules
 
     def get_active_rcns_ordered(self):
         return list(self._config[RulesActivationConfig._ORDER_LIST])
