@@ -5,8 +5,17 @@ class CCRType(object):
 
 
 # default-on modules
-CORE = ["Alphabet", "Navigation", "Numbers", "Punctuation",
-        "CasterRule", "HardwareRule", "MouseAlternativesRule", "WindowManagementRule"]
+CORE = [
+    # original Caster CCR "core" set:
+    "Alphabet", "Navigation", "Numbers", "Punctuation",
+    # rules which were split out of _caster.py:
+    "CasterRule", "HardwareRule", "MouseAlternativesRule", "WindowManagementRule",
+    # alternate mouse grid controls:
+    "LegionGridRule", "DouglasGridRule", "RainbowGridRule",
+    # gui control rules:
+    "HMCRule", "HMCConfirmRule", "HMCDirectoryRule",
+    "HMCHistoryRule", "HMCLaunchRule", "HMCSettingsRule"
+    ]
 
 # default companion rules
 COMPANION_STARTER = {

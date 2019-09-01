@@ -24,7 +24,7 @@ def settings_window():
         blocking=False).execute()
 
 
-class LaunchRule(MergeRule):
+class HMCLaunchRule(MergeRule):
     mapping = {
         "launch settings window":
             R(Function(settings_window)),
@@ -33,4 +33,4 @@ class LaunchRule(MergeRule):
 
 def get_rule():
     details = RuleDetails(name="settings window launcher", rdp_mode_exclusion=True)
-    return LaunchRule, details
+    return HMCLaunchRule, details
