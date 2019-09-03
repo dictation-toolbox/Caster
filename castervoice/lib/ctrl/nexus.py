@@ -1,14 +1,10 @@
-import datetime
-
 from castervoice.lib.ctrl.grammar_container import GrammarContainer
 from castervoice.lib.ctrl.mgr.ccr_toggle import CCRToggle
 from castervoice.lib.ctrl.mgr.grammar_activator import GrammarActivator
-from castervoice.lib.ctrl.mgr.loading.load.content_loader import ContentLoader
-from castervoice.lib.ctrl.mgr.loading.load.content_request_generator import ContentRequestGenerator
 from castervoice.lib.ctrl.mgr.loading.reload.manual_reload_observable import ManualReloadObservable
 from castervoice.lib.ctrl.mgr.loading.reload.timer_reload_observable import TimerReloadObservable
 from castervoice.lib.ctrl.mgr.rule_maker.mapping_rule_maker import MappingRuleMaker
-from castervoice.lib.ctrl.mgr.rules_config import RulesActivationConfig
+from castervoice.lib.ctrl.mgr.rules_config import RulesConfig
 from castervoice.lib.merge.ccrmerging2.compatibility.detail_compat_checker import DetailCompatibilityChecker
 from castervoice.lib.merge.ccrmerging2.hooks.hooks_config import HooksConfig
 from castervoice.lib.merge.ccrmerging2.hooks.hooks_runner import HooksRunner
@@ -22,7 +18,7 @@ from castervoice.lib.ctrl.mgr.validation.details.ccr_validator import CCRDetails
 from castervoice.lib.ctrl.mgr.validation.details.details_validation_delegator import DetailsValidationDelegator
 from castervoice.lib.ctrl.mgr.validation.details.non_ccr_validator import NonCCRDetailsValidator
 from castervoice.lib.ctrl.mgr.validation.rules.mergerule_validator import IsMergeRuleValidator
-from castervoice.lib.ctrl.mgr.validation.rules.not_noderule_validator import NotNodeRuleValidator
+from castervoice.lib.ctrl.mgr.validation.rules.not_treerule_validator import NotTreeRuleValidator
 from castervoice.lib.ctrl.mgr.validation.rules.selfmod_validator import SelfModifyingRuleValidator
 from castervoice.lib.merge.communication import Communicator
 from castervoice.lib.merge.selfmod.smr_configurer import SelfModRuleConfigurer
@@ -49,7 +45,7 @@ class Nexus:
         self.comm = Communicator()
 
         '''tracks both which rules are active and the activation order'''
-        rule_activation_config = RulesActivationConfig()
+        rules_config = RulesConfig()
 
         '''does post-instantiation configuration on selfmodrules'''
         smrc = SelfModRuleConfigurer()
@@ -64,8 +60,7 @@ class Nexus:
         transformers_runner = TransformersRunner(transformers_config)
 
         '''the ccrmerger -- only merges MergeRules'''
-        self._merger = Nexus._create_merger(rule_activation_config.get_active_rcns_ordered, smrc,
-                                            transformers_runner)
+        self._merger = Nexus._create_merger(rules_config.get_active_rcns_ordered, smrc, transformers_runner)
 
         '''unified loading mechanism for [rules, transformers, hooks] 
         from [caster starter locations, user dir]'''
@@ -76,20 +71,20 @@ class Nexus:
 
         '''the grammar manager -- probably needs to get broken apart more'''
         self._grammar_manager = Nexus._create_grammar_manager(self._merger,
-            self._content_loader, hooks_runner, rule_activation_config, smrc, mapping_rule_maker,
+            self._content_loader, hooks_runner, rules_config, smrc, mapping_rule_maker,
             transformers_runner)
 
         '''ACTION TIME:'''
-        self._load_and_register_all_content(hooks_runner, transformers_runner)
+        self._load_and_register_all_content(rules_config, hooks_runner, transformers_runner)
         self._grammar_manager.initialize()
 
-    def _load_and_register_all_content(self, hooks_runner, transformers_runner):
+    def _load_and_register_all_content(self, rules_config, hooks_runner, transformers_runner):
         """
         all rules go to grammar_manager
         all transformers go to transformers runner
         all hooks go to hooks runner
         """
-        content = self._content_loader.load_everything()
+        content = self._content_loader.load_everything(rules_config)
         [self._grammar_manager.register_rule(rc, d) for rc, d in content.rules]
         [transformers_runner.add_transformer(t) for t in content.transformers]
         [hooks_runner.add_hook(h) for h in content.hooks]
@@ -118,7 +113,7 @@ class Nexus:
         ccr_rule_validator = CCRRuleValidationDelegator(
             IsMergeRuleValidator(),
             SelfModifyingRuleValidator(),
-            NotNodeRuleValidator()
+            NotTreeRuleValidator()
         )
         details_validator = DetailsValidationDelegator(
             CCRDetailsValidator(),

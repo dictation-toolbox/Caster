@@ -21,7 +21,7 @@ class ContentLoader(object):
     def __init__(self, content_request_generator):
         self._content_request_generator = content_request_generator
 
-    def load_everything(self):
+    def load_everything(self, rules_config):
         # Generate all requests for both starter and user locations
         base_path = settings.SETTINGS["paths"]["BASE_PATH"]
         user_dir = settings.SETTINGS["paths"]["USER_DIR"]
@@ -42,7 +42,8 @@ class ContentLoader(object):
         hook_requests = []
         for module_name in requests:
             request = requests[module_name]
-            if request.content_type == ContentType.GET_RULE:
+            if request.content_type == ContentType.GET_RULE and \
+                    rules_config.load_is_allowed(request.content_class_name):
                 rule_requests.append(request)
             elif request.content_type == ContentType.GET_TRANSFORMER:
                 transformer_requests.append(request)

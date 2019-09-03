@@ -5,7 +5,7 @@ from castervoice.lib.config.config_toml import TomlConfig
 class TransformersConfig(TomlConfig):
 
     def __init__(self):
-        super(TransformersConfig, self).__init__(settings.SETTINGS["paths"]["ACTIVATED_TRANSFORMERS_CONFIG_PATH"])
+        super(TransformersConfig, self).__init__(settings.SETTINGS["paths"]["TRANSFORMERS_CONFIG_PATH"])
         self.load()
 
     def set_transformer_active(self, hcn, active):

@@ -1,4 +1,4 @@
-import glob
+import re
 import os
 
 from castervoice.lib.ctrl.mgr.loading.load.content_request import ContentRequest
@@ -13,39 +13,60 @@ class ContentRequestGenerator(object):
     def get_all_content_modules(self, directory):
         relevant_modules = []
         for dirpath, dirnames, filenames in os.walk(directory):
-            for fn in filenames:
-                file_path = dirpath + os.sep + fn
-                content_type = ContentRequestGenerator._get_content_type(file_path)
+            for filename in filenames:
+                if not filename.endswith("py"):
+                    continue
+                file_path = dirpath + os.sep + filename
+                content_type, content_class_name = ContentRequestGenerator._scan_file(file_path)
                 if content_type is not None:
-                    module_name = fn[:-3]
-                    relevant_modules.append(ContentRequest(content_type, dirpath, module_name))
+                    module_name = filename[:-3]
+                    request = ContentRequest(content_type,
+                                             dirpath,
+                                             module_name,
+                                             content_class_name)
+                    relevant_modules.append(request)
         return relevant_modules
 
     @staticmethod
-    def _get_content_type(file_path):
+    def _scan_file(file_path):
         """
         Reads the whole file, classifies it as rule, transformer, hook, or none.
+        Also finds a list of potential names for the loadable content class.
         :param file_path: str
         :return: str
         """
         if not file_path.endswith(".py"):
-            return None
+            return None, None
         if file_path.endswith("__init__.py"):
-            return None
+            return None, None
 
         content = None
         with open(file_path) as f:
             content = f.readlines()
+
+        rule_func = "def {}():".format(ContentType.GET_RULE)
+        transformer_func = "def {}():".format(ContentType.GET_TRANSFORMER)
+        hook_func = "def {}():".format(ContentType.GET_HOOK)
+
+        content_type = None
+        content_class_name = None
         for line in content:
-            if line.startswith("#"):
+            if line.strip().startswith("#") or line.isspace():
                 continue
-            rule_func = "def {}():".format(ContentType.GET_RULE)
-            transformer_func = "def {}():".format(ContentType.GET_TRANSFORMER)
-            hook_func = "def {}():".format(ContentType.GET_HOOK)
-            if rule_func in line:
-                return ContentType.GET_RULE
-            if transformer_func in line:
-                return ContentType.GET_TRANSFORMER
-            if hook_func in line:
-                return ContentType.GET_HOOK
-        return None
+            # should only be ONE 'get_<thing>' function
+            if content_type is None:
+                if rule_func in line:
+                    content_type = ContentType.GET_RULE
+                    # if it's a rule, keep looking for the class name
+                    continue
+                elif transformer_func in line:
+                    content_type = ContentType.GET_TRANSFORMER
+                    break
+                elif hook_func in line:
+                    content_type = ContentType.GET_HOOK
+                    break
+            else:
+                class_name_match = re.search("return (.+?),", line)
+                if class_name_match is not None and len(class_name_match.groups()) == 1:
+                    content_class_name = class_name_match.group(1)
+        return content_type, content_class_name
