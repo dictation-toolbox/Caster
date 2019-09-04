@@ -8,7 +8,6 @@ _sc = sikuli_controller.get_instance()
 
 
 class SikuliManagementRule(MappingRule):
-    pronunciation = "sikuli"
 
     mapping = {
         "launch sick IDE":       R(Function(_sc.launch_IDE)),

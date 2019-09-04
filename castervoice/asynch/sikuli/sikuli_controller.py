@@ -4,7 +4,7 @@ import socket
 
 from dragonfly import get_engine, Function, Playback
 
-from castervoice.lib import settings, utilities, control
+from castervoice.lib import settings, utilities, control, printer
 
 
 class SikuliController(object):
@@ -39,8 +39,8 @@ class SikuliController(object):
             self._start_server_proxy()
         except Exception:
             self._start_server()
-            seconds5 = 5
-            self._timer = get_engine().create_timer(self._retry_server_proxy, seconds5)
+            five_seconds = 5
+            self._timer = get_engine().create_timer(self._retry_server_proxy, five_seconds)
 
     def _start_server(self):
         runner_path = settings.SETTINGS["paths"]["SIKULI_RUNNER"]
@@ -59,12 +59,16 @@ class SikuliController(object):
         """
         This method will fail if the server isn't started yet.
         """
+        # this will never fail:
         self._server_proxy = control.nexus().comm.get_com("sikuli")
-        print("Caster-Sikuli server started successfully.")
+        # this will fail if the server isn't started yet:
+        self._server_proxy.list_functions()
+        # success at this point:
+        printer.out("Caster-Sikuli server started successfully.")
         SikuliController._ENABLE_GEN_RULE.execute()
 
     def _retry_server_proxy(self):
-        print("Attempting Caster-Sikuli connection [...]")
+        printer.out("Attempting Caster-Sikuli connection [...]")
         try:
             self._start_server_proxy()
             if self._timer:
