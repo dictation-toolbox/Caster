@@ -1,3 +1,5 @@
+import collections
+
 from dragonfly import MappingRule, Pause, Function
 import re
 from castervoice.lib import printer
@@ -97,6 +99,22 @@ class MergeRule(MappingRule, Pronounceable):
 
     def copy(self):
         return MergeRule(self.name, self._mapping.copy(), self._extras.values(),
+                         self._defaults.copy(), self._exported)
+
+    def order_for_merger(self):
+        """
+        Optimization for Kaldi engine, won't make a difference to other engines.
+        :return: MergeRule
+        """
+
+        unordered_specs = list(self._mapping.keys())
+        ordered_specs = sorted(unordered_specs)
+
+        ordered_dict = collections.OrderedDict()
+        for spec in ordered_specs:
+            ordered_dict[spec] = self._mapping[spec]
+
+        return MergeRule(self.name, ordered_dict, self._extras.values(),
                          self._defaults.copy(), self._exported)
 
     def _display_available_commands(self):

@@ -1,3 +1,5 @@
+import collections
+
 from dragonfly.grammar.elements import RuleRef, Alternative, Repetition
 from dragonfly.grammar.rule_compound import CompoundRule
 from castervoice.lib.const import CCRType
@@ -5,6 +7,9 @@ from castervoice.lib.context import AppContext
 
 
 class CCRMerger2(object):
+    _ORIGINAL = "original"
+    _SEQ = "caster_base_sequence"
+    _TERMINAL = "terminal"
 
     def __init__(self, transformers_runner, rule_sorter, compatibility_checker, merging_strategy, max_repetitions,
                  smr_configurer):
@@ -135,27 +140,29 @@ class CCRMerger2(object):
             result[managed_rule.get_rule_class_name()] = managed_rule.get_details()
         return result
 
-    def _create_repeat_rule(self, rule):
-        ORIGINAL, SEQ, TERMINAL = "original", "caster_base_sequence", "terminal"
-        alts = [RuleRef(rule=rule)]  # +[RuleRef(rule=sm) for sm in selfmod]
+    def _create_repeat_rule(self, merge_rule):
+        merge_rule = merge_rule.order_for_merger()
+        alts = [RuleRef(rule=merge_rule)]  # +[RuleRef(rule=sm) for sm in selfmod]
         single_action = Alternative(alts)
-        sequence = Repetition(single_action, min=1, max=self._max_repetitions, name=SEQ)
-        original = Alternative(alts, name=ORIGINAL)
-        terminal = Alternative(alts, name=TERMINAL)
+        sequence = Repetition(single_action, min=1, max=self._max_repetitions, name=CCRMerger2._SEQ)
+        original = Alternative(alts, name=CCRMerger2._ORIGINAL)
+        terminal = Alternative(alts, name=CCRMerger2._TERMINAL)
 
         class RepeatRule(CompoundRule):
-            spec = "[<" + ORIGINAL + "> original] [<" + SEQ + ">] [terminal <" + TERMINAL + ">]"
+            spec = "[<" + CCRMerger2._ORIGINAL + "> original] " + \
+                   "[<" + CCRMerger2._SEQ + ">] " + \
+                   "[terminal <" + CCRMerger2._TERMINAL + ">]"
             extras = [sequence, original, terminal]
 
             def _process_recognition(self, node, extras):
-                original = extras[ORIGINAL] if ORIGINAL in extras else None
-                sequence = extras[SEQ] if SEQ in extras else None
-                terminal = extras[TERMINAL] if TERMINAL in extras else None
-                if original is not None: original.execute()
-                if sequence is not None:
-                    for action in sequence:
+                _original = extras[CCRMerger2._ORIGINAL] if CCRMerger2._ORIGINAL in extras else None
+                _sequence = extras[CCRMerger2._SEQ] if CCRMerger2._SEQ in extras else None
+                _terminal = extras[CCRMerger2._TERMINAL] if CCRMerger2._TERMINAL in extras else None
+                if _original is not None: _original.execute()
+                if _sequence is not None:
+                    for action in _sequence:
                         action.execute()
-                if terminal is not None: terminal.execute()
+                if _terminal is not None: _terminal.execute()
 
         return RepeatRule(name=self._get_new_rule_name())
 
