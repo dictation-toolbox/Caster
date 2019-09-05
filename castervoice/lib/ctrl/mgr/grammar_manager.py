@@ -68,7 +68,7 @@ class GrammarManager(object):
         #
         self._activator.set_activation_fn(self._change_rule_active)
         #
-        smrc.set_reload_fn(lambda rcn: self._activate_rule(rcn, True))
+        smrc.set_reload_fn(lambda rcn: self._enable_rule(rcn, True))
         #
         self._initial_activations_complete = False
 
@@ -76,12 +76,12 @@ class GrammarManager(object):
         if self._initial_activations_complete:
             return
 
-        for rcn in self._config.get_active_rcns_ordered():
+        for rcn in self._config.get_enabled_rcns_ordered():
             rd = self._managed_rules[rcn].get_details()
             is_ccr = rd.declared_ccrtype is not None
             if is_ccr and not self._ccr_toggle.is_active():
                 continue
-            self._activate_rule(rcn, True)
+            self._enable_rule(rcn, True)
         if hasattr(self._reload_observable, "start"):
             self._reload_observable.start()
 
@@ -130,11 +130,11 @@ class GrammarManager(object):
         self._config.save()
 
         # load it
-        self._activate_rule(class_name, active)
+        self._enable_rule(class_name, active)
         # run activation hooks
         self._hooks_runner.execute(RuleActivationEvent(class_name, active))
 
-    def _activate_rule(self, class_name, active):
+    def _enable_rule(self, class_name, enabled):
         """
         Either creates a standalone Dragonfly rule or
         delegates to the CCRMerger to create the merged rule(s).
@@ -144,7 +144,7 @@ class GrammarManager(object):
         rule and its grammar are destroyed first, by the GrammarContainer.
 
         :param class_name: str
-        :param active: boolean
+        :param enabled: boolean
         :return:
         """
 
@@ -163,7 +163,7 @@ class GrammarManager(object):
             self._ccr_toggle.set_active(True)
 
             # handle CCR: get all active ccr rules after de/activating one
-            active_rule_class_names = self._config.get_active_rcns_ordered()
+            active_rule_class_names = self._config.get_enabled_rcns_ordered()
             active_mrs = [self._managed_rules[rcn] for rcn in active_rule_class_names]
             active_ccr_mrs = [mr for mr in active_mrs if mr.get_details().declared_ccrtype is not None]
 
@@ -186,7 +186,7 @@ class GrammarManager(object):
             for grammar in grammars:
                 grammar.load()
         else:
-            if active:
+            if enabled:
                 grammar = self._mapping_rule_maker.create_non_ccr_grammar(managed_rule)
                 self._grammars_container.set_non_ccr(managed_rule.get_rule_class_name(), grammar)
                 grammar.load()
@@ -209,8 +209,8 @@ class GrammarManager(object):
         self.register_rule(rule_class, details)
 
         class_name = rule_class.__name__
-        if class_name in self._config.get_active_rcns_ordered():
-            self._activate_rule(class_name, True)
+        if class_name in self._config.get_enabled_rcns_ordered():
+            self._enable_rule(class_name, True)
 
     def _get_invalidation(self, rule_class, details):
         """

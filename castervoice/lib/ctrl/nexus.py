@@ -44,7 +44,7 @@ class Nexus:
         '''rpc class for interacting with Caster UI elements via xmlrpclib'''
         self.comm = Communicator()
 
-        '''tracks both which rules are active and the activation order'''
+        '''tracks both which rules are enabled and the rules' order'''
         rules_config = RulesConfig()
 
         '''does post-instantiation configuration on selfmodrules'''
@@ -60,7 +60,7 @@ class Nexus:
         transformers_runner = TransformersRunner(transformers_config)
 
         '''the ccrmerger -- only merges MergeRules'''
-        self._merger = Nexus._create_merger(rules_config.get_active_rcns_ordered, smrc, transformers_runner)
+        self._merger = Nexus._create_merger(rules_config.get_enabled_rcns_ordered, smrc, transformers_runner)
 
         '''unified loading mechanism for [rules, transformers, hooks] 
         from [caster starter locations, user dir]'''
@@ -91,7 +91,7 @@ class Nexus:
         self._grammar_manager.load_activation_grammars()
 
     @staticmethod
-    def _create_grammar_manager(merger, content_loader, hooks_runner, rule_activation_config, smrc,
+    def _create_grammar_manager(merger, content_loader, hooks_runner, rule_config, smrc,
                                 mapping_rule_maker, transformers_runner):
         """
         This is where settings should be used to alter the dependency injection being done.
@@ -100,7 +100,7 @@ class Nexus:
         :param merger:
         :param content_loader:
         :param hooks_runner:
-        :param rule_activation_config
+        :param rule_config
         :param smrc
         :param mapping_rule_maker
         :param transformers_runner
@@ -128,7 +128,7 @@ class Nexus:
 
         grammars_container = GrammarContainer()
 
-        gm = GrammarManager(rule_activation_config, merger, content_loader, ccr_rule_validator, details_validator,
+        gm = GrammarManager(rule_config, merger, content_loader, ccr_rule_validator, details_validator,
                             observable, activator, mapping_rule_maker, grammars_container, hooks_runner,
                             always_global_ccr_mode, ccr_toggle, smrc, transformers_runner)
         return gm

@@ -66,7 +66,17 @@ class ContentRequestGenerator(object):
                     content_type = ContentType.GET_HOOK
                     break
             else:
-                class_name_match = re.search("return (.+?),", line)
-                if class_name_match is not None and len(class_name_match.groups()) == 1:
-                    content_class_name = class_name_match.group(1)
+                ccn = ContentRequestGenerator._extract_class_name(line)
+                if ccn is not None:
+                    content_class_name = ccn
         return content_type, content_class_name
+
+    @staticmethod
+    def _extract_class_name(line):
+        class_name_match = re.search("return (.+?),", line)
+        if class_name_match is not None and len(class_name_match.groups()) == 1:
+            result = class_name_match.group(1)
+            result = result.replace("[", "").replace("(", "")
+            return result
+        return None
+

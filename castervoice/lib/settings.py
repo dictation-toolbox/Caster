@@ -454,16 +454,16 @@ def _init(path):
 
 
 def _deep_merge_defaults(data, defaults):
-    '''
+    """
     Recursivly merge data and defaults, preferring data.
     Only handles nested dicts and scalar values.
     Modifies `data` in place.
-    '''
+    """
     changes = 0
     for key, default_value in defaults.iteritems():
         # If the key is in the data, use that, but call recursivly if it's a dict.
-        if (key in data):
-            if (isinstance(data[key], collections.Mapping)):
+        if key in data:
+            if isinstance(data[key], collections.Mapping):
                 child_data, child_changes = _deep_merge_defaults(data[key], default_value)
                 data[key] = child_data
                 changes += child_changes

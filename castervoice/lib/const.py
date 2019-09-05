@@ -4,11 +4,6 @@ class CCRType(object):
     SELFMOD = "selfmod"
 
 
-class LoadListingMode(object):
-    WHITELIST = "whitelist"
-    BLACKLIST = "blacklist"
-
-
 # default-on modules
 CORE = [
     # original Caster CCR "core" set:
