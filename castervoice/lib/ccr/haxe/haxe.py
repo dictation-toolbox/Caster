@@ -2,7 +2,8 @@ from dragonfly import Key
 
 from castervoice.lib.actions import Text
 from castervoice.lib.ccr.standard import SymbolSpecs
-from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.const import CCRType
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
@@ -121,4 +122,4 @@ class Haxe(MergeRule):
 
 
 def get_rule():
-    return Haxe, rdcommon.ccr_global()
+    return Haxe, RuleDetails(ccrtype=CCRType.GLOBAL)

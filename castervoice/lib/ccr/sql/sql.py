@@ -1,7 +1,8 @@
 from dragonfly import Key
 
 from castervoice.lib.actions import Text
-from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.const import CCRType
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
@@ -85,4 +86,4 @@ class SQL(MergeRule):
 
 
 def get_rule():
-    return SQL, rdcommon.ccr_global()
+    return SQL, RuleDetails(ccrtype=CCRType.GLOBAL)

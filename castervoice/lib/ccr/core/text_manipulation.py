@@ -1,10 +1,9 @@
-import copy
-
 from dragonfly import Function, Choice, Repetition, Dictation
 
 from castervoice.lib import text_manipulation_functions, alphanumeric
 from castervoice.lib.ccr.core.punctuation_support import text_punc_dict
-from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.const import CCRType
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
@@ -167,7 +166,7 @@ class TextManipulation(MergeRule):
 
 
 def get_rule():
-    return TextManipulation, rdcommon.ccr_global()
+    return TextManipulation, RuleDetails(ccrtype=CCRType.GLOBAL)
 
 
 

@@ -7,7 +7,8 @@ from dragonfly import Key, Pause, Dictation, Choice
 
 from castervoice.lib.actions import Text
 from castervoice.lib.ccr.standard import SymbolSpecs
-from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.const import CCRType
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 from castervoice.lib.temporary import Store, Retrieve
@@ -179,4 +180,4 @@ class Python(MergeRule):
 
 
 def get_rule():
-    return Python, rdcommon.ccr_global()
+    return Python, RuleDetails(ccrtype=CCRType.GLOBAL)

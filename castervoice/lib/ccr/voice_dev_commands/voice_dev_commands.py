@@ -10,7 +10,8 @@ from dragonfly.actions.action_mouse import get_cursor_position
 
 from castervoice.lib.actions import Text
 from castervoice.lib.ccr.core.nav import Navigation
-from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.const import CCRType
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
@@ -222,4 +223,4 @@ class VoiceDevCommands(MergeRule):
 
 
 def get_rule():
-    return VoiceDevCommands, rdcommon.ccr_global()
+    return VoiceDevCommands, RuleDetails(ccrtype=CCRType.GLOBAL)

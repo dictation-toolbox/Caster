@@ -1,7 +1,8 @@
 from dragonfly import AppContext, Key
 
 from castervoice.lib import settings, printer
-from castervoice.lib.ctrl.mgr import rdcommon
+from castervoice.lib.const import CCRType
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
@@ -304,4 +305,4 @@ class HTML(MergeRule):
 
 
 def get_rule():
-    return HTML, rdcommon.ccr_global()
+    return HTML, RuleDetails(ccrtype=CCRType.GLOBAL)
