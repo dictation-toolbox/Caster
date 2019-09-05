@@ -82,6 +82,8 @@ class GrammarManager(object):
             if is_ccr and not self._ccr_toggle.is_active():
                 continue
             self._activate_rule(rcn, True)
+        if hasattr(self._reload_observable, "start"):
+            self._reload_observable.start()
 
         self._initial_activations_complete = True
 
@@ -201,7 +203,6 @@ class GrammarManager(object):
         :param file_path_changed: str
         :return:
         """
-
         module_name = GrammarManager._get_module_name_from_file_path(file_path_changed)
         rule_class, details = self._content_loader.idem_import_module(module_name, ContentType.GET_RULE)
         # re-register:

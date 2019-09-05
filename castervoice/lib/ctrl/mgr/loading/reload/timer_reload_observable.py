@@ -11,5 +11,8 @@ class TimerReloadObservable(BaseReloadObservable):
 
         :param time_in_seconds: number, time between checking for updates
         """
-        BaseReloadObservable.__init__(self)
-        get_engine().create_timer(lambda: self._update(), time_in_seconds)
+        super(TimerReloadObservable, self).__init__()
+        self._time_in_seconds = time_in_seconds
+
+    def start(self):
+        get_engine().create_timer(lambda: self._update(), self._time_in_seconds)
