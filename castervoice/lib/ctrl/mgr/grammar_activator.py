@@ -56,10 +56,11 @@ class GrammarActivator(object):
             return None
 
         _mapping = {}
-        for class_name in self._class_name_to_trigger.keys():
-            trigger = self._class_name_to_trigger[class_name]
-            _mapping["enable " + trigger] = Function(lambda: self._activation_fn(class_name, True))
-            _mapping["disable " + trigger] = Function(lambda: self._activation_fn(class_name, False))
+        for class_name, trigger in self._class_name_to_trigger.items():
+            enable_spec = "enable {}".format(trigger)
+            disable_spec = "disable {}".format(trigger)
+            _mapping[enable_spec] = Function(lambda rcn: self._activation_fn(rcn, True), rcn=class_name)
+            _mapping[disable_spec] = Function(lambda rcn: self._activation_fn(rcn, False), rcn=class_name)
 
         class GrammarActivatorRule(MappingRule):
             mapping = _mapping

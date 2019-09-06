@@ -11,8 +11,6 @@ from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 
-control.nexus()
-
 
 def kill():
     control.nexus().comm.get_com("grids").kill()
@@ -113,4 +111,4 @@ class DouglasGridRule(MappingRule):
 
 
 def get_rule():
-    return DouglasGridRule, RuleDetails(name="legion grid rule", title="douglasgrid")
+    return DouglasGridRule, RuleDetails(name="douglas grid rule", title="douglasgrid")

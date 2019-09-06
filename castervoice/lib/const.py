@@ -14,7 +14,9 @@ CORE = [
     "LegionGridRule", "DouglasGridRule", "RainbowGridRule",
     # gui control rules:
     "HMCRule", "HMCConfirmRule", "HMCDirectoryRule",
-    "HMCHistoryRule", "HMCLaunchRule", "HMCSettingsRule"
+    "HMCHistoryRule", "HMCLaunchRule", "HMCSettingsRule",
+    # other common rules
+    "DragonRule", "BringRule"
     ]
 
 # internal rules

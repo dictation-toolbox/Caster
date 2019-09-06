@@ -66,7 +66,7 @@ class GrammarManager(object):
         self._reload_observable.register_listener(self)
         '''The passed method references below would be a good place to start splitting the GM apart.'''
         #
-        self._activator.set_activation_fn(self._change_rule_active)
+        self._activator.set_activation_fn(lambda rcn, active: self._change_rule_active(rcn, active))
         #
         smrc.set_reload_fn(lambda rcn: self._enable_rule(rcn, True))
         #
@@ -119,7 +119,8 @@ class GrammarManager(object):
 
     def _change_rule_active(self, class_name, active):
         """
-        This is called by the GrammarActivator.
+        This is called by the GrammarActivator. The necessity of this function
+        means something is designed wrong. Correct this in the future.
 
         :param class_name: str
         :param active: boolean

@@ -121,16 +121,28 @@ class Nexus:
             NonCCRDetailsValidator()
         )
 
-        activator = GrammarActivator(lambda rule: isinstance(rule, MergeRule))
         observable = TimerReloadObservable(5)
         if settings.SETTINGS["miscellaneous"]["reload_trigger"] == "manual":
             observable = ManualReloadObservable()
 
         grammars_container = GrammarContainer()
 
-        gm = GrammarManager(rule_config, merger, content_loader, ccr_rule_validator, details_validator,
-                            observable, activator, mapping_rule_maker, grammars_container, hooks_runner,
-                            always_global_ccr_mode, ccr_toggle, smrc, transformers_runner)
+        activator = GrammarActivator(lambda rule: isinstance(rule, MergeRule))
+
+        gm = GrammarManager(rule_config,
+                            merger,
+                            content_loader,
+                            ccr_rule_validator,
+                            details_validator,
+                            observable,
+                            activator,
+                            mapping_rule_maker,
+                            grammars_container,
+                            hooks_runner,
+                            always_global_ccr_mode,
+                            ccr_toggle,
+                            smrc,
+                            transformers_runner)
         return gm
 
     @staticmethod
