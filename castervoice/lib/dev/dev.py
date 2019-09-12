@@ -19,7 +19,7 @@ from castervoice.lib.merge.state.actions2 import NullAction, ConfirmAction, \
 from castervoice.lib.merge.state.short import L, S, R
 from castervoice.lib.merge.state.stackitems import StackItemRegisteredAction
 from castervoice.lib.tests import testrunner
-from castervoice.lib.tests.complexity import run_tests
+from castervoice.lib.tests.test_complexity import run_tests
 from castervoice.lib.tests.testutils import MockAlternative
 
 if os.path.isfile(settings.SETTINGS["paths"]["CONFIGDEBUGTXT_PATH"]) is False:

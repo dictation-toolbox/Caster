@@ -36,7 +36,3 @@ class TestTextFormat(unittest.TestCase):
         self.text_format.clear_text_format()
         test_string = self.text_format.get_formatted_text('this is a test')
         self.assertEqual(test_string, 'this_is_a_test')
-
-
-if __name__ == '__main__':
-    unittest.main()
