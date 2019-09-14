@@ -15,6 +15,7 @@ from castervoice.lib.ctrl.dependencies import DependencyMan  # requires nothing
 DependencyMan().initialize()
 _NEXUS = None
 from castervoice.lib import settings  # requires toml
+settings.initialize()
 if settings.SYSTEM_INFORMATION["platform"] not in ["win32", "win-amd64"] :
     msg = "Your platform ({}) is not currently supported by Caster."
     raise SystemError(msg.format(settings.SYSTEM_INFORMATION["platform"]))
@@ -29,12 +30,6 @@ if control.nexus() is None:
     _crg = ContentRequestGenerator()
     _content_loader = ContentLoader(_crg)
     control.init_nexus(_content_loader)
-
-# TODO: whatever this was intended to do probably needs to be re-done:
-# if globals().has_key('profile_switch_occurred'):
-#     reload(sikulixx)
-# else:
-#     profile_switch_occurred = None
 
 if settings.SETTINGS["sikuli"]["enabled"]:
     from castervoice.asynch.sikuli import sikuli_controller

@@ -3,6 +3,7 @@ Created on Oct 10, 2015
 
 @author: synkarius
 '''
+import io
 import random
 import re
 import time
@@ -21,6 +22,13 @@ from castervoice.lib.merge.ccrmerger_legacy import CCRMerger
 from castervoice.lib.merge.merge.mergepair import MergeInf
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
+
+
+def _report_to_file(message, path=None):
+    _path = settings.SETTINGS["paths"]["LOG_PATH"]
+    if path is not None: _path = path
+    with io.open(_path, 'at', encoding="utf-8") as f:
+        f.write(unicode(message) + "\n")
 
 
 def get_500_words():
@@ -254,6 +262,6 @@ def run_tests():
     report_path = settings.SETTINGS["paths"]["BASE_PATH"] + "/bin/data/complexity_report_" + str(
         time.time()) + ".txt"
     print("Report saved to " + report_path)
-    settings.report_to_file(result, report_path)
+    _report_to_file(result, report_path)
 
     settings.SETTINGS["miscellaneous"]["max_ccr_repetitions"] = original_ccr_max

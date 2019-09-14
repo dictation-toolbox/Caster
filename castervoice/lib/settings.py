@@ -11,19 +11,41 @@ import _winreg
 import version
 import errno
 
+# consts: some of these can easily be moved out of this file
 GENERIC_HELP_MESSAGE = """
 If you continue having problems with this or any other issue you can contact
 us through Gitter at <https://gitter.im/dictation-toolbox/Caster> or on our GitHub
 issue tracker at <https://github.com/dictation-toolbox/Caster/issues>.
 Thank you for using Caster!
 """
+SOFTWARE_VERSION_NUMBER = version.__version__
+SOFTWARE_NAME = "Caster v " + SOFTWARE_VERSION_NUMBER
+HOMUNCULUS_VERSION = "HMC v " + SOFTWARE_VERSION_NUMBER
+HMC_TITLE_RECORDING = " :: Recording Manager"
+HMC_TITLE_DIRECTORY = " :: Directory Selector"
+HMC_TITLE_CONFIRM = " :: Confirm"
+LEGION_TITLE = "legiongrid"
+RAINBOW_TITLE = "rainbowgrid"
+DOUGLAS_TITLE = "douglasgrid"
+SETTINGS_WINDOW_TITLE = "Caster Settings Window v "
+QTYPE_DEFAULT = "0"
+QTYPE_INSTRUCTIONS = "3"
+QTYPE_RECORDING = "4"
+QTYPE_DIRECTORY = "5"
+QTYPE_CONFIRM = "6"
+WXTYPE_SETTINGS = "7"
+HMC_SEPARATOR = "[hmc]"
 
-SETTINGS = {}
-BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "lib",
-                                              1)[0].replace("\\", "/")
+# calculated fields
+SETTINGS = None
+SYSTEM_INFORMATION = None
+WSR = False
+_BASE_PATH = None
+_USER_DIR = None
+_SETTINGS_PATH = None
 
 
-def set_user_dir():
+def _set_user_dir():
     '''
     Sets Caster's user directory path. Returns "user_dir" with valid path for Home directory or AppData.
     '''
@@ -50,7 +72,7 @@ def set_user_dir():
             raise NameError('UserPathException')
 
 
-def validate_user_dir():
+def _validate_user_dir():
     '''
     Checks for existing Caster's user directory path. Returns path.
     '''
@@ -62,58 +84,12 @@ def validate_user_dir():
         if os.path.exists(app_data) is True:
             return app_data
         else:
-            return set_user_dir()
+            return _set_user_dir()
     else:
-        return set_user_dir()
+        return _set_user_dir()
 
 
-_USER_DIR = validate_user_dir()
-_SETTINGS_PATH = os.path.normpath(os.path.join(_USER_DIR, "data/settings.toml"))
-
-print("Caster User Directory: " + _USER_DIR)
-
-for directory in ["data", "rules", "transformers", "hooks", "sikuli"]:
-    d = _USER_DIR + "/" + directory
-    if not os.path.exists(d):
-        os.makedirs(d)
-
-# title
-SOFTWARE_VERSION_NUMBER = version.__version__
-SOFTWARE_NAME = "Caster v " + SOFTWARE_VERSION_NUMBER
-HOMUNCULUS_VERSION = "HMC v " + SOFTWARE_VERSION_NUMBER
-HMC_TITLE_RECORDING = " :: Recording Manager"
-HMC_TITLE_DIRECTORY = " :: Directory Selector"
-HMC_TITLE_CONFIRM = " :: Confirm"
-LEGION_TITLE = "legiongrid"
-RAINBOW_TITLE = "rainbowgrid"
-DOUGLAS_TITLE = "douglasgrid"
-SETTINGS_WINDOW_TITLE = "Caster Settings Window v "
-
-# enums
-QTYPE_DEFAULT = "0"
-QTYPE_INSTRUCTIONS = "3"
-QTYPE_RECORDING = "4"
-QTYPE_DIRECTORY = "5"
-QTYPE_CONFIRM = "6"
-WXTYPE_SETTINGS = "7"
-
-HMC_SEPARATOR = "[hmc]"
-
-WSR = False
-
-# set the paths for autohotkey and git bash
-if os.path.isfile('C:/Program Files/Git/git-bash.exe'):
-    TERMINAL_PATH_DEFAULT = "C:/Program Files/Git/git-bash.exe"
-else:
-    TERMINAL_PATH_DEFAULT = ""
-
-if os.path.isfile('C:/Program Files/AutoHotkey/AutoHotkey.exe'):
-    AHK_PATH_DEFAULT = "C:/Program Files/AutoHotkey/AutoHotkey.exe"
-else:
-    AHK_PATH_DEFAULT = ""
-
-
-def get_platform_information():
+def _get_platform_information():
     """Return a dictionary containing platform-specific information."""
     import sysconfig
     system_information = {"platform": sysconfig.get_platform()}
@@ -131,9 +107,6 @@ def get_platform_information():
         system_information.update(
             {"hidden console binary": os.path.join(sys.exec_prefix, "bin", "python")})
     return system_information
-
-
-SYSTEM_INFORMATION = get_platform_information()
 
 
 def get_filename():
@@ -227,187 +200,6 @@ def _find_natspeak():
     return ""
 
 
-# The defaults for every setting. Could be moved out into its own file.
-_DEFAULT_SETTINGS = {
-    "paths": {
-        "BASE_PATH":
-            BASE_PATH,
-        "USER_DIR":
-            _USER_DIR,
-
-        # DATA
-        "SM_BRINGME_PATH":
-            _USER_DIR + "/data/sm_bringme.toml",
-        "SM_ALIAS_PATH":
-            _USER_DIR + "/data/sm_aliases.toml",
-        "SM_CHAIN_ALIAS_PATH":
-            _USER_DIR + "/data/sm_chain_aliases.toml",
-        "SM_HISTORY_PATH":
-            _USER_DIR + "/data/sm_history.toml",
-        "RULES_CONFIG_PATH":
-            _USER_DIR + "/data/rules.toml",
-        "TRANSFORMERS_CONFIG_PATH":
-            _USER_DIR + "/data/transformers.toml",
-        "HOOKS_CONFIG_PATH":
-            _USER_DIR + "/data/hooks.toml",
-        "COMPANION_CONFIG_PATH":
-            _USER_DIR + "/data/companion_config.toml",
-        "DLL_PATH":
-            BASE_PATH + "/lib/dll/",
-        "GDEF_FILE":
-            _USER_DIR + "/transformers/words.txt",
-        "LOG_PATH":
-            _USER_DIR + "/log.txt",
-        "SAVED_CLIPBOARD_PATH":
-            _USER_DIR + "/data/clipboard.json",
-        "SIKULI_SCRIPTS_PATH":
-            _USER_DIR + "/sikuli",
-        "GIT_REPO_LOCAL_REMOTE_PATH":
-            _USER_DIR + "/data/git_repo_local_to_remote_match.toml",
-        "GIT_REPO_LOCAL_REMOTE_DEFAULT_PATH":
-            BASE_PATH + "/bin/share/git_repo_local_to_remote_match.toml.defaults",
-
-        # REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
-        "REMOTE_DEBUGGER_PATH":
-            "",
-
-        # SIKULIX EXECUTABLES
-        "SIKULI_IDE":
-            "",
-        "SIKULI_RUNNER":
-            "",
-
-        # EXECUTABLES
-        "AHK_PATH":
-            AHK_PATH_DEFAULT,
-        "DOUGLAS_PATH":
-            BASE_PATH + "/asynch/mouse/grids.py",
-        "ENGINE_PATH":
-            _validate_engine_path(),
-        "HOMUNCULUS_PATH":
-            BASE_PATH + "/asynch/hmc/h_launch.py",
-        "LEGION_PATH":
-            BASE_PATH + "/asynch/mouse/legion.py",
-        "MEDIA_PATH":
-            BASE_PATH + "/bin/media",
-        "RAINBOW_PATH":
-            BASE_PATH + "/asynch/mouse/grids.py",
-        "REBOOT_PATH":
-            BASE_PATH + "/bin/reboot.bat",
-        "REBOOT_PATH_WSR":
-            BASE_PATH + "/bin/reboot_wsr.bat",
-        "SETTINGS_WINDOW_PATH":
-            BASE_PATH + "/asynch/settingswindow.py",
-        "SIKULI_SERVER_PATH":
-            BASE_PATH + "/asynch/sikuli/server/xmlrpc_server.sikuli",
-        "WSR_PATH":
-            "C:/Windows/Speech/Common/sapisvr.exe",
-        "TERMINAL_PATH":
-            TERMINAL_PATH_DEFAULT,
-
-        # CCR
-        "CONFIGDEBUGTXT_PATH":
-            _USER_DIR + "/data/configdebug.txt",
-
-        # PYTHON
-        "PYTHONW":
-            SYSTEM_INFORMATION["hidden console binary"],
-    },
-
-    # python settings
-    "python": {
-        "automatic_settings":
-            True,  # Set to false to manually set "version" and "pip" below.
-        "version":
-            "python",  # Depending Python setup (python, python2, python2.7, py, py -2)
-        "pip": "pip"  # Depending on PIP setup (pip ,pip2, pip2.7)
-    },
-
-    # sikuli settings
-    "sikuli": {
-        "enabled": False,
-        "version": ""
-    },
-
-    # gitbash settings
-    "gitbash": {
-        "loading_time": 5,  # the time to initialise the git bash window in seconds
-        "fetching_time": 3  # the time to fetch a github repository in seconds
-    },
-
-    # node rules
-    "trees": {},
-
-    # miscellaneous section
-    "miscellaneous": {
-        "dev_commands": True,
-        "keypress_wait": 50,  # milliseconds
-        "max_ccr_repetitions": 16,
-        "atom_palette_wait": 30,  # hundredths of a second
-        "rdp_mode": False,  # Switch app context manually for remote desktop
-        "integer_remap_opt_in": False,
-        "short_integer_opt_out": False,
-        "integer_remap_crash_fix": False,
-        "print_rdescripts": True,
-        "history_playback_delay_secs": 1.0,
-        "legion_vertical_columns": 30,
-        "use_aenea": False,
-        "online_mode": True,
-        "hmc": True,
-        "ccr_on": True,
-        "reload_trigger": "timer"
-    },
-
-    "formats": {
-        "_default": {
-            "text_format": [5, 0],
-            "secondary_format": [1, 0],
-        },
-        "C plus plus": {
-            "text_format": [3, 1],
-            "secondary_format": [2, 1],
-        },
-        "C sharp": {
-            "text_format": [3, 1],
-            "secondary_format": [2, 1],
-        },
-        "Dart": {
-            "text_format": [3, 1],
-            "secondary_format": [2, 1],
-        },
-        "HTML": {
-            "text_format": [5, 0],
-            "secondary_format": [5, 2],
-        },
-        "Java": {
-            "text_format": [3, 1],
-            "secondary_format": [2, 1],
-        },
-        "Javascript": {
-            "text_format": [3, 1],
-            "secondary_format": [2, 1],
-        },
-        "matlab": {
-            "text_format": [3, 1],
-            "secondary_format": [1, 3],
-        },
-        "Python": {
-            "text_format": [5, 3],
-            "secondary_format": [2, 1],
-        },
-        "Rust": {
-            "text_format": [5, 3],
-            "secondary_format": [2, 1],
-        },
-        "sequel": {
-            "text_format": [5, 3],
-            "secondary_format": [1, 3],
-        },
-    }
-}
-
-
-# Internal Methods
 def _save(data, path):
     '''only to be used for settings file'''
     try:
@@ -429,7 +221,8 @@ def _init(path):
     except IOError as e:
         print("\n\n" + repr(e) + " while loading settings file: " + path +
               "\nAttempting to recover...\n\n")
-    result, num_default_added = _deep_merge_defaults(result, _DEFAULT_SETTINGS)
+    default_settings = _get_defaults()
+    result, num_default_added = _deep_merge_defaults(result, default_settings)
     # Temporary piece of code to seamlessly migrate clipboards to JSON
     if result["paths"]["SAVED_CLIPBOARD_PATH"].endswith(".toml"):
         old_clipboard = result["paths"]["SAVED_CLIPBOARD_PATH"]
@@ -473,26 +266,217 @@ def _deep_merge_defaults(data, defaults):
     return data, changes
 
 
-# Public interface:
+def _get_defaults():
+    terminal_path_default = "C:/Program Files/Git/git-bash.exe"
+    if not os.path.isfile(terminal_path_default):
+        terminal_path_default = ""
+
+    ahk_path_default = "C:/Program Files/AutoHotkey/AutoHotkey.exe"
+    if not os.path.isfile(ahk_path_default):
+        ahk_path_default = ""
+
+    return {
+        "paths": {
+            "BASE_PATH":
+                _BASE_PATH,
+            "USER_DIR":
+                _USER_DIR,
+
+            # DATA
+            "SM_BRINGME_PATH":
+                _USER_DIR + "/data/sm_bringme.toml",
+            "SM_ALIAS_PATH":
+                _USER_DIR + "/data/sm_aliases.toml",
+            "SM_CHAIN_ALIAS_PATH":
+                _USER_DIR + "/data/sm_chain_aliases.toml",
+            "SM_HISTORY_PATH":
+                _USER_DIR + "/data/sm_history.toml",
+            "RULES_CONFIG_PATH":
+                _USER_DIR + "/data/rules.toml",
+            "TRANSFORMERS_CONFIG_PATH":
+                _USER_DIR + "/data/transformers.toml",
+            "HOOKS_CONFIG_PATH":
+                _USER_DIR + "/data/hooks.toml",
+            "COMPANION_CONFIG_PATH":
+                _USER_DIR + "/data/companion_config.toml",
+            "DLL_PATH":
+                _BASE_PATH + "/lib/dll/",
+            "GDEF_FILE":
+                _USER_DIR + "/transformers/words.txt",
+            "LOG_PATH":
+                _USER_DIR + "/log.txt",
+            "SAVED_CLIPBOARD_PATH":
+                _USER_DIR + "/data/clipboard.json",
+            "SIKULI_SCRIPTS_PATH":
+                _USER_DIR + "/sikuli",
+            "GIT_REPO_LOCAL_REMOTE_PATH":
+                _USER_DIR + "/data/git_repo_local_to_remote_match.toml",
+            "GIT_REPO_LOCAL_REMOTE_DEFAULT_PATH":
+                _BASE_PATH + "/bin/share/git_repo_local_to_remote_match.toml.defaults",
+
+            # REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
+            "REMOTE_DEBUGGER_PATH":
+                "",
+
+            # SIKULIX EXECUTABLES
+            "SIKULI_IDE":
+                "",
+            "SIKULI_RUNNER":
+                "",
+
+            # EXECUTABLES
+            "AHK_PATH":
+                ahk_path_default,
+            "DOUGLAS_PATH":
+                _BASE_PATH + "/asynch/mouse/grids.py",
+            "ENGINE_PATH":
+                _validate_engine_path(),
+            "HOMUNCULUS_PATH":
+                _BASE_PATH + "/asynch/hmc/h_launch.py",
+            "LEGION_PATH":
+                _BASE_PATH + "/asynch/mouse/legion.py",
+            "MEDIA_PATH":
+                _BASE_PATH + "/bin/media",
+            "RAINBOW_PATH":
+                _BASE_PATH + "/asynch/mouse/grids.py",
+            "REBOOT_PATH":
+                _BASE_PATH + "/bin/reboot.bat",
+            "REBOOT_PATH_WSR":
+                _BASE_PATH + "/bin/reboot_wsr.bat",
+            "SETTINGS_WINDOW_PATH":
+                _BASE_PATH + "/asynch/settingswindow.py",
+            "SIKULI_SERVER_PATH":
+                _BASE_PATH + "/asynch/sikuli/server/xmlrpc_server.sikuli",
+            "WSR_PATH":
+                "C:/Windows/Speech/Common/sapisvr.exe",
+            "TERMINAL_PATH":
+                terminal_path_default,
+
+            # CCR
+            "CONFIGDEBUGTXT_PATH":
+                _USER_DIR + "/data/configdebug.txt",
+
+            # PYTHON
+            "PYTHONW":
+                SYSTEM_INFORMATION["hidden console binary"],
+        },
+
+        # python settings
+        "python": {
+            "automatic_settings":
+                True,  # Set to false to manually set "version" and "pip" below.
+            "version":
+                "python",  # Depending Python setup (python, python2, python2.7, py, py -2)
+            "pip": "pip"  # Depending on PIP setup (pip ,pip2, pip2.7)
+        },
+
+        # sikuli settings
+        "sikuli": {
+            "enabled": False,
+            "version": ""
+        },
+
+        # gitbash settings
+        "gitbash": {
+            "loading_time": 5,  # the time to initialise the git bash window in seconds
+            "fetching_time": 3  # the time to fetch a github repository in seconds
+        },
+
+        # node rules
+        "trees": {},
+
+        # miscellaneous section
+        "miscellaneous": {
+            "dev_commands": True,
+            "keypress_wait": 50,  # milliseconds
+            "max_ccr_repetitions": 16,
+            "atom_palette_wait": 30,  # hundredths of a second
+            "rdp_mode": False,  # Switch app context manually for remote desktop
+            "integer_remap_opt_in": False,
+            "short_integer_opt_out": False,
+            "integer_remap_crash_fix": False,
+            "print_rdescripts": True,
+            "history_playback_delay_secs": 1.0,
+            "legion_vertical_columns": 30,
+            "use_aenea": False,
+            "online_mode": True,
+            "hmc": True,
+            "ccr_on": True,
+            "reload_trigger": "timer"
+        },
+
+        "formats": {
+            "_default": {
+                "text_format": [5, 0],
+                "secondary_format": [1, 0],
+            },
+            "C plus plus": {
+                "text_format": [3, 1],
+                "secondary_format": [2, 1],
+            },
+            "C sharp": {
+                "text_format": [3, 1],
+                "secondary_format": [2, 1],
+            },
+            "Dart": {
+                "text_format": [3, 1],
+                "secondary_format": [2, 1],
+            },
+            "HTML": {
+                "text_format": [5, 0],
+                "secondary_format": [5, 2],
+            },
+            "Java": {
+                "text_format": [3, 1],
+                "secondary_format": [2, 1],
+            },
+            "Javascript": {
+                "text_format": [3, 1],
+                "secondary_format": [2, 1],
+            },
+            "matlab": {
+                "text_format": [3, 1],
+                "secondary_format": [1, 3],
+            },
+            "Python": {
+                "text_format": [5, 3],
+                "secondary_format": [2, 1],
+            },
+            "Rust": {
+                "text_format": [5, 3],
+                "secondary_format": [2, 1],
+            },
+            "sequel": {
+                "text_format": [5, 3],
+                "secondary_format": [1, 3],
+            },
+        }
+    }
+
+
 def save_config():
     '''Save the current in-memory settings to disk'''
     _save(SETTINGS, _SETTINGS_PATH)
 
 
-def get_settings():
-    global SETTINGS
-    return SETTINGS
+def initialize():
+    global SETTINGS, SYSTEM_INFORMATION
+    global _BASE_PATH, _USER_DIR, _SETTINGS_PATH
 
+    # calculate prerequisites
+    SYSTEM_INFORMATION = _get_platform_information()
+    _BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "lib", 1)[0].replace("\\", "/")
+    _USER_DIR = _validate_user_dir()
+    _SETTINGS_PATH = os.path.normpath(os.path.join(_USER_DIR, "data/settings.toml"))
 
-def report_to_file(message, path=None):
-    _path = SETTINGS["paths"]["LOG_PATH"]
-    if path is not None: _path = path
-    with io.open(_path, 'at', encoding="utf-8") as f:
-        f.write(unicode(message) + "\n")
+    for directory in ["data", "rules", "transformers", "hooks", "sikuli"]:
+        d = _USER_DIR + "/" + directory
+        if not os.path.exists(d):
+            os.makedirs(d)
 
-
-# Kick everything off.
-SETTINGS = _init(_SETTINGS_PATH)
-_debugger_path = SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"]
-if _debugger_path not in sys.path and os.path.isdir(_debugger_path):
-    sys.path.append(_debugger_path)
+    # Kick everything off.
+    SETTINGS = _init(_SETTINGS_PATH)
+    _debugger_path = SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"]
+    if _debugger_path not in sys.path and os.path.isdir(_debugger_path):
+        sys.path.append(_debugger_path)
+    print("Caster User Directory: " + _USER_DIR)
