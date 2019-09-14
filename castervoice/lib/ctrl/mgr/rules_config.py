@@ -46,7 +46,7 @@ class RulesConfig(TomlConfig):
         try:
             return self._config[RulesConfig._WHITELISTED][rcn]
         except KeyError:
-            self._config[RulesConfig._WHITELISTED][rcn] = False
+            self._config[RulesConfig._WHITELISTED][rcn] = True
             self.save()
             return False
 
