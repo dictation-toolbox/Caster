@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from castervoice.lib import utilities, settings
-from tests.util import utilities_mocking
+from tests.test_util import utilities_mocking
 
 '''
 BIIIIIIIIIIIIIG testing problem: I can't even import settings.py without it

@@ -3,10 +3,19 @@ class BiDiGraph(object):
         self._nodes = {}
 
     def add(self, *nodes):
+        """
+        Adds nodes to the graph. All nodes in the added group are
+        assumed to be connected to each other.
+
+        This structure is not thread safe and provides mutable access
+        to its substructures.
+
+        :param nodes: a group of objects which are all hashable
+        """
         node_range = range(0, len(nodes))
         for i in node_range:
             node = nodes[i]
-            if node not in self._nodes:
+            if node not in self._nodes.keys():
                 self._nodes[node] = set()
             for k in node_range:
                 if i != k:
