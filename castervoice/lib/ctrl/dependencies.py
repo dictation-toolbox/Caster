@@ -18,6 +18,7 @@ def find_pip():
     if sys.platform.startswith("linux"):
         pip = os.path.join(python_scripts, "pip")
         return pip
+    return None
 
 
 def install_type():
