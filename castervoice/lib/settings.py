@@ -464,7 +464,7 @@ def settings(*key_path):
     value = SETTINGS
     for k in key_path:
         if k in value:
-            value = value[key_path]
+            value = value[k]
         else:
             return False
     return value
