@@ -454,6 +454,22 @@ def _get_defaults():
     }
 
 
+def settings(*key_path):
+    """
+    This should be the preferred way to use settings.SETTINGS,
+    a KeyError-safe function call to access the settings dict.
+    """
+    if SETTINGS is None:
+        return False
+    value = SETTINGS
+    for k in key_path:
+        if k in value:
+            value = value[key_path]
+        else:
+            return False
+    return value
+
+
 def save_config():
     '''Save the current in-memory settings to disk'''
     _save(SETTINGS, _SETTINGS_PATH)

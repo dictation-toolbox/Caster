@@ -16,7 +16,7 @@ def _is_aenea_available():
 # Use a subclass of dragonfly's clipboard class instead if the 'use_aenea'
 # setting is set to true. This will allow commands like 'stoosh' to work
 # properly server-side if the RPC functions are available.
-if settings.SETTINGS["miscellaneous"]["use_aenea"] and _is_aenea_available():
+if settings.settings("miscellaneous", "use_aenea") and _is_aenea_available():
     # pylint: disable=import-error
     import aenea
     from jsonrpclib import ProtocolError

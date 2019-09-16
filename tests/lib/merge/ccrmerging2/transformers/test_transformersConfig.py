@@ -1,22 +1,33 @@
-from unittest import TestCase
-
-from castervoice.lib import utilities, settings
+from castervoice.lib import utilities
+from castervoice.lib.merge.ccrmerging2.transformers.transformers_config import TransformersConfig
 from tests.test_util import utilities_mocking
+from tests.test_util.settings_mocking import SettingsEnabledTestCase
 
-'''
-BIIIIIIIIIIIIIG testing problem: I can't even import settings.py without it
-creating a bunch of files. Need to shut all that stuff off unless some
-function is called.
-'''
 
-class TestTransformersConfig(TestCase):
-    def test_set_transformer_active(self):
+class TestTransformersConfig(SettingsEnabledTestCase):
+
+    _MOCK_PATH = "/mock/path"
+
+    def setUp(self):
+        self._set_setting(["paths", "TRANSFORMERS_CONFIG_PATH"],
+                          TestTransformersConfig._MOCK_PATH)
         utilities_mocking.mock_toml_files()
-        utilities.save_toml_file(settings.SETTINGS[])
+        utilities.save_toml_file({
+            "MockTransformer": True,
+            "OffTransformer": False
+        }, TestTransformersConfig._MOCK_PATH)
 
-        self.fail()
+    def test_set_transformer_active(self):
+        tc = TransformersConfig()
+        self.assertFalse(tc.is_transformer_active("OffTransformer"))
+        tc.set_transformer_active("OffTransformer", True)
+        self.assertTrue(tc.is_transformer_active("OffTransformer"))
 
     def test_is_transformer_active(self):
-        utilities_mocking.mock_toml_files()
+        tc = TransformersConfig()
+        self.assertTrue(tc.is_transformer_active("MockTransformer"))
+        self.assertFalse(tc.is_transformer_active("OffTransformer"))
 
-        self.fail()
+    def test_contains(self):
+        tc = TransformersConfig()
+        self.assertTrue("MockTransformer" in tc)
