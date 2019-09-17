@@ -1,9 +1,9 @@
-from castervoice.lib import control, settings
+from castervoice.lib import control, settings, printer
 
 
 def kill():
     control.nexus().comm.get_com("hmc").kill()
 
 
-if not settings.SETTINGS["miscellaneous"]["hmc"]:
-    print("WARNING: Tk Window controls have been disabled -- this is not advised!")
+if not settings.settings(["miscellaneous", "hmc"]):
+    printer.out("WARNING: Tk Window controls have been disabled -- this is not advised!")

@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
 
-import io
 import os
 import shutil
-import sys
-import traceback
 from __builtin__ import True
 from subprocess import Popen, PIPE
-import tomlkit
 import time
 
 from castervoice.lib.actions import Key, Text
@@ -15,16 +11,15 @@ from castervoice.lib.context import read_selected_without_altering_clipboard
 from castervoice.lib.utilities import load_toml_file
 from castervoice.lib import settings
 
-_USER_DIR = settings.SETTINGS["paths"]["USER_DIR"]
 
-if os.path.isfile(settings.SETTINGS["paths"]["GIT_REPO_LOCAL_REMOTE_PATH"]) is False:
-    git_match_default = settings.SETTINGS["paths"]["GIT_REPO_LOCAL_REMOTE_DEFAULT_PATH"]
-    git_match_user = settings.SETTINGS["paths"]["GIT_REPO_LOCAL_REMOTE_PATH"]
-    shutil.copy(git_match_default, git_match_user)
+def _copy_path():
+    if not os.path.isfile(settings.SETTINGS["paths"]["GIT_REPO_LOCAL_REMOTE_PATH"]):
+        git_match_default = settings.SETTINGS["paths"]["GIT_REPO_LOCAL_REMOTE_DEFAULT_PATH"]
+        git_match_user = settings.SETTINGS["paths"]["GIT_REPO_LOCAL_REMOTE_PATH"]
+        shutil.copy(git_match_default, git_match_user)
 
 
-def rebuild_local_remote_items(config):
-    # logger.debug('Github rebuilding extras')
+def _rebuild_local_remote_items(config):
     return {
         key: (os.path.expandvars(value), header)
         for header, section in config.iteritems() for key, value in section.iteritems()
@@ -32,6 +27,8 @@ def rebuild_local_remote_items(config):
 
 
 def github_checkoutupdate_pull_request(new):
+    _copy_path()
+
     # Function to fetch a PR
     try:
         Key("c-l/20").execute()
@@ -45,7 +42,7 @@ def github_checkoutupdate_pull_request(new):
                 # logger.warn("Could not load bringme defaults")
                 raise Exception("Could not load " + settings.SETTINGS["paths"]["GIT_REPO_LOCAL_REMOTE_PATH"])
 
-            items = rebuild_local_remote_items(CONFIG)
+            items = _rebuild_local_remote_items(CONFIG)
             if repo_url in items:
                 local_directory = items[repo_url][0]
                 local_directory = local_directory.replace("\\", "\\\\")

@@ -14,7 +14,7 @@ from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 
 atom_palette_wait = 30
-if settings.SETTINGS["miscellaneous"]["atom_palette_wait"]:
+if settings.settings(["miscellaneous", "atom_palette_wait"]):
     atom_palette_wait = int(settings.SETTINGS["miscellaneous"]["atom_palette_wait"])
 
 def ACP(command):
