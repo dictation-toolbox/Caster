@@ -11,7 +11,7 @@ class Text(TextBase):
 
 # Override imported dragonfly actions with aenea's if the 'use_aenea' setting
 # is set to true.
-if settings.SETTINGS["miscellaneous"]["use_aenea"]:
+if settings.settings(["miscellaneous", "use_aenea"]):
     try:
         from aenea import Key, Text, Mouse
     except ImportError:

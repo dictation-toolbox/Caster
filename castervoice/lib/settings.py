@@ -454,19 +454,20 @@ def _get_defaults():
     }
 
 
-def settings(*key_path):
+def settings(key_path, default_value=None):
     """
     This should be the preferred way to use settings.SETTINGS,
     a KeyError-safe function call to access the settings dict.
     """
+    dv = False if default_value is None else default_value
     if SETTINGS is None:
-        return False
+        return dv
     value = SETTINGS
     for k in key_path:
         if k in value:
             value = value[k]
         else:
-            return False
+            return dv
     return value
 
 

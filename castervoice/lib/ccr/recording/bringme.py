@@ -30,7 +30,7 @@ class BringRule(BaseSelfModifyingRule):
     _explorer_context = AppContext("explorer.exe") | contexts.DIALOGUE_CONTEXT
     _terminal_context = contexts.TERMINAL_CONTEXT
     # Paths
-    _terminal_path = settings.SETTINGS["paths"]["TERMINAL_PATH"]
+    _terminal_path = settings.settings(["paths", "TERMINAL_PATH"])
     _explorer_path = "C:\\Windows\\explorer.exe"
 
     def __init__(self):

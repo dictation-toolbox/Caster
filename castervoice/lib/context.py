@@ -8,7 +8,7 @@ from castervoice.lib.clipboard import Clipboard
 
 # Override dragonfly.AppContext with aenea.ProxyAppContext if the 'use_aenea'
 # setting is set to true.
-if settings.SETTINGS["miscellaneous"]["use_aenea"]:
+if settings.settings(["miscellaneous", "use_aenea"]):
     try:
         from aenea import ProxyAppContext as AppContext
     except ImportError:

@@ -14,7 +14,7 @@ _context = AppContext(executable=["idea", "idea64", "studio64", "pycharm", "webs
 
 if _context:
     from dragonfly.actions.action_paste import Paste as Text
-    if settings.SETTINGS["miscellaneous"]["use_aenea"]:
+    if settings.settings(["miscellaneous", "use_aenea"]):
         try:
             from aenea import Paste as Text
         except ImportError:
