@@ -12,12 +12,10 @@ class ContentRequestGenerator(object):
 
     def get_all_content_modules(self, directory):
         relevant_modules = []
-        for dirpath, dirnames, filenames in os.walk(directory):
+        for dirpath, dirnames, filenames in self._walk(directory):
             for filename in filenames:
-                if not filename.endswith("py"):
-                    continue
                 file_path = dirpath + os.sep + filename
-                content_type, content_class_name = ContentRequestGenerator._scan_file(file_path)
+                content_type, content_class_name = self._scan_file(file_path)
                 if content_type is not None:
                     module_name = filename[:-3]
                     request = ContentRequest(content_type,
@@ -27,8 +25,18 @@ class ContentRequestGenerator(object):
                     relevant_modules.append(request)
         return relevant_modules
 
-    @staticmethod
-    def _scan_file(file_path):
+    def _walk(self, directory):
+        """File i/o broken out for testability"""
+        return os.walk(directory)
+
+    def _get_file_lines(self, file_path):
+        """File i/o broken out for testability"""
+        content = None
+        with open(file_path) as f:
+            content = f.readlines()
+        return content
+
+    def _scan_file(self, file_path):
         """
         Reads the whole file, classifies it as rule, transformer, hook, or none.
         Also finds a list of potential names for the loadable content class.
@@ -40,9 +48,7 @@ class ContentRequestGenerator(object):
         if file_path.endswith("__init__.py"):
             return None, None
 
-        content = None
-        with open(file_path) as f:
-            content = f.readlines()
+        content = self._get_file_lines(file_path)
 
         rule_func = "def {}():".format(ContentType.GET_RULE)
         transformer_func = "def {}():".format(ContentType.GET_TRANSFORMER)
