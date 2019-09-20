@@ -14,5 +14,6 @@ class SettingsEnabledTestCase(TestCase):
             if i == len_kp - 1:
                 s[kp] = value
             else:
-                s[kp] = {}
+                if kp not in s:
+                    s[kp] = {}
                 s = s[kp]

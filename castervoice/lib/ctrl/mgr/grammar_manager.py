@@ -205,7 +205,7 @@ class GrammarManager(object):
         :return:
         """
         module_name = GrammarManager._get_module_name_from_file_path(file_path_changed)
-        rule_class, details = self._content_loader.idem_import_module(module_name, ContentType.GET_RULE)
+        rule_class, details = self._content_loader._idem_import_module(module_name, ContentType.GET_RULE)
         # re-register:
         self.register_rule(rule_class, details)
 

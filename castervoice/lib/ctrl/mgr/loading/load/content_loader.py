@@ -56,7 +56,7 @@ class ContentLoader(object):
 
         return FullContentSet(rules, transformers, hooks)
 
-    def idem_import_module(self, module_name, fn_name):
+    def _idem_import_module(self, module_name, fn_name):
         """
         Returns the content requested from the specified module.
         """
@@ -91,7 +91,7 @@ class ContentLoader(object):
         for request in requests:
             if request.directory not in path:
                 path.append(request.directory)
-            content_item = self.idem_import_module(request.module_name, request.content_type)
+            content_item = self._idem_import_module(request.module_name, request.content_type)
             if content_item is not None:
                 result.append(content_item)
 
