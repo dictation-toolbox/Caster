@@ -7,11 +7,12 @@ import io
 import os
 import sys
 import tomlkit
-import _winreg
 import version
 import errno
 
 # consts: some of these can easily be moved out of this file
+from castervoice.lib import printer
+
 GENERIC_HELP_MESSAGE = """
 If you continue having problems with this or any other issue you can contact
 us through Gitter at <https://gitter.im/dictation-toolbox/Caster> or on our GitHub
@@ -149,7 +150,14 @@ def _find_natspeak():
     '''
     Finds engine 'natspeak.exe' path and verifies supported DNS versions via Windows Registry.
     '''
-    print("Searching Windows Registry For DNS...")
+
+    try:
+        import _winreg
+    except:
+        printer.out("Could not import _winreg")
+        return ""
+
+    printer.out("Searching Windows Registry For DNS...")
     proc_arch = os.environ['PROCESSOR_ARCHITECTURE'].lower()
     try:
         proc_arch64 = os.environ['PROCESSOR_ARCHITEW6432'].lower()
@@ -180,7 +188,7 @@ def _find_natspeak():
                 if error.errno == 2:  # Suppresses '[Error 2] The system cannot find the file specified'
                     pass
                 else:
-                    print(error)
+                    printer.out(error)
             finally:
                 skey.Close()
                 if Publisher == "Nuance Communications Inc." and "Dragon" in DisplayName:
@@ -189,14 +197,14 @@ def _find_natspeak():
                         engine_path = InstallLocation.replace(
                             "\\", "/") + "Program/natspeak.exe"
                         if os.path.isfile(engine_path):
-                            print("Search Complete.")
+                            printer.out("Search Complete.")
                             return engine_path
                     else:
-                        print(
+                        printer.out(
                             " Dragon Naturally Speaking " + str(DnsVersion) +
                             " is not supported by Caster. Only versions 13 and above are supported. Purchase Dragon Naturally Speaking 13 or above"
                         )
-    print("Cannot find dragon engine path")
+    printer.out("Cannot find dragon engine path")
     return ""
 
 
@@ -207,7 +215,7 @@ def _save(data, path):
         with io.open(path, "wt", encoding="utf-8") as f:
             f.write(formatted_data)
     except Exception as e:
-        print("Error saving toml file: " + str(e) + _SETTINGS_PATH)
+        printer.out("Error saving toml file: " + str(e) + _SETTINGS_PATH)
 
 
 def _init(path):
@@ -216,10 +224,10 @@ def _init(path):
         with io.open(path, "rt", encoding="utf-8") as f:
             result = tomlkit.loads(f.read()).value
     except ValueError as e:
-        print("\n\n" + repr(e) + " while loading settings file: " + path + "\n\n")
-        print(sys.exc_info())
+        printer.out("\n\n" + repr(e) + " while loading settings file: " + path + "\n\n")
+        printer.out(sys.exc_info())
     except IOError as e:
-        print("\n\n" + repr(e) + " while loading settings file: " + path +
+        printer.out("\n\n" + repr(e) + " while loading settings file: " + path +
               "\nAttempting to recover...\n\n")
     default_settings = _get_defaults()
     result, num_default_added = _deep_merge_defaults(result, default_settings)
@@ -229,7 +237,7 @@ def _init(path):
         import json
         clipboard = {}
         new_path = old_clipboard[:-4] + "json"
-        print("\n\n Migrating clipboard from {} to {}".format(old_clipboard, new_path))
+        printer.out("\n\n Migrating clipboard from {} to {}".format(old_clipboard, new_path))
         with io.open(old_clipboard, "rt", encoding="utf-8") as f:
             clipboard = tomlkit.loads(f.read()).value
         formatted_data = unicode(json.dumps(clipboard, ensure_ascii=False))
@@ -241,7 +249,7 @@ def _init(path):
         if not num_default_added:
             _save(result, _SETTINGS_PATH)
     if num_default_added > 0:
-        print("Default settings values added: %d " % num_default_added)
+        printer.out("Default settings values added: %d " % num_default_added)
         _save(result, _SETTINGS_PATH)
     return result
 
@@ -496,4 +504,4 @@ def initialize():
     _debugger_path = SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"]
     if _debugger_path not in sys.path and os.path.isdir(_debugger_path):
         sys.path.append(_debugger_path)
-    print("Caster User Directory: " + _USER_DIR)
+    printer.out("Caster User Directory: " + _USER_DIR)

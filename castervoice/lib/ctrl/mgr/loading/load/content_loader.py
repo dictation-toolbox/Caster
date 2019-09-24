@@ -56,7 +56,7 @@ class ContentLoader(object):
 
         return FullContentSet(rules, transformers, hooks)
 
-    def _idem_import_module(self, module_name, fn_name):
+    def idem_import_module(self, module_name, fn_name):
         """
         Returns the content requested from the specified module.
         """
@@ -65,7 +65,7 @@ class ContentLoader(object):
             module = _MODULES[module_name]
             module = self._reimport_module(module)
         else:
-            module = self._import_module(module_name)  # , fn_name
+            module = self._import_module(module_name)
 
         if module is None:
             return None
@@ -91,7 +91,7 @@ class ContentLoader(object):
         for request in requests:
             if request.directory not in path:
                 path.append(request.directory)
-            content_item = self._idem_import_module(request.module_name, request.content_type)
+            content_item = self.idem_import_module(request.module_name, request.content_type)
             if content_item is not None:
                 result.append(content_item)
 
@@ -105,27 +105,37 @@ class ContentLoader(object):
         """
 
         try:
-            return importlib.import_module(module_name)
+            load_fn = self._get_load_fn()
+            return load_fn(module_name)
         except Exception as e:
-            print("Could not import '{}'. Module has errors: {}".format(module_name, traceback.format_exc()))
+            printer.out("Could not import '{}'. Module has errors: {}".format(module_name, traceback.format_exc()))
             return None
 
     def _reimport_module(self, module):
         '''
         Reimports an already imported module. Python 2/3 compatible method.
         '''
+        reload_fn = self._get_reload_fn()
+
+        reloaded_module = None
+        try:
+            reloaded_module = reload_fn(module)
+        except:
+            msg = "An error occurred while importing '{}': {}"
+            printer.out(msg.format(str(module), traceback.format_exc()))
+            return None
+
+        return reloaded_module
+
+    def _get_load_fn(self):
+        """Importing broken out for testability"""
+        return importlib.import_module
+
+    def _get_reload_fn(self):
+        """Importing broken out for testability"""
         try:
             reload
         except NameError:
             # Python 3
             from imp import reload
-
-        reloaded_module = None
-        try:
-            reloaded_module = reload(module)
-        except:
-            msg = "An error occurred while importing '{}': {}"
-            print(msg.format(str(module), traceback.format_exc()))
-            return None
-
-        return reloaded_module
+        return reload

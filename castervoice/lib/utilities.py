@@ -12,31 +12,31 @@ import traceback
 from __builtin__ import True
 from subprocess import Popen
 import tomlkit
-
-import win32gui
-import win32clipboard
-
 from castervoice.lib.clipboard import Clipboard
+from castervoice.lib import printer
 
-from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,
-    HKEY_CURRENT_USER, OpenKey, QueryValueEx)
-
-from dragonfly.windows.window import Window
-from dragonfly import Key
+try:
+    import win32gui
+    import win32clipboard
+    from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,
+                         HKEY_CURRENT_USER, OpenKey, QueryValueEx)
+    from dragonfly.windows.window import Window
+    from dragonfly import Key
+except:
+    printer.out("utilities.py imports failed.")
 
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0]
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:
-    from castervoice.lib import settings
+    from castervoice.lib import settings, printer
 
 # filename_pattern was used to determine when to update the list in the element window,
 # checked to see when a new file name had appeared
 FILENAME_PATTERN = re.compile(r"[/\\]([\w_ ]+\.[\w]+)")
 
 from ctypes import cdll
-from win32gui import GetForegroundWindow
 
 def load_vda():
     # https://github.com/reckoner/pyVirtualDesktopAccessor
@@ -48,7 +48,7 @@ def load_vda():
 
 def move_current_window_to_desktop(n=0, follow=False):
     vda = load_vda()
-    wndh = GetForegroundWindow()
+    wndh = win32gui.GetForegroundWindow()
     vda.MoveWindowToDesktopNumber(wndh, n-1)
     if follow:
         vda.GoToDesktopNumber(n-1)
