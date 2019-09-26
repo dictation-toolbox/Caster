@@ -1,13 +1,11 @@
+from mock import Mock
+
 from castervoice.lib.ctrl.mgr.loading.load import content_loader
 from castervoice.lib.ctrl.mgr.loading.load.content_request_generator import ContentRequestGenerator
 from castervoice.lib.ctrl.mgr.loading.load.content_type import ContentType
 from castervoice.lib.ctrl.mgr.rules_config import RulesConfig
-from tests.test_util import utilities_mocking
+from tests.test_util import utilities_mocking, printer_mocking
 from tests.test_util.settings_mocking import SettingsEnabledTestCase
-
-
-class _FakeRule(object):
-    pass
 
 
 class _FakeImportedRuleModule(object):
@@ -26,10 +24,15 @@ class _FakeImportedHookModule(object):
         return self._content
 
 
+class _FakeContent(object):
+    pass
+
+
 class TestContentLoader(SettingsEnabledTestCase):
 
     _RULE_CONFIG_PATH = "/mock/rule/config/path"
     _RULE_MODULE_NAME = "rule_module"
+    _HOOK_NAME = "hook_module"
 
     def setUp(self):
         self._set_setting(["paths", "RULES_CONFIG_PATH"], TestContentLoader._RULE_CONFIG_PATH)
@@ -41,26 +44,47 @@ class TestContentLoader(SettingsEnabledTestCase):
         self.rc_mock._config[RulesConfig._WHITELISTED]["MockRuleOne"] = True
         self.rc_mock._config[RulesConfig._WHITELISTED]["MockRuleTwo"] = False
         self.cl = content_loader.ContentLoader(self.crg_mock)
+        self.cl._get_reload_fn = Mock()
+        self.cl._get_reload_fn.side_effect = [lambda x: x]
 
     def test_load_everything(self):
         #self.cl.load_everything()
         pass
 
-    def test_idem_import_module_reimport_success(self):
+    def test_idem_import_module_import_success(self):
         '''
         scenarios to test:
         1. reimport / fn found -> return content of fn
         2. reimport / error -> return None, check error was printed
-        3. import / fn found -> return content of fn
-        3b. import non-rule success
-        4. import / error -> return None, check error was printed
-        5. AttributeError -> return None, check error was printed
-        6. other error when calling getattr -> return None, check error was printed
+        X 3. import / fn found -> return content of fn
+        X 3b. import non-rule success
+        X 4. import / error -> return None, check error was printed
+        X 5. AttributeError -> return None, check error was printed
         '''
-        rule_module = _FakeImportedRuleModule(_FakeRule)
+        rule_module = _FakeImportedRuleModule(_FakeContent)
         content_loader._MODULES = {TestContentLoader._RULE_MODULE_NAME: rule_module}
         rule_class = self.cl.idem_import_module(TestContentLoader._RULE_MODULE_NAME, ContentType.GET_RULE)
-        self.assertEqual(_FakeRule, rule_class)
+        self.assertEqual(_FakeContent, rule_class)
 
+    def test_idem_import_module_import_hook_success(self):
+        hook_module = _FakeImportedHookModule(_FakeContent)
+        content_loader._MODULES = {TestContentLoader._HOOK_NAME: hook_module}
+        hook_class = self.cl.idem_import_module(TestContentLoader._HOOK_NAME, ContentType.GET_HOOK)
+        self.assertEqual(_FakeContent, hook_class)
 
+    def test_idem_import_module_import_failure(self):
+        content_loader._MODULES = {}
+        spy = printer_mocking.printer_spy()
+        rule_class = self.cl.idem_import_module(TestContentLoader._RULE_MODULE_NAME, ContentType.GET_RULE)
+        expected_error = "Could not import 'rule_module'. Module has errors:"
+        self.assertIsNone(rule_class)
+        self.assertTrue(expected_error in spy.get_first())
 
+    def test_idem_import_module_attribute_error(self):
+        hook_module = _FakeImportedHookModule(_FakeContent)
+        content_loader._MODULES = {TestContentLoader._RULE_MODULE_NAME: hook_module}
+        spy = printer_mocking.printer_spy()
+        rule_class = self.cl.idem_import_module(TestContentLoader._RULE_MODULE_NAME, ContentType.GET_RULE)
+        expected_error = "No method named 'get_rule' was found on 'rule_module'. Did you forget to implement it?"
+        self.assertIsNone(rule_class)
+        self.assertEqual(expected_error, spy.get_first())
