@@ -76,10 +76,15 @@ class GrammarManager(object):
         if self._initial_activations_complete:
             return
 
+        loaded_rcns = set(self._managed_rules.keys())
         for rcn in self._config.get_enabled_rcns_ordered():
-            rd = self._managed_rules[rcn].get_details()
-            is_ccr = rd.declared_ccrtype is not None
-            if is_ccr and not self._ccr_toggle.is_active():
+            if rcn in loaded_rcns:
+                rd = self._managed_rules[rcn].get_details()
+                is_ccr = rd.declared_ccrtype is not None
+                if is_ccr and not self._ccr_toggle.is_active():
+                    continue
+            else:
+                printer.out("Skipping rule {}.".format(rcn))
                 continue
             self._enable_rule(rcn, True)
         if hasattr(self._reload_observable, "start"):
@@ -164,7 +169,9 @@ class GrammarManager(object):
             self._ccr_toggle.set_active(True)
 
             # handle CCR: get all active ccr rules after de/activating one
-            active_rule_class_names = self._config.get_enabled_rcns_ordered()
+            loaded_rcns = set(self._managed_rules.keys()) # membership in a set is O(1)
+            active_rule_class_names = [rcn for rcn in self._config.get_enabled_rcns_ordered()
+                                       if rcn in loaded_rcns]
             active_mrs = [self._managed_rules[rcn] for rcn in active_rule_class_names]
             active_ccr_mrs = [mr for mr in active_mrs if mr.get_details().declared_ccrtype is not None]
 
