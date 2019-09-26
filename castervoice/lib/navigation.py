@@ -181,7 +181,7 @@ def kill_grids_and_wait():
 
 
 def mouse_click(button):
-    kill_grids_and_wait(control.nexus())
+    kill_grids_and_wait()
     Mouse(button).execute()
 
 
