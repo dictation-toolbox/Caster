@@ -17,10 +17,10 @@ atom_palette_wait = 30
 if settings.settings(["miscellaneous", "atom_palette_wait"]):
     atom_palette_wait = int(settings.SETTINGS["miscellaneous"]["atom_palette_wait"])
 
+
 def ACP(command):
     """Utilize the Palette UI to execute commands."""
-    return R(
-        Key("cs-p") + Pause(str(atom_palette_wait)) + Text(command) + Key("enter"))
+    return R(Key("cs-p") + Pause(str(atom_palette_wait)) + Text(command) + Key("enter"))
 
 class AtomRule(MappingRule):
     """
@@ -62,7 +62,7 @@ class AtomRule(MappingRule):
             ACP("Open Your Key Map"),
         "open [your] snippet":
             ACP("Open Your Snippet"),
-        "open [your] stylesheet":
+        "open [your] style sheet":
             ACP("Open your Stylesheet"),
         "save as":
             R(Key("cs-s")),
@@ -87,14 +87,15 @@ class AtomRule(MappingRule):
         "select encoding":
             R(Key("cs-u")),
         "[go to] line <ln1>":
-            R(Key("c-g") + Pause(str(atom_palette_wait)) + Text("%(ln1)s") +
-              Key("enter")),
+            R(
+                Key("c-g") + Pause(str(atom_palette_wait)) + Text("%(ln1)s") +
+                Key("enter")),
         "<action> [line] <ln1> [by <ln2>]":
             R(Function(navigation.action_lines)),
         "select grammar":
             R(Key("cs-l")),
         #Lines Submenu
-        "toggle outdent":
+        "toggle out dent":
             R(Key("c-rightbrace")),
         "auto indent windows":
             ACP("Window Auto Indent"),
@@ -140,9 +141,9 @@ class AtomRule(MappingRule):
         #View Menu
         "reload file":
             R(Key("ac-r")),
-        "fullscreen":
+        "full screen":
             R(Key("f11")),
-        "toggle menubar":
+        "toggle menu bar":
             ACP("Toggle Menu Bar"),
         "increase font [size] [<n>]":
             R(Key("cs-equals")*Repeat(extra="n")),
@@ -152,7 +153,7 @@ class AtomRule(MappingRule):
             R(Key("c-0")),
         "toggle soft wrap":
             ACP("Toggle Soft Wrap"),
-        "[toggle] treeview":
+        "[toggle] tree view":
             R(Key("c-backslash")),
         #Panes Submenu
         "split [pane] above":
@@ -211,8 +212,7 @@ class AtomRule(MappingRule):
         "[find] select skip [this] [<n>]":
             R(Key("c-k, c-d")*Repeat(extra="n")),
         "[find] select skip next [<n>]":
-            R(Key("c-d")) +
-            R(Key("c-k, c-d")*Repeat(extra="n")),
+            R(Key("c-d")) + R(Key("c-k, c-d")*Repeat(extra="n")),
         "find replace next":
             ACP("Find and Replace: Replace Next"),
         "find replace all":
@@ -255,7 +255,7 @@ class AtomRule(MappingRule):
         #Extras
         "markdown copy html":
             ACP("Markdown Preview: Copy HTML"),
-        "markdown toggle break on newline":
+        "markdown toggle break on new line":
             ACP("Markdown Preview: Toggle Break On Single Newline"),
         #Package Generator Submenu
         "(make|generate) package":
@@ -296,7 +296,7 @@ class AtomRule(MappingRule):
         "project symbol":
             R(Key("cs-r")),
         #Timecop Submenu
-        "timecop":
+        "time cop":
             ACP("Timecop: View"),
         #Tree View Submenu
         "tree focus":
@@ -524,16 +524,19 @@ class AtomRule(MappingRule):
             R(Text('#"": ACP(""),') + Key("enter"))*Repeat(extra="n"),
         #Repeatable Snippets
         "dev numb keys [input] [<n>]":
-            R(Text('#" [<n>]": R(Key("-") * Repeat(extra="n"),') + Key("enter"))*Repeat(extra="n"),
+            R(Text('#" [<n>]": R(Key("-") * Repeat(extra="n"),') + Key("enter"))*
+            Repeat(extra="n"),
         "dev numb [command] palette [<n>]":
-            R(Text('#" [<n>]": ACP("") * Repeat(extra="n"),') + Key("enter"))*Repeat(extra="n"),
+            R(Text('#" [<n>]": ACP("") * Repeat(extra="n"),') + Key("enter"))*
+            Repeat(extra="n"),
         #Basic Dragonfly Snippets
         "dev key [<n>]":
             R(Text('"": Key(""),'))*Repeat(extra="n"),
         "dev text [<n>]":
             R(Text('"": Text(""),'))*Repeat(extra="n"),
         "send command [<n>]":
-            R(Text('"": R(Function(SendJsonCommands, a_command=""), rdescript=""),'))*Repeat(extra="n"),
+            R(Text('"": R(Function(SendJsonCommands, a_command=""), rdescript=""),'))*
+            Repeat(extra="n"),
     }
 
     extras = [

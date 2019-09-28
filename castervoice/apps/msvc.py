@@ -9,7 +9,7 @@ class MSVCRule(MappingRule):
     mapping = {
         "cursor prior": R(Key("c-minus")),
         "cursor next": R(Key("cs-minus")),
-        "toggle fullscreen": R(Key("sa-enter")),
+        "toggle full screen": R(Key("sa-enter")),
         "resolve": R(Key("c-dot")),
         "jump to source": R(Key("f12")),
         "snippet": R(Key("tab")),
@@ -23,7 +23,7 @@ class MSVCRule(MappingRule):
         "on comment out": R(Key("c-k/50, c-u")),
         "set bookmark": R(Key("c-k, c-k")),
         "next bookmark": R(Key("c-k, c-n")),
-        "breakpoint": R(Key("f9")),
+        "break point": R(Key("f9")),
         "format code": R(Key("cs-f")),
         "(do imports | import all)": R(Key("cs-o")),
         "comment line": R(Key("c-slash")),

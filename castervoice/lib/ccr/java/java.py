@@ -1,5 +1,6 @@
 from dragonfly import Key
 
+
 from castervoice.lib.actions import Text
 from castervoice.lib.ccr.standard import SymbolSpecs
 from castervoice.lib.const import CCRType
@@ -112,7 +113,7 @@ class Java(MergeRule):
             R(Text("String ")),
         "boolean":
             R(Text("boolean ")),
-        "substring":
+        "sub string":
             R(Text("substring")),
         "ternary":
             R(Text("()?:") + Key("left:3")),
@@ -135,7 +136,7 @@ class Java(MergeRule):
         "is instance of":
             R(Text(" instanceof ")),
         "dock string":
-            R(Text("/***/")+ Key("left,left,enter")),
+            R(Text("/***/") + Key("left,left,enter")),
     }
 
     extras = []

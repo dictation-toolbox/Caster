@@ -12,7 +12,10 @@ from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
 
+
 class Bash(MergeRule):
+    pronunciation = "bash"
+
     mapping = {
         SymbolSpecs.IF:
             R(Text("if [[  ]]; ") + Key("left/5:5")),

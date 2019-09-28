@@ -35,7 +35,7 @@ ADD_BOOKMARK = "[add] bookmark"
 BOOKMARK_ALL_TABS = "bookmark all [tabs]"
 TOGGLE_BOOKMARK_TOOLBAR = "[toggle] bookmark bar"
 SHOW_BOOKMARKS = "[show] bookmarks"
-TOGGLE_FULL_SCREEN = "[toggle] full-screen"
+TOGGLE_FULL_SCREEN = "[toggle] full screen"
 SHOW_PAGE_SOURCE = "(show|view) page source"
 DEBUG_RESUME = "resume"
 DEBUG_STEP_OVER = "step over"
@@ -60,6 +60,8 @@ def get_defaults():
 def get_extras():
     return [
         Choice("nth", {
+    Choice(
+        "nth", {
             "first": "1",
             "second": "2",
             "third": "3",

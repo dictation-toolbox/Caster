@@ -95,7 +95,7 @@ class GitBashRule(MappingRule):
             R(Text("grep -rinH \"PATTERN\" *")),
         "search recursive count":
             R(Text("grep -rinH \"PATTERN\" * | wc -l")),
-        "search recursive filetype":
+        "search recursive file type":
             R(Text("find . -name \"*.java\" -exec grep -rinH \"PATTERN\" {} \\;")),
         "to file":
             R(Text(" > FILENAME")),
