@@ -112,20 +112,17 @@ class ContentLoader(object):
             return None
 
     def _reimport_module(self, module):
-        '''
+        """
         Reimports an already imported module. Python 2/3 compatible method.
-        '''
-        reload_fn = self._get_reload_fn()
+        """
 
-        reloaded_module = None
         try:
-            reloaded_module = reload_fn(module)
+            reload_fn = self._get_reload_fn()
+            return reload_fn(module)
         except:
             msg = "An error occurred while importing '{}': {}"
             printer.out(msg.format(str(module), traceback.format_exc()))
             return None
-
-        return reloaded_module
 
     def _get_load_fn(self):
         """Importing broken out for testability"""
