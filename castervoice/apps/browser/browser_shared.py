@@ -60,8 +60,6 @@ def get_defaults():
 def get_extras():
     return [
         Choice("nth", {
-    Choice(
-        "nth", {
             "first": "1",
             "second": "2",
             "third": "3",
