@@ -12,6 +12,7 @@ from castervoice.lib.merge.selfmod.selfmodrule import BaseSelfModifyingRule
 from castervoice.lib.merge.state.actions import AsynchronousAction
 from castervoice.lib.merge.state.actions2 import NullAction
 from castervoice.lib.merge.state.short import R, L, S
+from castervoice.lib.util import recognition_history
 
 
 class HistoryRule(BaseSelfModifyingRule):
@@ -20,9 +21,8 @@ class HistoryRule(BaseSelfModifyingRule):
     mapping = {"default sequence": NullAction()}
 
     def __init__(self):
-        super(HistoryRule, self).__init__(settings.SETTINGS["paths"]["SM_HISTORY_PATH"])
-        self._history = RecognitionHistory(20)
-        self._history.register()
+        super(HistoryRule, self).__init__(settings.settings("paths", "SM_HISTORY_PATH"))
+        self._history = recognition_history.get_and_register_history(20)
         self._preserved = None
 
     def _record_from_history(self):
@@ -109,11 +109,11 @@ class HistoryRule(BaseSelfModifyingRule):
         recorded_macros = self._config.get_copy()
         for spec in recorded_macros:
             sequences = recorded_macros[spec]
-            delay = settings.SETTINGS["miscellaneous"]["history_playback_delay_secs"]
+            delay = settings.settings("miscellaneous", "history_playback_delay_secs")
             # The associative string (ascii_str) must be ascii, but the sequences within Playback must be Unicode.
-            mapping[ascii_str] = R(
+            mapping[spec] = R(
                 Playback([(sequence, delay) for sequence in sequences]),
-                rdescript="Recorded Macro: " + ascii_str) * Repeat(extra="n")
+                rdescript="Recorded Macro: " + spec) * Repeat(extra="n")
         mapping["record from history"] = R(
             Function(lambda: self._record_from_history()), rdescript="Record From History")
         mapping["delete recorded macros"] = R(

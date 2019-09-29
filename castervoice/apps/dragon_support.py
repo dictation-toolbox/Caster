@@ -1,10 +1,11 @@
-from dragonfly import Key, RecognitionHistory, Dictation, Choice
+from dragonfly import Key, Dictation, Choice
 
 from castervoice.lib import utilities
 from castervoice.lib.actions import Text
 from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.util import recognition_history
 
-_DBL_FIX_HISTORY = RecognitionHistory(1)
+_DBL_FIX_HISTORY = recognition_history.get_and_register_history(1)
 
 
 def fix_dragon_double():
