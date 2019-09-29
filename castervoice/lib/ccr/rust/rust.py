@@ -109,7 +109,7 @@ class Rust(MergeRule):
             R(Text("static ")),
         "brace pan":
             R(Key("escape, escape, end, left, enter, enter, up, tab")),
-        "namespace":
+        "name space":
             R(Key("colon, colon")),
     }
 

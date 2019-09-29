@@ -1,4 +1,5 @@
 import importlib
+import os
 import traceback
 from sys import modules as _MODULES
 from sys import path
@@ -24,11 +25,13 @@ class ContentLoader(object):
         # Generate all requests for both starter and user locations
         base_path = settings.SETTINGS["paths"]["BASE_PATH"]
         user_dir = settings.SETTINGS["paths"]["USER_DIR"]
+        user_rules_dir = user_dir + os.sep + "rules"
 
         starter_content_requests = self._content_request_generator.get_all_content_modules(base_path)
         user_content_requests = self._content_request_generator.get_all_content_modules(user_dir)
 
         # user content should trump starter content
+        path.append(user_rules_dir)
         requests = {}
         for item in starter_content_requests:
             requests[item.module_name] = item
@@ -112,20 +115,17 @@ class ContentLoader(object):
             return None
 
     def _reimport_module(self, module):
-        '''
+        """
         Reimports an already imported module. Python 2/3 compatible method.
-        '''
-        reload_fn = self._get_reload_fn()
+        """
 
-        reloaded_module = None
         try:
-            reloaded_module = reload_fn(module)
+            reload_fn = self._get_reload_fn()
+            return reload_fn(module)
         except:
             msg = "An error occurred while importing '{}': {}"
             printer.out(msg.format(str(module), traceback.format_exc()))
             return None
-
-        return reloaded_module
 
     def _get_load_fn(self):
         """Importing broken out for testability"""

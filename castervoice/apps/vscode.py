@@ -15,18 +15,18 @@ class VSCodeCcrRule(MergeRule):
         # Note: If you get the bad grammar grammar too complex error, move some of these commands into the non-CCR rule
         # cursor/line navigation
         "scroll up [<n>]":
-            R(Key("c-up") * Repeat(extra='n'),
-            rdescript="VS Code: Scroll Up One Line at a Time"),
+            R(Key("c-up")*Repeat(extra='n'),
+              rdescript="VS Code: Scroll Up One Line at a Time"),
         "scroll down [<n>]":
-            R(Key("c-down") * Repeat(extra='n'),
+            R(Key("c-down")*Repeat(extra='n'),
               rdescript="VS Code: Scroll Down One Line at a Time"),
         "scroll page up [<n>]":
-            R(Key("a-pgup") * Repeat(extra='n'),
+            R(Key("a-pgup")*Repeat(extra='n'),
               rdescript="VS Code: Scroll Up One Page Up at a Time"),
         "scroll page down [<n>]":
-            R(Key("a-pgdown") * Repeat(extra='n'),
+            R(Key("a-pgdown")*Repeat(extra='n'),
               rdescript="VS Code: Scroll Down One Page Down At a Time"),
-        "(unindent|outdent) [<n>]":
+        "(unindent|out dent) [<n>]":
             R(Key("home, s-tab:%(n)s"), rdescript="VS Code: Unindent"),
         "comment [line]":
             R(Key("c-slash"), rdescript="VS Code: Line Comment"),
@@ -34,14 +34,12 @@ class VSCodeCcrRule(MergeRule):
             R(Key("sa-a"), rdescript="VS Code: Block Comment"),
         # Multi-cursor and selection
         "cursor above [<n>]":
-            R(Key("ca-up") * Repeat(extra='n'),
-              rdescript="VS Code: Insert Cursor Above"),
+            R(Key("ca-up")*Repeat(extra='n'), rdescript="VS Code: Insert Cursor Above"),
         "cursor below [<n>]":
-            R(Key("ca-down") * Repeat(extra='n'),
-              rdescript="VS Code: Insert Cursor Above"),
+            R(Key("ca-down")*Repeat(extra='n'), rdescript="VS Code: Insert Cursor Above"),
         "remove cursor":
-            R(Key("csa-down"),
-              rdescript="VS Code: Remove Cursor"),  # not sure if this command works always; also try csa-up
+            R(Key("csa-down"), rdescript="VS Code: Remove Cursor"
+              ),  # not sure if this command works always; also try csa-up
         # csa-down/up seems to work sometimes to remove 1 of the cursors
         # but I don't really understand how this works
         "tall cursor up":
@@ -56,18 +54,20 @@ class VSCodeCcrRule(MergeRule):
 
         # Command below requires "brackets select" extension for VS code
         "select [in] brackets [<n>]":
-            R(Key("ca-a") * Repeat(extra='n'),
-              rdescript="VS Code: Select in between parable punctuation inclusive using 'brackets select' extension"
+            R(Key("ca-a")*Repeat(extra='n'),
+              rdescript=
+              "VS Code: Select in between parable punctuation inclusive using 'brackets select' extension"
               )*Repeat(extra='n'),
         "all current selection":
-            R(Key("c-l"), rdescript="VS Code: Select All Occurrences of Current Selection"),
+            R(Key("c-l"),
+              rdescript="VS Code: Select All Occurrences of Current Selection"),
         "all current word":
             R(Key("c-f2"), rdescript="VS Code: Select All Occurrences of Current Word"),
         "select next [<n>]":
-            R(Key("c-f3") * Repeat(extra='n'),
+            R(Key("c-f3")*Repeat(extra='n'),
               rdescript="VS Code: Select Next Occurrence of Current Word"),
         "go to next [<n>]":
-            R(Key("sa-right/2, c-f3, c-left/2, escape") * Repeat(extra='n'),
+            R(Key("sa-right/2, c-f3, c-left/2, escape")*Repeat(extra='n'),
               rdescript="VS Code: Go to Next Occurrence of Current Word"),
         # may or may not want the escape afterwards to close the find box
         # note the above command might sometimes be off by one so you have to say one higher
@@ -76,30 +76,29 @@ class VSCodeCcrRule(MergeRule):
         "select prior [<n>]":
             R(Key("cs-f3"), rdescript="VS Code: Select Prior Occurrence of Current Word"),
         "go to prior [<n>]":
-            R(Key("sa-right/2, cs-f3, c-left/2, escape") * Repeat(extra='n'),
+            R(Key("sa-right/2, cs-f3, c-left/2, escape")*Repeat(extra='n'),
               rdescript="VS Code: Go to Prior Occurrence of Current Word"),
         # may or may not want the escape afterwards to close the find box
         "cursor all":
             R(Key("cs-l"),
               rdescript="VS Code: Add Cursor to All Occurrences of Current Selection"),
         "next cursor [<n>]":
-            R(Key("c-d") * Repeat(extra='n'),
+            R(Key("c-d")*Repeat(extra='n'),
               rdescript="VS Code: Add Cursor to Next Occurrence of Current Selection"),
         "indent [<n>]":
             R(Key("home, tab:%(n)s"), rdescript="VS Code: Indent"),
         "hard delete [<n>]":
             R(Key("s-del"), rdescript="VS Code: Eliminates Line not Just the Text on it"),
         "copy line up [<n>]":
-            R(Key("sa-up") * Repeat(extra='n'),
-              rdescript="VS Code: Duplicate Line Above"),
+            R(Key("sa-up")*Repeat(extra='n'), rdescript="VS Code: Duplicate Line Above"),
         "copy line up [<n>]":
-            R(Key("sa-down") * Repeat(extra='n'),
+            R(Key("sa-down")*Repeat(extra='n'),
               rdescript="VS Code: Duplicate Line Below"),
         "switch line down [<n>]":
-            R(Key("a-down") * Repeat(extra='n'),
+            R(Key("a-down")*Repeat(extra='n'),
               rdescript="VS Code: Switch Line With the One Below it"),
         "switch line up [<n>]":
-            R(Key("a-up") * Repeat(extra='n'),
+            R(Key("a-up")*Repeat(extra='n'),
               rdescript="VS Code: Switch Line With the One Above it"),
         "match bracket":
             R(Key("cs-backslash"), rdescript="VS Code: Jump to Matching Bracket"),
@@ -107,12 +106,14 @@ class VSCodeCcrRule(MergeRule):
         # commands for selecting between parable characters using "quick and simple text selection" VScode extension (required)
         # repetition of these commands by saying the number expands the selection to include the text between the next (i.e. outer) set of parable characters of the given type
         "select between <between_parables> [<n>]":
-            R(Key("c-k, %(between_parables)s") * Repeat(extra='n'),
-              rdescript="VS Code: Select between parentheses noninclusive using 'quick and simple text selection' VScode extension"
+            R(Key("c-k, %(between_parables)s")*Repeat(extra='n'),
+              rdescript=
+              "VS Code: Select between parentheses noninclusive using 'quick and simple text selection' VScode extension"
               ),
         "select around <around_parables> [<n>]":
-            R(Key("c-k, %(around_parables)s") * Repeat(extra='n'),
-              rdescript="VS Code: Select between parentheses inclusive using 'quick and simple text selection' VScode extension"
+            R(Key("c-k, %(around_parables)s")*Repeat(extra='n'),
+              rdescript=
+              "VS Code: Select between parentheses inclusive using 'quick and simple text selection' VScode extension"
               ),
     }
     extras = [
@@ -120,14 +121,15 @@ class VSCodeCcrRule(MergeRule):
         Dictation("mim"),
         IntegerRefST("n", 1, 100),
         IntegerRefST("m", 1, 10),
-        Choice("between_parables", {
-            "prekris": "lparen",
-            "brax": "lbracket",
-            "curly": "lbrace",
-            "angle": "langle",
-            "single": "squote",
-            "quote": "dquote",
-        }),
+        Choice(
+            "between_parables", {
+                "prekris": "lparen",
+                "brax": "lbracket",
+                "curly": "lbrace",
+                "angle": "langle",
+                "single": "squote",
+                "quote": "dquote",
+            }),
         Choice("around_parables", {
             "prekris": "rparen",
             "brax": "rbracket",

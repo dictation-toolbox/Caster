@@ -1,5 +1,6 @@
 from dragonfly import MappingRule, Function
 
+from castervoice.lib.ctrl.mgr.errors.no_pronunciation_error import NoPronunciationError
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 
 
@@ -29,10 +30,10 @@ class GrammarActivator(object):
         register or re-register a rule;
         the "trigger" is what the rule is called when you say "enabled X" or "disable X"
         """
-        trigger = self._get_best_trigger(managed_rule)
+        trigger = self._get_trigger(managed_rule)
         self._class_name_to_trigger[managed_rule.get_rule_class_name()] = trigger
 
-    def _get_best_trigger(self, managed_rule):
+    def _get_trigger(self, managed_rule):
         """
         Ideally we're dealing with a MergeRule and the trigger is its pronunciation. But since
         GrammarManager also manages pure Dragonfly rules, we might need to derive the name otherwise.
@@ -42,9 +43,7 @@ class GrammarActivator(object):
             return rule_instance.get_pronunciation()
         if managed_rule.get_details().name is not None:
             return managed_rule.get_details().name
-        if managed_rule.get_details().grammar_name is not None:
-            return managed_rule.get_details().grammar_name
-        return managed_rule.get_rule_class_name()
+        raise NoPronunciationError(managed_rule.get_rule_class_name())
 
     def construct_activation_rule(self):
         """

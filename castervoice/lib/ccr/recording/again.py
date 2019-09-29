@@ -5,8 +5,9 @@ from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.actions import AsynchronousAction
 from castervoice.lib.merge.state.short import R, L, S
+from castervoice.lib.util import recognition_history
 
-_history = RecognitionHistory(10)
+_history = recognition_history.get_and_register_history(10)
 
 
 class Again(MappingRule):
