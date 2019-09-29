@@ -1,4 +1,5 @@
 import importlib
+import os
 import traceback
 from sys import modules as _MODULES
 from sys import path
@@ -24,11 +25,13 @@ class ContentLoader(object):
         # Generate all requests for both starter and user locations
         base_path = settings.SETTINGS["paths"]["BASE_PATH"]
         user_dir = settings.SETTINGS["paths"]["USER_DIR"]
+        user_rules_dir = user_dir + os.sep + "rules"
 
         starter_content_requests = self._content_request_generator.get_all_content_modules(base_path)
         user_content_requests = self._content_request_generator.get_all_content_modules(user_dir)
 
         # user content should trump starter content
+        path.append(user_rules_dir)
         requests = {}
         for item in starter_content_requests:
             requests[item.module_name] = item
