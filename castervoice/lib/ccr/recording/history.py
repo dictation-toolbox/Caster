@@ -21,7 +21,7 @@ class HistoryRule(BaseSelfModifyingRule):
     mapping = {"default sequence": NullAction()}
 
     def __init__(self):
-        super(HistoryRule, self).__init__(settings.settings("paths", "SM_HISTORY_PATH"))
+        super(HistoryRule, self).__init__(settings.settings(["paths", "SM_HISTORY_PATH"]))
         self._history = recognition_history.get_and_register_history(20)
         self._preserved = None
 
@@ -109,7 +109,7 @@ class HistoryRule(BaseSelfModifyingRule):
         recorded_macros = self._config.get_copy()
         for spec in recorded_macros:
             sequences = recorded_macros[spec]
-            delay = settings.settings("miscellaneous", "history_playback_delay_secs")
+            delay = settings.settings(["miscellaneous", "history_playback_delay_secs"])
             # The associative string (ascii_str) must be ascii, but the sequences within Playback must be Unicode.
             mapping[spec] = R(
                 Playback([(sequence, delay) for sequence in sequences]),
