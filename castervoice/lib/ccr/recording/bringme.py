@@ -206,7 +206,7 @@ class BringRule(BaseSelfModifyingRule):
         "file": {
             "caster settings": "%USERPROFILE%\\.caster\\data\\settings.toml",
             "caster alias": "%USERPROFILE%\\.caster\\data\\sm_aliases.toml",
-            "caster bring me": "%USERPROFILE%\\.caster\\data\\bringme.toml",
+            "caster bring me": "%USERPROFILE%\\.caster\\data\\sm_bringme.toml",
             "caster ccr": "%USERPROFILE%\\.caster\\data\\ccr.toml",
             "caster config debug": "%USERPROFILE%\\.caster\\data\\configdebug.txt",
             "caster words": "%USERPROFILE%\\.caster\\filter\\words.txt",
