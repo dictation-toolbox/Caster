@@ -100,7 +100,7 @@ def _get_platform_information():
         system_information.update(
             {"main binary": os.path.join(sys.exec_prefix, "python.exe")})
         system_information.update(
-            {"hidden console binary": os.path.join(sys.exec_prefix, "pythonw.exe")})
+            {"hidden console binary": os.path.join(sys.exec_prefix, "pythonw.exe").replace("\\", "/")})
     else:
         system_information.update({"binary path": os.path.join(sys.exec_prefix, "bin")})
         system_information.update(
@@ -491,7 +491,7 @@ def initialize():
     # calculate prerequisites
     SYSTEM_INFORMATION = _get_platform_information()
     _BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "lib", 1)[0].replace("\\", "/")
-    _USER_DIR = _validate_user_dir()
+    _USER_DIR = _validate_user_dir().replace("\\", "/")
     _SETTINGS_PATH = os.path.normpath(os.path.join(_USER_DIR, "data/settings.toml"))
 
     for directory in ["data", "rules", "transformers", "hooks", "sikuli"]:
