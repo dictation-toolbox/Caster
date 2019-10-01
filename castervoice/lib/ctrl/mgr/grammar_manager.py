@@ -25,7 +25,8 @@ class GrammarManager(object):
                  always_global_ccr_mode,
                  ccr_toggle,
                  smrc,
-                 t_runner):
+                 t_runner,
+                 companion_config):
         """
         Holds both the current merged ccr rules and the most recently instantiated/validated
         copies of all ccr and non-ccr rules.
@@ -45,6 +46,7 @@ class GrammarManager(object):
         :param always_global_ccr_mode: an option which forces every rule to be treated as a global ccr rule
         :param smrc: grants limited access to other parts of framework to selfmod rules- don't keep reference
         :param t_runner: a reference is kept to it so can instantly activate its activation rule
+        :param companion_config a config which controls which rules can be enabled/disabled instantly by other rules
         """
         self._config = config
         self._merger = merger
@@ -59,6 +61,7 @@ class GrammarManager(object):
         self._always_global_ccr_mode = always_global_ccr_mode
         self._ccr_toggle = ccr_toggle
         self._transformers_runner = t_runner
+        self._companion_config = companion_config
 
         # rules: (class name : ManagedRule}
         self._managed_rules = {}
@@ -122,23 +125,30 @@ class GrammarManager(object):
         if not details.watch_exclusion:
             self._reload_observable.register_watched_file(details.get_filepath())
 
-    def _change_rule_active(self, class_name, active):
+    def _change_rule_active(self, class_name, enabled, companions=True):
         """
         This is called by the GrammarActivator. The necessity of this function
         means something is designed wrong. Correct this in the future.
 
         :param class_name: str
-        :param active: boolean
+        :param enabled: boolean
+        :param companions: (boolean) whether to load companion rules of the 'class_name' rule
         :return:
         """
         # update config, save
-        self._config.put(class_name, active)
+        self._config.put(class_name, enabled)
         self._config.save()
 
         # load it
-        self._enable_rule(class_name, active)
+        self._enable_rule(class_name, enabled)
         # run activation hooks
-        self._hooks_runner.execute(RuleActivationEvent(class_name, active))
+        self._hooks_runner.execute(RuleActivationEvent(class_name, enabled))
+
+        if companions:
+            for companion_rcn in self._companion_config.get_companions(class_name):
+                printer.out("2: {}".format(str(companion_rcn)))
+                if companion_rcn in self._managed_rules:
+                    self._change_rule_active(companion_rcn, enabled)
 
     def _enable_rule(self, class_name, enabled):
         """
@@ -161,6 +171,7 @@ class GrammarManager(object):
             ''' 
             This setting controls "RDP Mode". "RDP Mode" forces any rule 
             to load as a global ccr rule and ignore validation.
+            Not recommended unless you really know what you're doing.
             '''
             ccrtype = CCRType.GLOBAL
 

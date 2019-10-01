@@ -27,13 +27,13 @@ INTERNAL = [
 
 # default companion rules
 COMPANION_STARTER = {
-    "Navigation": "NavigationNon",
-    "Java": "JavaNon",
-    "Matlab": "MatlabNon",
-    "Prolog": "PrologNon",
-    "Python": "PythonNon",
-    "Rust": "RustNon",
-    "VHDL": "VHDLnon",
-    "EclipseCCR": "EclipseRule",
-    "VSCodeCcrRule": "VSCodeNonCcrRule"
+    "Navigation": ["NavigationNon"],
+    "Java": ["JavaNon"],
+    "Matlab": ["MatlabNon"],
+    "Prolog": ["PrologNon"],
+    "Python": ["PythonNon"],
+    "Rust": ["RustNon"],
+    "VHDL": ["VHDLnon"],
+    "EclipseCCR": ["EclipseRule"],
+    "VSCodeCcrRule": ["VSCodeNonCcrRule"]
 }

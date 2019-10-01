@@ -1,5 +1,6 @@
 from castervoice.lib.ctrl.grammar_container import GrammarContainer
 from castervoice.lib.ctrl.mgr.ccr_toggle import CCRToggle
+from castervoice.lib.ctrl.mgr.companion.companion_config import CompanionConfig
 from castervoice.lib.ctrl.mgr.grammar_activator import GrammarActivator
 from castervoice.lib.ctrl.mgr.loading.reload.manual_reload_observable import ManualReloadObservable
 from castervoice.lib.ctrl.mgr.loading.reload.timer_reload_observable import TimerReloadObservable
@@ -129,6 +130,8 @@ class Nexus:
 
         activator = GrammarActivator(lambda rule: isinstance(rule, MergeRule))
 
+        companion_config = CompanionConfig()
+
         gm = GrammarManager(rule_config,
                             merger,
                             content_loader,
@@ -142,7 +145,8 @@ class Nexus:
                             always_global_ccr_mode,
                             ccr_toggle,
                             smrc,
-                            transformers_runner)
+                            transformers_runner,
+                            companion_config)
         return gm
 
     @staticmethod

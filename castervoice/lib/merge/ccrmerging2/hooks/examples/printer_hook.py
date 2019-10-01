@@ -4,9 +4,6 @@ from castervoice.lib.merge.ccrmerging2.hooks.events.event_types import EventType
 
 
 class PrinterHook(BaseHook):
-    """
-    Copying this into the .caster dir enables printing of rule de/activation.
-    """
 
     def __init__(self):
         super(PrinterHook, self).__init__(EventType.ACTIVATION)
