@@ -182,6 +182,5 @@ class DependencyMan:
             print("\nCaster: Off-line mode is enabled\n")
 
     NATLINK = True
-    PIL = True
     PYWIN32 = True
     WX = True

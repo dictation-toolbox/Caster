@@ -21,6 +21,7 @@ try:  # Style C -- may be imported into Caster, or externally
 finally:
     from castervoice.lib import settings, utilities
     from castervoice.lib.merge.communication import Communicator
+    settings.initialize()
 
 try:
     from PIL import ImageGrab, ImageTk, ImageDraw, ImageFont

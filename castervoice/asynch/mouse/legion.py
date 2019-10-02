@@ -6,8 +6,6 @@ import threading
 from ctypes import *
 from dragonfly import monitors
 
-#from dragonfly import monitors
-
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0]
     if BASE_PATH not in sys.path:
@@ -15,6 +13,7 @@ try:  # Style C -- may be imported into Caster, or externally
 finally:
     from castervoice.asynch.mouse.grids import TkTransparent, Dimensions
     from castervoice.lib import gdi, settings, utilities
+    settings.initialize()
 
 try:
     from PIL import ImageGrab, ImageFilter, Image

@@ -10,10 +10,9 @@ from subprocess import Popen
 import dragonfly
 from dragonfly import Choice, monitors
 from castervoice.asynch.mouse.legion import LegionScanner
-from castervoice.lib import control, settings, utilities, textformat
+from castervoice.lib import control, settings, utilities, textformat, printer
 from castervoice.lib.actions import Key, Text, Mouse
 from castervoice.lib.clipboard import Clipboard
-from castervoice.lib.ctrl.dependencies import DependencyMan
 
 DIRECTION_STANDARD = {
     "sauce [E]": "up",
@@ -56,38 +55,34 @@ def initialize_clipboard():
 
 
 def mouse_alternates(mode, monitor=1):
-    nexus = control.nexus()
-    if DependencyMan.PIL:
-        if mode == "legion" and not utilities.window_exists(None, "legiongrid"):
-            r = monitors[int(monitor) - 1].rectangle
-            bbox = [
-                int(r.x),
-                int(r.y),
-                int(r.x) + int(r.dx) - 1,
-                int(r.y) + int(r.dy) - 1
-            ]
-            ls = LegionScanner()
-            ls.scan(bbox)
-            tscan = ls.get_update()
-            Popen([
-                settings.SETTINGS["paths"]["PYTHONW"],
-                settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0], "-m",
-                str(monitor)
-            ])  # , "-d", "500_500_500_500"
-        elif mode == "rainbow" and not utilities.window_exists(None, "rainbowgrid"):
-            Popen([
-                settings.SETTINGS["paths"]["PYTHONW"],
-                settings.SETTINGS["paths"]["RAINBOW_PATH"], "-g", "r", "-m",
-                str(monitor)
-            ])
-        elif mode == "douglas" and not utilities.window_exists(None, "douglasgrid"):
-            Popen([
-                settings.SETTINGS["paths"]["PYTHONW"],
-                settings.SETTINGS["paths"]["DOUGLAS_PATH"], "-g", "d", "-m",
-                str(monitor)
-            ])
-    else:
-        utilities.availability_message(mode.title(), "PIL")
+    if mode == "legion" and not utilities.window_exists(None, "legiongrid"):
+        r = monitors[int(monitor) - 1].rectangle
+        bbox = [
+            int(r.x),
+            int(r.y),
+            int(r.x) + int(r.dx) - 1,
+            int(r.y) + int(r.dy) - 1
+        ]
+        ls = LegionScanner()
+        ls.scan(bbox)
+        tscan = ls.get_update()
+        Popen([
+            settings.SETTINGS["paths"]["PYTHONW"],
+            settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0], "-m",
+            str(monitor)
+        ])
+    elif mode == "rainbow" and not utilities.window_exists(None, "rainbowgrid"):
+        Popen([
+            settings.SETTINGS["paths"]["PYTHONW"],
+            settings.SETTINGS["paths"]["RAINBOW_PATH"], "-g", "r", "-m",
+            str(monitor)
+        ])
+    elif mode == "douglas" and not utilities.window_exists(None, "douglasgrid"):
+        Popen([
+            settings.SETTINGS["paths"]["PYTHONW"],
+            settings.SETTINGS["paths"]["DOUGLAS_PATH"], "-g", "d", "-m",
+            str(monitor)
+        ])
 
 def _text_to_clipboard(keystroke, nnavi500):
     if nnavi500 == 1:
