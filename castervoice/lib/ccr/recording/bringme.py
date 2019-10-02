@@ -55,6 +55,7 @@ class BringRule(BaseSelfModifyingRule):
             "bring me <website>": R(Function(self._bring_website)),
             "bring me <folder> [in <app>]": R(Function(self._bring_folder)),
             "bring me <file>": R(Function(self._bring_file)),
+            "refresh bring me": R(Function(self._load_and_refresh)),
             "<launch> to bring me as <key>": R(Function(self._bring_add)),
             "to bring me as <key>": R(Function(self._bring_add_auto)),
             "remove <key> from bring me": R(Function(self._bring_remove)),
@@ -92,6 +93,12 @@ class BringRule(BaseSelfModifyingRule):
         :param args: in this case, args is the pre-altered copy of the state map to replace the current map with
         """
         self._config.replace(args[0])
+        self.reset()
+
+    def _load_and_refresh(self):
+        """
+
+        """
         self.reset()
 
     def _bring_add(self, launch_type, key):
