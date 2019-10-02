@@ -3,13 +3,8 @@ import os
 
 from dragonfly.grammar.elements import Choice
 
-from castervoice.lib import settings
+from castervoice.lib import settings, printer
 from castervoice.lib.merge.ccrmerging2.transformers.base_transformer import BaseRuleTransformer
-
-'''
-This module defines a global transformer, the parameters of
-which are defined in settings.SETTINGS["paths"]["GDEF_FILE"]
-'''
 
 
 class _PreservedSpec(object):
@@ -61,20 +56,11 @@ class _PreservedSpec(object):
         return "".join(c)
 
 
-class _GlobalFilterDefs(object):
+class _GlobalFilterDefinitions(object):
     P = "<?>"
 
-    @staticmethod
-    def preserve(spec, target):
-        _ = "<" + target + ">"
-        if _ in spec:
-            return spec.replace(_, _GlobalFilterDefs.P)
-        else:
-            return spec
-
-    @staticmethod
-    def restore(spec, target):
-        return spec.replace(_GlobalFilterDefs.P, "<" + target + ">")
+    def __len__(self):
+        return len(self.specs) + len(self.extras) + len(self.defaults)
 
     '''parsing modes'''
     MODES = {
@@ -93,15 +79,14 @@ class _GlobalFilterDefs(object):
 
         for line in lines:
 
-            if line.startswith(
-                    "#") or not line.strip():  # ignore comments and empty lines
+            if line.startswith("#") or not line.strip():  # ignore comments and empty lines
                 continue
 
             pair = line.split("->")
             original = pair[0].strip()
 
-            if original in _GlobalFilterDefs.MODES:
-                mode = _GlobalFilterDefs.MODES[original]
+            if original in _GlobalFilterDefinitions.MODES:
+                mode = _GlobalFilterDefinitions.MODES[original]
                 continue
 
             new = pair[1].strip()
@@ -121,37 +106,38 @@ class _GlobalFilterDefs(object):
                 self.extras[original] = new
                 self.defaults[original] = new
 
-
-_DEFS = None
-
-
-def _load_definitions():
-    if os.path.isfile(settings.SETTINGS["paths"]["GDEF_FILE"]):
-        '''user must create castervoice/user/words.txt for it to get picked up here'''
-        with io.open(
-                settings.SETTINGS["paths"]["GDEF_FILE"], "rt", encoding="utf-8") as f:
-            lines = f.readlines()
-            try:
-                _DEFS = _GlobalFilterDefs(lines)
-            except Exception:
-                print("Unable to parse words.txt")
+    @staticmethod
+    def load():
+        words_txt_path = settings.settings(["paths", "GDEF_FILE"])
+        words_txt_lines = []
+        if os.path.isfile(words_txt_path):
+            with io.open(words_txt_path, "rt", encoding="utf-8") as f:
+                words_txt_lines = f.readlines()
+        try:
+            return _GlobalFilterDefinitions(words_txt_lines)
+        except Exception:
+            print("Unable to parse words.txt")
 
 
-def _spec_override_from_config(mergerule):
+def _spec_override_from_config(rule, definitions):
     '''redundant safety check'''
-    if _DEFS is None:
-        return mergerule
+    if len(definitions) == 0:
+        return rule
+
+    mapping = rule._mapping
+    extras = rule._extras.copy()
+    defaults = rule._defaults.copy()
 
     '''SPECS'''
     specs_changed = False
-    for spec in mergerule.mapping_actual().keys():
-        action = mergerule.mapping_actual()[spec]
+    for spec in mapping.keys():
+        action = mapping[spec]
 
         pspec = _PreservedSpec.preserve(spec)
 
-        for original in _DEFS.specs.keys():
+        for original in definitions.specs.keys():
             if original in pspec.altered:
-                new = _DEFS.specs[original]
+                new = definitions.specs[original]
                 pspec.altered = pspec.altered.replace(original, new)
 
         pspec.altered = _PreservedSpec.restore(pspec)
@@ -159,43 +145,39 @@ def _spec_override_from_config(mergerule):
         if spec == pspec.altered:
             continue
 
-        del mergerule.mapping_actual()[spec]
-        mergerule.mapping_actual()[pspec.altered] = action
+        del mapping[spec]
+        mapping[pspec.altered] = action
         specs_changed = True
+
     '''EXTRAS'''
-    extras = mergerule.extras_copy().values()
+    extras_values = extras.values()
     extras_changed = False
-    if len(extras) > 0:
+    if len(extras_values) > 0:
         replacements = {}
-        for extra in extras:
-            if isinstance(extra,
-                          Choice):  # IntegerRefSTs will be dealt with elsewhere
+        for extra in extras_values:
+            if isinstance(extra, Choice):  # IntegerRefSTs will be dealt with elsewhere
                 choices = extra._choices
                 replace = False
-                for s in choices.keys(
-                ):  # ex: "dunce make" is key, some int or whatever is the value
-                    for ns in _DEFS.extras.keys(
-                    ):  # ex: "dunce" is key, "down" is the value
+                for s in choices.keys():  # ex: "dunce make" is key, some int or whatever is the value
+                    for ns in definitions.extras.keys():  # ex: "dunce" is key, "down" is the value
                         if ns in s:  # ex: "dunce" is in "dunce make"
                             replace = True
                             val = choices[s]
                             del choices[s]
-                            s = s.replace(ns, _DEFS.extras[ns])
+                            s = s.replace(ns, definitions.extras[ns])
                             choices[s] = val
                 if replace:
                     new_choice = Choice(extra.name, choices)
                     replacements[extra] = new_choice
         for old_choice in replacements:
             new_choice = replacements[old_choice]
-            extras.remove(old_choice)
-            extras.append(new_choice)
+            extras_values.remove(old_choice)
+            extras_values.append(new_choice)
         if len(replacements) > 0:
             extras_changed = True
     '''DEFAULTS'''
-    defaults = mergerule.defaults_copy()
     defaults_changed = False
     if len(defaults) > 0:
-        replacements = {}
         for default_key in defaults.keys():  #
             value = defaults[default_key]
             if isinstance(value, basestring):
@@ -204,9 +186,8 @@ def _spec_override_from_config(mergerule):
                 default_key should not be changed - it will never be spoken'''
                 nvalue = value  # new value
                 replace = False
-                for old in _DEFS.defaults.keys(
-                ):  # 'old' is the target word(s) in the old 'value'
-                    new = _DEFS.defaults[old]
+                for old in definitions.defaults.keys():  # 'old' is the target word(s) in the old 'value'
+                    new = definitions.defaults[old]
                     if old in nvalue:
                         nvalue = nvalue.replace(old, new)
                         replace = True
@@ -215,18 +196,21 @@ def _spec_override_from_config(mergerule):
                     defaults_changed = True
 
     if specs_changed or extras_changed or defaults_changed:
-        mergerule.__init__(mergerule._name, mergerule.mapping_actual(), extras, defaults,
-                           mergerule._exported, mergerule.ID, mergerule.composite, mergerule.compatible,
-                           mergerule._mcontext, mergerule._mwith)
-    return mergerule
-
-
-_load_definitions()
-if _DEFS is not None:
-    print("Global rule filter from file 'words.txt' activated ...")
+        rule_class = rule.__class__
+        rule = rule_class(name=rule.name,
+                 mapping=mapping,
+                 extras=extras,
+                 defaults=defaults,
+                 exported=rule._exported)
+    return rule
 
 
 class GlobalDefinitionsRuleTransformer(BaseRuleTransformer):
+
+    def __init__(self):
+        self._definitions = _GlobalFilterDefinitions.load()
+        if len(self._definitions) > 0:
+            printer.out("Global rule filter from file 'words.txt' activated ...")
 
     def get_pronunciation(self):
         return "global definitions"

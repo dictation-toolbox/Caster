@@ -54,5 +54,5 @@ class TransformersRunner(ActivationRuleGenerator):
                 rule = transformer.get_transformed_rule(rule)
             except:
                 err = "Error while running transformer {} with {} rule."
-                printer.out(err.format(self, rule))
+                printer.out(err.format(transformer, rule))
         return rule
