@@ -146,7 +146,6 @@ class GrammarManager(object):
 
         if companions:
             for companion_rcn in self._companion_config.get_companions(class_name):
-                printer.out("2: {}".format(str(companion_rcn)))
                 if companion_rcn in self._managed_rules:
                     self._change_rule_active(companion_rcn, enabled)
 

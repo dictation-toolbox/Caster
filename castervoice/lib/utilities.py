@@ -278,14 +278,3 @@ def get_clipboard_files(folders=False):
         files = [f for f in files if os.path.isfile(f)] if files else None
     win32clipboard.CloseClipboard()
     return files
-
-def copy_dragonfly_mapping_rule(mapping_rule):
-    # TODO: unit test this, figure out how to not use private access
-    mapping_rule_class = mapping_rule.__class__
-    copied = mapping_rule_class(
-        name=mapping_rule.name,
-        mapping=mapping_rule._mapping.copy(),
-        extras=mapping_rule._extras.copy() if mapping_rule._extras is not None else None,
-        defaults=mapping_rule._defaults.copy() if mapping_rule._defaults is not None else None
-    )
-    return copied

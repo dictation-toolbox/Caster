@@ -7,7 +7,6 @@ them are that:
 3. transformers enforce immutability
 4. transformers have no concept of "time" or "order"
 '''
-from castervoice.lib import utilities, printer
 from castervoice.lib.ctrl.mgr.errors.base_class_error import DontUseBaseClassError
 from castervoice.lib.merge.ccrmerging2.pronounceable import Pronounceable
 
@@ -15,20 +14,15 @@ from castervoice.lib.merge.ccrmerging2.pronounceable import Pronounceable
 class BaseRuleTransformer(Pronounceable):
     """
     Authors of new transformers should override the following methods:
+
     _transform
     _is_applicable methods
     get_pronunciation
+
     """
 
     def get_transformed_rule(self, rule):
-        if self._is_applicable(rule):
-            rule_copy = None
-            if hasattr(rule, "copy"):
-                rule_copy = rule.copy()
-            else:
-                rule_copy = utilities.copy_dragonfly_mapping_rule(rule)
-            return self._transform(rule_copy)
-        return rule
+        return rule if not self._is_applicable(rule) else self._transform(rule)
 
     def _transform(self, rule):
         raise DontUseBaseClassError(self)
