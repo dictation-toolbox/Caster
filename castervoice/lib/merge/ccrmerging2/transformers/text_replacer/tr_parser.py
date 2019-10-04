@@ -57,10 +57,9 @@ class TRParser(object):
             # extract source and target
             source_and_target = line.split("->")
             source = source_and_target[0].strip()
-            target = source_and_target[1].strip()
-
-            # allow for inline comments
-            target = "#".join(target.split("#")[:1])
+            # allow for inline comments on the right side of the line
+            target = "#".join(source_and_target[1].split("#")[:1])
+            target = target.strip()
 
             """
             See TRParseMode notes for what the different modes mean.
