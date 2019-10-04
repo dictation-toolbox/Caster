@@ -154,7 +154,7 @@ class Nexus:
         sorter = ConfigBasedRuleSetSorter(rules_order_fn)
         compat_checker = DetailCompatibilityChecker()
         merge_strategy = ClassicMergingStrategy()
-        max_repetitions = settings.SETTINGS["miscellaneous"]["max_ccr_repetitions"]
+        max_repetitions = settings.settings(["miscellaneous", "max_ccr_repetitions"])
 
         return CCRMerger2(transformers_runner, sorter, compat_checker, merge_strategy, max_repetitions, smrc)
 

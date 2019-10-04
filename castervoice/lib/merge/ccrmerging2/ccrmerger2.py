@@ -96,7 +96,10 @@ class CCRMerger2(object):
         return app_crs, non_app_crs
 
     def _create_merged_rules(self, app_crs, non_app_crs):
-        merged_rules = [self._merging_strategy.merge(non_app_crs)]
+        merged_rules = []
+        merged_non_app_crs_rule = self._merging_strategy.merge(non_app_crs)
+        if merged_non_app_crs_rule is not None:
+            merged_rules.append(merged_non_app_crs_rule)
         for app_cr in app_crs:
             with_one_app = list(non_app_crs)
             with_one_app.append(app_cr)
@@ -126,7 +129,8 @@ class CCRMerger2(object):
                 negation_context = ~context
             else:
                 negation_context += ~context
-        contexts.insert(0, negation_context)
+        if len(contexts) > 0:
+            contexts.insert(0, negation_context)
         return contexts
 
     @staticmethod
