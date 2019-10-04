@@ -34,6 +34,7 @@ def caster_alphabet():
         "Zulu"    : "z",
     }
 
+
 def get_alphabet_choice(spec):
     return Choice(spec, caster_alphabet())
 
