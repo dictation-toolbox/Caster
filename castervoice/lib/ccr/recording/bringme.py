@@ -216,7 +216,7 @@ class BringRule(BaseSelfModifyingRule):
             "caster bring me": "%USERPROFILE%\\.caster\\data\\sm_bringme.toml",
             "caster ccr": "%USERPROFILE%\\.caster\\data\\ccr.toml",
             "caster config debug": "%USERPROFILE%\\.caster\\data\\configdebug.txt",
-            "caster words": "%USERPROFILE%\\.caster\\filter\\words.txt",
+            "caster words": "%USERPROFILE%\\.caster\\transformers\\words.txt",
             "caster log": "%USERPROFILE%\\.caster\\data\\log.txt",
         }
     }
