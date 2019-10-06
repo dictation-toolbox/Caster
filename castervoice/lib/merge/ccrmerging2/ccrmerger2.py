@@ -129,8 +129,7 @@ class CCRMerger2(object):
                 negation_context = ~context
             else:
                 negation_context += ~context
-        if len(contexts) > 0:
-            contexts.insert(0, negation_context)
+        contexts.insert(0, negation_context)
         return contexts
 
     @staticmethod
