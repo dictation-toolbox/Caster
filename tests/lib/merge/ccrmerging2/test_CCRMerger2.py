@@ -77,6 +77,23 @@ class TestCCRMerger2(TestCase):
         self.assertIsInstance(result[0][1], LogicNotContext)
         self.assertIsInstance(result[1][1], Context)
 
-    
+    def test_words_txt_transformer(self):
+        """
+        Merger should use TextReplacerTransformer to replace "clear" with "bear" in specs
+        and "goof" with "gas" in extras.
+        """
+        # transformer setup
+        self.transformers_config.is_transformer_active.side_effect = [True, True]
+        trt = TextReplacerTransformer(mock_TRParser.MockTRParser)
+        mock_TRParser.MOCK_SPECS["clear"] = "bear"
+        mock_TRParser.MOCK_EXTRAS["goof"] = "gas"
+        self.transformers_runner._transformers.append(trt)
+
+        # rule setup
+        alphabet_mr = TestCCRMerger2._create_managed_rule(Alphabet, CCRType.GLOBAL)
+        navigation_mr = TestCCRMerger2._create_managed_rule(Navigation, CCRType.GLOBAL)
+        result = self.merger.merge([alphabet_mr, navigation_mr])
+
+        self.assertEqual(1, len(result))
 
 

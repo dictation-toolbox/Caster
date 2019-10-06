@@ -2,7 +2,7 @@ import collections
 
 from dragonfly import MappingRule, Pause, Function
 import re
-from castervoice.lib import printer
+from castervoice.lib import printer, available_commands_tracker
 from castervoice.lib.merge.ccrmerging2.pronounceable import Pronounceable
 
 
@@ -26,10 +26,6 @@ class MergeRule(MappingRule, Pronounceable):
                  extras=None,
                  defaults=None,
                  exported=None):
-
-        if mapping is not None:
-            mapping["display available commands"] = Function(
-                lambda: self._display_available_commands())
 
         MappingRule.__init__(self, name, mapping, extras, defaults, exported)
 
@@ -101,25 +97,30 @@ class MergeRule(MappingRule, Pronounceable):
         return MergeRule(self.name, self._mapping.copy(), self._extras.values(),
                          self._defaults.copy(), self._exported)
 
-    def order_for_merger(self):
+    def prepare_for_merger(self):
         """
-        Optimization for Kaldi engine, won't make a difference to other engines.
+        The OrderedDict is an optimization for Kaldi engine,
+        won't make a difference to other engines.
+
+        This is also the appropriate place to add the "list available commands"
+        command, since this happens post-merge.
+
         :return: MergeRule
         """
 
-        unordered_specs = list(self._mapping.keys())
+        unordered_specs = set(self._mapping.keys())
         ordered_specs = sorted(unordered_specs)
 
         ordered_dict = collections.OrderedDict()
         for spec in ordered_specs:
             ordered_dict[spec] = self._mapping[spec]
 
+        act = available_commands_tracker.get_instance()
+        act.set_available_commands("\n".join(ordered_specs))
+        ordered_dict["list available commands"] = Function(lambda: printer.out(act.get_available_commands()))
+
         return MergeRule(self.name, ordered_dict, self._extras.values(),
                          self._defaults.copy(), self._exported)
-
-    def _display_available_commands(self):
-        for spec in self.mapping_actual().keys():
-            printer.out(spec)
 
     def get_rule_class_name(self):
         return self.__class__.__name__

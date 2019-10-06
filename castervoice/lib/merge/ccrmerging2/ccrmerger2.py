@@ -144,7 +144,7 @@ class CCRMerger2(object):
         return result
 
     def _create_repeat_rule(self, merge_rule):
-        merge_rule = merge_rule.order_for_merger()
+        merge_rule = merge_rule.prepare_for_merger()
         alts = [RuleRef(rule=merge_rule)]  # +[RuleRef(rule=sm) for sm in selfmod]
         single_action = Alternative(alts)
         sequence = Repetition(single_action, min=1, max=self._max_repetitions, name=CCRMerger2._SEQ)
