@@ -28,6 +28,9 @@ class TestCCRMerger2(TestCase):
         self.transformers_runner = TransformersRunner(self.transformers_config)
         self.merger = Nexus._create_merger(order_fn, selfmodrule_configurer, self.transformers_runner)
 
+    def _extract_mergerule_from_repeatrule(self, repeat_rule, index=0):
+        return repeat_rule[index][0]._extras["caster_base_sequence"]._child._children[0]._rule
+
     def test_merge_empty(self):
         """
         Merger should run through empty list without errors.
@@ -96,4 +99,6 @@ class TestCCRMerger2(TestCase):
 
         self.assertEqual(1, len(result))
 
-
+        mergerule = self._extract_mergerule_from_repeatrule(result)
+        self.assertTrue("bear [<nnavi50>]" in mergerule._mapping.keys())
+        self.assertTrue("gas" in mergerule._extras["letter"]._choices)
