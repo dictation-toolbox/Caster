@@ -31,7 +31,7 @@ class RuleDetails(object):
         # Python black magic to determine which file to track:
         frame = inspect.stack()[1]
         module = inspect.getmodule(frame[0])
-        self._filepath = module.__file__
+        self._filepath = module.__file__.replace("\\", "/")
         if self._filepath.endswith("pyc"):
             self._filepath = self._filepath[:-1]
 
