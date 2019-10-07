@@ -376,7 +376,7 @@ class VSCodeCcrRule(MergeRule):
             R(Key("s-del"), rdescript="VS Code: Eliminates Line not Just the Text on it"),
         "copy line up [<n>]":
             R(Key("sa-up")*Repeat(extra='n'), rdescript="VS Code: Duplicate Line Above"),
-        "copy line up [<n>]":
+        "copy line down [<n>]":
             R(Key("sa-down")*Repeat(extra='n'),
               rdescript="VS Code: Duplicate Line Below"),
         "switch line down [<n>]":
