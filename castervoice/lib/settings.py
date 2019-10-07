@@ -488,6 +488,9 @@ def initialize():
     global SETTINGS, SYSTEM_INFORMATION
     global _BASE_PATH, _USER_DIR, _SETTINGS_PATH
 
+    if SETTINGS is not None:
+        return
+
     # calculate prerequisites
     SYSTEM_INFORMATION = _get_platform_information()
     _BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "lib", 1)[0].replace("\\", "/")
