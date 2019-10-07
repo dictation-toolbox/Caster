@@ -119,7 +119,7 @@ class MergeRule(MappingRule, Pronounceable):
         act.set_available_commands("\n".join(ordered_specs))
         ordered_dict["list available commands"] = Function(lambda: printer.out(act.get_available_commands()))
 
-        return MergeRule(self.name, ordered_dict, self._extras.values(),
+        return MappingRule(self.name, ordered_dict, self._extras.values(),
                          self._defaults.copy(), self._exported)
 
     def get_rule_class_name(self):
