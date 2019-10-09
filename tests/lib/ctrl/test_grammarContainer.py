@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from mock import Mock
 
-from castervoice.lib.ctrl.basic_grammar_container import BasicGrammarContainer
+from castervoice.lib.ctrl.mgr.grammar_container.basic_grammar_container import BasicGrammarContainer
 
 
 class _FakeRule(object):
