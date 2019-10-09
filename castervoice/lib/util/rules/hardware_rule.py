@@ -33,4 +33,4 @@ class HardwareRule(MappingRule):
 
 
 def get_rule():
-    return HardwareRule, RuleDetails(name="hardware rule", rdp_mode_exclusion=True)
+    return HardwareRule, RuleDetails(name="hardware rule")

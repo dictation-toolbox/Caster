@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from mock import Mock
 
-from castervoice.lib.ctrl.grammar_container import GrammarContainer
+from castervoice.lib.ctrl.basic_grammar_container import BasicGrammarContainer
 
 
 class _FakeRule(object):
@@ -31,7 +31,7 @@ class TestGrammarContainer(TestCase):
         self.grammar.rules.extend([self.rule1, self.rule2])
 
     def test_set_ccr_update(self):
-        gc = GrammarContainer()
+        gc = BasicGrammarContainer()
         gc.set_ccr([self.grammar])
         gc.set_ccr([_FakeGrammar()])
 
@@ -41,7 +41,7 @@ class TestGrammarContainer(TestCase):
         self.grammar.unload.assert_called_with()
 
     def test_set_ccr_delete(self):
-        gc = GrammarContainer()
+        gc = BasicGrammarContainer()
         gc.set_ccr([self.grammar])
         gc.set_ccr([])
 
@@ -51,7 +51,7 @@ class TestGrammarContainer(TestCase):
         self.grammar.unload.assert_called_with()
 
     def test_set_non_ccr_update(self):
-        gc = GrammarContainer()
+        gc = BasicGrammarContainer()
         gc.set_non_ccr("test", self.grammar)
         gc.set_non_ccr("test", _FakeGrammar())
 
@@ -61,7 +61,7 @@ class TestGrammarContainer(TestCase):
         self.grammar.unload.assert_called_with()
 
     def test_set_non_ccr_delete(self):
-        gc = GrammarContainer()
+        gc = BasicGrammarContainer()
         gc.set_non_ccr("test", self.grammar)
         gc.set_non_ccr("test", None)
 
@@ -71,7 +71,7 @@ class TestGrammarContainer(TestCase):
         self.grammar.unload.assert_called_with()
 
     def test_wipe_ccr(self):
-        gc = GrammarContainer()
+        gc = BasicGrammarContainer()
         gc.set_ccr = Mock()
         gc.wipe_ccr()
         gc.set_ccr.assert_called_with([])

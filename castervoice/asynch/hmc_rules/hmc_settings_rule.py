@@ -19,6 +19,5 @@ class HMCSettingsRule(MappingRule):
 
 def get_rule():
     details = RuleDetails(name="h m c settings rule",
-                          title=settings.SETTINGS_WINDOW_TITLE,
-                          rdp_mode_exclusion=True)
+                          title=settings.SETTINGS_WINDOW_TITLE)
     return HMCSettingsRule, details

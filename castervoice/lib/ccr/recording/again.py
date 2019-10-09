@@ -48,5 +48,5 @@ class Again(MappingRule):
 
 
 def get_rule():
-    details = RuleDetails(name="repeat that", rdp_mode_exclusion=True)
+    details = RuleDetails(name="repeat that")
     return Again, details

@@ -22,6 +22,5 @@ class MouseAlternativesRule(MappingRule):
 
 
 def get_rule():
-    details = RuleDetails(name="mouse alternatives rule",
-                          rdp_mode_exclusion=True)
+    details = RuleDetails(name="mouse alternatives rule")
     return MouseAlternativesRule, details

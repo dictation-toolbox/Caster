@@ -22,7 +22,6 @@ class GrammarManager(object):
                  mapping_rule_maker,
                  grammars_container,
                  hooks_runner,
-                 always_global_ccr_mode,
                  ccr_toggle,
                  smrc,
                  t_runner,
@@ -43,7 +42,6 @@ class GrammarManager(object):
         :param mapping_rule_maker: instantiates
         :param grammars_container: holds and destroys grammars
         :param hooks_runner: runs all hooks at different events
-        :param always_global_ccr_mode: an option which forces every rule to be treated as a global ccr rule
         :param smrc: grants limited access to other parts of framework to selfmod rules- don't keep reference
         :param t_runner: a reference is kept to it so can instantly activate its activation rule
         :param companion_config a config which controls which rules can be enabled/disabled instantly by other rules
@@ -58,7 +56,6 @@ class GrammarManager(object):
         self._mapping_rule_maker = mapping_rule_maker
         self._grammars_container = grammars_container
         self._hooks_runner = hooks_runner
-        self._always_global_ccr_mode = always_global_ccr_mode
         self._ccr_toggle = ccr_toggle
         self._transformers_runner = t_runner
         self._companion_config = companion_config
@@ -71,7 +68,7 @@ class GrammarManager(object):
         #
         self._activator.set_activation_fn(lambda rcn, active: self._change_rule_active(rcn, active))
         #
-        smrc.set_reload_fn(lambda rcn: self._enable_rule(rcn, True))
+        smrc.set_reload_fn(lambda rcn: self._delegate_enable_rule(rcn, True))
         #
         self._initial_activations_complete = False
 
@@ -83,13 +80,13 @@ class GrammarManager(object):
         for rcn in self._config.get_enabled_rcns_ordered():
             if rcn in loaded_rcns:
                 rd = self._managed_rules[rcn].get_details()
-                is_ccr = rd.declared_ccrtype is not None
-                if is_ccr and not self._ccr_toggle.is_active():
-                    continue
+                if rd.declared_ccrtype is None:
+                    self._delegate_enable_rule(rcn, True)
             else:
                 printer.out("Skipping rule {}.".format(rcn))
-                continue
-            self._enable_rule(rcn, True)
+        if self._ccr_toggle.is_active():
+            self._remerge_ccr_rules()
+
         if hasattr(self._reload_observable, "start"):
             self._reload_observable.start()
 
@@ -140,7 +137,7 @@ class GrammarManager(object):
         self._config.save()
 
         # load it
-        self._enable_rule(class_name, enabled)
+        self._delegate_enable_rule(class_name, enabled)
         # run activation hooks
         self._hooks_runner.execute(RuleActivationEvent(class_name, enabled))
 
@@ -149,7 +146,7 @@ class GrammarManager(object):
                 if companion_rcn in self._managed_rules:
                     self._change_rule_active(companion_rcn, enabled)
 
-    def _enable_rule(self, class_name, enabled):
+    def _delegate_enable_rule(self, class_name, enabled):
         """
         Either creates a standalone Dragonfly rule or
         delegates to the CCRMerger to create the merged rule(s).
@@ -165,51 +162,48 @@ class GrammarManager(object):
 
         managed_rule = self._managed_rules[class_name]
 
-        ccrtype = managed_rule.get_details().declared_ccrtype
-        if self._always_global_ccr_mode and not managed_rule.get_details().rdp_mode_exclusion:
-            ''' 
-            This setting controls "RDP Mode". "RDP Mode" forces any rule 
-            to load as a global ccr rule and ignore validation.
-            Not recommended unless you really know what you're doing.
-            '''
-            ccrtype = CCRType.GLOBAL
-
-        if ccrtype is not None:
-            # if the global ccr toggle was off, activating a ccr rule turns it back on
-            self._ccr_toggle.set_active(True)
-
-            # handle CCR: get all active ccr rules after de/activating one
-            loaded_rcns = set(self._managed_rules.keys()) # membership in a set is O(1)
-            active_rule_class_names = [rcn for rcn in self._config.get_enabled_rcns_ordered()
-                                       if rcn in loaded_rcns]
-            active_mrs = [self._managed_rules[rcn] for rcn in active_rule_class_names]
-            active_ccr_mrs = [mr for mr in active_mrs if mr.get_details().declared_ccrtype is not None]
-
-            '''
-            The merge may result in 1 to n+1 rules where n is the number of ccr app rules
-            which are in the active rules list.
-            For instance, if you have 1 app rule, you'll end up with two ccr rules. This is because
-            the merger has to make the global one, plus an app rule with the app stuff plus all the
-            global stuff.
-            '''
-            ccr_rules_and_contexts = self._merger.merge(active_ccr_mrs)
-            grammars = []
-            for rule_and_context in ccr_rules_and_contexts:
-                rule = rule_and_context[0]
-                context = rule_and_context[1]
-                grammar = Grammar(name="ccr-" + GrammarManager._get_next_id(), context=context)
-                grammar.add_rule(rule)
-                grammars.append(grammar)
-            self._grammars_container.set_ccr(grammars)
-            for grammar in grammars:
-                grammar.load()
+        if managed_rule.get_details().declared_ccrtype is None:
+            self._enable_non_ccr_rule(managed_rule, enabled)
         else:
-            if enabled:
-                grammar = self._mapping_rule_maker.create_non_ccr_grammar(managed_rule)
-                self._grammars_container.set_non_ccr(managed_rule.get_rule_class_name(), grammar)
-                grammar.load()
-            else:
-                self._grammars_container.set_non_ccr(managed_rule.get_rule_class_name(), None)
+            self._remerge_ccr_rules()
+
+    def _remerge_ccr_rules(self):
+        # if the global ccr toggle was off, activating a ccr rule turns it back on
+        self._ccr_toggle.set_active(True)
+
+        # handle CCR: get all active ccr rules after de/activating one
+        loaded_rcns = set(self._managed_rules.keys())
+        active_rule_class_names = [rcn for rcn in self._config.get_enabled_rcns_ordered()
+                                   if rcn in loaded_rcns]
+        active_mrs = [self._managed_rules[rcn] for rcn in active_rule_class_names]
+        active_ccr_mrs = [mr for mr in active_mrs if mr.get_details().declared_ccrtype is not None]
+
+        '''
+        The merge may result in 1 to n+1 rules where n is the number of ccr app rules
+        which are in the active rules list.
+        For instance, if you have 1 app rule, you'll end up with two ccr rules. This is because
+        the merger has to make the global one, plus an app rule with the app stuff plus all the
+        global stuff.
+        '''
+        ccr_rules_and_contexts = self._merger.merge(active_ccr_mrs)
+        grammars = []
+        for rule_and_context in ccr_rules_and_contexts:
+            rule = rule_and_context[0]
+            context = rule_and_context[1]
+            grammar = Grammar(name="ccr-" + GrammarManager._get_next_id(), context=context)
+            grammar.add_rule(rule)
+            grammars.append(grammar)
+        self._grammars_container.set_ccr(grammars)
+        for grammar in grammars:
+            grammar.load()
+
+    def _enable_non_ccr_rule(self, managed_rule, enabled):
+        if enabled:
+            grammar = self._mapping_rule_maker.create_non_ccr_grammar(managed_rule)
+            self._grammars_container.set_non_ccr(managed_rule.get_rule_class_name(), grammar)
+            grammar.load()
+        else:
+            self._grammars_container.set_non_ccr(managed_rule.get_rule_class_name(), None)
 
     def receive(self, file_path_changed):
         """
@@ -228,7 +222,7 @@ class GrammarManager(object):
 
         class_name = rule_class.__name__
         if class_name in self._config.get_enabled_rcns_ordered():
-            self._enable_rule(class_name, True)
+            self._delegate_enable_rule(class_name, True)
 
     def _get_invalidation(self, rule_class, details):
         """
@@ -237,10 +231,6 @@ class GrammarManager(object):
         :param details: RuleDetails
         :return:
         """
-
-        '''skip validations if forcing everything to be global ccr:'''
-        if self._always_global_ccr_mode and not details.rdp_mode_exclusion:
-            return None
 
         class_name = rule_class.__name__
 

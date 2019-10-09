@@ -21,6 +21,5 @@ class HMCRule(MappingRule):
 
 def get_rule():
     details = RuleDetails(name="h m c rule",
-                          title=settings.HOMUNCULUS_VERSION,
-                          rdp_mode_exclusion=True)
+                          title=settings.HOMUNCULUS_VERSION)
     return HMCRule, details

@@ -223,5 +223,5 @@ class BringRule(BaseSelfModifyingRule):
 
 
 def get_rule():
-    details = RuleDetails(ccrtype=CCRType.SELFMOD, rdp_mode_exclusion=True)
+    details = RuleDetails(ccrtype=CCRType.SELFMOD)
     return BringRule, details

@@ -32,5 +32,5 @@ class HMCLaunchRule(MergeRule):
 
 
 def get_rule():
-    details = RuleDetails(name="settings window launcher", rdp_mode_exclusion=True)
+    details = RuleDetails(name="settings window launcher")
     return HMCLaunchRule, details

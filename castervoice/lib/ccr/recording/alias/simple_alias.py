@@ -15,6 +15,5 @@ class Alias(BaseAliasRule):
 
 def get_rule():
     details = RuleDetails(name="alias",
-                          rdp_mode_exclusion=True,
                           transformer_exclusion=True)
     return [Alias, details]

@@ -1,4 +1,4 @@
-from castervoice.lib.ctrl.grammar_container import GrammarContainer
+from castervoice.lib.ctrl.mgr.grammar_container.basic_grammar_container import BasicGrammarContainer
 from castervoice.lib.ctrl.mgr.ccr_toggle import CCRToggle
 from castervoice.lib.ctrl.mgr.companion.companion_config import CompanionConfig
 from castervoice.lib.ctrl.mgr.grammar_activator import GrammarActivator
@@ -108,7 +108,6 @@ class Nexus:
         :return:
         """
 
-        always_global_ccr_mode = settings.SETTINGS["miscellaneous"]["rdp_mode"]
         ccr_toggle = CCRToggle()
 
         ccr_rule_validator = CCRRuleValidationDelegator(
@@ -126,7 +125,7 @@ class Nexus:
         if settings.SETTINGS["miscellaneous"]["reload_trigger"] == "manual":
             observable = ManualReloadObservable()
 
-        grammars_container = GrammarContainer()
+        grammars_container = BasicGrammarContainer()
 
         activator = GrammarActivator(lambda rule: isinstance(rule, MergeRule))
 
@@ -142,7 +141,6 @@ class Nexus:
                             mapping_rule_maker,
                             grammars_container,
                             hooks_runner,
-                            always_global_ccr_mode,
                             ccr_toggle,
                             smrc,
                             transformers_runner,

@@ -12,6 +12,7 @@ from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.ctrl.nexus import Nexus
 from castervoice.lib.merge.ccrmerging2.transformers.text_replacer.text_replacer import TextReplacerTransformer
 from castervoice.lib.merge.ccrmerging2.transformers.transformers_runner import TransformersRunner
+from tests.lib.merge.ccrmerging2.fake_rules import FakeRuleOne, FakeRuleTwo
 from tests.lib.merge.ccrmerging2.transformers.text_replacer import mock_TRParser
 
 
@@ -23,12 +24,12 @@ class TestCCRMerger2(TestCase):
 
     def setUp(self):
         order_fn = lambda: ["Alphabet", "Navigation", "EclipseCCR"]
-        selfmodrule_configurer = Mock()
+        self.selfmodrule_configurer = Mock()
         self.transformers_config = Mock()
         self.transformers_runner = TransformersRunner(self.transformers_config)
-        self.merger = Nexus._create_merger(order_fn, selfmodrule_configurer, self.transformers_runner)
+        self.merger = Nexus._create_merger(order_fn, self.selfmodrule_configurer, self.transformers_runner)
 
-    def _extract_mergerule_from_repeatrule(self, repeat_rule, index=0):
+    def _extract_merged_rule_from_repeatrule(self, repeat_rule, index=0):
         return repeat_rule[index][0]._extras["caster_base_sequence"]._child._children[0]._rule
 
     def test_merge_empty(self):
@@ -52,7 +53,7 @@ class TestCCRMerger2(TestCase):
 
     def test_merge_two(self):
         """
-        Merger successfully merge two CCR rules w/ no context.
+        Merger successfully merges two CCR rules w/ no context.
         """
         alphabet_mr = TestCCRMerger2._create_managed_rule(Alphabet, CCRType.GLOBAL)
         navigation_mr = TestCCRMerger2._create_managed_rule(Navigation, CCRType.GLOBAL)
@@ -63,6 +64,21 @@ class TestCCRMerger2(TestCase):
         context = result[0][1]
         self.assertEqual("RepeatRule", repeat_rule.__class__.__name__)
         self.assertIsNone(context)
+
+    def test_merge_two_incompatible(self):
+        """
+        Merger KOs the earlier incompatible rule and leaves the later one.
+        """
+        order_fn = lambda: ["FakeRuleOne", "FakeRuleTwo"]
+        self.merger = Nexus._create_merger(order_fn, self.selfmodrule_configurer, self.transformers_runner)
+
+        java_mr = TestCCRMerger2._create_managed_rule(FakeRuleOne, CCRType.GLOBAL)
+        python_mr = TestCCRMerger2._create_managed_rule(FakeRuleTwo, CCRType.GLOBAL)
+        result = self.merger.merge([java_mr, python_mr])
+
+        rule = self._extract_merged_rule_from_repeatrule(result)
+        self.assertIn("two exclusive", rule._mapping)
+        self.assertNotIn("one exclusive", rule._mapping)
 
     def test_merge_one_context_one_no_context(self):
         """
@@ -99,6 +115,6 @@ class TestCCRMerger2(TestCase):
 
         self.assertEqual(1, len(result))
 
-        mergerule = self._extract_mergerule_from_repeatrule(result)
-        self.assertTrue("bear [<nnavi50>]" in mergerule._mapping.keys())
-        self.assertTrue("gas" in mergerule._extras["letter"]._choices)
+        rule = self._extract_merged_rule_from_repeatrule(result)
+        self.assertTrue("bear [<nnavi50>]" in rule._mapping.keys())
+        self.assertTrue("gas" in rule._extras["letter"]._choices)

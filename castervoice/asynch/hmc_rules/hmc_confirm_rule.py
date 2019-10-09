@@ -22,6 +22,5 @@ class HMCConfirmRule(MappingRule):
 
 def get_rule():
     details = RuleDetails(name="h m c confirm rule",
-                          title=settings.HMC_TITLE_CONFIRM,
-                          rdp_mode_exclusion=True)
+                          title=settings.HMC_TITLE_CONFIRM)
     return HMCConfirmRule, details

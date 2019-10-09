@@ -43,6 +43,5 @@ class HMCHistoryRule(MappingRule):
 
 def get_rule():
     details = RuleDetails(name="h m c history rule",
-                          title=settings.HMC_TITLE_RECORDING,
-                          rdp_mode_exclusion=True)
+                          title=settings.HMC_TITLE_RECORDING)
     return HMCHistoryRule, details

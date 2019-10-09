@@ -19,6 +19,5 @@ class HMCDirectoryRule(MappingRule):
 
 def get_rule():
     details = RuleDetails(name="h m c directory rule",
-                          title=settings.HMC_TITLE_DIRECTORY,
-                          rdp_mode_exclusion=True)
+                          title=settings.HMC_TITLE_DIRECTORY)
     return HMCDirectoryRule, details

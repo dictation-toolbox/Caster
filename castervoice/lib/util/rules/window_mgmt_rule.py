@@ -16,6 +16,5 @@ class WindowManagementRule(MappingRule):
 
 
 def get_rule():
-    details = RuleDetails(name="window management rule",
-                          rdp_mode_exclusion=True)
+    details = RuleDetails(name="window management rule")
     return WindowManagementRule, details

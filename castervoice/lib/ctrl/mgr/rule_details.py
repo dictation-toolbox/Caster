@@ -7,7 +7,7 @@ class RuleDetails(object):
     """
 
     def __init__(self, name=None, executable=None, title=None, grammar_name=None,
-                 ccrtype=None, rdp_mode_exclusion=False, transformer_exclusion=False,
+                 ccrtype=None, transformer_exclusion=False,
                  watch_exclusion=False):
         """
         :param name: Dragonfly rule name
@@ -15,7 +15,6 @@ class RuleDetails(object):
         :param title: Dragonfly AppContext title
         :param grammar_name: Dragonfly grammar name
         :param ccrtype: global, app, selfmod, or none
-        :param rdp_mode_exclusion: exclude from rdp mode
         :param transformer_exclusion: exclude from transformations
         :param watch_exclusion: should not be watched for changes ("system" rules)
         """
@@ -24,7 +23,6 @@ class RuleDetails(object):
         self.title = title
         self.grammar_name = grammar_name
         self.declared_ccrtype = ccrtype
-        self.rdp_mode_exclusion = rdp_mode_exclusion
         self.transformer_exclusion = transformer_exclusion
         self.watch_exclusion = watch_exclusion
 

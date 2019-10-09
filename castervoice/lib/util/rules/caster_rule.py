@@ -38,4 +38,4 @@ class CasterRule(MappingRule):
 
 
 def get_rule():
-    return CasterRule, RuleDetails(name="caster rule", rdp_mode_exclusion=True)
+    return CasterRule, RuleDetails(name="caster rule")

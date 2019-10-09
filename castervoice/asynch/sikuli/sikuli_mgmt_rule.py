@@ -17,6 +17,5 @@ class SikuliManagementRule(MappingRule):
 
 
 def get_rule():
-    details = RuleDetails(name="sikuli control rule",
-                          rdp_mode_exclusion=True)
+    details = RuleDetails(name="sikuli control rule")
     return SikuliManagementRule, details
