@@ -17,8 +17,8 @@ class BaseAliasRule(BaseSelfModifyingRule):
 
     mapping = {"default alias command": NullAction()}
 
-    def __init__(self, config_path):
-        super(BaseAliasRule, self).__init__(config_path)
+    def __init__(self, config_path, **kwargs):
+        super(BaseAliasRule, self).__init__(config_path, **kwargs)
 
     def _deserialize(self):
         mapping = {}

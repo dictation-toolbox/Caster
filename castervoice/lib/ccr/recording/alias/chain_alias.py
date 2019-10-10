@@ -7,8 +7,8 @@ from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 class ChainAlias(BaseAliasRule):
     pronunciation = "chain alias"
 
-    def __init__(self):
-        super(ChainAlias, self).__init__(settings.settings(["paths", "SM_CHAIN_ALIAS_PATH"]))
+    def __init__(self, **kwargs):
+        super(ChainAlias, self).__init__(settings.settings(["paths", "SM_CHAIN_ALIAS_PATH"]), **kwargs)
 
     def get_pronunciation(self):
         return ChainAlias.pronunciation
