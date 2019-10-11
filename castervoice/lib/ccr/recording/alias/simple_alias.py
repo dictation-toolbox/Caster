@@ -6,8 +6,8 @@ from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 class Alias(BaseAliasRule):
     pronunciation = "alias"
 
-    def __init__(self):
-        super(Alias, self).__init__(settings.settings(["paths", "SM_ALIAS_PATH"]))
+    def __init__(self, **kwargs):
+        super(Alias, self).__init__(settings.settings(["paths", "SM_ALIAS_PATH"]), **kwargs)
 
     def get_pronunciation(self):
         return Alias.pronunciation
