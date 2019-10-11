@@ -25,7 +25,7 @@ class DetailCompatibilityChecker(BaseCompatibilityChecker):
         for rule in mergerules:
             DetailCompatibilityChecker._invert_mapping(
                 rule,
-                rule.mapping_copy().keys(),
+                rule.get_mapping().keys(),
                 specs_to_lists_of_rcns)
             rcns_to_rules[rule.get_rule_class_name()] = rule
 

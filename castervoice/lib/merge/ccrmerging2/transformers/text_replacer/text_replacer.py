@@ -125,8 +125,7 @@ def _spec_override_from_config(rule, definitions):
         rule.__init__(name=rule.name,
                       mapping=mapping,
                       extras=resulting_extras_list,
-                      defaults=defaults,
-                      exported=rule._exported)
+                      defaults=defaults)
     return rule
 
 

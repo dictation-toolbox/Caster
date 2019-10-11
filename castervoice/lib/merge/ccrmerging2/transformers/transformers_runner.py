@@ -19,7 +19,6 @@ class TransformersRunner(ActivationRuleGenerator):
         # test instantiation
         try:
             transformer = transformer_class()
-            self._transformers.append(transformer)
         except:
             err = "Error instantiating {}.".format(transformer_class.__name__)
             printer.out(err)
@@ -30,6 +29,9 @@ class TransformersRunner(ActivationRuleGenerator):
             self._transformers_config.set_transformer_active(transformer.get_class_name(), False)
             self._transformers_config.save()
             printer.out("New transformer added: {}".format(transformer.get_class_name()))
+
+        if self._transformers_config.is_transformer_active(transformer.get_class_name()):
+            self._transformers.append(transformer)
 
     def construct_activation_rule(self):
         m = {}
@@ -49,12 +51,13 @@ class TransformersRunner(ActivationRuleGenerator):
         return TransformersActivationRule, details
 
     def transform_rule(self, rule):
+        r = rule
         for transformer in self._transformers:
-            if not self._transformers_config.is_transformer_active(transformer.get_class_name()):
-                continue
             try:
-                rule = transformer.get_transformed_rule(rule)
+                r = transformer.get_transformed_rule(r)
             except:
                 err = "Error while running transformer {} with {} rule."
-                printer.out(err.format(transformer, rule))
-        return rule
+                printer.out(err.format(transformer, r))
+                import traceback
+                traceback.print_exc()
+        return r
