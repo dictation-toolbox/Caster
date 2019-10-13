@@ -1,8 +1,9 @@
-from dragonfly import Key, Function, Repeat, Mouse, Dictation, Choice, ContextAction, AppContext
+from dragonfly import Function, Repeat, Dictation, Choice, ContextAction, AppContext
 
 from castervoice.lib import navigation, context, textformat, text_utils
 from dragonfly.actions.action_mimic import Mimic
 
+from castervoice.lib.actions import Key, Mouse
 from castervoice.lib.ccr.core.punctuation_support import double_text_punc_dict, text_punc_dict
 from castervoice.lib.ccr.standard import SymbolSpecs
 from castervoice.lib.alphanumeric import caster_alphabet
