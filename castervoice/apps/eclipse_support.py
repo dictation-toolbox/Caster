@@ -1,6 +1,6 @@
 import re
 
-from dragonfly import Key
+from castervoice.lib.actions import Key
 
 from castervoice.lib import utilities, context
 from castervoice.lib.actions import Text

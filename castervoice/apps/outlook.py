@@ -1,6 +1,6 @@
-from dragonfly import Key, Function, Repeat, Dictation, Choice, AppContext
+from dragonfly import Function, Repeat, Dictation, Choice, AppContext
 
-from castervoice.lib.actions import Text
+from castervoice.lib.actions import Key, Text
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.mergerule import MergeRule

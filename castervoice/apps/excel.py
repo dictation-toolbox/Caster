@@ -9,10 +9,11 @@ import itertools
 
 # this function takes a dictionary and returns a dictionary whose keys are sequences of keys of the original dictionary
 # and whose values our the corresponding sequences of values of the original dictionary
-from dragonfly import Key, Repeat, Dictation, Choice, MappingRule
+from dragonfly import Repeat, Dictation, Choice, MappingRule
+
+from castervoice.lib.actions import Key, Text
 
 from castervoice.lib import alphanumeric
-from castervoice.lib.actions import Text
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R

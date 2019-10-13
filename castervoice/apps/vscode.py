@@ -1,5 +1,7 @@
 # thanks to Casper for contributing commands to this.
-from dragonfly import Key, Repeat, Dictation, Choice
+from dragonfly import Repeat, Dictation, Choice
+
+from castervoice.lib.actions import Key
 
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails

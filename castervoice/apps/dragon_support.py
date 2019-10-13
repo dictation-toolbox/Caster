@@ -1,4 +1,4 @@
-from dragonfly import Key, Dictation, Choice
+from dragonfly import Dictation, Choice
 
 from castervoice.lib import utilities
 from castervoice.lib.actions import Text

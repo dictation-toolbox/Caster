@@ -1,4 +1,6 @@
-from dragonfly import Mouse, Key, Repeat, Dictation, MappingRule
+from dragonfly import Repeat, Dictation, MappingRule
+
+from castervoice.lib.actions import Key, Text, Mouse
 
 from castervoice.lib.actions import Text
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails

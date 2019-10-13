@@ -5,7 +5,8 @@ Official Site "https://gitter.im/"
 """
 from dragonfly import Key, Pause, Choice, MappingRule
 
-from castervoice.lib.actions import Text
+from castervoice.lib.actions import Key, Text
+
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.short import R
 from castervoice.lib.temporary import Store, Retrieve

@@ -3,8 +3,9 @@ __author__ = 'LexiconCode'
 Command-module for Typora
 Official Site "https://typora.io/"
 """
-from dragonfly import Key, Repeat, Dictation, MappingRule
+from dragonfly import Repeat, Dictation, MappingRule
 
+from castervoice.lib.actions import Key
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R

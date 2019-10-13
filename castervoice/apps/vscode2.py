@@ -1,4 +1,6 @@
-from dragonfly import Key, Function, Repeat, Choice, Dictation, MappingRule
+from dragonfly import Function, Repeat, Choice, Dictation, MappingRule
+
+from castervoice.lib.actions import Key
 
 from castervoice.lib import navigation
 from castervoice.lib.actions import Text

@@ -1,4 +1,6 @@
-from dragonfly import Key, Repeat, Dictation, Function, Choice, Paste, Pause, MappingRule
+from dragonfly import Repeat, Dictation, Function, Choice, Paste, Pause, MappingRule
+
+from castervoice.lib.actions import Key
 
 from castervoice.apps.eclipse_support import ec_con
 from castervoice.lib import alphanumeric

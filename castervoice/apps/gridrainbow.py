@@ -1,6 +1,8 @@
 import time
 
-from dragonfly import Mouse, Function, Choice, MappingRule
+from dragonfly import Function, Choice, MappingRule
+
+from castervoice.lib.actions import Mouse
 
 from castervoice.asynch.mouse import grids
 import win32api, win32con

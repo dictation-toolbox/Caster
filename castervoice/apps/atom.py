@@ -5,10 +5,12 @@ Official Site "https://atom.io/"
 """
 
 # How long to wait for the Atom palette to load before hitting the enter key
-from dragonfly import Key, Pause, Function, Repeat, AppContext, Dictation, Choice, MappingRule
+from dragonfly import Pause, Function, Repeat, Dictation, Choice, MappingRule
+
+from castervoice.lib.actions import Text, Key
+from castervoice.lib.context import AppContext
 
 from castervoice.lib import settings, navigation
-from castervoice.lib.actions import Text
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
