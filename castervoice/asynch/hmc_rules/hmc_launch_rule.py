@@ -1,9 +1,8 @@
-from dragonfly import Function
+from dragonfly import Function, MappingRule
 
 from castervoice.asynch.hmc import h_launch
 from castervoice.lib import settings
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.actions import AsynchronousAction
 from castervoice.lib.merge.state.short import R, S, L
 
@@ -24,7 +23,7 @@ def settings_window():
         blocking=False).execute()
 
 
-class HMCLaunchRule(MergeRule):
+class HMCLaunchRule(MappingRule):
     mapping = {
         "launch settings window":
             R(Function(settings_window)),
