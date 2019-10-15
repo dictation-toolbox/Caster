@@ -1,7 +1,7 @@
 import re
-from dragonfly import Key, AppContext, Window
+from dragonfly import AppContext, Window
 from castervoice.lib import context
-
+from castervoice.lib.actions import Key
 
 contexts = {
     "texstudio": AppContext(executable="texstudio"),

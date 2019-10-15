@@ -9,9 +9,10 @@
 
 # You can skip down to the next comment, none of this stuff is really important...
 
-from dragonfly import (BringApp, Key, Function, Grammar, Playback, Dictation,
-                       Choice, WaitWindow, MappingRule, Text)
+from dragonfly import (BringApp, Function, Grammar, Playback, Dictation,
+                       Choice, WaitWindow, MappingRule)
 
+from castervoice.lib.actions import Text, Key
 from castervoice.lib.merge.additions import IntegerRefST
 
 def my_function(n, text):

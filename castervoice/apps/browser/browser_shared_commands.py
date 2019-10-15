@@ -1,8 +1,9 @@
 #
 # __author__ = "lexxish"
 #
-from dragonfly import Key, Repeat, Mouse, Pause, Function
+from dragonfly import Repeat, Pause, Function
 
+from castervoice.lib.actions import Key, Mouse
 from castervoice.apps.browser import browser_shared
 from castervoice.lib import github_automation
 from castervoice.lib.actions import Text

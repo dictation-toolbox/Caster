@@ -5,10 +5,10 @@ users may want to make this context-specific to their text editors
 '''
 import copy
 
-from dragonfly import Key, Pause, Choice, Dictation, Function
+from dragonfly import Pause, Choice, Dictation, Function
 from dragonfly.actions.action_mouse import get_cursor_position
 
-from castervoice.lib.actions import Text
+from castervoice.lib.actions import Text, Key
 from castervoice.lib.ccr.core.nav import Navigation
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails

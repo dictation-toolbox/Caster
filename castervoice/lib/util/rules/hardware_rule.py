@@ -1,5 +1,6 @@
-from dragonfly import MappingRule, Playback, Function, Key, Pause, Choice
+from dragonfly import MappingRule, Playback, Function, Pause, Choice
 
+from castervoice.lib.actions import Key
 from castervoice.lib import settings, navigation
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST

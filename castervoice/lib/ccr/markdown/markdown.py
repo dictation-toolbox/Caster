@@ -1,6 +1,6 @@
-from dragonfly import Function, Key, Dictation, Choice
+from dragonfly import Function, Dictation, Choice
 
-from castervoice.lib.actions import Text
+from castervoice.lib.actions import Text, Key
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST

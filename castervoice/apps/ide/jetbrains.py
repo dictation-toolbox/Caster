@@ -1,6 +1,6 @@
-from dragonfly import Dictation, Key, Repeat, MappingRule
+from dragonfly import Dictation, Repeat, MappingRule
 
-from castervoice.lib.actions import Text
+from castervoice.lib.actions import Text, Key
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 import ide_shared
 from castervoice.lib.merge.additions import IntegerRefST

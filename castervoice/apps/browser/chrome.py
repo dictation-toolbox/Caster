@@ -1,6 +1,7 @@
-from dragonfly import Key, Repeat, MappingRule
+from dragonfly import Repeat, MappingRule
 
 import browser_shared
+from castervoice.lib.actions import Key
 from castervoice.apps.browser.browser_shared_commands import BrowserSharedCommands
 from castervoice.lib.actions import Text
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails

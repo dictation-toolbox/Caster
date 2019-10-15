@@ -1,6 +1,6 @@
-from dragonfly import MappingRule, Key, Choice
+from dragonfly import MappingRule, Choice
 
-from castervoice.lib.actions import Text
+from castervoice.lib.actions import Text, Key
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.short import R
 
