@@ -3,7 +3,6 @@ import os, traceback
 from dragonfly import Grammar
 
 from castervoice.lib import printer
-from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.errors.not_a_module import NotAModuleError
 from castervoice.lib.ctrl.mgr.loading.load.content_type import ContentType
 from castervoice.lib.ctrl.mgr.managed_rule import ManagedRule
@@ -25,7 +24,8 @@ class GrammarManager(object):
                  ccr_toggle,
                  smrc,
                  t_runner,
-                 companion_config):
+                 companion_config,
+                 combo_validator):
         """
         Holds both the current merged ccr rules and the most recently instantiated/validated
         copies of all ccr and non-ccr rules.
@@ -44,7 +44,8 @@ class GrammarManager(object):
         :param hooks_runner: runs all hooks at different events
         :param smrc: grants limited access to other parts of framework to selfmod rules- don't keep reference
         :param t_runner: a reference is kept to it so can instantly activate its activation rule
-        :param companion_config a config which controls which rules can be enabled/disabled instantly by other rules
+        :param companion_config: a config which controls which rules can be enabled/disabled instantly by other rules
+        :param combo_validator: validates all (ccr/non-ccr) rule+detail combinations
         """
         self._config = config
         self._merger = merger
@@ -59,6 +60,7 @@ class GrammarManager(object):
         self._ccr_toggle = ccr_toggle
         self._transformers_runner = t_runner
         self._companion_config = companion_config
+        self._combo_validator = combo_validator
 
         # rules: (class name : ManagedRule}
         self._managed_rules = {}
@@ -237,7 +239,7 @@ class GrammarManager(object):
         '''validate details configuration before anything else'''
         details_invalidation = self._details_validator.validate_details(details)
         if details_invalidation is not None:
-            return class_name + " rejected due to detail validation errors: " + details_invalidation
+            return "{} rejected due to detail validation errors: {}".format(class_name, details_invalidation)
 
         '''attempt to instantiate the rule'''
         test_instance = None
@@ -245,13 +247,18 @@ class GrammarManager(object):
             test_instance = rule_class()
         except:  # ignore warnings on this line-- it's supposed to be broad
             traceback.print_exc()
-            return class_name + " rejected due to instantiation errors"
+            return "{} rejected due to instantiation errors".format(class_name)
 
         '''if ccr, validate the rule'''
         if details.declared_ccrtype is not None:
             error = self._ccr_rules_validator.validate_rule(test_instance, details.declared_ccrtype)
             if error is not None:
-                return class_name + " rejected due to rule validation errors: " + error
+                return "{} rejected due to rule validation errors: {}".format(class_name, error)
+
+        '''do combo validations'''
+        combo_invalidation = self._combo_validator.validate(test_instance, details)
+        if combo_invalidation is not None:
+            return "{} rejected due to rule/details combination errors: {}".format(class_name, combo_invalidation)
 
         return None
 
@@ -264,6 +271,7 @@ class GrammarManager(object):
         rules = [self._activator.construct_activation_rule(),
                  self._hooks_runner.construct_activation_rule(),
                  self._transformers_runner.construct_activation_rule()]
+        rules = [rule for rule in rules if len(rule[0].mapping) > 0]  # there might not be *any* transformers/hooks
         if hasattr(self._reload_observable, "get_loadable"):
             rules.append(self._reload_observable.get_loadable())
 

@@ -6,6 +6,9 @@ from castervoice.lib.ctrl.mgr.loading.reload.manual_reload_observable import Man
 from castervoice.lib.ctrl.mgr.loading.reload.timer_reload_observable import TimerReloadObservable
 from castervoice.lib.ctrl.mgr.rule_maker.mapping_rule_maker import MappingRuleMaker
 from castervoice.lib.ctrl.mgr.rules_config import RulesConfig
+from castervoice.lib.ctrl.mgr.validation.combo.combo_validation_delegator import ComboValidationDelegator
+from castervoice.lib.ctrl.mgr.validation.combo.non_empty_validator import RuleNonEmptyValidator
+from castervoice.lib.ctrl.mgr.validation.combo.rule_family_validator import RuleFamilyValidator
 from castervoice.lib.merge.ccrmerging2.compatibility.detail_compat_checker import DetailCompatibilityChecker
 from castervoice.lib.merge.ccrmerging2.hooks.hooks_config import HooksConfig
 from castervoice.lib.merge.ccrmerging2.hooks.hooks_runner import HooksRunner
@@ -120,6 +123,10 @@ class Nexus:
             AppCCRDetailsValidator(),
             NonCCRDetailsValidator()
         )
+        combo_validator = ComboValidationDelegator(
+            RuleFamilyValidator(),
+            RuleNonEmptyValidator()
+        )
 
         observable = TimerReloadObservable(5)
         if settings.SETTINGS["miscellaneous"]["reload_trigger"] == "manual":
@@ -144,7 +151,8 @@ class Nexus:
                             ccr_toggle,
                             smrc,
                             transformers_runner,
-                            companion_config)
+                            companion_config,
+                            combo_validator)
         return gm
 
     @staticmethod
