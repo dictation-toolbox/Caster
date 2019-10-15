@@ -29,4 +29,4 @@ class FileDialogueRule(MappingRule):
 
 
 def get_rule():
-    return FileDialogueRule, RuleDetails(name="file dialogue", title=["open, save, select"])
+    return FileDialogueRule, RuleDetails(name="file dialogue", title=["open", "save", "select"])
