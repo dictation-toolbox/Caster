@@ -14,15 +14,17 @@ from castervoice.lib.merge.ccrmerging2.transformers.text_replacer.text_replacer 
 from castervoice.lib.merge.ccrmerging2.transformers.transformers_runner import TransformersRunner
 from tests.lib.merge.ccrmerging2.fake_rules import FakeRuleOne, FakeRuleTwo
 from tests.lib.merge.ccrmerging2.transformers.text_replacer import mock_TRParser
+from tests.test_util.settings_mocking import SettingsEnabledTestCase
 
 
-class TestCCRMerger2(TestCase):
+class TestCCRMerger2(SettingsEnabledTestCase):
 
     @staticmethod
     def _create_managed_rule(rule_class, ccrtype, executable=None):
         return ManagedRule(rule_class, RuleDetails(ccrtype=ccrtype, executable=executable))
 
     def setUp(self):
+        self._set_setting(["miscellaneous", "max_ccr_repetitions"], "4")
         order_fn = lambda: ["Alphabet", "Navigation", "EclipseCCR"]
         self.selfmodrule_configurer = Mock()
         self.transformers_config = Mock()

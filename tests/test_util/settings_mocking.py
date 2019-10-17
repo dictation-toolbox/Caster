@@ -1,5 +1,7 @@
 from unittest import TestCase
 
+from mock import Mock
+
 from castervoice.lib import settings
 
 
@@ -17,3 +19,7 @@ class SettingsEnabledTestCase(TestCase):
                 if kp not in s:
                     s[kp] = {}
                 s = s[kp]
+
+
+def prevent_initialize():
+    settings.initialize = Mock()
