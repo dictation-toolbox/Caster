@@ -48,7 +48,7 @@ class RulesConfig(TomlConfig):
         except KeyError:
             self._config[RulesConfig._WHITELISTED][rcn] = True
             self.save()
-            return True
+            return self._config[RulesConfig._WHITELISTED][rcn]
 
     def _validate_enabled(self):
         """
