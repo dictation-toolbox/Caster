@@ -4,10 +4,10 @@ import threading
 import time
 from subprocess import Popen
 
-from dragonfly import AppContext, Function, Choice, Dictation, Key, ContextAction
+from dragonfly import AppContext, Function, Choice, Dictation, ContextAction
 
 from castervoice.lib import settings, utilities, context, contexts
-from castervoice.lib.actions import Text
+from castervoice.lib.actions import Text, Key
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.selfmod.selfmodrule import BaseSelfModifyingRule

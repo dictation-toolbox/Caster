@@ -2,9 +2,9 @@
 Created on Sep 4, 2018
 @author: Mike Roberts
 '''
-from dragonfly import Key, Function, Choice
+from dragonfly import Function, Choice
 
-from castervoice.lib.actions import Text
+from castervoice.lib.actions import Text, Key
 from castervoice.lib.ccr.standard import SymbolSpecs
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails

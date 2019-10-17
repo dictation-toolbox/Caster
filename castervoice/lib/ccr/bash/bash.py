@@ -2,9 +2,7 @@
 Created on Sep 1, 2015
 @author: synkarius
 '''
-from dragonfly import Key
-
-from castervoice.lib.actions import Text
+from castervoice.lib.actions import Text, Key
 from castervoice.lib.ccr.standard import SymbolSpecs
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails

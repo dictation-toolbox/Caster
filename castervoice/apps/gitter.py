@@ -3,7 +3,7 @@ __author__ = 'LexiconCode'
 Command-module for Gitter
 Official Site "https://gitter.im/"
 """
-from dragonfly import Key, Pause, Choice, MappingRule
+from dragonfly import Pause, Choice, MappingRule
 
 from castervoice.lib.actions import Key, Text
 

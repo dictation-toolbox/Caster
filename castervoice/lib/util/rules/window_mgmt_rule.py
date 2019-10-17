@@ -1,5 +1,6 @@
-from dragonfly import MappingRule, Playback, Key
+from dragonfly import MappingRule, Playback
 
+from castervoice.lib.actions import Key
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.short import R
 

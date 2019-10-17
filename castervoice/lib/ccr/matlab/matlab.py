@@ -2,9 +2,9 @@
 Created on May 26, 2017
 @author: shippy
 '''
-from dragonfly import Key, Dictation
+from dragonfly import Dictation
 
-from castervoice.lib.actions import Text
+from castervoice.lib.actions import Text, Key
 from castervoice.lib.ccr.standard import SymbolSpecs
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails

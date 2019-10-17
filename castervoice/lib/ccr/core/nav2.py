@@ -1,5 +1,6 @@
-from dragonfly import Key, Function, Repeat, Mouse, Dictation, Choice, MappingRule
+from dragonfly import Function, Repeat, Dictation, Choice, MappingRule
 
+from castervoice.lib.actions import Key, Mouse
 from castervoice.lib import navigation, utilities, alphanumeric
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST

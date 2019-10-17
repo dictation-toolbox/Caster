@@ -1,6 +1,6 @@
-from dragonfly import MappingRule, Key
+from dragonfly import MappingRule
 
-from castervoice.lib.actions import Text
+from castervoice.lib.actions import Text, Key
 from castervoice.lib.ccr.standard import SymbolSpecs
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.short import R

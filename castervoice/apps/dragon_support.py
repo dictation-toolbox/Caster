@@ -1,7 +1,7 @@
 from dragonfly import Dictation, Choice
 
 from castervoice.lib import utilities
-from castervoice.lib.actions import Text
+from castervoice.lib.actions import Text, Key
 from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.util import recognition_history
 

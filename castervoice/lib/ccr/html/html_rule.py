@@ -1,5 +1,6 @@
-from dragonfly import AppContext, Key
+from dragonfly import AppContext
 
+from castervoice.lib.actions import Key
 from castervoice.lib import settings, printer
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
