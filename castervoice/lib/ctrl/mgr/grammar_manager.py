@@ -78,18 +78,20 @@ class GrammarManager(object):
         if self._initial_activations_complete:
             return
 
-        loaded_rcns = set(self._managed_rules.keys())
+        loaded_enabled_rcns = set(self._managed_rules.keys())
         for rcn in self._config.get_enabled_rcns_ordered():
-            if rcn in loaded_rcns:
+            if rcn in loaded_enabled_rcns:
                 rd = self._managed_rules[rcn].get_details()
                 if rd.declared_ccrtype is None:
                     self._delegate_enable_rule(rcn, True)
             else:
-                printer.out("Skipping rule {}.".format(rcn))
+                msg = "Skipping rule {} because it is enabled but not loaded."
+                printer.out(msg.format(rcn))
         if self._ccr_toggle.is_active():
             self._remerge_ccr_rules()
 
-        if hasattr(self._reload_observable, "start"):
+        is_timer_based_reload_observable = hasattr(self._reload_observable, "start")
+        if is_timer_based_reload_observable:
             self._reload_observable.start()
 
         self._initial_activations_complete = True
@@ -174,9 +176,9 @@ class GrammarManager(object):
         self._ccr_toggle.set_active(True)
 
         # handle CCR: get all active ccr rules after de/activating one
-        loaded_rcns = set(self._managed_rules.keys())
+        loaded_enabled_rcns = set(self._managed_rules.keys())
         active_rule_class_names = [rcn for rcn in self._config.get_enabled_rcns_ordered()
-                                   if rcn in loaded_rcns]
+                                   if rcn in loaded_enabled_rcns]
         active_mrs = [self._managed_rules[rcn] for rcn in active_rule_class_names]
         active_ccr_mrs = [mr for mr in active_mrs if mr.get_details().declared_ccrtype is not None]
 
