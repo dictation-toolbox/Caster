@@ -80,7 +80,7 @@ class Rlang(MergeRule):
         "NA":
             R(Text("NA")),
         "shell iffae | LFA":
-            R(Text("elseif ()") + Key("left")),
+            R(Text("else if ()") + Key("left")),
         "dot (our|are)":
             R(Text(".R")),
         "see as vee":
