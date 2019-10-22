@@ -1,9 +1,8 @@
-from unittest import TestCase
-
-from dragonfly.grammar.context import LogicNotContext, Context
+from dragonfly.grammar.context import LogicNotContext, Context, LogicAndContext
 from mock import Mock
-
+from castervoice.lib.context import AppContext
 from castervoice.apps.eclipse import EclipseCCR
+from castervoice.apps.vscode import VSCodeCcrRule
 from castervoice.lib.ccr.core.alphabet import Alphabet
 from castervoice.lib.ccr.core.nav import Navigation
 from castervoice.lib.const import CCRType
@@ -25,7 +24,7 @@ class TestCCRMerger2(SettingsEnabledTestCase):
 
     def setUp(self):
         self._set_setting(["miscellaneous", "max_ccr_repetitions"], "4")
-        order_fn = lambda: ["Alphabet", "Navigation", "EclipseCCR"]
+        order_fn = lambda: ["Alphabet", "Navigation", "EclipseCCR", "VSCodeCcrRule"]
         self.selfmodrule_configurer = Mock()
         self.transformers_config = Mock()
         self.transformers_runner = TransformersRunner(self.transformers_config)
@@ -120,3 +119,24 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         rule = self._extract_merged_rule_from_repeatrule(result)
         self.assertTrue("bear [<nnavi50>]" in rule._mapping.keys())
         self.assertTrue("gas" in rule._extras["letter"]._choices)
+
+    def test_merge_two_app_ccr(self):
+        """
+        Merger successfully merges one global + two CCR app rules.
+        """
+        alphabet_mr = TestCCRMerger2._create_managed_rule(Alphabet, CCRType.GLOBAL)
+        eclipse_app_mr = TestCCRMerger2._create_managed_rule(EclipseCCR, CCRType.APP, "eclipse")
+        vscode_app_mr = TestCCRMerger2._create_managed_rule(VSCodeCcrRule, CCRType.APP, "vscode")
+        result = self.merger.merge([alphabet_mr, eclipse_app_mr, vscode_app_mr])
+
+        self.assertEqual(3, len(result))
+        repeat_rule_1, context_1 = result[0]
+        repeat_rule_2, context_2 = result[1]
+        repeat_rule_3, context_3 = result[2]
+        self.assertEqual("RepeatRule", repeat_rule_1.__class__.__name__)
+        self.assertEqual("RepeatRule", repeat_rule_2.__class__.__name__)
+        self.assertEqual("RepeatRule", repeat_rule_3.__class__.__name__)
+        self.assertIsInstance(context_1, LogicAndContext)
+        self.assertIsInstance(context_2, AppContext)
+        self.assertIsInstance(context_3, AppContext)
+        # TODO: write a similar unit test to check the executables/titles validity of the contexts produced

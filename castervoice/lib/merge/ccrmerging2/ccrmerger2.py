@@ -1,5 +1,3 @@
-import collections
-
 from dragonfly.grammar.elements import RuleRef, Alternative, Repetition
 from dragonfly.grammar.rule_compound import CompoundRule
 from castervoice.lib.const import CCRType
@@ -128,7 +126,7 @@ class CCRMerger2(object):
             if negation_context is None:
                 negation_context = ~context
             else:
-                negation_context += ~context
+                negation_context &= ~context
         contexts.insert(0, negation_context)
         return contexts
 
