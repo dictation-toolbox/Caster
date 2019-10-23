@@ -37,7 +37,6 @@ class BaseAliasRule(BaseSelfModifyingRule):
         self._smr_mapping = mapping
 
     def _refresh(self, *args):
-        # print("wtf2 dude ", ar)
         if len(args) > 1 and args[0] != "":
             spec = str(args[0])
             text = str(args[1])
@@ -55,7 +54,6 @@ class BaseAliasRule(BaseSelfModifyingRule):
         """
         text = BaseAliasRule._read_highlighted(10)
         spec = str(spec)
-        print("wtf dude", spec, text)
         if text is not None:
             # if spec:
             #     self._refresh(spec, str(text))
