@@ -47,7 +47,8 @@ class ContentLoader(object):
             if request.content_type == ContentType.GET_RULE and \
                     rules_config.load_is_allowed(request.content_class_name):
                 rule_requests.append(request)
-            elif request.content_type == ContentType.GET_TRANSFORMER:
+            elif request.content_type == ContentType.GET_TRANSFORMER and \
+                    request.module_name == "text_replacer":
                 transformer_requests.append(request)
             elif request.content_type == ContentType.GET_HOOK:
                 hook_requests.append(request)
