@@ -36,7 +36,7 @@ class CCRMerger2(object):
         self._max_repetitions = int(max_repetitions)
         self._smr_configurer = smr_configurer
 
-    def merge(self, managed_rules):
+    def merge_rules(self, managed_rules):
         """
         :param managed_rules: list of ManagedRules
         :return: list of tuples: (repeat-rule, context)
@@ -54,10 +54,10 @@ class CCRMerger2(object):
         app_crs, non_app_crs = self._separate_app_rules(compat_results, rcns_to_details)
         merged_rules = self._create_merged_rules(app_crs, non_app_crs)
         # 5: turn the merged rules into repeat rules
-        ccr_rules = [self._create_repeat_rule(merged_rule) for merged_rule in merged_rules]
+        repeat_rules = [self._create_repeat_rule(merged_rule) for merged_rule in merged_rules]
         contexts = CCRMerger2._create_contexts(app_crs, rcns_to_details)
 
-        return zip(ccr_rules, contexts)
+        return zip(repeat_rules, contexts)
 
     def _instantiate_and_configure_rules(self, managed_rules):
         instantiated_rules = []
@@ -95,13 +95,13 @@ class CCRMerger2(object):
 
     def _create_merged_rules(self, app_crs, non_app_crs):
         merged_rules = []
-        merged_non_app_crs_rule = self._merging_strategy.merge(non_app_crs)
+        merged_non_app_crs_rule = self._merging_strategy.merge_into_single(non_app_crs)
         if merged_non_app_crs_rule is not None:
             merged_rules.append(merged_non_app_crs_rule)
         for app_cr in app_crs:
             with_one_app = list(non_app_crs)
             with_one_app.append(app_cr)
-            merged_rules.append(self._merging_strategy.merge(with_one_app))
+            merged_rules.append(self._merging_strategy.merge_into_single(with_one_app))
         return merged_rules
 
     @staticmethod

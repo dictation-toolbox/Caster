@@ -37,14 +37,14 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         """
         Merger should run through empty list without errors.
         """
-        self.merger.merge([])
+        self.merger.merge_rules([])
 
     def test_merge_nonempty(self):
         """
         Merger successfully "merge" one CCR rule w/ no context.
         """
         navigation_mr = TestCCRMerger2._create_managed_rule(Navigation, CCRType.GLOBAL)
-        result = self.merger.merge([navigation_mr])
+        result = self.merger.merge_rules([navigation_mr])
 
         self.assertEqual(1, len(result))
         repeat_rule = result[0][0]
@@ -58,7 +58,7 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         """
         alphabet_mr = TestCCRMerger2._create_managed_rule(Alphabet, CCRType.GLOBAL)
         navigation_mr = TestCCRMerger2._create_managed_rule(Navigation, CCRType.GLOBAL)
-        result = self.merger.merge([alphabet_mr, navigation_mr])
+        result = self.merger.merge_rules([alphabet_mr, navigation_mr])
 
         self.assertEqual(1, len(result))
         repeat_rule = result[0][0]
@@ -75,7 +75,7 @@ class TestCCRMerger2(SettingsEnabledTestCase):
 
         java_mr = TestCCRMerger2._create_managed_rule(FakeRuleOne, CCRType.GLOBAL)
         python_mr = TestCCRMerger2._create_managed_rule(FakeRuleTwo, CCRType.GLOBAL)
-        result = self.merger.merge([java_mr, python_mr])
+        result = self.merger.merge_rules([java_mr, python_mr])
 
         rule = self._extract_merged_rule_from_repeatrule(result)
         self.assertIn("two exclusive", rule._mapping)
@@ -89,7 +89,7 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         """
         eclipse_mr = TestCCRMerger2._create_managed_rule(EclipseCCR, CCRType.APP, "eclipse")
         navigation_mr = TestCCRMerger2._create_managed_rule(Navigation, CCRType.GLOBAL)
-        result = self.merger.merge([eclipse_mr, navigation_mr])
+        result = self.merger.merge_rules([eclipse_mr, navigation_mr])
 
         self.assertEqual(2, len(result))
         self.assertEqual("RepeatRule", result[0][0].__class__.__name__)
@@ -112,7 +112,7 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         # rule setup
         alphabet_mr = TestCCRMerger2._create_managed_rule(Alphabet, CCRType.GLOBAL)
         navigation_mr = TestCCRMerger2._create_managed_rule(Navigation, CCRType.GLOBAL)
-        result = self.merger.merge([alphabet_mr, navigation_mr])
+        result = self.merger.merge_rules([alphabet_mr, navigation_mr])
 
         self.assertEqual(1, len(result))
 
@@ -127,7 +127,7 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         alphabet_mr = TestCCRMerger2._create_managed_rule(Alphabet, CCRType.GLOBAL)
         eclipse_app_mr = TestCCRMerger2._create_managed_rule(EclipseCCR, CCRType.APP, "eclipse")
         vscode_app_mr = TestCCRMerger2._create_managed_rule(VSCodeCcrRule, CCRType.APP, "vscode")
-        result = self.merger.merge([alphabet_mr, eclipse_app_mr, vscode_app_mr])
+        result = self.merger.merge_rules([alphabet_mr, eclipse_app_mr, vscode_app_mr])
 
         self.assertEqual(3, len(result))
         repeat_rule_1, context_1 = result[0]

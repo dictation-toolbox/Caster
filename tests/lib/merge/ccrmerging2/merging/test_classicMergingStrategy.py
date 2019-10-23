@@ -37,9 +37,9 @@ class TestClassicMergingStrategy(TestCase):
         ]
 
     def test_a_knocks_out_b(self):
-        merged_rule = self.merge_strategy.merge(self.compat_results_ba)
+        merged_rule = self.merge_strategy.merge_into_single(self.compat_results_ba)
         self.assertIn("a", merged_rule.get_mapping().keys())
 
     def test_b_knocks_out_a(self):
-        merged_rule = self.merge_strategy.merge(self.compat_results_ab)
+        merged_rule = self.merge_strategy.merge_into_single(self.compat_results_ab)
         self.assertIn("b", merged_rule.get_mapping().keys())

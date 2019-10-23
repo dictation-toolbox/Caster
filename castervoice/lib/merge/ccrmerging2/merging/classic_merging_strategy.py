@@ -6,7 +6,7 @@ class ClassicMergingStrategy(BaseMergingStrategy):
     This strategy KOs any incompatible rules.
     """
 
-    def merge(self, sorted_checked_rules):
+    def merge_into_single(self, sorted_checked_rules):
         """
         Merge any rules which aren't KO'd by their peers.
         Done in O(n) for the total number of specs.
