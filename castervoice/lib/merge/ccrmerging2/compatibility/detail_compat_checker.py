@@ -5,7 +5,6 @@ from castervoice.lib.util.hashable_list import HashableList
 
 
 class DetailCompatibilityChecker(BaseCompatibilityChecker):
-    # TODO: unit test the hell out of this method
     def compatibility_check(self, mergerules):
         """
         :param mergerules: collection of MergeRule
