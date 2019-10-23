@@ -37,10 +37,12 @@ class BaseAliasRule(BaseSelfModifyingRule):
         self._smr_mapping = mapping
 
     def _refresh(self, *args):
+        # print("wtf2 dude ", ar)
         if len(args) > 1 and args[0] != "":
             spec = str(args[0])
             text = str(args[1])
             self._config.put(spec, text)
+            self._config.save()
         self.reset()
 
     def _alias(self, spec):
@@ -53,18 +55,19 @@ class BaseAliasRule(BaseSelfModifyingRule):
         """
         text = BaseAliasRule._read_highlighted(10)
         spec = str(spec)
+        print("wtf dude", spec, text)
         if text is not None:
-            if spec:
-                self._refresh(spec, str(text))
-            else:
-                h_launch.launch(settings.QTYPE_INSTRUCTIONS, data="Enter_spec_for_command|")
-                on_complete = AsynchronousAction.hmc_complete(
-                    lambda data: self._refresh(data[0].replace("\n", ""), text))
-                AsynchronousAction(
-                    [L(S(["cancel"], on_complete))],
-                    time_in_seconds=0.5,
-                    repetitions=300,
-                    blocking=False).execute()
+            # if spec:
+            #     self._refresh(spec, str(text))
+            # else:
+            h_launch.launch(settings.QTYPE_INSTRUCTIONS, data="Enter_spec_for_command|")
+            on_complete = AsynchronousAction.hmc_complete(
+                lambda data: self._refresh(data[0].replace("\n", ""), text))
+            AsynchronousAction(
+                [L(S(["cancel"], on_complete))],
+                time_in_seconds=0.5,
+                repetitions=300,
+                blocking=False).execute()
 
     def _delete_all(self):
         self._config.replace({})
