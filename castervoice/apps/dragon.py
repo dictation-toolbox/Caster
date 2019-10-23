@@ -1,16 +1,14 @@
-from dragonfly import Function, Playback, Mimic, WaitWindow, Repeat, Pause
+from dragonfly import Function, Playback, Mimic, WaitWindow, Repeat, Pause, MappingRule
 from castervoice.lib.actions import Key
-from castervoice.lib.context import AppContext
 
 from castervoice.apps.dragon_support import cap_dictation, fix_dragon_double, extras_for_whole_file, \
     defaults_for_whole_file
 from castervoice.lib import utilities
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
 
-class DragonRule(MergeRule):
+class DragonRule(MappingRule):
     pronunciation = "dragon"
 
     mapping = {

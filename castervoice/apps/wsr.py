@@ -1,12 +1,11 @@
-from dragonfly import Function
+from dragonfly import Function, MappingRule
 
 from castervoice.lib import utilities
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
 
-class WindowsSpeechRecognitionRule(MergeRule):
+class WindowsSpeechRecognitionRule(MappingRule):
 
     mapping = {
         "reboot windows speech recognition":

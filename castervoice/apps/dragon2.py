@@ -1,14 +1,13 @@
-from dragonfly import Mimic
+from dragonfly import Mimic, MappingRule
 from castervoice.lib.actions import Key
 
 
 from castervoice.apps.dragon_support import extras_for_whole_file, defaults_for_whole_file
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
 
-class SpellingWindowRule(MergeRule):
+class SpellingWindowRule(MappingRule):
     mapping = {
         # todo: make these CCR
 
