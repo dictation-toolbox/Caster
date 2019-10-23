@@ -1,6 +1,5 @@
 from castervoice.lib import settings
 from castervoice.lib.ccr.recording.alias.base_alias import BaseAliasRule
-from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 
 
@@ -15,6 +14,6 @@ class Alias(BaseAliasRule):
 
 
 def get_rule():
-    details = RuleDetails(ccrtype=CCRType.GLOBAL,
+    details = RuleDetails(name="alias",
                           transformer_exclusion=True)
     return [Alias, details]

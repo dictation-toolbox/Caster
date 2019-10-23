@@ -6,7 +6,7 @@ from castervoice.lib import printer, available_commands_tracker
 from castervoice.lib.merge.ccrmerging2.pronounceable import Pronounceable
 
 
-class MergeRule(Pronounceable):
+class MergeRule(MappingRule, Pronounceable):
 
     mapping = {}
     extras = []
@@ -18,14 +18,16 @@ class MergeRule(Pronounceable):
     pronunciation = None
 
     def __init__(self, name=None, mapping=None, extras=None, defaults=None):
-        self.name = name or self.get_rule_class_name()
-        self._mapping = mapping or self.mapping.copy()
-        extras_list = extras or self.extras
-        self._extras = dict([(element.name, MergeRule._copy_extra(element))
-                            for element in extras_list])
-        self._defaults = defaults or self.defaults.copy()
+        _name = name or self.get_rule_class_name()
+        _mapping = mapping or self.mapping.copy()
+        _extras = extras or self.extras[:]
+        _defaults = defaults or self.defaults.copy()
         #
-        self._format_actions()
+        MergeRule._format_actions(_mapping, _name)
+        super(MergeRule, self).__init__(name=_name,
+                                        mapping=_mapping,
+                                        extras=_extras,
+                                        defaults=_defaults)
 
     def merge(self, other):
         new_mapping = self.get_mapping()
@@ -46,8 +48,9 @@ class MergeRule(Pronounceable):
                            extras=self.get_extras(),
                            defaults=self.get_defaults())
 
-    def _create_rdescript(self, spec):
-        rule_name = self.name
+    @staticmethod
+    def _create_rdescript(spec, rcn):
+        rule_name = rcn
         for unnecessary in ["Non", "Rule", "Ccr", "CCR"]:
             rule_name = rule_name.replace(unnecessary, "")
         extras = ""
@@ -57,11 +60,12 @@ class MergeRule(Pronounceable):
         return "%s: %s%s" % (rule_name, spec, extras)
 
     '''Generates an "rdescript" for actions in this rule which don't have them.'''
-    def _format_actions(self):
-        for spec, action in self._mapping.items():
+    @staticmethod
+    def _format_actions(mapping, rcn):
+        for spec, action in mapping.items():
             # pylint: disable=no-member
             if hasattr(action, "rdescript") and action.rdescript is None:
-                self._mapping[spec].rdescript = self._create_rdescript(spec)
+                mapping[spec].rdescript = MergeRule._create_rdescript(spec, rcn)
 
     def get_mapping(self):
         return self._mapping.copy()
@@ -73,7 +77,7 @@ class MergeRule(Pronounceable):
         return self._defaults.copy()
 
     def get_pronunciation(self):
-        return self.pronunciation if self.pronunciation is not None else self.name
+        return self.pronunciation if self.pronunciation is not None else self._name
 
     def prepare_for_merger(self):
         """
@@ -117,7 +121,3 @@ class MergeRule(Pronounceable):
             MergeRule._get_next_id.id = 0
         MergeRule._get_next_id.id += 1
         return MergeRule._get_next_id.id
-
-    @staticmethod
-    def _copy_extra(extra):
-        return extra  # TODO
