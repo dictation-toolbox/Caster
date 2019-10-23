@@ -27,24 +27,24 @@ class _TestRuleC(MergeRule):
 class TestDetailCompatibilityChecker(TestCase):
 
     def setUp(self):
-        self.compatChecker = DetailCompatibilityChecker()
+        self.compat_checker = DetailCompatibilityChecker()
 
     def test_no_incompatibilities_between_compatible_rules(self):
-        result = self.compatChecker.compatibility_check([_TestRuleA(), _TestRuleB()])
+        result = self.compat_checker.compatibility_check([_TestRuleA(), _TestRuleB()])
         a_incompats = self._get_incompatible_set_for_rule_class(result, "_TestRuleA")
         b_incompats = self._get_incompatible_set_for_rule_class(result, "_TestRuleB")
         self.assertEqual(0, len(a_incompats))
         self.assertEqual(0, len(b_incompats))
 
     def test_incompatibilities_detected_between_pairs(self):
-        result = self.compatChecker.compatibility_check([_TestRuleA(), _TestRuleC()])
+        result = self.compat_checker.compatibility_check([_TestRuleA(), _TestRuleC()])
         a_incompats = self._get_incompatible_set_for_rule_class(result, "_TestRuleA")
         c_incompats = self._get_incompatible_set_for_rule_class(result, "_TestRuleC")
         self.assertEqual(1, len(a_incompats))
         self.assertIn("_TestRuleC", a_incompats)
         self.assertEqual(1, len(c_incompats))
         self.assertIn("_TestRuleA", c_incompats)
-        result = self.compatChecker.compatibility_check([_TestRuleB(), _TestRuleC()])
+        result = self.compat_checker.compatibility_check([_TestRuleB(), _TestRuleC()])
         b_incompats = self._get_incompatible_set_for_rule_class(result, "_TestRuleB")
         c_incompats = self._get_incompatible_set_for_rule_class(result, "_TestRuleC")
         self.assertEqual(1, len(b_incompats))
@@ -53,7 +53,7 @@ class TestDetailCompatibilityChecker(TestCase):
         self.assertIn("_TestRuleB", c_incompats)
 
     def test_incompatibilities_detected_between_triple(self):
-        result = self.compatChecker.compatibility_check([_TestRuleA(), _TestRuleB(), _TestRuleC()])
+        result = self.compat_checker.compatibility_check([_TestRuleA(), _TestRuleB(), _TestRuleC()])
         a_incompats = self._get_incompatible_set_for_rule_class(result, "_TestRuleA")
         b_incompats = self._get_incompatible_set_for_rule_class(result, "_TestRuleB")
         c_incompats = self._get_incompatible_set_for_rule_class(result, "_TestRuleC")
