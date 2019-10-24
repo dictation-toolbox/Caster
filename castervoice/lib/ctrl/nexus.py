@@ -31,7 +31,6 @@ from castervoice.lib.ctrl.mgr.grammar_manager import GrammarManager
 from castervoice.lib.ctrl.mgr.validation.rules.rule_validation_delegator import CCRRuleValidationDelegator
 from castervoice.lib.merge.ccrmerging2.ccrmerger2 import CCRMerger2
 from castervoice.lib.merge.ccrmerging2.merging.classic_merging_strategy import ClassicMergingStrategy
-from tests.lib.ctrl.mgr.grammar_container.fake_grammar_container import FakeGrammarContainer
 
 
 class Nexus:
@@ -146,7 +145,6 @@ class Nexus:
             observable = ManualReloadObservable()
 
         grammars_container = BasicGrammarContainer()
-        grammars_container = FakeGrammarContainer()
 
         activator = GrammarActivator(lambda rule: isinstance(rule, MergeRule))
 
