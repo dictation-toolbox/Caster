@@ -23,3 +23,7 @@ class SettingsEnabledTestCase(TestCase):
 
 def prevent_initialize():
     settings.initialize = Mock()
+
+
+def prevent_save():
+    settings.save_config = Mock()

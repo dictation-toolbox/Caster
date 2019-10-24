@@ -1,7 +1,11 @@
 class FakeGrammarContainer(object):
     """
-    This is a test class. It should be in the test packages.
+    A spy for the grammar container.
     """
+
+    def __init__(self):
+        self.ccr = []
+        self.non_ccr = {}
 
     def _pass(self):
         pass
@@ -9,9 +13,16 @@ class FakeGrammarContainer(object):
     def set_non_ccr(self, rcn, grammar):
         grammar.load = lambda: self._pass()
 
+        if grammar is not None:
+            self.non_ccr[rcn] = grammar
+        else:
+            del self.non_ccr[rcn]
+
     def set_ccr(self, ccr_grammars):
         for grammar in ccr_grammars:
             grammar.load = lambda: self._pass()
+
+        self.ccr = ccr_grammars
 
     def wipe_ccr(self):
         pass

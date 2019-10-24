@@ -31,6 +31,7 @@ from castervoice.lib.ctrl.mgr.grammar_manager import GrammarManager
 from castervoice.lib.ctrl.mgr.validation.rules.rule_validation_delegator import CCRRuleValidationDelegator
 from castervoice.lib.merge.ccrmerging2.ccrmerger2 import CCRMerger2
 from castervoice.lib.merge.ccrmerging2.merging.classic_merging_strategy import ClassicMergingStrategy
+from tests.lib.ctrl.mgr.grammar_container.fake_grammar_container import FakeGrammarContainer
 
 
 class Nexus:
@@ -95,6 +96,29 @@ class Nexus:
         self._grammar_manager.load_activation_grammars()
 
     @staticmethod
+    def _create_ccr_rule_validator():
+        return CCRRuleValidationDelegator(
+            IsMergeRuleValidator(),
+            SelfModifyingRuleValidator(),
+            NotTreeRuleValidator()
+        )
+
+    @staticmethod
+    def _create_details_validator():
+        return DetailsValidationDelegator(
+            CCRDetailsValidator(),
+            AppCCRDetailsValidator(),
+            NonCCRDetailsValidator()
+        )
+
+    @staticmethod
+    def _create_combo_validator():
+        return ComboValidationDelegator(
+            RuleFamilyValidator(),
+            RuleNonEmptyValidator()
+        )
+
+    @staticmethod
     def _create_grammar_manager(merger, content_loader, hooks_runner, rule_config, smrc,
                                 mapping_rule_maker, transformers_runner):
         """
@@ -113,26 +137,16 @@ class Nexus:
 
         ccr_toggle = CCRToggle()
 
-        ccr_rule_validator = CCRRuleValidationDelegator(
-            IsMergeRuleValidator(),
-            SelfModifyingRuleValidator(),
-            NotTreeRuleValidator()
-        )
-        details_validator = DetailsValidationDelegator(
-            CCRDetailsValidator(),
-            AppCCRDetailsValidator(),
-            NonCCRDetailsValidator()
-        )
-        combo_validator = ComboValidationDelegator(
-            RuleFamilyValidator(),
-            RuleNonEmptyValidator()
-        )
+        ccr_rule_validator = Nexus._create_ccr_rule_validator()
+        details_validator = Nexus._create_details_validator()
+        combo_validator = Nexus._create_combo_validator()
 
         observable = TimerReloadObservable(5)
         if settings.SETTINGS["miscellaneous"]["reload_trigger"] == "manual":
             observable = ManualReloadObservable()
 
         grammars_container = BasicGrammarContainer()
+        grammars_container = FakeGrammarContainer()
 
         activator = GrammarActivator(lambda rule: isinstance(rule, MergeRule))
 
