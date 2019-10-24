@@ -4,6 +4,7 @@
 from castervoice.apps.shared.directions import FORWARD, RIGHT, BACK, LEFT, UP, DOWN
 
 method = "(meth|method)"
+methods = "(meths|methods)"
 
 # general
 EXPAND_SELECTION = "expand [selection] [<n>]"
@@ -87,6 +88,6 @@ EXTRACT_VARIABLE = "%s [variable|var]" % extract
 EXTRACT_FIELD = "%s field" % extract
 EXTRACT_CONSTANT = "%s constant" % extract
 EXTRACT_PARAMETER = "%s (param|parameter)" % extract
-IMPLEMENT_METHODS = "implement (%s|%ss)" % (method, method)
+IMPLEMENT_METHODS = "implement (%s|%s)" % (method, methods)
 OVERRIDE_METHOD = "override %s" % method
 AUTO_INDENT = "auto indent"
