@@ -139,5 +139,70 @@ class TestGrammarManager(SettingsEnabledTestCase):
         self.assertEqual(2, len(self._gm._grammars_container.non_ccr.keys()))
         self.assertEqual(1, len(self._gm._grammars_container.ccr))
 
-    def test_ccr_saves_after_merge(self):
-        """TODO: this"""
+    def test_enable_rule_causes_a_save(self):
+        from castervoice.lib import utilities
+        from castervoice.lib.ctrl.mgr.rules_config import RulesConfig
+        from castervoice.lib.ccr.core import alphabet
+        from castervoice.lib.ccr.core import punctuation
+
+        # "write" the rules.toml file:
+        self._setup_config_file(utilities,
+                                ["paths", "RULES_CONFIG_PATH"],
+                                TestGrammarManager._MOCK_PATH_RULES_CONFIG,
+                                {
+                                    RulesConfig._ENABLED_ORDERED: ["Alphabet"],
+                                    RulesConfig._INTERNAL: [],
+                                    RulesConfig._WHITELISTED: {
+                                        "Alphabet": True,
+                                        "Punctuation": True
+                                    }
+                                })
+        self._rule_config.load()
+
+        # check that the mock file changes were written
+        self.assertEqual(1, len(self._rule_config._config[RulesConfig._ENABLED_ORDERED]))
+
+        # initialize the gm
+        a, b = alphabet.get_rule(), punctuation.get_rule()
+        self._initialize(FullContentSet([a, b], [], []))
+
+        # simulate a spoken "enable" command from the GrammarActivator:
+        self._gm._change_rule_active("Punctuation", True)
+        # afterwards, the config should have both Alphabet and Punctuation enabled
+        config = utilities.load_toml_file(TestGrammarManager._MOCK_PATH_RULES_CONFIG)
+        self.assertIn("Alphabet", config[RulesConfig._ENABLED_ORDERED])
+        self.assertIn("Punctuation", config[RulesConfig._ENABLED_ORDERED])
+
+    def test_enable_incompatible_rule_knockout_is_saved(self):
+        from castervoice.lib import utilities
+        from castervoice.lib.ctrl.mgr.rules_config import RulesConfig
+        from castervoice.lib.ccr.java import java
+        from castervoice.lib.ccr.python import python
+
+        # "write" the rules.toml file:
+        self._setup_config_file(utilities,
+                                ["paths", "RULES_CONFIG_PATH"],
+                                TestGrammarManager._MOCK_PATH_RULES_CONFIG,
+                                {
+                                    RulesConfig._ENABLED_ORDERED: ["Java"],
+                                    RulesConfig._INTERNAL: [],
+                                    RulesConfig._WHITELISTED: {
+                                        "Java": True,
+                                        "Python": True
+                                    }
+                                })
+        self._rule_config.load()
+
+        # check that the mock file changes were written
+        self.assertEqual(1, len(self._rule_config._config[RulesConfig._ENABLED_ORDERED]))
+
+        # initialize the gm
+        a, b = java.get_rule(), python.get_rule()
+        self._initialize(FullContentSet([a, b], [], []))
+
+        # simulate a spoken "enable" command from the GrammarActivator:
+        self._gm._change_rule_active("Python", True)
+        # afterwards, the config should have Python enabled but not Java
+        config = utilities.load_toml_file(TestGrammarManager._MOCK_PATH_RULES_CONFIG)
+        self.assertNotIn("Java", config[RulesConfig._ENABLED_ORDERED])
+        self.assertIn("Python", config[RulesConfig._ENABLED_ORDERED])
