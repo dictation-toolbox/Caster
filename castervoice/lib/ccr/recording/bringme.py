@@ -56,14 +56,14 @@ class BringRule(BaseSelfModifyingRule):
             "bring me <folder> [in <app>]": R(Function(self._bring_folder)),
             "bring me <file>": R(Function(self._bring_file)),
             "refresh bring me": R(Function(self._load_and_refresh)),
-            "<launch> to bring me as <key>": R(Function(self._bring_add)),
+            "<launch_type> to bring me as <key>": R(Function(self._bring_add)),
             "to bring me as <key>": R(Function(self._bring_add_auto)),
             "remove <key> from bring me": R(Function(self._bring_remove)),
             "restore bring me defaults": R(Function(self._bring_reset_defaults)),
         }
         self._smr_extras = [
             Choice(
-                "launch", {
+                "launch_type", {
                     "[current] program": "program",
                     "website": "website",
                     "folder": "folder",
