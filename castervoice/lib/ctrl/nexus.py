@@ -9,7 +9,7 @@ from castervoice.lib.ctrl.mgr.rules_config import RulesConfig
 from castervoice.lib.ctrl.mgr.validation.combo.combo_validation_delegator import ComboValidationDelegator
 from castervoice.lib.ctrl.mgr.validation.combo.non_empty_validator import RuleNonEmptyValidator
 from castervoice.lib.ctrl.mgr.validation.combo.rule_family_validator import RuleFamilyValidator
-from castervoice.lib.merge.ccrmerging2.compatibility.detail_compat_checker import DetailCompatibilityChecker
+from castervoice.lib.merge.ccrmerging2.compatibility.simple_compat_checker import SimpleCompatibilityChecker
 from castervoice.lib.merge.ccrmerging2.hooks.hooks_config import HooksConfig
 from castervoice.lib.merge.ccrmerging2.hooks.hooks_runner import HooksRunner
 from castervoice.lib.merge.ccrmerging2.sorting.config_ruleset_sorter import ConfigBasedRuleSetSorter
@@ -170,7 +170,7 @@ class Nexus:
     @staticmethod
     def _create_merger(rules_order_fn, smrc, transformers_runner):
         sorter = ConfigBasedRuleSetSorter(rules_order_fn)
-        compat_checker = DetailCompatibilityChecker()
+        compat_checker = SimpleCompatibilityChecker()
         merge_strategy = ClassicMergingStrategy()
         max_repetitions = settings.settings(["miscellaneous", "max_ccr_repetitions"])
 

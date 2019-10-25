@@ -16,3 +16,9 @@ class FakeRuleTwo(MergeRule):
         "b": NullAction(),
         "two exclusive": NullAction()
     }
+
+
+class FakeRuleThree(MergeRule):
+    mapping = {
+        "c": NullAction()
+    }

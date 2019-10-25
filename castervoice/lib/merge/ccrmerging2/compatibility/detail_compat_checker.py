@@ -7,6 +7,10 @@ from castervoice.lib.util.hashable_list import HashableList
 class DetailCompatibilityChecker(BaseCompatibilityChecker):
     def compatibility_check(self, mergerules):
         """
+        DetailCompatibilityChecker computes incompatibilities
+        but eliminates nothing. This may be useful for certain
+        kinds of advanced merge strategies.
+
         :param mergerules: collection of MergeRule
         :return: collection of CompatibilityResult
         """
