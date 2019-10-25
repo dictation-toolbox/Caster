@@ -189,9 +189,9 @@ class GrammarManager(object):
         the merger has to make the global one, plus an app rule with the app stuff plus all the
         global stuff.
         '''
-        ccr_rules_and_contexts = self._merger.merge_rules(active_ccr_mrs)
+        merge_result = self._merger.merge_rules(active_ccr_mrs)
         grammars = []
-        for rule_and_context in ccr_rules_and_contexts:
+        for rule_and_context in merge_result.ccr_rules_and_contexts:
             rule = rule_and_context[0]
             context = rule_and_context[1]
             grammar = Grammar(name="ccr-" + GrammarManager._get_next_id(), context=context)

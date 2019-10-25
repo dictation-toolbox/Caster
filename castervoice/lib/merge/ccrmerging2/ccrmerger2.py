@@ -2,6 +2,7 @@ from dragonfly.grammar.elements import RuleRef, Alternative, Repetition
 from dragonfly.grammar.rule_compound import CompoundRule
 from castervoice.lib.const import CCRType
 from castervoice.lib.context import AppContext
+from castervoice.lib.merge.ccrmerging2.merge_result import MergeResult
 
 
 class CCRMerger2(object):
@@ -57,7 +58,8 @@ class CCRMerger2(object):
         repeat_rules = [self._create_repeat_rule(merged_rule) for merged_rule in merged_rules]
         contexts = CCRMerger2._create_contexts(app_crs, rcns_to_details)
 
-        return zip(repeat_rules, contexts)
+        rules_and_contexts = zip(repeat_rules, contexts)
+        return MergeResult(rules_and_contexts, [])
 
     def _instantiate_and_configure_rules(self, managed_rules):
         instantiated_rules = []

@@ -46,9 +46,9 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         navigation_mr = TestCCRMerger2._create_managed_rule(Navigation, CCRType.GLOBAL)
         result = self.merger.merge_rules([navigation_mr])
 
-        self.assertEqual(1, len(result))
-        repeat_rule = result[0][0]
-        context = result[0][1]
+        self.assertEqual(1, len(result.ccr_rules_and_contexts))
+        repeat_rule = result.ccr_rules_and_contexts[0][0]
+        context = result.ccr_rules_and_contexts[0][1]
         self.assertEqual("RepeatRule", repeat_rule.__class__.__name__)
         self.assertIsNone(context)
 
@@ -60,9 +60,9 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         navigation_mr = TestCCRMerger2._create_managed_rule(Navigation, CCRType.GLOBAL)
         result = self.merger.merge_rules([alphabet_mr, navigation_mr])
 
-        self.assertEqual(1, len(result))
-        repeat_rule = result[0][0]
-        context = result[0][1]
+        self.assertEqual(1, len(result.ccr_rules_and_contexts))
+        repeat_rule = result.ccr_rules_and_contexts[0][0]
+        context = result.ccr_rules_and_contexts[0][1]
         self.assertEqual("RepeatRule", repeat_rule.__class__.__name__)
         self.assertIsNone(context)
 
@@ -77,7 +77,7 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         python_mr = TestCCRMerger2._create_managed_rule(FakeRuleTwo, CCRType.GLOBAL)
         result = self.merger.merge_rules([java_mr, python_mr])
 
-        rule = self._extract_merged_rule_from_repeatrule(result)
+        rule = self._extract_merged_rule_from_repeatrule(result.ccr_rules_and_contexts)
         self.assertIn("two exclusive", rule._mapping)
         self.assertNotIn("one exclusive", rule._mapping)
 
@@ -91,11 +91,11 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         navigation_mr = TestCCRMerger2._create_managed_rule(Navigation, CCRType.GLOBAL)
         result = self.merger.merge_rules([eclipse_mr, navigation_mr])
 
-        self.assertEqual(2, len(result))
-        self.assertEqual("RepeatRule", result[0][0].__class__.__name__)
-        self.assertEqual("RepeatRule", result[1][0].__class__.__name__)
-        self.assertIsInstance(result[0][1], LogicNotContext)
-        self.assertIsInstance(result[1][1], Context)
+        self.assertEqual(2, len(result.ccr_rules_and_contexts))
+        self.assertEqual("RepeatRule", result.ccr_rules_and_contexts[0][0].__class__.__name__)
+        self.assertEqual("RepeatRule", result.ccr_rules_and_contexts[1][0].__class__.__name__)
+        self.assertIsInstance(result.ccr_rules_and_contexts[0][1], LogicNotContext)
+        self.assertIsInstance(result.ccr_rules_and_contexts[1][1], Context)
 
     def test_words_txt_transformer(self):
         """
@@ -114,9 +114,9 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         navigation_mr = TestCCRMerger2._create_managed_rule(Navigation, CCRType.GLOBAL)
         result = self.merger.merge_rules([alphabet_mr, navigation_mr])
 
-        self.assertEqual(1, len(result))
+        self.assertEqual(1, len(result.ccr_rules_and_contexts))
 
-        rule = self._extract_merged_rule_from_repeatrule(result)
+        rule = self._extract_merged_rule_from_repeatrule(result.ccr_rules_and_contexts)
         self.assertTrue("bear [<nnavi50>]" in rule._mapping.keys())
         self.assertTrue("gas" in rule._extras["letter"]._choices)
 
@@ -129,10 +129,10 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         vscode_app_mr = TestCCRMerger2._create_managed_rule(VSCodeCcrRule, CCRType.APP, "vscode")
         result = self.merger.merge_rules([alphabet_mr, eclipse_app_mr, vscode_app_mr])
 
-        self.assertEqual(3, len(result))
-        repeat_rule_1, context_1 = result[0]
-        repeat_rule_2, context_2 = result[1]
-        repeat_rule_3, context_3 = result[2]
+        self.assertEqual(3, len(result.ccr_rules_and_contexts))
+        repeat_rule_1, context_1 = result.ccr_rules_and_contexts[0]
+        repeat_rule_2, context_2 = result.ccr_rules_and_contexts[1]
+        repeat_rule_3, context_3 = result.ccr_rules_and_contexts[2]
         self.assertEqual("RepeatRule", repeat_rule_1.__class__.__name__)
         self.assertEqual("RepeatRule", repeat_rule_2.__class__.__name__)
         self.assertEqual("RepeatRule", repeat_rule_3.__class__.__name__)
