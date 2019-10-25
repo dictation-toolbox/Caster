@@ -20,7 +20,7 @@ class TestSimpleCompatibilityChecker(TestCase):
     def test_order_preservation(self):
         a = FakeRuleOne()
         b = FakeRuleThree()
-        
+
         rules = [a, b]
         results = self._compat_checker.compatibility_check(rules)
         self.assertIs(a, results[0].rule())

@@ -200,6 +200,16 @@ class GrammarManager(object):
         self._grammars_container.set_ccr(grammars)
         for grammar in grammars:
             grammar.load()
+        self._save_after_remerge(
+            [mr.get_rule_class_name() for mr in active_ccr_mrs],
+            merge_result.all_rule_class_names
+        )
+
+    def _save_after_remerge(self, pre_merge_rcns, post_merge_rcns):
+        """possibly save results after a merge since KOs may have occurred"""
+        if pre_merge_rcns != post_merge_rcns:
+            self._config.replace_enabled(post_merge_rcns)
+            self._config.save()
 
     def _enable_non_ccr_rule(self, managed_rule, enabled):
         if enabled:

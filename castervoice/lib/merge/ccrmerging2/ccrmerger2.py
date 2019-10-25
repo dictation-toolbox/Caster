@@ -59,7 +59,8 @@ class CCRMerger2(object):
         contexts = CCRMerger2._create_contexts(app_crs, rcns_to_details)
 
         rules_and_contexts = zip(repeat_rules, contexts)
-        return MergeResult(rules_and_contexts, [])
+        enabled_ordered_rcns = [cr.rule_class_name() for cr in compat_results]
+        return MergeResult(rules_and_contexts, enabled_ordered_rcns)
 
     def _instantiate_and_configure_rules(self, managed_rules):
         instantiated_rules = []

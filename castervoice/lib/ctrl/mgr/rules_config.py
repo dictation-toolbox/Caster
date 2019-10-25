@@ -35,6 +35,9 @@ class RulesConfig(TomlConfig):
             active_rules.append(rule_class_name)
         self._config[RulesConfig._ENABLED_ORDERED] = active_rules
 
+    def replace_enabled(self, enabled_ordered_rcns):
+        self._config[RulesConfig._ENABLED_ORDERED] = enabled_ordered_rcns
+
     def get_enabled_rcns_ordered(self):
         return list(self._config[RulesConfig._ENABLED_ORDERED])
 
