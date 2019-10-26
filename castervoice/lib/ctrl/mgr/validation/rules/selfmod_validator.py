@@ -3,7 +3,7 @@ from castervoice.lib.ctrl.mgr.validation.rules.base_validator import BaseRuleVal
 from castervoice.lib.merge.selfmod.selfmodrule import BaseSelfModifyingRule
 
 
-class SelfModifyingRuleValidator(BaseRuleValidator):
+class CCRSelfModifyingRuleValidator(BaseRuleValidator):
 
     def is_applicable(self, declared_ccrtype):
         return declared_ccrtype == CCRType.SELFMOD

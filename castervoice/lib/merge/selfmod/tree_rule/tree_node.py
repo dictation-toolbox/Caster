@@ -15,13 +15,6 @@ class TreeNode(object):
         :param defaults: defaults for this node's action
         :param children: (list) child nodes of this node
         """
-        err = str(spec) + ", " + str(action) + ", " + str(children)
-
-        # TODO: these should be moved into a validator, not done here
-        assert isinstance(spec, basestring), "Node spec must be string: " + err
-        assert isinstance(action, ActionBase), "Node base must be ActionBase: " + err
-        assert len(children) == 0 or isinstance(children[0], TreeNode), "Children must be nodes: " + err
-
         self._spec = spec
         self._action = action
         self._extras = extras

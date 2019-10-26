@@ -9,6 +9,7 @@ from castervoice.lib.ctrl.mgr.rules_config import RulesConfig
 from castervoice.lib.ctrl.mgr.validation.combo.combo_validation_delegator import ComboValidationDelegator
 from castervoice.lib.ctrl.mgr.validation.combo.non_empty_validator import RuleNonEmptyValidator
 from castervoice.lib.ctrl.mgr.validation.combo.rule_family_validator import RuleFamilyValidator
+from castervoice.lib.ctrl.mgr.validation.combo.treerule_validator import TreeRuleValidator
 from castervoice.lib.merge.ccrmerging2.compatibility.simple_compat_checker import SimpleCompatibilityChecker
 from castervoice.lib.merge.ccrmerging2.hooks.hooks_config import HooksConfig
 from castervoice.lib.merge.ccrmerging2.hooks.hooks_runner import HooksRunner
@@ -23,7 +24,7 @@ from castervoice.lib.ctrl.mgr.validation.details.details_validation_delegator im
 from castervoice.lib.ctrl.mgr.validation.details.non_ccr_validator import NonCCRDetailsValidator
 from castervoice.lib.ctrl.mgr.validation.rules.mergerule_validator import IsMergeRuleValidator
 from castervoice.lib.ctrl.mgr.validation.rules.not_treerule_validator import NotTreeRuleValidator
-from castervoice.lib.ctrl.mgr.validation.rules.selfmod_validator import SelfModifyingRuleValidator
+from castervoice.lib.ctrl.mgr.validation.rules.selfmod_validator import CCRSelfModifyingRuleValidator
 from castervoice.lib.merge.communication import Communicator
 from castervoice.lib.merge.selfmod.smr_configurer import SelfModRuleConfigurer
 from castervoice.lib.merge.state.stack import CasterState
@@ -98,7 +99,7 @@ class Nexus:
     def _create_ccr_rule_validator():
         return CCRRuleValidationDelegator(
             IsMergeRuleValidator(),
-            SelfModifyingRuleValidator(),
+            CCRSelfModifyingRuleValidator(),
             NotTreeRuleValidator()
         )
 
@@ -114,7 +115,8 @@ class Nexus:
     def _create_combo_validator():
         return ComboValidationDelegator(
             RuleFamilyValidator(),
-            RuleNonEmptyValidator()
+            RuleNonEmptyValidator(),
+            TreeRuleValidator()
         )
 
     @staticmethod
