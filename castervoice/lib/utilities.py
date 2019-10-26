@@ -14,6 +14,7 @@ from subprocess import Popen
 import tomlkit
 from castervoice.lib.clipboard import Clipboard
 from castervoice.lib import printer
+from castervoice.lib.util import guidance
 
 try:
     import win32gui
@@ -101,6 +102,7 @@ def get_window_title_info():
 
 
 def save_toml_file(data, path):
+    guidance.offer()
     try:
         formatted_data = unicode(tomlkit.dumps(data))
         with io.open(path, "wt", encoding="utf-8") as f:
@@ -110,6 +112,7 @@ def save_toml_file(data, path):
 
 
 def load_toml_file(path):
+    guidance.offer()
     result = {}
     try:
         with io.open(path, "rt", encoding="utf-8") as f:
@@ -123,7 +126,9 @@ def load_toml_file(path):
         simple_log(True)
     return result
 
+
 def save_json_file(data, path):
+    guidance.offer()
     try:
         formatted_data = unicode(json.dumps(data, ensure_ascii=False))
         with io.open(path, "wt", encoding="utf-8") as f:
@@ -133,6 +138,7 @@ def save_json_file(data, path):
 
 
 def load_json_file(path):
+    guidance.offer()
     result = {}
     try:
         with io.open(path, "rt", encoding="utf-8") as json_file:
@@ -153,16 +159,16 @@ def list_to_string(l):
 
 def simple_log(to_file=False):
     msg = list_to_string(sys.exc_info())
-    print(msg)
+    printer.out(msg)
     for tb in traceback.format_tb(sys.exc_info()[2]):
-        print(tb)
+        printer.out(tb)
     if to_file:
         with io.open(settings.SETTINGS["paths"]["LOG_PATH"], 'at', encoding="utf-8") as f:
             f.write(msg + "\n")
 
 
 def availability_message(feature, dependency):
-    print(feature + " feature not available without " + dependency)
+    printer.out(feature + " feature not available without " + dependency)
 
 
 def remote_debug(who_called_it=None):
@@ -172,7 +178,7 @@ def remote_debug(who_called_it=None):
         import pydevd  # @UnresolvedImport pylint: disable=import-error
         pydevd.settrace()
     except Exception:
-        print("ERROR: " + who_called_it +
+        printer.out("ERROR: " + who_called_it +
               " called utilities.remote_debug() but the debug server wasn't running.")
 
 
@@ -189,7 +195,7 @@ def reboot(wsr=False):
         status = natlinkstatus.NatlinkStatus()
         username = status.getUserName()
         popen_parameters.append(username)
-    print(popen_parameters)
+    printer.out(popen_parameters)
     Popen(popen_parameters)
 
 def default_browser_command():
@@ -231,7 +237,7 @@ def clear_log():
             win32gui.SetWindowText(rt_handle, "")
             return
     except Exception as e:
-        print (e)
+        printer.out(e)
 
 def get_clipboard_formats():
     '''

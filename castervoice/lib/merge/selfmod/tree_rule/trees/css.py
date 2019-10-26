@@ -550,6 +550,6 @@ class CSSTreeRule(TreeRule):
         super(CSSTreeRule, self).__init__("CSS", get_css_node())
 
 
-# def get_rule():
-#     return [CSSTreeRule, RuleDetails(ccrtype=CCRType.SELFMOD)]
+def get_rule():
+    return [CSSTreeRule, RuleDetails(ccrtype=CCRType.SELFMOD)]
 

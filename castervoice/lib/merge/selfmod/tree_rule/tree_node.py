@@ -4,7 +4,7 @@ from castervoice.lib.merge.selfmod.tree_rule.invalid_tree_node_path_error import
 
 
 class TreeNode(object):
-    def __init__(self, spec, action, extras=[], defaults={}, children=[]):
+    def __init__(self, spec, action, children=[], extras=[], defaults={}):
         """
         An action with child actions. These child actions can form a tree
         structure with this node and their child nodes.
@@ -16,6 +16,8 @@ class TreeNode(object):
         :param children: (list) child nodes of this node
         """
         err = str(spec) + ", " + str(action) + ", " + str(children)
+
+        # TODO: these should be moved into a validator, not done here
         assert isinstance(spec, basestring), "Node spec must be string: " + err
         assert isinstance(action, ActionBase), "Node base must be ActionBase: " + err
         assert len(children) == 0 or isinstance(children[0], TreeNode), "Children must be nodes: " + err
@@ -43,28 +45,15 @@ class TreeNode(object):
     def get_children(self):
         return self._children.copy()
 
-    def navigate_to_active_children(self, active_path):
-        """
-        Follows the active path through the tree, returns the children
-        of the last-activated node.
-
-        :param active_path: (array of strings) the path to the active node
-        :return: (array of FlattenedTreeNode)
-        """
+    @staticmethod
+    def get_nodes_along_path(nodes, active_path):
 
         if len(active_path) == 0:
-            raise InvalidTreeNodePathError("EMPTY PATH")
+            return nodes
 
-        if len(active_path) == 1:
-            if active_path[0] == self._spec:
-                return self._children.values()
-            else:
-                raise InvalidTreeNodePathError(active_path)
-
-        if active_path[0] in self._children:
-            child_node = self._children[active_path[0]]
-            active_path = list(active_path)
-            active_path.pop(0)
-            return child_node.navigate_to_active_children(active_path)
-        else:
-            raise InvalidTreeNodePathError(active_path)
+        active_path = list(active_path)
+        selecting_spec = active_path.pop(0)
+        for node in nodes:
+            if selecting_spec == node.get_spec():
+                return TreeNode.get_nodes_along_path(node.get_children().values(), active_path)
+        raise InvalidTreeNodePathError(active_path + [selecting_spec])

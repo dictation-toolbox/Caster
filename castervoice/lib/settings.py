@@ -12,6 +12,7 @@ import errno
 
 # consts: some of these can easily be moved out of this file
 from castervoice.lib import printer
+from castervoice.lib.util import guidance
 
 GENERIC_HELP_MESSAGE = """
 If you continue having problems with this or any other issue you can contact
@@ -209,7 +210,13 @@ def _find_natspeak():
 
 
 def _save(data, path):
-    '''only to be used for settings file'''
+    """
+    Only to be used for settings file.
+    :param data:
+    :param path:
+    :return:
+    """
+    guidance.offer()
     try:
         formatted_data = unicode(tomlkit.dumps(data))
         with io.open(path, "wt", encoding="utf-8") as f:
@@ -219,6 +226,7 @@ def _save(data, path):
 
 
 def _init(path):
+    guidance.offer()
     result = {}
     try:
         with io.open(path, "rt", encoding="utf-8") as f:
@@ -299,6 +307,8 @@ def _get_defaults():
                 _USER_DIR + "/data/sm_chain_aliases.toml",
             "SM_HISTORY_PATH":
                 _USER_DIR + "/data/sm_history.toml",
+            "SM_CSS_TREE_PATH":
+                _USER_DIR + "/data/sm_css_tree.toml",
             "RULES_CONFIG_PATH":
                 _USER_DIR + "/data/rules.toml",
             "TRANSFORMERS_CONFIG_PATH":
@@ -479,7 +489,9 @@ def settings(key_path, default_value=None):
 
 
 def save_config():
-    '''Save the current in-memory settings to disk'''
+    """
+    Save the current in-memory settings to disk
+    """
     _save(SETTINGS, _SETTINGS_PATH)
 
 
