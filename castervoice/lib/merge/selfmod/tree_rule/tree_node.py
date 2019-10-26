@@ -1,5 +1,3 @@
-from dragonfly import ActionBase
-
 from castervoice.lib.merge.selfmod.tree_rule.invalid_tree_node_path_error import InvalidTreeNodePathError
 
 
