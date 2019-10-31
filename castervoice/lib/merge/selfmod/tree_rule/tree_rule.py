@@ -88,6 +88,3 @@ class TreeRule(BaseSelfModifyingRule):
 
         if len(current_node.get_children()) == 0:
             del active_path[:]
-
-    def get_pronunciation(self):
-        return self._root_node.get_spec()

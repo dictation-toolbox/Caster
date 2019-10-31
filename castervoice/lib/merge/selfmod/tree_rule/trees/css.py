@@ -546,6 +546,9 @@ def _get_background():
 
 
 class CSSTreeRule(TreeRule):
+
+    pronunciation = "CSS"
+
     def __init__(self):
         super(CSSTreeRule, self).__init__("CSS", get_css_node())
 
