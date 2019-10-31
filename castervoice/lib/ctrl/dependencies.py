@@ -137,19 +137,24 @@ def update_timer():
     # Checks for updates every X days on startup
     try:
         from castervoice.lib import settings
-        onlinemode = settings.SETTINGS["miscellaneous"]["online_mode"]
+        onlinemode = settings.SETTINGS["online"]["online_mode"]
         lastupdate = settings.SETTINGS["online"]["last_update_date"] 
-        update_interval = settings.SETTINGS["online"]["update_interval"]
+        updateinterval = settings.SETTINGS["online"]["update_interval"]
         if lastupdate == 'None':
-            settings.SETTINGS["online"]["last_update_date"] = str(date.today())
+            lastupdate = str(date.today())
+            settings.SETTINGS["online"]["last_update_date"] = lastupdate
         if onlinemode == True:
             today = date.today()
             lastdate = datetime.strptime(lastupdate, "%Y-%m-%d").date()
-            diff = lastdate - today
-            if diff.days >= update_interval: # int Days
-                settings.SETTINGS["online"]["last_update_date"] = str(date.today())
-                print "Searching for updates..."
-                return True
+            diff = today - lastdate 
+            if diff.days >= updateinterval: # int Days
+                if internet_check() == True:
+                    settings.SETTINGS["online"]["last_update_date"] = str(date.today())
+                    print "Searching for updates..."
+                    return True
+                else:
+                    print("\nCaster: Network off-line check network connection\n")
+                    return False
             else:
                 return False
         else:
@@ -167,12 +172,9 @@ class DependencyMan:
             dep_min_version()
             dep_missing()
         if update_timer() == True:
-            if internet_check() == True:
-                dependency_check(command="dragonfly2")
-                if install is "pip":
-                    dependency_check(command="castervoice")
-            else:
-                print("\nCaster: Network off-line check network connection\n")
+            dependency_check(command="dragonfly2")
+            if install is "pip":
+                dependency_check(command="castervoice")
 
     NATLINK = True
     PYWIN32 = True
