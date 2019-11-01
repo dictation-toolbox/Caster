@@ -403,6 +403,12 @@ def _get_defaults():
         # node rules
         "trees": {},
 
+        "online": {
+            "online_mode": True, # False disables updates
+            "last_update_date": "None",
+            "update_interval": 7 # Days
+        },
+
         # miscellaneous section
         "miscellaneous": {
             "dev_commands": True,
@@ -416,7 +422,6 @@ def _get_defaults():
             "history_playback_delay_secs": 1.0,
             "legion_vertical_columns": 30,
             "use_aenea": False,
-            "online_mode": True,
             "hmc": True,
             "ccr_on": True,
             "reload_trigger": "timer"
