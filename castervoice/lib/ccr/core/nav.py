@@ -12,7 +12,7 @@ from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.actions import AsynchronousAction, ContextSeeker
-from castervoice.lib.merge.state.actions2 import UntilCancelled, NullAction
+from castervoice.lib.merge.state.actions2 import UntilCancelled
 from castervoice.lib.merge.state.short import S, L, R
 
 _tpd = text_punc_dict()
@@ -35,7 +35,6 @@ class Navigation(MergeRule):
     mapping = {
         # "periodic" repeats whatever comes next at 1-second intervals until "terminate"
         # or "escape" (or your SymbolSpecs.CANCEL) is spoken or 100 tries occur
-
         "periodic":
             ContextSeeker(forward=[
                 L(
