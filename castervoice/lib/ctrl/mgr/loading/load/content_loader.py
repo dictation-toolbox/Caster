@@ -79,8 +79,10 @@ class ContentLoader(object):
         try:
             fn = getattr(module, fn_name)
         except AttributeError:
-            msg = "No method named '{}' was found on '{}'. Did you forget to implement it?"
-            printer.out(msg.format(fn_name, module_name))
+            msg = "No method named '{}' was found on '{}'. Did you forget to implement it?".format(fn_name, module_name)
+            if ContentLoader._detect_pythonpath_module_name_in_use(module):
+                msg = "{} module name is already in use: {}".format(module_name, module.__file__)
+            printer.out(msg)
             return None
         except:
             msg = "Error loading module '{}'."
@@ -88,6 +90,12 @@ class ContentLoader(object):
             return None
 
         return fn()
+
+    @staticmethod
+    def _detect_pythonpath_module_name_in_use(module):
+        not_starter = "castervoice" not in module.__file__
+        not_user = ".caster" not in module.__file__
+        return not_starter and not_user
 
     def _process_requests(self, requests):
         result = []
