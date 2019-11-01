@@ -19,6 +19,7 @@ class _FakeImportedRuleModule(object):
 class _FakeImportedHookModule(object):
     def __init__(self, content):
         self._content = content
+        self.__file__ = "castervoice"
 
     def get_hook(self):
         return self._content
