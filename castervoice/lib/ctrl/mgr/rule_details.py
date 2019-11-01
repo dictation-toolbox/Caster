@@ -27,11 +27,17 @@ class RuleDetails(object):
         self.watch_exclusion = watch_exclusion
 
         # Python black magic to determine which file to track:
-        frame = inspect.stack()[1]
+        stack = inspect.stack(0)
+        self._filepath = RuleDetails._calculate_filepath_from_frame(stack, 1)
+
+    @staticmethod
+    def _calculate_filepath_from_frame(stack, index):
+        frame = stack[index]
         module = inspect.getmodule(frame[0])
-        self._filepath = module.__file__.replace("\\", "/")
-        if self._filepath.endswith("pyc"):
-            self._filepath = self._filepath[:-1]
+        filepath = module.__file__.replace("\\", "/")
+        if filepath.endswith("pyc"):
+            filepath = filepath[:-1]
+        return filepath
 
     def get_filepath(self):
         return self._filepath
