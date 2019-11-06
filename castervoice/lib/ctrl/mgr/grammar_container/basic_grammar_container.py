@@ -17,8 +17,8 @@ class BasicGrammarContainer(BaseGrammarContainer):
 
     def set_non_ccr(self, rcn, grammar):
         if rcn in self._non_ccr_grammars:
-            grammar = self._non_ccr_grammars[rcn]
-            BasicGrammarContainer._empty_grammar(grammar)
+            old_grammar = self._non_ccr_grammars[rcn]
+            BasicGrammarContainer._empty_grammar(old_grammar)
             del self._non_ccr_grammars[rcn]
 
         if grammar is not None:
