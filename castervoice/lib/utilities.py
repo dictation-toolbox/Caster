@@ -40,10 +40,13 @@ from ctypes import cdll
 
 # https://github.com/mrob95/pyVirtualDesktopAccessor
 # Source: https://github.com/Ciantic/VirtualDesktopAccessor
-if struct.calcsize("P")*8 == 32:
-    vda = cdll.LoadLibrary(BASE_PATH + "/castervoice/bin/VirtualDesktopAccessor32.dll")
-else:
-    vda = cdll.LoadLibrary(BASE_PATH + "/castervoice/bin/VirtualDesktopAccessor64.dll")
+try:
+    if struct.calcsize("P")*8 == 32:
+        vda = cdll.LoadLibrary(BASE_PATH + "/castervoice/bin/VirtualDesktopAccessor32.dll")
+    else:
+        vda = cdll.LoadLibrary(BASE_PATH + "/castervoice/bin/VirtualDesktopAccessor64.dll")
+except Exception as e:
+    print("Virtual desktop accessor loading failed with '%s'" % str(e))
 
 def move_current_window_to_desktop(n=0, follow=False):
     wndh = Window.get_foreground().handle
