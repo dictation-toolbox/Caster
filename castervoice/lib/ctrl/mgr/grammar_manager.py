@@ -8,6 +8,7 @@ from castervoice.lib.ctrl.mgr.errors.not_a_module import NotAModuleError
 from castervoice.lib.ctrl.mgr.loading.load.content_type import ContentType
 from castervoice.lib.ctrl.mgr.managed_rule import ManagedRule
 from castervoice.lib.merge.ccrmerging2.hooks.events.activation_event import RuleActivationEvent
+from castervoice.lib.merge.ccrmerging2.sorting.config_ruleset_sorter import ConfigBasedRuleSetSorter
 
 
 class GrammarManager(object):
@@ -170,7 +171,7 @@ class GrammarManager(object):
         Roadmap:
         DO THIS STUFF IN CLEAN STEPS, DISTINCT COMMITS:
         X 1. Save CCR companion prevention, and these comments
-        2. Take away the merger's access to the config get_ordered_enabled function
+        X 2. Take away the merger's access to the config get_ordered_enabled function
         3. Bring the diff here.
         4. Get rid of save after merge -- it just doesn't work.
         5. Add a diff-based save which only happens AFTER companions handling.
@@ -235,7 +236,8 @@ class GrammarManager(object):
         the merger has to make the global one, plus an app rule with the app stuff plus all the
         global stuff.
         '''
-        merge_result = self._merger.merge_rules(active_ccr_mrs)
+        sorter = ConfigBasedRuleSetSorter(self._config.get_enabled_rcns_ordered())
+        merge_result = self._merger.merge_rules(active_ccr_mrs, sorter)
         grammars = []
         for rule_and_context in merge_result.ccr_rules_and_contexts:
             rule = rule_and_context[0]

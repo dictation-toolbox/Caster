@@ -13,12 +13,11 @@ class ConfigBasedRuleSetSorter(BaseRuleSetSorter):
     determine rule merging order.
     """
 
-    def __init__(self, rcns_order_provider_fn):
-        self._rcns_order_provider_fn = rcns_order_provider_fn
+    def __init__(self, ordered_rcns):
+        self._ordered_rcns = tuple(ordered_rcns)
 
     def sort_rules(self, rules):
-        ordered_rule_class_names = self._rcns_order_provider_fn()
-        indexed_rules = [_IndexedRule(r, ordered_rule_class_names.index(ConfigBasedRuleSetSorter._get_class_name(r)))
+        indexed_rules = [_IndexedRule(r, self._ordered_rcns.index(ConfigBasedRuleSetSorter._get_class_name(r)))
                          for r in rules]
         sorted_indexed_rules = sorted(indexed_rules, key=lambda ir: ir.index)
         return [i.rule for i in sorted_indexed_rules]

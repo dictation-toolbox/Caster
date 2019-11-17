@@ -8,7 +8,7 @@ from castervoice.lib.util.rules.caster_rule import CasterRule
 
 class TestConfigBasedRuleSetSorter(TestCase):
     def test_sort_rules(self):
-        sorter = ConfigBasedRuleSetSorter(lambda: ["CasterRule", "Navigation", "Alphabet"])
+        sorter = ConfigBasedRuleSetSorter(["CasterRule", "Navigation", "Alphabet"])
         a = Alphabet()
         c = CasterRule()
         n = Navigation()

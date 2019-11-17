@@ -86,7 +86,7 @@ class TestGrammarManager(SettingsEnabledTestCase):
         smrc.set_hooks_runner(self._hooks_runner)
         transformers_config = TransformersConfig()
         self._transformers_runner = TransformersRunner(transformers_config)
-        merger = Nexus._create_merger(self._rule_config.get_enabled_rcns_ordered, smrc, self._transformers_runner)
+        merger = Nexus._create_merger(smrc, self._transformers_runner)
         self._content_loader = Mock()
         mapping_rule_maker = MappingRuleMaker(self._transformers_runner, smrc)
         ccr_toggle = CCRToggle()

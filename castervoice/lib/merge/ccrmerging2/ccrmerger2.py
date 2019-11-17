@@ -10,8 +10,7 @@ class CCRMerger2(object):
     _SEQ = "caster_base_sequence"
     _TERMINAL = "terminal"
 
-    def __init__(self, transformers_runner, rule_sorter, compatibility_checker, merging_strategy, max_repetitions,
-                 smr_configurer):
+    def __init__(self, transformers_runner, compatibility_checker, merging_strategy, max_repetitions, smr_configurer):
         """
         5-Step Merge Process
         ====================
@@ -22,14 +21,12 @@ class CCRMerger2(object):
         5. Use the old trick from _multiedit.py to turn a MappingRule into a CCR rule.
         ====================
         :param transformers_runner: runs Transformers on generated rules
-        :param rule_sorter: BaseRuleSetSorter impl
         :param compatibility_checker: BaseCompatibilityChecker impl
         :param merging_strategy: BaseMergingStrategy impl
         :param max_repetitions
         :param smr_configurer
         """
         self._transformers_runner = transformers_runner
-        self._rule_sorter = rule_sorter
         self._compatibility_checker = compatibility_checker
         self._merging_strategy = merging_strategy
         #
@@ -37,9 +34,10 @@ class CCRMerger2(object):
         self._max_repetitions = int(max_repetitions)
         self._smr_configurer = smr_configurer
 
-    def merge_rules(self, managed_rules):
+    def merge_rules(self, managed_rules, rule_sorter):
         """
         :param managed_rules: list of ManagedRules
+        :param rule_sorter: an implementation of BaseRuleSetSorter
         :return: list of tuples: (repeat-rule, context)
         """
         rcns_to_details = CCRMerger2._rule_details_dict(managed_rules)
@@ -48,7 +46,7 @@ class CCRMerger2(object):
         # 1: run transformers over rules
         transformed_rules = self._run_transformers(instantiated_rules, rcns_to_details)
         # 2: sort rules into the order they'll be merged in
-        sorted_rules = self._rule_sorter.sort_rules(transformed_rules)
+        sorted_rules = rule_sorter.sort_rules(transformed_rules)
         # 3: compute compatibility results for all rules vs all rules in O(n) for total specs
         compat_results = self._compatibility_checker.compatibility_check(sorted_rules)
         # 4: create one merged rule for each context, plus the no-contexts merged rule

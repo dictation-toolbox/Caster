@@ -170,13 +170,12 @@ class Nexus:
         return gm
 
     @staticmethod
-    def _create_merger(rules_order_fn, smrc, transformers_runner):
-        sorter = ConfigBasedRuleSetSorter(rules_order_fn)
+    def _create_merger(smrc, transformers_runner):
         compat_checker = SimpleCompatibilityChecker()
         merge_strategy = ClassicMergingStrategy()
         max_repetitions = settings.settings(["miscellaneous", "max_ccr_repetitions"])
 
-        return CCRMerger2(transformers_runner, sorter, compat_checker, merge_strategy, max_repetitions, smrc)
+        return CCRMerger2(transformers_runner, compat_checker, merge_strategy, max_repetitions, smrc)
 
     def set_ccr_active(self, active):
         self._grammar_manager.set_ccr_active(active)
