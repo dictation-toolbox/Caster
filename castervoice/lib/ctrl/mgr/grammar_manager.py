@@ -7,6 +7,7 @@ from castervoice.lib.ctrl.mgr.errors.invalid_companion_configuration_error impor
 from castervoice.lib.ctrl.mgr.errors.not_a_module import NotAModuleError
 from castervoice.lib.ctrl.mgr.loading.load.content_type import ContentType
 from castervoice.lib.ctrl.mgr.managed_rule import ManagedRule
+from castervoice.lib.ctrl.mgr.rules_enabled_diff import RulesEnabledDiff
 from castervoice.lib.merge.ccrmerging2.hooks.events.activation_event import RuleActivationEvent
 from castervoice.lib.merge.ccrmerging2.sorting.config_ruleset_sorter import ConfigBasedRuleSetSorter
 
@@ -143,7 +144,7 @@ class GrammarManager(object):
         self._config.save()
 
         # load it
-        self._delegate_enable_rule(class_name, enabled)
+        enabled_diff = self._delegate_enable_rule(class_name, enabled)
         # run activation hooks
         self._hooks_runner.execute(RuleActivationEvent(class_name, enabled))
 
@@ -172,7 +173,7 @@ class GrammarManager(object):
         DO THIS STUFF IN CLEAN STEPS, DISTINCT COMMITS:
         X 1. Save CCR companion prevention, and these comments
         X 2. Take away the merger's access to the config get_ordered_enabled function
-        3. Bring the diff here.
+        X 3. Bring the diff here.
         4. Get rid of save after merge -- it just doesn't work.
         5. Add a diff-based save which only happens AFTER companions handling.
         6. Remove pre-delegation save.
@@ -186,6 +187,25 @@ class GrammarManager(object):
 
         if companions:
             self._handle_companion_rules(class_name, enabled)
+
+    # def _rewrite_config_file(self, prev_enabled_rcns, diff):
+    #     """
+    #     Possibly save results after a merge since KOs may have occurred.
+    #     This save does not take companion rules into account. That happens later.
+    #
+    #     :param prev_enabled_rcns:
+    #     :param diff:
+    #     :return:
+    #     """
+    #     if len(diff.newly_enabled) + len(diff.newly_disabled) > 0:
+    #         result = list(prev_enabled_rcns)
+    #
+    #         for rcn in diff.newly_disabled:
+    #             result.remove(rcn)
+    #         result.extend(diff.newly_enabled)
+    #
+    #         self._config.replace_enabled(result)
+    #         self._config.save()
 
     def _handle_companion_rules(self, class_name, enabled):
         for companion_rcn in self._companion_config.get_companions(class_name):
@@ -208,22 +228,26 @@ class GrammarManager(object):
 
         :param class_name: str
         :param enabled: boolean
-        :return:
+        :return: RulesEnabledDiff
         """
 
         managed_rule = self._managed_rules[class_name]
 
         if managed_rule.get_details().declared_ccrtype is None:
-            self._enable_non_ccr_rule(managed_rule, enabled)
+            return self._enable_non_ccr_rule(managed_rule, enabled)
         else:
-            self._remerge_ccr_rules()
+            return self._remerge_ccr_rules()
 
     def _remerge_ccr_rules(self):
+        """
+        :return: RulesEnabledDiff
+        """
         # if the global ccr toggle was off, activating a ccr rule turns it back on
         self._ccr_toggle.set_active(True)
 
         # handle CCR: get all active ccr rules after de/activating one
         loaded_enabled_rcns = set(self._managed_rules.keys())
+        # TODO: the next line relies on the fact that the added rule gets saved previously to this -- change that
         active_rule_class_names = [rcn for rcn in self._config.get_enabled_rcns_ordered()
                                    if rcn in loaded_enabled_rcns]
         active_mrs = [self._managed_rules[rcn] for rcn in active_rule_class_names]
@@ -253,6 +277,8 @@ class GrammarManager(object):
             merge_result.all_rule_class_names
         )
 
+        return merge_result.rules_enabled_diff
+
     def _save_after_remerge(self, pre_merge_rcns, post_merge_rcns):
         """possibly save results after a merge since KOs may have occurred"""
         if pre_merge_rcns != post_merge_rcns:
@@ -260,12 +286,20 @@ class GrammarManager(object):
             self._config.save()
 
     def _enable_non_ccr_rule(self, managed_rule, enabled):
+        """
+        :param managed_rule:
+        :param enabled:
+        :return: RulesEnabledDiff
+        """
+        rcn = managed_rule.get_rule_class_name()
         if enabled:
             grammar = self._mapping_rule_maker.create_non_ccr_grammar(managed_rule)
-            self._grammars_container.set_non_ccr(managed_rule.get_rule_class_name(), grammar)
+            self._grammars_container.set_non_ccr(rcn, grammar)
             grammar.load()
+            return RulesEnabledDiff([rcn], frozenset())
         else:
-            self._grammars_container.set_non_ccr(managed_rule.get_rule_class_name(), None)
+            self._grammars_container.set_non_ccr(rcn, None)
+            return RulesEnabledDiff(frozenset(), [rcn])
 
     def receive(self, file_path_changed):
         """

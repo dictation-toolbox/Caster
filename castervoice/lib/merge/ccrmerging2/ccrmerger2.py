@@ -2,6 +2,7 @@ from dragonfly.grammar.elements import RuleRef, Alternative, Repetition
 from dragonfly.grammar.rule_compound import CompoundRule
 from castervoice.lib.const import CCRType
 from castervoice.lib.context import AppContext
+from castervoice.lib.ctrl.mgr.rules_enabled_diff import RulesEnabledDiff
 from castervoice.lib.merge.ccrmerging2.merge_result import MergeResult
 
 
@@ -37,9 +38,10 @@ class CCRMerger2(object):
     def merge_rules(self, managed_rules, rule_sorter):
         """
         :param managed_rules: list of ManagedRules
-        :param rule_sorter: an implementation of BaseRuleSetSorter
-        :return: list of tuples: (repeat-rule, context)
+        :param rule_sorter: BaseRuleSetSorter impl
+        :return: MergeResult
         """
+        pre_merge_rcns = [mr.get_rule_class_name() for mr in managed_rules]
         rcns_to_details = CCRMerger2._rule_details_dict(managed_rules)
         instantiated_rules = self._instantiate_and_configure_rules(managed_rules)
 
@@ -58,7 +60,32 @@ class CCRMerger2(object):
 
         rules_and_contexts = zip(repeat_rules, contexts)
         enabled_ordered_rcns = [cr.rule_class_name() for cr in compat_results]
-        return MergeResult(rules_and_contexts, enabled_ordered_rcns)
+        diff = CCRMerger2._calculate_post_merge_diff(pre_merge_rcns, enabled_ordered_rcns)
+        return MergeResult(rules_and_contexts, enabled_ordered_rcns, diff)
+
+    @staticmethod
+    def _calculate_post_merge_diff(pre_merge_rcns, post_merge_rcns):
+        """
+        Given list of pre-merge rcns and post-merge rcns, calculates which rules
+        were enabled and which were disabled by the merge.
+
+        :param pre_merge_rcns: iterable
+        :param post_merge_rcns: iterable
+        :return: RulesEnabledDiff
+        """
+        set_pre = frozenset(pre_merge_rcns)
+        set_post = frozenset(post_merge_rcns)
+        newly_enabled = list()  # must remain ordered
+        newly_disabled = set()  # order doesn't matter
+
+        for rcn in pre_merge_rcns:
+            if rcn not in set_post:
+                newly_disabled.add(rcn)
+        for rcn in post_merge_rcns:
+            if rcn not in set_pre:
+                newly_enabled.append(rcn)
+
+        return RulesEnabledDiff(newly_enabled, newly_disabled)
 
     def _instantiate_and_configure_rules(self, managed_rules):
         instantiated_rules = []
