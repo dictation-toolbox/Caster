@@ -70,7 +70,7 @@ class GrammarManager(object):
         self._reload_observable.register_listener(self)
         '''The passed method references below would be a good place to start splitting the GM apart.'''
         #
-        self._activator.set_activation_fn(lambda rcn, active: self._change_rule_active(rcn, active))
+        self._activator.set_activation_fn(lambda rcn, active: self._change_rule_enabled(rcn, active))
         #
         smrc.set_reload_fn(lambda rcn: self._delegate_enable_rule(rcn, True))
         #
@@ -128,7 +128,7 @@ class GrammarManager(object):
         if not details.watch_exclusion:
             self._reload_observable.register_watched_file(details.get_filepath())
 
-    def _change_rule_active(self, class_name, enabled, companions=True):
+    def _change_rule_enabled(self, class_name, enabled, companions=True):
         """
         This is called by the GrammarActivator. The necessity of this function
         means something is designed wrong. Correct this in the future.
@@ -176,7 +176,7 @@ class GrammarManager(object):
         4. Get rid of save after merge -- it just doesn't work.
         5. Add a diff-based save which only happens AFTER companions handling.
         6. Remove pre-delegation save.
-        7. Rename `_change_rule_active` to `_change_rule_enabled`.
+        X 7. Rename `_change_rule_active` to `_change_rule_enabled`.
         8. See about pointing everything at `_change_rule_enabled` which is currently pointed to `delegate_rule_enabled`
             -> "everything" is 3 functions out of the 7 which point at both functions combined. This makes
             `_change_rule_enabled` the center of the GM, rather than having two centers. 
@@ -195,7 +195,7 @@ class GrammarManager(object):
                 if is_ccr:
                     raise InvalidCompanionConfigurationError(companion_rcn)
 
-                self._change_rule_active(companion_rcn, enabled, False)
+                self._change_rule_enabled(companion_rcn, enabled, False)
 
     def _delegate_enable_rule(self, class_name, enabled):
         """
@@ -337,14 +337,14 @@ class GrammarManager(object):
 
         for rc, d in rules:
             self.register_rule(rc, d)
-            self._change_rule_active(rc.__name__, True)
+            self._change_rule_enabled(rc.__name__, True)
 
     def set_ccr_active(self, active):
         self._ccr_toggle.set_active(active)
         if not self._ccr_toggle.is_active():
             self._grammars_container.wipe_ccr()
         else:
-            self._change_rule_active("Numbers", True)
+            self._change_rule_enabled("Numbers", True)
 
     @staticmethod
     def _get_module_name_from_file_path(file_path):

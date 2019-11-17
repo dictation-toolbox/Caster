@@ -167,7 +167,7 @@ class TestGrammarManager(SettingsEnabledTestCase):
         self._initialize(FullContentSet([a, b], [], []))
 
         # simulate a spoken "enable" command from the GrammarActivator:
-        self._gm._change_rule_active("Punctuation", True)
+        self._gm._change_rule_enabled("Punctuation", True)
         # afterwards, the config should have both Alphabet and Punctuation enabled
         config = utilities.load_toml_file(TestGrammarManager._MOCK_PATH_RULES_CONFIG)
         self.assertIn("Alphabet", config[RulesConfig._ENABLED_ORDERED])
@@ -201,7 +201,7 @@ class TestGrammarManager(SettingsEnabledTestCase):
         self._initialize(FullContentSet([a, b], [], []))
 
         # simulate a spoken "enable" command from the GrammarActivator:
-        self._gm._change_rule_active("Python", True)
+        self._gm._change_rule_enabled("Python", True)
         # afterwards, the config should have Python enabled but not Java
         config = utilities.load_toml_file(TestGrammarManager._MOCK_PATH_RULES_CONFIG)
         self.assertNotIn("Java", config[RulesConfig._ENABLED_ORDERED])
