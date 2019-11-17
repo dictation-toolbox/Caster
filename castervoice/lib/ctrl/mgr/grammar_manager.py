@@ -3,6 +3,7 @@ import os, traceback
 from dragonfly import Grammar
 
 from castervoice.lib import printer
+from castervoice.lib.ctrl.mgr.errors.invalid_companion_configuration_error import InvalidCompanionConfigurationError
 from castervoice.lib.ctrl.mgr.errors.not_a_module import NotAModuleError
 from castervoice.lib.ctrl.mgr.loading.load.content_type import ContentType
 from castervoice.lib.ctrl.mgr.managed_rule import ManagedRule
@@ -145,10 +146,55 @@ class GrammarManager(object):
         # run activation hooks
         self._hooks_runner.execute(RuleActivationEvent(class_name, enabled))
 
+
+        '''
+        Problems:
+        1. Can't just do companion rules here after the normal process b/c don't have enough information.
+            If there were no KOs, it would be fine. But if something gets KO'd, its companions should too.
+            Can't just cycle through rules and remove companions of rules not activated though, b/c user could enable
+            companion rules independently of host rules.
+        2. Save after merge is broken. It always wipes all non-ccr rules b/c it is unaware of non-ccr-rules entirely.
+        
+        Solutions:
+        1. `_delegate_enable_rule` needs to return a diff of what got added/removed -- then can handle companions here
+            - this is messily implemented on the main branch -- salvage what you can and start clean here
+        2. The diff handles this problem too.
+            - prevent companion rules from being CCR to avoid that mess (THIS IS THE ONLY CHANGE ON THIS BRANCH);
+            - then, calling `_change_rule_active` for each companion, removes first, then adds, should cause the correct
+              rules to get written to rules.toml
+            - MUST also remove the `_save_after_remerge` method-- 
+                - ideally we want to pass the enabled_ordered to the merger instead of letting it use the config
+                    - this lets us not need to save before calling `remerge`, I THINK, check this
+                - either way, we want to save according to the diff, not via the current failing `_save_after_remerge` method 
+        
+        Roadmap:
+        DO THIS STUFF IN CLEAN STEPS, DISTINCT COMMITS:
+        X 1. Save CCR companion prevention, and these comments
+        2. Take away the merger's access to the config get_ordered_enabled function
+        3. Bring the diff here.
+        4. Get rid of save after merge -- it just doesn't work.
+        5. Add a diff-based save which only happens AFTER companions handling.
+        6. Remove pre-delegation save.
+        7. Rename `_change_rule_active` to `_change_rule_enabled`.
+        8. See about pointing everything at `_change_rule_enabled` which is currently pointed to `delegate_rule_enabled`
+            -> "everything" is 3 functions out of the 7 which point at both functions combined. This makes
+            `_change_rule_enabled` the center of the GM, rather than having two centers. 
+        9. Remove these comments.
+        '''
+
+
         if companions:
-            for companion_rcn in self._companion_config.get_companions(class_name):
-                if companion_rcn in self._managed_rules:
-                    self._change_rule_active(companion_rcn, enabled)
+            self._handle_companion_rules(class_name, enabled)
+
+    def _handle_companion_rules(self, class_name, enabled):
+        for companion_rcn in self._companion_config.get_companions(class_name):
+            if companion_rcn in self._managed_rules:
+                mr = self._managed_rules[companion_rcn]
+                is_ccr = mr.get_details.get_details().declared_ccrtype is not None
+                if is_ccr:
+                    raise InvalidCompanionConfigurationError(companion_rcn)
+
+                self._change_rule_active(companion_rcn, enabled, False)
 
     def _delegate_enable_rule(self, class_name, enabled):
         """
