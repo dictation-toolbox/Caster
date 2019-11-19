@@ -15,7 +15,7 @@ Make sure to select `Add python to path`. This can be done manually by searching
 
 - **Second only for Dragon NaturallySpeaking**.
 
-- Download and install [Natlink](https://sourceforge.net/projects/natlink/files/natlink/natlinktest4.1/). Use `Natlink-4.1 whiskey3` or newer.
+- Download and install [Natlink](https://sourceforge.net/projects/natlink/files/natlink/natlink4.2/). Use `Natlink-4.2` or newer.
 
 ### 3. Caster
 1. Download Caster from the [master branch](https://github.com/dictation-toolbox/Caster/archive/master.zip).
