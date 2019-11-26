@@ -173,7 +173,10 @@ class GrammarManager(object):
 
             for rcn in enabled_diff.newly_disabled:
                 result.remove(rcn)
-            result.extend(enabled_diff.newly_enabled)
+            result_set = set(result)
+            for rcn in enabled_diff.newly_enabled:
+                if rcn not in result_set:
+                    result.append(rcn)
 
             self._config.replace_enabled(result)
             self._config.save()

@@ -253,3 +253,28 @@ class TestGrammarManager(SettingsEnabledTestCase):
         self.assertEqual(1, enabled_ordered.count("Alphabet"))
         self.assertEqual(1, enabled_ordered.count("OutlookRule"))
 
+    def test_internal_rules_dont_create_duplicates(self):
+        from castervoice.lib import utilities
+        from castervoice.lib.ctrl.mgr.rules_config import RulesConfig
+        from castervoice.lib.ccr.core import alphabet
+
+        # "write" the rules.toml file:
+        self._setup_rules_config_file(loadable_true=["Alphabet"],
+                                      enabled=["GrammarActivatorRule", "ManualGrammarReloadRule"])
+
+        # check that the mock file changes were written
+        self.assertEqual(2, len(self._rule_config._config[RulesConfig._ENABLED_ORDERED]))
+
+        # initialize the gm
+        alphabet_rule = alphabet.get_rule()
+        self._initialize(FullContentSet([alphabet_rule], [], []))
+
+        """
+        After initialization, there should only be one copy of each of these in rules.toml: 
+        GrammarActivatorRule 
+        ManualGrammarReloadRule
+        """
+        config = utilities.load_toml_file(TestGrammarManager._MOCK_PATH_RULES_CONFIG)
+        enabled_ordered = config[RulesConfig._ENABLED_ORDERED]
+        self.assertEqual(1, enabled_ordered.count("GrammarActivatorRule"))
+        self.assertEqual(1, enabled_ordered.count("ManualGrammarReloadRule"))
