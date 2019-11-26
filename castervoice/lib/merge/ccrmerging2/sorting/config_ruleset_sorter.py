@@ -14,7 +14,7 @@ class ConfigBasedRuleSetSorter(BaseRuleSetSorter):
     """
 
     def __init__(self, ordered_rcns):
-        self._ordered_rcns = tuple(ordered_rcns)
+        self._ordered_rcns = list(ordered_rcns)
 
     def sort_rules(self, rules):
         indexed_rules = [_IndexedRule(r, self._ordered_rcns.index(ConfigBasedRuleSetSorter._get_class_name(r)))

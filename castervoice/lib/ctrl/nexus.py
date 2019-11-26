@@ -65,7 +65,7 @@ class Nexus:
         transformers_runner = TransformersRunner(transformers_config)
 
         '''the ccrmerger -- only merges MergeRules'''
-        self._merger = Nexus._create_merger(rules_config.get_enabled_rcns_ordered, smrc, transformers_runner)
+        self._merger = Nexus._create_merger(smrc, transformers_runner)
 
         '''unified loading mechanism for [rules, transformers, hooks] 
         from [caster starter locations, user dir]'''

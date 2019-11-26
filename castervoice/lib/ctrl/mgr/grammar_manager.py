@@ -10,6 +10,7 @@ from castervoice.lib.ctrl.mgr.managed_rule import ManagedRule
 from castervoice.lib.ctrl.mgr.rules_enabled_diff import RulesEnabledDiff
 from castervoice.lib.merge.ccrmerging2.hooks.events.activation_event import RuleActivationEvent
 from castervoice.lib.merge.ccrmerging2.sorting.config_ruleset_sorter import ConfigBasedRuleSetSorter
+from castervoice.lib.util import collection_utils
 
 
 class GrammarManager(object):
@@ -82,7 +83,8 @@ class GrammarManager(object):
             return
 
         loaded_enabled_rcns = set(self._managed_rules.keys())
-        for rcn in self._config.get_enabled_rcns_ordered():
+        enabled_ordered_rcns = self._config.get_enabled_rcns_ordered()
+        for rcn in enabled_ordered_rcns:
             if rcn in loaded_enabled_rcns:
                 rd = self._managed_rules[rcn].get_details()
                 if rd.declared_ccrtype is None:
@@ -91,7 +93,7 @@ class GrammarManager(object):
                 msg = "Skipping rule {} because it is enabled but not loaded."
                 printer.out(msg.format(rcn))
         if self._ccr_toggle.is_active():
-            self._remerge_ccr_rules()
+            self._remerge_ccr_rules(enabled_ordered_rcns)
 
         is_timer_based_reload_observable = hasattr(self._reload_observable, "start")
         if is_timer_based_reload_observable:
@@ -129,93 +131,79 @@ class GrammarManager(object):
         if not details.watch_exclusion:
             self._reload_observable.register_watched_file(details.get_filepath())
 
-    def _change_rule_enabled(self, class_name, enabled, companions=True):
+    def _change_rule_enabled(self, class_name, enabled, tail=True):
         """
         This is called by the GrammarActivator. The necessity of this function
         means something is designed wrong. Correct this in the future.
 
         :param class_name: str
         :param enabled: boolean
-        :param companions: (boolean) whether to load companion rules of the 'class_name' rule
+        :param tail: (boolean) whether this is the tail call, since this fn is recursive
         :return:
         """
-        # update config, save
-        self._config.put(class_name, enabled)
-        self._config.save()
 
         # load it
         enabled_diff = self._delegate_enable_rule(class_name, enabled)
         # run activation hooks
         self._hooks_runner.execute(RuleActivationEvent(class_name, enabled))
 
+        if tail:
+            enabled_diff = self._handle_companion_rules(enabled_diff)
+            self._rewrite_config_file(enabled_diff)
 
         '''
         Problems:
-        1. Can't just do companion rules here after the normal process b/c don't have enough information.
-            If there were no KOs, it would be fine. But if something gets KO'd, its companions should too.
-            Can't just cycle through rules and remove companions of rules not activated though, b/c user could enable
-            companion rules independently of host rules.
-        2. Save after merge is broken. It always wipes all non-ccr rules b/c it is unaware of non-ccr-rules entirely.
-        
-        Solutions:
-        1. `_delegate_enable_rule` needs to return a diff of what got added/removed -- then can handle companions here
-            - this is messily implemented on the main branch -- salvage what you can and start clean here
-        2. The diff handles this problem too.
-            - prevent companion rules from being CCR to avoid that mess (THIS IS THE ONLY CHANGE ON THIS BRANCH);
-            - then, calling `_change_rule_active` for each companion, removes first, then adds, should cause the correct
-              rules to get written to rules.toml
-            - MUST also remove the `_save_after_remerge` method-- 
-                - ideally we want to pass the enabled_ordered to the merger instead of letting it use the config
-                    - this lets us not need to save before calling `remerge`, I THINK, check this
-                - either way, we want to save according to the diff, not via the current failing `_save_after_remerge` method 
+        3. If ["GrammarActivatorRule", "HooksActivationRule"] are present at boot, they get added to the list again.
         
         Roadmap:
-        DO THIS STUFF IN CLEAN STEPS, DISTINCT COMMITS:
-        X 1. Save CCR companion prevention, and these comments
-        X 2. Take away the merger's access to the config get_ordered_enabled function
-        X 3. Bring the diff here.
-        4. Get rid of save after merge -- it just doesn't work.
-        5. Add a diff-based save which only happens AFTER companions handling.
-        6. Remove pre-delegation save.
-        X 7. Rename `_change_rule_active` to `_change_rule_enabled`.
         8. See about pointing everything at `_change_rule_enabled` which is currently pointed to `delegate_rule_enabled`
             -> "everything" is 3 functions out of the 7 which point at both functions combined. This makes
-            `_change_rule_enabled` the center of the GM, rather than having two centers. 
-        9. Remove these comments.
+            `_change_rule_enabled` the center of the GM, rather than having two centers.
+        9. Fix problem #3. -- build a unit test, step through it. 
+        10. Remove these comments.
         '''
 
+    def _rewrite_config_file(self, enabled_diff):
+        """
+        :param enabled_diff:
+        :return:
+        """
+        if len(enabled_diff.newly_enabled) + len(enabled_diff.newly_disabled) > 0:
+            result = list(self._config.get_enabled_rcns_ordered())
 
-        if companions:
-            self._handle_companion_rules(class_name, enabled)
+            for rcn in enabled_diff.newly_disabled:
+                result.remove(rcn)
+            result.extend(enabled_diff.newly_enabled)
 
-    # def _rewrite_config_file(self, prev_enabled_rcns, diff):
-    #     """
-    #     Possibly save results after a merge since KOs may have occurred.
-    #     This save does not take companion rules into account. That happens later.
-    #
-    #     :param prev_enabled_rcns:
-    #     :param diff:
-    #     :return:
-    #     """
-    #     if len(diff.newly_enabled) + len(diff.newly_disabled) > 0:
-    #         result = list(prev_enabled_rcns)
-    #
-    #         for rcn in diff.newly_disabled:
-    #             result.remove(rcn)
-    #         result.extend(diff.newly_enabled)
-    #
-    #         self._config.replace_enabled(result)
-    #         self._config.save()
+            self._config.replace_enabled(result)
+            self._config.save()
 
-    def _handle_companion_rules(self, class_name, enabled):
-        for companion_rcn in self._companion_config.get_companions(class_name):
-            if companion_rcn in self._managed_rules:
-                mr = self._managed_rules[companion_rcn]
-                is_ccr = mr.get_details.get_details().declared_ccrtype is not None
-                if is_ccr:
-                    raise InvalidCompanionConfigurationError(companion_rcn)
+    def _handle_companion_rules(self, enabled_diff):
+        newly_enabled = list()
+        newly_disabled = set()
+        diff = [(rcn, True) for rcn in enabled_diff.newly_enabled] + \
+               [(rcn, False) for rcn in enabled_diff.newly_disabled]
+        for difference in diff:
+            rcn = difference[0]
+            enabled = difference[1]
+            for companion_rcn in self._companion_config.get_companions(rcn):
+                if companion_rcn in self._managed_rules:
+                    mr = self._managed_rules[companion_rcn]
+                    is_ccr = mr.get_details().declared_ccrtype is not None
+                    if is_ccr:
+                        raise InvalidCompanionConfigurationError(companion_rcn)
 
-                self._change_rule_enabled(companion_rcn, enabled, False)
+                    self._change_rule_enabled(companion_rcn, enabled, False)
+                    if enabled:
+                        newly_enabled.append(companion_rcn)
+                    else:
+                        newly_disabled.add(companion_rcn)
+                else:
+                    invalid_msg = "Invalid companion rule (not loaded): {}"
+                    printer.out(invalid_msg.format(companion_rcn))
+
+        return RulesEnabledDiff(enabled_diff.newly_enabled + newly_enabled,
+                                enabled_diff.newly_disabled | newly_disabled)
 
     def _delegate_enable_rule(self, class_name, enabled):
         """
@@ -236,9 +224,14 @@ class GrammarManager(object):
         if managed_rule.get_details().declared_ccrtype is None:
             return self._enable_non_ccr_rule(managed_rule, enabled)
         else:
-            return self._remerge_ccr_rules()
+            rcn = managed_rule.get_rule_class_name()
+            enabled_rules = collection_utils.list_update_unique(self._config.get_enabled_rcns_ordered(), rcn, enabled)
+            enabled_diff = self._remerge_ccr_rules(enabled_rules)
+            place = enabled_diff.newly_enabled.append if enabled else enabled_diff.newly_disabled.add
+            place(rcn)
+            return enabled_diff
 
-    def _remerge_ccr_rules(self):
+    def _remerge_ccr_rules(self, enabled_rcns):
         """
         :return: RulesEnabledDiff
         """
@@ -247,9 +240,7 @@ class GrammarManager(object):
 
         # handle CCR: get all active ccr rules after de/activating one
         loaded_enabled_rcns = set(self._managed_rules.keys())
-        # TODO: the next line relies on the fact that the added rule gets saved previously to this -- change that
-        active_rule_class_names = [rcn for rcn in self._config.get_enabled_rcns_ordered()
-                                   if rcn in loaded_enabled_rcns]
+        active_rule_class_names = [rcn for rcn in enabled_rcns if rcn in loaded_enabled_rcns]
         active_mrs = [self._managed_rules[rcn] for rcn in active_rule_class_names]
         active_ccr_mrs = [mr for mr in active_mrs if mr.get_details().declared_ccrtype is not None]
 
@@ -260,7 +251,7 @@ class GrammarManager(object):
         the merger has to make the global one, plus an app rule with the app stuff plus all the
         global stuff.
         '''
-        sorter = ConfigBasedRuleSetSorter(self._config.get_enabled_rcns_ordered())
+        sorter = ConfigBasedRuleSetSorter(enabled_rcns)
         merge_result = self._merger.merge_rules(active_ccr_mrs, sorter)
         grammars = []
         for rule_and_context in merge_result.ccr_rules_and_contexts:
@@ -272,18 +263,8 @@ class GrammarManager(object):
         self._grammars_container.set_ccr(grammars)
         for grammar in grammars:
             grammar.load()
-        self._save_after_remerge(
-            [mr.get_rule_class_name() for mr in active_ccr_mrs],
-            merge_result.all_rule_class_names
-        )
 
         return merge_result.rules_enabled_diff
-
-    def _save_after_remerge(self, pre_merge_rcns, post_merge_rcns):
-        """possibly save results after a merge since KOs may have occurred"""
-        if pre_merge_rcns != post_merge_rcns:
-            self._config.replace_enabled(post_merge_rcns)
-            self._config.save()
 
     def _enable_non_ccr_rule(self, managed_rule, enabled):
         """

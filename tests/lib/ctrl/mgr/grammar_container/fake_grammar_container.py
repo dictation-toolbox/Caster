@@ -11,9 +11,8 @@ class FakeGrammarContainer(object):
         pass
 
     def set_non_ccr(self, rcn, grammar):
-        grammar.load = lambda: self._pass()
-
         if grammar is not None:
+            grammar.load = lambda: self._pass()
             self.non_ccr[rcn] = grammar
         else:
             del self.non_ccr[rcn]

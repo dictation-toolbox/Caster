@@ -22,6 +22,21 @@ class TestGrammarManager(SettingsEnabledTestCase):
         self._set_setting(settings_path, file_path)
         utils_module.save_toml_file(data, file_path)
 
+    def _setup_rules_config_file(self, loadable_true=[], enabled=[]):
+        from castervoice.lib import utilities
+        from castervoice.lib.ctrl.mgr.rules_config import RulesConfig
+        self._setup_config_file(utilities,
+                                ["paths", "RULES_CONFIG_PATH"],
+                                TestGrammarManager._MOCK_PATH_RULES_CONFIG,
+                                {
+                                    RulesConfig._ENABLED_ORDERED: enabled,
+                                    RulesConfig._INTERNAL: [],
+                                    RulesConfig._WHITELISTED: {
+                                        rcn: True for rcn in loadable_true
+                                    }
+                                })
+        self._rule_config.load()
+
     def _initialize(self, content):
         # self._content_loader.load_everything.side_effect = [content]
         [self._gm.register_rule(rc, d) for rc, d in content.rules]
@@ -125,6 +140,7 @@ class TestGrammarManager(SettingsEnabledTestCase):
 
     def test_initialize_one_mergerule(self):
         from castervoice.lib.ccr.core import alphabet
+        self._setup_rules_config_file(loadable_true=["Alphabet"], enabled=["Alphabet"])
         one_rule = alphabet.get_rule()
         self._initialize(FullContentSet([one_rule], [], []))
         self.assertEqual(2, len(self._gm._grammars_container.non_ccr.keys()))
@@ -133,6 +149,7 @@ class TestGrammarManager(SettingsEnabledTestCase):
     def test_initialize_two_compatible_global_mergerules(self):
         from castervoice.lib.ccr.core import alphabet
         from castervoice.lib.ccr.core import punctuation
+        self._setup_rules_config_file(loadable_true=["Alphabet", "Punctuation"], enabled=["Alphabet", "Punctuation"])
         a = alphabet.get_rule()
         b = punctuation.get_rule()
         self._initialize(FullContentSet([a, b], [], []))
@@ -146,18 +163,7 @@ class TestGrammarManager(SettingsEnabledTestCase):
         from castervoice.lib.ccr.core import punctuation
 
         # "write" the rules.toml file:
-        self._setup_config_file(utilities,
-                                ["paths", "RULES_CONFIG_PATH"],
-                                TestGrammarManager._MOCK_PATH_RULES_CONFIG,
-                                {
-                                    RulesConfig._ENABLED_ORDERED: ["Alphabet"],
-                                    RulesConfig._INTERNAL: [],
-                                    RulesConfig._WHITELISTED: {
-                                        "Alphabet": True,
-                                        "Punctuation": True
-                                    }
-                                })
-        self._rule_config.load()
+        self._setup_rules_config_file(loadable_true=["Alphabet", "Punctuation"], enabled=["Alphabet"])
 
         # check that the mock file changes were written
         self.assertEqual(1, len(self._rule_config._config[RulesConfig._ENABLED_ORDERED]))
@@ -180,18 +186,7 @@ class TestGrammarManager(SettingsEnabledTestCase):
         from castervoice.lib.ccr.python import python
 
         # "write" the rules.toml file:
-        self._setup_config_file(utilities,
-                                ["paths", "RULES_CONFIG_PATH"],
-                                TestGrammarManager._MOCK_PATH_RULES_CONFIG,
-                                {
-                                    RulesConfig._ENABLED_ORDERED: ["Java"],
-                                    RulesConfig._INTERNAL: [],
-                                    RulesConfig._WHITELISTED: {
-                                        "Java": True,
-                                        "Python": True
-                                    }
-                                })
-        self._rule_config.load()
+        self._setup_rules_config_file(loadable_true=["Java", "Python"], enabled=["Java"])
 
         # check that the mock file changes were written
         self.assertEqual(1, len(self._rule_config._config[RulesConfig._ENABLED_ORDERED]))
@@ -206,3 +201,55 @@ class TestGrammarManager(SettingsEnabledTestCase):
         config = utilities.load_toml_file(TestGrammarManager._MOCK_PATH_RULES_CONFIG)
         self.assertNotIn("Java", config[RulesConfig._ENABLED_ORDERED])
         self.assertIn("Python", config[RulesConfig._ENABLED_ORDERED])
+
+    def test_knockout_with_companions_saves_correctly(self):
+        from castervoice.lib import utilities
+        from castervoice.lib.ctrl.mgr.rules_config import RulesConfig
+        from castervoice.lib.ccr.java import java
+        from castervoice.lib.ccr.java import java2
+        from castervoice.lib.ccr.python import python
+        from castervoice.lib.ccr.python import python2
+        from castervoice.lib.ccr.core import alphabet
+        from castervoice.apps import outlook
+
+        # "write" the companion config file
+        self._setup_config_file(utilities,
+                                ["paths", "COMPANION_CONFIG_PATH"],
+                                TestGrammarManager._MOCK_PATH_COMPANION_CONFIG,
+                                {
+                                    "Java": ["JavaNon"],
+                                    "Python": ["PythonNon"]
+                                })
+
+        # "write" the rules.toml file:
+        self._setup_rules_config_file(loadable_true=["Alphabet", "OutlookRule", "Java", "JavaNon",
+                                                     "Python", "PythonNon"],
+                                      enabled=["Alphabet", "OutlookRule", "Java", "JavaNon"])
+
+        # check that the mock file changes were written
+        self.assertEqual(4, len(self._rule_config._config[RulesConfig._ENABLED_ORDERED]))
+
+        # initialize the gm
+        alphabet_rule, outlook_rule = alphabet.get_rule(), outlook.get_rule()
+        python_rule, pythonnon_rule = python.get_rule(), python2.get_rule()
+        java_rule, javanon_rule = java.get_rule(), java2.get_rule()
+        self._initialize(FullContentSet([alphabet_rule, outlook_rule, python_rule, pythonnon_rule,
+                                         java_rule, javanon_rule], [], []))
+
+        # simulate a spoken "enable" command from the GrammarActivator:
+        self._gm._change_rule_enabled("Python", True)
+        """
+        Afterwards, all of the following should be true:
+        1. Python and PythonNon should each be in rules.toml exactly once
+        2. Java and JavaNon should be in rules.toml zero times
+        3. Alphabet and Outlook should still be in rules.toml
+        """
+        config = utilities.load_toml_file(TestGrammarManager._MOCK_PATH_RULES_CONFIG)
+        enabled_ordered = config[RulesConfig._ENABLED_ORDERED]
+        self.assertEqual(1, enabled_ordered.count("Python"))
+        self.assertEqual(1, enabled_ordered.count("PythonNon"))
+        self.assertEqual(0, enabled_ordered.count("Java"))
+        self.assertEqual(0, enabled_ordered.count("JavaNon"))
+        self.assertEqual(1, enabled_ordered.count("Alphabet"))
+        self.assertEqual(1, enabled_ordered.count("OutlookRule"))
+
