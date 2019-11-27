@@ -11,6 +11,7 @@ from castervoice.lib.ctrl.mgr.rules_enabled_diff import RulesEnabledDiff
 from castervoice.lib.merge.ccrmerging2.hooks.events.activation_event import RuleActivationEvent
 from castervoice.lib.merge.ccrmerging2.sorting.config_ruleset_sorter import ConfigBasedRuleSetSorter
 from castervoice.lib.util import collection_utils
+from castervoice.lib.util.ordered_set import OrderedSet
 
 
 class GrammarManager(object):
@@ -152,15 +153,10 @@ class GrammarManager(object):
             self._rewrite_config_file(enabled_diff)
 
         '''
-        Problems:
-        3. If ["GrammarActivatorRule", "HooksActivationRule"] are present at boot, they get added to the list again.
-        
         Roadmap:
         8. See about pointing everything at `_change_rule_enabled` which is currently pointed to `delegate_rule_enabled`
             -> "everything" is 3 functions out of the 7 which point at both functions combined. This makes
             `_change_rule_enabled` the center of the GM, rather than having two centers.
-        9. Fix problem #3. -- build a unit test, step through it. 
-        10. Remove these comments.
         '''
 
     def _rewrite_config_file(self, enabled_diff):
@@ -169,16 +165,10 @@ class GrammarManager(object):
         :return:
         """
         if len(enabled_diff.newly_enabled) + len(enabled_diff.newly_disabled) > 0:
-            result = list(self._config.get_enabled_rcns_ordered())
-
-            for rcn in enabled_diff.newly_disabled:
-                result.remove(rcn)
-            result_set = set(result)
-            for rcn in enabled_diff.newly_enabled:
-                if rcn not in result_set:
-                    result.append(rcn)
-
-            self._config.replace_enabled(result)
+            result = OrderedSet(self._config.get_enabled_rcns_ordered())
+            result.remove_all(enabled_diff.newly_disabled)
+            result.add_all(enabled_diff.newly_enabled)
+            self._config.replace_enabled(result.to_list())
             self._config.save()
 
     def _handle_companion_rules(self, enabled_diff):
@@ -228,8 +218,9 @@ class GrammarManager(object):
             return self._enable_non_ccr_rule(managed_rule, enabled)
         else:
             rcn = managed_rule.get_rule_class_name()
-            enabled_rules = collection_utils.list_update_unique(self._config.get_enabled_rcns_ordered(), rcn, enabled)
-            enabled_diff = self._remerge_ccr_rules(enabled_rules)
+            enabled_rules = OrderedSet(self._config.get_enabled_rcns_ordered())
+            enabled_rules.update(rcn, enabled)
+            enabled_diff = self._remerge_ccr_rules(enabled_rules.to_list())
             place = enabled_diff.newly_enabled.append if enabled else enabled_diff.newly_disabled.add
             place(rcn)
             return enabled_diff

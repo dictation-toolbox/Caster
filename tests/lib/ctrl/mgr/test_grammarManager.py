@@ -278,3 +278,21 @@ class TestGrammarManager(SettingsEnabledTestCase):
         enabled_ordered = config[RulesConfig._ENABLED_ORDERED]
         self.assertEqual(1, enabled_ordered.count("GrammarActivatorRule"))
         self.assertEqual(1, enabled_ordered.count("ManualGrammarReloadRule"))
+
+    def test_disable_non_enabled_doesnt_crash(self):
+        from castervoice.lib.ctrl.mgr.rules_config import RulesConfig
+        from castervoice.lib.ccr.java import java
+        from castervoice.lib.ccr.python import python
+
+        # "write" the rules.toml file:
+        self._setup_rules_config_file(loadable_true=["Java", "Python"], enabled=["Java"])
+
+        # check that the mock file changes were written
+        self.assertEqual(1, len(self._rule_config._config[RulesConfig._ENABLED_ORDERED]))
+
+        # initialize the gm
+        a, b = java.get_rule(), python.get_rule()
+        self._initialize(FullContentSet([a, b], [], []))
+
+        # simulate a spoken "enable" command from the GrammarActivator:
+        self._gm._change_rule_enabled("Python", False)
