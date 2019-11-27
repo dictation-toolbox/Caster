@@ -10,7 +10,6 @@ from castervoice.lib.ctrl.mgr.managed_rule import ManagedRule
 from castervoice.lib.ctrl.mgr.rules_enabled_diff import RulesEnabledDiff
 from castervoice.lib.merge.ccrmerging2.hooks.events.activation_event import RuleActivationEvent
 from castervoice.lib.merge.ccrmerging2.sorting.config_ruleset_sorter import ConfigBasedRuleSetSorter
-from castervoice.lib.util import collection_utils
 from castervoice.lib.util.ordered_set import OrderedSet
 
 
