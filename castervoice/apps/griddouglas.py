@@ -6,7 +6,7 @@ from castervoice.lib import settings, control
 from castervoice.asynch.mouse import grids
 import win32api, win32con
 
-from castervoice.lib.ccr.standard import SymbolSpecs
+from castervoice.ccr.standard import SymbolSpecs
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R

@@ -1,7 +1,7 @@
 from unittest import TestCase
 
-from castervoice.lib.ccr.core.alphabet import Alphabet
-from castervoice.lib.ccr.core.nav import Navigation
+from castervoice.ccr.core.alphabet import Alphabet
+from castervoice.ccr.core.nav import Navigation
 from castervoice.lib.merge.ccrmerging2.sorting.alpha_ruleset_sorter import AlphaRuleSetSorter
 from castervoice.lib.util.rules.caster_rule import CasterRule
 
