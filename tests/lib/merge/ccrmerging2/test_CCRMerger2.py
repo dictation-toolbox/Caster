@@ -3,8 +3,8 @@ from mock import Mock
 from castervoice.lib.context import AppContext
 from castervoice.apps.eclipse import EclipseCCR
 from castervoice.apps.vscode import VSCodeCcrRule
-from castervoice.lib.ccr.core.alphabet import Alphabet
-from castervoice.lib.ccr.core.nav import Navigation
+from castervoice.ccr.core.alphabet import Alphabet
+from castervoice.ccr.core.nav import Navigation
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.managed_rule import ManagedRule
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails

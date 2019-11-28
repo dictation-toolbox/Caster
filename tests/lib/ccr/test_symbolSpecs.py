@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from castervoice.lib.ccr.standard import SymbolSpecs
+from castervoice.ccr.standard import SymbolSpecs
 
 
 class TestSymbolSpecs(TestCase):
