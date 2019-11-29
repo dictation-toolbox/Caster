@@ -1,8 +1,8 @@
 from dragonfly.grammar.context import LogicNotContext, Context, LogicAndContext
 from mock import Mock
 from castervoice.lib.context import AppContext
-from castervoice.apps.eclipse import EclipseCCR
-from castervoice.apps.vscode import VSCodeCcrRule
+from castervoice.apps.eclipse.eclipse import EclipseCCR
+from castervoice.apps.vscode.vscode import VSCodeCcrRule
 from castervoice.ccr.core.alphabet import Alphabet
 from castervoice.ccr.core.nav import Navigation
 from castervoice.lib.const import CCRType

@@ -1,6 +1,6 @@
 from dragonfly import Repeat, Dictation, Function, Choice, Paste, Pause
 
-from castervoice.apps.eclipse_support import ec_con
+from castervoice.apps.eclipse.eclipse_support import ec_con
 from castervoice.lib.actions import Key
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
