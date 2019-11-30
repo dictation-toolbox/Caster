@@ -5,11 +5,11 @@ class AppsModulesTestCase(ModulesTestCase):
     def _rule_modules(self):
         from castervoice.apps.browser import firefox, chrome
         from castervoice.apps.ide import jetbrains
-        from castervoice.apps.dragon import dragon, dragon2
-        from castervoice.apps.eclipse import eclipse, eclipse2
-        from castervoice.apps.MouseGrids import griddouglas, gridrainbow, gridlegion
-        from castervoice.apps.totalcmd import totalcmd, totalcmd2
-        from castervoice.apps.vscode import vscode2, vscode
+        from castervoice.apps.dragon_rules import dragon, dragon2
+        from castervoice.apps.eclipse_rules import eclipse, eclipse2
+        from castervoice.apps.mousegrids_rules import griddouglas, gridrainbow, gridlegion
+        from castervoice.apps.totalcmd_rules import totalcmd, totalcmd2
+        from castervoice.apps.vscode_rules import vscode2, vscode
         from castervoice.apps import adobe_acrobat, atom, excel, emacs, explorer, \
             file_dialogue, gitbash, foxitreader, fman, flashdevelop, gitter, githubdesktop, lyx, kdiff3, \
             rstudio, outlook, notepadplusplus, msvc, sublime, ssms, sqldeveloper, \

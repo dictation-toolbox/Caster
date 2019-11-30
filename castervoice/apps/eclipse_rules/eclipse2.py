@@ -2,7 +2,7 @@ from dragonfly import Repeat, Dictation, Function, Choice, Paste, Pause, Mapping
 
 from castervoice.lib.actions import Key
 
-from castervoice.apps.eclipse.eclipse_support import ec_con
+from castervoice.apps.eclipse_rules.eclipse_support import ec_con
 from castervoice.lib import alphanumeric
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST, Boolean
