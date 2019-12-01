@@ -1,6 +1,5 @@
 # Caster
-[![Travis Build Status](https://travis-ci.org/dictation-toolbox/Caster.svg?branch=master)](https://travis-ci.org/dictation-toolbox/Caster) [![ReadTheDocs Build Status](https://readthedocs.org/projects/pip/badge/)](https://caster.readthedocs.io/en/latest/)
-
+[![Travis Build Status](https://travis-ci.org/dictation-toolbox/Caster.svg?branch=master)](https://travis-ci.org/dictation-toolbox/Caster) [![Documentation Status](https://readthedocs.org/projects/caster/badge/?version=latest)](https://caster.readthedocs.io/en/latest/?badge=latest)
 [Caster](https://github.com/dictation-toolbox/Caster)  is a collection of tools aimed at enabling programming and accessibility entirely by voice built upon the [Dragonfly](https://github.com/dictation-toolbox/dragonfly) API.
 
 **Note for PyPi Users**: The PIP package is (_Alpha_). Do not use the PIP install. Alternatively use this [Master Branch](https://github.com/dictation-toolbox/Caster) with classic install for the best feature experience.
