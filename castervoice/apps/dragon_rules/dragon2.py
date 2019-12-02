@@ -2,7 +2,7 @@ from dragonfly import Mimic, MappingRule
 from castervoice.lib.actions import Key
 
 
-from castervoice.apps.dragon_support import extras_for_whole_file, defaults_for_whole_file
+from castervoice.apps.dragon_rules.dragon_support import extras_for_whole_file, defaults_for_whole_file
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.short import R
 
