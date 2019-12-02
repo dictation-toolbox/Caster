@@ -16,13 +16,4 @@ matrix:
         - pip install -vvv --user -e .
       script:
         - python castervoice/lib/tests/testrunner.py && pylint -E _caster.py && pylint -E castervoice
-deploy:
-  provider: pypi
-  user: CasterVoice@protonmail.com
-  distributions: sdist
-  password:
-    secure: HyYcP6rAJK6HlCEqFCyN18vuxTJRdY7GlWeNdv6czZSFPfJyAg73YgnNYtgQuj9g79RdOTxGdfXboj2ga84yu8PqwLO0j3IrXOjc8epc/YNy4BpRDca40dRdW19UV9aqe/aDCVjwpbp0lOikmNpuev7uZnyIRSw6ocRNG11N6NnB3tuSjywrYygqZLCfpv+/rjKuePGbal+VcVnITWkP9G19uBpvTK/E+J4L4QU0vuIN7zVnlV9TmDkvkmFKHrJAsF3rL+JfAMNaSPVSy7Toyr06kPIwOh+PwDhV4v4VWOXAElhkyVw/2raVMOb6guGTpXina5dnIAACuMfuMSOgr9fjrXY01YBH1Ve+XU4DlVwbW0Ak3ZA4T7m3wm8rKt73nF7wNDo3tA4wHTjwjpYp0x05bg4446D4mjn9A5aOHy7FD71+dsUfGUatOxnHhXFxlnTVuLSvoYOgUgvhHTp9M11Gv1hfAV4wdf5qU0l7WbC9kOcv1rJa/JkKxY1571CtMlGjGaQ0Pbq+DxLy+qyshygc/MYJSVQScwO+NF7bRVexekZ6FHzihRnUXymgVoayJ5iYBfJIjMGrXbwVEHx4+MwDDqgaFYDW2JgyeVU7EsUnIpEOh/5TEFcDj/lZPJUIVaXSu/Eki9JvM/3cSGunBXbWn95n7FIo3i1+ZRnbvf0=
-  on:
-    branch: master
-    tags: true
 
