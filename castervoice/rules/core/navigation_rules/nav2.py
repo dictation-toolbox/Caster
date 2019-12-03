@@ -2,7 +2,7 @@ from dragonfly import Function, Repeat, Dictation, Choice, MappingRule
 
 from castervoice.lib.actions import Key, Mouse
 from castervoice.lib import navigation, utilities
-from castervoice.rules.core import alphabet_support
+from castervoice.rules.core.alphabet_rules import alphabet_support
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.actions import AsynchronousAction

@@ -139,7 +139,7 @@ class TestGrammarManager(SettingsEnabledTestCase):
         self.assertEqual(0, len(self._gm._grammars_container.ccr))
 
     def test_initialize_one_mergerule(self):
-        from castervoice.rules.core import alphabet
+        from castervoice.rules.core.alphabet_rules import alphabet
         self._setup_rules_config_file(loadable_true=["Alphabet"], enabled=["Alphabet"])
         one_rule = alphabet.get_rule()
         self._initialize(FullContentSet([one_rule], [], []))
@@ -147,8 +147,8 @@ class TestGrammarManager(SettingsEnabledTestCase):
         self.assertEqual(1, len(self._gm._grammars_container.ccr))
 
     def test_initialize_two_compatible_global_mergerules(self):
-        from castervoice.rules.core import alphabet
-        from castervoice.rules.core import punctuation
+        from castervoice.rules.core.alphabet_rules import alphabet
+        from castervoice.rules.core.punctuation_rules import punctuation
         self._setup_rules_config_file(loadable_true=["Alphabet", "Punctuation"], enabled=["Alphabet", "Punctuation"])
         a = alphabet.get_rule()
         b = punctuation.get_rule()
@@ -159,8 +159,8 @@ class TestGrammarManager(SettingsEnabledTestCase):
     def test_enable_rule_causes_a_save(self):
         from castervoice.lib import utilities
         from castervoice.lib.ctrl.mgr.rules_config import RulesConfig
-        from castervoice.rules.core import alphabet
-        from castervoice.rules.core import punctuation
+        from castervoice.rules.core.alphabet_rules import alphabet
+        from castervoice.rules.core.punctuation_rules import punctuation
 
         # "write" the rules.toml file:
         self._setup_rules_config_file(loadable_true=["Alphabet", "Punctuation"], enabled=["Alphabet"])
@@ -209,7 +209,7 @@ class TestGrammarManager(SettingsEnabledTestCase):
         from castervoice.rules.ccr.java import java2
         from castervoice.rules.ccr.python import python
         from castervoice.rules.ccr.python import python2
-        from castervoice.rules.core import alphabet
+        from castervoice.rules.core.alphabet_rules import alphabet
         from castervoice.rules.apps.microsoft_office import outlook
 
         # "write" the companion config file
@@ -256,7 +256,7 @@ class TestGrammarManager(SettingsEnabledTestCase):
     def test_internal_rules_dont_create_duplicates(self):
         from castervoice.lib import utilities
         from castervoice.lib.ctrl.mgr.rules_config import RulesConfig
-        from castervoice.rules.core import alphabet
+        from castervoice.rules.core.alphabet_rules import alphabet
 
         # "write" the rules.toml file:
         self._setup_rules_config_file(loadable_true=["Alphabet"],

@@ -4,12 +4,12 @@ from tests.test_util.modules_testing import ModulesTestCase
 class CCRModulesTestCase(ModulesTestCase):
     def _rule_modules(self):
         from castervoice.rules.ccr.bash import bash
-        from castervoice.rules.core import text_manipulation
-        from castervoice.rules.core import numeric
-        from castervoice.rules.core import nav
-        from castervoice.rules.core import nav2
-        from castervoice.rules.core import alphabet
-        from castervoice.rules.core import punctuation
+        from castervoice.rules.core.text_manipulation_rules import text_manipulation
+        from castervoice.rules.core.numbers_rules import numeric
+        from castervoice.rules.core.navigation_rules import nav
+        from castervoice.rules.core.navigation_rules import nav2
+        from castervoice.rules.core.alphabet_rules import alphabet
+        from castervoice.rules.core.punctuation_rules import punctuation
         from castervoice.rules.ccr.cpp import cpp
         from castervoice.rules.ccr.csharp import csharp
         from castervoice.rules.ccr.dart import dart

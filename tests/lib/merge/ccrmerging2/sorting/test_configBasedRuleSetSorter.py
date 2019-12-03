@@ -1,7 +1,7 @@
 from unittest import TestCase
 
-from castervoice.rules.core.alphabet import Alphabet
-from castervoice.rules.core.nav import Navigation
+from castervoice.rules.core.alphabet_rules.alphabet import Alphabet
+from castervoice.rules.core.navigation_rules.nav import Navigation
 from castervoice.lib.merge.ccrmerging2.sorting.config_ruleset_sorter import ConfigBasedRuleSetSorter
 from castervoice.lib.util.rules.caster_rule import CasterRule
 
