@@ -1,6 +1,6 @@
 from dragonfly import Function, Choice, Repetition, Dictation
 
-from castervoice.rules.core import text_manipulation_support, alphanumeric
+from castervoice.rules.core import text_manipulation_support, alphabet_support
 from castervoice.rules.core.punctuation_support import text_punc_dict
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
@@ -105,7 +105,7 @@ class TextManipulation(MergeRule):
             rdescript="Text Manipulation: select until chosen character"),
     }
     new_text_punc_dict = text_punc_dict()
-    new_text_punc_dict.update(alphanumeric.caster_alphabet())
+    new_text_punc_dict.update(alphabet_support.caster_alphabet())
     new_text_punc_dict.update(number_dict)
     character_dict = new_text_punc_dict
     character_choice_object = Choice("character_choice", character_dict)
