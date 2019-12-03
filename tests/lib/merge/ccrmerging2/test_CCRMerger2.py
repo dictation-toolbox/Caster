@@ -1,10 +1,10 @@
 from dragonfly.grammar.context import LogicNotContext, Context, LogicAndContext
 from mock import Mock
 from castervoice.lib.context import AppContext
-from castervoice.apps.eclipse_rules.eclipse import EclipseCCR
-from castervoice.apps.vscode_rules.vscode import VSCodeCcrRule
-from castervoice.ccr.core.alphabet import Alphabet
-from castervoice.ccr.core.nav import Navigation
+from castervoice.rules.apps.editor.eclipse_rules.eclipse import EclipseCCR
+from castervoice.rules.apps.editor.vscode_rules.vscode import VSCodeCcrRule
+from castervoice.rules.core.alphabet import Alphabet
+from castervoice.rules.core.nav import Navigation
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.managed_rule import ManagedRule
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
