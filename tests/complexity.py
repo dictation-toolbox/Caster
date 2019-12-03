@@ -13,10 +13,10 @@ from dragonfly.grammar.grammar_base import Grammar
 
 from castervoice.lib import settings
 from castervoice.lib.actions import Text
-from castervoice.rules.core.alphabet import Alphabet
-from castervoice.rules.core.nav import Navigation
-from castervoice.rules.core.numeric import Numbers
-from castervoice.rules.core.punctuation import Punctuation
+from castervoice.rules.core.alphabet_rules.alphabet import Alphabet
+from castervoice.rules.core.navigation_rules.nav import Navigation
+from castervoice.rules.core.numbers_rules.numeric import Numbers
+from castervoice.rules.core.punctuation_rules.punctuation import Punctuation
 from castervoice.rules.ccr.python.python import Python
 from castervoice.lib.merge.ccrmerger_legacy import CCRMerger # Deprecated
 from castervoice.lib.merge.merge.mergepair import MergeInf # Deprecated

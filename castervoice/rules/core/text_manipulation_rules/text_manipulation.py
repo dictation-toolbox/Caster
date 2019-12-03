@@ -1,7 +1,8 @@
 from dragonfly import Function, Choice, Repetition, Dictation
 
-from castervoice.rules.core import text_manipulation_support, alphabet_support
-from castervoice.rules.core.punctuation_support import text_punc_dict
+from castervoice.rules.core.text_manipulation_rules import text_manipulation_support
+from castervoice.rules.core.alphabet_rules import alphabet_support
+from castervoice.rules.core.punctuation_rules.punctuation_support import text_punc_dict
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
@@ -87,21 +88,21 @@ class TextManipulation(MergeRule):
         # select text or character
         "grab <direction> [<number_of_lines_to_search>] [<occurrence_number>] <dictation>":
             R(Function(text_manipulation_support.select_phrase,
-            dict(dictation="phrase"), dictation_versus_character="dictation"),
+                       dict(dictation="phrase"), dictation_versus_character="dictation"),
                  rdescript="Text Manipulation: select chosen phrase"),
         "grab <direction> [<number_of_lines_to_search>] [<occurrence_number>] <character>":
             R(Function(text_manipulation_support.select_phrase,
-            dict(character="phrase", dictation_versus_character="character")),
+                       dict(character="phrase", dictation_versus_character="character")),
             rdescript="Text Manipulation: select chosen character"),
 
         # select until text or character
         "grab <direction> [<number_of_lines_to_search>] until [<before_after>] [<occurrence_number>] <dictation> ":
             R(Function(text_manipulation_support.select_until_phrase,
-            dict(dictation="phrase"), dictation_versus_character="dictation"),
+                       dict(dictation="phrase"), dictation_versus_character="dictation"),
                  rdescript="Text Manipulation: select until chosen phrase"),
         "grab <direction> [<number_of_lines_to_search>] until [<before_after>] [<occurrence_number>] <character>":
             R(Function(text_manipulation_support.select_until_phrase,
-            dict(character="phrase"), dictation_versus_character="character"),
+                       dict(character="phrase"), dictation_versus_character="character"),
             rdescript="Text Manipulation: select until chosen character"),
     }
     new_text_punc_dict = text_punc_dict()

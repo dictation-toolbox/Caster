@@ -1,6 +1,6 @@
 from dragonfly import Choice
 
-from castervoice.rules.core import alphabet_support
+from castervoice.rules.core.alphabet_rules import alphabet_support
 from castervoice.lib.actions import Text, Key
 from castervoice.rules.ccr.standard import SymbolSpecs
 from castervoice.lib.const import CCRType
