@@ -2,9 +2,9 @@ from dragonfly import (IntegerRef, Integer)
 from dragonfly.grammar.elements import RuleWrap, Choice
 from dragonfly.language.base.integer_internal import MapIntBuilder
 from dragonfly.language.loader import language
-from dragonfly.language.en.short_number import ShortIntegerContent
 
-from castervoice.lib import settings, alphanumeric
+from castervoice.lib import settings
+from castervoice.rules.core import alphanumeric
 
 '''
 Integer Remap feature needs to be rewritten:
