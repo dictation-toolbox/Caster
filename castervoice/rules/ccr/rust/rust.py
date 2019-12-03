@@ -1,6 +1,6 @@
 from dragonfly import Choice
 
-from castervoice.rules.core import alphanumeric
+from castervoice.rules.core import alphabet_support
 from castervoice.lib.actions import Text, Key
 from castervoice.rules.ccr.standard import SymbolSpecs
 from castervoice.lib.const import CCRType
@@ -127,8 +127,8 @@ class Rust(MergeRule):
         Choice("signed", {"unsigned": "u"}),
         Choice("mutability", {"mute ah | mute": "mut "}),
         IntegerRefST("n", 0, 1000),
-        alphanumeric.get_alphabet_choice("a"),
-        alphanumeric.get_alphabet_choice("b"),
+        alphabet_support.get_alphabet_choice("a"),
+        alphabet_support.get_alphabet_choice("b"),
     ]
     defaults = {"bits": "32", "signed": "i", "mutability": "", "a": "i", "b": "j", "n": 1}
 

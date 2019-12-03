@@ -1,6 +1,6 @@
 from dragonfly import Function, Choice
 
-from castervoice.rules.core import alphanumeric
+from castervoice.rules.core import alphabet_support
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.mergerule import MergeRule
@@ -12,10 +12,10 @@ class Alphabet(MergeRule):
 
     mapping = {
         "[<big>] <letter>":
-            R(Function(alphanumeric.letters2, extra={"big", "letter"})),
+            R(Function(alphabet_support.letters2, extra={"big", "letter"})),
     }
     extras = [
-        alphanumeric.get_alphabet_choice("letter"),
+        alphabet_support.get_alphabet_choice("letter"),
         Choice("big", {
             "big": True,
         }),

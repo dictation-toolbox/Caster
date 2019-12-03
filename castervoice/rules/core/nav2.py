@@ -2,7 +2,7 @@ from dragonfly import Function, Repeat, Dictation, Choice, MappingRule
 
 from castervoice.lib.actions import Key, Mouse
 from castervoice.lib import navigation, utilities
-from castervoice.rules.core import alphanumeric
+from castervoice.rules.core import alphabet_support
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.actions import AsynchronousAction
@@ -92,7 +92,7 @@ class NavigationNon(MappingRule):
         "close tab [<n>]":
             R(Key("c-w/20"))*Repeat(extra="n"),
         "elite translation <text>":
-            R(Function(alphanumeric.elite_text)),
+            R(Function(alphabet_support.elite_text)),
 
         # Workspace management
         "show work [spaces]":

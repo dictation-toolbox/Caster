@@ -13,7 +13,7 @@ from dragonfly import Repeat, Dictation, Choice, MappingRule
 
 from castervoice.lib.actions import Key, Text
 
-from castervoice.rules.core import alphanumeric
+from castervoice.rules.core import alphabet_support
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
@@ -119,8 +119,8 @@ class ExcelRule(MappingRule):
         IntegerRefST("row_1", 1, 100),
         IntegerRefST("row_2", 1, 100),
         # when I set the sequence length to 3 I got the grammar too complex Natlink error.
-        Choice("column_1", make_sequence_dict_up_to_length(alphanumeric.caster_alphabet(), 2)),
-        Choice("column_2", make_sequence_dict_up_to_length(alphanumeric.caster_alphabet(), 2)),
+        Choice("column_1", make_sequence_dict_up_to_length(alphabet_support.caster_alphabet(), 2)),
+        Choice("column_2", make_sequence_dict_up_to_length(alphabet_support.caster_alphabet(), 2)),
     ]
     defaults = {"n": 1, "dict": ""}
 
