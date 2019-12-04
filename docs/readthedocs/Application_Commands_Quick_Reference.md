@@ -1,25 +1,25 @@
 # Application Commands Quick Reference
 
 Classic Install Location: `castervoice\rules\apps`
-The App is followed by pronunciation to `enable` or `disable` the grammars" denoting (CCR). A '/' separates multiple grammars.
+The application name is followed by a pronunciation to `enable` or `disable` and the respective grammars. A '/' separates pronunciations for different grammars belonging to a single app.
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [Adobe acrobat](#adobe-acrobat) - acrobat
 - [Atom](#atom) - atom
-- [Google Chrome](#google-chrome) # google chrome
+- [Google Chrome](#google-chrome) - google chrome
 - [Command Prompt](#command-prompt)
-- [Dragon](#dragon) dragon/dragon spelling window
+- [Dragon](#dragon) - dragon/dragon spelling window
 - [Eclipse](#eclipse) eclipse/eclipse jump (ccr)
 - [Emacs](#emacs) - E max
 - [Excel](#excel) - excel
 - [Internet Explorer](#internet-explorer) - explorer
 - [File Dialogues](#file-dialogues) - file dialogue
-- [Firefox](#firefox) # firefox
+- [Firefox](#firefox) - firefox
 - [Flash Develop](#flash-develop) - flash develop
 - [fman](#fman) - F man
 - [Foxit Reader](#foxit-reader) - fox it reader
 - [Git Bash](#git-bash) - git bash
-- [Gitter](#gitter) - Gitter
+- [Gitter](#gitter) - gitter
 - [GitHub Desktop](#github-desktop) - github desktop
 - [Jetbrains](#jetbrains) - jet brains
 - [KDiff3](#kdiff3) - K diff
@@ -28,13 +28,13 @@ The App is followed by pronunciation to `enable` or `disable` the grammars" deno
 - [Notepad++](#notepad) - notepad plus plus
 - [Outlook](#outlook) - outlook
 - [RStudio](#rstudio) - are studio
-- [SQL Developer](#sql-developer) sequel developer-
+- [SQL Developer](#sql-developer) - sequel developer
 - [SQL Server Management Studio](#sql-server-management-studio) - sequel server management studio
 - [Sublime](#sublime) - sublime
 - [Total Commander](#total-commander) total commander/synchronize directories
 - [Typora](#typora) - tie poor a
 - [Visual Studio](#visual-studio) - visual studio
-- [Visual Studio Code](#visual-studio-code) Visual Studio Code CCR/ Visual Studio Code
+- [Visual Studio Code](#visual-studio-code) Visual Studio Code CCR/Visual Studio Code
 
 <!-- /TOC -->
 
