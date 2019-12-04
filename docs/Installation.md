@@ -7,7 +7,7 @@ Caster currently supports the following speech recognition engines on Microsoft 
 
 ### 1. Python
 
-- **First** Download and install [Python v2.7.X  32-bit](https://sourceforge.net/projects/natlink/files/pythonfornatlink/python2.7.14/python2.7.14.exe/download) or higher but not Python 3. These dependencies will change when Natlink utilizes Python 3.
+- **First** Download and install [Python v2.7.17 32-bit](https://www.python.org/downloads/release/python-2717/) listed as `Windows x86 MSI installer` not Python 3 or the python 2.7 64-bit. These dependencies will change when Natlink utilizes Python 3.
 
 Make sure to select `Add python to path`. This can be done manually by searching for "edit environment variables for your account" and adding your Python27 folder to the list of Path values
 
@@ -15,7 +15,7 @@ Make sure to select `Add python to path`. This can be done manually by searching
 
 - **Second only for Dragon NaturallySpeaking**.
 
-- Download and install [Natlink](https://sourceforge.net/projects/natlink/files/natlink/natlinktest4.1/). Use `Natlink-4.1 whiskey3` or newer.
+- Download and install [Natlink](https://sourceforge.net/projects/natlink/files/natlink/natlink4.2/). Use `Natlink-4.2` or newer.
 
 ### 3. Caster
 1. Download Caster from the [master branch](https://github.com/dictation-toolbox/Caster/archive/master.zip).

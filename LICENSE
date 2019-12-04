@@ -175,6 +175,10 @@ Library.
 Below is a list of all the non-original code used in this work, and the licenses each respective piece uses.
 
 - Dragonfly: LGPL3
-- pywin32: Python Software Foundation License
+- Future: OSI Approved, MIT License (MIT)
+- Pywin32: Python Software Foundation License
 - Pillow: PIL Software License
+- Mock: BSD License (OSI Approved :: BSD License)
 - TiRG by trg787: Public Domain License, see (github.com/synkarius/tirg-dll)
+- Tomlkit: MIT License (MIT)
+- Wxpython: OSI Approved (wxWindows Library License (https://opensource.org/licenses/wxwindows.php)
