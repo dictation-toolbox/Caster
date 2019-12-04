@@ -29,6 +29,7 @@ B) the user of a programming language will know what they're supposed to get fil
 TARGET_CHOICE = Choice(
     "target", {
         "comma": ",",
+        ",": ",",
         "(period | dot)": ".",
         "(pair | parentheses)": "(~)",
         "[square] (bracket | brackets)": "[~]",
@@ -38,7 +39,7 @@ TARGET_CHOICE = Choice(
         "are paren": ")",
         "openers": "(~[~{",
         "closers": "}~]~)",
-        "token": "TOKEN"
+        "token": "TOKEN",
     })
 _CLIP = {}
 
