@@ -11,7 +11,7 @@ from castervoice.lib.temporary import Store, Retrieve
 
 
 class ChromeRule(MappingRule):
-    _mapping = {
+    mapping = {
         "(new window|win new)":
             R(Key("c-n")),
         "(new incognito window | incognito)":

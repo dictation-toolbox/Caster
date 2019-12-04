@@ -20,10 +20,10 @@ class FirefoxRule(MappingRule):
         browser_shared.SHOW_EXTENSIONS:
             R(Key("a-a, l, e/15, enter")),
     }
-   mapping = BrowserSharedCommands.merge_dictionaries(_mapping, BrowserSharedCommands.chromeAndFirefoxMapping)
+    mapping = BrowserSharedCommands.merge_dictionaries(_mapping, BrowserSharedCommands.chromeAndFirefoxMapping)
     extras = browser_shared.get_extras()
     defaults = browser_shared.get_defaults()
 
 
-def get_rule():
-    return FirefoxRule, RuleDetails(name="fire fox", executable="firefox")
+#def get_rule():
+#    return FirefoxRule, RuleDetails(name="fire fox", executable="firefox")
