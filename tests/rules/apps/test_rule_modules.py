@@ -9,9 +9,9 @@ class AppsModulesTestCase(ModulesTestCase):
         from castervoice.rules.apps.speech_engine.dragon_rules import dragon
         from castervoice.rules.apps.editor.eclipse_rules import eclipse2
         from castervoice.rules.apps.editor.eclipse_rules import eclipse
-        from castervoice.rules.apps.mousegrids import gridlegion
-        from castervoice.rules.apps.mousegrids import griddouglas
-        from castervoice.rules.apps.mousegrids import gridrainbow
+        from castervoice.rules.apps.mouse_grids import gridlegion
+        from castervoice.rules.apps.mouse_grids import griddouglas
+        from castervoice.rules.apps.mouse_grids import gridrainbow
         from castervoice.rules.apps.file_manager.totalcmd_rules import totalcmd2
         from castervoice.rules.apps.file_manager.totalcmd_rules import totalcmd
         from castervoice.rules.apps.editor.vscode_rules import vscode
