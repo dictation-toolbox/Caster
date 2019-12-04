@@ -4,7 +4,7 @@ from tests.test_util.modules_testing import ModulesTestCase
 class AppsModulesTestCase(ModulesTestCase):
     def _rule_modules(self):
         from castervoice.rules.apps.browser import firefox, chrome
-        from castervoice.rules.apps.editor.ide import jetbrains
+        from castervoice.rules.apps.editor import jetbrains
         from castervoice.rules.apps.speech_engine.dragon_rules import dragon2
         from castervoice.rules.apps.speech_engine.dragon_rules import dragon
         from castervoice.rules.apps.editor.eclipse_rules import eclipse2
