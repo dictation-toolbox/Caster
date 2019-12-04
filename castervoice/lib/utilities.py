@@ -12,24 +12,26 @@ import traceback
 from __builtin__ import True
 from subprocess import Popen
 import tomlkit
-
-import win32gui
-import win32ui
-import win32clipboard
-
 from castervoice.lib.clipboard import Clipboard
+from castervoice.lib import printer
+from castervoice.lib.util import guidance
 
-from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,
-    HKEY_CURRENT_USER, OpenKey, QueryValueEx)
-
-from dragonfly import Window, Key
+try:
+    import win32gui
+    import win32clipboard
+    from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,
+                         HKEY_CURRENT_USER, OpenKey, QueryValueEx)
+    from dragonfly.windows.window import Window
+    from dragonfly import Key
+except:
+    printer.out("utilities.py imports failed.")
 
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0]
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:
-    from castervoice.lib import settings
+    from castervoice.lib import settings, printer
 
 # filename_pattern was used to determine when to update the list in the element window,
 # checked to see when a new file name had appeared
@@ -49,7 +51,8 @@ except Exception as e:
     print("Virtual desktop accessor loading failed with '%s'" % str(e))
 
 def move_current_window_to_desktop(n=0, follow=False):
-    wndh = Window.get_foreground().handle
+    vda = load_vda()
+    wndh = win32gui.GetForegroundWindow()
     vda.MoveWindowToDesktopNumber(wndh, n-1)
     if follow:
         vda.GoToDesktopNumber(n-1)
@@ -64,6 +67,7 @@ def close_all_workspaces():
 
 def window_exists(classname, windowname):
     try:
+        import win32ui
         win32ui.FindWindow(classname, windowname)
     except win32ui.error:
         return False
@@ -101,6 +105,7 @@ def get_window_title_info():
 
 
 def save_toml_file(data, path):
+    guidance.offer()
     try:
         formatted_data = unicode(tomlkit.dumps(data))
         with io.open(path, "wt", encoding="utf-8") as f:
@@ -110,6 +115,7 @@ def save_toml_file(data, path):
 
 
 def load_toml_file(path):
+    guidance.offer()
     result = {}
     try:
         with io.open(path, "rt", encoding="utf-8") as f:
@@ -123,7 +129,9 @@ def load_toml_file(path):
         simple_log(True)
     return result
 
+
 def save_json_file(data, path):
+    guidance.offer()
     try:
         formatted_data = unicode(json.dumps(data, ensure_ascii=False))
         with io.open(path, "wt", encoding="utf-8") as f:
@@ -133,6 +141,7 @@ def save_json_file(data, path):
 
 
 def load_json_file(path):
+    guidance.offer()
     result = {}
     try:
         with io.open(path, "rt", encoding="utf-8") as json_file:
@@ -153,16 +162,16 @@ def list_to_string(l):
 
 def simple_log(to_file=False):
     msg = list_to_string(sys.exc_info())
-    print(msg)
+    printer.out(msg)
     for tb in traceback.format_tb(sys.exc_info()[2]):
-        print(tb)
+        printer.out(tb)
     if to_file:
         with io.open(settings.SETTINGS["paths"]["LOG_PATH"], 'at', encoding="utf-8") as f:
             f.write(msg + "\n")
 
 
 def availability_message(feature, dependency):
-    print(feature + " feature not available without " + dependency)
+    printer.out(feature + " feature not available without " + dependency)
 
 
 def remote_debug(who_called_it=None):
@@ -172,7 +181,7 @@ def remote_debug(who_called_it=None):
         import pydevd  # @UnresolvedImport pylint: disable=import-error
         pydevd.settrace()
     except Exception:
-        print("ERROR: " + who_called_it +
+        printer.out("ERROR: " + who_called_it +
               " called utilities.remote_debug() but the debug server wasn't running.")
 
 
@@ -189,7 +198,7 @@ def reboot(wsr=False):
         status = natlinkstatus.NatlinkStatus()
         username = status.getUserName()
         popen_parameters.append(username)
-    print(popen_parameters)
+    printer.out(popen_parameters)
     Popen(popen_parameters)
 
 def default_browser_command():
@@ -231,7 +240,7 @@ def clear_log():
             win32gui.SetWindowText(rt_handle, "")
             return
     except Exception as e:
-        print (e)
+        printer.out(e)
 
 def get_clipboard_formats():
     '''

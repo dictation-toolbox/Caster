@@ -18,25 +18,31 @@ Once you have created a rule class with your desired mappings inside, you need t
 ### Global rules
 These rules are available in any context, can be chained together with other commands in a single utterance using CCR, and are enabled using the `enable python` command (for example). All of the programming language grammars and core navigation commands are added as global rules.
 ```python
-control.global_rule(MyRule())
+def get_rule():
+    return MyRule, RuleDetails(ccrtype=CCRType.GLOBAL)
 ```
 
 ### Non-CCR app rules
 These rules are context specific and do not allow multiple commands in sequence. While this may seem like a limitation, for most app commands (e.g. "page back" in a browser) it is rare to want to do multiple things in a single utterance. Using CCR only when necessary improves start-up time and reduces grammar complexity, so most app grammars are implemented this way.
 ```python
-context = AppContext(title="application title")
-control.non_ccr_app_rule(MyRule(), context=context)
+def get_rule():
+    return MyRule, RuleDetails(title="application title")
 ```
 
 ### CCR app rules
 If desired though, it is possible to create contextual commands with CCR, using the following formulation. By default this will allow app commands to be chained with any core commands, but this can be changed by setting the `mwith` property of the rule to a list of rule pronunciations.
 ```python
-context = AppContext(title="application title")
-control.ccr_app_rule(MyRule(), context=context)
+def get_rule():
+    return MyRule, RuleDetails(ccrtype=CCRType.APP, title="application title")
 ```
 
 ### Self modifying rules
 These rules are available globally and modify themselves on the fly. Examples of this in caster include the "bring me" and "alias" commands.
 ```python
-control.selfmod_rule(MyRule())
+// ccr selfmod rule:
+def get_rule():
+    return MyRule, RuleDetails(ccrtype=CCRType.SELFMOD)
+// non-ccr selfmod rule:
+def get_rule():
+    return MyRule, RuleDetails(name="my rule")
 ```

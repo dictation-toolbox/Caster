@@ -1,26 +1,28 @@
-from castervoice.lib.imports import *
+from dragonfly import Repeat, MappingRule
 
-import browser
+import browser_shared
+from castervoice.lib.actions import Key
 from castervoice.apps.browser.browser_shared_commands import BrowserSharedCommands
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.state.short import R
 
-class FirefoxRule(BrowserSharedCommands):
-    pronunciation = "fire fox"
 
+class FirefoxRule(MappingRule):
     _mapping = {
-        browser.PREVIOUS_TAB_N_TIMES:
+        browser_shared.PREVIOUS_TAB_N_TIMES:
             # control shift tab doesn't work and this appears to be an undocumented workaround
             R(Key("c-tab/30")) * Repeat(extra="n"),
-        browser.FIND_NEXT_MATCH:
+        browser_shared.FIND_NEXT_MATCH:
             R(Key("c-g/20")) * Repeat(extra="n"),
-        browser.TOGGLE_BOOKMARK_TOOLBAR:
+        browser_shared.TOGGLE_BOOKMARK_TOOLBAR:
             R(Key("c-b")),
-        browser.SHOW_EXTENSIONS:
+        browser_shared.SHOW_EXTENSIONS:
             R(Key("a-a, l, e/15, enter")),
     }
     mapping = BrowserSharedCommands.merge_dictionaries(_mapping, BrowserSharedCommands.chromeAndFirefoxMapping)
-    extras = browser.EXTRAS
-    defaults = browser.DEFAULTS
+    extras = browser_shared.get_extras()
+    defaults = browser_shared.get_defaults()
 
 
-context = AppContext(executable="firefox")
-control.non_ccr_app_rule(FirefoxRule(), context=context)
+def get_rule():
+    return FirefoxRule, RuleDetails(name="fire fox", executable="firefox")

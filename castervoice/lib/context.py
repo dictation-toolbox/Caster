@@ -8,7 +8,7 @@ from castervoice.lib.clipboard import Clipboard
 
 # Override dragonfly.AppContext with aenea.ProxyAppContext if the 'use_aenea'
 # setting is set to true.
-if settings.SETTINGS["miscellaneous"]["use_aenea"]:
+if settings.settings(["miscellaneous", "use_aenea"]):
     try:
         from aenea import ProxyAppContext as AppContext
     except ImportError:
@@ -172,9 +172,10 @@ def paste_string_without_altering_clipboard(content, pause_time="1"):
     return True
 
 
-def fill_within_line(target, nexus):
+def fill_within_line(target):
     result = navigate_to_character("left", str(target), True)
     if result:
+        from castervoice.lib.ctrl import nexus
         nexus.state.terminate_asynchronous(True)
     return result
 

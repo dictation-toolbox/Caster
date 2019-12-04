@@ -1,7 +1,13 @@
-from castervoice.lib.imports import *
+from dragonfly import Dictation, MappingRule
 
-class SQLDeveloperRule(MergeRule):
-    pronunciation = "sequel developer"
+from castervoice.lib.actions import Key
+
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.state.short import R
+
+
+class SQLDeveloperRule(MappingRule):
 
     mapping = {
         "run this query": R(Key("f9")),
@@ -15,5 +21,8 @@ class SQLDeveloperRule(MergeRule):
     defaults = {"n": 1}
 
 
-context = AppContext(executable="sqldeveloper64W", title="SQL Developer")
-control.non_ccr_app_rule(SQLDeveloperRule(), context=context)
+def get_rule():
+    details = RuleDetails(name="sequel developer",
+                          executable="sqldeveloper64W",
+                          title="SQL Developer")
+    return SQLDeveloperRule, details

@@ -1,9 +1,11 @@
-from castervoice.lib.imports import *
+from dragonfly import Repeat, Dictation, MappingRule
+from castervoice.lib.actions import Key
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.state.short import R
 
 
-class MSVCRule(MergeRule):
-    pronunciation = "Microsoft visual studio"
-
+class MSVCRule(MappingRule):
     mapping = {
         "cursor prior": R(Key("c-minus")),
         "cursor next": R(Key("cs-minus")),
@@ -34,5 +36,5 @@ class MSVCRule(MergeRule):
     defaults = {"n": 1}
 
 
-context = AppContext(executable="WDExpress")
-control.non_ccr_app_rule(MSVCRule(), context=context)
+def get_rule():
+    return MSVCRule, RuleDetails(name="Microsoft visual studio", executable="WDExpress")

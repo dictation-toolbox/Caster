@@ -1,7 +1,14 @@
-from castervoice.lib.imports import *
+from dragonfly import Repeat, Dictation, MappingRule
 
-class NPPRule(MergeRule):
-    pronunciation = "notepad plus plus"
+from castervoice.lib.actions import Key, Text, Mouse
+
+from castervoice.lib.actions import Text
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.state.short import R
+
+
+class NPPRule(MappingRule):
 
     mapping = {
         "stylize <n2>":
@@ -28,5 +35,5 @@ class NPPRule(MergeRule):
     defaults = {"n": 1}
 
 
-context = AppContext(executable="notepad++")
-control.non_ccr_app_rule(NPPRule(), context=context)
+def get_rule():
+    return NPPRule, RuleDetails(name="notepad plus plus", executable="notepad++")

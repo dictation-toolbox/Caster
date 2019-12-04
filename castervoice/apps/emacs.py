@@ -1,9 +1,13 @@
-from castervoice.lib.imports import *
+from dragonfly import Dictation, MappingRule
+
+from castervoice.lib.actions import Key
+
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.state.short import R
 
 
-class EmacsRule(MergeRule):
-    pronunciation = "E max"
-
+class EmacsRule(MappingRule):
     mapping = {
         "open file": R(Key("c-x, c-f")),
         "save file": R(Key("c-x, c-s")),
@@ -48,5 +52,5 @@ class EmacsRule(MergeRule):
     defaults = {"n": 1, "mim": ""}
 
 
-context = AppContext(executable="emacs", title="emacs")
-control.non_ccr_app_rule(EmacsRule(), context=context)
+def get_rule():
+    return EmacsRule, RuleDetails(name="E max", executable="emacs", title="emacs")

@@ -12,6 +12,7 @@ complexity_report*
 *.*~
 *.aux
 *.synctex.gz
+_test/
 
 # Ignore Rope
 .ropeproject/
@@ -23,7 +24,7 @@ complexity_report*
 # Ignore Natlink
 /core/
 
-# Ignore User Rules and Filters
+# Ignore User Content
 /caster/user
 
 # Ignore Custom Sikuli Scripts

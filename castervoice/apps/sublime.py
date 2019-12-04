@@ -1,9 +1,14 @@
-from castervoice.lib.imports import *
+from dragonfly import Function, Dictation, Choice, MappingRule
+
+from castervoice.lib import navigation
+from castervoice.lib.actions import Key, Text
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.state.short import R
+from castervoice.lib.temporary import Store, Retrieve
 
 
-class SublimeRule(MergeRule):
-    pronunciation = "sublime"
-
+class SublimeRule(MappingRule):
     mapping = {
         "new file":
             R(Key("c-n")),
@@ -186,5 +191,5 @@ class SublimeRule(MergeRule):
     }
 
 
-context = AppContext(executable="sublime_text", title="Sublime Text")
-control.non_ccr_app_rule(SublimeRule(), context=context)
+def get_rule():
+    return SublimeRule, RuleDetails(name="sublime", executable="sublime_text", title="Sublime Text")

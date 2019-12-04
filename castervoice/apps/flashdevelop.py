@@ -1,9 +1,13 @@
-from castervoice.lib.imports import *
+from dragonfly import Repeat, Dictation, MappingRule, Pause
+
+from castervoice.lib.actions import Key, Text
+
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.state.short import R
 
 
-class FlashDevelopRule(MergeRule):
-    pronunciation = "flash develop"
-
+class FlashDevelopRule(MappingRule):
     mapping = {
         "prior tab [<n>]": R(Key("c-pgup"))*Repeat(extra="n"),
         "next tab [<n>]": R(Key("c-pgdown"))*Repeat(extra="n"),
@@ -26,6 +30,7 @@ class FlashDevelopRule(MergeRule):
         "(debug | run) last": R(Key("f5")),
         "split view horizontal": R(Key("cs-enter")),
         "auto complete": R(Key("cs-1")),
+        "[go to] line <n>": R(Key("c-g") + Pause("50") + Text("%(n)d") + Key("enter")),
     }
     extras = [
         Dictation("text"),
@@ -35,19 +40,8 @@ class FlashDevelopRule(MergeRule):
     defaults = {"n": 1, "mim": ""}
 
 
-class FlashDevelopCCR(MergeRule):
-    pronunciation = "flash develop"
-    non = FlashDevelopRule
-
-    mapping = {
-        "[go to] line <n>": R(Key("c-g") + Pause("50") + Text("%(n)d") + Key("enter")),
-    }
-    extras = [
-        Dictation("text"),
-        IntegerRefST("n", 1, 1000),
-    ]
-    defaults = {"n": 1}
-
-
-context = AppContext(executable="FlashDevelop", title="FlashDevelop")
-control.ccr_app_rule(FlashDevelopCCR(), context=context)
+def get_rule():
+    details = RuleDetails(name="flash develop",
+                          executable="FlashDevelop",
+                          title="FlashDevelop")
+    return FlashDevelopRule, details

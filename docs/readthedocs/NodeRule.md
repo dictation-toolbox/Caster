@@ -51,9 +51,9 @@ If the **status window** is active, the NodeRule will use it to display hints ab
 
 ## How to Create and Register a Node
 
-### Making Your Own HintNode
+### Making Your Own TreeNode
 
-To create a NodeRule, you first have to create a [HintNode](https://github.com/synkarius/caster/blob/master/caster/lib/dfplus/hint/hintnode.py) which will be passed into the NodeRule constructor. For examples, look at the [nodes directory](https://github.com/synkarius/caster/tree/master/caster/lib/dfplus/hint/nodes). A HintNode basically looks like this:
+To create a TreeRule, you first have to create a [TreeNode](https://github.com/synkarius/caster/blob/master/caster/lib/dfplus/hint/hintnode.py) which will be passed into the NodeRule constructor. For examples, look at the [nodes directory](https://github.com/synkarius/caster/tree/master/caster/lib/dfplus/hint/nodes). A TreeNode basically looks like this:
 
 ```python
 HintNode("spec", SomeDragonflyAction(), [<child nodes>], [<extras>], {<defaults>})

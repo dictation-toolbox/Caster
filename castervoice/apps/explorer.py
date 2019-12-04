@@ -1,8 +1,13 @@
-from castervoice.lib.imports import *
+from dragonfly import Dictation, MappingRule
 
-class IERule(MergeRule):
-    pronunciation = "explorer"
+from castervoice.lib.actions import Key, Text
 
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.state.short import R
+
+
+class IERule(MappingRule):
     mapping = {
         "address bar":
             R(Key("a-d")),
@@ -37,5 +42,5 @@ class IERule(MergeRule):
     defaults = {"n": 1}
 
 
-context = AppContext(executable="explorer")
-control.non_ccr_app_rule(IERule(), context=context)
+def get_rule():
+    return IERule, RuleDetails(name="explorer", executable="explorer")

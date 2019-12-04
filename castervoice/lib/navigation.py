@@ -8,12 +8,11 @@ from ctypes import windll
 from subprocess import Popen
 
 import dragonfly
-from dragonfly import Choice, monitors, Pause
+from dragonfly import Choice, monitors
 from castervoice.asynch.mouse.legion import LegionScanner
-from castervoice.lib import control, settings, utilities, textformat
+from castervoice.lib import control, settings, utilities, textformat, printer
 from castervoice.lib.actions import Key, Text, Mouse
 from castervoice.lib.clipboard import Clipboard
-from castervoice.lib.ctrl.dependencies import DependencyMan
 
 DIRECTION_STANDARD = {
     "sauce [E]": "up",
@@ -41,6 +40,7 @@ TARGET_CHOICE = Choice(
         "closers": "}~]~)",
         "token": "TOKEN"
     })
+_CLIP = {}
 
 
 def get_direction_choice(name):
@@ -48,47 +48,43 @@ def get_direction_choice(name):
     return Choice(name, DIRECTION_STANDARD)
 
 
-def initialize_clipboard(nexus):
-    if len(nexus.clip) == 0:
-        nexus.clip = utilities.load_json_file(
-            settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
+def initialize_clipboard():
+    global _CLIP
+    if len(_CLIP) == 0:
+        _CLIP = utilities.load_json_file(settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
 
 
-def mouse_alternates(mode, nexus, monitor=1):
-    if DependencyMan.PIL:
-        if mode == "legion" and not utilities.window_exists(None, "legiongrid"):
-            r = monitors[int(monitor) - 1].rectangle
-            bbox = [
-                int(r.x),
-                int(r.y),
-                int(r.x) + int(r.dx) - 1,
-                int(r.y) + int(r.dy) - 1
-            ]
-            ls = LegionScanner()
-            ls.scan(bbox)
-            tscan = ls.get_update()
-            Popen([
-                settings.SETTINGS["paths"]["PYTHONW"],
-                settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0], "-m",
-                str(monitor)
-            ])  # , "-d", "500_500_500_500"
-        elif mode == "rainbow" and not utilities.window_exists(None, "rainbowgrid"):
-            Popen([
-                settings.SETTINGS["paths"]["PYTHONW"],
-                settings.SETTINGS["paths"]["RAINBOW_PATH"], "-g", "r", "-m",
-                str(monitor)
-            ])
-        elif mode == "douglas" and not utilities.window_exists(None, "douglasgrid"):
-            Popen([
-                settings.SETTINGS["paths"]["PYTHONW"],
-                settings.SETTINGS["paths"]["DOUGLAS_PATH"], "-g", "d", "-m",
-                str(monitor)
-            ])
-    else:
-        utilities.availability_message(mode.title(), "PIL")
+def mouse_alternates(mode, monitor=1):
+    if mode == "legion" and not utilities.window_exists(None, "legiongrid"):
+        r = monitors[int(monitor) - 1].rectangle
+        bbox = [
+            int(r.x),
+            int(r.y),
+            int(r.x) + int(r.dx) - 1,
+            int(r.y) + int(r.dy) - 1
+        ]
+        ls = LegionScanner()
+        ls.scan(bbox)
+        tscan = ls.get_update()
+        Popen([
+            settings.SETTINGS["paths"]["PYTHONW"],
+            settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0], "-m",
+            str(monitor)
+        ])
+    elif mode == "rainbow" and not utilities.window_exists(None, "rainbowgrid"):
+        Popen([
+            settings.SETTINGS["paths"]["PYTHONW"],
+            settings.SETTINGS["paths"]["RAINBOW_PATH"], "-g", "r", "-m",
+            str(monitor)
+        ])
+    elif mode == "douglas" and not utilities.window_exists(None, "douglasgrid"):
+        Popen([
+            settings.SETTINGS["paths"]["PYTHONW"],
+            settings.SETTINGS["paths"]["DOUGLAS_PATH"], "-g", "d", "-m",
+            str(monitor)
+        ])
 
-
-def _text_to_clipboard(keystroke, nnavi500, nexus):
+def _text_to_clipboard(keystroke, nnavi500):
     if nnavi500 == 1:
         Key(keystroke).execute()
     else:
@@ -96,14 +92,15 @@ def _text_to_clipboard(keystroke, nnavi500, nexus):
         cb = Clipboard(from_system=True)
         Key(keystroke).execute()
         key = str(nnavi500)
+        global _CLIP
         for i in range(0, max_tries):
             failure = False
             try:
                 # time for keypress to execute
                 time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
-                nexus.clip[key] = unicode(Clipboard.get_system_text())
+                _CLIP[key] = unicode(Clipboard.get_system_text())
                 utilities.save_json_file(
-                    nexus.clip, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
+                    _CLIP, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
             except Exception:
                 failure = True
                 utilities.simple_log()
@@ -112,15 +109,15 @@ def _text_to_clipboard(keystroke, nnavi500, nexus):
         cb.copy_to_system()
 
 
-def stoosh_keep_clipboard(nnavi500, nexus):
-    _text_to_clipboard("c-c", nnavi500, nexus)
+def stoosh_keep_clipboard(nnavi500):
+    _text_to_clipboard("c-c", nnavi500)
 
 
-def cut_keep_clipboard(nnavi500, nexus):
-    _text_to_clipboard("c-x", nnavi500, nexus)
+def cut_keep_clipboard(nnavi500):
+    _text_to_clipboard("c-x", nnavi500)
 
 
-def drop_keep_clipboard(nnavi500, nexus, capitalization, spacing):
+def drop_keep_clipboard(nnavi500, capitalization, spacing):
     # Maintain standard spark functionality for non-strings
     if capitalization == 0 and spacing == 0 and nnavi500 == 1:
         Key("c-v").execute()
@@ -128,8 +125,8 @@ def drop_keep_clipboard(nnavi500, nexus, capitalization, spacing):
     # Get clipboard text
     if nnavi500 > 1:
         key = str(nnavi500)
-        if key in nexus.clip:
-            text = nexus.clip[key]
+        if key in _CLIP:
+            text = _CLIP[key]
         else:
             dragonfly.get_engine().speak("slot empty")
             text = None
@@ -158,9 +155,10 @@ def duple_keep_clipboard(nnavi50):
     cb.copy_to_system()
 
 
-def erase_multi_clipboard(nexus):
-    nexus.clip = {}
-    utilities.save_json_file(nexus.clip,
+def erase_multi_clipboard():
+    global _CLIP
+    _CLIP = {}
+    utilities.save_json_file(_CLIP,
                              settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
 
 
@@ -169,26 +167,26 @@ def volume_control(n, volume_mode):
         Key("volume" + str(volume_mode)).execute()
 
 
-def kill_grids_and_wait(nexus):
+def kill_grids_and_wait():
     window_title = utilities.get_active_window_title()
     if (window_title == settings.RAINBOW_TITLE or window_title == settings.DOUGLAS_TITLE
             or window_title == settings.LEGION_TITLE):
-        nexus.comm.get_com("grids").kill()
+        control.nexus().comm.get_com("grids").kill()
         time.sleep(0.1)
 
 
-def mouse_click(nexus, button):
-    kill_grids_and_wait(nexus)
+def mouse_click(button):
+    kill_grids_and_wait()
     Mouse(button).execute()
 
 
-left_click = lambda nexus: mouse_click(nexus, "left")
-right_click = lambda nexus: mouse_click(nexus, "right")
-middle_click = lambda nexus: mouse_click(nexus, "middle")
-left_down = lambda nexus: mouse_click(nexus, "left:down")
-left_up = lambda nexus: mouse_click(nexus, "left:up")
-right_down = lambda nexus: mouse_click(nexus, "right:down")
-right_up = lambda nexus: mouse_click(nexus, "right:up")
+left_click   = lambda: mouse_click("left")
+right_click  = lambda: mouse_click("right")
+middle_click = lambda: mouse_click("middle")
+left_down    = lambda: mouse_click("left:down")
+left_up      = lambda: mouse_click("left:up")
+right_down   = lambda: mouse_click("right:down")
+right_up     = lambda: mouse_click("right:up")
 
 
 def wheel_scroll(direction, nnavi500):

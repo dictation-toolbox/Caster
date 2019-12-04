@@ -1,8 +1,16 @@
-from castervoice.lib.imports import *
+from dragonfly import Pause, Function, Choice, MappingRule
 
-class RStudioRule(MergeRule):
-    pronunciation = "are studio"
+from castervoice.lib.actions import Key, Text, Mouse
 
+from castervoice.lib import navigation
+from castervoice.lib.actions import Text
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.state.short import R
+from castervoice.lib.temporary import Store, Retrieve
+
+
+class RStudioRule(MappingRule):
     mapping = {
     "new file":
         R(Key("cs-n")),
@@ -68,5 +76,7 @@ class RStudioRule(MergeRule):
     ]
     defaults = {"ln2": ""}
 
-context = AppContext(executable="rstudio")
-control.non_ccr_app_rule(RStudioRule(), context=context)
+
+def get_rule():
+    details = RuleDetails(name="are studio", executable="rstudio")
+    return RStudioRule, details

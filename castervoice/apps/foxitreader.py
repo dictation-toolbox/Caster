@@ -1,8 +1,13 @@
-from castervoice.lib.imports import *
+from dragonfly import Repeat, Dictation, MappingRule
 
-class FoxitRule(MergeRule):
-    pronunciation = "fox it reader"
+from castervoice.lib.actions import Key
 
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.state.short import R
+
+
+class FoxitRule(MappingRule):
     mapping = {
         "next tab [<n>]": R(Key("c-tab"))*Repeat(extra="n"),
         "prior tab [<n>]": R(Key("cs-tab"))*Repeat(extra="n"),
@@ -16,5 +21,5 @@ class FoxitRule(MergeRule):
     defaults = {"n": 1, "mim": ""}
 
 
-context = AppContext(executable="Foxit Reader")
-control.non_ccr_app_rule(FoxitRule(), context=context)
+def get_rule():
+    return FoxitRule, RuleDetails(name="fox it reader", title="Foxit Reader")

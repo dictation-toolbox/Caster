@@ -1,4 +1,10 @@
-from castervoice.lib.imports import *
+from dragonfly import Mimic, Function, MappingRule
+
+from castervoice.lib.actions import Key, Text
+
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.state.short import R
 
 
 def _apply(n):
@@ -6,8 +12,7 @@ def _apply(n):
         Text("stash@{" + str(int(n)) + "}").execute()
 
 
-class GitBashRule(MergeRule):
-    pronunciation = "git bash"
+class GitBashRule(MappingRule):
     GIT_ADD_ALL = "g, i, t, space, a, d, d, space, minus, A"
     GIT_COMMIT = "g, i, t, space, c, o, m, m, i, t, space, minus, m, space, quote, quote, left"
     mapping = {
@@ -102,15 +107,19 @@ class GitBashRule(MergeRule):
     defaults = {"n": 0}
 
 
-terminal_context = AppContext(executable=[
-    "\\sh.exe", "\\bash.exe", "\\cmd.exe", "\\mintty.exe", "\\powershell.exe"
-])
+_executables = [
+    "\\sh.exe",
+    "\\bash.exe",
+    "\\cmd.exe",
+    "\\mintty.exe",
+    "\\powershell.exe",
+    "idea",
+    "idea64",
+    "studio64",
+    "pycharm"
+]
 
-jetbrains_context = AppContext(executable="idea", title="IntelliJ") \
-          | AppContext(executable="idea64", title="IntelliJ") \
-          | AppContext(executable="studio64") \
-          | AppContext(executable="pycharm")
 
-context = terminal_context | jetbrains_context
+def get_rule():
+    return GitBashRule, RuleDetails(name="git bash", executable=_executables)
 
-control.ccr_app_rule(GitBashRule(), context)

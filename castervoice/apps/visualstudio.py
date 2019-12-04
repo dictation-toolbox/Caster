@@ -1,9 +1,13 @@
-from castervoice.lib.imports import *
+from dragonfly import Repeat, Dictation, MappingRule
 
 
-class VisualStudioRule(MergeRule):
-    pronunciation = "visual studio"
+from castervoice.lib.actions import Key, Text
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.state.short import R
 
+
+class VisualStudioRule(MappingRule):
     mapping = {
         "next tab [<n>]":
             R(Key("ca-pgdown"))*Repeat(extra="n"),
@@ -84,5 +88,5 @@ class VisualStudioRule(MergeRule):
     defaults = {"n": 1, "mim": ""}
 
 
-context = AppContext(executable="devenv")
-control.non_ccr_app_rule(VisualStudioRule(), context=context)
+def get_rule():
+    return VisualStudioRule, RuleDetails(name="visual studio", executable="devenv")

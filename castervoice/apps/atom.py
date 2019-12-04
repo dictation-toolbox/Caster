@@ -3,11 +3,20 @@ __author__ = 'LexiconCode'
 Command-module for Atom
 Official Site "https://atom.io/"
 """
-from castervoice.lib.imports import *
 
 # How long to wait for the Atom palette to load before hitting the enter key
+from dragonfly import Pause, Function, Repeat, Dictation, Choice, MappingRule
+
+from castervoice.lib.actions import Text, Key
+from castervoice.lib.context import AppContext
+
+from castervoice.lib import settings, navigation
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.state.short import R
+
 atom_palette_wait = 30
-if settings.SETTINGS["miscellaneous"]["atom_palette_wait"]:
+if settings.settings(["miscellaneous", "atom_palette_wait"]):
     atom_palette_wait = int(settings.SETTINGS["miscellaneous"]["atom_palette_wait"])
 
 
@@ -15,8 +24,7 @@ def ACP(command):
     """Utilize the Palette UI to execute commands."""
     return R(Key("cs-p") + Pause(str(atom_palette_wait)) + Text(command) + Key("enter"))
 
-
-class AtomRule(MergeRule):
+class AtomRule(MappingRule):
     """
     Commands for the Atom editor.
 
@@ -30,8 +38,6 @@ class AtomRule(MergeRule):
     the category but are not displayed by the menu or UI Legend: '#' for not assigned,
     '##' for shortcut or functional duplicate.
     """
-
-    pronunciation = "atom"
 
     mapping = {
         # Menu UI------------------------------------------------------------------------
@@ -563,5 +569,5 @@ class AtomRule(MergeRule):
     }
 
 
-context = AppContext(executable="atom", title="Atom")
-control.non_ccr_app_rule(AtomRule(), context=context)
+def get_rule():
+    return AtomRule, RuleDetails(name="atom", executable="atom", title="Atom")

@@ -3,12 +3,15 @@ __author__ = 'LexiconCode'
 Command-module for Typora
 Official Site "https://typora.io/"
 """
-from castervoice.lib.imports import *
+from dragonfly import Repeat, Dictation, MappingRule
+
+from castervoice.lib.actions import Key
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.state.short import R
 
 
-class TyporaRule(MergeRule):
-    pronunciation = "tie poor a"
-
+class TyporaRule(MappingRule):
     mapping = {
         # File
         "new file": R(Key("c-n")),
@@ -81,5 +84,7 @@ class TyporaRule(MergeRule):
     defaults = {"n": 1, "h": 1}
 
 
-context = AppContext(executable="typora")
-control.non_ccr_app_rule(TyporaRule(), context=context)
+def get_rule():
+    details = RuleDetails(name="tie poor a",
+                          executable="typora")
+    return TyporaRule, details

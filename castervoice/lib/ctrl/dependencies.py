@@ -5,7 +5,7 @@ Created on Oct 7, 2015
 '''
 import os, sys, socket, time, pkg_resources, subprocess
 from pkg_resources import VersionConflict, DistributionNotFound
-from subprocess import Popen
+from datetime import datetime, date
 
 update = None
 
@@ -19,6 +19,7 @@ def find_pip():
     if sys.platform.startswith("linux"):
         pip = os.path.join(python_scripts, "pip")
         return pip
+    return None
 
 
 def install_type():
@@ -84,7 +85,6 @@ def dependency_check(command=None):
 
 
 def dep_missing():
-    # Checks for missing dependencies with the classic install
     uppath = lambda _path, n: os.sep.join(_path.split(os.sep)[:-n])
     requirements = os.path.join(uppath(__file__, 4), "requirements.txt")
     with open(requirements) as f:
@@ -96,8 +96,7 @@ def dep_missing():
         except VersionConflict:
             pass
         except DistributionNotFound as e:
-            print(
-                "\n Caster: {0} dependency is missing. Use 'pip install {0}' in CMD or Terminal to install"
+            print("\n Caster: {0} dependency is missing. Use 'pip install {0}' in CMD or Terminal to install"
                 .format(e.req))
             time.sleep(15)
 
@@ -134,16 +133,35 @@ def dep_min_version():
             .format(pippackages))
 
 
-def online_mode():
-    # Tries to import settings on failure online_mode is true
+def update_timer():
+    # Checks for updates every X days on startup
     try:
         from castervoice.lib import settings
-        if settings.SETTINGS["miscellaneous"]["online_mode"] is True:
-            return True
+        onlinemode = settings.SETTINGS["online"]["online_mode"]
+        lastupdate = settings.SETTINGS["online"]["last_update_date"] 
+        updateinterval = settings.SETTINGS["online"]["update_interval"]
+        if lastupdate == 'None':
+            lastupdate = str(date.today())
+            settings.SETTINGS["online"]["last_update_date"] = lastupdate
+        if onlinemode == True:
+            today = date.today()
+            lastdate = datetime.strptime(lastupdate, "%Y-%m-%d").date()
+            diff = today - lastdate 
+            if diff.days >= updateinterval: # int Days
+                if internet_check() == True:
+                    settings.SETTINGS["online"]["last_update_date"] = str(date.today())
+                    print "Searching for updates..."
+                    return True
+                else:
+                    print("\nCaster: Network off-line check network connection\n")
+                    return False
+            else:
+                return False
         else:
+            print("\nCaster: Off-line mode is enabled\n")
             return False
     except ImportError:
-        return True
+        return False
 
 
 class DependencyMan:
@@ -153,17 +171,11 @@ class DependencyMan:
         if install is "classic":
             dep_min_version()
             dep_missing()
-        if online_mode() == True:
-            if internet_check() == True:
-                dependency_check(command="dragonfly2")
-                if install is "pip":
-                    dependency_check(command="castervoice")
-            else:
-                print("\nCaster: Network off-line check network connection\n")
-        else:
-            print("\nCaster: Off-line mode is enabled\n")
+        if update_timer() == True:
+            dependency_check(command="dragonfly2")
+            if install is "pip":
+                dependency_check(command="castervoice")
 
     NATLINK = True
-    PIL = True
     PYWIN32 = True
     WX = True
