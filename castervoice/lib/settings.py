@@ -87,6 +87,7 @@ HMC_TITLE_CONFIRM = " :: Confirm"
 LEGION_TITLE = "legiongrid"
 RAINBOW_TITLE = "rainbowgrid"
 DOUGLAS_TITLE = "douglasgrid"
+SUDOKU_TITLE = "sudokugrid"
 SETTINGS_WINDOW_TITLE = "Caster Settings Window v "
 
 # enums
@@ -298,6 +299,8 @@ _DEFAULT_SETTINGS = {
             BASE_PATH + "/asynch/settingswindow.py",
         "SIKULI_SERVER_PATH":
             BASE_PATH + "/asynch/sikuli/server/xmlrpc_server.sikuli",
+        "SUDOKU_PATH":
+            BASE_PATH + "/asynch/mouse/grids.py",
         "WSR_PATH":
             "C:/Windows/Speech/Common/sapisvr.exe",
         "TERMINAL_PATH":

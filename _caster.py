@@ -112,6 +112,8 @@ class MainRule(MergeRule):
             R(Function(navigation.mouse_alternates, mode="rainbow", nexus=_NEXUS)),
         "douglas [<monitor>]":
             R(Function(navigation.mouse_alternates, mode="douglas", nexus=_NEXUS)),
+        "sudoku [<monitor>]":
+            R(Function(navigation.mouse_alternates, mode="sudoku", nexus=_NEXUS)),
 
         # ccr de/activation
         "<enable> <name>":
