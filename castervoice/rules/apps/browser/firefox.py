@@ -7,6 +7,7 @@ from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.short import R
 
 from castervoice.lib import github_automation
+from castervoice.lib.temporary import Store, Retrieve
 
 class FirefoxRule(MappingRule):
     mapping = {
@@ -94,6 +95,11 @@ class FirefoxRule(MappingRule):
             R(Key("c-b")),
         "[show] (extensions|plugins)":
             R(Key("a-a, l, e/15, enter")),
+        "google that":
+            R(Store(remove_cr=True) + Key("c-t") + Retrieve() + Key("enter")),
+        "wikipedia that":
+            R(Store(space="+", remove_cr=True) + Key("c-t") + Text(
+                "https://en.wikipedia.org/w/index.php?search=") + Retrieve() + Key("enter")),
     }
     extras = [
         Choice("nth", {
