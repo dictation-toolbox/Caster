@@ -297,7 +297,7 @@ class VSCodeNonCcrRule(MappingRule):
 
 
 def get_rule():
-    details = RuleDetails(name="Visual Studio Code Non Continuous",
+    details = RuleDetails(name="Visual Studio Code",
                           executable="code",
                           title="Visual Studio Code")
     return VSCodeNonCcrRule, details

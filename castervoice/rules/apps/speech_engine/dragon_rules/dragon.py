@@ -9,8 +9,6 @@ from castervoice.lib.merge.state.short import R
 
 
 class DragonRule(MappingRule):
-    pronunciation = "dragon"
-
     mapping = {
         "format <text>": Function(cap_dictation, extra={"text"}),
         '(lock Dragon | deactivate)':

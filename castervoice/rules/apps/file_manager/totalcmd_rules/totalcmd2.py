@@ -19,5 +19,5 @@ class SyncDirsRule(MappingRule):
 def get_rule():
     details = RuleDetails(name="total commander synchronize directories",
                           executable=["totalcmd", "totalcmd64"],
-                          title='Synchronize directories')
+                          title='synchronize directories')
     return SyncDirsRule, details

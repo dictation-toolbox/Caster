@@ -11,7 +11,7 @@ from castervoice.lib.merge.state.short import R
 
 
 class VSCodeCcrRule(MergeRule):
-    pronunciation = "visual studio code continuous"
+    pronunciation = "visual studio code ccr"
 
     mapping = {
         # Note: If you get the bad grammar grammar too complex error, move some of these commands into the non-CCR rule
