@@ -1,4 +1,5 @@
 # Application Commands Quick Reference
+Classic Install Location: `castervoice\rules\apps`
 
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
