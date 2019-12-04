@@ -3,7 +3,8 @@
 Caster currently supports the following speech recognition engines on Microsoft Windows Vista through Windows 10.
 
 - Windows Speech Recognition (WSR)
-- Dragon NaturallySpeaking (DNS) - Caster only supports Dragon NaturallySpeaking 13 or higher.
+- Dragon NaturallySpeaking (DPI) - Caster only supports Dragon NaturallySpeaking 13 or higher.
+    - Recommended due to instability of Internet browsers and (DPI) disabling the DNS browser plug-ins.
 
 ### 1. Python
 
