@@ -2,6 +2,8 @@ import os
 import sys
 import unittest
 
+from dragonfly import get_engine
+
 from castervoice.lib.ctrl.mgr.errors.guidance_rejection import GuidanceRejectionException
 from castervoice.lib.util import guidance
 from tests.test_util import settings_mocking
@@ -16,6 +18,7 @@ def get_master_suite():
 
 
 def run_tests():
+    get_engine("text")
     settings_mocking.prevent_initialize()
     return unittest.TextTestRunner(verbosity=2).run(get_master_suite())
 
