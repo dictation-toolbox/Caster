@@ -21,7 +21,7 @@ if settings.SYSTEM_INFORMATION["platform"] not in ["win32", "win-amd64"] :
 settings.WSR = __name__ == "__main__"
 
 if settings.WSR:
-    from castervoice.ccr.standard import SymbolSpecs
+    from castervoice.rules.ccr.standard import SymbolSpecs
     SymbolSpecs.set_cancel_word("escape")
 from castervoice.lib import control
 

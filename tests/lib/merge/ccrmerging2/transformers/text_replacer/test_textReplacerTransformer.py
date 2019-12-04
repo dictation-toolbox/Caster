@@ -2,8 +2,8 @@ from unittest import TestCase
 
 from dragonfly import MappingRule, Dictation, Choice
 
-from castervoice.ccr.core.alphabet import Alphabet
-from castervoice.ccr.core.nav import Navigation
+from castervoice.rules.core.alphabet_rules.alphabet import Alphabet
+from castervoice.rules.core.navigation_rules.nav import Navigation
 from castervoice.lib.merge.ccrmerging2.transformers.text_replacer.text_replacer import TextReplacerTransformer
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.actions2 import NullAction
