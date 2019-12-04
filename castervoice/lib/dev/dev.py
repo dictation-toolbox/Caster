@@ -18,9 +18,9 @@ from castervoice.lib.merge.state.actions2 import NullAction, ConfirmAction, \
     BoxAction
 from castervoice.lib.merge.state.short import L, S, R
 from castervoice.lib.merge.state.stackitems import StackItemRegisteredAction
-from castervoice.lib.tests import testrunner
-from castervoice.lib.tests.test_complexity import run_tests
-from castervoice.lib.tests.testutils import MockAlternative
+# from castervoice.lib.tests import testrunner # Deprecated
+# from castervoice.lib.tests.test_complexity import run_tests # Deprecated
+# from castervoice.lib.tests.testutils import MockAlternative # Deprecated
 
 if os.path.isfile(settings.SETTINGS["paths"]["CONFIGDEBUGTXT_PATH"]) is False:
     configdebug_default = settings.SETTINGS["paths"][
@@ -98,10 +98,10 @@ class DevelopmentHelp(MappingRule):
             R(Function(devgen.refresh), rdescript="Dev: Refreshed Debug File"),
         "Agrippa <filetype> <path>":
             Function(grep_this),
-        "run rule complexity test":
-            Function(lambda: run_tests()),
-        "run unit tests":
-            Function(testrunner.run_tests),
+#        "run rule complexity test":
+#            Function(lambda: run_tests()),
+#        "run unit tests":
+#            Function(testrunner.run_tests),
         "run remote debugger":
             Function(run_remote_debugger),
     }
@@ -228,13 +228,13 @@ class StackTest(MappingRule):
     defaults = {"text": "", "text2": ""}
 
 
-def load():
-    global grammar
-    grammar.add_rule(StackTest())
-    grammar.add_rule(DevelopmentHelp())
-    grammar.add_rule(Experimental())
-    grammar.load()
+#def load(): # ToDo: Migrate to Caster 1.0.0
+#    global grammar
+#    grammar.add_rule(StackTest())
+#    grammar.add_rule(DevelopmentHelp())
+#    grammar.add_rule(Experimental())
+#    grammar.load()
 
 
-if settings.SETTINGS["miscellaneous"]["dev_commands"]:
-    load()
+#if settings.SETTINGS["miscellaneous"]["dev_commands"]:
+#    load()

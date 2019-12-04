@@ -51,7 +51,7 @@ except Exception as e:
     print("Virtual desktop accessor loading failed with '%s'" % str(e))
 
 def move_current_window_to_desktop(n=0, follow=False):
-    vda = load_vda()
+    vda = load_vda()  # pylint: disable=undefined-variable
     wndh = win32gui.GetForegroundWindow()
     vda.MoveWindowToDesktopNumber(wndh, n-1)
     if follow:

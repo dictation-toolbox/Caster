@@ -73,7 +73,7 @@ def navigate_to_character(direction3, target, fill=False):
             Key("left" if look_left else "right").execute()
             '''number of times to press left or right before the highlight
             (the target may be a part of a fully highlighted word): '''
-            nt = index if look_left else len(context) - index - 1
+            nt = index if look_left else len(context) - index - 1 # pylint: disable=no-member
             if nt != 0:
                 Key("right/5:" + str(nt) if look_left else "left/5:" + str(nt)).execute()
             '''highlight only the target'''
@@ -176,7 +176,7 @@ def fill_within_line(target):
     result = navigate_to_character("left", str(target), True)
     if result:
         from castervoice.lib.ctrl import nexus
-        nexus.state.terminate_asynchronous(True)
+        nexus.state.terminate_asynchronous(True) # pylint: disable=no-member
     return result
 
 

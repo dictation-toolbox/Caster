@@ -8,4 +8,4 @@ class BaseMergingStrategy(object):
     """
 
     def merge_into_single(self, sorted_checked_rules):
-        raise DontUseBaseClassError()
+        raise DontUseBaseClassError() # pylint: disable=no-value-for-parameter

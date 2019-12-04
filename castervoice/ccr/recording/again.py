@@ -14,7 +14,7 @@ class Again(MappingRule):
 
     mapping = {
         "again (<n> [(times|time)] | do)":
-            R(Function(lambda n: Again._create_asynchronous(n)), show=False)
+            R(Function(lambda n: Again._create_asynchronous(n)), show=False),  # pylint: disable=E0602
     }
     extras = [IntegerRefST("n", 1, 50)]
     defaults = {"n": 1}

@@ -26,7 +26,7 @@ if settings.settings(["miscellaneous", "use_aenea"]) and _is_aenea_available():
     import aenea
     from jsonrpclib import ProtocolError
 
-    class Clipboard(DragonflyClipboard):
+    class Clipboard(DragonflyClipboard): # pylint: disable=function-redefined
 
         @classmethod
         def get_system_text(cls):
