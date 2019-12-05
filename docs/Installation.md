@@ -4,7 +4,7 @@ Caster currently supports the following speech recognition engines on Microsoft 
 
 - Windows Speech Recognition (WSR)
 - Dragon NaturallySpeaking (DPI) - Caster only supports Dragon NaturallySpeaking 13 or higher.
-    - Recommended due to instability of Internet browsers and (DPI) disabling the DNS browser plug-ins.
+  - Recommended due to instability of Internet browsers and (DPI) disabling the DNS browser plug-ins.
 
 ### 1. Python
 
@@ -19,6 +19,7 @@ Make sure to select `Add python to path`. This can be done manually by searching
 - Download and install [Natlink](https://sourceforge.net/projects/natlink/files/natlink/natlink4.2/). Use `Natlink-4.2` or newer.
 
 ### 3. Caster
+
 1. Download Caster from the [master branch](https://github.com/dictation-toolbox/Caster/archive/master.zip).
 2. Open up the zip file downloaded
 3. Extract the `Caster-master` folder, you can put it anywhere but it is common to use `user\Documents\Caster`.
@@ -41,15 +42,16 @@ Make sure to select `Add python to path`. This can be done manually by searching
 
 2. Open the start menu and search for `natlink`, click the file called `Configure NatLink via GUI`.
 
-     ![Configure start](https://mathfly.org/images/configure_start.png)
+   ![Configure start](https://mathfly.org/images/configure_start.png)
 
 3. Ensure that the details of your DNS setup are correct in the “info” tab.
 
 4. In the “configure” tab, under “NatLink” and “UserDirectory” click enable. When you are prompted for a folder, give it the folder containing `install.bat` (`C:\Users\<YourUsername>\Documents\Caster`).
 
-     ![Caster-Natlink.jpg](https://i.postimg.cc/d1jN4xcw/Caster-Natlink.jpg)
+   ![Caster-Natlink.jpg](https://i.postimg.cc/d1jN4xcw/Caster-Natlink.jpg)
 
 ###  **PIP Install** (Beta) 
+
 If you're using DNS make sure you've installed and configured NatLink first! Open [command prompt](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows) (CMD) and type the following then press enter.
 
 `pip install castervoice` 
@@ -72,6 +74,13 @@ At the end of the PIP install instructions a CMD window will guide you of what t
   In order to use Legion, you may need to install [Microsoft Visual C++ Redistributable Packages for Visual Studio 2019 (x86).](https://support.microsoft.com/en-nz/help/2977003/the-latest-supported-visual-c-downloads). We have found that Legion works without this requirement on Windows 10 computers that are up-to-date but not on all Windows 7 computers, even with the VS packages installed. Please raise an issue if you find Legion still doesn't work on Windows 10 after installing the requirement or if you have managed to get Legion working on Windows 7.
 
 **NatLink**
+
+- Visual C++ Runtime Error R6034 on Dragon launch. This is related to Natlink
+
+  - You can safely ignore it.
+
+  - Fix "Core directory of NatLink (...\NatLink\MacroSystem\core) there is a directory msvcr100fix. Please consult the README.txt file. See if copying the dll file (msvcr100.dll) to the Core directory (one step up) solves your problem."  Note: Not recommended for Windows 10.
+  - A dated discussion [VoiceCoder](https://groups.yahoo.com/neo/groups/VoiceCoder/conversations/topics/7925) on the issue.
 
 - When using `start_configurenatlink.py` gives  `ImportError: No module named six"` or `ImportError: No module named future"`
 
@@ -144,7 +153,7 @@ Caster dependencies
 
 - wxpython
 - pillow
-- toml
+- tomlkit
 - future
 - mock
 
