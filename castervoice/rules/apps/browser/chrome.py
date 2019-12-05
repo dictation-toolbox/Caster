@@ -25,7 +25,7 @@ class ChromeRule(MappingRule):
         "win close|close all tabs":
             R(Key("cs-w")),
         "(next|forward) tab [<n>]|tab (right|sauce) [<n>]":
-            R(Key("cs-tab")) * Repeat(extra="n"),
+            R(Key("c-tab")) * Repeat(extra="n"),
         "new tab that":
             R(Mouse("middle") + Pause("20") + Key("c-tab")),
         "go (back|prev|prior|previous) [<n>]":
