@@ -1,5 +1,6 @@
 import re
-from dragonfly import AppContext, Window
+from dragonfly import Window
+from castervoice.lib.context import AppContext
 from castervoice.lib import context
 from castervoice.lib.actions import Key
 

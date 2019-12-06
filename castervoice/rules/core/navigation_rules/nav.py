@@ -1,4 +1,5 @@
-from dragonfly import Function, Repeat, Dictation, Choice, ContextAction, AppContext
+from dragonfly import Function, Repeat, Dictation, Choice, ContextAction
+from castervoice.lib.context import AppContext
 
 from castervoice.lib import navigation, context, textformat, text_utils
 import navigation_support

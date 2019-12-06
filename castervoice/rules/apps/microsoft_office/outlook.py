@@ -1,4 +1,4 @@
-from dragonfly import Function, Repeat, Dictation, Choice, AppContext, MappingRule
+from dragonfly import Function, Repeat, Dictation, Choice, MappingRule
 
 from castervoice.lib.actions import Key, Text
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
