@@ -165,9 +165,16 @@ class LegionScanner:
 
     def setup_dll(self):
         import sys
-        self.tirg_dll = cdll.LoadLibrary(
-            (settings.SETTINGS["paths"]["DLL_PATH"] + "tirg-dll.dll").encode(
+        import struct
+        try:
+            if struct.calcsize("P") * 8 == 32:
+                self.tirg_dll = cdll.LoadLibrary((settings.SETTINGS["paths"]["DLL_PATH"] + "tirg-32.dll").encode(
                 sys.getfilesystemencoding()))
+            else:
+                self.tirg_dll = cdll.LoadLibrary((settings.SETTINGS["paths"]["DLL_PATH"] + "tirg-64.dll").encode(
+                sys.getfilesystemencoding()))
+        except Exception as e:
+            print("Legion loading failed with '%s'" % str(e))
         self.tirg_dll.getTextBBoxesFromFile.argtypes = [c_char_p, c_int, c_int]
         self.tirg_dll.getTextBBoxesFromFile.restype = c_char_p
         self.tirg_dll.getTextBBoxesFromBytes.argtypes = [c_char_p, c_int, c_int]
