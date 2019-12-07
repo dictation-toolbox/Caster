@@ -4,6 +4,7 @@ from __future__ import print_function, unicode_literals
 
 import io
 import json
+import locale
 import os
 import re
 import sys
@@ -44,9 +45,11 @@ from ctypes import cdll
 # Source: https://github.com/Ciantic/VirtualDesktopAccessor
 try:
     if struct.calcsize("P")*8 == 32:
-        vda = cdll.LoadLibrary(BASE_PATH + "/castervoice/bin/VirtualDesktopAccessor32.dll")
+        vda = cdll.LoadLibrary((
+            BASE_PATH + "/castervoice/bin/VirtualDesktopAccessor32.dll").encode(locale.getpreferredencoding()))
     else:
-        vda = cdll.LoadLibrary(BASE_PATH + "/castervoice/bin/VirtualDesktopAccessor64.dll")
+        vda = cdll.LoadLibrary((
+            BASE_PATH + "/castervoice/bin/VirtualDesktopAccessor64.dll").encode(locale.getpreferredencoding()))
 except Exception as e:
     print("Virtual desktop accessor loading failed with '%s'" % str(e))
 
