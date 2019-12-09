@@ -1,4 +1,5 @@
 import os, traceback
+import re
 
 from dragonfly import Grammar
 
@@ -119,6 +120,7 @@ class GrammarManager(object):
             printer.out(invalidation)
             return
 
+        self._set_rdescript(rule_class.mapping, class_name)
         '''
         rule should be safe for loading at this point: register it
         but do not load here -- this method only registers
@@ -375,4 +377,25 @@ class GrammarManager(object):
             GrammarManager._get_next_id.id = 0
         GrammarManager._get_next_id.id += 1
         return str(GrammarManager._get_next_id.id)
+
+    @staticmethod
+    def _set_rdescript(mapping, rcn):
+        for spec, action in mapping.items():
+            # pylint: disable=no-member
+            if hasattr(action, "rdescript") and action.rdescript is None:
+                mapping[spec].rdescript = GrammarManager._create_rdescript(spec, rcn)
+            elif hasattr(action, "rdescript") and not action.rdescript.startswith(rcn):                    
+                mapping[spec].rdescript = "%s: %s" % (rcn, action.rdescript)
+                
+
+    @staticmethod
+    def _create_rdescript(spec, rcn):
+        rule_name = rcn
+        for unnecessary in ["Non", "Rule", "Ccr", "CCR"]:
+            rule_name = rule_name.replace(unnecessary, "")
+        extras = ""
+        named_extras = re.findall(r"<(.*?)>", spec)
+        if named_extras:
+            extras = ", %(" + ")s, %(".join(named_extras) + ")s"
+        return "%s: %s%s" % (rule_name, spec, extras)
 
