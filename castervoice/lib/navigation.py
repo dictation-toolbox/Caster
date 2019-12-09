@@ -7,7 +7,7 @@ import time
 from ctypes import windll
 from subprocess import Popen
 
-import dragonfly
+import dragonfly 
 from dragonfly import Choice, monitors
 from castervoice.asynch.mouse.legion import LegionScanner
 from castervoice.lib import control, settings, utilities, textformat, printer
@@ -26,10 +26,17 @@ Note: distinct token types were removed because
 A) a general purpose fill token is easier to remember than 10 of them, and
 B) the user of a programming language will know what they're supposed to get filled with
 '''
+ # Insurers comma is recognized consistently with DNS/Natlink
+ # if/else statement workaround engines that do not expect punctuation symbol as a command
+if (dragonfly.engines.get_engine()._name == 'natlink'):
+    comma = "(comma | ,)"
+else:
+    comma = "comma"
+    
+
 TARGET_CHOICE = Choice(
     "target", {
-        "comma": ",",
-        ",": ",",
+        comma: ",",
         "(period | dot)": ".",
         "(pair | parentheses)": "(~)",
         "[square] (bracket | brackets)": "[~]",
