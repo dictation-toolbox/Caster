@@ -424,7 +424,8 @@ def _get_defaults():
             "use_aenea": False,
             "hmc": True,
             "ccr_on": True,
-            "reload_trigger": "timer"
+            "reload_trigger": "timer",
+            "status_window_forefront_on_error": False,
         },
 
         "formats": {
