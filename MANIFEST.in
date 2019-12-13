@@ -9,7 +9,8 @@ include castervoice/bin/VirtualDesktopAccessor32.dll
 include castervoice/bin/VirtualDesktopAccessor64.dll
 include castervoice/bin/reboot.bat
 include castervoice/bin/reboot_wsr.bat
-include castervoice/lib/dll/tirg-dll.dll
+include castervoice/lib/dll/tirg-32.dll
+include castervoice/lib/dll/tirg-64.dll
 include castervoice/asynch/sikuli/server/xmlrpc_server.sikuli/xmlrpc_server.html
 include castervoice/asynch/sikuli/server/xmlrpc_server.sikuli/xmlrpc_server.py
 include castervoice/lib/github_automation.ahk
