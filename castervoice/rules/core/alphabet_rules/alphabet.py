@@ -1,6 +1,11 @@
 from dragonfly import Function, Choice
 
-from castervoice.rules.core.alphabet_rules import alphabet_support
+
+try:  # Try first loading from caster user directory
+    import alphabet_support
+except ImportError: 
+    from castervoice.rules.core.alphabet_rules import alphabet_support
+
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.mergerule import MergeRule

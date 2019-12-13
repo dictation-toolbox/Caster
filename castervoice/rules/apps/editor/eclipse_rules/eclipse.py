@@ -1,10 +1,14 @@
 from dragonfly import Dictation, Function, Paste, Pause
 
-from castervoice.rules.apps.editor.eclipse_rules.eclipse_support import ec_con
-from castervoice.lib.const import CCRType
+try: # Try first loading from caster user directory
+    from eclipse_support import ec_con
+except ImportError: 
+    from castervoice.rules.apps.editor.eclipse_rules.eclipse_support import ec_con
+
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST, Boolean
 from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.const import CCRType
+from castervoice.lib.merge.additions import IntegerRefST, Boolean
 from castervoice.lib.merge.state.short import R
 
 from castervoice.lib.actions import Key, Text

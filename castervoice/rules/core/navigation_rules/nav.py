@@ -4,9 +4,18 @@ from castervoice.lib import navigation, context, textformat, text_utils
 from dragonfly.actions.action_mimic import Mimic
 
 from castervoice.lib.actions import Key, Mouse
-from castervoice.rules.core.punctuation_rules.punctuation_support import double_text_punc_dict, text_punc_dict
 from castervoice.rules.ccr.standard import SymbolSpecs
-from castervoice.rules.core.alphabet_rules.alphabet_support import caster_alphabet
+
+try:  # Try first loading from caster user directory
+    from alphabet_rules.alphabet_support import caster_alphabet
+except ImportError: 
+    from castervoice.rules.core.alphabet_rules.alphabet_support import caster_alphabet
+
+try:  # Try  first loading  from caster user directory
+    from punctuation_rules.punctuation_support import double_text_punc_dict, text_punc_dict
+except ImportError: 
+    from castervoice.rules.core.punctuation_rules.punctuation_support import double_text_punc_dict, text_punc_dict
+
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST

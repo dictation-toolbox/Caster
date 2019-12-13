@@ -2,8 +2,14 @@ from dragonfly import MappingRule
 
 from castervoice.lib.actions import Text
 from castervoice.rules.ccr.standard import SymbolSpecs
-from castervoice.rules.ccr.vhdl.vhdl_strings import for_generate_string, if_generate_string, process_string, case_string, \
-    component_declaration_string, component_string, architecture_string, entity_string
+
+try:  # Try  first loading  from caster user directory
+    from vhdl_support import for_generate_string, if_generate_string, process_string, \
+        case_string, component_declaration_string, component_string, architecture_string, entity_string
+except ImportError:
+    from castervoice.rules.ccr.vhdl.vhdl_support import for_generate_string, if_generate_string, process_string, \
+        case_string, component_declaration_string, component_string, architecture_string, entity_string
+
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.short import R
 

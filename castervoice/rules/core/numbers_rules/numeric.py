@@ -1,6 +1,10 @@
 from dragonfly import Function
 
-from castervoice.rules.core.alphabet_rules import alphabet_support
+try:  # Try first loading from caster user directory
+    from numeric_support import word_number, numbers2
+except ImportError: 
+    from castervoice.rules.core.numbers_rules.numeric_support import word_number, numbers2
+    
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
@@ -12,9 +16,9 @@ class Numbers(MergeRule):
     pronunciation = "numbers"
     mapping = {
         "word number <wn>":
-            R(Function(alphabet_support.word_number, extra="wn")),
+            R(Function(word_number, extra="wn")),
         "numb <wnKK>":
-            R(Function(alphabet_support.numbers2, extra="wnKK"),
+            R(Function(numbers2, extra="wnKK"),
               rspec="Number"),
     }
 

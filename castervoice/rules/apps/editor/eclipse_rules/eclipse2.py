@@ -2,10 +2,14 @@ from dragonfly import Repeat, Dictation, Function, Choice, MappingRule
 
 from castervoice.lib.actions import Key
 
-from castervoice.rules.apps.editor.eclipse_rules.eclipse_support import ec_con
-from castervoice.rules.core.alphabet_rules import alphabet_support
-from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+try: # Try first loading from caster user directory
+    from eclipse_support import ec_con
+except ImportError: 
+    from castervoice.rules.apps.editor.eclipse_rules.eclipse_support import ec_con
+
+from castervoice.rules.core.alphabet_rules import alphabet_support # Manually change import path if in user directory.
 from castervoice.lib.merge.additions import IntegerRefST, Boolean
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.short import R
 
 

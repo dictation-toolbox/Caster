@@ -4,7 +4,7 @@ from dragonfly.language.base.integer_internal import MapIntBuilder
 from dragonfly.language.loader import language
 
 from castervoice.lib import settings
-from castervoice.rules.core.alphabet_rules import alphabet_support
+from castervoice.rules.core.alphabet_rules import alphabet_support # Conditional import load from user directory?
 
 '''
 Integer Remap feature needs to be rewritten:

@@ -12,8 +12,7 @@ import itertools
 from dragonfly import Repeat, Dictation, Choice, MappingRule
 
 from castervoice.lib.actions import Key, Text
-
-from castervoice.rules.core.alphabet_rules import alphabet_support
+from castervoice.rules.core.alphabet_rules import alphabet_support  # Manually change in port in if in user directory
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R

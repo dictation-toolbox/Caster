@@ -1,7 +1,12 @@
 from dragonfly import Choice, Repeat
 
 from castervoice.lib.actions import Key, Text
-from castervoice.rules.core.punctuation_rules.punctuation_support import text_punc_dict, double_text_punc_dict
+
+try:  # Try  first loading  from caster user directory
+    from punctuation_support import double_text_punc_dict, text_punc_dict
+except ImportError:
+    from castervoice.rules.core.punctuation_rules.punctuation_support import double_text_punc_dict, text_punc_dict
+
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
