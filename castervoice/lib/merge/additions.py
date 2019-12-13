@@ -4,7 +4,7 @@ from dragonfly.language.base.integer_internal import MapIntBuilder
 from dragonfly.language.loader import language
 
 from castervoice.lib import settings
-from castervoice.rules.core.alphabet_rules import alphabet_support # Conditional import load from user directory?
+from castervoice.rules.core.numbers_rules.numeric_support import numbers_map_1_to_9  # Conditional import load from user directory?
 
 '''
 Integer Remap feature needs to be rewritten:
@@ -20,7 +20,7 @@ if not settings.settings(["miscellaneous", "integer_remap_crash_fix"]):
                 content = language.IntegerContent
                 
             if "en" in language.language_map and settings.settings(["miscellaneous", "integer_remap_opt_in"]):
-                content.builders[1] = MapIntBuilder(alphabet_support.numbers_map_1_to_9())
+                content.builders[1] = MapIntBuilder(numbers_map_1_to_9())
 
             element = Integer(None, min, max, content=content)
             RuleWrap.__init__(self, name, element, default=default)
