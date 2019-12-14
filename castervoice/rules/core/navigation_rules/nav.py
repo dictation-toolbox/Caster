@@ -284,7 +284,7 @@ class Navigation(MergeRule):
         Choice("capitalization", {
             "yell": 1,
             "tie": 2,
-            "Gerrish": 3,
+            "gerrish": 3,
             "sing": 4,
             "laws": 5
         }),
