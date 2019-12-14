@@ -425,7 +425,7 @@ def _get_defaults():
             "hmc": True,
             "ccr_on": True,
             "reload_trigger": "timer",
-            "status_window_forefront_on_error": False,
+            "status_window_foreground_on_error": False,
         },
 
         "formats": {

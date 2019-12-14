@@ -22,7 +22,7 @@ class LoggingHandler(logging.Handler):
         msg = self.format(record)
         print("\n")
         # Brings status window to the forefront upon error
-        if (settings.SETTINGS["miscellaneous"]["status_window_forefront_on_error"]):
+        if (settings.SETTINGS["miscellaneous"]["status_window_foreground_on_error"]):
              # The window title is unique to Natlink
             if (get_engine()._name == 'natlink'):
                 windows = Window.get_matching_windows(None, "Messages from Python Macros V")
