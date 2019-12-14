@@ -2,6 +2,7 @@ from dragonfly import Function, Repeat, Dictation, Choice, MappingRule
 
 from castervoice.lib.actions import Key, Mouse
 from castervoice.lib import navigation, utilities
+import navigation_support
 
 try:  # Try first loading from caster user directory
     from alphabet_rules import alphabet_support
@@ -133,9 +134,9 @@ class NavigationNon(MappingRule):
             "fast": 0.1,
             "superfast": 0.05
         }),
-        navigation.get_direction_choice("direction"),
-        navigation.get_direction_choice("direction2"),
-        navigation.TARGET_CHOICE,
+        navigation_support.get_direction_choice("direction"),
+        navigation_support.get_direction_choice("direction2"),
+        navigation_support.TARGET_CHOICE,
         Choice("dokick", {
             "kick": 1,
             "psychic": 2

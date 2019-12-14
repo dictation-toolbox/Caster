@@ -1,6 +1,7 @@
 from dragonfly import Function, Repeat, Dictation, Choice, ContextAction, AppContext
 
 from castervoice.lib import navigation, context, textformat, text_utils
+import navigation_support
 from dragonfly.actions.action_mimic import Mimic
 
 from castervoice.lib.actions import Key, Mouse
@@ -305,8 +306,8 @@ class Navigation(MergeRule):
             "triple": 3,
             "Quadra": 4
         }),
-        navigation.TARGET_CHOICE,
-        navigation.get_direction_choice("mtn_dir"),
+        navigation_support.TARGET_CHOICE,
+        navigation_support.get_direction_choice("mtn_dir"),
         Choice("mtn_mode", {
             "shin": "s",
             "queue": "cs",

@@ -7,59 +7,22 @@ import time
 from ctypes import windll
 from subprocess import Popen
 
-import dragonfly 
+import dragonfly
 from dragonfly import Choice, monitors
 from castervoice.asynch.mouse.legion import LegionScanner
 from castervoice.lib import control, settings, utilities, textformat, printer
 from castervoice.lib.actions import Key, Text, Mouse
 from castervoice.lib.clipboard import Clipboard
 
-DIRECTION_STANDARD = {
-    "sauce [E]": "up",
-    "dunce [E]": "down",
-    "lease [E]": "left",
-    "Ross [E]": "right",
-    "back": "left"
-}
-'''
-Note: distinct token types were removed because
-A) a general purpose fill token is easier to remember than 10 of them, and
-B) the user of a programming language will know what they're supposed to get filled with
-'''
- # Insurers comma is recognized consistently with DNS/Natlink
- # if/else statement workaround engines that do not expect punctuation symbol as a command
-if (dragonfly.engines.get_engine()._name == 'natlink'):
-    comma = "(comma | ,)"
-else:
-    comma = "comma"
-    
 
-TARGET_CHOICE = Choice(
-    "target", {
-        comma: ",",
-        "(period | dot)": ".",
-        "(pair | parentheses)": "(~)",
-        "[square] (bracket | brackets)": "[~]",
-        "curly [brace]": "{~}",
-        "loop": "for~while",
-        "L paren": "(",
-        "are paren": ")",
-        "openers": "(~[~{",
-        "closers": "}~]~)",
-        "token": "TOKEN",
-    })
 _CLIP = {}
-
-
-def get_direction_choice(name):
-    global DIRECTION_STANDARD
-    return Choice(name, DIRECTION_STANDARD)
 
 
 def initialize_clipboard():
     global _CLIP
     if len(_CLIP) == 0:
-        _CLIP = utilities.load_json_file(settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
+        _CLIP = utilities.load_json_file(
+            settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
 
 
 def mouse_alternates(mode, monitor=1):
@@ -92,6 +55,7 @@ def mouse_alternates(mode, monitor=1):
             str(monitor)
         ])
 
+
 def _text_to_clipboard(keystroke, nnavi500):
     if nnavi500 == 1:
         Key(keystroke).execute()
@@ -105,7 +69,8 @@ def _text_to_clipboard(keystroke, nnavi500):
             failure = False
             try:
                 # time for keypress to execute
-                time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
+                time.sleep(
+                    settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
                 _CLIP[key] = unicode(Clipboard.get_system_text())
                 utilities.save_json_file(
                     _CLIP, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
@@ -144,7 +109,8 @@ def drop_keep_clipboard(nnavi500, capitalization, spacing):
     if text is not None:
         cb = Clipboard(from_system=True)
         if capitalization != 0 or spacing != 0:
-            text = textformat.TextFormat.formatted_text(capitalization, spacing, text)
+            text = textformat.TextFormat.formatted_text(
+                capitalization, spacing, text)
         Clipboard.set_system_text(text)
         time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
         Key("c-v").execute()
@@ -196,11 +162,10 @@ left_up      = lambda: mouse_click("left:up")
 right_down   = lambda: mouse_click("right:down")
 right_up     = lambda: mouse_click("right:up")
 
-
 def wheel_scroll(direction, nnavi500):
     amount = 120
     if direction != "up":
-        amount = amount* -1
+        amount = amount * -1
     for i in xrange(1, abs(nnavi500) + 1):
         windll.user32.mouse_event(0x00000800, 0, 0, amount, 0)
         time.sleep(0.1)
@@ -222,9 +187,11 @@ def curse(direction, direction2, nnavi500, dokick):
     Mouse("<" + str(x) + ", " + str(y) + ">").execute()
     if int(dokick) != 0:
         if int(dokick) == 1:
-            left_click(control.nexus()) # pylint: disable=too-many-function-args
+            left_click(control.nexus()
+                       )  # pylint: disable=too-many-function-args
         elif int(dokick) == 2:
-            right_click(control.nexus()) # pylint: disable=too-many-function-args
+            right_click(control.nexus()
+                        )  # pylint: disable=too-many-function-args
 
 
 def next_line(semi):
@@ -257,7 +224,8 @@ def action_lines(action,
                  select_line_down="s-down",
                  wait="",
                  upon_arrival=""):
-    num_lines = max(int(ln2) - int(ln1) + 1, int(ln1) - int(ln2) + 1) if ln2 else 1
+    num_lines = max(int(ln2) - int(ln1) + 1, int(ln1) -
+                    int(ln2) + 1) if ln2 else 1
     top_line = min(int(ln2), int(ln1)) if ln2 else int(ln1)
     command = Key(go_to_line) + Text(str(top_line)) + Key(
         "enter%s, %s%s%s:%s, %s" %
