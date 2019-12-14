@@ -17,7 +17,7 @@ from castervoice.rules.core.alphabet_rules.alphabet import Alphabet
 from castervoice.rules.core.navigation_rules.nav import Navigation
 from castervoice.rules.core.numbers_rules.numeric import Numbers
 from castervoice.rules.core.punctuation_rules.punctuation import Punctuation
-from castervoice.rules.ccr.python.python import Python
+from castervoice.rules.ccr.python_rules.python import Python
 from castervoice.lib.merge.ccrmerger_legacy import CCRMerger # Deprecated
 from castervoice.lib.merge.merge.mergepair import MergeInf # Deprecated
 from castervoice.lib.merge.mergerule import MergeRule

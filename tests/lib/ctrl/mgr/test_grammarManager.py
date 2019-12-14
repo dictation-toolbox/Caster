@@ -182,8 +182,8 @@ class TestGrammarManager(SettingsEnabledTestCase):
     def test_enable_incompatible_rule_knockout_is_saved(self):
         from castervoice.lib import utilities
         from castervoice.lib.ctrl.mgr.rules_config import RulesConfig
-        from castervoice.rules.ccr.java import java
-        from castervoice.rules.ccr.python import python
+        from castervoice.rules.ccr.java_rules import java
+        from castervoice.rules.ccr.python_rules import python
 
         # "write" the rules.toml file:
         self._setup_rules_config_file(loadable_true=["Java", "Python"], enabled=["Java"])
@@ -205,10 +205,10 @@ class TestGrammarManager(SettingsEnabledTestCase):
     def test_knockout_with_companions_saves_correctly(self):
         from castervoice.lib import utilities
         from castervoice.lib.ctrl.mgr.rules_config import RulesConfig
-        from castervoice.rules.ccr.java import java
-        from castervoice.rules.ccr.java import java2
-        from castervoice.rules.ccr.python import python
-        from castervoice.rules.ccr.python import python2
+        from castervoice.rules.ccr.java_rules import java
+        from castervoice.rules.ccr.java_rules import java2
+        from castervoice.rules.ccr.python_rules import python
+        from castervoice.rules.ccr.python_rules import python2
         from castervoice.rules.core.alphabet_rules import alphabet
         from castervoice.rules.apps.microsoft_office import outlook
 
@@ -281,8 +281,8 @@ class TestGrammarManager(SettingsEnabledTestCase):
 
     def test_disable_non_enabled_doesnt_crash(self):
         from castervoice.lib.ctrl.mgr.rules_config import RulesConfig
-        from castervoice.rules.ccr.java import java
-        from castervoice.rules.ccr.python import python
+        from castervoice.rules.ccr.java_rules import java
+        from castervoice.rules.ccr.python_rules import python
 
         # "write" the rules.toml file:
         self._setup_rules_config_file(loadable_true=["Java", "Python"], enabled=["Java"])
