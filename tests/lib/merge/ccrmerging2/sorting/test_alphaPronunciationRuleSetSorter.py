@@ -3,7 +3,7 @@ from unittest import TestCase
 from castervoice.rules.core.alphabet_rules.alphabet import Alphabet
 from castervoice.rules.core.navigation_rules.nav import Navigation
 from castervoice.lib.merge.ccrmerging2.sorting.alpha_ruleset_sorter import AlphaRuleSetSorter
-from castervoice.lib.util.rules.caster_rule import CasterRule
+from castervoice.rules.core.utility_rules.caster_rule import CasterRule
 
 
 class TestAlphaPronunciationRuleSetSorter(TestCase):
