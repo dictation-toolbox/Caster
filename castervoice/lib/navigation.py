@@ -187,11 +187,10 @@ def curse(direction, direction2, nnavi500, dokick):
     Mouse("<" + str(x) + ", " + str(y) + ">").execute()
     if int(dokick) != 0:
         if int(dokick) == 1:
-            left_click(control.nexus()
-                       )  # pylint: disable=too-many-function-args
+            left_click(control.nexus()) # pylint: disable=too-many-function-args
         elif int(dokick) == 2:
-            right_click(control.nexus()
-                        )  # pylint: disable=too-many-function-args
+            right_click(control.nexus()) # pylint: disable=too-many-function-args
+
 
 
 def next_line(semi):
