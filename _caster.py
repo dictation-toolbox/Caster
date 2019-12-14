@@ -8,7 +8,7 @@ import logging
 from dragonfly import get_engine
 from dragonfly.windows.window import Window
 
-logging.basicConfig(format = "%(asctime)s")  
+logging.basicConfig(format = "%(asctime)s : %(levelname)s : %(funcName)s\n%(msg)s")   
 
 from castervoice.lib import settings  # requires toml
 settings.initialize()
@@ -19,8 +19,6 @@ _NEXUS = None
 
 class LoggingHandler(logging.Handler):
     def emit(self, record):
-        msg = self.format(record)
-        print("\n")
         # Brings status window to the forefront upon error
         if (settings.SETTINGS["miscellaneous"]["status_window_foreground_on_error"]):
              # The window title is unique to Natlink
