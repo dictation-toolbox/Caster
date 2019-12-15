@@ -4,7 +4,7 @@ import re
 from dragonfly import Function, MappingRule
 
 from castervoice.lib import available_commands_tracker, printer
-from castervoice.lib.ctrl.mgr.rule_formatter import set_rdescript
+from castervoice.lib.ctrl.mgr.rule_formatter import _set_rdescripts
 from castervoice.lib.merge.ccrmerging2.pronounceable import Pronounceable
 
 
@@ -24,7 +24,7 @@ class MergeRule(MappingRule, Pronounceable):
         _mapping = mapping or self.mapping.copy()
         _extras = extras or self.extras[:]
         _defaults = defaults or self.defaults.copy()
-        set_rdescript(_mapping, _name)
+        _set_rdescripts(_mapping, _name)
         #
         super(MergeRule, self).__init__(name=_name,
                                         mapping=_mapping,

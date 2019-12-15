@@ -1,10 +1,14 @@
 import re
 
-def set_rdescript(mapping, rcn):
+def _set_rdescripts(mapping, rcn):
     for spec, action in mapping.items():
         # pylint: disable=no-member
-        if hasattr(action, "rdescript") and action.rdescript is None:
-            mapping[spec].rdescript = _create_rdescript(spec, rcn)
+        _set_rdescript(action, spec, rcn)
+
+
+def _set_rdescript(action, spec, rcn):
+    if hasattr(action, "rdescript") and action.rdescript is None:
+        action.rdescript = _create_rdescript(spec, rcn)
 
 def _create_rdescript(spec, rcn):
     rule_name = rcn

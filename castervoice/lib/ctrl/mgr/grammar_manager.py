@@ -7,7 +7,7 @@ from castervoice.lib.ctrl.mgr.errors.invalid_companion_configuration_error impor
 from castervoice.lib.ctrl.mgr.errors.not_a_module import NotAModuleError
 from castervoice.lib.ctrl.mgr.loading.load.content_type import ContentType
 from castervoice.lib.ctrl.mgr.managed_rule import ManagedRule
-from castervoice.lib.ctrl.mgr.rule_formatter import set_rdescript
+from castervoice.lib.ctrl.mgr.rule_formatter import _set_rdescripts
 from castervoice.lib.ctrl.mgr.rules_enabled_diff import RulesEnabledDiff
 from castervoice.lib.merge.ccrmerging2.hooks.events.activation_event import RuleActivationEvent
 from castervoice.lib.merge.ccrmerging2.sorting.config_ruleset_sorter import ConfigBasedRuleSetSorter
@@ -120,7 +120,7 @@ class GrammarManager(object):
             printer.out(invalidation)
             return
 
-        set_rdescript(rule_class.mapping, class_name)
+        _set_rdescripts(rule_class.mapping, class_name)
         '''
         rule should be safe for loading at this point: register it
         but do not load here -- this method only registers
