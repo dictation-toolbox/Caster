@@ -4,39 +4,16 @@ You also can find some good vocola commands for Excel on Mark Lillibridge's Gith
 https://github.com/mdbridge/bit-bucket/tree/master/voice/my_commands/commands
 Alex Boche 2019
 """
-import itertools
-
 
 # this function takes a dictionary and returns a dictionary whose keys are sequences of keys of the original dictionary
 # and whose values our the corresponding sequences of values of the original dictionary
-from dragonfly import Repeat, Dictation, Choice, MappingRule
+from dragonfly import Repeat, Dictation, Choice, MappingRule, Repetition
 
-from castervoice.lib.actions import Key, Text
 from castervoice.rules.core.alphabet_rules import alphabet_support  # Manually change in port in if in user directory
+from castervoice.lib.actions import Text, Key
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
-
-
-def make_sequence_dict_fixed_length(dictionary, fixed_sequence_length):
-    mapping = {}
-    for tup in itertools.product(dictionary.keys(), repeat=fixed_sequence_length):
-        mapping[" ".join(tup)] = "".join(dictionary[word] for word in tup)
-    return mapping
-
-
-def make_sequence_dict_up_to_length(dictionary, highest_length):
-    # d will be a dict of whole number keys pointing to the corresponding fixed length dictionaries
-    d = {}
-    for i in range(1, highest_length + 1):
-        d[i] = make_sequence_dict_fixed_length(dictionary, i)
-    # output = {k: d[i][k] for k in d[i] for i in d}
-    output = {}
-    for i in d:
-        for k in d[i]:
-            output[k] = d[i][k]
-    return output
-
 
 class ExcelRule(MappingRule):
     mapping = {
@@ -113,16 +90,13 @@ class ExcelRule(MappingRule):
     extras = [
         Dictation("dict"),
         IntegerRefST("n", 1, 10),
-        IntegerRefST("m", 1, 10),
-        IntegerRefST("numbers", 1, 100),
         IntegerRefST("row_1", 1, 100),
         IntegerRefST("row_2", 1, 100),
-        # when I set the sequence length to 3 I got the grammar too complex Natlink error.
-        Choice("column_1", make_sequence_dict_up_to_length(alphabet_support.caster_alphabet(), 2)),
-        Choice("column_2", make_sequence_dict_up_to_length(alphabet_support.caster_alphabet(), 2)),
+        # change max to 3 if you want sequences of lentgh three and so on
+        Repetition(Choice("alphabet1", alphabet_support.caster_alphabet()), min=1, max=2, name="column_1"),
+        Repetition(Choice("alphabet2", alphabet_support.caster_alphabet()), min=1, max=2, name="column_2")
     ]
     defaults = {"n": 1, "dict": ""}
-
 
 def get_rule():
     return ExcelRule, RuleDetails(name="excel", executable="excel")
