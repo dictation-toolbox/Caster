@@ -3,10 +3,10 @@ import re
 def _set_rdescripts(mapping, rcn):
     for spec, action in mapping.items():
         # pylint: disable=no-member
-        _set_rdescript(action, spec, rcn)
+        _set_the_rdescript(action, spec, rcn)
 
 
-def _set_rdescript(action, spec, rcn):
+def _set_the_rdescript(action, spec, rcn):
     if hasattr(action, "rdescript") and action.rdescript is None:
         action.rdescript = _create_rdescript(spec, rcn)
 

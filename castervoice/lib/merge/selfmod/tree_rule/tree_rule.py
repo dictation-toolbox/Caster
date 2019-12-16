@@ -3,7 +3,7 @@ import os
 from dragonfly import Function
 from castervoice.lib import settings
 from castervoice.lib.ctrl.mgr.errors.tree_rule_config_error import TreeRuleConfigurationError
-from castervoice.lib.ctrl.mgr.rule_formatter import _set_rdescript 
+from castervoice.lib.ctrl.mgr.rule_formatter import _set_the_rdescript 
 from castervoice.lib.merge.ccrmerging2.hooks.events.node_change_event import NodeChangeEvent
 from castervoice.lib.merge.selfmod.selfmodrule import BaseSelfModifyingRule
 from castervoice.lib.merge.selfmod.tree_rule.tree_node import TreeNode
@@ -45,7 +45,7 @@ class TreeRule(BaseSelfModifyingRule):
         for tree_node in active_nodes:
             spec = tree_node.get_spec()
             action = tree_node.get_action()
-            _set_rdescript(action, spec, self.__class__.__name__)
+            _set_the_rdescript(action, spec, self.__class__.__name__)
             action_and_node_change = action + Function(TreeRule._create_spec_fn(self._refresh, spec))
             self._smr_mapping[spec] = action_and_node_change
             self._smr_extras.extend(tree_node.get_extras())
