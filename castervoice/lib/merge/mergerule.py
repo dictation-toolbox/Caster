@@ -1,8 +1,10 @@
 import collections
-
-from dragonfly import MappingRule, Function
 import re
-from castervoice.lib import printer, available_commands_tracker
+
+from dragonfly import Function, MappingRule
+
+from castervoice.lib import available_commands_tracker, printer
+from castervoice.lib.ctrl.mgr.rule_formatter import _set_rdescripts
 from castervoice.lib.merge.ccrmerging2.pronounceable import Pronounceable
 
 
@@ -22,8 +24,8 @@ class MergeRule(MappingRule, Pronounceable):
         _mapping = mapping or self.mapping.copy()
         _extras = extras or self.extras[:]
         _defaults = defaults or self.defaults.copy()
+        _set_rdescripts(_mapping, _name)
         #
-        MergeRule._format_actions(_mapping, _name)
         super(MergeRule, self).__init__(name=_name,
                                         mapping=_mapping,
                                         extras=_extras,
@@ -47,25 +49,6 @@ class MergeRule(MappingRule, Pronounceable):
         return MappingRule(mapping=self.get_mapping(),
                            extras=self.get_extras(),
                            defaults=self.get_defaults())
-
-    @staticmethod
-    def _create_rdescript(spec, rcn):
-        rule_name = rcn
-        for unnecessary in ["Non", "Rule", "Ccr", "CCR"]:
-            rule_name = rule_name.replace(unnecessary, "")
-        extras = ""
-        named_extras = re.findall(r"<(.*?)>", spec)
-        if named_extras:
-            extras = ", %(" + ")s, %(".join(named_extras) + ")s"
-        return "%s: %s%s" % (rule_name, spec, extras)
-
-    '''Generates an "rdescript" for actions in this rule which don't have them.'''
-    @staticmethod
-    def _format_actions(mapping, rcn):
-        for spec, action in mapping.items():
-            # pylint: disable=no-member
-            if hasattr(action, "rdescript") and action.rdescript is None:
-                mapping[spec].rdescript = MergeRule._create_rdescript(spec, rcn)
 
     def get_mapping(self):
         return self._mapping.copy()
