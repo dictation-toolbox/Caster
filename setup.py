@@ -25,8 +25,8 @@ def find_version(*file_paths):
 
 
 def _post_install():
-    from post_setup import runpostinstall
-    runpostinstall()
+    from post_setup import RunPostInstall
+    RunPostInstall()
 
 
 class new_install(install):
@@ -60,7 +60,7 @@ setuptools.setup(
         "Operating System :: OS Independent"
     ],
     install_requires=[
-        "dragonfly2>=0.14.1",
+        "dragonfly2>=0.19.1",
         "wxpython",
         "pillow",
         "tomlkit",
