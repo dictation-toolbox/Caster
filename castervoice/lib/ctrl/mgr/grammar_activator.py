@@ -1,7 +1,7 @@
-from dragonfly import MappingRule, Function
-
 from castervoice.lib.ctrl.mgr.errors.no_pronunciation_error import NoPronunciationError
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.state.short import R
+from dragonfly import Function, MappingRule
 
 
 class GrammarActivator(object):
@@ -58,8 +58,10 @@ class GrammarActivator(object):
         for class_name, trigger in self._class_name_to_trigger.items():
             enable_spec = "enable {}".format(trigger)
             disable_spec = "disable {}".format(trigger)
-            _mapping[enable_spec] = Function(lambda rcn: self._activation_fn(rcn, True), rcn=class_name)
-            _mapping[disable_spec] = Function(lambda rcn: self._activation_fn(rcn, False), rcn=class_name)
+            _mapping[enable_spec] = R(Function(
+                lambda rcn: self._activation_fn(rcn, True), rcn=class_name))
+            _mapping[disable_spec] = R(Function(
+                lambda rcn: self._activation_fn(rcn, False), rcn=class_name))
 
         class GrammarActivatorRule(MappingRule):
             mapping = _mapping
