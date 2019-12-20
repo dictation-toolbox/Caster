@@ -424,8 +424,12 @@ def _get_defaults():
             "use_aenea": False,
             "hmc": True,
             "ccr_on": True,
-            "reload_trigger": "timer",
             "status_window_foreground_on_error": False,
+        },
+        # Grammar reloading section
+        "grammar_reloading": {
+            "reload_trigger": "timer", # manual or timer
+            "reload_timer_seconds": 5, # seconds
         },
 
         "formats": {

@@ -141,9 +141,10 @@ class Nexus:
         ccr_rule_validator = Nexus._create_ccr_rule_validator()
         details_validator = Nexus._create_details_validator()
         combo_validator = Nexus._create_combo_validator()
-
-        observable = TimerReloadObservable(5)
-        if settings.SETTINGS["miscellaneous"]["reload_trigger"] == "manual":
+        
+        timer = settings.SETTINGS["grammar_reloading"]["reload_timer_seconds"]
+        observable = TimerReloadObservable(timer)
+        if settings.SETTINGS["grammar_reloading"]["reload_trigger"] == "manual":
             observable = ManualReloadObservable()
 
         grammars_container = BasicGrammarContainer()
