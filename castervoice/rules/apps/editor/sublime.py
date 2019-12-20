@@ -1,4 +1,4 @@
-from dragonfly import Function, Dictation, Choice, MappingRule
+from dragonfly import Function, Dictation, Choice, MappingRule,Repeat
 
 from castervoice.lib import navigation
 from castervoice.lib.actions import Key, Text
@@ -52,12 +52,12 @@ class SublimeRule(MappingRule):
         "edit lines":
             R(Key("cs-l")),
         "edit next [<n3>]":
-            R(Key("c-d/10")),
+            R(Key("c-d/10"))*Repeat(extra="n3"),
         "edit up [<n3>]":
-            R(Key("ac-up")),
+            R(Key("ac-up"))*Repeat(extra="n3"),
         "edit down [<n3>]":
-            R(Key("ac-down")),
-        "edit all":
+            R(Key("ac-down"))*Repeat(extra="n3"),
+       "edit all":
             R(Key("a-f3")),
         #
         "transform upper":
