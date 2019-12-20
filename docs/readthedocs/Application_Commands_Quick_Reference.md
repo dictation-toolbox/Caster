@@ -24,6 +24,7 @@ The application name is followed by a pronunciation to `enable` or `disable` and
 - [Jetbrains](#jetbrains) - jet brains
 - [KDiff3](#kdiff3) - K diff
 - [lyx](#lyx) - lyx
+- [Microsoft Teams](#microsoft-teams) - microsoft teams
 - [Microsoft Visual Studio](#microsoft-visual-studio) - microsoft visual studio
 - [Notepad++](#notepad) - notepad plus plus
 - [Outlook](#outlook) - outlook
@@ -437,6 +438,27 @@ Same Commands as [Git Bash](#git-bash)
             "matrix": "x"
             "macro": "o"
 ```
+
+# Microsoft Teams
+
+| command               | command               | command                        |
+|-----------------------|-----------------------|--------------------------------|
+| search                | calendar              | start audio call               |
+| keyboard shortcuts    | calls                 | start video call               |
+| settings              | files                 | toggle mute                    |
+| help                  | shifts                | screen share                   |
+| commands              | previous item         | toggle video                   |
+| filter                | next item             | sharing toolbar                |
+| go to                 | previous team         | decline screen share           |
+| new chat              | next team             | accept screen share            |
+| activity              | previous section      | schedule meeting               |
+| chat                  | next section          | go to current time             |
+| teams                 | focus compose         | go to previous \(day \| week\) |
+| send                  | expand compose        | go to next \(day \| week\)     |
+| attach                | reply                 | view day                       |
+| new line              | accept \[video\] call | view workweek                  |
+| accept \[audio\] call | view week             |
+| decline \[call\]      |
 
 # Microsoft Visual Studio
 
