@@ -28,6 +28,7 @@ def move_mouse(n, s, action, nexus):
 
     sudoku.move_mouse(int(n), int(s))
 
+    # Close the grid window
     sudoku.kill()
     grids.wait_for_death(settings.SUDOKU_TITLE)
     time.sleep(0.1)
@@ -44,6 +45,7 @@ def drag_mouse(n0, s0, n, s, action, nexus):
     sudoku = nexus.comm.get_com("grids")
     x, y = sudoku.get_mouse_pos(int(n), int(s))
 
+    # If dragging from a different location, move there first
     if int(n0) > 0:
         sudoku.move_mouse(int(n0), int(s0))
 
@@ -51,6 +53,7 @@ def drag_mouse(n0, s0, n, s, action, nexus):
     grids.wait_for_death(settings.SUDOKU_TITLE)
     time.sleep(0.1)
 
+    # Hold down click, move to drag destination, and release click
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)
     time.sleep(0.1)
     win32api.SetCursorPos((int(x), int(y)))

@@ -360,15 +360,22 @@ Divide screen into grid of 3 x 3 squares and assign each one a number.
     with one of the numbers from 1 to 9.
 '''
 class SudokuGrid(TkTransparent):
-    def __init__(self, grid_size=None, square_size=None):
+    def __init__(self, grid_size=None, square_size=32):
         TkTransparent.__init__(self, settings.SUDOKU_TITLE, grid_size)
-
-        self.square_size = square_size if square_size else 32
 
         screen_w = self.dimensions.width
         screen_h = self.dimensions.height
-        self.width = int(screen_w / self.square_size)
-        self.height = int(screen_h / self.square_size)
+
+        self.square_width = square_size
+        while (screen_w % self.square_width != 0):
+            self.square_width -= 1
+
+        self.square_height = square_size
+        while (screen_h % self.square_height != 0):
+            self.square_height -= 1
+
+        self.width = int(screen_w / self.square_width)
+        self.height = int(screen_h / self.square_height)
         self.num_squares = self.width * self.height
         self.up_w = int((self.width - 1) / 3 + 1) * 3
         self.up_h = int((self.height - 1) / 3 + 1) * 3
@@ -485,8 +492,8 @@ class SudokuGrid(TkTransparent):
     # sq - square number
     def square_to_pos(self, sq):
         x, y = self.square_to_xy(sq)
-        return (int((x + 0.5) * self.square_size),
-                int((y + 0.5) * self.square_size))
+        return (int((x + 0.5) * self.square_width),
+                int((y + 0.5) * self.square_height))
 
     # Convert square number to screen number
     # sq - square number
@@ -507,14 +514,13 @@ class SudokuGrid(TkTransparent):
 
     # Draw grid on background
     def draw_lines_and_numbers(self):
-        size = self.square_size
         canvas = self._canvas
 
         # Iterate over logical grid of squares
         for sq in xrange(self.num_squares):
             x, y = self.square_to_xy(sq)
-            screen_x = x * size
-            screen_y = y * size
+            screen_x = x * self.square_width
+            screen_y = y * self.square_height
 
             fill = "black"
             if sq % 3:
@@ -537,7 +543,7 @@ class SudokuGrid(TkTransparent):
                 n = self.square_to_num(sq)
                 pos = self.num_to_pos(n)
                 canvas.create_text(pos[0], pos[1], text=str(n),
-                                   font="Arial 18 bold", fill='Black')
+                                   font="TkFixedFont 14", fill='Black')
 
 
 # Main function
