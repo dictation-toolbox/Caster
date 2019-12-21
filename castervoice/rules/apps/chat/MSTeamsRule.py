@@ -72,7 +72,7 @@ class MSTeamsRule(MappingRule):
         "Accept [video] call":
             R(Key("cs-a")),
         "Accept [audio] call":
-            R(Key("cs-")),
+            R(Key("cs-s")),
         "decline [call]":
             R(Key("cs-d")),
         "start audio call":
