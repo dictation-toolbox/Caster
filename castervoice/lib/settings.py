@@ -308,8 +308,6 @@ def _get_defaults():
                 _USER_DIR + "/data/sm_chain_aliases.toml",
             "SM_HISTORY_PATH":
                 _USER_DIR + "/data/sm_history.toml",
-            "SM_CSS_TREE_PATH":
-                _USER_DIR + "/data/sm_css_tree.toml",
             "RULES_CONFIG_PATH":
                 _USER_DIR + "/data/rules.toml",
             "TRANSFORMERS_CONFIG_PATH":
@@ -403,8 +401,10 @@ def _get_defaults():
             "fetching_time": 3  # the time to fetch a github repository in seconds
         },
 
-        # node rules
-        "trees": {},
+        # node rules path
+        "Tree_Node_Path": {
+            "SM_CSS_TREE_PATH": _USER_DIR + "/data/sm_css_tree.toml",
+        },
 
         "online": {
             "online_mode": True, # False disables updates

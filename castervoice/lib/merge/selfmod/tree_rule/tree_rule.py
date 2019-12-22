@@ -21,10 +21,10 @@ class TreeRule(BaseSelfModifyingRule):
     @staticmethod
     def _get_tree_rule_config_path(tree_name):
         formatted_path_name = "SM_{}_TREE_PATH".format(tree_name.upper().replace(" ", "_"))
-        if formatted_path_name not in settings.SETTINGS["paths"]:
-            msg = "Path '{}' was not found in the 'paths' section of settings.toml. Did you add it?"
+        if formatted_path_name not in settings.SETTINGS["Tree_Node_Path"]:
+            msg = "Path '{}' was not found in the 'Tree_Node_Path' section of settings.toml. Did you add it?"
             raise TreeRuleConfigurationError(msg.format(formatted_path_name))
-        config_path = settings.settings(["paths", formatted_path_name])
+        config_path = settings.settings(["Tree_Node_Path", formatted_path_name])
         return config_path
 
     def _deserialize(self):
