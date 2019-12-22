@@ -301,7 +301,7 @@ def _get_defaults():
 
             # DATA
             "SM_BRINGME_PATH":
-                _USER_DIR + "/data/sm_bringme.toml",
+                _USER_DIR + "/settings/sm_bringme.toml",
             "SM_ALIAS_PATH":
                 _USER_DIR + "/data/sm_aliases.toml",
             "SM_CHAIN_ALIAS_PATH":
@@ -309,13 +309,13 @@ def _get_defaults():
             "SM_HISTORY_PATH":
                 _USER_DIR + "/data/sm_history.toml",
             "RULES_CONFIG_PATH":
-                _USER_DIR + "/data/rules.toml",
+                _USER_DIR + "/settings/rules.toml",
             "TRANSFORMERS_CONFIG_PATH":
-                _USER_DIR + "/data/transformers.toml",
+                _USER_DIR + "/settings/transformers.toml",
             "HOOKS_CONFIG_PATH":
-                _USER_DIR + "/data/hooks.toml",
+                _USER_DIR + "/settings/hooks.toml",
             "COMPANION_CONFIG_PATH":
-                _USER_DIR + "/data/companion_config.toml",
+                _USER_DIR + "/settings/companion_config.toml",
             "DLL_PATH":
                 _BASE_PATH + "/lib/dll/",
             "GDEF_FILE":
@@ -324,10 +324,10 @@ def _get_defaults():
                 _USER_DIR + "/log.txt",
             "SAVED_CLIPBOARD_PATH":
                 _USER_DIR + "/data/clipboard.json",
-            "SIKULI_SCRIPTS_PATH":
+            "SIKULI_SCRIPTS_PATH": 
                 _USER_DIR + "/sikuli",
             "GIT_REPO_LOCAL_REMOTE_PATH":
-                _USER_DIR + "/data/git_repo_local_to_remote_match.toml",
+                _USER_DIR + "/settings/git_repo_local_to_remote_match.toml",
             "GIT_REPO_LOCAL_REMOTE_DEFAULT_PATH":
                 _BASE_PATH + "/bin/share/git_repo_local_to_remote_match.toml.defaults",
 
@@ -519,9 +519,9 @@ def initialize():
     SYSTEM_INFORMATION = _get_platform_information()
     _BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "lib", 1)[0].replace("\\", "/")
     _USER_DIR = _validate_user_dir().replace("\\", "/")
-    _SETTINGS_PATH = os.path.normpath(os.path.join(_USER_DIR, "data/settings.toml"))
+    _SETTINGS_PATH = os.path.normpath(os.path.join(_USER_DIR, "settings/settings.toml"))
 
-    for directory in ["data", "rules", "transformers", "hooks", "sikuli"]:
+    for directory in ["data", "rules", "transformers", "hooks", "sikuli", "settings"]:
         d = _USER_DIR + "/" + directory
         if not os.path.exists(d):
             os.makedirs(d)
