@@ -4,7 +4,8 @@ import threading
 import time
 from subprocess import Popen
 
-from dragonfly import AppContext, Function, Choice, Dictation, ContextAction
+from dragonfly import Function, Choice, Dictation, ContextAction
+from castervoice.lib.context import AppContext
 
 from castervoice.lib import settings, utilities, context, contexts
 from castervoice.lib.actions import Text, Key

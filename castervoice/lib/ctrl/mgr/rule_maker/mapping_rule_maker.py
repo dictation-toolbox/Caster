@@ -1,4 +1,5 @@
-from dragonfly import Grammar, AppContext
+from dragonfly import Grammar
+from castervoice.lib.context import AppContext
 from castervoice.lib.ctrl.mgr.rule_maker.base_rule_maker import BaseRuleMaker
 
 

@@ -17,13 +17,16 @@ To use Aenea-Caster compatibility, do the following:
 1. Install dependencies for the copypaste plugin: `pip install yapsy subprocess32 pyperclip`
 1. Start/restart Dragon and the Aenea server.
 
-To use this functionality in your own grammar files, import `Key`, `Text`, `Mouse`, `AppContext` and/or `Clipboard` as below:
+To use this functionality in your own grammar files, import `Key`, `Text`, `Mouse`, and/or `Clipboard` as below:
 
 ``` Python
-from caster.lib.actions import Key, Text, Mouse
-from caster.lib.clipboard import Clipboard
-from caster.lib.context import AppContext
+from castervoice.lib.actions import Key, Text, Mouse
+from castervoice.lib.clipboard import Clipboard
+```
 
+If using `ContextAction` include the following import.
+```
+from castervoice.lib.context import AppContext
 ```
 
 If the `use_aenea` setting is false, these lines will just import dragonfly's classes.
