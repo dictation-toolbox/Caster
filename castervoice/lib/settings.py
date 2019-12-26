@@ -88,7 +88,58 @@ def _validate_user_dir():
         else:
             return _set_user_dir()
     else:
+<<<<<<< HEAD
         return _set_user_dir()
+=======
+        return set_user_dir()
+
+
+_USER_DIR = validate_user_dir()
+_SETTINGS_PATH = os.path.normpath(os.path.join(_USER_DIR, "data/settings.toml"))
+
+print("Caster User Directory: " + _USER_DIR)
+
+for directory in ["data", "rules", "filters", "sikuli"]:
+    d = _USER_DIR + "/" + directory
+    if not os.path.exists(d):
+        os.makedirs(d)
+
+# title
+SOFTWARE_VERSION_NUMBER = version.__version__
+SOFTWARE_NAME = "Caster v " + SOFTWARE_VERSION_NUMBER
+HOMUNCULUS_VERSION = "HMC v " + SOFTWARE_VERSION_NUMBER
+HMC_TITLE_RECORDING = " :: Recording Manager"
+HMC_TITLE_DIRECTORY = " :: Directory Selector"
+HMC_TITLE_CONFIRM = " :: Confirm"
+LEGION_TITLE = "legiongrid"
+RAINBOW_TITLE = "rainbowgrid"
+DOUGLAS_TITLE = "douglasgrid"
+SUDOKU_TITLE = "sudokugrid"
+SETTINGS_WINDOW_TITLE = "Caster Settings Window v "
+
+# enums
+QTYPE_DEFAULT = "0"
+QTYPE_INSTRUCTIONS = "3"
+QTYPE_RECORDING = "4"
+QTYPE_DIRECTORY = "5"
+QTYPE_CONFIRM = "6"
+WXTYPE_SETTINGS = "7"
+
+HMC_SEPARATOR = "[hmc]"
+
+WSR = False
+
+# set the paths for autohotkey and git bash
+if os.path.isfile('C:/Program Files/Git/git-bash.exe'):
+    TERMINAL_PATH_DEFAULT = "C:/Program Files/Git/git-bash.exe"
+else:
+    TERMINAL_PATH_DEFAULT = ""
+
+if os.path.isfile('C:/Program Files/AutoHotkey/AutoHotkey.exe'):
+    AHK_PATH_DEFAULT = "C:/Program Files/AutoHotkey/AutoHotkey.exe"
+else:
+    AHK_PATH_DEFAULT = ""
+>>>>>>> sudoku-grid
 
 
 def _get_platform_information():
@@ -209,6 +260,199 @@ def _find_natspeak():
     return ""
 
 
+<<<<<<< HEAD
+=======
+# The defaults for every setting. Could be moved out into its own file.
+_DEFAULT_SETTINGS = {
+    "paths": {
+        "BASE_PATH":
+            BASE_PATH,
+        "USER_DIR":
+            _USER_DIR,
+
+        # DATA
+        "BRINGME_PATH":
+            _USER_DIR + "/data/bringme.toml",
+        "BRINGME_DEFAULTS_PATH":
+            BASE_PATH + "/bin/share/bringme.toml.defaults",
+        "FILTER_RULES_DEFAULTS_PATH":
+            BASE_PATH + "/bin/share/FilterRules",
+        "RULES_RULES_DEFAULTS_PATH":
+            BASE_PATH + "/bin/share/Rules",
+        "ALIAS_PATH":
+            _USER_DIR + "/data/aliases.toml",
+        "CCR_CONFIG_PATH":
+            _USER_DIR + "/data/ccr.toml",
+        "DLL_PATH":
+            BASE_PATH + "/lib/dll/",
+        "SIMPLIFIED_FILTER_RULES_PATH":
+            _USER_DIR + "/filters/words.txt",
+        "LOG_PATH":
+            _USER_DIR + "/log.txt",
+        "RECORDED_MACROS_PATH":
+            _USER_DIR + "/data/recorded_macros.toml",
+        "SAVED_CLIPBOARD_PATH":
+            _USER_DIR + "/data/clipboard.json",
+        "SIKULI_SCRIPTS_PATH":
+            _USER_DIR + "/sikuli",
+        "GIT_REPO_LOCAL_REMOTE_PATH":
+            _USER_DIR + "/data/git_repo_local_to_remote_match.toml",
+        "GIT_REPO_LOCAL_REMOTE_DEFAULT_PATH":
+            BASE_PATH + "/bin/share/git_repo_local_to_remote_match.toml.defaults",
+
+        # REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
+        "REMOTE_DEBUGGER_PATH":
+            "",
+
+        # SIKULIX EXECUTABLES
+        "SIKULI_IDE":
+            "",
+        "SIKULI_RUNNER":
+            "",
+
+        # EXECUTABLES
+        "AHK_PATH":
+            AHK_PATH_DEFAULT,
+        "DOUGLAS_PATH":
+            BASE_PATH + "/asynch/mouse/grids.py",
+        "ENGINE_PATH":
+            _validate_engine_path(),
+        "HOMUNCULUS_PATH":
+            BASE_PATH + "/asynch/hmc/h_launch.py",
+        "LEGION_PATH":
+            BASE_PATH + "/asynch/mouse/legion.py",
+        "MEDIA_PATH":
+            BASE_PATH + "/bin/media",
+        "RAINBOW_PATH":
+            BASE_PATH + "/asynch/mouse/grids.py",
+        "REBOOT_PATH":
+            BASE_PATH + "/bin/reboot.bat",
+        "REBOOT_PATH_WSR":
+            BASE_PATH + "/bin/reboot_wsr.bat",
+        "SETTINGS_WINDOW_PATH":
+            BASE_PATH + "/asynch/settingswindow.py",
+        "SIKULI_SERVER_PATH":
+            BASE_PATH + "/asynch/sikuli/server/xmlrpc_server.sikuli",
+        "SUDOKU_PATH":
+            BASE_PATH + "/asynch/mouse/grids.py",
+        "WSR_PATH":
+            "C:/Windows/Speech/Common/sapisvr.exe",
+        "TERMINAL_PATH":
+            TERMINAL_PATH_DEFAULT,
+
+        # CCR
+        "CONFIGDEBUGTXT_PATH":
+            _USER_DIR + "/data/configdebug.txt",
+
+        # PYTHON
+        "PYTHONW":
+            SYSTEM_INFORMATION["hidden console binary"],
+    },
+
+    # python settings
+    "python": {
+        "automatic_settings":
+            True,  # Set to false to manually set "version" and "pip" below.
+        "version":
+            "python",  # Depending Python setup (python, python2, python2.7, py, py -2)
+        "pip": "pip"  # Depending on PIP setup (pip ,pip2, pip2.7)
+    },
+
+    # sikuli settings
+    "sikuli": {
+        "enabled": False,
+        "version": ""
+    },
+
+    # gitbash settings
+    "gitbash": {
+        "loading_time": 5,  # the time to initialise the git bash window in seconds
+        "fetching_time": 3  # the time to fetch a github repository in seconds
+    },
+
+    # feature switches
+    "feature_rules": {
+        "hmc": True,
+        "again": True,
+        "alias": True,
+        "chainalias": True,
+    },
+
+    # node rules
+    "nodes": {},
+
+    # miscellaneous section
+    "miscellaneous": {
+        "dev_commands": True,
+        "keypress_wait": 50,  # milliseconds
+        "max_ccr_repetitions": 16,
+        "atom_palette_wait": 30,  # hundredths of a second
+        "rdp_mode": False,  # Switch app context manually for remote desktop
+        "integer_remap_opt_in": False,
+        "short_integer_opt_out": False,
+        "integer_remap_crash_fix": False,
+        "print_rdescripts": True,
+        "history_playback_delay_secs": 1.0,
+        "legion_vertical_columns": 30,
+        "use_aenea": False,
+        "online_mode": True,
+    },
+    "pronunciations": {
+        "c++": "C plus plus",
+        "jquery": "J query",
+    },
+    "one time warnings": {},
+    "formats": {
+        "_default": {
+            "text_format": [5, 0],
+            "secondary_format": [1, 0],
+        },
+        "C plus plus": {
+            "text_format": [3, 1],
+            "secondary_format": [2, 1],
+        },
+        "C sharp": {
+            "text_format": [3, 1],
+            "secondary_format": [2, 1],
+        },
+        "Dart": {
+            "text_format": [3, 1],
+            "secondary_format": [2, 1],
+        },
+        "HTML": {
+            "text_format": [5, 0],
+            "secondary_format": [5, 2],
+        },
+        "Java": {
+            "text_format": [3, 1],
+            "secondary_format": [2, 1],
+        },
+        "Javascript": {
+            "text_format": [3, 1],
+            "secondary_format": [2, 1],
+        },
+        "matlab": {
+            "text_format": [3, 1],
+            "secondary_format": [1, 3],
+        },
+        "Python": {
+            "text_format": [5, 3],
+            "secondary_format": [2, 1],
+        },
+        "Rust": {
+            "text_format": [5, 3],
+            "secondary_format": [2, 1],
+        },
+        "sequel": {
+            "text_format": [5, 3],
+            "secondary_format": [1, 3],
+        },
+    }
+}
+
+
+# Internal Methods
+>>>>>>> sudoku-grid
 def _save(data, path):
     """
     Only to be used for settings file.

@@ -14,6 +14,8 @@ class MouseAlternativesRule(MappingRule):
             R(Function(navigation.mouse_alternates, mode="rainbow")),
         "douglas [<monitor>]":
             R(Function(navigation.mouse_alternates, mode="douglas")),
+        "sudoku [<monitor>]":
+            R(Function(navigation.mouse_alternates, mode="sudoku")),
     }
     extras = [
         IntegerRefST("monitor", 1, 10)

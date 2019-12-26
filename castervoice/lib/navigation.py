@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import win32api, win32con
 '''
 master_text_nav shouldn't take strings as arguments - it should take ints, so it can be language-agnostic
 '''
@@ -15,7 +16,48 @@ from castervoice.lib.actions import Key, Text, Mouse
 from castervoice.lib.clipboard import Clipboard
 
 
+<<<<<<< HEAD
 _CLIP = {}
+=======
+def mouse_alternates(mode, nexus, monitor=1):
+    if DependencyMan.PIL:
+        if mode == "legion" and not utilities.window_exists(None, "legiongrid"):
+            r = monitors[int(monitor) - 1].rectangle
+            bbox = [
+                int(r.x),
+                int(r.y),
+                int(r.x) + int(r.dx) - 1,
+                int(r.y) + int(r.dy) - 1
+            ]
+            ls = LegionScanner()
+            ls.scan(bbox)
+            tscan = ls.get_update()
+            Popen([
+                settings.SETTINGS["paths"]["PYTHONW"],
+                settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0], "-m",
+                str(monitor)
+            ])  # , "-d", "500_500_500_500"
+        elif mode == "rainbow" and not utilities.window_exists(None, "rainbowgrid"):
+            Popen([
+                settings.SETTINGS["paths"]["PYTHONW"],
+                settings.SETTINGS["paths"]["RAINBOW_PATH"], "-g", "r", "-m",
+                str(monitor)
+            ])
+        elif mode == "sudoku" and not utilities.window_exists(None, "sudokugrid"):
+            Popen([
+                settings.SETTINGS["paths"]["PYTHONW"],
+                settings.SETTINGS["paths"]["SUDOKU_PATH"], "-g", "s", "-m",
+                str(monitor)
+            ])
+        elif mode == "douglas" and not utilities.window_exists(None, "douglasgrid"):
+            Popen([
+                settings.SETTINGS["paths"]["PYTHONW"],
+                settings.SETTINGS["paths"]["DOUGLAS_PATH"], "-g", "d", "-m",
+                str(monitor)
+            ])
+    else:
+        utilities.availability_message(mode.title(), "PIL")
+>>>>>>> sudoku-grid
 
 
 def initialize_clipboard():
