@@ -367,7 +367,7 @@ def _get_defaults():
             "SIKULI_SERVER_PATH":
                 _BASE_PATH + "/asynch/sikuli/server/xmlrpc_server.sikuli",
             "SUDOKU_PATH":
-                BASE_PATH + "/asynch/mouse/grids.py",
+                _BASE_PATH + "/asynch/mouse/grids.py",
             "WSR_PATH":
                 "C:/Windows/Speech/Common/sapisvr.exe",
             "TERMINAL_PATH":

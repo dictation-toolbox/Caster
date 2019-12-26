@@ -1,6 +1,15 @@
-from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.const import CCRType
+import time
+
+from dragonfly import Function, Choice, MappingRule
+from castervoice.lib.actions import Mouse
+from castervoice.lib import settings, control
 from castervoice.asynch.mouse import grids
+import win32api, win32con
+
+from castervoice.rules.ccr.standard import SymbolSpecs
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.state.short import R
 
 import win32api, win32con
 
