@@ -392,7 +392,7 @@ class SudokuGrid(TkTransparent):
             self.after(100, self.click)
         finally:
             self.mainloop()
-    
+
     def click(self):
         win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)
         win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
@@ -571,7 +571,7 @@ def main(argv):
                 g = SudokuGrid
         elif opt == '-m':
             m = arg
-        
+
     if g is None:
         raise ValueError("Grid mode not specified.")
     r = monitors[int(m) - 1].rectangle
