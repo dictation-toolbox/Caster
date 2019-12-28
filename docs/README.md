@@ -59,7 +59,7 @@
 
 - [Editing and Navigation](https://github.com/dictation-toolbox/Caster/blob/master/CasterQuickReference.pdf)
 
-  - Four additional [mouse navigation modes](https://caster.readthedocs.io/en/latest/readthedocs/Mouse/): curse, douglas, legion, and rainbow - [Demo](https://www.youtube.com/watch?v=UISjQBMmQ-I&feature=youtu.be)
+  - Four additional [mouse navigation modes](https://caster.readthedocs.io/en/latest/readthedocs/Mouse/): curse, sudoku, douglas, legion, and rainbow - [Demo](https://www.youtube.com/watch?v=UISjQBMmQ-I&feature=youtu.be)
   - [Text navigation commands](https://caster.readthedocs.io/en/latest/readthedocs/Text_Manipulation/) - [Demo](https://www.youtube.com/watch?v=xj8IzNlfM70), Text formatting commands
   - Alphabet, numbers, punctuation input commands
   - Commands to interact with generic File Dialogues.
