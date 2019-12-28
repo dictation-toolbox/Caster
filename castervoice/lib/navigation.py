@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import win32api, win32con
 '''
 master_text_nav shouldn't take strings as arguments - it should take ints, so it can be language-agnostic
 '''
@@ -52,6 +53,12 @@ def mouse_alternates(mode, monitor=1):
         Popen([
             settings.SETTINGS["paths"]["PYTHONW"],
             settings.SETTINGS["paths"]["DOUGLAS_PATH"], "-g", "d", "-m",
+            str(monitor)
+        ])
+    elif mode == "sudoku" and not utilities.window_exists(None, "sudokugrid"):
+        Popen([
+            settings.SETTINGS["paths"]["PYTHONW"],
+            settings.SETTINGS["paths"]["SUDOKU_PATH"], "-g", "s", "-m",
             str(monitor)
         ])
 

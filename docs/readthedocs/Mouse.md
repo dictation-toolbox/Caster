@@ -101,6 +101,28 @@ Selecting from one point to another is available including fine adjustment of th
 - _red 86 move, curse sauce lease 5, squat, 2 green 10 move, curse dunce lease 10, bench_
     - Selects from the first red 86 to the second green 10 with fine adjustment.
 
+### Sudoku
+
+**Description**:
+
+Creates a grid of numbered 3 x 3 squares over the whole screen. A number is called out to move directly to the center of the square. The position can be refined to one of the adjacent small squares. It supports both clicking and dragging.
+
+**Usage**:
+
+- Invoke: `sudoku` or `sudoku <monitor_number>`
+- Move to square: `<number>`
+- Select/drag to square: `drag <number>`
+- Select/drag from square to square: `<number> drag <number>`
+- Move to square with refinement (also for drag): `<number> grid <number>`
+
+**Examples**:
+
+- _159 grid 8_
+- _95 double click_
+- _drag 201_
+- _7 drag 13_
+- _55 move, curse sauce lease 5, squat, 20 grid 7 move, curse dunce lease 10, bench_
+
 ### Legion
 
 **Description**:
