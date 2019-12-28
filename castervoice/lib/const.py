@@ -11,7 +11,7 @@ CORE = [
     # rules which were split out of _caster.py:
     "CasterRule", "HardwareRule", "MouseAlternativesRule", "WindowManagementRule",
     # alternate mouse grid controls:
-    "LegionGridRule", "DouglasGridRule", "RainbowGridRule",
+    "LegionGridRule", "DouglasGridRule", "RainbowGridRule", "SudokuGridRule",
     # gui control rules:
     "HMCRule", "HMCConfirmRule", "HMCDirectoryRule",
     "HMCHistoryRule", "HMCLaunchRule", "HMCSettingsRule",

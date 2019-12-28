@@ -1,15 +1,16 @@
 import time
 
 from dragonfly import Function, Choice, MappingRule
-from castervoice.lib.actions import Mouse
-from castervoice.lib import settings, control
-from castervoice.asynch.mouse import grids
-import win32api, win32con
 
+from castervoice.lib.actions import Mouse
+
+from castervoice.lib import control, settings
 from castervoice.rules.ccr.standard import SymbolSpecs
-from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
+
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.asynch.mouse import grids
 
 import win32api, win32con
 
@@ -76,7 +77,7 @@ Rules for sudoku grid. We can either move the mouse or drag it.
 The number n is one of the numbered squares.
 The grid portion is a number from 1-9 referencing an inner unnumbered square.
 '''
-class SudokuGridRule(MergeRule):
+class SudokuGridRule(MappingRule):
     pronunciation = "sudoku grid"
 
     mapping = {
@@ -110,5 +111,5 @@ class SudokuGridRule(MergeRule):
     }
 
 def get_rule():
-    details = RuleDetails(title="sudokugrid", ccrtype=CCRType.APP)
-    return SudokuGridRule, details
+    Details = RuleDetails(name="Sudoku Grid", title="sudokugrid")
+    return SudokuGridRule, Details
