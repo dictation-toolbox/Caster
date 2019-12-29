@@ -2,7 +2,7 @@ from dragonfly import Function, Repeat, Dictation, Choice, MappingRule
 
 from castervoice.lib.actions import Key, Mouse
 from castervoice.lib import navigation, utilities
-import navigation_support
+from castervoice.rules.core.navigation_rules import navigation_support
 
 try:  # Try first loading from caster user directory
     from alphabet_rules import alphabet_support
