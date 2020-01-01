@@ -60,10 +60,8 @@ def _set_user_dir():
             user_dir = Path(user_dir.joinpath(".caster"))
     except IOError as e:
         if e.errno == errno.EACCES:
-            print("Caster does not have read/write for a user directory. \n" +
-                  errno.EACCES)
-            print("Caster could not find a valid user directory at: " + str(user_dir))
-
+            print("Caster does not have read/write for a user directory at: {} \n {}".format(user_dir, errno.EACCES))
+            
 def _validate_user_dir():
     '''
     Checks for existing Caster's user directory path. Returns path.
@@ -124,9 +122,9 @@ def _validate_engine_path():
                     formatted_data = unicode(tomlkit.dumps(data))
                     with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as toml_file:
                         toml_file.write(formatted_data)
-                    print("Setting engine path to " + engine_path)
+                    print("Setting engine path to {}".format(engine_path))
                 except Exception as e:
-                    print("Error saving settings file ") + str(e) + _SETTINGS_PATH
+                    print("Error saving settings file {} {} ".format(e, _SETTINGS_PATH))
                 return engine_path
     else:
         return _find_natspeak()
@@ -183,13 +181,12 @@ def _find_natspeak():
                         engine_path = InstallLocation.replace(
                             "\\", "/") + "Program/natspeak.exe"
                         if os.path.isfile(engine_path):
-                            printer.out("Search Complete.")
+                            printer.out("Search Complete.") 
                             return engine_path
                     else:
                         printer.out(
-                            " Dragon Naturally Speaking " + str(DnsVersion) +
-                            " is not supported by Caster. Only versions 13 and above are supported. Purchase Dragon Naturally Speaking 13 or above"
-                        )
+                            "Dragon Naturally Speaking {} is not supported by Caster. Only versions 13 and above are supported. Purchase Dragon Naturally Speaking 13 or above"
+                            .format(DnsVersion))     
     printer.out("Cannot find dragon engine path")
     return ""
 
@@ -207,7 +204,7 @@ def _save(data, path):
         with io.open(path, "wt", encoding="utf-8") as f:
             f.write(formatted_data)
     except Exception as e:
-        printer.out("Error saving toml file: " + str(e) + _SETTINGS_PATH)
+        printer.out("Error saving toml file: {} {}".format(e, _SETTINGS_PATH))
 
 
 def _init(path):
@@ -217,15 +214,14 @@ def _init(path):
         with io.open(path, "rt", encoding="utf-8") as f:
             result = tomlkit.loads(f.read()).value
     except ValueError as e:
-        printer.out("\n\n" + repr(e) + " while loading settings file: " + path + "\n\n")
+        printer.out("\n\n" + repr(e) + " while loading settings file: {} \n\n".format(path))
         printer.out(sys.exc_info())
     except IOError as e:
-        printer.out("\n\n" + repr(e) + " while loading settings file: " + path +
-              "\nAttempting to recover...\n\n")
+        printer.out("\n\n" + repr(e) + " while loading settings file: {} \nAttempting to recover...\n\n".format(path))
     default_settings = _get_defaults()
     result, num_default_added = _deep_merge_defaults(result, default_settings)
     if num_default_added > 0:
-        printer.out("Default settings values added: %d " % num_default_added)
+        printer.out("Default settings values added: {} ".format(num_default_added))
         _save(result, _SETTINGS_PATH)
     return result
 
@@ -498,4 +494,4 @@ def initialize():
     _debugger_path = SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"]
     if _debugger_path not in sys.path and os.path.isdir(_debugger_path):
         sys.path.append(_debugger_path)
-    printer.out("Caster User Directory: " + _USER_DIR)
+    printer.out("Caster User Directory: {}".format(_USER_DIR))
