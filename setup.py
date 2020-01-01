@@ -67,6 +67,7 @@ setuptools.setup(
         "future",
         "mock",
         "appdirs",
+        "pathlib2",
     ],
     cmdclass={'install': new_install,
               'develop': dev_install,
