@@ -224,23 +224,6 @@ def _init(path):
               "\nAttempting to recover...\n\n")
     default_settings = _get_defaults()
     result, num_default_added = _deep_merge_defaults(result, default_settings)
-    # Temporary piece of code to seamlessly migrate clipboards to JSON
-    if result["paths"]["SAVED_CLIPBOARD_PATH"].endswith(".toml"):
-        old_clipboard = result["paths"]["SAVED_CLIPBOARD_PATH"]
-        import json
-        clipboard = {}
-        new_path = old_clipboard[:-4] + "json"
-        printer.out("\n\n Migrating clipboard from {} to {}".format(old_clipboard, new_path))
-        with io.open(old_clipboard, "rt", encoding="utf-8") as f:
-            clipboard = tomlkit.loads(f.read()).value
-        formatted_data = unicode(json.dumps(clipboard, ensure_ascii=False))
-        with io.open(new_path, "wt", encoding="utf-8") as f:
-            f.write(formatted_data)
-        result["paths"]["SAVED_CLIPBOARD_PATH"] = new_path
-        if os.path.exists(old_clipboard):
-            os.remove(old_clipboard)
-        if not num_default_added:
-            _save(result, _SETTINGS_PATH)
     if num_default_added > 0:
         printer.out("Default settings values added: %d " % num_default_added)
         _save(result, _SETTINGS_PATH)
