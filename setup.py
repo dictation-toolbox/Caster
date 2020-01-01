@@ -66,6 +66,7 @@ setuptools.setup(
         "tomlkit",
         "future",
         "mock",
+        "appdirs",
     ],
     cmdclass={'install': new_install,
               'develop': dev_install,

@@ -188,7 +188,7 @@ class BringRule(BaseSelfModifyingRule):
         threading.Thread(target=os.startfile, args=(file, )).start()
 
     # =================== BringMe default setup:
-
+    user_dir = settings.SETTINGS["paths"]["USER_DIR"]
     _bm_defaults = {
         "website": {
             "caster documentation": "https://caster.readthedocs.io/en/latest/",
@@ -202,23 +202,24 @@ class BringRule(BaseSelfModifyingRule):
             "libraries": "%USERPROFILE%",
             "my pictures": "%USERPROFILE%\\Pictures",
             "my documents": "%USERPROFILE%\\Documents",
-            "caster user": "%USERPROFILE%\\.caster",
-            "caster transformers": "%USERPROFILE%\\.caster\\transformers",
-            "caster rules": "%USERPROFILE%\\.caster\\rules",
-            "caster data": "%USERPROFILE%\\.caster\\data",
-            "sick you lee": "%USERPROFILE%\\.caster\\sikuli",
+            "caster user": os.path.join(user_dir),
+            "caster hooks": os.path.join(user_dir, "hooks"),
+            "caster transformers": os.path.join(user_dir, "transformers"),
+            "caster rules": os.path.join(user_dir, "rules"),
+            "caster data": os.path.join(user_dir, "data"),
+            "caster settings": os.path.join(user_dir, "settings"),
+            "sick you lee": os.path.join(user_dir, "sikuli"),
         },
         "program": {
             "notepad": "C:\\Windows\\notepad.exe",
         },
         "file": {
-            "caster settings": "%USERPROFILE%\\.caster\\data\\settings.toml",
-            "caster alias": "%USERPROFILE%\\.caster\\data\\sm_aliases.toml",
-            "caster bring me": "%USERPROFILE%\\.caster\\data\\sm_bringme.toml",
-            "caster ccr": "%USERPROFILE%\\.caster\\data\\ccr.toml",
-            "caster config debug": "%USERPROFILE%\\.caster\\data\\configdebug.txt",
-            "caster words": "%USERPROFILE%\\.caster\\transformers\\words.txt",
-            "caster log": "%USERPROFILE%\\.caster\\data\\log.txt",
+            "caster settings file": os.path.join(user_dir, "settings\\settings.toml"),
+            "caster alias": os.path.join(user_dir, "data\\sm_aliases.toml"),
+            "caster bring me": os.path.join(user_dir, "settings\\sm_bringme.toml"),
+            "caster ccr": os.path.join(user_dir, "data\\ccr.toml"),
+            "caster words": os.path.join(user_dir, "transformers\\words.txt"),
+            "caster log": os.path.join(user_dir, "data\\log.txt"),
         }
     }
 

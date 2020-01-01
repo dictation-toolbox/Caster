@@ -9,6 +9,7 @@ import sys
 import tomlkit
 import version
 import errno
+from appdirs import *
 
 # consts: some of these can easily be moved out of this file
 from castervoice.lib import printer
@@ -50,19 +51,13 @@ _SETTINGS_PATH = None
 
 def _set_user_dir():
     '''
-    Sets Caster's user directory path. Returns "user_dir" with valid path for Home directory or AppData.
+    Sets Caster's user directory path. Returns "user_dir" with valid path for Home directory or 'AppData\Local\.caster".
     '''
     user_dir = 'empty_path'
     try:
-        directory = os.path.expanduser("~")
+        directory = os.path.join(user_data_dir())
         if os.access(directory, os.W_OK) and os.access(directory, os.R_OK) is True:
             user_dir = directory
-        else:
-            if os.name == 'nt':
-                directory = os.path.expandvars(r'%APPDATA%')
-                if os.access(directory,
-                             os.W_OK) and os.access(directory, os.R_OK) is True:
-                    user_dir = directory
     except IOError as e:
         if e.errno == errno.EACCES:
             print("Caster does not have read/write for a user directory. \n" +
@@ -79,15 +74,9 @@ def _validate_user_dir():
     '''
     Checks for existing Caster's user directory path. Returns path.
     '''
-    user_dir = os.path.join(os.path.expanduser("~"), ".caster")
+    user_dir = os.path.join(user_data_dir(), ".caster")
     if os.path.exists(user_dir) is True:
         return user_dir
-    if os.name == 'nt':
-        app_data = os.path.join(os.path.expandvars(r'%APPDATA%'), ".caster")
-        if os.path.exists(app_data) is True:
-            return app_data
-        else:
-            return _set_user_dir()
     else:
         return _set_user_dir()
 
