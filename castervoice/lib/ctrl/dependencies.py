@@ -107,7 +107,7 @@ def dep_min_version():
     # A GitHub Issue URL needed to explain the change to version specific '==' dependency.
     upgradelist = []
     listdependency = ([
-        ["dragonfly2", ">=", "0.18.0", None],
+        ["dragonfly2", ">=", "0.20.0", None],
     ])
     for dep in listdependency:
         package = dep[0]
