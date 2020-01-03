@@ -1,9 +1,12 @@
+from builtins import str
+
 import getopt
 import os
 import re
 import sys
 import threading
 from ctypes import *
+from pathlib2 import Path
 from dragonfly import monitors
 
 try:  # Style C -- may be imported into Caster, or externally
@@ -168,10 +171,10 @@ class LegionScanner:
         import struct
         try:
             if struct.calcsize("P") * 8 == 32:
-                self.tirg_dll = cdll.LoadLibrary((settings.SETTINGS["paths"]["DLL_PATH"] + "tirg-32.dll").encode(
+                self.tirg_dll = cdll.LoadLibrary(str(Path(settings.SETTINGS["paths"]["DLL_PATH"]).joinpath("tirg-32.dll")).encode(
                 sys.getfilesystemencoding()))
             else:
-                self.tirg_dll = cdll.LoadLibrary((settings.SETTINGS["paths"]["DLL_PATH"] + "tirg-64.dll").encode(
+                self.tirg_dll = cdll.LoadLibrary(str(Path(settings.SETTINGS["paths"]["DLL_PATH"]).joinpath("tirg-64.dll")).encode(
                 sys.getfilesystemencoding()))
         except Exception as e:
             print("Legion loading failed with '%s'" % str(e))

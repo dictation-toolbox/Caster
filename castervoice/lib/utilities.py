@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function, unicode_literals
+from builtins import str
 
 import io
 import json
@@ -16,6 +17,7 @@ import tomlkit
 from castervoice.lib.clipboard import Clipboard
 from castervoice.lib import printer
 from castervoice.lib.util import guidance
+from pathlib2 import Path
 
 try:
     import win32gui
@@ -45,11 +47,11 @@ from ctypes import cdll
 # Source: https://github.com/Ciantic/VirtualDesktopAccessor
 try:
     if struct.calcsize("P")*8 == 32:
-        vda = cdll.LoadLibrary((
-            BASE_PATH + "/castervoice/bin/VirtualDesktopAccessor32.dll").encode(locale.getpreferredencoding()))
+        vda = cdll.LoadLibrary(
+            str(Path(BASE_PATH).joinpath("castervoice/bin/VirtualDesktopAccessor32.dll")).encode(locale.getpreferredencoding()))
     else:
-        vda = cdll.LoadLibrary((
-            BASE_PATH + "/castervoice/bin/VirtualDesktopAccessor64.dll").encode(locale.getpreferredencoding()))
+        vda = cdll.LoadLibrary(
+            str(Path(BASE_PATH).joinpath("castervoice/bin/VirtualDesktopAccessor64.dll")).encode(locale.getpreferredencoding()))
 except Exception as e:
     print("Virtual desktop accessor loading failed with '%s'" % str(e))
 

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
+from __future__ import unicode_literals
+from builtins import str
 
 import collections
 import io
@@ -60,7 +61,7 @@ def _set_user_dir():
             user_dir = Path(user_dir.joinpath(".caster"))
     except IOError as e:
         if e.errno == errno.EACCES:
-            print("Caster does not have read/write for a user directory at: {} \n {}".format(user_dir, errno.EACCES))
+            printer.out("Caster does not have read/write for a user directory at: {} \n {}".format(user_dir, errno.EACCES))
             
 def _validate_user_dir():
     '''
@@ -82,15 +83,15 @@ def _get_platform_information():
     if sys.platform == "win32":
         system_information.update({"binary path": sys.exec_prefix})
         system_information.update(
-            {"main binary": os.path.join(sys.exec_prefix, "python.exe")})
+            {"main binary": str(Path(sys.exec_prefix).joinpath("python.exe"))})
         system_information.update(
-            {"hidden console binary": os.path.join(sys.exec_prefix, "pythonw.exe").replace("\\", "/")})
+            {"hidden console binary": str(Path(sys.exec_prefix).joinpath("pythonw.exe"))})
     else:
-        system_information.update({"binary path": os.path.join(sys.exec_prefix, "bin")})
+        system_information.update({"binary path": str(Path(sys.exec_prefix).joinpath(sys.exec_prefix).joinpath("bin"))})
         system_information.update(
-            {"main binary": os.path.join(sys.exec_prefix, "bin", "python")})
+            {"main binary": str(Path(sys.exec_prefix).joinpath("bin", "python"))})
         system_information.update(
-            {"hidden console binary": os.path.join(sys.exec_prefix, "bin", "python")})
+            {"hidden console binary": str(Path(sys.exec_prefix).joinpath("bin", "python"))})
     return system_information
 
 
@@ -122,9 +123,9 @@ def _validate_engine_path():
                     formatted_data = unicode(tomlkit.dumps(data))
                     with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as toml_file:
                         toml_file.write(formatted_data)
-                    print("Setting engine path to {}".format(engine_path))
+                    printer.out("Setting engine path to {}".format(engine_path))
                 except Exception as e:
-                    print("Error saving settings file {} {} ".format(e, _SETTINGS_PATH))
+                    printer.out("Error saving settings file {} {} ".format(e, _SETTINGS_PATH))
                 return engine_path
     else:
         return _find_natspeak()
@@ -178,8 +179,7 @@ def _find_natspeak():
                 if Publisher == "Nuance Communications Inc." and "Dragon" in DisplayName:
                     DnsVersion = int(str(DisplayVersion)[:2])
                     if DnsVersion >= 13:
-                        engine_path = InstallLocation.replace(
-                            "\\", "/") + "Program/natspeak.exe"
+                        engine_path = str(Path(InstallLocation).joinpath("Program/natspeak.exe"))
                         if os.path.isfile(engine_path):
                             printer.out("Search Complete.") 
                             return engine_path
@@ -214,10 +214,10 @@ def _init(path):
         with io.open(path, "rt", encoding="utf-8") as f:
             result = tomlkit.loads(f.read()).value
     except ValueError as e:
-        printer.out("\n\n" + repr(e) + " while loading settings file: {} \n\n".format(path))
+        printer.out("\n\n {} while loading settings file: {} \n\n".format(repr(e), path))
         printer.out(sys.exc_info())
     except IOError as e:
-        printer.out("\n\n" + repr(e) + " while loading settings file: {} \nAttempting to recover...\n\n".format(path))
+        printer.out("\n\n {} while loading settings file: {} \nAttempting to recover...\n\n".format(repr(e), path))
     default_settings = _get_defaults()
     result, num_default_added = _deep_merge_defaults(result, default_settings)
     if num_default_added > 0:
@@ -261,82 +261,82 @@ def _get_defaults():
                 _BASE_PATH,
             "USER_DIR":
                 _USER_DIR,
-
+            # pathlib2 string conversion can be removed once pathlib2 is utilized throughout Caster.
             # DATA
             "SM_BRINGME_PATH":
-                _USER_DIR + "/settings/sm_bringme.toml",
+                str(Path(_USER_DIR).joinpath("settings/sm_bringme.toml")),
             "SM_ALIAS_PATH":
-                _USER_DIR + "/data/sm_aliases.toml",
+                str(Path(_USER_DIR).joinpath("data/sm_aliases.toml")),
             "SM_CHAIN_ALIAS_PATH":
-                _USER_DIR + "/data/sm_chain_aliases.toml",
+                str(Path(_USER_DIR).joinpath("data/sm_chain_aliases.toml")),
             "SM_HISTORY_PATH":
-                _USER_DIR + "/data/sm_history.toml",
+                str(Path(_USER_DIR).joinpath("data/sm_history.toml")),
             "RULES_CONFIG_PATH":
-                _USER_DIR + "/settings/rules.toml",
+                str(Path(_USER_DIR).joinpath("settings/rules.toml")),
             "TRANSFORMERS_CONFIG_PATH":
-                _USER_DIR + "/settings/transformers.toml",
+                str(Path(_USER_DIR).joinpath("settings/transformers.toml")),
             "HOOKS_CONFIG_PATH":
-                _USER_DIR + "/settings/hooks.toml",
+                str(Path(_USER_DIR).joinpath("settings/hooks.toml")),
             "COMPANION_CONFIG_PATH":
-                _USER_DIR + "/settings/companion_config.toml",
+                str(Path(_USER_DIR).joinpath("settings/companion_config.toml")),
             "DLL_PATH":
-                _BASE_PATH + "/lib/dll/",
+                str(Path(_BASE_PATH).joinpath("lib/dll/")),
             "GDEF_FILE":
-                _USER_DIR + "/transformers/words.txt",
+                str(Path(_USER_DIR).joinpath("transformers/words.txt")),
             "LOG_PATH":
-                _USER_DIR + "/log.txt",
+                str(Path(_USER_DIR).joinpath("log.txt")),
             "SAVED_CLIPBOARD_PATH":
-                _USER_DIR + "/data/clipboard.json",
-            "SIKULI_SCRIPTS_PATH": 
-                _USER_DIR + "/sikuli",
+                str(Path(_USER_DIR).joinpath("data/clipboard.json")),
+            "SIKULI_SCRIPTS_PATH":
+                str(Path(_USER_DIR).joinpath("sikuli")),
             "GIT_REPO_LOCAL_REMOTE_PATH":
-                _USER_DIR + "/settings/git_repo_local_to_remote_match.toml",
+                str(Path(_USER_DIR).joinpath("settings/git_repo_local_to_remote_match.toml")),
             "GIT_REPO_LOCAL_REMOTE_DEFAULT_PATH":
-                _BASE_PATH + "/bin/share/git_repo_local_to_remote_match.toml.defaults",
+                str(Path(_BASE_PATH).joinpath("bin/share/git_repo_local_to_remote_match.toml.defaults")),
 
             # REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
             "REMOTE_DEBUGGER_PATH":
-                "",
+                str(Path("")),
 
             # SIKULIX EXECUTABLES
             "SIKULI_IDE":
-                "",
+                str(Path("")),
             "SIKULI_RUNNER":
-                "",
+                str(Path("")),
 
             # EXECUTABLES
             "AHK_PATH":
-                ahk_path_default,
+                str(Path(_BASE_PATH).joinpath(ahk_path_default)),
             "DOUGLAS_PATH":
-                _BASE_PATH + "/asynch/mouse/grids.py",
+                str(Path(_BASE_PATH).joinpath("asynch/mouse/grids.py")),
             "ENGINE_PATH":
                 _validate_engine_path(),
             "HOMUNCULUS_PATH":
-                _BASE_PATH + "/asynch/hmc/h_launch.py",
+                str(Path(_BASE_PATH).joinpath("asynch/hmc/h_launch.py")),
             "LEGION_PATH":
-                _BASE_PATH + "/asynch/mouse/legion.py",
+                str(Path(_BASE_PATH).joinpath("asynch/mouse/legion.py")),
             "MEDIA_PATH":
-                _BASE_PATH + "/bin/media",
+                str(Path(_BASE_PATH).joinpath("bin/media")),
             "RAINBOW_PATH":
-                _BASE_PATH + "/asynch/mouse/grids.py",
+                str(Path(_BASE_PATH).joinpath("asynch/mouse/grids.py")),
             "REBOOT_PATH":
-                _BASE_PATH + "/bin/reboot.bat",
+                str(Path(_BASE_PATH).joinpath("bin/reboot.bat")),
             "REBOOT_PATH_WSR":
-                _BASE_PATH + "/bin/reboot_wsr.bat",
+                str(Path(_BASE_PATH).joinpath("bin/reboot_wsr.bat")),
             "SETTINGS_WINDOW_PATH":
-                _BASE_PATH + "/asynch/settingswindow.py",
+                str(Path(_BASE_PATH).joinpath("asynch/settingswindow.py")),
             "SIKULI_SERVER_PATH":
-                _BASE_PATH + "/asynch/sikuli/server/xmlrpc_server.sikuli",
+                str(Path(_BASE_PATH).joinpath("asynch/sikuli/server/xmlrpc_server.sikuli")),
             "SUDOKU_PATH":
-                _BASE_PATH + "/asynch/mouse/grids.py",
+                str(Path(_BASE_PATH).joinpath("asynch/mouse/grids.py")),
             "WSR_PATH":
-                "C:/Windows/Speech/Common/sapisvr.exe",
+                str(Path(_BASE_PATH).joinpath("C:/Windows/Speech/Common/sapisvr.exe")),
             "TERMINAL_PATH":
-                terminal_path_default,
+                str(Path("terminal_path_default")),
 
             # CCR
             "CONFIGDEBUGTXT_PATH":
-                _USER_DIR + "/data/configdebug.txt",
+                str(Path(_USER_DIR).joinpath("data/configdebug.txt")),
 
             # PYTHON
             "PYTHONW":
@@ -366,7 +366,7 @@ def _get_defaults():
 
         # node rules path
         "Tree_Node_Path": {
-            "SM_CSS_TREE_PATH": _USER_DIR + "/data/sm_css_tree.toml",
+            "SM_CSS_TREE_PATH": str(Path(_USER_DIR).joinpath("data/sm_css_tree.toml")),
         },
 
         "online": {
@@ -480,14 +480,14 @@ def initialize():
 
     # calculate prerequisites
     SYSTEM_INFORMATION = _get_platform_information()
-    _BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "lib", 1)[0].replace("\\", "/")
-    _USER_DIR = _validate_user_dir().replace("\\", "/")
-    _SETTINGS_PATH = os.path.normpath(os.path.join(_USER_DIR, "settings/settings.toml"))
+    _BASE_PATH = str(Path(__file__).resolve().parent.parent)
+    _USER_DIR = _validate_user_dir()
+    _SETTINGS_PATH = str(Path(_USER_DIR).joinpath("settings/settings.toml"))
 
     for directory in ["data", "rules", "transformers", "hooks", "sikuli", "settings"]:
-        d = _USER_DIR + "/" + directory
-        if not os.path.exists(d):
-            os.makedirs(d)
+        d = Path(_USER_DIR).joinpath(directory)
+        if not Path.exists(d):
+            Path.mkdir(d)
 
     # Kick everything off.
     SETTINGS = _init(_SETTINGS_PATH)
