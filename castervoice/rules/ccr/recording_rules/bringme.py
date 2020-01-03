@@ -212,7 +212,7 @@ class BringRule(BaseSelfModifyingRule):
             "my pictures": str(Path(_home_dir).joinpath("Pictures")),
             "my documents": str(Path(_home_dir).joinpath("Documents")),
 
-            # Castor User Dir Navigation
+            # Caster User Dir Navigation
             "caster user": str(Path(_user_dir)),
             "caster hooks": str(Path(_user_dir).joinpath("hooks")),
             "caster transformers": str(Path(_user_dir).joinpath("transformers")),
@@ -236,6 +236,8 @@ class BringRule(BaseSelfModifyingRule):
             # Caster Data
             "caster alias file": str(Path(_user_dir).joinpath("data/sm_aliases.toml")),
             "caster chain aliases file": str(Path(_user_dir).joinpath("data/sm_chain_aliases.toml")),
+            "caster clipboard file": str(Path(_user_dir).joinpath("data/clipboard.json")),
+            "caster record from history file": str(Path(_user_dir).joinpath("data/sm_history.toml")),
             "caster log file": str(Path(_user_dir).joinpath("data/log.txt")),
 
             # Simplified Transformer 
