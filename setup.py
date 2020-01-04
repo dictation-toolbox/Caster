@@ -60,12 +60,14 @@ setuptools.setup(
         "Operating System :: OS Independent"
     ],
     install_requires=[
-        "dragonfly2>=0.19.1",
+        "dragonfly2>=0.20.0",
         "wxpython",
         "pillow",
         "tomlkit",
         "future",
         "mock",
+        "appdirs",
+        "scandir",
     ],
     cmdclass={'install': new_install,
               'develop': dev_install,
