@@ -67,6 +67,7 @@ setuptools.setup(
         "future",
         "mock",
         "appdirs",
+        "scandir",
     ],
     cmdclass={'install': new_install,
               'develop': dev_install,
