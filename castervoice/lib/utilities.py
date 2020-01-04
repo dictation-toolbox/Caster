@@ -19,7 +19,7 @@ from castervoice.lib import printer
 from castervoice.lib.util import guidance
 
 if sys.version_info > (3, 0):
-    from pathlib import Path
+    from pathlib import Path  # pylint: disable=import-error
 else:
     from castervoice.lib.util.pathlib import Path
 
