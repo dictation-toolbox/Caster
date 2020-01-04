@@ -97,9 +97,9 @@ class SudokuGridRule(MappingRule):
         IntegerRefST("s0", 0, 10),
         Choice("action", {
             "move": 0,
-            "click": 1,
-            "double click": 2,
-            "right click": 3,
+            "kick": 1,
+            "kick (double | 2)": 2,
+            "psychic": 3,
         }),
     ]
     defaults = {
