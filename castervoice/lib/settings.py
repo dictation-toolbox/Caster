@@ -11,7 +11,12 @@ import tomlkit
 import version
 import errno
 from appdirs import *
-from pathlib2 import Path
+
+
+if sys.version_info > (3, 0):
+    from pathlib import Path # pylint: disable=import-error
+else:
+    from castervoice.lib.util.pathlib import Path
 
 # consts: some of these can easily be moved out of this file
 from castervoice.lib import printer
@@ -261,7 +266,7 @@ def _get_defaults():
                 _BASE_PATH,
             "USER_DIR":
                 _USER_DIR,
-            # pathlib2 string conversion can be removed once pathlib2 is utilized throughout Caster.
+            # pathlib string conversion can be removed once pathlib is utilized throughout Caster.
             # DATA
             "SM_BRINGME_PATH":
                 str(Path(_USER_DIR).joinpath("settings/sm_bringme.toml")),
@@ -481,14 +486,12 @@ def initialize():
     # calculate prerequisites
     SYSTEM_INFORMATION = _get_platform_information()
     _BASE_PATH = str(Path(__file__).resolve().parent.parent)
-    _USER_DIR = _validate_user_dir()
+    _USER_DIR = user_data_dir(appname="caster", appauthor=False)
     _SETTINGS_PATH = str(Path(_USER_DIR).joinpath("settings/settings.toml"))
 
     for directory in ["data", "rules", "transformers", "hooks", "sikuli", "settings"]:
         d = Path(_USER_DIR).joinpath(directory)
-        if not Path.exists(d):
-            Path.mkdir(d)
-
+        d.mkdir(parents=True, exist_ok=True)
     # Kick everything off.
     SETTINGS = _init(_SETTINGS_PATH)
     _debugger_path = SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"]

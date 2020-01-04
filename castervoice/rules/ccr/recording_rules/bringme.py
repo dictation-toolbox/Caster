@@ -1,9 +1,14 @@
 import os
+import sys
 import shlex
 import threading
 import time
 from subprocess import Popen
-from pathlib2 import Path
+
+if sys.version_info > (3, 0):
+    from pathlib import Path # pylint: disable=import-error
+else:
+    from castervoice.lib.util.pathlib import Path
 
 from dragonfly import Function, Choice, Dictation, ContextAction
 from castervoice.lib.context import AppContext

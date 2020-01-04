@@ -43,7 +43,7 @@ We'll go into more detail on the differences between these rules elsewhere. For 
 
 ### How to Add and Modify Rules
 
-If you'd like to add rules for new languages or popular libraries for languages, you should create them in the `lib/ccr/` folder. If you want to add a custom command set, say, for work, you should put it in the `C:\Users\%USERNAME%\.caster\rules` folder. This folder is ignored by Git, so you won't upload it if/when you commit other changes.
+If you'd like to add rules for new languages or popular libraries for languages, you should create them in the `lib/ccr/` folder. If you want to add a custom command set, say, for work, you should put it in the `C:\Users\%USERNAME%\AppData\Local\caster\rules` folder. This folder is ignored by Git, so you won't upload it if/when you commit other changes.
 
 If you want to personalize existing command sets, you can use rule filters. Rule filters let you instruct Caster as to how it should modify command sets either at boot or at runtime when command sets change (for example, when you say `enable Python`).
 

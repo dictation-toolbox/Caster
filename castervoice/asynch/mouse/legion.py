@@ -6,8 +6,12 @@ import re
 import sys
 import threading
 from ctypes import *
-from pathlib2 import Path
 from dragonfly import monitors
+
+if sys.version_info > (3, 0):
+    from pathlib import Path # pylint: disable=import-error
+else:
+    from castervoice.lib.util.pathlib import Path
 
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0]

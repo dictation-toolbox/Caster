@@ -18,7 +18,7 @@ At time of writing, Sikuli [1.1.3 is no longer supported](https://raiman.github.
 
 - download sikulixsetup-1.1.3.jar
 - run it, choose option 1
-- Edit settings.toml `C:\Users\%USERNAME%\.caster\data\settings.toml`:
+- Edit settings.toml `C:\Users\%USERNAME%\AppData\Local\caster\settings\settings.toml`:
 
 ```toml
     [paths]
@@ -41,7 +41,7 @@ At time of writing, Sikuli [1.1.3 is no longer supported](https://raiman.github.
 
 - download sikulix.jar, jython-standalone-2.7.1.jar
 - place the two jars next to each other
-- Edit settings.toml `C:\Users\%USERNAME%\.caster\data\settings.toml`:
+- Edit settings.toml `C:\Users\%USERNAME%\AppData\Local\caster\settings\settings.toml`:
 
 ```toml
     [paths]

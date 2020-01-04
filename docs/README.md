@@ -33,7 +33,7 @@
 
 # Feature List
 
-- Configurable Settings in `C:\Users\%USERNAME%\AppData\Local\.caster`
+- Configurable Settings in `C:\Users\%USERNAME%\AppData\Local\caster`
 
 - Customize Commands aka `Specs` and their actions via [Simplified Filter Rules](https://caster.readthedocs.io/en/latest/readthedocs/CCR/#rule-filters-simplified) and [Filter Rules](https://caster.readthedocs.io/en/latest/readthedocs/CCR/#Rule-Filters) (WIP). Filter Rules code examples can be found in `.caster\filters\examples`.
 
