@@ -252,5 +252,5 @@ class BringRule(BaseSelfModifyingRule):
 
 
 def get_rule():
-    details = RuleDetails(ccrtype=CCRType.SELFMOD)
+    details = RuleDetails(ccrtype=CCRType.SELFMOD, transformer_exclusion=True)
     return BringRule, details
