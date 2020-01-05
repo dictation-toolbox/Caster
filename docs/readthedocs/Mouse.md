@@ -118,7 +118,7 @@ Creates a grid of numbered 3 x 3 squares over the whole screen. A number is call
 **Examples**:
 
 - _159 grid 8_
-- _95 double click_
+- _95 kick double_
 - _drag 201_
 - _7 drag 13_
 - _55 move, curse sauce lease 5, squat, 20 grid 7 move, curse dunce lease 10, bench_
