@@ -56,30 +56,6 @@ _USER_DIR = None
 _SETTINGS_PATH = None
 
 
-def _set_user_dir():
-    '''
-    Sets Caster's user directory path. Returns "user_dir" with valid path for Home directory or 'AppData\Local\.caster".
-    '''
-    try:
-        user_dir = Path(user_data_dir())
-        if os.access(str(user_dir), os.W_OK) and os.access(str(user_dir), os.R_OK) is True:
-            user_dir = Path(user_dir.joinpath(".caster"))
-    except IOError as e:
-        if e.errno == errno.EACCES:
-            printer.out("Caster does not have read/write for a user directory at: {} \n {}".format(user_dir, errno.EACCES))
-            
-def _validate_user_dir():
-    '''
-    Checks for existing Caster's user directory path. Returns path.
-    '''
-    app_data = Path(user_data_dir())
-    user_dir = Path(app_data.joinpath(".caster"))
-    if Path.exists(user_dir) is True:
-        return str(user_dir)
-    else:
-        return str(_set_user_dir())
-
-
 def _get_platform_information():
     """Return a dictionary containing platform-specific information."""
     import sysconfig
