@@ -109,7 +109,7 @@ def _spec_override_from_config(rule, definitions):
     defaults = rule._defaults.copy()
     defaults_changed = False
     if len(defaults) > 0:
-        for default_key in defaults.keys():  #
+        for default_key in list(defaults.keys()):  #
             value = defaults[default_key]
             if isinstance(value, six.string_types):
                 '''only replace strings; also,

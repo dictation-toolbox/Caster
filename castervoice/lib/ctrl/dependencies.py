@@ -117,9 +117,9 @@ def dep_min_version():
         try:
             pkg_resources.require('{0} {1} {2}'.format(package, operator, version))
         except VersionConflict as e:
-            if operator is ">=":
+            if operator == ">=":
                 upgradelist.append('{0}'.format(package))
-            if operator is "==":
+            if operator == "==":
                 print((
                     "\nCaster: Requires an exact version of dependencies. Issue reference: {0} \n"
                     .format(issueurl)))
@@ -138,7 +138,7 @@ def update_timer():
     try:
         from castervoice.lib import settings
         onlinemode = settings.SETTINGS["online"]["online_mode"]
-        lastupdate = settings.SETTINGS["online"]["last_update_date"] 
+        lastupdate = settings.SETTINGS["online"]["last_update_date"]
         updateinterval = settings.SETTINGS["online"]["update_interval"]
         if lastupdate == 'None':
             lastupdate = str(date.today())
@@ -146,7 +146,7 @@ def update_timer():
         if onlinemode == True:
             today = date.today()
             lastdate = datetime.strptime(lastupdate, "%Y-%m-%d").date()
-            diff = today - lastdate 
+            diff = today - lastdate
             if diff.days >= updateinterval: # int Days
                 if internet_check() == True:
                     settings.SETTINGS["online"]["last_update_date"] = str(date.today())
@@ -168,12 +168,12 @@ class DependencyMan:
     # Initializes functions
     def initialize(self):
         install = install_type()
-        if install is "classic":
+        if install == "classic":
             dep_min_version()
             dep_missing()
         if update_timer() == True:
             dependency_check(command="dragonfly2")
-            if install is "pip":
+            if install == "pip":
                 dependency_check(command="castervoice")
 
     NATLINK = True
