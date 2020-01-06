@@ -6,9 +6,9 @@ import sys
 import threading
 import six
 if six.PY2:
-    from SimpleXMLRPCServer import SimpleXMLRPCServer
+    from SimpleXMLRPCServer import SimpleXMLRPCServer   # pylint: disable=import-error
 else:
-    from xmlrpc.server import SimpleXMLRPCServer
+    from xmlrpc.server import SimpleXMLRPCServer  # pylint: disable=no-name-in-module
 from threading import Timer
 import numbers
 
@@ -72,7 +72,7 @@ class SettingsFrame(Frame):
         menu_bar.Append(file_menu, '&File')
         self.SetMenuBar(menu_bar)
 
-        alpha = settings.SETTINGS.keys()
+        alpha = settings.SETTINGS.keys()  # pylint: disable=no-member
         alpha.sort()
         self.fields = []
         for top in alpha:

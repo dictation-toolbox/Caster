@@ -1,6 +1,6 @@
 import six
 if six.PY2:
-    import xmlrpclib
+    import xmlrpclib # pylint: disable=import-error
 else:
     import xmlrpc.client as xmlrpclib
 

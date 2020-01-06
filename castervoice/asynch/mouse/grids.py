@@ -2,10 +2,10 @@ from __future__ import division
 
 import six
 if six.PY2:
-    from SimpleXMLRPCServer import SimpleXMLRPCServer
+    from SimpleXMLRPCServer import SimpleXMLRPCServer  # pylint: disable=import-error
     import Tkinter as tk
 else:
-    from xmlrpc.server import SimpleXMLRPCServer
+    from xmlrpc.server import SimpleXMLRPCServer  # pylint: disable=no-name-in-module
     import tkinter as tk
 
 import getopt

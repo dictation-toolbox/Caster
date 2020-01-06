@@ -1,11 +1,11 @@
 import sys
 import six
 if six.PY2:
-    from SimpleXMLRPCServer import SimpleXMLRPCServer
+    from SimpleXMLRPCServer import SimpleXMLRPCServer  # pylint: disable=import-error
     from Tkinter import Label, Text
     import Tkinter as tk
 else:
-    from xmlrpc.server import SimpleXMLRPCServer
+    from xmlrpc.server import SimpleXMLRPCServer # pylint: disable=no-name-in-module
     from tkinter import Label, Text
     import tkinter as tk
 import signal, os

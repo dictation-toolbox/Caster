@@ -1,8 +1,8 @@
 import six
 if six.PY2:
-    from SimpleXMLRPCServer import SimpleXMLRPCServer
+    from SimpleXMLRPCServer import SimpleXMLRPCServer  # pylint: disable=import-error
 else:
-    from xmlrpc.server import SimpleXMLRPCServer
+    from xmlrpc.server import SimpleXMLRPCServer  # pylint: disable=no-name-in-module
 import os
 import sys
 from inspect import getmembers, isfunction

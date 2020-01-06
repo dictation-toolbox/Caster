@@ -9,7 +9,7 @@ if six.PY2:
     def zip_longest(*args):
         return map(None, *args)
 else:
-    from itertools import zip_longest
+    from itertools import zip_longest # pylint: disable=no-name-in-module
 
 def _preserve(spec):
     p = TRItem()
