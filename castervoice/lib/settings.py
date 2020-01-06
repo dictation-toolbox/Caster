@@ -8,7 +8,7 @@ import io
 import os
 import sys
 import tomlkit
-import version
+from castervoice.lib import version
 import errno
 from appdirs import *
 
@@ -101,7 +101,7 @@ def _validate_engine_path():
                 engine_path = _find_natspeak()
                 data["paths"]["ENGINE_PATH"] = engine_path
                 try:
-                    formatted_data = unicode(tomlkit.dumps(data))
+                    formatted_data = str(tomlkit.dumps(data))
                     with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as toml_file:
                         toml_file.write(formatted_data)
                     printer.out("Setting engine path to {}".format(engine_path))
@@ -162,12 +162,12 @@ def _find_natspeak():
                     if DnsVersion >= 13:
                         engine_path = str(Path(InstallLocation).joinpath("Program/natspeak.exe"))
                         if os.path.isfile(engine_path):
-                            printer.out("Search Complete.") 
+                            printer.out("Search Complete.")
                             return engine_path
                     else:
                         printer.out(
                             "Dragon Naturally Speaking {} is not supported by Caster. Only versions 13 and above are supported. Purchase Dragon Naturally Speaking 13 or above"
-                            .format(DnsVersion))     
+                            .format(DnsVersion))
     printer.out("Cannot find dragon engine path")
     return ""
 
@@ -181,7 +181,7 @@ def _save(data, path):
     """
     guidance.offer()
     try:
-        formatted_data = unicode(tomlkit.dumps(data))
+        formatted_data = str(tomlkit.dumps(data))
         with io.open(path, "wt", encoding="utf-8") as f:
             f.write(formatted_data)
     except Exception as e:
@@ -214,7 +214,7 @@ def _deep_merge_defaults(data, defaults):
     Modifies `data` in place.
     """
     changes = 0
-    for key, default_value in defaults.iteritems():
+    for key, default_value in defaults.items():
         # If the key is in the data, use that, but call recursivly if it's a dict.
         if key in data:
             if isinstance(data[key], collections.Mapping):
@@ -474,3 +474,4 @@ def initialize():
     if _debugger_path not in sys.path and os.path.isdir(_debugger_path):
         sys.path.append(_debugger_path)
     printer.out("Caster User Directory: {}".format(_USER_DIR))
+

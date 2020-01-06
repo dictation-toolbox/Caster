@@ -52,7 +52,7 @@ def internet_check(host="1.1.1.1", port=53, timeout=3):
         if e.errno == 10051:  # Unreachable Network
             pass
         if e.errno not in (10051, 11001):  # Unknown Error
-            print(e.errno)
+            print((e.errno))
         return False
 
 
@@ -73,15 +73,15 @@ def dependency_check(command=None):
         out = p.communicate('')
         for line in out:
             if "INSTALLED" and "latest" in line:
-                print("Caster: {0} is up-to-date".format(command.strip('2')))
+                print(("Caster: {0} is up-to-date".format(command.strip('2'))))
                 update = False
                 break
             else:
-                print("Caster: Say 'Update {0}' to update.".format(command.strip('2')))
+                print(("Caster: Say 'Update {0}' to update.".format(command.strip('2'))))
                 update = True
                 break
     except Exception as e:
-        print("Exception from starting subprocess {0}: " "{1}".format(com, e))
+        print(("Exception from starting subprocess {0}: " "{1}".format(com, e)))
 
 
 def dep_missing():
@@ -96,8 +96,8 @@ def dep_missing():
         except VersionConflict:
             pass
         except DistributionNotFound as e:
-            print("\n Caster: {0} dependency is missing. Use 'pip install {0}' in CMD or Terminal to install"
-                .format(e.req))
+            print(("\n Caster: {0} dependency is missing. Use 'pip install {0}' in CMD or Terminal to install"
+                .format(e.req)))
             time.sleep(15)
 
 
@@ -120,17 +120,17 @@ def dep_min_version():
             if operator is ">=":
                 upgradelist.append('{0}'.format(package))
             if operator is "==":
-                print(
+                print((
                     "\nCaster: Requires an exact version of dependencies. Issue reference: {0} \n"
-                    .format(issueurl))
-                print("Install the exact version: 'pip install {0}'".format(e.req))
+                    .format(issueurl)))
+                print(("Install the exact version: 'pip install {0}'".format(e.req)))
     if not upgradelist:
         pass
     else:
         pippackages = (' '.join(map(str, upgradelist)))
-        print(
+        print((
             "\nCaster: Requires updated version of dependencies.\n Update With: 'pip install --upgrade {0}' \n"
-            .format(pippackages))
+            .format(pippackages)))
 
 
 def update_timer():
@@ -150,7 +150,7 @@ def update_timer():
             if diff.days >= updateinterval: # int Days
                 if internet_check() == True:
                     settings.SETTINGS["online"]["last_update_date"] = str(date.today())
-                    print "Searching for updates..."
+                    print("Searching for updates...")
                     return True
                 else:
                     print("\nCaster: Network off-line check network connection\n")

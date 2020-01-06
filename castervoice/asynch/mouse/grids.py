@@ -1,6 +1,12 @@
 from __future__ import division
 
-from SimpleXMLRPCServer import SimpleXMLRPCServer
+import six
+if six.PY2:
+    from SimpleXMLRPCServer import SimpleXMLRPCServer
+    import Tkinter as tk
+else:
+    from xmlrpc.server import SimpleXMLRPCServer
+    import tkinter as tk
 
 import getopt
 import signal
@@ -9,8 +15,6 @@ from threading import Timer
 import time
 
 import win32api, win32con
-
-import Tkinter as tk
 
 from dragonfly import monitors
 
@@ -518,7 +522,7 @@ class SudokuGrid(TkTransparent):
         canvas = self._canvas
 
         # Iterate over logical grid of squares
-        for sq in xrange(self.num_squares):
+        for sq in range(self.num_squares):
             x, y = self.square_to_xy(sq)
             screen_x = x * self.square_width
             screen_y = y * self.square_height

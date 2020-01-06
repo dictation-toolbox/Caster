@@ -4,7 +4,11 @@ import os
 import signal
 import sys
 import threading
-from SimpleXMLRPCServer import SimpleXMLRPCServer
+import six
+if six.PY2:
+    from SimpleXMLRPCServer import SimpleXMLRPCServer
+else:
+    from xmlrpc.server import SimpleXMLRPCServer
 from threading import Timer
 import numbers
 
@@ -183,11 +187,11 @@ class SettingsFrame(Frame):
 
     def field_from_value(self, window, value, field):
         item = None
-        if isinstance(value, basestring):
+        if isinstance(value, six.string_types):
             item = TextCtrl(window, value=value)
             field.text_type = STRING_SETTING
         elif isinstance(value, list):
-            if isinstance(value[0], basestring):
+            if isinstance(value[0], six.string_types):
                 item = TextCtrl(window, value=", ".join(value))
                 field.text_type = STRING_LIST_SETTING
             elif isinstance(value[0], numbers.Real):

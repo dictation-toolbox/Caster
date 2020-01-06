@@ -54,7 +54,7 @@ class MergeRule(MappingRule, Pronounceable):
         return self._mapping.copy()
 
     def get_extras(self):
-        return self._extras.values()
+        return list(self._extras.values())
 
     def get_defaults(self):
         return self._defaults.copy()

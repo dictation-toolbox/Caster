@@ -6,12 +6,12 @@ from builtins import str
 import io
 import json
 import locale
+import six
 import os
 import re
 import sys
 import time
 import traceback
-from __builtin__ import True
 from subprocess import Popen
 import tomlkit
 from castervoice.lib.clipboard import Clipboard
@@ -26,7 +26,11 @@ else:
 try:
     import win32gui
     import win32clipboard
-    from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,
+    if six.PY2:
+        from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,
+                         HKEY_CURRENT_USER, OpenKey, QueryValueEx)
+    else:
+        from winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,
                          HKEY_CURRENT_USER, OpenKey, QueryValueEx)
     from dragonfly.windows.window import Window
     from dragonfly import Key
@@ -52,10 +56,10 @@ from ctypes import cdll
 try:
     if struct.calcsize("P")*8 == 32:
         vda = cdll.LoadLibrary(
-            str(Path(BASE_PATH).joinpath("castervoice/bin/VirtualDesktopAccessor32.dll")).encode(locale.getpreferredencoding()))
+            str(Path(BASE_PATH).joinpath("castervoice/bin/VirtualDesktopAccessor32.dll")))
     else:
         vda = cdll.LoadLibrary(
-            str(Path(BASE_PATH).joinpath("castervoice/bin/VirtualDesktopAccessor64.dll")).encode(locale.getpreferredencoding()))
+            str(Path(BASE_PATH).joinpath("castervoice/bin/VirtualDesktopAccessor64.dll")))
 except Exception as e:
     print("Virtual desktop accessor loading failed with '%s'" % str(e))
 
@@ -86,7 +90,7 @@ def window_exists(classname, windowname):
 
 def get_active_window_title(pid=None):
     _pid = win32gui.GetForegroundWindow() if pid is None else pid
-    return unicode(win32gui.GetWindowText(_pid), errors='ignore')
+    return win32gui.GetWindowText(_pid)
 
 
 def get_active_window_path():
@@ -116,7 +120,7 @@ def get_window_title_info():
 def save_toml_file(data, path):
     guidance.offer()
     try:
-        formatted_data = unicode(tomlkit.dumps(data))
+        formatted_data = str(tomlkit.dumps(data))
         with io.open(path, "wt", encoding="utf-8") as f:
             f.write(formatted_data)
     except Exception:
@@ -142,7 +146,7 @@ def load_toml_file(path):
 def save_json_file(data, path):
     guidance.offer()
     try:
-        formatted_data = unicode(json.dumps(data, ensure_ascii=False))
+        formatted_data = str(json.dumps(data, ensure_ascii=False))
         with io.open(path, "wt", encoding="utf-8") as f:
             f.write(formatted_data)
     except Exception:
@@ -166,7 +170,7 @@ def load_json_file(path):
 
 
 def list_to_string(l):
-    return u"\n".join([unicode(x) for x in l])
+    return u"\n".join([str(x) for x in l])
 
 
 def simple_log(to_file=False):

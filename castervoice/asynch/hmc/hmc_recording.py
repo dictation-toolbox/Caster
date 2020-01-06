@@ -1,8 +1,13 @@
-from Tkinter import Label, Entry, Checkbutton
 import sys, os
 from threading import Timer
 
-import Tkinter as tk
+import six
+if six.PY2:
+    from Tkinter import Label, Entry, Checkbutton
+    import Tkinter as tk
+else:
+    from tkinter import Label, Entry, Checkbutton
+    import tkinter as tk
 
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0]

@@ -94,8 +94,8 @@ class BringRule(BaseSelfModifyingRule):
         return [
             Choice(header,
                    {key: os.path.expandvars(value)
-                    for key, value in section.iteritems()})
-            for header, section in config_copy.iteritems()
+                    for key, value in section.items()})
+            for header, section in config_copy.items()
         ]
 
     def _refresh(self, *args):
@@ -245,7 +245,7 @@ class BringRule(BaseSelfModifyingRule):
             "caster record from history file": str(Path(_user_dir).joinpath("data/sm_history.toml")),
             "caster log file": str(Path(_user_dir).joinpath("data/log.txt")),
 
-            # Simplified Transformer 
+            # Simplified Transformer
             "caster transformer file": str(Path(_user_dir).joinpath("transformers/words.txt")),
         }
     }

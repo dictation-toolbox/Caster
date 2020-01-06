@@ -78,7 +78,7 @@ def _text_to_clipboard(keystroke, nnavi500):
                 # time for keypress to execute
                 time.sleep(
                     settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
-                _CLIP[key] = unicode(Clipboard.get_system_text())
+                _CLIP[key] = Clipboard.get_system_text()
                 utilities.save_json_file(
                     _CLIP, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
             except Exception:
@@ -173,7 +173,7 @@ def wheel_scroll(direction, nnavi500):
     amount = 120
     if direction != "up":
         amount = amount * -1
-    for i in xrange(1, abs(nnavi500) + 1):
+    for i in range(1, abs(nnavi500) + 1):
         windll.user32.mouse_event(0x00000800, 0, 0, amount, 0)
         time.sleep(0.1)
 

@@ -1,10 +1,15 @@
-from SimpleXMLRPCServer import SimpleXMLRPCServer
 import sys
-from Tkinter import (Label, Text)
+import six
+if six.PY2:
+    from SimpleXMLRPCServer import SimpleXMLRPCServer
+    from Tkinter import Label, Text
+    import Tkinter as tk
+else:
+    from xmlrpc.server import SimpleXMLRPCServer
+    from tkinter import Label, Text
+    import tkinter as tk
 import signal, os
 from threading import Timer
-
-import Tkinter as tk
 
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0]
@@ -41,7 +46,7 @@ class Homunculus(tk.Tk):
             Label(
                 self,
                 text=" ".join(self.data[0].split(settings.HMC_SEPARATOR)), # pylint: disable=no-member
-                name="pathlabel").pack() 
+                name="pathlabel").pack()
             self.ext_box = Text(self, name="ext_box")
             self.ext_box.pack(side=tk.LEFT)
 
