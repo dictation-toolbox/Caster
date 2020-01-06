@@ -4,6 +4,6 @@ pillow==6.2.1
 tomlkit==0.5.8
 future==0.18.2
 mock==3.0.5
-pylint==1.9.5
+pylint
 appdirs==1.4.3
 scandir==1.10.0
