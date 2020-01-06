@@ -8,6 +8,8 @@ import io
 import os
 import sys
 import tomlkit
+from past.builtins import xrange
+
 from castervoice.lib import version
 import errno
 from appdirs import *
