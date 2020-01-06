@@ -61,7 +61,7 @@ def _spec_override_from_config(rule, definitions):
     '''SPECS'''
     mapping = rule._mapping.copy()
     specs_changed = False
-    for spec in mapping.keys():
+    for spec in list(mapping.keys()):
         action = mapping[spec]
 
         pspec = _preserve(spec)
