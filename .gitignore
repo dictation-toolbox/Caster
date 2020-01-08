@@ -49,3 +49,13 @@ castervoice.egg-info
 
 # Ignore Notepad++ backup files
 **/nppBackup
+
+# Speech recognition models
+kaldi_model
+
+# Ignore virtual
+venv
+
+# Dragonfly module loaders
+kaldi_module_loader_plus.py
+kaldi_module_loader.py
