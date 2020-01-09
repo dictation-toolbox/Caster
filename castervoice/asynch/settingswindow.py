@@ -6,6 +6,7 @@ import sys
 import threading
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 from threading import Timer
+import tomlkit
 
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0]
@@ -32,13 +33,14 @@ use `pip install --upgrade wxPython` to install the latest version.
         file=sys.stderr)
     raise
 
+settings.initialize()
 DICT_SETTING = 1
 STRING_SETTING = 2
-STRINGLIST_SETTING = 4
-INTEGERLIST_SETTING = 8
-INTEGER_SETTING = 16
+STRING_LIST_SETTING = 4
+NUMBER_LIST_SETTING = 8
+NUMBER_SETTING = 16
 BOOLEAN_SETTING = 32
-
+real_type = (tomlkit.items.Integer, tomlkit.items.Float, float, int)
 
 class Field:
     def __init__(self, wx_field, original, text_type=None):
@@ -101,16 +103,20 @@ class SettingsFrame(Frame):
             value = None
             if isinstance(field.wx_field, TextCtrl):
                 value = field.wx_field.GetValue()
-                if field.text_type == STRINGLIST_SETTING:
+                if field.text_type == STRING_LIST_SETTING:
                     d[field.original] = [
                         x for x in value.replace(", ", ",").split(",") if x
-                    ]  # don't count empty strings
-                elif field.text_type == INTEGERLIST_SETTING:
-                    d[field.original] = [
-                        int(x) for x in value.replace(", ", ",").split(",") if x
-                    ]  # don't count empty strings
-                elif field.text_type == INTEGER_SETTING:
-                    d[field.original] = int(value)
+                    ]  #don't count empty strings
+                elif field.text_type == NUMBER_LIST_SETTING:
+                    temp_list = (
+                        float(x) for x in value.replace(", ", ",").split(",") if x
+                    )  # don't count empty strings
+                    d[field.original] = [int(x) if x.is_integer() else x for x in temp_list]
+                elif field.text_type == NUMBER_SETTING:
+                    value = float(value)
+                    if value.is_integer():
+                        value = int(value)
+                    d[field.original] = float(value)
                 else:
                     d[field.original] = value.replace("\\", "/")
             elif isinstance(field.wx_field, (Panel, ScrolledPanel)):
@@ -184,16 +190,16 @@ class SettingsFrame(Frame):
         elif isinstance(value, list):
             if isinstance(value[0], basestring):
                 item = TextCtrl(window, value=", ".join(value))
-                field.text_type = STRINGLIST_SETTING
-            elif isinstance(value[0], int):
+                field.text_type = STRING_LIST_SETTING
+            elif isinstance(value[0], real_type):
                 item = TextCtrl(window, value=", ".join((str(x) for x in value)))
-                field.text_type = INTEGERLIST_SETTING
+                field.text_type = NUMBER_LIST_SETTING
         elif isinstance(value, bool):
             item = CheckBox(window, -1, '', (120, 75))
             item.SetValue(value)
-        elif isinstance(value, int):
+        elif isinstance(value, real_type):
             item = TextCtrl(window, value=str(value))
-            field.text_type = INTEGER_SETTING
+            field.text_type = NUMBER_SETTING
         elif isinstance(value, dict):
             subpage = Panel(window)
             vbox = BoxSizer(VERTICAL)
@@ -214,6 +220,9 @@ class SettingsFrame(Frame):
             subpage.SetSizer(vbox)
             subpage.Show()
             item = subpage
+        else:
+            # This is left for bug reporting purposes.
+            print("{} from the field {} was not assigned to {} because type {} wasn't properly handled.".format(value, field, window, type(value)))
         field.wx_field = item
         return item
 
