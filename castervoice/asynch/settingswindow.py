@@ -6,7 +6,7 @@ import sys
 import threading
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 from threading import Timer
-import tomlkit
+import numbers
 
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0]
@@ -40,7 +40,6 @@ STRING_LIST_SETTING = 4
 NUMBER_LIST_SETTING = 8
 NUMBER_SETTING = 16
 BOOLEAN_SETTING = 32
-real_type = (tomlkit.items.Integer, tomlkit.items.Float, float, int)
 
 class Field:
     def __init__(self, wx_field, original, text_type=None):
@@ -191,13 +190,13 @@ class SettingsFrame(Frame):
             if isinstance(value[0], basestring):
                 item = TextCtrl(window, value=", ".join(value))
                 field.text_type = STRING_LIST_SETTING
-            elif isinstance(value[0], real_type):
+            elif isinstance(value[0], numbers.Real):
                 item = TextCtrl(window, value=", ".join((str(x) for x in value)))
                 field.text_type = NUMBER_LIST_SETTING
         elif isinstance(value, bool):
             item = CheckBox(window, -1, '', (120, 75))
             item.SetValue(value)
-        elif isinstance(value, real_type):
+        elif isinstance(value, numbers.Real):
             item = TextCtrl(window, value=str(value))
             field.text_type = NUMBER_SETTING
         elif isinstance(value, dict):
