@@ -6,17 +6,19 @@ class CCRType(object):
 
 # default-on modules
 CORE = [
-    # original Caster CCR "core" set:
-    "Alphabet", "Navigation", "Numbers", "Punctuation",
-    # rules which were split out of _caster.py:
+    # Original Caster CCR "core" set:
+    "Alphabet", "Navigation", "NavigationNon", "Numbers", "Punctuation",
+    # Rules which were split out of _caster.py:
     "CasterRule", "HardwareRule", "MouseAlternativesRule", "WindowManagementRule",
-    # alternate mouse grid controls:
+    # Alternate mouse grid controls:
     "LegionGridRule", "DouglasGridRule", "RainbowGridRule", "SudokuGridRule",
-    # gui control rules:
+    # HMC GUI control rules:
     "HMCRule", "HMCConfirmRule", "HMCDirectoryRule",
     "HMCHistoryRule", "HMCLaunchRule", "HMCSettingsRule",
+    # GUI Rules
+    "HistoryRule", "ChainAlias", "Alias",
     # other common rules
-    "DragonRule", "BringRule"
+    "DragonRule", "BringRule", "Again",
     ]
 
 # internal rules
