@@ -356,6 +356,11 @@ def _get_defaults():
             "update_interval": 7 # Days
         },
 
+        # Default enabled hooks: Use hook class name
+        "hooks": {
+            "default_hooks": ['PrinterHook'],
+        },
+
         # miscellaneous section
         "miscellaneous": {
             "dev_commands": True,
