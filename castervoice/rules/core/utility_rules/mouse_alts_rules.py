@@ -1,6 +1,5 @@
 from dragonfly import MappingRule, Function
-
-from castervoice.lib import navigation
+from castervoice.lib import navigation, utilities
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
@@ -9,13 +8,17 @@ from castervoice.lib.merge.state.short import R
 class MouseAlternativesRule(MappingRule):
     mapping = {
         "legion [<monitor>]":
-            R(Function(navigation.mouse_alternates, mode="legion")),
+            R(Function(navigation.mouse_alternates, mode="legion") +
+                Function(utilities.focus_mousegrid, gridtitle="legiongrid")),
         "rainbow [<monitor>]":
-            R(Function(navigation.mouse_alternates, mode="rainbow")),
+            R(Function(navigation.mouse_alternates, mode="rainbow") +
+                Function(utilities.focus_mousegrid, gridtitle="rainbowgrid")),
         "douglas [<monitor>]":
-            R(Function(navigation.mouse_alternates, mode="douglas")),
+            R(Function(navigation.mouse_alternates, mode="douglas") +
+                Function(utilities.focus_mousegrid, gridtitle="douglasgrid")),
         "sudoku [<monitor>]":
-            R(Function(navigation.mouse_alternates, mode="sudoku")),
+            R(Function(navigation.mouse_alternates, mode="sudoku") +
+                Function(utilities.focus_mousegrid, gridtitle="sudokugrid")),
     }
     extras = [
         IntegerRefST("monitor", 1, 10)
