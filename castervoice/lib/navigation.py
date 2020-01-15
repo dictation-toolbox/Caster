@@ -26,6 +26,9 @@ def initialize_clipboard():
             settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
 
 
+initialize_clipboard()
+
+
 def mouse_alternates(mode, monitor=1):
     if mode == "legion" and not utilities.window_exists(None, "legiongrid"):
         r = monitors[int(monitor) - 1].rectangle
