@@ -29,7 +29,7 @@ try:
     from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,
                          HKEY_CURRENT_USER, OpenKey, QueryValueEx)
     from dragonfly.windows.window import Window
-    from dragonfly import Key
+    from dragonfly import Key, Pause
 except:
     printer.out("utilities.py imports failed.")
 
@@ -111,6 +111,31 @@ def get_window_title_info():
         filename = match_object[0]
     path_folders = title.split("/")[:-1]
     return [filename, path_folders, title]
+
+def focus_mousegrid(gridtitle):
+    '''
+    Loops over active windows for MouseGrid window titles. Issue #171
+    When MouseGrid window titles found focuses MouseGrid overly.
+    '''
+    if sys.platform.startswith('win'):
+        # May not be needed for Linux/Mac OS - testing required
+        try:
+            for i in range(9):
+                matches = Window.get_matching_windows(title=gridtitle, executable="python")
+                if not matches:
+                    Pause("50").execute()
+                else:
+                    break
+            if matches:
+                for handle in matches:
+                    handle.set_foreground()
+                    break
+            else:
+                printer.out("`Title: `{}` no matching windows found".format(gridtitle))
+        except Exception as e:
+            printer.out("Error focusing MouseGrid: {}".format(e))
+    else:
+        pass
 
 
 def save_toml_file(data, path):
