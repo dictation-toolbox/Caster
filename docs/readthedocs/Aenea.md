@@ -14,7 +14,7 @@ To use Aenea-Caster compatibility, do the following:
 1. Copy `aenea.json`, which is usually created in `C:\NatLink\NatLink\MacroSystem` in the course of the Aenea install, to your NatLink User Directory. You can find this directory by running `Configure NatLink by GUI` and looking for the box titled UserDirectory. Often it is `C:\Users\<YourUsername>\Documents\Caster`.
 1. Change the `use_aenea` setting in your Caster settings.toml file to true. You may find settings.toml in `C:\Users\<YourUsername>\AppData\Local\caster\settings`.
 1. Copy the copypaste.py and copypaste.yapsy-plugin files from [magneto-host/server/linux_x11/plugins](https://github.com/Danesprite/magneto-host/tree/master/server/linux_x11/plugins) into your server plugins directory (usually *aenea/server/linux\_x11/plugins* or *aenea/server/osx/plugins*).
-1. Install dependencies for the copypaste plugin: `pip install yapsy subprocess32 pyperclip`
+1. Install dependencies for the copypaste plugin: `python -m pip install yapsy subprocess32 pyperclip`
 1. Start/restart Dragon and the Aenea server.
 
 To use this functionality in your own grammar files, import `Key`, `Text`, `Mouse`, and/or `Clipboard` as below:

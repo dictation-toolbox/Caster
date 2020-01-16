@@ -58,7 +58,7 @@ def internet_check(host="1.1.1.1", port=53, timeout=3):
 
 def dependency_check(command=None):
     # Check for updates pip packages castervoice/dragonfly2
-    com = [find_pip(), "search", command]
+    com = ["python", "-m", find_pip(), "search", command]
     startupinfo = None
     global update
     try:
@@ -123,13 +123,13 @@ def dep_min_version():
                 print(
                     "\nCaster: Requires an exact version of dependencies. Issue reference: {0} \n"
                     .format(issueurl))
-                print("Install the exact version: 'pip install {0}'".format(e.req))
+                print("Install the exact version: 'python -m pip install {0}'".format(e.req))
     if not upgradelist:
         pass
     else:
         pippackages = (' '.join(map(str, upgradelist)))
         print(
-            "\nCaster: Requires updated version of dependencies.\n Update With: 'pip install --upgrade {0}' \n"
+            "\nCaster: Requires updated version of dependencies.\n Update With: 'python -m pip install {0} --upgrade' \n"
             .format(pippackages))
 
 
