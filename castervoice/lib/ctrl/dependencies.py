@@ -42,7 +42,7 @@ def dep_missing():
         except VersionConflict:
             pass
         except DistributionNotFound as e:
-            print("\n Caster: {0} dependency is missing. Use 'pip install {0}' in CMD or Terminal to install"
+            print("\n Caster: {0} dependency is missing. Use 'python -m pip install {0}' in CMD or Terminal to install"
                   .format(e.req))
             time.sleep(15)
 
@@ -84,8 +84,8 @@ class DependencyMan:
     def initialize(self):
         install = install_type()
         if install is "classic":
-            dep_min_version()
             dep_missing()
+            dep_min_version()
 
     NATLINK = True
     PYWIN32 = True
