@@ -61,35 +61,32 @@ def update_check(command=None):
 
 def update_timer():
     # Checks for updates every X days on startup
-    try:
-        onlinemode = settings.SETTINGS["online"]["online_mode"]
-        lastupdate = settings.SETTINGS["online"]["last_update_date"]
-        updateinterval = settings.SETTINGS["online"]["update_interval"]
-        if lastupdate == 'None':
-            lastupdate = str(date.today())
-            settings.SETTINGS["online"]["last_update_date"] = lastupdate
-        if onlinemode:
-            today = date.today()
-            lastdate = datetime.strptime(lastupdate, "%Y-%m-%d").date()
-            diff = today - lastdate
-            if diff.days >= updateinterval:  # int Days
-                if internet_check():
-                    settings.SETTINGS["online"]["last_update_date"] = str(date.today())
-                    printer.out("Searching for updates...")
-                    return True
-                else:
-                    printer.out("\nCaster: Network off-line check network connection\n")
-                    return False
+    onlinemode = settings.SETTINGS["online"]["online_mode"]
+    lastupdate = settings.SETTINGS["online"]["last_update_date"]
+    updateinterval = settings.SETTINGS["online"]["update_interval"]
+    if lastupdate == 'None':
+        lastupdate = str(date.today())
+        settings.SETTINGS["online"]["last_update_date"] = lastupdate
+    if onlinemode:
+        today = date.today()
+        lastdate = datetime.strptime(lastupdate, "%Y-%m-%d").date()
+        diff = today - lastdate
+        if diff.days >= updateinterval:  # int Days
+            if internet_check():
+                settings.SETTINGS["online"]["last_update_date"] = str(date.today())
+                printer.out("Searching for updates...")
+                return True
             else:
+                printer.out("\nCaster: Network off-line check network connection\n")
                 return False
         else:
-            printer.out("\nCaster: Off-line mode is enabled\n")
             return False
-    except ImportError:
+    else:
+        printer.out("\nCaster: Off-line mode is enabled\n")
         return False
 
 
-class UpdateChecker:
+class UpdateChecker(object):
     # Initializes functions
     def initialize(self):
         install = install_type()
