@@ -1,7 +1,8 @@
 from dragonfly import MappingRule, Function, RunCommand, Playback
 
 from castervoice.lib import control
-from castervoice.lib.ctrl.dependencies import update, find_pip
+from castervoice.lib.ctrl.dependencies import find_pip
+from castervoice.lib.ctrl.updatecheck import update
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.short import R
 
@@ -24,8 +25,9 @@ class _DependencyUpdate(RunCommand):
 class CasterRule(MappingRule):
     mapping = {
         # update management
-        "update caster":
-            R(_DependencyUpdate([_PIP, "install", "--upgrade", "castervoice"])),
+        
+        # "update caster": ToDo: Implement pip caster install
+        #     R(_DependencyUpdate([_PIP, "install", "--upgrade", "castervoice"])),
         "update dragonfly":
             R(_DependencyUpdate([_PIP, "install", "--upgrade", "dragonfly2"])),
 
