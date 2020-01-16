@@ -25,9 +25,8 @@ class _DependencyUpdate(RunCommand):
 class CasterRule(MappingRule):
     mapping = {
         # update management
-        
-        # "update caster": ToDo: Implement pip caster install
-        #     R(_DependencyUpdate([_PIP, "install", "--upgrade", "castervoice"])),
+        "update caster":
+            R(_DependencyUpdate([_PIP, "install", "--upgrade", "castervoice"])),
         "update dragonfly":
             R(_DependencyUpdate([_PIP, "install", "--upgrade", "dragonfly2"])),
 
