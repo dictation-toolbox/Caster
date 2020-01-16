@@ -5,8 +5,6 @@ Created on Jun 29, 2014
 '''
 import datetime
 import logging
-from dragonfly import get_engine
-from dragonfly.windows.window import Window
 
 logging.basicConfig(format = "%(asctime)s : %(levelname)s : %(funcName)s\n%(msg)s")   
 
@@ -18,6 +16,10 @@ settings.initialize()
 
 from castervoice.lib.ctrl.updatecheck import UpdateChecker # requires settings/dependencies
 UpdateChecker().initialize()
+
+from dragonfly import get_engine
+from dragonfly.windows.window import Window
+
 
 _NEXUS = None
 
