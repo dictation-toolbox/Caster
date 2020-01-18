@@ -32,8 +32,10 @@ def internet_check(host="1.1.1.1", port=53, timeout=3):
 
 
 def update_check(command=None):
+    
     # Check for updates pip packages castervoice/dragonfly2
-    com = ["python", "-m", find_pip(), "search", command]
+    # ToDo: Investigate why adding to com `"python", "-m"` causes erroneous update messages
+    com = [find_pip(), "search", command]
     startupinfo = None
     global update
     try:
