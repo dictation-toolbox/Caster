@@ -99,27 +99,6 @@ class NavigationNon(MappingRule):
             R(Key("c-w/20"))*Repeat(extra="n"),
         "elite translation <text>":
             R(Function(alphabet_support.elite_text)),
-
-        # Workspace management
-        "show work [spaces]":
-            R(Key("w-tab")),
-        "(create | new) work [space]":
-            R(Key("wc-d")),
-        "close work [space]":
-            R(Key("wc-f4")),
-        "close all work [spaces]":
-            R(Function(utilities.close_all_workspaces)),
-        "next work [space] [<n>]":
-            R(Key("wc-right"))*Repeat(extra="n"),
-        "(previous | prior) work [space] [<n>]":
-            R(Key("wc-left"))*Repeat(extra="n"),
-
-        "go work [space] <n>":
-            R(Function(lambda n: utilities.go_to_desktop_number(n))),
-        "send work [space] <n>":
-            R(Function(lambda n: utilities.move_current_window_to_desktop(n))),
-        "move work [space] <n>":
-            R(Function(lambda n: utilities.move_current_window_to_desktop(n, True))),
     }
 
     extras = [
