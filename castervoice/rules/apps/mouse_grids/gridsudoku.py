@@ -91,8 +91,8 @@ class SudokuGridRule(MappingRule):
             R(Function(kill)),
     }
     extras = [
-        IntegerRefST("n", -1, 999),
-        IntegerRefST("n0", -1, 999),
+        IntegerRefST("n", -1, 1500),
+        IntegerRefST("n0", -1, 1500),
         IntegerRefST("s", 0, 10),
         IntegerRefST("s0", 0, 10),
         Choice("action", {
