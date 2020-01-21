@@ -5,7 +5,7 @@ from castervoice.lib import settings
 
 class Text(TextBase):
     # dragonfly _pause_default 0.02 is too slow! Caster default 0.003
-    _pause_default = (settings.SETTINGS["miscellaneous"]["dragonfly_pause_default"])
+    _pause_default = settings.settings(["miscellaneous", "dragonfly_pause_default"])
     def __init__(self, spec=None, static=False, pause=_pause_default, autofmt=False, use_hardware=False):
         TextBase.__init__(self, spec=spec, static=static, pause=pause, autofmt=autofmt, use_hardware=use_hardware)
 
