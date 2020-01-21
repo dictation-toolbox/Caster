@@ -14,7 +14,7 @@ class TerminalCommand(RunCommand):
 
     Example 2 - A synchronous command
     "update caster test":
-        R(TerminalCommand('pip install --upgrade castervoice', synchronous=True),
+        R(TerminalCommand('python -m pip install --upgrade castervoice', synchronous=True),
           rdescript="Core: Update"),
 
     '''

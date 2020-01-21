@@ -3,11 +3,19 @@ Created on Oct 7, 2015
 
 @author: synkarius
 '''
-import os, sys, socket, time, pkg_resources, subprocess
+import os, sys, time, pkg_resources
 from pkg_resources import VersionConflict, DistributionNotFound
-from datetime import datetime, date
 
-update = None
+
+def install_type():
+    # Checks if Caster install is Classic or PIP.
+    try:
+        pkg_resources.require("castervoice")
+    except VersionConflict:
+        pass
+    except DistributionNotFound:
+        return "classic"
+    return "pip"
 
 
 def find_pip():
@@ -22,68 +30,6 @@ def find_pip():
     return None
 
 
-def install_type():
-    # Checks if Caster install is Classic or PIP.
-    try:
-        pkg_resources.require("castervoice")
-    except VersionConflict:
-        pass
-    except DistributionNotFound:
-        return "classic"
-    return "pip"
-
-
-def internet_check(host="1.1.1.1", port=53, timeout=3):
-    """
-    Checks for network connection via DNS resolution.
-    :param host: CloudFire DNS
-    :param port: 53/tcp
-    :param timeout: An integer
-    :return: True or False
-    """
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    try:
-        s.settimeout(timeout)
-        s.connect((host, port))
-        return True
-    except socket.error as e:
-        if e.errno == 11001:
-            print("Caster: Internet check failed to resolve CloudFire DNS")
-        if e.errno == 10051:  # Unreachable Network
-            pass
-        if e.errno not in (10051, 11001):  # Unknown Error
-            print(e.errno)
-        return False
-
-
-def dependency_check(command=None):
-    # Check for updates pip packages castervoice/dragonfly2
-    com = [find_pip(), "search", command]
-    startupinfo = None
-    global update
-    try:
-        if os.name == 'nt':
-            startupinfo = subprocess.STARTUPINFO()
-            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-        p = subprocess.Popen(com,
-                             stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE,
-                             stdin=subprocess.PIPE,
-                             startupinfo=startupinfo)
-        out = p.communicate('')
-        for line in out:
-            if "INSTALLED" and "latest" in line:
-                print("Caster: {0} is up-to-date".format(command.strip('2')))
-                update = False
-                break
-            else:
-                print("Caster: Say 'Update {0}' to update.".format(command.strip('2')))
-                update = True
-                break
-    except Exception as e:
-        print("Exception from starting subprocess {0}: " "{1}".format(com, e))
-
-
 def dep_missing():
     uppath = lambda _path, n: os.sep.join(_path.split(os.sep)[:-n])
     requirements = os.path.join(uppath(__file__, 4), "requirements.txt")
@@ -96,8 +42,8 @@ def dep_missing():
         except VersionConflict:
             pass
         except DistributionNotFound as e:
-            print("\n Caster: {0} dependency is missing. Use 'pip install {0}' in CMD or Terminal to install"
-                .format(e.req))
+            print("\n Caster: {0} dependency is missing. Use 'python -m pip install {0}' in CMD or Terminal to install"
+                  .format(e.req))
             time.sleep(15)
 
 
@@ -122,46 +68,15 @@ def dep_min_version():
             if operator is "==":
                 print(
                     "\nCaster: Requires an exact version of dependencies. Issue reference: {0} \n"
-                    .format(issueurl))
-                print("Install the exact version: 'pip install {0}'".format(e.req))
+                        .format(issueurl))
+                print("Install the exact version: 'python -m pip install {0}'".format(e.req))
     if not upgradelist:
         pass
     else:
         pippackages = (' '.join(map(str, upgradelist)))
         print(
-            "\nCaster: Requires updated version of dependencies.\n Update With: 'pip install --upgrade {0}' \n"
+            "\nCaster: Requires updated version of dependencies.\n Update With: 'python -m pip install {0} --upgrade' \n"
             .format(pippackages))
-
-
-def update_timer():
-    # Checks for updates every X days on startup
-    try:
-        from castervoice.lib import settings
-        onlinemode = settings.SETTINGS["online"]["online_mode"]
-        lastupdate = settings.SETTINGS["online"]["last_update_date"] 
-        updateinterval = settings.SETTINGS["online"]["update_interval"]
-        if lastupdate == 'None':
-            lastupdate = str(date.today())
-            settings.SETTINGS["online"]["last_update_date"] = lastupdate
-        if onlinemode == True:
-            today = date.today()
-            lastdate = datetime.strptime(lastupdate, "%Y-%m-%d").date()
-            diff = today - lastdate 
-            if diff.days >= updateinterval: # int Days
-                if internet_check() == True:
-                    settings.SETTINGS["online"]["last_update_date"] = str(date.today())
-                    print "Searching for updates..."
-                    return True
-                else:
-                    print("\nCaster: Network off-line check network connection\n")
-                    return False
-            else:
-                return False
-        else:
-            print("\nCaster: Off-line mode is enabled\n")
-            return False
-    except ImportError:
-        return False
 
 
 class DependencyMan:
@@ -169,12 +84,8 @@ class DependencyMan:
     def initialize(self):
         install = install_type()
         if install is "classic":
-            dep_min_version()
             dep_missing()
-        if update_timer() == True:
-            dependency_check(command="dragonfly2")
-            if install is "pip":
-                dependency_check(command="castervoice")
+            dep_min_version()
 
     NATLINK = True
     PYWIN32 = True

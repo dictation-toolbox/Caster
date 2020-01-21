@@ -313,7 +313,7 @@ def _get_defaults():
             "WSR_PATH":
                 str(Path(_BASE_PATH).joinpath("C:/Windows/Speech/Common/sapisvr.exe")),
             "TERMINAL_PATH":
-                str(Path("terminal_path_default")),
+                str(Path(terminal_path_default)),
 
             # CCR
             "CONFIGDEBUGTXT_PATH":

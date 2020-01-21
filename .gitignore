@@ -50,6 +50,7 @@ castervoice.egg-info
 
 # Ignore Notepad++ backup files
 **/nppBackup
+*.bak
 
 # Speech recognition models
 kaldi_model
