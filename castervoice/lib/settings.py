@@ -15,10 +15,11 @@ import errno
 from appdirs import *
 
 
-if sys.version_info > (3, 0):
-    from pathlib import Path # pylint: disable=import-error
-else:
+import six
+if six.PY2:
     from castervoice.lib.util.pathlib import Path
+else:
+    from pathlib import Path  # pylint: disable=import-error
 
 # consts: some of these can easily be moved out of this file
 from castervoice.lib import printer

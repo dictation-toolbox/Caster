@@ -5,10 +5,11 @@ import threading
 import time
 from subprocess import Popen
 
-if sys.version_info > (3, 0):
-    from pathlib import Path # pylint: disable=import-error
-else:
+import six
+if six.PY2:
     from castervoice.lib.util.pathlib import Path
+else:
+    from pathlib import Path  # pylint: disable=import-error
 
 from dragonfly import Function, Choice, Dictation, ContextAction
 from castervoice.lib.context import AppContext

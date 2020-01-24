@@ -18,10 +18,12 @@ from castervoice.lib.clipboard import Clipboard
 from castervoice.lib import printer
 from castervoice.lib.util import guidance
 
-if sys.version_info > (3, 0):
-    from pathlib import Path  # pylint: disable=import-error
-else:
+import six
+if six.PY2:
     from castervoice.lib.util.pathlib import Path
+else:
+    from pathlib import Path  # pylint: disable=import-error
+
 
 try:
     import win32gui
