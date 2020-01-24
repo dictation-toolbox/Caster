@@ -315,7 +315,7 @@ def _get_defaults():
             "WSR_PATH":
                 str(Path(_BASE_PATH).joinpath("C:/Windows/Speech/Common/sapisvr.exe")),
             "TERMINAL_PATH":
-                str(Path("terminal_path_default")),
+                str(Path(terminal_path_default)),
 
             # CCR
             "CONFIGDEBUGTXT_PATH":
@@ -358,6 +358,11 @@ def _get_defaults():
             "update_interval": 7 # Days
         },
 
+        # Default enabled hooks: Use hook class name
+        "hooks": {
+            "default_hooks": ['PrinterHook'],
+        },
+
         # miscellaneous section
         "miscellaneous": {
             "dev_commands": True,
@@ -374,6 +379,7 @@ def _get_defaults():
             "hmc": True,
             "ccr_on": True,
             "status_window_foreground_on_error": False,
+            "dragonfly_pause_default":  0.003, # dragonfly _pause_default 0.02 is too slow! Caster default 0.003
         },
         # Grammar reloading section
         "grammar_reloading": {

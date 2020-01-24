@@ -44,11 +44,13 @@ caster/bin/data
 
 # Ignore dist files
 dist
+build/
 castervoice.egg-info
 /.stignore
 
 # Ignore Notepad++ backup files
 **/nppBackup
+*.bak
 
 # Speech recognition models
 kaldi_model

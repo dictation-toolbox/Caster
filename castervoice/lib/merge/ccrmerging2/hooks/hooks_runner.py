@@ -4,6 +4,7 @@ import traceback
 from castervoice.lib import printer
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.ccrmerging2.activation_rule_generator import ActivationRuleGenerator
+from castervoice.lib import settings
 
 
 class HooksRunner(ActivationRuleGenerator):
@@ -24,11 +25,16 @@ class HooksRunner(ActivationRuleGenerator):
             printer.out(err)
             return
 
-        # register it
+        # register new hook and enables default hooks
+        default_hooks = settings.SETTINGS["hooks"]["default_hooks"]
         if hook.get_class_name() not in self._hooks_config:
-            self._hooks_config.set_hook_active(hook.get_class_name(), False)
-            self._hooks_config.save()
-            printer.out("New hook added: {}".format(hook.get_class_name()))
+            if hook.get_class_name() in default_hooks:
+                self._hooks_config.set_hook_active(hook.get_class_name(), True)
+                printer.out("Default hook added and enabled: {}".format(hook.get_class_name()))
+            else:
+                self._hooks_config.set_hook_active(hook.get_class_name(), False)
+                printer.out("New hook added: {}".format(hook.get_class_name()))
+        self._hooks_config.save()
 
     def construct_activation_rule(self):
         m = {}

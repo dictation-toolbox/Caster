@@ -32,7 +32,7 @@ except ImportError:
     print(
         """
 An error was encountered while trying to import the `wxPython` module. Please
-use `pip install --upgrade wxPython` to install the latest version.
+use `python -m pip install --upgrade wxPython` to install the latest version.
 """ + settings.GENERIC_HELP_MESSAGE,
         file=sys.stderr)
     raise
