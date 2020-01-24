@@ -2,7 +2,7 @@ import os, socket, subprocess
 from datetime import datetime, date
 
 from castervoice.lib import settings
-from castervoice.lib.ctrl.dependencies import find_pip, install_type
+from castervoice.lib.ctrl.dependencies import find_pip, install_type  # pylint: disable=no-name-in-module
 from castervoice.lib import printer
 
 update = None

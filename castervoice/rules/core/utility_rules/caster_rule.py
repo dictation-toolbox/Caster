@@ -1,7 +1,7 @@
 from dragonfly import MappingRule, Function, RunCommand, Playback
 
 from castervoice.lib import control
-from castervoice.lib.ctrl.dependencies import find_pip
+from castervoice.lib.ctrl.dependencies import find_pip  # pylint: disable=no-name-in-module
 from castervoice.lib.ctrl.updatecheck import update
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.short import R

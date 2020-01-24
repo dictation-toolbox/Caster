@@ -66,7 +66,7 @@ def dep_min_version():
             if operator == ">=":
                 upgradelist.append('{0}'.format(package))
             if operator == "==":
-                print((
+                print(
                     "\nCaster: Requires an exact version of dependencies. Issue reference: {0} \n"
                         .format(issueurl))
                 print("Install the exact version: 'python -m pip install {0}'".format(e.req))
