@@ -23,7 +23,10 @@ def initialize_clipboard():
     global _CLIP
     if len(_CLIP) == 0:
         _CLIP = utilities.load_json_file(
-            settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
+            settings.settings(["paths", "SAVED_CLIPBOARD_PATH"]))
+
+
+initialize_clipboard()
 
 
 def mouse_alternates(mode, monitor=1):
@@ -39,26 +42,26 @@ def mouse_alternates(mode, monitor=1):
         ls.scan(bbox)
         tscan = ls.get_update()
         Popen([
-            settings.SETTINGS["paths"]["PYTHONW"],
-            settings.SETTINGS["paths"]["LEGION_PATH"], "-t", tscan[0], "-m",
+            settings.settings(["paths","PYTHONW"]),
+            settings.settings(["paths","LEGION_PATH"]), "-t", tscan[0], "-m",
             str(monitor)
         ])
     elif mode == "rainbow" and not utilities.window_exists(None, "rainbowgrid"):
         Popen([
-            settings.SETTINGS["paths"]["PYTHONW"],
-            settings.SETTINGS["paths"]["RAINBOW_PATH"], "-g", "r", "-m",
+            settings.settings(["paths","PYTHONW"]),
+            settings.settings(["paths","RAINBOW_PATH"]), "-g", "r", "-m",
             str(monitor)
         ])
     elif mode == "douglas" and not utilities.window_exists(None, "douglasgrid"):
         Popen([
-            settings.SETTINGS["paths"]["PYTHONW"],
-            settings.SETTINGS["paths"]["DOUGLAS_PATH"], "-g", "d", "-m",
+            settings.settings(["paths","PYTHONW"]),
+            settings.settings(["paths","DOUGLAS_PATH"]), "-g", "d", "-m",
             str(monitor)
         ])
     elif mode == "sudoku" and not utilities.window_exists(None, "sudokugrid"):
         Popen([
-            settings.SETTINGS["paths"]["PYTHONW"],
-            settings.SETTINGS["paths"]["SUDOKU_PATH"], "-g", "s", "-m",
+            settings.settings(["paths","PYTHONW"]),
+            settings.settings(["paths","SUDOKU_PATH"]), "-g", "s", "-m",
             str(monitor)
         ])
 
@@ -77,10 +80,10 @@ def _text_to_clipboard(keystroke, nnavi500):
             try:
                 # time for keypress to execute
                 time.sleep(
-                    settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
+                    settings.settings([u'miscellaneous', u'keypress_wait'])/1000.)
                 _CLIP[key] = unicode(Clipboard.get_system_text())
                 utilities.save_json_file(
-                    _CLIP, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
+                    _CLIP, settings.settings([u'paths', u'SAVED_CLIPBOARD_PATH']))
             except Exception:
                 failure = True
                 utilities.simple_log()
@@ -119,9 +122,9 @@ def drop_keep_clipboard(nnavi500, capitalization, spacing):
             text = textformat.TextFormat.formatted_text(
                 capitalization, spacing, text)
         Clipboard.set_system_text(text)
-        time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
+        time.sleep(settings.settings([u'miscellaneous', u'keypress_wait'])/1000.)
         Key("c-v").execute()
-        time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
+        time.sleep(settings.settings([u'miscellaneous', u'keypress_wait'])/1000.)
         # Restore the clipboard contents.
         cb.copy_to_system()
 
@@ -129,10 +132,10 @@ def drop_keep_clipboard(nnavi500, capitalization, spacing):
 def duple_keep_clipboard(nnavi50):
     cb = Clipboard(from_system=True)
     Key("escape, home, s-end, c-c, end").execute()
-    time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
+    time.sleep(settings.settings([u'miscellaneous', u'keypress_wait'])/1000.)
     for i in range(0, nnavi50):
         Key("enter, c-v").execute()
-        time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
+        time.sleep(settings.settings([u'miscellaneous', u'keypress_wait'])/1000.)
     cb.copy_to_system()
 
 
@@ -140,7 +143,7 @@ def erase_multi_clipboard():
     global _CLIP
     _CLIP = {}
     utilities.save_json_file(_CLIP,
-                             settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
+                             settings.settings([u'paths', u'SAVED_CLIPBOARD_PATH']))
 
 
 def volume_control(n, volume_mode):
