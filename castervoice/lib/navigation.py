@@ -8,6 +8,8 @@ import time
 from ctypes import windll
 from subprocess import Popen
 
+import six
+
 import dragonfly
 from dragonfly import Choice, monitors
 from castervoice.asynch.mouse.legion import LegionScanner
@@ -81,7 +83,7 @@ def _text_to_clipboard(keystroke, nnavi500):
                 # time for keypress to execute
                 time.sleep(
                     settings.settings([u'miscellaneous', u'keypress_wait'])/1000.)
-                _CLIP[key] = unicode(Clipboard.get_system_text())
+                _CLIP[key] = six.string_types(Clipboard.get_system_text())
                 utilities.save_json_file(
                     _CLIP, settings.settings([u'paths', u'SAVED_CLIPBOARD_PATH']))
             except Exception:
