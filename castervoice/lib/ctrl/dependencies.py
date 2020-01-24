@@ -83,7 +83,7 @@ class DependencyMan:
     # Initializes functions
     def initialize(self):
         install = install_type()
-        if install is "classic":
+        if install == "classic":
             dep_missing()
             dep_min_version()
 

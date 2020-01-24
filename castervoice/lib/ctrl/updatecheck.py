@@ -94,5 +94,5 @@ class UpdateChecker(object):
         install = install_type()
         if update_timer():
             update_check(command="dragonfly2")
-            if install is "pip":
+            if install == "pip":
                 update_check(command="castervoice")
