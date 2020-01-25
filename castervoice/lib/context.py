@@ -175,8 +175,8 @@ def paste_string_without_altering_clipboard(content, pause_time="1"):
 def fill_within_line(target):
     result = navigate_to_character("left", str(target), True)
     if result:
-        from castervoice.lib.ctrl import nexus
-        nexus.state.terminate_asynchronous(True) # pylint: disable=no-member
+        from control import nexus
+        nexus().state.terminate_asynchronous(success=True)
     return result
 
 
