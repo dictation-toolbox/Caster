@@ -1,7 +1,11 @@
 from dragonfly import Window, Key
 from ctypes import windll
 # https://github.com/mrob95/py-VirtualDesktopAccessor
-import pyvda
+try:
+    import pyvda
+except Exception as e:
+    # This could fail on linux or windows <10
+    print("Importing package pyvda failed with exception %s" % str(e))
 
 ASFW_ANY = -1
 
