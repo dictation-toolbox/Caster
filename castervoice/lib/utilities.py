@@ -50,36 +50,6 @@ finally:
 # checked to see when a new file name had appeared
 FILENAME_PATTERN = re.compile(r"[/\\]([\w_ ]+\.[\w]+)")
 
-import struct
-from ctypes import cdll
-
-# https://github.com/mrob95/pyVirtualDesktopAccessor
-# Source: https://github.com/Ciantic/VirtualDesktopAccessor
-try:
-    if struct.calcsize("P")*8 == 32:
-        vda = cdll.LoadLibrary(
-            str(Path(BASE_PATH).joinpath("castervoice/bin/VirtualDesktopAccessor32.dll")))
-    else:
-        vda = cdll.LoadLibrary(
-            str(Path(BASE_PATH).joinpath("castervoice/bin/VirtualDesktopAccessor64.dll")))
-except Exception as e:
-    print("Virtual desktop accessor loading failed with '%s'" % str(e))
-
-def move_current_window_to_desktop(n=0, follow=False):
-    vda = load_vda()  # pylint: disable=undefined-variable
-    wndh = win32gui.GetForegroundWindow()
-    vda.MoveWindowToDesktopNumber(wndh, n-1)
-    if follow:
-        vda.GoToDesktopNumber(n-1)
-
-def go_to_desktop_number(n):
-    vda.GoToDesktopNumber(n-1)
-
-def close_all_workspaces():
-    total = vda.GetDesktopCount()
-    go_to_desktop_number(total)
-    Key("wc-f4/10:" + str(total-1)).execute()
-
 def window_exists(classname, windowname):
     try:
         import win32ui

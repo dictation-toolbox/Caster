@@ -29,7 +29,7 @@ class Again(MappingRule):
         if len(_history) == 0:
             return
 
-        last_utterance_index = 1
+        last_utterance_index = 2
         if settings.WSR:  # ContextStack adds the word to history before executing it
             if len(_history) == 1: return
             last_utterance_index = 2

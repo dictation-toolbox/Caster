@@ -68,6 +68,7 @@ setuptools.setup(
         "mock",
         "appdirs",
         "scandir",
+        "pyvda",
     ],
     cmdclass={'install': new_install,
               'develop': dev_install,

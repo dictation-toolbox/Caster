@@ -16,18 +16,6 @@ def fix_dragon_double():
     except Exception:
         utilities.simple_log(False)
 
-
-def cap_dictation(dictation):
-    input_list = str(dictation).split(" ")
-    output_list = []
-    for i in range(len(input_list)):
-        if input_list[i] == "cap":
-            input_list[i + 1] = input_list[i + 1].title()
-        else:
-            output_list.append(input_list[i])
-    Text(" ".join(output_list)).execute()
-
-
 # extras are common to both classes in this file
 def extras_for_whole_file():
     return [

@@ -1,7 +1,7 @@
 from dragonfly import Function, Playback, Mimic, WaitWindow, Repeat, Pause, MappingRule
 from castervoice.lib.actions import Key
 
-from castervoice.rules.apps.speech_engine.dragon_rules.dragon_support import cap_dictation, fix_dragon_double, extras_for_whole_file, \
+from castervoice.rules.apps.speech_engine.dragon_rules.dragon_support import fix_dragon_double, extras_for_whole_file, \
     defaults_for_whole_file
 from castervoice.lib import utilities
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
@@ -10,7 +10,6 @@ from castervoice.lib.merge.state.short import R
 
 class DragonRule(MappingRule):
     mapping = {
-        "format <text>": Function(cap_dictation, extra={"text"}),
         '(lock Dragon | deactivate)':
             R(Playback([(["go", "to", "sleep"], 0.0)])),
         '(number|numbers) mode':

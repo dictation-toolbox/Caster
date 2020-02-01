@@ -5,8 +5,6 @@ include docs/README.md
 include castervoice/bin/data/configdebug.txt
 include castervoice/bin/share/words.txt
 include castervoice/bin/share/git_repo_local_to_remote_match.toml.defaults
-include castervoice/bin/VirtualDesktopAccessor32.dll
-include castervoice/bin/VirtualDesktopAccessor64.dll
 include castervoice/bin/reboot.bat
 include castervoice/bin/reboot_wsr.bat
 include castervoice/lib/dll/tirg-32.dll

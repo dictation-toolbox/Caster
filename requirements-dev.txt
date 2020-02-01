@@ -7,3 +7,4 @@ mock==3.0.5
 pylint
 appdirs==1.4.3
 scandir==1.10.0
+pyvda
