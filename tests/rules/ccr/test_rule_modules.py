@@ -1,15 +1,8 @@
 from tests.test_util.modules_testing import ModulesTestCase
 
-
 class CCRModulesTestCase(ModulesTestCase):
     def _rule_modules(self):
         from castervoice.rules.ccr.bash_rules import bash
-        from castervoice.rules.core.text_manipulation_rules import text_manipulation
-        from castervoice.rules.core.numbers_rules import numeric
-        from castervoice.rules.core.navigation_rules import nav
-        from castervoice.rules.core.navigation_rules import nav2
-        from castervoice.rules.core.alphabet_rules import alphabet
-        from castervoice.rules.core.punctuation_rules import punctuation
         from castervoice.rules.ccr.cpp_rules import cpp
         from castervoice.rules.ccr.csharp_rules import csharp
         from castervoice.rules.ccr.dart_rules import dart
@@ -39,8 +32,7 @@ class CCRModulesTestCase(ModulesTestCase):
         from castervoice.rules.ccr.vhdl_rules import vhdl2
         from castervoice.rules.ccr.vhdl_rules import vhdl
         from castervoice.rules.ccr.voice_dev_commands_rules import voice_dev_commands
-        return [bash, alphabet, nav, nav2, numeric, punctuation,
-                text_manipulation, cpp, csharp, dart, go, haxe,
+        return [bash, cpp, csharp, dart, go, haxe,
                 html_rule, java, java2, javascript, latex,
                 markdown, matlab, matlab2, prolog, prolog2,
                 python, python2, r, chain_alias, simple_alias,
