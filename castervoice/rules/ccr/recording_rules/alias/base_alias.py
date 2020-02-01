@@ -55,17 +55,17 @@ class BaseAliasRule(BaseSelfModifyingRule):
         text = BaseAliasRule._read_highlighted(10)
         spec = str(spec)
         if text is not None:
-            # if spec:
-            #     self._refresh(spec, str(text))
-            # else:
-            h_launch.launch(settings.QTYPE_INSTRUCTIONS, data="Enter_spec_for_command|")
-            on_complete = AsynchronousAction.hmc_complete(
-                lambda data: self._refresh(data[0].replace("\n", ""), text))
-            AsynchronousAction(
-                [L(S(["cancel"], on_complete))],
-                time_in_seconds=0.5,
-                repetitions=300,
-                blocking=False).execute()
+            if spec:
+                self._refresh(spec, str(text))
+            else:
+                h_launch.launch(settings.QTYPE_INSTRUCTIONS, data="Enter_spec_for_command|")
+                on_complete = AsynchronousAction.hmc_complete(
+                    lambda data: self._refresh(data[0].replace("\n", ""), text))
+                AsynchronousAction(
+                    [L(S(["cancel"], on_complete))],
+                    time_in_seconds=0.5,
+                    repetitions=300,
+                    blocking=False).execute()
 
     def _delete_all(self):
         self._config.replace({})
