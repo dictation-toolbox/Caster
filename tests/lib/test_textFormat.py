@@ -20,6 +20,12 @@ class TestTextFormat(unittest.TestCase):
         self.assertEqual(test_string, 'This.is.a.test')
         test_string = TextFormat.formatted_text(5, 5, 'this is a test')
         self.assertEqual(test_string, 'this/is/a/test')
+        test_string = TextFormat.formatted_text(6, 6, 'tHiS Is a TeSt')
+        self.assertEqual(test_string, 'tHiS\\Is\\a\\TeSt')
+        test_string = TextFormat.formatted_text(7, 6, 'tHiS Is a TeSt')
+        self.assertEqual(test_string, 'THiS\\Is\\a\\TeSt')
+        test_string = TextFormat.formatted_text(8, 6, 'THiS Is a TeSt')
+        self.assertEqual(test_string, 'tHiS\\Is\\a\\TeSt')
 
     def test_set_text_format(self):
         self.text_format.set_text_format(1, 2)
