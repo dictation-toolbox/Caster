@@ -20,6 +20,9 @@ Caster provides powerful text manipulation and navigation features. These functi
     - This command will also remove a space immediately preceding the target object.
 - Replacing a single element: `replace <direction>  [<number_of_lines_to_search>] [<occurrence_number>] <target_object> with <replacement_object>`
     - Note: `<replacement_object>` must be dictation if `<target_object>` is dictation and likewise for character targets. As in, you can't yet replace dictation with a Caster alphabet element.
+- Change capitalization of single element: `capital <direction> [<number_of_lines_to_search>] [<occurrence_number>] [<letter_size>] <character>`
+    - only the 1st letter of the word has its case changed
+    - letter_size defaults to uppercase
 
 **Examples**:
 
@@ -42,7 +45,11 @@ Caster provides powerful text manipulation and navigation features. These functi
     - Searches eight lines up and deletes from the cursor to the first occurrence of the word "examples" above the cursor.
 - _replace lease num six with hotel_
     - Replaces the nearest occurrence (to the left of the cursor) of the digit "6" with the letter "h".
-
+- _capital dunce three second multiple_
+    - change the 2nd instance of the word "multiple" in the next 3 lines to "Multiple"
+- _capital ross lower multiple_
+    - change the next instance of the word "Multiple" to "multiple"
+    
 ## Possible future features
 Please feel free to try and implement these and submit a pull request!
 
