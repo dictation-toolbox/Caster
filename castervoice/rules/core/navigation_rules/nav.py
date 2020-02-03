@@ -287,7 +287,10 @@ class Navigation(MergeRule):
             "tie": 2,
             "gerrish": 3,
             "sing": 4,
-            "laws": 5
+            "laws": 5,
+            "say": 6,
+            "cop": 7,
+            "slip": 8,
         }),
         Choice(
             "spacing", {
@@ -298,7 +301,7 @@ class Navigation(MergeRule):
                 "pebble": 4,
                 "incline": 5,
                 "dissent": 6,
-                "descent": 6
+                "descent": 6,
             }),
         Choice("semi", tell_commands_dict),
         Choice("word_limit", {
