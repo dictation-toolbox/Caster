@@ -169,6 +169,36 @@ def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, di
             Key("left:%d" %offset).execute()
 
 
+def copypaste_change_phrase_capitalization(phrase, direction, number_of_lines_to_search, occurrence_number, letter_size, dictation_versus_character):
+    if direction == "up" or direction == "down":
+        # "up" and "down" get treated just as the "left" and "right" 
+        # except that the default number of lines to search get set to three instead of zero
+        number_of_lines_to_search, direction = deal_with_up_down_directions(direction, number_of_lines_to_search)
+    application = get_application()
+    selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
+    if not selected_text:
+        return 
+    replaced_phrase = phrase
+    if letter_size == "lower":
+        replacement_phrase = phrase[0].lower()
+    else:
+        replacement_phrase = phrase[0].upper()
+    replacement_phrase += phrase[1:]
+    new_text = replace_phrase_with_phrase(selected_text, replaced_phrase, replacement_phrase, direction, occurrence_number, dictation_versus_character)
+    if not new_text:
+        # replaced_phrase not found
+        deal_with_phrase_not_found(selected_text, application, direction)
+        return
+    
+    text_manipulation_paste(new_text, application)
+    if number_of_lines_to_search < 20: 
+        # only put the cursor back in the right spot if the number of lines to search is fairly small
+        if direction == "right":
+            offset = len(new_text)
+            Key("left:%d" %offset).execute()
+
+
+
 def remove_phrase_from_text(text, phrase, direction, occurrence_number, dictation_versus_character):
     match_index = get_start_end_position(text, phrase, direction, occurrence_number, dictation_versus_character)
     if match_index:
