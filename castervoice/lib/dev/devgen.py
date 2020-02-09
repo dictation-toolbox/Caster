@@ -1,6 +1,6 @@
 ﻿from dragonfly import MappingRule, Grammar, Config, Section, Item, Dictation, Mimic
 from castervoice.lib import settings, utilities
-from dragonfly.actions import Key, Text
+from castervoice.lib.actions import Text, Key
 
 _grammar = Grammar("dev gen")
 

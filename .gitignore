@@ -12,6 +12,7 @@ complexity_report*
 *.*~
 *.aux
 *.synctex.gz
+_test/
 
 # Ignore Rope
 .ropeproject/
@@ -23,7 +24,7 @@ complexity_report*
 # Ignore Natlink
 /core/
 
-# Ignore User Rules and Filters
+# Ignore User Content
 /caster/user
 
 # Ignore Custom Sikuli Scripts
@@ -43,8 +44,20 @@ caster/bin/data
 
 # Ignore dist files
 dist
+build/
 castervoice.egg-info
 /.stignore
 
 # Ignore Notepad++ backup files
 **/nppBackup
+*.bak
+
+# Speech recognition models
+kaldi_model
+
+# Ignore virtual
+venv
+
+# Dragonfly module loaders
+kaldi_module_loader_plus.py
+kaldi_module_loader.py

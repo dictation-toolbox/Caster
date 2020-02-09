@@ -25,8 +25,8 @@ def find_version(*file_paths):
 
 
 def _post_install():
-    from post_setup import runpostinstall
-    runpostinstall()
+    from post_setup import RunPostInstall
+    RunPostInstall()
 
 
 class new_install(install):
@@ -39,7 +39,8 @@ class dev_install(develop):
     def run(self):
         develop.run(self)
 
-with open("docs/README.md", "r") as fh:
+readmepath = os.path.normpath(os.path.join(here, "docs/README.md"))
+with open(readmepath, "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
@@ -59,12 +60,15 @@ setuptools.setup(
         "Operating System :: OS Independent"
     ],
     install_requires=[
-        "dragonfly2>=0.14.1",
+        "dragonfly2>=0.20.0",
         "wxpython",
         "pillow",
-        "toml",
+        "tomlkit",
         "future",
         "mock",
+        "appdirs",
+        "scandir",
+        "pyvda",
     ],
     cmdclass={'install': new_install,
               'develop': dev_install,

@@ -11,16 +11,16 @@ from dragonfly import (Function, BringApp, WaitWindow, Dictation, Choice, Gramma
 from castervoice.lib import utilities, settings, context, control
 from castervoice.lib.dev import devgen
 from castervoice.lib.actions import Key, Text
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.state.actions import ContextSeeker, AsynchronousAction, \
+from castervoice.lib.merge.additions import IntegerRefST
+from castervoice.lib.merge.state.actions import ContextSeeker, AsynchronousAction, \
     RegisteredAction
-from castervoice.lib.dfplus.state.actions2 import NullAction, ConfirmAction, \
+from castervoice.lib.merge.state.actions2 import NullAction, ConfirmAction, \
     BoxAction
-from castervoice.lib.dfplus.state.short import L, S, R
-from castervoice.lib.dfplus.state.stackitems import StackItemRegisteredAction
-from castervoice.lib.tests import testrunner
-from castervoice.lib.tests.complexity import run_tests
-from castervoice.lib.tests.testutils import MockAlternative
+from castervoice.lib.merge.state.short import L, S, R
+from castervoice.lib.merge.state.stackitems import StackItemRegisteredAction
+# from castervoice.lib.tests import testrunner # Deprecated
+# from castervoice.lib.tests.test_complexity import run_tests # Deprecated
+# from castervoice.lib.tests.testutils import MockAlternative # Deprecated
 
 if os.path.isfile(settings.SETTINGS["paths"]["CONFIGDEBUGTXT_PATH"]) is False:
     configdebug_default = settings.SETTINGS["paths"][
@@ -33,53 +33,6 @@ grammar = Grammar('development')
 
 def experiment():
     '''This function is for test'''
-
-
-#     try:
-#         for i in range(0, 10000):
-#             action = NullAction(rdescript="test_"+str(i))
-#             action.show = True
-#             action.set_nexus(control.nexus())
-#             alt = MockAlternative(u"my", u"spoken", u"words")
-#             sia = StackItemRegisteredAction(action, {"_node":alt})
-#             control.nexus().state.add(sia)
-#     except Exception:
-#         utilities.simple_log()
-
-#     from Levenshtein.StringMatcher import StringMatcher
-#     try:
-#         spoken = "issue certificate shares"
-#         for item in ["isctsh", # actual answer, rated worst with sift4
-#                      "Issue",
-#                      "issue_list",
-#                      "issues",
-#                      "isbksh",
-#                      "cert",
-#                      "ctshrs",
-#                      "certificate",
-#                      "Certificate",
-#                      spoken #for reference
-#                       ]:
-#             s = SequenceMatcher(None, item, spoken) # difflib
-#             caster_abbrev = selector._abbreviated_string(spoken).lower() # castervoice
-#
-#             l = StringMatcher()
-#             l.set_seqs(spoken, item)
-#
-#
-#             print("castervoice", item, selector._phrase_to_symbol_similarity_score(caster_abbrev, item))
-#             print("difflib: ", item, s.ratio())
-#             print("levenshtein: ", item, l.ratio())
-#             print("sift4: ", item, sift4(item, spoken, None, None))
-#             print("\n")
-#
-#
-#         print(str(text), str(text2), sift4(str(text), str(text2), None, None))
-#     except Exception:
-#         utilities.simple_log()
-
-#     comm = Communicator()
-#     comm.get_com("status").error(0)
 
 
 def run_remote_debugger():
@@ -145,10 +98,10 @@ class DevelopmentHelp(MappingRule):
             R(Function(devgen.refresh), rdescript="Dev: Refreshed Debug File"),
         "Agrippa <filetype> <path>":
             Function(grep_this),
-        "run rule complexity test":
-            Function(lambda: run_tests()),
-        "run unit tests":
-            Function(testrunner.run_tests),
+#        "run rule complexity test":
+#            Function(lambda: run_tests()),
+#        "run unit tests":
+#            Function(testrunner.run_tests),
         "run remote debugger":
             Function(run_remote_debugger),
     }
@@ -275,13 +228,13 @@ class StackTest(MappingRule):
     defaults = {"text": "", "text2": ""}
 
 
-def load():
-    global grammar
-    grammar.add_rule(StackTest())
-    grammar.add_rule(DevelopmentHelp())
-    grammar.add_rule(Experimental())
-    grammar.load()
+#def load(): # ToDo: Migrate to Caster 1.0.0
+#    global grammar
+#    grammar.add_rule(StackTest())
+#    grammar.add_rule(DevelopmentHelp())
+#    grammar.add_rule(Experimental())
+#    grammar.load()
 
 
-if settings.SETTINGS["miscellaneous"]["dev_commands"]:
-    load()
+#if settings.SETTINGS["miscellaneous"]["dev_commands"]:
+#    load()

@@ -1,6 +1,5 @@
 # Caster
-[![Travis Build Status](https://travis-ci.org/dictation-toolbox/Caster.svg?branch=master)](https://travis-ci.org/dictation-toolbox/Caster) [![ReadTheDocs Build Status](https://readthedocs.org/projects/pip/badge/)](https://caster.readthedocs.io/en/latest/)
-
+[![Travis Build Status](https://travis-ci.org/dictation-toolbox/Caster.svg?branch=master)](https://travis-ci.org/dictation-toolbox/Caster) [![Documentation Status](https://readthedocs.org/projects/caster/badge/?version=latest)](https://caster.readthedocs.io/en/latest/?badge=latest)
 [Caster](https://github.com/dictation-toolbox/Caster)  is a collection of tools aimed at enabling programming and accessibility entirely by voice built upon the [Dragonfly](https://github.com/dictation-toolbox/dragonfly) API.
 
 **Note for PyPi Users**: The PIP package is (_Alpha_). Do not use the PIP install. Alternatively use this [Master Branch](https://github.com/dictation-toolbox/Caster) with classic install for the best feature experience.
@@ -10,7 +9,7 @@
   - [VimGolf and Project Euler](https://www.youtube.com/watch?v=T1bKAqDhH_E)
   - [Dictating maths into scientific notebook](https://www.youtube.com/watch?v=oq8EoPu0cGY&t=3s) and [Dictating math by voice using Caster](https://www.youtube.com/watch?v=z-iHvPmjcas)
 - [Instructions for installing](https://caster.readthedocs.io/en/latest/Installation/)
-- Documentation on Caster [[ReadTheDocs](https://caster.readthedocs.io/en/latest/)]and Dragonfly [[ReadTheDocs](https://dragonfly2.readthedocs.io/en/latest/)] 
+- Documentation on Caster [[ReadTheDocs](https://caster.readthedocs.io/en/latest/)] and Dragonfly [[ReadTheDocs](https://dragonfly2.readthedocs.io/en/latest/)] 
 - [How to Speak Code](https://caster.readthedocs.io/en/latest/readthedocs/Examples/Speaking/Examples/) - Example Document
 - Caster Command Reference Guides 
   - [Caster](https://github.com/dictation-toolbox/Caster/blob/master/CasterQuickReference.pdf) - commands to get started with. Universal navigation and editing - These commands are active all the time, and provide input commands for letters, numbers and punctuation, as well as the ability to easily manipulate windows and text. 
@@ -34,7 +33,7 @@
 
 # Feature List
 
-- Configurable Settings in `C:\Users\%USERNAME%\.caster`
+- Configurable Settings in `C:\Users\%USERNAME%\AppData\Local\caster`
 
 - Customize Commands aka `Specs` and their actions via [Simplified Filter Rules](https://caster.readthedocs.io/en/latest/readthedocs/CCR/#rule-filters-simplified) and [Filter Rules](https://caster.readthedocs.io/en/latest/readthedocs/CCR/#Rule-Filters) (WIP). Filter Rules code examples can be found in `.caster\filters\examples`.
 
@@ -55,11 +54,12 @@
   - Word Processor: lyx, Microsoft Word, Typora
   - Browsers: Firefox, Chrome, Internet Explorer
   - Git Client:  Github Desktop 
-  - Applications: Foxit Reader, Gitter, fman, Total Commander, Outlook, Excel
+  - Chat: Microsoft Teams, Gitter
+  - Applications: Foxit Reader, fman, Total Commander, Outlook, Excel
 
 - [Editing and Navigation](https://github.com/dictation-toolbox/Caster/blob/master/CasterQuickReference.pdf)
 
-  - Four additional [mouse navigation modes](https://caster.readthedocs.io/en/latest/readthedocs/Mouse/): curse, douglas, legion, and rainbow - [Demo](https://www.youtube.com/watch?v=UISjQBMmQ-I&feature=youtu.be)
+  - Four additional [mouse navigation modes](https://caster.readthedocs.io/en/latest/readthedocs/Mouse/): curse, sudoku, douglas, legion, and rainbow - [Demo](https://www.youtube.com/watch?v=UISjQBMmQ-I&feature=youtu.be)
   - [Text navigation commands](https://caster.readthedocs.io/en/latest/readthedocs/Text_Manipulation/) - [Demo](https://www.youtube.com/watch?v=xj8IzNlfM70), Text formatting commands
   - Alphabet, numbers, punctuation input commands
   - Commands to interact with generic File Dialogues.

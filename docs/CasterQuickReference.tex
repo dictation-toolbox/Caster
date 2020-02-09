@@ -210,7 +210,7 @@ whiskey \\ x-ray \\ yankee \\ zulu \\
 
 %----------------------------------------------------------------------------------------
 
-\sectiontitle{Selection, movement}
+\sectiontitle{Selection, Movement}
 
 \command{shackle}{select line}
 \command{shin \footnotemark[1] \footnotemark[2]}{shift - <dir>}
@@ -230,7 +230,7 @@ whiskey \\ x-ray \\ yankee \\ zulu \\
 
 %----------------------------------------------------------------------------------------
 
-\sectiontitle{Copy and paste}
+\sectiontitle{Copy and Paste}
 
 \command{stoosh \footnotemark[3]}{copy}
 \command{cut \footnotemark[3]}{cut}
@@ -253,45 +253,7 @@ whiskey \\ x-ray \\ yankee \\ zulu \\
 \begin{minipage}[t]{85mm} % Create a box to house tex
 %
 %%----------------------------------------------------------------------------------------
-\sectiontitle{Programming core\protect\footnotemark[1]}
-
-\footnotetext[1]{See the CCR languages quick reference in the docs for details of the language specific commands.}
-
-\command{enable <language>}{activate module}
-
-\begin{multicols}{2}
-
-iffae \\
-shells \\
-shell iffae \\
-switch \\
-breaker \\
-default \\
-for each \\
-for loop \\
-do loop \\
-while loop \\
-convert to integer \\
-convert to floating-point \\
-convert to string \\
-lodge and \\
-lodge or \\
-lodge not \\
-print to console \\
-function \\
-class \\
-add comment \\
-long comment \\
-value not \\
-return \\
-value true \\
-value false \\
-
-\end{multicols}
-%----------------------------------------------------------------------------------------
-\
-
-\sectiontitle{Text formatting}
+\sectiontitle{Text Formatting}
 
 \textbf{Capitalisation}
 
@@ -310,10 +272,25 @@ value false \\
 \command{incline}{some/words}
 \command{dissent | descent}{some\textbackslash words}
 
-\footnotetext[2]{gerrish defaults to gum, snake to laws}
-
 Capitalisation and spacing can be combined into a single command. They may be suffixed by "bow" and then dictation to format (ex: "tie snake bow some words") to aid recognition.
+\footnotetext[3]{Pass-through text formatting as defined by speech recognition engine.}
+\\
+%----------------------------------------------------------------------------------------
 
+\sectiontitle{Format Setting}
+\\
+\examplecommand{set [big] format <capitalisation> <spacing> [bow]}{Set a standard/[secondary] format}
+
+\command{[big] format <dictation>}{Apply the standard/[secondary] format to dictation}
+
+%----------------------------------------------------------------------------------------
+\sectiontitle{Free Dictation - Engine Formatting} \footnotemark[2]
+\\
+\command{say}{default engine formatting}
+\command{cop}{Initial letter capitalized}
+\command{slip}{initial letter lowercase}
+\footnotetext[2]{gerrish defaults to gum, snake to laws}
+%----------------------------------------------------------------------------------------
 
 \end{minipage} % End the third column of text
 } % End the third division of the page
@@ -325,47 +302,42 @@ Capitalisation and spacing can be combined into a single command. They may be su
 \begin{minipage}[t]{85mm} % Create a box to house text
 
 %----------------------------------------------------------------------------------------
+\sectiontitle{Programming Core\protect\footnotemark[1]}
 
-\sectiontitle{Format setting}
+\footnotetext[1]{See the CCR languages quick reference in the docs for details of the language specific commands.}
 
-\examplecommand{set [big] format <capitalisation> <spacing> [bow]}{Set a standard/[secondary] format}
+\command{enable <language>}{activate module}
 
-\examplecommand{[big] format <dictation>}{Apply the standard/[secondary] format to dictation}
+\begin{multicols}{2}
+
+iffae \\
+shells \\
+shell iffae \\
+switch \\
+breaker \\
+default \\
+for each \\
+for loop \\
+do loop \\
+while loop \\
+convert to integer \\
+convert to floating point \\
+convert to string \\
+lodge and \\
+lodge or \\
+lodge not \\
+print to console \\
+function \\
+class \\
+add comment \\
+long comment \\
+value not \\
+return \\
+value true \\
+value false \\
+
+\end{multicols}
 %----------------------------------------------------------------------------------------
-
-\sectiontitle{Mouse replacement}
-
-\command{kick}{left click}
-\command{kick mid}{middle click}
-\command{psychic}{right click}
-\command{shift right click}{shift right click}
-\command{shift click}{shift click}
-\command{squat}{left button down}
-\command{bench}{left button up}
-\command{lean}{right button down}
-\command{hoist}{right button up}
-\command{colic}{control left click}
-\command{scree \footnotemark[1]}{scroll wheel}
-\command{curse}{move cursor by pixels}
-\command{douglas}{move cursor on grid}
-\command{rainbow}{alternate grid}
-\command{legion}{smart text selection}
-\command{left point}{mouse to screen left}
-\command{center point}{mouse to screen center}
-\command{right point}{mouse to screen right}
-
-\footnotetext[1]{Takes optional direction parameter, one of the direction keys from table (5)}
-
-%----------------------------------------------------------------------------------------
-
-\sectiontitle{Template-based navigation}
-
-\command{jump in \footnotemark[2]}{move cursor inside next ([\{<}
-\command{jump out \footnotemark[2]}{move cursor past next )]\}>}
-\command{jump back \footnotemark[2]}{move cursor inside prev )]\}>}
-\command{fill <target> \footnotemark[2]}{highlight <target> in line}
-
-\footnotetext[2]{All of these are asynchronous, and can be cancelled with the word "cancel" if the search is taking too long. See \textit{navigation.py} for a full list of targets.}
 
 %----------------------------------------------------------------------------------------
 
@@ -377,7 +349,7 @@ Capitalisation and spacing can be combined into a single command. They may be su
 \put(105,200){ % Divide the page
 \begin{minipage}[t]{85mm} % Create a box to house text
 
-\sectiontitle{Window management}
+\sectiontitle{Window Management}
 
 \command{minimise}{minimise window}
 \command{maximise}{maximise window}
@@ -422,6 +394,43 @@ Capitalisation and spacing can be combined into a single command. They may be su
 
 \put(200, 200){
 \begin{minipage}[t]{85mm}
+%----------------------------------------------------------------------------------------
+
+\sectiontitle{Template-based Navigation}
+
+\command{jump in \footnotemark[2]}{move cursor inside next ([\{<}
+\command{jump out \footnotemark[2]}{move cursor past next )]\}>}
+\command{jump back \footnotemark[2]}{move cursor inside prev )]\}>}
+\command{fill <target> \footnotemark[2]}{highlight <target> in line}
+
+\footnotetext[2]{All of these are asynchronous, and can be cancelled with the word "cancel" if the search is taking too long. See \textit{navigation.py} for a full list of targets.}
+
+
+%----------------------------------------------------------------------------------------
+
+\sectiontitle{Mouse Replacement}
+
+\command{kick}{left click}
+\command{kick mid}{middle click}
+\command{psychic}{right click}
+\command{shift right click}{shift right click}
+\command{shift click}{shift click}
+\command{squat}{left button down}
+\command{bench}{left button up}
+\command{lean}{right button down}
+\command{hoist}{right button up}
+\command{colic}{control left click}
+\command{scree \footnotemark[1]}{scroll wheel}
+\command{curse}{move cursor by pixels}
+\command{douglas}{move cursor on grid}
+\command{rainbow}{alternate grid}
+\command{legion}{smart text selection}
+\command{left point}{mouse to screen left}
+\command{center point}{mouse to screen center}
+\command{right point}{mouse to screen right}
+
+\footnotetext[1]{Takes optional direction parameter, one of the direction keys from table (5)}
+
 
 \sectiontitle{Dragon}
 
@@ -430,15 +439,14 @@ Capitalisation and spacing can be combined into a single command. They may be su
 \sectiontitle{Update and Caster Management}
 
 \command{clear caster log}{Clears Log Window}
-\command{update caster}{Updates Caster}
 \command{update dragonfly}{Updates Dragonfly}
 \command{reboot dragon}{Restarts Caster}
 \command{reboot windows speech recognition}{Restarts Caster}
-
+%----------------------------------------------------------------------------------------
 \end{minipage}
 }
 \end{picture} % End the container for the entire page
-
+%----------------------------------------------------------------------------------------
 
 \begin{picture}(297,210) % Create a container for the page content
 \put(10,200){ % Divide the page
@@ -455,6 +463,7 @@ Capitalisation and spacing can be combined into a single command. They may be su
 \examplecommand{curly quotes arch ross deckle quotes brov}{\{"a":"b"\}}
 \examplecommand{backslash format command curly}{\textbackslash command\{\}}
 \examplecommand{(python) tell sink print to console spark three}{new line, print(<third clipboard position>)}
+%----------------------------------------------------------------------------------------
 \end{minipage}
 }
 

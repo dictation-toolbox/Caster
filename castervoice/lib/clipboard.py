@@ -1,7 +1,12 @@
-from dragonfly import Clipboard as DragonflyClipboard
+from castervoice.lib import settings, printer
 
-from castervoice.lib import settings
-
+Clipboard = None
+try:
+    from dragonfly import Clipboard as DragonflyClipboard
+    # Use DragonflyClipboard as Clipboard.
+    Clipboard = DragonflyClipboard
+except:
+    printer.out("dragonfly.Clipboard failed to import.")
 
 def _is_aenea_available():
     try:
@@ -16,12 +21,12 @@ def _is_aenea_available():
 # Use a subclass of dragonfly's clipboard class instead if the 'use_aenea'
 # setting is set to true. This will allow commands like 'stoosh' to work
 # properly server-side if the RPC functions are available.
-if settings.SETTINGS["miscellaneous"]["use_aenea"] and _is_aenea_available():
+if settings.settings(["miscellaneous", "use_aenea"]) and _is_aenea_available():
     # pylint: disable=import-error
     import aenea
     from jsonrpclib import ProtocolError
 
-    class Clipboard(DragonflyClipboard):
+    class Clipboard(DragonflyClipboard): # pylint: disable=function-redefined
 
         @classmethod
         def get_system_text(cls):
@@ -49,7 +54,3 @@ if settings.SETTINGS["miscellaneous"]["use_aenea"] and _is_aenea_available():
 
             # Set this system's clipboard content.
             DragonflyClipboard.set_system_text(content)
-
-else:
-    # Use DragonflyClipboard as Clipboard.
-    Clipboard = DragonflyClipboard

@@ -3,11 +3,14 @@ include _caster.py
 include post_setup.py
 include docs/README.md
 include castervoice/bin/data/configdebug.txt
-include castervoice/bin/share/FilterRules/words.txt
+include castervoice/bin/share/words.txt
 include castervoice/bin/share/git_repo_local_to_remote_match.toml.defaults
-include castervoice/bin/VirtualDesktopAccessor.dll
 include castervoice/bin/reboot.bat
 include castervoice/bin/reboot_wsr.bat
-include castervoice/lib/dll/tirg-dll.dll
+include castervoice/lib/dll/tirg-32.dll
+include castervoice/lib/dll/tirg-64.dll
 include castervoice/asynch/sikuli/server/xmlrpc_server.sikuli/xmlrpc_server.html
 include castervoice/asynch/sikuli/server/xmlrpc_server.sikuli/xmlrpc_server.py
+include castervoice/lib/github_automation.ahk
+include requirements.txt
+include requirements-dev.txt

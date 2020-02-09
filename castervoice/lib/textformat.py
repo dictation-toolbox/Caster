@@ -14,6 +14,9 @@ class TextFormat():
     3 Gerrish - camelCase
     4 sing - Sentencecase
     5 laws (default) - alllower
+    6 say - whatever speech engine provides
+    7 cop - Whatever speech engine provides, initial letter capitalized
+    8 slip - whatever speech engine provides, initial letter lowercase
     Commands for word spacing:
     0 (default except Gerrish) - words with spaces
     1 gum (default for Gerrish)  - wordstogether
@@ -21,6 +24,7 @@ class TextFormat():
     3 snake - words_with_underscores
     4 pebble - words.with.fullstops
     5 incline - words/with/slashes
+    6 descent - words\with\backslashes
     '''
 
     @classmethod
@@ -36,6 +40,12 @@ class TextFormat():
                 t = t.capitalize()
             elif capitalization == 5:
                 t = t.lower()
+            elif capitalization == 6:
+                pass
+            elif capitalization == 7:
+                t = t[0].upper() + t[1:]
+            elif capitalization == 8:
+                t = t[0].lower() + t[1:]
         if spacing != 0:
             if spacing == 1:
                 t = "".join(t.split(" "))
@@ -53,7 +63,7 @@ class TextFormat():
 
     @classmethod
     def get_text_format_description(cls, capitalization, spacing):
-        caps = {0: "<none>", 1: "yell", 2: "tie", 3: "gerrish", 4: "sing", 5: "laws"}
+        caps = {0: "<none>", 1: "yell", 2: "tie", 3: "gerrish", 4: "sing", 5: "laws", 6: "say", 7: "cop", 8: "slip"}
         spaces = {
             0: "<none>",
             1: "gum",
@@ -98,9 +108,9 @@ class TextFormat():
         return TextFormat.formatted_text(self.capitalization, self.spacing, t)
 
 
-format = TextFormat(*settings.SETTINGS["formats"]["_default"]["text_format"])
+format = TextFormat(*settings.settings(["formats", "_default", "text_format"], default_value=[5, 0]))
 secondary_format = TextFormat(
-    *settings.SETTINGS["formats"]["_default"]["secondary_format"])
+    *settings.settings(["formats", "_default", "secondary_format"], default_value=[1, 0]))
 
 
 def _choose_format(big):

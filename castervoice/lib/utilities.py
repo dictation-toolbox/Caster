@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function, unicode_literals
+from builtins import str
 
 import io
 import json
+import locale
 import os
 import re
 import sys
@@ -11,61 +13,40 @@ import time
 import traceback
 from __builtin__ import True
 from subprocess import Popen
-import toml
-
-import win32gui
-import win32ui
-import win32clipboard
-
+import tomlkit
 from castervoice.lib.clipboard import Clipboard
+from castervoice.lib import printer
+from castervoice.lib.util import guidance
 
-from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,
-    HKEY_CURRENT_USER, OpenKey, QueryValueEx)
+if sys.version_info > (3, 0):
+    from pathlib import Path  # pylint: disable=import-error
+else:
+    from castervoice.lib.util.pathlib import Path
 
-from dragonfly.windows.window import Window
-from dragonfly import Key
+try:
+    import win32gui
+    import win32clipboard
+    from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,
+                         HKEY_CURRENT_USER, OpenKey, QueryValueEx)
+    from dragonfly.windows.window import Window
+    from dragonfly import Key, Pause
+except:
+    printer.out("utilities.py imports failed.")
 
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0]
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:
-    from castervoice.lib import settings
+    from castervoice.lib import settings, printer
 
 # filename_pattern was used to determine when to update the list in the element window,
 # checked to see when a new file name had appeared
 FILENAME_PATTERN = re.compile(r"[/\\]([\w_ ]+\.[\w]+)")
 
-from ctypes import cdll
-from win32gui import GetForegroundWindow
-
-def load_vda():
-    # https://github.com/reckoner/pyVirtualDesktopAccessor
-    # provides a 32-bit python implementation (this one).
-    # there is a 64-bit implementation at
-    # https://github.com/Ciantic/VirtualDesktopAccessor
-    vda = cdll.LoadLibrary(BASE_PATH + "/castervoice/bin/VirtualDesktopAccessor.dll")
-    return vda
-
-def move_current_window_to_desktop(n=0, follow=False):
-    vda = load_vda()
-    wndh = GetForegroundWindow()
-    vda.MoveWindowToDesktopNumber(wndh, n-1)
-    if follow:
-        vda.GoToDesktopNumber(n-1)
-
-def go_to_desktop_number(n):
-    vda = load_vda()
-    return vda.GoToDesktopNumber(n-1)
-
-def close_all_workspaces():
-    vda = load_vda()
-    total = vda.GetDesktopCount()
-    go_to_desktop_number(total)
-    Key("wc-f4/10:" + str(total-1)).execute()
-
 def window_exists(classname, windowname):
     try:
+        import win32ui
         win32ui.FindWindow(classname, windowname)
     except win32ui.error:
         return False
@@ -101,10 +82,36 @@ def get_window_title_info():
     path_folders = title.split("/")[:-1]
     return [filename, path_folders, title]
 
+def focus_mousegrid(gridtitle):
+    '''
+    Loops over active windows for MouseGrid window titles. Issue #171
+    When MouseGrid window titles found focuses MouseGrid overly.
+    '''
+    if sys.platform.startswith('win'):
+        # May not be needed for Linux/Mac OS - testing required
+        try:
+            for i in range(9):
+                matches = Window.get_matching_windows(title=gridtitle, executable="python")
+                if not matches:
+                    Pause("50").execute()
+                else:
+                    break
+            if matches:
+                for handle in matches:
+                    handle.set_foreground()
+                    break
+            else:
+                printer.out("`Title: `{}` no matching windows found".format(gridtitle))
+        except Exception as e:
+            printer.out("Error focusing MouseGrid: {}".format(e))
+    else:
+        pass
+
 
 def save_toml_file(data, path):
+    guidance.offer()
     try:
-        formatted_data = unicode(toml.dumps(data))
+        formatted_data = unicode(tomlkit.dumps(data))
         with io.open(path, "wt", encoding="utf-8") as f:
             f.write(formatted_data)
     except Exception:
@@ -112,10 +119,11 @@ def save_toml_file(data, path):
 
 
 def load_toml_file(path):
+    guidance.offer()
     result = {}
     try:
         with io.open(path, "rt", encoding="utf-8") as f:
-            result = toml.loads(f.read())
+            result = tomlkit.loads(f.read()).value
     except IOError as e:
         if e.errno == 2:  # The file doesn't exist.
             save_toml_file(result, path)
@@ -125,7 +133,9 @@ def load_toml_file(path):
         simple_log(True)
     return result
 
+
 def save_json_file(data, path):
+    guidance.offer()
     try:
         formatted_data = unicode(json.dumps(data, ensure_ascii=False))
         with io.open(path, "wt", encoding="utf-8") as f:
@@ -135,6 +145,7 @@ def save_json_file(data, path):
 
 
 def load_json_file(path):
+    guidance.offer()
     result = {}
     try:
         with io.open(path, "rt", encoding="utf-8") as json_file:
@@ -155,16 +166,16 @@ def list_to_string(l):
 
 def simple_log(to_file=False):
     msg = list_to_string(sys.exc_info())
-    print(msg)
+    printer.out(msg)
     for tb in traceback.format_tb(sys.exc_info()[2]):
-        print(tb)
+        printer.out(tb)
     if to_file:
         with io.open(settings.SETTINGS["paths"]["LOG_PATH"], 'at', encoding="utf-8") as f:
             f.write(msg + "\n")
 
 
 def availability_message(feature, dependency):
-    print(feature + " feature not available without " + dependency)
+    printer.out(feature + " feature not available without " + dependency)
 
 
 def remote_debug(who_called_it=None):
@@ -174,7 +185,7 @@ def remote_debug(who_called_it=None):
         import pydevd  # @UnresolvedImport pylint: disable=import-error
         pydevd.settrace()
     except Exception:
-        print("ERROR: " + who_called_it +
+        printer.out("ERROR: " + who_called_it +
               " called utilities.remote_debug() but the debug server wasn't running.")
 
 
@@ -191,7 +202,7 @@ def reboot(wsr=False):
         status = natlinkstatus.NatlinkStatus()
         username = status.getUserName()
         popen_parameters.append(username)
-    print(popen_parameters)
+    printer.out(popen_parameters)
     Popen(popen_parameters)
 
 def default_browser_command():
@@ -233,7 +244,7 @@ def clear_log():
             win32gui.SetWindowText(rt_handle, "")
             return
     except Exception as e:
-        print (e)
+        printer.out(e)
 
 def get_clipboard_formats():
     '''

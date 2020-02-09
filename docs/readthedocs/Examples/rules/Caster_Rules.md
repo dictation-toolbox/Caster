@@ -15,8 +15,8 @@ A Caster MergeRule is very similar to a Dragonfly MappingRule, but it has a few 
 from dragonfly import *
 
 from caster.lib import control
-from caster.lib.dfplus.merge.mergerule import MergeRule
-from caster.lib.dfplus.state.short import R
+from caster.lib.merge.mergerule import MergeRule
+from caster.lib.merge.state.short import R
 
 class MyMappingRule(MappingRule):
   mapping = {
@@ -67,8 +67,8 @@ The simplest is `RegisteredAction`. (Type aliased to `R` for short.) `R` can wra
 from dragonfly import *
 
 from caster.lib import control
-from caster.lib.dfplus.merge.mergerule import MergeRule
-from caster.lib.dfplus.state.short import R
+from caster.lib.merge.mergerule import MergeRule
+from caster.lib.merge.state.short import R
 
 class Birds(MergeRule):
   mapping = {
@@ -88,8 +88,8 @@ Two things of note here.
 from dragonfly import *
 
 from caster.lib import control
-from caster.lib.dfplus.merge.mergerule import MergeRule
-from caster.lib.dfplus.state.short import R
+from caster.lib.merge.mergerule import MergeRule
+from caster.lib.merge.state.short import R
 
 class Birds(MergeRule):
   mapping = {
@@ -108,10 +108,10 @@ In order to do this, the ContextSeeker constructor takes one or both of two arra
 from dragonfly import *
 
 from caster.lib import control
-from caster.lib.dfplus.merge.mergerule import MergeRule
-from caster.lib.dfplus.state.actions import ContextSeeker
-from caster.lib.dfplus.state.actions2 import NullAction
-from caster.lib.dfplus.state.short import R, L, S
+from caster.lib.merge.mergerule import MergeRule
+from caster.lib.merge.state.actions import ContextSeeker
+from caster.lib.merge.state.actions2 import NullAction
+from caster.lib.merge.state.short import R, L, S
 
 class Birds(MergeRule):
   mapping = {
@@ -143,10 +143,10 @@ ContextSeekers can also look forward. Let's look at an example of a forward-look
 from dragonfly import *
 
 from caster.lib import control
-from caster.lib.dfplus.merge.mergerule import MergeRule
-from caster.lib.dfplus.state.actions import ContextSeeker
-from caster.lib.dfplus.state.actions2 import NullAction
-from caster.lib.dfplus.state.short import R, L, S
+from caster.lib.merge.mergerule import MergeRule
+from caster.lib.merge.state.actions import ContextSeeker
+from caster.lib.merge.state.actions2 import NullAction
+from caster.lib.merge.state.short import R, L, S
 
 class Times(MergeRule):
   mapping = {
@@ -185,10 +185,10 @@ That's a lot, so let's see it in action.
 from dragonfly import *
 
 from caster.lib import control
-from caster.lib.dfplus.merge.mergerule import MergeRule
-from caster.lib.dfplus.state.actions import ContextSeeker
-from caster.lib.dfplus.state.actions2 import NullAction
-from caster.lib.dfplus.state.short import R, L, S
+from caster.lib.merge.mergerule import MergeRule
+from caster.lib.merge.state.actions import ContextSeeker
+from caster.lib.merge.state.actions2 import NullAction
+from caster.lib.merge.state.short import R, L, S
 
 def print_params_to_console(params):
   print(params)
@@ -228,10 +228,10 @@ Let's look at a few basic AsynchronousActions:
 from dragonfly import *
 
 from caster.lib import control
-from caster.lib.dfplus.merge.mergerule import MergeRule
-from caster.lib.dfplus.state.actions import ContextSeeker
-from caster.lib.dfplus.state.actions2 import NullAction
-from caster.lib.dfplus.state.short import R, L, S
+from caster.lib.merge.mergerule import MergeRule
+from caster.lib.merge.state.actions import ContextSeeker
+from caster.lib.merge.state.actions2 import NullAction
+from caster.lib.merge.state.short import R, L, S
 
 my_value = 0
 
@@ -296,8 +296,8 @@ In our example above with A, B, C, and D, the rules were combined (or at least a
 
 ```Python
 from caster.lib import control
-from caster.lib.dfplus.merge.mergepair import MergeInf
-from caster.lib.dfplus.state.short import R
+from caster.lib.merge.mergepair import MergeInf
+from caster.lib.merge.state.short import R
 
 def handle_incompatibility_by_deletion(mp):
     if mp.time == MergeInf.RUN and mp.rule1 is not None:
@@ -319,8 +319,8 @@ Here is another example. Suppose you don't like a particular spec and want to re
 
 ```Python
 from caster.lib import control
-from caster.lib.dfplus.merge.mergepair import MergeInf
-from caster.lib.dfplus.state.short import R
+from caster.lib.merge.mergepair import MergeInf
+from caster.lib.merge.state.short import R
 
 def replace_spec(rule, target, replacement):
     if target in rule.mapping_actual().keys():
@@ -348,8 +348,8 @@ Maybe you're fine with a spec, but you want to replace the action?
 from dragonfly.actions.action_text import Text
 
 from caster.lib import control
-from caster.lib.dfplus.merge.mergepair import MergeInf
-from caster.lib.dfplus.state.short import R
+from caster.lib.merge.mergepair import MergeInf
+from caster.lib.merge.state.short import R
 
 def update_python(rule):
     if "shells" in rule.mapping_actual().keys():
@@ -373,8 +373,8 @@ Here is another example. In this one, we add the "identity is" command to the Py
 from dragonfly.actions.action_text import Text
 
 from caster.lib import control
-from caster.lib.dfplus.merge.mergepair import MergeInf
-from caster.lib.dfplus.state.short import R
+from caster.lib.merge.mergepair import MergeInf
+from caster.lib.merge.state.short import R
 
 def add_is_to_python(rule):
     if rule.get_pronunciation() == "Python":

@@ -1,3 +1,5 @@
+from builtins import str
+
 import getopt
 import os
 import re
@@ -6,8 +8,6 @@ import threading
 from ctypes import *
 from dragonfly import monitors
 
-#from dragonfly import monitors
-
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0]
     if BASE_PATH not in sys.path:
@@ -15,6 +15,12 @@ try:  # Style C -- may be imported into Caster, or externally
 finally:
     from castervoice.asynch.mouse.grids import TkTransparent, Dimensions
     from castervoice.lib import gdi, settings, utilities
+    settings.initialize()
+
+if sys.version_info > (3, 0):
+    from pathlib import Path # pylint: disable=import-error
+else:
+    from castervoice.lib.util.pathlib import Path
 
 try:
     from PIL import ImageGrab, ImageFilter, Image
@@ -166,9 +172,16 @@ class LegionScanner:
 
     def setup_dll(self):
         import sys
-        self.tirg_dll = cdll.LoadLibrary(
-            (settings.SETTINGS["paths"]["DLL_PATH"] + "tirg-dll.dll").encode(
+        import struct
+        try:
+            if struct.calcsize("P") * 8 == 32:
+                self.tirg_dll = cdll.LoadLibrary(str(Path(settings.SETTINGS["paths"]["DLL_PATH"]).joinpath("tirg-32.dll")).encode(
                 sys.getfilesystemencoding()))
+            else:
+                self.tirg_dll = cdll.LoadLibrary(str(Path(settings.SETTINGS["paths"]["DLL_PATH"]).joinpath("tirg-64.dll")).encode(
+                sys.getfilesystemencoding()))
+        except Exception as e:
+            print("Legion loading failed with '%s'" % str(e))
         self.tirg_dll.getTextBBoxesFromFile.argtypes = [c_char_p, c_int, c_int]
         self.tirg_dll.getTextBBoxesFromFile.restype = c_char_p
         self.tirg_dll.getTextBBoxesFromBytes.argtypes = [c_char_p, c_int, c_int]

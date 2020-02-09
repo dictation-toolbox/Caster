@@ -1,6 +1,6 @@
 from dragonfly import *
 from castervoice.lib import navigation
-from castervoice.lib.dfplus.state.short import R
+from castervoice.lib.merge.state.short import R
 
 release = Key("shift:up, ctrl:up")
 # this gets added on the right side

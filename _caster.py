@@ -3,159 +3,70 @@
 main Caster module
 Created on Jun 29, 2014
 '''
-
-import os, time, sys
+import datetime
 import logging
-logging.basicConfig()
 
-import time, socket, os
-from dragonfly import (get_engine, Function, Grammar, Playback, Dictation, Choice, Pause,
-                       RunCommand)
-from castervoice.lib.ccr.standard import SymbolSpecs
+logging.basicConfig(format = "%(asctime)s : %(levelname)s : %(funcName)s\n%(msg)s")   
+
+from castervoice.lib.ctrl.dependencies import DependencyMan  # requires nothing
+DependencyMan().initialize()
+
+from castervoice.lib import settings  
+settings.initialize()
+
+from castervoice.lib.ctrl.updatecheck import UpdateChecker # requires settings/dependencies
+UpdateChecker().initialize()
+
+from dragonfly import get_engine
+from dragonfly.windows.window import Window
+
 
 _NEXUS = None
-from castervoice.lib import settings  # requires nothing
-if settings.SYSTEM_INFORMATION["platform"] != "win32":
-    raise SystemError("Your platform is not currently supported by Caster.")
+
+class LoggingHandler(logging.Handler):
+    def emit(self, record):
+        # Brings status window to the forefront upon error
+        if (settings.SETTINGS["miscellaneous"]["status_window_foreground_on_error"]):
+             # The window title is unique to Natlink
+            if (get_engine()._name == 'natlink'):
+                windows = Window.get_matching_windows(None, "Messages from Python Macros V")
+            if windows:
+                windows[0].set_foreground()
+
+logger1 = logging.getLogger('action')
+logger1.addHandler(LoggingHandler())
+
+logger2 = logging.getLogger('engine')
+logger2.addHandler(LoggingHandler())
+
+# Natlink with DNS requires 32-bit Python and Windows OS
+# ToDo: create then move to castervoice.lib.ctrl.engines
+if (get_engine()._name == 'natlink'):
+    import struct
+    if settings.SYSTEM_INFORMATION["platform"] not in ["win32", "win-amd64"]:
+        msg = "Your platform ({}) is not currently supported by Caster."
+        raise SystemError(msg.format(settings.SYSTEM_INFORMATION["platform"]))
+    if struct.calcsize("P") == 8:  # 64-bit
+        msg = "Caster is using a 64-bit python environment with Natlink. Natlink requires a 32-bit python environment"
+        raise SystemError(msg)
+
 settings.WSR = __name__ == "__main__"
-from castervoice.lib import utilities  # requires settings
+
 if settings.WSR:
+    from castervoice.rules.ccr.standard import SymbolSpecs
     SymbolSpecs.set_cancel_word("escape")
 from castervoice.lib import control
-_NEXUS = control.nexus()
-_NEXUS.dep.initialize()
-from castervoice.lib.ctrl.dependencies import pip_path, update
-from castervoice.lib import navigation
-navigation.initialize_clipboard(_NEXUS)
 
-from castervoice.apps import __init__
-from castervoice.asynch import *
-from castervoice.lib.ccr import *
-from castervoice.lib.ccr.recording import bringme, again, alias, history
-import castervoice.lib.dev.dev
-from castervoice.asynch.sikuli import sikuli
+if control.nexus() is None:
+    from castervoice.lib.ctrl.mgr.loading.load.content_loader import ContentLoader
+    from castervoice.lib.ctrl.mgr.loading.load.content_request_generator import ContentRequestGenerator
+    _crg = ContentRequestGenerator()
+    _content_loader = ContentLoader(_crg)
+    control.init_nexus(_content_loader)
 
-from castervoice.lib.actions import Key
-from castervoice.lib.terminal import TerminalCommand
-from castervoice.lib.dfplus.state.short import R
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.merge.mergepair import MergeInf
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-
-if not globals().has_key('profile_switch_occurred'):
-    # Load user rules
-    _NEXUS.process_user_content()
-    _NEXUS.merger.update_config()
-    _NEXUS.merger.merge(MergeInf.BOOT)
-
-
-class DependencyUpdate(RunCommand):
-    synchronous = True
-
-    # pylint: disable=method-hidden
-    def process_command(self, proc):
-        # Process the output from the command.
-        RunCommand.process_command(self, proc)
-        # Only reboot dragon if the command was successful and online_mode is true
-        # 'pip install ...' may exit successfully even if there were connection errors.
-        if proc.wait() == 0 and update:
-            Playback([(["reboot", "dragon"], 0.0)]).execute()
-
-
-def change_monitor():
-    if settings.SETTINGS["sikuli"]["enabled"]:
-        Playback([(["monitor", "select"], 0.0)]).execute()
-    else:
-        print("This command requires SikuliX to be enabled in the settings file")
-
-
-class MainRule(MergeRule):
-    @staticmethod
-    def generate_ccr_choices(nexus):
-        choices = {}
-        for ccr_choice in nexus.merger.global_rule_names():
-            choices[ccr_choice] = ccr_choice
-        return Choice("name", choices)
-
-    @staticmethod
-    def generate_sm_ccr_choices(nexus):
-        choices = {}
-        for ccr_choice in nexus.merger.selfmod_rule_names():
-            choices[ccr_choice] = ccr_choice
-        return Choice("name2", choices)
-
-    mapping = {
-        # update management
-        "update caster":
-            R(DependencyUpdate([pip_path, "install", "--upgrade", "castervoice"])),
-        "update dragonfly":
-            R(DependencyUpdate([pip_path, "install", "--upgrade", "dragonfly2"])),
-
-        # hardware management
-        "volume <volume_mode> [<n>]":
-            R(Function(navigation.volume_control, extra={'n', 'volume_mode'})),
-        "change monitor":
-            R(Key("w-p") + Pause("100") + Function(change_monitor)),
-
-        # window management
-        'minimize':
-            R(Playback([(["minimize", "window"], 0.0)])),
-        'maximize':
-            R(Playback([(["maximize", "window"], 0.0)])),
-        "remax":
-            R(Key("a-space/10,r/10,a-space/10,x")),
-
-        # passwords
-
-        # mouse alternatives
-        "legion [<monitor>]":
-            R(Function(navigation.mouse_alternates, mode="legion", nexus=_NEXUS)),
-        "rainbow [<monitor>]":
-            R(Function(navigation.mouse_alternates, mode="rainbow", nexus=_NEXUS)),
-        "douglas [<monitor>]":
-            R(Function(navigation.mouse_alternates, mode="douglas", nexus=_NEXUS)),
-
-        # ccr de/activation
-        "<enable> <name>":
-            R(Function(_NEXUS.merger.global_rule_changer(), save=True)),
-        "<enable> <name2>":
-            R(Function(_NEXUS.merger.selfmod_rule_changer(), save=True)),
-        "enable caster":
-            R(Function(_NEXUS.merger.merge, time=MergeInf.RUN, name="numbers")),
-        "disable caster":
-            R(Function(_NEXUS.merger.ccr_off)),
-    }
-    extras = [
-        IntegerRefST("n", 1, 50),
-        Dictation("text"),
-        Dictation("text2"),
-        Dictation("text3"),
-        Choice("enable", {
-            "enable": True,
-            "disable": False
-        }),
-        Choice("volume_mode", {
-            "mute": "mute",
-            "up": "up",
-            "down": "down"
-        }),
-        generate_ccr_choices.__func__(_NEXUS),
-        generate_sm_ccr_choices.__func__(_NEXUS),
-        IntegerRefST("monitor", 1, 10)
-    ]
-    defaults = {"n": 1, "nnv": 1, "text": "", "volume_mode": "setsysvolume", "enable": -1}
-
-
-control.non_ccr_app_rule(MainRule(), context=None, rdp=False)
-
-if globals().has_key('profile_switch_occurred'):
-    reload(sikuli)
-else:
-    profile_switch_occurred = None
-
+if settings.SETTINGS["sikuli"]["enabled"]:
+    from castervoice.asynch.sikuli import sikuli_controller
+    sikuli_controller.get_instance().bootstrap_start_server_proxy()
 print("\n*- Starting " + settings.SOFTWARE_NAME + " -*")
-
 if settings.WSR:
-    print("Windows Speech Recognition is garbage; it is " \
-        +"recommended that you not run Caster this way. ")
     get_engine().recognize_forever()

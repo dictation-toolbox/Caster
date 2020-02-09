@@ -9,11 +9,21 @@ A video demonstration [here](https://youtu.be/UISjQBMmQ-I). Note that this demon
 - Left click: `kick [<number>]`
     - Can use an optional `<number>` to double (_two_) or triple (_three_) click.
 - Right click: `psychic`
+- Hold down left mouse: `squat`
+- Release left mouse: `bench`
+- Hold down right mouse: `lean`
+- Release right mouse: `hoist`
+- Control left click: `colic`
+- Middle click: `kick mid`
+- Shift click: `shift click`
+- Shift right click: `shift right click`
 
 ### Moving
 
 - Move around: `curse <direction> [[E] <direction>] <distance_in_pixel>`  
     - `<direction>` can be _sauce_ (up), _dunce_ (down), _lease_ (left), or _ross_ (right).
+- Scroll mouse wheel: `scree <direction> [number_of_scrolls]`
+    - `<direction>` can be _sauce_ (up) or _dunce_ (down).
 
 **Examples**:
 
@@ -28,13 +38,16 @@ A video demonstration [here](https://youtu.be/UISjQBMmQ-I). Note that this demon
 
 **Description**:
 
-Approach the desired position by sequentially selecting tiles on the screen. Provided by Dragon Naturally Speaking.
+Approach the desired position by sequentially selecting tiles on the screen. Provided by Dragon Naturally Speaking and only available for the main monitor.
 
 **Usage**:
 
 - Invoke: `mousegrid`
 - Select tile: `<tile_number>`  
-    - `<tile_number>` is an integer from 1 to 9. This function is currently only supported by Dragon for a single monitor.
+    - `<tile_number>` is an integer from 1 to 9.
+- Click on left on screen: `left point`
+- Click on center on screen: `center point`
+- Click on right on screen: `right point`
 
 ### Douglas
 
@@ -87,6 +100,28 @@ Selecting from one point to another is available including fine adjustment of th
     - Selects from the first red 86 to the second green 10.
 - _red 86 move, curse sauce lease 5, squat, 2 green 10 move, curse dunce lease 10, bench_
     - Selects from the first red 86 to the second green 10 with fine adjustment.
+
+### Sudoku
+
+**Description**:
+
+Creates a grid of numbered 3 x 3 squares over the whole screen. A number is called out to move directly to the center of the square. The position can be refined to one of the adjacent small squares. It supports both clicking and dragging.
+
+**Usage**:
+
+- Invoke: `sudoku` or `sudoku <monitor_number>`
+- Move to square: `<number>`
+- Select/drag to square: `drag <number>`
+- Select/drag from square to square: `<number> drag <number>`
+- Move to square with refinement (also for drag): `<number> grid <number>`
+
+**Examples**:
+
+- _159 grid 8_
+- _95 kick double_
+- _drag 201_
+- _7 drag 13_
+- _55 move, curse sauce lease 5, squat, 20 grid 7 move, curse dunce lease 10, bench_
 
 ### Legion
 

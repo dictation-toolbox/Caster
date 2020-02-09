@@ -11,18 +11,22 @@ Aenea-Caster compatibility includes:
 To use Aenea-Caster compatibility, do the following:
 
 1. Make sure that Aenea is setup correctly by following the [instructions](https://github.com/dictation-toolbox/aenea).
-2. Change the `use_aenea` setting in your Caster settings.toml file to true.
-3. Copy the copypaste.py and copypaste.yapsy-plugin files from [magneto-host/server/linux_x11/plugins](https://github.com/Danesprite/magneto-host/tree/master/server/linux_x11/plugins) into your server plugins directory (usually *aenea/server/linux\_x11/plugins* or *aenea/server/osx/plugins*).
-4. Install dependencies for the copypaste plugin: `pip install yapsy subprocess32 pyperclip`
-5. Start/restart Dragon and the Aenea server.
+1. Copy `aenea.json`, which is usually created in `C:\NatLink\NatLink\MacroSystem` in the course of the Aenea install, to your NatLink User Directory. You can find this directory by running `Configure NatLink by GUI` and looking for the box titled UserDirectory. Often it is `C:\Users\<YourUsername>\Documents\Caster`.
+1. Change the `use_aenea` setting in your Caster settings.toml file to true. You may find settings.toml in `C:\Users\<YourUsername>\AppData\Local\caster\settings`.
+1. Copy the copypaste.py and copypaste.yapsy-plugin files from [magneto-host/server/linux_x11/plugins](https://github.com/Danesprite/magneto-host/tree/master/server/linux_x11/plugins) into your server plugins directory (usually *aenea/server/linux\_x11/plugins* or *aenea/server/osx/plugins*).
+1. Install dependencies for the copypaste plugin: `python -m pip install yapsy subprocess32 pyperclip`
+1. Start/restart Dragon and the Aenea server.
 
-To use this functionality in your own grammar files, import `Key`, `Text`, `Mouse`, `AppContext` and/or `Clipboard` as below:
+To use this functionality in your own grammar files, import `Key`, `Text`, `Mouse`, and/or `Clipboard` as below:
 
 ``` Python
-from caster.lib.actions import Key, Text, Mouse
-from caster.lib.clipboard import Clipboard
-from caster.lib.context import AppContext
+from castervoice.lib.actions import Key, Text, Mouse
+from castervoice.lib.clipboard import Clipboard
+```
 
+If using `ContextAction` include the following import.
+```
+from castervoice.lib.context import AppContext
 ```
 
 If the `use_aenea` setting is false, these lines will just import dragonfly's classes.

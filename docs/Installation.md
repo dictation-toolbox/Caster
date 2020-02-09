@@ -3,11 +3,12 @@
 Caster currently supports the following speech recognition engines on Microsoft Windows Vista through Windows 10.
 
 - Windows Speech Recognition (WSR)
-- Dragon NaturallySpeaking (DNS) - Caster only supports Dragon NaturallySpeaking 13 or higher.
+- Dragon NaturallySpeaking (DPI) - Caster only supports Dragon NaturallySpeaking 13 or higher.
+  - Recommended due to instability of Internet browsers and (DPI) disabling the DNS browser plug-ins.
 
 ### 1. Python
 
-- **First** Download and install [Python v2.7.X  32-bit](https://sourceforge.net/projects/natlink/files/pythonfornatlink/python2.7.14/python2.7.14.exe/download) or higher but not Python 3. These dependencies will change when Natlink utilizes Python 3.
+- **First** Download and install [Python v2.7.17 32-bit](https://www.python.org/downloads/release/python-2717/) listed as `Windows x86 MSI installer` not Python 3 or the python 2.7 64-bit. These dependencies will change when Natlink utilizes Python 3.
 
 Make sure to select `Add python to path`. This can be done manually by searching for "edit environment variables for your account" and adding your Python27 folder to the list of Path values
 
@@ -15,9 +16,10 @@ Make sure to select `Add python to path`. This can be done manually by searching
 
 - **Second only for Dragon NaturallySpeaking**.
 
-- Download and install [Natlink](https://sourceforge.net/projects/natlink/files/natlink/natlinktest4.1/). Use `Natlink-4.1 whiskey3` or newer.
+- Download and install [Natlink](https://sourceforge.net/projects/natlink/files/natlink/natlink4.2/). Use `Natlink-4.2` or newer.
 
 ### 3. Caster
+
 1. Download Caster from the [master branch](https://github.com/dictation-toolbox/Caster/archive/master.zip).
 2. Open up the zip file downloaded
 3. Extract the `Caster-master` folder, you can put it anywhere but it is common to use `user\Documents\Caster`.
@@ -40,18 +42,19 @@ Make sure to select `Add python to path`. This can be done manually by searching
 
 2. Open the start menu and search for `natlink`, click the file called `Configure NatLink via GUI`.
 
-     ![Configure start](https://mathfly.org/images/configure_start.png)
+   ![Configure start](https://mathfly.org/images/configure_start.png)
 
 3. Ensure that the details of your DNS setup are correct in the “info” tab.
 
 4. In the “configure” tab, under “NatLink” and “UserDirectory” click enable. When you are prompted for a folder, give it the folder containing `install.bat` (`C:\Users\<YourUsername>\Documents\Caster`).
 
-     ![Caster-Natlink.jpg](https://i.postimg.cc/d1jN4xcw/Caster-Natlink.jpg)
+   ![Caster-Natlink.jpg](https://i.postimg.cc/d1jN4xcw/Caster-Natlink.jpg)
 
 ###  **PIP Install** (Beta) 
+
 If you're using DNS make sure you've installed and configured NatLink first! Open [command prompt](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows) (CMD) and type the following then press enter.
 
-`pip install castervoice` 
+`python -m pip install castervoice` 
 
 At the end of the PIP install instructions a CMD window will guide you of what to expect for WSR or DNS. Setup complete. **Note** If a window does not appear please refer to the troubleshooting section.  
 
@@ -64,7 +67,7 @@ At the end of the PIP install instructions a CMD window will guide you of what t
   1. Change the directory to  `Desktop` in CMD.
      Example PIP `cd C:\Users\<YourUsername>\Desktop` or Classic `cd C:\Users\<YourUsername>\Documents\Caster`
   2. Then Classic:`python _caster.py` or PIP: `python start_caster.py` 
-- You have followed the PIP install `pip install castervoice` CMD window does not provide instructions during install. Caster does not start with DNS automatically or `start_caster.py` does not appear on the desktop for WSR.
+- You have followed the PIP install `python -m pip install castervoice` CMD window does not provide instructions during install. Caster does not start with DNS automatically or `start_caster.py` does not appear on the desktop for WSR.
   - Look for `CasterInstall.log` on your desktop to check for error messages.
   - The PIP install is in beta yet please report any issues or error messages that you experience github [issues](https://github.com/dictation-toolbox/Caster/issues) or [gitter chat](https://gitter.im/synkarius/Caster?utm_source=share-link&utm_medium=link&utm_campaign=share-link). 
 - To fix `ERROR:action.exec:Execution failed: Function(mouse_alternates): [Error 126] The specified module could not be found`. Triggered by using the `Legion` command
@@ -72,9 +75,16 @@ At the end of the PIP install instructions a CMD window will guide you of what t
 
 **NatLink**
 
+- Visual C++ Runtime Error R6034 on Dragon launch. This is related to Natlink
+
+  - You can safely ignore it.
+
+  - Fix "Core directory of NatLink (...\NatLink\MacroSystem\core) there is a directory msvcr100fix. Please consult the README.txt file. See if copying the dll file (msvcr100.dll) to the Core directory (one step up) solves your problem."  Note: Not recommended for Windows 10.
+  - A dated discussion [VoiceCoder](https://groups.yahoo.com/neo/groups/VoiceCoder/conversations/topics/7925) on the issue.
+
 - When using `start_configurenatlink.py` gives  `ImportError: No module named six"` or `ImportError: No module named future"`
 
-  To fix pip Install  `pip install six` or `pip install dragonfly2` in CMD
+  To fix pip Install  `python -m pip install six` or `python -m pip install dragonfly2` in CMD
 
 - Cannot load compatibility module support `(GUID = {dd990001-bb89-1d2-b031-0060088dc929}))`
 
@@ -113,17 +123,17 @@ At the end of the PIP install instructions a CMD window will guide you of what t
 **Dragonfly**
 
 - Fix TypeError: command must be a non-empty string, not ['C:\\Python27\\Scripts\\pip.exe', 'search', 'castervoice']
-  Update `pip install --upgrade dragonfly2` Dragonfly
+  Update `python -m pip install --upgrade dragonfly2` Dragonfly
 - Commands work in some applications but not others that are supported by Caster. To fix verify that the program is not running an administrator/elevated privileges. Dragonfly grammars cannot interact with programs that have administrator/elevated privileges.
   - Advanced [Workaround](https://groups.google.com/d/msg/dragonflyspeech/2VrJKBI2mSo/R4zl6u2mBwAJ) - Editing natlink.exe with hex editor and re-signing with self signed certificate - **Use at your own risk!** Instructions note disadvantages.
   - [Proof of Concept](https://github.com/dictation-toolbox/dragonfly/issues/11) work around but the project needs an active developer with C#.
 - To fix `ImportError: No module named win32con`
-  Package win32con is out of date or not installed. Try `pip install pywin32`  Alternatively if the error persists use the [Windows installer](https://sourceforge.net/projects/pywin32/files/pywin32/Build%20221/pywin32-221.win32-py2.7.exe/download)
+  Package win32con is out of date or not installed. Try `python -m pip install pywin32`  Alternatively if the error persists use the [Windows installer](https://sourceforge.net/projects/pywin32/files/pywin32/Build%20221/pywin32-221.win32-py2.7.exe/download)
 - To fix `lost sys.stder` use `pywin32` for `system wide` features, such as registering COM objects or implementing Windows Services. So you **must** run the following command from an elevated CMD:
   - `python C:\Python27\Scripts\pywin32_postinstall.py -install`
 
 - To fix `ImportError: cannot import name RuleWrap`
-  You likely either have the wrong version of Dragonfly installed, or don't have it installed at all.  RuleWrap is a Dragonfly import. Try `pip uninstall dragonfly` (it's okay if it doesn't find the package) then `pip install dragonfly2`.
+  You likely either have the wrong version of Dragonfly installed, or don't have it installed at all.  RuleWrap is a Dragonfly import. Try `pip uninstall dragonfly` (it's okay if it doesn't find the package) then `python -m pip install dragonfly2`.
 
 ### Extra information
 
@@ -143,7 +153,7 @@ Caster dependencies
 
 - wxpython
 - pillow
-- toml
+- tomlkit
 - future
 - mock
 

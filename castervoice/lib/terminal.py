@@ -1,5 +1,5 @@
 from dragonfly import RunCommand, Function
-from castervoice.lib.dfplus.state.actions2 import ConfirmAction
+from castervoice.lib.merge.state.actions2 import ConfirmAction
 
 class TerminalCommand(RunCommand):
     '''
@@ -14,7 +14,7 @@ class TerminalCommand(RunCommand):
 
     Example 2 - A synchronous command
     "update caster test":
-        R(TerminalCommand('pip install --upgrade castervoice', synchronous=True),
+        R(TerminalCommand('python -m pip install --upgrade castervoice', synchronous=True),
           rdescript="Core: Update"),
 
     '''
