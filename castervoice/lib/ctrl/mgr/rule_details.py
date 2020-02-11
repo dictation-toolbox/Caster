@@ -43,8 +43,10 @@ class RuleDetails(object):
             return filepath
         except AttributeError as e:
             if not os.path.isfile(frame[1]):
-                printer.out("\n {} \n File does not exist. A stale .pyc file is in the same dir."
-                "\n Delete the .pyc file that has the same name in the file path.\n".format(frame[1]))
+                pyc = frame[1] + "c"
+                if os.path.isfile(pyc):
+                    printer.out("\n {} \n Caster Detected a stale .pyc file. The stale file has been removed please restart Caster. \n".format(pyc))
+                    os.remove(pyc)
             else:
                 traceback.print_exc()
 
