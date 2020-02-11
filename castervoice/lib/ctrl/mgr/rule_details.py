@@ -1,4 +1,6 @@
+import os, traceback
 import inspect
+from castervoice.lib import printer
 
 
 class RuleDetails(object):
@@ -32,12 +34,21 @@ class RuleDetails(object):
 
     @staticmethod
     def _calculate_filepath_from_frame(stack, index):
-        frame = stack[index]
-        module = inspect.getmodule(frame[0])
-        filepath = module.__file__.replace("\\", "/")
-        if filepath.endswith("pyc"):
-            filepath = filepath[:-1]
-        return filepath
+        try:
+            frame = stack[index]
+            module = inspect.getmodule(frame[0])
+            filepath = module.__file__.replace("\\", "/")  
+            if filepath.endswith("pyc"):
+                filepath = filepath[:-1]
+            return filepath
+        except AttributeError as e:
+            if not os.path.isfile(frame[1]):
+                pyc = frame[1] + "c"
+                if os.path.isfile(pyc):
+                    printer.out("\n {} \n Caster Detected a stale .pyc file. The stale file has been removed please restart Caster. \n".format(pyc))
+                    os.remove(pyc)
+            else:
+                traceback.print_exc()
 
     def get_filepath(self):
         return self._filepath
