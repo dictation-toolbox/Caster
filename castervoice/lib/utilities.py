@@ -184,7 +184,7 @@ def reboot():
     engine = get_engine()
     if engine._name == 'kaldi':
         engine.disconnect()
-        Popen(['python', '-m', 'dragonfly', 'load', '_*.py', '--engine kaldi',  '--no-recobs-messages', '--engine-options  \model_dir=kaldi_model_zamia \vad_padding_end_ms=300'])
+        Popen(['python', '-m', 'dragonfly', 'load-directory', '.', '--engine kaldi',  '--no-recobs-messages'])
     if engine._name == 'sapi5inproc':
         engine.disconnect()
         Popen(['python', '-m', 'dragonfly', 'load', '--engine', 'sapi5inproc', '_*.py', '--no-recobs-messages'])
@@ -260,10 +260,10 @@ def clear_log():
                 rt_handle = win32gui.FindWindowEx(handle, None, "RICHEDIT", None)
                 win32gui.SetWindowText(rt_handle, "")
             else:
-                if window_exists(windowname="Caster: Status Window"):
+                if window_exists(windowname="Windows PowerShell"):
                     os.system('clear')
         else:
-            if window_exists(windowname="Caster: Status Window"):
+            if window_exists(windowname="Windows PowerShell"):
                 os.system('clear')
             else:
                 printer.out("clear_log: Not implemented with GUI")

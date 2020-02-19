@@ -8,6 +8,7 @@ import logging
 
 logging.basicConfig(format = "%(asctime)s : %(levelname)s : %(funcName)s\n%(msg)s")   
 
+
 from castervoice.lib.ctrl.dependencies import DependencyMan  # requires nothing
 DependencyMan().initialize()
 
@@ -28,21 +29,28 @@ class LoggingHandler(logging.Handler):
         # Brings status window to the forefront upon error
         if settings.SETTINGS["miscellaneous"]["status_window_foreground_on_error"]:
             title = None
-            # The window title is unique to Natlink
             if get_engine()._name == 'natlink':
                 import natlinkstatus  # pylint: disable=import-error
                 status = natlinkstatus.NatlinkStatus()
                 if status.NatlinkIsEnabled() == 1:
                     title = "Messages from Python Macros V"
+                else:
+                    title = "Windows PowerShell"
+            if get_engine()._name != 'natlink':
+                title = "Windows PowerShell"
             windows = Window.get_matching_windows(title=title)
-            if windows and title is not None:
+            if windows:
                 windows[0].set_foreground()
 
-logger1 = logging.getLogger('action')
-logger1.addHandler(LoggingHandler())
+if settings.SETTINGS["miscellaneous"]["status_window_foreground_on_error"]:
+    # setLevel 40 = Error
+    logger1 = logging.getLogger('action')
+    logger1.setLevel(40)
+    logger1.addHandler(LoggingHandler())
 
-logger2 = logging.getLogger('engine')
-logger2.addHandler(LoggingHandler())
+    logger2 = logging.getLogger('engine')
+    logger2.setLevel(40)
+    logger2.addHandler(LoggingHandler())
 
 settings.WSR = __name__ == "__main__"
 
