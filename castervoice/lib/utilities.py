@@ -19,7 +19,7 @@ from castervoice.lib import printer
 from castervoice.lib.util import guidance
 
 from dragonfly import Key, Pause, Window, get_engine
-
+ 
 if sys.version_info > (3, 0):
     from pathlib import Path  # pylint: disable=import-error
 else:
@@ -41,15 +41,12 @@ finally:
 # checked to see when a new file name had appeared
 FILENAME_PATTERN = re.compile(r"[/\\]([\w_ ]+\.[\w]+)")
 
-def window_exists(classname, windowname):
-    try:
-        import win32ui
-        win32ui.FindWindow(classname, windowname)
-    except win32ui.error:
-        return False
-    else:
+# ToDo: Implement Optional exact title matching for `get_matching_windows` in Dragonfly
+def window_exists(windowname=None, executable=None):
+    if Window.get_matching_windows(title=windowname, executable=executable):
         return True
-
+    else:
+        return False
 
 def get_active_window_title(pid=None):
     _pid = win32gui.GetForegroundWindow() if pid is None else pid
@@ -60,10 +57,13 @@ def get_active_window_path():
     return Window.get_foreground().executable
 
 
-def get_window_by_title(title):
+def get_window_by_title(title=None): 
     # returns 0 if nothing found
-    hwnd = win32gui.FindWindowEx(0, 0, 0, title)
-    return hwnd
+    Matches = Window.get_matching_windows(title=title)
+    if Matches:
+        return Matches[0].handle
+    else:
+        return 0 
 
 
 def get_window_title_info():
@@ -249,16 +249,27 @@ def default_browser_command():
 
 
 def clear_log():
-    # Function to clear natlink status window
+    # Function to clear status window. 
+    # Natlink status window not used an out-of-process mode.
+    # ToDo: window_exists utilized when engine launched through Dragonfly CLI via bat in future
     try:
         windows = Window.get_all_windows()
-        matching = [w for w in windows
-        if b"Messages from Python Macros" in w.title]
-        if matching:
-            handle = (matching[0].handle)
-            rt_handle = win32gui.FindWindowEx(handle, None, "RICHEDIT", None)
-            win32gui.SetWindowText(rt_handle, "")
-            return
+        if get_engine()._name == 'natlink':
+            import natlinkstatus # pylint: disable=import-error
+            status = natlinkstatus.NatlinkStatus()
+            if status.NatlinkIsEnabled() == 1:
+                import win32gui # Import: Natlink will crash running out-of-process
+                handle = get_window_by_title("Messages from Python Macros")
+                rt_handle = win32gui.FindWindowEx(handle, None, "RICHEDIT", None)
+                win32gui.SetWindowText(rt_handle, "")
+            else:
+                if window_exists(windowname="Caster: Status Window"):
+                    os.system('clear')
+        else:
+            if window_exists(windowname="Caster: Status Window"):
+                os.system('clear')
+            else:
+                printer.out("clear_log: Not implemented with GUI")
     except Exception as e:
         printer.out(e)
 
