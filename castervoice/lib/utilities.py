@@ -18,6 +18,8 @@ from castervoice.lib.clipboard import Clipboard
 from castervoice.lib import printer
 from castervoice.lib.util import guidance
 
+from dragonfly import Key, Pause, Window, get_engine
+
 if sys.version_info > (3, 0):
     from pathlib import Path  # pylint: disable=import-error
 else:
@@ -25,8 +27,6 @@ else:
 
 try:
     import win32gui
-    from dragonfly.windows.window import Window
-    from dragonfly import Key, Pause
 except:
     printer.out("utilities.py imports failed.")
 
@@ -186,21 +186,35 @@ def remote_debug(who_called_it=None):
               " called utilities.remote_debug() but the debug server wasn't running.")
 
 
-def reboot(wsr=False):
+def reboot():
     popen_parameters = []
-    if wsr:
+    engine = get_engine()
+    if engine._name == 'kaldi':
+        engine.disconnect()
+        Popen(['python', '-m', 'dragonfly', 'load', '--engine', 'kaldi', '_*.py'])
+    if engine._name == 'sapi5inproc':
+        engine.disconnect()
+        Popen(['python', '-m', 'dragonfly', 'load', '--engine', 'sapi5inproc', '_*.py'])
+    if engine._name in ["sapi5shared", "sapi5"]:
         popen_parameters.append(settings.SETTINGS["paths"]["REBOOT_PATH_WSR"])
         popen_parameters.append(settings.SETTINGS["paths"]["WSR_PATH"])
-        # castervoice path inserted too if there's a way to wake up WSR
-    else:
-        popen_parameters.append(settings.SETTINGS["paths"]["REBOOT_PATH"])
-        popen_parameters.append(settings.SETTINGS["paths"]["ENGINE_PATH"])
-        import natlinkstatus
+        printer.out(popen_parameters)
+        Popen(popen_parameters)
+    if engine._name == 'natlink':
+        import natlinkstatus # pylint: disable=import-error
         status = natlinkstatus.NatlinkStatus()
-        username = status.getUserName()
-        popen_parameters.append(username)
-    printer.out(popen_parameters)
-    Popen(popen_parameters)
+        if status.NatlinkIsEnabled() == 1:
+            # Natlink in-process
+            popen_parameters.append(settings.SETTINGS["paths"]["REBOOT_PATH"])
+            popen_parameters.append(settings.SETTINGS["paths"]["ENGINE_PATH"])
+            username = status.getUserName()
+            popen_parameters.append(username)
+            printer.out(popen_parameters)
+            Popen(popen_parameters)
+        else:
+           # Natlink out-of-process
+            engine.disconnect()
+            Popen(['python', '-m', 'dragonfly', 'load', '--engine', 'natlink', '_*.py'])
 
 
  # ToDo: Implement default_browser_command Mac/Linux
@@ -237,8 +251,6 @@ def default_browser_command():
 def clear_log():
     # Function to clear natlink status window
     try:
-        # pylint: disable=import-error
-        import natlink
         windows = Window.get_all_windows()
         matching = [w for w in windows
         if b"Messages from Python Macros" in w.title]
