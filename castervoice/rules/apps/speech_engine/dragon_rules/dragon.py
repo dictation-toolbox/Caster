@@ -24,8 +24,6 @@ class DragonRule(MappingRule):
             R(Playback([(["command", "mode", "on"], 0.0)])),
         '(command off | com off)':
             R(Playback([(["command", "mode", "off"], 0.0)])),
-        "reboot dragon":
-            R(Function(utilities.reboot)),
         "fix dragon double":
             R(Function(fix_dragon_double)),
         "left point":
