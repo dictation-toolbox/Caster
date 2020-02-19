@@ -214,10 +214,10 @@ def reboot():
 def default_browser_command():
     if sys.platform.startswith('win'):
         if six.PY2:
-            from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,
+            from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT, # pylint: disable=import-error
                         HKEY_CURRENT_USER, OpenKey, QueryValueEx)
         else:
-            from winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,
+            from winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT, # pylint: disable=import-error
                         HKEY_CURRENT_USER, OpenKey, QueryValueEx)
         '''
         Tries to get default browser command, returns either a space delimited
