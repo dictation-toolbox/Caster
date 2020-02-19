@@ -4,7 +4,12 @@ from castervoice.lib import printer
 from castervoice.lib.merge.ccrmerging2.transformers.base_transformer import BaseRuleTransformer
 from castervoice.lib.merge.ccrmerging2.transformers.text_replacer.tr_item import TRItem
 from castervoice.lib.merge.ccrmerging2.transformers.text_replacer.tr_parser import TRParser
-
+import six
+if six.PY2:
+    def zip_longest(*args):
+        return map(None, *args)
+else:
+    from itertools import zip_longest # pylint: disable=no-name-in-module
 
 def _preserve(spec):
     p = TRItem()
@@ -42,7 +47,8 @@ def _restore(pspec):
         return p.altered  # so just return the result
 
     # intersperse the lists
-    c = [b for a in map(None, q, p.extras) for b in a if b is not None]
+    c = [b for a in zip_longest(q, p.extras) for b in a if b is not None]
+
 
     return "".join(c)
 
@@ -55,7 +61,7 @@ def _spec_override_from_config(rule, definitions):
     '''SPECS'''
     mapping = rule._mapping.copy()
     specs_changed = False
-    for spec in mapping.keys():
+    for spec in list(mapping.keys()):
         action = mapping[spec]
 
         pspec = _preserve(spec)
@@ -103,9 +109,9 @@ def _spec_override_from_config(rule, definitions):
     defaults = rule._defaults.copy()
     defaults_changed = False
     if len(defaults) > 0:
-        for default_key in defaults.keys():  #
+        for default_key in list(defaults.keys()):  #
             value = defaults[default_key]
-            if isinstance(value, basestring):
+            if isinstance(value, six.string_types):
                 '''only replace strings; also,
                 only replace values, not keys:
                 default_key should not be changed - it will never be spoken'''

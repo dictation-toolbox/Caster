@@ -53,7 +53,7 @@ castervoice.egg-info
 *.bak
 
 # Speech recognition models
-kaldi_model
+kaldi_model*
 
 # Ignore virtual
 venv

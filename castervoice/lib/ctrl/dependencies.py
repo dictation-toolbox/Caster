@@ -63,9 +63,9 @@ def dep_min_version():
         try:
             pkg_resources.require('{0} {1} {2}'.format(package, operator, version))
         except VersionConflict as e:
-            if operator is ">=":
+            if operator == ">=":
                 upgradelist.append('{0}'.format(package))
-            if operator is "==":
+            if operator == "==":
                 print(
                     "\nCaster: Requires an exact version of dependencies. Issue reference: {0} \n"
                         .format(issueurl))
@@ -83,7 +83,7 @@ class DependencyMan:
     # Initializes functions
     def initialize(self):
         install = install_type()
-        if install is "classic":
+        if install == "classic":
             dep_missing()
             dep_min_version()
 

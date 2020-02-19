@@ -2,7 +2,7 @@ import os, socket, subprocess
 from datetime import datetime, date
 
 from castervoice.lib import settings
-from castervoice.lib.ctrl.dependencies import find_pip, install_type
+from castervoice.lib.ctrl.dependencies import find_pip, install_type  # pylint: disable=no-name-in-module
 from castervoice.lib import printer
 
 update = None
@@ -94,5 +94,5 @@ class UpdateChecker(object):
         install = install_type()
         if update_timer():
             update_check(command="dragonfly2")
-            if install is "pip":
+            if install == "pip":
                 update_check(command="castervoice")

@@ -30,7 +30,7 @@ def get_start_end_position(text, phrase, direction, occurrence_number, dictation
         # for matching purposes use lowercase
         # PROBLEM: this will not match words in class names like "Class" in "ClassName"
         # PROBLEM: it's not matching the right one when you have two occurrences of the same word in a row
-        pattern = '(?:[^A-Za-z]|\A)({})(?:[^A-Za-z]|\Z)'.format(phrase.lower()) # must get group 1
+        pattern = r'(?:[^A-Za-z]|\A)({})(?:[^A-Za-z]|\Z)'.format(phrase.lower()) # must get group 1
 
     if not re.search(pattern, text.lower()):
         # replaced phase not found

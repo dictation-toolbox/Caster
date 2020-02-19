@@ -155,7 +155,7 @@ def paste_string_without_altering_clipboard(content, pause_time="1"):
     for i in range(0, max_tries):
         failure = False
         try:
-            Clipboard.set_system_text(unicode(content))
+            Clipboard.set_system_text(content)
             Pause(pause_time).execute()
             Key("c-v").execute()
             time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/

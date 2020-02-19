@@ -14,7 +14,7 @@ def double_text_punc_dict():
 
 
 def _inv_dtpb():
-    return {v: k for k, v in double_text_punc_dict().iteritems()}
+    return {v: k for k, v in double_text_punc_dict().items()}
 
 
 def text_punc_dict():

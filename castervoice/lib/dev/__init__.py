@@ -1,1 +1,1 @@
-import dev
+from castervoice.lib.dev import dev

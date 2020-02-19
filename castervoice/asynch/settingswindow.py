@@ -4,7 +4,11 @@ import os
 import signal
 import sys
 import threading
-from SimpleXMLRPCServer import SimpleXMLRPCServer
+import six
+if six.PY2:
+    from SimpleXMLRPCServer import SimpleXMLRPCServer   # pylint: disable=import-error
+else:
+    from xmlrpc.server import SimpleXMLRPCServer  # pylint: disable=no-name-in-module
 from threading import Timer
 import numbers
 
@@ -68,7 +72,7 @@ class SettingsFrame(Frame):
         menu_bar.Append(file_menu, '&File')
         self.SetMenuBar(menu_bar)
 
-        alpha = settings.SETTINGS.keys()
+        alpha = settings.SETTINGS.keys()  # pylint: disable=no-member
         alpha.sort()
         self.fields = []
         for top in alpha:
@@ -183,11 +187,11 @@ class SettingsFrame(Frame):
 
     def field_from_value(self, window, value, field):
         item = None
-        if isinstance(value, basestring):
+        if isinstance(value, six.string_types):
             item = TextCtrl(window, value=value)
             field.text_type = STRING_SETTING
         elif isinstance(value, list):
-            if isinstance(value[0], basestring):
+            if isinstance(value[0], six.string_types):
                 item = TextCtrl(window, value=", ".join(value))
                 field.text_type = STRING_LIST_SETTING
             elif isinstance(value[0], numbers.Real):

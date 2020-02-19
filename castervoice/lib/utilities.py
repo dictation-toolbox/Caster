@@ -6,13 +6,13 @@ from builtins import str
 import io
 import json
 import locale
+import six
 import os
 import re
 import sys
 import six
 import time
 import traceback
-from __builtin__ import True
 from subprocess import Popen
 import tomlkit
 
@@ -101,7 +101,7 @@ def focus_mousegrid(gridtitle):
 def save_toml_file(data, path):
     guidance.offer()
     try:
-        formatted_data = unicode(tomlkit.dumps(data))
+        formatted_data = str(tomlkit.dumps(data))
         with io.open(path, "wt", encoding="utf-8") as f:
             f.write(formatted_data)
     except Exception:
@@ -127,7 +127,7 @@ def load_toml_file(path):
 def save_json_file(data, path):
     guidance.offer()
     try:
-        formatted_data = unicode(json.dumps(data, ensure_ascii=False))
+        formatted_data = str(json.dumps(data, ensure_ascii=False))
         with io.open(path, "wt", encoding="utf-8") as f:
             f.write(formatted_data)
     except Exception:
@@ -151,7 +151,7 @@ def load_json_file(path):
 
 
 def list_to_string(l):
-    return u"\n".join([unicode(x) for x in l])
+    return u"\n".join([str(x) for x in l])
 
 
 def simple_log(to_file=False):
@@ -210,11 +210,15 @@ def reboot():
             Popen(['python', '-m', 'dragonfly', 'load', '--engine', 'natlink', '_*.py', '--no-recobs-messages'])
 
 
- # ToDo: Implement default_browser_command Mac/Linux
+# ToDo: Implement default_browser_command Mac/Linux
 def default_browser_command():
     if sys.platform.startswith('win'):
-        from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,
-                             HKEY_CURRENT_USER, OpenKey, QueryValueEx)
+        if six.PY2:
+            from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT, # pylint: disable=import-error
+                        HKEY_CURRENT_USER, OpenKey, QueryValueEx)
+        else:
+            from winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT, # pylint: disable=import-error
+                        HKEY_CURRENT_USER, OpenKey, QueryValueEx)
         '''
         Tries to get default browser command, returns either a space delimited
         command string with '%1' as URL placeholder, or empty string.

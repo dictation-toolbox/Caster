@@ -58,7 +58,7 @@ class CCRMerger2(object):
         repeat_rules = [self._create_repeat_rule(merged_rule) for merged_rule in merged_rules]
         contexts = CCRMerger2._create_contexts(app_crs, rcns_to_details)
 
-        rules_and_contexts = zip(repeat_rules, contexts)
+        rules_and_contexts = list(zip(repeat_rules, contexts))
         enabled_ordered_rcns = [cr.rule_class_name() for cr in compat_results]
         diff = CCRMerger2._calculate_post_merge_diff(pre_merge_rcns, enabled_ordered_rcns)
         return MergeResult(rules_and_contexts, enabled_ordered_rcns, diff)
