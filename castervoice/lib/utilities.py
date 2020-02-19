@@ -9,37 +9,31 @@ import locale
 import os
 import re
 import sys
+import six
 import time
 import traceback
 from __builtin__ import True
 from subprocess import Popen
 import tomlkit
+
+from dragonfly import Key, Pause, Window, get_engine
+
 from castervoice.lib.clipboard import Clipboard
 from castervoice.lib import printer
 from castervoice.lib.util import guidance
 
-from dragonfly import Key, Pause, Window, get_engine
- 
-if sys.version_info > (3, 0):
-    from pathlib import Path  # pylint: disable=import-error
-else:
+if six.PY2:
     from castervoice.lib.util.pathlib import Path
-
-try:
-    import win32gui
-except:
-    printer.out("utilities.py imports failed.")
+else:
+    from pathlib import Path  # pylint: disable=import-error
 
 try:  # Style C -- may be imported into Caster, or externally
-    BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0]
+    BASE_PATH = str(Path(__file__).resolve().parent.parent)
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:
     from castervoice.lib import settings, printer
 
-# filename_pattern was used to determine when to update the list in the element window,
-# checked to see when a new file name had appeared
-FILENAME_PATTERN = re.compile(r"[/\\]([\w_ ]+\.[\w]+)")
 
 # ToDo: Implement Optional exact title matching for `get_matching_windows` in Dragonfly
 def window_exists(windowname=None, executable=None):
@@ -47,14 +41,6 @@ def window_exists(windowname=None, executable=None):
         return True
     else:
         return False
-
-def get_active_window_title(pid=None):
-    _pid = win32gui.GetForegroundWindow() if pid is None else pid
-    return unicode(win32gui.GetWindowText(_pid), errors='ignore')
-
-
-def get_active_window_path():
-    return Window.get_foreground().executable
 
 
 def get_window_by_title(title=None): 
@@ -66,18 +52,25 @@ def get_window_by_title(title=None):
         return 0 
 
 
-def get_window_title_info():
-    '''get name of active file and folders in path;
-    will be needed to look up collection of symbols
-    in scanner data'''
-    global FILENAME_PATTERN
-    title = get_active_window_title().replace("\\", "/")
-    match_object = FILENAME_PATTERN.findall(title)
-    filename = None
+def get_active_window_title():
+    return Window.get_foreground().title
+
+
+def get_active_window_path():
+    return Window.get_foreground().executable
+
+
+def get_active_window_info():
+    '''Returns foreground window executable_file, executable_path, title, handle, classname'''
+    FILENAME_PATTERN = re.compile(r"[/\\]([\w_ ]+\.[\w]+)")
+    window = Window.get_foreground()
+    executable_path = str(Path(get_active_window_path()))
+    match_object = FILENAME_PATTERN.findall(window.executable)
+    executable_file = None
     if len(match_object) > 0:
-        filename = match_object[0]
-    path_folders = title.split("/")[:-1]
-    return [filename, path_folders, title]
+        executable_file = match_object[0]
+    return [executable_file, executable_path, window.title, window.handle, window.classname]
+
 
 def focus_mousegrid(gridtitle):
     '''
@@ -274,6 +267,7 @@ def clear_log():
         printer.out(e)
 
 
+# ToDo: BringMe - Implement clipboard formats for Mac/Linux
 def get_clipboard_formats():
     '''
     Return list of all data formats currently in the clipboard
