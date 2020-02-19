@@ -25,9 +25,6 @@ else:
 
 try:
     import win32gui
-    import win32clipboard
-    from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,
-                         HKEY_CURRENT_USER, OpenKey, QueryValueEx)
     from dragonfly.windows.window import Window
     from dragonfly import Key, Pause
 except:
@@ -205,29 +202,36 @@ def reboot(wsr=False):
     printer.out(popen_parameters)
     Popen(popen_parameters)
 
+
+ # ToDo: Implement default_browser_command Mac/Linux
 def default_browser_command():
-    '''
-    Tries to get default browser command, returns either a space delimited
-    command string with '%1' as URL placeholder, or empty string.
-    '''
-    browser_class = 'Software\\Microsoft\\Windows\\Shell\\Associations\\UrlAssociations\\https\\UserChoice'
-    try:
-        reg = ConnectRegistry(None,HKEY_CURRENT_USER)
-        key = OpenKey(reg, browser_class)
-        value, t = QueryValueEx(key, 'ProgId')
-        CloseKey(key)
-        CloseKey(reg)
-        reg = ConnectRegistry(None,HKEY_CLASSES_ROOT)
-        key = OpenKey(reg, '%s\\shell\\open\\command' % value)
-        path, t = QueryValueEx(key, None)
-    except WindowsError:
-        # logger.warn(e)
-        traceback.print_exc()
-        return ''
-    finally:
-        CloseKey(key)
-        CloseKey(reg)
-    return path
+    if sys.platform.startswith('win'):
+        from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,
+                             HKEY_CURRENT_USER, OpenKey, QueryValueEx)
+        '''
+        Tries to get default browser command, returns either a space delimited
+        command string with '%1' as URL placeholder, or empty string.
+        '''
+        browser_class = 'Software\\Microsoft\\Windows\\Shell\\Associations\\UrlAssociations\\https\\UserChoice'
+        try:
+            reg = ConnectRegistry(None,HKEY_CURRENT_USER)
+            key = OpenKey(reg, browser_class)
+            value, t = QueryValueEx(key, 'ProgId')
+            CloseKey(key)
+            CloseKey(reg)
+            reg = ConnectRegistry(None,HKEY_CLASSES_ROOT)
+            key = OpenKey(reg, '%s\\shell\\open\\command' % value)
+            path, t = QueryValueEx(key, None)
+        except WindowsError:
+            # logger.warn(e)
+            traceback.print_exc()
+            return ''
+        finally:
+            CloseKey(key)
+            CloseKey(reg)
+        return path
+    else:
+        printer.out("default_browser_command: Not implemented for OS")
 
 
 def clear_log():
@@ -246,48 +250,62 @@ def clear_log():
     except Exception as e:
         printer.out(e)
 
+
 def get_clipboard_formats():
     '''
     Return list of all data formats currently in the clipboard
     '''
     formats = []
-    f = win32clipboard.EnumClipboardFormats(0)
-    while f:
-        formats.append(f)
-        f = win32clipboard.EnumClipboardFormats(f)
-    return formats
+    if sys.platform.startswith('win'):
+        import win32clipboard
+        f = win32clipboard.EnumClipboardFormats(0)
+        while f:
+            formats.append(f)
+            f = win32clipboard.EnumClipboardFormats(f)
+        return formats
+    else:
+        printer.out("get_clipboard_formats: Not implemented for OS")
+
 
 def get_selected_files(folders=False):
     '''
     Copy selected (text or file is subsequently of interest) to a fresh clipboard
     '''
-    cb = Clipboard(from_system=True)
-    cb.clear_clipboard()
-    Key("c-c").execute()
-    time.sleep(0.1)
-    files = get_clipboard_files(folders)
-    cb.copy_to_system()
-    return files
+    if sys.platform.startswith('win'):
+        cb = Clipboard(from_system=True)
+        cb.clear_clipboard()
+        Key("c-c").execute()
+        time.sleep(0.1)
+        files = get_clipboard_files(folders)
+        cb.copy_to_system()
+        return files
+    else:
+        printer.out("get_selected_files: Not implemented for OS")
+
 
 def get_clipboard_files(folders=False):
     '''
     Enumerate clipboard content and return files either directly copied or
     highlighted path copied
     '''
-    files = None
-    win32clipboard.OpenClipboard()
-    f = get_clipboard_formats()
-    if win32clipboard.CF_HDROP in f:
-        files = win32clipboard.GetClipboardData(win32clipboard.CF_HDROP)
-    elif win32clipboard.CF_UNICODETEXT in f:
-        files = [win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)]
-    elif win32clipboard.CF_TEXT in f:
-        files = [win32clipboard.GetClipboardData(win32clipboard.CF_TEXT)]
-    elif win32clipboard.CF_OEMTEXT in f:
-        files = [win32clipboard.GetClipboardData(win32clipboard.CF_OEMTEXT)]
-    if folders:
-        files = [f for f in files if os.path.isdir(f)] if files else None
+    if sys.platform.startswith('win'):
+        import win32clipboard
+        files = None
+        win32clipboard.OpenClipboard()
+        f = get_clipboard_formats()
+        if win32clipboard.CF_HDROP in f:
+            files = win32clipboard.GetClipboardData(win32clipboard.CF_HDROP)
+        elif win32clipboard.CF_UNICODETEXT in f:
+            files = [win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)]
+        elif win32clipboard.CF_TEXT in f:
+            files = [win32clipboard.GetClipboardData(win32clipboard.CF_TEXT)]
+        elif win32clipboard.CF_OEMTEXT in f:
+            files = [win32clipboard.GetClipboardData(win32clipboard.CF_OEMTEXT)]
+        if folders:
+            files = [f for f in files if os.path.isdir(f)] if files else None
+        else:
+            files = [f for f in files if os.path.isfile(f)] if files else None
+        win32clipboard.CloseClipboard()
+        return files
     else:
-        files = [f for f in files if os.path.isfile(f)] if files else None
-    win32clipboard.CloseClipboard()
-    return files
+        printer.out("get_clipboard_files: Not implemented for OS")
