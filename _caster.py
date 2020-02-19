@@ -26,11 +26,16 @@ _NEXUS = None
 class LoggingHandler(logging.Handler):
     def emit(self, record):
         # Brings status window to the forefront upon error
-        if (settings.SETTINGS["miscellaneous"]["status_window_foreground_on_error"]):
-             # The window title is unique to Natlink
-            if (get_engine()._name == 'natlink'):
-                windows = Window.get_matching_windows(None, "Messages from Python Macros V")
-            if windows:
+        if settings.SETTINGS["miscellaneous"]["status_window_foreground_on_error"]:
+            title = None
+            # The window title is unique to Natlink
+            if get_engine()._name == 'natlink':
+                import natlinkstatus  # pylint: disable=import-error
+                status = natlinkstatus.NatlinkStatus()
+                if status.NatlinkIsEnabled() == 1:
+                    title = "Messages from Python Macros V"
+            windows = Window.get_matching_windows(title=title)
+            if windows and title is not None:
                 windows[0].set_foreground()
 
 logger1 = logging.getLogger('action')
