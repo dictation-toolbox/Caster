@@ -24,18 +24,8 @@ if six.PY2:
 else:
     from pathlib import Path  # pylint: disable=import-error
 
-
 try:
     import win32gui
-    import win32clipboard
-    if six.PY2:
-        from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,
-                         HKEY_CURRENT_USER, OpenKey, QueryValueEx)
-    else:
-        from winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,
-                         HKEY_CURRENT_USER, OpenKey, QueryValueEx)
-    from dragonfly.windows.window import Window
-    from dragonfly import Key, Pause
 except:
     printer.out("utilities.py imports failed.")
 
@@ -50,15 +40,12 @@ finally:
 # checked to see when a new file name had appeared
 FILENAME_PATTERN = re.compile(r"[/\\]([\w_ ]+\.[\w]+)")
 
-def window_exists(classname, windowname):
-    try:
-        import win32ui
-        win32ui.FindWindow(classname, windowname)
-    except win32ui.error:
-        return False
-    else:
+# ToDo: Implement Optional exact title matching for `get_matching_windows` in Dragonfly
+def window_exists(windowname=None, executable=None):
+    if Window.get_matching_windows(title=windowname, executable=executable):
         return True
-
+    else:
+        return False
 
 def get_active_window_title(pid=None):
     _pid = win32gui.GetForegroundWindow() if pid is None else pid
@@ -69,10 +56,13 @@ def get_active_window_path():
     return Window.get_foreground().executable
 
 
-def get_window_by_title(title):
+def get_window_by_title(title=None): 
     # returns 0 if nothing found
-    hwnd = win32gui.FindWindowEx(0, 0, 0, title)
-    return hwnd
+    Matches = Window.get_matching_windows(title=title)
+    if Matches:
+        return Matches[0].handle
+    else:
+        return 0 
 
 
 def get_window_title_info():
@@ -194,106 +184,154 @@ def remote_debug(who_called_it=None):
         printer.out("ERROR: " + who_called_it +
               " called utilities.remote_debug() but the debug server wasn't running.")
 
-
-def reboot(wsr=False):
+def reboot():
+    # ToDo: Save engine arguments elsewhere and retrievesfor reboot. Allows for user-defined arguments.
     popen_parameters = []
-    if wsr:
+    engine = get_engine()
+    if engine._name == 'kaldi':
+        engine.disconnect()
+        Popen(['python', '-m', 'dragonfly', 'load', '_*.py', '--engine kaldi',  '--no-recobs-messages', '--engine-options  \model_dir=kaldi_model_zamia \vad_padding_end_ms=300'])
+    if engine._name == 'sapi5inproc':
+        engine.disconnect()
+        Popen(['python', '-m', 'dragonfly', 'load', '--engine', 'sapi5inproc', '_*.py', '--no-recobs-messages'])
+    if engine._name in ["sapi5shared", "sapi5"]:
         popen_parameters.append(settings.SETTINGS["paths"]["REBOOT_PATH_WSR"])
         popen_parameters.append(settings.SETTINGS["paths"]["WSR_PATH"])
-        # castervoice path inserted too if there's a way to wake up WSR
-    else:
-        popen_parameters.append(settings.SETTINGS["paths"]["REBOOT_PATH"])
-        popen_parameters.append(settings.SETTINGS["paths"]["ENGINE_PATH"])
-        import natlinkstatus
+        printer.out(popen_parameters)
+        Popen(popen_parameters)
+    if engine._name == 'natlink':
+        import natlinkstatus # pylint: disable=import-error
         status = natlinkstatus.NatlinkStatus()
-        username = status.getUserName()
-        popen_parameters.append(username)
-    printer.out(popen_parameters)
-    Popen(popen_parameters)
+        if status.NatlinkIsEnabled() == 1:
+            # Natlink in-process
+            popen_parameters.append(settings.SETTINGS["paths"]["REBOOT_PATH"])
+            popen_parameters.append(settings.SETTINGS["paths"]["ENGINE_PATH"])
+            username = status.getUserName()
+            popen_parameters.append(username)
+            printer.out(popen_parameters)
+            Popen(popen_parameters)
+        else:
+           # Natlink out-of-process
+            engine.disconnect()
+            Popen(['python', '-m', 'dragonfly', 'load', '--engine', 'natlink', '_*.py', '--no-recobs-messages'])
 
+
+# ToDo: Implement default_browser_command Mac/Linux
 def default_browser_command():
-    '''
-    Tries to get default browser command, returns either a space delimited
-    command string with '%1' as URL placeholder, or empty string.
-    '''
-    browser_class = 'Software\\Microsoft\\Windows\\Shell\\Associations\\UrlAssociations\\https\\UserChoice'
-    try:
-        reg = ConnectRegistry(None,HKEY_CURRENT_USER)
-        key = OpenKey(reg, browser_class)
-        value, t = QueryValueEx(key, 'ProgId')
-        CloseKey(key)
-        CloseKey(reg)
-        reg = ConnectRegistry(None,HKEY_CLASSES_ROOT)
-        key = OpenKey(reg, '%s\\shell\\open\\command' % value)
-        path, t = QueryValueEx(key, None)
-    except WindowsError:
-        # logger.warn(e)
-        traceback.print_exc()
-        return ''
-    finally:
-        CloseKey(key)
-        CloseKey(reg)
-    return path
+    if sys.platform.startswith('win'):
+        if six.PY2:
+            from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,
+                        HKEY_CURRENT_USER, OpenKey, QueryValueEx)
+        else:
+            from winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,
+                        HKEY_CURRENT_USER, OpenKey, QueryValueEx)
+        '''
+        Tries to get default browser command, returns either a space delimited
+        command string with '%1' as URL placeholder, or empty string.
+        '''
+        browser_class = 'Software\\Microsoft\\Windows\\Shell\\Associations\\UrlAssociations\\https\\UserChoice'
+        try:
+            reg = ConnectRegistry(None,HKEY_CURRENT_USER)
+            key = OpenKey(reg, browser_class)
+            value, t = QueryValueEx(key, 'ProgId')
+            CloseKey(key)
+            CloseKey(reg)
+            reg = ConnectRegistry(None,HKEY_CLASSES_ROOT)
+            key = OpenKey(reg, '%s\\shell\\open\\command' % value)
+            path, t = QueryValueEx(key, None)
+        except WindowsError:
+            # logger.warn(e)
+            traceback.print_exc()
+            return ''
+        finally:
+            CloseKey(key)
+            CloseKey(reg)
+        return path
+    else:
+        printer.out("default_browser_command: Not implemented for OS")
 
 
 def clear_log():
-    # Function to clear natlink status window
+    # Function to clear status window. 
+    # Natlink status window not used an out-of-process mode.
+    # ToDo: window_exists utilized when engine launched through Dragonfly CLI via bat in future
     try:
-        # pylint: disable=import-error
-        import natlink
         windows = Window.get_all_windows()
-        matching = [w for w in windows
-        if b"Messages from Python Macros" in w.title]
-        if matching:
-            handle = (matching[0].handle)
-            rt_handle = win32gui.FindWindowEx(handle, None, "RICHEDIT", None)
-            win32gui.SetWindowText(rt_handle, "")
-            return
+        if get_engine()._name == 'natlink':
+            import natlinkstatus # pylint: disable=import-error
+            status = natlinkstatus.NatlinkStatus()
+            if status.NatlinkIsEnabled() == 1:
+                import win32gui # Import: Natlink will crash running out-of-process
+                handle = get_window_by_title("Messages from Python Macros")
+                rt_handle = win32gui.FindWindowEx(handle, None, "RICHEDIT", None)
+                win32gui.SetWindowText(rt_handle, "")
+            else:
+                if window_exists(windowname="Caster: Status Window"):
+                    os.system('clear')
+        else:
+            if window_exists(windowname="Caster: Status Window"):
+                os.system('clear')
+            else:
+                printer.out("clear_log: Not implemented with GUI")
     except Exception as e:
         printer.out(e)
+
 
 def get_clipboard_formats():
     '''
     Return list of all data formats currently in the clipboard
     '''
     formats = []
-    f = win32clipboard.EnumClipboardFormats(0)
-    while f:
-        formats.append(f)
-        f = win32clipboard.EnumClipboardFormats(f)
-    return formats
+    if sys.platform.startswith('win'):
+        import win32clipboard
+        f = win32clipboard.EnumClipboardFormats(0)
+        while f:
+            formats.append(f)
+            f = win32clipboard.EnumClipboardFormats(f)
+        return formats
+    else:
+        printer.out("get_clipboard_formats: Not implemented for OS")
+
 
 def get_selected_files(folders=False):
     '''
     Copy selected (text or file is subsequently of interest) to a fresh clipboard
     '''
-    cb = Clipboard(from_system=True)
-    cb.clear_clipboard()
-    Key("c-c").execute()
-    time.sleep(0.1)
-    files = get_clipboard_files(folders)
-    cb.copy_to_system()
-    return files
+    if sys.platform.startswith('win'):
+        cb = Clipboard(from_system=True)
+        cb.clear_clipboard()
+        Key("c-c").execute()
+        time.sleep(0.1)
+        files = get_clipboard_files(folders)
+        cb.copy_to_system()
+        return files
+    else:
+        printer.out("get_selected_files: Not implemented for OS")
+
 
 def get_clipboard_files(folders=False):
     '''
     Enumerate clipboard content and return files either directly copied or
     highlighted path copied
     '''
-    files = None
-    win32clipboard.OpenClipboard()
-    f = get_clipboard_formats()
-    if win32clipboard.CF_HDROP in f:
-        files = win32clipboard.GetClipboardData(win32clipboard.CF_HDROP)
-    elif win32clipboard.CF_UNICODETEXT in f:
-        files = [win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)]
-    elif win32clipboard.CF_TEXT in f:
-        files = [win32clipboard.GetClipboardData(win32clipboard.CF_TEXT)]
-    elif win32clipboard.CF_OEMTEXT in f:
-        files = [win32clipboard.GetClipboardData(win32clipboard.CF_OEMTEXT)]
-    if folders:
-        files = [f for f in files if os.path.isdir(f)] if files else None
+    if sys.platform.startswith('win'):
+        import win32clipboard
+        files = None
+        win32clipboard.OpenClipboard()
+        f = get_clipboard_formats()
+        if win32clipboard.CF_HDROP in f:
+            files = win32clipboard.GetClipboardData(win32clipboard.CF_HDROP)
+        elif win32clipboard.CF_UNICODETEXT in f:
+            files = [win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)]
+        elif win32clipboard.CF_TEXT in f:
+            files = [win32clipboard.GetClipboardData(win32clipboard.CF_TEXT)]
+        elif win32clipboard.CF_OEMTEXT in f:
+            files = [win32clipboard.GetClipboardData(win32clipboard.CF_OEMTEXT)]
+        if folders:
+            files = [f for f in files if os.path.isdir(f)] if files else None
+        else:
+            files = [f for f in files if os.path.isfile(f)] if files else None
+        win32clipboard.CloseClipboard()
+        return files
     else:
-        files = [f for f in files if os.path.isfile(f)] if files else None
-    win32clipboard.CloseClipboard()
-    return files
+        printer.out("get_clipboard_files: Not implemented for OS")

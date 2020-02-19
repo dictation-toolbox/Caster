@@ -287,14 +287,17 @@ class GrammarManager(object):
         :param file_path_changed: str
         :return:
         """
-        module_name = GrammarManager._get_module_name_from_file_path(file_path_changed)
-        rule_class, details = self._content_loader.idem_import_module(module_name, ContentType.GET_RULE)
-        # re-register:
-        self.register_rule(rule_class, details)
+        try:
+            module_name = GrammarManager._get_module_name_from_file_path(file_path_changed)
+            rule_class, details = self._content_loader.idem_import_module(module_name, ContentType.GET_RULE)
+            # re-register:
+            self.register_rule(rule_class, details)
 
-        class_name = rule_class.__name__
-        if class_name in self._config.get_enabled_rcns_ordered():
-            self._delegate_enable_rule(class_name, True)
+            class_name = rule_class.__name__
+            if class_name in self._config.get_enabled_rcns_ordered():
+                self._delegate_enable_rule(class_name, True)
+        except Exception as e:
+            print('Grammar Manager: {} - See error message above'.format(e)) 
 
     def _get_invalidation(self, rule_class, details):
         """

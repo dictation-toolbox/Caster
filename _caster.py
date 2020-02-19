@@ -39,17 +39,6 @@ logger1.addHandler(LoggingHandler())
 logger2 = logging.getLogger('engine')
 logger2.addHandler(LoggingHandler())
 
-# Natlink with DNS requires 32-bit Python and Windows OS
-# ToDo: create then move to castervoice.lib.ctrl.engines
-if (get_engine()._name == 'natlink'):
-    import struct
-    if settings.SYSTEM_INFORMATION["platform"] not in ["win32", "win-amd64"]:
-        msg = "Your platform ({}) is not currently supported by Caster."
-        raise SystemError(msg.format(settings.SYSTEM_INFORMATION["platform"]))
-    if struct.calcsize("P") == 8:  # 64-bit
-        msg = "Caster is using a 64-bit python environment with Natlink. Natlink requires a 32-bit python environment"
-        raise SystemError(msg)
-
 settings.WSR = __name__ == "__main__"
 
 if settings.WSR:
