@@ -185,22 +185,36 @@ def remote_debug(who_called_it=None):
         printer.out("ERROR: " + who_called_it +
               " called utilities.remote_debug() but the debug server wasn't running.")
 
-
-def reboot(wsr=False):
+def reboot():
+    # ToDo: Save engine arguments elsewhere and retrievesfor reboot. Allows for user-defined arguments.
     popen_parameters = []
-    if wsr:
+    engine = get_engine()
+    if engine._name == 'kaldi':
+        engine.disconnect()
+        Popen(['python', '-m', 'dragonfly', 'load', '_*.py', '--engine kaldi',  '--no-recobs-messages', '--engine-options  \model_dir=kaldi_model_zamia \vad_padding_end_ms=300'])
+    if engine._name == 'sapi5inproc':
+        engine.disconnect()
+        Popen(['python', '-m', 'dragonfly', 'load', '--engine', 'sapi5inproc', '_*.py', '--no-recobs-messages'])
+    if engine._name in ["sapi5shared", "sapi5"]:
         popen_parameters.append(settings.SETTINGS["paths"]["REBOOT_PATH_WSR"])
         popen_parameters.append(settings.SETTINGS["paths"]["WSR_PATH"])
-        # castervoice path inserted too if there's a way to wake up WSR
-    else:
-        popen_parameters.append(settings.SETTINGS["paths"]["REBOOT_PATH"])
-        popen_parameters.append(settings.SETTINGS["paths"]["ENGINE_PATH"])
-        import natlinkstatus
+        printer.out(popen_parameters)
+        Popen(popen_parameters)
+    if engine._name == 'natlink':
+        import natlinkstatus # pylint: disable=import-error
         status = natlinkstatus.NatlinkStatus()
-        username = status.getUserName()
-        popen_parameters.append(username)
-    printer.out(popen_parameters)
-    Popen(popen_parameters)
+        if status.NatlinkIsEnabled() == 1:
+            # Natlink in-process
+            popen_parameters.append(settings.SETTINGS["paths"]["REBOOT_PATH"])
+            popen_parameters.append(settings.SETTINGS["paths"]["ENGINE_PATH"])
+            username = status.getUserName()
+            popen_parameters.append(username)
+            printer.out(popen_parameters)
+            Popen(popen_parameters)
+        else:
+           # Natlink out-of-process
+            engine.disconnect()
+            Popen(['python', '-m', 'dragonfly', 'load', '--engine', 'natlink', '_*.py', '--no-recobs-messages'])
 
 
  # ToDo: Implement default_browser_command Mac/Linux
