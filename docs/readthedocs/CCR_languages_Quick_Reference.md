@@ -453,30 +453,33 @@ Should all be prefixed with `pack`
 
 | Command                                | Output                                   | Command            | Output                                       |
 | -------------------------------------- | ---------------------------------------- | -------------------| -------------------------------------------- |
-| `[unsigned] integer [<ibits>]`         | `[u32] i32`                              | lodge and          | `&&`                                         |
-| add comment                            | `//`                                     | lodge not          | `!`                                          |
-| `array [of] size <n>`                  | `[TOKEN; 0..1000]`                       | lodge or           | &#124; &#124;                                |
-| `bind [mute]`                          | `let [mut ]`                             | long comment       | `///`                                        |
-| boolean                                | `bool`                                   | macro assertion    | `assert_eq!()`                               |
-| brace pan                              | ` `                                      | macro format string| `format!()`                                  |
-| breaker                                | `break;`                                 | macro panic        | `panic!()`                                   |
-| case of                                | `=>`                                     | macro vector       | `vec![]`                                     |
-| class                                  | `+`                                      | name space         | `::`                                         |
-| convert to floating point              | `parse::<f64>().unwrap()`                | of type            | `:`                                          |
-| convert to integer                     | `parse::<i32>().unwrap()`                | print to console   | `println!()`                                 |
-| convert to string                      | `to_string()`                            | `refer to [mute]`  | `&[mut ]`                                    |
-| default                                | `_`                                      | return             | `return`                                     |
-| do loop                                | `while {TOKEN;TOKEN}{}`                  | shells             | `else {}`                                    |
-| `enumerate for each [<a> <b>]`         | `for (i, j) in TOKEN.enumerate() {}`     | static             | `static`                                     |
-| `enumerate for loop [of <a> [in <n>]]` | `for (i, TOKEN) in (0..1).enumerate(){}` | string             | `String`                                     |
-| `float [<fbits>]`                      | `f32`                                    | switch             | `match`                                      |
-| for each                               | `for TOKEN in TOKEN {}`                  | ternary            | `if TOKEN == TOKEN { TOKEN } else { TOKEN }` |
-| `for loop [of <a> [in <n>]]`           | `for i in 0..1 {}`                       | value false        | `false`                                      |
-| `function [<return>]`                  | `fn TOKEN(TOKEN) [-> TOKEN {}]`          | value not          | `None`                                       |
-| iffae                                  | `if {}`                                  | value some         | `Some()`                                     |
-| import                                 | `use`                                    | value true         | `true`                                       |
+| `[unsigned] integer [<ibits>]`         | `[u32] i32`                              | long comment       | `/// `                                       |
+| add comment                            | `// `                                    | macro assertion    | `assert_eq!()`                               |
+| `array [of] size <n>`                  | `[TOKEN; 0..1000]`                       | macro debug        | `dbg!(&)`                                    |
+| `bind [mute]`                          | `let [mut ]`                             | macro format string| `format!()`                                  |
+| boolean                                | `bool`                                   | macro panic        | `panic!()`                                   |
+| brace pan                              | ` `                                      | macro vector       | `vec![]`                                     |
+| breaker                                | `break;`                                 | name space         | `::`                                         |
+| case of                                | ` => `                                   | of type            | `:`                                          |
+| class                                  | `+`                                      | print to console   | `println!()`                                 |
+| convert to floating point              | `parse::<f64>().unwrap()`                | `refer to [mute]`  | `&[mut ]`                                    |
+| convert to integer                     | `parse::<i32>().unwrap()`                | self               | `self`                                       |
+| convert to string                      | `to_string()`                            | return             | `return`                                     |
+| default                                | `_`                                      | shells             | `else {}`                                    |
+| do loop                                | `while {TOKEN;TOKEN}{}`                  | static             | `static`                                     |
+| `enumerate for each [<a> <b>]`         | `for (i, j) in TOKEN.enumerate() {}`     | string             | `String`                                     |
+| `enumerate for loop [of <a> [in <n>]]` | `for (i, TOKEN) in (0..1).enumerate(){}` | switch             | `match `                                     |
+| `float [<fbits>]`                      | `f32`                                    | ternary            | `if TOKEN == TOKEN { TOKEN } else { TOKEN }` |
+| for each                               | `for TOKEN in TOKEN {}`                  | value false        | `false`                                      |
+| `for loop [of <a> [in <n>]]`           | `for i in 0..1 {}`                       | value not          | `None`                                       |
+| `function [<return>]`                  | `fn TOKEN(TOKEN) [-> TOKEN {}]`          | value some         | `Some()`                                     |
+| iffae                                  | `if {}`                                  | value true         | `true`                                       |
+| import                                 | `use`                                    | unwrap             | `.unwrap()`                                  |
 | infinite loop                          | `loop {}`                                | while loop         | `while TOKEN {}`                             |
 | lifetime                               | `''`                                     |                    |                                              |
+| lodge and                              | ` && `                                   |                    |                                              |
+| lodge not                              | `!`                                      |                    |                                              |
+| lodge or                               | ` &#124; &#124; `                        |                    |                                              |
 
 # SQL
 
