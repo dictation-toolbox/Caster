@@ -1,4 +1,4 @@
-from dragonfly import Function, Repeat, Choice, Dictation, MappingRule
+from dragonfly import Function, Repeat, Choice, Dictation, MappingRule, Pause
 
 from castervoice.lib.actions import Key
 
@@ -75,10 +75,12 @@ class VSCodeNonCcrRule(MappingRule):
         # File Management
         "copy path":
             R(Key("c-k, p")),
-        "[open] command palette":
-            R(Key("cs-p"), rdescript="VS Code: Command Palette"),
+        "[open] command palette [<text>]":
+            R(Key("cs-p") + Text("%(text)s"), rdescript="VS Code: Command Palette"),
         "(open file | go to [tab]) [<text>]":
             R(Key("c-p") + Text("%(text)s"), rdescript="VS Code: Go to File without using dialogbox"),
+        "open project [<text>]":
+            R(Key("c-r") + Pause("30") + Text("%(text)s")),
         "open dialogue":
             R(Key("c-o"), rdescript="VS Code: open file dialogbox"),
         "open folder":
@@ -224,8 +226,7 @@ class VSCodeNonCcrRule(MappingRule):
             R(Key("c-m")),
 
         # Integrated Terminal
-        "[show] terminal":
-            R(Key("c-backtick")),
+
         "new terminal":
             R(Key("cs-backtick")),
         "terminal scroll up":
