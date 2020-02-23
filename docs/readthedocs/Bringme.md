@@ -1,4 +1,4 @@
-# Bring me
+# Bring Me
 
 _Bring me_ is a set of commands that allow the user to quickly invoke an item from a list of previously-saved items. Currently, these items are: programs, websites, folders, and files. The list of items is saved to the Caster user directory (`.caster`) in the file `data/bringme.toml`. On first installation, if no list of items exists yet, a default list is created with some documentation websites, common computer folders and some Caster settings files. Say "bring me caster bring me" to bring up the `data/bringme.toml` file.
 

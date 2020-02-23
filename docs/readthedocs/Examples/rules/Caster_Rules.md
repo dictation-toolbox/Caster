@@ -2,21 +2,21 @@
 
 Dragonfly is a powerful framework for mapping voice commands to actions. Caster gives the user:
 
-- the ability to dynamically combine CCR rules at run time,
-- a pre-made set of rules to start with as a base,
-- tools with which to modify the pre-made rules,
-- the Context Stack, a way of tracking state between commands.
+- The ability to dynamically combine CCR rules.
+- A pre-made set of rules to start with as a base.
+- Tools with which to modify all  `starter rules` .
+- Override built-in  `starter rules` with a modified copy of your own.
+- Grammars are reloadable on save.
+- The Context Stack, a way of tracking state between commands.
 
 ## MergeRules VS MappingRules
 
-A Caster MergeRule is very similar to a Dragonfly MappingRule, but it has a few extra properties and can do things that MappingRules can't easily do. The following is an example of a full Python file containing two MergeRules _and_ a MappingRule.
+A Caster MergeRule is very similar to a Dragonfly MappingRule, but it has a few extra properties and can do things that MappingRules can't easily do. The following is an examples containing two complete MergeRules _and_ a MappingRule.
 
 ```Python
-from dragonfly import *
+from dragonfly import MappingRule, Key
 
-from caster.lib import control
-from caster.lib.merge.mergerule import MergeRule
-from caster.lib.merge.state.short import R
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 
 class MyMappingRule(MappingRule):
   mapping = {
@@ -24,35 +24,47 @@ class MyMappingRule(MappingRule):
     "some other command":   Key("b"),
   }
 
-class MyMergeRule(MergeRule):
-  pronunciation = "key rule"
-
-  mapping = {
-    "press keys <key_one> [<key_two>]":   Key("%(key_one)s, %(key_two)s"),
-  }
-  extras = [
-    Choice("key_one", { "arch": "a", "brav": "b", "char": "c" } ),
-    Choice("key_two", { "arch": "a", "brav": "b", "char": "c" } ),
-  ]
-  defaults = { "key_two": "a" }
-
-class OtherRule(MergeRule):
-  pronunciation = "other rule"
-  non = MyMappingRule
-
-  mapping = {
-    "hello":    Text("hello"),
-  }
-
-control.nexus().merger.add_global_rule(MyMergeRule())
-control.nexus().merger.add_global_rule(OtherRule())
+def get_rule():
+    details = RuleDetails(name="Rule Name")
+    return MyMappingRule, details
 ```
+
+```python
+from dragonfly import Key, Choice
+
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.const import CCRType
+
+class MyMergeRule(MergeRule):
+    pronunciation = "key rule"
+
+    mapping = {
+        "press keys <key_one> [<key_two>]": Key("%(key_one)s, %(key_two)s"),
+    }
+    extras = [
+        Choice("key_one", {"arch": "a", "brav": "b", "char": "c"}),
+        Choice("key_two", {"arch": "a", "brav": "b", "char": "c"}),
+    ]
+    defaults = {"key_two": "a"}
+
+def get_rule():
+    details = RuleDetails(ccrtype=CCRType.GLOBAL)
+    return MyMergeRule, details
+```
+
+
 
 Differences you should notice here:
 
 - The `pronunciation` property: this is what you say in order to enable or disable the rule. If it is not specified, the pronunciation will be the name of the class. So, to enable the first MergeRule, you'd say, "enable key rule". To disable it, you'd say, "disable key rule".
-- The `non` property: this is a reference to a MappingRule. This MappingRule will be activated alongside the MergeRule when it is activated. See how we are not creating a Grammar object and using it to add the MappingRule like we would normally? Although the MergeRule will be added to the CCR pool, the MappingRule will not. All of its commands will remain as singular, uncombineable. This is often desirable because either (1) certain specs don't blend well, or (2) certain commands are not usually combined with others and so keeping them out of the CCR pool reduces combinatorial complexity and improves performance.
-- Using the Nexus. Caster MergeRules are usually added to the "nexus". This is a singleton object which manages the CCR pool and various other Caster services. You can add a MergeRule to a Dragonfly Grammar object, but you won't get the benefits that way.
+
+  - MappingRule Use `name="Rule Name"`  for rnable/disable Instead of `pronunciation` 
+
+- The `non` property: this is a reference to a MappingRule. This MappingRule will be activated alongside the MergeRule when it is activated through companion rules. See how we are not creating a Grammar object and using it to add the MappingRule like we would normally? Although the MergeRule will be added to the CCR pool, the MappingRule will not. All of its commands will remain as singular, uncombineable. This is often desirable because either (1) certain specs don't blend well, or (2) certain commands are not usually combined with others and so keeping them out of the CCR pool reduces combinatorial complexity and improves performance.
+
+  ToDo: No longer added to the nexus, research to describe modern method
+
 - The benefits. MergeRules are merged with each other when activated and are combined into a large CCR command. So for instance, if you said "enable key rule", you could then say "press keys arch press keys arch brav" to press A, A, B. If you then said "enable other rule", you could say "press keys arch hello" to press A and print "hello".
 
 ## The Context Stack
@@ -64,38 +76,49 @@ In addition to new types of rules, Caster provides new types of actions.
 The simplest is `RegisteredAction`. (Type aliased to `R` for short.) `R` can wrap any Dragonfly action(s) and adds additional functionality to said wrapped action(s). Let's look at a simple example.
 
 ```Python
-from dragonfly import *
+from dragonfly import Text
 
-from caster.lib import control
-from caster.lib.merge.mergerule import MergeRule
-from caster.lib.merge.state.short import R
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.const import CCRType
 
-class Birds(MergeRule):
-  mapping = {
-    "favorite bird":   R(Text("parakeet"), rdescript="Print my favorite bird"),
-  }
-control.nexus().merger.add_global_rule(Birds())
+from castervoice.lib.merge.state.short import R
+
+ Birds(MergeRule):
+    mapping = {
+        "favorite bird": R(Text("parakeet"), rdescript="Print my favorite bird"),
+    }
+
+def get_rule():
+    details = RuleDetails(ccrtype=CCRType.GLOBAL)
+    return Birds, details
 ```
 
 Two things of note here.
 
-- There is no `pronunciation` property. To enable this rule then, you'd say "enable birds".
+- There is no `pronunciation` property defined. It defaults `class`  name to `Birds`. To enable this rule then, you'd say "enable birds".
 - The `R` action has a `rdescript` parameter. This is a description of what the action does, and allows the action to be registered with various printing services (such as the Python console, the status window, or loggers) so you can see the order in which actions executed, or that they _have_ executed.
+  - If `rdescript` Is not used. `rdescript`   would default to  `favorite bird"`
 
 `R` can also be used to mark a command as a part of another command. This is one significant difference between Caster and Dragonfly. Dragonfly commands are once-and-done. Caster commands can interact with other commands which have been spoken in the past or will be spoken in the future. In order to use this functionality, we set the `rspec` property of the `R` action. Like so:
 
 ```Python
-from dragonfly import *
+from dragonfly import Text
 
-from caster.lib import control
-from caster.lib.merge.mergerule import MergeRule
-from caster.lib.merge.state.short import R
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.const import CCRType
+
+from castervoice.lib.merge.state.short import R
 
 class Birds(MergeRule):
   mapping = {
     "favorite bird":   R(Text("parakeet"), rdescript="Print my favorite bird", rspec="favorite_bird"),
   }
-control.nexus().merger.add_global_rule(Birds())
+
+def get_rule():
+    details = RuleDetails(ccrtype=CCRType.GLOBAL)
+    return Birds, details
 ```
 
 ### ContextSeeker
@@ -105,13 +128,15 @@ control.nexus().merger.add_global_rule(Birds())
 In order to do this, the ContextSeeker constructor takes one or both of two arrays of command-searching objects, the "backward" array and the "forward" array. Let's look at a simple example first, a ContextSeeker that looks backward one command for the "favorite bird" command and then prints the rest of the sentence if and only if it finds it.
 
 ```Python
-from dragonfly import *
+from dragonfly import Text, Key
 
-from caster.lib import control
-from caster.lib.merge.mergerule import MergeRule
-from caster.lib.merge.state.actions import ContextSeeker
-from caster.lib.merge.state.actions2 import NullAction
-from caster.lib.merge.state.short import R, L, S
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.const import CCRType
+
+from castervoice.lib.merge.state.actions import ContextSeeker
+from castervoice.lib.merge.state.actions2 import NullAction
+from castervoice.lib.merge.state.short import R, L, S
 
 class Birds(MergeRule):
   mapping = {
@@ -125,7 +150,10 @@ class Birds(MergeRule):
                                          ]
                                     )
   }
-control.nexus().merger.add_global_rule(Birds())
+
+def get_rule():
+    details = RuleDetails(ccrtype=CCRType.GLOBAL)
+    return Birds, details
 ```
 
 _Whoa there!_ you're thinking. _That's a lot of parentheses and square brackets._ It is. Let's go through what's happening here.
@@ -140,13 +168,15 @@ ContextSeekers can look backwards multiple commands, executing conditional logic
 ContextSeekers can also look forward. Let's look at an example of a forward-looking command.
 
 ```Python
-from dragonfly import *
+from dragonfly import Text
 
-from caster.lib import control
-from caster.lib.merge.mergerule import MergeRule
-from caster.lib.merge.state.actions import ContextSeeker
-from caster.lib.merge.state.actions2 import NullAction
-from caster.lib.merge.state.short import R, L, S
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.const import CCRType
+
+from castervoice.lib.merge.state.actions import ContextSeeker
+from castervoice.lib.merge.state.actions2 import NullAction
+from castervoice.lib.merge.state.short import R, L, S
 
 class Times(MergeRule):
   mapping = {
@@ -163,7 +193,9 @@ class Times(MergeRule):
                                          ]
                                     )
   }
-control.nexus().merger.add_global_rule(Times())
+def get_rule():
+    details =  RuleDetails(ccrtype=CCRType.GLOBAL)
+    return Times, details
 ```
 
 In this example, you can first say "noon time", "afternoon", or "midnight" to print "noon", "2 PM", or "midnight" respectively. But if you say "wait for" first, a forward-looking ContextSeeker will be added to the Context Stack. Nothing will happen immediately. If you then follow up by saying "afternoon", the second `S` will be selected, and "day time" will print. The trigger command, "afternoon" will not execute. It has been _consumed_ by the ContextSeeker. Consumption can be disabled -- see the "ContextSet Parameters" section.
@@ -182,13 +214,15 @@ The `S` object has a lot of options to specify different kinds of behavior. They
 That's a lot, so let's see it in action.
 
 ```Python
-from dragonfly import *
+from dragonfly import Text
 
-from caster.lib import control
-from caster.lib.merge.mergerule import MergeRule
-from caster.lib.merge.state.actions import ContextSeeker
-from caster.lib.merge.state.actions2 import NullAction
-from caster.lib.merge.state.short import R, L, S
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.const import CCRType
+
+from castervoice.lib.merge.state.actions import ContextSeeker
+from castervoice.lib.merge.state.actions2 import NullAction
+from castervoice.lib.merge.state.short import R, L, S
 
 def print_params_to_console(params):
   print(params)
@@ -209,7 +243,10 @@ class Times(MergeRule):
                                          ]
                                     )
   }
-control.nexus().merger.add_global_rule(Times())
+  
+def get_rule():
+    details = RuleDetails(ccrtype=CCRType.GLOBAL)
+    return Times, details
 ```
 
 In this example, each of the `S` objects (except the first) delivers parameters to the print_params_to_console function differently. If you say "wait for noon time", an array of strings (specifically, ["some", "parameters"]) will be printed to the console. If you say "wait for midnight", the triggering rspec will be printed ("midnight"). The "evening" option is the most interesting though. If you say "wait for evening", an array containing "wait", "for", and "evening" will be printed. However, if you say, "wait for", and then separately say "evening", an array containing only "evening" will be printed.
@@ -225,34 +262,42 @@ In this example, each of the `S` objects (except the first) delivers parameters 
 Let's look at a few basic AsynchronousActions:
 
 ```Python
-from dragonfly import *
+from dragonfly import Key
 
-from caster.lib import control
-from caster.lib.merge.mergerule import MergeRule
-from caster.lib.merge.state.actions import ContextSeeker
-from caster.lib.merge.state.actions2 import NullAction
-from caster.lib.merge.state.short import R, L, S
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.const import CCRType
+
+from castervoice.lib.merge.state.short import R, L, S
+from castervoice.lib.merge.state.actions import AsynchronousAction
+from castervoice.lib.merge.state.actions2 import NullAction
 
 my_value = 0
 
+
 def repeat_me():
-  global my_value
-  my_value = my_value + 5
-  print(my_value)
-  if my_value == 10:
-    my_value = 0
-    return True
-  return False
+    global my_value
+    my_value = my_value + 5
+    print(my_value)
+    if my_value == 10:
+        my_value = 0
+        return True
+    return False
+
 
 class Actions(MergeRule):
-  mapping = {
-    "term":         R(NullAction(), rspec="term_"),
-    "key left":     AsynchronousAction([L(S(["term_"], Key("left")))]),
-    "key right":    AsynchronousAction([L(S(["!"], Key("right")))],
-                        time_in_seconds=2, repetitions=5),
-    "repeat_me":    AsynchronousAction([L(S(["!"], repeat_me))]),
-  }
-control.nexus().merger.add_global_rule(Times())
+    mapping = {
+        "term": R(NullAction(), rspec="term_"),
+        "key left": AsynchronousAction([L(S(["term_"], Key("left")))]),
+        "key right": AsynchronousAction([L(S(["!"], Key("right")))],
+                                        time_in_seconds=2, repetitions=5),
+        "repeat_me": AsynchronousAction([L(S(["!"], repeat_me))]),
+    }
+
+
+def get_rule():
+    details = RuleDetails(ccrtype=CCRType.GLOBAL)
+    return Actions, details
 ```
 
 Here we have one `R` and three AsynchronousActions. The first AsynchronousAction will run indefinitely, pressing the left key at one-second intervals (the default for `time_in_seconds`) until the "term" command is spoken. The second AsynchronousAction will run for 10 seconds, pressing the right key at two-second intervals. The third will run the "repeat_me" function twice and then terminate because "repeat_me" returned True.
@@ -265,130 +310,8 @@ The parameters for AsynchronousAction are as follows.
 - `blocking`: whether the AsynchronousAction should block other commands from executing while it is running. Caster commands, but not Dragonfly can be blocked. Defaults to True. Unless cancelled, blocked commands will execute after the AsynchronousAction is finished.
 - `finisher`: a Dragonfly action which runs after the AsynchronousAction is finished.
 
-## Pre-made Rules
+### Understanding Rule Merging.
 
-Out-of-the-box, Caster gives the user new mouse navigation commands (see the Mouse page), text formatting and navigation commands, and programming-language specific rules. (See the Quick Reference for more details.) Unlike Dragonfly, Caster is targeted at programmers specifically, and so more technical knowledge is assumed of its user base.
-
-## Modifying the Pre-made Rules
-
-If you want to modify the pre-made ruleset, there are a few ways to go about it. Of course, you could just edit the source, but then you'd have to deal with merge conflicts when updating to newer versions of Caster. There are two ways to get around this:
-
-- **Make a copy in the safe zone.** (1) Copy the file you'd like to change into your `caster/user` folder. (2) Disable the original rule in your `settings.toml` file. (3) Give the new MergeRule a `pronunciation` which is distinct from that of the original. For example, if you're modifying java.py, give the new Java rule a `pronunciation` of "my java" rather than "java".
-- **Use rule filters.** This is the recommended way. Rule filters allow you to change any part of any rule, either at boot time or when the rule is activated ("merge time"). See the Rule Filters section of the CCR page for more details. Supports both line and in-line python comments.
-
-## Rule Filters
-
-### Rule Merging
-
-Before we get into how rule filters work, you need to know a little about the rule-merging process.
-
-When MergeRules are activated, they are merged together with each other into one large CCR rule. If rules are incompatible with each other, the more-recently activated rule will deactivate the less-recently activated rule. For instance, both the Java and Python rules have "if" and "else" commands, so either would deactivate the other. Compatibility is based on specs: rules with even one identical spec are incompatible.
+When MergeRules are activated, they are merged together with each other into one large CCR rule. If rules are incompatible with each other, the more-recently activated rule will deactivate the less-recently activated rule. For instance, both the Java and Python rules have "if" and "else" commands, so either would deactivate the other. Compatibility is based on specs: rules with even one identical spec are incompatible. New merging strategies can be created see [classic_merging_strategy.py](https://github.com/dictation-toolbox/Caster/tree/master/castervoice/lib/merge/ccrmerging2/merging) for the default strategy with some interesting [notes](https://github.com/synkarius/Caster/issues/46). 
 
 Let's say you have four rules, A, B, C, and D. A is incompatible with D, but B and C are not incompatible with anything. Now suppose you have B, C, and D active and you speak the command to activate A. The current combined rule, composed of B, C, and D, is dropped. A is treated as the new combined rule. It is then merged with B. Now the combined rule consists of A and B. Then C is merged in: still no incompatibilities, so the new combined rule is A, B, and C. Now Caster attempts to merge D in, but discovers the incompatibility and drops D, since A is the more-recently activated of the two incompatible rules.
-
-### Merge Times
-
-There are three times these merges occur: at boot, when you manually activate a rule, and when a `SelfModifyingRule` changes itself. The third is out of the scope of this document, and so will not be discussed. At boot, Caster looks at your CCR config file (caster/bin/data/ccr.toml), and activates whatever rules you had active last time you were using Caster. By default, four CCR rules are active: Alphabet, Numbers, Navigation, and Punctuation.
-
-### How Rule Filters Work
-
-In our example above with A, B, C, and D, the rules were combined (or at least attempted) in pairs. (A and B, C and AB, D and ABC.) At each point at which an incompatibility could occur (each "merge point"), Caster gives you the user the opportunity to examine and change the incoming pair of rules. You can write functions which do anything you want to the two rules, based on any properties of the rules, or the merge. To do this, you need to understand MappingRules and MergeRules, and their properties. That is why this section is last. Let's look at some example rule filters.
-
-```Python
-from caster.lib import control
-from caster.lib.merge.mergepair import MergeInf
-from caster.lib.merge.state.short import R
-
-def handle_incompatibility_by_deletion(mp):
-    if mp.time == MergeInf.RUN and mp.rule1 is not None:
-        for spec in mp.rule1.mapping_actual().keys():
-            if spec in mp.rule2.mapping_actual().keys():
-                del mp.rule2.mapping_actual()[spec]
-
-control.nexus().merger.add_filter(handle_incompatibility_by_deletion)
-```
-
-This rule filter would ensure that there was never any incompatibility, by deleting conflicting words in the more-recently activated rule. Things worth pointing out here:
-
-- The function receives a parameter called "mp". "mp" is an instance of `caster.lib.dfplus.merge.mergepair.MergePair`. It includes either one or two rules and information about the merge.
-- `rule1` is checked for None. `rule1` can be None. `rule2` cannot be None.
-- Either of the rules can be modified in any way before the function exits and the attempted merge takes place.
-- The rule filter is added to the Caster rule merger via `control.nexus().merger.add_filter`.
-
-Here is another example. Suppose you don't like a particular spec and want to replace or modify it?
-
-```Python
-from caster.lib import control
-from caster.lib.merge.mergepair import MergeInf
-from caster.lib.merge.state.short import R
-
-def replace_spec(rule, target, replacement):
-    if target in rule.mapping_actual().keys():
-        action = rule.mapping_actual()[target]
-        del rule.mapping_actual()[target]
-        rule.mapping_actual()[replacement] = action
-
-def replace_spec_filter(mp):
-    if mp.time == MergeInf.BOOT:
-        target = "[go to] line <n>"
-        replacement = "travel to line <n>"
-
-        if mp.rule1 is not None:
-            replace_spec(mp.rule1, target, replacement)
-        replace_spec(mp.rule2, target, replacement)
-
-control.nexus().merger.add_filter(replace_spec_filter)
-```
-
-In this example, "[go to] line <n>" is replaced by "travel to line <n>". This could be configured to replace any number of specs, perhaps reading in from a dictionary file.
-
-Maybe you're fine with a spec, but you want to replace the action?
-
-```Python
-from dragonfly.actions.action_text import Text
-
-from caster.lib import control
-from caster.lib.merge.mergepair import MergeInf
-from caster.lib.merge.state.short import R
-
-def update_python(rule):
-    if "shells" in rule.mapping_actual().keys():
-        rule.mapping_actual()["shells"] = R(Text("not allowed to use 'else'"), rdescript="Troll Replacement")
-
-def replace_python_else_action(mp):
-    if mp.time == MergeInf.RUN and mp.type == MergeInf.GLOBAL:
-        if mp.rule1 is not None and mp.rule1.get_pronunciation() == "Python":
-            update_python(mp.rule1)
-        if mp.rule2.get_pronunciation() == "Python":
-            update_python(mp.rule2)
-
-control.nexus().merger.add_filter(replace_python_else_action)
-```
-
-Notice here how both `rule1` and `rule2` are being checked. That is because either of them might be the Python rule which is being targeted.
-
-Here is another example. In this one, we add the "identity is" command to the Python rule:
-
-```python
-from dragonfly.actions.action_text import Text
-
-from caster.lib import control
-from caster.lib.merge.mergepair import MergeInf
-from caster.lib.merge.state.short import R
-
-def add_is_to_python(rule):
-    if rule.get_pronunciation() == "Python":
-        rule.mapping_actual()["identity is"] = R(Text(" is "), rdescript="Python: Is")
-
-def add_is_to_python_filter(mp):
-    if mp.time == MergeInf.BOOT:
-        if mp.rule1 is not None:
-            add_is_to_python(mp.rule1)
-        add_is_to_python(mp.rule2)
-
-control.nexus().merger.add_filter(add_is_to_python_filter)
-```
-
-### Where Do I Put These?
-
-The designated location which Caster will check for rule filters is the `caster/user/filters` folder. Any Python files you put there with rule filters will be picked up, and, like the rest of the `caster/user` folder, will not be affected by Caster updates.

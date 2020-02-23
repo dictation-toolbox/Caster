@@ -1,4 +1,4 @@
-[Original Gist](https://gist.github.com/chilimangoes/f6ae51ca53d96a19a46c45ecd4b0d296)
+# Voice Coding Examples
 
 In the following examples, a comma separates commands that can be strung together into a single utterance, while a semicolon separates commands that must be said as separate utterances (because either the previous or next phrase is not a CCR command).
 
@@ -46,3 +46,5 @@ _"gerrish gum bow var, ace, terminal format format pattern; ace equals ace, quot
 This is something that I only run into occasionally in my day-to-day use of Caster. But because these examples consist almost entirely of Caster CCR commands, I've been making extensive use of the "terminal format" command while preparing them. :)
 
 Note that this works with any of the formatting commands. For example, you can say "terminal gerrish gum bow", "terminal tie spine bow", or "terminal snake bow". However, I usually find it difficult, both cognitively and verbally, to string that many words together into a command without messing something up. To make it easier, I will usually explicitly set the format I want to work with by using the "set format" command, and then simply saying "terminal format". For example: "set format Gerrish gum bow; terminal format some stuff".
+
+Sources [Chilimangoes's Examples Gist](https://gist.github.com/chilimangoes/f6ae51ca53d96a19a46c45ecd4b0d296)

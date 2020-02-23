@@ -23,7 +23,7 @@ So, let's say for example that I want to be able to speak any of the following c
 
 That's sixteen specs getting added. Since a lot of them will only be spoken after others, this command set fits well into a tree structure. (Not all command sets will.) The number of specs in the active CCR grammar from this command set can be reduced by only keeping a certain number of levels of the tree structure open (speakable) at a given time.
 
-<img src="https://raw.githubusercontent.com/synkarius/caster/master/caster/doc/img/noderule1.png">
+<img src="https://raw.githubusercontent.com/dictation-toolbox/Caster/master/docs/img/noderule1.png">
 
 In the above diagram, the first two levels of the tree are active. This means I can speak these specs:
 
@@ -31,21 +31,23 @@ In the above diagram, the first two levels of the tree are active. This means I 
     a d
     a e
     a f
+    
     b
     b g
+    
     c
     c h
     c i
 
 If I then speak spec (a), it's effect occurs, and the NodeRule updates itself so that the active nodes look like the diagram below.
 
-<img src="https://raw.githubusercontent.com/synkarius/caster/master/caster/doc/img/noderule2.png">
+<img src="https://raw.githubusercontent.com/dictation-toolbox/Caster/master/docs/img/noderule2.png">
 
 If I had spoken (a d) instead, only (m) would have been available next.
 
 The NodeRule will reset itself to its initial state if either any of the final nodes are spoken or, if any unrelated **Context Stack** action is spoken.
 
-## Integration With the Status Window
+## Integration With the Status Window (Not implemented Yet)
 
 If the **status window** is active, the NodeRule will use it to display hints about what the next available nodes are.
 
@@ -53,7 +55,7 @@ If the **status window** is active, the NodeRule will use it to display hints ab
 
 ### Making Your Own TreeNode
 
-To create a TreeRule, you first have to create a [TreeNode](https://github.com/synkarius/caster/blob/master/caster/lib/dfplus/hint/hintnode.py) which will be passed into the NodeRule constructor. For examples, look at the [nodes directory](https://github.com/synkarius/caster/tree/master/caster/lib/dfplus/hint/nodes). A TreeNode basically looks like this:
+To create a TreeRule, you first have to create a [TreeNode](https://github.com/dictation-toolbox/Caster/blob/master/castervoice/lib/merge/selfmod/tree_rule/tree_node.py) which will be passed into the NodeRule constructor. For examples, look at the [tree directory](https://github.com/dictation-toolbox/Caster/tree/master/castervoice/lib/merge/selfmod/tree_rule/trees). A TreeNode basically looks like this:
 
 ```python
 HintNode("spec", SomeDragonflyAction(), [<child nodes>], [<extras>], {<defaults>})
@@ -76,11 +78,65 @@ HintNode("spell name", Function(some_function), [HintNode("Fred", Text("Fred")),
 HintNode("choose [<d>]", Function(print_choice), extras=[Choice("d", {"one":1, "two":})], defaults={"d":1})
 ```
 
-### Registering Your NodeRule with CCR (optional)
+### Registering Your NodeRule.
 
-The topmost node will be treated a little differently than the rest.
+- Drop the following rule `YourTree.py` into `.caster\rules`
+- You will need to add to `settings.toml` Under `[Tree_Node_Path]` the following on its own line `SM_<YourTreeRule>_TREE_PATH = "C:/Users//.caster/data/sm_<YourTreeRule>_tree_node.toml"`
+-  Restart Caster
+- The pronunciation for enabling and disabling a note rule is the `class name` 
 
-- Its text/spec will not be used to create any commands. They will be ignored in this regard. Instead, its text will be used to create the enable/disable commands if you register it with CCR.
-- Its immediate children will be treated as top-level nodes, and it is to them that the NodeRule will reset, when it resets.
+### Complete NodeRule Example .
 
-A NodeRule can be added to a normal Dragonfly grammar. However, if you wish to add one to the global Caster CCR grammar, you must register it by adding its HintNode to the list in [\_nodes.py](https://github.com/synkarius/caster/blob/master/caster/lib/dfplus/hint/_nodes.py). Then, a NodeRule will be generated for that HintNode the next time you reboot Dragon NaturallySpeaking, and you can enable or disable it by saying `enable <topmost node spec>` or `disable <topmost node spec>`.
+<Details>
+```
+from castervoice.lib.actions import Text
+from castervoice.lib.const import CCRType
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.selfmod.tree_rule.tree_node import TreeNode
+from castervoice.lib.merge.selfmod.tree_rule.tree_rule import TreeRule
+from castervoice.lib.merge.state.actions2 import NullAction
+from castervoice.lib.merge.state.short import R
+
+H = TreeNode
+
+demo_nodes = H("I say zero", R(Text("LevelZero")), [
+            H("I say one", Text("Level One A"), [
+                    H("two A one", R(Text("Level Two A1")), [
+                            H("three A one", R(Text("Level Three A1"))),
+                            H("three A two", R(Text("Level Three A2"))),
+                            H("three A three", R(Text("Level Three A3")))
+                        ]),
+                    H("two A two", R(Text("Level Two A2")))
+                ]),
+            H("level one be", R(Text("Level One B"))),
+            H("level one see", R(Text("Level One C")))
+    ])
+
+class DemoTreeRule(TreeRule):
+    def __init__(self):
+        super(DemoTreeRule, self).__init__("demo nodes", demo_nodes)
+
+def get_rule():
+     return [DemoTreeRule, RuleDetails(ccrtype=CCRType.SELFMOD)]
+```
+1. Drop the following rule `DemoTreeRule` into `.caster\rules`.
+
+2. You will need to add to `settings.toml` Under `[paths]`  the following on its own line `SM_DEMO_NODES_TREE_PATH = "C:/Users/<Insert username here>/.caster/data/sm_demo_tree_node.toml"` 
+
+3. Restart Dragon.
+
+4. To enable the rule say `Enable Demo Tree Rule`
+
+   **Note**: If you forget to add the path above in the settings the following will print out.
+   `TreeRuleConfigurationError: Path 'SM_DEMO_NODES_TREE_PATH' was not found in the 'paths' section of settings.toml. Did you add it?`
+
+   **Note**: To manually reset the NodeTree say `cancel demo nodes`
+
+The below flowchart is to clarify the flow of commands throughout different node levels. To begin transitioning the Nodes say `I say zero` It will perform that action and advance to the next level (Node). However if I say `level one be` the NodeTree will reset back all the way to the beginning `I say zero`.
+
+
+![image](https://user-images.githubusercontent.com/24551569/70587921-eafe5b00-1b90-11ea-8e17-16db4036bf73.png)
+
+
+
+

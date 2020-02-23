@@ -1,6 +1,6 @@
 # Dragonfly Rules
 
-This page demonstrates how to get started making Dragonfly rules. Let's start with a very simple Dragonfly `MappingRule`. The following is a complete Python file which will work with Dragon. (For WSR, see the WSR page.)
+This page demonstrates how to get started making Dragonfly rules. Let's start with a very simple Dragonfly `MappingRule`. The following is a complete Python file which will work with any engine supported by Dragonfly.
 
 ## My First Rule
 
@@ -23,7 +23,7 @@ grammar.add_rule(MyRule())
 grammar.load()
 ```
 
-Done. Name this file `_example1.py`, put it in your Natlink `User Directory` folder (configurable in the Natlink configuration GUI `start_configurenatlink.py`) and reboot Dragon. When you do, saying "some words I speak" will trigger the first command, causing the keys A, B, C to be pressed. Same for the second command. (It is a Text action rather than a Key action, but in the example the effects are similar.)
+Done. Name this file `_example1.py`, put it in your My documents Caster folder. If the speech engine is already started  say `reboot Caster`. When you do, saying "some words I speak" will trigger the first command, causing the keys A, B, C to be pressed. Same for the second command. (It is a Text action rather than a Key action, but in the example the effects are similar.)
 
 ## Using Extras
 
@@ -111,7 +111,54 @@ grammar.add_rule(MyRule())
 grammar.load()
 ```
 
-In this example, we defined a function called "my_fn". Any extras in the spec of the command will be available to the function which the Function action will call.
+In this example, we defined a function called `my_fn`. Functions can accept multiple arguments from the extras, including optional extras as described above; Any extras in the spec of the command will be available to the function which the Function action calls.
+
+Note that, under the hood, Dragonfly makes use of [keyword arguments](https://www.treyhunner.com/2018/04/keyword-arguments-in-python/). Therefore, the parameter that `my_fn` accepts (`my_key`) must be named identically to the `extras`.
+
+The example above shows how spoken words can be passed in as parameters. However, it is also possible to pass in unspoken arguments to your function. These are added as additional arguments to `Function`.
+
+The example below shows how this works. Note how "fruit" and "animals" are received automatically by `busy_func`, 
+while "stuff" and "things" must be added directly. Also recall that since "animals" is optional, a default value must be provided.
+
+
+```python
+from dragonfly import *
+
+def busy_func(fruit, animals, stuff, things):
+    print fruit
+    print animals
+    print stuff
+    print things
+
+class FunctionExamplesRule(MappingRule):
+    mapping = {
+        "secret <fruit> [<animals>]": Function(busy_func, stuff="shhhh...", things="more"),
+    }
+
+    extras = [
+        Choice("fruit", {
+            "arch": "apple",
+            "brav": "blueberry",
+            "char": "cherry",
+        }),
+
+        Choice("animals", {
+            "delta": "dogs",
+            "echo": "emus",
+            "foxy": "foxes"
+        }),
+    ]
+
+    defaults = {
+        "animals": "emus",
+    }
+    
+grammar = Grammar("FunctionExamplesRule")
+grammar.add_rule(MyRule())
+grammar.load()
+```
+
+ 
 
 ## Compound Actions
 

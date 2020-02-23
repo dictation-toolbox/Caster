@@ -7,15 +7,9 @@
   - MergeRule
   - SelfModifyingRule
   - CCRMerger
-  - FuzzyMatchAction
   - ConfirmAction
   - BoxAction
   - SelectiveAction
-  - the settings
-  - sticky list
-  - ergonomic break alarm
-  - WSR setup
-  - status window
 
   **Needs Update**
 

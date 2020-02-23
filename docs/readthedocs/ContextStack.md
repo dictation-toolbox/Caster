@@ -16,16 +16,16 @@ A RegisteredAction wraps a Dragonfly action. When Dragonfly executes the Registe
 
 ```python
 "some spec":        RegisteredAction(Key("c-f"), rdescript="Find")
+# RegisteredAction can be shortened to `R`
+"some spec":        R(Key("c-f"), rdescript="Find")
 ```
 
 RegisteredAction has a number of optional parameters which affect its processing in the context stack.
 
 - `rspec` - registers this command as a key which is able to trigger specific behavior in ContextSeekers and AsynchronousActions
-- `rdescript` - the description of this command which will appear in the status window if it is active
+- `rdescript` - the description of this command which will appear in the status window
 - `rundo` - another Dragonfly action which is used to undo the base action (not implemented yet)
-- `show` - whether or not to show the `rdescript` in the status window
-
-RegisteredAction can be shortened to `R`.
+- `show` - whether or not to show the `rdescript` in the status window.
 
 ## ContextSeeker
 

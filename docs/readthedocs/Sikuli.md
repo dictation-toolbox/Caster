@@ -35,7 +35,7 @@ At time of writing, Caster supports Sikulix v2.0.1 and up.
 
 This video is out of date in terms of the Sikuli setup and config options. It is still up to date for the filename/exports convention described toward the end of the video though.
 
-[YouTube](https://youtu.be/RFdsD2OgDzk?list=PLV6JPhkq1x8LHu02YefhUU9rXiB2PK8tc)
+[![](http://img.youtube.com/vi/RFdsD2OgDzk/0.jpg)](http://www.youtube.com/watch?v=RFdsD2OgDzk "Sikuli Commands by Voice: Script Creation Conventions")
 
 ## Control Sikulix
 

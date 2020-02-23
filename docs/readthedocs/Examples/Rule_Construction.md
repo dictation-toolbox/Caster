@@ -1,48 +1,115 @@
 # Rule Construction
 
-This section discusses how to get started making Dragonfly and Caster rules.
+This section discusses how to get started making Dragonfly and Caster rules. 
 
-# Standard imports
-Using the `from library import *` construction to import everything from a particular module is generally frowned upon in Python because it does not make explicit what you are importing, and this can make it difficult to work out where particular names are coming from at a glance.
+## Dragonfly Rules
 
-When constructing caster rules however, there are a fairly well-defined group of objects which are regularly required and which most people reading the rule will be familiar with. These include dragonfly objects, caster utility modules, caster rule types (MergeRule and SelfModifyingRule), etc.
+These are some basic examples of how Dragonfly loads rules. Dragon rules can be converted to Caster equivalents by replacing the loading functions and with the proper Caster imports. The following are types of dragonfly rules.
 
-This means that it makes sense to place all of these standard imports into one file, so that they can be imported into a new file with a single line of code. This file can be found at `castervoice/lib/imports.py` and the standard imports can be accessed with:
+**Dragonfly App Rule**
+
 ```python
-from castervoice.lib.imports import *
+context = AppContext(executable="devenv", title="microsoft visual studio")
+grammar = Grammar("visual studio", context=context)
+grammar.add_rule(MicrosoftVisualStudioRule())
+grammar.load()
 ```
 
-# Loading rules
-Once you have created a rule class with your desired mappings inside, you need to load it so that the commands are recognised. Wrapper functions for this are provided in `lib/control.py`, taking as parameters your rule (usually a subclass of MergeRule), and if appropriate the context in which it should be active. The types of rule which can be added are detailed further in `doc/readtedocs/CCR.md`. The functions for loading them are as follows, and should be placed at the bottom of the grammar file.
+**Dragonfly Global Rule**
 
-### Global rules
+```python
+grammar = Grammar("my new grammar")
+grammar.add_rule(MyRule())
+grammar.load()
+```
+
+## Caster Loading Rules
+
+Caster differs from Dragonfly on how it manages loading rules. The primary purpose for this difference is so that Caster can manages the CCR merger and makes rules reloadable on save. 
+
+Once you have created a rule class with your desired mappings inside, you need to load it so that the commands are recognised. RuleDetails are provided in `lib\ctrl\mgr\rule_details.py`, that has parameters your rule, and if appropriate the context in which it should be active.  The `get_rule()` function returns `RuleDetails` parameters and the rule class. Here is a breakdown of the RuleDetails parameters.
+
+**RuleDetails Parameters Summary** 
+
+- `name`:  Dragonfly rule name needs to be unique
+
+- `executable`:  Dragonfly AppContext executable
+  - For Windows users the `.exe` is not needed. For example `firefox.exe`  would be `firefox`.
+
+- `title`:  AppContext title can be a partial or exact match
+
+- `grammar_name`:  Dragonfly grammar name Needs to be unique
+
+- `ccrtype`:  global, app, selfmod, or none
+
+ The types of rule which can be added are detailed further in `doc/readtedocs/CCR.md` with complete examples.  However here is a summary.
+
+**Global CCR Rules**
+
 These rules are available in any context, can be chained together with other commands in a single utterance using CCR, and are enabled using the `enable python` command (for example). All of the programming language grammars and core navigation commands are added as global rules.
+
 ```python
 def get_rule():
     return MyRule, RuleDetails(ccrtype=CCRType.GLOBAL)
 ```
 
-### Non-CCR app rules
+### Non-CCR App Rules
 These rules are context specific and do not allow multiple commands in sequence. While this may seem like a limitation, for most app commands (e.g. "page back" in a browser) it is rare to want to do multiple things in a single utterance. Using CCR only when necessary improves start-up time and reduces grammar complexity, so most app grammars are implemented this way.
+
 ```python
 def get_rule():
-    return MyRule, RuleDetails(title="application title")
+    details = RuleDetails(executable="exe name", 
+                          title="application title")
+    return MyRule, details
 ```
 
-### CCR app rules
-If desired though, it is possible to create contextual commands with CCR, using the following formulation. By default this will allow app commands to be chained with any core commands, but this can be changed by setting the `mwith` property of the rule to a list of rule pronunciations.
+### CCR App Rules
+App specific commands with CCR, using the following formulation. By default this will allow app commands to be chained with any core commands.
 ```python
 def get_rule():
-    return MyRule, RuleDetails(ccrtype=CCRType.APP, title="application title")
+    details = RuleDetails(executable="exe name", 
+                          title="application title",
+                          ccrtype=CCRType.APP)
+    return MyRule, details
 ```
 
-### Self modifying rules
-These rules are available globally and modify themselves on the fly. Examples of this in caster include the "bring me" and "alias" commands.
+### Self Modifying CCR Rules
+These rules are available globally and modify themselves on the fly. Examples of this in Caster include the "bring me" and "alias" commands.
 ```python
-// ccr selfmod rule:
 def get_rule():
     return MyRule, RuleDetails(ccrtype=CCRType.SELFMOD)
-// non-ccr selfmod rule:
-def get_rule():
-    return MyRule, RuleDetails(name="my rule")
 ```
+
+
+
+## Required Caster Imports by Rule Category
+
+Based on the type of rule category as described in the above section require important. The imports go at the very top of the file.
+
+**CCR App Rules / Global CCR Rules**
+
+```python
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.const import CCRType
+```
+
+**Non-CCR App Rules**
+
+```python
+from dragonfly import MappingRule
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+```
+
+**Self Modifying CCR Rules**
+
+```python
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.merge.selfmod.selfmodrule import BaseSelfModifyingRule
+from castervoice.lib.const import CCRType
+```
+
+
+
+
+
