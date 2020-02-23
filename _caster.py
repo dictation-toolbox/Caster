@@ -3,7 +3,6 @@
 main Caster module
 Created on Jun 29, 2014
 '''
-import datetime
 import six
 
 if six.PY2:
@@ -23,11 +22,11 @@ from dragonfly import get_engine
 
 _NEXUS = None
 
-settings.WSR = __name__ == "__main__"
-
-if settings.WSR:
+if get_engine()._name in ["sapi5shared", "sapi5", "sapi5inproc"]:
+    settings.WSR = True
     from castervoice.rules.ccr.standard import SymbolSpecs
     SymbolSpecs.set_cancel_word("escape")
+
 from castervoice.lib import control
 
 if control.nexus() is None:
@@ -40,6 +39,5 @@ if control.nexus() is None:
 if settings.SETTINGS["sikuli"]["enabled"]:
     from castervoice.asynch.sikuli import sikuli_controller
     sikuli_controller.get_instance().bootstrap_start_server_proxy()
+
 print("\n*- Starting " + settings.SOFTWARE_NAME + " -*")
-if settings.WSR:
-    get_engine().recognize_forever()

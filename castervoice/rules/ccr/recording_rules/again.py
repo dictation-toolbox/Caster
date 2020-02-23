@@ -1,4 +1,4 @@
-from dragonfly import Function, Playback, RecognitionHistory, MappingRule
+from dragonfly import Function, Playback, RecognitionHistory, MappingRule, get_engine
 
 from castervoice.lib import settings
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
@@ -30,7 +30,7 @@ class Again(MappingRule):
             return
 
         last_utterance_index = 2
-        if settings.WSR:  # ContextStack adds the word to history before executing it
+        if get_engine()._name in ["sapi5shared", "sapi5", "sapi5inproc"]:  # ContextStack adds the word to history before executing it
             if len(_history) == 1: return
             last_utterance_index = 2
 
