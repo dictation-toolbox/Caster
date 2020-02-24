@@ -662,6 +662,6 @@ Same Commands as [Git Bash](#git-bash)
 | `join line`                            | `toggle blame`                        | `lens commit details`                    |
 | `lens file history`                    | `lens repo status`                    | `toggle git lens`                        |
 | `mark (prev / prior / previous)`       | `mark next`                           | `<action>* line <ln1> [by <ln2>]`        |
-| `open project [<text>]`                |                                       |                                          |
+| `open project [<text>]`                | `altar kick`                          |                                          |
 
 \* select / copy / cut / paste / delete
