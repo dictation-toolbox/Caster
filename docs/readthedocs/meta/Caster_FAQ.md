@@ -7,16 +7,16 @@ Welcome to the Caster project! This FAQ guide this to help introduce the Caster 
       Individuals involved in the Caster project are incredibly diverse. In the community people are from all over the world. We are representative of the UK, US, Australia, Canada, Germany, and other countries.
 
       What we all have in common is we want to leverage our voice to enhance our computing experience. People come to the project for different reasons. There are medical reasons that may limit people's ability to interact with the keyboard and mouse. On the other side of the spectrum, there are those that augment their workflow with voice controlling applications in combination with traditional computer inputs. 
-
-   
+      
+      
 
 2. **is Caster only meant to be used by developers who code only by voice?**
 
       Both developers and everyday users can benefit from a simple experience to control their computer. Caster was designed for voice programmers who develop software. However programming as a barrier for most people. We want to simplify experience for the everyday users, yet maintain the power and flexibility necessary for developers underneath the hood. 
 
       Caster can be used without programming experience and customized on a basic level through simplified transformers. Which allow you to redefine command names without programming experience. We acknowledge there is a lot of work to be done to make Caster truly accessible for those without a technical background, but that vision is a work in progress.
-
-   
+      
+      
 
 3. **Maybe I do not need certain features. How flexible is Caster?** 
 
@@ -28,7 +28,7 @@ Welcome to the Caster project! This FAQ guide this to help introduce the Caster 
 
       - I need a highly customized environment to build own custom rules that suits my needs.
 
-        You could disable all the starter rules and create your own with Caster a framework.
+        You could disable all the starter rules and create your own with Caster as a framework.
         
         
 
@@ -46,12 +46,34 @@ Welcome to the Caster project! This FAQ guide this to help introduce the Caster 
       - Commands that are created by the end-user are more likely to be remembered
 
       You can customize commands by copying starter rules, utilizing simplified transformers, creating your own from scratch. See the read the `Caster Rules` in the documentation.
-
-   
+      
+      
 
 6. **Does Caster support multiple languages?**
 
       Currently the starter rules are structured on the English language. However you can customize them to your to a language of your preference. In order to make Caster starter rules Multilingual the project needs a proper [grammar API](https://github.com/dictation-toolbox/Caster/issues/533#issuecomment-589829408).
+      
+      
+      
+7. **Does Dragonfly come with its own commands?**
 
+      Dragonfly does not come with built-in commands and end-user would have to to create their own commands.
 
+      
+
+8. **What's the difference between Caster and Dragonfly?**
+
+      Casters built on top of dragonfly. Caster adds some significant features that Dragonfly does not have.
+
+      - Caster reloads rules on save automatically
+
+      - Caster has continuous command recognition (CCR) MergeRules
+
+      - NodeRule which allows packing specs into nodes in a tree, and only activating part of the tree at a given time, it's possible to include thousands of specs in a single grammar.
+
+      - RegisteredAction and ContextSeeker which can change command behavior based on previous recognized commands or change what future commands are available.
+
+        
+
+      Outside of that Caster really only differs from dragonfly framework on how grammars are loaded and context creation. Otherwise it simply adds functionality. 99% of what you can do a Dragonfly can be done in Caster as well.
 
