@@ -633,7 +633,7 @@ Same Commands as [Git Bash](#git-bash)
 | `source control`                       | `keyboard shortcuts`                  | `key mappings`                           |
 | `settings`                             | `snippets`                            | `extensions`                             |
 | `search details`                       | `output panel`                        | `markdown preview`                       |
-| `markdown preview side`                | `Zen mode`                            | `[open] command palette`                 |
+| `markdown preview side`                | `Zen mode`                            | `[open] command palette [<text>]`        |
 | `(Open [file] / Go to [tab]) [<text>]` | `Save and close`                      | `new file`                               |
 | `new window`                           | `close window`                        | `close workspace`                        |
 | `close editor`                         | `save as`                             | `save all`                               |
@@ -661,6 +661,7 @@ Same Commands as [Git Bash](#git-bash)
 | `(fold / collapse) [all] regions`      | `(unfold / uncollapse) [all] regions` | `toggle word wrap`                       |
 | `join line`                            | `toggle blame`                        | `lens commit details`                    |
 | `lens file history`                    | `lens repo status`                    | `toggle git lens`                        |
-| `mark (prev / prior / previous)`       | `mark next`                           | `<action>* [line] <ln1> [by <ln2>]`      |
+| `mark (prev / prior / previous)`       | `mark next`                           | `<action>* line <ln1> [by <ln2>]`        |
+| `open project [<text>]`                |                                       |                                          |
 
 \* select / copy / cut / paste / delete
