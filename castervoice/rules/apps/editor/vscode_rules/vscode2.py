@@ -1,6 +1,6 @@
 from dragonfly import Function, Repeat, Choice, Dictation, MappingRule, Pause
 
-from castervoice.lib.actions import Key
+from castervoice.lib.actions import Key, Mouse
 
 from castervoice.lib import navigation
 from castervoice.lib.actions import Text
@@ -237,6 +237,8 @@ class VSCodeNonCcrRule(MappingRule):
             R(Key("s-pgup")),
         "terminal page down":
             R(Key("s-pgdown")),
+        "altar kick":
+            R(Key("alt:down") + Mouse("left") + Key("alt:up")),
 
         # Collapsing
         "(fold | collapse) region":
