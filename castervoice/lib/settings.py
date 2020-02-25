@@ -379,7 +379,6 @@ def _get_defaults():
             "use_aenea": False,
             "hmc": True,
             "ccr_on": True,
-            "status_window_foreground_on_error": False,
             "dragonfly_pause_default":  0.003, # dragonfly _pause_default 0.02 is too slow! Caster default 0.003
         },
         # Grammar reloading section
