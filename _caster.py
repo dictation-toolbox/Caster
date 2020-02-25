@@ -6,9 +6,6 @@ Created on Jun 29, 2014
 import datetime
 import logging
 
-logging.basicConfig(format = "%(asctime)s : %(levelname)s : %(funcName)s\n%(msg)s")   
-
-
 from castervoice.lib.ctrl.dependencies import DependencyMan  # requires nothing
 DependencyMan().initialize()
 
@@ -19,38 +16,8 @@ from castervoice.lib.ctrl.updatecheck import UpdateChecker # requires settings/d
 UpdateChecker().initialize()
 
 from dragonfly import get_engine
-from dragonfly.windows.window import Window
-
 
 _NEXUS = None
-
-class LoggingHandler(logging.Handler):
-    def emit(self, record):
-        # Brings status window to the forefront upon error
-        if settings.SETTINGS["miscellaneous"]["status_window_foreground_on_error"]:
-            title = None
-            if get_engine()._name == 'natlink':
-                import natlinkstatus  # pylint: disable=import-error
-                status = natlinkstatus.NatlinkStatus()
-                if status.NatlinkIsEnabled() == 1:
-                    title = "Messages from Python Macros V"
-                else:
-                    title = "Windows PowerShell"
-            if get_engine()._name != 'natlink':
-                title = "Windows PowerShell"
-            windows = Window.get_matching_windows(title=title)
-            if windows:
-                windows[0].set_foreground()
-
-if settings.SETTINGS["miscellaneous"]["status_window_foreground_on_error"]:
-    # setLevel 40 = Error
-    logger1 = logging.getLogger('action')
-    logger1.setLevel(40)
-    logger1.addHandler(LoggingHandler())
-
-    logger2 = logging.getLogger('engine')
-    logger2.setLevel(40)
-    logger2.addHandler(LoggingHandler())
 
 settings.WSR = __name__ == "__main__"
 

@@ -10,6 +10,7 @@ from castervoice.lib.ctrl.mgr.managed_rule import ManagedRule
 from castervoice.lib.ctrl.mgr.rule_formatter import _set_rdescripts
 from castervoice.lib.ctrl.mgr.rules_enabled_diff import RulesEnabledDiff
 from castervoice.lib.merge.ccrmerging2.hooks.events.activation_event import RuleActivationEvent
+from castervoice.lib.merge.ccrmerging2.hooks.events.on_error_event import OnErrorEvent
 from castervoice.lib.merge.ccrmerging2.sorting.config_ruleset_sorter import ConfigBasedRuleSetSorter
 from castervoice.lib.util.ordered_set import OrderedSet
 
@@ -296,8 +297,9 @@ class GrammarManager(object):
             class_name = rule_class.__name__
             if class_name in self._config.get_enabled_rcns_ordered():
                 self._delegate_enable_rule(class_name, True)
-        except Exception as e:
-            print('Grammar Manager: {} - See error message above'.format(e)) 
+        except Exception as error:
+            print('Grammar Manager: {} - See error message above'.format(error)) 
+            self._hooks_runner.execute(OnErrorEvent())
 
     def _get_invalidation(self, rule_class, details):
         """
