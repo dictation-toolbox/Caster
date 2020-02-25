@@ -298,7 +298,7 @@ class GrammarManager(object):
             if class_name in self._config.get_enabled_rcns_ordered():
                 self._delegate_enable_rule(class_name, True)
         except Exception as error:
-            print('Grammar Manager: {} - See error message above'.format(error)) 
+            printer.out('Grammar Manager: {} - See error message above'.format(error)) 
             self._hooks_runner.execute(OnErrorEvent())
 
     def _get_invalidation(self, rule_class, details):
