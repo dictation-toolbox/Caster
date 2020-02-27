@@ -121,9 +121,12 @@ def _find_natspeak():
     '''
 
     try:
-        import _winreg
+        if six.PY2:
+            import _winreg as winreg 
+        else:
+            import winreg
     except:
-        printer.out("Could not import _winreg")
+        printer.out("Could not import winreg")
         return ""
 
     printer.out("Searching Windows Registry For DNS...")
@@ -136,23 +139,23 @@ def _find_natspeak():
     if proc_arch == 'x86' and not proc_arch64:
         arch_keys = {0}
     elif proc_arch == 'x86' or proc_arch == 'amd64':
-        arch_keys = {_winreg.KEY_WOW64_32KEY, _winreg.KEY_WOW64_64KEY}
+        arch_keys = {winreg.KEY_WOW64_32KEY, winreg.KEY_WOW64_64KEY}
     else:
         raise Exception("Unhandled arch: %s" % proc_arch)
 
     for arch_key in arch_keys:
-        key = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE,
+        key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE,
                               "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall",
-                              0, _winreg.KEY_READ | arch_key)
-        for i in xrange(0, _winreg.QueryInfoKey(key)[0]):
-            skey_name = _winreg.EnumKey(key, i)
-            skey = _winreg.OpenKey(key, skey_name)
+                              0, winreg.KEY_READ | arch_key)
+        for i in xrange(0, winreg.QueryInfoKey(key)[0]):
+            skey_name = winreg.EnumKey(key, i)
+            skey = winreg.OpenKey(key, skey_name)
             DisplayName, Publisher, DisplayVersion, InstallLocation = 'null'
             try:
-                DisplayName = _winreg.QueryValueEx(skey, 'DisplayName')[0]
-                Publisher = _winreg.QueryValueEx(skey, 'Publisher')[0]
-                DisplayVersion = _winreg.QueryValueEx(skey, 'DisplayVersion')[0]
-                InstallLocation = _winreg.QueryValueEx(skey, 'InstallLocation')[0]
+                DisplayName = winreg.QueryValueEx(skey, 'DisplayName')[0]
+                Publisher = winreg.QueryValueEx(skey, 'Publisher')[0]
+                DisplayVersion = winreg.QueryValueEx(skey, 'DisplayVersion')[0]
+                InstallLocation = winreg.QueryValueEx(skey, 'InstallLocation')[0]
             except OSError as error:
                 if error.errno == 2:  # Suppresses '[Error 2] The system cannot find the file specified'
                     pass
