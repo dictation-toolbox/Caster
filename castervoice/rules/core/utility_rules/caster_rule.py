@@ -19,7 +19,7 @@ class _DependencyUpdate(RunCommand):
         # Only reboot dragon if the command was successful and online_mode is true
         # 'pip install ...' may exit successfully even if there were connection errors.
         if proc.wait() == 0 and update:
-            Playback([(["reboot", "dragon"], 0.0)]).execute()
+            Function(utilities.reboot).execute()
 
 
 class CasterRule(MappingRule):
