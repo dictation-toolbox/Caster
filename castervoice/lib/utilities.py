@@ -250,13 +250,12 @@ def clear_log():
     # Natlink status window not used an out-of-process mode.
     # ToDo: window_exists utilized when engine launched through Dragonfly CLI via bat in future
     try:
-        windows = Window.get_all_windows()
         if get_engine()._name == 'natlink':
             import natlinkstatus # pylint: disable=import-error
             status = natlinkstatus.NatlinkStatus()
             if status.NatlinkIsEnabled() == 1:
-                import win32gui # Import: Natlink will crash running out-of-process
-                handle = get_window_by_title("Messages from Python Macros")
+                import win32gui
+                handle = get_window_by_title("Messages from Python Macros") or get_window_by_title("Messages from Natlink")
                 rt_handle = win32gui.FindWindowEx(handle, None, "RICHEDIT", None)
                 win32gui.SetWindowText(rt_handle, "")
             else:

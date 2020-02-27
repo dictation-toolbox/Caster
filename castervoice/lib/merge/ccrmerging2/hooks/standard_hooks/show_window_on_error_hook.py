@@ -3,6 +3,7 @@ from castervoice.lib.merge.ccrmerging2.hooks.base_hook import BaseHook
 from castervoice.lib.merge.ccrmerging2.hooks.events.event_types import EventType
 from castervoice.lib import printer
 
+import six
 from dragonfly import get_engine
 from dragonfly.windows.window import Window
 
@@ -12,7 +13,10 @@ def show_window():
         import natlinkstatus  # pylint: disable=import-error
         status = natlinkstatus.NatlinkStatus()
         if status.NatlinkIsEnabled() == 1:
-            title = "Messages from Python Macros V"
+            if six.PY2:
+               title = "Messages from Python Macros"
+            else: 
+                title= "Messages from Natlink"
         else:
             title = "Windows PowerShell"
     if get_engine()._name != 'natlink':
