@@ -67,7 +67,8 @@ class Homunculus(tk.Tk):
         self.server_quit = 0
         comm = Communicator()
         self.server = SimpleXMLRPCServer(
-            (Communicator.LOCALHOST, comm.com_registry["hmc"]), allow_none=True)
+            (Communicator.LOCALHOST, comm.com_registry["hmc"]),
+            logRequests=False, allow_none=True)
         self.server.register_function(self.xmlrpc_do_action, "do_action")
         self.server.register_function(self.xmlrpc_complete, "complete")
         self.server.register_function(self.xmlrpc_get_message, "get_message")
