@@ -1,31 +1,47 @@
 # Dragon NaturallySpeaking - Classic Install
 
-- Dragon NaturallySpeaking (DPI / DNS) - Caster only supports Dragon NaturallySpeaking 13 and Windows 7 or higher. 
-  - Recommend disabling the DNS Browser plug-ins due to instability of Internet browsers and DNS .
+1. **Install Dragon NaturallySpeaking** (DPI / DNS) - Caster only supports Dragon NaturallySpeaking 13 and Windows 7 or higher.
 
-### 1. Python
+   After installing Dragon Naturally Speaking you can configure the DNS settings.
 
-- **First** Download and install [Python v2.7.17 32-bit](https://www.python.org/downloads/release/python-2717/) listed as `Windows x86 MSI installer` not Python 3 or the Python 2.7 64-bit. These dependencies will change when Natlink utilizes Python 3.
+   - Recommend disabling the DNS Browser plug-ins due to instability of Internet browsers and DNS.
 
-Make sure to select `Add python to path`. This can be done manually by searching for "edit environment variables for your account" and adding your Python27 folder to the list of Path values
+   - Disable all the checkboxes in the “Correction” menu, except for the “Automatically add words to the active vocabulary” option.
 
-### 2. NatLink  - Only for Dragon NaturallySpeaking
+   - Under the “Commands” menu make sure to check the “Require click to select…” checkboxes. Otherwise you will find yourself accidentally clicking buttons or menu items instead of inserting text into your editor. I’ve disabled the other checkboxes in that menu as well.
 
-- Download and install [Natlink](https://sourceforge.net/projects/natlink/files/natlink/natlink4.2/). Use `Natlink-4.2` or newer.
+   - Set the “speed versus accuracy” slider in the “Miscellaneous” menu to a fairly high value.
 
-### 3. Caster
+   - Uncheck the “Use the dictation box for unsupported applications” checkbox. Use Caster text manipulation instead.
 
-1. Download Caster from the [master branch](https://github.com/dictation-toolbox/Caster/archive/master.zip).
-2. Open up the zip file downloaded
-3. Copy the contents of `Caster-master` folder, you can put it anywhere but it is common to use `%USERPROFILE%\Documents\Caster`.
-4. Install dependencies and set up Natlink by running `Caster/Install_Caster_DNS-WSR.bat`. *Note that for this to work correctly Python must be installed to `C:/Python27` *
-5. *Optional Step* for Caster's`Legion` MouseGrid - Legion Feature available on Windows 8 and above.
-   - The Legion MouseGrid requires [Microsoft Visual C++ Redistributable Packages for Visual Studio 2015, 2017 and 2019 (x86).](https://support.microsoft.com/en-nz/help/2977003/the-latest-supported-visual-c-downloads) Note: Should not be needed if Windows 10 is up-to-date.
+     
 
-### 4. Setup and launch DNS for Classic Install.
+2. ### Python
 
-1. Start or restart Dragon. `Click Run_Caster_DNS.bat` Status Window appear and load Caster.  Once loaded Caster commands should be available to dictate.
-2. To test this, open Window's Notepad and try saying `arch brov char delta` producing `abcd` text.
+   **First** Download and install [Python v2.7.17 32-bit](https://www.python.org/downloads/release/python-2717/) listed as `Windows x86 MSI installer` not Python 3 or the Python 2.7 64-bit. These dependencies will change when Natlink utilizes Python 3.
+
+   Make sure to select `Add python to path`. This can be done manually by searching for "edit environment variables for your account" and adding your Python27 folder to the list of Path values
+
+   
+
+3.  **NatLink**  - Only for Dragon NaturallySpeaking
+
+   Download and install [Natlink](https://sourceforge.net/projects/natlink/files/natlink/natlink4.2/). Use `Natlink-4.2` or newer.
+
+   
+
+4. ### Caster
+   1. Download Caster from the [master branch](https://github.com/dictation-toolbox/Caster/archive/master.zip).
+   2. Open up the zip file downloaded
+   3. Copy the contents of `Caster-master` folder, you can put it anywhere but it is common to use `%USERPROFILE%\Documents\Caster`.
+   4. Install dependencies and set up Natlink by running `Caster/Install_Caster_DNS-WSR.bat`. *Note that for this to work correctly Python must be installed to `C:/Python27` *
+   5. *Optional Step* for Caster's`Legion` MouseGrid - Legion Feature available on Windows 8 and above.
+      - The Legion MouseGrid requires [Microsoft Visual C++ Redistributable Packages for Visual Studio 2015, 2017 and 2019 (x86).](https://support.microsoft.com/en-nz/help/2977003/the-latest-supported-visual-c-downloads) Note: Should not be needed if Windows 10 is up-to-date.
+
+5. **Setup and launch DNS for Classic Install.**
+
+   1. Start or restart Dragon. `Click Run_Caster_DNS.bat` Status Window appear and load Caster.  Once loaded Caster commands should be available to dictate.
+   2. To test this, open Window's Notepad and try saying `arch brov char delta` producing `abcd` text.
 
 ### Update Caster
   1. Backup `%USERPROFILE%\Documents\Caster`
@@ -34,13 +50,13 @@ Make sure to select `Add python to path`. This can be done manually by searching
 
 ------
 
-### Manual Natlink Configuration
+### Manual Natlink Configuration 
 
-This utilizes Natlink Configuration GUI to launch Caster. Automatically launches Caster when DNS starts. A bit error-prone see troubleshooting section.
+An alternative to the instructions above for configuring Natlink. This utilizes Natlink Configuration GUI to launch Caster. Automatically launches Caster when DNS starts. A bit error-prone see troubleshooting section. 
 
 1. Open [command prompt](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows) (CMD) and type the following then press enter.
 
-  - `python -m pip install future six wxPython pywin32`
+   `python -m pip install future six wxPython pywin32`
 
 2. Open the start menu and search for `natlink`, click the file called `Configure NatLink via GUI`.
 
