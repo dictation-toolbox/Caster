@@ -8,19 +8,17 @@
 
    - Disable all the checkboxes in the “Correction” menu, except for the “Automatically add words to the active vocabulary” option.
 
-   - Under the “Commands” menu make sure to check the “Require click to select…” checkboxes. Otherwise you will find yourself accidentally clicking buttons or menu items instead of inserting text into your editor. I’ve disabled the other checkboxes in that menu as well.
+        Under the “Commands” menu make sure to check the “Require click to select…” checkboxes. Otherwise you will find yourself accidentally clicking buttons or menu items instead of inserting text into your editor. I’ve disabled the other checkboxes in that menu as well.
 
    - Set the “speed versus accuracy” slider in the “Miscellaneous” menu to a fairly high value.
 
-   - Uncheck the “Use the dictation box for unsupported applications” checkbox. Use Caster text manipulation instead.
-
-     
+     ​    Uncheck the “Use the dictation box for unsupported applications” checkbox. Use Caster text manipulation instead.
 
 2. ### Python
 
    **First** Download and install [Python v2.7.17 32-bit](https://www.python.org/downloads/release/python-2717/) listed as `Windows x86 MSI installer` not Python 3 or the Python 2.7 64-bit. These dependencies will change when Natlink utilizes Python 3.
 
-   Make sure to select `Add python to path`. This can be done manually by searching for "edit environment variables for your account" and adding your Python27 folder to the list of Path values
+   Make sure to select `Add python to path`. This can be done manually by searching for "edit environment variables for your account" and adding your Python folder to the list of Path values
 
    
 
@@ -38,6 +36,8 @@
    5. *Optional Step* for Caster's`Legion` MouseGrid - Legion Feature available on Windows 8 and above.
       - The Legion MouseGrid requires [Microsoft Visual C++ Redistributable Packages for Visual Studio 2015, 2017 and 2019 (x86).](https://support.microsoft.com/en-nz/help/2977003/the-latest-supported-visual-c-downloads) Note: Should not be needed if Windows 10 is up-to-date.
 
+   
+   
 5. **Setup and launch DNS for Classic Install.**
 
    1. Start or restart Dragon. `Click Run_Caster_DNS.bat` Status Window appear and load Caster.  Once loaded Caster commands should be available to dictate.

@@ -4,7 +4,7 @@ All rules managed by Caster are tracked in this config file `rules.toml `located
 
 Rules can exist in different states:
 
-- `Loaded ` During startup Caster loads all available rules on startup into the speech recognition engine. If a rule is not loaded it cannot be `enabled`/`disabled` and the rules commands commands cannot be recognized. 
+- `Loaded ` During startup Caster loads all available rules on startup into the speech recognition engine. If a rule is not loaded it cannot be `enabled`/`disabled` and the rules commands cannot be recognized. 
 
 - `Active`/`Inactive ` rule state denotes whether or not a rule is available for recognition.
   For instance if you say `disable Firefox` the Firefox rule will become  `Inactive `. When Firefox application is launched the commands will not be available for recognition until Firefox rule is set to `active`  with the `enable Firefox` command. 
@@ -28,7 +28,7 @@ New users will be provided a core set of rules to get started with and then expe
 
 The following `rules.toml `Is a mock representative of the default settings. `_enabled_ordered` shows the default enabled grammars when Caster first starts. Defaults may vary by Caster version and engine.
 
-```toml
+``` toml
 _enabled_ordered = ["Alphabet", "Navigation", "NavigationNon", "Numbers", "Punctuation", "CasterRule", "HardwareRule", "MouseAlternativesRule", "WindowManagementRule", "LegionGridRule", "DouglasGridRule", "RainbowGridRule", "SudokuGridRule", "HMCRule", "HMCConfirmRule", "HMCDirectoryRule", "HMCHistoryRule", "HMCLaunchRule", "HMCSettingsRule", "HistoryRule", "ChainAlias", "Alias", "DragonRule", "BringRule", "Again", "GrammarActivatorRule", "HooksActivationRule"]
 _internal = ["GrammarActivatorRule", "HooksActivationRule", "TransformersActivationRule", "ManualGrammarReloadRule"]
 
