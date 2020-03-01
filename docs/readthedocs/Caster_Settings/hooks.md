@@ -1,25 +1,53 @@
-## Hooks and Events
+## Hooks
 
-​	Hooks are a new concept to Caster 1.0.0. The basic idea is that Caster itself defines "events", objects which contain immutable information about the stuff going on in the "guts" of Caster, and then those objects are fed to "hooks", user-defined listeners Called events which can do whatever they want with said information. This should allow a decent amount of customization to happen without needing to make changes in the "guts" (Nexus, GrammarManager, CCRMerger, etc. of Caster.
+This allows you to turn off certain Caster features.  Setting a hook to `true` or `False` in `hooks.toml` changes if the hook runs when Caster starts. Hooks can be temporarily `Disabled` and `Enabled`  by voice while Caster is running which does not altar settings in `hooks.toml`. Toggling typically use the hook name unless noted otherwise.
 
-Loosely coupled code leads to less bugs and more productivity, and so the use of hooks rather than "guts" modifications is encouraged  whenever possible.
+Say `Enable <hook name> ` activate a hook
 
-User made hooks can be placed in run from the Caster user directory `AppData\Local\caster\hooks`
+### Types of Hooks
 
-New event type added to  [Event types](https://github.com/dictation-toolbox/Caster/blob/master/castervoice/lib/merge/ccrmerging2/hooks/events/event_types.py)
+1. Formatting Hook
 
-Example hooks
+   The Formatting Hook prints out to the status window when changes are made to Casters `set format  <Spacing> <Capitallization> bow` command.
 
-- [printer_hook.py]([printer_hook.py](https://github.com/dictation-toolbox/Caster/blob/master/castervoice/lib/merge/ccrmerging2/hooks/examples/printer_hook.py)) utilizes [activation event](https://github.com/dictation-toolbox/Caster/blob/master/castervoice/lib/merge/ccrmerging2/hooks/events/activation_event.py)	
+   Example command
 
-- [format_hook.py](https://github.com/dictation-toolbox/Caster/blob/master/castervoice/lib/merge/ccrmerging2/hooks/standard_hooks/format_hook.py) utilizes  [activation event](https://github.com/dictation-toolbox/Caster/blob/master/castervoice/lib/merge/ccrmerging2/hooks/events/activation_event.py)
+   ` set format tie snake bow` 
 
-- [node_change_event.py](https://github.com/dictation-toolbox/Caster/blob/master/castervoice/lib/merge/ccrmerging2/hooks/events/node_change_event.py) utilizes [node change event](https://github.com/dictation-toolbox/Caster/blob/master/castervoice/lib/merge/ccrmerging2/hooks/events/node_change_event.py)
+   Example Legend
 
-Hooks placement in castor source code.
+   - snake - words_with_underscores
+   - tie - TitleCase
 
--  `activation event` in [grammar_manager.py](https://github.com/dictation-toolbox/Caster/blob/cb7adc4253d8d55089936e5b90ee57ce5784660e/castervoice/lib/ctrl/mgr/grammar_manager.py#L150)
-- `node change event` in [tree_rule.py](https://github.com/dictation-toolbox/Caster/blob/30c022a7085be6c8dbfee1c839d50fc7c8cdaf82/castervoice/lib/merge/selfmod/tree_rule/tree_rule.py#L57)
+   
 
+2. Printer Hook (Enabled by Default)
 
+   The Formatting Hook prints out to the status window when rules are enabled or disabled. `Enable  <Rule name>`
 
+   Command example 
+
+   Say `Enable Firefox`
+
+   `The rule FirefoxRule was set to active.`
+
+   
+
+3. Show Status Window On Error Hook
+
+   Say `Enable show On Error Hook`
+
+   When Caster encounters an error the status window is brought to the forefront. This allows you to see the error message. 
+
+   - Currently this is only implemented when grammars reload with an error.
+
+```toml
+# hooks.toml example file
+FormattingHook = false
+PrinterHook = true
+ShowStatusWindowOnErrorHook = false
+```
+
+------
+
+Learn more about creating your own hooks and events in the **Customize Caster** documentation.
