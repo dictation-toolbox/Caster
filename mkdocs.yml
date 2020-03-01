@@ -26,6 +26,7 @@ nav:
         - 'Dragon NaturallySpeaking': readthedocs/Installation/Dragon_NaturallySpeaking.md
         - 'Kaldi': readthedocs/Installation/Kaldi.md
         - 'Windows Speech Recognition': readthedocs/Installation/Windows_Speech_Recognition.md
+        - 'Troubleshooting_Install': readthedocs/Installation/Troubleshooting_Install.md
     - Caster Commands: 
         - 'Using Voice Commands': readthedocs/Caster_Commands/Using_Voice_Commands.md
         - 'Application Commands Reference': readthedocs/Caster_Commands/Application_Commands_Quick_Reference.md
@@ -55,6 +56,7 @@ nav:
             - 'Node Rule': readthedocs/Rule_Construction/Caster_Rules/NodeRule.md
     - Customize Caster:
         - 'Editing Starter Rules': "readthedocs/Customize_Caster/Customizing_Starter_Rules.md"
+        - 'Creating Hooks and Events': "readthedocs/Customize_Caster/Creating_Hooks_and_Events.md"
         - Explanation of Settings:
             - 'Rules': readthedocs/Caster_Settings/rules.md
             - 'Caster Settings': readthedocs/Caster_Settings/settings.md
