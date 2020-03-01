@@ -2,6 +2,7 @@
 
 Classic Install Location: `castervoice\rules\apps`
 The application name is followed by a pronunciation to `enable` or `disable` and the respective grammars. A '/' separates pronunciations for different grammars belonging to a single app.
+
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [Adobe acrobat](#adobe-acrobat) - acrobat
@@ -244,7 +245,7 @@ Same Commands as [Git Bash](#git-bash)
 | `insert cell [to the] left`                            | `insert cell above`              | `insert pivot table`               |
 | `insert pivot chart`                                   | `add-ins`                        | `add border`                       |
 | `arrange Windows`                                      | `auto sum`                       | `freeze panes`                     |
-| `toggle edit cell`                                     | `|`                              |
+| `toggle edit cell`                                     | `|`                              |                                    |
 
 # Internet Explorer
 
@@ -385,8 +386,8 @@ Same Commands as [Git Bash](#git-bash)
 | `[move] line up`                 | `kill forward`             | `extract method`            |
 | `[move] line down`               | `kill back`                | `extract constant`          |
 | `extract param`                  | `kill`                     | `override method`           |
-| `auto indent`                    |
-| GIT Commands (embedded terminal) |
+| `auto indent`                    |                            |                             |
+| GIT Commands (embedded terminal) |                            |                             |
 | `(get push / push)`              | `fetch`                    | `search recursive filetype` |
 | `(undo changes / reset hard)`    | `gooey blame`              | `stash`                     |
 | `CD`                             | `initialize repository`    | `stash apply [<n>]`         |
@@ -442,7 +443,7 @@ Same Commands as [Git Bash](#git-bash)
 # Microsoft Teams
 
 | command               | command               | command                        |
-|-----------------------|-----------------------|--------------------------------|
+| --------------------- | --------------------- | ------------------------------ |
 | search                | calendar              | start audio call               |
 | keyboard shortcuts    | calls                 | start video call               |
 | settings              | files                 | toggle mute                    |
@@ -457,8 +458,8 @@ Same Commands as [Git Bash](#git-bash)
 | send                  | expand compose        | go to next \(day \| week\)     |
 | attach                | reply                 | view day                       |
 | new line              | accept \[video\] call | view workweek                  |
-| accept \[audio\] call | view week             |
-| decline \[call\]      |
+| accept \[audio\] call | view week             |                                |
+| decline \[call\]      |                       |                                |
 
 # Microsoft Visual Studio
 
@@ -519,7 +520,7 @@ Same Commands as [Git Bash](#git-bash)
 | `first tab`                         | `next tab`   | `save all`       |
 | `focus console`                     | `open file`  | `select all`     |
 | `help that`                         | `head that`  | `vee table that` |
-| `<action>* [line] <ln1> [by <ln2>]` | `|`          |
+| `<action>* [line] <ln1> [by <ln2>]` | `|`          |                  |
 
 \* select / copy / cut / paste / delete
 
@@ -587,7 +588,7 @@ Same Commands as [Git Bash](#git-bash)
 | `file tree`          | `source code [mode]`           | `focus mode`                   |
 | `typewriter [mode]`  | `[toggle] full screen`         | `actual size`                  |
 | `zoom in <n>`        | `zoom out <n>`                 | `switch documnets`             |
-| `toggle [dev] tools` | `|`                            |
+| `toggle [dev] tools` | `|`                            |                                |
 
 # Visual Studio
 
@@ -633,7 +634,7 @@ Same Commands as [Git Bash](#git-bash)
 | `source control`                       | `keyboard shortcuts`                  | `key mappings`                           |
 | `settings`                             | `snippets`                            | `extensions`                             |
 | `search details`                       | `output panel`                        | `markdown preview`                       |
-| `markdown preview side`                | `Zen mode`                            | `[open] command palette`                 |
+| `markdown preview side`                | `Zen mode`                            | `[open] command palette [<text>]`        |
 | `(Open [file] / Go to [tab]) [<text>]` | `Save and close`                      | `new file`                               |
 | `new window`                           | `close window`                        | `close workspace`                        |
 | `close editor`                         | `save as`                             | `save all`                               |
@@ -662,5 +663,6 @@ Same Commands as [Git Bash](#git-bash)
 | `join line`                            | `toggle blame`                        | `lens commit details`                    |
 | `lens file history`                    | `lens repo status`                    | `toggle git lens`                        |
 | `mark (prev / prior / previous)`       | `mark next`                           | `<action>* [line] <ln1> [by <ln2>]`      |
+| `open project [<text>]`                |                                       |                                          |
 
 \* select / copy / cut / paste / delete
