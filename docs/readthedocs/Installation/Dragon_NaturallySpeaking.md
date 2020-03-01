@@ -8,11 +8,13 @@
 
    - Disable all the checkboxes in the “Correction” menu, except for the “Automatically add words to the active vocabulary” option.
 
-        Under the “Commands” menu make sure to check the “Require click to select…” checkboxes. Otherwise you will find yourself accidentally clicking buttons or menu items instead of inserting text into your editor. I’ve disabled the other checkboxes in that menu as well.
+     Under the “Commands” menu make sure to check the “Require click to select…” checkboxes. Otherwise you will find yourself accidentally clicking buttons or menu items instead of inserting text into your editor. I’ve disabled the other checkboxes in that menu as well.
 
    - Set the “speed versus accuracy” slider in the “Miscellaneous” menu to a fairly high value.
 
-     ​    Uncheck the “Use the dictation box for unsupported applications” checkbox. Use Caster text manipulation instead.
+     Uncheck the “Use the dictation box for unsupported applications” checkbox. Use Caster text manipulation instead.
+
+   
 
 2. ### Python
 
