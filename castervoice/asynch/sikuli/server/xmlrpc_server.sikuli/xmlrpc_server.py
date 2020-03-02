@@ -8,7 +8,7 @@ import sys
 from inspect import getmembers, isfunction
 
 modules = []
-server = SimpleXMLRPCServer(("127.0.0.1", 8000), allow_none=True)
+server = SimpleXMLRPCServer(("127.0.0.1", 8000), logRequests=False, allow_none=True)
 quit = 0
 
 SCRIPTS_PATH = sys.argv[1]

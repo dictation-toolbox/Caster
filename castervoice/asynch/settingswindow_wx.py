@@ -45,6 +45,7 @@ NUMBER_SETTING = 16
 BOOLEAN_SETTING = 32
 
 OnKillEvent, EVT_ON_KILL = wx.lib.newevent.NewEvent()
+OnCompleteEvent, EVT_ON_COMPLETE = wx.lib.newevent.NewEvent()
 SETTINGS_FRAME = None
 
 
@@ -84,6 +85,7 @@ class SettingsFrame(Frame):
         self.CenterOnScreen()
         self.Show()
         self.Bind(EVT_ON_KILL, self.OnKill)
+        self.Bind(EVT_ON_COMPLETE, self.OnComplete)
         self.Bind(EVT_CLOSE, self.xmlrpc_kill)
         self.expiration = threading.Timer(300, self.xmlrpc_kill)
         self.expiration.start()
@@ -100,6 +102,10 @@ class SettingsFrame(Frame):
         self.expiration.cancel()
         self.server.shutdown()
         self.Destroy()
+
+    def OnComplete(self, event):
+        self.completed = True
+        self.Hide()
 
     def prepare_for_exit(self, e):
         self.Hide()
@@ -154,8 +160,7 @@ class SettingsFrame(Frame):
             return None
 
     def xmlrpc_complete(self):
-        self.completed = True
-        self.Hide()
+        wx.PostEvent(SETTINGS_FRAME, OnCompleteEvent())
 
     def make_page(self, title):
         page = ScrolledPanel(parent=self.notebook, id=-1)
@@ -228,7 +233,9 @@ class SettingsFrame(Frame):
 
 def main():
     server_address = (Communicator.LOCALHOST, Communicator().com_registry["hmc"])
-    server = SimpleXMLRPCServer(server_address, allow_none=True)
+    # Enabled by default logging causes RPC to malfunction when the GUI runs on
+    # pythonw.  Explicitly disable logging for the XML server.
+    server = SimpleXMLRPCServer(server_address, logRequests=False, allow_none=True)
     app = App(False)
     SettingsFrame(None,
                   settings.SETTINGS_WINDOW_TITLE + settings.SOFTWARE_VERSION_NUMBER,

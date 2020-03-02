@@ -45,6 +45,8 @@ BOOLEAN_SETTING = 32
 CONTROL_KEY = PySide2.QtCore.Qt.Key_Meta if sys.platform == "darwin" else PySide2.QtCore.Qt.Key_Control
 SHIFT_TAB_KEY = int(PySide2.QtCore.Qt.Key_Tab) + 1
 
+RPC_COMPLETE_EVENT = PySide2.QtCore.QEvent.Type(PySide2.QtCore.QEvent.registerEventType(-1))
+
 
 class Field:
     def __init__(self, widget, original, text_type=None):
@@ -98,6 +100,10 @@ class SettingsDialog(QDialog):
                     next = tabs_count - 1 if next == -1 else next
                     self.tabs.setCurrentIndex(next)
                     return True
+        elif event.type() == RPC_COMPLETE_EVENT:
+            self.completed = True
+            self.hide()
+            return True
         return QDialog.event(self, event)
 
     def keyPressEvent(self, event):
@@ -213,8 +219,7 @@ class SettingsDialog(QDialog):
             return None
 
     def xmlrpc_complete(self):
-        self.completed = True
-        self.hide()
+        PySide2.QtCore.QCoreApplication.postEvent(self, PySide2.QtCore.QEvent(RPC_COMPLETE_EVENT))
 
     def accept(self):
         self.xmlrpc_complete()
@@ -225,7 +230,9 @@ class SettingsDialog(QDialog):
 
 def main():
     server_address = (Communicator.LOCALHOST, Communicator().com_registry["hmc"])
-    server = SimpleXMLRPCServer(server_address, allow_none=True)
+    # Enabled by default logging causes RPC to malfunction when the GUI runs on
+    # pythonw.  Explicitly disable logging for the XML server.
+    server = SimpleXMLRPCServer(server_address, logRequests=False, allow_none=True)
     app = QApplication(sys.argv)
     window = SettingsDialog(server)
     window.show()
