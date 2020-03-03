@@ -1,24 +1,18 @@
 # -*- coding: utf-8 -*-
-import win32api, win32con
 '''
 master_text_nav shouldn't take strings as arguments - it should take ints, so it can be language-agnostic
 '''
-
-import time
-from ctypes import windll
-from subprocess import Popen
-
 import six
-
-import dragonfly
-from dragonfly import Choice, monitors
+import subprocess
+import time
+from dragonfly import get_engine, monitors
 from castervoice.asynch.mouse.legion import LegionScanner
-from castervoice.lib import control, settings, utilities, textformat, printer
+from castervoice.lib import control, settings, utilities, textformat
 from castervoice.lib.actions import Key, Text, Mouse
 from castervoice.lib.clipboard import Clipboard
 
-
 _CLIP = {}
+GRID_PROCESS = None
 
 
 def initialize_clipboard():
@@ -32,6 +26,7 @@ initialize_clipboard()
 
 
 def mouse_alternates(mode, monitor=1):
+    args = []
     if mode == "legion" and not utilities.window_exists(None, "legiongrid"):
         r = monitors[int(monitor) - 1].rectangle
         bbox = [
@@ -43,29 +38,54 @@ def mouse_alternates(mode, monitor=1):
         ls = LegionScanner()
         ls.scan(bbox)
         tscan = ls.get_update()
-        Popen([
-            settings.settings(["paths","PYTHONW"]),
-            settings.settings(["paths","LEGION_PATH"]), "-t", tscan[0], "-m",
+        args = [
+            settings.settings(["paths", "PYTHONW"]),
+            settings.settings(["paths", "LEGION_PATH"]), "-t", tscan[0], "-m",
             str(monitor)
-        ])
+        ]
     elif mode == "rainbow" and not utilities.window_exists(None, "rainbowgrid"):
-        Popen([
-            settings.settings(["paths","PYTHONW"]),
-            settings.settings(["paths","RAINBOW_PATH"]), "-g", "r", "-m",
+        args = [
+            settings.settings(["paths", "PYTHONW"]),
+            settings.settings(["paths", "RAINBOW_PATH"]), "-g", "r", "-m",
             str(monitor)
-        ])
+        ]
     elif mode == "douglas" and not utilities.window_exists(None, "douglasgrid"):
-        Popen([
-            settings.settings(["paths","PYTHONW"]),
-            settings.settings(["paths","DOUGLAS_PATH"]), "-g", "d", "-m",
+        args = [
+            settings.settings(["paths", "PYTHONW"]),
+            settings.settings(["paths", "DOUGLAS_PATH"]), "-g", "d", "-m",
             str(monitor)
-        ])
+        ]
     elif mode == "sudoku" and not utilities.window_exists(None, "sudokugrid"):
-        Popen([
-            settings.settings(["paths","PYTHONW"]),
-            settings.settings(["paths","SUDOKU_PATH"]), "-g", "s", "-m",
+        args = [
+            settings.settings(["paths", "PYTHONW"]),
+            settings.settings(["paths", "SUDOKU_PATH"]), "-g", "s", "-m",
             str(monitor)
-        ])
+        ]
+    global GRID_PROCESS
+    GRID_PROCESS = subprocess.Popen(args) if args else None
+
+
+def wait_for_grid_exit(timeout=5):
+    global GRID_PROCESS
+    if GRID_PROCESS:
+        # TODO Remove if-part after fully migrating to Python3
+        if six.PY2:
+            t = 0.0
+            inc = 0.1
+            while t < timeout:
+                GRID_PROCESS.poll()
+                if GRID_PROCESS.returncode is not None:
+                    break
+                t += inc
+                time.sleep(inc)
+            if t >= timeout:
+                GRID_PROCESS.kill()
+        else:
+            try:
+                GRID_PROCESS.wait(timeout)
+            except subprocess.TimeoutExpired:  # pylint: disable=no-member
+                GRID_PROCESS.kill()
+    GRID_PROCESS = None
 
 
 def _text_to_clipboard(keystroke, nnavi500):
@@ -83,7 +103,7 @@ def _text_to_clipboard(keystroke, nnavi500):
                 # time for keypress to execute
                 time.sleep(
                     settings.settings([u'miscellaneous', u'keypress_wait'])/1000.)
-                _CLIP[key] = six.string_types(Clipboard.get_system_text())
+                _CLIP[key] = Clipboard.get_system_text()
                 utilities.save_json_file(
                     _CLIP, settings.settings([u'paths', u'SAVED_CLIPBOARD_PATH']))
             except Exception:
@@ -113,7 +133,7 @@ def drop_keep_clipboard(nnavi500, capitalization, spacing):
         if key in _CLIP:
             text = _CLIP[key]
         else:
-            dragonfly.get_engine().speak("slot empty")
+            get_engine().speak("slot empty")
             text = None
     else:
         text = Clipboard.get_system_text()
@@ -174,13 +194,11 @@ left_up      = lambda: mouse_click("left:up")
 right_down   = lambda: mouse_click("right:down")
 right_up     = lambda: mouse_click("right:up")
 
+
 def wheel_scroll(direction, nnavi500):
-    amount = 120
-    if direction != "up":
-        amount = amount * -1
+    wheel = "wheelup" if direction == "up" else "wheeldown"
     for i in range(1, abs(nnavi500) + 1):
-        windll.user32.mouse_event(0x00000800, 0, 0, amount, 0)
-        time.sleep(0.1)
+        Mouse("{}:1/10".format(wheel)).execute()
 
 
 def curse(direction, direction2, nnavi500, dokick):
@@ -199,10 +217,9 @@ def curse(direction, direction2, nnavi500, dokick):
     Mouse("<" + str(x) + ", " + str(y) + ">").execute()
     if int(dokick) != 0:
         if int(dokick) == 1:
-            left_click(control.nexus()) # pylint: disable=too-many-function-args
+            left_click()
         elif int(dokick) == 2:
-            right_click(control.nexus()) # pylint: disable=too-many-function-args
-
+            right_click()
 
 
 def next_line(semi):
