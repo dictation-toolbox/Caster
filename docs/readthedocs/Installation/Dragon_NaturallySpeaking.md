@@ -14,7 +14,6 @@
 
      Uncheck the “Use the dictation box for unsupported applications” checkbox. Use Caster text manipulation instead.
 
-   
 
 2. ### Python
 
@@ -22,14 +21,12 @@
 
    Make sure to select `Add python to path`. This can be done manually by searching for "edit environment variables for your account" and adding your Python folder to the list of Path values
 
-   
 
-3.  **NatLink**  - Only for Dragon NaturallySpeaking
+3. ### NatLink
 
    Download and install [Natlink](https://sourceforge.net/projects/natlink/files/natlink/natlink4.2/). Use `Natlink-4.2` or newer.
 
    
-
 4. ### Caster
    1. Download Caster from the [master branch](https://github.com/dictation-toolbox/Caster/archive/master.zip).
    2. Open up the zip file downloaded
@@ -38,8 +35,6 @@
    5. *Optional Step* for Caster's`Legion` MouseGrid - Legion Feature available on Windows 8 and above.
       - The Legion MouseGrid requires [Microsoft Visual C++ Redistributable Packages for Visual Studio 2015, 2017 and 2019 (x86).](https://support.microsoft.com/en-nz/help/2977003/the-latest-supported-visual-c-downloads) Note: Should not be needed if Windows 10 is up-to-date.
 
-   
-   
 5. **Setup and launch DNS for Classic Install.**
 
    1. Start or restart Dragon. `Click Run_Caster_DNS.bat` Status Window appear and load Caster.  Once loaded Caster commands should be available to dictate.
