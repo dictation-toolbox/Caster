@@ -1,6 +1,8 @@
 # Dragon NaturallySpeaking - Classic Install
 
-1. **Install Dragon NaturallySpeaking** (DPI / DNS) - Caster only supports Dragon NaturallySpeaking 13 and Windows 7 or higher.
+1. **Install Dragon NaturallySpeaking** (DPI / DNS) - Caster only supports Dragon NaturallySpeaking 13 and Windows 
+
+   7 or higher.
 
    After installing Dragon Naturally Speaking you can configure the DNS settings.
 
@@ -11,22 +13,25 @@
      Under the “Commands” menu make sure to check the “Require click to select…” checkboxes. Otherwise you will find yourself accidentally clicking buttons or menu items instead of inserting text into your editor. I’ve disabled the other checkboxes in that menu as well.
 
    - Set the “speed versus accuracy” slider in the “Miscellaneous” menu to a fairly high value.
-
+   
      Uncheck the “Use the dictation box for unsupported applications” checkbox. Use Caster text manipulation instead.
-
-
+   
+   
+   
 2. ### Python
 
-   **First** Download and install [Python v2.7.17 32-bit](https://www.python.org/downloads/release/python-2717/) listed as `Windows x86 MSI installer` not Python 3 or the Python 2.7 64-bit. These dependencies will change when Natlink utilizes Python 3.
+   Download and install [Python v2.7.17 32-bit](https://www.python.org/downloads/release/python-2717/) listed as `Windows x86 MSI installer` not Python 3 or the Python 2.7 64-bit. These dependencies will change when Natlink utilizes Python 3.
 
    Make sure to select `Add python to path`. This can be done manually by searching for "edit environment variables for your account" and adding your Python folder to the list of Path values
 
+   
 
 3. ### NatLink
 
    Download and install [Natlink](https://sourceforge.net/projects/natlink/files/natlink/natlink4.2/). Use `Natlink-4.2` or newer.
 
    
+
 4. ### Caster
    1. Download Caster from the [master branch](https://github.com/dictation-toolbox/Caster/archive/master.zip).
    2. Open up the zip file downloaded
@@ -34,6 +39,8 @@
    4. Install dependencies and set up Natlink by running `Caster/Install_Caster_DNS-WSR.bat`. *Note that for this to work correctly Python must be installed to `C:/Python27` *
    5. *Optional Step* for Caster's`Legion` MouseGrid - Legion Feature available on Windows 8 and above.
       - The Legion MouseGrid requires [Microsoft Visual C++ Redistributable Packages for Visual Studio 2015, 2017 and 2019 (x86).](https://support.microsoft.com/en-nz/help/2977003/the-latest-supported-visual-c-downloads) Note: Should not be needed if Windows 10 is up-to-date.
+
+   
 
 5. **Setup and launch DNS for Classic Install.**
 
