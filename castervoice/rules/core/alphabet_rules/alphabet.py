@@ -3,7 +3,7 @@ from dragonfly import Function, Choice
 
 try:  # Try first loading from caster user directory
     import alphabet_support
-except ImportError: 
+except ImportError:
     from castervoice.rules.core.alphabet_rules import alphabet_support
 
 from castervoice.lib.const import CCRType

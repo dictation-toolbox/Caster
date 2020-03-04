@@ -1,15 +1,10 @@
 import time
-
-from dragonfly import Playback, Function, Choice, MappingRule
-
-from castervoice.lib import control, settings, navigation
-from castervoice.asynch.mouse import grids
-import win32api, win32con
-
-from castervoice.rules.ccr.standard import SymbolSpecs
+from dragonfly import Playback, Function, Choice, MappingRule, Mouse
+from castervoice.lib import control, navigation
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
+from castervoice.rules.ccr.standard import SymbolSpecs
 
 
 def kill():
@@ -28,7 +23,7 @@ def send_input(n, action):
         response = s.retrieve_data_for_highlight(str(int(n)))
 
     s.kill()
-    grids.wait_for_death(settings.LEGION_TITLE)
+    navigation.wait_for_grid_exit()
 
     if int_a == 0:
         Playback([(["mouse", "left", "click"], 0.0)]).execute()
@@ -38,35 +33,30 @@ def send_input(n, action):
         x1 = response["l"] + 2
         x2 = response["r"]
         y = response["y"]
-
-        win32api.SetCursorPos((x1, y))
-        win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0)
-        win32api.SetCursorPos((x2, y))
+        Mouse("[{}, {}]".format(x1, y)).execute()
         time.sleep(0.1)
-        win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0)
+        Mouse("left:down").execute()
+        Mouse("[{}, {}]".format(x2, y)).execute()
+        time.sleep(0.1)
+        Mouse("left:up").execute()
 
 
 def drag_highlight(n1, n2):
     s = control.nexus().comm.get_com("grids")
-
     response1 = s.retrieve_data_for_highlight(str(int(n1)))
     response2 = s.retrieve_data_for_highlight(str(int(n2)))
-
     s.kill()
-    grids.wait_for_death(settings.LEGION_TITLE)
-
+    navigation.wait_for_grid_exit()
     x11 = response1["l"] + 2
-    x12 = response1["r"]
     y1 = response1["y"]
-    x21 = response2["l"] + 2
     x22 = response2["r"]
     y2 = response2["y"]
-
-    win32api.SetCursorPos((x11, y1))
-    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0)
-    win32api.SetCursorPos((x22, y2))
+    Mouse("[{}, {}]".format(x11, y1)).execute()
     time.sleep(0.1)
-    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0)
+    Mouse("left:down").execute()
+    Mouse("[{}, {}]".format(x22, y2)).execute()
+    time.sleep(0.1)
+    Mouse("left:up").execute()
 
 
 class LegionGridRule(MappingRule):

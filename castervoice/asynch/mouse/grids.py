@@ -1,49 +1,32 @@
 from __future__ import division
 
+import getopt
+import os
+import signal
 import six
+import sys
+import threading as th
+import time
+from dragonfly import monitors
 if six.PY2:
     from SimpleXMLRPCServer import SimpleXMLRPCServer  # pylint: disable=import-error
     import Tkinter as tk
 else:
     from xmlrpc.server import SimpleXMLRPCServer  # pylint: disable=no-name-in-module
     import tkinter as tk
-
-import getopt
-import signal
-import sys, os
-from threading import Timer
-import time
-
-import win32api, win32con
-
-from dragonfly import monitors
-
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0]
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:
     from castervoice.lib import settings, utilities
+    from castervoice.lib.actions import Mouse
     from castervoice.lib.merge.communication import Communicator
     settings.initialize()
-
 try:
     from PIL import ImageGrab, ImageTk, ImageDraw, ImageFont
 except ImportError:
-    utilities.availability_message("Douglas Grid / Rainbow Grid / Sudoku Grid",
-                                   "PIL")
-
-
-def wait_for_death(title, timeout=5):
-    t = 0.0
-    inc = 0.1
-    while t < timeout:
-        if not utilities.window_exists(None, title):
-            break
-        t += inc
-        time.sleep(inc)
-    if t >= timeout:
-        print("wait_for_death()" + " timed out (" + title + ")")
+    utilities.availability_message("Douglas Grid / Rainbow Grid / Sudoku Grid", "PIL")
 
 
 class Dimensions:
@@ -97,13 +80,11 @@ class TkTransparent(tk.Tk):
         #        self.bind("<Key>", self.key)
         # self.mainloop()#do this in the child classes
         def start_server():
-            while not self.server_quit:
-                self.server._handle_request_noblock()
+            self.server.serve_forever()
 
-        Timer(1, start_server).start()
+        th.Timer(1, start_server).start()
 
     def setup_xmlrpc_server(self):
-        self.server_quit = 0
         comm = Communicator()
         self.server = SimpleXMLRPCServer(
             (Communicator.LOCALHOST, comm.com_registry["grids"]),
@@ -131,13 +112,13 @@ class TkTransparent(tk.Tk):
         self.after(10, self.die)
 
     def die(self):
-        self.server_quit = 1
+        self.server.shutdown()
         self.destroy()
         os.kill(os.getpid(), signal.SIGTERM)
 
     @staticmethod
     def move_mouse(mx, my):
-        win32api.SetCursorPos((mx, my))
+        Mouse("[{}, {}]".format(mx, my)).execute()
 
 
 class RainbowGrid(TkTransparent):
@@ -360,6 +341,7 @@ class DouglasGrid(TkTransparent):
                     font="Arial 10 bold",
                     fill='White')
 
+
 '''
 Divide screen into grid of 3 x 3 squares and assign each one a number.
     The user can specify a square number and further refine the selection
@@ -396,11 +378,13 @@ class SudokuGrid(TkTransparent):
             # Windows sometimes steals focus anyway
             self.after(100, self.click)
         finally:
-            self.mainloop()
+            try:
+                self.mainloop()
+            except KeyboardInterrupt:
+                self.server.shutdown()
 
     def click(self):
-        win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)
-        win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
+        Mouse("left:1").execute()
 
     # Set up the RPC server
     def setup_xmlrpc_server(self):
@@ -543,9 +527,7 @@ class SudokuGrid(TkTransparent):
                     0, screen_y, self.dimensions.width, screen_y, fill=fill)
 
             # draw number
-            if ((x % 3 == 1 or x == self.width - 1) and
-                (y % 3 == 1 or y == self.height - 1)):
-
+            if (x % 3 == 1 or x == self.width - 1) and (y % 3 == 1 or y == self.height - 1):
                 n = self.square_to_num(sq)
                 pos = self.num_to_pos(n)
                 canvas.create_text(pos[0], pos[1], text=str(n),

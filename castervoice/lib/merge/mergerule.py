@@ -1,5 +1,4 @@
 import collections
-import re
 
 from dragonfly import Function, MappingRule
 
