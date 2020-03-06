@@ -5,6 +5,11 @@ Created on Jun 29, 2014
 '''
 import datetime
 import logging
+import six
+
+if six.PY2:
+    import logging
+    logging.basicConfig()
 
 from castervoice.lib.ctrl.dependencies import DependencyMan  # requires nothing
 DependencyMan().initialize()
