@@ -136,7 +136,7 @@ class CCRMerger2(object):
     @staticmethod
     def _create_contexts(app_crs, rcns_to_details):
         """
-        Returns a list of AppContexts, based on 'executable', one for each
+        Returns a list of contexts, AppContexts based on 'executable', FuncContext, one for each
         app rule, and if more than zero app rules, the negation context for the
         global ccr rule. (Global rule should be active when none of the other
         contexts are.) If there are zero app rules, [None] will be returned
