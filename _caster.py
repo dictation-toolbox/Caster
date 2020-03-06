@@ -4,7 +4,6 @@ main Caster module
 Created on Jun 29, 2014
 '''
 import datetime
-import logging
 import six
 
 if six.PY2:
