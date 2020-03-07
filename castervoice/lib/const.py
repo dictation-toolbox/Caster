@@ -1,3 +1,7 @@
+import dragonfly
+import sys
+
+
 class CCRType(object):
     GLOBAL = "global"
     APP = "app"
@@ -11,15 +15,23 @@ CORE = [
     # Rules which were split out of _caster.py:
     "CasterRule", "HardwareRule", "MouseAlternativesRule", "WindowManagementRule",
     # Alternate mouse grid controls:
-    "LegionGridRule", "DouglasGridRule", "RainbowGridRule", "SudokuGridRule",
+    "DouglasGridRule", "RainbowGridRule", "SudokuGridRule",
     # HMC GUI control rules:
     "HMCRule", "HMCConfirmRule", "HMCDirectoryRule",
     "HMCHistoryRule", "HMCLaunchRule", "HMCSettingsRule",
     # GUI Rules
     "HistoryRule", "ChainAlias", "Alias",
     # other common rules
-    "DragonRule", "BringRule", "Again",
+    "BringRule", "Again"
     ]
+
+# default-on modules that are platform or engine specific
+if sys.platform == "win32":
+    CORE.extend([
+         "LegionGridRule"
+    ])
+    if dragonfly.get_engine().name == 'natlink':
+        CORE.append("DragonRule")
 
 # internal rules
 INTERNAL = [

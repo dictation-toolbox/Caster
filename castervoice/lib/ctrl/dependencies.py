@@ -6,6 +6,7 @@ Created on Oct 7, 2015
 import os, sys, time, pkg_resources
 from pkg_resources import VersionConflict, DistributionNotFound
 
+DARWIN = sys.platform == "darwin"
 
 def install_type():
     # Checks if Caster install is Classic or PIP.
@@ -20,19 +21,16 @@ def install_type():
 
 def find_pip():
     # Find the pip script for Python.
-    python_scripts = os.path.join(sys.exec_prefix, "Scripts")
-    if sys.platform == "win32":
-        pip = os.path.join(python_scripts, "pip.exe")
-        return pip
-    if sys.platform.startswith("linux"):
-        pip = os.path.join(python_scripts, "pip")
-        return pip
-    return None
+    python_scripts = os.path.join(sys.exec_prefix,
+                                  "bin" if DARWIN else "Scripts")
+    pip_exec = "pip.exe" if sys.platform == "win32" else "pip"
+    return os.path.join(python_scripts, pip_exec)
 
 
 def dep_missing():
     uppath = lambda _path, n: os.sep.join(_path.split(os.sep)[:-n])
-    requirements = os.path.join(uppath(__file__, 4), "requirements.txt")
+    requirements_file = "requirements-mac.txt" if DARWIN else "requirements.txt"
+    requirements = os.path.join(uppath(__file__, 4), requirements_file)
     with open(requirements) as f:
         requirements = f.read().splitlines()
     for dep in requirements:

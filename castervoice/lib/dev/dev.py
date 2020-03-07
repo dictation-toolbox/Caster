@@ -79,7 +79,7 @@ def bring_test():
 def launch_url(url):
     command = utilities.default_browser_command()
     if not command:
-        threading.Thread(target=os.startfile, args=(url, )).start()
+        threading.Thread(target=os.startfile, args=(url, )).start()  # pylint: disable=no-member
     else:
         path = command.replace('%1', url)
         Popen(shlex.split(path))
