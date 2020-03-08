@@ -5,7 +5,9 @@
 **Note for PyPi Users**: The PIP package is (_Alpha_). Do not use the PIP install. Alternatively use this [Master Branch](https://github.com/dictation-toolbox/Caster) with classic install for the best feature experience.
 
 - Videos by the Caster Community:
-  - [Caster Demo](https://www.youtube.com/watch?v=oIwh3z2jXD4)
+  
+  - [Caster voice coding: Advent of Code 2018](https://youtu.be/oDsMGroASSw?t=3) - Programming with Go
+  - [Caster Demo](https://www.youtube.com/watch?v=oIwh3z2jXD4) macro recorder, clipboard control, and text formatting commands.
   - [VimGolf and Project Euler](https://www.youtube.com/watch?v=T1bKAqDhH_E)
   - [Dictating maths into scientific notebook](https://www.youtube.com/watch?v=oq8EoPu0cGY&t=3s) and [Dictating math by voice using Caster](https://www.youtube.com/watch?v=z-iHvPmjcas)
   
