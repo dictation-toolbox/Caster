@@ -8,19 +8,21 @@ class RuleDetails(object):
     A per-rule instantiation configuration.
     """
 
-    def __init__(self, name=None, executable=None, title=None, grammar_name=None,
+    def __init__(self, name=None, function_context=None, executable=None, title=None, grammar_name=None,
                  ccrtype=None, transformer_exclusion=False,
                  watch_exclusion=False):
         """
         :param name: Dragonfly rule name
-        :param executable: Dragonfly AppContext executable
-        :param title: Dragonfly AppContext title
+        :param function_context: Dragonfly FunctionContext bool variable
+        :param executable: Dragonfly Context executable
+        :param title: Dragonfly Context title
         :param grammar_name: Dragonfly grammar name
         :param ccrtype: global, app, selfmod, or none
         :param transformer_exclusion: exclude from transformations
         :param watch_exclusion: should not be watched for changes ("system" rules)
         """
         self.name = name
+        self.function_context = function_context
         self.executable = executable
         self.title = title
         self.grammar_name = grammar_name

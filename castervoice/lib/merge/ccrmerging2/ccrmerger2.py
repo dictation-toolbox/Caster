@@ -1,5 +1,6 @@
 from dragonfly.grammar.elements import RuleRef, Alternative, Repetition
 from dragonfly.grammar.rule_compound import CompoundRule
+from dragonfly import FuncContext
 from castervoice.lib.const import CCRType
 from castervoice.lib.context import AppContext
 from castervoice.lib.ctrl.mgr.rules_enabled_diff import RulesEnabledDiff
@@ -135,7 +136,7 @@ class CCRMerger2(object):
     @staticmethod
     def _create_contexts(app_crs, rcns_to_details):
         """
-        Returns a list of AppContexts, based on 'executable', one for each
+        Returns a list of contexts, AppContexts based on 'executable', FuncContext, one for each
         app rule, and if more than zero app rules, the negation context for the
         global ccr rule. (Global rule should be active when none of the other
         contexts are.) If there are zero app rules, [None] will be returned
@@ -149,7 +150,10 @@ class CCRMerger2(object):
         negation_context = None
         for cr in app_crs:
             details = rcns_to_details[cr.rule_class_name()]
-            context = AppContext(executable=details.executable, title=details.title)
+            if details.function_context is not None:
+                context = FuncContext(function=details.function_context, executable=details.executable, title=details.title)
+            else:
+                context = AppContext(executable=details.executable, title=details.title)
             contexts.append(context)
             if negation_context is None:
                 negation_context = ~context

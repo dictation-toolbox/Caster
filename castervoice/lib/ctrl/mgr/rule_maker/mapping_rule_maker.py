@@ -1,4 +1,4 @@
-from dragonfly import Grammar
+from dragonfly import Grammar, FuncContext
 from castervoice.lib.context import AppContext
 from castervoice.lib.ctrl.mgr.rule_maker.base_rule_maker import BaseRuleMaker
 
@@ -24,8 +24,11 @@ class MappingRuleMaker(BaseRuleMaker):
         self._smr_configurer.configure(rule_instance)
 
         context = None
-        if details.executable is not None or details.title is not None:
-            context = AppContext(executable=details.executable, title=details.title)
+        if details.function_context is not None:
+            context = FuncContext(function=details.function_context, executable=details.executable, title=details.title)
+        else:
+            if details.executable is not None or details.title is not None:
+                context = AppContext(executable=details.executable, title=details.title)
         self._name_uniquefier += 1
         counter = "g" + str(self._name_uniquefier)
         grammar_name = counter if details.grammar_name is None else details.grammar_name + counter
