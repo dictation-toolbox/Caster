@@ -17,7 +17,7 @@
 
 ## Introduction
 
-For an introduction to CCR, check out [this video](http://www.youtube.com/watch?v=g3c5H7sAbBQ). The short version is, CCR allows you to speak sequential commands without pauses between them, greatly speeding up your ability to use commands in general.
+For an introduction to CCR, check out [this video](http://www.youtube.com/watch?v=g3c5H7sAbBQ). The short version is: CCR allows you to speak sequential commands without pauses between them, greatly speeding up your ability to use commands in general.
 
 ## CCR In Caster
 
@@ -35,17 +35,17 @@ However, this also creates the need for compatibility checking. For example, sup
 
 There are different kinds of Dragonfly and Caster rules which can be created or modified. Each rule is either a single command or a command set. These types include:
 
-- **Rule, CompoundRule, MappingRule**: the original Dragonfly rule types. These can be used with Caster, but not for CCR.
-- **MergeRule**: the basic Caster CCR building block. It is similar to Dragonfly's MappingRule, but has a few extra properties.
+- **Rule, CompoundRule, MappingRule**: the original Dragonfly rule types. These can be used with Caster but not for CCR.
+- **MergeRule**: the basic Caster CCR building block. It is similar to Dragonfly's MappingRule but has a few extra properties.
 - **SelfModifyingRule**: this is a type of MergeRule which modifies its own command set based on some kind of user input. NodeRule, Alias, ChainAlias, and HistoryRule are all SelfModifyingRules.
 
 We'll go into more detail on the differences between these rules elsewhere. For now, know that most rules used for CCR in Caster extend MergeRule.
 
 ### How to Add and Modify Rules
 
-If you'd like to add rules for new languages or popular libraries for languages, you should create them in the `lib/ccr/` folder. If you want to add a custom command set, say, for work, you should put it in the `C:\Users\%USERNAME%\AppData\Local\caster\rules` folder. This folder is ignored by Git, so you won't upload it if/when you commit other changes.
+If you'd like to add rules for new languages or popular libraries for languages for the Castor repository, you should create them in the `castervoice\lib\ccr\` folder. If you want to add a custom command set, say, for work/home, you should put it in the `C:\Users\%USERNAME%\AppData\Local\caster\rules` folder. 
 
-If you want to personalize existing command sets, you can use rule filters. Rule filters let you instruct Caster as to how it should modify command sets either at boot or at runtime when command sets change (for example, when you say `enable Python`).
+If you want to personalize existing command sets, you can use rule transformers. Rule transformers let you instruct Caster as to how it should modify command sets either at boot or at runtime when command sets change (for example, when you say `enable Python`).
 
 ### Rule Transformers  - Out of date - 
 
@@ -70,14 +70,14 @@ Let's go through these.
 MergeRule has a handful of class-level properties which can be defined to enable certain behavior.
 
 - `pronunciation`: This property allows me to change which word I can use in the `enable`/`disable` commands. For example, if my MergeRule-extending class is called `NYCCommands`, I can set `pronunciation="new york city"` in order to be able to say `enable new york city`.
-- `non`: Suppose you want a non-CCR rule activated alongside your CCR rule. For instance, let's say there are some Python commands you want available while you're coding in Python, but which you know you'll never use as part of a command sequence and which you don't want in the CCR command set for performance / phonetic distinctness reasons. You can define `non` as the class of that rule and it will be instantiated and activated alongside the MergeRule you define it on. The same thing works for App CCR rules.
+- `non`: Suppose you want a non-CCR rule activated alongside your CCR rule. For instance, let's say there are some Python commands you want available while you're coding in Python, but which you know you'll never use as part of a command sequence and which you don't want in the CCR command set for performance / phonetic distinctness reasons. You can define `non` as the class of that rule, and it will be instantiated and activated alongside the MergeRule you define it on. The same thing works for App CCR rules. These definitions are defined in Companion Rules.
 
 ### How to Register Caster CCR Rules
 
 In order to make any new rules you might create available to the CCRMerger, you must register them as follows:
 
 ```python
-# Global Rules
+# Global Rules:
 def get_rule():
     details =  RuleDetails(ccrtype=CCRType.GLOBAL)
     return SomeRule1, details
@@ -87,7 +87,7 @@ def get_rule():
     details = RuleDetails(ccrtype=CCRType.APP, executable="eclipse", title="application title")
     return SomeRule2, details
 
-# Self Modifying Rules (SMR)
+# Self Modifying Rules (SMR):
 def get_rule():
     details = RuleDetails(ccrtype=CCRType.SELFMOD)
     return SomeRuleSMR, details

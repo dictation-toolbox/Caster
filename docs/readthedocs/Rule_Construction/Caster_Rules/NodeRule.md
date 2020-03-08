@@ -10,7 +10,7 @@
 
 ## What and Why
 
-Dragon NaturallySpeaking has an upper complexity limit on Grammars. After the limit is reached, a BadGrammar error will occur. NodeRule is a way to sidestep that limit. By packing specs into nodes in a tree, and only activating part of the tree at a given time, it's possible to include thousands of specs in a single grammar.
+All speech recognition engines, including Dragon NaturallySpeaking, have an upper complexity limit on Grammars. After the limit is reached, a BadGrammar error will occur. NodeRule is a way to sidestep that limit. By packing specs into nodes in a tree - and only activating part of the tree at a given time - it's possible to include thousands of specs in a single grammar.
 
 So, let's say for example that I want to be able to speak any of the following command chains, where the letters represent specs.
 
@@ -81,14 +81,18 @@ HintNode("choose [<d>]", Function(print_choice), extras=[Choice("d", {"one":1, "
 ### Registering Your NodeRule.
 
 - Drop the following rule `YourTree.py` into `.caster\rules`
-- You will need to add to `settings.toml` Under `[Tree_Node_Path]` the following on its own line `SM_<YourTreeRule>_TREE_PATH = "C:/Users//.caster/data/sm_<YourTreeRule>_tree_node.toml"`
--  Restart Caster
+
+- You will need to add to `settings.toml` under `[Tree_Node_Path]` in its own line eg. `SM_<YourTreeRule>_TREE_PATH = "C:/Users/.caster/data/sm_<YourTreeRule>_tree_node.toml"`
+
+- Restart Caster
+
 - The pronunciation for enabling and disabling a note rule is the `class name` 
 
-### Complete NodeRule Example .
+  **Note**: To manually reset the NodeTree say `cancel demo nodes`
 
-<Details>
-```
+### Complete NodeRule Example Rule
+
+```python
 from castervoice.lib.actions import Text
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
@@ -119,24 +123,22 @@ class DemoTreeRule(TreeRule):
 def get_rule():
      return [DemoTreeRule, RuleDetails(ccrtype=CCRType.SELFMOD)]
 ```
+
+### Registering the Complete NodeRule Example
+
 1. Drop the following rule `DemoTreeRule` into `.caster\rules`.
 
 2. You will need to add to `settings.toml` Under `[paths]`  the following on its own line `SM_DEMO_NODES_TREE_PATH = "C:/Users/<Insert username here>/.caster/data/sm_demo_tree_node.toml"` 
 
-3. Restart Dragon.
+3. Restart Caster.
 
 4. To enable the rule say `Enable Demo Tree Rule`
 
    **Note**: If you forget to add the path above in the settings the following will print out.
    `TreeRuleConfigurationError: Path 'SM_DEMO_NODES_TREE_PATH' was not found in the 'paths' section of settings.toml. Did you add it?`
 
-   **Note**: To manually reset the NodeTree say `cancel demo nodes`
+**NodeRule Example Spec Flowchart**
 
-The below flowchart is to clarify the flow of commands throughout different node levels. To begin transitioning the Nodes say `I say zero` It will perform that action and advance to the next level (Node). However if I say `level one be` the NodeTree will reset back all the way to the beginning `I say zero`.
-
+Once the DemoTreeRule is registered the flowchart below can be used as a reference. The flowchart is to clarify the flow of commands throughout different node levels  To begin transitioning the Nodes say `I say zero` It will perform that action and advance to the next level Node. However if I say `level one be` the NodeTree will reset back all the way to the beginning `I say zero`.
 
 ![image](https://user-images.githubusercontent.com/24551569/70587921-eafe5b00-1b90-11ea-8e17-16db4036bf73.png)
-
-
-
-

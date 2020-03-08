@@ -1,10 +1,10 @@
 # Caster
 [![Travis Build Status](https://travis-ci.org/dictation-toolbox/Caster.svg?branch=master)](https://travis-ci.org/dictation-toolbox/Caster) [![Documentation Status](https://readthedocs.org/projects/caster/badge/?version=latest)](https://caster.readthedocs.io/en/latest/?badge=latest)
-[Caster](https://github.com/dictation-toolbox/Caster) is a collection of tools to control your computer by voice built upon the [Dragonfly](https://github.com/dictation-toolbox/dragonfly) framework. Caster gives you the power with mouse and keyboard to augment your workflow for every day activities or as an accessibility tool to develop applications entirely by voice. 
+[Caster](https://github.com/dictation-toolbox/Caster) is a collection of tools to control your computer by voice built upon the [Dragonfly](https://github.com/dictation-toolbox/dragonfly) framework. Caster gives you the power to control your computer by voice. Take control of your applications, games, and your mouse and keyboard to augment your workflow for every day activities or as an accessibility tool to develop applications entirely by voice. 
 
 **Note for PyPi Users**: The PIP package is (_Alpha_). Do not use the PIP install. Alternatively use this [Master Branch](https://github.com/dictation-toolbox/Caster) with classic install for the best feature experience.
 
-- Videos by the Caster Community.
+- Videos by the Caster Community:
   - [Caster Demo](https://www.youtube.com/watch?v=oIwh3z2jXD4)
   - [VimGolf and Project Euler](https://www.youtube.com/watch?v=T1bKAqDhH_E)
   - [Dictating maths into scientific notebook](https://www.youtube.com/watch?v=oq8EoPu0cGY&t=3s) and [Dictating math by voice using Caster](https://www.youtube.com/watch?v=z-iHvPmjcas)
@@ -15,16 +15,16 @@
 
 - [How to Speak Code](https://caster.readthedocs.io/en/latest/readthedocs/Examples/Speaking/Examples/) - Example Document
 
-- Caster Command Reference Guides 
-  - [Caster](https://github.com/dictation-toolbox/Caster/blob/master/CasterQuickReference.pdf) - commands to get started with. Universal navigation and editing - These commands are active all the time, and provide input commands for letters, numbers and punctuation, as well as the ability to easily manipulate windows and text. 
+- Caster Command Reference Guides:
+  - [Caster](https://github.com/dictation-toolbox/Caster/blob/master/CasterQuickReference.pdf) - Universal navigation and editing -  These voice commands are active all the time and provide input commands for letters, numbers, and punctuation, as well as the ability to easily manipulate windows and text. 
     - `window right` moves the active window to the right-hand side of the screen.
     - `prekris` inserts a pair of brackets `()` and moves the cursor inside them.
-    - `shackle` selects the current line.
+    - `shackle` selects the current line
   - [Applications](https://caster.readthedocs.io/en/latest/readthedocs/Application_Commands_Quick_Reference/) - Application specific control - These commands are only activated when a particular program is the active window, and they provide support for text editors, IDEs, web browsers etc. For example, while the Sublime text editor is the active window, saying
     - `find` will execute a `ctrl-f` keystroke, bringing up the find and replace prompt,
     - `open file` will execute a `ctrl-o` keystroke,
     - `edit next <n>` - `ctrl-d` n times, selecting the next n instances of the currently selected word.
-  - [Program Languages](https://caster.readthedocs.io/en/latest/readthedocs/CCR_languages_Quick_Reference/) - Language specific coding - These modules are activated and deactivated with the `enable/disable <language>` voice command. For example say `enable python`. 
+  - [Program Languages](https://caster.readthedocs.io/en/latest/readthedocs/CCR_languages_Quick_Reference/) - Language specific coding - These modules are activated and deactivated with the `enable/disable <language>` voice command. For example after saying `enable python`, the following commands become available for dictation: 
     - `for loop` which will insert `for i in range(0, ):`
     - `print to console` - `print()`
     - `open file` -  `open('filename', 'r') as f:`

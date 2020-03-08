@@ -1,6 +1,6 @@
 # Mouse
 
-A video demonstration [here](https://youtu.be/UISjQBMmQ-I). Note that this demonstration is a little old and doesn't show all features.
+A video demonstration of mouse commands is found [here](https://youtu.be/UISjQBMmQ-I). Note that this demonstration is a little old and doesn't show all features.
 
 ## Basic mouse commands
 

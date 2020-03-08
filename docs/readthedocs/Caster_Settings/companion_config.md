@@ -4,18 +4,18 @@
 
 - Enabling a parent rule with a companion enables them both
 - Disabling the rule which enabled the companion disables the companion
-- Disabling the companion does NOT disable the rule
+- Disabling the companion does NOT disable the parent rule
 
-Consider the following Example `Python = ["PythonNon"]` 
+Consider the following example `Python = ["PythonNon"]` 
 
-`Python ` Is the parent rule and `PythonNon` Is its child. Say  `Enable Python` then not only would `Python` and `PythonNon` would become enabled.
+`Python ` is the parent rule and `PythonNon` is its child. If you say  `Enable Python` then not only `Python` but also `PythonNon` rule would become enabled.
 
 Guide to creating your own companions
 
-- The names are the exact class names of the Rule.
+- The names are the exact class names of the rule.
 
 - The rule `parent rule` must be MergeRules and a the `child` MappingRules.
-- Caution it is possible to have a companion rule circle, which  is to say, an infinite enable loop.
+- Caution it is possible to have a companion rule circle, which  is to say, an infinite loop.
 
 Default companions for Caster `1.x.x`
 

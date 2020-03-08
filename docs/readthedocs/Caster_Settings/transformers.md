@@ -1,6 +1,6 @@
 ## Transformers
 
-**Update**: The fate of Transformer feature has decided and is now considered deprecated..See [Issue #43](https://github.com/synkarius/Caster/issues/43) No new transformers can be defined by the end user except for `Simplified Transformers` via words.txt.
+**Update**: The fate of Transformer feature has been decided, and it is now considered deprecated except for internal Caster use eg. `Simplified Transformers` view words.txt. See [Issue #43](https://github.com/synkarius/Caster/issues/43). No new transformers can be defined by the end user.
 
 ### Complex Transformers - Feature 
 

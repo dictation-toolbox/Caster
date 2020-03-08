@@ -1,26 +1,26 @@
 ## Settings
 
-Explanation of `settings.toml`. Caster settings can be edited in the following ways.
+Explanation of `settings.toml`. Caster settings can be edited in the following ways:
 
-- Edited through a GUI Say `launch caster settings` once done say `complete` To save the file
+- Edited through a GUI. Say `launch caster settings`. Once done, say `complete` to save the file
 
-- The settings file can be summoned manually by saying `bring me caster sBring meettings file` to your default editor for `.toml` files
+- The settings file can be summoned manually by saying `bring me caster settings file` to your default editor for `.toml` files
 
   
 
-  The following is an example settings file with comments explaining the various settings. Some of the settings fields have been truncated for brevity as noted in the comments.
+  The following is an `example.toml` settings file with comments explaining the various settings. Some of the settings fields have been truncated for brevity as noted in the comments.
 
 ```toml
 [Tree_Node_Path] # Paths for Node Tree Rules
 SM_CSS_TREE_PATH = "C:\\Users\\Main\\AppData\\Local\\caster\\data\\sm_css_tree.toml"
 
 
-[formats] # Truncated - Control setting dictation formatting per language pre language.
-# Legend - Represents text formatting (capitalization and spacing) rules
-# Each language can hold two formats. You may want to format your variables different than your class for example.
+[formats] # Truncated - Control setting dictation formatting per programming language.
+# Legend - Represents text formatting (capitalization and spacing) rules.
+# Each language can hold two formats. You can have differen formats for classes and variables for example.
 
 [formats."C plus plus"] # Language
-# First nuumber is capitalization second is spacing
+# The first nuumber is capitalization and the second is spacing.
 secondary_format = [2, 1] 
 text_format = [3, 1]
 
@@ -51,22 +51,22 @@ default_hooks = ["PrinterHook"] # Default hooks. Do not edit.
 atom_palette_wait = 30 # Milliseconds to pause for atom palette functions
 ccr_on = true # Toggle on and off all CCR commands regardless of grammar.
 dev_commands = true # No longer used
-history_playback_delay_secs = 1.0 # How fast the `playback` Command replays From 'record from history'
+history_playback_delay_secs = 1.0 # How fast the `playback` command replays from 'record from history'
 hmc = true # Turns off GUI components of Caster
 integer_remap_crash_fix = false # Unknown
 integer_remap_opt_in = false # Unknown
 keypress_wait = 50 # Configurable keypress outer pause wait from dragonfly
 legion_vertical_columns = 30 # How many vertical lines are in the Legion MouseGrid
 max_ccr_repetitions = 16 # How many CCR commands can uttered in a row. Affects grammar complexity
-print_rdescripts = true # Prints out Commands to the status window after dictation
+print_rdescripts = true # Prints out commands to the status window after dictation
 short_integer_opt_out = false # Unknown
-status_window_foreground_on_error = false # If Caster Logs an error the status window will appear for end user to evaluate error message
+status_window_foreground_on_error = false # If Caster logs an error, the status window will appear for end user to evaluate error message
 use_aenea = false # Enables aenea third-party integration
 
 [online]
 last_update_date = "2020-01-18" # Last time Caster looked for an update
-online_mode = true #  Disables all Caster features that utilizing an internet connection 
-update_interval = 7 #  Intervals days between checking for updates
+online_mode = true #  Disables all Caster features that utilize an internet connection 
+update_interval = 7 #  Interval days between checking for updates
 
 [paths] # Truncated # Default generated paths: "." placeholder for empty path.
 # Most of the settings here are auto generated which have been omitted except for the following.

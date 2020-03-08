@@ -1,6 +1,6 @@
 # Taxonomy of a Rule
 
-​	Throughout the Caster documentation, you will see references to `rule`, `command`, `spec`, `action`, `extra`, and `default`s. These all refer to parts of a Rule, typically a Dragonfly MappingRule or a Caster MergeRule. Both are structured the same way, as depicted below.
+Throughout the Caster documentation, you will see references to `rule`, `command`, `spec`, `action`, `extra`, and `default`s. These all refer to parts of a Rule, typically a Dragonfly MappingRule or a Caster MergeRule. Both are structured the same way, as depicted below.
 
 <img src="https://raw.githubusercontent.com/dictation-toolbox/Caster/master/docs/img/terminology.png">
 

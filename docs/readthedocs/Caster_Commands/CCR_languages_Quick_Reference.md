@@ -1,7 +1,8 @@
 # CCR Languages Quick Reference
 
 A quick reference guide for the language-specific commands included with Caster. Use the `"enable <language>"` command to activate a particular module.
-Classic Install Location: `castervoice\rules\ccr`
+
+Classic Install Location: `castervoice\rules\ccr` in Caster source code.
 
 - [Bash](#bash)
 - [C++](#c)

@@ -1,6 +1,6 @@
 # Text Manipulation and Navigation
 
-​	Caster provides powerful text manipulation and navigation features. These functions are experimental and subject to change (perhaps based on your feedback!). We encourage contributions; please discuss your ideas [here](https://github.com/dictation-toolbox/Caster/issues/579). These commands are "CCR" so are able to be combined with other CCR commands. Enable these commands by saying "Enable text manipulation".
+Caster provides powerful text manipulation and navigation features. These functions are experimental and subject to change (perhaps based on your feedback!). We encourage contributions; please discuss your ideas [here](https://github.com/dictation-toolbox/Caster/issues/579). These commands are "CCR" and so are able to be combined with other CCR commands. Enable these commands by saying "Enable text manipulation".
 
 ## Common elements
 

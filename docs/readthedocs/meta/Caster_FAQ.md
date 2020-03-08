@@ -34,46 +34,46 @@ Welcome to the Caster project! This FAQ guide this to help introduce the Caster 
 
 4. **Why does the Caster use obscure or strange words for command names?**
 
-      Typically speech recognition engines are great with sentences not short commands. Basically the general vocabulary is too ambiguous for speech recognition engines to discern between words that are phonetically close and how the pronounced. Think of how similar "end", "and", "n" and "m" sound, and if that's all you heard and did not know the context of it being in a sentence. Words that are phonetically distinct from each other increase speech recognition accuracy.  
+      Typically speech recognition engines are great with sentences not short commands. Basically the general vocabulary is too ambiguous for speech recognition engines to discern between words that are phonetically close and how they are pronounced. Think of how similar "end", "and", "n" and "m" sound, and if that's all you heard and did not know the context of it being in a sentence. Words that are phonetically distinct from each other increase speech recognition accuracy.  
 
       
 
 5. **Can I customize the rules that contain voice commands in Caster?**
 
-      Many people customize commands due to preference or if commands are not pronounceable in there dialect. Customization of command phrases is expected. Everyone's voice, microphone, soundcard, speech engine backend and dictation environment is different. There are distinct advantages for creating your own commands.
+      Customization of command phrases is expected. Many people customize commands due to preference or if commands are not pronounceable in their dialect. Everyone's voice, microphone, soundcard, speech engine backend and dictation environment is different. There are distinct advantages for creating your own commands.
 
       - Customizing commands will lead to higher accuracy 
       - Commands that are created by the end-user are more likely to be remembered
 
-      You can customize commands by copying starter rules, utilizing simplified transformers, creating your own from scratch. See the read the `Caster Rules` in the documentation.
+      You can customize commands by copying starter rules, utilizing simplified transformers, or creating your own from scratch. See the read the `Caster Rules` in the documentation.
       
       
 
 6. **Does Caster support multiple languages?**
 
-      Currently the starter rules are structured on the English language. However you can customize them to your to a language of your preference. In order to make Caster starter rules Multilingual the project needs a proper [grammar API](https://github.com/dictation-toolbox/Caster/issues/533#issuecomment-589829408).
+      Currently the starter rules are structured on the English language. If your speech recognition supports your language, you can customize them to your preference. In order to make Caster starter rules Multilingual, the project needs a proper [grammar API](https://github.com/dictation-toolbox/Caster/issues/533#issuecomment-589829408).
       
       
       
 7. **Does Dragonfly come with its own commands?**
 
-      Dragonfly does not come with built-in commands and end-user would have to to create their own commands.
+      Dragonfly does not come with built-in commands, and you would have to to create their own commands.
 
       
 
 8. **What's the difference between Caster and Dragonfly?**
 
-      Casters built on top of dragonfly. Caster adds some significant features that Dragonfly does not have.
+      Caster is built on top of Dragonfly. Caster adds some significant features that Dragonfly does not have.
 
       - Caster reloads rules on save automatically
 
       - Caster has continuous command recognition (CCR) MergeRules
 
-      - NodeRule which allows packing specs into nodes in a tree, and only activating part of the tree at a given time, it's possible to include thousands of specs in a single grammar.
+      - NodeRule allows packing specs into nodes in a tree and only activating part of the tree at a given time without overwhelming the speech recognition engine. It's possible to include thousands of specs in a single grammar.
 
-      - RegisteredAction and ContextSeeker which can change command behavior based on previous recognized commands or change what future commands are available.
+      - RegisteredAction and ContextSeeker allow you to change command behavior based on previous recognized commands or future commands that are available.
 
         
 
-      Outside of that Caster really only differs from dragonfly framework on how grammars are loaded and context creation. Otherwise it simply adds functionality. 99% of what you can do a Dragonfly can be done in Caster as well.
+      Outside of those features, Caster really only differs from the Dragonfly framework on how grammars are loaded and their context created. Otherwise it simply adds functionality. 99% of what you can do in Dragonfly can be done in Caster as well.
 

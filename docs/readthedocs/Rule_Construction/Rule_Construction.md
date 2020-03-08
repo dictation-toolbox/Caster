@@ -25,9 +25,9 @@ grammar.load()
 
 ## Caster Loading Rules
 
-Caster differs from Dragonfly on how it manages loading rules. The primary purpose for this difference is so that Caster can manages the CCR merger and makes rules reloadable on save. 
+Caster differs from Dragonfly on how it manages loading rules. The primary purpose for this difference is so that Caster can manage the CCR merger and make rules reloadable on save. 
 
-Once you have created a rule class with your desired mappings inside, you need to load it so that the commands are recognised. RuleDetails are provided in `lib\ctrl\mgr\rule_details.py`, that has parameters your rule, and if appropriate the context in which it should be active.  The `get_rule()` function returns `RuleDetails` parameters and the rule class. Here is a breakdown of the RuleDetails parameters.
+Once you have created a rule class with your desired mappings inside, you need to load it so that the commands are recognized.  You can customize your rule by defining RuleDetail parameters, which includes the appropriate the context in which it should be active.  The `get_rule()` function returns `RuleDetails` parameters and the rule class. Here is a breakdown of the RuleDetails parameters:
 
 **RuleDetails Parameters Summary** 
 
@@ -38,11 +38,11 @@ Once you have created a rule class with your desired mappings inside, you need t
 
 - `title`:  AppContext title can be a partial or exact match
 
-- `grammar_name`:  Dragonfly grammar name Needs to be unique
+- `grammar_name`:  Dragonfly grammar name needs to be unique
 
 - `ccrtype`:  global, app, selfmod, or none
 
- The types of rule which can be added are detailed further in `doc/readtedocs/CCR.md` with complete examples.  However here is a summary.
+ The types of rule which can be added are detailed further in `doc/readtedocs/CCR.md` with complete examples. One rule can only be contained per file. However here is a summary:
 
 **Global CCR Rules**
 
@@ -64,7 +64,7 @@ def get_rule():
 ```
 
 ### CCR App Rules
-App specific commands with CCR, using the following formulation. By default this will allow app commands to be chained with any core commands.
+App CCR rules can be made with the following `get_rule` example. By default this will allow app commands to be chained with any CCR commands. Note: It is possible to have a CCR and non-CCR rule for one application. 
 ```python
 def get_rule():
     details = RuleDetails(executable="exe name", 
@@ -84,7 +84,7 @@ def get_rule():
 
 ## Required Caster Imports by Rule Category
 
-Based on the type of rule category as described in the above section require important. The imports go at the very top of the file.
+Based on the type of rule category as described in the above section, these are the required imports. The imports go at the very top of the file.
 
 **CCR App Rules / Global CCR Rules**
 

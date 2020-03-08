@@ -1,7 +1,9 @@
 # Application Commands Quick Reference
 
-Classic Install Location: `castervoice\rules\apps`
-The application name is followed by a pronunciation to `enable` or `disable` and the respective grammars. A '/' separates pronunciations for different grammars belonging to a single app.
+
+The application name is followed by a pronunciation to `enable` or `disable` and the respective rules. A '/' separates pronunciations for different rules belonging to a single app grammar.
+
+Classic Install Location: `castervoice\rules\apps' ` in Caster source code. 
 
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
