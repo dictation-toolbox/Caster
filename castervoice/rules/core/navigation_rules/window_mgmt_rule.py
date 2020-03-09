@@ -14,8 +14,6 @@ class WindowManagementRule(MappingRule):
             R(Function(utilities.maximize_window)),
         'minimize':
             R(Function(utilities.minimize_window)),
-        "remax":
-            R(Key("a-space/10,r/10,a-space/10,x")),
 
         # Workspace management
         "show work [spaces]":
