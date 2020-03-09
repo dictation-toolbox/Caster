@@ -10,10 +10,11 @@ import sys
 import tomlkit
 from past.builtins import xrange
 
+from castervoice.lib import printer
 from castervoice.lib import version
-import errno
-from appdirs import *
+from castervoice.lib.util import guidance
 
+from appdirs import *
 
 import six
 if six.PY2:
@@ -22,9 +23,6 @@ else:
     from pathlib import Path  # pylint: disable=import-error
 
 # consts: some of these can easily be moved out of this file
-from castervoice.lib import printer
-from castervoice.lib.util import guidance
-
 GENERIC_HELP_MESSAGE = """
 If you continue having problems with this or any other issue you can contact
 us through Gitter at <https://gitter.im/dictation-toolbox/Caster> or on our GitHub
@@ -90,8 +88,7 @@ def _validate_engine_path():
     if not sys.platform.startswith('win'):
         return ''
     try:
-        # pylint: disable=import-error
-        import natlink
+        import natlink  # pylint: disable=import-error
     except ImportError:
         return ''
     if os.path.isfile(_SETTINGS_PATH):
@@ -122,10 +119,10 @@ def _find_natspeak():
 
     try:
         if six.PY2:
-            import _winreg as winreg 
+            import _winreg as winreg
         else:
             import winreg
-    except:
+    except ImportError:
         printer.out("Could not import winreg")
         return ""
 
@@ -145,8 +142,8 @@ def _find_natspeak():
 
     for arch_key in arch_keys:
         key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE,
-                              "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall",
-                              0, winreg.KEY_READ | arch_key)
+                             "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall",
+                             0, winreg.KEY_READ | arch_key)
         for i in xrange(0, winreg.QueryInfoKey(key)[0]):
             skey_name = winreg.EnumKey(key, i)
             skey = winreg.OpenKey(key, skey_name)
@@ -357,9 +354,9 @@ def _get_defaults():
         },
 
         "online": {
-            "online_mode": True, # False disables updates
+            "online_mode": True,  # False disables updates
             "last_update_date": "None",
-            "update_interval": 7 # Days
+            "update_interval": 7  # Days
         },
 
         # Default enabled hooks: Use hook class name
@@ -382,12 +379,12 @@ def _get_defaults():
             "use_aenea": False,
             "hmc": True,
             "ccr_on": True,
-            "dragonfly_pause_default":  0.003, # dragonfly _pause_default 0.02 is too slow! Caster default 0.003
+            "dragonfly_pause_default":  0.003,  # dragonfly _pause_default 0.02 is too slow! Caster default 0.003
         },
         # Grammar reloading section
         "grammar_reloading": {
-            "reload_trigger": "timer", # manual or timer
-            "reload_timer_seconds": 5, # seconds
+            "reload_trigger": "timer",  # manual or timer
+            "reload_timer_seconds": 5,  # seconds
         },
 
         "formats": {
@@ -481,8 +478,7 @@ def initialize():
         d.mkdir(parents=True, exist_ok=True)
     # Kick everything off.
     SETTINGS = _init(_SETTINGS_PATH)
-    _debugger_path = SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"]
+    _debugger_path = SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"]  # pylint: disable=invalid-sequence-index
     if _debugger_path not in sys.path and os.path.isdir(_debugger_path):
         sys.path.append(_debugger_path)
     printer.out("Caster User Directory: {}".format(_USER_DIR))
-

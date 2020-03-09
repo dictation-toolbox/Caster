@@ -230,10 +230,10 @@ def reboot():
 def default_browser_command():
     if sys.platform.startswith('win'):
         if six.PY2:
-            from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT, # pylint: disable=import-error
+            from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT, # pylint: disable=import-error,no-name-in-module
                         HKEY_CURRENT_USER, OpenKey, QueryValueEx)
         else:
-            from winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT, # pylint: disable=import-error
+            from winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT, # pylint: disable=import-error,no-name-in-module
                         HKEY_CURRENT_USER, OpenKey, QueryValueEx)
         '''
         Tries to get default browser command, returns either a space delimited
@@ -249,7 +249,7 @@ def default_browser_command():
             reg = ConnectRegistry(None,HKEY_CLASSES_ROOT)
             key = OpenKey(reg, '%s\\shell\\open\\command' % value)
             path, t = QueryValueEx(key, None)
-        except WindowsError:
+        except WindowsError:  # pylint: disable=undefined-variable
             # logger.warn(e)
             traceback.print_exc()
             return ''
@@ -267,10 +267,10 @@ def clear_log():
     # ToDo: window_exists utilized when engine launched through Dragonfly CLI via bat in future
     try:
         if get_engine()._name == 'natlink':
-            import natlinkstatus # pylint: disable=import-error
+            import natlinkstatus  # pylint: disable=import-error
             status = natlinkstatus.NatlinkStatus()
             if status.NatlinkIsEnabled() == 1:
-                import win32gui
+                import win32gui  # pylint: disable=import-error
                 handle = get_window_by_title("Messages from Python Macros") or get_window_by_title("Messages from Natlink")
                 rt_handle = win32gui.FindWindowEx(handle, None, "RICHEDIT", None)
                 win32gui.SetWindowText(rt_handle, "")
@@ -293,7 +293,7 @@ def get_clipboard_formats():
     '''
     formats = []
     if sys.platform.startswith('win'):
-        import win32clipboard
+        import win32clipboard  # pylint: disable=import-error
         f = win32clipboard.EnumClipboardFormats(0)
         while f:
             formats.append(f)
@@ -325,7 +325,7 @@ def get_clipboard_files(folders=False):
     highlighted path copied
     '''
     if sys.platform.startswith('win'):
-        import win32clipboard
+        import win32clipboard  # pylint: disable=import-error
         files = None
         win32clipboard.OpenClipboard()
         f = get_clipboard_formats()

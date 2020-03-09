@@ -6,7 +6,6 @@ import six
 import subprocess
 import time
 from dragonfly import get_engine, monitors
-from castervoice.asynch.mouse.legion import LegionScanner
 from castervoice.lib import control, settings, utilities, textformat
 from castervoice.lib.actions import Key, Text, Mouse
 from castervoice.lib.clipboard import Clipboard
@@ -28,6 +27,7 @@ initialize_clipboard()
 def mouse_alternates(mode, monitor=1):
     args = []
     if mode == "legion" and not utilities.window_exists(None, "legiongrid"):
+        from castervoice.asynch.mouse.legion import LegionScanner
         r = monitors[int(monitor) - 1].rectangle
         bbox = [
             int(r.x),

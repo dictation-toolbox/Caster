@@ -195,7 +195,7 @@ class BringRule(BaseSelfModifyingRule):
         Popen(program)
 
     def _bring_file(self, file):
-        threading.Thread(target=os.startfile, args=(file, )).start()
+        threading.Thread(target=os.startfile, args=(file, )).start()  # pylint: disable=no-member
 
     # =================== BringMe default setup:
     _bm_defaults = {
