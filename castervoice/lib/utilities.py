@@ -35,6 +35,8 @@ finally:
     from castervoice.lib import settings, printer
 
 
+# ToDo: move functions that manipulate or retrieve information from Windows to `window_mgmt_support` in navigation_rules.
+
 # ToDo: Implement Optional exact title matching for `get_matching_windows` in Dragonfly
 def window_exists(windowname=None, executable=None):
     if Window.get_matching_windows(title=windowname, executable=executable):
@@ -70,6 +72,20 @@ def get_active_window_info():
     if len(match_object) > 0:
         executable_file = match_object[0]
     return [executable_file, executable_path, window.title, window.handle, window.classname]
+
+
+def maximize_window():
+    '''
+    Maximize foreground Window
+    '''
+    Window.get_foreground().maximize()
+
+
+def minimize_window():
+    '''
+    Minimize foreground Window
+    '''
+    Window.get_foreground().minimize()
 
 
 def focus_mousegrid(gridtitle):

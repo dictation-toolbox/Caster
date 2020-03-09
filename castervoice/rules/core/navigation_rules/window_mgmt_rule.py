@@ -5,13 +5,15 @@ from castervoice.lib.actions import Key
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.short import R
 from castervoice.lib import windows_virtual_desktops
+from castervoice.lib import utilities
+
 
 class WindowManagementRule(MappingRule):
     mapping = {
-        'minimize':
-            R(Playback([(["minimize", "window"], 0.0)])),
         'maximize':
-            R(Playback([(["maximize", "window"], 0.0)])),
+            R(Function(utilities.maximize_window)),
+        'minimize':
+            R(Function(utilities.minimize_window)),
         "remax":
             R(Key("a-space/10,r/10,a-space/10,x")),
 
