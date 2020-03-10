@@ -83,8 +83,8 @@ from castervoice.lib.const import CCRType
 
 from castervoice.lib.merge.state.short import R
 
- Birds(MergeRule):
-    mapping = {
+class Birds(MergeRule):
+        mapping = {
         "favorite bird": R(Text("parakeet"), rdescript="Print my favorite bird"),
     }
 
