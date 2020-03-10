@@ -7,9 +7,6 @@
   - [Command Sets](#command-sets)
   - [Command Standards and Compatibility](#command-standards-and-compatibility)
   - [Types of Rules](#types-of-rules)
-  - [How to Add and Modify Rules](#how-to-add-and-modify-rules)
-  - [Rule Filters](#rule-filters)
-    - [Simplified Filter Rules](#simplified-filter-rules)
   - [Other Features of MergeRule](#other-features-of-mergerule)
   - [How to Register Caster CCR Rules](#how-to-register-caster-ccr-rules)
 
@@ -40,12 +37,6 @@ There are different kinds of Dragonfly and Caster rules which can be created or 
 - **SelfModifyingRule**: this is a type of MergeRule which modifies its own command set based on some kind of user input. NodeRule, Alias, ChainAlias, and HistoryRule are all SelfModifyingRules.
 
 We'll go into more detail on the differences between these rules elsewhere. For now, know that most rules used for CCR in Caster extend MergeRule.
-
-### How to Add and Modify Rules
-
-If you'd like to add rules for new languages or popular libraries for languages for the Castor repository, you should create them in the `castervoice\lib\ccr\` folder. If you want to add a custom command set, say, for work/home, you should put it in the `C:\Users\%USERNAME%\AppData\Local\caster\rules` folder. 
-
-If you want to personalize existing command sets, you can use rule transformers. Rule transformers let you instruct Caster as to how it should modify command sets either at boot or at runtime when command sets change (for example, when you say `enable Python`).
 
 ### Rule Transformers  - Out of date - 
 

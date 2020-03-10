@@ -6,6 +6,9 @@
 2. **Write documentation.** The [ReadTheDocs page](http://caster.readthedocs.org/en/latest/) is pretty sparse. ReadTheDocs uses [markdown](https://markdown-guide.readthedocs.io/en/latest/) so create new docs as .md files.
 3. **Speak.** Tell others who might be interested in Caster. Join our discussions on the issues page and [Gitter](https://gitter.im/dictation-toolbox/caster). The more the merrier, and your thoughts are welcome and encouraged.
 
+## Adding New Rules for the Caster repository
+If you'd like to add rules for new languages or popular libraries for languages for the Castor repository, you should create them in the `castervoice\lib\rules\` folder in the appropriate directory category.
+
 ### BountySource Guidelines
 - In order for bounties to be posted they must have very clear guidelines and resources for those that wish to collect.
 

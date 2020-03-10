@@ -1,6 +1,6 @@
 # Kaldi - Classic Install
 
-Caster currently supports Kaldi on Microsoft Windows 7 through Windows 10. Consider supporting the author [daanzu]( https://github.com/sponsors/daanzu) if you use his engine full-time.
+Caster currently supports Kaldi on Microsoft Windows 7 through Windows 10. Consider supporting the author [daanzu](https://github.com/sponsors/daanzu) if you use his engine full-time.
 
 ### 1. Python
 

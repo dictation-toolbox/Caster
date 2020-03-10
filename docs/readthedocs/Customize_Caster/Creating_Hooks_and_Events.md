@@ -1,4 +1,4 @@
-### Creating Hooks and Events
+## Creating Hooks and Events
 
 Hooks are a new concept to Caster 1.x.x. The basic idea is that Caster itself defines "events." Event objects contain immutable information about the stuff going on in the "guts" of Caster. Those objects are fed to "hooks", user-defined listeners, which can do whatever they want with that event data.
 
