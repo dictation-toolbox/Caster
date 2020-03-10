@@ -21,12 +21,12 @@ nav:
     - "Caster FAQ": readthedocs/meta/Caster_FAQ.md
     - Getting Started:
         - "Getting Started Overview": readthedocs/Getting_Started/Getting_Started_Overview.md
-        - "Choose Speech Recognition Engine": readthedocs/Getting_Started/Choose_Recognition_Engine.md
+        - "Choose a Speech Recognition Engine": readthedocs/Getting_Started/Choose_Recognition_Engine.md
     - Installation: 
         - 'Dragon NaturallySpeaking': readthedocs/Installation/Dragon_NaturallySpeaking.md
         - 'Kaldi': readthedocs/Installation/Kaldi.md
         - 'Windows Speech Recognition': readthedocs/Installation/Windows_Speech_Recognition.md
-        - 'Troubleshooting_Install': readthedocs/Installation/Troubleshooting_Install.md
+        - 'Troubleshooting Install': readthedocs/Installation/Troubleshooting_Install.md
     - Caster Commands: 
         - 'Using Voice Commands': readthedocs/Caster_Commands/Using_Voice_Commands.md
         - 'Application Commands Reference': readthedocs/Caster_Commands/Application_Commands_Quick_Reference.md

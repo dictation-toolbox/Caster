@@ -4,21 +4,24 @@ Hooks are a new concept to Caster 1.x.x. The basic idea is that Caster itself de
 
 This should allow a decent amount of customization to happen without needing to make changes in the "guts" (Nexus, GrammarManager, CCRMerger, etc. of Caster.
 
-Loosely coupled code leads to less bugs and more productivity, and so the use of hooks rather than "guts" modifications is encouraged  whenever possible.
+Loosely coupled code leads to less bugs and more productivity, and so the use of hooks rather than "guts" modifications is encouraged whenever possible.
 
 All new hooks are set to `false` by default unless they're defined as defaults in  `settings.toml`  under `default_hooks`
 
 New event types can be added to  [Event types](https://github.com/dictation-toolbox/Caster/blob/master/castervoice/lib/merge/ccrmerging2/hooks/events/event_types.py)
 
-Example hooks:
+Example Hooks with Events:
 
-- [printer_hook.py]([printer_hook.py](https://github.com/dictation-toolbox/Caster/blob/master/castervoice/lib/merge/ccrmerging2/hooks/examples/printer_hook.py)) utilizes [activation event](https://github.com/dictation-toolbox/Caster/blob/master/castervoice/lib/merge/ccrmerging2/hooks/events/activation_event.py)	
-
+- [printer_hook.py](https://github.com/dictation-toolbox/Caster/blob/master/castervoice/lib/merge/ccrmerging2/hooks/examples/printer_hook.py) utilizes [activation event](https://github.com/dictation-toolbox/Caster/blob/master/castervoice/lib/merge/ccrmerging2/hooks/events/activation_event.py)
 - [format_hook.py](https://github.com/dictation-toolbox/Caster/blob/master/castervoice/lib/merge/ccrmerging2/hooks/standard_hooks/format_hook.py) utilizes  [activation event](https://github.com/dictation-toolbox/Caster/blob/master/castervoice/lib/merge/ccrmerging2/hooks/events/activation_event.py)
-
-- [node_change_event.py](https://github.com/dictation-toolbox/Caster/blob/master/castervoice/lib/merge/ccrmerging2/hooks/events/node_change_event.py) utilizes [node change event](https://github.com/dictation-toolbox/Caster/blob/master/castervoice/lib/merge/ccrmerging2/hooks/events/node_change_event.py)
+- [node_change_hook.py](https://github.com/dictation-toolbox/Caster/blob/master/castervoice/lib/merge/ccrmerging2/hooks/events/node_change_event.py) utilizes [node change event](https://github.com/dictation-toolbox/Caster/blob/master/castervoice/lib/merge/ccrmerging2/hooks/events/node_change_event.py)
+- [show_window_on_error_hook.py](https://github.com/dictation-toolbox/Caster/blob/49b2e676fe98eca671c1184423dd656c347d281b/castervoice/lib/ctrl/mgr/grammar_manager.py#L302) utilizes [on error event](https://github.com/dictation-toolbox/Caster/blob/master/castervoice/lib/merge/ccrmerging2/hooks/events/on_error_event.py)
 
 Event placement in Caster source code:
 
--  `activation event` in [grammar_manager.py](https://github.com/dictation-toolbox/Caster/blob/cb7adc4253d8d55089936e5b90ee57ce5784660e/castervoice/lib/ctrl/mgr/grammar_manager.py#L150)
--  `node change event` in [tree_rule.py](https://github.com/dictation-toolbox/Caster/blob/30c022a7085be6c8dbfee1c839d50fc7c8cdaf82/castervoice/lib/merge/selfmod/tree_rule/tree_rule.py#L57)
+-  `activation event` in [grammar_manager.py](https://github.com/dictation-toolbox/Caster/blob/3ff4f7d7c9c01fec2059ffa5c4ca708fdb7d09ad/castervoice/lib/ctrl/mgr/grammar_manager.py#L151)
+-  `node change event` in [tree_rule.py](https://github.com/dictation-toolbox/Caster/blob/3ff4f7d7c9c01fec2059ffa5c4ca708fdb7d09ad/castervoice/lib/merge/selfmod/tree_rule/tree_rule.py#L57)
+-  `on error event` in [grammar_manager.py](https://github.com/dictation-toolbox/Caster/blob/49b2e676fe98eca671c1184423dd656c347d281b/castervoice/lib/ctrl/mgr/grammar_manager.py#L302)
+
+
+
