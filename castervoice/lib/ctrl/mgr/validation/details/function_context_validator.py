@@ -11,7 +11,7 @@ class FunctionContextDetailsValidator(BaseDetailsValidator):
         invalidations = []
         if details.function_context is not bool:
             invalidations.append("Function Context must return a bool value")
-        if details.declared_ccrtype == CCRType.GLOBAL:
+        if details.declared_ccrtype == CCRType.GLOBAL or details.declared_ccrtype == CCRType.SELFMOD:
             invalidations.append("Function Context cannot be used with `CCRType.GLOBAL`")
 
 

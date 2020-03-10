@@ -32,15 +32,12 @@ Once you have created a rule class with your desired mappings inside, you need t
 **RuleDetails Parameters Summary** 
 
 - `name`:  Dragonfly rule name needs to be unique
-
 - `executable`:  Dragonfly AppContext executable
   - For Windows users the `.exe` is not needed. For example `firefox.exe`  would be `firefox`.
-
 - `title`:  AppContext title can be a partial or exact match
-
 - `grammar_name`:  Dragonfly grammar name needs to be unique
-
 - `ccrtype`:  global, app, selfmod, or none
+- `function_context`: Dragonfly FuncContext bool variable
 
  The types of rule which can be added are detailed further in `doc/readtedocs/CCR.md` with complete examples. One rule can only be contained per file. However here is a summary:
 
@@ -80,9 +77,19 @@ def get_rule():
     return MyRule, RuleDetails(ccrtype=CCRType.SELFMOD)
 ```
 
+### FuncContext 
 
+Parameter allows a function to be evaluated if it returns `true` and `false` to  determine context. When the function returns true the context becomes active. Can be used everything above with the exception of `CCRType.SELFMOD` and `ccrtype=CCRType.GLOBAL`.
 
-## Required Caster Imports by Rule Category
+```python
+def get_rule():
+    details = RuleDetails(executable="exe name", 
+                          title="application title",
+                          function_context=myfunction,
+                          ccrtype=CCRType.APP)
+    return MyRule, details
+
+```
 
 Based on the type of rule category as described in the above section, these are the required imports. The imports go at the very top of the file.
 
