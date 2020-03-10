@@ -163,6 +163,12 @@ class VSCodeNonCcrRule(MappingRule):
             R(Key("c-k, c-right")),
         "(prior | previous | un) pane":
             R(Key("c-k, c-right")),
+        "move tab left":
+            R(Key("ca-left"),
+            rdescript="VS Code: Move the current tab to the editor pane on the left."),
+        "move tab right":
+            R(Key("ca-right"),
+            rdescript="VS Code: Move the current tab to the editor pane on the right."),
         "shift group left":
             R(Key("c-k, left"),
               rdescript="VS Code: Shift Current Group of Tabs to the Left E.g. Swap with Pane to the Left"),
