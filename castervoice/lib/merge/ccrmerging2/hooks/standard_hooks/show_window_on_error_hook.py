@@ -18,9 +18,9 @@ def show_window():
             else: 
                 title= "Messages from Natlink"
         else:
-            title = "Windows PowerShell"
+            title = "Caster: Status Window"
     if get_engine()._name != 'natlink':
-        title = "Windows PowerShell"
+        title = "Caster: Status Window"
     windows = Window.get_matching_windows(title=title)
     if windows:
         windows[0].set_foreground()

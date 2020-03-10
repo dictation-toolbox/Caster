@@ -275,10 +275,10 @@ def clear_log():
                 rt_handle = win32gui.FindWindowEx(handle, None, "RICHEDIT", None)
                 win32gui.SetWindowText(rt_handle, "")
             else:
-                if window_exists(windowname="Windows PowerShell"):
+                if window_exists(windowname="Caster: Status Window"):
                     os.system('clear')
         else:
-            if window_exists(windowname="Windows PowerShell"):
+            if window_exists(windowname="Caster: Status Window"):
                 os.system('clear')
             else:
                 printer.out("clear_log: Not implemented with GUI")
