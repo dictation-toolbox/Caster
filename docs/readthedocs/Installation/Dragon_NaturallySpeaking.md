@@ -2,33 +2,28 @@
 
 **Install Dragon NaturallySpeaking** (DPI / DNS) - Caster only supports Dragon NaturallySpeaking 13 and Windows 7 or higher.
 
-After installing Dragon Naturally Speaking, you can configure the DNS settings.
+After installing Dragon Naturally Speaking, you can configure the DNS settings based on your preference.
 
-- Disabling the DNS Browser plug-ins due to instability of Internet browsers and DNS is recommended.
+   > - Disabling the DNS Browser plug-ins due to instability of Internet browsers and DNS is recommended.
+   > - Disable all the checkboxes in the “Correction” menu, except for the “Automatically add words to the active vocabulary” option.
+   >     - Under the “Commands” menu check the “Require click to select…” checkboxes. 
+   >       Otherwise you will find yourself accidentally clicking buttons or menu items instead of inserting text into your editor. I’ve disabled the other checkboxes in that menu as well.
+   > - Set the “speed versus accuracy” slider in the “Miscellaneous” menu to a fairly high value.
+   >     - Uncheck the “Use the dictation box for unsupported applications” checkbox. Use Caster text manipulation instead.
 
-- Disable all the checkboxes in the “Correction” menu, except for the “Automatically add words to the active vocabulary” option.
 
-  > Under the “Commands” menu make sure to check the “Require click to select…” checkboxes. Otherwise you will find yourself accidentally clicking buttons or menu items instead of inserting text into your editor. I’ve disabled the other checkboxes in that menu as well.
+### Python
 
-- Set the “speed versus accuracy” slider in the “Miscellaneous” menu to a fairly high value.
+   > 1. Download and install [Python v2.7.17 32-bit](https://www.python.org/downloads/release/python-2717/) listed as `Windows x86 MSI installer` not Python 3 or the Python 2.7 64-bit. 
+   >     - These dependencies will change when Natlink utilizes Python 3.
+   > 2. Make sure to select `Add python to path`. 
+   >     - This can be done manually by searching for "edit environment variables for your account" and adding your Python folder to the list of Path values
 
-  > Uncheck the “Use the dictation box for unsupported applications” checkbox. Use Caster text manipulation instead.
+### NatLink
 
-------
+   > - Download and install [Natlink](https://sourceforge.net/projects/natlink/files/natlink/natlink4.2/). Use `Natlink-4.2` or newer.
 
-1. ### Python
-
-   Download and install [Python v2.7.17 32-bit](https://www.python.org/downloads/release/python-2717/) listed as `Windows x86 MSI installer` not Python 3 or the Python 2.7 64-bit. These dependencies will change when Natlink utilizes Python 3.
-
-   Make sure to select `Add python to path`. This can be done manually by searching for "edit environment variables for your account" and adding your Python folder to the list of Path values
-
-   
-
-2. ### NatLink
-
-   Download and install [Natlink](https://sourceforge.net/projects/natlink/files/natlink/natlink4.2/). Use `Natlink-4.2` or newer.
-
-3. ### Caster
+### Caster
 
    > 1. Download Caster from the [master branch](https://github.com/dictation-toolbox/Caster/archive/master.zip).
    > 2. Open up the zip file downloaded
@@ -37,62 +32,63 @@ After installing Dragon Naturally Speaking, you can configure the DNS settings.
    > 5. **Optional Step* for Caster's`Legion` MouseGrid - Legion Feature available on Windows 8 and above.
    > 6. The Legion MouseGrid requires [Microsoft Visual C++ Redistributable Packages for Visual Studio 2015, 2017 and 2019 (x86).](https://support.microsoft.com/en-nz/help/2977003/the-latest-supported-visual-c-downloads) Note: Should not be needed if Windows 10 is up-to-date.
 
-4. ### **Setup and launch DNS for Classic Install.**
+### **Setup and launch DNS for Classic Install.**
 
    > 1. Start or restart Dragon. `Click Run_Caster_DNS.bat` Status Window appear and load Caster.  Once loaded Caster commands should be available to dictate.
    > 2. To test this, open Window's Notepad and try saying `arch brov char delta` producing `abcd` text.
 
 ### Update Caster
-  1. Backup `%USERPROFILE%\Documents\Caster`
-  2. Delete `%USERPROFILE%\Documents\Caster`
-  3. Repeat Steps `1. - 4.` within the Caster install section
+   > 1. Backup `%USERPROFILE%\Documents\Caster`
+   > 2. Delete `%USERPROFILE%\Documents\Caster`
+   > 3. Repeat Steps `1. - 4.` within the Caster install section
 
 ------
 
-### Manual Natlink Configuration 
+### -Alternative- Manual Natlink Configuration 
 
 An alternative to the instructions above for configuring Natlink. This utilizes Natlink Configuration GUI to launch Caster. Automatically launches Caster when DNS starts. A bit error-prone see troubleshooting section. 
 
-1. Open [command prompt](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows) (CMD) and type the following then press enter.
+   > 1. Open [command prompt](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows) (CMD) and type the following then press enter.
+   >     - `python -m pip install future six wxPython pywin32`
+   > 2. Open the start menu and search for `natlink`.
+   > 3. Click the file called `Configure NatLink via GUI`.
+   > ![Configure start](https://mathfly.org/images/configure_start.png)
 
-   `python -m pip install future six wxPython pywin32`
+   > 4. Ensure that the details of your DNS setup are correct in the “info” tab.
 
-2. Open the start menu and search for `natlink`, and click the file called `Configure NatLink via GUI`.
-
-   ![Configure start](https://mathfly.org/images/configure_start.png)
-
-3. Ensure that the details of your DNS setup are correct in the “info” tab.
-4. In the “configure” tab - under “NatLink” and “UserDirectory” - click enable. When you are prompted for a folder, give it the folder (`C:\Users\<YourUsername>\Documents\Caster`).
-
-   ![Caster-Natlink.jpg](https://i.postimg.cc/d1jN4xcw/Caster-Natlink.jpg)
+   > 5. In the “configure” tab - under “NatLink” and “UserDirectory” - click enable. When you are prompted for a folder, give it the folder 
+   >  (`C:\Users\<YourUsername>\Documents\Caster`).
+   >  ![Caster-Natlink.jpg](https://i.postimg.cc/d1jN4xcw/Caster-Natlink.jpg)
 
 
-### Manual Configuration Troubleshooting FAQ
+### Manual Configuration Natlink Troubleshooting FAQ
 
 - Visual C++ Runtime Error R6034 on Dragon launch. This is related to Natlink
 
-  - You can safely ignore it.
-
-  - Fix "Core directory of NatLink (...\NatLink\MacroSystem\core) there is a directory msvcr100fix. Please consult the README.txt file. See if copying the dll file (msvcr100.dll) to the Core directory (one step up) solves your problem."  Note: Not recommended for Windows 10.
-  - A dated discussion [VoiceCoder](https://groups.yahoo.com/neo/groups/VoiceCoder/conversations/topics/7925) on the issue.
+   > -  You can safely ignore it.
+   > -  A Fix: "Core directory of NatLink (...\NatLink\MacroSystem\core) there is a directory msvcr100fix. Please consult the NatLink README.txt file.
+   >     - See if copying the dll file (msvcr100.dll) to the Core directory (one step up) solves your problem."  
+   >     - Note: Not recommended for Windows 10.
+   > -  A dated discussion [VoiceCoder](https://groups.yahoo.com/neo/groups/VoiceCoder/conversations/topics/7925) on the issue.
 
 - When using `start_configurenatlink.py` gives  `ImportError: No module named six"` or `ImportError: No module named future"`
 
-  To fix pip Install  `pip install six` or `pip install dragonfly2` in CMD
+  >    - To fix pip Install  `pip install six` or `pip install dragonfly2` in CMD
 
 - Cannot load compatibility module support `(GUID = {dd990001-bb89-1d2-b031-0060088dc929}))`
 
-  [Detailed Instructions](https://qh.antenna.nl/unimacro/installation/problemswithinstallation.html) Typically fixed by installing Microsoft Visual C++ 2010 Service Pack 1 Redistributable Package
+  >    - [Detailed Instructions](https://qh.antenna.nl/unimacro/installation/problemswithinstallation.html) Typically fixed by installing Microsoft Visual C++ 2010 Service Pack 1 Redistributable Package
 
-  - May need to unRegister and then reRegister Natlink from the GUI
+  >    - May need to unRegister and then reRegister Natlink from the GUI
 
 - Running "Configure NatLink via GUI" does not bring up the settings window - try running the program as an administrator:
 
-  1. Open an administrator command prompt by searching for "cmd" in start and right click run as administrator.
-  2. Change directory to the folder where start_configurenatlink.py was installed. This is likely to be 
+   >  1. Open an administrator command prompt by searching for "cmd" in start and right click run as administrator.
 
-     `cd C:\NatLink\NatLink\confignatlinkvocolaunimacro`.
+   >  2. Change directory to the folder where start_configurenatlink.py was installed. See command below:
 
-  3. Run `python start_configurenatlink.py`.
+   >  3. `cd C:\NatLink\NatLink\confignatlinkvocolaunimacro`.
+
+   >  4. Run `python start_configurenatlink.py`.
 
 - The [qh.antenna troubleshooting guide](https://qh.antenna.nl/unimacro/installation/problemswithinstallation.html) has further solutions for NatLink Issues.
