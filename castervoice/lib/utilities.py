@@ -262,10 +262,14 @@ def default_browser_command():
 
 
 def clear_log():
-    # Function to clear status window. 
+    # Function to clear status window.
     # Natlink status window not used an out-of-process mode.
     # ToDo: window_exists utilized when engine launched through Dragonfly CLI via bat in future
     try:
+        if sys.platform.startswith('win'):
+            clearcmd = "cls" # Windows OS
+        else:
+            clearcmd = "clear" # Linux
         if get_engine()._name == 'natlink':
             import natlinkstatus  # pylint: disable=import-error
             status = natlinkstatus.NatlinkStatus()
@@ -276,10 +280,10 @@ def clear_log():
                 win32gui.SetWindowText(rt_handle, "")
             else:
                 if window_exists(windowname="Caster: Status Window"):
-                    os.system('clear')
+                    os.system(clearcmd)
         else:
             if window_exists(windowname="Caster: Status Window"):
-                os.system('clear')
+                os.system(clearcmd)
             else:
                 printer.out("clear_log: Not implemented with GUI")
     except Exception as e:
