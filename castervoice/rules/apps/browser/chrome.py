@@ -25,7 +25,7 @@ class ChromeRule(MappingRule):
             R(Key("cs-w")),
         "(next|forward) tab [<n>]|tab (right|sauce) [<n>]":
             R(Key("c-tab")) * Repeat(extra="n"),
-        "(back|prev|prior|previous) tab [<n>]|tab (left|lease) [<n>]":
+        "(back|previous) tab [<n>]|tab (left|lease) [<n>]":
             R(Key("cs-tab")) * Repeat(extra="n"),    
         "new tab that":
             R(Mouse("middle") + Pause("20") + Key("c-tab")),
