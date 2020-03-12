@@ -29,7 +29,7 @@ class VSCodeNonCcrRule(MappingRule):
         "<action> [line] <ln1> [by <ln2>]":
             R(Function(navigation.action_lines)),
 
-        "go back <n>":
+        "go back [<n>]":
             R(Key("a-left") * Repeat(extra='n')),
         "go forward [<n>]":
             R(Key("a-right")) * Repeat(extra="n"),
