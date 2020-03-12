@@ -630,7 +630,7 @@ Same Commands as [Git Bash](#git-bash)
 
 | Command                                | Command                               | Command                                  |
 | :------------------------------------- | :------------------------------------ | :--------------------------------------- |
-| `[(go to / jump / jump to)] line <n>`  | `Go back <n>`                         | `Go forward [<n>]`                       |
+| `[(go to / jump / jump to)] line <n>`  | `Go back [<n>]`                       | `Go forward [<n>]`                       |
 | `[toggle] full screen`                 | `toggle orientation`                  | `zoom in [<n>]`                          |
 | `zoom out [<n>]`                       | `sidebar`                             | `explorer`                               |
 | `source control`                       | `keyboard shortcuts`                  | `key mappings`                           |
