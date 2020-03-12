@@ -200,10 +200,10 @@ def reboot():
     engine = get_engine()
     if engine._name == 'kaldi':
         engine.disconnect()
-        Popen(['python', '-m', 'dragonfly', 'load-directory', '.', '--engine kaldi',  '--no-recobs-messages'])
+        Popen([sys.executable, '-m', 'dragonfly', 'load-directory', '.', '--engine kaldi',  '--no-recobs-messages'])
     if engine._name == 'sapi5inproc':
         engine.disconnect()
-        Popen(['python', '-m', 'dragonfly', 'load', '--engine', 'sapi5inproc', '_*.py', '--no-recobs-messages'])
+        Popen([sys.executable, '-m', 'dragonfly', 'load', '--engine', 'sapi5inproc', '_*.py', '--no-recobs-messages'])
     if engine._name in ["sapi5shared", "sapi5"]:
         popen_parameters.append(settings.SETTINGS["paths"]["REBOOT_PATH_WSR"])
         popen_parameters.append(settings.SETTINGS["paths"]["WSR_PATH"])
@@ -223,7 +223,7 @@ def reboot():
         else:
            # Natlink out-of-process
             engine.disconnect()
-            Popen(['python', '-m', 'dragonfly', 'load', '--engine', 'natlink', '_*.py', '--no-recobs-messages'])
+            Popen([sys.executable, '-m', 'dragonfly', 'load', '--engine', 'natlink', '_*.py', '--no-recobs-messages'])
 
 
 # ToDo: Implement default_browser_command Mac/Linux
