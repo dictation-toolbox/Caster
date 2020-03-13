@@ -111,4 +111,4 @@ class WebexTeamsRule(MappingRule):
     }
 
 def get_rule():
-    return WebexTeamsRule, RuleDetails(name="Webex Teams", executable="CiscoCollabHost")
+    return WebexTeamsRule, RuleDetails(name="Web X Teams", executable="CiscoCollabHost")
