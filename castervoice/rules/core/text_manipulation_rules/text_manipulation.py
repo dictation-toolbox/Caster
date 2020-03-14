@@ -116,6 +116,17 @@ class TextManipulation(MergeRule):
             R(Function(text_manipulation_support.select_until_phrase,
                        dict(character="phrase"), dictation_versus_character="character"),
             rdescript="Text Manipulation: select until chosen character"),
+
+        # capitalized 1st word of text or character
+        "capital <direction> [<number_of_lines_to_search>] [<occurrence_number>] [<letter_size>] <dictation>":
+            R(Function(text_manipulation_support.copypaste_change_phrase_capitalization,
+                       dict(dictation="phrase"), dictation_versus_character="dictation"),
+                 rdescript="Text Manipulation: change capitalization phrase"),
+        "capital <direction> [<number_of_lines_to_search>] [<occurrence_number>] [<letter_size>] <character>":
+            R(Function(text_manipulation_support.copypaste_change_phrase_capitalization,
+                       dict(character="phrase"), dictation_versus_character="character"),
+            rdescript="Text Manipulation: change capitalization character"),
+
     }
     new_text_punc_dict = text_punc_dict()
     new_text_punc_dict.update(alphabet_support.caster_alphabet())
@@ -153,6 +164,12 @@ class TextManipulation(MergeRule):
             "before": "before",
             "after": "after",
         }),
+        Choice("letter_size", {
+            "upper": "upper",
+            "upward": "upper",
+            "lower": "lower",
+            "lowered": "lower",
+        }),
         Choice("occurrence_number", {
             "first": 1,
             "second": 2,
@@ -171,6 +188,7 @@ class TextManipulation(MergeRule):
     defaults = {
 
         "before_after": None,
+        "letter_size": "upper",
         "number_of_lines_to_search": 0, # before changing this default, please read the function deal_with_up_down_directions
         "occurrence_number": 1,} # if direction is up or down, the default number_of_lines_to_search
         # will be 3 instead of zero.

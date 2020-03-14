@@ -1,44 +1,32 @@
 from __future__ import division
 
-from SimpleXMLRPCServer import SimpleXMLRPCServer
-
 import getopt
+import os
 import signal
-import sys, os
-from threading import Timer
+import six
+import sys
+import threading as th
 import time
-
-import win32api
-
-import Tkinter as tk
-
 from dragonfly import monitors
-
+if six.PY2:
+    from SimpleXMLRPCServer import SimpleXMLRPCServer  # pylint: disable=import-error
+    import Tkinter as tk
+else:
+    from xmlrpc.server import SimpleXMLRPCServer  # pylint: disable=no-name-in-module
+    import tkinter as tk
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0]
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:
     from castervoice.lib import settings, utilities
+    from castervoice.lib.actions import Mouse
     from castervoice.lib.merge.communication import Communicator
     settings.initialize()
-
 try:
     from PIL import ImageGrab, ImageTk, ImageDraw, ImageFont
 except ImportError:
-    utilities.availability_message("Douglas Grid / Rainbow Grid", "PIL")
-
-
-def wait_for_death(title, timeout=5):
-    t = 0.0
-    inc = 0.1
-    while t < timeout:
-        if not utilities.window_exists(None, title):
-            break
-        t += inc
-        time.sleep(inc)
-    if t >= timeout:
-        print("wait_for_death()" + " timed out (" + title + ")")
+    utilities.availability_message("Douglas Grid / Rainbow Grid / Sudoku Grid", "PIL")
 
 
 class Dimensions:
@@ -92,16 +80,15 @@ class TkTransparent(tk.Tk):
         #        self.bind("<Key>", self.key)
         # self.mainloop()#do this in the child classes
         def start_server():
-            while not self.server_quit:
-                self.server._handle_request_noblock()
+            self.server.serve_forever()
 
-        Timer(1, start_server).start()
+        th.Timer(1, start_server).start()
 
     def setup_xmlrpc_server(self):
-        self.server_quit = 0
         comm = Communicator()
         self.server = SimpleXMLRPCServer(
-            (Communicator.LOCALHOST, comm.com_registry["grids"]), allow_none=True)
+            (Communicator.LOCALHOST, comm.com_registry["grids"]),
+            logRequests=False, allow_none=True)
         self.server.register_function(self.xmlrpc_kill, "kill")
 
     def pre_redraw(self):
@@ -125,13 +112,13 @@ class TkTransparent(tk.Tk):
         self.after(10, self.die)
 
     def die(self):
-        self.server_quit = 1
+        self.server.shutdown()
         self.destroy()
         os.kill(os.getpid(), signal.SIGTERM)
 
     @staticmethod
     def move_mouse(mx, my):
-        win32api.SetCursorPos((mx, my))
+        Mouse("[{}, {}]".format(mx, my)).execute()
 
 
 class RainbowGrid(TkTransparent):
@@ -355,13 +342,207 @@ class DouglasGrid(TkTransparent):
                     fill='White')
 
 
+'''
+Divide screen into grid of 3 x 3 squares and assign each one a number.
+    The user can specify a square number and further refine the selection
+    with one of the numbers from 1 to 9.
+'''
+class SudokuGrid(TkTransparent):
+    def __init__(self, grid_size=None, square_size=32):
+        TkTransparent.__init__(self, settings.SUDOKU_TITLE, grid_size)
+
+        screen_w = self.dimensions.width
+        screen_h = self.dimensions.height
+
+        self.square_width = square_size
+        while (screen_w % self.square_width != 0):
+            self.square_width -= 1
+
+        self.square_height = square_size
+        while (screen_h % self.square_height != 0):
+            self.square_height -= 1
+
+        self.width = int(screen_w / self.square_width)
+        self.height = int(screen_h / self.square_height)
+        self.num_squares = self.width * self.height
+        self.up_w = int((self.width - 1) / 3 + 1) * 3
+        self.up_h = int((self.height - 1) / 3 + 1) * 3
+        self.down_w = (int(self.up_w / 3) - 1) * 3
+        self.down_h = (int(self.up_h / 3) - 1) * 3
+
+        # Put this in a try so we don't freeze if draw fails
+        try:
+            self.draw()
+
+            # Click on newly drawn grid to "guarantee" it gets focus
+            # Windows sometimes steals focus anyway
+            self.after(100, self.click)
+        finally:
+            try:
+                self.mainloop()
+            except KeyboardInterrupt:
+                self.server.shutdown()
+
+    def click(self):
+        Mouse("left:1").execute()
+
+    # Set up the RPC server
+    def setup_xmlrpc_server(self):
+        TkTransparent.setup_xmlrpc_server(self)
+        self.server.register_function(self.xmlrpc_move_mouse, "move_mouse")
+        self.server.register_function(self.xmlrpc_get_mouse_pos, "get_mouse_pos")
+
+    # RPC function to move the mouse using screen number and inner number
+    # n1 - the screen number from 1 to m
+    # n2 - inner number from 1 to 9
+    def xmlrpc_move_mouse(self, n1, n2):
+        x, y = self.get_mouse_pos(n1, n2)
+        self.move_mouse(x, y)
+
+    # RPC function to get the mouse position from screen number and inner number
+    # n1 - the screen number from 1 to m
+    # n2 - inner number from 1 to 9
+    def xmlrpc_get_mouse_pos(self, n1, n2):
+        return self.get_mouse_pos(n1, n2)
+
+    # Draw the grid on screen
+    def draw(self):
+        self.pre_redraw()
+        self.draw_lines_and_numbers()
+        self.unhide()
+
+    # Get the mouse position from screen number and enter number
+    # n1 - the screen number from 1 to m
+    # n2 - inner number from 1 to 9
+    def get_mouse_pos(self, n1, n2):
+        sq = self.num_to_square(n1)
+        sq_refined = self.get_refined_square(sq, n2)
+        return self.square_to_pos(self.fit_to_screen(sq_refined))
+
+    # Modify the square based on the inner number
+    # sq - square number
+    # n2 - inner number from 1 to 9
+    def get_refined_square(self, sq, n2):
+        if n2 != 0 and n2 != 5:
+            n2 -= 1
+
+            # We use the rounded up width because this is the unadjusted square
+            x = n2 % 3
+            y = int(n2 / 3)
+
+            sq += (x - 1) + (y - 1) * self.up_w
+
+        return sq
+
+    # Convert screen number to position on screen
+    # n - the screen number from 1 to m
+    def num_to_pos(self, n):
+        # The number of squares is based on the rounded-up width and height
+        num_squares = self.up_w * self.up_h
+
+        # If the number is out of range, fix it
+        if n < 1:
+            n = 1
+        elif n >= int(num_squares / 9):
+            n = int(num_squares / 9)
+
+        sq = self.num_to_square(n)
+
+        return self.square_to_pos(self.fit_to_screen(sq))
+
+    # Adjust the square number if current square is offscreen
+    # sq - square number
+    def fit_to_screen(self, sq):
+        up_x = sq % self.up_w
+        up_y = int(sq / self.up_w)
+
+        # adjust square if offscreen
+        if up_x >= self.width:
+            up_x = self.width - 1
+        if up_y >= self.height:
+            up_y = self.height - 1
+
+        return up_x + up_y * self.width
+
+    # Convert a screen number to an internal square number
+    # n - the screen number from 1 to m
+    def num_to_square(self, n):
+        # decrement screen number to make 0 to m-1
+        n -= 1
+
+        # Use the rounded up width because the center square may be off screen
+        up_x = n % int(self.up_w / 3)
+        up_y = int(n / (self.up_w / 3))
+
+        sq = (up_x * 3 + 1) + ((up_y * 3 + 1) * self.up_w)
+
+        return sq
+
+    # Convert a square number to a screen position
+    # sq - square number
+    def square_to_pos(self, sq):
+        x, y = self.square_to_xy(sq)
+        return (int((x + 0.5) * self.square_width),
+                int((y + 0.5) * self.square_height))
+
+    # Convert square number to screen number
+    # sq - square number
+    def square_to_num(self, sq):
+        x, y = self.square_to_xy(sq)
+
+        n = int(x / 3) + int(y / 3) * int(self.up_w / 3)
+
+        # increment for 1...
+        return n + 1
+
+    # Convert a square number to grid coordinates
+    # sq - square number
+    def square_to_xy(self, sq):
+        x = sq % self.width
+        y = int(sq / self.width)
+        return x, y
+
+    # Draw grid on background
+    def draw_lines_and_numbers(self):
+        canvas = self._canvas
+
+        # Iterate over logical grid of squares
+        for sq in range(self.num_squares):
+            x, y = self.square_to_xy(sq)
+            screen_x = x * self.square_width
+            screen_y = y * self.square_height
+
+            fill = "black"
+            if sq % 3:
+                fill = "gray"
+
+            # draw vertical grid lines
+            if x > 0 and sq <= self.width:
+                canvas.create_line(
+                    screen_x, 0, screen_x, self.dimensions.height, fill=fill)
+
+            # draw horizontal grid lines
+            if x == 0:
+                canvas.create_line(
+                    0, screen_y, self.dimensions.width, screen_y, fill=fill)
+
+            # draw number
+            if (x % 3 == 1 or x == self.width - 1) and (y % 3 == 1 or y == self.height - 1):
+                n = self.square_to_num(sq)
+                pos = self.num_to_pos(n)
+                canvas.create_text(pos[0], pos[1], text=str(n),
+                                   font="TkFixedFont 14", fill='Black')
+
+
+# Main function
 def main(argv):
-    help_message = 'Usage: grids.py -g <GRID_TYPE> [-m <MONITOR>]\n where <GRID_TYPE> is one of:\n  r\trainbow grid\n  d\tdouglas grid'
+    help_message = 'Usage: grids.py -g <GRID_TYPE> [-m <MONITOR>]\n where <GRID_TYPE> is one of:\n  r\trainbow grid\n  d\tdouglas grid\n  s\tsudoku grid'
     try:
         opts, args = getopt.getopt(argv, "hg:m:")
     except getopt.GetoptError:
         print(help_message)
         sys.exit(2)
+
     g = None
     m = 1
     for opt, arg in opts:
@@ -373,8 +554,11 @@ def main(argv):
                 g = RainbowGrid
             elif arg == 'd':
                 g = DouglasGrid
+            elif arg == 's':
+                g = SudokuGrid
         elif opt == '-m':
             m = arg
+
     if g is None:
         raise ValueError("Grid mode not specified.")
     r = monitors[int(m) - 1].rectangle

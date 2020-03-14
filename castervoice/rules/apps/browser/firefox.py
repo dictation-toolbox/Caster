@@ -25,7 +25,7 @@ class FirefoxRule(MappingRule):
             R(Key("cs-w")),
         "(next|forward) tab [<n>]|tab (right|sauce) [<n>]":
             R(Key("c-tab")) * Repeat(extra="n"),
-        "(back|prev|prior|previous) tab [<n>]|tab (left|lease) [<n>]":
+        "(back|previous) tab [<n>]|tab (left|lease) [<n>]":
         # control shift tab doesn't work and this appears to be an undocumented workaround
             R(Key("c-tab/30")) * Repeat(extra="n"),
         "new tab that":

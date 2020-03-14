@@ -8,7 +8,6 @@ Official Site "https://atom.io/"
 from dragonfly import Pause, Function, Repeat, Dictation, Choice, MappingRule
 
 from castervoice.lib.actions import Text, Key
-from castervoice.lib.context import AppContext
 
 from castervoice.lib import settings, navigation
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails

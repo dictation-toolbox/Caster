@@ -1,8 +1,12 @@
-from Tkinter import Label, Entry, StringVar
+import six
+if six.PY2:
+    from Tkinter import Label, Entry, StringVar
+    import tkFileDialog # pylint: disable=import-error
+else:
+    from tkinter import Label, Entry, StringVar, filedialog as tkFileDialog
 import os
 import sys
 from threading import Timer
-import tkFileDialog
 
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0]

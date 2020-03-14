@@ -155,7 +155,7 @@ def paste_string_without_altering_clipboard(content, pause_time="1"):
     for i in range(0, max_tries):
         failure = False
         try:
-            Clipboard.set_system_text(unicode(content))
+            Clipboard.set_system_text(content)
             Pause(pause_time).execute()
             Key("c-v").execute()
             time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/
@@ -175,8 +175,8 @@ def paste_string_without_altering_clipboard(content, pause_time="1"):
 def fill_within_line(target):
     result = navigate_to_character("left", str(target), True)
     if result:
-        from castervoice.lib.ctrl import nexus
-        nexus.state.terminate_asynchronous(True) # pylint: disable=no-member
+        from control import nexus
+        nexus().state.terminate_asynchronous(success=True)
     return result
 
 

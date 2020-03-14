@@ -7,6 +7,7 @@ import io
 import random
 import re
 import time
+from builtins import str
 
 from dragonfly.grammar.elements import Choice
 from dragonfly.grammar.grammar_base import Grammar
@@ -28,7 +29,7 @@ def _report_to_file(message, path=None):
     _path = settings.SETTINGS["paths"]["LOG_PATH"]
     if path is not None: _path = path
     with io.open(_path, 'at', encoding="utf-8") as f:
-        f.write(unicode(message) + "\n")
+        f.write(str(message) + "\n")
 
 
 def get_500_words():

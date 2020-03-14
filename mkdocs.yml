@@ -18,34 +18,61 @@ theme:
 
 nav:
     - Home: README.md
-    - Getting Started: CasterQuickReference.md
-    - License: LICENSE.md
+    - "Caster FAQ": readthedocs/meta/Caster_FAQ.md
+    - Getting Started:
+        - "Getting Started Overview": readthedocs/Getting_Started/Getting_Started_Overview.md
+        - "Choose a Speech Recognition Engine": readthedocs/Getting_Started/Choose_Recognition_Engine.md
+    - Installation: 
+        - 'Dragon NaturallySpeaking': readthedocs/Installation/Dragon_NaturallySpeaking.md
+        - 'Kaldi': readthedocs/Installation/Kaldi.md
+        - 'Windows Speech Recognition': readthedocs/Installation/Windows_Speech_Recognition.md
+        - 'Troubleshooting Install': readthedocs/Installation/Troubleshooting_Install.md
+    - Caster Commands: 
+        - 'Using Voice Commands': readthedocs/Caster_Commands/Using_Voice_Commands.md
+        - 'Application Commands Reference': readthedocs/Caster_Commands/Application_Commands_Quick_Reference.md
+        - 'Caster Core Reference': readthedocs/Caster_Commands/CasterQuickReference.md
+        - 'Languages Reference': readthedocs/Caster_Commands/CCR_languages_Quick_Reference.md
+        - 'Text Manipulation and Navigation': readthedocs/Caster_Commands/Text_Manipulation.md
+        - 'Mouse': readthedocs/Caster_Commands/Mouse.md
+        - 'Record Macros': readthedocs/Caster_Commands/Record_Macros.md
+        - 'Alias': readthedocs/Caster_Commands/Alias.md
+        - 'Bring Me': readthedocs/Caster_Commands/Bringme.md
+    - Programming By Voice:
+        - 'Speaking Examples': readthedocs/Getting_Started/How_to_Speak_Code/How_to_Speak_Code_Intro.md
+        - 'How to Speak Code': readthedocs/Getting_Started/How_to_Speak_Code/Speaking/Examples.md
+    - Caster User Directory: 
+        - readthedocs/User_Dir/Caster_User_Dir.md
+    - Rule Construction:
+        - 'Intro into Rules and Grammars': readthedocs/Rule_Construction/Intro_Into_Rules_and_Grammars.md
+        - 'Taxonomy of a Rule': readthedocs/Rule_Construction/Taxonomy_of_a_Rule.md
+        - 'Loading Rules': readthedocs/Rule_Construction/Rule_Construction.md
+        - Dragonfly Rules:
+            - 'Dragonfly Rules': readthedocs/Rule_Construction/Dragonfly_Rules/Dragonfly_Rules.md
+            - 'Sample File': readthedocs/Rule_Construction/Dragonfly_Rules/Sample_File.md 
+        - Caster Rules:  
+            - 'Caster Rules': readthedocs/Rule_Construction/Caster_Rules/Caster_Rules.md
+            - 'CCR': readthedocs/Rule_Construction/Caster_Rules/CCR.md
+            - 'Context Stack': readthedocs/Rule_Construction/Caster_Rules/ContextStack.md
+            - 'Node Rule': readthedocs/Rule_Construction/Caster_Rules/NodeRule.md
+    - Customize Caster:
+        - 'Editing Starter Rules': "readthedocs/Customize_Caster/Customizing_Starter_Rules.md"
+        - 'Creating Hooks and Events': "readthedocs/Customize_Caster/Creating_Hooks_and_Events.md"
+        - Explanation of Settings:
+            - 'Rules': readthedocs/Caster_Settings/rules.md
+            - 'Caster Settings': readthedocs/Caster_Settings/settings.md
+            - 'Companion Config': readthedocs/Caster_Settings/companion_config.md
+            - 'Hooks': readthedocs/Caster_Settings/hooks.md
+            - 'Transformers': readthedocs/Caster_Settings/transformers.md
+    - Third-party Integrations:
+        - 'Aenea':  readthedocs/Third-party_Integrations/Aenea.md
+        - 'Sikuli': readthedocs/Third-party_Integrations/Sikuli.md
+    - Getting Support: readthedocs/meta/Getting_Support.md
     - Contributing: Contributing.md
     - Code of Conduct: CODE_OF_CONDUCT.md
-    - Installation: Installation.md
-    - Documentation:
-        - Aenea: readthedocs/Aenea.md
-        - Alias: readthedocs/Alias.md
-        - Bring me: readthedocs/Bringme.md
-        - Application Commands Quick Reference: readthedocs/Application_Commands_Quick_Reference.md
-        - Auto CCR and Cmd Mode: readthedocs/Auto_CCR_and_Cmd-Mode.md
-        - CCR: readthedocs/CCR.md
-        - 'Languages Quick_Reference': readthedocs/CCR_languages_Quick_Reference.md
-        - 'Context Stack': readthedocs/ContextStack.md
-        - 'Mouse': readthedocs/Mouse.md
-        - 'Node Rule': readthedocs/NodeRule.md
-        - 'Record Macros': readthedocs/Record_Macros.md
-        - 'Sikuli': readthedocs/Sikuli.md
-        - 'Taxonomy of a Rule': readthedocs/Taxonomy_of_a_Rule.md
-        - 'Text Manipulation and Navigation': readthedocs/Text_Manipulation.md
-        - 'Voice Index': readthedocs/Voice_Index.md
-        - 'Windows Speech Recognition': readthedocs/Windows_Speech_Recognition.md
-    - 'Examples':
-        - 'How to Speak Code': readthedocs/Examples/How_to_Speak_Code.md
-        - 'Rule Construction': readthedocs/Examples/Rule_Construction.md
-        - Rules:
-            - 'Caster Rules': readthedocs/Examples/rules/Caster_Rules.md
-            - 'Dragonfly Rules': readthedocs/Examples/rules/Dragonfly_Rules.md
-            - 'Old Sample File': readthedocs/Examples/rules/Old_Sample_File.md
-        - Speaking Examples: readthedocs/Examples/Speaking/Examples.md
-    - Undocumented features: readthedocs/meta/Undocumented_Features.md
+    - License: LICENSE.md
+    - Meta: 
+        - 'Undocumented Features': readthedocs/meta/Undocumented_Features.md
+        - 'Grammar Documentation Template': readthedocs/meta/GRAMMAR_DOCUMENTATION_TEMPLATE.md
+        - Archive: 
+            - readthedocs/meta/Archive/RuleFilters.md 
+            - readthedocs/meta/Archive/Windows_Speech_Recognition.md

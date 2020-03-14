@@ -20,3 +20,5 @@ def mock_toml_files():
     _TOML_FILE = {}
     utilities.save_toml_file = _save_toml_file
     utilities.load_toml_file = _load_toml_file
+    utilities.save_json_file = _save_toml_file
+    utilities.load_json_file = _load_toml_file

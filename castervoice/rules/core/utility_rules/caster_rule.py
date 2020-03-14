@@ -1,7 +1,8 @@
 from dragonfly import MappingRule, Function, RunCommand, Playback
 
-from castervoice.lib import control
-from castervoice.lib.ctrl.dependencies import update, find_pip
+from castervoice.lib import control, utilities
+from castervoice.lib.ctrl.dependencies import find_pip  # pylint: disable=no-name-in-module
+from castervoice.lib.ctrl.updatecheck import update
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.short import R
 
@@ -18,14 +19,16 @@ class _DependencyUpdate(RunCommand):
         # Only reboot dragon if the command was successful and online_mode is true
         # 'pip install ...' may exit successfully even if there were connection errors.
         if proc.wait() == 0 and update:
-            Playback([(["reboot", "dragon"], 0.0)]).execute()
+            Function(utilities.reboot).execute()
 
 
 class CasterRule(MappingRule):
     mapping = {
-        # update management
-        "update caster":
-            R(_DependencyUpdate([_PIP, "install", "--upgrade", "castervoice"])),
+        # update management ToDo: Fully implement castervoice PIP install
+        #"update caster":   
+        #    R(_DependencyUpdate([_PIP, "install", "--upgrade", "castervoice"])),
+        "reboot caster":
+            R(Function(utilities.reboot)),
         "update dragonfly":
             R(_DependencyUpdate([_PIP, "install", "--upgrade", "dragonfly2"])),
 

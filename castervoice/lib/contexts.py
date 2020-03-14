@@ -1,4 +1,4 @@
-from dragonfly import AppContext
+from castervoice.lib.context import AppContext
 
 TERMINAL_CONTEXT = AppContext(executable=[
     "\\sh.exe",

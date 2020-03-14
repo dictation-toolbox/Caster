@@ -18,9 +18,9 @@ class Prolog(MergeRule):
         "implies": R(Text(":-")),
         "comment": R(Text("%")),
         "Open Block comment": R(Text("/* ")),
-        "Close Block comment": R(Text("*\ ")),
+        "Close Block comment": R(Text(r"*\ ")),
         "Anonymous": R(Text("_")),
-        "Not": R(Text("\+")),
+        "Not": R(Text(r"\+")),
         "cut": R(Text("!")),
         "Or": R(Text(";")),
         "Fail": R(Text("Fail"))

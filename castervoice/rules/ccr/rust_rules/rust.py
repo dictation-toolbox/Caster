@@ -21,9 +21,9 @@ class Rust(MergeRule):
             R(Text("else {}") + Key("left/5:3")),
         #
         SymbolSpecs.SWITCH:
-            R(Text("match")),
+            R(Text("match ")),
         SymbolSpecs.CASE:
-            R(Text(" => ") + Key("left")),
+            R(Text(" => ")),
         SymbolSpecs.BREAK:
             R(Text("break;")),
         SymbolSpecs.DEFAULT:
@@ -63,9 +63,9 @@ class Rust(MergeRule):
             R(Text("struct ")),
         #
         SymbolSpecs.COMMENT:
-            R(Text("//")),
+            R(Text("// ")),
         SymbolSpecs.LONG_COMMENT:
-            R(Text("///")),
+            R(Text("/// ")),
         #
         SymbolSpecs.NULL:
             R(Text("None")),
@@ -107,6 +107,8 @@ class Rust(MergeRule):
             R(Text("'")),
         "static":
             R(Text("static ")),
+        "self":
+            R(Text("self")),
         "brace pan":
             R(Key("escape, escape, end, left, enter, enter, up, tab")),
         "name space":

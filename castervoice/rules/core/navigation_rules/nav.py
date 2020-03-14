@@ -1,7 +1,8 @@
-from dragonfly import Function, Repeat, Dictation, Choice, ContextAction, AppContext
+from dragonfly import Function, Repeat, Dictation, Choice, ContextAction
+from castervoice.lib.context import AppContext
 
 from castervoice.lib import navigation, context, textformat, text_utils
-import navigation_support
+from castervoice.rules.core.navigation_rules import navigation_support
 from dragonfly.actions.action_mimic import Mimic
 
 from castervoice.lib.actions import Key, Mouse
@@ -286,7 +287,10 @@ class Navigation(MergeRule):
             "tie": 2,
             "gerrish": 3,
             "sing": 4,
-            "laws": 5
+            "laws": 5,
+            "say": 6,
+            "cop": 7,
+            "slip": 8,
         }),
         Choice(
             "spacing", {
@@ -297,7 +301,7 @@ class Navigation(MergeRule):
                 "pebble": 4,
                 "incline": 5,
                 "dissent": 6,
-                "descent": 6
+                "descent": 6,
             }),
         Choice("semi", tell_commands_dict),
         Choice("word_limit", {

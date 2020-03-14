@@ -10,6 +10,7 @@ from castervoice.lib.ctrl.mgr.managed_rule import ManagedRule
 from castervoice.lib.ctrl.mgr.rule_formatter import _set_rdescripts
 from castervoice.lib.ctrl.mgr.rules_enabled_diff import RulesEnabledDiff
 from castervoice.lib.merge.ccrmerging2.hooks.events.activation_event import RuleActivationEvent
+from castervoice.lib.merge.ccrmerging2.hooks.events.on_error_event import OnErrorEvent
 from castervoice.lib.merge.ccrmerging2.sorting.config_ruleset_sorter import ConfigBasedRuleSetSorter
 from castervoice.lib.util.ordered_set import OrderedSet
 
@@ -287,14 +288,18 @@ class GrammarManager(object):
         :param file_path_changed: str
         :return:
         """
-        module_name = GrammarManager._get_module_name_from_file_path(file_path_changed)
-        rule_class, details = self._content_loader.idem_import_module(module_name, ContentType.GET_RULE)
-        # re-register:
-        self.register_rule(rule_class, details)
+        try:
+            module_name = GrammarManager._get_module_name_from_file_path(file_path_changed)
+            rule_class, details = self._content_loader.idem_import_module(module_name, ContentType.GET_RULE)
+            # re-register:
+            self.register_rule(rule_class, details)
 
-        class_name = rule_class.__name__
-        if class_name in self._config.get_enabled_rcns_ordered():
-            self._delegate_enable_rule(class_name, True)
+            class_name = rule_class.__name__
+            if class_name in self._config.get_enabled_rcns_ordered():
+                self._delegate_enable_rule(class_name, True)
+        except Exception as error:
+            printer.out('Grammar Manager: {} - See error message above'.format(error)) 
+            self._hooks_runner.execute(OnErrorEvent())
 
     def _get_invalidation(self, rule_class, details):
         """

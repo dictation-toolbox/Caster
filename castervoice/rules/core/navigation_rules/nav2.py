@@ -2,7 +2,7 @@ from dragonfly import Function, Repeat, Dictation, Choice, MappingRule
 
 from castervoice.lib.actions import Key, Mouse
 from castervoice.lib import navigation, utilities
-import navigation_support
+from castervoice.rules.core.navigation_rules import navigation_support
 
 try:  # Try first loading from caster user directory
     from alphabet_rules import alphabet_support
@@ -99,27 +99,6 @@ class NavigationNon(MappingRule):
             R(Key("c-w/20"))*Repeat(extra="n"),
         "elite translation <text>":
             R(Function(alphabet_support.elite_text)),
-
-        # Workspace management
-        "show work [spaces]":
-            R(Key("w-tab")),
-        "(create | new) work [space]":
-            R(Key("wc-d")),
-        "close work [space]":
-            R(Key("wc-f4")),
-        "close all work [spaces]":
-            R(Function(utilities.close_all_workspaces)),
-        "next work [space] [<n>]":
-            R(Key("wc-right"))*Repeat(extra="n"),
-        "(previous | prior) work [space] [<n>]":
-            R(Key("wc-left"))*Repeat(extra="n"),
-
-        "go work [space] <n>":
-            R(Function(lambda n: utilities.go_to_desktop_number(n))),
-        "send work [space] <n>":
-            R(Function(lambda n: utilities.move_current_window_to_desktop(n))),
-        "move work [space] <n>":
-            R(Function(lambda n: utilities.move_current_window_to_desktop(n, True))),
     }
 
     extras = [

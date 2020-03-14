@@ -1,12 +1,21 @@
 import os
+import sys
 import shlex
 import threading
 import time
 from subprocess import Popen
 
-from dragonfly import AppContext, Function, Choice, Dictation, ContextAction
+import six
+if six.PY2:
+    from castervoice.lib.util.pathlib import Path
+else:
+    from pathlib import Path  # pylint: disable=import-error
+
+from dragonfly import Function, Choice, Dictation, ContextAction
+from castervoice.lib.context import AppContext
 
 from castervoice.lib import settings, utilities, context, contexts
+from castervoice.lib import printer
 from castervoice.lib.actions import Text, Key
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
@@ -31,7 +40,9 @@ class BringRule(BaseSelfModifyingRule):
     _terminal_context = contexts.TERMINAL_CONTEXT
     # Paths
     _terminal_path = settings.settings(["paths", "TERMINAL_PATH"])
-    _explorer_path = "C:\\Windows\\explorer.exe"
+    _explorer_path = str(Path("C:\\Windows\\explorer.exe"))
+    _user_dir = settings.SETTINGS["paths"]["USER_DIR"]
+    _home_dir = str(Path.home())
 
     def __init__(self):
         super(BringRule, self).__init__(settings.settings(["paths", "SM_BRINGME_PATH"]))
@@ -84,8 +95,8 @@ class BringRule(BaseSelfModifyingRule):
         return [
             Choice(header,
                    {key: os.path.expandvars(value)
-                    for key, value in section.iteritems()})
-            for header, section in config_copy.iteritems()
+                    for key, value in section.items()})
+            for header, section in config_copy.items()
         ]
 
     def _refresh(self, *args):
@@ -107,7 +118,7 @@ class BringRule(BaseSelfModifyingRule):
             path = utilities.get_active_window_path()
             if not path:
                 # dragonfly.get_engine().speak("program not detected")
-                print("Program path for bring me not found ")
+                printer.out("Program path for bring me not found ")
         elif launch_type == 'file':
             files = utilities.get_selected_files(folders=False)
             path = files[0] if files else None # or allow adding multiple files
@@ -122,7 +133,7 @@ class BringRule(BaseSelfModifyingRule):
                 time.sleep(0.1)
                 _, path = context.read_selected_without_altering_clipboard()
                 if not path:
-                    print("Selection for bring me not found ")
+                    printer.out("Selection for bring me not found ")
             Key("escape").execute()
         if not path:
             # logger.warn('Cannot add %s as %s to bringme: cannot get path', launch, key)
@@ -184,44 +195,63 @@ class BringRule(BaseSelfModifyingRule):
         Popen(program)
 
     def _bring_file(self, file):
-        threading.Thread(target=os.startfile, args=(file, )).start()
+        threading.Thread(target=os.startfile, args=(file, )).start()  # pylint: disable=no-member
 
     # =================== BringMe default setup:
-
     _bm_defaults = {
         "website": {
+            # Documentation
             "caster documentation": "https://caster.readthedocs.io/en/latest/",
             "dragonfly documentation": "https://dragonfly2.readthedocs.io/en/latest/",
+
+            # Caster Support
             "dragonfly gitter": "https://gitter.im/dictation-toolbox/dragonfly",
             "caster gitter": "https://gitter.im/dictation-toolbox/Caster",
             "caster discord": "https://discord.gg/9eAAsCJr",
+
+            # General URLs
             "google": "https://www.google.com",
         },
         "folder": {
-            "libraries": "%USERPROFILE%",
-            "my pictures": "%USERPROFILE%\\Pictures",
-            "my documents": "%USERPROFILE%\\Documents",
-            "caster user": "%USERPROFILE%\\.caster",
-            "caster transformers": "%USERPROFILE%\\.caster\\transformers",
-            "caster rules": "%USERPROFILE%\\.caster\\rules",
-            "caster data": "%USERPROFILE%\\.caster\\data",
-            "sick you lee": "%USERPROFILE%\\.caster\\sikuli",
+            # OS folder Navigation
+            "libraries | home": _home_dir,
+            "my pictures": str(Path(_home_dir).joinpath("Pictures")),
+            "my documents": str(Path(_home_dir).joinpath("Documents")),
+
+            # Caster User Dir Navigation
+            "caster user": str(Path(_user_dir)),
+            "caster hooks": str(Path(_user_dir).joinpath("hooks")),
+            "caster transformers": str(Path(_user_dir).joinpath("transformers")),
+            "caster rules": str(Path(_user_dir).joinpath("rules")),
+            "caster data": str(Path(_user_dir).joinpath("data")),
+            "caster settings": str(Path(_user_dir).joinpath("settings")),
+            "sick you lee": str(Path(_user_dir).joinpath("sikuli")),
         },
         "program": {
-            "notepad": "C:\\Windows\\notepad.exe",
+            "notepad": str(Path("C:\\Windows\\notepad.exe")),
         },
         "file": {
-            "caster settings": "%USERPROFILE%\\.caster\\data\\settings.toml",
-            "caster alias": "%USERPROFILE%\\.caster\\data\\sm_aliases.toml",
-            "caster bring me": "%USERPROFILE%\\.caster\\data\\sm_bringme.toml",
-            "caster ccr": "%USERPROFILE%\\.caster\\data\\ccr.toml",
-            "caster config debug": "%USERPROFILE%\\.caster\\data\\configdebug.txt",
-            "caster words": "%USERPROFILE%\\.caster\\transformers\\words.txt",
-            "caster log": "%USERPROFILE%\\.caster\\data\\log.txt",
+            # User Settings
+            "caster settings file": str(Path(_user_dir).joinpath("settings/settings.toml")),
+            "caster rules file": str(Path(_user_dir).joinpath("settings/rules.toml")),
+            "caster bring me file": str(Path(_user_dir).joinpath("settings/sm_bringme.toml")),
+            "caster hooks file": str(Path(_user_dir).joinpath("settings/hooks.toml")),
+            "caster companion file": str(Path(_user_dir).joinpath("settings/companion_config.toml")),
+            "caster transformers file": str(Path(_user_dir).joinpath("settings/transformers.toml")),
+
+            # Caster Data
+            "caster alias file": str(Path(_user_dir).joinpath("data/sm_aliases.toml")),
+            "caster chain aliases file": str(Path(_user_dir).joinpath("data/sm_chain_aliases.toml")),
+            "caster clipboard file": str(Path(_user_dir).joinpath("data/clipboard.json")),
+            "caster record from history file": str(Path(_user_dir).joinpath("data/sm_history.toml")),
+            "caster log file": str(Path(_user_dir).joinpath("data/log.txt")),
+
+            # Simplified Transformer
+            "caster transformer file": str(Path(_user_dir).joinpath("transformers/words.txt")),
         }
     }
 
 
 def get_rule():
-    details = RuleDetails(ccrtype=CCRType.SELFMOD)
+    details = RuleDetails(ccrtype=CCRType.SELFMOD, transformer_exclusion=True)
     return BringRule, details

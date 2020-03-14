@@ -1,3 +1,5 @@
+from builtins import str
+
 import getopt
 import os
 import re
@@ -14,6 +16,12 @@ finally:
     from castervoice.asynch.mouse.grids import TkTransparent, Dimensions
     from castervoice.lib import gdi, settings, utilities
     settings.initialize()
+
+import six
+if six.PY2:
+    from castervoice.lib.util.pathlib import Path
+else:
+    from pathlib import Path  # pylint: disable=import-error
 
 try:
     from PIL import ImageGrab, ImageFilter, Image
@@ -168,10 +176,10 @@ class LegionScanner:
         import struct
         try:
             if struct.calcsize("P") * 8 == 32:
-                self.tirg_dll = cdll.LoadLibrary((settings.SETTINGS["paths"]["DLL_PATH"] + "tirg-32.dll").encode(
+                self.tirg_dll = cdll.LoadLibrary(str(Path(settings.SETTINGS["paths"]["DLL_PATH"]).joinpath("tirg-32.dll")).encode(
                 sys.getfilesystemencoding()))
             else:
-                self.tirg_dll = cdll.LoadLibrary((settings.SETTINGS["paths"]["DLL_PATH"] + "tirg-64.dll").encode(
+                self.tirg_dll = cdll.LoadLibrary(str(Path(settings.SETTINGS["paths"]["DLL_PATH"]).joinpath("tirg-64.dll")).encode(
                 sys.getfilesystemencoding()))
         except Exception as e:
             print("Legion loading failed with '%s'" % str(e))

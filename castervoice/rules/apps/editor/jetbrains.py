@@ -116,5 +116,5 @@ class JetbrainsRule(MappingRule):
 
 def get_rule():
     details = RuleDetails(name="jet brains",
-                          executable=["idea", "idea64", "studio64", "pycharm"])
+                          executable=["idea", "idea64", "studio64", "pycharm", "rider64"])
     return JetbrainsRule, details

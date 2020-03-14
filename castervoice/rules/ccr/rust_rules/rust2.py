@@ -13,12 +13,16 @@ class RustNon(MappingRule):
             R(Text("panic!()") + Key("left")),
         "macro assertion":
             R(Text("assert_eq!()") + Key("left")),
+        "macro debug":
+            R(Text("dbg!(&)") + Key("left")),
         "ternary":
             R(Text("if TOKEN == TOKEN { TOKEN } else { TOKEN }")),
         "function [<return>]":
             R(Text("fn TOKEN(TOKEN)%(return)s{}")),
         "infinite loop":
             R(Text("loop {}") + Key("left")),
+        "unwrap":
+            R(Text(".unwrap()"))
     }
     extras = [
         Choice("return", {"return": " -> TOKEN "}),

@@ -24,12 +24,6 @@ _test/
 # Ignore Natlink
 /core/
 
-# Ignore User Content
-/caster/user
-
-# Ignore Custom Sikuli Scripts
-/caster/asynch/sikuli/scripts
-
 # Ignore SonarQube
 .sonar
 sonar-project.properties
@@ -39,13 +33,22 @@ sonar-project.properties
 .pydevproject
 .settings
 
-# Ignore User Data
-caster/bin/data
-
 # Ignore dist files
 dist
+build/
 castervoice.egg-info
 /.stignore
 
 # Ignore Notepad++ backup files
 **/nppBackup
+*.bak
+
+# Speech recognition models
+kaldi_model*
+
+# Ignore virtual
+venv
+
+# Dragonfly module loaders
+kaldi_module_loader_plus.py
+kaldi_module_loader.py
