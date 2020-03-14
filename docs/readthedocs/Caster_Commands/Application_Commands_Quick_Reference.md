@@ -39,6 +39,7 @@ Classic Install Location: `castervoice\rules\apps' ` in Caster source code.
 - [Typora](#typora) - tie poor a
 - [Visual Studio](#visual-studio) - visual studio
 - [Visual Studio Code](#visual-studio-code) Visual Studio Code CCR/Visual Studio Code
+- [Webex Teams](#webex-teams) - webex teams
 
 <!-- /TOC -->
 
@@ -668,3 +669,21 @@ Same Commands as [Git Bash](#git-bash)
 | `open project [<text>]`                |                                       |                                          |
 
 \* select / copy / cut / paste / delete
+
+# Webex Teams
+
+| Command                            | Command                         | Command              |
+| :--------------------------------- | :------------------------------ | :------------------- |
+| `(bullet | bulletted) list`        | `heading three`                 | `show meetings`      |
+| `(number | numbered) list`         | `heading two`                   | `show mentions all`  |
+| `(search | find)`                  | `help`                          | `show mentions me`   |
+| `(search | find) space`            | `leave space`                   | `show notifications` |
+| `add (person | people) [<person>]` | `new-line`                      | `show spaces`        |
+| `attach`                           | `next (space | item) [<n>]`     | `show teams`         |
+| `contact person [<person>]`        | `personal meeting link`         | `show unread`        |
+| `create space`                     | `previous (space | item) [<n>]` | `show whiteboards`   |
+| `create whiteboard`                | `send`                          | `strong | bold`      |
+| `emoji`                            | `show calls`                    | `toggle markdown`    |
+| `emphasis | italicize`             | `show drafts`                   | `underline`          |
+| `gif | jeff`                       | `show favorites`                |                      |
+| `heading one`                      | `show flags`                    |                      |
