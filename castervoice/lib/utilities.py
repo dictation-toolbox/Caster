@@ -1,25 +1,24 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function, unicode_literals
-from builtins import str
 
 import io
 import json
-import locale
-import six
 import os
 import re
 import sys
 import six
+import subprocess
 import time
-import traceback
-from subprocess import Popen
 import tomlkit
+import traceback
 
-from dragonfly import Key, Pause, Window, get_current_engine
+from dragonfly import CompoundRule, Key, MappingRule, Pause, Window, get_current_engine
 
-from castervoice.lib.clipboard import Clipboard
+from castervoice.lib import control
 from castervoice.lib import printer
+from castervoice.lib.clipboard import Clipboard
+from castervoice.lib.rules_collection import get_instance
 from castervoice.lib.util import guidance
 
 if six.PY2:
@@ -32,25 +31,22 @@ try:  # Style C -- may be imported into Caster, or externally
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:
-    from castervoice.lib import settings, printer
+    from castervoice.lib import settings
 
 
 # TODO: Move functions that manipulate or retrieve information from Windows to `window_mgmt_support` in navigation_rules.
 # TODO: Implement Optional exact title matching for `get_matching_windows` in Dragonfly
 def window_exists(windowname=None, executable=None):
-    if Window.get_matching_windows(title=windowname, executable=executable):
-        return True
-    else:
-        return False
+    return Window.get_matching_windows(title=windowname, executable=executable) and True
 
 
-def get_window_by_title(title=None): 
+def get_window_by_title(title=None):
     # returns 0 if nothing found
     Matches = Window.get_matching_windows(title=title)
     if Matches:
         return Matches[0].handle
     else:
-        return 0 
+        return 0
 
 
 def get_active_window_title():
@@ -193,23 +189,24 @@ def remote_debug(who_called_it=None):
         printer.out("ERROR: " + who_called_it +
               " called utilities.remote_debug() but the debug server wasn't running.")
 
+
 def reboot():
     # TODO: Save engine arguments elsewhere and retrieves for reboot. Allows for user-defined arguments.
     popen_parameters = []
     engine = get_current_engine()
     if engine.name == 'kaldi':
         engine.disconnect()
-        Popen([sys.executable, '-m', 'dragonfly', 'load', '_*.py', '--engine', 'kaldi',  '--no-recobs-messages'])
+        subprocess.Popen([sys.executable, '-m', 'dragonfly', 'load', '_*.py', '--engine', 'kaldi',  '--no-recobs-messages'])
     if engine.name == 'sapi5inproc':
         engine.disconnect()
-        Popen([sys.executable, '-m', 'dragonfly', 'load', '--engine', 'sapi5inproc', '_*.py', '--no-recobs-messages'])
+        subprocess.Popen([sys.executable, '-m', 'dragonfly', 'load', '--engine', 'sapi5inproc', '_*.py', '--no-recobs-messages'])
     if engine.name in ["sapi5shared", "sapi5"]:
         popen_parameters.append(settings.SETTINGS["paths"]["REBOOT_PATH_WSR"])
         popen_parameters.append(settings.SETTINGS["paths"]["WSR_PATH"])
         printer.out(popen_parameters)
-        Popen(popen_parameters)
+        subprocess.Popen(popen_parameters)
     if engine.name == 'natlink':
-        import natlinkstatus # pylint: disable=import-error
+        import natlinkstatus  # pylint: disable=import-error
         status = natlinkstatus.NatlinkStatus()
         if status.NatlinkIsEnabled() == 1:
             # Natlink in-process
@@ -218,21 +215,21 @@ def reboot():
             username = status.getUserName()
             popen_parameters.append(username)
             printer.out(popen_parameters)
-            Popen(popen_parameters)
+            subprocess.Popen(popen_parameters)
         else:
-           # Natlink out-of-process
+            # Natlink out-of-process
             engine.disconnect()
-            Popen([sys.executable, '-m', 'dragonfly', 'load', '--engine', 'natlink', '_*.py', '--no-recobs-messages'])
+            subprocess.Popen([sys.executable, '-m', 'dragonfly', 'load', '--engine', 'natlink', '_*.py', '--no-recobs-messages'])
 
 
 # TODO: Implement default_browser_command Mac/Linux
 def default_browser_command():
     if sys.platform.startswith('win'):
         if six.PY2:
-            from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT, # pylint: disable=import-error,no-name-in-module
+            from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,  # pylint: disable=import-error,no-name-in-module
                         HKEY_CURRENT_USER, OpenKey, QueryValueEx)
         else:
-            from winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT, # pylint: disable=import-error,no-name-in-module
+            from winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,  # pylint: disable=import-error,no-name-in-module
                         HKEY_CURRENT_USER, OpenKey, QueryValueEx)
         '''
         Tries to get default browser command, returns either a space delimited
@@ -266,9 +263,9 @@ def clear_log():
     # TODO: window_exists utilized when engine launched through Dragonfly CLI via bat in future
     try:
         if sys.platform.startswith('win'):
-            clearcmd = "cls" # Windows OS
+            clearcmd = "cls"  # Windows OS
         else:
-            clearcmd = "clear" # Linux
+            clearcmd = "clear"  # Linux
         if get_current_engine().name == 'natlink':
             import natlinkstatus  # pylint: disable=import-error
             status = natlinkstatus.NatlinkStatus()
@@ -348,3 +345,60 @@ def get_clipboard_files(folders=False):
         return files
     else:
         printer.out("get_clipboard_files: Not implemented for OS")
+
+
+def start_hud():
+    hud = control.nexus().comm.get_com("hud")
+    try:
+        hud.ping()
+    except ConnectionRefusedError:  # pylint: disable=undefined-variable
+        subprocess.Popen([settings.SETTINGS["paths"]["PYTHONW"],
+                          settings.SETTINGS["paths"]["HUD_PATH"]])
+
+
+def show_hud():
+    hud = control.nexus().comm.get_com("hud")
+    hud.show_hud()
+
+
+def hide_hud():
+    hud = control.nexus().comm.get_com("hud")
+    hud.hide_hud()
+
+
+def show_rules():
+    """
+    Get a list of active grammars loaded into the current engine,
+    including active rules and their attributes.  Send the list
+    to HUD GUI for display.
+    """
+    grammars = []
+    engine = get_current_engine()
+    for grammar in engine.grammars:
+        if any([r.active for r in grammar.rules]):
+            rules = []
+            for rule in grammar.rules:
+                if rule.active and not rule.name.startswith('_'):
+                    if isinstance(rule, CompoundRule):
+                        specs = [rule.spec]
+                    elif isinstance(rule, MappingRule):
+                        specs = sorted(["{}::{}".format(x, rule._mapping[x]) for x in rule._mapping])
+                    else:
+                        specs = [rule.element.gstring()]
+                    rules.append({
+                        "name": rule.name,
+                        "exported": rule.exported,
+                        "specs": specs
+                    })
+            grammars.append({"name": grammar.name, "rules": rules})
+    grammars.extend(get_instance().serialize())
+    hud = control.nexus().comm.get_com("hud")
+    hud.show_rules(json.dumps(grammars))
+
+
+def hide_rules():
+    """
+    Instruct HUD to hide the frame with the list of rules.
+    """
+    hud = control.nexus().comm.get_com("hud")
+    hud.hide_rules()
