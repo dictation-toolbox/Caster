@@ -21,8 +21,21 @@ After installing Dragon Naturally Speaking, you can configure the DNS settings b
 
 ### NatLink
 
-   > - Download and install [Natlink](https://sourceforge.net/projects/natlink/files/natlink/natlink4.2/). Use `Natlink-4.2` or newer.
+   - Download and install [Natlink](https://sourceforge.net/projects/natlink/files/natlink/natlink4.2/). Use `Natlink-4.2` or newer.
+      1. Verify (DPI / DNS) is not running.
 
+      2. Open the start menu and search for `Configure NatLink` and click `Configure NatLink via GUI`.
+         ![Configure start](https://mathfly.org/images/configure_start.png)
+         
+         
+         
+3. Register Natlink and Restart your computer.
+         ![Natlink-Setup1.jpg](https://i.postimg.cc/3wdKsJFS/Natlink-Setup1.jpg)
+      
+         
+      
+      4. Relaunch `Configure NatLink via GUI`. Then disable Natlink. Done with Natlink setup.
+         ![Natlink-Setup2.jpg](https://i.postimg.cc/j20TGHMv/Natlink-Setup2.jpg)
 ### Caster
 
    > 1. Download Caster from the [master branch](https://github.com/dictation-toolbox/Caster/archive/master.zip).
@@ -44,24 +57,20 @@ After installing Dragon Naturally Speaking, you can configure the DNS settings b
 
 ------
 
-### -Alternative- Manual Natlink Configuration 
+### -Alternative- Natlink Configuration 
 
-An alternative to the instructions above for configuring Natlink. This utilizes Natlink Configuration GUI to launch Caster. Automatically launches Caster when DNS starts. A bit error-prone see troubleshooting section. 
+An alternative to the instructions above for configuring Natlink. Automatically launches Caster when DNS starts. The disadvantage of this method is when Caser restarts so does DNS. Open the start menu and search for `natlink` and click the file called `Configure NatLink via GUI`.
 
-   > 1. Open [command prompt](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows) (CMD) and type the following then press enter.
-   >     - `python -m pip install future six wxPython pywin32`
-   > 2. Open the start menu and search for `natlink`.
-   > 3. Click the file called `Configure NatLink via GUI`.
    > ![Configure start](https://mathfly.org/images/configure_start.png)
+   >
+   > 1. Ensure that the details of your DNS setup are correct in the “info” tab.
+   > 2. In the "configure" tab Register Natlink and Restart your computer.
+   >     ![Caster-Natlink.jpg](https://i.postimg.cc/d1jN4xcw/Caster-Natlink.jpg)
+   > 3. Relaunch the GUI. In the “configure” tab - under “NatLink” and “UserDirectory” - click enable. When you are prompted for a folder, give it the folder 
+   >    (`C:\Users\<YourUsername>\Documents\Caster`).
 
-   > 4. Ensure that the details of your DNS setup are correct in the “info” tab.
 
-   > 5. In the “configure” tab - under “NatLink” and “UserDirectory” - click enable. When you are prompted for a folder, give it the folder 
-   >  (`C:\Users\<YourUsername>\Documents\Caster`).
-   >  ![Caster-Natlink.jpg](https://i.postimg.cc/d1jN4xcw/Caster-Natlink.jpg)
-
-
-### Manual Configuration Natlink Troubleshooting FAQ
+### Natlink Troubleshooting FAQ
 
 - Visual C++ Runtime Error R6034 on Dragon launch. This is related to Natlink
 
