@@ -93,6 +93,7 @@ class HistoryRule(BaseSelfModifyingRule):
             spec = str(args[0])
             sequences = args[1]
             self._config.put(spec, sequences)
+            self._config.save()
         else:
             self._config.replace({})
 
