@@ -28,6 +28,11 @@ class SublimeSnippetControllRule(MappingRule):
     		R(Key("c-z") + DisplaySnippetVariants()),
 
     	# "next field":R(SublimeCommand("next_field")),
+    	# I often use the following to avoid problems
+    	# with tabs and auto complete, but inside a CCR
+    	# "okay [<n>]":
+            # R(Key("left,right,tab"))*Repeat(extra="n"), 
+
     	# "previous field":R(SublimeCommand("prev_field")),
     }
     extras = [
