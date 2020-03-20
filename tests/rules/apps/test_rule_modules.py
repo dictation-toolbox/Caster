@@ -48,6 +48,6 @@ class AppsModulesTestCase(ModulesTestCase):
                 foxitreader, gitbash, githubdesktop, gitter,
                 griddouglas, gridlegion, gridrainbow, kdiff3, lyx,
                 msvc, MSTeamsRule, notepadplusplus, outlook, rstudio,
-                sqldeveloper, ssms, sublime, totalcmd, totalcmd2,
+                sqldeveloper, ssms, sublime, sublime_snippet_control,totalcmd, totalcmd2,
                 typora, visualstudio, vscode, vscode2, winword,
                 wsr]
