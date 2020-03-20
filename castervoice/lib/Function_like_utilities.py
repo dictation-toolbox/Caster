@@ -12,9 +12,9 @@ import six
 
 def get_signature_arguments(function):
 	if six.PY2:
+		# pylint: disable=deprecated-method
 		argspec = inspect.getargspec(function)
 	else:
-		# pylint: disable=deprecated-method
 		argspec = inspect.getfullargspec(function)
 	args, varkw = argspec[0], argspec[2]
 	filter_keywords = not varkw
