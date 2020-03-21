@@ -15,6 +15,7 @@ def get_signature_arguments(function):
 		# pylint: disable=deprecated-method
 		argspec = inspect.getargspec(function)
 	else:
+		# pylint: disable=no-member
 		argspec = inspect.getfullargspec(function)
 	args, varkw = argspec[0], argspec[2]
 	filter_keywords = not varkw
