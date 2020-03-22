@@ -7,6 +7,7 @@ import os, sys, time, pkg_resources
 from pkg_resources import VersionConflict, DistributionNotFound
 
 DARWIN = sys.platform == "darwin"
+LINUX = sys.platform == "linux"
 
 def install_type():
     # Checks if Caster install is Classic or PIP.
@@ -22,14 +23,14 @@ def install_type():
 def find_pip():
     # Find the pip script for Python.
     python_scripts = os.path.join(sys.exec_prefix,
-                                  "bin" if DARWIN else "Scripts")
+                                  "bin" if DARWIN or LINUX else "Scripts")
     pip_exec = "pip.exe" if sys.platform == "win32" else "pip"
     return os.path.join(python_scripts, pip_exec)
 
 
 def dep_missing():
     uppath = lambda _path, n: os.sep.join(_path.split(os.sep)[:-n])
-    requirements_file = "requirements-mac.txt" if DARWIN else "requirements.txt"
+    requirements_file = "requirements-mac-linux.txt" if DARWIN or LINUX else "requirements.txt"
     requirements = os.path.join(uppath(__file__, 4), requirements_file)
     with open(requirements) as f:
         requirements = f.read().splitlines()
@@ -51,7 +52,7 @@ def dep_min_version():
     # A GitHub Issue URL needed to explain the change to version specific '==' dependency.
     upgradelist = []
     listdependency = ([
-        ["dragonfly2", ">=", "0.20.0", None],
+        ["dragonfly2", ">=", "0.22.0", None],
     ])
     for dep in listdependency:
         package = dep[0]
