@@ -42,7 +42,7 @@ jobs:
       before_install:
         - python -m pip install --upgrade pip wheel
       install:
-        - pip install -U -r requirements-mac.txt
+        - pip install -U -r requirements-mac-linux.txt
         - pip install -vvv --user -e .
       script:
         - python tests/testrunner.py && pylint -E _caster.py && pylint -E castervoice
