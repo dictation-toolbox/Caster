@@ -13,19 +13,9 @@ from castervoice.lib.Function_like_utilities import  get_signature_arguments,get
 
 grammars_with_snippets = {}
 
-def mark_snippets(*args):
-	names = set(args)
-	def function(x):
-		data = {}
-		for y in x.extras:
-			if isinstance(y,Choice) and y.name in names:
-				data[y.name] = y
-		grammars_with_snippets[x] = data
-		return x
-	return function
-
-
-
+def mark_as_snippet_grammar(rule):
+	grammars_with_snippets[rule] = rule.extras
+	return rule
 
 
 
