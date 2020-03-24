@@ -130,22 +130,6 @@ class SnippetVariant(ActionBase):
 
 ############################## DISPLAY VARIANTS QUICK PANEL ##############################
 
-def display_variants():
-	data = deepcopy(snippet_state["extra_data"])
-	snippet = snippet_state["snippet"]
-	print("snippet",snippet)
-	alternatives = []
-	for i in range(1,6):
-		data["n"] = i
-		x,_ = generate_snippet_text(snippet,data)
-		alternatives.append(x)
-	items = [{
-			"caption":json.dumps(x),
-			"command":"insert_snippet",
-			"args":dict(contents=x,**snippet_state["snippet_parameters"])
-		} for x in alternatives]
-	send_sublime("quick_panel", dict(items=items))
-
 
 class DisplaySnippetVariants(ActionBase):
 	"""docstring for DisplaySnippetVariants"""
