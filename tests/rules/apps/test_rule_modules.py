@@ -38,9 +38,9 @@ class AppsModulesTestCase(ModulesTestCase):
         from castervoice.rules.apps.editor import flashdevelop
         from castervoice.rules.apps.editor import msvc
         from castervoice.rules.apps.editor import typora
-        from castervoice.rules.apps.editor import sublime
-        from castervoice.rules.apps.editor import sublime_snippet_control
-        from castervoice.rules.apps.editor import sublime_snippet_additional_control
+        from castervoice.rules.apps.editor.sublime_rules import sublime
+        from castervoice.rules.apps.editor.sublime_rules import sublime_snippet_control
+        from castervoice.rules.apps.editor.sublime_rules import sublime_snippet_additional_control
         from castervoice.rules.apps.editor import emacs
         from castervoice.rules.apps.chat import gitter, MSTeamsRule
         return [chrome, firefox, jetbrains, adobe_acrobat, atom,
