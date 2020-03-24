@@ -40,6 +40,7 @@ class AppsModulesTestCase(ModulesTestCase):
         from castervoice.rules.apps.editor import typora
         from castervoice.rules.apps.editor import sublime
         from castervoice.rules.apps.editor import sublime_snippet_control
+        from castervoice.rules.apps.editor import sublime_snippet_additional_control
         from castervoice.rules.apps.editor import emacs
         from castervoice.rules.apps.chat import gitter, MSTeamsRule
         return [chrome, firefox, jetbrains, adobe_acrobat, atom,
@@ -48,6 +49,6 @@ class AppsModulesTestCase(ModulesTestCase):
                 foxitreader, gitbash, githubdesktop, gitter,
                 griddouglas, gridlegion, gridrainbow, kdiff3, lyx,
                 msvc, MSTeamsRule, notepadplusplus, outlook, rstudio,
-                sqldeveloper, ssms, sublime, sublime_snippet_control,totalcmd, totalcmd2,
+                sqldeveloper, ssms, sublime, sublime_snippet_control,sublime_snippet_additional_control,totalcmd, totalcmd2,
                 typora, visualstudio, vscode, vscode2, winword,
                 wsr]
