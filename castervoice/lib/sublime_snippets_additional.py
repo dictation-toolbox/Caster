@@ -13,6 +13,8 @@ from castervoice.lib.Function_like_utilities import  get_signature_arguments,get
 
 grammars_with_snippets = {}
 
+observer = None
+
 def mark_as_snippet_grammar(rule):
 	grammars_with_snippets[rule] = rule.extras
 	return rule

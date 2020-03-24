@@ -18,7 +18,7 @@ from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.sublime import send_sublime,SublimeCommand
 from castervoice.lib.sublime_snippets import Snippet,SnippetVariant,DisplaySnippetVariants,snippet_state
 
-from castervoice.lib.sublime_snippets_additional import grammars_with_snippets
+from castervoice.lib.sublime_snippets_additional import grammars_with_snippets,observer
 
 
 
@@ -54,17 +54,21 @@ class SublimeSnippetAdditionalControllRule(BaseSelfModifyingRule):
         self._smr_defaults =  {}
 
         names = snippet_state["extra_data"].keys()
+        
+        
         if last_rule:
             # print(grammars_with_snippets[last_rule])
             for e in grammars_with_snippets[last_rule]:
+                
                 if isinstance(e,Choice) and e.name in names:
+                    
                     self._smr_mapping["variant <"+e.name+">"] = R(Key("c-z") + SnippetVariant(**{e.name:e.name}))
                     self._smr_extras.append(e)
         print(self._smr_mapping)
 
     
     def _refresh(self,rule = None,*args):
-        # print("The refreshing snippets",snippet_state)
+        print("The refreshing snippets",snippet_state)
         global last_keys,last_rule
         if type(rule) not in grammars_with_snippets:
             # print(rule,grammars_with_snippets.keys())
@@ -83,13 +87,14 @@ refresh_after_command_callback = lambda words,rule: SublimeSnippetAdditionalCont
 # refresh_after_command_callback = lambda words,rule:SublimeSnippetAdditionalControllRule.last._refresh() if SublimeSnippetAdditionalControllRule.last else None
 
 # this is not working
-if SublimeSnippetAdditionalControllRule.observer:
+if observer:
     print("disaster")
-    print(SublimeSnippetAdditionalControllRule.observer)
-    SublimeSnippetAdditionalControllRule.observer.unregister()
+    print(observer)
+    observer.unregister()
+    
 
 
-SublimeSnippetAdditionalControllRule.observer = register_post_recognition_callback(refresh_after_command_callback)
+observer = register_post_recognition_callback(refresh_after_command_callback)
 
 
 
