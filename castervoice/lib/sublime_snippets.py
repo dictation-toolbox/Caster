@@ -144,11 +144,14 @@ class DisplaySnippetVariants(ActionBase):
 		alternatives = []
 		protection_counter = 0
 		for value in self.values:
-			data[self.name] = value
-			x,_ = generate_snippet_text(snippet,data)
-			alternatives.append(x)
-			protection_counter += 1
-			if protection_counter==20:
+			try :
+				data[self.name] = value
+				x,_ = generate_snippet_text(snippet,data)
+				alternatives.append(x)
+				protection_counter += 1
+				if protection_counter==20:
+					break
+			except:
 				break
 
 		items = [{
