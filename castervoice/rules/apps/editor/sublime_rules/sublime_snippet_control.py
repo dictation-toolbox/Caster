@@ -10,8 +10,10 @@ from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 
-from castervoice.lib.sublime import send_sublime,SublimeCommand
-from castervoice.lib.sublime_snippets import Snippet,SnippetVariant,DisplaySnippetVariants
+try:
+    from sublime_rules.sublime_snippets import Snippet,SnippetVariant,DisplaySnippetVariants,send_sublime,SublimeCommand
+except ImportError:
+    from castervoice.rules.apps.editor.sublime_rules.sublime_snippets import Snippet,SnippetVariant,DisplaySnippetVariants,send_sublime,SublimeCommand
 
 
 
@@ -22,10 +24,10 @@ from castervoice.lib.sublime_snippets import Snippet,SnippetVariant,DisplaySnipp
 class SublimeSnippetControllRule(MappingRule):
     pronunciation = "sublime snippet control"
     mapping = {
-    	"variant <n>":
-    		R(Key("c-z") + SnippetVariant(n="n")),
-    	"display variants":
-    		R(Key("c-z") + DisplaySnippetVariants()),
+    	# "variant <n>":
+    	# 	R(Key("c-z") + SnippetVariant(n="n")),
+    	# "display variants":
+    	# 	R(Key("c-z") + DisplaySnippetVariants()),
 
     	# "next field":R(SublimeCommand("next_field")),
     	# I often use the following to avoid problems

@@ -6,12 +6,31 @@ from copy import deepcopy
 from dragonfly import RunCommand
 from dragonfly.actions.action_base  import ActionBase, ActionError
 
-from castervoice.lib.sublime import send_sublime
-from castervoice.lib.Function_like_utilities import  get_signature_arguments,get_only_proper_arguments,rename_data,evaluate_function
+from castervoice.rules.apps.editor.sublime_rules.Function_like_utilities import  get_signature_arguments,get_only_proper_arguments,rename_data,evaluate_function
+
+########################################################################################################################
+# General purpose sublime stuff, can be used regardless of snippets
+########################################################################################################################
+
+############################## BASIC INTERFACE WITH SUBLIME ##############################
+
+def send_sublime(command,data):
+    RunCommand(["subl", "-b","--command",command + " " + json.dumps(data)],synchronous = True).execute()
+
+############################## SUBLIME COMMAND ACTION ##############################
+
+class SublimeCommand(RunCommand):
+	"""docstring for SublimeCommand"""
+	def __init__(self, command,data = {}):
+		super(SublimeCommand, self).__init__(["subl", "-b","--command",command + " " + json.dumps(data)],synchronous = True)
+	
 
 
+########################################################################################################################
+# Actual snippet stuff, contains functions to send snippets, generate snippet text and dragonfly actions wrappers
+########################################################################################################################
 
-############################## INTERFACE WITH SUBLIME ##############################
+############################## LOW LEVEL SNIPPET INTERFACE WITH SUBLIME ##############################
 
 def send_snippet(contents, **kwargs):
 	kwargs['contents'] = contents
@@ -35,6 +54,7 @@ initial_snippet_state = {
 snippet_state = initial_snippet_state
 
 def snippet_log(clear_those_not_set = True,**kwargs):
+	print("snippet",kwargs)
 	global snippet_state 
 	if clear_those_not_set:
 		snippet_state = initial_snippet_state
@@ -43,7 +63,7 @@ def snippet_log(clear_those_not_set = True,**kwargs):
 
 
 
-############################## ACTUALLY INSERTED SNIPPETS ##############################
+############################## GENERATING AND HIGH-LEVEL INSERTING SNIPPETS ##############################
 
 def generate_snippet_text(snippet = "",data = {}):
 	if isinstance(snippet,str):
@@ -212,6 +232,23 @@ class SnippetTransform(ActionBase):
 		insert_snippet(snippet_new,additional_log = {k:v for k,v in snippet_state.items() if k!="snippet_text"})
 	
 
+
+
+########################################################################################################################
+# decorator and backend needed for the self modifying snippet variants
+########################################################################################################################
+
+
+
+
+grammars_with_snippets = {}
+
+observer = None
+
+def mark_as_snippet_grammar(rule):
+	grammars_with_snippets[rule] = rule.extras
+	print(rule,"mark_as_snippet_grammar")
+	return rule
 
 
 

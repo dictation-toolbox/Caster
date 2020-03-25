@@ -15,10 +15,17 @@ from castervoice.lib.merge.state.short import R
 from castervoice.lib.merge.selfmod.selfmodrule import BaseSelfModifyingRule
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 
-from castervoice.lib.sublime import send_sublime,SublimeCommand
-from castervoice.lib.sublime_snippets import Snippet,SnippetVariant,DisplaySnippetVariants,snippet_state
-
-from castervoice.lib.sublime_snippets_additional import grammars_with_snippets,observer
+try : 
+    # raise ImportError()
+    from sublime_snippets import Snippet,SnippetVariant,DisplaySnippetVariants,snippet_state,send_sublime,SublimeCommand,grammars_with_snippets,observer
+    print(" success with dry")
+    print(" success with dry")
+    print(" success with dry")
+except ImportError:
+    print(" and import there is expected")
+    print(" and import there is expected")
+    print(" and import there is expected")
+    from castervoice.rules.apps.editor.sublime_rules.sublime_snippets import Snippet,SnippetVariant,DisplaySnippetVariants,snippet_state,grammars_with_snippets,observer
 
 
 
