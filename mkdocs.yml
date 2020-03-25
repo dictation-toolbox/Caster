@@ -29,8 +29,8 @@ nav:
         - 'Troubleshooting Install': readthedocs/Installation/Troubleshooting_Install.md
     - Caster Commands: 
         - 'Using Voice Commands': readthedocs/Caster_Commands/Using_Voice_Commands.md
-        - 'Application Commands Reference': readthedocs/Caster_Commands/Application_Commands_Quick_Reference.md
         - 'Caster Core Reference': readthedocs/Caster_Commands/CasterQuickReference.md
+        - 'Application Commands Reference': readthedocs/Caster_Commands/Application_Commands_Quick_Reference.md
         - 'Languages Reference': readthedocs/Caster_Commands/CCR_languages_Quick_Reference.md
         - 'Text Manipulation and Navigation': readthedocs/Caster_Commands/Text_Manipulation.md
         - 'Mouse': readthedocs/Caster_Commands/Mouse.md

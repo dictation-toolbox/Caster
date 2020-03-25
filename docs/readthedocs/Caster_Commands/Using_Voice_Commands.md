@@ -10,7 +10,7 @@ For those that simply want to leverage voice control with their computer, we rec
 
 - `google that` Googles the highlighted text
 
-For those that are looking for complete keyboard and mouse replacement as an Accessibility tool, we recommend [Caster's Quick Reference](https://github.com/dictation-toolbox/Caster/blob/master/CasterQuickReference.pdf) guide. The document contains universal commands for navigation and editing. 
+For those that are looking for complete keyboard and mouse replacement as an Accessibility tool, we recommend [Caster's Quick Reference](https://caster.readthedocs.io/en/latest/readthedocs/Caster_Commands/CasterQuickReference/). The document contains universal commands for navigation and editing. 
 
 These commands are active all the time and provide input commands for letters, numbers, and  punctuation, as well as the ability to easily manipulate windows and text. A few examples from the document are:
 
