@@ -3,7 +3,6 @@ from castervoice.lib.actions import Key
 
 from castervoice.rules.apps.speech_engine.dragon_rules.dragon_support import fix_dragon_double, extras_for_whole_file, \
     defaults_for_whole_file
-from castervoice.lib import utilities
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.short import R
 
@@ -82,10 +81,6 @@ class DragonRule(MappingRule):
         "[dictation] sources": R(Mimic("manage", "dictation", "sources"), 
             rdescript="Dragon: manage dictation sources"),
         
-
-        # A Natlink Command
-        "clear caster log":
-            R(Function(utilities.clear_log)),
     }
     # see above
     extras = extras_for_whole_file()

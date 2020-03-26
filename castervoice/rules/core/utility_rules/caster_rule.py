@@ -24,13 +24,15 @@ class _DependencyUpdate(RunCommand):
 
 class CasterRule(MappingRule):
     mapping = {
-        # update management ToDo: Fully implement castervoice PIP install
-        #"update caster":   
-        #    R(_DependencyUpdate([_PIP, "install", "--upgrade", "castervoice"])),
+        "clear caster log":
+            R(Function(utilities.clear_log)),
         "reboot caster":
             R(Function(utilities.reboot)),
         "update dragonfly":
             R(_DependencyUpdate([_PIP, "install", "--upgrade", "dragonfly2"])),
+        # update management ToDo: Fully implement castervoice PIP install
+        #"update caster":   
+        #    R(_DependencyUpdate([_PIP, "install", "--upgrade", "castervoice"])),
 
         # ccr de/activation
         "enable c c r":
