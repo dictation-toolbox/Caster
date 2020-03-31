@@ -211,7 +211,7 @@ class Navigation(MergeRule):
     }
     button_dictionary_10 = {
         "function {}".format(i): "f{}".format(i)
-        for i in range(1, 10)
+        for i in range(1, 13)
     }
     button_dictionary_10.update(caster_alphabet())
     button_dictionary_10.update(_tpd)
