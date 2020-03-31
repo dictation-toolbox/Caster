@@ -253,7 +253,7 @@ def delete_until_phrase(text, phrase, direction, before_after, occurrence_number
             #     return text[: left_index] + " "
                 return text[: left_index]
 
-        else: # todo: handle before-and-after defaults better
+        else: # TODO: handle before-and-after defaults better
             if text[-1] == " ":
                 return text[: right_index] + " "
             else:
@@ -397,7 +397,7 @@ def select_phrase(phrase, direction, number_of_lines_to_search, occurrence_numbe
     
         
     # Approach 1: paste the selected text over itself rather than simply unselecting. A little slower but works Texstudio
-    # todo: change this so that it unselects by pressing left and then right rather than pasting over the top
+    # TODO: change this so that it unselects by pressing left and then right rather than pasting over the top
     if application == "texstudio":
         text_manipulation_paste(selected_text, application) # yes, this is kind of redundant but it gets the proper pause time
         multiline_movement_correction = selected_text[right_index :].count("\r\n")
@@ -457,7 +457,7 @@ def select_until_phrase(direction, phrase, before_after, number_of_lines_to_sear
         return
     
     # Approach 1: paste the selected text over itself rather than simply unselecting. A little slower but works Texstudio
-    # todo: change this so that it unselects by pressing left and then right rather than pasting over the top
+    # TODO: change this so that it unselects by pressing left and then right rather than pasting over the top
     if application == "texstudio":
         text_manipulation_paste(selected_text, application) # yes, this is kind of redundant but it gets the proper pause time
         if direction == "left":

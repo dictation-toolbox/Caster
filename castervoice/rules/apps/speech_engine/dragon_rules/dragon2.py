@@ -9,7 +9,7 @@ from castervoice.lib.merge.state.short import R
 
 class SpellingWindowRule(MappingRule):
     mapping = {
-        # todo: make these CCR
+        # TODO: make these CCR
 
         "<first_second_third> word":
             R(Key("home, c-right:%(first_second_third)d, cs-right"),

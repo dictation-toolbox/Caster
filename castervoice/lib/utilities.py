@@ -35,9 +35,8 @@ finally:
     from castervoice.lib import settings, printer
 
 
-# ToDo: move functions that manipulate or retrieve information from Windows to `window_mgmt_support` in navigation_rules.
-
-# ToDo: Implement Optional exact title matching for `get_matching_windows` in Dragonfly
+# TODO: Move functions that manipulate or retrieve information from Windows to `window_mgmt_support` in navigation_rules.
+# TODO: Implement Optional exact title matching for `get_matching_windows` in Dragonfly
 def window_exists(windowname=None, executable=None):
     if Window.get_matching_windows(title=windowname, executable=executable):
         return True
@@ -195,7 +194,7 @@ def remote_debug(who_called_it=None):
               " called utilities.remote_debug() but the debug server wasn't running.")
 
 def reboot():
-    # ToDo: Save engine arguments elsewhere and retrievesfor reboot. Allows for user-defined arguments.
+    # TODO: Save engine arguments elsewhere and retrieves for reboot. Allows for user-defined arguments.
     popen_parameters = []
     engine = get_engine()
     if engine._name == 'kaldi':
@@ -226,7 +225,7 @@ def reboot():
             Popen([sys.executable, '-m', 'dragonfly', 'load', '--engine', 'natlink', '_*.py', '--no-recobs-messages'])
 
 
-# ToDo: Implement default_browser_command Mac/Linux
+# TODO: Implement default_browser_command Mac/Linux
 def default_browser_command():
     if sys.platform.startswith('win'):
         if six.PY2:
@@ -264,7 +263,7 @@ def default_browser_command():
 def clear_log():
     # Function to clear status window.
     # Natlink status window not used an out-of-process mode.
-    # ToDo: window_exists utilized when engine launched through Dragonfly CLI via bat in future
+    # TODO: window_exists utilized when engine launched through Dragonfly CLI via bat in future
     try:
         if sys.platform.startswith('win'):
             clearcmd = "cls" # Windows OS
@@ -290,7 +289,7 @@ def clear_log():
         printer.out(e)
 
 
-# ToDo: BringMe - Implement clipboard formats for Mac/Linux
+# TODO: BringMe - Implement clipboard formats for Mac/Linux
 def get_clipboard_formats():
     '''
     Return list of all data formats currently in the clipboard
