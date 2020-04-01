@@ -1,4 +1,7 @@
-import os, socket, subprocess
+import os
+import sys
+import socket
+import subprocess
 from datetime import datetime, date
 
 from castervoice.lib import settings
@@ -32,24 +35,25 @@ def internet_check(host="1.1.1.1", port=53, timeout=3):
 
 
 def update_check(command=None):
-
-    # Check for updates pip packages castervoice/dragonfly2
-    # ToDo: Investigate why adding to com `"python", "-m"` causes erroneous update messages
+    """
+    Check for updates pip packages castervoice/dragonfly2
+    :param command: str
+    """
+    global update
     com = [find_pip(), "search", command]
     startupinfo = None
-    global update
     try:
         if os.name == 'nt':
             startupinfo = subprocess.STARTUPINFO()
             startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
         p = subprocess.Popen(com,
-                             stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE,
-                             stdin=subprocess.PIPE,
-                             startupinfo=startupinfo)
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE,
+                            stdin=subprocess.PIPE,
+                            startupinfo=startupinfo)
         out = p.communicate('')
         for line in out:
-            if "INSTALLED" and "latest" in line:
+            if b"INSTALLED" and b"latest" in line:
                 printer.out("Caster: {0} is up-to-date".format(command.strip('2')))
                 update = False
                 break
@@ -62,7 +66,10 @@ def update_check(command=None):
 
 
 def update_timer():
-    # Checks for updates every X days on startup
+    """
+    Checks for updates every X days on startup
+    :return: True or False
+    """
     onlinemode = settings.SETTINGS["online"]["online_mode"]
     lastupdate = settings.SETTINGS["online"]["last_update_date"]
     updateinterval = settings.SETTINGS["online"]["update_interval"]
@@ -89,7 +96,9 @@ def update_timer():
 
 
 class UpdateChecker(object):
-    # Initializes functions
+    """
+    Initializes Update Checker functions
+    """
     def initialize(self):
         install = install_type()
         if update_timer():
