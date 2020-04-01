@@ -1,10 +1,11 @@
-import six
-if six.PY2:
-    from SimpleXMLRPCServer import SimpleXMLRPCServer  # pylint: disable=import-error
-else:
-    from xmlrpc.server import SimpleXMLRPCServer  # pylint: disable=no-name-in-module
 import os
 import sys
+
+if sys.version_info[0] < 3:
+    from SimpleXMLRPCServer import SimpleXMLRPCServer   # pylint: disable=import-error
+else:
+    from xmlrpc.server import SimpleXMLRPCServer  # pylint: disable=no-name-in-module
+    
 from inspect import getmembers, isfunction
 
 modules = []
@@ -38,7 +39,7 @@ for s in [x[0] for x in os.walk(SCRIPTS_PATH)]:
         mdl_name = s.split(".sikuli")[0].split("\\")[-1]
         exec("import " + mdl_name)
         exec("l = getmembers(" + mdl_name + ", isfunction)")
-        for d in l:
+        for d in l: # pylint: disable=undefined-variable
             if d[0].startswith("export_"):
                 registered_function_name = mdl_name + "_" + d[0].replace("export_", "")
                 modules.append(registered_function_name)
