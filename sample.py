@@ -52,7 +52,7 @@ class MainRule(MappingRule):
      # Sometimes it's easier to have things as a list in a command as a choice that do different things.
      # That's what `<choice>` Is defined in `extras` allows you define that list. If you dictate `i choose custom grid` Then `CustomGrid` will be printed as text.
      # Items in the list are pairs. e.g `{"custom grid": "CustomGrid"}` The first item of a pair is the command "custom grid" and the second "CustomGrid" output text action.   
-    "i choose <choice>":              Text("<choice>"),
+    "i choose <choice>":              Text("%(choice)s"),
         
     }
 
