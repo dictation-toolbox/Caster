@@ -16,15 +16,8 @@ from castervoice.lib.merge.selfmod.selfmodrule import BaseSelfModifyingRule
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 
 try : 
-    # raise ImportError()
     from sublime_snippets import Snippet,SnippetVariant,DisplaySnippetVariants,snippet_state,send_sublime,SublimeCommand,grammars_with_snippets,observer
-    print(" success with dry")
-    print(" success with dry")
-    print(" success with dry")
 except ImportError:
-    print(" and import there is expected")
-    print(" and import there is expected")
-    print(" and import there is expected")
     from castervoice.rules.apps.editor.sublime_rules.sublime_snippets import Snippet,SnippetVariant,DisplaySnippetVariants,snippet_state,grammars_with_snippets,observer
 
 
@@ -49,8 +42,6 @@ class SublimeSnippetAdditionalControllRule(BaseSelfModifyingRule):
     observer = None
     last = None
     def __init__(self, *args, **kwargs):
-        def printr(*args):
-            print(args)
         SublimeSnippetAdditionalControllRule.last = self 
         super(SublimeSnippetAdditionalControllRule, self).__init__(os.path.join(settings.SETTINGS["paths"]["USER_DIR"],"nothing.toml"),"sublime snippet additional control")
 
@@ -71,11 +62,10 @@ class SublimeSnippetAdditionalControllRule(BaseSelfModifyingRule):
                     
                     self._smr_mapping["variant <"+e.name+">"] = R(Key("c-z") + SnippetVariant(**{e.name:e.name}))
                     self._smr_extras.append(e)
-        print(self._smr_mapping)
+        # print(self._smr_mapping)
 
     
     def _refresh(self,rule = None,*args):
-        print("The refreshing snippets",snippet_state)
         global last_keys,last_rule
         if type(rule) not in grammars_with_snippets:
             # print(rule,grammars_with_snippets.keys())
@@ -87,7 +77,6 @@ class SublimeSnippetAdditionalControllRule(BaseSelfModifyingRule):
             last_keys = set(snippet_state["extra_data"].keys())
             last_rule = type(rule)
             self.reset()
-        # self.reset()try : 
 #dear
 #---------------------------------------------------------------------------std::cerr<<  << " " <<  << " " <<  << std::endl;
 refresh_after_command_callback = lambda words,rule: SublimeSnippetAdditionalControllRule.last._refresh(rule) if SublimeSnippetAdditionalControllRule.last else None
@@ -95,8 +84,6 @@ refresh_after_command_callback = lambda words,rule: SublimeSnippetAdditionalCont
 
 # this is not working
 if observer:
-    print("disaster")
-    print(observer)
     observer.unregister()
     
 
@@ -106,7 +93,7 @@ observer = register_post_recognition_callback(refresh_after_command_callback)
 
 
 def get_rule():
-    return SublimeSnippetAdditionalControllRule, RuleDetails(ccrtype=CCRType.SELFMOD, executable=["sublime_text"])
+    return SublimeSnippetAdditionalControllRule, RuleDetails(name="sublime snippet additional control", executable=["sublime_text"])
     
 
     
