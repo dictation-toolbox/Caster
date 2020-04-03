@@ -48,6 +48,6 @@ class SublimeSnippetControllRule(MappingRule):
 #---------------------------------------------------------------------------
 
 
-def get_rule():
-    return SublimeSnippetControllRule, RuleDetails(name="sublime snippet control", executable=["sublime_text"])
+# def get_rule():
+    # return SublimeSnippetControllRule, RuleDetails(name="sublime snippet control", executable=["sublime_text"])
     
