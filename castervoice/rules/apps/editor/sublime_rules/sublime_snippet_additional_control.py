@@ -16,7 +16,7 @@ from castervoice.lib.merge.selfmod.selfmodrule import BaseSelfModifyingRule
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 
 try : 
-    from sublime_snippets import Snippet,SnippetVariant,DisplaySnippetVariants,snippet_state,send_sublime,SublimeCommand,grammars_with_snippets,observer
+    from sublime_rules.sublime_snippets import Snippet,SnippetVariant,DisplaySnippetVariants,snippet_state,send_sublime,SublimeCommand,grammars_with_snippets,observer
 except ImportError:
     from castervoice.rules.apps.editor.sublime_rules.sublime_snippets import Snippet,SnippetVariant,DisplaySnippetVariants,snippet_state,grammars_with_snippets,observer
 
