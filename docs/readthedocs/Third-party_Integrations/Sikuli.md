@@ -43,3 +43,4 @@ This video is out of date in terms of the Sikuli setup and config options. It is
     - "launch sick IDE" - Launches Sikulix's integrated IDE for Sikulix Scripts
     - "launch sick server": Launches `Caster Sikuli Bridge` for controlling your custom scripts scripts by voice
     - "terminate sick server": Closes the `Caster Sikuli Bridge`
+    - "refresh sick server" Restarts the `Caster Sikuli Bridge`
