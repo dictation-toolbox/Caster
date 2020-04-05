@@ -210,7 +210,7 @@ class Navigation(MergeRule):
         "space": "space"
     }
     button_dictionary_10 = {
-        "F{}".format(i) : "f{}".format(i)
+        "(F{}".format(i) + " | function {})".format(i) : "f{}".format(i)
         for i in range(1, 13)
     }
     button_dictionary_10.update(caster_alphabet())
