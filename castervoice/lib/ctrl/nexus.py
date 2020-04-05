@@ -22,6 +22,7 @@ from castervoice.lib.ctrl.mgr.validation.details.ccr_app_validator import AppCCR
 from castervoice.lib.ctrl.mgr.validation.details.ccr_validator import CCRDetailsValidator
 from castervoice.lib.ctrl.mgr.validation.details.details_validation_delegator import DetailsValidationDelegator
 from castervoice.lib.ctrl.mgr.validation.details.non_ccr_validator import NonCCRDetailsValidator
+from castervoice.lib.ctrl.mgr.validation.details.function_context_validator import FunctionContextDetailsValidator
 from castervoice.lib.ctrl.mgr.validation.rules.mergerule_validator import IsMergeRuleValidator
 from castervoice.lib.ctrl.mgr.validation.rules.not_treerule_validator import NotTreeRuleValidator
 from castervoice.lib.ctrl.mgr.validation.rules.selfmod_validator import CCRSelfModifyingRuleValidator
@@ -108,7 +109,8 @@ class Nexus:
         return DetailsValidationDelegator(
             CCRDetailsValidator(),
             AppCCRDetailsValidator(),
-            NonCCRDetailsValidator()
+            NonCCRDetailsValidator(),
+            FunctionContextDetailsValidator()
         )
 
     @staticmethod
