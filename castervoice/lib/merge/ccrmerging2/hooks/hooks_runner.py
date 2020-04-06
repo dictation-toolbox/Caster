@@ -5,6 +5,7 @@ from castervoice.lib import printer
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.ccrmerging2.activation_rule_generator import ActivationRuleGenerator
 from castervoice.lib import settings
+from castervoice.lib.merge.state.short import R
 
 
 class HooksRunner(ActivationRuleGenerator):
@@ -39,8 +40,8 @@ class HooksRunner(ActivationRuleGenerator):
     def construct_activation_rule(self):
         m = {}
         for hook in self._hooks:
-            enable_action = Function(lambda: self._hooks_config.set_hook_active(hook.get_class_name(), True))
-            disable_action = Function(lambda: self._hooks_config.set_hook_active(hook.get_class_name(), False))
+            enable_action = R(Function(lambda: self._hooks_config.set_hook_active(hook.get_class_name(), True)) + Function(hook._run_on_enable))
+            disable_action = R(Function(lambda: self._hooks_config.set_hook_active(hook.get_class_name(), False)) + Function(hook._run_on_disable))
             m["enable {} hook".format(hook.get_pronunciation())] = enable_action
             m["disable {} hook".format(hook.get_pronunciation())] = disable_action
 
@@ -59,5 +60,6 @@ class HooksRunner(ActivationRuleGenerator):
                 try:
                     hook.run(event)
                 except:
-                    err = "Error while running hook {} with {} event."
+                    err = "Error while running hook {} with {} event.\n"
                     printer.out(err.format(hook, event.get_type()))
+                    traceback.print_exc()

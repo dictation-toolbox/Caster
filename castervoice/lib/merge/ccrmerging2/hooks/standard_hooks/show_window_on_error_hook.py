@@ -34,7 +34,6 @@ class ShowStatusWindowOnErrorHook(BaseHook):
         return "show status error"
 
     def run(self, event_data):
-        printer.out("run")
         show_window()
 
 def get_hook():
