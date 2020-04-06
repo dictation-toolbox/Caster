@@ -1,8 +1,9 @@
 global-exclude *.pyc
 include _caster.py
-include Run_Caster_WSR.bat
 include Run_Caster_Kaldi.bat
+include Run_Caster_WSR.bat
 include Run_Caster_DNS.bat
+include Run_Caster_Test_Engine.bat
 include docs/README.md
 include castervoice/bin/share/words.txt
 include castervoice/bin/share/git_repo_local_to_remote_match.toml.defaults
@@ -15,4 +16,5 @@ include castervoice/asynch/sikuli/server/xmlrpc_server.sikuli/xmlrpc_server.py
 include castervoice/lib/github_automation.ahk
 include requirements.txt
 include requirements-dev.txt
+include requirements-mac-linux.txt
 include post_setup.py
