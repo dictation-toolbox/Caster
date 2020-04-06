@@ -207,7 +207,7 @@ class BringRule(BaseSelfModifyingRule):
             # Caster Support
             "dragonfly gitter": "https://gitter.im/dictation-toolbox/dragonfly",
             "caster gitter": "https://gitter.im/dictation-toolbox/Caster",
-            "caster discord": "https://discord.gg/9eAAsCJr",
+            "caster discord": "https://discord.gg/9eAAsCJ",
 
             # General URLs
             "google": "https://www.google.com",
@@ -244,7 +244,7 @@ class BringRule(BaseSelfModifyingRule):
             "caster chain aliases file": str(Path(_user_dir).joinpath("data/sm_chain_aliases.toml")),
             "caster clipboard file": str(Path(_user_dir).joinpath("data/clipboard.json")),
             "caster record from history file": str(Path(_user_dir).joinpath("data/sm_history.toml")),
-            "caster log file": str(Path(_user_dir).joinpath("data/log.txt")),
+            "caster log file": str(Path(_user_dir).joinpath("log.txt")),
 
             # Simplified Transformer
             "caster transformer file": str(Path(_user_dir).joinpath("transformers/words.txt")),
