@@ -5,7 +5,7 @@ master_text_nav shouldn't take strings as arguments - it should take ints, so it
 import six
 import subprocess
 import time
-from dragonfly import get_engine, monitors
+from dragonfly import get_current_engine, monitors
 from castervoice.lib import control, settings, utilities, textformat
 from castervoice.lib.actions import Key, Text, Mouse
 from castervoice.lib.clipboard import Clipboard
@@ -133,7 +133,7 @@ def drop_keep_clipboard(nnavi500, capitalization, spacing):
         if key in _CLIP:
             text = _CLIP[key]
         else:
-            get_engine().speak("slot empty")
+            get_current_engine().speak("slot empty")
             text = None
     else:
         text = Clipboard.get_system_text()
