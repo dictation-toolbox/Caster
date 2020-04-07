@@ -18,11 +18,12 @@ settings.initialize()
 from castervoice.lib.ctrl.updatecheck import UpdateChecker # requires settings/dependencies
 UpdateChecker().initialize()
 
-from dragonfly import get_current_engine
+from dragonfly import get_engine
 
 _NEXUS = None
 
-if get_current_engine().name in ["sapi5shared", "sapi5", "sapi5inproc"]:
+# get_engine() is used here as a workaround for running Natlink inprocess
+if get_engine().name in ["sapi5shared", "sapi5", "sapi5inproc"]:
     settings.WSR = True
     from castervoice.rules.ccr.standard import SymbolSpecs
     SymbolSpecs.set_cancel_word("escape")
