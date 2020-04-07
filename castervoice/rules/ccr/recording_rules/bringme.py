@@ -44,8 +44,8 @@ class BringRule(BaseSelfModifyingRule):
     _user_dir = settings.SETTINGS["paths"]["USER_DIR"]
     _home_dir = str(Path.home())
 
-    def __init__(self):
-        super(BringRule, self).__init__(settings.settings(["paths", "SM_BRINGME_PATH"]))
+    def __init__(self, **kwargs):
+        super(BringRule, self).__init__(settings.settings(["paths", "SM_BRINGME_PATH"]), **kwargs)
 
     def _initialize(self):
         """
@@ -251,7 +251,7 @@ class BringRule(BaseSelfModifyingRule):
         }
     }
 
-
 def get_rule():
-    details = RuleDetails(ccrtype=CCRType.SELFMOD, transformer_exclusion=True)
-    return BringRule, details
+    details = RuleDetails(name="bring me",
+                          transformer_exclusion=True)
+    return [BringRule, details]
