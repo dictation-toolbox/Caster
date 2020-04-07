@@ -117,7 +117,7 @@ class BringRule(BaseSelfModifyingRule):
         if launch_type == "program":
             path = utilities.get_active_window_path()
             if not path:
-                # dragonfly.get_engine().speak("program not detected")
+                # dragonfly.get_current_engine().speak("program not detected")
                 printer.out("Program path for bring me not found ")
         elif launch_type == 'file':
             files = utilities.get_selected_files(folders=False)

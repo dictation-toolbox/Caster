@@ -1,4 +1,4 @@
-from dragonfly import get_engine
+from dragonfly import get_current_engine
 
 from castervoice.lib.ctrl.mgr.loading.reload.base_reload_observable import BaseReloadObservable
 
@@ -15,4 +15,4 @@ class TimerReloadObservable(BaseReloadObservable):
         self._time_in_seconds = time_in_seconds
 
     def start(self):
-        get_engine().create_timer(lambda: self._update(), self._time_in_seconds)
+        get_current_engine().create_timer(lambda: self._update(), self._time_in_seconds)

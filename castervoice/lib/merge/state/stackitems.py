@@ -3,7 +3,7 @@ Created on Jun 7, 2015
 
 @author: dave
 '''
-from dragonfly import Pause, ActionBase, get_engine
+from dragonfly import Pause, ActionBase, get_current_engine
 
 from castervoice.lib import printer, settings
 
@@ -241,7 +241,7 @@ class StackItemAsynchronous(StackItemSeeker):
                     execute(False)
 
         self.closure = closure
-        self.timer = get_engine().create_timer(self.closure, self.time_in_seconds)
+        self.timer = get_current_engine().create_timer(self.closure, self.time_in_seconds)
         self.closure()
 
 

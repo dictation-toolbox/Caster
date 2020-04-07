@@ -16,7 +16,7 @@ import traceback
 from subprocess import Popen
 import tomlkit
 
-from dragonfly import Key, Pause, Window, get_engine
+from dragonfly import Key, Pause, Window, get_current_engine
 
 from castervoice.lib.clipboard import Clipboard
 from castervoice.lib import printer
@@ -196,19 +196,19 @@ def remote_debug(who_called_it=None):
 def reboot():
     # TODO: Save engine arguments elsewhere and retrieves for reboot. Allows for user-defined arguments.
     popen_parameters = []
-    engine = get_engine()
-    if engine._name == 'kaldi':
+    engine = get_current_engine()
+    if engine.name == 'kaldi':
         engine.disconnect()
         Popen([sys.executable, '-m', 'dragonfly', 'load-directory', '.', '--engine kaldi',  '--no-recobs-messages'])
-    if engine._name == 'sapi5inproc':
+    if engine.name == 'sapi5inproc':
         engine.disconnect()
         Popen([sys.executable, '-m', 'dragonfly', 'load', '--engine', 'sapi5inproc', '_*.py', '--no-recobs-messages'])
-    if engine._name in ["sapi5shared", "sapi5"]:
+    if engine.name in ["sapi5shared", "sapi5"]:
         popen_parameters.append(settings.SETTINGS["paths"]["REBOOT_PATH_WSR"])
         popen_parameters.append(settings.SETTINGS["paths"]["WSR_PATH"])
         printer.out(popen_parameters)
         Popen(popen_parameters)
-    if engine._name == 'natlink':
+    if engine.name == 'natlink':
         import natlinkstatus # pylint: disable=import-error
         status = natlinkstatus.NatlinkStatus()
         if status.NatlinkIsEnabled() == 1:
@@ -269,7 +269,7 @@ def clear_log():
             clearcmd = "cls" # Windows OS
         else:
             clearcmd = "clear" # Linux
-        if get_engine()._name == 'natlink':
+        if get_current_engine().name == 'natlink':
             import natlinkstatus  # pylint: disable=import-error
             status = natlinkstatus.NatlinkStatus()
             if status.NatlinkIsEnabled() == 1:

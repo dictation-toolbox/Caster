@@ -16,7 +16,7 @@ def get_direction_choice(name):
 
  # Insurers comma is recognized consistently with DNS/Natlink
  # if/else statement workaround engines that do not expect punctuation symbol as a command
-if (dragonfly.engines.get_engine()._name == 'natlink'):
+if (dragonfly.get_current_engine().name == 'natlink'):
     comma = "(comma | ,)"
 else:
     comma = "comma"

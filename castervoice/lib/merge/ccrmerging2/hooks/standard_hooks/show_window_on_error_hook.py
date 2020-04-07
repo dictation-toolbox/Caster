@@ -4,12 +4,13 @@ from castervoice.lib.merge.ccrmerging2.hooks.events.event_types import EventType
 from castervoice.lib import printer
 
 import six
-from dragonfly import get_engine
+from dragonfly import get_current_engine
 from dragonfly.windows.window import Window
 
 def show_window():
     title = None
-    if get_engine()._name == 'natlink':
+    engine = get_current_engine().name
+    if engine == 'natlink':
         import natlinkstatus  # pylint: disable=import-error
         status = natlinkstatus.NatlinkStatus()
         if status.NatlinkIsEnabled() == 1:
@@ -19,7 +20,7 @@ def show_window():
                 title= "Messages from Natlink"
         else:
             title = "Caster: Status Window"
-    if get_engine()._name != 'natlink':
+    if engine != 'natlink':
         title = "Caster: Status Window"
     windows = Window.get_matching_windows(title=title)
     if windows:

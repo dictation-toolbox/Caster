@@ -30,7 +30,7 @@ if sys.platform == "win32":
     CORE.extend([
          "LegionGridRule"
     ])
-    if dragonfly.get_engine().name == 'natlink':
+    if dragonfly.get_current_engine().name == 'natlink':
         CORE.append("DragonRule")
 
 # internal rules
