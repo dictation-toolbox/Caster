@@ -24,7 +24,7 @@ def initialize_clipboard():
 initialize_clipboard()
 
 
-def mouse_alternates(mode, monitor=1):
+def mouse_alternates(mode, monitor=1, rough=True):
     args = []
     if mode == "legion" and not utilities.window_exists(None, "legiongrid"):
         from castervoice.asynch.mouse.legion import LegionScanner
@@ -36,7 +36,7 @@ def mouse_alternates(mode, monitor=1):
             int(r.y) + int(r.dy) - 1
         ]
         ls = LegionScanner()
-        ls.scan(bbox)
+        ls.scan(bbox, rough)
         tscan = ls.get_update()
         args = [
             settings.settings(["paths", "PYTHONW"]),
