@@ -27,7 +27,7 @@ class MouseAlternativesRule(MappingRule):
             "detailed": False
         })
     ]
-    defaults = {"rough": False}
+    defaults = {"rough": True}
 
 
 def get_rule():
