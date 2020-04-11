@@ -55,14 +55,10 @@ class SublimeSnippetAdditionalControllRule(BaseSelfModifyingRule):
         
         
         if last_rule:
-            # print(grammars_with_snippets[last_rule])
-            for e in grammars_with_snippets[last_rule]:
-                
+            for e in grammars_with_snippets[last_rule]["extras"]:
                 if isinstance(e,Choice) and e.name in names:
-                    
                     self._smr_mapping["variant <"+e.name+">"] = R(Key("c-z") + SnippetVariant(**{e.name:e.name}))
                     self._smr_extras.append(e)
-        # print(self._smr_mapping)
 
     
     def _refresh(self,rule = None,*args):
@@ -79,7 +75,7 @@ class SublimeSnippetAdditionalControllRule(BaseSelfModifyingRule):
             self.reset()
 #dear
 #---------------------------------------------------------------------------std::cerr<<  << " " <<  << " " <<  << std::endl;
-refresh_after_command_callback = lambda words,rule: SublimeSnippetAdditionalControllRule.last._refresh(rule) if SublimeSnippetAdditionalControllRule.last else None
+refresh_after_command_callback = lambda words,rule, *a: SublimeSnippetAdditionalControllRule.last._refresh(rule, *a) if SublimeSnippetAdditionalControllRule.last else None
 # refresh_after_command_callback = lambda words,rule:SublimeSnippetAdditionalControllRule.last._refresh() if SublimeSnippetAdditionalControllRule.last else None
 
 # this is not working
