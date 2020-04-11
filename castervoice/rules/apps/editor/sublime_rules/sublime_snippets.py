@@ -272,10 +272,17 @@ grammars_with_snippets = {}
 
 observer = None
 
-def mark_as_snippet_grammar(rule):
-	grammars_with_snippets[rule] = rule.extras
-	return rule
-
+def mark_as_snippet_grammar(*rule,**rename):
+	def function(rule):
+		grammars_with_snippets[rule] = {"extras":rule.extras,"defaults":rule.defaults,"rename":rename}
+		return rule
+	if len(rule)==1 and isinstance(rule[0],type):
+		return function(rule[0])
+	elif len(rule)==0: 
+		return function
+	else:
+		raise ValueError("mark_as_snippet_grammar is not used correctly!")
+	return function
 
 
 
