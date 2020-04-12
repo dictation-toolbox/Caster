@@ -54,9 +54,19 @@ class SublimeSnippetAdditionalControllRule(BaseSelfModifyingRule):
         names = snippet_state["extra_data"].keys()        
         if last_rule:
             for e in grammars_with_snippets[last_rule]["extras"]:
-                if isinstance(e,Choice) and snippet_state["remap_data"].get(e.name,e.name) in names:
-                    self._smr_mapping["variant <"+e.name+">"] = R(Key("c-z") + SnippetVariant(**{e.name:snippet_state["remap_data"].get(e.name,e.name)}))
+                final_name = snippet_state["remap_data"].get(e.name,e.name)
+                if isinstance(e,Choice) and final_name in names:
+                    self._smr_mapping["variant <"+e.name+">"] = R(Key("c-z") + SnippetVariant(**{e.name:final_name}))
                     self._smr_extras.append(e)
+                    all_options = list(e._choices.values())
+                    if e.name in grammars_with_snippets[last_rule]["defaults"]:
+                        default_item=grammars_with_snippets[last_rule]["defaults"][e.name]
+                        if default_item not in all_options:
+                            all_options.append(default_item)
+                    spoken_name = grammars_with_snippets[last_rule]["rename"].get(e.name,e.name)
+                    self._smr_mapping["display " + spoken_name + " variants"] = R(Key("c-z") + DisplaySnippetVariants(final_name,all_options))
+        # print(self._smr_mapping)
+
 
     
     def _refresh(self,rule = None,*args):
