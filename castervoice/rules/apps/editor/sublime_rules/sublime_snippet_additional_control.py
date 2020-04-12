@@ -3,8 +3,8 @@ import os
 
 from copy import deepcopy
 
-from dragonfly import (MappingRule, Choice, Dictation, Grammar,Repeat, Function,RunCommand,FocusWindow)
-from dragonfly import *
+from dragonfly import (MappingRule, Choice, Dictation, Grammar,Repeat, Function,RunCommand,FocusWindow,RecognitionObserver)
+
 
 from castervoice.lib import settings, utilities, context, contexts
 from castervoice.lib.actions import Key, Text
@@ -16,9 +16,9 @@ from castervoice.lib.merge.selfmod.selfmodrule import BaseSelfModifyingRule
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 
 try : 
-    from sublime_rules.sublime_snippets import Snippet,SnippetVariant,DisplaySnippetVariants,snippet_state,send_sublime,SublimeCommand,grammars_with_snippets,observer
+    from sublime_rules.sublime_snippets import Snippet,SnippetVariant,DisplaySnippetVariants,snippet_state,send_sublime,SublimeCommand,grammars_with_snippets
 except ImportError:
-    from castervoice.rules.apps.editor.sublime_rules.sublime_snippets import Snippet,SnippetVariant,DisplaySnippetVariants,snippet_state,grammars_with_snippets,observer
+    from castervoice.rules.apps.editor.sublime_rules.sublime_snippets import Snippet,SnippetVariant,DisplaySnippetVariants,snippet_state,grammars_with_snippets
 
 
 
@@ -29,9 +29,9 @@ initial = {
             R(Key("c-z") + DisplaySnippetVariants()),
 }
 
-# 941
+
 # global controll grammar WIP
-#
+
 
 
 last_keys = set()
@@ -77,22 +77,27 @@ class SublimeSnippetAdditionalControllRule(BaseSelfModifyingRule):
         if last_keys == set(snippet_state["extra_data"].keys()) and type(rule)==last_rule:
             return 0
         else:
-            # Text("refreshed").execute()
             last_keys = set(snippet_state["extra_data"].keys())
             last_rule = type(rule)
             self.reset()
-#dear
-#---------------------------------------------------------------------------std::cerr<<  << " " <<  << " " <<  << std::endl;
-refresh_after_command_callback = lambda words,rule, *a: SublimeSnippetAdditionalControllRule.last._refresh(rule, *a) if SublimeSnippetAdditionalControllRule.last else None
-# refresh_after_command_callback = lambda words,rule:SublimeSnippetAdditionalControllRule.last._refresh() if SublimeSnippetAdditionalControllRule.last else None
 
-# this is not working
-if observer:
-    observer.unregister()
     
+class Observer(RecognitionObserver):
+    """docstring for Observer"""
+    last = None
+    def __init__(self, *args, **kw):
+        super(Observer, self).__init__(*args, **kw)
+        Observer.last = self
 
+    def on_post_recognition(self, words, rule):
+        if Observer.last is not self:
+            self.unregister()
+            return 
+        if SublimeSnippetAdditionalControllRule.last:
+            SublimeSnippetAdditionalControllRule.last._refresh(rule,words)
 
-observer = register_post_recognition_callback(refresh_after_command_callback)
+observer = Observer()
+observer.register()
 
 
 

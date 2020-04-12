@@ -273,8 +273,6 @@ class SnippetTransform(ActionBase):
 
 grammars_with_snippets = {}
 
-observer = None
-
 def mark_as_snippet_grammar(*rule,**rename):
 	def function(rule):
 		grammars_with_snippets[rule] = {"extras":rule.extras,"defaults":rule.defaults,"rename":rename}
