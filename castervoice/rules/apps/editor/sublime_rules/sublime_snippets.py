@@ -77,6 +77,7 @@ initial_snippet_state = {
 	"snippet_parameters":{},	
 	"extra_data":{},
 	"stack":[],
+	"remap_data":{},
 }
 
 snippet_state = initial_snippet_state
@@ -85,7 +86,9 @@ def snippet_log(clear_those_not_set = True,**kwargs):
 	global snippet_state 
 	if clear_those_not_set:
 		snippet_state = initial_snippet_state
+		# snippet_state = initial_snippet_state.copy()
 	snippet_state.update({k:v for k,v in kwargs.items() if k in snippet_state})
+# 	print(snippet_state is initial_snippet_state)
 	
 
 
@@ -155,7 +158,7 @@ class Snippet(ActionBase):
 		contents = self.retrieve_contents_from_extras_if_needed(self.contents,data)
 		data = rename_data(data,self.remap_data)
 		data.update(self.force_data)
-		insert_snippet(contents,data,self.snippet_parameters)
+		insert_snippet(contents,data,self.snippet_parameters,additional_log = {"remap_data":self.remap_data})
 
 ############################## SNIPPET VARIANTS ##############################
 
@@ -172,7 +175,7 @@ class SnippetVariant(ActionBase):
 		for k,v in self.remap_data.items():
 			if k in data:
 				extra_data[v] = data[k]
-		insert_snippet(contents,extra_data,snippet_state["snippet_parameters"])
+		insert_snippet(contents,extra_data,snippet_state["snippet_parameters"],additional_log = {"remap_data":snippet_state["remap_data"]})
 
 
 ############################## DISPLAY VARIANTS QUICK PANEL ##############################

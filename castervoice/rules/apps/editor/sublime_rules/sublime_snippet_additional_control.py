@@ -51,13 +51,11 @@ class SublimeSnippetAdditionalControllRule(BaseSelfModifyingRule):
         self._smr_extras =  [IntegerRefST("n",1,10)]
         self._smr_defaults =  {}
 
-        names = snippet_state["extra_data"].keys()
-        
-        
+        names = snippet_state["extra_data"].keys()        
         if last_rule:
             for e in grammars_with_snippets[last_rule]["extras"]:
-                if isinstance(e,Choice) and e.name in names:
-                    self._smr_mapping["variant <"+e.name+">"] = R(Key("c-z") + SnippetVariant(**{e.name:e.name}))
+                if isinstance(e,Choice) and snippet_state["remap_data"].get(e.name,e.name) in names:
+                    self._smr_mapping["variant <"+e.name+">"] = R(Key("c-z") + SnippetVariant(**{e.name:snippet_state["remap_data"].get(e.name,e.name)}))
                     self._smr_extras.append(e)
 
     
