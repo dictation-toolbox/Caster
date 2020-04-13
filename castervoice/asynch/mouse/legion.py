@@ -200,7 +200,8 @@ class LegionScanner:
         # If PIL gets updated with multimon support, this can be switched back.
         img = gdi.grab_screen(bbox)  # ImageGrab.grab(bbox)
         if rough:
-            new_size = (img.size[0]/2 , img.size[1]/2)
+            factor = settings.SETTINGS["miscellaneous"]["legion_downscale_factor"]
+            new_size = (img.size[0]*factor, img.size[1]*factor)
             img.thumbnail(new_size)
         
 
@@ -208,7 +209,7 @@ class LegionScanner:
         result = self.tirg_scan(img)
         if rough:
             result = result.split(",")
-            result= [int(i)*2 for i in result]
+            result= [int(float(i)/factor) for i in result]
             result = ",".join(str(bit) for bit in result)
         
         if result != self.last_signature:
