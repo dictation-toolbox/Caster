@@ -209,9 +209,13 @@ class LegionScanner:
         result = self.tirg_scan(img)
         if rough:
             result = result.split(",")
+            print (result) # preprocess
+            print ("---------------")
+            result = list(filter(None, result)) # Removes empty items
+            print (result) # postprocss
             result= [int(float(i)/factor) for i in result]
             result = ",".join(str(bit) for bit in result)
-        
+            
         if result != self.last_signature:
             with self.lock:
                 self.last_signature = result
