@@ -75,7 +75,7 @@
   
 - Utilize Powerful Commands
 
-  - "[Alias](https://caster.readthedocs.io/en/latest/readthedocs/Third-party_Integrations/Aenea/)" Commands - on-the-fly commands created by highlighting stuff
+  - "[Alias](https://caster.readthedocs.io/en/latest/readthedocs/Caster_Commands/Alias/)" Commands - on-the-fly commands created by highlighting stuff
   - "[Record From History](https://caster.readthedocs.io/en/latest/readthedocs/Caster_Commands/Record_Macros/)" - turn previously spoken commands into a voice macro 
 
 - Third-party Integrations
