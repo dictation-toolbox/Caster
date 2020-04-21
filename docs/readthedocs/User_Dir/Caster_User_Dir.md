@@ -6,7 +6,9 @@ This provides a brief overview of the caster user directory. The main function o
 
 Windows  OS `C:\Users\%USERNAME%\AppData\Local\caster`
 
-Please note that this directory is set by default by Caster, and is distinct to the Natlink UserDirectory, which needs to be set to the main Caster directory if using the [Alternative Natlink Configuration](https://caster.readthedocs.io/en/latest/readthedocs/Installation/Dragon_NaturallySpeaking/#-alternative-natlink-configuration).
+At this point setup should be complete and engine agnostic.
+
+*DNS/DPI*: The Caster User directory is managed by Caster, and should not be confused with Natlink's UserDirectory, which is set to the Caster source code directory if using the [Alternative Natlink Configuration](https://caster.readthedocs.io/en/latest/readthedocs/Installation/Dragon_NaturallySpeaking/#-alternative-natlink-configuration).
 
 **Layout  Description**
 
