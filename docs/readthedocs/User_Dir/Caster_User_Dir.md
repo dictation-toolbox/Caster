@@ -6,6 +6,8 @@ This provides a brief overview of the caster user directory. The main function o
 
 Windows  OS `C:\Users\%USERNAME%\AppData\Local\caster`
 
+Please note that this directory is set by default by Caster, and is distinct to the Natlink UserDirectory, which needs to be set to the main Caster directory if using the [Alternative Natlink Configuration](https://caster.readthedocs.io/en/latest/readthedocs/Installation/Dragon_NaturallySpeaking/#-alternative-natlink-configuration).
+
 **Layout  Description**
 
 1. `data` - Caster stores the data files that are not meant to be edited by the end user explicitly in the data directory. Most data toml files are for SelfModifying rules starting with `sm_`.
