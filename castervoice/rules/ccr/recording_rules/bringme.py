@@ -41,8 +41,9 @@ class BringRule(BaseSelfModifyingRule):
     # Paths
     _terminal_path = settings.settings(["paths", "TERMINAL_PATH"])
     _explorer_path = str(Path("C:\\Windows\\explorer.exe"))
+    _source_dir =  Path(settings.SETTINGS["paths"]["BASE_PATH"]).parents[0]
     _user_dir = settings.SETTINGS["paths"]["USER_DIR"]
-    _home_dir = str(Path.home())
+    _home_dir = Path.home()
 
     def __init__(self, **kwargs):
         super(BringRule, self).__init__(settings.settings(["paths", "SM_BRINGME_PATH"]), **kwargs)
@@ -214,11 +215,12 @@ class BringRule(BaseSelfModifyingRule):
         },
         "folder": {
             # OS folder Navigation
-            "libraries | home": _home_dir,
+            "libraries | home": str(Path(_home_dir)),
             "my pictures": str(Path(_home_dir).joinpath("Pictures")),
             "my documents": str(Path(_home_dir).joinpath("Documents")),
 
             # Caster User Dir Navigation
+            "caster source": str(Path(_source_dir)),
             "caster user": str(Path(_user_dir)),
             "caster hooks": str(Path(_user_dir).joinpath("hooks")),
             "caster transformers": str(Path(_user_dir).joinpath("transformers")),
