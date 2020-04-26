@@ -9,7 +9,6 @@ from dragonfly import get_current_engine, monitors
 from castervoice.lib import control, settings, utilities, textformat
 from castervoice.lib.actions import Key, Text, Mouse
 from castervoice.lib.clipboard import Clipboard
-import time
 
 _CLIP = {}
 GRID_PROCESS = None
@@ -25,10 +24,8 @@ def initialize_clipboard():
 initialize_clipboard()
 
 
-def mouse_alternates(mode, monitor=1, rough=True):
+def mouse_alternates(mode, monitor=1):
     args = []
-    start = time.time()
-
     if mode == "legion" and not utilities.window_exists(None, "legiongrid"):
         from castervoice.asynch.mouse.legion import LegionScanner
         r = monitors[int(monitor) - 1].rectangle
@@ -39,7 +36,7 @@ def mouse_alternates(mode, monitor=1, rough=True):
             int(r.y) + int(r.dy) - 1
         ]
         ls = LegionScanner()
-        ls.scan(bbox, rough)
+        ls.scan(bbox)
         tscan = ls.get_update()
         args = [
             settings.settings(["paths", "PYTHONW"]),
@@ -66,8 +63,6 @@ def mouse_alternates(mode, monitor=1, rough=True):
         ]
     global GRID_PROCESS
     GRID_PROCESS = subprocess.Popen(args) if args else None
-    end = time.time()
-    print(end - start)
 
 
 def wait_for_grid_exit(timeout=5):

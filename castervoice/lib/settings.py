@@ -377,7 +377,6 @@ def _get_defaults():
             "print_rdescripts": True,
             "history_playback_delay_secs": 1.0,
             "legion_vertical_columns": 30,
-            "legion_downscale_factor": 0.5,
             "use_aenea": False,
             "hmc": True,
             "ccr_on": True,

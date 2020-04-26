@@ -195,27 +195,12 @@ class LegionScanner:
         result = re.sub("[^0-9,]", "", bbstring)
         return result
 
-    def scan(self, bbox=None, rough=True):
+    def scan(self, bbox=None):
         # ImageGrab.grab currently doesn't support multiple monitors.
         # If PIL gets updated with multimon support, this can be switched back.
         img = gdi.grab_screen(bbox)  # ImageGrab.grab(bbox)
-        if rough:
-            factor = settings.SETTINGS["miscellaneous"]["legion_downscale_factor"]
-            new_size = (img.size[0]*factor, img.size[1]*factor)
-            img.thumbnail(new_size)
-        
-
         img = img.filter(ImageFilter.FIND_EDGES)
         result = self.tirg_scan(img)
-        if rough:
-            result = result.split(",")
-            print (result) # preprocess
-            print ("---------------")
-            result = list(filter(None, result)) # Removes empty items
-            print (result) # postprocss
-            result= [int(float(i)/factor) for i in result]
-            result = ",".join(str(bit) for bit in result)
-            
         if result != self.last_signature:
             with self.lock:
                 self.last_signature = result
