@@ -13,27 +13,27 @@ class ExplorerRule(MappingRule):
         "address bar":
             R(Key("escape/" + file_dialogue_wait + ", c-l")),
         "new folder":
-            R(Key("escape/" + file_dialogue_wait + ", c-l/" + file_dialogue_wait + ", tab/" + file_dialogue_wait + ":3, cs-n/" + file_dialogue_wait)),
+            R(Key("escape, c-l, tab/" + file_dialogue_wait + ":3, cs-n")),
         "new file":
-            R(Key("a-h, w")),
+            R(Key("escape, a-h, w")),
         "(show | file | folder) properties":
-            R(Key("a-enter")),
+            R(Key("escape, a-enter")),
         "get up [<n>]":
-            R(Key("a-up"))*Repeat(extra="n"),
+            R(Key("escape, a-up"))*Repeat(extra="n"),
         "get back [<n>]": 
-            R(Key("a-left"))*Repeat(extra="n"),
+            R(Key("escape, a-left"))*Repeat(extra="n"),
         "get forward [<n>]": 
-            R(Key("a-right"))*Repeat(extra="n"),
+            R(Key("escape, a-right"))*Repeat(extra="n"),
         "search [<text>]":
-            R(Key("escape/" + file_dialogue_wait + ", c-l/" + file_dialogue_wait + ", tab:1") + Text("%(text)s")),
+            R(Key("escape, c-l, tab/" + file_dialogue_wait + "") + Text("%(text)s")),
         "(navigation | nav | left) pane":
-            R(Key("escape/" + file_dialogue_wait + ", c-l/" + file_dialogue_wait + ", tab/" + file_dialogue_wait + ":2")),
+            R(Key("escape/10, c-l, tab/" + file_dialogue_wait + ":2")),
         "(center|file|files|folder) (list | pane)":
-            R(Key("escape/" + file_dialogue_wait + ", c-l/" + file_dialogue_wait + ", tab/" + file_dialogue_wait + ":3")),
+            R(Key("escape/10, c-l, tab/" + file_dialogue_wait + ":3")),
             # for the sort command below,
             # once you've selected the relevant heading for sorting using the arrow keys, press enter
         "sort [headings]":
-            R(Key("escape/" + file_dialogue_wait + ", c-l/" + file_dialogue_wait + ", tab/" + file_dialogue_wait + ":4")),
+            R(Key("escape/10, c-l, tab/" + file_dialogue_wait + ":3, tab:1")),
     }
     extras = [IntegerRefST("n", 1, 10), Dictation("text")]
     defaults = {
