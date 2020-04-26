@@ -370,6 +370,7 @@ def _get_defaults():
             "keypress_wait": 50,  # milliseconds
             "max_ccr_repetitions": 16,
             "atom_palette_wait": 30,  # hundredths of a second
+            "file_dialogue_wait": 40,  # hundredths of a second
             "integer_remap_opt_in": False,
             "short_integer_opt_out": False,
             "integer_remap_crash_fix": False,

@@ -250,20 +250,15 @@ Same Commands as [Git Bash](#git-bash)
 | `arrange Windows`                                      | `auto sum`                       | `freeze panes`                     |
 | `toggle edit cell`                                     | `|`                              |                                    |
 
-# Internet Explorer
+# File Dialogues / File Explorer
 
-| Command                             | Command       | Command      |
-| :---------------------------------- | :------------ | :----------- |
-| `(show / file / folder) properties` | `get forward` | `new folder` |
-| `address bar`                       | `get up`      |              |
-| `get back`                          | `new file`    |              |
-
-# File Dialogues
-
-| Command               | Command      | Command       |
-| :-------------------- | :----------- | :------------ |
-| `up [n]`              | `back [n]`   | `forward [n]` |
-| `(files / file list)` | `navigation` | `[file] name` |
+| Command                             | Command                                         | Command           |
+| :---------------------------------- | :---------------------------------------------- | :---------------- |
+| `address bar`                       | `new folder`                                    | `new file`        |
+| `(show / file / folder) properties` | `get up`                                        | `get back`        |
+| `get forward`                       | `search [<text>]`                               | `organize`        |
+| `(navigation / nav / left) pane`    | `(center / file / files / folder) (list / pane)`| `sort [headings]` |
+| `file name` | `file type` |  |
 
 # Firefox
 
