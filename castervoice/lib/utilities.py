@@ -199,7 +199,7 @@ def reboot():
     engine = get_current_engine()
     if engine.name == 'kaldi':
         engine.disconnect()
-        Popen([sys.executable, '-m', 'dragonfly', 'load-directory', '.', '--engine kaldi',  '--no-recobs-messages'])
+        Popen([sys.executable, '-m', 'dragonfly', 'load', '_*.py', '--engine', 'kaldi',  '--no-recobs-messages'])
     if engine.name == 'sapi5inproc':
         engine.disconnect()
         Popen([sys.executable, '-m', 'dragonfly', 'load', '--engine', 'sapi5inproc', '_*.py', '--no-recobs-messages'])
