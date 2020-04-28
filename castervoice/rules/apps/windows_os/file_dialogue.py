@@ -8,7 +8,12 @@ from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 from castervoice.lib import settings
 
-file_dialogue_wait = str(settings.SETTINGS["miscellaneous"]["file_dialogue_wait"])
+file_dialogue_wait = "40"
+if settings.settings(["miscellaneous", "file_dialogue_wait"]):
+    print("here")
+    file_dialogue_wait = str(settings.SETTINGS["miscellaneous"]["file_dialogue_wait"])
+
+
 class FileDialogueRule(MappingRule):
     mapping = {
         "address bar":
