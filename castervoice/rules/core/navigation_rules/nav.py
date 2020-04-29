@@ -248,7 +248,7 @@ class Navigation(MergeRule):
             "(control | fly)": "c-", #TODO: make DRY
             "(shift | shin)": "s-",
             "alt": "a-",
-            "(control shift | que)": "cs-",
+            "(control shift | queue)": "cs-",
             "control alt": "ca-",
             "(shift alt | alt shift)": "sa-",
             "(control alt shift | control shift alt)": "csa-",  # control must go first
