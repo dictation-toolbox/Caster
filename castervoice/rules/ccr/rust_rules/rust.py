@@ -111,6 +111,14 @@ class Rust(MergeRule):
             R(Text("self")),
         "brace pan":
             R(Key("escape, escape, end, left, enter, enter, up, tab")),
+        "enum":
+            R(Text("enum ")),
+        "await":
+            R(Text(".await")),
+        "async":
+            R(Text("async ")),
+        "clone":
+            R(Text(".clone()")),
         "name space":
             R(Key("colon, colon")),
     }
