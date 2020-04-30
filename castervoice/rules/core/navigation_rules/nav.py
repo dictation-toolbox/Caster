@@ -84,6 +84,8 @@ class Navigation(MergeRule):
             R(Key("c-s"), rspec="save"),
         'shock [<nnavi50>]':
             R(Key("enter"), rspec="shock")*Repeat(extra="nnavi50"),
+        'stun [<nnavi50>]':
+            R(Key("c-enter"), rspec="stun")*Repeat(extra="nnavi50"),
         # "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]":
         #     R(Function(text_utils.master_text_nav)), # this is now implemented below
         "shift click":
