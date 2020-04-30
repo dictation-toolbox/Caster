@@ -141,8 +141,8 @@ Creates a grid of numbered 3 x 3 squares over the whole screen. A number is call
 
 - _legion 2_
     - Runs legion on screen 2.
-- _legion 2 detailed_
-    - Runs legion on screen 2.
+- _legion detailed_
+    - Runs legion on screen 1 scanning with full resolution.
 - _76 select_
     - Selects from the left side to the right side of 76.
 - _76 select 100_
