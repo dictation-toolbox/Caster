@@ -106,6 +106,8 @@ class Navigation(MergeRule):
             R(Key("home/5, s-end"), rspec="shackle"),
         "(tell | tau) <semi>":
             R(Function(navigation.next_line), rspec="tell dock"),
+        "(hark | heart) <semi>":
+            R(Function(navigation.previous_line), rspec="hark dock"),
         "duple [<nnavi50>]":
             R(Function(navigation.duple_keep_clipboard), rspec="duple"),
         "Kraken":
