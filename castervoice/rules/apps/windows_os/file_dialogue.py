@@ -10,7 +10,6 @@ from castervoice.lib import settings
 
 file_dialogue_wait = "40"
 if settings.settings(["miscellaneous", "file_dialogue_wait"]):
-    print("here")
     file_dialogue_wait = str(settings.SETTINGS["miscellaneous"]["file_dialogue_wait"])
 
 
