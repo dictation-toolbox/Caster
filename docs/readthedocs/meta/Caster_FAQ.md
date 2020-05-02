@@ -20,7 +20,7 @@ Welcome to the Caster project! This FAQ guide this to help introduce the Caster 
 
 3. **Maybe I do not need certain features. How flexible is Caster?** 
 
-      The voice commands are purposely structured to allow you to pick and choose how you want to use the project. This allows for a broad userbase with diverse interests and abelites.  A configuration file allows you to block categories of commands called `rules`  giving you control over your experience. The sky is the limit: consider the following use cases:
+      The voice commands are purposely structured to allow you to pick and choose how you want to use the project. This allows for a broad userbase with diverse interests and abelites.  A configuration file allows you to block categories of commands called `rules`  giving you control over your experience. The sky is the limit. Consider the following use cases:
 
       - I am developer or person who does not have barriers using computer inputs like keyboard and mouse. I only want to control applications by voice to augment their workflow.
 
