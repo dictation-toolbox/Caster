@@ -10,7 +10,7 @@ Welcome to the Caster project! This FAQ guide this to help introduce the Caster 
       
       
 
-2. **is Caster only meant to be used by developers who code only by voice?**
+2. **Is Caster only meant to be used by developers who code only by voice?**
 
       Both developers and everyday users can benefit from a simple experience to control their computer. Caster was designed for voice programmers who develop software. However programming is a barrier for most people. We want to simplify experience for the everyday users, yet maintain the power and flexibility necessary for developers underneath the hood. 
 
