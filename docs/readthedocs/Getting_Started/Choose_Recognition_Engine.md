@@ -47,7 +47,7 @@ Daanzu's [Kaldi](https://dragonfly2.readthedocs.io/en/latest/kaldi_engine.html) 
 
 - Free and open source engine that respects user privacy.
 
-- Typically lower recognition latency then DNS 
+- Typically lower recognition latency than DNS 
 
 - A selection of pre-trained speech recognition models to choose from that are continually developed.
 
@@ -61,7 +61,7 @@ Daanzu's [Kaldi](https://dragonfly2.readthedocs.io/en/latest/kaldi_engine.html) 
 
 - Alternative Dictation sources such as a cloud based or local speech recognition backend
 
-- Many other highlights can be found in Daanzu's [Kaldi Docuumentation](https://dragonfly2.readthedocs.io/en/latest/kaldi_engine.html)
+- Many other highlights can be found in Daanzu's [Kaldi Documentation](https://dragonfly2.readthedocs.io/en/latest/kaldi_engine.html)
 
    
 
