@@ -68,7 +68,7 @@
 
   - Python, Java, Bash, C++, C#, Rust, Go, HTML, CSS, JavaScript, SQL, Dart, Latex , Matlab, R, Prolog, VHDL, and Haxe
 - [Editing and Navigation](https://github.com/dictation-toolbox/Caster/blob/master/CasterQuickReference.pdf)
-- Four additional [mouse navigation modes](https://caster.readthedocs.io/en/latest/readthedocs/Caster_Commands/Mouse/): curse, sudoku, douglas, legion, and rainbow - [Demo](https://www.youtube.com/watch?v=UISjQBMmQ-I&feature=youtu.be)
+- Five additional [mouse navigation modes](https://caster.readthedocs.io/en/latest/readthedocs/Caster_Commands/Mouse/): curse, sudoku, douglas, legion, and rainbow - [Demo](https://www.youtube.com/watch?v=UISjQBMmQ-I&feature=youtu.be)
   - [Text navigation commands](https://caster.readthedocs.io/en/latest/readthedocs/Caster_Commands/Text_Manipulation/) - [Demo](https://www.youtube.com/watch?v=xj8IzNlfM70), Text formatting commands
   - Alphabet, numbers, punctuation input commands
   - Commands to interact with generic File Dialogues.
