@@ -29,7 +29,7 @@ CORE = [
 if sys.platform == "win32":
     CORE.extend([
          "LegionGridRule",
-         "IERule"
+         "ExplorerRule"
     ])
     # get_engine() is used here as a workaround for running Natlink inprocess
     if dragonfly.get_engine().name == 'natlink':
