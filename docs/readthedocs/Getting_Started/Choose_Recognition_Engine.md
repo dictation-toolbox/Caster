@@ -4,7 +4,7 @@ Caster currently supports the following speech recognition engines on Microsoft 
 
 ## Dragon NaturallySpeaking
 
-**Dragon [NaturallySpeaking (DPI)](https://www.nuance.com/dragon.html)** - Caster only supports Dragon NaturallySpeaking 13 or higher. For best results, Dragon Professional Individual (DPI) is recommended.
+**Dragon [NaturallySpeaking (DNS)](https://www.nuance.com/dragon.html)** - Caster only supports Dragon NaturallySpeaking 13 or higher. For best results, Dragon Professional Individual (DPI) is recommended.
 
 - Known for its high accuracy in speech recognition especially with free dictation.
 
