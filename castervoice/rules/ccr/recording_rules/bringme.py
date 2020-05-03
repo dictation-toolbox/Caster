@@ -22,6 +22,7 @@ from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.selfmod.selfmodrule import BaseSelfModifyingRule
 from castervoice.lib.merge.state.short import R
 
+file_dialogue_wait = str(settings.SETTINGS["miscellaneous"]["file_dialogue_wait"])
 
 class BringRule(BaseSelfModifyingRule):
     """
@@ -185,7 +186,8 @@ class BringRule(BaseSelfModifyingRule):
         if not app:
             ContextAction(Function(lambda: Popen([BringRule._explorer_path, folder])), [
                 (BringRule._terminal_context, Text("cd \"%s\"\n" % folder)),
-                (BringRule._explorer_context, Key("c-l/5") + Text("%s\n" % folder))
+                (BringRule._explorer_context, 
+                    Key("c-l/5") + Text("%s\n" % folder) + Key("c-l, tab/" + file_dialogue_wait + ":3, tab:1"))
             ]).execute()
         elif app == "terminal":
             Popen([BringRule._terminal_path, "--cd=" + folder.replace("\\", "/")])
