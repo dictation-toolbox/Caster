@@ -1,5 +1,5 @@
 import time
-from dragonfly import Playback, Function, Choice, MappingRule, Mouse
+from dragonfly import Function, Choice, MappingRule, Mouse
 from castervoice.lib import control, navigation
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
@@ -26,9 +26,9 @@ def send_input(n, action):
     navigation.wait_for_grid_exit()
 
     if int_a == 0:
-        Playback([(["mouse", "left", "click"], 0.0)]).execute()
+        Mouse("left").execute()
     elif int_a == 1:
-        Playback([(["mouse", "right", "click"], 0.0)]).execute()
+        Mouse("right").execute()
     elif int_a == 2:
         x1 = response["l"] + 2
         x2 = response["r"]
