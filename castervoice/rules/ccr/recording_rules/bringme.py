@@ -22,7 +22,9 @@ from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.selfmod.selfmodrule import BaseSelfModifyingRule
 from castervoice.lib.merge.state.short import R
 
-file_dialogue_wait = str(settings.SETTINGS["miscellaneous"]["file_dialogue_wait"])
+file_dialogue_wait = "40"
+if settings.settings(["miscellaneous", "file_dialogue_wait"]):
+    file_dialogue_wait = str(settings.SETTINGS["miscellaneous"]["file_dialogue_wait"])
 
 class BringRule(BaseSelfModifyingRule):
     """
