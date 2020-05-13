@@ -33,8 +33,6 @@ class UnityRule(MappingRule):
 
 		"rename":
 			R(Key("f2")),
-		"refresh":
-			R(Key("c-r")),
 	}
 	extras = [
 		Dictation("dictation"),
