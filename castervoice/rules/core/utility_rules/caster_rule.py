@@ -35,9 +35,9 @@ class CasterRule(MappingRule):
         #    R(_DependencyUpdate([_PIP, "install", "--upgrade", "castervoice"])),
 
         # ccr de/activation
-        "enable c c r":
+        "enable (c c r|ccr)":
             R(Function(lambda: control.nexus().set_ccr_active(True))),
-        "disable c c r":
+        "disable (c c r|ccr)":
             R(Function(lambda: control.nexus().set_ccr_active(False))),
     }
 

@@ -106,6 +106,8 @@ class Navigation(MergeRule):
             R(Key("home/5, s-end"), rspec="shackle"),
         "(tell | tau) <semi>":
             R(Function(navigation.next_line), rspec="tell dock"),
+        "(hark | heart) <semi>":
+            R(Function(navigation.previous_line), rspec="hark dock"),
         "duple [<nnavi50>]":
             R(Function(navigation.duple_keep_clipboard), rspec="duple"),
         "Kraken":
@@ -248,7 +250,7 @@ class Navigation(MergeRule):
             "(control | fly)": "c-", #TODO: make DRY
             "(shift | shin)": "s-",
             "alt": "a-",
-            "(control shift | que)": "cs-",
+            "(control shift | queue)": "cs-",
             "control alt": "ca-",
             "(shift alt | alt shift)": "sa-",
             "(control alt shift | control shift alt)": "csa-",  # control must go first

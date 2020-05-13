@@ -1,5 +1,8 @@
 import re
 import os
+import six
+if six.PY2:
+    from io import open
 
 from castervoice.lib.ctrl.mgr.loading.load.content_request import ContentRequest
 from castervoice.lib.ctrl.mgr.loading.load.content_type import ContentType
@@ -32,7 +35,7 @@ class ContentRequestGenerator(object):
     def _get_file_lines(self, file_path):
         """File i/o broken out for testability"""
         content = None
-        with open(file_path) as f:
+        with open(file_path, encoding="utf8") as f:
             content = f.readlines()
         return content
 

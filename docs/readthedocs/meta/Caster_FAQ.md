@@ -10,9 +10,9 @@ Welcome to the Caster project! This FAQ guide this to help introduce the Caster 
       
       
 
-2. **is Caster only meant to be used by developers who code only by voice?**
+2. **Is Caster only meant to be used by developers who code only by voice?**
 
-      Both developers and everyday users can benefit from a simple experience to control their computer. Caster was designed for voice programmers who develop software. However programming as a barrier for most people. We want to simplify experience for the everyday users, yet maintain the power and flexibility necessary for developers underneath the hood. 
+      Both developers and everyday users can benefit from a simple experience to control their computer. Caster was designed for voice programmers who develop software. However programming is a barrier for most people. We want to simplify experience for the everyday users, yet maintain the power and flexibility necessary for developers underneath the hood. 
 
       Caster can be used without programming experience and customized on a basic level through simplified transformers. Which allow you to redefine command names without programming experience. We acknowledge there is a lot of work to be done to make Caster truly accessible for those without a technical background, but that vision is a work in progress.
       
@@ -20,7 +20,7 @@ Welcome to the Caster project! This FAQ guide this to help introduce the Caster 
 
 3. **Maybe I do not need certain features. How flexible is Caster?** 
 
-      The voice commands are purposely structured to allow you to pick and choose how you want to use the project. This allows for a broad userbase with diverse interests and abelites.  A configuration file allows you to block categories of commands called `rules`  giving you control over your experience. The skies is the limit, consider the following use cases:
+      The voice commands are purposely structured to allow you to pick and choose how you want to use the project. This allows for a broad userbase with diverse interests and abelites.  A configuration file allows you to block categories of commands called `rules`  giving you control over your experience. The sky is the limit. Consider the following use cases:
 
       - I am developer or person who does not have barriers using computer inputs like keyboard and mouse. I only want to control applications by voice to augment their workflow.
 

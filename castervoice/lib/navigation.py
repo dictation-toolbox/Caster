@@ -24,8 +24,9 @@ def initialize_clipboard():
 initialize_clipboard()
 
 
-def mouse_alternates(mode, monitor=1):
+def mouse_alternates(mode, monitor=1, rough=True):
     args = []
+
     if mode == "legion" and not utilities.window_exists(None, "legiongrid"):
         from castervoice.asynch.mouse.legion import LegionScanner
         r = monitors[int(monitor) - 1].rectangle
@@ -36,7 +37,7 @@ def mouse_alternates(mode, monitor=1):
             int(r.y) + int(r.dy) - 1
         ]
         ls = LegionScanner()
-        ls.scan(bbox)
+        ls.scan(bbox, rough)
         tscan = ls.get_update()
         args = [
             settings.settings(["paths", "PYTHONW"]),
@@ -221,13 +222,24 @@ def curse(direction, direction2, nnavi500, dokick):
         elif int(dokick) == 2:
             right_click()
 
+def previous_line(semi):
+    semi = str(semi)
+    Key("escape").execute()
+    time.sleep(0.05)
+    Key("end").execute()
+    time.sleep(0.05)
+    Text(semi).execute()
+    time.sleep(0.05)
+    Key("up").execute()
+    time.sleep(0.05)
+    Key("enter").execute()
 
 def next_line(semi):
     semi = str(semi)
     Key("escape").execute()
-    time.sleep(0.07)
+    time.sleep(0.05)
     Key("end").execute()
-    time.sleep(0.07)
+    time.sleep(0.05)
     Text(semi).execute()
     Key("enter").execute()
 
