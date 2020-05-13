@@ -37,6 +37,7 @@ Classic Install Location: `castervoice\rules\apps' ` in Caster source code.
 - [Sublime](#sublime) - sublime
 - [Total Commander](#total-commander) total commander/synchronize directories
 - [Typora](#typora) - tie poor a
+- [Unity](#unity) - unity
 - [Visual Studio](#visual-studio) - visual studio
 - [Visual Studio Code](#visual-studio-code) Visual Studio Code CCR/Visual Studio Code
 - [Webex Teams](#webex-teams) - webex teams
