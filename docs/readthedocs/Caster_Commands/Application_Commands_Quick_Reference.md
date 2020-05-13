@@ -601,7 +601,7 @@ Same Commands as [Git Bash](#git-bash)
 | `build and run`            | `build settings`               | `make empty [game object]`     |
 | `align with view`          | `move to view`                 | `move [sibling] first`         |
 | `move [sibling] last`      | `(set active | toggle )`       | `[load] selection [<1to9>]`    |
-| `store selection [<1to9>]` |                                |                                |
+| `store selection [<1to9>]` | `rename`                       | `refresh`                      |
 
 
 # Visual Studio
