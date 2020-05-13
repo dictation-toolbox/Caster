@@ -593,6 +593,17 @@ Same Commands as [Git Bash](#git-bash)
 | `zoom in <n>`        | `zoom out <n>`                 | `switch documnets`             |
 | `toggle [dev] tools` | `|`                            |                                |
 
+# Unity
+| Command                    | Command                        | Command                        |
+| :------------------------- | :----------------------------- | :----------------------------- |
+| `show <window>`            | `search <window>`              | `clear <window>`               |
+| `max view`                 | `(play | stop) game`           | `pause game`                   |
+| `build and run`            | `build settings`               | `make empty [game object]`     |
+| `align with view`          | `move to view`                 | `move [sibling] first`         |
+| `move [sibling] last`      | `(set active | toggle )`       | `[load] selection [<1to9>]`    |
+| `store selection [<1to9>]` |                                |                                |
+
+
 # Visual Studio
 
 | Command                            | Command                      | Command                             |

@@ -5,10 +5,10 @@ from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 
 class UnityRule(MappingRule):
 	mapping = {
-		"<window>" : R(Key("c-%(window)s")),
+		"show <window>" : R(Key("c-%(window)s")),
 		"search <searchable> [<dictation>]" : R(Key("c-%(searchable)s,c-f") + Text("%(dictation)s")),
 		"clear <searchable> [search]" : R(Key("c-%(searchable)s,c-f,backspace")),
-		"console" : R(Key("cs-c")),
+		"show console" : R(Key("cs-c")),
 
 		"max view" : R(Key("s-space")),
 
@@ -18,7 +18,7 @@ class UnityRule(MappingRule):
 		"build and run" : R(Key("c-b")),
 		"build settings" : R(Key("cs-b")),
 
-		"make empty" : R(Key("as-n")),
+		"make empty [game object]" : R(Key("as-n")),
 		"add component" : R(Key("cs-a")),
 
 		"align with view" : R(Key("cs-f")),
@@ -30,7 +30,6 @@ class UnityRule(MappingRule):
 
 		"[load] selection [<1to9>]" : R(Key("cs-%(1to9)s")),
 		"store selection [<1to9>]" : R(Key("ca-%(1to9)s")),
-
 	}
 	extras = [
 		Dictation("dictation"),
