@@ -616,16 +616,18 @@ Same Commands as [Git Bash](#git-bash)
 
 | Command                      | Command                                   | Command                                 |
 | :--------------------------- | :---------------------------------------- | :-------------------------------------- |
-| `scroll up [<n>]`            | `scroll down [<n>]`                       | `scroll page up [<n>]`                  |
-| `scroll page down [<n>]`     | `(Unindent/outdent) [<n>]`                | `Comment line`                          |
-| `Block comment`              | `cursor above [<n>]`                      | `cursor below [<n>]`                    |
-| `remove cursor`              | `tall cursor up`                          | `tall cursor down`                      |
-| `select [in] brackets [<n>]` | `all current selection`                   | `all current word`                      |
-| `select next [<n>]`          | `go to next [<n>]`                        | `select prior [<n>]`                    |
-| `go to prior [<n>]`          | `cursor all`                              | `next cursor [<n>]`                     |
-| `indent [<n>]`               | `hard delete [<n>]`                       | `copy line up [<n>]`                    |
-| `copy line up [<n>]`         | `switch line down [<n>]`                  | `switch line up [<n>]`                  |
-| `match bracket`              | `select between <between_parables> [<n>]` | `select around <around_parables> [<n>]` |
+| `scroll up [<n>]`            | `scroll page up [<n>]`                    | `Comment line`                          |
+| `scroll down [<n>]`          | `scroll page down [<n>]`                  | `Block comment`                         |
+| `cursor above [<n>]`         | `cursor all`                              | `tall cursor up`                        |
+| `cursor below [<n>]`         | `remove cursor`                           | `tall cursor down`                      |
+| `select [in] brackets [<n>]` | `all current selection`                   | `go to next [<n>]`                      |
+| `select next [<n>]`          | `next cursor [<n>]`                       | `go to prior [<n>]`                     |
+| `select prior [<n>]`         | `skip next cursor [<n>]`                  | `copy line down [<n>]`                  |
+| `indent [<n>]`               | `all current word`                        | `copy line up [<n>]`                    |
+| `(Unindent/outdent) [<n>]`   | `select around <around_parables> [<n>]`   | `switch line up [<n>]`                  |
+| `match bracket`              | `select between <between_parables> [<n>]` | `switch line down [<n>]`                |
+| `hard delete [<n>]`          | 
+
 
 ## Non-CCR
 
