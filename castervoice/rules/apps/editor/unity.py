@@ -30,6 +30,11 @@ class UnityRule(MappingRule):
 
 		"[load] selection [<1to9>]" : R(Key("cs-%(1to9)s")),
 		"store selection [<1to9>]" : R(Key("ca-%(1to9)s")),
+
+		"rename":
+			R(Key("f2")),
+		"refresh":
+			R(Key("c-r")),
 	}
 	extras = [
 		Dictation("dictation"),
