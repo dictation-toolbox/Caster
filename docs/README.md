@@ -1,16 +1,18 @@
 # Caster
-[![Travis Build Status](https://travis-ci.org/dictation-toolbox/Caster.svg?branch=master)](https://travis-ci.org/dictation-toolbox/Caster) [![Documentation Status](https://readthedocs.org/projects/caster/badge/?version=latest)](https://caster.readthedocs.io/en/latest/?badge=latest)
-	[Caster](https://github.com/dictation-toolbox/Caster) gives you the power to control your computer by voice. Take control of your applications, games, mouse and keyboard to augment your workflow for every day activities or as an accessibility tool to develop applications entirely by voice built upon the [Dragonfly](https://github.com/dictation-toolbox/dragonfly) framework. 
+
+[![Travis Build Status](https://travis-ci.org/dictation-toolbox/Caster.svg?branch=master)](https://travis-ci.org/dictation-toolbox/Caster) [![Documentation Status](https://readthedocs.org/projects/caster/badge/?version=latest)](https://caster.readthedocs.io/en/latest/?badge=latest) ![GitHub top language](https://img.shields.io/github/languages/top/dictation-toolbox/Caster)[![https://github.com/dictation-toolbox/Caster/blob/master/LICENSE](https://img.shields.io/badge/license-GNU-informational)](https://matrix.to/#/!KOGBGqVOBKJjKLgFUY:matrix.org?via=matrix.org)
+
+​	[Caster](https://github.com/dictation-toolbox/Caster) gives you the power to control your computer by voice. Take control of your applications, games, mouse and keyboard to augment your workflow for every day activities or as an accessibility tool to develop applications entirely by voice built upon the [Dragonfly](https://github.com/dictation-toolbox/dragonfly) framework.  
 
 **Note for PyPi Users**: The PIP package is (_Alpha_). Do not use the PIP install. Alternatively use this [Master Branch](https://github.com/dictation-toolbox/Caster) with classic install for the best feature experience.
 
 - Videos by the Caster Community:
-  
+
   - [Caster voice coding: Advent of Code 2018](https://youtu.be/oDsMGroASSw?t=3) - Programming with Go
   - [Caster Demo](https://www.youtube.com/watch?v=oIwh3z2jXD4) macro recorder, clipboard control, and text formatting commands.
   - [VimGolf and Project Euler](https://www.youtube.com/watch?v=T1bKAqDhH_E)
   - [Dictating maths into scientific notebook](https://www.youtube.com/watch?v=oq8EoPu0cGY&t=3s) and [Dictating math by voice using Caster](https://www.youtube.com/watch?v=z-iHvPmjcas)
-  
+
 - Read the [Frequently Asked Questions - FAQ](https://caster.readthedocs.io/en/latest/readthedocs/meta/Caster_FAQ/)
 
 - [Getting started with Caster - ReadTheDocs](https://caster.readthedocs.io/en/latest/readthedocs/Getting_Started/Getting_Started_Overview/)
@@ -18,6 +20,7 @@
 - [How to Speak Code](https://caster.readthedocs.io/en/latest/readthedocs/Getting_Started/How_to_Speak_Code/How_to_Speak_Code_Intro/) - Example Document
 
 - Caster Command Reference Guides:
+
   - [Caster](https://github.com/dictation-toolbox/Caster/blob/master/CasterQuickReference.pdf) - Universal navigation and editing -  These voice commands are active all the time and provide input commands for letters, numbers, and punctuation, as well as the ability to easily manipulate windows and text. 
     - `window right` moves the active window to the right-hand side of the screen.
     - `prekris` inserts a pair of brackets `()` and moves the cursor inside them.
@@ -30,21 +33,21 @@
     - `for loop` which will insert `for i in range(0, ):`
     - `print to console` - `print()`
     - `open file` -  `open('filename', 'r') as f:`
-  
+
 - Application or Language not supported? 
 
-  ​	 [Make your own Dragonfly and Caster rules](https://caster.readthedocs.io/en/latest/readthedocs/Rule_Construction/Intro_Into_Rules_and_Grammars/) augmented by [Development Commands](https://caster.readthedocs.io/en/latest/readthedocs/Caster_Commands/CCR_languages_Quick_Reference/#VoiceDevCommands)
+  [Make your own Dragonfly and Caster rules](https://caster.readthedocs.io/en/latest/readthedocs/Rule_Construction/Intro_Into_Rules_and_Grammars/) augmented by [Development Commands](https://caster.readthedocs.io/en/latest/readthedocs/Caster_Commands/CCR_languages_Quick_Reference/#VoiceDevCommands)
 
 - [Contributing / How can I help?](https://caster.readthedocs.io/en/latest/Contributing/)
 
 - Do you want to financially support Caster development? 
   Donate at [![Bountysource](https://www.bountysource.com/badge/team?team_id=407907&style=bounties_posted)](https://www.bountysource.com/teams/caster-dictation/bounties?utm_source=Bountysource&utm_medium=shield&utm_campaign=bounties_posted) 
-  
-- Need support or just curious? Join our community at [![Join the chat at https://gitter.im/synkarius/caster](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dictation-toolbox/home) and [Discord](https://discord.gg/9eAAsCJ) for voice chat.
+
+- Need support or just curious? Join our community at [![Gitter](https://img.shields.io/gitter/room/dictation-toolbox/Caster?label=Chat)](https://gitter.im/dictation-toolbox/home) [![Discord](https://img.shields.io/discord/431142802005688340?label=Discord)](https://discord.gg/9eAAsCJ) [![Matrix](https://img.shields.io/matrix/caster:matrix.org?label=Matrix%20Chat&server_fqdn=matrix.org)](https://matrix.to/#/+dictation-toolbox:matrix.org)
 
 - The [DictationToolbox.org](https://dictation-toolbox.github.io/dictation-toolbox.org/) (WIP) is a curated webpage of information related to voice programming and accessibility. Content Includes: User Tips, Hardware, Videos, Blogs, Repositories, Presentations, and etc. Pull requests welcome!
 
-# Feature List
+# Feature List 
 
 - Configurable Settings in `C:\Users\%USERNAME%\AppData\Local\caster`
 - Customize Commands aka `Specs` via [Simplified Transformers](https://caster.readthedocs.io/en/latest/readthedocs/Customize_Caster/Customizing_Starter_Rules/)
@@ -63,7 +66,7 @@
   - Browsers: Firefox, Chrome, Internet Explorer
   - Git Client:  Github Desktop 
   - Chat: Microsoft Teams, Gitter
-  - Applications: Foxit Reader, fman, Total Commander, Outlook, Excel
+  - Applications: Foxit Reader, fman, Total Commander, Outlook, Excel, Unity3D
 - Supported [Programming Languages](https://caster.readthedocs.io/en/latest/readthedocs/Caster_Commands/CCR_languages_Quick_Reference/) - Enhanced by Caster's [Continuous Command Recognition](https://caster.readthedocs.io/en/latest/readthedocs/Rule_Construction/Caster_Rules/CCR/) - [Demo](https://www.youtube.com/watch?v=Obdegwr_LFc&index=5&list=PLV6JPhkq1x8LHu02YefhUU9rXiB2PK8tc)
 
   - Python, Java, Bash, C++, C#, Rust, Go, HTML, CSS, JavaScript, SQL, Dart, Latex , Matlab, R, Prolog, VHDL, and Haxe
@@ -72,7 +75,7 @@
   - [Text navigation commands](https://caster.readthedocs.io/en/latest/readthedocs/Caster_Commands/Text_Manipulation/) - [Demo](https://www.youtube.com/watch?v=xj8IzNlfM70), Text formatting commands
   - Alphabet, numbers, punctuation input commands
   - Commands to interact with generic File Dialogues.
-  
+
 - Utilize Powerful Commands
 
   - "[Alias](https://caster.readthedocs.io/en/latest/readthedocs/Caster_Commands/Alias/)" Commands - on-the-fly commands created by highlighting stuff
