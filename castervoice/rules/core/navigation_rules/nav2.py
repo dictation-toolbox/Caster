@@ -53,7 +53,7 @@ class NavigationNon(MappingRule):
             R(Function(navigation.curse)),
         "scree <direction> [<nnavi500>]":
             R(Function(navigation.wheel_scroll)),
-        "zinc <direction> <time_in_seconds>":
+        "scree <direction> <time_in_seconds>":
             R(AsynchronousAction(
                 [L(S(["cancel"], Function(navigation.wheel_scroll, nnavi500=1)))],
                 repetitions=1000,
