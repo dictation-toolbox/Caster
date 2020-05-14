@@ -24,6 +24,9 @@ A video demonstration of mouse commands is found [here](https://youtu.be/UISjQBM
     - `<direction>` can be _sauce_ (up), _dunce_ (down), _lease_ (left), or _ross_ (right).
 - Scroll mouse wheel: `scree <direction> [number_of_scrolls]`
     - `<direction>` can be _sauce_ (up) or _dunce_ (down).
+- Scroll mouse wheel continuously (until you say `cancel`): `zinc <direction> <scroll speed>`
+    - `<direction>` can be _sauce_ (up) or _dunce_ (down).
+    - `<scroll speed>` can be _super slow_, _slow_, _normal_, or _supefast_
 
 **Examples**:
 
