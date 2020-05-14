@@ -37,6 +37,7 @@ Classic Install Location: `castervoice\rules\apps' ` in Caster source code.
 - [Sublime](#sublime) - sublime
 - [Total Commander](#total-commander) total commander/synchronize directories
 - [Typora](#typora) - tie poor a
+- [Unity](#unity) - unity
 - [Visual Studio](#visual-studio) - visual studio
 - [Visual Studio Code](#visual-studio-code) Visual Studio Code CCR/Visual Studio Code
 - [Webex Teams](#webex-teams) - webex teams
@@ -592,6 +593,17 @@ Same Commands as [Git Bash](#git-bash)
 | `typewriter [mode]`  | `[toggle] full screen`         | `actual size`                  |
 | `zoom in <n>`        | `zoom out <n>`                 | `switch documnets`             |
 | `toggle [dev] tools` | `|`                            |                                |
+
+# Unity
+| Command                    | Command                        | Command                        |
+| :------------------------- | :----------------------------- | :----------------------------- |
+| `show <window>`            | `search <window>`              | `clear <window>`               |
+| `max view`                 | `(play \| stop) game`          | `pause game`                   |
+| `build and run`            | `build settings`               | `make empty [game object]`     |
+| `align with view`          | `move to view`                 | `move [sibling] first`         |
+| `move [sibling] last`      | `(set active \| toggle )`      | `[load] selection [<1to9>]`    |
+| `store selection [<1to9>]` | `rename`                       |                                |
+
 
 # Visual Studio
 
