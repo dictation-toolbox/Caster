@@ -53,6 +53,11 @@ class NavigationNon(MappingRule):
             R(Function(navigation.curse)),
         "scree <direction> [<nnavi500>]":
             R(Function(navigation.wheel_scroll)),
+        "scree <direction> <time_in_seconds>":
+            R(AsynchronousAction(
+                [L(S(["cancel"], Function(navigation.wheel_scroll, nnavi500=1)))],
+                repetitions=1000,
+                blocking=False)),
         "colic":
             R(Key("control:down") + Mouse("left") + Key("control:up")),
         "garb [<nnavi500>]":
