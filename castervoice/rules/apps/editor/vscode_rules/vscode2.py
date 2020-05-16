@@ -37,7 +37,7 @@ class VSCodeNonCcrRule(MappingRule):
         # Display
         # note that most of these can be turned on/off with the same command
         "[toggle] full screen":
-            R(Key("sa-enter")),
+            R(Key("f11")),
         "toggle orientation":
             R(Key("sa-0")),
         "zoom in [<n>]":
