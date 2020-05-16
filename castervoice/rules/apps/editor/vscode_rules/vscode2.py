@@ -113,7 +113,7 @@ class VSCodeNonCcrRule(MappingRule):
             R(Key("cs-t") * Repeat(extra='n')),
         "Exit preview":
             R(Key("space, c-z")),
-        "keep preview open":
+        "keep [preview] open":
             R(Key("c-k, enter")),
         "windows explorer here":
             R(Key("c-k, r")),
@@ -188,8 +188,10 @@ class VSCodeNonCcrRule(MappingRule):
             R(Key("a-f12")),
         "trigger parameter hints":
             R(Key("cs-space")),
-        "format that":
+        "format (that | selection)":
             R(Key("c-k, c-f")),
+        "format (doc | document)":
+            R(Key("sa-f")),
         "(definition to side | side def)":
             R(Key("c-k, f12")),
         "show references":
