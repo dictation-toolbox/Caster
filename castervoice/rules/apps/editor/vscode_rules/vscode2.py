@@ -265,7 +265,7 @@ class VSCodeNonCcrRule(MappingRule):
         "run this line":
             R(Key("csa-l")),
         "join line":
-            R(Key("csa-j")),
+            R(Key("f1") + Text("join lines") + Key("enter")),
 
         # requires gitlens extension
         "toggle blame":
