@@ -657,7 +657,7 @@ Same Commands as [Git Bash](#git-bash)
 | `close editor`                         | `save as`                             | `save all`                               |
 | `next tab [<n>]`                       | `previous tab [<n>]`                  | `close tab [<n>]`                        |
 | `(recent / R) tab [<n>]`               | `reopen tab [<n>]`                    | `Exit preview`                           |
-| `keep preview open`                    | `copy path`                           | `windows explorer here`                  |
+| `keep [preview] open`                  | `copy path`                           | `windows explorer here`                  |
 | `show active file in new window`       | `(search / find)`                     | `replace`                                |
 | `find in files`                        | `replace in files`                    | `next find`                              |
 | `(prior / previous) find`              | `select all occurrences`              | `toggle regex`                           |
@@ -666,7 +666,7 @@ Same Commands as [Git Bash](#git-bash)
 | `split editor`                         | `next pane`                           | `(prior / previous / un) pane`           |
 | `shift group left`                     | `shift group left`                    | `<nth> tab`                              |
 | `Go to definition`                     | `Go to required definition`           | `peak definition`                        |
-| `trigger parameter hints`              | `format that`                         | `(definition to side / side def)`        |
+| `trigger parameter hints`              | `format (that | selection)`           | `(definition to side / side def)`        |
 | `show references`                      | `rename symbol`                       | `(trim white)`                           |
 | `change file language`                 | `debug`                               | `[toggle] break point`                   |
 | `step over [<n>]`                      | `step into`                           | `step out [of]`                          |
@@ -680,7 +680,7 @@ Same Commands as [Git Bash](#git-bash)
 | `join line`                            | `toggle blame`                        | `lens commit details`                    |
 | `lens file history`                    | `lens repo status`                    | `toggle git lens`                        |
 | `mark (prev / prior / previous)`       | `mark next`                           | `<action>* [line] <ln1> [by <ln2>]`      |
-| `open project [<text>]`                |                                       |                                          |
+| `open project [<text>]`                | `format (doc | document)`             |                                          |
 
 \* select / copy / cut / paste / delete
 

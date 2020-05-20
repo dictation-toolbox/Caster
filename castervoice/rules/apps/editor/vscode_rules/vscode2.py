@@ -37,7 +37,7 @@ class VSCodeNonCcrRule(MappingRule):
         # Display
         # note that most of these can be turned on/off with the same command
         "[toggle] full screen":
-            R(Key("sa-enter")),
+            R(Key("f11")),
         "toggle orientation":
             R(Key("sa-0")),
         "zoom in [<n>]":
@@ -113,7 +113,7 @@ class VSCodeNonCcrRule(MappingRule):
             R(Key("cs-t") * Repeat(extra='n')),
         "Exit preview":
             R(Key("space, c-z")),
-        "keep preview open":
+        "keep [preview] open":
             R(Key("c-k, enter")),
         "windows explorer here":
             R(Key("c-k, r")),
@@ -188,8 +188,10 @@ class VSCodeNonCcrRule(MappingRule):
             R(Key("a-f12")),
         "trigger parameter hints":
             R(Key("cs-space")),
-        "format that":
+        "format (that | selection)":
             R(Key("c-k, c-f")),
+        "format (doc | document)":
+            R(Key("sa-f")),
         "(definition to side | side def)":
             R(Key("c-k, f12")),
         "show references":
@@ -265,7 +267,7 @@ class VSCodeNonCcrRule(MappingRule):
         "run this line":
             R(Key("csa-l")),
         "join line":
-            R(Key("csa-j")),
+            R(Key("f1") + Text("join lines") + Key("enter")),
 
         # requires gitlens extension
         "toggle blame":
