@@ -10,6 +10,7 @@ Classic Install Location: `castervoice\rules\ccr` in Caster source code.
 - [VoiceDevCommands](#VoiceDevCommands)
 - [Haxe](#haxe)
 - [HTML](#html)
+- [CSS](#css)
 - [Java](#java)
 - [Javascript](#javascript)
 - [LaTeX](#latex)
@@ -249,6 +250,35 @@ Classic Install Location: `castervoice\rules\ccr` in Caster source code.
 | link                               | `<link >`                      | video close                    | `</video>`                                                      |
 | list element / DL                  | `<dl>`                         | small                          | `<small></small>`                                               |
 | time                               | `<time></time>`                |                                |                                                                 |
+# CSS
+
+The CSS commands are designed just like human language. Basically you can write CSS exactly as you read it.
+For writing selector, you just dictate as you normally would and then say selector to put brackets
+input: dot example selector
+output: .example{
+}
+You can also use pseudo-classes, just say the name.
+Input: dot example before selector
+output: .example::before{
+}
+
+Input: dot example hover selector
+output: .example:hover{
+}
+
+For writing properties, just say the name of a property to write it And put the cursor where you need to insert value. example:
+input: border radius
+output: border-radius:;
+
+input: background color
+output: background-color:;
+you can use any property just like this
+
+For writing units just say the value and unit. for example:
+input: 10 pixel
+output: 10px
+list of units
+Pixel or px, percentage or percent, centimeter or cm, inch or in, millimeter or mm, pica or pc, points or pt, ch, em, rem, ex, viewport height or vh, viewport width or vw, millisecond or ms, second or S
 
 # Java
 
