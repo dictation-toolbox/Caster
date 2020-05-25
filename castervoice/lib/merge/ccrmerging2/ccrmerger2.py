@@ -157,11 +157,11 @@ class CCRMerger2(object):
                 contexts.append(funkcontext)
             else:
                 contexts.append(context)
-
-            if negation_context is None:
-                negation_context = ~context
-            else:
-                negation_context &= ~context
+            if details.function_context is None:
+                if negation_context is None:
+                    negation_context = ~context
+                else:
+                    negation_context &= ~context
         contexts.insert(0, negation_context)
         return contexts
 
