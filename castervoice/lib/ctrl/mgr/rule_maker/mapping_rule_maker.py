@@ -25,7 +25,7 @@ class MappingRuleMaker(BaseRuleMaker):
 
         context = None
         if details.function_context is not None:
-            context = FuncContext(function=details.function_context, executable=details.executable, title=details.title)
+            context = AppContext(executable=details.executable, title=details.title) & FuncContext(function=details.function_context)
         else:
             if details.executable is not None or details.title is not None:
                 context = AppContext(executable=details.executable, title=details.title)
