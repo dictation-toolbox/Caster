@@ -150,15 +150,18 @@ class CCRMerger2(object):
         negation_context = None
         for cr in app_crs:
             details = rcns_to_details[cr.rule_class_name()]
+            context = AppContext(executable=details.executable, title=details.title)
             if details.function_context is not None:
-                context = FuncContext(function=details.function_context, executable=details.executable, title=details.title)
+                funkcontext = context
+                funkcontext &= FuncContext(function=details.function_context)
+                contexts.append(funkcontext)
             else:
-                context = AppContext(executable=details.executable, title=details.title)
-            contexts.append(context)
-            if negation_context is None:
-                negation_context = ~context
-            else:
-                negation_context &= ~context
+                contexts.append(context)
+            if details.function_context is None:
+                if negation_context is None:
+                    negation_context = ~context
+                else:
+                    negation_context &= ~context
         contexts.insert(0, negation_context)
         return contexts
 
