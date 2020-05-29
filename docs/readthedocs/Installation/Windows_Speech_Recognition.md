@@ -17,7 +17,7 @@ Caster currently supports Windows Speech Recognition (WSR) on Microsoft Windows 
    - The Legion MouseGrid requires [Microsoft Visual C++ Redistributable Packages for Visual Studio 2015, 2017 and 2019 (x86).](https://support.microsoft.com/en-nz/help/2977003/the-latest-supported-visual-c-downloads) Note: Should not be needed if Windows 10 is up-to-date.
 5. Click `Install_Caster_DNS-WSR.bat` to install prerequisite Caster dependencies.  
 
-### 4. Launch  Caster for Classic Install.
+### 4. Launch Caster for Classic Install.
 
 1. Go to  `%USERPROFILE%\Documents\Caster`
 
@@ -25,14 +25,22 @@ Caster currently supports Windows Speech Recognition (WSR) on Microsoft Windows 
 
 3. To test open Window's Notepad, try saying `arch brov char delta` producing `abcd` text. Set up complete!
 
-
 ### Update Caster
-  1. Backup `%USERPROFILE%\Documents\Caster`
-  2. Delete `%USERPROFILE%\Documents\Caster`
-  3. Repeat Steps `1. - 4.` within the Caster install section
+
+1. Backup `%USERPROFILE%\Documents\Caster`
+2. Delete `%USERPROFILE%\Documents\Caster`
+3. Repeat Steps `1. - 4.` within the Caster install section
+
 ------
 
    **Troubleshooting Windows Speech Recognition**
 
- No commonly reported issues yet.
+-  Receive the `-2147352567` COM error when Caster starts.
+  
+  ```
+  com_error: (-2147352567, 'Exception occurred.', (0, None, None, None, 0, -2004287480), None)`
+  ```
+  
+  - This is most likely related to the microphone being utilized by another program. See [issue #821](https://github.com/dictation-toolbox/Caster/issues/821) and [#68](https://github.com/dictation-toolbox/Caster/issues/68).  This can be mitigated by closing the program that's utilizing the microphone.
+
 
