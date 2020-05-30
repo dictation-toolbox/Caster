@@ -327,6 +327,14 @@ def _get_defaults():
                 SYSTEM_INFORMATION["hidden console binary"],
         },
 
+        # Speech recognition engine settings
+        "engine": {
+            "default_engine_mode": False, 
+            "engine_mode": "normal",
+            "default_mic": False, 
+            "mic_mode": "on"
+        },
+
         # python settings
         "python": {
             "automatic_settings":

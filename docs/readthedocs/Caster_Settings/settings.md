@@ -6,14 +6,39 @@ Explanation of `settings.toml`. Caster settings can be edited in the following w
 
 - The settings file can be summoned manually by saying `bring me caster settings file` to your default editor for `.toml` files
 
-  
-
   The following is an `example.toml` settings file with comments explaining the various settings. Some of the settings fields have been truncated for brevity as noted in the comments.
+
+## Settings
+
+Explanation of `settings.toml`. Caster settings can be edited in the following ways:
+
+- Edited through a GUI. Say `launch caster settings`. Once done, say `complete` to save the file
+
+- The settings file can be summoned manually by saying `bring me caster settings file` to your default editor for `.toml` files
+  
+  The following is an `example.toml` settings file with comments explaining the various settings. Some of the settings fields have been truncated for brevity as noted in the comments.
+
+
 
 ```toml
 [Tree_Node_Path] # Paths for Node Tree Rules
 SM_CSS_TREE_PATH = "C:\\Users\\Main\\AppData\\Local\\caster\\data\\sm_css_tree.toml"
 
+[engine] # controls configuration of engine. Currently limited only for DNS
+# 'on': mic is on # default
+# 'sleeping': mic from the sleeping and can be woken up by command
+# 'off': mic off and cannot be turned back on by voice. (DNS Only)
+default_engine_mode = true
+engine_mode = "normal"
+
+# Valid mic_mode options
+# 'normal': dictation and command (Default: DNS only)
+# 'dictation': Dictation only 
+# 'command': Commands only (Default: Other engines)
+# 'numbers': Numbers only
+# 'spell': Spelling only
+default_mic = true
+mic_mode = "on"
 
 [formats] # Truncated - Control setting dictation formatting per programming language.
 # Legend - Represents text formatting (capitalization and spacing) rules.
@@ -42,7 +67,6 @@ text_format = [3, 1]
 #    3 snake - words_with_underscores
 #    4 pebble - words.with.fullstops
 #    5 incline - words/with/slashes
-...
 
 [hooks]
 default_hooks = ["PrinterHook"] # Default hooks. Do not edit. 
@@ -89,6 +113,7 @@ version = "python"
 [sikuli] 
 enabled = false # Toggle sikuli third-party integration 
 version = "" # Sikuli Version
-
 ```
 
+
+```
