@@ -390,12 +390,13 @@ def select_phrase(phrase, direction, number_of_lines_to_search, occurrence_numbe
     match_index = get_start_end_position(selected_text, phrase, direction, occurrence_number, dictation_versus_character)
     if match_index:
         left_index, right_index = match_index
+        deal_with_inner_select(selected_text, phrase, left_index, right_index, application)
     else:
         # phrase not found
         deal_with_phrase_not_found(selected_text, application, direction)
-        return
-    
         
+    
+def deal_with_inner_select(selected_text, phrase, left_index, right_index, application):
     # Approach 1: paste the selected text over itself rather than simply unselecting. A little slower but works Texstudio
     # TODO: change this so that it unselects by pressing left and then right rather than pasting over the top
     if application == "texstudio":

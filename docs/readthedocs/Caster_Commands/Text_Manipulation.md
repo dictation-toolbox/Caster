@@ -49,7 +49,46 @@ Caster provides powerful text manipulation and navigation features. These functi
   - change the 2nd instance of the word "multiple" in the next 3 lines to "Multiple"
 - _capital ross lower multiple_
   - change the next instance of the word "Multiple" to "multiple"
-  
+
+## Corrections Window
+
+Caster supports commonly misheard dictation and incorrect capitalizations
+using the corrections window.
+
+There are two ways to invoke it. The simplest is to select a single word using
+the mouse, keyboard, or one of the grab commands described above.
+
+Then say _remedy selection_ or _remedy selected_ to bring up a list of possible corrections
+for the selected word. The corrections will include variations on capitalizations of that word
+as well as lists of any words that are known to sound similar or be confused with the one that
+selected. This includes common homophones, different spellings of numbers, and words
+that have been contributed by the Caster community.
+
+For example, if you select the word "or" and then say "remedy or", it will show a window
+that looks like this:
+
+![or corrections](https://i.postimg.cc/63jWsDmJ/or-corrections.jpg)
+
+The window is divided to make it easy to distinguish different words and
+three capitalization options for lower, upper, and title cases.
+
+Each of the options has been assigned a number. To replace the selection with one of the
+words in the box, simply say _choose [number]_. If none of the options is suitable,
+say _cancel_ to dismiss the box. The word will remain selected so you can replace it
+with alternative means such as other dictation or the keyboard.
+
+you can also display the corrections box if there is no selected text. The easiest is to 
+say _remedy word_ which will find the nearest instance of that word to the left of the cursor.
+If Caster can't find the word it hears, it will also search for other words that sound
+like it using the same dictionary.
+
+If that doesn't allow you to select and correct the word that you are interested in,
+the remedy command also accepts optional arguments similar to those used for _grab_
+as described above. For example you could say _remedy ross eight second in_ to
+show the corrections dialogue for the second instance of the word "in"
+in the eight lines to the right of and below the cursor.
+
+    
 ## Possible future features
 
 Please feel free to try and implement these and submit a pull request!
