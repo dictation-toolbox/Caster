@@ -21,7 +21,6 @@ Explanation of `settings.toml`. Caster settings can be edited in the following w
 
 
 ```toml
-```toml
 [Tree_Node_Path] # Paths for Node Tree Rules
 SM_CSS_TREE_PATH = "C:\\Users\\Main\\AppData\\Local\\caster\\data\\sm_css_tree.toml"
 
@@ -68,7 +67,6 @@ text_format = [3, 1]
 #    3 snake - words_with_underscores
 #    4 pebble - words.with.fullstops
 #    5 incline - words/with/slashes
-...
 
 [hooks]
 default_hooks = ["PrinterHook"] # Default hooks. Do not edit. 
