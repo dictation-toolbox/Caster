@@ -32,7 +32,7 @@ from castervoice.lib.ctrl.mgr.grammar_manager import GrammarManager
 from castervoice.lib.ctrl.mgr.validation.rules.rule_validation_delegator import CCRRuleValidationDelegator
 from castervoice.lib.merge.ccrmerging2.ccrmerger2 import CCRMerger2
 from castervoice.lib.merge.ccrmerging2.merging.classic_merging_strategy import ClassicMergingStrategy
-
+from castervoice.lib.ctrl.mgr.engine_manager import EngineModesManager
 
 class Nexus:
     def __init__(self, content_loader):
@@ -79,9 +79,13 @@ class Nexus:
             self._content_loader, hooks_runner, rules_config, smrc, mapping_rule_maker,
             transformers_runner)
 
+        '''tracks engine grammar exclusivity and mic states -- TODO Grammar exclusivity should be managed through grammar manager'''
+        self._engine_modes_manager = EngineModesManager()
+
         '''ACTION TIME:'''
         self._load_and_register_all_content(rules_config, hooks_runner, transformers_runner)
         self._grammar_manager.initialize()
+        self._engine_modes_manager.initialize()
 
     def _load_and_register_all_content(self, rules_config, hooks_runner, transformers_runner):
         """
