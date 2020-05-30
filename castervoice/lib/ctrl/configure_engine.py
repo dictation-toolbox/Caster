@@ -48,7 +48,6 @@ class EngineConfigLate():
         # Only DNS supports mic_state 'off'. Substituts `sleep` mode on other engines"
         if self.settings.SETTINGS["engine"]["default_mic"]: # Default is `False`
             default_mic_state = self.settings.SETTINGS["engine"]["mic_mode"] # Default is `on`
-            print(default_mic_state)
             if self.engine != "natlink" and default_mic_state == "off": 
                 default_mic_state == "sleep" 
             self.instannce.set_mic_mode(default_mic_state)
