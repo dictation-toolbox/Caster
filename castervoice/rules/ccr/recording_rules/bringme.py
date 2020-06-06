@@ -148,9 +148,10 @@ class BringRule(BaseSelfModifyingRule):
         # Remove item from bring me
         config_copy = self._config.get_copy()
         deleted = False
+        key = str(key)
         for section in config_copy.keys():
             if key in config_copy[section]:
-                del config_copy[section][str(key)]
+                del config_copy[section][key]
                 deleted = True
                 break
         if deleted:
