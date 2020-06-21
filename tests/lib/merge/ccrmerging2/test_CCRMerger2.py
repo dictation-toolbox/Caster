@@ -31,6 +31,9 @@ class TestCCRMerger2(SettingsEnabledTestCase):
             result = [x.matches(**data) for x in permutation]
             self.assertEqual(expected,result)
 
+    def _evaluate_contexts(self,contexts,data = {}):
+        return [x.matches(**data) for x in contexts]
+
 
     def setUp(self):
         self._set_setting(["miscellaneous", "max_ccr_repetitions"], "4")
@@ -149,7 +152,7 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         self.assertIsInstance(context_1, FuncContext)
         self.assertIsInstance(context_2, AppContext)
         self.assertIsInstance(context_3, AppContext)
-        
+
         self._evaluate_context_in_every_permutation([context_1, context_2, context_3],
             [True,False,False],
             dict(executable = "sublime_text", title = "hello",handle=None)
@@ -163,3 +166,82 @@ class TestCCRMerger2(SettingsEnabledTestCase):
             dict(executable = "vscode", title = "hello",handle=None)
         )
         # TODO: write a similar unit test to check the executables/titles validity of the contexts produced
+    
+    def test_merge_two_app_with_function_context_ccr(self):
+        """
+        Merger successfully merges one global + two CCR app rules.
+        """
+        nice_value = True
+        def nice_function():
+            return nice_value
+
+        def fear_of_the_bug():
+            raise ValueError("")
+
+
+        alphabet_mr = TestCCRMerger2._create_managed_rule(Alphabet, CCRType.GLOBAL)
+        eclipse_app_mr = TestCCRMerger2._create_managed_rule(EclipseCCR, CCRType.APP, "eclipse",function = fear_of_the_bug)
+        vscode_app_mr = TestCCRMerger2._create_managed_rule(VSCodeCcrRule, CCRType.APP, "vscode",function = nice_function)
+        result = self.merger.merge_rules([alphabet_mr, eclipse_app_mr, vscode_app_mr], self.sorter)
+
+        contexts = [x[1] for x in result.ccr_rules_and_contexts]
+        self.assertEqual(3, len(result.ccr_rules_and_contexts))       
+
+        # check that we get the same result no matter what the order
+        self._evaluate_context_in_every_permutation(contexts,[True,False,False],
+            dict(executable = "sublime_text", title = "hello",handle=None)
+        )
+        self._evaluate_context_in_every_permutation(contexts,[False,False,True],
+            dict(executable = "vscode", title = "hello",handle=None)
+        )
+        self._evaluate_context_in_every_permutation(contexts,[False,True,False],
+            dict(executable = "eclipse", title = "hello",handle=None)
+        )
+
+        nice_value = False
+        self._evaluate_context_in_every_permutation(contexts,[True,False,False],
+            dict(executable = "vscode", title = "hello",handle=None)
+        )
+        nice_value = True
+
+
+        # make sure the exception didn't break anything
+        # self._evaluate_contexts(contexts,dict(executable = "vscode", title = "hello",handle=None))
+
+    def test_function_gets_called_only_once(self):
+        '''
+        Make sure function inside of function context gets called only once
+        And only if necessary!
+        '''
+        counter = {
+            "n":0,
+            "v":0,
+        }
+
+        def reset_counter():
+            for k in counter:
+                counter[k] = 0
+
+        def first_context():
+            counter["n"] = counter["n"] + 1
+            return True
+
+        def second_context():
+            counter["v"] = counter["v"] + 1
+            raise Exception()
+
+
+        alphabet_mr = TestCCRMerger2._create_managed_rule(Alphabet, CCRType.GLOBAL)
+        eclipse_app_mr = TestCCRMerger2._create_managed_rule(Navigation, CCRType.APP,function = first_context)
+        vscode_app_mr = TestCCRMerger2._create_managed_rule(VSCodeCcrRule, CCRType.APP,function = second_context)
+        result = self.merger.merge_rules([alphabet_mr, eclipse_app_mr, vscode_app_mr], self.sorter)
+
+        contexts = [x[1] for x in result.ccr_rules_and_contexts]
+        self.assertEqual(3, len(result.ccr_rules_and_contexts))       
+        for p in permutations(contexts):
+            self._evaluate_contexts(c,dict(executable= "vscode", title = "hello",handle=None))
+            self.assertEqual(counter,dict(n = 1,v = 1))
+            reset_counter()
+            self._evaluate_contexts(c,dict(executable= "sublime", title = "hello",handle=None))
+            self.assertEqual(counter,dict(n = 1,v = 0))
+            reset_counter()
