@@ -25,6 +25,13 @@ class TestCCRMerger2(SettingsEnabledTestCase):
     def _create_managed_rule(rule_class, ccrtype, executable=None,function = None):
         return ManagedRule(rule_class, RuleDetails(ccrtype=ccrtype, executable=executable,function_context = function))
 
+    def _evaluate_context_in_every_permutation(self,contexts,expected_output,data = {}):
+        for permutation in permutations(zip(contexts,expected_output)):
+            expected = [x[1] for x in permutation]
+            result = [x.matches(**data) for x in permutation]
+            self.assertEqual(expected,result)
+
+
     def setUp(self):
         self._set_setting(["miscellaneous", "max_ccr_repetitions"], "4")
         self.selfmodrule_configurer = Mock()
@@ -142,4 +149,17 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         self.assertIsInstance(context_1, FuncContext)
         self.assertIsInstance(context_2, AppContext)
         self.assertIsInstance(context_3, AppContext)
+        
+        self._evaluate_context_in_every_permutation([context_1, context_2, context_3],
+            [True,False,False],
+            dict(executable = "sublime_text", title = "hello",handle=None)
+        )
+        self._evaluate_context_in_every_permutation([context_1, context_2, context_3],
+            [False,True,False],
+            dict(executable = "eclipse", title = "hello",handle=None)
+        )
+        self._evaluate_context_in_every_permutation([context_1, context_2, context_3],
+            [False,False,True],
+            dict(executable = "vscode", title = "hello",handle=None)
+        )
         # TODO: write a similar unit test to check the executables/titles validity of the contexts produced
