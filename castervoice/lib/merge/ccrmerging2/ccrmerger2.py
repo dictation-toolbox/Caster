@@ -1,3 +1,5 @@
+import traceback
+
 from dragonfly.grammar.elements import RuleRef, Alternative, Repetition
 from dragonfly.grammar.rule_compound import CompoundRule
 from dragonfly import FuncContext
@@ -157,7 +159,11 @@ class CCRMerger2(object):
                 if valid:
                     context_evaluations[context] = (result,False)
                 else:
-                    result = old_matches(executable,title,handle)
+                    try : 
+                        result = old_matches(executable,title,handle)
+                    except :
+                        results  = True
+                        traceback.print_exc()
                     context_evaluations[context] = (result,True)
                 return result
             context.matches = matches
