@@ -238,7 +238,7 @@ class TestCCRMerger2(SettingsEnabledTestCase):
 
         contexts = [x[1] for x in result.ccr_rules_and_contexts]
         self.assertEqual(3, len(result.ccr_rules_and_contexts))       
-        for p in permutations(contexts):
+        for c in permutations(contexts):
             self._evaluate_contexts(c,dict(executable= "vscode", title = "hello",handle=None))
             self.assertEqual(counter,dict(n = 1,v = 1))
             reset_counter()
