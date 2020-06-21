@@ -1,4 +1,6 @@
-from dragonfly.grammar.context import LogicNotContext, Context, LogicAndContext
+from itertools import permutations
+
+from dragonfly.grammar.context import LogicNotContext, Context, LogicAndContext,FuncContext
 from mock import Mock
 from castervoice.lib.context import AppContext
 from castervoice.rules.apps.editor.eclipse_rules.eclipse import EclipseCCR
@@ -20,8 +22,8 @@ from tests.test_util.settings_mocking import SettingsEnabledTestCase
 class TestCCRMerger2(SettingsEnabledTestCase):
 
     @staticmethod
-    def _create_managed_rule(rule_class, ccrtype, executable=None):
-        return ManagedRule(rule_class, RuleDetails(ccrtype=ccrtype, executable=executable))
+    def _create_managed_rule(rule_class, ccrtype, executable=None,function = None):
+        return ManagedRule(rule_class, RuleDetails(ccrtype=ccrtype, executable=executable,function_context = function))
 
     def setUp(self):
         self._set_setting(["miscellaneous", "max_ccr_repetitions"], "4")
@@ -51,7 +53,7 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         repeat_rule = result.ccr_rules_and_contexts[0][0]
         context = result.ccr_rules_and_contexts[0][1]
         self.assertEqual("RepeatRule", repeat_rule.__class__.__name__)
-        self.assertIsNone(context)
+        self.assertIsInstance(context, FuncContext)
 
     def test_merge_two(self):
         """
@@ -65,7 +67,7 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         repeat_rule = result.ccr_rules_and_contexts[0][0]
         context = result.ccr_rules_and_contexts[0][1]
         self.assertEqual("RepeatRule", repeat_rule.__class__.__name__)
-        self.assertIsNone(context)
+        self.assertIsInstance(context, FuncContext)
 
     def test_merge_two_incompatible(self):
         """
@@ -95,7 +97,7 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         self.assertEqual(2, len(result.ccr_rules_and_contexts))
         self.assertEqual("RepeatRule", result.ccr_rules_and_contexts[0][0].__class__.__name__)
         self.assertEqual("RepeatRule", result.ccr_rules_and_contexts[1][0].__class__.__name__)
-        self.assertIsInstance(result.ccr_rules_and_contexts[0][1], LogicNotContext)
+        self.assertIsInstance(result.ccr_rules_and_contexts[0][1], FuncContext)
         self.assertIsInstance(result.ccr_rules_and_contexts[1][1], Context)
 
     def test_words_txt_transformer(self):
@@ -137,7 +139,7 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         self.assertEqual("RepeatRule", repeat_rule_1.__class__.__name__)
         self.assertEqual("RepeatRule", repeat_rule_2.__class__.__name__)
         self.assertEqual("RepeatRule", repeat_rule_3.__class__.__name__)
-        self.assertIsInstance(context_1, LogicAndContext)
+        self.assertIsInstance(context_1, FuncContext)
         self.assertIsInstance(context_2, AppContext)
         self.assertIsInstance(context_3, AppContext)
         # TODO: write a similar unit test to check the executables/titles validity of the contexts produced
