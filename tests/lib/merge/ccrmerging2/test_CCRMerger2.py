@@ -28,7 +28,7 @@ class TestCCRMerger2(SettingsEnabledTestCase):
     def _evaluate_context_in_every_permutation(self,contexts,expected_output,data = {}):
         for permutation in permutations(zip(contexts,expected_output)):
             expected = [x[1] for x in permutation]
-            result = [x.matches(**data) for x in permutation]
+            result = [x[0].matches(**data) for x in permutation]
             self.assertEqual(expected,result)
 
     def _evaluate_contexts(self,contexts,data = {}):
@@ -202,7 +202,7 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         self._evaluate_context_in_every_permutation(contexts,[True,False,False],
             dict(executable = "vscode", title = "hello",handle=None)
         )
-        nice_value = True
+        
 
 
         # make sure the exception didn't break anything
@@ -233,7 +233,7 @@ class TestCCRMerger2(SettingsEnabledTestCase):
 
         alphabet_mr = TestCCRMerger2._create_managed_rule(Alphabet, CCRType.GLOBAL)
         eclipse_app_mr = TestCCRMerger2._create_managed_rule(Navigation, CCRType.APP,function = first_context)
-        vscode_app_mr = TestCCRMerger2._create_managed_rule(VSCodeCcrRule, CCRType.APP,function = second_context)
+        vscode_app_mr = TestCCRMerger2._create_managed_rule(VSCodeCcrRule, CCRType.APP,"vscode",function = second_context)
         result = self.merger.merge_rules([alphabet_mr, eclipse_app_mr, vscode_app_mr], self.sorter)
 
         contexts = [x[1] for x in result.ccr_rules_and_contexts]
