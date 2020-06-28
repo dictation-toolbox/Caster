@@ -2,6 +2,9 @@ import os
 import sys
 import unittest
 
+if os.path.dirname(os.path.dirname(os.path.abspath(__file__))) not in sys.path:
+	sys.path.insert(0,os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from dragonfly import get_engine
 
 from castervoice.lib.ctrl.mgr.errors.guidance_rejection import GuidanceRejectionException

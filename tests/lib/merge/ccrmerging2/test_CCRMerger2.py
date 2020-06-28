@@ -1,4 +1,6 @@
-from dragonfly.grammar.context import LogicNotContext, Context, LogicAndContext
+from itertools import permutations
+
+from dragonfly.grammar.context import LogicNotContext, Context, LogicAndContext,FuncContext
 from mock import Mock
 from castervoice.lib.context import AppContext
 from castervoice.rules.apps.editor.eclipse_rules.eclipse import EclipseCCR
@@ -20,8 +22,18 @@ from tests.test_util.settings_mocking import SettingsEnabledTestCase
 class TestCCRMerger2(SettingsEnabledTestCase):
 
     @staticmethod
-    def _create_managed_rule(rule_class, ccrtype, executable=None):
-        return ManagedRule(rule_class, RuleDetails(ccrtype=ccrtype, executable=executable))
+    def _create_managed_rule(rule_class, ccrtype, executable=None,function = None):
+        return ManagedRule(rule_class, RuleDetails(ccrtype=ccrtype, executable=executable,function_context = function))
+
+    def _evaluate_context_in_every_permutation(self,contexts,expected_output,data = {}):
+        for permutation in permutations(zip(contexts,expected_output)):
+            expected = [x[1] for x in permutation]
+            result = [x[0].matches(**data) for x in permutation]
+            self.assertEqual(expected,result)
+
+    def _evaluate_contexts(self,contexts,data = {}):
+        return [x.matches(**data) for x in contexts]
+
 
     def setUp(self):
         self._set_setting(["miscellaneous", "max_ccr_repetitions"], "4")
@@ -51,7 +63,7 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         repeat_rule = result.ccr_rules_and_contexts[0][0]
         context = result.ccr_rules_and_contexts[0][1]
         self.assertEqual("RepeatRule", repeat_rule.__class__.__name__)
-        self.assertIsNone(context)
+        self.assertIsInstance(context, FuncContext)
 
     def test_merge_two(self):
         """
@@ -65,7 +77,7 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         repeat_rule = result.ccr_rules_and_contexts[0][0]
         context = result.ccr_rules_and_contexts[0][1]
         self.assertEqual("RepeatRule", repeat_rule.__class__.__name__)
-        self.assertIsNone(context)
+        self.assertIsInstance(context, FuncContext)
 
     def test_merge_two_incompatible(self):
         """
@@ -95,7 +107,7 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         self.assertEqual(2, len(result.ccr_rules_and_contexts))
         self.assertEqual("RepeatRule", result.ccr_rules_and_contexts[0][0].__class__.__name__)
         self.assertEqual("RepeatRule", result.ccr_rules_and_contexts[1][0].__class__.__name__)
-        self.assertIsInstance(result.ccr_rules_and_contexts[0][1], LogicNotContext)
+        self.assertIsInstance(result.ccr_rules_and_contexts[0][1], FuncContext)
         self.assertIsInstance(result.ccr_rules_and_contexts[1][1], Context)
 
     def test_words_txt_transformer(self):
@@ -137,7 +149,99 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         self.assertEqual("RepeatRule", repeat_rule_1.__class__.__name__)
         self.assertEqual("RepeatRule", repeat_rule_2.__class__.__name__)
         self.assertEqual("RepeatRule", repeat_rule_3.__class__.__name__)
-        self.assertIsInstance(context_1, LogicAndContext)
+        self.assertIsInstance(context_1, FuncContext)
         self.assertIsInstance(context_2, AppContext)
         self.assertIsInstance(context_3, AppContext)
+
+        self._evaluate_context_in_every_permutation([context_1, context_2, context_3],
+            [True,False,False],
+            dict(executable = "sublime_text", title = "hello",handle=None)
+        )
+        self._evaluate_context_in_every_permutation([context_1, context_2, context_3],
+            [False,True,False],
+            dict(executable = "eclipse", title = "hello",handle=None)
+        )
+        self._evaluate_context_in_every_permutation([context_1, context_2, context_3],
+            [False,False,True],
+            dict(executable = "vscode", title = "hello",handle=None)
+        )
         # TODO: write a similar unit test to check the executables/titles validity of the contexts produced
+    
+    def test_merge_two_app_with_function_context_ccr(self):
+        """
+        Merger successfully merges one global + two CCR app rules.
+        """
+        nice_value = True
+        def nice_function():
+            return nice_value
+
+        def fear_of_the_bug():
+            raise ValueError("")
+
+
+        alphabet_mr = TestCCRMerger2._create_managed_rule(Alphabet, CCRType.GLOBAL)
+        eclipse_app_mr = TestCCRMerger2._create_managed_rule(EclipseCCR, CCRType.APP, "eclipse",function = fear_of_the_bug)
+        vscode_app_mr = TestCCRMerger2._create_managed_rule(VSCodeCcrRule, CCRType.APP, "vscode",function = nice_function)
+        result = self.merger.merge_rules([alphabet_mr, eclipse_app_mr, vscode_app_mr], self.sorter)
+
+        contexts = [x[1] for x in result.ccr_rules_and_contexts]
+        self.assertEqual(3, len(result.ccr_rules_and_contexts))       
+
+        # check that we get the same result no matter what the order
+        self._evaluate_context_in_every_permutation(contexts,[True,False,False],
+            dict(executable = "sublime_text", title = "hello",handle=None)
+        )
+        self._evaluate_context_in_every_permutation(contexts,[False,False,True],
+            dict(executable = "vscode", title = "hello",handle=None)
+        )
+        self._evaluate_context_in_every_permutation(contexts,[False,True,False],
+            dict(executable = "eclipse", title = "hello",handle=None)
+        )
+
+        nice_value = False
+        self._evaluate_context_in_every_permutation(contexts,[True,False,False],
+            dict(executable = "vscode", title = "hello",handle=None)
+        )
+        
+
+
+        # make sure the exception didn't break anything
+        # self._evaluate_contexts(contexts,dict(executable = "vscode", title = "hello",handle=None))
+
+    def test_function_gets_called_only_once(self):
+        '''
+        Make sure function inside of function context gets called only once
+        And only if necessary!
+        '''
+        counter = {
+            "n":0,
+            "v":0,
+        }
+
+        def reset_counter():
+            for k in counter:
+                counter[k] = 0
+
+        def first_context():
+            counter["n"] = counter["n"] + 1
+            return True
+
+        def second_context():
+            counter["v"] = counter["v"] + 1
+            raise Exception()
+
+
+        alphabet_mr = TestCCRMerger2._create_managed_rule(Alphabet, CCRType.GLOBAL)
+        eclipse_app_mr = TestCCRMerger2._create_managed_rule(Navigation, CCRType.APP,function = first_context)
+        vscode_app_mr = TestCCRMerger2._create_managed_rule(VSCodeCcrRule, CCRType.APP,"vscode",function = second_context)
+        result = self.merger.merge_rules([alphabet_mr, eclipse_app_mr, vscode_app_mr], self.sorter)
+
+        contexts = [x[1] for x in result.ccr_rules_and_contexts]
+        self.assertEqual(3, len(result.ccr_rules_and_contexts))       
+        for c in permutations(contexts):
+            self._evaluate_contexts(c,dict(executable= "vscode", title = "hello",handle=None))
+            self.assertEqual(counter,dict(n = 1,v = 1))
+            reset_counter()
+            self._evaluate_contexts(c,dict(executable= "sublime", title = "hello",handle=None))
+            self.assertEqual(counter,dict(n = 1,v = 0))
+            reset_counter()

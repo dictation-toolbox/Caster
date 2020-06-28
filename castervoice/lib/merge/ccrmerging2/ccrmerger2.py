@@ -1,3 +1,5 @@
+import traceback
+
 from dragonfly.grammar.elements import RuleRef, Alternative, Repetition
 from dragonfly.grammar.rule_compound import CompoundRule
 from dragonfly import FuncContext
@@ -147,21 +149,36 @@ class CCRMerger2(object):
         :return:
         """
         contexts = []
-        negation_context = None
+        context_evaluations = {} 
+
+        def wrap_context(context):
+            old_matches = context.matches
+            context_evaluations[context] = (False,False)
+            def matches(executable,title,handle):
+                result,valid = context_evaluations[context]
+                if valid:
+                    context_evaluations[context] = (result,False)
+                else:
+                    try : 
+                        result = old_matches(executable,title,handle)
+                    except :
+                        results  = True
+                        traceback.print_exc()
+                    context_evaluations[context] = (result,True)
+                return result
+            context.matches = matches
+            return context
+
         for cr in app_crs:
             details = rcns_to_details[cr.rule_class_name()]
             context = AppContext(executable=details.executable, title=details.title)
             if details.function_context is not None:
-                funkcontext = context
-                funkcontext &= FuncContext(function=details.function_context)
-                contexts.append(funkcontext)
-            else:
-                contexts.append(context)
-            if details.function_context is None:
-                if negation_context is None:
-                    negation_context = ~context
-                else:
-                    negation_context &= ~context
+                context &= FuncContext(function=details.function_context)
+            contexts.append(wrap_context(context))
+
+        negation_context = FuncContext(lambda **kw:[x for x in context_evaluations if x.matches(**kw)]==[])
+
+
         contexts.insert(0, negation_context)
         return contexts
 
