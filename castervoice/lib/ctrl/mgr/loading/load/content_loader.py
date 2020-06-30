@@ -103,6 +103,7 @@ class ContentLoader(object):
         for request in requests:
             if request.directory not in path:
                 path.append(request.directory)
+        for request in requests:
             content_item = self.idem_import_module(request.module_name, request.content_type)
             if content_item is not None:
                 result.append(content_item)
