@@ -162,7 +162,7 @@ class CCRMerger2(object):
                     try : 
                         result = old_matches(executable,title,handle)
                     except :
-                        results  = True
+                        result  = True
                         traceback.print_exc()
                     context_evaluations[context] = (result,True)
                 return result
