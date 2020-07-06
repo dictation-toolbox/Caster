@@ -1,6 +1,6 @@
 # Companion Rules
 
-​	The `companion_config.toml` allows you to set multiple rules as companions.  A child companion `MergeRules ` grammar is linked to its parent `MergeRules ` grammar Enabled/Disabled state. When the parent grammar state changes so does it's child companions.
+​    The `companion_config.toml` allows you to set multiple rules as companions.  A child companion `MappingRules` grammar is linked to its parent `MergeRules` grammar Enabled/Disabled state. When the parent grammar state changes so does it's child companions.
 
 - Enabling a parent rule with a companion enables them both
 - Disabling the rule which enabled the companion disables the companion
@@ -8,13 +8,14 @@
 
 Consider the following example `Python = ["PythonNon"]` 
 
-`Python ` is the parent rule and `PythonNon` is its child. If you say  `Enable Python` then not only `Python` but also `PythonNon` rule would become enabled.
+`Python` is the parent rule and `PythonNon` is its child. If you say  `Enable Python` then not only `Python` but also `PythonNon` rule would become enabled.
 
 Guide to creating your own companions
 
 - The names are the exact class names of the rule.
 
-- The rule `parent rule` must be MergeRules and a the `child` MappingRules.
+- The `parent` must be a MergeRules and the `child` MappingRules.
+
 - Caution it is possible to have a companion rule circle, which  is to say, an infinite loop.
 
 Default companions for Caster `1.x.x`
@@ -30,4 +31,3 @@ Rust = ["RustNon"]
 VHDL = ["VHDLnon"]
 VSCodeCcrRule = ["VSCodeNonCcrRule"]
 ```
-
