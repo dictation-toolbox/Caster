@@ -18,8 +18,7 @@ Make sure to select `Add python to path`. This can be done manually by searching
    - The Legion MouseGrid requires [Microsoft Visual C++ Redistributable Packages for Visual Studio 2015, 2017 and 2019 (x86).](https://support.microsoft.com/en-nz/help/2977003/the-latest-supported-visual-c-downloads) Note: Should not be needed if Windows 10 is up-to-date.
 5. Click `Install_Caster_Kaldi.bat` to install prerequisite dependencies and set up Kaldi. 
 
-
-### 3. Set up Kaldi  
+### 3. Set up Kaldi
 
 1. Download your preferred Kaldi model at [kaldi-active-grammar/releases](https://github.com/daanzu/kaldi-active-grammar/releases)
 
@@ -31,9 +30,10 @@ Make sure to select `Add python to path`. This can be done manually by searching
 2. Double-click on `Run_Caster_Kaldi.bat`
 
 ### Update Caster
-  1. Backup `%USERPROFILE%\Documents\Caster`
-  2. Delete `%USERPROFILE%\Documents\Caster`
-  3. Repeat Steps `1. - 5.` within the Caster install section
+
+1. Backup `%USERPROFILE%\Documents\Caster`
+2. Delete `%USERPROFILE%\Documents\Caster`
+3. Repeat Steps `1. - 5.` within the Caster install section
 
 ------
 
@@ -41,5 +41,10 @@ Make sure to select `Add python to path`. This can be done manually by searching
 
  No commonly reported issues yet.
 
+
+
+**Known Issues**
+
+- [Enabling Text Manipulation Commands causes Caster to freeze on Kaldi](https://github.com/dictation-toolbox/Caster/issues/824)
 
 
