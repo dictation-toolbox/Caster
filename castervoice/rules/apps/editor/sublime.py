@@ -37,9 +37,9 @@ class SublimeRule(MappingRule):
         "(select | sell) all":
             R(Key("c-a")),
         "(select | sell) scope [<n2>]":
-            R(Key("cs-space")),
+            R(Key("cs-space")*Repeat(extra="n2")),
         "(select | sell) brackets [<n2>]":
-            R(Key("cs-m")),
+            R(Key("cs-m")*Repeat(extra="n2")),
         "(select | sell) indent":
             R(Key("cs-j")),
         #
@@ -87,6 +87,8 @@ class SublimeRule(MappingRule):
             R(Store() + Key("c-f") + Retrieve() + Key("enter")),
         "command pallette":
             R(Key("cs-p")),
+        "file back [<n2>]":
+            R(Key("c-p")  + Key("down")*Repeat(extra="n2") + Key("enter")),
         #
         "fold":
             R(Key("cs-lbracket")),
@@ -104,9 +106,9 @@ class SublimeRule(MappingRule):
         "show key bindings":
             R(Key("f10, p, right, k")),
         "zoom in [<n2>]":
-            R(Key("c-equal")),
+            R(Key("c-equal")*Repeat(extra="n2")),
         "zoom out [<n2>]":
-            R(Key("c-minus")),
+            R(Key("c-minus")*Repeat(extra="n2")),
         #
         "(set | add) bookmark":
             R(Key("c-f2")),
@@ -117,8 +119,13 @@ class SublimeRule(MappingRule):
         "clear bookmarks":
             R(Key("cs-f2")),
         #
-        "build it":
-            R(Key("c-b")),
+        "set mark": R(Key("c-k,c-space")),
+        "select mark": R(Key("c-k,c-a")),
+        "swap with mark": R(Key("c-k,c-x")),
+        #
+        "build it": R(Key("c-b")),
+        "build <nth>":R(Key("c-s,a-%(nth)s,c-b")),
+        "build [<nth>] last":R(Key("c-s,a-1") + Key("c-pageup")*Repeat(extra="nth") + Key("c-b")),
         #
         "record macro":
             R(Key("c-q")),
@@ -135,6 +142,9 @@ class SublimeRule(MappingRule):
             R(Key("c-pgup")),
         "<nth> tab":
             R(Key("a-%(nth)s")),
+        "[<nth>] last tab":
+            R(Key("a-1") + Key("c-pageup")*Repeat(extra="nth")),
+
         "column <cols>":
             R(Key("as-%(cols)s")),
         "focus <panel>":
@@ -142,8 +152,8 @@ class SublimeRule(MappingRule):
         "move <panel>":
             R(Key("cs-%(panel)s")),
         #
-        "open terminal":
-            R(Key("cs-t")),
+        "open terminal": R(Key("cs-t")),
+        "open console":R(Key("c-`")),
     }
     extras = [
         Dictation("dict"),
@@ -188,6 +198,7 @@ class SublimeRule(MappingRule):
         "n2": 1,
         "n3": 1,
         "file type": "",
+        "nth":"1",
     }
 
 
