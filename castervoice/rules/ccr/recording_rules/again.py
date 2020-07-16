@@ -34,9 +34,9 @@ class Again(MappingRule):
             if len(_history) == 1: return
             last_utterance_index = 2
 
-        utterance = [
-            str(x) for x in " ".join(_history[len(_history) - last_utterance_index]).split()
-        ]
+        # Calculatees last utterance from recognition history and creates list of str for Dragonfly Playback
+        utterance = map(str, (_history[len(_history) - last_utterance_index]))
+
         if utterance[0] == "again": return
         forward = [L(S(["cancel"], lambda: Again._repeat(utterance)))]
         AsynchronousAction(
