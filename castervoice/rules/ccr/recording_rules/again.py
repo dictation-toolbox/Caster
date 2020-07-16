@@ -1,14 +1,14 @@
-from dragonfly import Function, Playback, RecognitionHistory, MappingRule, get_current_engine
+from dragonfly import Function, Playback, MappingRule, get_current_engine, ShortIntegerRef
 
 from castervoice.lib import settings
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.actions import AsynchronousAction
 from castervoice.lib.merge.state.short import R, L, S
 from castervoice.lib.util import recognition_history
 
 _history = recognition_history.get_and_register_history(10)
 
+#TODO: Investigate why Caster's abstraction of dragonflys `ShortIntegerRef` Via `IntegerRefST` causes recognition errors in this grammar.
 
 class Again(MappingRule):
 
@@ -16,13 +16,13 @@ class Again(MappingRule):
         "again (<n> [(times|time)] | do)":
             R(Function(lambda n: Again._create_asynchronous(n)), show=False),  # pylint: disable=E0602
     }
-    extras = [IntegerRefST("n", 1, 50)]
+    extras = [ShortIntegerRef("n", 1, 50)]
     defaults = {"n": 1}
 
     @staticmethod
     def _repeat(utterance):
         Playback([(utterance, 0.0)]).execute()
-        return False
+        return False 
 
     @staticmethod
     def _create_asynchronous(n):
