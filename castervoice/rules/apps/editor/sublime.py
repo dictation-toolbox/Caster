@@ -49,15 +49,21 @@ class SublimeRule(MappingRule):
             R(Key("a-enter")),
         "replace":
             R(Key("c-h")),
+        "replace all":
+            R(Key("ca-enter")),
+        "paste from history":
+            R(Key("c-k,c-v")),
         "edit lines":
             R(Key("cs-l")),
         "edit next [<n3>]":
             R(Key("c-d/10"))*Repeat(extra="n3"),
+        "edit only next [<n3>]":
+            R(Key("c-k,c-d/10"))*Repeat(extra="n3"),
         "edit up [<n3>]":
             R(Key("ac-up"))*Repeat(extra="n3"),
         "edit down [<n3>]":
             R(Key("ac-down"))*Repeat(extra="n3"),
-       "edit all":
+        "edit all":
             R(Key("a-f3")),
         #
         "transform upper":
@@ -69,10 +75,18 @@ class SublimeRule(MappingRule):
             R(Key("c-g/10") + Text("%(ln1)s") + Key("enter")),
         "<action> [line] <ln1> [by <ln2>]":
             R(Function(navigation.action_lines)),
+        "[move] line down [<n3>]":
+            R(Key("cs-down") * Repeat(extra='n3')),
+        "[move] line up [<n3>]":
+            R(Key("cs-up") * Repeat(extra='n3')),
+        #
         "go to file":
             R(Key("c-p")),
         "go to <dict> [<filetype>]":
             R(Key("c-p") + Text("%(dict)s" + "%(filetype)s") + Key("enter")),
+        "file back [<n2>]":
+            R(Key("c-p")  + Key("down")*Repeat(extra="n2") + Key("enter")),
+        #
         "go to word":
             R(Key("c-semicolon")),
         "go to symbol":
@@ -87,8 +101,13 @@ class SublimeRule(MappingRule):
             R(Store() + Key("c-f") + Retrieve() + Key("enter")),
         "command pallette":
             R(Key("cs-p")),
-        "file back [<n2>]":
-            R(Key("c-p")  + Key("down")*Repeat(extra="n2") + Key("enter")),
+        #
+        "go back [<n2>]":
+            R(Key("a-minus")*Repeat(extra="n2")),
+        "go forward [<n2>]":
+            R(Key("a-plus")*Repeat(extra="n2")),
+        "next modification":R(Key("c-dot")),
+        "previous modification":R(Key("c-comma")),
         #
         "fold":
             R(Key("cs-lbracket")),
@@ -105,6 +124,8 @@ class SublimeRule(MappingRule):
             R(Key("c-k, c-b")),
         "show key bindings":
             R(Key("f10, p, right, k")),
+        "show at center":
+            R(Key("c-k,c-c")),
         "zoom in [<n2>]":
             R(Key("c-equal")*Repeat(extra="n2")),
         "zoom out [<n2>]":
@@ -122,8 +143,10 @@ class SublimeRule(MappingRule):
         "set mark": R(Key("c-k,c-space")),
         "select mark": R(Key("c-k,c-a")),
         "swap with mark": R(Key("c-k,c-x")),
+        "delete mark":R(Key("c-k,c-w")),
         #
         "build it": R(Key("c-b")),
+        "build with": R(Key("cs-b")),
         "build <nth>":R(Key("c-s,a-%(nth)s,c-b")),
         "build [<nth>] last":R(Key("c-s,a-1") + Key("c-pageup")*Repeat(extra="nth") + Key("c-b")),
         #
@@ -152,8 +175,10 @@ class SublimeRule(MappingRule):
         "move <panel>":
             R(Key("cs-%(panel)s")),
         #
-        "open terminal": R(Key("cs-t")),
-        "open console":R(Key("c-`")),
+        "open terminal": 
+            R(Key("cs-t")),
+        "open console":
+            R(Key("c-`")),
     }
     extras = [
         Dictation("dict"),
