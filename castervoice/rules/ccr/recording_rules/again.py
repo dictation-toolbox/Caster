@@ -26,13 +26,13 @@ class Again(MappingRule):
 
     @staticmethod
     def _create_asynchronous(n):
+        last_utterance_index = 2
         if len(_history) == 0:
             return
 
-        last_utterance_index = 2
-        if get_current_engine().name in ["sapi5shared", "sapi5", "sapi5inproc"]:  # ContextStack adds the word to history before executing it
+        # ContextStack adds the word to history before executing it for WSR 
+        if get_current_engine().name in ["sapi5shared", "sapi5", "sapi5inproc"]:  
             if len(_history) == 1: return
-            last_utterance_index = 2
 
         # Calculatees last utterance from recognition history and creates list of str for Dragonfly Playback
         utterance = map(str, (_history[len(_history) - last_utterance_index]))
