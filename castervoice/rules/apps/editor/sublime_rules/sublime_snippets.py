@@ -100,8 +100,8 @@ def generate_snippet_text(snippet = "",data = {}):
 		snippet_text = snippet
 		extra_data = {}
 	elif isinstance(snippet,list):
-		if any([not isinstance(x,str) for x in snippet]):
-			raise TypeError("In insert_snippet snippet must be a string or list of strings or callable!")
+		if any(not isinstance(x,str) for x in snippet):
+			raise TypeError("In generate_snippet_text snippet must be a string or list of strings or callable!Received ",type(snippet))
 		n = data.get("n",1)
 		snippet_text = snippet[n-1]
 		extra_data = dict(n=n)
@@ -109,7 +109,7 @@ def generate_snippet_text(snippet = "",data = {}):
 		extra_data = get_only_proper_arguments(snippet, data)
 		snippet_text = evaluate_function(snippet,data)
 	else:
-		raise TypeError("In insert_snippet snippet must be a string or list of strings or callable!")
+		raise TypeError("In generate_snippet_text snippet must be a string or list of strings or callable!Received ",type(snippet))
 	return snippet_text,extra_data
 
 def insert_snippet(snippet,data={},snippet_parameters = {},additional_log = {}):
