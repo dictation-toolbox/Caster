@@ -550,8 +550,8 @@ Same Commands as [Git Bash](#git-bash)
 |`new file`                        |`new window`                      |`open file`                       |
 |`open folder`                     |`open recent`                     |`save as`                         |
 |`comment line`                    |`comment block`                   |`outdent lines`                   |
-|`join lines`                      |`match bracket`                   |`(select | sell) all`             |
-|`(select | sell) scope [<n2>]`    |`(select | sell) brackets [<n2>]` |`(select | sell) indent`          |
+|`join lines`                      |`match bracket`                   |`(select / sell) all`             |
+|`(select / sell) scope [<n2>]`    |`(select / sell) brackets [<n2>]` |`(select / sell) indent`          |
 |`find`                            |`get all`                         |`replace`                         |
 |`replace all`                     |`paste from history`              |`edit lines`                      |
 |`edit next [<n3>]`                |`edit only next [<n3>]`           |`edit up [<n3>]`                  |
@@ -565,12 +565,12 @@ Same Commands as [Git Bash](#git-bash)
 |`previous modification`           |`fold`                            |`unfold`                          |
 |`unfold all`                      |`fold [level] <n2>`               |`full screen`                     |
 |`toggle side bar`                 |`show key bindings`               |`show at center`                  |
-|`zoom in [<n2>]`                  |`zoom out [<n2>]`                 |`(set | add) bookmark`            |
+|`zoom in [<n2>]`                  |`zoom out [<n2>]`                 |`(set / add) bookmark`            |
 |`next bookmark`                   |`previous bookmark`               |`clear bookmarks`                 |
 |`set mark`                        |`select mark`                     |`swap with mark`                  |
 |`delete mark`                     |`build it`                        |`build with`                      |
 |`build <nth>`                     |`build [<nth>] last`              |`record macro`                    |
-|`play [back] macro [<n3>]`        |`(new | create) snippet`          |`close tab`                       |
+|`play [back] macro [<n3>]`        |`(new / create) snippet`          |`close tab`                       |
 |`next tab`                        |`previous tab`                    |`<nth> tab`                       |
 |`[<nth>] last tab`                |`column <cols>`                   |`focus <panel>`                   |
 |`move <panel>`                    |`open terminal`                   |`open console`                    |
