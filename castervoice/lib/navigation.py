@@ -278,5 +278,6 @@ actions = {
     "copy": "c-c",
     "cut": "c-x",
     "paste": "c-v",
-    "delete": "backspace"
+    "delete": "backspace",
+    "comment": "c-slash",
 }
