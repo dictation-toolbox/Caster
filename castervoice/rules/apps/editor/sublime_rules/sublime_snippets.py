@@ -95,6 +95,80 @@ def snippet_log(clear_those_not_set = True,**kwargs):
 
 ############################## GENERATING AND HIGH-LEVEL INSERTING SNIPPETS ##############################
 
+def filter_snippet_text(snippet_text):
+	'''
+	Filter out numerical placeholders that have their_default value in two locations
+	For example:
+		${1:data} = ${1:data} + $2
+	will not be accepted by sublime!
+	Precondition for these to work is that those default values are the same!
+	'''
+	def clean(text):
+		temporary,skip,l = [],0,len(text)
+		for i,(c,n) in enumerate(zip(text, text[1:])):
+			if skip and i!=l-2:
+				skip = skip - 1
+				continue
+			elif not skip and c=="\\" and n in ["\\","$","{","}"]:
+				temporary += [" "," "]
+				skip = 1
+			elif i==l-2:
+				if not skip: temporary.append(c)
+				temporary.append(n)
+			else:
+				temporary.append(c)
+		return "".join(temporary)
+
+	def bracket_match(text):
+		temporary,l,mapping = [],len(text),{}
+		for i,c in enumerate(text):
+			if c=="{" and i!=0 and text[i-1]=="$":
+				temporary.append(i)
+			elif c=="}":
+				if temporary:
+					m = len(temporary)
+					mapping[temporary.pop()] = (i,m)
+		return mapping
+
+
+
+
+
+	def find_duplicates(text,mapping):
+		temporary={}
+		pattern = re.compile(r"\$\{(\d+):")
+		l = pattern.finditer(text)
+		for m in l:
+			number = m.group(1)
+			beginning = m.start(0) + 1
+			ending,depth = mapping[beginning]
+			try :
+				temporary[number].append((beginning,ending,depth)) 
+			except :
+				temporary[number] = [(beginning,ending,depth)]
+		return {k:v for k,v in temporary.items() if len(v)!=1} 
+
+
+
+	def eliminate_duplicates(original,duplicates):
+		temporary = list(original)
+		print(original,duplicates)
+		c = [(d,k,b,e) for k,v in duplicates.items() for b,e,d in v[1:]];c = sorted(c,reverse=True)
+		# for k,v in duplicates.items():
+		if True:
+			for d,k,b,e in c:
+				for i in range(b,e+1):
+					temporary[i] = ""
+				for i,letter in enumerate(k):
+					temporary[b+i] = letter
+		return "".join(temporary)
+
+	text_after_escaping = clean(snippet_text)
+	bracket_mapping = bracket_match(text_after_escaping)
+	duplicates = find_duplicates(text_after_escaping,bracket_mapping)
+	return eliminate_duplicates(snippet_text,duplicates)
+
+
 def generate_snippet_text(snippet = "",data = {}):
 	if isinstance(snippet,str):
 		snippet_text = snippet
@@ -110,6 +184,7 @@ def generate_snippet_text(snippet = "",data = {}):
 		snippet_text = evaluate_function(snippet,data)
 	else:
 		raise TypeError("In generate_snippet_text snippet must be a string or list of strings or callable!Received ",type(snippet))
+	# snippet_text = filter_snippet_text(snippet_text)
 	return snippet_text,extra_data
 
 def insert_snippet(snippet,data={},snippet_parameters = {},additional_log = {}):
@@ -196,6 +271,36 @@ class DisplaySnippetVariants(ActionBase):
 		for value in self.values:
 			try :
 				data[self.name] = value
+				x,_ = generate_snippet_text(snippet,data)
+				alternatives.append(x)
+				protection_counter += 1
+				if protection_counter==20:
+					break
+			except:
+				break
+
+		items = [{
+				"caption":json.dumps(x),
+				"command":"insert_snippet",
+				"args":dict(contents=x,**snippet_state["snippet_parameters"])
+			} for x in alternatives]
+		send_sublime("quick_panel", dict(items=items))
+
+
+class DisplayMultipleSnippetVariants(ActionBase):
+	"""docstring for DisplaySnippetVariants"""
+	def __init__(self,values):
+		super(DisplayMultipleSnippetVariants, self).__init__()
+		self.values = values
+	
+	def _execute(self,*args,**kwargs):
+		snippet = snippet_state["snippet"]
+		alternatives = []
+		protection_counter = 0
+		for name,value in self.values.items():
+			try :
+				data = deepcopy(snippet_state["extra_data"])
+				data[name] = value
 				x,_ = generate_snippet_text(snippet,data)
 				alternatives.append(x)
 				protection_counter += 1
