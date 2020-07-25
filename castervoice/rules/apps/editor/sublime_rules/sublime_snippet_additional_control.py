@@ -3,7 +3,11 @@ import os
 
 from copy import deepcopy
 
-from dragonfly import (MappingRule, Choice, Dictation, Grammar,Repeat, Function,RunCommand,FocusWindow,RecognitionObserver)
+from dragonfly import (
+    MappingRule, Choice, Dictation, Grammar,
+    Repeat, Function,RunCommand,RecognitionObserver
+)
+from dragonfly.engines.backend_text.engine import  TextInputEngine 
 
 
 from castervoice.lib import settings, utilities, context, contexts
@@ -14,6 +18,7 @@ from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 from castervoice.lib.merge.selfmod.selfmodrule import BaseSelfModifyingRule
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+
 
 try : 
     from sublime_rules.sublime_snippets import Snippet,SnippetVariant,DisplaySnippetVariants,DisplayMultipleSnippetVariants,snippet_state,send_sublime,SublimeCommand,grammars_with_snippets
@@ -30,12 +35,16 @@ initial = {
 }
 
 
-# global controll grammar WIP
-
-
-
 last_keys = set()
 last_rule = None
+meaningful = True
+
+try :
+    engine # upon reload keep the old engine and just to be sure clean it up
+    for grammar in engine.grammars: 
+        grammar.unload()
+except :
+    engine = TextInputEngine()
 
 class SublimeSnippetAdditionalControllRule(BaseSelfModifyingRule):
     pronunciation = "sublime snippet additional control"
@@ -45,71 +54,82 @@ class SublimeSnippetAdditionalControllRule(BaseSelfModifyingRule):
         SublimeSnippetAdditionalControllRule.last = self 
         super(SublimeSnippetAdditionalControllRule, self).__init__(os.path.join(settings.SETTINGS["paths"]["USER_DIR"],"nothing.toml"),"sublime snippet additional control")
 
+    def rename(self,extra_name):
+        return snippet_state["remap_data"].get(extra_name,extra_name)
+
+    def get_last(self,field_name):
+        return grammars_with_snippets[last_rule][field_name]
 
     def _deserialize(self):
-        self._smr_mapping = initial.copy()
-        self._smr_extras =  [IntegerRefST("n",1,10)]
-        self._smr_defaults =  {}
-
-        names = snippet_state["extra_data"].keys()        
+        global meaningful
+        self._smr_mapping = {}
+        self._smr_extras = []
+        self._smr_defaults = {}
+        names = snippet_state["extra_data"].keys()   # List[str]
+        snippet = snippet_state["snippet"] # Union[str,List[str],Callable]
         if last_rule:
-            for e in grammars_with_snippets[last_rule]["extras"]:
-                final_name = snippet_state["remap_data"].get(e.name,e.name)
-                if final_name in names:
-                    self._smr_mapping["variant <"+e.name+">"] = R(Key("c-z") + SnippetVariant(**{e.name:final_name}))
-                    self._smr_extras.append(e)
-                    # try : 
-                    #     self._smr_defaults[e.name] = grammars_with_snippets[last_rule]["defaults"][e.name] 
-                    # except KeyError:
-                    #     pass
+            meaningful = True
+            default = self.get_last("defaults")
+            if isinstance(snippet,str):
+                self._smr_mapping = initial.copy()
+                self._smr_extras =  [IntegerRefST("n",1,10)]
+                self._smr_defaults =  {}
+                meaningful = False
+            elif isinstance(snippet,list):
+                self._smr_mapping = initial.copy()
+                self._smr_extras =  [IntegerRefST("n",1,len(snippet) + 1)]
+                self._smr_defaults =  {}
+            elif callable(snippet):
+                for e in self.get_last("extras"): # Element
+                    final_name = self.rename(e.name) 
+                    if final_name in names:
+                        self._smr_mapping["variant <"+e.name+">"] = R(Key("c-z") + SnippetVariant(**{e.name:final_name}))
+                        self._smr_extras.append(e)
+                        if isinstance(e,(Choice)) and e._extras is None:
+                            spoken_name = final_name.upper() if len(final_name) == 1 else final_name
+                            all_options = list(e._choices.values()) + ([default[e.name]] if e.name in default else [])
+                            self._smr_mapping["display "+spoken_name+" variant"] = R(
+                                Key("c-z") + DisplaySnippetVariants(final_name,all_options)
+                            )
+                        if isinstance(e,IntegerRefST):
+                            spoken_name = final_name.upper() if len(final_name) == 1 else final_name
+                            all_options = list(range(e._rule._element._min,e._rule._element._max))
+                            self._smr_mapping["display "+spoken_name+" variant"] = R(
+                                Key("c-z") + DisplaySnippetVariants(final_name,all_options)
+                            )
+        else:
+            meaningful = True
+            self._smr_mapping = initial.copy()
+            self._smr_extras =  [IntegerRefST("n",1,10)]
+            self._smr_defaults =  {}
+            meaningful = False
 
-                    # self._smr_mapping["display " + spoken_name + " variants"] = R(Key("c-z") + DisplaySnippetVariants(final_name,all_options))
-        # print(self._smr_mapping)
+
 
 
     def process_recognition(self,node):
-        from dragonfly import Grammar
-        from dragonfly.engines.backend_text.engine import  TextInputEngine as get_engine 
-        # from dragonfly.engines.backend_text import  get_engine 
-
-        words = node.words()
-        successful = {}
-        engine = get_engine()
+        words,successful = node.words(),{} # List[String],Dict[String,Any]
         for e in self._smr_extras:
             class LocalRule(MappingRule):
                 mapping = {
                     "variant <"+e.name+">": 
                     Function(lambda **kwargs: 
-                        successful.update({k:v for k,v in kwargs.items() if k not in ["_node","_grammar","_rule"] }))
+                        successful.update({self.rename(k):v for k,v in kwargs.items() if k not in ["_node","_grammar","_rule"] }))
                 }
                 extras = [e]
-            grammar = Grammar("grammar",engine=engine)
+            grammar = Grammar(e.name,engine=engine)
             grammar.add_rule(LocalRule())
             grammar.load()
-            # engine.load_grammar(grammar)
             try : 
                 engine.mimic(words)
             except :
                 pass
-            # grammar.unload()
-        assert successful
-        print("successful",successful,engine.grammars,"authornot Oscar vast echor")
-        if len(successful)==1:
+            grammar.unload()
+        assert successful or not "".join(words).strip().startswith("variant"),"Successful " + str(successful) + " words " + words
+        if len(successful)==1 or not "".join(words).strip().startswith("variant"):
             MappingRule.process_recognition(self,node)
         else:
             (Key("c-z") + DisplayMultipleSnippetVariants(successful)).execute()
-
-
-
-
-
-
-
-
-
-
-
-
 
                 
     def _refresh(self,rule = None,*args):
@@ -150,7 +170,7 @@ observer.register()
 
 
 def get_rule():
-    return SublimeSnippetAdditionalControllRule, RuleDetails(name="sublime snippet additional control", executable=["sublime_text"])
+    return SublimeSnippetAdditionalControllRule, RuleDetails(name="sublime snippet additional control", executable=["sublime_text"],function_context=lambda: meaningful)
     
 
     
