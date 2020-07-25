@@ -16,9 +16,9 @@ from castervoice.lib.merge.selfmod.selfmodrule import BaseSelfModifyingRule
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 
 try : 
-    from sublime_rules.sublime_snippets import Snippet,SnippetVariant,DisplaySnippetVariants,snippet_state,send_sublime,SublimeCommand,grammars_with_snippets
+    from sublime_rules.sublime_snippets import Snippet,SnippetVariant,DisplaySnippetVariants,DisplayMultipleSnippetVariants,snippet_state,send_sublime,SublimeCommand,grammars_with_snippets
 except ImportError:
-    from castervoice.rules.apps.editor.sublime_rules.sublime_snippets import Snippet,SnippetVariant,DisplaySnippetVariants,snippet_state,grammars_with_snippets
+    from castervoice.rules.apps.editor.sublime_rules.sublime_snippets import Snippet,SnippetVariant,DisplaySnippetVariants,DisplayMultipleSnippetVariants,snippet_state,grammars_with_snippets
 
 
 
@@ -55,22 +55,66 @@ class SublimeSnippetAdditionalControllRule(BaseSelfModifyingRule):
         if last_rule:
             for e in grammars_with_snippets[last_rule]["extras"]:
                 final_name = snippet_state["remap_data"].get(e.name,e.name)
-                if isinstance(e,Choice) and final_name in names:
+                if final_name in names:
                     self._smr_mapping["variant <"+e.name+">"] = R(Key("c-z") + SnippetVariant(**{e.name:final_name}))
                     self._smr_extras.append(e)
-                    all_options = list(e._choices.values())
-                    if e.name in grammars_with_snippets[last_rule]["defaults"]:
-                        default_item=grammars_with_snippets[last_rule]["defaults"][e.name]
-                        if default_item not in all_options:
-                            all_options.append(default_item)
-                    spoken_name = grammars_with_snippets[last_rule]["rename"].get(e.name,e.name)
-                    self._smr_mapping["display " + spoken_name + " variants"] = R(Key("c-z") + DisplaySnippetVariants(final_name,all_options))
+                    # try : 
+                    #     self._smr_defaults[e.name] = grammars_with_snippets[last_rule]["defaults"][e.name] 
+                    # except KeyError:
+                    #     pass
+
+                    # self._smr_mapping["display " + spoken_name + " variants"] = R(Key("c-z") + DisplaySnippetVariants(final_name,all_options))
         # print(self._smr_mapping)
 
 
-    
+    def process_recognition(self,node):
+        from dragonfly import Grammar
+        from dragonfly.engines.backend_text.engine import  TextInputEngine as get_engine 
+        # from dragonfly.engines.backend_text import  get_engine 
+
+        words = node.words()
+        successful = {}
+        engine = get_engine()
+        for e in self._smr_extras:
+            class LocalRule(MappingRule):
+                mapping = {
+                    "variant <"+e.name+">": 
+                    Function(lambda **kwargs: 
+                        successful.update({k:v for k,v in kwargs.items() if k not in ["_node","_grammar","_rule"] }))
+                }
+                extras = [e]
+            grammar = Grammar("grammar",engine=engine)
+            grammar.add_rule(LocalRule())
+            grammar.load()
+            # engine.load_grammar(grammar)
+            try : 
+                engine.mimic(words)
+            except :
+                pass
+            # grammar.unload()
+        assert successful
+        print("successful",successful,engine.grammars,"authornot Oscar vast echor")
+        if len(successful)==1:
+            MappingRule.process_recognition(self,node)
+        else:
+            (Key("c-z") + DisplayMultipleSnippetVariants(successful)).execute()
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
     def _refresh(self,rule = None,*args):
         global last_keys,last_rule
+        # print(rule,grammars_with_snippets.keys())
         if type(rule) not in grammars_with_snippets:
             # print(rule,grammars_with_snippets.keys())
             return 
@@ -84,20 +128,24 @@ class SublimeSnippetAdditionalControllRule(BaseSelfModifyingRule):
     
 class Observer(RecognitionObserver):
     """docstring for Observer"""
-    last = None
+    # last = None
     def __init__(self, *args, **kw):
         super(Observer, self).__init__(*args, **kw)
         Observer.last = self
 
-    def on_post_recognition(self, words, rule):
+    def on_post_recognition(self, node,words, rule):
+
         if Observer.last is not self:
             self.unregister()
             return 
         if SublimeSnippetAdditionalControllRule.last:
             SublimeSnippetAdditionalControllRule.last._refresh(rule,words)
+# data
 
 observer = Observer()
 observer.register()
+
+
 
 
 
