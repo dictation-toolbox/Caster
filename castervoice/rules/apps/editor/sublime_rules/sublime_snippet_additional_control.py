@@ -58,7 +58,16 @@ class SublimeSnippetAdditionalControllRule(BaseSelfModifyingRule):
         return snippet_state["remap_data"].get(extra_name,extra_name)
 
     def get_last(self,field_name):
-        return grammars_with_snippets[last_rule][field_name]
+        rule = last_rule
+        if type(last_rule).__name__.startswith("Repeat"):
+            rule = last_rule.extras[1].children[0].rule
+        if hasattr(rule,"_smr_" + field_name):
+            return getattr(rule,"_smr_" + field_name)
+        if hasattr(rule,field_name):
+            return getattr(rule,field_name)
+        else:
+            raise ValueError("Problem inside sublime snippet control, the last rule was " + str(rule))
+        # return grammars_with_snippets[last_rule][field_name]
 
     def _deserialize(self):
         global meaningful
@@ -135,14 +144,17 @@ class SublimeSnippetAdditionalControllRule(BaseSelfModifyingRule):
     def _refresh(self,rule = None,*args):
         global last_keys,last_rule
         # print(rule,grammars_with_snippets.keys())
-        if type(rule) not in grammars_with_snippets:
-            # print(rule,grammars_with_snippets.keys())
+        # if type(rule) not in grammars_with_snippets and not type(rule).__name__.startswith("Repeat"):
+        #     print(rule,grammars_with_snippets.keys())
+        #     return 
+        if  type(rule).__name__ == "SublimeSnippetAdditionalControllRule":
             return 
-        if last_keys == set(snippet_state["extra_data"].keys()) and type(rule)==last_rule:
+        if last_keys == set(snippet_state["extra_data"].keys()) and rule == last_rule:
             return 0
         else:
             last_keys = set(snippet_state["extra_data"].keys())
-            last_rule = type(rule)
+            # last_rule = type(rule)
+            last_rule=rule
             self.reset()
 
     
@@ -158,6 +170,7 @@ class Observer(RecognitionObserver):
         if Observer.last is not self:
             self.unregister()
             return 
+        
         if SublimeSnippetAdditionalControllRule.last:
             SublimeSnippetAdditionalControllRule.last._refresh(rule,words)
 # data
