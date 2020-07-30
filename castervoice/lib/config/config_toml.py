@@ -9,7 +9,11 @@ class TomlConfig(BaseConfig):
         self._config_path = config_path
 
     def save(self):
+        if not self._config_path:
+            return 
         utilities.save_toml_file(self._config, self._config_path)
 
     def load(self):
+        if not self._config_path:
+            return {}
         self._config = utilities.load_toml_file(self._config_path)

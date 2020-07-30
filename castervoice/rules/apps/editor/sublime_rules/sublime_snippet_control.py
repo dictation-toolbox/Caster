@@ -53,7 +53,8 @@ class SublimeSnippetControllRule(BaseSelfModifyingRule):
     last = None
     def __init__(self, *args, **kwargs):
         SublimeSnippetControllRule.last = self 
-        super(SublimeSnippetControllRule, self).__init__(os.path.join(settings.SETTINGS["paths"]["USER_DIR"],"nothing.toml"),"sublime snippet additional control")
+        super(SublimeSnippetControllRule, self).__init__(None,"sublime snippet control")
+        # super(SublimeSnippetControllRule, self).__init__(os.path.join(settings.SETTINGS["paths"]["USER_DIR"],"nothing.toml"),"sublime snippet additional control")
 
     def rename(self,extra_name):
         return snippet_state["remap_data"].get(extra_name,extra_name)
