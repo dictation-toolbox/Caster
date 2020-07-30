@@ -34,10 +34,12 @@ initial = {
             R(Key("c-z") + DisplaySnippetVariants()),
 }
 
-
-last_keys = set()
-last_rule = None
-meaningful = True
+try : 
+    last_keys,last_rule,meaningful
+except :    
+    last_keys = set()
+    last_rule = None
+    meaningful = True
 
 try :
     engine # upon reload keep the old engine and just to be sure clean it up
