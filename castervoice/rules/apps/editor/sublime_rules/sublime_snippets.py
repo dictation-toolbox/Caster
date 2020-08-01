@@ -79,13 +79,16 @@ initial_snippet_state = {
 	"stack":[],
 	"remap_data":{},
 }
-
-snippet_state = initial_snippet_state
+try : 
+	snippet_state
+except :
+	snippet_state = initial_snippet_state
 
 def snippet_log(clear_those_not_set = True,**kwargs):
 	global snippet_state 
 	if clear_those_not_set:
 		snippet_state = initial_snippet_state
+		# snippet_state.update(initial_snippet_state)
 		# snippet_state = initial_snippet_state.copy()
 	snippet_state.update({k:v for k,v in kwargs.items() if k in snippet_state})
 # 	print(snippet_state is initial_snippet_state)
@@ -188,6 +191,17 @@ def generate_snippet_text(snippet = "",data = {}):
 	return snippet_text,extra_data
 
 def insert_snippet(snippet,data={},snippet_parameters = {},additional_log = {}):
+	"""Summary
+	
+	Args:
+	    snippet (Union[str,List[str],Callable[...,str]]): Description
+	    data (dict, optional): Description
+	    snippet_parameters (dict, optional): Description
+	    additional_log (dict, optional): Description
+	
+	Raises:
+	    TypeError: Description
+	"""
 	snippet_text,extra_data = generate_snippet_text(snippet,data)
 	if callable(snippet_parameters):
 		snippet_parameters = evaluate_function(snippet_parameters,dict(snippet=snippet_text))
@@ -211,8 +225,34 @@ def insert_snippet(snippet,data={},snippet_parameters = {},additional_log = {}):
 ############################## SNIPPET CLASS ##############################
 
 class Snippet(ActionBase):
-	"""docstring for Snippet"""
+	"""docstring for Snippet
+	
+	Attributes:
+	    contents (Union[str,List[str],Callable[...,str]]): 
+	    	The snippet to be inserted.It can be one of the following:
+	    	- a raw string containing the snippet text
+	    	- a list of strings, containing variations of the same snippet
+	    	- a callable that will generate the snippet, optionally using the spoken data
+	    remap_data (Dict[str,str]): 
+	    	a dictionary containing entries of the form (old_name,new_name)
+	    	enabling you to rename extras before they are passed to the snippet generation
+	    	For instance, suppose you have a snippet
+	    		lambda world: "$1 = " + world + " $2 " + world
+	    	normally the world parameter should come from an extra named `world`.
+	    	you can use
+	    		remap_data ={"other_name":"world"}
+	    force_data (TYPE): Description
+	    snippet_parameters (TYPE): Description
+	"""
 	def __init__(self, contents,remap_data = {},snippet_parameters = {},force_data = {}):
+		"""Summary
+		
+		Args:
+		    contents (TYPE): Description
+		    remap_data (dict, optional): Description
+		    snippet_parameters (dict, optional): Description
+		    force_data (dict, optional): Description
+		"""
 		super(Snippet, self).__init__()
 		self.contents = contents
 		self.remap_data = remap_data
