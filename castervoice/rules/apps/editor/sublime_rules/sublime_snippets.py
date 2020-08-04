@@ -47,10 +47,23 @@ def send_sublime(c,data):
 
 ############################## SUBLIME COMMAND ACTION ##############################
 
-class SublimeCommand(RunCommand):
+class SublimeCommand(ActionBase):
 	"""docstring for SublimeCommand"""
-	def __init__(self, command,data = {}):
-		super(SublimeCommand, self).__init__([subl, "-b","--command",command + " " + json.dumps(data)],synchronous = True)
+	def __init__(self, command,parameters = {}):
+		super(SublimeCommand, self).__init__()
+		if not isinstance(parameters,dict) and not callable(parameters):
+			raise TypeError("In SublimeCommand parameters must be a dict or a callable")
+		if not isinstance(command,str):
+			raise TypeError("In SublimeCommand command must be a string")
+		self.parameters = parameters
+		self.command = command
+
+	def _execute(self,data):
+		if isinstance(self.parameters,dict):
+			p = self.parameters
+		else:
+			p = evaluate_function(self.parameters,data)
+		send_sublime(self.command,p)
 	
 
 
