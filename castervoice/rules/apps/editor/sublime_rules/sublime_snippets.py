@@ -11,39 +11,13 @@ from dragonfly import RunCommand
 from dragonfly.actions.action_base  import ActionBase, ActionError
 
 from castervoice.rules.apps.editor.sublime_rules.Function_like_utilities import  get_signature_arguments,get_only_proper_arguments,rename_data,evaluate_function
+from castervoice.rules.apps.editor.sublime_rules.sublime_communication_support import  send_sublime
 
 ########################################################################################################################
 # General purpose sublime stuff, can be used regardless of snippets
 ########################################################################################################################
 
 ############################## BASIC INTERFACE WITH SUBLIME ##############################
-
-
-def validate_subl():
-    if platform.system() != 'Windows':
-        return "subl"
-    try:
-        subprocess.check_call(["subl", "-h"],stdout=subprocess.PIPE,stderr=subprocess.PIPE) # For testing purposes you can invalidate to trigger failure
-        return "subl"
-    except Exception as e:
-        try : 
-            subprocess.check_call(["C:\\Program Files\\Sublime Text 3\\subl", "-h"],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-            print("Resorting to C:\\Program Files\\Sublime Text 3\\subl.exe")
-            return  "C:\\Program Files\\Sublime Text 3\\subl"
-        except :
-            print("Sublime Text 3 `subl` executable was not in the Windows path")
-            if not os.path.isdir(r'C:\\Program Files\\Sublime Text 3'):
-                print("And there is no C:\\Program Files\\Sublime Text 3 directory to fall back to!")
-            else:
-                print("And it was not found under C:\\Program Files\\Sublime Text 3")
-            print("Please add `subl` to the path manually")
-            return "subl"
-
-subl = validate_subl()
-
-
-def send_sublime(c,data):
-    RunCommand([subl,"-b", "--command",c + " " + json.dumps(data)],synchronous = True).execute()
 
 ############################## SUBLIME COMMAND ACTION ##############################
 
