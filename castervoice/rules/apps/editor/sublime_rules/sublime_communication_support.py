@@ -54,7 +54,27 @@ def send_snippet(contents,**kw):
 	send_sublime("insert_snippet",kw)
 
 def send_quick_panel(items):
+	"""displaying a list of choices in the quick panel and executed different action depending 
+	on what the user chose
+	
+	Args:
+	    items (TYPE): an iterable of tuples representing a choice and consisting of three parts
+	    	- caption (str): the text displayed to the user
+	    	- command (str): the name of the command to execute, if this item is chosen
+	    	- args (dict): the parameters to pass to the command, must be json serializable
+	
+	"""
 	result = []
 	for caption,command,args in items:
+		if  not isinstance(caption,str):
+			raise TypeError("caption must be a string instead received ",caption)
+		if  not isinstance(command,str):
+			raise TypeError("command must be a string instead received ",command)
+		if  not isinstance(args,dict):
+			raise TypeError("args must be a dict instead received ",args)
+		try : 
+			json.dumps(args)
+		except :
+			raise TypeError("args must be json serializable, received ",args)
 		result.append(dict(caption=caption,command=command,args=args))
 	send_sublime("quick_panel",dict(items=result))
