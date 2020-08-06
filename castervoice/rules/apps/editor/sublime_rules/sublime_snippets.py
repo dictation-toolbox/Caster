@@ -60,19 +60,19 @@ initial_snippet_state = {
 	"stack":[],
 	"remap_data":{},
 }
+
+
 try : 
 	snippet_state
 except :
-	snippet_state = initial_snippet_state
+	snippet_state = initial_snippet_state.copy()
 
 def snippet_log(clear_those_not_set = True,**kwargs):
 	global snippet_state 
 	if clear_those_not_set:
-		snippet_state = initial_snippet_state
-		# snippet_state.update(initial_snippet_state)
-		# snippet_state = initial_snippet_state.copy()
+		snippet_state.update(initial_snippet_state)
 	snippet_state.update({k:v for k,v in kwargs.items() if k in snippet_state})
-# 	print(snippet_state is initial_snippet_state)
+
 	
 
 
