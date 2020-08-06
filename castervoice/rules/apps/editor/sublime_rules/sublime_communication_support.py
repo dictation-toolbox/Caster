@@ -30,8 +30,24 @@ def validate_subl():
 subl = validate_subl()
 
 
-def send_sublime(c,data):
-    RunCommand([subl,"-b", "--command",c + " " + json.dumps(data)],synchronous = True).execute()
+def send_sublime(command,parameters = {},synchronous = True):
+	"""send any sublime command with arbitrary parameters
+	
+	Args:
+	    command (str): the name of the command to execute
+	    parameters (dict, optional): the parameters to pass to the command, must be json serializable
+	    synchronous (bool, optional): whether the command should be executed in a synchronous manner
+	
+	"""
+	if  not isinstance(command,str):
+		raise TypeError("command must be a string instead received ",command)
+	if  not isinstance(parameters,dict):
+		raise TypeError("parameters must be a dict instead received ",parameters)
+	try : 
+		parameters = json.dumps(parameters) 
+	except :
+		raise TypeError("parameters must be json serializable, received ",parameters)
+	RunCommand([subl,"-b", "--command",command + " " + parameters],synchronous = synchronous).execute()
 
 def send_snippet(contents,**kw):
 	kw["contents"] = contents
@@ -42,4 +58,3 @@ def send_quick_panel(items):
 	for caption,command,args in items:
 		result.append(dict(caption=caption,command=command,args=args))
 	send_sublime("quick_panel",dict(items=result))
-	
