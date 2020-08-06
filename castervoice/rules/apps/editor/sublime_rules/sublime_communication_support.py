@@ -50,6 +50,21 @@ def send_sublime(command,parameters = {},synchronous = True):
 	RunCommand([subl,"-b", "--command",command + " " + parameters],synchronous = synchronous).execute()
 
 def send_snippet(contents,**kw):
+	"""primitive to transmit the snippet to be inserted
+	This only takes care of sending the raw snippet text and parameters
+	not generating it or doing the bookkeeping for the variance system
+	
+	Args:
+	    contents (str): the contents/text of this snippet to be inserted
+	    **kw: the raw snippet parameters passed as keyword arguments
+	
+	"""
+	if  not isinstance(contents,str):
+		raise TypeError("contents must be a string instead received ",contents)
+	try : 
+		json.dumps(kw)
+	except :
+		raise TypeError("snippet parameters must be json serializable, received",kw)
 	kw["contents"] = contents
 	send_sublime("insert_snippet",kw)
 
