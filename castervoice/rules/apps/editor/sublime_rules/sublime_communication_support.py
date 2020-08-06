@@ -32,3 +32,14 @@ subl = validate_subl()
 
 def send_sublime(c,data):
     RunCommand([subl,"-b", "--command",c + " " + json.dumps(data)],synchronous = True).execute()
+
+def send_snippet(contents,**kw):
+	kw["contents"] = contents
+	send_sublime("insert_snippet",kw)
+
+def send_quick_panel(items):
+	result = []
+	for caption,command,args in items:
+		result.append(dict(caption=caption,command=command,args=args))
+	send_sublime("quick_panel",dict(items=result))
+	

@@ -11,7 +11,7 @@ from dragonfly import RunCommand
 from dragonfly.actions.action_base  import ActionBase, ActionError
 
 from castervoice.rules.apps.editor.sublime_rules.Function_like_utilities import  get_signature_arguments,get_only_proper_arguments,rename_data,evaluate_function
-from castervoice.rules.apps.editor.sublime_rules.sublime_communication_support import  send_sublime
+from castervoice.rules.apps.editor.sublime_rules.sublime_communication_support import  send_sublime,send_snippet,send_quick_panel
 
 ########################################################################################################################
 # General purpose sublime stuff, can be used regardless of snippets
@@ -47,12 +47,6 @@ class SublimeCommand(ActionBase):
 
 ############################## LOW LEVEL SNIPPET INTERFACE WITH SUBLIME ##############################
 
-def send_snippet(contents, **kwargs):
-	kwargs['contents'] = contents
-	for k in kwargs:
-		if not isinstance(kwargs[k],str):
-			raise TypeError("In insert_snippet value for parameter" + k  + " should be string but I received " + type(kwargs[k]))
-	send_sublime("insert_snippet",kwargs)
 
 
 
@@ -311,7 +305,11 @@ class DisplaySnippetVariants(ActionBase):
 				"command":"insert_snippet",
 				"args":dict(contents=x,**snippet_state["snippet_parameters"])
 			} for x in alternatives]
-		send_sublime("quick_panel", dict(items=items))
+		# send_sublime("quick_panel", dict(items=items))
+		send_quick_panel(
+			(json.dumps(x),"insert_snippet",dict(contents=x,**snippet_state["snippet_parameters"])) 
+			for x in alternatives
+		)
 
 
 class DisplayMultipleSnippetVariants(ActionBase):
