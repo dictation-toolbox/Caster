@@ -35,11 +35,11 @@ initial = {
 }
 
 try : 
-    last_keys,last_rule,meaningful
+    last_state,last_rule,meaningful
 except :    
-    last_keys = set()
+    last_state = snippet_state.copy()
     last_rule = None
-    meaningful = True
+    meaningful = False
 
 try :
     engine # upon reload keep the old engine and just to be sure clean it up
@@ -49,7 +49,6 @@ except :
     engine = TextInputEngine()
 
 class SublimeSnippetControllRule(BaseSelfModifyingRule):
-    observer = None
     last = None
     def __init__(self, *args, **kwargs):
         SublimeSnippetControllRule.last = self 
@@ -145,18 +144,12 @@ class SublimeSnippetControllRule(BaseSelfModifyingRule):
 
                 
     def _refresh(self,rule = None,*args):
-        global last_keys,last_rule
-        # print(rule,grammars_with_snippets.keys())
-        # if type(rule) not in grammars_with_snippets and not type(rule).__name__.startswith("Repeat"):
-        #     print(rule,grammars_with_snippets.keys())
-        #     return 
+        global last_state,last_rule
         if  type(rule).__name__ == "SublimeSnippetControllRule":
+            last_state = snippet_state.copy()
             return 
-        if last_keys == set(snippet_state["extra_data"].keys()) and rule == last_rule:
-            return 0
-        else:
-            last_keys = set(snippet_state["extra_data"].keys())
-            # last_rule = type(rule)
+        if last_state != snippet_state and rule:
+            last_state = snippet_state.copy()
             last_rule=rule
             self.reset()
 
