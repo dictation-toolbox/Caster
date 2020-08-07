@@ -1,8 +1,6 @@
 import json
-import os
-import platform
 import re
-import subprocess
+
 
 
 from copy import deepcopy
@@ -21,11 +19,6 @@ from castervoice.rules.apps.editor.sublime_rules.snippet_generation_support impo
 )
 
 
-########################################################################################################################
-# General purpose sublime stuff, can be used regardless of snippets
-########################################################################################################################
-
-############################## BASIC INTERFACE WITH SUBLIME ##############################
 
 ############################## SUBLIME COMMAND ACTION ##############################
 
@@ -47,21 +40,6 @@ class SublimeCommand(ActionBase):
 			p = evaluate_function(self.parameters,data)
 		send_sublime(self.command,p)
 	
-
-
-########################################################################################################################
-# Actual snippet stuff, contains functions to send snippets, generate snippet text and dragonfly actions wrappers
-########################################################################################################################
-
-############################## LOW LEVEL SNIPPET INTERFACE WITH SUBLIME ##############################
-
-
-
-
-############################## GENERATING AND HIGH-LEVEL INSERTING SNIPPETS ##############################
-
-
-
 
 
 ############################## SNIPPET CLASS ##############################
@@ -234,33 +212,6 @@ class SnippetTransform(ActionBase):
 		snippet_state["stack"].append(s)		
 		insert_snippet(snippet_new,additional_log = {k:v for k,v in snippet_state.items() if k!="snippet_text"})
 	
-
-
-
-########################################################################################################################
-# decorator and backend needed for the self modifying snippet variants
-########################################################################################################################
-
-
-
-
-grammars_with_snippets = {}
-
-def mark_as_snippet_grammar(*rule,**rename):
-	def function(rule):
-		grammars_with_snippets[rule] = {"extras":rule.extras,"defaults":rule.defaults,"rename":rename}
-		return rule
-	if len(rule)==1 and isinstance(rule[0],type):
-		return function(rule[0])
-	elif len(rule)==0: 
-		return function
-	else:
-		raise ValueError("mark_as_snippet_grammar is not used correctly!")
-	return function
-
-
-
-
 
 
 
