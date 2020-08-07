@@ -3,6 +3,7 @@ import os
 
 from copy import deepcopy
 
+
 from dragonfly import (
     MappingRule, Choice, Dictation, Grammar,
     Repeat, Function,RunCommand,RecognitionObserver
@@ -21,9 +22,13 @@ from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 
 
 try : 
-    from sublime_rules.sublime_snippets import Snippet,SnippetVariant,DisplaySnippetVariants,DisplayMultipleSnippetVariants,snippet_state,send_sublime,SublimeCommand,grammars_with_snippets
+    from sublime_rules.sublime_snippets import (
+        Snippet,SnippetVariant,DisplaySnippetVariants,DisplayMultipleSnippetVariants,snippet_state
+    )
 except ImportError:
-    from castervoice.rules.apps.editor.sublime_rules.sublime_snippets import Snippet,SnippetVariant,DisplaySnippetVariants,DisplayMultipleSnippetVariants,snippet_state,grammars_with_snippets
+    from castervoice.rules.apps.editor.sublime_rules.sublime_snippets import (
+        Snippet,SnippetVariant,DisplaySnippetVariants,DisplayMultipleSnippetVariants,snippet_state
+    )
 
 
 
