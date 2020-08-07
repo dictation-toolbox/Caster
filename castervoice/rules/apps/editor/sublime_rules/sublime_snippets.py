@@ -34,11 +34,15 @@ class SublimeCommand(ActionBase):
 		self.command = command
 
 	def _execute(self,data):
+		try :
+			command =  self.command % data 
+		except :
+			command =  self.command
 		if isinstance(self.parameters,dict):
 			p = self.parameters
 		else:
 			p = evaluate_function(self.parameters,data)
-		send_sublime(self.command,p)
+		send_sublime(command,p)
 	
 
 
