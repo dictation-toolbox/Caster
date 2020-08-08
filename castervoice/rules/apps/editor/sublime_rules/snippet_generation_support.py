@@ -83,15 +83,16 @@ def insert_snippet(snippet,data={},snippet_parameters = {},additional_log = {}):
 
 
 
-def apply_single_transformation(l,t):
-	if isinstance(t,tuple):
-		first = t[:2]
-		last = t[2:]
-		args = first + (l,) + last
-		print("Args",args)
+def apply_single_transformation(snippet_text,transformation):
+	if  not isinstance(snippet_text,str):
+		raise TypeError("snippet_text must be a string instead received ",snippet_text)
+	if isinstance(transformation,tuple):
+		args = transformation[:2] + (snippet_text,) + transformation[2:] # inject the snippet_text in the third position
 		return re.sub(*args)
-	elif callable(t):
-		return t(l)
+	elif callable(transformation):
+		return transformation(snippet_text)
+	else:
+		raise TypeError("transformation must be callable or that can be passed to `re.sub`,received",transformation)
 	 
 
 
