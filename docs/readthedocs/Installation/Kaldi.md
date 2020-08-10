@@ -39,12 +39,8 @@ Make sure to select `Add python to path`. This can be done manually by searching
 
    **Troubleshooting Kaldi** 
 
- No commonly reported issues yet.
-
-
+- No commonly reported issues yet.
 
 **Known Issues**
 
-- [Enabling Text Manipulation Commands causes Caster to freeze on Kaldi](https://github.com/dictation-toolbox/Caster/issues/824)
-
-
+- None
