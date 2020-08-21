@@ -177,8 +177,7 @@ class LegionScanner:
         import struct
         try:
             if struct.calcsize("P") * 8 == 32:
-                self.tirg_dll = cdll.LoadLibrary(str(Path(settings.SETTINGS["paths"]["DLL_PATH"]).joinpath("tirg-32.dll")).encode(
-                sys.getfilesystemencoding()))
+                self.tirg_dll = cdll.LoadLibrary(str(Path(settings.SETTINGS["paths"]["DLL_PATH"]).joinpath("tirg-32.dll")))
             else:
                 self.tirg_dll = cdll.LoadLibrary(str(Path(settings.SETTINGS["paths"]["DLL_PATH"]).joinpath("tirg-64.dll")))
         except Exception as e:
