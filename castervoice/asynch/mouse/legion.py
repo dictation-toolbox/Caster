@@ -5,6 +5,7 @@ import os
 import re
 import sys
 import threading
+import locale
 from ctypes import *
 from dragonfly import monitors
 
@@ -191,7 +192,7 @@ class LegionScanner:
         bbstring = self.tirg_dll.getTextBBoxesFromBytes(img.tobytes(), img.size[0],
                                                         img.size[1])
         # clean the results in case any garbage letters come through
-        result = re.sub("[^0-9,]", "", bbstring.decode(sys.getfilesystemencoding()))
+        result = re.sub("[^0-9,]", "", bbstring.decode(locale.getpreferredencoding()))
         return result
 
     def scan(self, bbox=None, rough=True):
