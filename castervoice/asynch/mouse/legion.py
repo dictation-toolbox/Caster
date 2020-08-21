@@ -179,8 +179,7 @@ class LegionScanner:
                 self.tirg_dll = cdll.LoadLibrary(str(Path(settings.SETTINGS["paths"]["DLL_PATH"]).joinpath("tirg-32.dll")).encode(
                 sys.getfilesystemencoding()))
             else:
-                self.tirg_dll = cdll.LoadLibrary(str(Path(settings.SETTINGS["paths"]["DLL_PATH"]).joinpath("tirg-64.dll")).encode(
-                sys.getfilesystemencoding()))
+                self.tirg_dll = cdll.LoadLibrary(str(Path(settings.SETTINGS["paths"]["DLL_PATH"]).joinpath("tirg-64.dll")))
         except Exception as e:
             print("Legion loading failed with '%s'" % str(e))
         self.tirg_dll.getTextBBoxesFromFile.argtypes = [c_char_p, c_int, c_int]
@@ -192,7 +191,7 @@ class LegionScanner:
         bbstring = self.tirg_dll.getTextBBoxesFromBytes(img.tobytes(), img.size[0],
                                                         img.size[1])
         # clean the results in case any garbage letters come through
-        result = re.sub("[^0-9,]", "", bbstring)
+        result = re.sub("[^0-9,]", "", bbstring.decode("utf-8"))
         return result
 
     def scan(self, bbox=None, rough=True):
