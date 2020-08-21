@@ -114,7 +114,7 @@ class LegionGrid(TkTransparent):
         # Helper class for splitting larger rectangles to smaller ones.
         for rect in rectangles_to_split:
             width = rect.x2 - rect.x1
-            pieces = width/self.max_rectangle_width
+            pieces = width//self.max_rectangle_width
             new_width = width/pieces
             for i in range(0, pieces):
                 r = Rectangle()
