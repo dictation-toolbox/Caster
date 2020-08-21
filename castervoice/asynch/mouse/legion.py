@@ -237,10 +237,6 @@ def main(argv):
     dimensions = None
     auto_quit = False
 
-    error_code = windll.shcore.SetProcessDpiAwareness(2)  #enable 1-1 pixel mapping
-    if error_code == -2147024891:
-        raise OSError("Failed to set app awareness")
-
     try:
         opts, args = getopt.getopt(argv, "ht:a:d:m:",
                                    ["tirg=", "dimensions=", "autoquit="])
