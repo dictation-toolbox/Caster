@@ -373,10 +373,6 @@ class SudokuGrid(TkTransparent):
         # Put this in a try so we don't freeze if draw fails
         try:
             self.draw()
-
-            # Click on newly drawn grid to "guarantee" it gets focus
-            # Windows sometimes steals focus anyway
-            self.after(100, self.click)
         finally:
             try:
                 self.mainloop()
