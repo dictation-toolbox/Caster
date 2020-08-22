@@ -397,7 +397,7 @@ class SudokuGrid(TkTransparent):
     # n2 - inner number from 1 to 9
     def xmlrpc_move_mouse(self, n1, n2):
         x, y = self.get_mouse_pos(n1, n2)
-        self.move_mouse(x, y)
+        self.move_mouse(x + self.dimensions.x, y + self.dimensions.y)
 
     # RPC function to get the mouse position from screen number and inner number
     # n1 - the screen number from 1 to m
