@@ -1,5 +1,5 @@
 @echo off
-echo Runnig Kaldi from Dragonfly CLI
+echo Running Kaldi from Dragonfly CLI
 
 set currentpath=%~dp0
 
