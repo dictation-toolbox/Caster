@@ -35,6 +35,25 @@ Make sure to select `Add python to path`. This can be done manually by searching
 2. Delete `%USERPROFILE%\Documents\Caster`
 3. Repeat Steps `1. - 5.` within the Caster install section
 
+## MacOS
+
+### Requirements
+
+* PiP ([Installing with get-pip.py](https://pip.pypa.io/en/stable/installing/#installing-with-get-pip-py))
+
+### Installation
+
+Open up a terminal and follow these steps:
+```
+git clone https://github.com/dictation-toolbox/Caster
+cd Caster
+python -m pip install -r requirements-mac-linux.txt
+python -m pip install "dragonfly2[kaldi]"
+curl -LO https://github.com/daanzu/kaldi-active-grammar/releases/download/v1.4.0/kaldi_model_daanzu_20200328_1ep-mediumlm.zip
+unzip kaldi_model_daanzu_20200328_1ep-mediumlm.zip
+python -m dragonfly load _*.py --engine kaldi --no-recobs-messages
+```
+
 ------
 
    **Troubleshooting Kaldi** 
