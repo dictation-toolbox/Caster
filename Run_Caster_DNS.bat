@@ -1,5 +1,5 @@
 @echo off
-echo Runnig DNS/DPI from Dragonfly CLI with Natlink.
+echo Running DNS/DPI from Dragonfly CLI with Natlink.
 
 set currentpath=%~dp0
 
