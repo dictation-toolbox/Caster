@@ -9,6 +9,8 @@ Caster currently supports Kaldi on Microsoft Windows 7 through Windows 10. Consi
 
 Make sure to select `Add python to path`. This can be done manually by searching for "edit environment variables for your account" and adding your Python27 or Python 3 folder to the list of Path values.
 
+Be sure the `wheel` package is installed. It can be installed with `pip install wheel` on a command line. You may need to update pip by running `pip install --upgrade pip` first.
+
 ### 2. Caster
 
 1. Download Caster from the [master branch](https://github.com/dictation-toolbox/Caster/archive/master.zip).
