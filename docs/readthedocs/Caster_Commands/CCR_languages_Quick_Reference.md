@@ -250,6 +250,7 @@ Classic Install Location: `castervoice\rules\ccr` in Caster source code.
 | link                               | `<link >`                      | video close                    | `</video>`                                                      |
 | list element / DL                  | `<dl>`                         | small                          | `<small></small>`                                               |
 | time                               | `<time></time>`                |                                |                                                                 |
+
 # CSS
 
 The CSS commands are designed just like human language. Basically you can write CSS exactly as you read it.

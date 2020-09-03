@@ -59,7 +59,7 @@ class VisualStudioRule(MappingRule):
             R(Key("f11")),
         "step out [of]":
             R(Key("s-f11")),
-        "resume":
+        "(resume | go debug)":
             R(Key("f5")),
         "run tests":
             R(Key("c-r, t")),
@@ -79,6 +79,14 @@ class VisualStudioRule(MappingRule):
             R(Key("a-m, g")),
         "[add] [new] linked work item":
             R(Key("sa-l")),
+        "go back":
+            R(Key("c--")),
+        "go forward":
+            R(Key("cs--")),
+        "go to definition":
+            R(Key("f12")),
+        "show refs":
+            R(Key("a-2")),	
     }
     extras = [
         Dictation("text"),

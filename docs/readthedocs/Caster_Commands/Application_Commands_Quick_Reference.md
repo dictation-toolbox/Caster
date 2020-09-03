@@ -617,18 +617,20 @@ Same Commands as [Git Bash](#git-bash)
 
 | Command                            | Command                      | Command                             |
 | :--------------------------------- | :--------------------------- | :---------------------------------- |
-| `(list / show) documents`          | `collapse to definitions`    | `run all tests`                     |
-| `(set / toggle) bookmark`          | `comment block`              | `run tests`                         |
-| `(show / view) history`            | `comment line`               | `solution explorer`                 |
-| `(un / on) comment block`          | `compare (files / versions)` | `source control explorer`           |
-| `(un / on) comment line`           | `get latest [version]`       | `step into`                         |
-| `[add] [new] linked work item`     | `go to line`                 | `step out [of]`                     |
-| `[focus] document (window / pane)` | `next bookmark`              | `step over [<n>]`                   |
-| `[open] [go to] work item`         | `next tab [<n>]`             | `team explorer`                     |
-| `[toggle] break point`             | `prior bookmark`             | `toggle [section] outlining`        |
-| `[toggle] full screen`             | `prior tab [<n>]`            | `toggle all outlining`              |
-| `build solution`                   | `quick launch`               | `undo (checkout / pending changes)` |
-| `close tab [<n>]`                  | `resume`                     |                                     |
+| `(list / show) documents`          | `comment line`               | `resume`                            |
+| `(set / toggle) bookmark`          | `compare (files / versions)` | `run all tests`                     |
+| `(show / view) history`            | `get latest [version]`       | `run tests`                         |
+| `(un / on) comment block`          | `go back`                    | `show refs`                         |
+| `(un / on) comment line`           | `go forward`                 | `solution explorer`                 |
+| `[add] [new] linked work item`     | `go to debug`                | `source control explorer`           |
+| `[focus] document (window / pane)` | `go to definition`           | `step into`                         |
+| `[open] [go to] work item`         | `go to line`                 | `step out [of]`                     |
+| `[toggle] break point`             | `next bookmark`              | `step over [<n>]`                   |
+| `[toggle] full screen`             | `next tab [<n>]`             | `team explorer`                     |
+| `build solution`                   | `prior bookmark`             | `toggle [section] outlining`        |
+| `close tab [<n>] `                 | `prior tab [<n>]`            | `toggle all outlining`              |
+| `collapse to definitions`          | `quick launch`               | `undo (checkout / pending changes)` |
+| `comment block`                    |                              |                                     |
 
 # Visual Studio Code
 
