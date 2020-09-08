@@ -28,7 +28,7 @@ class JetbrainsRule(MappingRule):
     mapping = {
         "quick fix": R(Key("a-enter")),
         "(duplicate|duple) %s" % DOWN: R(Key("c-d")),
-        "auto complete": R(Key("cs-a")),
+        "find action": R(Key("cs-a")),
         "format [code]": R(Key("ca-l")),
         "show doc": R(Key("c-q")),
         "find class": R(Key("c-n")),
@@ -42,9 +42,11 @@ class JetbrainsRule(MappingRule):
         "select ex down" : R(Key("cs-w")),
         "find file": R(Key("shift, shift")),
         "find": R(Key("c-f")),
+        "find next": R(Key("f3")),
+        "find prior": R(Key("f3")),
         "find %s [match] [<n>]" % FORWARD: R(Key("enter")) * Repeat(extra="n"),
         "find %s [match] [<n>]" % BACK: R(Key("s-enter")) * Repeat(extra="n"),
-        "replace": R(Key("c-r")),
+        "replace [here]": R(Key("c-r")),
         "find [in] (all|files)": R(Key("cs-f")),
         "replace [in] (all|files)": R(Key("cs-r")),
         "go [to line] [<n>]": R(Key("c-g/%s" % DELAY) + Text("%(n)s") + Key("enter")),
@@ -52,12 +54,17 @@ class JetbrainsRule(MappingRule):
         "override %s" % method: R(Key("c-o")),
         "run config": R(Key("as-f10")),
         "[find] (usage|usages)": R(Key("a-f7")),
+        "show (usage|usages)": R(Key("ca-f7")),
+        "[find] (usage|usages) in file": R(Key("c-f7")),
         "[go to] (source|declaration)": R(Key("c-b")),
+        "[go to] implementation": R(Key("ca-b")),
         "(skraken|smart kraken)": R(Key("cs-space")),
         "go %s [<n>]" % FORWARD: R(Key("ca-right")) * Repeat(extra="n"),
         "go %s [<n>]" % BACK: R(Key("ca-left")) * Repeat(extra="n"),
         "%s %s [<n>]" % (method, FORWARD): R(Key("a-down")) * Repeat(extra="n"),
         "%s %s [<n>]" % (method, BACK): R(Key("a-up")) * Repeat(extra="n"),
+        "go block start": R(Key("c-[")),
+        "go block end": R(Key("c-]")),
         "(%s error|error %s)" % (FORWARD, RIGHT): R(Key("f2")) * Repeat(extra="n"),
         "(%s error|error %s)" % (BACK, LEFT): R(Key("s-f2")) * Repeat(extra="n"),
         "[organize|optimize] imports": R(Key("ca-o")) * Repeat(extra="n"),
@@ -71,6 +78,10 @@ class JetbrainsRule(MappingRule):
         "debug": R(Key("s-f9")),
         "redo [<n>]": R(Key("cs-z")) * Repeat(extra="n"),
         "[show] settings": R(Key("ca-s")),
+        "collapse": R(Key("c--")),
+        "uncollapse": R(Key("c-+")),
+        "collapse all": R(Key("cs--")),
+        "uncollapse all": R(Key("cs-+")),
 
         # only works if you disable tabs.
         "close pane [<n>]|pane close [<n>]": R(Key("c-f4/%s" % DELAY)) * Repeat(extra="n"),
@@ -85,9 +96,18 @@ class JetbrainsRule(MappingRule):
         "%s constant" % extract: R(Key("ca-c")) * Repeat(extra="n"),
         "%s (param|parameter)" % extract: R(Key("ca-p")) * Repeat(extra="n"),
 
+        # debugging
+        "step over": R(Key("f8")),
+        "step into": R(Key("f7")),
+        "smart step over": R(Key("s-f7")),
+        "step out": R(Key("s-f8")),
+        "toggle breakpoint": R(Key("c-f8")),
+        "view breakpoints": R(Key("cs-f8,cs-f8")),
+        "continue": R(Key("f9")),
+
         # window navigation
         "focus editor": R(Key("escape")),
-        "go [to] project": R(Key("a-1")),
+        "go tool <n>": R(Key("a-%(n)s")),
         "[toggle] (term|terminal)": R(Key("a-f12")),
 
         # must be bound manually below this point
@@ -116,5 +136,5 @@ class JetbrainsRule(MappingRule):
 
 def get_rule():
     details = RuleDetails(name="jet brains",
-                          executable=["idea", "idea64", "studio64", "pycharm", "rider64"])
+                          executable=["idea", "idea64", "studio64", "pycharm", "rider64", "webstorm", "webstorm64"])
     return JetbrainsRule, details

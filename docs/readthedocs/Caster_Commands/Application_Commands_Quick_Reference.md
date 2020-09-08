@@ -369,28 +369,38 @@ Same Commands as [Git Bash](#git-bash)
 | `emphasize`     | `insert image`   | `mention`     |
 | `<size> header` | `strikethrough`  | `latex`       |
 
-# Jetbrains
+# Jetbrains 
 
-| Command                          | Command                    | Command                     |
-| :------------------------------- | :------------------------- | :-------------------------- |
-| `Jen method`                     | `find in current`          | `search [everywhere]`       |
-| `auto complete`                  | `format code`              | `find symbol`               |
-| `auto file`                      | `format class`             | `[find] usage`              |
-| `build`                          | `go to line`               | `select ex`                 |
-| `build and run`                  | `jump to source`           | `select ex down`            |
-| `comment [line]`                 | `next tab`                 | `show doc`                  |
-| `delete line`                    | `prior tab`                | `show param`                |
-| `duplicate`                      | `quick fix`                | `uncomment line`            |
-| `expand [selection] [<n>]`       | `smart auto complete`      | `quick fix`                 |
-| `split right`                    | `pane left`                | `pane right`                |
-| `split down`                     | `pane down`                | `pane up`                   |
-| `split`                          | `last tab`                 | `second last tab`           |
-| `go [to] editor`                 | `go [to] project explorer` | `toggle terminal`           |
-| `new file`                       | `method forward`           | `method back`               |
-| `[move] line up`                 | `kill forward`             | `extract method`            |
-| `[move] line down`               | `kill back`                | `extract constant`          |
-| `extract param`                  | `kill`                     | `override method`           |
-| `auto indent`                    |                            |                             |
+It is worth noting that JetBrains commands may vary differently on Mac, versus Windows/Linux. 
+These commands are for Windows/Linux and creating a separate command ruleset for JetBrains on Mac is probably necessary.
+
+| Command                               | Command                        | Command                          |
+| :------------------------------------ | :----------------------------- | :------------------------------- |
+| `auto indent`                         | `build`                        | `build and run`                  |
+| `close pane [<n>] / pane close [<n>]` | `close tab [<n>]`              | `collapse`                       |
+| `collapse all`                        | `(comment / rem) [line]`       | `continue`                       |
+| `debug`                               | `(duplicate / duple)`          | `(%s error / error %s)`          |
+| `expand [selection] [<n>]`            | `extract (param / parameter)`  | `extract [variable|var]`         |
+| `extract constant`                    | `extract field`                | `file rename / rename file`      |
+| `find`                                | `find %s [match] [<n>]`        | `find [in] (all / files)`        |
+| `find action`                         | `find class`                   | `find file`                      |
+| `find next`                           | `find prior`                   | `[find] (usage / usages)`        |
+| `[find] (usage / usages) in file`     | `focus editor`                 | `format [code]`                  |
+| `go %s [<n>]`                         | `go [to line] [<n>]`           | `go block end`                   |
+| `go block start`                      | `go tool <n>`                  | `[go to] (source / declaration)` |
+| `[go to] implementation`              | `implement (method / methods)` | `inline`                         |
+| `(kill / delete) %s`                  | `method %s [<n>]`              | `[move] line %s [<n>]`           |
+| `(organize / optimize) imports`       | `override method`              | `pane %s [<n>]`                  |
+| `(pane %s / %s pane) [<n>]`           | `(pull / extract)`             | `quick fix`                      |
+| `redo [<n>]`                          | `refactor`                     | `rename`                         |
+| `replace [here]`                      | `replace [in] (all / files)`   | `run config`                     |
+| `run config`                          | `select ex`                    | `select ex down`                 |
+| `show (usage / usages)`               | `show doc`                     | `[show] settings`                |
+| `shrink [selection] [<n>]`            | `(skraken / smart kraken)`     | `smart step over`                |
+| `split [pane] %s`                     | `step into`                    | `step out`                       |
+| `step over`                           | `%s tab [<n>] / tab %s [<n>]`  | `toggle breakpoint`              |
+| `[toggle] (term / terminal)`          | `uncollapse`                   | `uncollapse all`                 |
+| `(uncomment / unrem) [line]`          | `view breakpoints`             |                                  |
 | GIT Commands (embedded terminal) |                            |                             |
 | `(get push / push)`              | `fetch`                    | `search recursive filetype` |
 | `(undo changes / reset hard)`    | `gooey blame`              | `stash`                     |
