@@ -369,7 +369,10 @@ Same Commands as [Git Bash](#git-bash)
 | `emphasize`     | `insert image`   | `mention`     |
 | `<size> header` | `strikethrough`  | `latex`       |
 
-# Jetbrains
+# Jetbrains 
+
+It is worth noting that JetBrains commands may vary differently on Mac, versus Windows/Linux. 
+These commands are for Windows/Linux and creating a separate command ruleset for JetBrains on Mac is probably necessary.
 
 | Command                               | Command                        | Command                          |
 | :------------------------------------ | :----------------------------- | :------------------------------- |
