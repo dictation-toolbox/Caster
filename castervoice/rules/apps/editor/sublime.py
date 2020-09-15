@@ -227,5 +227,5 @@ class SublimeRule(MappingRule):
     }
 
 
-# def get_rule():
-#     return SublimeRule, RuleDetails(name="sublime", executable="sublime_text", title="Sublime Text")
+def get_rule():
+    return SublimeRule, RuleDetails(name="sublime", executable="sublime_text", title="Sublime Text")
