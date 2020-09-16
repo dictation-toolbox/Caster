@@ -5,16 +5,6 @@ Explanation of `settings.toml`. Caster settings can be edited in the following w
 - Edited through a GUI. Say `launch caster settings`. Once done, say `complete` to save the file
 
 - The settings file can be summoned manually by saying `bring me caster settings file` to your default editor for `.toml` files
-
-  The following is an `example.toml` settings file with comments explaining the various settings. Some of the settings fields have been truncated for brevity as noted in the comments.
-
-## Settings
-
-Explanation of `settings.toml`. Caster settings can be edited in the following ways:
-
-- Edited through a GUI. Say `launch caster settings`. Once done, say `complete` to save the file
-
-- The settings file can be summoned manually by saying `bring me caster settings file` to your default editor for `.toml` files
   
   The following is an `example.toml` settings file with comments explaining the various settings. Some of the settings fields have been truncated for brevity as noted in the comments.
 
