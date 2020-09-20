@@ -185,9 +185,9 @@ class Navigation(MergeRule):
         "<pre_modifier> <button_dictionary_1>":
               R(Key("%(pre_modifier)s%(button_dictionary_1)s"),
               rdescript="press pre_modifiers plus buttons from button_dictionary_1, non-repeatable"),
-        "<post_modifier> <button_dictionary_1>":
-              R(Key("%(button_dictionary_1)s:%(post_modifier)s"),
-              rdescript="press buttons from button_dictionary_1 with post modifier, non-repeatable"),
+        "<post_modifier> <modifier_button_dictionary>":
+              R(Key("%(modifier_button_dictionary)s:%(post_modifier)s"),
+              rdescript="press buttons from modifier_button_dictionary with post modifier, non-repeatable"),
     }
     tell_commands_dict = {"dock": ";", "doc": ";", "sink": "", "com": ",", "deck": ":"}
     tell_commands_dict.update(_tpd)
@@ -224,6 +224,14 @@ class Navigation(MergeRule):
         "backslash": "backslash"
     }
     button_dictionary_10.update(longhand_punctuation_names)
+    modifier_button_dictionary = {
+        "[lease | left] alt": "alt",
+        "(ross | right) alt": "ralt",
+        "[lease | left] (control | fly)": "control",
+        "(ross | right) (control | fly)": "rcontrol",
+        "[lease | left] (shin | shift)": "shift",
+        "(ross | right) (shin | shift)": "rshift",
+    }
     button_dictionary_1 = {
         "(home | lease wally | latch)": "home",
         "(end | ross wally | ratch)": "end",
@@ -238,14 +246,8 @@ class Navigation(MergeRule):
         "seven": "7",
         "eight": "8",
         "nine": "9",
-        "[lease] alt": "alt",
-        "ross alt": "ralt",
-        "[lease] (control | fly)": "control",
-        "ross (control | fly)": "rcontrol",
-        "[lease] (shin | shift)": "shift",
-        "ross (shin | shift)": "rshift",
-        "windows": "win",
     }
+    button_dictionary_1.update(modifier_button_dictionary)
     combined_button_dictionary = {}
     for dictionary in [button_dictionary_1, button_dictionary_10, button_dictionary_500]:
         combined_button_dictionary.update(dictionary)
@@ -292,6 +294,7 @@ class Navigation(MergeRule):
         Choice("button_dictionary_1", button_dictionary_1),
         Choice("button_dictionary_10", button_dictionary_10),
         Choice("button_dictionary_500", button_dictionary_500),
+        Choice("modifier_button_dictionary", modifier_button_dictionary),
         Choice("combined_button_dictionary", combined_button_dictionary),
 
         Choice("capitalization", {
