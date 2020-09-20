@@ -16,7 +16,7 @@ from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
-new_modifier_choice_object = copy.deepcopy(Navigation.modifier_choice_object)
+new_pre_modifier_choice_object = copy.deepcopy(Navigation.pre_modifier_choice_object)
 
 def split_dictation(text):
     if text:
@@ -88,8 +88,8 @@ class VoiceDevCommands(MergeRule):
 
         # Dragonfly Snippets
         # this first command is probably the most useful one
-        "dev key [<modifier>] <combined_button_dictionary>": 
-            R(Text('Key("%(modifier)s%(combined_button_dictionary)s")'),
+        "dev key [<pre_modifier>] <combined_button_dictionary>": 
+            R(Text('Key("%(pre_modifier)s%(combined_button_dictionary)s")'),
             rdescript="DragonflyDev: Snippet for creating a full Key action"),
         "dev key":
             R(Text('Key("")') + Key("left:2"), rdescript="DragonflyDev: Snippet for Key Action"),
@@ -198,7 +198,7 @@ class VoiceDevCommands(MergeRule):
     }
 
     extras = [
-        new_modifier_choice_object,
+        new_pre_modifier_choice_object,
         Choice("combined_button_dictionary", Navigation.combined_button_dictionary),
         Dictation("text"),
         Dictation("dict"),

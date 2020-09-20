@@ -176,21 +176,18 @@ class Navigation(MergeRule):
             R(Key("cs-left:%(nnavi500)s")),
         "flitch [<nnavi500>]":
             R(Key("cs-right:%(nnavi500)s")),
-        "<modifier> <button_dictionary_500> [<nnavi500>]":
-            R(Key("%(modifier)s%(button_dictionary_500)s")*Repeat(extra='nnavi500'),
-              rdescript="press modifier keys plus buttons from button_dictionary_500"),
-        "<modifier> <button_dictionary_10> [<nnavi10>]":
-            R(Key("%(modifier)s%(button_dictionary_10)s")*Repeat(extra='nnavi10'),
-              rdescript="press modifier keys plus buttons from button_dictionary_10"),
-        "<modifier> <button_dictionary_1>":
-              R(Key("%(modifier)s%(button_dictionary_1)s"),
-              rdescript="press modifiers plus buttons from button_dictionary_1, non-repeatable"),
-
-        # "key stroke [<modifier>] <combined_button_dictionary>":
-        #     R(Text('Key("%(modifier)s%(combined_button_dictionary)s")')),
-
-        # "key stroke [<modifier>] <combined_button_dictionary>":
-        #     R(Text('Key("%(modifier)s%(combined_button_dictionary)s")')),
+        "<pre_modifier> <button_dictionary_500> [<nnavi500>]":
+            R(Key("%(pre_modifier)s%(button_dictionary_500)s")*Repeat(extra='nnavi500'),
+              rdescript="press pre_modifier keys plus buttons from button_dictionary_500"),
+        "<pre_modifier> <button_dictionary_10> [<nnavi10>]":
+            R(Key("%(pre_modifier)s%(button_dictionary_10)s")*Repeat(extra='nnavi10'),
+              rdescript="press pre_modifier keys plus buttons from button_dictionary_10"),
+        "<pre_modifier> <button_dictionary_1>":
+              R(Key("%(pre_modifier)s%(button_dictionary_1)s"),
+              rdescript="press pre_modifiers plus buttons from button_dictionary_1, non-repeatable"),
+        "<post_modifier> <button_dictionary_1>":
+              R(Key("%(button_dictionary_1)s:%(post_modifier)s"),
+              rdescript="press buttons from button_dictionary_1 with post modifier, non-repeatable"),
     }
     tell_commands_dict = {"dock": ";", "doc": ";", "sink": "", "com": ",", "deck": ":"}
     tell_commands_dict.update(_tpd)
@@ -240,13 +237,20 @@ class Navigation(MergeRule):
         "six": "6",
         "seven": "7",
         "eight": "8",
-        "nine": "9"
+        "nine": "9",
+        "[lease] alt": "alt",
+        "ross alt": "ralt",
+        "[lease] (control | fly)": "control",
+        "ross (control | fly)": "rcontrol",
+        "[lease] (shin | shift)": "shift",
+        "ross (shin | shift)": "rshift",
+        "windows": "win",
     }
     combined_button_dictionary = {}
     for dictionary in [button_dictionary_1, button_dictionary_10, button_dictionary_500]:
         combined_button_dictionary.update(dictionary)
 
-    modifier_choice_object = Choice("modifier", {
+    pre_modifier_choice_object = Choice("pre_modifier", {
             "(control | fly)": "c-", #TODO: make DRY
             "(shift | shin)": "s-",
             "alt": "a-",
@@ -265,6 +269,11 @@ class Navigation(MergeRule):
             "control windows alt shift": "cwas-",
             "hit": "",
         })
+
+    post_modifier_choice_object = Choice("post_modifier", {
+            "hold": "down",
+            "release": "up"
+        })
     extras = [
         IntegerRefST("nnavi10", 1, 11),
         IntegerRefST("nnavi3", 1, 4),
@@ -278,7 +287,8 @@ class Navigation(MergeRule):
             "lease": "left",
             "ross": "right",
         }),
-        modifier_choice_object,
+        pre_modifier_choice_object,
+        post_modifier_choice_object,
         Choice("button_dictionary_1", button_dictionary_1),
         Choice("button_dictionary_10", button_dictionary_10),
         Choice("button_dictionary_500", button_dictionary_500),
@@ -344,7 +354,7 @@ class Navigation(MergeRule):
         "extreme": None,
         "big": False,
         "splatdir": "backspace",
-        "modifier": "",
+        "pre_modifier": "",
     }
 
 
