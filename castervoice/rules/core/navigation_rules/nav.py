@@ -246,6 +246,7 @@ class Navigation(MergeRule):
         "seven": "7",
         "eight": "8",
         "nine": "9",
+        "windows": "win"
     }
     button_dictionary_1.update(modifier_button_dictionary)
     combined_button_dictionary = {}
