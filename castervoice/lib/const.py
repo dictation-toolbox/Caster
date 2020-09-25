@@ -20,7 +20,7 @@ CORE = [
     "HMCRule", "HMCConfirmRule", "HMCDirectoryRule",
     "HMCHistoryRule", "HMCLaunchRule", "HMCSettingsRule",
     # GUI Rules
-    "HistoryRule", "ChainAlias", "Alias",
+    "HistoryRule", "ChainAlias", "Alias", "CorrectionsWindowRule"
     # other common rules
     "BringRule", "Again"
     ]
