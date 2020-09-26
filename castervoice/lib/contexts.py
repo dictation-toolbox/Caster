@@ -26,6 +26,4 @@ DIALOGUE_CONTEXT = AppContext(title=[
         "open",
         "save",
         "select",
-        "Open Project",
-        "Choose Directory"
     ])
