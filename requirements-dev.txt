@@ -8,3 +8,4 @@ appdirs>=1.4.3
 scandir>=1.10.0
 pylint
 pyvda
+six
