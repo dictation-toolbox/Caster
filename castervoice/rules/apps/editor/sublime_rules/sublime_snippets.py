@@ -57,31 +57,31 @@ class Snippet(ActionBase):
 	    	- a raw string containing the snippet text
 	    	- a list of strings, containing variations of the same snippet
 	    	- a callable that will generate the snippet, optionally using the spoken data
+	    	As a fourth option you can specify that you want to obtain the snippet contents
+	    	(which can be in any of the above three forms) from an extra. As an example
+	    		"snippet <something>":R(Snippet("%(something)s"))
+	    	where
+	    		Choice("something",{"hello":"Hello $1,My name is $2","there":"$1= there($1)"})
 	    remap_data (Dict[str,str]): 
 	    	a dictionary containing entries of the form (old_name,new_name)
 	    	enabling you to rename extras before they are passed to the snippet generation
 	    	For instance, suppose you have a snippet
 	    		lambda world: "$1 = " + world + " $2 " + world
 	    	normally the world parameter should come from an extra named `world`.
-	    	you can use
+	    	However, suppose you want `world` to come from an extra named `other_name`
+	    	Then in a manner similar to `Function` you can use
 	    		remap_data ={"other_name":"world"}
-	    force_data (TYPE): Description
-	    snippet_parameters (TYPE): Description
+	    snippet_parameters (Union[Dict,Callable[...,str]]):
+	    	Parameters to pass along with a snippet. Can be either
+	    	- a hardcoded dictionary contain the parameters
+	    	- a callable that processes the extras spoken and returns the dictionary
+	    	In the latter case, the semantics are like `Function`.
 	"""
-	def __init__(self, contents,remap_data = {},snippet_parameters = {},force_data = {}):
-		"""Summary
-		
-		Args:
-		    contents (TYPE): Description
-		    remap_data (dict, optional): Description
-		    snippet_parameters (dict, optional): Description
-		    force_data (dict, optional): Description
-		"""
+	def __init__(self, contents,remap_data = {},snippet_parameters = {}):
 		super(Snippet, self).__init__()
 		self.contents = contents
 		self.remap_data = remap_data
 		self.snippet_parameters = snippet_parameters
-		self.force_data = force_data
 
 	def retrieve_contents_from_extras_if_needed(self,contents,data):
 		if isinstance(contents,str) and  "$" not in contents:
@@ -96,7 +96,6 @@ class Snippet(ActionBase):
 	def _execute(self,data):
 		contents = self.retrieve_contents_from_extras_if_needed(self.contents,data)
 		data = rename_data(data,self.remap_data)
-		data.update(self.force_data)
 		insert_snippet(contents,data,self.snippet_parameters,additional_log = {"remap_data":self.remap_data})
 
 ############################## SNIPPET VARIANTS ##############################
@@ -189,31 +188,67 @@ class DisplayMultipleSnippetVariants(ActionBase):
 ############################## SNIPPET TRANSFORMATION ##############################
 
 class SnippetTransform(ActionBase):
-	"""docstring for SnippetTransform"""
+	"""Apply a transformation to the previous inserted snippet
+	
+	Attributes:
+	    transformation (
+	    		Union[str,Transformation,List[Transformation]] where
+	    		Transformation = Union[Tuple,Callable[str,str]]
+	    	): 
+	    	the transformation to be applied to the last inserted snippet.One of
+	    	- callable, that accepts a single parameter the snippet text and 
+	    	  returns the final text
+	    	- a tuple that describes a regular expression and  contains the arguments
+	    	  you would pass to `re.sub` function ( excluding that snippet text of course)
+
+	    	You can also pass at least
+
+	    steps (int): Description
+	"""
 	def __init__(self, transformation, steps = 0):
 		super(SnippetTransform, self).__init__()
 		self.transformation = transformation
 		self.steps = steps
+		if  not isinstance(transformation,str):
+			self.verify_transformation(transformation)
 
-	def retrieve_transformation_from_extras_if_needed(self,transformation,data):
-		if isinstance(transformation,str) and  "%" in transformation:
-			name = re.search(r"^%\((\w+)\)s$",transformation).group(1)
-			if name in data:
-				return data[name]
-			else:
-				raise ValueError(r"transformation is not a snippet nor of the form %(name)s")
+	def retrieve_transformation_from_extras_if_needed(self,data,transformation):
+		if isinstance(transformation,str):
+			temporary = []
+			for m in re.finditer(r"%\((\w+)\)s",transformation):
+				name = m.group(1)
+				if name in data:
+					t = data[name]
+					if isinstance(t,list):
+						temporary.extend(t)
+					else:
+						temporary.append(t)
+				else:
+					raise ValueError(r"transformation is not a snippet nor of the form %(name)s")
+			if not temporary:
+				raise ValueError("Empty transformation extracted from extra no %(name)s found :",transformation)
+			return temporary
 		else:
 			return transformation
 
+	def verify_transformation(self, transformation):
+		if  not isinstance(transformation,(tuple,list)) and not callable(transformation):
+			raise TypeError("transformation must be a tuple or callable or a list thereof, instead received",transformation)
+		if isinstance(transformation,list):
+			if any(x for x in transformation if  not isinstance(x,tuple) and  not callable(x)):
+				raise TypeError("transformation must be a tuple or callable or a list thereof, instead received",transformation)
+
 
 	def _execute(self,data):
-		transformation = self.retrieve_transformation_from_extras_if_needed(self.transformation,data)
+		transformation = self.retrieve_transformation_from_extras_if_needed(data,self.transformation)
+		self.verify_transformation(transformation)
 		s = snippet_state["snippet_text"]
 		for i in range(0,self.steps):
 			s = snippet_state["stack"].pop()
+		# by now s holds snippet we want to transform
+		# and this stack no longer contains it!
 		snippet_new = transform_snippet(s,transformation)
-		# if self.steps>0:
-		snippet_state["stack"].append(s)		
+		snippet_state["stack"].append(s) # push s onto the stack
 		insert_snippet(snippet_new,additional_log = {k:v for k,v in snippet_state.items() if k!="snippet_text"})
 	
 
