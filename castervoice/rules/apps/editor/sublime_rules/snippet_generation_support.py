@@ -5,6 +5,25 @@ from castervoice.rules.apps.editor.sublime_rules.sublime_communication_support i
 
 
 def generate_snippet_text(snippet = "",data = {}):
+	"""Generate snippet text from the given snippet(generator) and spoken extras
+	
+	Args:
+	    snippet (Union[str,List[str],Callable[...,str]]): The snippet (generator) to generate text. Can be one of
+		    - a raw string containing the snippet text
+		    - a list of strings, containing variations of the same snippet
+		    - a callable that will generate the snippet, optionally using the spoken data
+
+	    data (dict, optional): The spoken extras that would be passed
+	    	- parameters to a callable or 
+	    	- From which the index `n` will be retrieved to pick from the list (1-indexed)
+	
+	Returns:
+	    str: the final text of the snippet
+	    dict: the key-values pairs of the data used by the callable to generate the snippet
+	
+	Raises:
+	    TypeError: Description
+	"""
 	if isinstance(snippet,str):
 		snippet_text = snippet
 		extra_data = {}
@@ -55,13 +74,26 @@ def snippet_log(clear_those_not_set = True,**kwargs):
 
 
 def insert_snippet(snippet,data={},snippet_parameters = {},additional_log = {}):
-	"""Summary
+	"""Given a snippet  and the corresponding spoken data( after renaming ) generates the snippet text
+	inserts it and updates the snippets state
 	
 	Args:
-	    snippet (Union[str,List[str],Callable[...,str]]): Description
-	    data (dict, optional): Description
-	    snippet_parameters (dict, optional): Description
-	    additional_log (dict, optional): Description
+	    snippet (Union[str,List[str],Callable[...,str]]): The snippet (generator) to generate text. Can be one of
+		    - a raw string containing the snippet text
+		    - a list of strings, containing variations of the same snippet
+		    - a callable that will generate the snippet, optionally using the spoken data
+	    data (dict, optional):  The spoken extras that would be passed
+	    	- parameters to a callable or 
+	    	- From which the index `n` will be retrieved to pick from the list (1-indexed)
+	    snippet_parameters (Union[dict,Callable[...,dict]], optional): parameters to be sent along with a snippet
+	    	In a manner similar to environmental variables( like `$SELECTION`). It can either be
+	    	- a dictionary containing the keys and values as raw strings
+	    	- a callable that accepts two parameters
+	    		- `snippet_text` and
+	    		- `data`
+	    	and returns the final dictionary
+	    additional_log (dict, optional): additional parameters to be logged in the snippets state ( for example 
+	    	which parameters had to be renamed)
 	
 	Raises:
 	    TypeError: Description
@@ -109,8 +141,9 @@ def transform_snippet(snippet_text,transformation):
 
 
 
+################################################################
 
-
+# works but is no longer needed, ignored for the time being !
 def filter_snippet_text(snippet_text):
 	'''
 	Filter out numerical placeholders that have their_default value in two locations
@@ -183,3 +216,4 @@ def filter_snippet_text(snippet_text):
 	bracket_mapping = bracket_match(text_after_escaping)
 	duplicates = find_duplicates(text_after_escaping,bracket_mapping)
 	return eliminate_duplicates(snippet_text,duplicates)
+
