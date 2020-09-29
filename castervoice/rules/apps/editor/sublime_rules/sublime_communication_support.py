@@ -46,7 +46,7 @@ def send_sublime(command,parameters = {},synchronous = True):
 	try : 
 		parameters = json.dumps(parameters) 
 	except :
-		raise TypeError("parameters must be json serializable, received ",parameters)
+		raise TypeError("parameters must be json serializable, instead received ",parameters)
 	RunCommand([subl,"-b", "--command",command + " " + parameters],synchronous = synchronous).execute()
 
 def send_snippet(contents,**kw):
@@ -64,7 +64,7 @@ def send_snippet(contents,**kw):
 	try : 
 		json.dumps(kw)
 	except :
-		raise TypeError("snippet parameters must be json serializable, received",kw)
+		raise TypeError("snippet parameters must be json serializable, instead received",kw)
 	kw["contents"] = contents
 	send_sublime("insert_snippet",kw)
 
