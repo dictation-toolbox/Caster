@@ -33,7 +33,7 @@ def placeholder(field,default  = ""):
 		else:
 			return "${" + str(field) + ":" + str(default)  + "}"
 
-def regular(varname,regex,format_string,option  = ""):
+def regular(varname,regex,format_string,options  = "",*,ignore_case=False,replace_all=False,ignore_new_lines=True):
 	"""Utility for generating snippet code for regular expression substitution.Produces
 
 	${var_name/regex/format_string/options} or
@@ -45,15 +45,23 @@ def regular(varname,regex,format_string,option  = ""):
 	    varname (str): The variable name for example 1,2
 	    regex (str): Perl style regular expression
 	    format_string (str): Perl style format string
-	    option (str, optional): optional can take one of the following values
+	    options (str, optional): optional can take a combination of the following values
 	    	- "i" : case insensitive
 	    	- "g" : replace all appearances
 	    	- "m" : do not ignore new lines
-
+		ignore_case(bool): set True for a case insensitive regular expression(equivalent to options="i")
+		replace_all(bool): set True for replacing all occurrences of regular expression(equivalent to options="g")
+		ignore_new_lines(bool): set False to not ignore new lines in regular expression(equivalent to options="m")
 	
 	Returns: str
 	"""
-	arg = (varname,regex,format_string) + ((option,) if option else ())
+	if ignore_case  and "i" not in options:
+		options = options + "i"
+	if replace_all and "g" not in options:
+		options = options + "g"
+	if  not ignore_new_lines and "m" not in options:
+		options = options + "m"
+	arg = (varname,regex,format_string) + ((options,) if options else ())
 	return "${" + "/".join(map(str, arg)) + "}"
 
 def load_snippets(snippets,extras = [], defaults = {}):
