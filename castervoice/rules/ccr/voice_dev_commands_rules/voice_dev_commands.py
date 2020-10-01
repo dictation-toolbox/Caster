@@ -104,7 +104,6 @@ class VoiceDevCommands(MergeRule):
         "dev choice":
             R(Text('Choice("", {') + Pause("10") + Key("enter, up, right:4"),
               rdescript="DragonflyDev: Snippet for the Choice Extra"),
-        "dev placeholder <placeholder_index>":R(Text("${%(placeholder_index)d:}") +  Key("left:2")),
         "dev mouse [<mouse_button>]":
             R(Function(type_mouse), rdescript="DragonflyDev: Snippet for Mouse Click Command"),
         "dev mouse current [position]":
@@ -112,6 +111,12 @@ class VoiceDevCommands(MergeRule):
               rdescript="DragonflyDev: Snippet for Making a Command for Clicking at the Current Cursor Position"),
         "dev execute": R(Key("end")+Text(".execute()"),
             rdescript="call 'execute' method at end of line"),
+
+        # 
+        "dev placeholder <placeholder_index>":R(Text("${%(placeholder_index)d:}") +  Key("left:2")),
+        "dev snippet":R(Text("Snippet()") + Key("left")),
+        "dev sublime command":R(Text("SublimeCommand()") + Key("left")),
+        "dev snippet transform":R(Text("SnippetTransform()") + Key("left")),
 
  # Caster Snippets
         "dev bring app":
@@ -219,6 +224,7 @@ class VoiceDevCommands(MergeRule):
         }),
         IntegerRefST("distance_1", 1, 500),
         IntegerRefST("distance_2", 1, 500),
+        IntegerRefST("placeholder_index",0,10),
     ]
     defaults = {"spec": "", "dict": "", "text": "", "mouse_button": ""}
 
