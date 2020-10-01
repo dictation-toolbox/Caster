@@ -11,6 +11,16 @@ import six
 
 
 def get_signature_arguments(function):
+	"""Utility to extract the name of the arguments of the function signature
+	
+	Args:
+	    function (Callable): the function in question
+	
+	Returns:
+	    Tuple[Set[str],bool]: tuple consistent of
+	    	- the names of the arguments
+	    	- boolean indicating the  function does NOT accept **kwargs
+	"""
 	# pylint: disable=no-member
 	if six.PY2:
 		# pylint: disable=deprecated-method
