@@ -85,6 +85,9 @@ def load_snippets(snippets,extras = [], defaults = {}):
 		elif isinstance(v,list):
 			mapping[k + " <n>"] = R(Snippet(v)); l.append(len(v))
 		elif callable(v):
+			names,_ = get_signature_arguments(v)
+			if "n" in names:
+				l.append(10)
 			mapping[k] = R(Snippet(v))
 		# elif isinstance(v,dict) and all(isinstance(x,str) for x in v):
 			
