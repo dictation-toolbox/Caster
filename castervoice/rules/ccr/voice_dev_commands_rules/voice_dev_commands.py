@@ -104,6 +104,7 @@ class VoiceDevCommands(MergeRule):
         "dev choice":
             R(Text('Choice("", {') + Pause("10") + Key("enter, up, right:4"),
               rdescript="DragonflyDev: Snippet for the Choice Extra"),
+        "dev placeholder <placeholder_index>":R(Text("${%(placeholder_index)d:}") +  Key("left:2")),
         "dev mouse [<mouse_button>]":
             R(Function(type_mouse), rdescript="DragonflyDev: Snippet for Mouse Click Command"),
         "dev mouse current [position]":
