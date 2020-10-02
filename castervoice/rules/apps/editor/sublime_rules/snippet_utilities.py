@@ -35,7 +35,7 @@ def placeholder(field,default  = ""):
 		else:
 			return "${" + str(field) + ":" + str(default)  + "}"
 
-def regular(varname,regex,format_string,options  = "",*,ignore_case=False,replace_all=False,ignore_new_lines=True):
+def regular(varname,regex,format_string,options  = "",ignore_case=False,replace_all=False,ignore_new_lines=True):
 	"""Utility for generating snippet code for regular expression substitution.Produces
 
 	${var_name/regex/format_string/options} or
