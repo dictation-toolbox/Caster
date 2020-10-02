@@ -106,6 +106,11 @@ def load_snippets(snippets,extras = [], defaults = {}):
 			raise TypeError("")
 
 	def decorator(c):
+		get_extra_names = lambda p: {x.name for x in p if hasattr(x,"name")}
+		if get_extra_names(extras + additional_extras) & get_extra_names(c.extras):
+			raise ValueError("Overlapping extra_names between load_snippets decorator and class",
+				get_extra_names(extras + additional_extras) & get_extra_names(c.extras))
+
 		c.mapping.update(mapping)
 		c.extras.extend(extras + additional_extras)
 		c.defaults.update(defaults)
