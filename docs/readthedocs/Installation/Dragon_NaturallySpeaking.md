@@ -16,26 +16,9 @@ After installing Dragon Naturally Speaking, you can configure the DNS settings b
 
    > 1. Download and install [Python v2.7.17 32-bit](https://www.python.org/downloads/release/python-2717/) listed as `Windows x86 MSI installer` not Python 3 or the Python 2.7 64-bit. 
    >     - These dependencies will change when Natlink utilizes Python 3.
-   > 2. Make sure to select `Add python to path`. 
+   > 2. Make sure to select `Add python to path` and `pip`. 
    >     - This can be done manually by searching for "edit environment variables for your account" and adding your Python folder to the list of Path values
 
-### NatLink
-
-   - Download and install [Natlink](https://sourceforge.net/projects/natlink/files/natlink/natlink4.2/). Use `Natlink-4.2` or newer.
-      1. Verify (DPI / DNS) is not running.
-
-      2. Open the start menu and search for `Configure NatLink` and click `Configure NatLink via GUI`.
-         ![Configure start](https://mathfly.org/images/configure_start.png)
-         
-         
-         
-3. Register Natlink and Restart your computer.
-         ![Natlink-Setup1.jpg](https://i.postimg.cc/3wdKsJFS/Natlink-Setup1.jpg)
-      
-         
-      
-      4. Relaunch `Configure NatLink via GUI`. Then disable Natlink. Done with Natlink setup.
-         ![Natlink-Setup2.jpg](https://i.postimg.cc/j20TGHMv/Natlink-Setup2.jpg)
 ### Caster
 
    > 1. Download Caster from the [master branch](https://github.com/dictation-toolbox/Caster/archive/master.zip).
@@ -45,12 +28,24 @@ After installing Dragon Naturally Speaking, you can configure the DNS settings b
    > 5. **Optional Step* for Caster's`Legion` MouseGrid - Legion Feature available on Windows 8 and above.
    > 6. The Legion MouseGrid requires [Microsoft Visual C++ Redistributable Packages for Visual Studio 2015, 2017 and 2019 (x86).](https://support.microsoft.com/en-nz/help/2977003/the-latest-supported-visual-c-downloads) Note: Should not be needed if Windows 10 is up-to-date.
 
-### **Setup and launch DNS for Classic Install.**
+### NatLink
+
+Download and install [Natlink](https://sourceforge.net/projects/natlink/files/natlink/natlink4.2/). Use `Natlink-4.2` or newer.
+
+1. Verify (DPI / DNS) is not running.
+2. Open the start menu and search for `Configure NatLink` and click `Configure NatLink via GUI`.
+   ![Configure start](https://mathfly.org/images/configure_start.png)
+3. Register Natlink and Restart your computer.    ![Natlink-Setup1.jpg](https://i.postimg.cc/3wdKsJFS/Natlink-Setup1.jpg)
+4. Relaunch `Configure NatLink via GUI`. Then disable Natlink. Done with Natlink setup.
+   ![Natlink-Setup2.jpg](https://i.postimg.cc/j20TGHMv/Natlink-Setup2.jpg)
+
+### **Launch Caster with DNS/DPI for Classic Install.**
 
    > 1. Start or restart Dragon. `Click Run_Caster_DNS.bat` Status Window appear and load Caster.  Once loaded Caster commands should be available to dictate.
    > 2. To test this, open Window's Notepad and try saying `arch brov char delta` producing `abcd` text.
 
 ### Update Caster
+
    > 1. Backup `%USERPROFILE%\Documents\Caster`
    > 2. Delete `%USERPROFILE%\Documents\Caster`
    > 3. Repeat Steps `1. - 4.` within the Caster install section
@@ -61,10 +56,10 @@ After installing Dragon Naturally Speaking, you can configure the DNS settings b
 
 An alternative to the instructions above for configuring Natlink. Automatically launches Caster when DNS starts. The disadvantage of this method is when Caser restarts so does DNS. Open the start menu and search for `natlink` and click the file called `Configure NatLink via GUI`.
 
-   > ![Configure start](https://mathfly.org/images/configure_start.png)
-   >
+![Configure start](https://mathfly.org/images/configure_start.png)
+
    > 1. Ensure that the details of your DNS setup are correct in the “info” tab.
-   > 2. In the "configure" tab Register Natlink and Restart your computer.
+   >2. In the "configure" tab Register Natlink and Restart your computer.
    >     ![Caster-Natlink.jpg](https://i.postimg.cc/d1jN4xcw/Caster-Natlink.jpg)
    > 3. Relaunch the GUI. In the “configure” tab - under “NatLink” and “UserDirectory” - click enable. When you are prompted for a folder, give it the folder 
    >    (`C:\Users\<YourUsername>\Documents\Caster`).
