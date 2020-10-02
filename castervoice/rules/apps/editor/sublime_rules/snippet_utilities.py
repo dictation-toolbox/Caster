@@ -1,3 +1,5 @@
+import re
+
 from dragonfly import Choice
 
 from castervoice.rules.apps.editor.sublime_rules.Function_like_utilities import  get_signature_arguments
@@ -78,8 +80,10 @@ def load_snippets(snippets,extras = [], defaults = {}):
 	Raises:
 	    TypeError: Description
 	"""
-	mapping,l = {},[]
+	mapping,l,additional_extras = {},[],[]
 	for k,v in snippets.items():
+		if  not isinstance(k,str):
+			raise  TypeError("snippet keys must be strings, instead received",k)
 		if isinstance(v,str):
 			mapping[k] = R(Snippet(v))
 		elif isinstance(v,list):
@@ -89,13 +93,21 @@ def load_snippets(snippets,extras = [], defaults = {}):
 			if "n" in names:
 				l.append(10)
 			mapping[k] = R(Snippet(v))
-		# elif isinstance(v,dict) and all(isinstance(x,str) for x in v):
-			
+		elif isinstance(v,dict):
+			if any( not isinstance(x,str) or not isinstance(y,str) for x,y in v.items()):
+				raise  TypeError("the dictionary should be consisting only of strings, instead received",v)
+			extra_names = {x.group(1) for x in re.finditer(r"<(.+)>",k)}
+			assert len(extra_names) == 1,"when the value is a dictionary, must only contain one extra, instead received " + str(len(extra_names))
+			name = list(extra_names)[0]
+			additional_extras.append(Choice(name,v))
+			mapping[k] = R(Snippet(lambda _snippet_internal:_snippet_internal,remap_data = {name:"_snippet_internal"}))
+			# mapping[k] = R(Snippet('%({0})s'.format(name)))
 		else:
 			raise TypeError("")
+
 	def decorator(c):
 		c.mapping.update(mapping)
-		c.extras.extend(extras)
+		c.extras.extend(extras + additional_extras)
 		c.defaults.update(defaults)
 		if l:
 			e = next((x for x in c.extras if isinstance(x,IntegerRefST)),None)
