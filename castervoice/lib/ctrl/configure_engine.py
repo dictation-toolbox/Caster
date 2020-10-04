@@ -1,7 +1,7 @@
 # TODO: Create and utilize base class. These classes should be initialized only once.
 # TODO: Add a function for end-user user to overload in EngineConfigEarly and EngineConfigLate
 
-class EngineConfigEarly():
+class EngineConfigEarly:
     """
     Initializes engine specific customizations before Nexus initializes.
     Grammars are not loaded
@@ -23,43 +23,40 @@ class EngineConfigEarly():
             SymbolSpecs.set_cancel_word("escape")
 
 
-class EngineConfigLate():
+class EngineConfigLate:
     """
     Initializes engine specific customizations after Nexus has initialized.
     Grammars are loaded into engine.
     """
     from castervoice.lib import settings
-    from castervoice.lib import printer
     from dragonfly import get_current_engine
     engine = get_current_engine().name
 
     def __init__(self):
-        from castervoice.lib import control # Access to Nexus instance
-        self.instannce = control.nexus()._engine_modes_manager
+        from castervoice.lib.ctrl.mgr.engine_manager import EngineModesManager
+        self.EngineModesManager = EngineModesManager.initialize()
         if self.engine != "text":
             self.set_default_mic_mode()
             self.set_engine_default_mode()
-
 
     def set_default_mic_mode(self):
         """
         Sets the microphone state on Caster startup.
         """
         # Only DNS supports mic_state 'off'. Substituts `sleep` mode on other engines"
-        if self.settings.SETTINGS["engine"]["default_mic"]: # Default is `False`
-            default_mic_state = self.settings.SETTINGS["engine"]["mic_mode"] # Default is `on`
-            if self.engine != "natlink" and default_mic_state == "off": 
-                default_mic_state == "sleep" 
-            self.instannce.set_mic_mode(default_mic_state)
-
+        if self.settings.SETTINGS["engine"]["default_mic"]:  # Default is `False`
+            default_mic_state = self.settings.SETTINGS["engine"]["mic_mode"]  # Default is `on`
+            if self.engine != "natlink" and default_mic_state == "off":
+                default_mic_state = "sleep"
+            self.EngineModesManager.set_mic_mode(default_mic_state)
 
     def set_engine_default_mode(self):
         """
         Sets the engine mode on Caster startup.
         """
         # Only DNS supports 'normal'. Substituts `command` mode on other engines"
-        if self.settings.SETTINGS["engine"]["default_engine_mode"]: # Default is `False`
+        if self.settings.SETTINGS["engine"]["default_engine_mode"]:  # Default is `False`
             default_mode = self.settings.SETTINGS["engine"]["engine_mode"]  # Default is `normal`
             if self.engine != "natlink" and default_mode == "normal":
-                default_mode == "command"
-            self.instannce.set_engine_mode(mode=default_mode, state=True)
+                default_mode = "command"
+            self.EngineModesManager.set_engine_mode(mode=default_mode, state=True)
