@@ -13,7 +13,7 @@ CORE = [
     # Original Caster CCR "core" set:
     "Alphabet", "Navigation", "NavigationNon", "Numbers", "Punctuation",
     # Rules which were split out of _caster.py:
-    "CasterRule", "HardwareRule", "MouseAlternativesRule", "WindowManagementRule",
+    "CasterRule", "CasterMicRule", "HardwareRule", "MouseAlternativesRule", "WindowManagementRule",
     # Alternate mouse grid controls:
     "DouglasGridRule", "RainbowGridRule", "SudokuGridRule",
     # HMC GUI control rules:
