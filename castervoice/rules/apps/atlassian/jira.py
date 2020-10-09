@@ -9,19 +9,19 @@ class JiraRule(MappingRule):
 
     mapping = {
         # Global Shortcuts
-        "show dashboards":
+        "go to dashboards":
             R(Key("g") + Key("d")),
-        "show projects":
+        "go to projects":
             R(Key("g") + Key("p")),
-        "show boards":
+        "go to boards":
             R(Key("g") + Key("a")),
-        "show issues":
+        "go to issues":
             R(Key("g") + Key("i")),
         # This requires a plugin
-        "show tempo [teams]":
+        "go to tempo [teams]":
             R(Key("g") + Key("t")),
         # This requires a plugin
-        "show portfolio":
+        "go to portfolio":
             R(Key("p") + Key("v")),
         "quick search":
             R(Key("slash")),
@@ -59,11 +59,11 @@ class JiraRule(MappingRule):
             R(Key("s")),
 
         # Board Shortcuts
-        "show backlog":
+        "go to backlog":
             R(Key("1")),
-        "show sprint":
+        "go to sprint":
             R(Key("2")),
-        "show reports":
+        "go to reports":
             R(Key("3")),
         "toggle details":
             R(Key("t")),
