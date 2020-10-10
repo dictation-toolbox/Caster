@@ -13,7 +13,7 @@ import sys
 import six
 import time
 import traceback
-from subprocess import Popen
+import subprocess
 import tomlkit
 
 from dragonfly import Key, Pause, Window, get_current_engine
@@ -199,15 +199,15 @@ def reboot():
     engine = get_current_engine()
     if engine.name == 'kaldi':
         engine.disconnect()
-        Popen([sys.executable, '-m', 'dragonfly', 'load', '_*.py', '--engine', 'kaldi',  '--no-recobs-messages'])
+        subprocess.Popen([sys.executable, '-m', 'dragonfly', 'load', '_*.py', '--engine', 'kaldi',  '--no-recobs-messages'])
     if engine.name == 'sapi5inproc':
         engine.disconnect()
-        Popen([sys.executable, '-m', 'dragonfly', 'load', '--engine', 'sapi5inproc', '_*.py', '--no-recobs-messages'])
+        subprocess.Popen([sys.executable, '-m', 'dragonfly', 'load', '--engine', 'sapi5inproc', '_*.py', '--no-recobs-messages'])
     if engine.name in ["sapi5shared", "sapi5"]:
         popen_parameters.append(settings.SETTINGS["paths"]["REBOOT_PATH_WSR"])
         popen_parameters.append(settings.SETTINGS["paths"]["WSR_PATH"])
         printer.out(popen_parameters)
-        Popen(popen_parameters)
+        subprocess.Popen(popen_parameters)
     if engine.name == 'natlink':
         import natlinkstatus # pylint: disable=import-error
         status = natlinkstatus.NatlinkStatus()
@@ -218,11 +218,11 @@ def reboot():
             username = status.getUserName()
             popen_parameters.append(username)
             printer.out(popen_parameters)
-            Popen(popen_parameters)
+            subprocess.Popen(popen_parameters)
         else:
            # Natlink out-of-process
             engine.disconnect()
-            Popen([sys.executable, '-m', 'dragonfly', 'load', '--engine', 'natlink', '_*.py', '--no-recobs-messages'])
+            subprocess.Popen([sys.executable, '-m', 'dragonfly', 'load', '--engine', 'natlink', '_*.py', '--no-recobs-messages'])
 
 
 # TODO: Implement default_browser_command Mac/Linux
