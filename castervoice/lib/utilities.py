@@ -225,7 +225,6 @@ def reboot():
             subprocess.Popen([sys.executable, '-m', 'dragonfly', 'load', '--engine', 'natlink', '_*.py', '--no-recobs-messages'])
 
 
-# TODO: Implement default_browser_command Mac/Linux
 def default_browser_command():
     if sys.platform.startswith('win'):
         if six.PY2:
@@ -257,8 +256,8 @@ def default_browser_command():
             CloseKey(reg)
         return path
     else:
-        printer.out("default_browser_command: Not implemented for OS")
-
+        default_browser = webbrowser.get()
+        return default_browser.name + " %1"
 
 def clear_log():
     # Function to clear status window.
