@@ -10,7 +10,8 @@ class Communicator:
     def __init__(self):
         self.coms = {}
         self.com_registry = {
-            "hmc": 1338,
+            "hmc": 1337,
+            "hud": 1338,
             "grids": 1339,
             "sikuli": 8000
         }

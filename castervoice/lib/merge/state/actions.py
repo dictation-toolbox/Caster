@@ -1,3 +1,4 @@
+from functools import reduce
 from dragonfly import ActionBase
 
 from castervoice.lib import control
@@ -34,6 +35,9 @@ class RegisteredAction(ActionBase):
     def nexus(self):
         return self._nexus or control.nexus()
 
+    def __str__(self):
+        return '{}'.format(self.base)
+
 
 class ContextSeeker(RegisteredAction):
     def __init__(self,
@@ -52,6 +56,10 @@ class ContextSeeker(RegisteredAction):
 
     def _execute(self, data=None):
         self.nexus().state.add(StackItemSeeker(self, data))
+
+    def __str__(self):
+        tail = reduce((lambda x, y: "{}_{}".format(x, y)), self.forward) if isinstance(self.forward, list) else self.forward
+        return '{}!{}'.format(self.back, tail) if self.back else '!{}'.format(tail)
 
 
 class AsynchronousAction(ContextSeeker):
@@ -90,6 +98,10 @@ class AsynchronousAction(ContextSeeker):
             if "repetitions" in data: self.time_in_seconds = int(data["repetitions"])
 
         self.nexus().state.add(StackItemAsynchronous(self, data))
+
+    def __str__(self):
+        action = reduce((lambda x, y: "{}${}".format(x, y)), self.forward) if isinstance(self.forward, list) else self.forward
+        return '#{}&{}*{}'.format(self.time_in_seconds, action, self.repetitions)
 
     @staticmethod
     def hmc_complete(data_function):

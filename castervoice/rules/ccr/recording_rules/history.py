@@ -1,4 +1,3 @@
-from dragonfly import RecognitionHistory
 from dragonfly.actions.action_base import Repeat
 from dragonfly.actions.action_function import Function
 from dragonfly.actions.action_playback import Playback

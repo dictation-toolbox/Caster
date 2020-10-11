@@ -35,6 +35,7 @@ HOMUNCULUS_VERSION = "HMC v " + SOFTWARE_VERSION_NUMBER
 HMC_TITLE_RECORDING = " :: Recording Manager"
 HMC_TITLE_DIRECTORY = " :: Directory Selector"
 HMC_TITLE_CONFIRM = " :: Confirm"
+HUD_TITLE = "Caster HUD"
 LEGION_TITLE = "legiongrid"
 RAINBOW_TITLE = "rainbowgrid"
 DOUGLAS_TITLE = "douglasgrid"
@@ -297,6 +298,8 @@ def _get_defaults():
                 _validate_engine_path(),
             "HOMUNCULUS_PATH":
                 str(Path(_BASE_PATH).joinpath("asynch/hmc/h_launch.py")),
+            "HUD_PATH":
+                str(Path(_BASE_PATH).joinpath("asynch/hud.py")),
             "LEGION_PATH":
                 str(Path(_BASE_PATH).joinpath("asynch/mouse/legion.py")),
             "MEDIA_PATH":
@@ -369,7 +372,7 @@ def _get_defaults():
 
         # Default enabled hooks: Use hook class name
         "hooks": {
-            "default_hooks": ['PrinterHook'],
+            "default_hooks": ['PrinterHook', 'RulesLoadedHook'],
         },
 
         # miscellaneous section
