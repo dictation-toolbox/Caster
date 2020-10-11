@@ -119,12 +119,13 @@ class EngineModesManager(object):
         Synchronizes Caster exclusivity modes an with DNS/DPI GUI built-in modes state.
         """
         # TODO: Implement set_engine_mode logic with modes not just mic_state.
-        mic_state = cls.get_mic_mode()
-        if mic_state is None:
-            cls.mic_state = natlink.getMicState()
+        caster_mic = cls.get_mic_mode()
+        natlink_mic = natlink.getMicState()
+        if caster_mic is None:
+            cls.mic_state = natlink_mic
         else:
-            if natlink.getMicState() != mic_state:
-                cls.set_mic_mode(natlink.getMicState())
+            if natlink_mic != caster_mic:
+                cls.set_mic_mode(natlink_mic)
 
 
 class ExclusiveManager:
