@@ -1,4 +1,4 @@
-from dragonfly import get_engine, get_current_engine, FuncContext, Function, MappingRule, Grammar, Choice, Dictation
+from dragonfly import get_engine, get_current_engine, register_recognition_callback, FuncContext, Function, MappingRule, Grammar, Choice, Dictation
 from castervoice.lib import printer
 
 engine = get_current_engine().name
@@ -16,7 +16,8 @@ class EngineModesManager(object):
     engine_state = None
     previous_engine_state = None
     mic_state = None
-    timer_callback = None
+    sync_timer = None
+    sleep_timer = None
 
     @classmethod
     def initialize(cls):
@@ -29,9 +30,15 @@ class EngineModesManager(object):
         cls.engine_state = cls.previous_engine_state = next(
             iter(cls.engine_modes.keys()))
         # Timer to synchronize natlink.getMicState/SetRecognitionMode with mode_state in case of changed by end-user via DNS GUI.
-        if engine == 'natlink' and cls.timer_callback is None:
-            cls.timer_callback = get_current_engine().create_timer(callback=cls._sync_mode, interval=1)
-            cls.timer_callback.start()
+        if engine == 'natlink' and cls.sync_timer is None:
+            cls.sync_timer = get_current_engine().create_timer(callback=cls._sync_mode, interval=1)
+            cls.sync_timer.start()
+        # A timer to microphone state  to sleep after X amount of seconds after last successful recognition of utterance
+        if cls.sleep_timer is None:
+            cls.sleep_timer = get_current_engine().create_timer(callback=cls._sleep_timer, interval=120)
+            cls.sleep_timer.start()
+            register_recognition_callback(function=cls._reset_sleep_timer) # Resets sleep_timer 
+
 
     @classmethod
     def set_mic_mode(cls, mode):
@@ -126,7 +133,23 @@ class EngineModesManager(object):
         else:
             if natlink_mic != caster_mic:
                 cls.set_mic_mode(natlink_mic)
+    
+    @classmethod
+    def _sleep_timer(cls):
+        """
+        Puts microphone to sleep if "on" via sleep_timer callback every x seconds
+        """
+        mic_state = cls.get_mic_mode()
+        if cls.get_mic_mode() == "on":
+            cls.set_mic_mode("sleeping")
 
+    @classmethod
+    def _reset_sleep_timer(cls, words=None):
+        """
+        A register_recognition_callback to reset the timer for sleep_timer based on last successful recognition
+        """
+        cls.sleep_timer.stop()
+        cls.sleep_timer.start()
 
 class ExclusiveManager:
     """
@@ -135,7 +158,6 @@ class ExclusiveManager:
     :param modetype: 'mic_mode' or 'engine_mode' str
     """
     # TODO: Implement set_engine_mode exclusivity with mode rules.
-    # TODO: Implement timer for sleep mode.
     # TODO: Implement hotkey for microphone on-off
     sleep_grammar = None
     sleeping = False
