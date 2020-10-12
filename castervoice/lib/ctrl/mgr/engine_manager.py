@@ -1,5 +1,5 @@
 from dragonfly import get_engine, get_current_engine, register_recognition_callback, FuncContext, Function, MappingRule, Grammar, Choice, Dictation
-from castervoice.lib import printer
+from castervoice.lib import printer, settings
 
 engine = get_current_engine().name
 if engine == 'natlink':
@@ -33,11 +33,11 @@ class EngineModesManager(object):
         if engine == 'natlink' and cls.sync_timer is None:
             cls.sync_timer = get_current_engine().create_timer(callback=cls._sync_mode, interval=1)
             cls.sync_timer.start()
-        # A timer to microphone state  to sleep after X amount of seconds after last successful recognition of utterance
+        # A timer to change microphone state to "sleep" after X amount of seconds after last successful recognition
         if cls.sleep_timer is None:
-            cls.sleep_timer = get_current_engine().create_timer(callback=cls._sleep_timer, interval=120)
+            cls.sleep_timer = get_current_engine().create_timer(callback=cls._sleep_timer, interval=int(settings.SETTINGS["engine"]["mic_sleep_timer"]))
             cls.sleep_timer.start()
-            register_recognition_callback(function=cls._reset_sleep_timer) # Resets sleep_timer 
+            register_recognition_callback(function=cls._reset_sleep_timer)
 
 
     @classmethod
