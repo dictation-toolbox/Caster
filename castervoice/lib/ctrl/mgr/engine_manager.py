@@ -1,5 +1,5 @@
-from dragonfly import get_engine, get_current_engine, register_recognition_callback, FuncContext, Function, MappingRule, Grammar, Choice, Dictation
-from castervoice.lib import printer, settings
+from dragonfly import get_engine, get_current_engine, FuncContext, Function, MappingRule, Grammar, Choice, Dictation
+from castervoice.lib import printer
 
 engine = get_current_engine().name
 if engine == 'natlink':
@@ -23,7 +23,6 @@ class EngineModesManager(object):
         if engine != 'natlink':
             cls.engine_modes.pop("normal", 0)
             cls.mic_modes.pop("off", 7)
-        #if self.engine == 'natlink':
         # Sets 1st index key ("normal" or "command") depending on engine type as default mode
         cls.engine_state = cls.previous_engine_state = next(
             iter(cls.engine_modes.keys()))
