@@ -8,8 +8,6 @@ Explanation of `settings.toml`. Caster settings can be edited in the following w
   
   The following is an `example.toml` settings file with comments explaining the various settings. Some of the settings fields have been truncated for brevity as noted in the comments.
 
-
-
 ```toml
 [Tree_Node_Path] # Paths for Node Tree Rules
 SM_CSS_TREE_PATH = "C:\\Users\\Main\\AppData\\Local\\caster\\data\\sm_css_tree.toml"
@@ -106,9 +104,4 @@ version = "python"
 [sikuli] 
 enabled = false # Toggle sikuli third-party integration 
 version = "" # Sikuli Version
-```
-
-
-```
-
 ```
