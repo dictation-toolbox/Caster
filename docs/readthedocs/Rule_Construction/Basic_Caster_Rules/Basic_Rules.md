@@ -164,7 +164,8 @@ Actions can be combined with the `+` operator. (They can also be repeated a dyna
 from dragonfly import *
 
 def my_fn(my_key):
-  &#39;&#39;&#39;some custom logic here&#39;&#39;&#39;
+  '''some custom logic here'''
+	print("%(my_key)s has been pressed")
 
 class MyRule(MappingRule):
   mapping = {
@@ -199,7 +200,8 @@ class MyRule(MergeRule):
     pronunciation = "my rule"
     mapping = {
     "my pet":         R(Text(" my dog ")),
-    "your pet":       R(Text(" my cat")),
+    "your pet":       R(Text(" my cat ")),
+    "his pet":       R(Text(" his fish")),    
   }
 
 def get_rule():
@@ -207,9 +209,7 @@ def get_rule():
     return MyRule, details
 ```
 
-For the moment were going to deviate from talking about  `Actions`  that exist within side `mapping`. We going to briefly talk about a class called `MergeRule` is different than `MappingRule`
-
-MergeRules allow you to dictate more than one Command per utterance. Say `my pet your pet my pet`  In one utterance. The folloowing will text be produceed `my dog my cat my dog`
+For the moment were going to deviate from talking about  `Actions`  that exist within side `mapping`. We going to briefly talk about a class called `MergeRule` is different than `MappingRule`. MergeRules allow you to dictate more than one Command per utterance. Say `my pet your pet his fish`  In one utterance. The following will text be produced `my dog my cat his fish`.
 
 Note :
 
@@ -217,8 +217,6 @@ Note :
 
 - `R()` that surrounds Action allows for Catster print out the command history to the status window. Can be used in both `MergeRule` and `MappingRule`.
 
-
-
 ### Final step
 
-The final step is loading rules controls changes when the rules are active. This is done by `get_rule` which is explained is `Loading Rules`  of the doccumentation. Once you have masttered basic rules continue to `Advanced Rules`.
+The final step is loading rules controls changes when the rules are active. This is done by `get_rule` which is explained is `Loading Rules`  of the documentation. Once you have mastered basic rules continue to `Advanced Rules`.

@@ -16,9 +16,7 @@ Rules should be placed in [Caster User Directory](https://caster.readthedocs.io/
    
    **Note** Saving the file will cause the rule to reload with your changes allowing you to experiment. If there is an error, the status window will show an error message. Correct what's wrong and save the file. Repeat as needed.
 
-`Example Rule Code`
-
-Some of these commands are Windows OS specific like file paths which could be changed if you're using Linux/Mac OS
+`Example Rule Code` - Some of these commands are Windows OS specific like file paths which could be changed if you're using Linux/Mac OS
 
 ```python
 # These lines that start with the # are called comments. They don't affect the way the code runs.
