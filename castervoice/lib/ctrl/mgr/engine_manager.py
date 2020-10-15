@@ -16,7 +16,6 @@ class EngineModesManager(object):
     engine_state = None
     previous_engine_state = None
     mic_state = None
-    timer_callback = None
 
     @classmethod
     def initialize(cls):
@@ -24,14 +23,9 @@ class EngineModesManager(object):
         if engine != 'natlink':
             cls.engine_modes.pop("normal", 0)
             cls.mic_modes.pop("off", 7)
-        #if self.engine == 'natlink':
         # Sets 1st index key ("normal" or "command") depending on engine type as default mode
         cls.engine_state = cls.previous_engine_state = next(
             iter(cls.engine_modes.keys()))
-        # Timer to synchronize natlink.getMicState/SetRecognitionMode with mode_state in case of changed by end-user via DNS GUI.
-        if engine == 'natlink' and cls.timer_callback is None:
-            cls.timer_callback = get_current_engine().create_timer(callback=cls._sync_mode, interval=1)
-            cls.timer_callback.start()
 
     @classmethod
     def set_mic_mode(cls, mode):
@@ -127,7 +121,6 @@ class EngineModesManager(object):
             if natlink_mic != caster_mic:
                 cls.set_mic_mode(natlink_mic)
 
-
 class ExclusiveManager:
     """
     Loads and switches exclusivity for caster modes
@@ -135,7 +128,6 @@ class ExclusiveManager:
     :param modetype: 'mic_mode' or 'engine_mode' str
     """
     # TODO: Implement set_engine_mode exclusivity with mode rules.
-    # TODO: Implement timer for sleep mode.
     # TODO: Implement hotkey for microphone on-off
     sleep_grammar = None
     sleeping = False
