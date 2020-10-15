@@ -36,7 +36,7 @@ mic_sleep_timer = 120 # A timer puts microphone to after X seconds after last su
 # Each language can hold two formats. You can have differen formats for classes and variables for example.
 
 [formats."C plus plus"] # Language
-# The first nuumber is capitalization and the second is spacing.
+# The first number is capitalization and the second is spacing.
 secondary_format = [2, 1] 
 text_format = [3, 1]
 
@@ -79,7 +79,7 @@ status_window_foreground_on_error = false # If Caster logs an error, the status 
 use_aenea = false # Enables aenea third-party integration
 
 [online]
-last_update_date = "2020-01-18" # Last time Caster looked for an update
+last_update_date = "2020-01-18" # Last time Caster looked for an Dragonfly update 
 online_mode = true #  Disables all Caster features that utilize an internet connection 
 update_interval = 7 #  Interval days between checking for updates
 

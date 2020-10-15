@@ -4,7 +4,7 @@ Caster currently supports Windows Speech Recognition (WSR) on Microsoft Windows 
 
 ### 1. Python
 
-- **First** Download and install [Python v2.7.17 64-bit](https://www.python.org/downloads/release/python-2717/) listed as `Windows x86-64 MSI installer` not Python 3.
+- **First** Download and install [Python v2.7.18 64-bit](https://www.python.org/downloads/release/python-2718/) listed as `Windows x86-64 MSI installer` not Python 3.
 
 - Make sure to select `Add python to path`. This can be done manually by searching for "edit environment variables for your account" and adding your Python folder to the list of Path values.
 
@@ -35,12 +35,10 @@ Caster currently supports Windows Speech Recognition (WSR) on Microsoft Windows 
 
    **Troubleshooting Windows Speech Recognition**
 
--  Receive the `-2147352567` COM error when Caster starts.
+- Receive the `-2147352567` COM error when Caster starts.
   
   ```
   com_error: (-2147352567, 'Exception occurred.', (0, None, None, None, 0, -2004287480), None)`
   ```
   
   - This is most likely related to the microphone being utilized by another program. See [issue #821](https://github.com/dictation-toolbox/Caster/issues/821) and [#68](https://github.com/dictation-toolbox/Caster/issues/68).  This can be mitigated by closing the program that's utilizing the microphone.
-
-

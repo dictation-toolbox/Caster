@@ -46,8 +46,10 @@
 
 # Feature List 
 
-- Configurable Settings in `C:\Users\%USERNAME%\AppData\Local\caster`
+- Configurable [Settings](https://caster.readthedocs.io/en/latest/readthedocs/User_Dir/Caster_User_Dir/)
+
 - Customize Commands aka `Specs` via [Simplified Transformers](https://caster.readthedocs.io/en/latest/readthedocs/Customize_Caster/Customizing_Starter_Rules/)
+
 - Compatible Speech Recognition Engines
 
   - [Dragon NaturallySpeaking](https://www.nuance.com/dragon.html) v13 and higher 
@@ -64,10 +66,13 @@
   - Git Client:  Github Desktop 
   - Chat: Microsoft Teams, Gitter
   - Applications: Foxit Reader, fman, Total Commander, Outlook, Excel, Unity3D
+  
 - Supported [Programming Languages](https://caster.readthedocs.io/en/latest/readthedocs/Caster_Commands/CCR_languages_Quick_Reference/) - Enhanced by Caster's [Continuous Command Recognition](https://caster.readthedocs.io/en/latest/readthedocs/Rule_Construction/Caster_Rules/CCR/) - [Demo](https://www.youtube.com/watch?v=Obdegwr_LFc&index=5&list=PLV6JPhkq1x8LHu02YefhUU9rXiB2PK8tc)
 
   - Python, Java, Bash, C++, C#, Rust, Go, HTML, CSS, JavaScript, SQL, Dart, Latex , Matlab, R, Prolog, VHDL, and Haxe
+  
 - [Editing and Navigation](https://github.com/dictation-toolbox/Caster/blob/master/CasterQuickReference.pdf)
+
 - Five additional [mouse navigation modes](https://caster.readthedocs.io/en/latest/readthedocs/Caster_Commands/Mouse/): curse, sudoku, douglas, legion, and rainbow - [Demo](https://www.youtube.com/watch?v=UISjQBMmQ-I&feature=youtu.be)
   - [Text navigation commands](https://caster.readthedocs.io/en/latest/readthedocs/Caster_Commands/Text_Manipulation/) - [Demo](https://www.youtube.com/watch?v=xj8IzNlfM70), Text formatting commands
   - Alphabet, numbers, punctuation input commands
@@ -87,4 +92,5 @@
 - Caster extends the Dragonfly API for even more powerful commands.
 
   - The [Context Stack](https://caster.readthedocs.io/en/latest/readthedocs/Rule_Construction/Caster_Rules/ContextStack/) - Create asynchronous and context seeking commands
+
   - Spec reduction via [NodeRule](https://caster.readthedocs.io/en/latest/readthedocs/Rule_Construction/Caster_Rules/NodeRule/)

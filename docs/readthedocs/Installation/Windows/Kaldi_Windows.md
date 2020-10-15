@@ -4,7 +4,7 @@ Caster currently supports Kaldi on Microsoft Windows 7 through Windows 10. Consi
 
 ### 1. Python
 
-- **First** Download and install [Python v2.7.17 64-bit](https://www.python.org/downloads/release/python-2717/) or [Python 3](https://www.python.org/downloads/release/python-381/) listed as `Windows x86-64 MSI installer`.
+- **First** Download and install [Python v2.7.18 64-bit](https://www.python.org/downloads/release/python-2718/) or [Python 3](https://www.python.org/downloads/release/python-381/) listed as `Windows x86-64 MSI installer`.
   - Caster with Python 3 is in beta.
 
 Make sure to select `Add python to path`. This can be done manually by searching for "edit environment variables for your account" and adding your Python27 or Python 3 folder to the list of Path values.
@@ -20,7 +20,7 @@ Be sure the `wheel` package is installed. It can be installed with `pip install 
    - The Legion MouseGrid requires [Microsoft Visual C++ Redistributable Packages for Visual Studio 2015, 2017 and 2019 (x86).](https://support.microsoft.com/en-nz/help/2977003/the-latest-supported-visual-c-downloads) Note: Should not be needed if Windows 10 is up-to-date.
 5. Click `Install_Caster_Kaldi.bat` to install prerequisite dependencies and set up Kaldi. 
 
-### 3. Set up Kaldi
+### 3. Set up Kaldi Model
 
 1. Download your preferred Kaldi model at [kaldi-active-grammar/releases](https://github.com/daanzu/kaldi-active-grammar/releases)
 
