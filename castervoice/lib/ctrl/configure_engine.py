@@ -35,8 +35,8 @@ class EngineConfigLate:
 
     def __init__(self):
         self.EngineModesManager.initialize()
-        if self.engine == 'kaldi':
-            # kaldi needs a default mic state for sleep_timer
+        if self.engine != 'natlink':
+            # Other engines besides natlink needs a default mic state for sleep_timer
             self.EngineModesManager.mic_state = "on"
         if self.engine != "text":
             self._engine_timers()
