@@ -1,4 +1,4 @@
-from dragonfly import Function, Repeat, Dictation, Choice, ContextAction
+from dragonfly import Function, Repeat, Dictation, Choice, ContextAction, MappingRule
 from castervoice.lib.context import AppContext
 
 from castervoice.lib import navigation, context, textformat, text_utils
@@ -28,9 +28,7 @@ from castervoice.lib.merge.state.short import S, L, R
 
 _tpd = text_punc_dict()
 
-class Keyboard(MergeRule):
-    pronunciation = "keyboard"
-    
+class Keyboard(MappingRule):
     mapping = {
         "<modifier> <button_dictionary_1>":
               R(Key("%(modifier)s%(button_dictionary_1)s"),
@@ -49,15 +47,6 @@ class Keyboard(MergeRule):
     }
     button_dictionary_1.update(caster_alphabet())
     button_dictionary_1.update(_tpd)
-    longhand_punctuation_names = {
-        "minus": "hyphen",
-        "hyphen": "hyphen",
-        "comma": "comma",
-        "deckle": "colon",
-        "colon": "colon",
-        "slash": "slash",
-        "backslash": "backslash"
-    }
     button_dictionary_1.update(longhand_punctuation_names)
     shift_spec = "(shift | shin)"
     control_spec = "(control | fly)"
@@ -76,7 +65,7 @@ class Keyboard(MergeRule):
         "(down | dunce)": "down",
         "page (down | dunce)": "pgdown",
         "page (up | sauce)": "pgup",
-        "(ace | space)": "space",
+        "ace": "space",
         "zero": "0",
         "one": "1",
         "two": "2",
@@ -144,4 +133,4 @@ class Keyboard(MergeRule):
 
 
 def get_rule():
-    return Keyboard, RuleDetails(ccrtype=CCRType.GLOBAL)
+    return Keyboard, RuleDetails(ccrtype=CCRType.GLOBAL, name = "keyboard")
