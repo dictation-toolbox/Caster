@@ -29,7 +29,7 @@ New users will be provided a core set of starter rules to get started with and t
 The following `rules.toml `is a mock representation of the default settings. `_enabled_ordered` shows the default enabled grammars when Caster first starts. Defaults may vary by Caster version and engine.
 
 ``` toml
-_enabled_ordered = ["Alphabet", "Navigation", "NavigationNon", "Numbers", "Punctuation", "CasterRule", "HardwareRule", "MouseAlternativesRule", "WindowManagementRule", "LegionGridRule", "DouglasGridRule", "RainbowGridRule", "SudokuGridRule", "HMCRule", "HMCConfirmRule", "HMCDirectoryRule", "HMCHistoryRule", "HMCLaunchRule", "HMCSettingsRule", "HistoryRule", "ChainAlias", "Alias", "DragonRule", "BringRule", "Again", "GrammarActivatorRule", "HooksActivationRule"]
+_enabled_ordered = ["Alphabet", "Navigation", "NavigationNon", "Numbers", "Punctuation", "Keyboard", "CasterRule", "HardwareRule", "MouseAlternativesRule", "WindowManagementRule", "LegionGridRule", "DouglasGridRule", "RainbowGridRule", "SudokuGridRule", "HMCRule", "HMCConfirmRule", "HMCDirectoryRule", "HMCHistoryRule", "HMCLaunchRule", "HMCSettingsRule", "HistoryRule", "ChainAlias", "Alias", "DragonRule", "BringRule", "Again", "GrammarActivatorRule", "HooksActivationRule"]
 _internal = ["GrammarActivatorRule", "HooksActivationRule", "TransformersActivationRule", "ManualGrammarReloadRule"]
 
 [whitelisted]

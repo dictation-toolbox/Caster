@@ -10,8 +10,8 @@ class CCRType(object):
 
 # default-on modules
 CORE = [
-    # Original Caster CCR "core" set:
-    "Alphabet", "Navigation", "NavigationNon", "Numbers", "Punctuation",
+    # Caster CCR "core" set:
+    "Alphabet", "Navigation", "NavigationNon", "Numbers", "Punctuation", "Keyboard",
     # Rules which were split out of _caster.py:
     "CasterRule", "CasterMicRule", "HardwareRule", "MouseAlternativesRule", "WindowManagementRule",
     # Alternate mouse grid controls:

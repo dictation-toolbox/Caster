@@ -91,10 +91,10 @@ class TestTextReplacerTransformer(TestCase):
     def test_replace_real_mergerule_spec(self):
         trt = TextReplacerTransformer(mock_TRParser.MockTRParser)
         rule = Navigation()
-        mock_TRParser.MOCK_SPECS["clear"] = "bear"
+        mock_TRParser.MOCK_SPECS["cut"] = "but"
         transformed_rule = trt.get_transformed_rule(rule)
 
-        self.assertTrue("bear [<nnavi50>]" in transformed_rule._mapping)
+        self.assertTrue("but [<nnavi500>]" in transformed_rule._mapping)
 
     def test_that_transformer_does_not_change_class_name(self):
         trt = TextReplacerTransformer(mock_TRParser.MockTRParser)
