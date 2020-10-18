@@ -140,3 +140,4 @@ class Keyboard(MappingRule):
 
 def get_rule():
     return Keyboard, RuleDetails(name = "keyboard")
+
