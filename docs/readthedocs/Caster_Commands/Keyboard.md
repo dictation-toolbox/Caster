@@ -2,7 +2,7 @@
 
 This grammar provides a close-to-full replacement of the keyboard, including the use of the modifier keys (control, alt, shift, windows) as well as the ability to both hold and release keys.
 
-Caster aims to replace most use of the keyboard with dedicated commands. The commands in this grammar are provided as a back up.
+Caster aims to replace most use of the keyboard with dedicated commands. The commands in this grammar are provided as a back up and are not provided with continuous command recognition (CCR).
 
 ## Commands
 
