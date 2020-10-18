@@ -30,6 +30,7 @@ nav:
     - Caster Commands: 
         - 'Using Voice Commands': readthedocs/Caster_Commands/Using_Voice_Commands.md
         - 'Caster Core Reference': readthedocs/Caster_Commands/CasterQuickReference.md
+        - 'Caster Keyboard Replacement': readthedocs/Caster_Commands/Keyboard.md
         - 'Application Commands Reference': readthedocs/Caster_Commands/Application_Commands_Quick_Reference.md
         - 'Languages Reference': readthedocs/Caster_Commands/CCR_languages_Quick_Reference.md
         - 'Text Manipulation and Navigation': readthedocs/Caster_Commands/Text_Manipulation.md

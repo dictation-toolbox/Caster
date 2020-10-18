@@ -57,6 +57,10 @@ class Keyboard(MappingRule):
     windows_spec = "windows"
     # in the punctuation dictionary it uses " " which is not the correct dragonfly key name.
     del button_dictionary_1["ace"]
+    del button_dictionary_1["[is] less [than] [or] equal [to]"]
+    del button_dictionary_1["[is] equal to"]
+    del button_dictionary_1["[is] greater [than] [or] equal [to]"]
+ 
     button_dictionary_1.update({
         "(tab | tabby)": "tab",
         "(backspace | clear)": "backspace",
