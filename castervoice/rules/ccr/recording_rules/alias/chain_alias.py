@@ -15,4 +15,5 @@ class ChainAlias(BaseAliasRule):
 
 
 def get_rule():
-    return ChainAlias, RuleDetails(ccrtype=CCRType.SELFMOD)
+    return ChainAlias, RuleDetails(ccrtype=CCRType.SELFMOD,
+                          transformer_exclusion=True)
