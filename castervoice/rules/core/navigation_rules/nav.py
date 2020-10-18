@@ -182,10 +182,17 @@ class Navigation(MergeRule):
     
     tell_commands_dict = {"dock": ";", "doc": ";", "sink": "", "com": ",", "deck": ":"}
     tell_commands_dict.update(_tpd)
-    button_dictionary_500_no_prefix_no_modifier = { 
-        key:value for key, value in Keyboard.button_dictionary_1.items() if value in [
-            "tab", "backspace", "del", "enter", "left", "right", "up", "down", "pgdown", "pgup", "space"
-            ]
+    button_dictionary_500_no_prefix_no_modifier = {
+        "tabby": "tab",
+        "clear": "backspace",
+        "deli": "del",
+        "shock": "enter",
+        "lease": "left",
+        "ross": "right",
+        "sauce": "up",
+        "dunce": "down",
+        "page (down | dunce)": "pgdown",
+        "page (up | sauce)": "pgup",
     }
     button_dictionary_500_modifier = { 
         key:value for key, value in Keyboard.button_dictionary_1.items() if value in [
