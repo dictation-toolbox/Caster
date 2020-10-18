@@ -178,6 +178,9 @@ class Navigation(MergeRule):
         "<modifier> <button_dictionary_500_modifier> [<nnavi500>]":
             R(Key("%(modifier)s%(button_dictionary_500_modifier)s")*Repeat(extra='nnavi500'),
               rdescript="press modifiers plus buttons from button_dictionary_500_modifier"),
+        "<modifier> <button_dictionary_1_modifier>":
+            R(Key("%(modifier)s%(button_dictionary_1_modifier)s"),
+              rdescript="press modifiers plus buttons from button_dictionary_1_modifier"),              
     }
     
     tell_commands_dict = {"dock": ";", "doc": ";", "sink": "", "com": ",", "deck": ":"}
@@ -199,6 +202,11 @@ class Navigation(MergeRule):
             "backspace", "del", "enter", "left", "right", "up", "down", "pgdown", "pgup"
             ]
     }
+    button_dictionary_1_modifier = { 
+        key:value for key, value in Keyboard.button_dictionary_1.items() if value in [
+            "home", "end"
+            ]
+    }    
     extras = [
         IntegerRefST("nnavi10", 1, 11),
         IntegerRefST("nnavi3", 1, 4),
@@ -249,6 +257,7 @@ class Navigation(MergeRule):
         Keyboard.modifier_choice_object,
         Choice("button_dictionary_500_no_prefix_no_modifier", button_dictionary_500_no_prefix_no_modifier),
         Choice("button_dictionary_500_modifier", button_dictionary_500_modifier),
+        Choice("button_dictionary_1_modifier", button_dictionary_1_modifier)        
     ]
 
     defaults = {
