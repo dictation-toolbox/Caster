@@ -28,6 +28,10 @@ from castervoice.lib.merge.state.short import S, L, R
 
 _tpd = text_punc_dict()
 
+cat_spec_and_reverse = lambda s1, s2: "(" + s1 + " " + s2 + ")" + " | " + "(" + s2 + " " + s1 + ")"
+
+cat_spec_and_reverse_3 = lambda s1, s2, s3: cat_spec_and_reverse(cat_spec_and_reverse(s1, s2), s3) + " | (" + s1 + " " + s3 + " " + s2 + ")" + " | (" + s2 + " " + s3 + " " + s1 + ")" + " | (" + s3 + " " + s2 + " " + s1 + ")"
+
 class Keyboard(MappingRule):
     mapping = {
         "<modifier> <button_dictionary_1>":
@@ -47,7 +51,6 @@ class Keyboard(MappingRule):
     }
     button_dictionary_1.update(caster_alphabet())
     button_dictionary_1.update(_tpd)
-    button_dictionary_1.update(longhand_punctuation_names)
     shift_spec = "(shift | shin)"
     control_spec = "(control | fly)"
     alt_spec = "alt"
@@ -98,23 +101,23 @@ class Keyboard(MappingRule):
         # track control deliberately left off as these are (or will be) dealt with in HardwareRule and I don't think there's a use case for modifiers there
         # browser forward/back are deliberately left off. These functions are implemented at the browser rule level
     })
-   
+    
     modifier_choice_object = Choice("modifier", {
-            "(control | fly)": "c-",
-            "(shift | shin)": "s-",
-            "alt": "a-",
-            "(control shift | queue)": "cs-",
-            "control alt": "ca-",
-            "(shift alt | alt shift)": "sa-",
-            "(control alt shift | control shift alt)": "csa-",  # control must go first
-            "windows": "w-",  # windows should go before alt/shift
-            "control windows": "cw-",
-            "control windows alt": "cwa-",
-            "control windows shift": "cws-",
-            "windows shift alt": "wsa-",
-            "windows alt shift": "was-",
-            "windows shift": "ws-",
-            "windows alt": "wa-",
+            control_spec: "c-",
+            shift_spec: "s-",
+            alt_spec: "a-",
+            cat_spec_and_reverse(control_spec, shift_spec) + " | queue": "cs-",
+            cat_spec_and_reverse(control_spec, alt_spec): "ca-",
+            cat_spec_and_reverse(alt_spec, shift_spec): "sa-",
+            cat_spec_and_reverse_3(alt_spec, control_spec, shift_spec): "csa-",
+            windows_spec: "w-",
+            cat_spec_and_reverse(control_spec, windows_spec): "cw-",
+            cat_spec_and_reverse_3(alt_spec, control_spec, windows_spec): "cwa-",
+            cat_spec_and_reverse_3(shift_spec, control_spec, windows_spec): "cws-",
+            cat_spec_and_reverse_3(alt_spec, shift_spec, windows_spec): "wsa-",
+            cat_spec_and_reverse(windows_spec, shift_spec): "ws-",
+            cat_spec_and_reverse(windows_spec, alt_spec): "wa-",
+            # We will leave this as is as it is seldom used
             "control windows alt shift": "cwas-",
             "press": "",
         })
@@ -131,6 +134,5 @@ class Keyboard(MappingRule):
         "modifier": ""
     }
 
-
 def get_rule():
-    return Keyboard, RuleDetails(ccrtype=CCRType.GLOBAL, name = "keyboard")
+    return Keyboard, RuleDetails(name = "keyboard")
