@@ -169,8 +169,8 @@ def erase_multi_clipboard():
                              settings.settings([u'paths', u'SAVED_CLIPBOARD_PATH']))
 
 
-def volume_control(n, volume_mode):
-    for i in range(0, int(n)):
+def volume_control(n_volume, volume_mode):
+    for i in range(0, int(n_volume)):
         Key("volume" + str(volume_mode)).execute()
 
 
