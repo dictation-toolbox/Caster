@@ -1,4 +1,4 @@
-from dragonfly import MappingRule, Playback, Function, Pause, Choice
+from dragonfly import MappingRule, Playback, Function, Pause, Choice, Repeat
 
 from castervoice.lib.actions import Key
 from castervoice.lib import settings, navigation
@@ -16,21 +16,35 @@ def change_monitor():
 
 class HardwareRule(MappingRule):
     mapping = {
-        "volume <volume_mode> [<n>]":
-            R(Function(navigation.volume_control, extra={'n', 'volume_mode'})),
+        "volume <volume_mode> [<n_volume>]":
+            R(Function(navigation.volume_control, extra={'n_media', 'volume_mode'})),
+        
+        "media <multimedia_control> [<n_media>]":
+            R(Key("%(multimedia_control)s") * Repeat(extra="n_volume")),
 
         "change monitor":
             R(Key("w-p") + Pause("100") + Function(change_monitor))
     }
     extras = [
-        IntegerRefST("n", 1, 50),
+        IntegerRefST("n_media", 1, 15),
+        IntegerRefST("n_volume", 1, 50),
+        Choice("multimedia_control", {
+            "next": "tracknext",
+            "back":"trackprev",
+            "play|pause": "playpause",
+        }),
+
         Choice("volume_mode", {
             "mute": "mute",
             "up": "up",
-            "down": "down"
+            "down": "down",
         })
     ]
-    defaults = {"n": 1, "volume_mode": "setsysvolume"}
+    defaults = {
+        "n_volume": 1, 
+        "n_media": 1,
+        "volume_mode": "setsysvolume",
+        }
 
 
 def get_rule():
