@@ -1,7 +1,7 @@
 from dragonfly import MappingRule, Playback, Function, Pause, Choice, Repeat
 
 from castervoice.lib.actions import Key
-from castervoice.lib import settings, navigation
+from castervoice.lib import settings
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
@@ -16,11 +16,12 @@ def change_monitor():
 
 class HardwareRule(MappingRule):
     mapping = {
+        # Windows 10 changes volume by increments 2
         "volume <volume_mode> [<n_volume>]":
-            R(Function(navigation.volume_control, extra={'n_media', 'volume_mode'})),
+            R(Key("%(volume_mode)s") * Repeat(extra="n_volume")),
         
         "media <multimedia_control> [<n_media>]":
-            R(Key("%(multimedia_control)s") * Repeat(extra="n_volume")),
+            R(Key("%(multimedia_control)s") * Repeat(extra="n_media")),
 
         "change monitor":
             R(Key("w-p") + Pause("100") + Function(change_monitor))
@@ -35,9 +36,9 @@ class HardwareRule(MappingRule):
         }),
 
         Choice("volume_mode", {
-            "mute": "mute",
-            "up": "up",
-            "down": "down",
+            "mute|unmute": "volumemute",
+            "up": "volumeup",
+            "down": "volumedown",
         })
     ]
     defaults = {
