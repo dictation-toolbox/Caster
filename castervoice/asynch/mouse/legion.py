@@ -5,6 +5,7 @@ import os
 import re
 import sys
 import threading
+import locale
 from ctypes import *
 from dragonfly import monitors
 
@@ -113,7 +114,7 @@ class LegionGrid(TkTransparent):
         # Helper class for splitting larger rectangles to smaller ones.
         for rect in rectangles_to_split:
             width = rect.x2 - rect.x1
-            pieces = width/self.max_rectangle_width
+            pieces = width//self.max_rectangle_width
             new_width = width/pieces
             for i in range(0, pieces):
                 r = Rectangle()
@@ -176,11 +177,9 @@ class LegionScanner:
         import struct
         try:
             if struct.calcsize("P") * 8 == 32:
-                self.tirg_dll = cdll.LoadLibrary(str(Path(settings.SETTINGS["paths"]["DLL_PATH"]).joinpath("tirg-32.dll")).encode(
-                sys.getfilesystemencoding()))
+                self.tirg_dll = cdll.LoadLibrary(str(Path(settings.SETTINGS["paths"]["DLL_PATH"]).joinpath("tirg-32.dll")))
             else:
-                self.tirg_dll = cdll.LoadLibrary(str(Path(settings.SETTINGS["paths"]["DLL_PATH"]).joinpath("tirg-64.dll")).encode(
-                sys.getfilesystemencoding()))
+                self.tirg_dll = cdll.LoadLibrary(str(Path(settings.SETTINGS["paths"]["DLL_PATH"]).joinpath("tirg-64.dll")))
         except Exception as e:
             print("Legion loading failed with '%s'" % str(e))
         self.tirg_dll.getTextBBoxesFromFile.argtypes = [c_char_p, c_int, c_int]
@@ -192,7 +191,7 @@ class LegionScanner:
         bbstring = self.tirg_dll.getTextBBoxesFromBytes(img.tobytes(), img.size[0],
                                                         img.size[1])
         # clean the results in case any garbage letters come through
-        result = re.sub("[^0-9,]", "", bbstring)
+        result = re.sub("[^0-9,]", "", bbstring.decode(locale.getpreferredencoding()))
         return result
 
     def scan(self, bbox=None, rough=True):
@@ -237,10 +236,6 @@ def main(argv):
     monitor = 1
     dimensions = None
     auto_quit = False
-
-    error_code = windll.shcore.SetProcessDpiAwareness(2)  #enable 1-1 pixel mapping
-    if error_code == -2147024891:
-        raise OSError("Failed to set app awareness")
 
     try:
         opts, args = getopt.getopt(argv, "ht:a:d:m:",

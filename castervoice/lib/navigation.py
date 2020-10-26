@@ -169,11 +169,6 @@ def erase_multi_clipboard():
                              settings.settings([u'paths', u'SAVED_CLIPBOARD_PATH']))
 
 
-def volume_control(n, volume_mode):
-    for i in range(0, int(n)):
-        Key("volume" + str(volume_mode)).execute()
-
-
 def kill_grids_and_wait():
     window_title = utilities.get_active_window_title()
     if (window_title == settings.RAINBOW_TITLE or window_title == settings.DOUGLAS_TITLE

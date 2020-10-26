@@ -66,7 +66,7 @@ class LegionGridRule(MappingRule):
             R(Function(send_input)),
         "refresh":
             R(Function(navigation.mouse_alternates, mode="legion")),
-        SymbolSpecs.CANCEL:
+        SymbolSpecs.CANCEL + " {weight=2}":
             R(Function(kill)),
         "<n1> (select | light) <n2>":
             R(Function(drag_highlight)),
