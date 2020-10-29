@@ -112,13 +112,13 @@ class TestCCRMerger2(SettingsEnabledTestCase):
 
     def test_words_txt_transformer(self):
         """
-        Merger should use TextReplacerTransformer to replace "clear" with "bear" in specs
+        Merger should use TextReplacerTransformer to replace "cut" with "but" in specs
         and "goof" with "gas" in extras.
         """
         # transformer setup
         self.transformers_config.is_transformer_active.side_effect = [True, True]
         trt = TextReplacerTransformer(mock_TRParser.MockTRParser)
-        mock_TRParser.MOCK_SPECS["clear"] = "bear"
+        mock_TRParser.MOCK_SPECS["cut"] = "but"
         mock_TRParser.MOCK_EXTRAS["goof"] = "gas"
         self.transformers_runner._transformers.append(trt)
 
@@ -130,7 +130,7 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         self.assertEqual(1, len(result.ccr_rules_and_contexts))
 
         rule = self._extract_merged_rule_from_repeatrule(result.ccr_rules_and_contexts)
-        self.assertTrue("bear [<nnavi50>]" in rule._mapping.keys())
+        self.assertTrue("but [<nnavi500>]" in rule._mapping.keys())
         self.assertTrue("gas" in rule._extras["letter"]._choices)
 
     def test_merge_two_app_ccr(self):
