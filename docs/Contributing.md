@@ -10,7 +10,7 @@
 Many newcomers to the voice coding community are expert developers who arrive very excited to make a fundamental contribution to this project or create something that will supersede Caster. If this is you, great! However, the vast majority of these contributions have gone nowhere, because the developer loses interest and the project is not in a place to be picked up by someone else; we do not want _this_ to be you. We encourage you to address one of the existing issues or review/finish a pull request. If you really do want to make a major contribution, please first [raise an issue](https://github.com/dictation-toolbox/Caster/issues/new/choose) with your idea.
 
 ## Adding New Rules for the Caster repository
-If you'd like to add rules for new languages or popular libraries for languages for the Castor repository, you should create them in the `castervoice/rules` folder in the appropriate directory category.
+If you'd like to add rules for new languages or popular libraries for languages for the Caster repository, you should create them in the `castervoice/rules` folder in the appropriate directory category.
 
 ## BountySource Guidelines
 - In order for bounties to be posted they must have very clear guidelines and resources for those that wish to collect.
