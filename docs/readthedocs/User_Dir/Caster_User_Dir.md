@@ -15,7 +15,7 @@ Users can set the location of their Caster user directory using the environment 
 
 **Layout  Description**
 
-1. `data` - Caster stores the files that are not intended to be edited by the user in the `data` directory. Most data `toml` files are for self-modifying rules, such as [Alias](Caster_Commands/Alias.md), and start with `sm_`.
+1. `data` - Caster stores the files that are not intended to be edited by the user in the `data` directory. Most data `toml` files are for self-modifying rules, such as [Alias](../Caster_Commands/Alias), and start with `sm_`.
 2. `hooks` - For user-made [hooks](../Caster_Settings/hooks) (Empty by default)
 3. `rules` - For user-made [rules](../Caster_Settings/rules) and overrides of rules from Caster (Empty by default)
 4. `settings` - All Caster [settings](../Caster_Settings/settings) files
