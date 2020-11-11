@@ -2,6 +2,8 @@
 
 This provides a brief overview of the Caster user directory. The main function of the user directory is to store Caster settings and user-made content. 
 
+*Note for Dragon users*: The Caster User directory is managed by Caster, and should not be confused with Natlink's UserDirectory, which is set to the Caster source code directory if using the [Alternative Natlink Configuration](../Installation/Dragon_NaturallySpeaking.md/#-alternative-natlink-configuration).
+
 **User Directory Location**
 
 The default locations are:
@@ -10,8 +12,6 @@ The default locations are:
  - Linux and MacOS: `~/.local/share/caster`
 
 Users can set the location of their Caster user directory using the environment variable `CASTER_USER_DIR`. For help on setting environment variables on your system, search for "setting environment variables <_your OS_>".
-
-*Note for Dragon users*: The Caster User directory is managed by Caster, and should not be confused with Natlink's UserDirectory, which is set to the Caster source code directory if using the [Alternative Natlink Configuration](../Installation/Dragon_NaturallySpeaking.md/#-alternative-natlink-configuration).
 
 **Layout  Description**
 
