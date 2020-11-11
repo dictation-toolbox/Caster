@@ -26,5 +26,5 @@ Users can set the location of their Caster user directory using the environment 
 
 It's good to back up this directory as it contains user content. The backup scheme can be simple as a zip file, cloud-backup service (e.g. Dropbox), or even a private GitHub repository. The simplest solution for most users will be to use the environment variable `CASTER_USER_DIR` to place the user directory inside your cloud-backup folder. Note that on many Windows setups the full user directory is already backed up by default using OneDrive. 
 
-Another alternative is to use hard links to a folder in your clour-backup folder. Hard links provide the ability to keep a single copy of a file yet have it appear in multiple directories. There is a helpful utility that makes these Hardlinks easy to use on Windows OS. See [Hard Link Shell Extension](https://schinagl.priv.at/nt/hardlinkshellext/linkshellextension.html).
+Another alternative is to use hard links to a folder in your cloud-backup folder. Hard links provide the ability to keep a single copy of a file yet have it appear in multiple directories. There is a helpful utility that makes these hard links easy to use on Windows OS. See [Hard Link Shell Extension](https://schinagl.priv.at/nt/hardlinkshellext/linkshellextension.html).
 
