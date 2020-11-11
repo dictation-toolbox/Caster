@@ -1,23 +1,26 @@
 ## User Directory
 
-This provides a brief overview of the caster user directory. The main function of the user directory is to store Caster settings and user-made content. 
+This provides a brief overview of the Caster user directory. The main function of the user directory is to store Caster settings and user-made content. 
 
 **User Directory Location**
 
-Windows  OS `C:\Users\%USERNAME%\AppData\Local\caster`
+The default locations are:
 
-At this point setup should be complete and engine agnostic.
+Windows: `C:\Users\%USERNAME%\AppData\Local\caster`
+Linux and MacOS: `~/.local/share/caster`
+
+Users can set the location of their Caster user directory using the environment variable `CASTER_USER_DIR`. For help on setting environment variables on your system, search for "setting environment variables <_your OS_>".
 
 *DNS/DPI*: The Caster User directory is managed by Caster, and should not be confused with Natlink's UserDirectory, which is set to the Caster source code directory if using the [Alternative Natlink Configuration](https://caster.readthedocs.io/en/latest/readthedocs/Installation/Dragon_NaturallySpeaking/#-alternative-natlink-configuration).
 
 **Layout  Description**
 
-1. `data` - Caster stores the data files that are not meant to be edited by the end user explicitly in the data directory. Most data toml files are for SelfModifying rules starting with `sm_`.
-2. `hooks` - User-made hooks are placed (Empty by default)
-3. `rules` - User-made rules and "Caster starter rules" overrides (Empty by default)
-4. `settings` - All Caster related settings file
-5. `sikuli` - User-made sikuli scripts (Empty by default)
-6. `transformers` - Used for simplified transformers i.e words.txt (Empty by default)
+1. `data` - Caster stores the files that are not intended to be edited by the user in the `data` directory. Most data `toml` files are for self-modifying rules, such as [Alias](Caster_Commands/Alias), and start with `sm_`.
+2. `hooks` - For user-made [hooks](Caster_Settings/hooks) (Empty by default)
+3. `rules` - For user-made [rules](Caster_Settings/rules) and overrides of rules from Caster (Empty by default)
+4. `settings` - All Caster [settings](Caster_Settings/settings) files
+5. `sikuli` - For user-made [Sikuli](Third-party_Integrations/Sikuli) scripts (Empty by default)
+6. `transformers` - For [simplified transformers](Customize_Caster/Customizing_Starter_Rules/#use-simplified-transformers) i.e words.txt (Empty by default)
 
 ### Backup Procedures
 
