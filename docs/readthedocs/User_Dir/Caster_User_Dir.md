@@ -6,8 +6,8 @@ This provides a brief overview of the Caster user directory. The main function o
 
 The default locations are:
 
-Windows: `C:\Users\%USERNAME%\AppData\Local\caster`
-Linux and MacOS: `~/.local/share/caster`
+ - Windows: `C:\Users\%USERNAME%\AppData\Local\caster`
+ - Linux and MacOS: `~/.local/share/caster`
 
 Users can set the location of their Caster user directory using the environment variable `CASTER_USER_DIR`. For help on setting environment variables on your system, search for "setting environment variables <_your OS_>".
 
