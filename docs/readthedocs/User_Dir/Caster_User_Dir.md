@@ -27,5 +27,5 @@ Users can set the location of their Caster user directory using the environment 
 It's good to back up this directory as it contains user content. The backup scheme can be simple as a zip file, Cloud backup service i.e. Dropbox, or even a private GitHub repository.
 
 - You can utilize hard links. Hardlinks provide the ability to keep a single copy of a file yet have it appear in multiple directories.
-  - There is a helpful utility that makes these Hardlinks easy to use Windows OS. [Hard Link Shell Extension](https://schinagl.priv.at/nt/hardlinkshellext/linkshellextension.html) 
+  - There is a helpful utility that makes these Hardlinks easy to use Windows OS. See [Hard Link Shell Extension](https://schinagl.priv.at/nt/hardlinkshellext/linkshellextension.html).
 
