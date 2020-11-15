@@ -1,14 +1,14 @@
-# These lines that start with the # are called comments. They don't affect the way the code runs.
+# These lines that start with the '#' are called comments. They don't affect the way the code runs.
 # In this tutorial file, I put comments above the relevant lines.
 
-# Before we begin, it's worth noting that the, The function `get_rule()` that loads this rule is commented out. Therefore will cause it to never run.
+# Before we begin, it's worth noting that the function 'get_rule()' that loads this rule is commented out. Therefore will cause it to never run.
 # 1. You will need to scroll to the very end of the file and uncomment the following:
 
-#def get_rule():
-#    return MyRule, RuleDetails(name="my rule")
+# def get_rule():
+#     return MyRule, RuleDetails(name="my rule")
 
 # 2. Now that it's uncommented simply start/restart Caster. 
-# 3. say "enable my rule" 
+# 3. To enable the rule, say "enable my rule" 
 
 # You can skip down to the next comment, for now this is not important...
 
@@ -24,20 +24,20 @@ def my_function(n, text):
 
 class MyRule(MappingRule):
 
+    # It is this section that you want to edit if you're new. The mapping, extras, and defaults
     mapping = {
-    # It is this section that you want to fiddle around with if you're new: mapping, extras, and defaults
 
-    # Here I'm just saying two word to trigger some other words
-    "hotel info":                   Text("These types of hospitality industry are not cheap."),
+    # Here I'm just saying two words to trigger some other words
+    "hotel info":                   Text("These types of hospitality services are not cheap."),
 
     # In the next line, there are two things to observe:
     # the first is the use of parentheses and the pipe symbol (|)
     # --this lets me use either "motel" or "lodging" to trigger that command.
-    # The next is the playback action, which lets me tell speech recognition engine to simulate me speaking some words.
-	'(motel | lodging)':           Playback([(["hotel", "info"], 0.0)]),
+    # The next is the playback action, which lets me tell the speech recognition engine to simulate me speaking some words.
+    "(motel | lodging)":            Playback([(["hotel", "info"], 0.0)]),
 
-    # Here I'm using BringApp-- this is the same as typing what goes in between the parentheses
-    # Into the command prompt/terminnal, without the quotes and commas, like:
+    # Here I'm using BringApp -- this is the same as typing what goes in between the parentheses
+    # into the command prompt/terminal, without the quotes and commas, like:
     # Windows OS: explorer C:\NatLink\NatLink\MacroSystem
     # Could be changed changed for Linux/Mac
     # -- (which would open Windows Explorer at the specified location). Anything you can do with the command line can be done this way
