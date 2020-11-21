@@ -20,8 +20,11 @@ def _inv_dtpb():
 def text_punc_dict():
     # Insurers comma is recognized consistently with DNS/Natlink and
     # if/else statement workaround engines that do not expect punctuation symbol as a command
-    if (dragonfly.get_current_engine().name == 'natlink'):
-        comma = "(comma | ,)"
+    if hasattr(dragonfly.get_current_engine(), "name"):
+        if (dragonfly.get_current_engine().name == 'natlink'):
+            comma = "(comma | ,)"
+        else:
+            comma = "comma"
     else:
         comma = "comma"
 

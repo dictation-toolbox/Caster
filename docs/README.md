@@ -2,7 +2,7 @@
 
 [![Travis Build Status](https://travis-ci.org/dictation-toolbox/Caster.svg?branch=master)](https://travis-ci.org/dictation-toolbox/Caster) [![Documentation Status](https://readthedocs.org/projects/caster/badge/?version=latest)](https://caster.readthedocs.io/en/latest/?badge=latest) ![GitHub top language](https://img.shields.io/github/languages/top/dictation-toolbox/Caster)[![https://github.com/dictation-toolbox/Caster/blob/master/LICENSE](https://img.shields.io/badge/license-GNU-informational)](https://matrix.to/#/!KOGBGqVOBKJjKLgFUY:matrix.org?via=matrix.org)
 
-​	[Caster](https://github.com/dictation-toolbox/Caster) gives you the power to control your computer by voice. Take control of your applications, games, mouse and keyboard to augment your workflow for every day activities or as an accessibility tool to develop applications entirely by voice built upon the [Dragonfly](https://github.com/dictation-toolbox/dragonfly) framework.  
+[Caster](https://github.com/dictation-toolbox/Caster) gives you the power to control your computer by voice. Take control of your applications, games, mouse and keyboard to augment your workflow for every day activities or as an accessibility tool to develop applications entirely by voice built upon the [Dragonfly](https://github.com/dictation-toolbox/dragonfly) framework.  
 
 **Note for PyPi Users**: The PIP package is (_Alpha_). Do not use the PIP install. Alternatively use this [Master Branch](https://github.com/dictation-toolbox/Caster) with classic install for the best feature experience.
 

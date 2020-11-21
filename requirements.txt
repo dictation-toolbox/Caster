@@ -1,4 +1,4 @@
-dragonfly2>=0.26.0
+dragonfly2>=0.28.0
 wxpython==4.0.7
 pillow>=6.2.2
 tomlkit>=0.5.11
@@ -7,3 +7,4 @@ mock>=3.0.5
 appdirs>=1.4.3
 scandir>=1.10.0
 pyvda
+six

@@ -1,104 +1,171 @@
-from dragonfly import get_engine, get_current_engine
-from castervoice.lib import settings, printer
+from dragonfly import get_engine, get_current_engine, FuncContext, Function, MappingRule, Grammar, Choice, Dictation
+from castervoice.lib import printer
 
-# TODO: Implement a grammar exclusivity for non-DNS engines in a separate class
+engine = get_current_engine().name
+if engine == 'natlink':
+    import natlink
+
 
 class EngineModesManager(object):
     """
     Manages engine modes and microphone states using backend engine API and through dragonfly grammar exclusivity.
     """
-    engine = get_current_engine().name
-    if engine == 'natlink':
-        import natlink
-    
-    engine_modes =  {"normal":0,  "command":2, "dictation":1,"numbers":3, "spell":4}
-    mic_modes = ["on", "sleeping", "off"]
+    engine_modes = {"normal": 0,  "command": 2,
+                    "dictation": 1, "numbers": 3, "spell": 4}
+    mic_modes = {"on": 5, "sleeping": 6, "off": 7}
     engine_state = None
     previous_engine_state = None
     mic_state = None
 
-    def initialize(self):
+    @classmethod
+    def initialize(cls):
         # Remove "normal" and "off" from 'states' for non-DNS based engines.
-        if self.engine != 'natlink':
-            self.engine_modes.pop("normal", 0)
-            self.mic_modes.remove("off")
+        if engine != 'natlink':
+            cls.engine_modes.pop("normal", 0)
+            cls.mic_modes.pop("off", 7)
         # Sets 1st index key ("normal" or "command") depending on engine type as default mode
-        self.engine_state = self.previous_engine_state = next(iter(self.engine_modes.keys()))
+        cls.engine_state = cls.previous_engine_state = next(
+            iter(cls.engine_modes.keys()))
 
-
-    def set_mic_mode(self, mode):
+    @classmethod
+    def set_mic_mode(cls, mode):
         """
         Changes the engine microphone mode
-        'on': mic is on
-        'sleeping': mic from the sleeping and can be woken up by command
-        'off': mic off and cannot be turned back on by voice. (DNS Only)
+        :param mode: str
+            'on': mic is on
+            'sleeping': mic from the sleeping and can be woken up by command
+            'off': mic off and cannot be turned back on by voice. (DPI Only)
         """
-        if mode in self.mic_modes:
-            self.mic_state = mode
-            if self.engine == 'natlink':
-                self.natlink.setMicState(mode)
-            # From here other engines use grammar exclusivity to re-create the sleep mode
-            #if mode != "off": # off does not need grammar exclusivity
-                #pass
-                # TODO: Implement mic mode sleep mode using grammar exclusivity. This should override DNS is built in sleep grammar but kept in sync automatically with natlink.setmic_state
-            else:
-                printer.out("Caster: 'set_mic_mode' is not implemented for '{}'".format(self.engine))
+        if mode in cls.mic_modes:
+            cls.mic_state = mode
+            if engine == 'natlink':
+                natlink.setMicState(mode)
+            # Overrides DNS/DPI is built in sleep grammar
+            ExclusiveManager(mode, modetype="mic_mode")
         else:
-            printer.out("Caster: '{}' is not a valid. set_mic_state modes are: 'off' - DNS Only, 'on', 'sleeping'".format(mode))
+            printer.out(
+                "Caster: '{}' is not valid. set_mic_state modes are: 'off' - DPI Only, 'on', 'sleeping'".format(mode))
 
-
-    def get_mic_mode(self):
+    @classmethod
+    def get_mic_mode(cls):
         """
         Returns mic state.
-        mode: string
+            mode: str
         """
-        return self.mic_state
+        return cls.mic_state
 
-
-    def set_engine_mode(self, mode=None, state=True):
+    @classmethod
+    def set_engine_mode(cls, mode=None, state=True):
         """
         Sets the engine mode so that only certain types of commands/dictation are recognized.
-        'state': Bool - enable/disable mode.
+        :param state: Bool - enable/disable mode.
             'True': replaces current mode (Default)
             'False': restores previous mode
-        'normal': dictation and command (Default: DNS only)
-        'dictation': Dictation only 
-        'command': Commands only (Default: Other engines)
-        'numbers': Numbers only
-        'spell': Spelling only
+        :param mode: str
+            'normal': dictation and command (Default: DPI only)
+            'dictation': Dictation only 
+            'command': Commands only (Default: Other engines)
+            'numbers': Numbers only
+            'spell': Spelling only
         """
         if state and mode is not None:
             # Track previous engine state
-            # TODO: Timer to synchronize natlink.getMicState() with mengine_state in case of changed by end-user via DNS GUI.
-            self.previous_engine_state = self.engine_state
+            cls.previous_engine_state = cls.engine_state
         else:
             if not state:
                 # Restore previous mode
-                mode = self.previous_engine_state
+                mode = cls.previous_engine_state
             else:
-                printer.out("Caster: set_engine_mode: 'State' cannot be 'True' with a undefined a 'mode'")
-            
-        if mode in self.engine_modes:
-            if self.engine == 'natlink':
+                printer.out(
+                    "Caster: set_engine_mode: 'State' cannot be 'True' with a undefined a 'mode'")
+
+        if mode in cls.engine_modes:
+            if engine == 'natlink':
                 try:
-                    self.natlink.execScript("SetRecognitionMode {}".format(self.engine_modes[mode])) # engine_modes[mode] is an integer
-                    self.engine_state = mode
+                    natlink.execScript("SetRecognitionMode {}".format(
+                        cls.engine_modes[mode]))  # engine_modes[mode] is an integer
+                    cls.engine_state = mode
+                    ExclusiveManager(mode, modetype="engine_mode")
                 except Exception as e:
                     printer.out("natlink.execScript failed \n {}".format(e))
             else:
-                # TODO: Implement mode exclusivity. This should override DNS is built in sleep grammar but kept in sync automatically with natlinks SetRecognitionMode
-                # Once DNS enters its native mode exclusivity will override the any native DNS mode except for normal/command mode.
-                if self.engine == 'text':
-                    self.engine_state = mode
+                # TODO: Implement set_engine_mode exclusivity. This should override DPI is built mode but kept in sync automatically.
+                if engine == 'text':
+                    cls.engine_state = mode
                 else:
-                    printer.out("Caster: 'set_engine_mode' is not implemented for '{}'".format(self.engine))
+                    printer.out(
+                        "Caster: 'set_engine_mode' is not implemented for '{}'".format(engine))
         else:
-            printer.out("Caster: '{}' mode is not a valid. set_engine_mode: Modes: 'normal'- DNS Only, 'dictation', 'command', 'numbers', 'spell'".format(mode))
+            printer.out(
+                "Caster: '{}' mode is not valid. set_engine_mode: Modes: 'normal'- DPI Only, 'dictation', 'command', 'numbers', 'spell'".format(mode))
 
-
-    def get_engine_mode(self):
+    @classmethod
+    def get_engine_mode(cls):
         """
         Returns engine mode.
-        mode: str
+            mode: str
         """
-        return self.engine_state
+        return cls.engine_state
+
+    @classmethod
+    def _sync_mode(cls):
+        """
+        Synchronizes Caster exclusivity modes an with DNS/DPI GUI built-in modes state.
+        """
+        # TODO: Implement set_engine_mode logic with modes not just mic_state.
+        caster_mic = cls.get_mic_mode()
+        natlink_mic = natlink.getMicState()
+        if caster_mic is None:
+            cls.mic_state = natlink_mic
+        else:
+            if natlink_mic != caster_mic:
+                cls.set_mic_mode(natlink_mic)
+
+class ExclusiveManager:
+    """
+    Loads and switches exclusivity for caster modes
+    :param mode: str
+    :param modetype: 'mic_mode' or 'engine_mode' str
+    """
+    # TODO: Implement set_engine_mode exclusivity with mode rules.
+    # TODO: Implement hotkey for microphone on-off
+    sleep_grammar = None
+    sleeping = False
+
+    sleep_rule = MappingRule(
+        name="sleep_rule",
+        mapping={
+            "caster <mic_mode>": Function(lambda mic_mode: EngineModesManager.set_mic_mode(mode=mic_mode)),
+            "<text>": Function(lambda text: False)
+        },
+        extras=[Choice("mic_mode", {
+            "off": "off",
+            "on": "on",
+            "sleep": "sleeping",
+        }),
+            Dictation("text")],
+        context=FuncContext(lambda: ExclusiveManager.sleeping),
+    )
+
+    def __init__(self, mode, modetype):
+        if modetype == "mic_mode":
+            if not isinstance(ExclusiveManager.sleep_grammar, Grammar):
+                grammar = ExclusiveManager.sleep_grammar = Grammar("sleeping")
+                grammar.add_rule(self.sleep_rule)
+                grammar.load()
+            if mode == "sleeping":
+                self.set_exclusive(state=True)
+                printer.out("Caster: Microphone is sleeping")
+            if mode == "on":
+                self.set_exclusive(state=False)
+                printer.out("Caster: Microphone is on")
+            if mode == "off":
+                printer.out("Caster: Microphone is off")
+        else:
+            printer.out("{}, {} not implemented".format(mode, modetype))
+
+    def set_exclusive(self, state):
+        grammar = ExclusiveManager.sleep_grammar
+        ExclusiveManager.sleeping = state
+        grammar.set_exclusive(state)
+        get_engine().process_grammars_context()

@@ -6,10 +6,13 @@
 2. **Write documentation.** The [ReadTheDocs page](http://caster.readthedocs.org/en/latest/) is pretty sparse. ReadTheDocs uses [markdown](https://markdown-guide.readthedocs.io/en/latest/) so create new docs as .md files.
 3. **Speak.** Tell others who might be interested in Caster. Join our discussions on the issues page and [Gitter](https://gitter.im/dictation-toolbox/caster). The more the merrier, and your thoughts are welcome and encouraged.
 
-## Adding New Rules for the Caster repository
-If you'd like to add rules for new languages or popular libraries for languages for the Castor repository, you should create them in the `castervoice\lib\rules\` folder in the appropriate directory category.
+## Only start major contributions if you will commit to them
+Many newcomers to the voice coding community are expert developers who arrive very excited to make a fundamental contribution to this project or create something that will supersede Caster. If this is you, great! However, the vast majority of these contributions have gone nowhere, because the developer loses interest and the project is not in a place to be picked up by someone else; we do not want _this_ to be you. We encourage you to address one of the existing issues or review/finish a pull request. If you really do want to make a major contribution, please first [raise an issue](https://github.com/dictation-toolbox/Caster/issues/new/choose) with your idea.
 
-### BountySource Guidelines
+## Adding New Rules for the Caster repository
+If you'd like to add rules for new languages or popular libraries for languages for the Caster repository, you should create them in the `castervoice/rules` folder in the appropriate directory category.
+
+## BountySource Guidelines
 - In order for bounties to be posted they must have very clear guidelines and resources for those that wish to collect.
 
 - While you can post bounties as an individual, it's best to work with community to develop them. Therefore we request that each bounty candidate be discussed with the community in a GitHub issue.

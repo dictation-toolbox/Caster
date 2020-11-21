@@ -2,10 +2,8 @@
 
 from __future__ import print_function, unicode_literals
 from builtins import str
-
 import io
 import json
-import locale
 import six
 import os
 import re
@@ -13,7 +11,14 @@ import sys
 import six
 import time
 import traceback
-from subprocess import Popen
+import subprocess
+import webbrowser
+from locale import getpreferredencoding
+from six import binary_type
+try:
+    from urllib import unquote
+except ImportError:
+    from urllib.parse import unquote
 import tomlkit
 
 from dragonfly import Key, Pause, Window, get_current_engine
@@ -34,6 +39,9 @@ try:  # Style C -- may be imported into Caster, or externally
 finally:
     from castervoice.lib import settings, printer
 
+DARWIN = sys.platform.startswith('darwin')
+LINUX =  sys.platform.startswith('linux')
+WIN32 = sys.platform.startswith('win')
 
 # TODO: Move functions that manipulate or retrieve information from Windows to `window_mgmt_support` in navigation_rules.
 # TODO: Implement Optional exact title matching for `get_matching_windows` in Dragonfly
@@ -92,7 +100,7 @@ def focus_mousegrid(gridtitle):
     Loops over active windows for MouseGrid window titles. Issue #171
     When MouseGrid window titles found focuses MouseGrid overly.
     '''
-    if sys.platform.startswith('win'):
+    if WIN32:
         # May not be needed for Linux/Mac OS - testing required
         try:
             for i in range(9):
@@ -199,15 +207,15 @@ def reboot():
     engine = get_current_engine()
     if engine.name == 'kaldi':
         engine.disconnect()
-        Popen([sys.executable, '-m', 'dragonfly', 'load', '_*.py', '--engine', 'kaldi',  '--no-recobs-messages'])
+        subprocess.Popen([sys.executable, '-m', 'dragonfly', 'load', '_*.py', '--engine', 'kaldi',  '--no-recobs-messages'])
     if engine.name == 'sapi5inproc':
         engine.disconnect()
-        Popen([sys.executable, '-m', 'dragonfly', 'load', '--engine', 'sapi5inproc', '_*.py', '--no-recobs-messages'])
+        subprocess.Popen([sys.executable, '-m', 'dragonfly', 'load', '--engine', 'sapi5inproc', '_*.py', '--no-recobs-messages'])
     if engine.name in ["sapi5shared", "sapi5"]:
         popen_parameters.append(settings.SETTINGS["paths"]["REBOOT_PATH_WSR"])
         popen_parameters.append(settings.SETTINGS["paths"]["WSR_PATH"])
         printer.out(popen_parameters)
-        Popen(popen_parameters)
+        subprocess.Popen(popen_parameters)
     if engine.name == 'natlink':
         import natlinkstatus # pylint: disable=import-error
         status = natlinkstatus.NatlinkStatus()
@@ -218,16 +226,15 @@ def reboot():
             username = status.getUserName()
             popen_parameters.append(username)
             printer.out(popen_parameters)
-            Popen(popen_parameters)
+            subprocess.Popen(popen_parameters)
         else:
            # Natlink out-of-process
             engine.disconnect()
-            Popen([sys.executable, '-m', 'dragonfly', 'load', '--engine', 'natlink', '_*.py', '--no-recobs-messages'])
+            subprocess.Popen([sys.executable, '-m', 'dragonfly', 'load', '--engine', 'natlink', '_*.py', '--no-recobs-messages'])
 
 
-# TODO: Implement default_browser_command Mac/Linux
 def default_browser_command():
-    if sys.platform.startswith('win'):
+    if WIN32:
         if six.PY2:
             from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT, # pylint: disable=import-error,no-name-in-module
                         HKEY_CURRENT_USER, OpenKey, QueryValueEx)
@@ -257,15 +264,15 @@ def default_browser_command():
             CloseKey(reg)
         return path
     else:
-        printer.out("default_browser_command: Not implemented for OS")
-
+        default_browser = webbrowser.get()
+        return default_browser.name + " %1"
 
 def clear_log():
     # Function to clear status window.
     # Natlink status window not used an out-of-process mode.
     # TODO: window_exists utilized when engine launched through Dragonfly CLI via bat in future
     try:
-        if sys.platform.startswith('win'):
+        if WIN32:
             clearcmd = "cls" # Windows OS
         else:
             clearcmd = "clear" # Linux
@@ -289,28 +296,47 @@ def clear_log():
         printer.out(e)
 
 
-# TODO: BringMe - Implement clipboard formats for Mac/Linux
+# TODO: BringMe - Implement clipboard formats for Mac
 def get_clipboard_formats():
     '''
     Return list of all data formats currently in the clipboard
     '''
     formats = []
-    if sys.platform.startswith('win'):
+    if LINUX:
+        encoding = getpreferredencoding()
+        com = ["xclip", "-o", "-t", "TARGETS"]
+        try:
+            p = subprocess.Popen(com,
+                                 stdout=subprocess.PIPE,
+                                 stderr=subprocess.PIPE,
+                                 stdin=subprocess.PIPE,
+                                 )
+            for line in iter(p.stdout.readline, b''):
+                if isinstance(line, binary_type):
+                    line = line.decode(encoding)
+                formats.append(line.strip())
+        except Exception as e:
+            print(
+                "Exception from starting subprocess {0}: " "{1}".format(com, e))
+
+    if WIN32:
         import win32clipboard  # pylint: disable=import-error
         f = win32clipboard.EnumClipboardFormats(0)
         while f:
             formats.append(f)
             f = win32clipboard.EnumClipboardFormats(f)
-        return formats
+
+    if not formats:
+        print("get_clipboard_formats: formats are {}: Not implemented".format(formats))
     else:
-        printer.out("get_clipboard_formats: Not implemented for OS")
+        return formats
 
 
 def get_selected_files(folders=False):
     '''
     Copy selected (text or file is subsequently of interest) to a fresh clipboard
     '''
-    if sys.platform.startswith('win'):
+    if WIN32 or LINUX:
         cb = Clipboard(from_system=True)
         cb.clear_clipboard()
         Key("c-c").execute()
@@ -322,29 +348,72 @@ def get_selected_files(folders=False):
         printer.out("get_selected_files: Not implemented for OS")
 
 
+def enum_files_from_clipboard(target):
+    '''
+    Generates absolute paths from clipboard 
+    Returns unverified absolute file/dir paths based on defined mime type
+    '''
+    paths = []
+    if LINUX:
+        encoding = getpreferredencoding()
+        com = ["xclip", "-selection", "clipboard", "-o", target]
+        try:
+            p = subprocess.Popen(com,
+                                 stdout=subprocess.PIPE,
+                                 stderr=subprocess.PIPE,
+                                 stdin=subprocess.PIPE,
+                                 )
+            for line in iter(p.stdout.readline, b''):
+                if isinstance(line, binary_type):
+                    line = line.decode(encoding).strip()
+                if line.startswith("file://"):
+                    line = line.replace("file://", "")
+                paths.append(unquote(line))
+            return paths
+        except Exception as e:
+            print(
+                "Exception from starting subprocess {0}: " "{1}".format(com, e))
+
+
 def get_clipboard_files(folders=False):
     '''
-    Enumerate clipboard content and return files either directly copied or
+    Enumerate clipboard content and return files/folders either directly copied or
     highlighted path copied
     '''
-    if sys.platform.startswith('win'):
+    files = None
+    if WIN32:
         import win32clipboard  # pylint: disable=import-error
-        files = None
         win32clipboard.OpenClipboard()
         f = get_clipboard_formats()
         if win32clipboard.CF_HDROP in f:
             files = win32clipboard.GetClipboardData(win32clipboard.CF_HDROP)
         elif win32clipboard.CF_UNICODETEXT in f:
-            files = [win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)]
+            files = [win32clipboard.GetClipboardData(
+                win32clipboard.CF_UNICODETEXT)]
         elif win32clipboard.CF_TEXT in f:
             files = [win32clipboard.GetClipboardData(win32clipboard.CF_TEXT)]
         elif win32clipboard.CF_OEMTEXT in f:
-            files = [win32clipboard.GetClipboardData(win32clipboard.CF_OEMTEXT)]
+            files = [win32clipboard.GetClipboardData(
+                win32clipboard.CF_OEMTEXT)]
         if folders:
             files = [f for f in files if os.path.isdir(f)] if files else None
         else:
             files = [f for f in files if os.path.isfile(f)] if files else None
         win32clipboard.CloseClipboard()
         return files
-    else:
-        printer.out("get_clipboard_files: Not implemented for OS")
+
+    if LINUX:
+        f = get_clipboard_formats()
+        if "UTF8_STRING" in f:
+            files = enum_files_from_clipboard("UTF8_STRING")
+        elif "TEXT" in f:
+            files = enum_files_from_clipboard("TEXT")
+        elif "text/plain" in f:
+            files = enum_files_from_clipboard("text/plain")
+        if folders:
+            files = [f for f in files if os.path.isdir(
+                str(f))] if files else None
+        else:
+            files = [f for f in files if os.path.isfile(
+                str(f))] if files else None
+        return files

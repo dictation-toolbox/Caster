@@ -25,6 +25,7 @@ Classic Install Location: `castervoice\rules\apps' ` in Caster source code.
 - [Gitter](#gitter) - gitter
 - [GitHub Desktop](#github-desktop) - github desktop
 - [Jetbrains](#jetbrains) - jet brains
+- [Jira](#jira) - jira
 - [KDiff3](#kdiff3) - K diff
 - [lyx](#lyx) - lyx
 - [Microsoft Teams](#microsoft-teams) - microsoft teams
@@ -416,6 +417,19 @@ These commands are for Windows/Linux and creating a separate command ruleset for
 | `cherry pick`                    | `remove untracked`         | `visualize file`            |
 | `commit`                         | `search recursive`         |                             |
 | `exit`                           | `search recursive count`   |                             |
+
+# Jira
+| Command                         | Command            | Command                      |
+| :------------------------------ | :----------------- | :--------------------------- |
+| `(action | actions)`            | `send to top`      | `go to reports`              |
+| `(action | edit) <action>`      | `share issue`      | `go to sprint`               |
+| `create issue`                  | `go to backlog`    | `go to tempo [teams]`        |
+| `edit issue`                    | `go to boards`     | `submit [form]`              |
+| `next (issue | item) [<n>]`     | `go to dashboards` | `toggle details`             |
+| `previous (issue | item) [<n>]` | `go to issues`     | `toggle presentation [mode]` |
+| `quick search`                  | `go to portfolio`  | `toggle swim lanes`          |
+| `send to bottom`                | `go to projects`   | `view issue`                 |
+
 
 # kdiff3
 

@@ -8,27 +8,28 @@ Explanation of `settings.toml`. Caster settings can be edited in the following w
   
   The following is an `example.toml` settings file with comments explaining the various settings. Some of the settings fields have been truncated for brevity as noted in the comments.
 
-
-
 ```toml
 [Tree_Node_Path] # Paths for Node Tree Rules
 SM_CSS_TREE_PATH = "C:\\Users\\Main\\AppData\\Local\\caster\\data\\sm_css_tree.toml"
 
-[engine] # controls configuration of engine. Currently limited only for DNS
-# 'on': mic is on # default
-# 'sleeping': mic from the sleeping and can be woken up by command
-# 'off': mic off and cannot be turned back on by voice. (DNS Only)
-default_engine_mode = true
-engine_mode = "normal"
-
+[engine] # controls configuration of engine.
+default_engine_mode = false #  Changes default mode when caster starts
+engine_mode = "normal" # Currently implementfor DNS Only/DPI.
 # Valid mic_mode options
-# 'normal': dictation and command (Default: DNS only)
+# 'normal': dictation and command (Default: Only/DPI only)
 # 'dictation': Dictation only 
 # 'command': Commands only (Default: Other engines)
 # 'numbers': Numbers only
 # 'spell': Spelling only
-default_mic = true
+
+default_mic = false # Changes default mic mode when caster starts
 mic_mode = "on"
+# 'on': mic is on # default
+# 'sleeping': mic from the sleeping and can be woken up by command
+# 'off': mic off and cannot be turned back on by voice. (DNS Only)
+
+mic_sleep_timer = 120 # A timer puts microphone to after X seconds after last successful recognition.
+#DNS/DPI has its own built-in sleep mode timer defaults to 5 minutes. Caster mic sleep timer will not work as expected beyond DNS/DPI 5 #minutes default timer (microphone will go to sleep prematurely). if you increase the default timer to greater than 5 minutes anything #under caster mic sleep timer will work as expected.
 
 [formats] # Truncated - Control setting dictation formatting per programming language.
 # Legend - Represents text formatting (capitalization and spacing) rules.
@@ -82,7 +83,7 @@ last_update_date = "2020-01-18" # Last time Caster looked for an update
 online_mode = true #  Disables all Caster features that utilize an internet connection 
 update_interval = 7 #  Interval days between checking for updates
 
-[paths] # Truncated # Default generated paths: "." placeholder for empty path.
+[paths] # Default generated paths: "." placeholder for empty path.
 # Most of the settings here are auto generated which have been omitted except for the following.
 
 AHK_PATH = "C:\\Program Files\\AutoHotkey\\AutoHotkey.exe" # Change the location of AutoHotkey
@@ -103,7 +104,4 @@ version = "python"
 [sikuli] 
 enabled = false # Toggle sikuli third-party integration 
 version = "" # Sikuli Version
-```
-
-
 ```

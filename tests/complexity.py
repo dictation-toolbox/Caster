@@ -16,6 +16,7 @@ from castervoice.lib import settings
 from castervoice.lib.actions import Text
 from castervoice.rules.core.alphabet_rules.alphabet import Alphabet
 from castervoice.rules.core.navigation_rules.nav import Navigation
+from castervoice.rules.core.keyboard_rules.keyboard import Keyboard
 from castervoice.rules.core.numbers_rules.numeric import Numbers
 from castervoice.rules.core.punctuation_rules.punctuation import Punctuation
 from castervoice.rules.ccr.python_rules.python import Python
@@ -147,7 +148,7 @@ class ComplexityTestRule(MergeRule):
 
 def core_and_python():
     '''intended to mimic the average use case: '''
-    return [Alphabet(), Navigation(), Numbers(), Punctuation(), Python()]
+    return [Alphabet(), Navigation(), Numbers(), Punctuation(), Keyboard(), Python()]
 
 
 def prep_merger(merger, nc, ns):
