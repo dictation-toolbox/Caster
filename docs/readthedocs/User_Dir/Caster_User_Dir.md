@@ -1,28 +1,30 @@
 ## User Directory
 
-This provides a brief overview of the caster user directory. The main function of the user directory is to store Caster settings and user-made content. 
+This provides a brief overview of the Caster user directory. The main function of the user directory is to store Caster settings and user-made content. 
+
+*Note for Dragon users*: The Caster User directory is managed by Caster, and should not be confused with Natlink's UserDirectory, which is set to the Caster source code directory if using the [Alternative Natlink Configuration](../Installation/Dragon_NaturallySpeaking.md/#-alternative-natlink-configuration).
 
 **User Directory Location**
 
-Windows  OS `C:\Users\%USERNAME%\AppData\Local\caster`
+The default locations are:
 
-At this point setup should be complete and engine agnostic.
+ - Windows: `C:\Users\%USERNAME%\AppData\Local\caster`
+ - Linux and MacOS: `~/.local/share/caster`
 
-*DNS/DPI*: The Caster User directory is managed by Caster, and should not be confused with Natlink's UserDirectory, which is set to the Caster source code directory if using the [Alternative Natlink Configuration](https://caster.readthedocs.io/en/latest/readthedocs/Installation/Dragon_NaturallySpeaking/#-alternative-natlink-configuration).
+Users can set the location of their Caster user directory using the environment variable `CASTER_USER_DIR`. For help on setting environment variables on your system, search for "setting environment variables <_your OS_>".
 
 **Layout  Description**
 
-1. `data` - Caster stores the data files that are not meant to be edited by the end user explicitly in the data directory. Most data toml files are for SelfModifying rules starting with `sm_`.
-2. `hooks` - User-made hooks are placed (Empty by default)
-3. `rules` - User-made rules and "Caster starter rules" overrides (Empty by default)
-4. `settings` - All Caster related settings file
-5. `sikuli` - User-made sikuli scripts (Empty by default)
-6. `transformers` - Used for simplified transformers i.e words.txt (Empty by default)
+ - `data` - Caster stores the files that are not intended to be edited by the user in the `data` directory. Most files here are for self-modifying rules, such as [Alias](../Caster_Commands/Alias.md), and start with `sm_`.
+ - `hooks` - For user-made [hooks](../Caster_Settings/hooks.md) (Empty by default).
+ - `rules` - For user-made [rules](../Caster_Settings/rules.md) and overrides of rules from Caster (Empty by default).
+ - `settings` - All Caster [settings](../Caster_Settings/settings.md) files.
+ - `sikuli` - For user-made [Sikuli](../Third-party_Integrations/Sikuli.md) scripts (Empty by default).
+ - `transformers` - For [simplified transformers](../Customize_Caster/Customizing_Starter_Rules.md/#use-simplified-transformers) i.e words.txt (Empty by default).
 
 ### Backup Procedures
 
-It's good to back up this directory as it contains user content. The backup scheme can be simple as a zip file, Cloud backup service i.e. Dropbox, or even a private GitHub repository.
+It's good to back up this directory as it contains user content. The backup scheme can be simple as a zip file, cloud-backup service (e.g. Dropbox), or even a private GitHub repository. The simplest solution for most users will be to use the environment variable `CASTER_USER_DIR` to place the user directory inside your cloud-backup folder. Note that on many Windows setups the full user directory is already backed up by default using OneDrive. 
 
-- You can utilize hard links. Hardlinks provide the ability to keep a single copy of a file yet have it appear in multiple directories.
-  - There is a helpful utility that makes these Hardlinks easy to use Windows OS. [Hard Link Shell Extension](https://schinagl.priv.at/nt/hardlinkshellext/linkshellextension.html) 
+Another alternative is to use hard links to a folder in your cloud-backup folder. Hard links provide the ability to keep a single copy of a file yet have it appear in multiple directories. There is a helpful utility that makes these hard links easy to use on Windows OS. See [Hard Link Shell Extension](https://schinagl.priv.at/nt/hardlinkshellext/linkshellextension.html).
 
