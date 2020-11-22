@@ -11,6 +11,8 @@ jobs:
       cache: pip
       before_install:
         - choco install python2
+        - choco install python2 vcredist2008
+        - choco install --ignore-dependencies vcpython27
         - export PATH="/c/Python27:/c/Python27/Scripts:$PATH"
         - python -m pip install --upgrade pip wheel
       install:
