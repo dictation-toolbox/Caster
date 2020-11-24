@@ -6,11 +6,11 @@ Instead of creating an entirely new Rule and file for each example we are going 
 
 For each example in this document you can copy and paste the the code into `caster_example_rule.py` and save the file. Then those commands will become available. We can do this because were really utilizing the same class `MyRule` rule.
 
-`MappingRule` are non-CCR Continuous Command Recognition (CCR). non-CCR commands command requires a pause after you dictate. 
+`MappingRule` are non-CCR Continuous Command Recognition (CCR). non-CCR commands command requires a pause after you dictate.
 
 ## A simple Rule
 
-Lets start with a very simple `MappingRule`. 
+Lets start with a very simple `MappingRule`.
 
 ```python
 # The following line imports all the dragonfly stuff we&#39;ll be using -- obviously you must have Dragonfly installed
@@ -23,11 +23,11 @@ class MyRule(MappingRule):
     "command number two":         Text("here is a hashtag: #"),
   }
 
-def get_rule():   
+def get_rule():
     return MyRule, RuleDetails(name="my rule")
 ```
 
-Done. Name this file `_example1.py`, put it in your My Documents Caster folder. If the speech engine is already started say `reboot Caster`. When you do, saying &quot;some words I speak&quot; will trigger the first command, causing the keys A, B, C to be virtually pressed on the keyboard. Same for the second command. (It is a Text action which prints out a string of text rather than an pressing individual Key action one at a time. Ultimately, they both output text).
+Done. Name this file `_example1.py`, put it in your My Documents Caster folder. If the speech engine is already started say `reboot Caster`. When you do, saying `some words I speak` will trigger the first command, causing the keys A, B, C to be virtually pressed on the keyboard. Same for the second command. (It is a Text action which prints out a string of text rather than an pressing individual Key action one at a time. Ultimately, they both output text).
 
 ## Using Extras
 
@@ -50,15 +50,15 @@ class MyRule(MappingRule):
     Dictation("my_words"),
   ]
 
-def get_rule():   
+def get_rule():
     return MyRule, RuleDetails(name="my rule")
 ```
 
-With this rule, you can say &quot;press key arch&quot; and &quot;a&quot; will be pressed, or &quot;press key brav&quot; and &quot;b&quot; will be pressed. The second command in the rule uses a `Dictation` extra. Any amount of words can be captured by a `Dictation` extra. So, for example, you can say &quot;print these words the short green tree&quot; -- and that will print &quot;words I said: the short green tree&quot;. Whatever you said will be slotted into the result in place of `%(my_words)s`.
+With this rule, you can say `press key arch` and `a` will be pressed, or `press key brav` and `b` will be pressed. The second command in the rule uses a `Dictation` extra. Any amount of words can be captured by a `Dictation` extra. So, for example, you can say `print these words the short green tree` -- and that will print `words I said: the short green tree`. Whatever you said will be slotted into the result in place of `%(my_words)s`.
 
 ## Optional Words, Optional Extras, and Defaults
 
-Suppose you want to have an optional word in a spec. You can use square brackets to make parts of the `spec` optional, including the extras. However, if you make extras optional, you should set sensible default parameters in`defaults` e.g. ` &quot;my_words&quot;: &quot;said nothing&quot;`. Without defining defaults when using optional extras, an error message will be triggered when an appropriate extra is not dictated. Here is a rule with commands with specs with optional parts:
+Suppose you want to have an optional word in a spec. You can use square brackets to make parts of the `spec` optional, including the extras. However, if you make extras optional, you should set sensible default parameters in`defaults` e.g. ` `my_words`: `said nothing``. Without defining defaults when using optional extras, an error message will be triggered when an appropriate extra is not dictated. Here is a rule with commands with specs with optional parts:
 
 ```python
 from dragonfly import *
@@ -80,11 +80,11 @@ class MyRule(MappingRule):
     "my_words": "said nothing"
   }
 
-def get_rule():   
+def get_rule():
     return MyRule, RuleDetails(name="my rule")
 ```
 
-It is nearly identical to the rule in the previous section, except that now to trigger the first command, you don&#39;t have to speak the word &quot;key&quot;. So you could say &quot;press arch&quot; or &quot;press key arch&quot; and the effect would be the same. The second command has an optional extra now. So, if you only say &quot;print these words&quot;, the default for &quot;my_words&quot; will be used and &quot;word I said: said nothing&quot; will be printed.
+It is nearly identical to the rule in the previous section, except that now to trigger the first command, you don&#39;t have to speak the word `key`. So you could say `press arch` or `press key arch` and the effect would be the same. The second command has an optional extra now. So, if you only say `print these words`, the default for `my_words` will be used and `word I said: said nothing` will be printed.
 
 ## The Function Action
 
@@ -108,7 +108,7 @@ class MyRule(MappingRule):
     })
   ]
 
-def get_rule():   
+def get_rule():
     return MyRule, RuleDetails(name="my rule")
 ```
 
@@ -118,7 +118,7 @@ Note that, under the hood, Dragonfly makes use of [keyword arguments](https://ww
 
 The example above shows how spoken words can be passed in as parameters. However, it is also possible to pass in unspoken arguments to your function. These are added as additional arguments to `Function`.
 
-The example below shows how this works. Note how &quot;fruit&quot; and &quot;animals&quot; are received automatically by `busy_func`, while &quot;stuff&quot; and &quot;things&quot; must be added directly. Also recall that since &quot;animals&quot; is optional, a default value must be provided.
+The example below shows how this works. Note how `fruit` and `animals` are received automatically by `busy_func`, while `stuff` and `things` must be added directly. Also recall that since `animals` is optional, a default value must be provided.
 
 ```python
 from dragonfly import *
@@ -152,20 +152,20 @@ class MyRule(MappingRule):
         "animals": "emus",
     }
 
-def get_rule():   
+def get_rule():
     return MyRule, RuleDetails(name="my rule")
 ```
 
 ## Compound Actions
 
-Actions can be combined with the `+` operator. (They can also be repeated a dynamic number of times via the `*` operator and Dragonfly&#39;s Repeat class.) Below, a Key action and a Function action are combined. Both will execute when the spec is spoken.
+Actions can be combined with the `+` operator. (They can also be repeated a dynamic number of times via the `*` operator and Dragonfly's Repeat class.) Below, a Key action and a Function action are combined. Both will execute when the spec is spoken.
 
 ```python
 from dragonfly import *
 
 def my_fn(my_key):
   '''some custom logic here'''
-	print("%(my_key)s has been pressed")
+  print("%(my_key)s has been pressed")
 
 class MyRule(MappingRule):
   mapping = {
@@ -179,11 +179,11 @@ class MyRule(MappingRule):
     })
   ]
 
-def get_rule():   
+def get_rule():
     return MyRule, RuleDetails(name="my rule")
 ```
 
-Notice that both the Key action and the Function action use the &quot;my_key&quot; extra. It is available to all of the actions in the command.
+Notice that both the Key action and the Function action use the `my_key` extra. It is available to all of the actions in the command.
 
 ## Basic MergeRule
 
@@ -201,7 +201,7 @@ class MyRule(MergeRule):
     mapping = {
     "my pet":         R(Text(" my dog ")),
     "your pet":       R(Text(" my cat ")),
-    "his pet":       R(Text(" his fish")),    
+    "his pet":       R(Text(" his fish")),
   }
 
 def get_rule():
