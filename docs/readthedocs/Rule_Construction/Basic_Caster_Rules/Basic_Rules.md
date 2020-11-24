@@ -1,19 +1,17 @@
 # Basic Caster Rules
 
-The beginning of this guide demonstrates how to get started making basic non-CCR`MappingRule` rules.  At the end be a basic Primer for CCR `MergeRule` which Is a type rule that makes CCR commands which do not require a pause.
+The beginning of this guide demonstrates how to get started making basic non-CCR `MappingRule` rules. `MappingRule` are non-CCR Continuous Command Recognition (CCR). Non-CCR commands command requires a pause after you dictate after each command.  At the end this page there is an introductory primer for CCR.
 
-Instead of creating an entirely new Rule and file for each example we are going to reuse `caster_example_rule.py` from `Your First Rule` part of the documentation in your user directory. If you were creating a new rule outside this documentation need  to make sure that 
+Instead of creating an entirely new rule and file for each example we are going to reuse `caster_example_rule.py` from `Your First Rule` part of the documentation in your Caster user directory. Normally we create a new class rule and file you would create.
 
-For each example in this document you can copy and paste the the code into `caster_example_rule.py` and save the file. Then those commands will become available. We can do this because were really utilizing the same class `MyRule` rule.
-
-`MappingRule` are non-CCR Continuous Command Recognition (CCR). non-CCR commands command requires a pause after you dictate.
+For each example in this document you can copy and paste the the code into `caster_example_rule.py` replacing its entire contents and save the file. Then those commands will become available. This is possible because we are utilizing the same class `MyRule` rule.
 
 ## A simple Rule
 
 Lets start with a very simple `MappingRule`.
 
 ```python
-# The following line imports all the dragonfly stuff we&#39;ll be using -- obviously you must have Dragonfly installed
+# The following line imports all the dragonfly stuff we'll be using -- obviously you must have Dragonfly installed
 from dragonfly import *
 
 # Now we make our MappingRule object with only two commands
@@ -84,7 +82,7 @@ def get_rule():
     return MyRule, RuleDetails(name="my rule")
 ```
 
-It is nearly identical to the rule in the previous section, except that now to trigger the first command, you don&#39;t have to speak the word `key`. So you could say `press arch` or `press key arch` and the effect would be the same. The second command has an optional extra now. So, if you only say `print these words`, the default for `my_words` will be used and `word I said: said nothing` will be printed.
+It is nearly identical to the rule in the previous section, except that now to trigger the first command, you do not have to speak the word `key`. So you could say `press arch` or `press key arch` and the effect would be the same. The second command has an optional extra now. So, if you only say `print these words`, the default for `my_words` will be used and `word I said: said nothing` will be printed.
 
 ## The Function Action
 
@@ -94,7 +92,7 @@ The Key, Mouse, and Text actions will get you pretty far, but what if you need t
 from dragonfly import *
 
 def my_fn(my_key):
-  &#39;&#39;&#39;some custom logic here&#39;&#39;&#39;
+  print("some custom logic here")
 
 class MyRule(MappingRule):
   mapping = {
@@ -209,7 +207,10 @@ def get_rule():
     return MyRule, details
 ```
 
-For the moment were going to deviate from talking about  `Actions`  that exist within side `mapping`. We going to briefly talk about a class called `MergeRule` is different than `MappingRule`. MergeRules allow you to dictate more than one Command per utterance. Say `my pet your pet his fish`  In one utterance. The following will text be produced `my dog my cat his fish`.
+### CCR Primer
+
+For the moment were going to deviate from talking about `MappingRule`. We going to briefly talk about a class called `MergeRule` is different than `MappingRule`.
+MergeRules allow you to dictate more than one Command per utterance. Say `my pet your pet his fish`  in one utterance the following will text be produced `my dog my cat his fish`.
 
 Note :
 

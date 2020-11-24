@@ -5,18 +5,22 @@ This page demonstrates how to get started experimenting with voice commands with
 Rules should be placed in [Caster User Directory](https://caster.readthedocs.io/en/latest/readthedocs/User_Dir/Caster_User_Dir/) `rules` directory. See hyperlink for directory file path based on OS. The `rules` folder is where all your created rules should be stored. This folder can be summoned by voice say `bring me caster rules` If Caster is running. 
 
 1. Create a new file called `caster_example_rule.py`
+    - Windows OS users may need to [enable viewing file extensions](https://helpdesk.flexradio.com/hc/en-us/articles/204676189-How-to-change-a-File-Extension-in-Windows) like `.py`.
 
 2. Copy and paste the entire contents of `Example Rule Code` into `caster_example_rule.py`
 
-3. Simply start/restart Caster for the new rule to be recognized.
+3. Simply start/restart(Say `reboot caster`) Caster for the new rule to be recognized.
 
 4. Say `enable my rule` this will make commands available for recognition. Castor remembers that you've activated the rule between restarts. If you wish to disable the rule say `disable my rule`
 
 5. Now any of the commands below like `hotel`  which print out `hotels are not cheap` are available for recognition.
    
-   **Note** Saving the file will cause the rule to reload with your changes allowing you to experiment. If there is an error, the status window will show an error message. Correct what's wrong and save the file. Repeat as needed.
+**Note** 
+    - Saving the file will cause the rule to reload with your changes allowing you to experiment. If there is an error, the status window will show an error message. Correct what's wrong and save the file. Repeat as needed.
+    - Caster goes asleep when it has not recognized words after a period of time. Say `caster on` to wake it up and `caster sleep` to stop recognition.
+    - `Example Rule Code` - Some of these commands are Windows OS specific like file paths which could be changed if you're using Linux/Mac OS
 
-`Example Rule Code` - Some of these commands are Windows OS specific like file paths which could be changed if you're using Linux/Mac OS
+### Example Rule Code
 
 ```python
 # These lines that start with the # are called comments. They don't affect the way the code runs.
@@ -79,7 +83,7 @@ class MyRule(MappingRule):
     "i choose <choice>":           Text("%(choice)s"),
 
     }
-# This stuff is required too -- However you will learn more about how to change the rule types and contexts laterr
+# This stuff is required too -- However you will learn more about how to change the rule types and contexts later.
 def get_rule():   
     return MyRule, RuleDetails(name="my rule")
 ```
