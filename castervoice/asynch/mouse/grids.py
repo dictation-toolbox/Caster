@@ -10,7 +10,7 @@ import time
 from dragonfly import monitors
 if six.PY2:
     from SimpleXMLRPCServer import SimpleXMLRPCServer  # pylint: disable=import-error
-    import Tkinter as tk
+    import Tkinter as tk # pylint: disable=import-error
 else:
     from xmlrpc.server import SimpleXMLRPCServer  # pylint: disable=no-name-in-module
     import tkinter as tk

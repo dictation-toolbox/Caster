@@ -1,6 +1,6 @@
 import six
 if six.PY2:
-    from Tkinter import Label
+    from Tkinter import Label # pylint: disable=import-error
 else:
     from tkinter import Label
 import os

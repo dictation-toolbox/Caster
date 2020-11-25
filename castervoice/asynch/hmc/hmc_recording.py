@@ -3,8 +3,8 @@ from threading import Timer
 
 import six
 if six.PY2:
-    from Tkinter import Label, Entry, Checkbutton
-    import Tkinter as tk
+    from Tkinter import Label, Entry, Checkbutton # pylint: disable=import-error
+    import Tkinter as tk # pylint: disable=import-error
 else:
     from tkinter import Label, Entry, Checkbutton
     import tkinter as tk
