@@ -1,6 +1,6 @@
 import six
 if six.PY2:
-    from Tkinter import Label, Entry, StringVar
+    from Tkinter import Label, Entry, StringVar # pylint: disable=import-error
     import tkFileDialog # pylint: disable=import-error
 else:
     from tkinter import Label, Entry, StringVar, filedialog as tkFileDialog
