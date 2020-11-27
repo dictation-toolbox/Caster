@@ -4,8 +4,6 @@
 
 [Caster](https://github.com/dictation-toolbox/Caster) gives you the power to control your computer by voice. Take control of your applications, games, mouse and keyboard to augment your workflow for every day activities or as an accessibility tool to develop applications entirely by voice built upon the [Dragonfly](https://github.com/dictation-toolbox/dragonfly) framework.  
 
-**Note for PyPi Users**: The PIP package is (_Alpha_). Do not use the PIP install. Alternatively use this [Master Branch](https://github.com/dictation-toolbox/Caster) with classic install for the best feature experience.
-
 - Videos by the Caster Community:
 
   - [Caster voice coding: Advent of Code 2018](https://youtu.be/oDsMGroASSw?t=3) - Programming with Go
