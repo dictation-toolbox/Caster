@@ -183,7 +183,12 @@ def get_rule():
 
 Notice that both the Key action and the Function action use the `my_key` extra. It is available to all of the actions in the command.
 
-## Basic MergeRule
+## CCR Primer
+
+For the moment were going to deviate from talking about `MappingRule`. We going to briefly talk about a class called `MergeRule` is different than `MappingRule`.
+MergeRules allow you to dictate more than one Command per utterance. Say `my pet your pet his fish`  in one utterance the following will text be produced `my dog my cat his fish`.
+
+**Basic MergeRule (CCR)**
 
 ```python
 from dragonfly import Text
@@ -207,16 +212,11 @@ def get_rule():
     return MyRule, details
 ```
 
-### CCR Primer
-
-For the moment were going to deviate from talking about `MappingRule`. We going to briefly talk about a class called `MergeRule` is different than `MappingRule`.
-MergeRules allow you to dictate more than one Command per utterance. Say `my pet your pet his fish`  in one utterance the following will text be produced `my dog my cat his fish`.
-
 Note :
 
 - `MergeRule` has  `pronunciation = "my rule"` vs `MappingRule`  has`RuleDetails(name= "My rule")` for the defining phrase to enable or disable the rule.
 
-- `R()` that surrounds Action allows for Catster print out the command history to the status window. Can be used in both `MergeRule` and `MappingRule`.
+- `R()` that surrounds Action allows for Caster print out the command history to the status window. Can be used in both `MergeRule` and `MappingRule`.
 
 ### Final step
 
