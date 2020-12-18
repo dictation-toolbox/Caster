@@ -3,7 +3,7 @@
 
 The application name is followed by a pronunciation to `enable` or `disable` and the respective rules. A '/' separates pronunciations for different rules belonging to a single app grammar.
 
-Classic Install Location: `castervoice\rules\apps' ` in Caster source code. 
+Classic Install Location: `castervoice\rules\apps'` in Caster source code.
 
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
@@ -45,7 +45,7 @@ Classic Install Location: `castervoice\rules\apps' ` in Caster source code.
 
 <!-- /TOC -->
 
-# Adobe acrobat
+## Adobe Acrobat
 
 | Command                            | Command                      | Command                                  |
 | :--------------------------------- | :--------------------------- | :--------------------------------------- |
@@ -61,7 +61,7 @@ Classic Install Location: `castervoice\rules\apps' ` in Caster source code.
 | `change speed <speed_one_to_nine>` | `reverse [direction]`        | `stop [scrolling]`                       |
 | `highlight`                        | `hand tool`                  | `select tool`                            |
 
-# Atom
+## Atom
 
 | Command                               | Command                                           | Command                             |
 | :------------------------------------ | :------------------------------------------------ | :---------------------------------- |
@@ -142,7 +142,7 @@ Classic Install Location: `castervoice\rules\apps' ` in Caster source code.
 
 \* select / copy / cut / paste / delete
 
-# Google Chrome
+## Google Chrome
 
 | Command                   | Command                              | Command                      |
 | :------------------------ | :----------------------------------- | :--------------------------- |
@@ -171,11 +171,11 @@ Classic Install Location: `castervoice\rules\apps' ` in Caster source code.
 | `checkout [this] pull request [locally]` | Called from any tab of the Github pull request page: ("Conversation", "Commits", "Checks", "Files changed"). Adjust pause times in the `gitbash` section of `settings.toml`. |
 | `update [this] pull request [locally]`   | Called from any tab of the Github pull request page: ("Conversation", "Commits", "Checks", "Files changed"). Adjust pause times in the `gitbash` section of `settings.toml`. |
 
-# Command Prompt
+## Command Prompt
 
-Same Commands as [Git Bash](#git-bash)
+Same Commands as [Git Bash](## git-bash)
 
-# Total Commander
+## Total Commander
 
 | Command           | Command              | Command         |
 | :---------------- | :------------------- | :-------------- |
@@ -187,14 +187,14 @@ Same Commands as [Git Bash](#git-bash)
 | `multi rename`    | `display thumbnails` | `display list`  |
 | `display details` | `display file tree`  |                 |
 
-# Total Commander: synchronize directories
+## Total Commander: synchronize directories
 
 | Command         | Command            | Command       |
 | :-------------- | :----------------- | :------------ |
 | `compare files` | `copy left`        | `copy right`  |
 | `view right`    | `remove selection` | `synchronize` |
 
-# Dragon
+## Dragon
 
 | Command                      | Command               | Command                           |
 | :--------------------------- | :-------------------- | :-------------------------------- |
@@ -209,7 +209,7 @@ Same Commands as [Git Bash](#git-bash)
 | `add to vocab`               | `train from vocab`    |                                   |
 | `peak recognition history`   | `remove from vocab`   |                                   |
 
-# Eclipse
+## Eclipse
 
 | Command                                | Command                            | Command                 |
 | :------------------------------------- | :--------------------------------- | :---------------------- |
@@ -223,7 +223,7 @@ Same Commands as [Git Bash](#git-bash)
 | `find everywhere`                      | `prior tab [<n>]`                  | `symbol prior [<n>]`    |
 | `find regex <text> [<back>] [<go>]`    | `refractor symbol`                 | `terminate`             |
 
-# Emacs
+## Emacs
 
 | Command               | Command               | Command            |
 | :-------------------- | :-------------------- | :----------------- |
@@ -239,7 +239,7 @@ Same Commands as [Git Bash](#git-bash)
 | `document forward`    | `paragraph backward`  | `word backward`    |
 | `forward delete`      | `paragraph forward`   | `word forward`     |
 
-# Excel
+## Excel
 
 | Command                                                | Command                          | Command                            |
 | :----------------------------------------------------- | :------------------------------- | :--------------------------------- |
@@ -252,7 +252,7 @@ Same Commands as [Git Bash](#git-bash)
 | `arrange Windows`                                      | `auto sum`                       | `freeze panes`                     |
 | `toggle edit cell`                                     | `|`                              |                                    |
 
-# Internet Explorer
+## Internet Explorer
 
 | Command                             | Command       | Command      |
 | :---------------------------------- | :------------ | :----------- |
@@ -260,14 +260,14 @@ Same Commands as [Git Bash](#git-bash)
 | `address bar`                       | `get up`      |              |
 | `get back`                          | `new file`    |              |
 
-# File Dialogues
+## File Dialogues
 
 | Command               | Command      | Command       |
 | :-------------------- | :----------- | :------------ |
 | `up [n]`              | `back [n]`   | `forward [n]` |
 | `(files / file list)` | `navigation` | `[file] name` |
 
-# Firefox
+## Firefox
 
 | Command                   | Command                              | Command                      |
 | :------------------------ | :----------------------------------- | :--------------------------- |
@@ -296,7 +296,7 @@ Same Commands as [Git Bash](#git-bash)
 | `checkout [this] pull request [locally]` | Called from any tab of the Github pull request page: ("Conversation", "Commits", "Checks", "Files changed"). Adjust pause times in the `gitbash` section of `settings.toml`. |
 | `update [this] pull request [locally]`   | Called from any tab of the Github pull request page: ("Conversation", "Commits", "Checks", "Files changed"). Adjust pause times in the `gitbash` section of `settings.toml`. |
 
-# Flash Develop
+## Flash Develop
 
 | Command              | Command            | Command                 |
 | :------------------- | :----------------- | :---------------------- |
@@ -308,7 +308,7 @@ Same Commands as [Git Bash](#git-bash)
 | `find everywhere`    | `refractor symbol` | `symbol prior [<n>]`    |
 | `format code`        | `resume`           | `terminate`             |
 
-# fman
+## fman
 
 | Command           | Command                       | Command          |
 | :---------------- | :---------------------------- | :--------------- |
@@ -322,13 +322,13 @@ Same Commands as [Git Bash](#git-bash)
 | `sort [by] size`  | `sort [by] (modified / date)` | `stoosh path`    |
 | `terminal`        | `command pallette`            | `tabby`          |
 
-# Foxit Reader
+## Foxit Reader
 
 | Command           | Command          | Command           |
 | :---------------- | :--------------- | :---------------- |
 | `close tab [<n>]` | `next tab [<n>]` | `prior tab [<n>]` |
 
-# Git Bash
+## Git Bash
 
 | Command                       | Command                    | Command                     |
 | :---------------------------- | :------------------------- | :-------------------------- |
@@ -347,7 +347,7 @@ Same Commands as [Git Bash](#git-bash)
 | `commit`                      | `search recursive`         |                             |
 | `exit`                        | `search recursive count`   |                             |
 
-# GitHub Desktop
+## GitHub Desktop
 
 | Command                            | Command                 | Command                       |
 | :--------------------------------- | :---------------------- | :---------------------------- |
@@ -361,7 +361,7 @@ Same Commands as [Git Bash](#git-bash)
 | `update from master`               | `compare to branch`     | `merge into current [branch]` |
 | `compare on github`                | `[create] pull request` | ``                            |
 
-# Gitter
+## Gitter
 
 | Command         | Command          | Command       |
 | :-------------- | :--------------- | :------------ |
@@ -370,7 +370,7 @@ Same Commands as [Git Bash](#git-bash)
 | `emphasize`     | `insert image`   | `mention`     |
 | `<size> header` | `strikethrough`  | `latex`       |
 
-# Jetbrains 
+## Jetbrains 
 
 It is worth noting that JetBrains commands may vary differently on Mac, versus Windows/Linux. 
 These commands are for Windows/Linux and creating a separate command ruleset for JetBrains on Mac is probably necessary.
@@ -418,7 +418,7 @@ These commands are for Windows/Linux and creating a separate command ruleset for
 | `commit`                         | `search recursive`         |                             |
 | `exit`                           | `search recursive count`   |                             |
 
-# Jira
+## Jira
 | Command                         | Command            | Command                      |
 | :------------------------------ | :----------------- | :--------------------------- |
 | `(action | actions)`            | `send to top`      | `go to reports`              |
@@ -431,13 +431,13 @@ These commands are for Windows/Linux and creating a separate command ruleset for
 | `send to bottom`                | `go to projects`   | `view issue`                 |
 
 
-# kdiff3
+## kdiff3
 
 | Command   | Command | Command |
 | :-------- | :------ | :------ |
 | `refresh` |         |         |
 
-# lyx
+## lyx
 
 | Command              | Command                | Command |
 | :------------------- | :--------------------- | :------ |
@@ -468,7 +468,7 @@ These commands are for Windows/Linux and creating a separate command ruleset for
             "macro": "o"
 ```
 
-# Microsoft Teams
+## Microsoft Teams
 
 | command               | command               | command                        |
 | --------------------- | --------------------- | ------------------------------ |
@@ -489,7 +489,7 @@ These commands are for Windows/Linux and creating a separate command ruleset for
 | accept \[audio\] call | view week             |                                |
 | decline \[call\]      |                       |                                |
 
-# Microsoft Visual Studio
+## Microsoft Visual Studio
 
 | Command                     | Command          | Command              |
 | :-------------------------- | :--------------- | :------------------- |
@@ -501,14 +501,14 @@ These commands are for Windows/Linux and creating a separate command ruleset for
 | `cursor next`               | `on comment out` | `step over [<n>]`    |
 | `cursor prior`              | `resolve`        | `toggle full screen` |
 
-# Notepad++
+## Notepad++
 
 | Command              | Command        |
 | :------------------- | :------------- |
 | `function list`      | `remove style` |
 | `preview in browser` | `stylize <n2>` |
 
-# Outlook
+## Outlook
 
 | Command                            | Command                            | Command                             |
 | :--------------------------------- | :--------------------------------- | :---------------------------------- |
@@ -537,7 +537,7 @@ These commands are for Windows/Linux and creating a separate command ruleset for
 | `next open message`                | `(prior / previous) open message`  | `previous view`                     |
 | `next view`                        | `[go] back`                        | ``                                  |
 
-# RStudio
+## RStudio
 
 | Command                             | Command      | Command          |
 | :---------------------------------- | :----------- | :--------------- |
@@ -552,13 +552,13 @@ These commands are for Windows/Linux and creating a separate command ruleset for
 
 \* select / copy / cut / paste / delete
 
-# SQL Developer
+## SQL Developer
 
 | Command        | Command       | Command          |
 | :------------- | :------------ | :--------------- |
 | `comment line` | `format code` | `run this query` |
 
-# SQL Server Management Studio
+## SQL Server Management Studio
 
 | Command                   | Command          | Command           |
 | :------------------------ | :--------------- | :---------------- |
@@ -569,7 +569,7 @@ These commands are for Windows/Linux and creating a separate command ruleset for
 | `[toggle] full screen`    | `next tab [<n>]` | `step over [<n>]` |
 | `close tab [<n>]`         | `prior bookmark` |                   |
 
-# Sublime
+## Sublime
 
 | Command                          | Command                          | Command                          |
 | :------------------------------- | :------------------------------- | :------------------------------  |
@@ -601,10 +601,9 @@ These commands are for Windows/Linux and creating a separate command ruleset for
 |`[<nth>] last tab`                |`column <cols>`                   |`focus <panel>`                   |
 |`move <panel>`                    |`open terminal`                   |`open console`                    |
 
-
 \* select / copy / cut / paste / delete / comment
 
-# Typora
+## Typora
 
 | Command              | Command                        | Command                        |
 | :------------------- | :----------------------------- | :----------------------------- |
@@ -626,7 +625,8 @@ These commands are for Windows/Linux and creating a separate command ruleset for
 | `zoom in <n>`        | `zoom out <n>`                 | `switch documnets`             |
 | `toggle [dev] tools` | `|`                            |                                |
 
-# Unity
+## Unity
+
 | Command                    | Command                        | Command                        |
 | :------------------------- | :----------------------------- | :----------------------------- |
 | `show <window>`            | `search <window>`              | `clear <window>`               |
@@ -636,8 +636,7 @@ These commands are for Windows/Linux and creating a separate command ruleset for
 | `move [sibling] last`      | `(set active \| toggle )`      | `[load] selection [<1to9>]`    |
 | `store selection [<1to9>]` | `rename`                       |                                |
 
-
-# Visual Studio
+## Visual Studio
 
 | Command                            | Command                      | Command                             |
 | :--------------------------------- | :--------------------------- | :---------------------------------- |
@@ -652,11 +651,11 @@ These commands are for Windows/Linux and creating a separate command ruleset for
 | `[toggle] break point`             | `next bookmark`              | `step over [<n>]`                   |
 | `[toggle] full screen`             | `next tab [<n>]`             | `team explorer`                     |
 | `build solution`                   | `prior bookmark`             | `toggle [section] outlining`        |
-| `close tab [<n>] `                 | `prior tab [<n>]`            | `toggle all outlining`              |
+| `close tab [<n>]`                 | `prior tab [<n>]`            | `toggle all outlining`              |
 | `collapse to definitions`          | `quick launch`               | `undo (checkout / pending changes)` |
 | `comment block`                    |                              |                                     |
 
-# Visual Studio Code
+## Visual Studio Code
 
 ## CCR (Continuous Command Recognition)
 
@@ -672,8 +671,7 @@ These commands are for Windows/Linux and creating a separate command ruleset for
 | `indent [<n>]`               | `all current word`                        | `copy line up [<n>]`                    |
 | `(Unindent/outdent) [<n>]`   | `select around <around_parables> [<n>]`   | `switch line up [<n>]`                  |
 | `match bracket`              | `select between <between_parables> [<n>]` | `switch line down [<n>]`                |
-| `hard delete [<n>]`          | 
-
+| `hard delete [<n>]`          |
 
 ## Non-CCR
 
@@ -718,7 +716,7 @@ These commands are for Windows/Linux and creating a separate command ruleset for
 
 \* select / copy / cut / paste / delete
 
-# Webex Teams
+## Webex Teams
 
 | Command                            | Command                         | Command              |
 | :--------------------------------- | :------------------------------ | :------------------- |

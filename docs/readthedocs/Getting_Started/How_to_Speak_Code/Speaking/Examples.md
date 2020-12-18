@@ -2,7 +2,7 @@
 
 In the following examples, a comma separates commands that can be strung together into a single utterance, while a semicolon separates commands that must be said as separate utterances (because either the previous or next phrase is not a CCR command).
 
-## Example 1:
+## Example 1
 
 Dictate the following JavaScript function.
 
@@ -29,7 +29,7 @@ _"set format gerrish gum bow; format fun, tabby, format set status text, tabby, 
 
 The rest of the dictation after the function definition would be the same. This is a savings of five words, or about 25%, for the function definition. Creating specific snippets for things like variable declarations and assignments, jQuery selectors, etc. could reduce this further.
 
-## Example 2:
+## Example 2
 
 Dictate a variable or identifier name that has a Caster CCR keyword embedded in it.
 

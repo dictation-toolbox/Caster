@@ -14,13 +14,13 @@ Rules should be placed in [Caster User Directory](https://caster.readthedocs.io/
 4. Say `enable my rule` this will make commands available for recognition. Castor remembers that you've activated the rule between restarts. If you wish to disable the rule say `disable my rule`
 
 5. Now any of the commands below like `hotel`  which print out `hotels are not cheap` are available for recognition.
-   
-**Note** 
+
+**Note**
     - Saving the file will cause the rule to reload with your changes allowing you to experiment. If there is an error, the status window will show an error message. Correct what's wrong and save the file. Repeat as needed.
     - Caster goes asleep when it has not recognized words after a period of time. Say `caster on` to wake it up and `caster sleep` to stop recognition.
     - `Example Rule Code` - Some of these commands are Windows OS specific like file paths which could be changed if you're using Linux/Mac OS
 
-### Example Rule Code
+## Example Rule Code
 
 ```python
 # These lines that start with the # are called comments. They don't affect the way the code runs.

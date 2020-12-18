@@ -1,8 +1,8 @@
-## Hooks
+# Hooks
 
 This allows you to turn off certain Caster features.  Setting a hook to `true` or `False` in `hooks.toml` changes if the hook runs when Caster starts. Hooks can be temporarily `Disabled` and `Enabled`  by voice while Caster is running which does not altar settings in `hooks.toml`. Toggling typically uses the hook name unless noted otherwise.
 
-Say `Enable <hook name> ` activate a hook.
+Say `Enable <hook name>` activate a hook.
 
 ### Types of Hooks
 
@@ -12,26 +12,22 @@ Say `Enable <hook name> ` activate a hook.
 
    Example command
 
-   ` set format tie snake bow` 
+   `set format tie snake bow`
 
    Example Legend
 
    - snake - words_with_underscores
    - tie - TitleCase
 
-   
-
 2. Printer Hook (Enabled by Default)
 
    The Formatting Hook prints out to the status window when rules are enabled or disabled. `Enable  <Rule name>`
 
-   Command example 
+   Command example
 
    Say `Enable Firefox`
 
    `The rule FirefoxRule was set to active.`
-
-   
 
 3. Show Status Window On Error Hook
 

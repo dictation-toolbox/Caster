@@ -17,8 +17,6 @@ Common Examples of different context:
 
 This seems very complex, by and large you'll be working with `rules` as Caster creates and manages the grammars for you.
 
-
-
 ## **Rule Construction Overview**
 
 Rule construction documentation will walk youu through the following:
@@ -31,6 +29,6 @@ Rule construction documentation will walk youu through the following:
   
   **Note** It is highly recommended that you skip `Advanced Rules` to `Loading Rules` until you're comfortably going your own basic rules.
 
-- `Advanced Rules`  - Goes in-depth with castor specific features such as CCR
+- `Advanced Rules` - Goes in-depth with castor specific features such as CCR
 
 - `Loading Rules` - Which shows you how to load and define when and where rules are active such as `global` or `application` contexts.

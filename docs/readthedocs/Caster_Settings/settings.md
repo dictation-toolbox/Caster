@@ -1,4 +1,4 @@
-## Settings
+# Settings
 
 Explanation of `settings.toml`. Caster settings can be edited in the following ways:
 

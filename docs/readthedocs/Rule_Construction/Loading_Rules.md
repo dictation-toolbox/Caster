@@ -1,4 +1,4 @@
-### Loading Rules
+# Loading Rules
 
 Up until this point we talk a lot about of how to create your own commands but not  the context of when they become active.  This is managed through `get_rule` where Caster registers rules to create grammars.
 
@@ -34,7 +34,7 @@ Once you have created a unique rule class  with your desired mappings inside, yo
   
   The types of rule which can be added are detailed further in `doc/readtedocs/CCR.md` with complete examples. One rule can only be contained per file. However here is a summary:
 
-#### **CCR Global Rules**
+## **CCR Global Rules**
 
 `MergeRule`
 
@@ -50,7 +50,7 @@ def get_rule():
     return HomonymsRule, RuleDetails(ccrtype=CCRType.GLOBAL)
 ```
 
-#### **Non-CCR Global Rules**
+### **Non-CCR Global Rules**
 
 `MappingRule`
 
@@ -61,7 +61,7 @@ def get_rule():
     return MyUniqueRule, RuleDetails(name="my unique rule")
 ```
 
-#### **CCR App Rules**
+### **CCR App Rules**
 
 `MergeRule`
 
@@ -82,7 +82,7 @@ def get_rule():
     return ExcelRule, details
 ```
 
-#### Non-CCR App Rules
+### Non-CCR App Rules
 
 `MappingRule`
 
@@ -117,7 +117,7 @@ def get_rule():
     return MySelfModRule, RuleDetails(ccrtype=CCRType.SELFMOD)
 ```
 
-#### FuncContext
+### FuncContext
 
 `MergeRule` or `MappingRule` use their respectiive imports above.
 

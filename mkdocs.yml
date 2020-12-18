@@ -57,6 +57,8 @@ nav:
             - 'Node Rule': readthedocs/Rule_Construction/Advanced_Caster_Rules/NodeRule.md
         - Loading Rules: 
             - readthedocs/Rule_Construction/Loading_Rules.md
+        - Migrating From Dragonfly or Previous Caster Versions:
+            - readthedocs/Rule_Construction/Migrating_From_Dragonfly-Caster.md
     - Customize Caster:
         - 'Editing Starter Rules': "readthedocs/Customize_Caster/Customizing_Starter_Rules.md"
         - 'Creating Hooks and Events': "readthedocs/Customize_Caster/Creating_Hooks_and_Events.md"
@@ -76,8 +78,8 @@ nav:
         - 'Undocumented Features': readthedocs/meta/Undocumented_Features.md
         - 'Grammar Documentation Template': readthedocs/meta/GRAMMAR_DOCUMENTATION_TEMPLATE.md
         - Dragonfly Rules:
-            - 'Dragonfly Rules': readthedocs/Rule_Construction/Dragonfly_Rules/Dragonfly_Rules.md
-            - 'Sample File': readthedocs/Rule_Construction/Dragonfly_Rules/Sample_File.md 
+            - 'Dragonfly Rules': readthedocs/meta/Dragonfly_Rules/Dragonfly_Rules.md
+            - 'Sample File': readthedocs/meta/Dragonfly_Rules/Sample_File.md
         - Archive: 
             - readthedocs/meta/Archive/RuleFilters.md 
             - readthedocs/meta/Archive/Windows_Speech_Recognition.md

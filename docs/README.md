@@ -31,20 +31,20 @@
     - `print to console` - `print()`
     - `open file` -  `open('filename', 'r') as f:`
 
-- Application or Language not supported? 
+- Application or Language not supported?
 
   [Make your own Caster rules](https://caster.readthedocs.io/en/latest/readthedocs/Rule_Construction/Intro_Into_Rules_and_Grammars/) augmented by [Development Commands](https://caster.readthedocs.io/en/latest/readthedocs/Caster_Commands/CCR_languages_Quick_Reference/#VoiceDevCommands)
 
 - [Contributing / How can I help?](https://caster.readthedocs.io/en/latest/Contributing/)
 
-- Do you want to financially support Caster development? 
+- Do you want to financially support Caster development?
   Donate at [![IssueHunt](https://img.shields.io/badge/-IssueHunt-blue)](https://issuehunt.io/r/dictation-toolbox/Caster)
 
 - Need support or just curious? Join our community at [![Gitter](https://img.shields.io/gitter/room/dictation-toolbox/Caster?label=Chat)](https://gitter.im/dictation-toolbox/home) [![Discord](https://img.shields.io/discord/431142802005688340?label=Discord)](https://discord.gg/9eAAsCJ) [![Matrix](https://img.shields.io/matrix/caster:matrix.org?label=Matrix%20Chat&server_fqdn=matrix.org)](https://matrix.to/#/+dictation-toolbox:matrix.org)
 
 - The [DictationToolbox.org](https://dictation-toolbox.github.io/dictation-toolbox.org/) (WIP) is a curated webpage of information related to voice programming and accessibility. Content Includes: User Tips, Hardware, Videos, Blogs, Repositories, Presentations, and etc. Pull requests welcome!
 
-# Feature List 
+## Feature List
 
 - Configurable [Settings](https://caster.readthedocs.io/en/latest/readthedocs/User_Dir/Caster_User_Dir/)
 
@@ -52,7 +52,7 @@
 
 - Compatible Speech Recognition Engines
 
-  - [Dragon NaturallySpeaking](https://www.nuance.com/dragon.html) v13 and higher 
+  - [Dragon NaturallySpeaking](https://www.nuance.com/dragon.html) v13 and higher
   - [Kaldi](https://dragonfly2.readthedocs.io/en/latest/kaldi_engine.html)
   - [Windows Speech Recognition](https://support.microsoft.com/en-us/help/17208/windows-10-use-speech-recognition)
 
@@ -60,14 +60,14 @@
 
   - IDEs/Editors: Microsoft Visual C++, Visual Studio, Eclipse, Jetbrains IDEs, Emacs, Sublime, Atom, Visual Studio Code, Notepad++, FlashDevelop, Sql Developer, SQL Server Management Studio
   - Development Tools: Command Prompt, GitBash, KDiff3
-  - Statistics: RStudio 
+  - Statistics: RStudio
   - Word Processor: lyx, Microsoft Word, Typora
   - Browsers: Firefox, Chrome, Internet Explorer
-  - Git Client:  Github Desktop 
+  - Git Client:  Github Desktop
   - Chat: Microsoft Teams, Gitter
   - Applications: Foxit Reader, fman, Total Commander, Outlook, Excel, Unity3D
   
-- Supported [Programming Languages](https://caster.readthedocs.io/en/latest/readthedocs/Caster_Commands/CCR_languages_Quick_Reference/) - Enhanced by Caster's [Continuous Command Recognition](https://caster.readthedocs.io/en/latest/readthedocs/Rule_Construction/Caster_Rules/CCR/) - [Demo](https://www.youtube.com/watch?v=Obdegwr_LFc&index=5&list=PLV6JPhkq1x8LHu02YefhUU9rXiB2PK8tc)
+- Supported [Programming Languages](https://caster.readthedocs.io/en/latest/readthedocs/Caster_Commands/CCR_languages_Quick_Reference/) - Enhanced by Caster's [Continuous Command Recognition](https://caster.readthedocs.io/en/latest/readthedocs/Rule_Construction/Advanced_Caster_Rules/CCR/) - [Demo](https://www.youtube.com/watch?v=Obdegwr_LFc&index=5&list=PLV6JPhkq1x8LHu02YefhUU9rXiB2PK8tc)
 
   - Python, Java, Bash, C++, C#, Rust, Go, HTML, CSS, JavaScript, SQL, Dart, Latex , Matlab, R, Prolog, VHDL, and Haxe
   
@@ -91,6 +91,6 @@
 
 - Caster extends the Dragonfly API for even more powerful commands.
 
-  - The [Context Stack](https://caster.readthedocs.io/en/latest/readthedocs/Rule_Construction/Caster_Rules/ContextStack/) - Create asynchronous and context seeking commands
+  - The [Context Stack](https://caster.readthedocs.io/en/latest/readthedocs/Rule_Construction/Advanced_Caster_Rules/ContextStack/) - Create asynchronous and context seeking commands
 
-  - Spec reduction via [NodeRule](https://caster.readthedocs.io/en/latest/readthedocs/Rule_Construction/Caster_Rules/NodeRule/)
+  - Spec reduction via [NodeRule](https://caster.readthedocs.io/en/latest/readthedocs/Rule_Construction/Advanced_Caster_Rules/NodeRule/)

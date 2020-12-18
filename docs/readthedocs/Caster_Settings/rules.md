@@ -1,4 +1,4 @@
-## Rules
+# Rules
 
 All rules managed by Caster are tracked in this config file `rules.toml`located in [Caster User Directory](https://caster.readthedocs.io/en/latest/readthedocs/User_Dir/Caster_User_Dir/) `settings` folder.  This configuration file allows you not only to see what rules are active but change with the whitelist which rules are loaded by Caster during startup.  Rules are loaded from [Caster User Directory](https://caster.readthedocs.io/en/latest/readthedocs/User_Dir/Caster_User_Dir/) `Rules` folder and/or the Caster source code directly typically `Documents\Caster\Rules`.
 
@@ -26,7 +26,7 @@ New users will be provided a core set of starter rules to get started with and t
 - All rules loaded by Caster including from `AppData\Local\caster\Rules` (user made) and `Documents\Caster\castervoice\Rules` (Caster Starter Rules) will automatically be added to `[whitelisted]` as `true` during startup when the rule is first detected.
 - Caster must be restarted for changes in `[whitelisted]` to take effect.
 
-The following `rules.toml `is a mock representation of the default settings. `_enabled_ordered` shows the default enabled grammars when Caster first starts. Defaults may vary by Caster version and engine.
+The following `rules.toml` is a mock representation of the default settings. `_enabled_ordered` shows the default enabled grammars when Caster first starts. Defaults may vary by Caster version and engine.
 
 ```toml
 _enabled_ordered = ["Alphabet", "Navigation", "NavigationNon", "Numbers", "Punctuation", "Keyboard", "CasterRule", "HardwareRule", "MouseAlternativesRule", "WindowManagementRule", "LegionGridRule", "DouglasGridRule", "RainbowGridRule", "SudokuGridRule", "HMCRule", "HMCConfirmRule", "HMCDirectoryRule", "HMCHistoryRule", "HMCLaunchRule", "HMCSettingsRule", "HistoryRule", "ChainAlias", "Alias", "DragonRule", "BringRule", "Again", "GrammarActivatorRule", "HooksActivationRule"]

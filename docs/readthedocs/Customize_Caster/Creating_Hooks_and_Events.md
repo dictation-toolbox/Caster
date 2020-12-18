@@ -1,4 +1,4 @@
-## Creating Hooks and Events
+# Creating Hooks and Events
 
 Hooks are a new concept to Caster 1.x.x. The basic idea is that Caster itself defines "events." Event objects contain immutable information about the stuff going on in the "guts" of Caster. Those objects are fed to "hooks", user-defined listeners, which can do whatever they want with that event data.  
 
@@ -6,7 +6,7 @@ Hooks and Events make use of dependency injection and class inheritance through 
 
 All new hooks are set to `false` by default unless they' are defined as defaults in `settings.py`  under `default_hooks`. 
 
-1. **Hook Runner Placement** 
+1. **Hook Runner Placement**
 
    First to figure out what data you want to monitor In the code and create a hook runner. For example Printer Hook monitors and prints enabled/disabled rules states. See [grammar_manager.py](https://github.com/dictation-toolbox/Caster/blob/3ff4f7d7c9c01fec2059ffa5c4ca708fdb7d09ad/castervoice/lib/ctrl/mgr/grammar_manager.py#L151). A hook runner runs every time an event occurs. Printer Hook runner example `self._hooks_runner.execute(RuleActivationEvent(class_name, enabled))` .
 
@@ -20,11 +20,11 @@ All new hooks are set to `false` by default unless they' are defined as defaults
 
       **Note**: Hook Runners can be reused to capture data throughout the source code in multiple functions assuming the observed data uses the same variables.
 
-2. **Create a Event** 
+2. **Create a Event**
 
    Create a Event and register [Event types](https://github.com/dictation-toolbox/Caster/blob/master/castervoice/lib/merge/ccrmerging2/hooks/events/event_types.py). 
 
-   - Events can be reused in hooks.
+- Events can be reused in hooks.
 - Don't forget to import the event at the location of your hook runner.
 
 The Event needs a class name `RuleActivationEvent`,  registered event type `EventType.ACTIVATION` , and the variables (`class_name, enabled`). 
@@ -41,19 +41,19 @@ class RuleActivationEvent(BaseHookEvent):
         self.active = active 
 ```
 
-3.  **Create a Hook**.
+3.**Create a Hook**
 
    Hooks need class name `PrinterHook`, Event type `EventType.ACTIVATION` and a pronunciation`"printer"` 
 
-   - Hook can be enabled/disabled while Caster is running. The get_pronunciation Is returned as `printer` but the full pronunciation `enable/disable printer hook`.  The prefix/suffix is added automatically.
+- Hook can be enabled/disabled while Caster is running. The get_pronunciation Is returned as `printer` but the full pronunciation `enable/disable printer hook`.  The prefix/suffix is added automatically.
 
-   - The required `run` function is where you add your logic to process the event data.
+- The required `run` function is where you add your logic to process the event data.
 
-   - Advanced *optional* functionality with  `run_on_enable` and `run_on_disable`. These functions only run when a hook is enabled or disabled. Useful for when you want to process data differently on enabling or disabling a hook that is separate from  `run` function.
+- Advanced *optional* functionality with  `run_on_enable` and `run_on_disable`. These functions only run when a hook is enabled or disabled. Useful for when you want to process data differently on enabling or disabling a hook that is separate from  `run` function.
 
-      **Note** `run_on_enable` should not be used If a hook is registered as a default hook in `settings.py.  The hook will already be enabled on Casters for starts.
+     **Note** `run_on_enable` should not be used If a hook is registered as a default hook in `settings.py.  The hook will already be enabled on Casters for starts.
 
-   - Hooks can be placed in the Caster User Directory `caster\hooks`.
+- Hooks can be placed in the Caster User Directory `caster\hooks`.
 
 ```python
 from castervoice.lib import printer
@@ -74,7 +74,7 @@ class PrinterHook(BaseHook):
         state = "active" if event.active else "inactive" # Monitoring state
         # Printing To console rule class name and state
         printer.out("The rule {} was set to {}.".format(event.rule_class_name, state))
-	
+
     def run_on_enable(self, event):
         # Logic for function to run when enabling a hook
         
@@ -94,9 +94,6 @@ Example Hooks with Events:
 
 Hook Runner Placement placement in Caster source code:
 
--  `activation event` in [grammar_manager.py](https://github.com/dictation-toolbox/Caster/blob/3ff4f7d7c9c01fec2059ffa5c4ca708fdb7d09ad/castervoice/lib/ctrl/mgr/grammar_manager.py#L151)
--  `node change event` in [tree_rule.py](https://github.com/dictation-toolbox/Caster/blob/5172a44d3cd58619f6228231e3aef2fddd1f1fb3/castervoice/lib/merge/selfmod/tree_rule/tree_rule.py#L57)
--  `on error event` in [grammar_manager.py](https://github.com/dictation-toolbox/Caster/blob/5172a44d3cd58619f6228231e3aef2fddd1f1fb3/castervoice/lib/ctrl/mgr/grammar_manager.py#L302)
-
-
-
+- `activation event` in [grammar_manager.py](https://github.com/dictation-toolbox/Caster/blob/3ff4f7d7c9c01fec2059ffa5c4ca708fdb7d09ad/castervoice/lib/ctrl/mgr/grammar_manager.py#L151)
+- `node change event` in [tree_rule.py](https://github.com/dictation-toolbox/Caster/blob/5172a44d3cd58619f6228231e3aef2fddd1f1fb3/castervoice/lib/merge/selfmod/tree_rule/tree_rule.py#L57)
+- `on error event` in [grammar_manager.py](https://github.com/dictation-toolbox/Caster/blob/5172a44d3cd58619f6228231e3aef2fddd1f1fb3/castervoice/lib/ctrl/mgr/grammar_manager.py#L302)
