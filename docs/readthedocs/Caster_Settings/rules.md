@@ -1,13 +1,13 @@
 ## Rules
 
-All rules managed by Caster are tracked in this config file `rules.toml `located in `AppData\Local\caster\settings`. This configuration file allows you not only to see what rules are active but change with the whitelist which rules are loaded by Caster during startup.
+All rules managed by Caster are tracked in this config file `rules.toml`located in [Caster User Directory](https://caster.readthedocs.io/en/latest/readthedocs/User_Dir/Caster_User_Dir/) `settings` folder.  This configuration file allows you not only to see what rules are active but change with the whitelist which rules are loaded by Caster during startup.  Rules are loaded from [Caster User Directory](https://caster.readthedocs.io/en/latest/readthedocs/User_Dir/Caster_User_Dir/) `Rules` folder and/or the Caster source code directly typically `Documents\Caster\Rules`.
 
 Rules can exist in different states:
 
-- `Loaded ` During startup Caster loads all available rules on startup into the speech recognition engine. If a rule is not loaded, it cannot be `enabled`/`disabled`, and the rule's commands cannot be recognized. 
-
-- `Active`/`Inactive ` rule state denotes whether or not a rule is available for recognition.
-  For instance if you say `disable Firefox`, the Firefox rule will become  `Inactive `. When the Firefox application is launched, the commands will not be available for recognition until the Firefox rule is set to `active`  with the `enable Firefox` command. 
+- `Loaded` During startup Caster loads all available rules on startup into the speech recognition engine. If a rule is not loaded, it cannot be `enabled`/`disabled`, and the rule's commands cannot be recognized. 
+- `Active`/`Inactive` rule state denotes whether or not a rule is available for recognition.
+  For instance if you say `disable Firefox`, the Firefox rule will become `Inactive`. When the Firefox application is launched, the commands will not be available for recognition until the Firefox rule is set to `active`  with the `enable Firefox` command.
+- Newly created rules will not be registered in `rules.toml` until Caster restarts and are `disabled` by default.  
 
 ### Enabled Ordered
 
@@ -28,7 +28,7 @@ New users will be provided a core set of starter rules to get started with and t
 
 The following `rules.toml `is a mock representation of the default settings. `_enabled_ordered` shows the default enabled grammars when Caster first starts. Defaults may vary by Caster version and engine.
 
-``` toml
+```toml
 _enabled_ordered = ["Alphabet", "Navigation", "NavigationNon", "Numbers", "Punctuation", "Keyboard", "CasterRule", "HardwareRule", "MouseAlternativesRule", "WindowManagementRule", "LegionGridRule", "DouglasGridRule", "RainbowGridRule", "SudokuGridRule", "HMCRule", "HMCConfirmRule", "HMCDirectoryRule", "HMCHistoryRule", "HMCLaunchRule", "HMCSettingsRule", "HistoryRule", "ChainAlias", "Alias", "DragonRule", "BringRule", "Again", "GrammarActivatorRule", "HooksActivationRule"]
 _internal = ["GrammarActivatorRule", "HooksActivationRule", "TransformersActivationRule", "ManualGrammarReloadRule"]
 
@@ -53,5 +53,4 @@ VSCodeNonCcrRule = true
 VisualStudioRule = true
 
 # Truncated created for brevity
-
 ```
