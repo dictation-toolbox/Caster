@@ -33,7 +33,7 @@
 
 - Application or Language not supported? 
 
-  [Make your own Dragonfly and Caster rules](https://caster.readthedocs.io/en/latest/readthedocs/Rule_Construction/Intro_Into_Rules_and_Grammars/) augmented by [Development Commands](https://caster.readthedocs.io/en/latest/readthedocs/Caster_Commands/CCR_languages_Quick_Reference/#VoiceDevCommands)
+  [Make your own Caster rules](https://caster.readthedocs.io/en/latest/readthedocs/Rule_Construction/Intro_Into_Rules_and_Grammars/) augmented by [Development Commands](https://caster.readthedocs.io/en/latest/readthedocs/Caster_Commands/CCR_languages_Quick_Reference/#VoiceDevCommands)
 
 - [Contributing / How can I help?](https://caster.readthedocs.io/en/latest/Contributing/)
 
