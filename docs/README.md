@@ -39,7 +39,7 @@
 - Do you want to financially support Caster development?
   Donate at [![IssueHunt](https://img.shields.io/badge/-IssueHunt-blue)](https://issuehunt.io/r/dictation-toolbox/Caster)
 
-- Need support or just curious? Join our community at [![Gitter](https://img.shields.io/gitter/room/dictation-toolbox/Caster?label=Chat)](https://gitter.im/dictation-toolbox/home) [![Discord](https://img.shields.io/discord/431142802005688340?label=Discord)](https://discord.gg/9eAAsCJ) [![Matrix](https://img.shields.io/matrix/caster:matrix.org?label=Matrix%20Chat&server_fqdn=matrix.org)](https://matrix.to/#/+dictation-toolbox:matrix.org)
+- Need support or just curious? Join our community at [![Gitter](https://img.shields.io/gitter/room/dictation-toolbox/Caster?label=Chat)](https://gitter.im/dictation-toolbox/home) [![Discord](https://img.shields.io/discord/431142802005688340?label=Discord)](https://discord.gg/9eAAsCJ) [![Matrix](https://img.shields.io/matrix/caster:matrix.org?label=Matrix%20Chat&server_fqdn=matrix.org)](https://matrix.to/#/!kDGnKQgJlhrXPevERT:gitter.im/$lZqvz45stPbRFe8a2vMM34WyQUl7ZBa1AZbIhg9yywU?via=gitter.im&via=matrix.org)
 
 - The [DictationToolbox.org](https://dictation-toolbox.github.io/dictation-toolbox.org/) (WIP) is a curated webpage of information related to voice programming and accessibility. Content Includes: User Tips, Hardware, Videos, Blogs, Repositories, Presentations, and etc. Pull requests welcome!
 
