@@ -1,4 +1,4 @@
-dragonfly2[kaldi]>=0.28.0
+dragonfly2[kaldi]>=0.29.0
 wxpython>=4.0.7
 pillow>=6.2.2
 tomlkit>=0.5.11

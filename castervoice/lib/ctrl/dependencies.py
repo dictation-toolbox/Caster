@@ -54,7 +54,7 @@ def dep_min_version():
     # Needs to be manually resolved if Caster requires a specific version of dependency
     # A GitHub Issue URL needed to explain the change to version specific '==' dependency.
     listdependency = ([
-        ["dragonfly2", ">=", "0.29.0", "https://github.com/dictation-toolbox/dragonfly/issues/286"],
+        ["dragonfly2", ">=", "0.29.0", "https://github.com/dictation-toolbox/dragonfly/issues/289"],
     ])
     for dep in listdependency:
         package = dep[0]
