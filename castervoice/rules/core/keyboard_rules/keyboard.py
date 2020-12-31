@@ -32,6 +32,17 @@ cat_spec_and_reverse = lambda s1, s2: "(" + s1 + " " + s2 + ")" + " | " + "(" + 
 
 cat_spec_and_reverse_3 = lambda s1, s2, s3: cat_spec_and_reverse(cat_spec_and_reverse(s1, s2), s3) + " | (" + s1 + " " + s3 + " " + s2 + ")" + " | (" + s2 + " " + s3 + " " + s1 + ")" + " | (" + s3 + " " + s2 + " " + s1 + ")"
 
+button_dictionary_1 = {
+    "(F{}".format(i) + " | function {})".format(i) : "f{}".format(i)
+    for i in range(1, 13)
+    }
+
+def getspec(value, dct=button_dictionary_1):
+    # Reverses Keys and Values which allows for dct.get(value)
+    # The returned String is the spoken spec for the command
+    reversed_dictionary = dict(map(reversed, dct.items()))
+    return reversed_dictionary.get(value)
+
 class Keyboard(MappingRule):
     mapping = {
         "<modifier> <button_dictionary_1>":
@@ -45,10 +56,6 @@ class Keyboard(MappingRule):
     # These buttons can be used without using the "press" prefix.
     right_spec = "(right | ross)"
     left_spec = "(left | lease)"
-    button_dictionary_1 = {
-        "(F{}".format(i) + " | function {})".format(i) : "f{}".format(i)
-        for i in range(1, 13)
-    }
     button_dictionary_1.update(caster_alphabet())
     button_dictionary_1.update(_tpd)
     shift_spec = "(shift | shin)"
@@ -59,12 +66,6 @@ class Keyboard(MappingRule):
     del button_dictionary_1["[is] less [than] [or] equal [to]"]
     del button_dictionary_1["[is] equal to"]
     del button_dictionary_1["[is] greater [than] [or] equal [to]"]
-
-    ace_key = list(button_dictionary_1.keys())[list(button_dictionary_1.values()).index(' ')]
-    slash_key = list(button_dictionary_1.keys())[list(button_dictionary_1.values()).index('/')]
-    minus_key = list(button_dictionary_1.keys())[list(button_dictionary_1.values()).index('-')]
-    colon_key = list(button_dictionary_1.keys())[list(button_dictionary_1.values()).index(':')]
-    comma_key = list(button_dictionary_1.keys())[list(button_dictionary_1.values()).index(',')]
 
     button_dictionary_1.update({
         "(tab | tabby)": "tab",
@@ -77,11 +78,11 @@ class Keyboard(MappingRule):
         "(down | dunce)": "down",
         "page (down | dunce)": "pgdown",
         "page (up | sauce)": "pgup",
-        ace_key: "space",
-        comma_key: "comma",
-        minus_key: "minus",
-        slash_key: "slash",
-        colon_key: "colon",
+        getspec(' '): "space",
+        getspec(','): "comma",
+        getspec('-'): "minus",
+        getspec('/'): "slash",
+        getspec(':'): "colon",
         "zero": "0",
         "one": "1",
         "two": "2",
@@ -149,4 +150,3 @@ class Keyboard(MappingRule):
 
 def get_rule():
     return Keyboard, RuleDetails(name = "keyboard")
-
