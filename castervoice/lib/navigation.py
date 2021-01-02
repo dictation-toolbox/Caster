@@ -27,7 +27,7 @@ initialize_clipboard()
 def mouse_alternates(mode, monitor=1, rough=True):
     args = []
 
-    if mode == "legion" and not utilities.window_exists(None, "legiongrid"):
+    if mode == "legion" and not utilities.window_exists("legiongrid", None):
         from castervoice.asynch.mouse.legion import LegionScanner
         r = monitors[int(monitor) - 1].rectangle
         bbox = [
@@ -44,19 +44,19 @@ def mouse_alternates(mode, monitor=1, rough=True):
             settings.settings(["paths", "LEGION_PATH"]), "-t", tscan[0], "-m",
             str(monitor)
         ]
-    elif mode == "rainbow" and not utilities.window_exists(None, "rainbowgrid"):
+    elif mode == "rainbow" and not utilities.window_exists("rainbowgrid", None):
         args = [
             settings.settings(["paths", "PYTHONW"]),
             settings.settings(["paths", "RAINBOW_PATH"]), "-g", "r", "-m",
             str(monitor)
         ]
-    elif mode == "douglas" and not utilities.window_exists(None, "douglasgrid"):
+    elif mode == "douglas" and not utilities.window_exists("douglasgrid", None):
         args = [
             settings.settings(["paths", "PYTHONW"]),
             settings.settings(["paths", "DOUGLAS_PATH"]), "-g", "d", "-m",
             str(monitor)
         ]
-    elif mode == "sudoku" and not utilities.window_exists(None, "sudokugrid"):
+    elif mode == "sudoku" and not utilities.window_exists("sudokugrid", None):
         args = [
             settings.settings(["paths", "PYTHONW"]),
             settings.settings(["paths", "SUDOKU_PATH"]), "-g", "s", "-m",
