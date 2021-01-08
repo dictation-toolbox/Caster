@@ -30,7 +30,7 @@ _tpd = text_punc_dict()
 
 cat_spec_and_reverse = lambda s1, s2: "(" + s1 + " " + s2 + ")" + " | " + "(" + s2 + " " + s1 + ")"
 
-cat_spec_and_reverse_3 = lambda s1, s2, s3: cat_spec_and_reverse(cat_spec_and_reverse(s1, s2), s3) + " | (" + s1 + " " + s3 + " " + s2 + ")" + " | (" + s2 + " " + s3 + " " + s1 + ")" + " | (" + s3 + " " + s2 + " " + s1 + ")"
+cat_spec_and_reverse_3 = lambda s1, s2, s3: "(" + s1 + " (" + cat_spec_and_reverse(s2, s3) + ")) | (" + s2 + " (" + cat_spec_and_reverse(s1, s3) + ")) | (" + s3 + " (" + cat_spec_and_reverse(s1, s2) + "))"
 
 class Keyboard(MappingRule):
     mapping = {
