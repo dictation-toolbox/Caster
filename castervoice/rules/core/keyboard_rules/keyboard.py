@@ -36,10 +36,10 @@ class Keyboard(MappingRule):
     mapping = {
         "<modifier> <button_dictionary_1>":
               R(Key("%(modifier)s%(button_dictionary_1)s"),
-              rdescript="press modifiers plus buttons from button_dictionary_1, non-repeatable"),
-        "<hold_release> [<modifier>] <button_dictionary_1>":
-              R(Key("%(modifier)s%(button_dictionary_1)s:%(hold_release)s"),
-              rdescript="press modifiers plus buttons from button_dictionary_1, non-repeatable"),
+              rdescript="press button: %(modifier)s%(button_dictionary_1)s"),
+        "<hold_release> <button_dictionary_1>":
+              R(Key("%(button_dictionary_1)s:%(hold_release)s"),
+              rdescript="%(hold_release)s button: %(button_dictionary_1)s"),
     }
 
     # These buttons can be used without using the "press" prefix.
@@ -56,11 +56,16 @@ class Keyboard(MappingRule):
     alt_spec = "alt"
     windows_spec = "windows"
     # in the punctuation dictionary it uses " " which is not the correct dragonfly key name.
-    del button_dictionary_1["ace"]
     del button_dictionary_1["[is] less [than] [or] equal [to]"]
     del button_dictionary_1["[is] equal to"]
     del button_dictionary_1["[is] greater [than] [or] equal [to]"]
- 
+
+    ace_key = list(button_dictionary_1.keys())[list(button_dictionary_1.values()).index(' ')]
+    slash_key = list(button_dictionary_1.keys())[list(button_dictionary_1.values()).index('/')]
+    minus_key = list(button_dictionary_1.keys())[list(button_dictionary_1.values()).index('-')]
+    colon_key = list(button_dictionary_1.keys())[list(button_dictionary_1.values()).index(':')]
+    comma_key = list(button_dictionary_1.keys())[list(button_dictionary_1.values()).index(',')]
+
     button_dictionary_1.update({
         "(tab | tabby)": "tab",
         "(backspace | clear)": "backspace",
@@ -72,7 +77,11 @@ class Keyboard(MappingRule):
         "(down | dunce)": "down",
         "page (down | dunce)": "pgdown",
         "page (up | sauce)": "pgup",
-        "ace": "space",
+        ace_key: "space",
+        comma_key: "comma",
+        minus_key: "minus",
+        slash_key: "slash",
+        colon_key: "colon",
         "zero": "0",
         "one": "1",
         "two": "2",
