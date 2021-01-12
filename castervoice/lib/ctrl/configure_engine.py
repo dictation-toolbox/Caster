@@ -51,7 +51,7 @@ class EngineConfigLate:
                 callback=self.EngineModesManager._sync_mode, interval=1)
             sync_timer.start()
         # A timer to change microphone state to "sleep" after X amount of seconds after last successful recognition
-        if self.sleep_timer is None and settings.SETTINGS["engine"]["mic_sleep_timer_toggle"] == True:
+        if self.sleep_timer is None and settings.SETTINGS["engine"]["mic_sleep_timer_on"] == True:
             self.sleep_timer = get_current_engine().create_timer(callback=self._sleep_timer,
                                                             interval=int(settings.SETTINGS["engine"]["mic_sleep_timer"]))
             self.sleep_timer.start()

@@ -333,7 +333,7 @@ def _get_defaults():
             "engine_mode": "normal",
             "default_mic": False, 
             "mic_mode": "on",
-            "mic_sleep_timer_toggle": True, 
+            "mic_sleep_timer_on": True, 
             "mic_sleep_timer": 300, # Seconds before microphone goes to sleep after last successful recognition.
             # Note: No greater than 5 minutes or 300 seconds unless DPI/DPI sleep settings are adjusted
         },
