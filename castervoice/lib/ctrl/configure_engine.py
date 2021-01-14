@@ -1,3 +1,4 @@
+import time
 from dragonfly import get_engine, get_current_engine, register_recognition_callback
 from castervoice.lib import settings
 
@@ -50,7 +51,7 @@ class EngineConfigLate:
                 callback=self.EngineModesManager._sync_mode, interval=1)
             sync_timer.start()
         # A timer to change microphone state to "sleep" after X amount of seconds after last successful recognition
-        if self.sleep_timer is None:
+        if self.sleep_timer is None and settings.SETTINGS["engine"]["mic_sleep_timer_on"] == True:
             self.sleep_timer = get_current_engine().create_timer(callback=self._sleep_timer,
                                                             interval=int(settings.SETTINGS["engine"]["mic_sleep_timer"]))
             self.sleep_timer.start()
@@ -68,6 +69,7 @@ class EngineConfigLate:
         A register_recognition_callback to reset the timer for sleep_timer based on last successful recognition
         """
         self.sleep_timer.stop()
+        time.sleep(0.15)
         self.sleep_timer.start()
 
     def _set_default_mic_mode(self):
