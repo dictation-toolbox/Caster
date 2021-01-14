@@ -28,8 +28,9 @@ mic_mode = "on"
 # 'sleeping': mic from the sleeping and can be woken up by command
 # 'off': mic off and cannot be turned back on by voice. (DNS Only)
 
-mic_sleep_timer = 120 # A timer puts microphone to after X seconds after last successful recognition.
-#DNS/DPI has its own built-in sleep mode timer defaults to 5 minutes. Caster mic sleep timer will not work as expected beyond DNS/DPI 5 #minutes default timer (microphone will go to sleep prematurely). if you increase the default timer to greater than 5 minutes anything #under caster mic sleep timer will work as expected.
+mic_sleep_timer_on = true 
+mic_sleep_timer = 300 # A timer puts microphone to after X seconds after last successful recognition.
+#DNS/DPI has its own built-in sleep mode timer defaults to 5 minutes. Caster mic sleep timer will not work as expected beyond DNS/DPI 5 #minutes default timer (microphone will go to sleep prematurely). if you increase the default timer to greater than 5 minutes. Anything under 5 minutes/300 seconds caster mic sleep timer will work as expected.
 
 [formats] # Truncated - Control setting dictation formatting per programming language.
 # Legend - Represents text formatting (capitalization and spacing) rules.
