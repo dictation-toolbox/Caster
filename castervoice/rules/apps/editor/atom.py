@@ -5,13 +5,12 @@ Official Site "https://atom.io/"
 """
 
 # How long to wait for the Atom palette to load before hitting the enter key
-from dragonfly import Pause, Function, Repeat, Dictation, Choice, MappingRule
+from dragonfly import Pause, Function, Repeat, Dictation, Choice, MappingRule, ShortIntegerRef
 
 from castervoice.lib.actions import Text, Key
 
 from castervoice.lib import settings, navigation
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 
 atom_palette_wait = 30
@@ -543,10 +542,10 @@ class AtomRule(MappingRule):
     extras = [
         Dictation("text"),
         Dictation("mim"),
-        IntegerRefST("n", 1, 50),
-        IntegerRefST("ln1", 1, 50000),
-        IntegerRefST("ln2", 1, 50000),
-        IntegerRefST("n2", 1, 10),
+        ShortIntegerRef("n", 1, 50),
+        ShortIntegerRef("ln1", 1, 50000),
+        ShortIntegerRef("ln2", 1, 50000),
+        ShortIntegerRef("n2", 1, 10),
         Choice("action", navigation.actions),
         Choice(
             "nrw", {

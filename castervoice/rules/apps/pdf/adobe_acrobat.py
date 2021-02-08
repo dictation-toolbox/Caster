@@ -1,7 +1,6 @@
-from dragonfly import Dictation, Repeat, Pause, MappingRule
+from dragonfly import Dictation, Repeat, Pause, MappingRule, ShortIntegerRef
 from castervoice.lib.actions import Text, Key, Mouse
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 
 _SHOW_HIDE_MENU = Key("a-v, s")
@@ -98,9 +97,9 @@ class AcrobatRule(MappingRule):
     }
     extras = [
         Dictation("dict"),
-        IntegerRefST("n", 1, 1000),
-        IntegerRefST("m", 1, 9),
-        IntegerRefST("speed_one_to_nine", 1, 9),
+        ShortIntegerRef("n", 1, 1000),
+        ShortIntegerRef("m", 1, 9),
+        ShortIntegerRef("speed_one_to_nine", 1, 9),
     ]
     defaults = {"n": 1, "dict": "nothing"}
 

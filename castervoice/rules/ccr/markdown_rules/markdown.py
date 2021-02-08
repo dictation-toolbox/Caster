@@ -1,9 +1,8 @@
-from dragonfly import Function, Dictation, Choice
+from dragonfly import Function, Dictation, Choice, ShortIntegerRef
 
 from castervoice.lib.actions import Text, Key
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 from castervoice.lib.temporary import Store, Retrieve
@@ -28,8 +27,8 @@ class Markdown(MergeRule):
     }
     extras = [
         Dictation("dict"),
-        IntegerRefST("n", 1, 12),
-        IntegerRefST("num", 1, 7),
+        ShortIntegerRef("n", 1, 12),
+        ShortIntegerRef("num", 1, 7),
         Choice(
             "element", {
                 "list": "asterisk, space",

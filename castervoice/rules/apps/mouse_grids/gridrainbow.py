@@ -1,10 +1,9 @@
 import time
-from dragonfly import Function, Choice, MappingRule
+from dragonfly import Function, Choice, MappingRule, ShortIntegerRef
 from dragonfly.actions.mouse import get_cursor_position
 from castervoice.lib import control, navigation
 from castervoice.lib.actions import Mouse
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 from castervoice.rules.ccr.standard import SymbolSpecs
 
@@ -88,9 +87,9 @@ class RainbowGridRule(MappingRule):
             R(Function(kill)),
     }
     extras = [
-        IntegerRefST("pre", 0, 9),
-        IntegerRefST("pre1", 0, 9),
-        IntegerRefST("pre2", 0, 9),
+        ShortIntegerRef("pre", 0, 9),
+        ShortIntegerRef("pre1", 0, 9),
+        ShortIntegerRef("pre2", 0, 9),
         Choice(
             "color", {
                 "(red | rot)": 0,
@@ -118,9 +117,9 @@ class RainbowGridRule(MappingRule):
                 "(blue | blau)": 4,
                 "(purple | lila)": 5
             }),
-        IntegerRefST("n", 0, 100),
-        IntegerRefST("n1", 0, 100),
-        IntegerRefST("n2", 0, 100),
+        ShortIntegerRef("n", 0, 100),
+        ShortIntegerRef("n1", 0, 100),
+        ShortIntegerRef("n2", 0, 100),
         Choice("action", {
             "kick": 0,
             "psychic": 1,

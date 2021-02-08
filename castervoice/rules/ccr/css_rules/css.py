@@ -1,9 +1,9 @@
+from dragonfly import ShortIntegerRef
 from castervoice.lib.actions import Key, Text
 from castervoice.lib import settings, printer
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.context import AppContext
-from castervoice.lib.merge.additions import IntegerRefST
 
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
@@ -419,7 +419,7 @@ class CSS(MergeRule):
 
     }
     extras = [
-        IntegerRefST("ln1", 1, 1000),
+        ShortIntegerRef("ln1", 1, 1000),
     ]
     defaults = {}
 

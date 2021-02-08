@@ -1,7 +1,6 @@
-from dragonfly import Repeat, Choice, MappingRule
+from dragonfly import Repeat, Choice, MappingRule, ShortIntegerRef 
 from castervoice.lib.actions import Key
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 
 
@@ -23,7 +22,7 @@ class LyxRule(MappingRule):
         "insert <environment>": R(Key("a-i, h, %(environment)s")),
         }
     extras = [
-        IntegerRefST("n", 1, 10),
+        ShortIntegerRef("n", 1, 10),
         Choice("environment", {
             "(in line formula | in line)": "i",
             "(display formula | display)": "d",

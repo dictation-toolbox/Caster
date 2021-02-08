@@ -1,9 +1,8 @@
-from dragonfly import MappingRule, Playback, Function, Pause, Choice, Repeat
+from dragonfly import MappingRule, Playback, Function, Pause, Choice, Repeat, ShortIntegerRef
 
 from castervoice.lib.actions import Key
 from castervoice.lib import settings
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 
 
@@ -27,8 +26,8 @@ class HardwareRule(MappingRule):
             R(Key("w-p") + Pause("100") + Function(change_monitor))
     }
     extras = [
-        IntegerRefST("n_media", 1, 15),
-        IntegerRefST("n_volume", 1, 50),
+        ShortIntegerRef("n_media", 1, 15),
+        ShortIntegerRef("n_volume", 1, 50),
         Choice("multimedia_control", {
             "next": "tracknext",
             "back":"trackprev",

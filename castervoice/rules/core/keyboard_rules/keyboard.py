@@ -1,4 +1,4 @@
-from dragonfly import Function, Repeat, Dictation, Choice, ContextAction, MappingRule
+from dragonfly import Function, Repeat, Dictation, Choice, ContextAction, MappingRule, ShortIntegerRef
 from castervoice.lib.context import AppContext
 
 from castervoice.lib import navigation, context, textformat, text_utils
@@ -20,7 +20,6 @@ except ImportError:
 
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.actions import AsynchronousAction, ContextSeeker
 from castervoice.lib.merge.state.actions2 import UntilCancelled

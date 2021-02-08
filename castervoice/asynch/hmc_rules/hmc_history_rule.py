@@ -1,8 +1,7 @@
-from dragonfly import Function, MappingRule
+from dragonfly import Function, MappingRule, ShortIntegerRef
 
 from castervoice.lib import control, settings
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 
 
@@ -36,8 +35,8 @@ class HMCHistoryRule(MappingRule):
             R(Function(hmc_recording_repeatable))
     }
     extras = [
-        IntegerRefST("n", 1, 25),
-        IntegerRefST("n2", 1, 25),
+        ShortIntegerRef("n", 1, 25),
+        ShortIntegerRef("n2", 1, 25),
     ]
 
 

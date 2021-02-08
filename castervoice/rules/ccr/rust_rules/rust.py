@@ -1,11 +1,10 @@
-from dragonfly import Choice
+from dragonfly import Choice, ShortIntegerRef
 
 from castervoice.rules.core.alphabet_rules import alphabet_support # Manually change import path if in user directory.
 from castervoice.lib.actions import Text, Key
 from castervoice.rules.ccr.standard import SymbolSpecs
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
@@ -136,7 +135,7 @@ class Rust(MergeRule):
         }),
         Choice("signed", {"unsigned": "u"}),
         Choice("mutability", {"mute ah | mute": "mut "}),
-        IntegerRefST("n", 0, 1000),
+        ShortIntegerRef("n", 0, 1000),
         alphabet_support.get_alphabet_choice("a"),
         alphabet_support.get_alphabet_choice("b"),
     ]
