@@ -38,7 +38,8 @@ class AppsModulesTestCase(ModulesTestCase):
         from castervoice.rules.apps.editor import flashdevelop
         from castervoice.rules.apps.editor import msvc
         from castervoice.rules.apps.editor import typora
-        from castervoice.rules.apps.editor import sublime
+        from castervoice.rules.apps.editor.sublime_rules import sublime
+        from castervoice.rules.apps.editor.sublime_rules import sublime_snippet_control
         from castervoice.rules.apps.editor import emacs
         from castervoice.rules.apps.chat import gitter, MSTeamsRule, webexteams
         from castervoice.rules.apps.atlassian import jira
@@ -48,6 +49,6 @@ class AppsModulesTestCase(ModulesTestCase):
                 foxitreader, gitbash, githubdesktop, gitter,
                 griddouglas, gridlegion, gridrainbow, jira, kdiff3, lyx,
                 msvc, MSTeamsRule, notepadplusplus, outlook, rstudio,
-                sqldeveloper, ssms, sublime, totalcmd, totalcmd2,
+                sqldeveloper, ssms, sublime, sublime_snippet_control,totalcmd, totalcmd2,
                 typora, visualstudio, vscode, vscode2, winword,
                 webexteams, wsr]

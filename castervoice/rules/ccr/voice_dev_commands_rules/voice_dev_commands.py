@@ -112,6 +112,12 @@ class VoiceDevCommands(MergeRule):
         "dev execute": R(Key("end")+Text(".execute()"),
             rdescript="call 'execute' method at end of line"),
 
+        # 
+        "dev placeholder <placeholder_index>":R(Text("${%(placeholder_index)d:}") +  Key("left:2")),
+        "dev snippet":R(Text("Snippet()") + Key("left")),
+        "dev sublime command":R(Text("SublimeCommand()") + Key("left")),
+        "dev snippet transform":R(Text("SnippetTransform()") + Key("left")),
+
  # Caster Snippets
         "dev bring app":
             R(Text("BringApp()") + Key("left"), rdescript="CasterDev: Snippet for Bring App"),
@@ -218,6 +224,7 @@ class VoiceDevCommands(MergeRule):
         }),
         IntegerRefST("distance_1", 1, 500),
         IntegerRefST("distance_2", 1, 500),
+        IntegerRefST("placeholder_index",0,10),
     ]
     defaults = {"spec": "", "dict": "", "text": "", "mouse_button": ""}
 

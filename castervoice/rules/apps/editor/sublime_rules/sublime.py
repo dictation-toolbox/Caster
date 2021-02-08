@@ -228,4 +228,4 @@ class SublimeRule(MappingRule):
 
 
 def get_rule():
-    return SublimeRule, RuleDetails(name="sublime", executable="sublime_text", title="Sublime Text")
+    return SublimeRule, RuleDetails(name="sublime new", executable="sublime_text", title="Sublime Text")
