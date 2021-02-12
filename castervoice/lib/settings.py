@@ -64,7 +64,7 @@ def add_message(message):
     """
     try:
         if message not in STARTUP_MESSAGES:
-            STARTUP_MESSAGES.append(message)
+            STARTUP_MESSAGES.append(str(message))
     except Exception as e:
         print(e)
 
