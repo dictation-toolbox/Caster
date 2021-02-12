@@ -1,4 +1,4 @@
-from dragonfly import Choice, Function
+from dragonfly import Choice, Function, ShortIntegerRef
 
 try:  # Try first loading from caster user directory
     from numeric_support import word_number, numbers2
@@ -8,7 +8,6 @@ except ImportError:
 from castervoice.lib.actions import Text
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
@@ -24,8 +23,8 @@ class Numbers(MergeRule):
     }
 
     extras = [
-        IntegerRefST("wn", 0, 10),
-        IntegerRefST("wnKK", 0, 1000000),
+        ShortIntegerRef("wn", 0, 10),
+        ShortIntegerRef("wnKK", 0, 1000000),
         Choice(
             "long", {
                 "long": " ",

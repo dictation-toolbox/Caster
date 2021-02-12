@@ -1,10 +1,9 @@
 import time
-from dragonfly import Function, Choice, MappingRule
+from dragonfly import Function, Choice, MappingRule, ShortIntegerRef
 from dragonfly.actions.mouse import get_cursor_position
 from castervoice.lib import control, navigation
 from castervoice.lib.actions import Mouse
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 from castervoice.rules.ccr.standard import SymbolSpecs
 
@@ -86,12 +85,12 @@ class DouglasGridRule(MappingRule):
             R(Function(kill)),
     }
     extras = [
-        IntegerRefST("x", 0, 300),
-        IntegerRefST("y", 0, 300),
-        IntegerRefST("x1", 0, 300),
-        IntegerRefST("y1", 0, 300),
-        IntegerRefST("x2", 0, 300),
-        IntegerRefST("y2", 0, 300),
+        ShortIntegerRef("x", 0, 300),
+        ShortIntegerRef("y", 0, 300),
+        ShortIntegerRef("x1", 0, 300),
+        ShortIntegerRef("y1", 0, 300),
+        ShortIntegerRef("x2", 0, 300),
+        ShortIntegerRef("y2", 0, 300),
         Choice("action", {
             "kick": 0,
             "psychic": 1,

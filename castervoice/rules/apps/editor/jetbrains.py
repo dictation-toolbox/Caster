@@ -1,8 +1,7 @@
-from dragonfly import Dictation, Repeat, MappingRule
+from dragonfly import Dictation, Repeat, MappingRule, ShortIntegerRef
 
 from castervoice.lib.actions import Text, Key
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 
 # Directional Movement
@@ -128,7 +127,7 @@ class JetbrainsRule(MappingRule):
     extras = [
         Dictation("text"),
         Dictation("mim"),
-        IntegerRefST("n", 1, 1000),
+        ShortIntegerRef("n", 1, 1000),
     ]
 
     defaults = {"n": 1, "mim": ""}

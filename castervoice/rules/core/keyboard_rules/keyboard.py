@@ -1,10 +1,25 @@
-from dragonfly import Choice, MappingRule, Repetition, Function, List
+from dragonfly import Function, Repeat, Dictation, Choice, ContextAction, MappingRule, ShortIntegerRef
+from castervoice.lib.context import AppContext
 
-from castervoice.rules.core.keyboard_rules import keyboard_support
+try:  # Try first loading from caster user directory
+    from keyboard_rules import keyboard_support
+except ImportError:
+    from castervoice.rules.core.keyboard_rules import keyboard_support
+
+try:  # Try first loading from caster user directory
+    from punctuation_rules import punctuation_support
+except ImportError:
+    from castervoice.rules.core.punctuation_rules import punctuation_support
+
 from castervoice.lib.actions import Key
 
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.state.short import R
+from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.state.actions import AsynchronousAction, ContextSeeker
+from castervoice.lib.merge.state.actions2 import UntilCancelled
+from castervoice.lib.merge.state.short import S, L, R
+
+_tpd = punctuation_support.text_punc_dict()
 
 def hold_keys(modifier_choice_key_name):
     modifier_list = modifier_choice_key_name.strip().split(" ")

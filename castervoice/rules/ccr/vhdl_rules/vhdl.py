@@ -3,13 +3,12 @@ Created on 18 Mar 2018
 
 @author: gerrish
 '''
-from dragonfly import Function, Choice
+from dragonfly import Function, Choice, ShortIntegerRef
 
 from castervoice.lib.actions import Key, Text
 from castervoice.rules.ccr.standard import SymbolSpecs
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
@@ -105,12 +104,12 @@ class VHDL(MergeRule):
     }
 
     extras = [
-        IntegerRefST("amount", 1, 128),
+        ShortIntegerRef("amount", 1, 128),
         Choice("digit", {
             "(zero|zeros)": 0,
             "(one|once)": 1
         }),
-        IntegerRefST("digit", 0, 2)
+        ShortIntegerRef("digit", 0, 2)
     ]
     defaults = {}
 

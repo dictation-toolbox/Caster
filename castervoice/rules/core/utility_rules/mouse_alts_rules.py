@@ -1,7 +1,6 @@
-from dragonfly import MappingRule, Function, Choice
+from dragonfly import MappingRule, Function, Choice, ShortIntegerRef
 from castervoice.lib import navigation, utilities
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 
 
@@ -21,7 +20,7 @@ class MouseAlternativesRule(MappingRule):
                 Function(utilities.focus_mousegrid, gridtitle="sudokugrid")),
     }
     extras = [
-        IntegerRefST("monitor", 1, 10),
+        ShortIntegerRef("monitor", 1, 10),
         Choice("rough", {
             "rough": True,
             "detailed": False

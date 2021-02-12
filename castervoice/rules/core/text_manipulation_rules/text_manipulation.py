@@ -1,4 +1,4 @@
-from dragonfly import Function, Choice, Repetition, Dictation
+from dragonfly import Function, Choice, Repetition, Dictation, ShortIntegerRef
 
 try:  # Try first loading from caster user directory
     from text_manipulation_rules import text_manipulation_support
@@ -17,7 +17,6 @@ except ImportError:
 
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
@@ -140,10 +139,10 @@ class TextManipulation(MergeRule):
         Dictation("dictation"),
         Dictation("dictation2"),
         Dictation("text"),
-        IntegerRefST("n", 1, 100),
-        IntegerRefST("m", 1, 100),
-        IntegerRefST("wait_time", 1, 1000),
-        IntegerRefST("number_of_lines_to_search", 1, 50),
+        ShortIntegerRef("n", 1, 100),
+        ShortIntegerRef("m", 1, 100),
+        ShortIntegerRef("wait_time", 1, 1000),
+        ShortIntegerRef("number_of_lines_to_search", 1, 50),
 
 
         Choice("character", character_dict),

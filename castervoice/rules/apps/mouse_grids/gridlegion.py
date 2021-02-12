@@ -1,8 +1,7 @@
 import time
-from dragonfly import Function, Choice, MappingRule, Mouse
+from dragonfly import Function, Choice, MappingRule, Mouse, ShortIntegerRef
 from castervoice.lib import control, navigation
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 from castervoice.rules.ccr.standard import SymbolSpecs
 
@@ -77,9 +76,9 @@ class LegionGridRule(MappingRule):
             "psychic": 1,
             "select | light": 2,
         }),
-        IntegerRefST("n", 0, 1000),
-        IntegerRefST("n1", 0, 1000),
-        IntegerRefST("n2", 0, 1000),
+        ShortIntegerRef("n", 0, 1000),
+        ShortIntegerRef("n1", 0, 1000),
+        ShortIntegerRef("n2", 0, 1000),
     ]
     defaults = {
         "action": -1,

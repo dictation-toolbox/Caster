@@ -1,8 +1,7 @@
-from dragonfly import Function, Repeat, Dictation, Choice, MappingRule
+from dragonfly import Function, Repeat, Dictation, Choice, MappingRule, ShortIntegerRef
 
 from castervoice.lib.actions import Key, Text
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 
 
@@ -112,7 +111,7 @@ class OutlookRule(MappingRule):
     extras = [
         Dictation("dict"),
         Dictation("text"),
-        IntegerRefST("n", 1, 100),
+        ShortIntegerRef("n", 1, 100),
         Choice(
             "sort_by", {
                 "date": "d",

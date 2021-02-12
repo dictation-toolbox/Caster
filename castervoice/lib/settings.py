@@ -47,6 +47,7 @@ QTYPE_DIRECTORY = "5"
 QTYPE_CONFIRM = "6"
 WXTYPE_SETTINGS = "7"
 HMC_SEPARATOR = "[hmc]"
+STARTUP_MESSAGES = []
 
 # calculated fields
 SETTINGS = None
@@ -56,6 +57,16 @@ _BASE_PATH = None
 _USER_DIR = None
 _SETTINGS_PATH = None
 
+def add_message(message):
+    """
+    Add string message to be printed when Caster initializes
+    message: str
+    """
+    try:
+        if message not in STARTUP_MESSAGES:
+            STARTUP_MESSAGES.append(str(message))
+    except Exception as e:
+        print(e)
 
 def _get_platform_information():
     """Return a dictionary containing platform-specific information."""
@@ -381,9 +392,6 @@ def _get_defaults():
             "keypress_wait": 50,  # milliseconds
             "max_ccr_repetitions": 16,
             "atom_palette_wait": 30,  # hundredths of a second
-            "integer_remap_opt_in": False,
-            "short_integer_opt_out": False,
-            "integer_remap_crash_fix": False,
             "print_rdescripts": True,
             "history_playback_delay_secs": 1.0,
             "legion_vertical_columns": 30,

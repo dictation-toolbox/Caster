@@ -1,10 +1,9 @@
 # pylint: skip-file
-from dragonfly import Dictation, Repeat, MappingRule
+from dragonfly import Dictation, Repeat, MappingRule, ShortIntegerRef
 
 from castervoice.lib.actions import Text, Key
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 import ide_shared
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 
 
@@ -12,7 +11,7 @@ class JetbrainsRule(MappingRule):
     extras = [
         Dictation("text"),
         Dictation("mim"),
-        IntegerRefST("n", 1, 1000),
+        ShortIntegerRef("n", 1, 1000),
     ]
 
     DELAY = "20"

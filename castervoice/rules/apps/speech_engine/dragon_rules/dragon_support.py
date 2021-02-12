@@ -1,8 +1,7 @@
-from dragonfly import Dictation, Choice
+from dragonfly import Dictation, Choice, ShortIntegerRef
 
 from castervoice.lib import utilities
 from castervoice.lib.actions import Text, Key
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.util import recognition_history
 
 _DBL_FIX_HISTORY = recognition_history.get_and_register_history(1)
@@ -20,7 +19,7 @@ def fix_dragon_double():
 def extras_for_whole_file():
     return [
         Dictation("text"),
-        IntegerRefST("n10", 1, 10),
+        ShortIntegerRef("n10", 1, 10),
         Choice("first_second_third", {
             "first": 0,
             "second": 1,

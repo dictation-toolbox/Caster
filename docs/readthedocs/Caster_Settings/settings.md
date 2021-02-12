@@ -69,13 +69,10 @@ ccr_on = true # Toggle on and off all CCR commands regardless of grammar.
 dev_commands = true # No longer used
 history_playback_delay_secs = 1.0 # How fast the `playback` command replays from 'record from history'
 hmc = true # Turns off GUI components of Caster
-integer_remap_crash_fix = false # Unknown
-integer_remap_opt_in = false # Unknown
 keypress_wait = 50 # Configurable keypress outer pause wait from dragonfly
 legion_vertical_columns = 30 # How many vertical lines are in the Legion MouseGrid
 max_ccr_repetitions = 16 # How many CCR commands can uttered in a row. Affects grammar complexity
 print_rdescripts = true # Prints out commands to the status window after dictation
-short_integer_opt_out = false # Unknown
 status_window_foreground_on_error = false # If Caster logs an error, the status window will appear for end user to evaluate error message
 use_aenea = false # Enables aenea third-party integration
 

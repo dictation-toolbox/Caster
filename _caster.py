@@ -38,3 +38,6 @@ if settings.SETTINGS["sikuli"]["enabled"]:
     sikuli_controller.get_instance().bootstrap_start_server_proxy()
 
 print("\n*- Starting " + settings.SOFTWARE_NAME + " -*")
+
+for message in settings.STARTUP_MESSAGES:
+    print("\n" + message + "\n")
