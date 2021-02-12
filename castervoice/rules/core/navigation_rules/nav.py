@@ -17,12 +17,12 @@ except ImportError:
         from castervoice.rules.core.punctuation_rules.punctuation_support import double_text_punc_dict, text_punc_dict
 
 try:
-    from keyboard_rules.keyboard import Keyboard
+    from keyboard_rules import keyboard_support
 except ImportError: 
     try:
-        from keyboard import Keyboard
+        from keyboard_support import keyboard_support
     except ImportError: 
-        from castervoice.rules.core.keyboard_rules.keyboard import Keyboard
+        from castervoice.rules.core.keyboard_rules import keyboard_support
 
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
@@ -197,12 +197,12 @@ class Navigation(MergeRule):
         "page (up | sauce)": "pgup",
     }
     button_dictionary_500_modifier = { 
-        key:value for key, value in Keyboard.button_dictionary_1.items() if value in [
+        key:value for key, value in keyboard_support.button_dictionary_1.items() if value in [
             "backspace", "del", "enter", "left", "right", "up", "down", "pgdown", "pgup"
             ]
     }
     button_dictionary_1_modifier = { 
-        key:value for key, value in Keyboard.button_dictionary_1.items() if value in [
+        key:value for key, value in keyboard_support.button_dictionary_1.items() if value in [
             "home", "end"
             ]
     }    
@@ -253,7 +253,7 @@ class Navigation(MergeRule):
             "lease": "backspace",
             "ross": "delete",
         }),
-        Keyboard.modifier_choice_object,
+        keyboard_support.modifier_choice_object,
         Choice("button_dictionary_500_no_prefix_no_modifier", button_dictionary_500_no_prefix_no_modifier),
         Choice("button_dictionary_500_modifier", button_dictionary_500_modifier),
         Choice("button_dictionary_1_modifier", button_dictionary_1_modifier)        

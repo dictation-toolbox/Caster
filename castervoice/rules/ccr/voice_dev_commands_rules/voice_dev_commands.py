@@ -9,13 +9,13 @@ from dragonfly import Pause, Choice, Dictation, Function, ShortIntegerRef
 from dragonfly.actions.action_mouse import get_cursor_position
 
 from castervoice.lib.actions import Text, Key
-from castervoice.rules.core.keyboard_rules.keyboard import Keyboard
+from castervoice.rules.core.keyboard_rules import keyboard_support
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
-new_modifier_choice_object = copy.deepcopy(Keyboard.modifier_choice_object)
+new_modifier_choice_object = copy.deepcopy(keyboard_support.modifier_choice_object)
 
 def split_dictation(text):
     if text:
@@ -198,7 +198,7 @@ class VoiceDevCommands(MergeRule):
 
     extras = [
         new_modifier_choice_object,
-        Choice("button_dictionary_1", Keyboard.button_dictionary_1),
+        Choice("button_dictionary_1", keyboard_support.button_dictionary_1),
         Dictation("text"),
         Dictation("dict"),
         Dictation("spec"),
