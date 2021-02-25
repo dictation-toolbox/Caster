@@ -175,10 +175,10 @@ class Navigation(MergeRule):
             R(Key("%(button_dictionary_500_no_prefix_no_modifier)s")*Repeat(extra='nnavi500'),
               rdescript="press buttons from button_dictionary_500_no_prefix_no_modifier"),
         "<modifier> <button_dictionary_500_modifier> [<nnavi500>]":
-            R(Key("%(modifier)s%(button_dictionary_500_modifier)s")*Repeat(extra='nnavi500'),
+            R(Key("%(modifier)s-%(button_dictionary_500_modifier)s")*Repeat(extra='nnavi500'),
               rdescript="press modifiers plus buttons from button_dictionary_500_modifier"),
         "<modifier> <button_dictionary_1_modifier>":
-            R(Key("%(modifier)s%(button_dictionary_1_modifier)s"),
+            R(Key("%(modifier)s-%(button_dictionary_1_modifier)s"),
               rdescript="press modifiers plus buttons from button_dictionary_1_modifier"),              
     }
     
