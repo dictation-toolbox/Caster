@@ -8,7 +8,6 @@ import six
 import os
 import re
 import sys
-import six
 import time
 import traceback
 import subprocess
@@ -327,7 +326,7 @@ def get_clipboard_formats():
             f = win32clipboard.EnumClipboardFormats(f)
 
     if not formats:
-        print("get_clipboard_formats: formats are {}: Not implemented".format(formats))
+        print("get_clipboard_formats: Formats {} were not available for clipboard contents".format(formats))
     else:
         return formats
 
@@ -385,22 +384,26 @@ def get_clipboard_files(folders=False):
         import win32clipboard  # pylint: disable=import-error
         win32clipboard.OpenClipboard()
         f = get_clipboard_formats()
-        if win32clipboard.CF_HDROP in f:
-            files = win32clipboard.GetClipboardData(win32clipboard.CF_HDROP)
-        elif win32clipboard.CF_UNICODETEXT in f:
-            files = [win32clipboard.GetClipboardData(
-                win32clipboard.CF_UNICODETEXT)]
-        elif win32clipboard.CF_TEXT in f:
-            files = [win32clipboard.GetClipboardData(win32clipboard.CF_TEXT)]
-        elif win32clipboard.CF_OEMTEXT in f:
-            files = [win32clipboard.GetClipboardData(
-                win32clipboard.CF_OEMTEXT)]
-        if folders:
-            files = [f for f in files if os.path.isdir(f)] if files else None
-        else:
-            files = [f for f in files if os.path.isfile(f)] if files else None
-        win32clipboard.CloseClipboard()
-        return files
+        try:
+            if win32clipboard.CF_HDROP in f:
+                files = win32clipboard.GetClipboardData(win32clipboard.CF_HDROP)
+            elif win32clipboard.CF_UNICODETEXT in f:
+                files = [win32clipboard.GetClipboardData(
+                    win32clipboard.CF_UNICODETEXT)]
+            elif win32clipboard.CF_TEXT in f:
+                files = [win32clipboard.GetClipboardData(win32clipboard.CF_TEXT)]
+            elif win32clipboard.CF_OEMTEXT in f:
+                files = [win32clipboard.GetClipboardData(
+                    win32clipboard.CF_OEMTEXT)]
+            if folders:
+                files = [f for f in files if os.path.isdir(f)] if files else None
+            else:
+                files = [f for f in files if os.path.isfile(f)] if files else None
+            win32clipboard.CloseClipboard()
+            return files
+        except Exception as e:
+            win32clipboard.CloseClipboard()
+            printer.out(e)
 
     if LINUX:
         f = get_clipboard_formats()
