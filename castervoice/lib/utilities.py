@@ -84,8 +84,14 @@ def minimize_window():
     Window.get_foreground().minimize()
 
 def restore_window():
+    '''
+    Restores last minimized window triggered minimize_window.
+    '''
     global lasthandle
-    Window.restore(lasthandle)
+    if lasthandle is None:
+        printer.out("No previous window minimized by voice")
+    else:
+        Window.restore(lasthandle)
 
 def get_active_window_info():
     '''Returns foreground window executable_file, executable_path, title, handle, classname'''
