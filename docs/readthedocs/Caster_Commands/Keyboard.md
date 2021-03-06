@@ -7,9 +7,9 @@ Caster aims to replace most use of the keyboard with dedicated commands. The com
 ## Commands
 
 - Press a key: `press <key>`  
-- Hold a key: `hold <key>`  
-- Release a key: `release <key>`  
 - Press a key modified by control, alt, shift, or windows: `<modifier> <key>`
+- Hold a modifier key: `hold <key>`  
+- Release a modifier key: `release <key>`  
 
 ## Available modifiers
 
