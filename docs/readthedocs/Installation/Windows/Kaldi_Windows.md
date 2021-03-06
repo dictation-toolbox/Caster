@@ -48,4 +48,5 @@ Caster currently supports Kaldi on Microsoft Windows 7 through Windows 10. Consi
 
 **Known Issues**
 
-- None
+- Kaldi outputs a lot of text to the caster status window on Windows OS
+  - [Kaldi mitigation for keyboard action processing bug via debug mode](https://github.com/dictation-toolbox/Caster/issues/799)
