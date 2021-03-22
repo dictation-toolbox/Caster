@@ -1,14 +1,12 @@
-from dragonfly import Repeat, Pause, Function, Choice, MappingRule
+from dragonfly import Repeat, Pause, Function, Choice, MappingRule, ShortIntegerRef
 
 from castervoice.lib.actions import Key, Mouse, Text
 
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.short import R
 
 from castervoice.lib import github_automation
 from castervoice.lib.temporary import Store, Retrieve
-
 
 class ChromeRule(MappingRule):
     mapping = {
@@ -26,6 +24,8 @@ class ChromeRule(MappingRule):
             R(Key("cs-w")),
         "(next|forward) tab [<n>]|tab (right|sauce) [<n>]":
             R(Key("c-tab")) * Repeat(extra="n"),
+        "(back|previous) tab [<n>]|tab (left|lease) [<n>]":
+            R(Key("cs-tab")) * Repeat(extra="n"),    
         "new tab that":
             R(Mouse("middle") + Pause("20") + Key("c-tab")),
         "go (back|prev|prior|previous) [<n>]":
@@ -132,8 +132,8 @@ class ChromeRule(MappingRule):
                 "seventh": "7",
                 "eighth": "8",
             }),
-        IntegerRefST("n", 1, 100),
-        IntegerRefST("m", 1, 10)
+        ShortIntegerRef("n", 1, 100),
+        ShortIntegerRef("m", 1, 10)
     ]
     defaults = {"n": 1, "m":"", "nth": ""}
 

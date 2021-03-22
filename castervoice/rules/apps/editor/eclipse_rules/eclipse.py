@@ -1,4 +1,4 @@
-from dragonfly import Dictation, Function, Paste, Pause
+from dragonfly import Dictation, Function, Paste, Pause, ShortIntegerRef
 
 try: # Try first loading from caster user directory
     from eclipse_support import ec_con
@@ -8,7 +8,7 @@ except ImportError:
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.const import CCRType
-from castervoice.lib.merge.additions import IntegerRefST, Boolean
+from castervoice.lib.merge.additions import Boolean
 from castervoice.lib.merge.state.short import R
 
 from castervoice.lib.actions import Key, Text
@@ -39,7 +39,7 @@ class EclipseCCR(MergeRule):
     }
     extras = [
         Dictation("text"),
-        IntegerRefST("n", 1, 1000),
+        ShortIntegerRef("n", 1, 1000),
         Boolean("back"),
     ]
     defaults = {"n": 1, "back": False}

@@ -1,29 +1,23 @@
-## List Of Undocumented Features
+# List Of Undocumented Features
 
   As these features get documented, they can be removed from this page.
 
-  **Needs Docs**
+## Needs Docs
 
-  - MergeRule
-  - SelfModifyingRule
-  - CCRMerger
-  - FuzzyMatchAction
-  - ConfirmAction
-  - BoxAction
-  - SelectiveAction
-  - the settings
-  - sticky list
-  - ergonomic break alarm
-  - WSR setup
-  - status window
+- MergeRule
+- SelfModifyingRule
+- CCRMerger
+- ConfirmAction
+- BoxAction
+- SelectiveAction
+  
+### Needs Update
 
-  **Needs Update**
+- CCR
+- ContextSeeker
+- AsynchronousAction
 
-  - CCR
-  - ContextSeeker
-  - AsynchronousAction
+### More Examples Needed
 
-  **More Examples Needed**
-
-  - ContextSeeker
-  - AsynchronousAction
+- ContextSeeker
+- AsynchronousAction

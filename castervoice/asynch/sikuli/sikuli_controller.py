@@ -2,7 +2,7 @@ from subprocess import Popen
 import traceback
 import socket
 
-from dragonfly import get_engine, Function, Playback
+from dragonfly import get_current_engine, Function, Playback
 
 from castervoice.lib import settings, utilities, control, printer
 
@@ -40,7 +40,7 @@ class SikuliController(object):
         except Exception:
             self._start_server()
             five_seconds = 5
-            self._timer = get_engine().create_timer(self._retry_server_proxy, five_seconds)
+            self._timer = get_current_engine().create_timer(self._retry_server_proxy, five_seconds)
 
     def _start_server(self):
         runner_path = settings.SETTINGS["paths"]["SIKULI_RUNNER"]

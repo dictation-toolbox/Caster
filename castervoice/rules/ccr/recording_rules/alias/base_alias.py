@@ -1,3 +1,5 @@
+import re
+
 from dragonfly import Function
 
 from castervoice.lib import settings, context
@@ -53,9 +55,9 @@ class BaseAliasRule(BaseSelfModifyingRule):
         :return:
         """
         text = BaseAliasRule._read_highlighted(10)
-        spec = str(spec)
         if text is not None:
             if spec:
+                spec = re.sub(r'[^A-Za-z\'\s]+', '', str(spec)).lower() # Sanitize free dictation for spec, words and apostrophes only.
                 self._refresh(spec, str(text))
             else:
                 h_launch.launch(settings.QTYPE_INSTRUCTIONS, data="Enter_spec_for_command|")

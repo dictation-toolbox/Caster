@@ -1,5 +1,8 @@
-import xmlrpclib
-
+import six
+if six.PY2:
+    import xmlrpclib # pylint: disable=import-error
+else:
+    import xmlrpc.client as xmlrpclib
 
 class Communicator:
     LOCALHOST = "127.0.0.1"

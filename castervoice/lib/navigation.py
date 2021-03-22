@@ -1,22 +1,17 @@
 # -*- coding: utf-8 -*-
-import win32api, win32con
 '''
 master_text_nav shouldn't take strings as arguments - it should take ints, so it can be language-agnostic
 '''
-
+import six
+import subprocess
 import time
-from ctypes import windll
-from subprocess import Popen
-
-import dragonfly
-from dragonfly import Choice, monitors
-from castervoice.asynch.mouse.legion import LegionScanner
-from castervoice.lib import control, settings, utilities, textformat, printer
+from dragonfly import get_current_engine, monitors
+from castervoice.lib import control, settings, utilities, textformat
 from castervoice.lib.actions import Key, Text, Mouse
 from castervoice.lib.clipboard import Clipboard
 
-
 _CLIP = {}
+GRID_PROCESS = None
 
 
 def initialize_clipboard():
@@ -29,8 +24,11 @@ def initialize_clipboard():
 initialize_clipboard()
 
 
-def mouse_alternates(mode, monitor=1):
-    if mode == "legion" and not utilities.window_exists(None, "legiongrid"):
+def mouse_alternates(mode, monitor=1, rough=True):
+    args = []
+
+    if mode == "legion" and not utilities.window_exists("legiongrid", None):
+        from castervoice.asynch.mouse.legion import LegionScanner
         r = monitors[int(monitor) - 1].rectangle
         bbox = [
             int(r.x),
@@ -39,31 +37,56 @@ def mouse_alternates(mode, monitor=1):
             int(r.y) + int(r.dy) - 1
         ]
         ls = LegionScanner()
-        ls.scan(bbox)
+        ls.scan(bbox, rough)
         tscan = ls.get_update()
-        Popen([
-            settings.settings(["paths","PYTHONW"]),
-            settings.settings(["paths","LEGION_PATH"]), "-t", tscan[0], "-m",
+        args = [
+            settings.settings(["paths", "PYTHONW"]),
+            settings.settings(["paths", "LEGION_PATH"]), "-t", tscan[0], "-m",
             str(monitor)
-        ])
-    elif mode == "rainbow" and not utilities.window_exists(None, "rainbowgrid"):
-        Popen([
-            settings.settings(["paths","PYTHONW"]),
-            settings.settings(["paths","RAINBOW_PATH"]), "-g", "r", "-m",
+        ]
+    elif mode == "rainbow" and not utilities.window_exists("rainbowgrid", None):
+        args = [
+            settings.settings(["paths", "PYTHONW"]),
+            settings.settings(["paths", "RAINBOW_PATH"]), "-g", "r", "-m",
             str(monitor)
-        ])
-    elif mode == "douglas" and not utilities.window_exists(None, "douglasgrid"):
-        Popen([
-            settings.settings(["paths","PYTHONW"]),
-            settings.settings(["paths","DOUGLAS_PATH"]), "-g", "d", "-m",
+        ]
+    elif mode == "douglas" and not utilities.window_exists("douglasgrid", None):
+        args = [
+            settings.settings(["paths", "PYTHONW"]),
+            settings.settings(["paths", "DOUGLAS_PATH"]), "-g", "d", "-m",
             str(monitor)
-        ])
-    elif mode == "sudoku" and not utilities.window_exists(None, "sudokugrid"):
-        Popen([
-            settings.settings(["paths","PYTHONW"]),
-            settings.settings(["paths","SUDOKU_PATH"]), "-g", "s", "-m",
+        ]
+    elif mode == "sudoku" and not utilities.window_exists("sudokugrid", None):
+        args = [
+            settings.settings(["paths", "PYTHONW"]),
+            settings.settings(["paths", "SUDOKU_PATH"]), "-g", "s", "-m",
             str(monitor)
-        ])
+        ]
+    global GRID_PROCESS
+    GRID_PROCESS = subprocess.Popen(args) if args else None
+
+
+def wait_for_grid_exit(timeout=5):
+    global GRID_PROCESS
+    if GRID_PROCESS:
+        # TODO Remove if-part after fully migrating to Python3
+        if six.PY2:
+            t = 0.0
+            inc = 0.1
+            while t < timeout:
+                GRID_PROCESS.poll()
+                if GRID_PROCESS.returncode is not None:
+                    break
+                t += inc
+                time.sleep(inc)
+            if t >= timeout:
+                GRID_PROCESS.kill()
+        else:
+            try:
+                GRID_PROCESS.wait(timeout)
+            except subprocess.TimeoutExpired:  # pylint: disable=no-member
+                GRID_PROCESS.kill()
+    GRID_PROCESS = None
 
 
 def _text_to_clipboard(keystroke, nnavi500):
@@ -81,7 +104,7 @@ def _text_to_clipboard(keystroke, nnavi500):
                 # time for keypress to execute
                 time.sleep(
                     settings.settings([u'miscellaneous', u'keypress_wait'])/1000.)
-                _CLIP[key] = unicode(Clipboard.get_system_text())
+                _CLIP[key] = Clipboard.get_system_text()
                 utilities.save_json_file(
                     _CLIP, settings.settings([u'paths', u'SAVED_CLIPBOARD_PATH']))
             except Exception:
@@ -111,7 +134,7 @@ def drop_keep_clipboard(nnavi500, capitalization, spacing):
         if key in _CLIP:
             text = _CLIP[key]
         else:
-            dragonfly.get_engine().speak("slot empty")
+            get_current_engine().speak("slot empty")
             text = None
     else:
         text = Clipboard.get_system_text()
@@ -146,11 +169,6 @@ def erase_multi_clipboard():
                              settings.settings([u'paths', u'SAVED_CLIPBOARD_PATH']))
 
 
-def volume_control(n, volume_mode):
-    for i in range(0, int(n)):
-        Key("volume" + str(volume_mode)).execute()
-
-
 def kill_grids_and_wait():
     window_title = utilities.get_active_window_title()
     if (window_title == settings.RAINBOW_TITLE or window_title == settings.DOUGLAS_TITLE
@@ -172,13 +190,11 @@ left_up      = lambda: mouse_click("left:up")
 right_down   = lambda: mouse_click("right:down")
 right_up     = lambda: mouse_click("right:up")
 
+
 def wheel_scroll(direction, nnavi500):
-    amount = 120
-    if direction != "up":
-        amount = amount * -1
-    for i in xrange(1, abs(nnavi500) + 1):
-        windll.user32.mouse_event(0x00000800, 0, 0, amount, 0)
-        time.sleep(0.1)
+    wheel = "wheelup" if direction == "up" else "wheeldown"
+    for i in range(1, abs(nnavi500) + 1):
+        Mouse("{}:1/10".format(wheel)).execute()
 
 
 def curse(direction, direction2, nnavi500, dokick):
@@ -197,18 +213,28 @@ def curse(direction, direction2, nnavi500, dokick):
     Mouse("<" + str(x) + ", " + str(y) + ">").execute()
     if int(dokick) != 0:
         if int(dokick) == 1:
-            left_click(control.nexus()) # pylint: disable=too-many-function-args
+            left_click()
         elif int(dokick) == 2:
-            right_click(control.nexus()) # pylint: disable=too-many-function-args
+            right_click()
 
-
+def previous_line(semi):
+    semi = str(semi)
+    Key("escape").execute()
+    time.sleep(0.05)
+    Key("end").execute()
+    time.sleep(0.05)
+    Text(semi).execute()
+    time.sleep(0.05)
+    Key("up").execute()
+    time.sleep(0.05)
+    Key("enter").execute()
 
 def next_line(semi):
     semi = str(semi)
     Key("escape").execute()
-    time.sleep(0.07)
+    time.sleep(0.05)
     Key("end").execute()
-    time.sleep(0.07)
+    time.sleep(0.05)
     Text(semi).execute()
     Key("enter").execute()
 
@@ -247,5 +273,6 @@ actions = {
     "copy": "c-c",
     "cut": "c-x",
     "paste": "c-v",
-    "delete": "backspace"
+    "delete": "backspace",
+    "comment": "c-slash",
 }

@@ -1,5 +1,8 @@
+import traceback
+
 from dragonfly.grammar.elements import RuleRef, Alternative, Repetition
 from dragonfly.grammar.rule_compound import CompoundRule
+from dragonfly import FuncContext
 from castervoice.lib.const import CCRType
 from castervoice.lib.context import AppContext
 from castervoice.lib.ctrl.mgr.rules_enabled_diff import RulesEnabledDiff
@@ -58,7 +61,7 @@ class CCRMerger2(object):
         repeat_rules = [self._create_repeat_rule(merged_rule) for merged_rule in merged_rules]
         contexts = CCRMerger2._create_contexts(app_crs, rcns_to_details)
 
-        rules_and_contexts = zip(repeat_rules, contexts)
+        rules_and_contexts = list(zip(repeat_rules, contexts))
         enabled_ordered_rcns = [cr.rule_class_name() for cr in compat_results]
         diff = CCRMerger2._calculate_post_merge_diff(pre_merge_rcns, enabled_ordered_rcns)
         return MergeResult(rules_and_contexts, enabled_ordered_rcns, diff)
@@ -135,7 +138,7 @@ class CCRMerger2(object):
     @staticmethod
     def _create_contexts(app_crs, rcns_to_details):
         """
-        Returns a list of AppContexts, based on 'executable', one for each
+        Returns a list of contexts, AppContexts based on 'executable', FuncContext, one for each
         app rule, and if more than zero app rules, the negation context for the
         global ccr rule. (Global rule should be active when none of the other
         contexts are.) If there are zero app rules, [None] will be returned
@@ -146,15 +149,36 @@ class CCRMerger2(object):
         :return:
         """
         contexts = []
-        negation_context = None
+        context_evaluations = {} 
+
+        def wrap_context(context):
+            old_matches = context.matches
+            context_evaluations[context] = (False,False)
+            def matches(executable,title,handle):
+                result,valid = context_evaluations[context]
+                if valid:
+                    context_evaluations[context] = (result,False)
+                else:
+                    try : 
+                        result = old_matches(executable,title,handle)
+                    except :
+                        result  = True
+                        traceback.print_exc()
+                    context_evaluations[context] = (result,True)
+                return result
+            context.matches = matches
+            return context
+
         for cr in app_crs:
             details = rcns_to_details[cr.rule_class_name()]
             context = AppContext(executable=details.executable, title=details.title)
-            contexts.append(context)
-            if negation_context is None:
-                negation_context = ~context
-            else:
-                negation_context &= ~context
+            if details.function_context is not None:
+                context &= FuncContext(function=details.function_context)
+            contexts.append(wrap_context(context))
+
+        negation_context = FuncContext(lambda **kw:[x for x in context_evaluations if x.matches(**kw)]==[])
+
+
         contexts.insert(0, negation_context)
         return contexts
 

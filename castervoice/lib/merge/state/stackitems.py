@@ -3,9 +3,9 @@ Created on Jun 7, 2015
 
 @author: dave
 '''
-from dragonfly import Pause, ActionBase, get_engine
+from dragonfly import Pause, ActionBase, get_current_engine
 
-from castervoice.lib import settings
+from castervoice.lib import printer, settings
 
 
 class StackItem:
@@ -63,10 +63,13 @@ class StackItemRegisteredAction(StackItem):
         if settings.SETTINGS["miscellaneous"]["print_rdescripts"] and self.show:
             # formats rdescript with the given data
             try:
-                rd = self.rdescript % self.dragonfly_data
-            except:
+                rd = self.rdescript % self.dragonfly_data if self.dragonfly_data else self.rdescript
+            except KeyError:
                 rd = self.rdescript
-            print(rd)
+            except TypeError:
+                print("TypeError: dragonfly_data <{}>".format(self.dragonfly_data))
+                rd = self.rdescript
+            printer.out(rd)
 
 
 class StackItemSeeker(StackItemRegisteredAction):
@@ -238,7 +241,7 @@ class StackItemAsynchronous(StackItemSeeker):
                     execute(False)
 
         self.closure = closure
-        self.timer = get_engine().create_timer(self.closure, self.time_in_seconds)
+        self.timer = get_current_engine().create_timer(self.closure, self.time_in_seconds)
         self.closure()
 
 

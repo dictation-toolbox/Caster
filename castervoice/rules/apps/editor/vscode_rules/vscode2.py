@@ -1,11 +1,10 @@
-from dragonfly import Function, Repeat, Choice, Dictation, MappingRule
+from dragonfly import Function, Repeat, Choice, Dictation, MappingRule, Pause, ShortIntegerRef
 
-from castervoice.lib.actions import Key
+from castervoice.lib.actions import Key, Mouse
 
 from castervoice.lib import navigation
 from castervoice.lib.actions import Text
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 
 
@@ -29,7 +28,7 @@ class VSCodeNonCcrRule(MappingRule):
         "<action> [line] <ln1> [by <ln2>]":
             R(Function(navigation.action_lines)),
 
-        "go back <n>":
+        "go back [<n>]":
             R(Key("a-left") * Repeat(extra='n')),
         "go forward [<n>]":
             R(Key("a-right")) * Repeat(extra="n"),
@@ -37,7 +36,7 @@ class VSCodeNonCcrRule(MappingRule):
         # Display
         # note that most of these can be turned on/off with the same command
         "[toggle] full screen":
-            R(Key("sa-enter")),
+            R(Key("f11")),
         "toggle orientation":
             R(Key("sa-0")),
         "zoom in [<n>]":
@@ -75,10 +74,12 @@ class VSCodeNonCcrRule(MappingRule):
         # File Management
         "copy path":
             R(Key("c-k, p")),
-        "[open] command palette":
-            R(Key("cs-p"), rdescript="VS Code: Command Palette"),
+        "[open] command palette [<text>]":
+            R(Key("cs-p") + Text("%(text)s"), rdescript="VS Code: Command Palette"),
         "(open file | go to [tab]) [<text>]":
             R(Key("c-p") + Text("%(text)s"), rdescript="VS Code: Go to File without using dialogbox"),
+        "open project [<text>]":
+            R(Key("c-r") + Pause("30") + Text("%(text)s")),
         "open dialogue":
             R(Key("c-o"), rdescript="VS Code: open file dialogbox"),
         "open folder":
@@ -111,7 +112,7 @@ class VSCodeNonCcrRule(MappingRule):
             R(Key("cs-t") * Repeat(extra='n')),
         "Exit preview":
             R(Key("space, c-z")),
-        "keep preview open":
+        "keep [preview] open":
             R(Key("c-k, enter")),
         "windows explorer here":
             R(Key("c-k, r")),
@@ -160,7 +161,13 @@ class VSCodeNonCcrRule(MappingRule):
         "next pane":
             R(Key("c-k, c-right")),
         "(prior | previous | un) pane":
-            R(Key("c-k, c-right")),
+            R(Key("c-k, c-left")),
+        "move tab left":
+            R(Key("ca-left"),
+            rdescript="VS Code: Move the current tab to the editor pane on the left."),
+        "move tab right":
+            R(Key("ca-right"),
+            rdescript="VS Code: Move the current tab to the editor pane on the right."),
         "shift group left":
             R(Key("c-k, left"),
               rdescript="VS Code: Shift Current Group of Tabs to the Left E.g. Swap with Pane to the Left"),
@@ -180,8 +187,10 @@ class VSCodeNonCcrRule(MappingRule):
             R(Key("a-f12")),
         "trigger parameter hints":
             R(Key("cs-space")),
-        "format that":
+        "format (that | selection)":
             R(Key("c-k, c-f")),
+        "format (doc | document)":
+            R(Key("sa-f")),
         "(definition to side | side def)":
             R(Key("c-k, f12")),
         "show references":
@@ -224,8 +233,7 @@ class VSCodeNonCcrRule(MappingRule):
             R(Key("c-m")),
 
         # Integrated Terminal
-        "[show] terminal":
-            R(Key("c-backtick")),
+
         "new terminal":
             R(Key("cs-backtick")),
         "terminal scroll up":
@@ -236,6 +244,8 @@ class VSCodeNonCcrRule(MappingRule):
             R(Key("s-pgup")),
         "terminal page down":
             R(Key("s-pgdown")),
+        "altar kick":
+            R(Key("alt:down") + Mouse("left") + Key("alt:up")),
 
         # Collapsing
         "(fold | collapse) region":
@@ -256,7 +266,7 @@ class VSCodeNonCcrRule(MappingRule):
         "run this line":
             R(Key("csa-l")),
         "join line":
-            R(Key("csa-j")),
+            R(Key("f1") + Text("join lines") + Key("enter")),
 
         # requires gitlens extension
         "toggle blame":
@@ -279,9 +289,9 @@ class VSCodeNonCcrRule(MappingRule):
     extras = [
         Dictation("text"),
         Dictation("mim"),
-        IntegerRefST("ln1", 1, 1000),
-        IntegerRefST("ln2", 1, 1000),
-        IntegerRefST("n", 1, 1000),
+        ShortIntegerRef("ln1", 1, 1000),
+        ShortIntegerRef("ln2", 1, 1000),
+        ShortIntegerRef("n", 1, 1000),
         Choice("action", navigation.actions),
         Choice(
             "nth", {

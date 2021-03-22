@@ -59,4 +59,5 @@ class TestTreeNode(TestCase):
     def test_get_nodes_along_path_error(self):
         with self.assertRaises(InvalidTreeNodePathError) as context:
             TreeNode.get_nodes_along_path([_TEST_NODES], ["zero", "one alpha", "two alpha", "three delta"])
-        self.assertTrue("Broken TreeNode path:" in context.exception.message)
+        # self.assertTrue("Broken TreeNode path:" in context.exception.message)
+        self.assertTrue("Broken TreeNode path:" in str(context.exception))

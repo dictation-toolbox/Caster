@@ -1,9 +1,8 @@
-from dragonfly import Repeat, Dictation, MappingRule
+from dragonfly import Repeat, Dictation, MappingRule, ShortIntegerRef
 
 
 from castervoice.lib.actions import Key, Text
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 
 
@@ -59,7 +58,7 @@ class VisualStudioRule(MappingRule):
             R(Key("f11")),
         "step out [of]":
             R(Key("s-f11")),
-        "resume":
+        "(resume | go debug)":
             R(Key("f5")),
         "run tests":
             R(Key("c-r, t")),
@@ -79,11 +78,19 @@ class VisualStudioRule(MappingRule):
             R(Key("a-m, g")),
         "[add] [new] linked work item":
             R(Key("sa-l")),
+        "go back":
+            R(Key("c--")),
+        "go forward":
+            R(Key("cs--")),
+        "go to definition":
+            R(Key("f12")),
+        "show refs":
+            R(Key("a-2")),	
     }
     extras = [
         Dictation("text"),
         Dictation("mim"),
-        IntegerRefST("n", 1, 1000),
+        ShortIntegerRef("n", 1, 1000),
     ]
     defaults = {"n": 1, "mim": ""}
 

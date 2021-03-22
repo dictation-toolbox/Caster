@@ -1,4 +1,4 @@
-from dragonfly import Function, Repeat, Dictation, Choice, MappingRule
+from dragonfly import Function, Repeat, Dictation, Choice, MappingRule, ShortIntegerRef
 
 from castervoice.lib.actions import Key, Mouse
 from castervoice.lib import navigation, utilities
@@ -10,7 +10,6 @@ except ImportError:
     from castervoice.rules.core.alphabet_rules import alphabet_support
 
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.actions import AsynchronousAction
 from castervoice.lib.merge.state.short import S, L, R
 
@@ -37,12 +36,8 @@ class NavigationNon(MappingRule):
             R(Key("cs-f")),
         "replace":
             R(Key("c-h")),
-        "(F to | F2)":
-            R(Key("f2")),
-        "(F six | F6)":
-            R(Key("f6")),
-        "(F nine | F9)":
-            R(Key("f9")),
+        "F<function_key>":
+            R(Key("f%(function_key)s")),
         "[show] context menu":
             R(Key("s-f10")),
         "lean":
@@ -57,6 +52,11 @@ class NavigationNon(MappingRule):
             R(Function(navigation.curse)),
         "scree <direction> [<nnavi500>]":
             R(Function(navigation.wheel_scroll)),
+        "scree <direction> <time_in_seconds>":
+            R(AsynchronousAction(
+                [L(S(["cancel"], Function(navigation.wheel_scroll, nnavi500=1)))],
+                repetitions=1000,
+                blocking=False)),
         "colic":
             R(Key("control:down") + Mouse("left") + Key("control:up")),
         "garb [<nnavi500>]":
@@ -104,8 +104,9 @@ class NavigationNon(MappingRule):
     extras = [
         Dictation("text"),
         Dictation("mim"),
-        IntegerRefST("n", 1, 50),
-        IntegerRefST("nnavi500", 1, 500),
+        ShortIntegerRef("function_key", 1, 13),
+        ShortIntegerRef("n", 1, 50),
+        ShortIntegerRef("nnavi500", 1, 500),
         Choice("time_in_seconds", {
             "super slow": 5,
             "slow": 2,

@@ -33,7 +33,6 @@ from castervoice.lib.ctrl.mgr.validation.rules.rule_validation_delegator import 
 from castervoice.lib.merge.ccrmerging2.ccrmerger2 import CCRMerger2
 from castervoice.lib.merge.ccrmerging2.merging.classic_merging_strategy import ClassicMergingStrategy
 
-
 class Nexus:
     def __init__(self, content_loader):
         """
@@ -108,7 +107,7 @@ class Nexus:
         return DetailsValidationDelegator(
             CCRDetailsValidator(),
             AppCCRDetailsValidator(),
-            NonCCRDetailsValidator()
+            NonCCRDetailsValidator(),
         )
 
     @staticmethod
@@ -141,7 +140,7 @@ class Nexus:
         ccr_rule_validator = Nexus._create_ccr_rule_validator()
         details_validator = Nexus._create_details_validator()
         combo_validator = Nexus._create_combo_validator()
-        
+
         timer = settings.SETTINGS["grammar_reloading"]["reload_timer_seconds"]
         observable = TimerReloadObservable(timer)
         if settings.SETTINGS["grammar_reloading"]["reload_trigger"] == "manual":

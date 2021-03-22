@@ -7,6 +7,7 @@ import io
 import random
 import re
 import time
+from builtins import str
 
 from dragonfly.grammar.elements import Choice
 from dragonfly.grammar.grammar_base import Grammar
@@ -15,6 +16,7 @@ from castervoice.lib import settings
 from castervoice.lib.actions import Text
 from castervoice.rules.core.alphabet_rules.alphabet import Alphabet
 from castervoice.rules.core.navigation_rules.nav import Navigation
+from castervoice.rules.core.keyboard_rules.keyboard import Keyboard
 from castervoice.rules.core.numbers_rules.numeric import Numbers
 from castervoice.rules.core.punctuation_rules.punctuation import Punctuation
 from castervoice.rules.ccr.python_rules.python import Python
@@ -28,7 +30,7 @@ def _report_to_file(message, path=None):
     _path = settings.SETTINGS["paths"]["LOG_PATH"]
     if path is not None: _path = path
     with io.open(_path, 'at', encoding="utf-8") as f:
-        f.write(unicode(message) + "\n")
+        f.write(str(message) + "\n")
 
 
 def get_500_words():
@@ -146,7 +148,7 @@ class ComplexityTestRule(MergeRule):
 
 def core_and_python():
     '''intended to mimic the average use case: '''
-    return [Alphabet(), Navigation(), Numbers(), Punctuation(), Python()]
+    return [Alphabet(), Navigation(), Numbers(), Punctuation(), Keyboard(), Python()]
 
 
 def prep_merger(merger, nc, ns):

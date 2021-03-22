@@ -14,14 +14,17 @@ def double_text_punc_dict():
 
 
 def _inv_dtpb():
-    return {v: k for k, v in double_text_punc_dict().iteritems()}
+    return {v: k for k, v in double_text_punc_dict().items()}
 
 
 def text_punc_dict():
     # Insurers comma is recognized consistently with DNS/Natlink and
     # if/else statement workaround engines that do not expect punctuation symbol as a command
-    if (dragonfly.engines.get_engine()._name == 'natlink'):
-        comma = "(comma | ,)"
+    if hasattr(dragonfly.get_current_engine(), "name"):
+        if (dragonfly.get_current_engine().name == 'natlink'):
+            comma = "(comma | ,)"
+        else:
+            comma = "comma"
     else:
         comma = "comma"
 

@@ -1,8 +1,7 @@
-from dragonfly import Repeat, Pause, Function, Choice, MappingRule
+from dragonfly import Repeat, Pause, Function, Choice, MappingRule, ShortIntegerRef
 
 from castervoice.lib.actions import Key, Mouse, Text
 
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.short import R
 
@@ -25,7 +24,7 @@ class FirefoxRule(MappingRule):
             R(Key("cs-w")),
         "(next|forward) tab [<n>]|tab (right|sauce) [<n>]":
             R(Key("c-tab")) * Repeat(extra="n"),
-        "(back|prev|prior|previous) tab [<n>]|tab (left|lease) [<n>]":
+        "(back|previous) tab [<n>]|tab (left|lease) [<n>]":
         # control shift tab doesn't work and this appears to be an undocumented workaround
             R(Key("c-tab/30")) * Repeat(extra="n"),
         "new tab that":
@@ -112,8 +111,8 @@ class FirefoxRule(MappingRule):
                 "seventh": "7",
                 "eighth": "8",
             }),
-        IntegerRefST("n", 1, 100),
-        IntegerRefST("m", 1, 10)
+        ShortIntegerRef("n", 1, 100),
+        ShortIntegerRef("m", 1, 10)
     ]
     defaults = {"n": 1, "m":"", "nth": ""}
 

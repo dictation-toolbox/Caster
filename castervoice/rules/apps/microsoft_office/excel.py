@@ -7,12 +7,11 @@ Alex Boche 2019
 
 # this function takes a dictionary and returns a dictionary whose keys are sequences of keys of the original dictionary
 # and whose values our the corresponding sequences of values of the original dictionary
-from dragonfly import Repeat, Dictation, Choice, MappingRule, Repetition
+from dragonfly import Repeat, Dictation, Choice, MappingRule, Repetition, ShortIntegerRef
 
 from castervoice.rules.core.alphabet_rules import alphabet_support  # Manually change in port in if in user directory
 from castervoice.lib.actions import Text, Key
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 
 class ExcelRule(MappingRule):
@@ -89,9 +88,9 @@ class ExcelRule(MappingRule):
     }
     extras = [
         Dictation("dict"),
-        IntegerRefST("n", 1, 10),
-        IntegerRefST("row_1", 1, 100),
-        IntegerRefST("row_2", 1, 100),
+        ShortIntegerRef("n", 1, 10),
+        ShortIntegerRef("row_1", 1, 100),
+        ShortIntegerRef("row_2", 1, 100),
         # change max to 3 if you want sequences of lentgh three and so on
         Repetition(Choice("alphabet1", alphabet_support.caster_alphabet()), min=1, max=2, name="column_1"),
         Repetition(Choice("alphabet2", alphabet_support.caster_alphabet()), min=1, max=2, name="column_2")

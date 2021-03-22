@@ -1,6 +1,14 @@
 import os
 import sys
 import unittest
+import six
+
+if six.PY2:
+    import logging
+    logging.basicConfig()
+
+if os.path.dirname(os.path.dirname(os.path.abspath(__file__))) not in sys.path:
+	sys.path.insert(0,os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from dragonfly import get_engine
 

@@ -44,13 +44,15 @@ def grab_screen(bbox=None):
     """
 
     def cleanup():
-        if bitmap:
+        if 'bitmap' in locals() or 'bitmap' in globals():
             DeleteObject(bitmap)
-        DeleteDC(screen_copy)
-        DeleteDC(screen)
+        if 'screen_copy' in locals() or 'screen_copy' in globals():
+            DeleteDC(screen_copy)
+        if 'screen' in locals() or 'screen' in globals():
+            DeleteDC(screen)
 
     try:
-        screen = CreateDC(c_char_p('DISPLAY'), NULL, NULL, NULL)
+        screen = CreateDC(c_char_p('DISPLAY'.encode('utf-8')), NULL, NULL, NULL)
         screen_copy = CreateCompatibleDC(screen)
 
         if bbox:
@@ -79,7 +81,7 @@ def grab_screen(bbox=None):
 
         bitmap_header = pack('LHHHH', calcsize('LHHHH'), width, height, 1, 24)
         bitmap_buffer = c_buffer(bitmap_header)
-        bitmap_bits = c_buffer(' ' *(height*((width*3 + 3) & -4)))
+        bitmap_bits = c_buffer(b' ' *(height*((width*3 + 3) & -4)))
         got_bits = GetDIBits(screen_copy, bitmap, 0, height, bitmap_bits, bitmap_buffer,
                              0)
         if got_bits == NULL or got_bits == ERROR_INVALID_PARAMETER:

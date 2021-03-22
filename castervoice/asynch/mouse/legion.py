@@ -5,6 +5,7 @@ import os
 import re
 import sys
 import threading
+import locale
 from ctypes import *
 from dragonfly import monitors
 
@@ -17,10 +18,11 @@ finally:
     from castervoice.lib import gdi, settings, utilities
     settings.initialize()
 
-if sys.version_info > (3, 0):
-    from pathlib import Path # pylint: disable=import-error
-else:
+import six
+if six.PY2:
     from castervoice.lib.util.pathlib import Path
+else:
+    from pathlib import Path  # pylint: disable=import-error
 
 try:
     from PIL import ImageGrab, ImageFilter, Image
@@ -112,7 +114,7 @@ class LegionGrid(TkTransparent):
         # Helper class for splitting larger rectangles to smaller ones.
         for rect in rectangles_to_split:
             width = rect.x2 - rect.x1
-            pieces = width/self.max_rectangle_width
+            pieces = width//self.max_rectangle_width
             new_width = width/pieces
             for i in range(0, pieces):
                 r = Rectangle()
@@ -175,11 +177,9 @@ class LegionScanner:
         import struct
         try:
             if struct.calcsize("P") * 8 == 32:
-                self.tirg_dll = cdll.LoadLibrary(str(Path(settings.SETTINGS["paths"]["DLL_PATH"]).joinpath("tirg-32.dll")).encode(
-                sys.getfilesystemencoding()))
+                self.tirg_dll = cdll.LoadLibrary(str(Path(settings.SETTINGS["paths"]["DLL_PATH"]).joinpath("tirg-32.dll")))
             else:
-                self.tirg_dll = cdll.LoadLibrary(str(Path(settings.SETTINGS["paths"]["DLL_PATH"]).joinpath("tirg-64.dll")).encode(
-                sys.getfilesystemencoding()))
+                self.tirg_dll = cdll.LoadLibrary(str(Path(settings.SETTINGS["paths"]["DLL_PATH"]).joinpath("tirg-64.dll")))
         except Exception as e:
             print("Legion loading failed with '%s'" % str(e))
         self.tirg_dll.getTextBBoxesFromFile.argtypes = [c_char_p, c_int, c_int]
@@ -191,15 +191,30 @@ class LegionScanner:
         bbstring = self.tirg_dll.getTextBBoxesFromBytes(img.tobytes(), img.size[0],
                                                         img.size[1])
         # clean the results in case any garbage letters come through
-        result = re.sub("[^0-9,]", "", bbstring)
+        result = re.sub("[^0-9,]", "", bbstring.decode(locale.getpreferredencoding()))
         return result
 
-    def scan(self, bbox=None):
+    def scan(self, bbox=None, rough=True):
         # ImageGrab.grab currently doesn't support multiple monitors.
         # If PIL gets updated with multimon support, this can be switched back.
         img = gdi.grab_screen(bbox)  # ImageGrab.grab(bbox)
+        if rough:
+            factor = settings.SETTINGS["miscellaneous"]["legion_downscale_factor"]
+            if str(factor) == "auto":
+                # Choose a fixed "rough" final size that will work in most circumstances
+                factor = min(1500 / float(img.size[0]), 1)
+            new_size = (img.size[0]*factor, img.size[1]*factor)
+            img.thumbnail(new_size)
+        
+
         img = img.filter(ImageFilter.FIND_EDGES)
         result = self.tirg_scan(img)
+        if rough:
+            result = result.split(",")
+            result = list(filter(None, result)) # Removes empty items
+            result= [int(float(i)/factor) for i in result]
+            result = ",".join(str(bit) for bit in result)
+            
         if result != self.last_signature:
             with self.lock:
                 self.last_signature = result
@@ -221,10 +236,6 @@ def main(argv):
     monitor = 1
     dimensions = None
     auto_quit = False
-
-    error_code = windll.shcore.SetProcessDpiAwareness(2)  #enable 1-1 pixel mapping
-    if error_code == -2147024891:
-        raise OSError("Failed to set app awareness")
 
     try:
         opts, args = getopt.getopt(argv, "ht:a:d:m:",

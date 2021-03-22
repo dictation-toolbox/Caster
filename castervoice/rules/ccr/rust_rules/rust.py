@@ -1,11 +1,10 @@
-from dragonfly import Choice
+from dragonfly import Choice, ShortIntegerRef
 
 from castervoice.rules.core.alphabet_rules import alphabet_support # Manually change import path if in user directory.
 from castervoice.lib.actions import Text, Key
 from castervoice.rules.ccr.standard import SymbolSpecs
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
@@ -21,9 +20,9 @@ class Rust(MergeRule):
             R(Text("else {}") + Key("left/5:3")),
         #
         SymbolSpecs.SWITCH:
-            R(Text("match")),
+            R(Text("match ")),
         SymbolSpecs.CASE:
-            R(Text(" => ") + Key("left")),
+            R(Text(" => ")),
         SymbolSpecs.BREAK:
             R(Text("break;")),
         SymbolSpecs.DEFAULT:
@@ -63,9 +62,9 @@ class Rust(MergeRule):
             R(Text("struct ")),
         #
         SymbolSpecs.COMMENT:
-            R(Text("//")),
+            R(Text("// ")),
         SymbolSpecs.LONG_COMMENT:
-            R(Text("///")),
+            R(Text("/// ")),
         #
         SymbolSpecs.NULL:
             R(Text("None")),
@@ -107,8 +106,18 @@ class Rust(MergeRule):
             R(Text("'")),
         "static":
             R(Text("static ")),
+        "self":
+            R(Text("self")),
         "brace pan":
             R(Key("escape, escape, end, left, enter, enter, up, tab")),
+        "enum":
+            R(Text("enum ")),
+        "await":
+            R(Text(".await")),
+        "async":
+            R(Text("async ")),
+        "clone":
+            R(Text(".clone()")),
         "name space":
             R(Key("colon, colon")),
     }
@@ -126,7 +135,7 @@ class Rust(MergeRule):
         }),
         Choice("signed", {"unsigned": "u"}),
         Choice("mutability", {"mute ah | mute": "mut "}),
-        IntegerRefST("n", 0, 1000),
+        ShortIntegerRef("n", 0, 1000),
         alphabet_support.get_alphabet_choice("a"),
         alphabet_support.get_alphabet_choice("b"),
     ]

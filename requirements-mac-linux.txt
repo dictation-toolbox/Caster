@@ -1,0 +1,10 @@
+dragonfly2[kaldi]>=0.29.0
+pillow>=6.2.2
+tomlkit>=0.5.11
+future>=0.18.2
+mock>=3.0.5
+appdirs>=1.4.3
+scandir>=1.10.0
+pylint
+PySide2
+six

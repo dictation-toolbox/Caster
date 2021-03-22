@@ -4,11 +4,13 @@ import shlex
 import threading
 import time
 from subprocess import Popen
+import re
 
-if sys.version_info > (3, 0):
-    from pathlib import Path # pylint: disable=import-error
-else:
+import six
+if six.PY2:
     from castervoice.lib.util.pathlib import Path
+else:
+    from pathlib import Path  # pylint: disable=import-error
 
 from dragonfly import Function, Choice, Dictation, ContextAction
 from castervoice.lib.context import AppContext
@@ -40,11 +42,12 @@ class BringRule(BaseSelfModifyingRule):
     # Paths
     _terminal_path = settings.settings(["paths", "TERMINAL_PATH"])
     _explorer_path = str(Path("C:\\Windows\\explorer.exe"))
+    _source_dir =  Path(settings.SETTINGS["paths"]["BASE_PATH"]).parents[0]
     _user_dir = settings.SETTINGS["paths"]["USER_DIR"]
-    _home_dir = str(Path.home())
+    _home_dir = Path.home()
 
-    def __init__(self):
-        super(BringRule, self).__init__(settings.settings(["paths", "SM_BRINGME_PATH"]))
+    def __init__(self, **kwargs):
+        super(BringRule, self).__init__(settings.settings(["paths", "SM_BRINGME_PATH"]), **kwargs)
 
     def _initialize(self):
         """
@@ -57,7 +60,6 @@ class BringRule(BaseSelfModifyingRule):
         """
         This _deserialize creates mapping which uses the user-made extras.
         """
-
         self._initialize()
 
         self._smr_mapping = {
@@ -83,7 +85,8 @@ class BringRule(BaseSelfModifyingRule):
                 "terminal": "terminal",
                 "explorer": "explorer",
             }),
-            Dictation("key"),
+            # Sanitize free dictation for spec, words and apostrophes only.
+            Dictation("key").apply(lambda key: re.sub(r'[^A-Za-z\'\s]+', '', key).lower()),
         ]
         self._smr_extras.extend(self._rebuild_items())
         self._smr_defaults = {"app": None}
@@ -94,8 +97,8 @@ class BringRule(BaseSelfModifyingRule):
         return [
             Choice(header,
                    {key: os.path.expandvars(value)
-                    for key, value in section.iteritems()})
-            for header, section in config_copy.iteritems()
+                    for key, value in section.items()})
+            for header, section in config_copy.items()
         ]
 
     def _refresh(self, *args):
@@ -116,7 +119,7 @@ class BringRule(BaseSelfModifyingRule):
         if launch_type == "program":
             path = utilities.get_active_window_path()
             if not path:
-                # dragonfly.get_engine().speak("program not detected")
+                # dragonfly.get_current_engine().speak("program not detected")
                 printer.out("Program path for bring me not found ")
         elif launch_type == 'file':
             files = utilities.get_selected_files(folders=False)
@@ -146,9 +149,10 @@ class BringRule(BaseSelfModifyingRule):
         # Remove item from bring me
         config_copy = self._config.get_copy()
         deleted = False
+        key = str(key)
         for section in config_copy.keys():
             if key in config_copy[section]:
-                del config_copy[section][str(key)]
+                del config_copy[section][key]
                 deleted = True
                 break
         if deleted:
@@ -194,7 +198,7 @@ class BringRule(BaseSelfModifyingRule):
         Popen(program)
 
     def _bring_file(self, file):
-        threading.Thread(target=os.startfile, args=(file, )).start()
+        threading.Thread(target=os.startfile, args=(file, )).start()  # pylint: disable=no-member
 
     # =================== BringMe default setup:
     _bm_defaults = {
@@ -206,18 +210,19 @@ class BringRule(BaseSelfModifyingRule):
             # Caster Support
             "dragonfly gitter": "https://gitter.im/dictation-toolbox/dragonfly",
             "caster gitter": "https://gitter.im/dictation-toolbox/Caster",
-            "caster discord": "https://discord.gg/9eAAsCJr",
+            "caster discord": "https://discord.gg/9eAAsCJ",
 
             # General URLs
             "google": "https://www.google.com",
         },
         "folder": {
             # OS folder Navigation
-            "libraries | home": _home_dir,
+            "libraries | home": str(Path(_home_dir)),
             "my pictures": str(Path(_home_dir).joinpath("Pictures")),
             "my documents": str(Path(_home_dir).joinpath("Documents")),
 
             # Caster User Dir Navigation
+            "caster source": str(Path(_source_dir)),
             "caster user": str(Path(_user_dir)),
             "caster hooks": str(Path(_user_dir).joinpath("hooks")),
             "caster transformers": str(Path(_user_dir).joinpath("transformers")),
@@ -243,14 +248,14 @@ class BringRule(BaseSelfModifyingRule):
             "caster chain aliases file": str(Path(_user_dir).joinpath("data/sm_chain_aliases.toml")),
             "caster clipboard file": str(Path(_user_dir).joinpath("data/clipboard.json")),
             "caster record from history file": str(Path(_user_dir).joinpath("data/sm_history.toml")),
-            "caster log file": str(Path(_user_dir).joinpath("data/log.txt")),
+            "caster log file": str(Path(_user_dir).joinpath("log.txt")),
 
-            # Simplified Transformer 
+            # Simplified Transformer
             "caster transformer file": str(Path(_user_dir).joinpath("transformers/words.txt")),
         }
     }
 
-
 def get_rule():
-    details = RuleDetails(ccrtype=CCRType.SELFMOD, transformer_exclusion=True)
-    return BringRule, details
+    details = RuleDetails(name="bring me",
+                          transformer_exclusion=True)
+    return [BringRule, details]

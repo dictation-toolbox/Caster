@@ -3,7 +3,11 @@ Created on Jun 7, 2015
 
 @author: dave
 '''
-import Queue
+import six
+if six.PY2:
+    import Queue # pylint: disable=import-error
+else:
+    import queue as Queue
 
 from dragonfly import RecognitionHistory
 

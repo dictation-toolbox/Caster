@@ -3,15 +3,12 @@ from castervoice.lib.actions import Key
 
 from castervoice.rules.apps.speech_engine.dragon_rules.dragon_support import fix_dragon_double, extras_for_whole_file, \
     defaults_for_whole_file
-from castervoice.lib import utilities
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.short import R
 
 
 class DragonRule(MappingRule):
     mapping = {
-        '(lock Dragon | deactivate)':
-            R(Playback([(["go", "to", "sleep"], 0.0)])),
         '(number|numbers) mode':
             R(Playback([(["numbers", "mode", "on"], 0.0)])),
         'spell mode':
@@ -24,8 +21,6 @@ class DragonRule(MappingRule):
             R(Playback([(["command", "mode", "on"], 0.0)])),
         '(command off | com off)':
             R(Playback([(["command", "mode", "off"], 0.0)])),
-        "reboot dragon":
-            R(Function(utilities.reboot)),
         "fix dragon double":
             R(Function(fix_dragon_double)),
         "left point":
@@ -84,10 +79,6 @@ class DragonRule(MappingRule):
         "[dictation] sources": R(Mimic("manage", "dictation", "sources"), 
             rdescript="Dragon: manage dictation sources"),
         
-
-        # A Natlink Command
-        "clear caster log":
-            R(Function(utilities.clear_log)),
     }
     # see above
     extras = extras_for_whole_file()

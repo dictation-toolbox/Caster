@@ -1,17 +1,11 @@
 import time
-
-from dragonfly import Function, Choice, MappingRule
-
+from dragonfly import Function, Choice, MappingRule, ShortIntegerRef
+from dragonfly.actions.mouse import get_cursor_position
+from castervoice.lib import control, navigation
 from castervoice.lib.actions import Mouse
-
-from castervoice.asynch.mouse import grids
-import win32api, win32con
-
-from castervoice.lib import control, settings
-from castervoice.rules.ccr.standard import SymbolSpecs
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
+from castervoice.rules.ccr.standard import SymbolSpecs
 
 
 def kill():
@@ -24,7 +18,7 @@ def send_input(pre, color, n, action):
     int_a = int(action)
     if (int_a == 0) | (int_a == 1) | (int_a == -1):
         s.kill()
-        grids.wait_for_death(settings.DOUGLAS_TITLE)
+        navigation.wait_for_grid_exit()
         time.sleep(0.1)
     if int_a == 0:
         Mouse("left").execute()
@@ -35,12 +29,12 @@ def send_input(pre, color, n, action):
 def send_input_select(pre1, color1, n1, pre2, color2, n2):
     s = control.nexus().comm.get_com("grids")
     s.move_mouse(int(pre1), int(color1), int(n1))
-    _x1, _y1 = win32api.GetCursorPos()
+    _x1, _y1 = get_cursor_position()
     s.move_mouse(int(pre2), int(color2), int(n2))
-    _x2, _y2 = win32api.GetCursorPos()
+    _x2, _y2 = get_cursor_position()
     s.kill()
-    grids.wait_for_death(settings.DOUGLAS_TITLE)
-    drag_from_to(_x1,_y1,_x2,_y2)
+    navigation.wait_for_grid_exit()
+    drag_from_to(_x1, _y1, _x2, _y2)
 
 
 def send_input_select_short(pre1, color1, n1, n2):
@@ -48,12 +42,12 @@ def send_input_select_short(pre1, color1, n1, n2):
 
 
 def drag_from_to(x1, y1, x2, y2):
-    win32api.SetCursorPos((x1,y1))
+    Mouse("[{}, {}]".format(x1, y1)).execute()
     time.sleep(0.1)
-    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,0,0)
-    win32api.SetCursorPos((x2,y2))
+    Mouse("left:down").execute()
+    Mouse("[{}, {}]".format(x2, y2)).execute()
     time.sleep(0.1)
-    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,0,0)
+    Mouse("left:up").execute()
 
 
 x1 = None
@@ -64,16 +58,16 @@ y2 = None
 
 def store_first_point():
     global x1, y1
-    x1, y1 = win32api.GetCursorPos()
+    x1, y1 = get_cursor_position()
 
 
 def select_text():
     global x1, y1, x2, y2
-    x2, y2 = win32api.GetCursorPos()
+    x2, y2 = get_cursor_position()
     s = control.nexus().comm.get_com("grids")
     s.kill()
-    grids.wait_for_death(settings.DOUGLAS_TITLE)
-    drag_from_to(x1,y1,x2,y2)
+    navigation.wait_for_grid_exit()
+    drag_from_to(x1, y1, x2, y2)
 
 
 class RainbowGridRule(MappingRule):
@@ -93,9 +87,9 @@ class RainbowGridRule(MappingRule):
             R(Function(kill)),
     }
     extras = [
-        IntegerRefST("pre", 0, 9),
-        IntegerRefST("pre1", 0, 9),
-        IntegerRefST("pre2", 0, 9),
+        ShortIntegerRef("pre", 0, 9),
+        ShortIntegerRef("pre1", 0, 9),
+        ShortIntegerRef("pre2", 0, 9),
         Choice(
             "color", {
                 "(red | rot)": 0,
@@ -123,9 +117,9 @@ class RainbowGridRule(MappingRule):
                 "(blue | blau)": 4,
                 "(purple | lila)": 5
             }),
-        IntegerRefST("n", 0, 100),
-        IntegerRefST("n1", 0, 100),
-        IntegerRefST("n2", 0, 100),
+        ShortIntegerRef("n", 0, 100),
+        ShortIntegerRef("n1", 0, 100),
+        ShortIntegerRef("n2", 0, 100),
         Choice("action", {
             "kick": 0,
             "psychic": 1,

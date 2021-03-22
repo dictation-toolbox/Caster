@@ -8,20 +8,21 @@ import io
 import os
 import sys
 import tomlkit
-import version
-import errno
-from appdirs import *
+from past.builtins import xrange
 
-
-if sys.version_info > (3, 0):
-    from pathlib import Path # pylint: disable=import-error
-else:
-    from castervoice.lib.util.pathlib import Path
-
-# consts: some of these can easily be moved out of this file
 from castervoice.lib import printer
+from castervoice.lib import version
 from castervoice.lib.util import guidance
 
+from appdirs import *
+
+import six
+if six.PY2:
+    from castervoice.lib.util.pathlib import Path
+else:
+    from pathlib import Path  # pylint: disable=import-error
+
+# consts: some of these can easily be moved out of this file
 GENERIC_HELP_MESSAGE = """
 If you continue having problems with this or any other issue you can contact
 us through Gitter at <https://gitter.im/dictation-toolbox/Caster> or on our GitHub
@@ -46,6 +47,7 @@ QTYPE_DIRECTORY = "5"
 QTYPE_CONFIRM = "6"
 WXTYPE_SETTINGS = "7"
 HMC_SEPARATOR = "[hmc]"
+STARTUP_MESSAGES = []
 
 # calculated fields
 SETTINGS = None
@@ -55,6 +57,16 @@ _BASE_PATH = None
 _USER_DIR = None
 _SETTINGS_PATH = None
 
+def add_message(message):
+    """
+    Add string message to be printed when Caster initializes
+    message: str
+    """
+    try:
+        if message not in STARTUP_MESSAGES:
+            STARTUP_MESSAGES.append(str(message))
+    except Exception as e:
+        print(e)
 
 def _get_platform_information():
     """Return a dictionary containing platform-specific information."""
@@ -87,8 +99,7 @@ def _validate_engine_path():
     if not sys.platform.startswith('win'):
         return ''
     try:
-        # pylint: disable=import-error
-        import natlink
+        import natlink  # pylint: disable=import-error
     except ImportError:
         return ''
     if os.path.isfile(_SETTINGS_PATH):
@@ -101,7 +112,7 @@ def _validate_engine_path():
                 engine_path = _find_natspeak()
                 data["paths"]["ENGINE_PATH"] = engine_path
                 try:
-                    formatted_data = unicode(tomlkit.dumps(data))
+                    formatted_data = str(tomlkit.dumps(data))
                     with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as toml_file:
                         toml_file.write(formatted_data)
                     printer.out("Setting engine path to {}".format(engine_path))
@@ -118,9 +129,12 @@ def _find_natspeak():
     '''
 
     try:
-        import _winreg
-    except:
-        printer.out("Could not import _winreg")
+        if six.PY2:
+            import _winreg as winreg
+        else:
+            import winreg
+    except ImportError:
+        printer.out("Could not import winreg")
         return ""
 
     printer.out("Searching Windows Registry For DNS...")
@@ -133,23 +147,23 @@ def _find_natspeak():
     if proc_arch == 'x86' and not proc_arch64:
         arch_keys = {0}
     elif proc_arch == 'x86' or proc_arch == 'amd64':
-        arch_keys = {_winreg.KEY_WOW64_32KEY, _winreg.KEY_WOW64_64KEY}
+        arch_keys = {winreg.KEY_WOW64_32KEY, winreg.KEY_WOW64_64KEY}
     else:
         raise Exception("Unhandled arch: %s" % proc_arch)
 
     for arch_key in arch_keys:
-        key = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE,
-                              "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall",
-                              0, _winreg.KEY_READ | arch_key)
-        for i in xrange(0, _winreg.QueryInfoKey(key)[0]):
-            skey_name = _winreg.EnumKey(key, i)
-            skey = _winreg.OpenKey(key, skey_name)
+        key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE,
+                             "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall",
+                             0, winreg.KEY_READ | arch_key)
+        for i in xrange(0, winreg.QueryInfoKey(key)[0]):
+            skey_name = winreg.EnumKey(key, i)
+            skey = winreg.OpenKey(key, skey_name)
             DisplayName, Publisher, DisplayVersion, InstallLocation = 'null'
             try:
-                DisplayName = _winreg.QueryValueEx(skey, 'DisplayName')[0]
-                Publisher = _winreg.QueryValueEx(skey, 'Publisher')[0]
-                DisplayVersion = _winreg.QueryValueEx(skey, 'DisplayVersion')[0]
-                InstallLocation = _winreg.QueryValueEx(skey, 'InstallLocation')[0]
+                DisplayName = winreg.QueryValueEx(skey, 'DisplayName')[0]
+                Publisher = winreg.QueryValueEx(skey, 'Publisher')[0]
+                DisplayVersion = winreg.QueryValueEx(skey, 'DisplayVersion')[0]
+                InstallLocation = winreg.QueryValueEx(skey, 'InstallLocation')[0]
             except OSError as error:
                 if error.errno == 2:  # Suppresses '[Error 2] The system cannot find the file specified'
                     pass
@@ -162,12 +176,12 @@ def _find_natspeak():
                     if DnsVersion >= 13:
                         engine_path = str(Path(InstallLocation).joinpath("Program/natspeak.exe"))
                         if os.path.isfile(engine_path):
-                            printer.out("Search Complete.") 
+                            printer.out("Search Complete.")
                             return engine_path
                     else:
                         printer.out(
                             "Dragon Naturally Speaking {} is not supported by Caster. Only versions 13 and above are supported. Purchase Dragon Naturally Speaking 13 or above"
-                            .format(DnsVersion))     
+                            .format(DnsVersion))
     printer.out("Cannot find dragon engine path")
     return ""
 
@@ -181,7 +195,7 @@ def _save(data, path):
     """
     guidance.offer()
     try:
-        formatted_data = unicode(tomlkit.dumps(data))
+        formatted_data = str(tomlkit.dumps(data))
         with io.open(path, "wt", encoding="utf-8") as f:
             f.write(formatted_data)
     except Exception as e:
@@ -214,7 +228,7 @@ def _deep_merge_defaults(data, defaults):
     Modifies `data` in place.
     """
     changes = 0
-    for key, default_value in defaults.iteritems():
+    for key, default_value in defaults.items():
         # If the key is in the data, use that, but call recursivly if it's a dict.
         if key in data:
             if isinstance(data[key], collections.Mapping):
@@ -324,6 +338,17 @@ def _get_defaults():
                 SYSTEM_INFORMATION["hidden console binary"],
         },
 
+        # Speech recognition engine settings
+        "engine": {
+            "default_engine_mode": False, 
+            "engine_mode": "normal",
+            "default_mic": False, 
+            "mic_mode": "on",
+            "mic_sleep_timer_on": True, 
+            "mic_sleep_timer": 300, # Seconds before microphone goes to sleep after last successful recognition.
+            # Note: No greater than 5 minutes or 300 seconds unless DPI/DPI sleep settings are adjusted
+        },
+
         # python settings
         "python": {
             "automatic_settings":
@@ -351,9 +376,9 @@ def _get_defaults():
         },
 
         "online": {
-            "online_mode": True, # False disables updates
+            "online_mode": True,  # False disables updates
             "last_update_date": "None",
-            "update_interval": 7 # Days
+            "update_interval": 7  # Days
         },
 
         # Default enabled hooks: Use hook class name
@@ -367,22 +392,19 @@ def _get_defaults():
             "keypress_wait": 50,  # milliseconds
             "max_ccr_repetitions": 16,
             "atom_palette_wait": 30,  # hundredths of a second
-            "integer_remap_opt_in": False,
-            "short_integer_opt_out": False,
-            "integer_remap_crash_fix": False,
             "print_rdescripts": True,
             "history_playback_delay_secs": 1.0,
             "legion_vertical_columns": 30,
+            "legion_downscale_factor": "auto",
             "use_aenea": False,
             "hmc": True,
             "ccr_on": True,
-            "status_window_foreground_on_error": False,
-            "dragonfly_pause_default":  0.003, # dragonfly _pause_default 0.02 is too slow! Caster default 0.003
+            "dragonfly_pause_default":  0.003,  # dragonfly _pause_default 0.02 is too slow! Caster default 0.003
         },
         # Grammar reloading section
         "grammar_reloading": {
-            "reload_trigger": "timer", # manual or timer
-            "reload_timer_seconds": 5, # seconds
+            "reload_trigger": "timer",  # manual or timer
+            "reload_timer_seconds": 5,  # seconds
         },
 
         "formats": {
@@ -468,7 +490,10 @@ def initialize():
     # calculate prerequisites
     SYSTEM_INFORMATION = _get_platform_information()
     _BASE_PATH = str(Path(__file__).resolve().parent.parent)
-    _USER_DIR = user_data_dir(appname="caster", appauthor=False)
+    if os.getenv("CASTER_USER_DIR") is not None:
+        _USER_DIR = os.getenv("CASTER_USER_DIR")
+    else:
+        _USER_DIR = user_data_dir(appname="caster", appauthor=False)
     _SETTINGS_PATH = str(Path(_USER_DIR).joinpath("settings/settings.toml"))
 
     for directory in ["data", "rules", "transformers", "hooks", "sikuli", "settings"]:
@@ -476,7 +501,7 @@ def initialize():
         d.mkdir(parents=True, exist_ok=True)
     # Kick everything off.
     SETTINGS = _init(_SETTINGS_PATH)
-    _debugger_path = SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"]
+    _debugger_path = SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"]  # pylint: disable=invalid-sequence-index
     if _debugger_path not in sys.path and os.path.isdir(_debugger_path):
         sys.path.append(_debugger_path)
     printer.out("Caster User Directory: {}".format(_USER_DIR))

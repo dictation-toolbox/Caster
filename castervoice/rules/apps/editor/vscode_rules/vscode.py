@@ -1,11 +1,10 @@
 # thanks to Casper for contributing commands to this.
-from dragonfly import Repeat, Dictation, Choice
+from dragonfly import Repeat, Dictation, Choice, ShortIntegerRef
 
 from castervoice.lib.actions import Key
 
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
@@ -14,6 +13,8 @@ class VSCodeCcrRule(MergeRule):
     pronunciation = "visual studio code ccr"
 
     mapping = {
+        "[show] terminal":
+            R(Key("c-backtick")),
         # Note: If you get the bad grammar grammar too complex error, move some of these commands into the non-CCR rule
         # cursor/line navigation
         "scroll up [<n>]":
@@ -28,8 +29,6 @@ class VSCodeCcrRule(MergeRule):
         "scroll page down [<n>]":
             R(Key("a-pgdown")*Repeat(extra='n'),
               rdescript="VS Code: Scroll Down One Page Down At a Time"),
-        "(unindent|out dent) [<n>]":
-            R(Key("home, s-tab:%(n)s"), rdescript="VS Code: Unindent"),
         "comment [line]":
             R(Key("c-slash"), rdescript="VS Code: Line Comment"),
         "block comment":
@@ -87,8 +86,14 @@ class VSCodeCcrRule(MergeRule):
         "next cursor [<n>]":
             R(Key("c-d")*Repeat(extra='n'),
               rdescript="VS Code: Add Cursor to Next Occurrence of Current Selection"),
+        "skip next cursor [<n>]":
+            R(Key("c-k,c-d") * Repeat(extra="n"),
+            rdescript="VS Code: Skip Selection and Add Cursor to Next Occurrence of Current Selection",
+        ),
         "indent [<n>]":
-            R(Key("home, tab:%(n)s"), rdescript="VS Code: Indent"),
+            R(Key("c-]"), rdescript="VS Code: Indent"),
+        "(unindent|out dent) [<n>]":
+            R(Key("c-["), rdescript="VS Code: Unindent"),
         "hard delete [<n>]":
             R(Key("s-del"), rdescript="VS Code: Eliminates Line not Just the Text on it"),
         "copy line up [<n>]":
@@ -121,8 +126,8 @@ class VSCodeCcrRule(MergeRule):
     extras = [
         Dictation("text"),
         Dictation("mim"),
-        IntegerRefST("n", 1, 100),
-        IntegerRefST("m", 1, 10),
+        ShortIntegerRef("n", 1, 100),
+        ShortIntegerRef("m", 1, 10),
         Choice(
             "between_parables", {
                 "prekris": "lparen",

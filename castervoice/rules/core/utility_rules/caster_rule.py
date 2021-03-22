@@ -1,7 +1,7 @@
 from dragonfly import MappingRule, Function, RunCommand, Playback
 
-from castervoice.lib import control
-from castervoice.lib.ctrl.dependencies import find_pip
+from castervoice.lib import control, utilities
+from castervoice.lib.ctrl.dependencies import find_pip  # pylint: disable=no-name-in-module
 from castervoice.lib.ctrl.updatecheck import update
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.short import R
@@ -19,21 +19,25 @@ class _DependencyUpdate(RunCommand):
         # Only reboot dragon if the command was successful and online_mode is true
         # 'pip install ...' may exit successfully even if there were connection errors.
         if proc.wait() == 0 and update:
-            Playback([(["reboot", "dragon"], 0.0)]).execute()
+            Function(utilities.reboot).execute()
 
 
 class CasterRule(MappingRule):
     mapping = {
+        "clear caster log":
+            R(Function(utilities.clear_log)),
+        "reboot caster":
+            R(Function(utilities.reboot)),
+        "update dragonfly":
+            R(_DependencyUpdate([_PIP, "install", "--upgrade", "dragonfly2"])),
         # update management ToDo: Fully implement castervoice PIP install
         #"update caster":   
         #    R(_DependencyUpdate([_PIP, "install", "--upgrade", "castervoice"])),
-        "update dragonfly":
-            R(_DependencyUpdate([_PIP, "install", "--upgrade", "dragonfly2"])),
 
         # ccr de/activation
-        "enable c c r":
+        "enable (c c r|ccr)":
             R(Function(lambda: control.nexus().set_ccr_active(True))),
-        "disable c c r":
+        "disable (c c r|ccr)":
             R(Function(lambda: control.nexus().set_ccr_active(False))),
     }
 
