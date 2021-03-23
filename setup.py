@@ -47,7 +47,7 @@ setuptools.setup(
     name="castervoice",
     version=find_version("castervoice/lib", "version.py"),
     author="synkarius",
-    author_email="caster@donotrackplus.com",
+    author_email="CasterVoice@protonmail.com",
     description="Dragonfly-Based Voice Programming Toolkit",
     long_description=long_description,
     long_description_content_type="text/markdown",
