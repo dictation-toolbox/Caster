@@ -6,5 +6,5 @@ future>=0.18.2
 mock>=3.0.5
 appdirs>=1.4.3
 scandir>=1.10.0
-pyvda
+pyvda==0.0.8
 six
