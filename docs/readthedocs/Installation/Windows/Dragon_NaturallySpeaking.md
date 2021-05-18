@@ -37,15 +37,18 @@ After installing Dragon Naturally Speaking, you can configure the DNS settings b
 
 ### Caster
 
-    1. Download Caster from the [master branch](https://github.com/dictation-toolbox/Caster/archive/master.zip).
-    2. Open up the zip file downloaded
-    3. Copy the contents of `Caster-master` folder. You can put it anywhere but it is common to use `%USERPROFILE%\Documents\Caster`.
-    4. Due to Python 2.7 a precompiled `regex` package needs to be installed be installed via`pip install https://download.lfd.uci.edu/pythonlibs/w4tscw6k/cp27/regex-2020.1.8-cp27-cp27m-win32.whl` using command prompt ([package source](https://www.lfd.uci.edu/~gohlke/pythonlibs/#regex))
-    5. Install dependencies and set up Natlink by running `Caster/Install_Caster_DNS-WSR.bat`. 
+1. Download Caster from the [master branch](https://github.com/dictation-toolbox/Caster/archive/master.zip).
+2. Open up the zip file downloaded
+3. Copy the contents of `Caster-master` folder. You can put it anywhere but it is common to use `%USERPROFILE%\Documents\Caster`.
+4. Due to Python 2.7 a precompiled [regex](https://www.lfd.uci.edu/~gohlke/pythonlibs/#regex) package needs to be installed. 
+    Search for and download `regex` file ending in `cp27-cp27m-win32.whl`
+    Command prompt example `pip install regex-2020.1.8-cp27-cp27m-win32.whl`
+5. Install dependencies and set up Natlink by running `Caster/Install_Caster_DNS-WSR.bat`. 
 
-    - *Note: For this to work correctly, Python must be installed to `C:/Python27` **
-    - **Optional Step** for Caster's `Legion` MouseGrid- Legion Feature available on Windows 8 and above.
-  5. The Legion MouseGrid requires [Microsoft Visual C++ Redistributable Packages for Visual Studio 2015, 2017 and 2019 (x86).](https://support.microsoft.com/en-nz/help/2977003/the-latest-supported-visual-c-downloads) Note: Should not be needed if Windows 10 is up-to-date.
+- *Note: For this to work correctly, Python must be installed to `C:/Python27` **
+- **Optional Step** for Caster's `Legion` MouseGrid- Legion Feature available on Windows 8 and above.
+
+6. The Legion MouseGrid requires [Microsoft Visual C++ Redistributable Packages for Visual Studio 2015, 2017 and 2019 (x86).](https://support.microsoft.com/en-nz/help/2977003/the-latest-supported-visual-c-downloads) Note: Should not be needed if Windows 10 is up-to-date.
 
 ### **Setup and launch DNS for Classic Install.**
 
@@ -76,11 +79,12 @@ An alternative to the instructions above for configuring Natlink. Automatically 
 
 **Caster Troubleshooting FAQ**
 
-1. Error during install `regex` package:  `error: Microsoft Visual C++ 9.0 is required. Get it from http://aka.ms/vcpython27` 
+1. Error during install `regex` package:  `error: Microsoft Visual C++ 9.0 is required. Get it from http://aka.ms/vcpython27`
 
    Documented ["Microsoft Compilers for Python 2.7" is no longer supported by Microsoft](https://github.com/dictation-toolbox/Caster/issues/890)
 
-   - Fix: Command prompt `pip install https://download.lfd.uci.edu/pythonlibs/w4tscw6k/cp27/regex-2020.1.8-cp27-cp27m-win32.whl` Installs a precompiled regex package. ([package source](https://www.lfd.uci.edu/~gohlke/pythonlibs/#regex))
+   - Fix: Install a precompiled regex package.([regex](https://www.lfd.uci.edu/~gohlke/pythonlibs/#regex)) Search for and download `regex` file ending in `-cp27-cp27m-win32.whl`
+     Command prompt example `pip install regex-2020.1.8-cp27-cp27m-win32.whl` from the download location.
 
 ### Natlink Troubleshooting FAQ
 
