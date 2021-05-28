@@ -1,4 +1,4 @@
-import time
+import time, psutil
 from dragonfly import Function, Choice, MappingRule, ShortIntegerRef
 from dragonfly.actions.mouse import get_cursor_position
 from castervoice.lib import control, navigation
@@ -6,7 +6,6 @@ from castervoice.lib.actions import Mouse
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.short import R
 from castervoice.rules.ccr.standard import SymbolSpecs
-
 
 def kill():
     control.nexus().comm.get_com("grids").kill()
@@ -16,13 +15,15 @@ def send_input(pre, color, n, action):
     s = control.nexus().comm.get_com("grids")
     s.move_mouse(int(pre), int(color), int(n))
     int_a = int(action)
-    if (int_a == 0) | (int_a == 1) | (int_a == -1):
+    if (int_a == 0) | (int_a == 1) | (int_a == 2) | (int_a == -1):
         s.kill()
         navigation.wait_for_grid_exit()
         time.sleep(0.1)
     if int_a == 0:
         Mouse("left").execute()
-    elif int_a == 1:
+    if int_a == 1:
+        Mouse("left:2").execute()
+    elif int_a == 2:
         Mouse("right").execute()
 
 
@@ -75,15 +76,15 @@ class RainbowGridRule(MappingRule):
     mapping = {
         "[<pre>] <color> <n> [<action>]":
             R(Function(send_input)),
-        "[<pre1>] <color1> <n1> select [<pre2>] <color2> <n2>":
+        "[<pre1>] <color1> <n1> (grab | select) [<pre2>] <color2> <n2>":
             R(Function(send_input_select)),
-        "[<pre1>] <color1> <n1> select <n2>":
+        "[<pre1>] <color1> <n1> (grab | select) <n2>":
             R(Function(send_input_select_short)),
-        "squat":
+        "squat {weight=2}":
             R(Function(store_first_point)),
-        "bench":
+        "bench {weight=2}":
             R(Function(select_text)),
-        SymbolSpecs.CANCEL:
+        SymbolSpecs.CANCEL + "{weight=2}":
             R(Function(kill)),
     }
     extras = [
@@ -122,12 +123,9 @@ class RainbowGridRule(MappingRule):
         ShortIntegerRef("n2", 0, 100),
         Choice("action", {
             "kick": 0,
-            "psychic": 1,
-            "move": 2,
-        }),
-        Choice("point", {
-            "one": 1,
-            "two": 2,
+            "kick (double | 2)": 1,
+            "psychic": 2,
+            "move": 3,
         }),
     ]
     defaults = {
@@ -138,5 +136,19 @@ class RainbowGridRule(MappingRule):
     }
 
 
+def is_rainbow_on():
+    for proc in psutil.process_iter():
+        try:
+            # Get process name & pid from process object.
+            if proc.name().startswith("python"):
+                if len(proc.cmdline()) > 2:
+                    if proc.cmdline()[1].endswith("grids.py"):
+                        if proc.cmdline()[3] == "r":
+                            return True
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            pass
+    return False
+
 def get_rule():
-    return RainbowGridRule, RuleDetails(name="rainbow grid rule", title="rainbowgrid")
+    Details = RuleDetails(name="Rainbow Grid", function_context=is_rainbow_on)
+    return RainbowGridRule, Details

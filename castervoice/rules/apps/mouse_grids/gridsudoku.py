@@ -1,11 +1,11 @@
-import time
+import time, psutil
 from dragonfly import Function, Choice, MappingRule, ShortIntegerRef
+from dragonfly.actions.mouse import get_cursor_position
 from castervoice.lib import control, navigation
 from castervoice.lib.actions import Mouse
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.short import R
 from castervoice.rules.ccr.standard import SymbolSpecs
-
 
 # Command to kill the grid
 def kill():
@@ -15,11 +15,11 @@ def kill():
 # Perform an action based on the passed in action number
 # action - optional mouse action after movement
 def perform_mouse_action(action):
-    if action == 1:
+    if action == 0:
         Mouse("left").execute()
-    if action == 2:
+    if action == 1:
         Mouse("left:2").execute()
-    elif action == 3:
+    elif action == 2:
         Mouse("right").execute()
 
 
@@ -30,10 +30,24 @@ def perform_mouse_action(action):
 def move_mouse(n, s, action):
     sudoku = control.nexus().comm.get_com("grids")
     sudoku.move_mouse(int(n), int(s))
-    sudoku.kill()
-    navigation.wait_for_grid_exit()
+    int_a = int(action)
+    if (int_a == 0) | (int_a == 1) | (int_a == 2) | (int_a == -1):
+        sudoku.kill()
+        navigation.wait_for_grid_exit()
     time.sleep(0.1)
     perform_mouse_action(int(action))
+
+def send_input(x, y, action):
+    int_a = int(action)
+    if (int_a == 0) | (int_a == 1) | (int_a == 2) | (int_a == -1):
+        s.kill()
+        navigation.wait_for_grid_exit()
+    if int_a == 0:
+        Mouse("left").execute()
+    if int_a == 1:
+        Mouse("left:2").execute()
+    elif int_a == 2:
+        Mouse("right").execute()
 
 
 # Command to drag the mouse from the current position
@@ -44,7 +58,9 @@ def move_mouse(n, s, action):
 # action - optional mouse action after movement
 def drag_mouse(n0, s0, n, s, action):
     sudoku = control.nexus().comm.get_com("grids")
+    # These numbers are internal to the monitor the screen is on
     x, y = sudoku.get_mouse_pos(int(n), int(s))
+    
     # If dragging from a different location, move there first
     if int(n0) > 0:
         sudoku.move_mouse(int(n0), int(s0))
@@ -58,6 +74,27 @@ def drag_mouse(n0, s0, n, s, action):
     Mouse("left:up/30").execute()
     perform_mouse_action(int(action))
 
+# This is used for the fine movement dragging
+def drag_from_to(x1, y1, x2, y2):
+    Mouse("[{}, {}]".format(x1, y1)).execute()
+    time.sleep(0.5)
+    Mouse("left:down").execute()
+    time.sleep(0.5)
+    Mouse("[{}, {}]".format(x2, y2)).execute()
+    time.sleep(0.5)
+    Mouse("left:up").execute()
+
+def store_first_point():
+    global x1, y1
+    x1, y1 = get_cursor_position()
+    
+def select_text():
+    global x1, y1, x2, y2
+    x2, y2 = get_cursor_position()
+    s = control.nexus().comm.get_com("grids")
+    s.kill()
+    navigation.wait_for_grid_exit()
+    drag_from_to(x1, y1, x2, y2)
 
 '''
 Rules for sudoku grid. We can either move the mouse or drag it.
@@ -72,11 +109,13 @@ class SudokuGridRule(MappingRule):
     mapping = {
         "<n> [grid <s>] [<action>]":
             R(Function(move_mouse)),
-        "[<n0>] [grid <s0>] drag <n> [grid <s>] [<action>]":
+        "[<n0>] [grid <s0>] (grab | select | drag) <n> [grid <s>] [<action>]":
             R(Function(drag_mouse)),
-        "escape":
-            R(Function(kill)),
-        SymbolSpecs.CANCEL:
+        "squat {weight=2}":
+            R(Function(store_first_point)),
+        "bench {weight=2}":
+            R(Function(select_text)),
+        SymbolSpecs.CANCEL + "{weight=2}":
             R(Function(kill)),
     }
     extras = [
@@ -85,10 +124,10 @@ class SudokuGridRule(MappingRule):
         ShortIntegerRef("s", 0, 10),
         ShortIntegerRef("s0", 0, 10),
         Choice("action", {
-            "move": 0,
-            "kick": 1,
-            "kick (double | 2)": 2,
-            "psychic": 3,
+            "kick": 0,
+            "kick (double | 2)": 1,
+            "psychic": 2,
+            "move": 3,
         }),
     ]
     defaults = {
@@ -96,10 +135,22 @@ class SudokuGridRule(MappingRule):
         "n0": 0,
         "s": 0,
         "s0": 0,
-        "action": 0,
+        "action": -1,
     }
 
+def is_sudoku_on():
+    for proc in psutil.process_iter():
+        try:
+            # Get process name & pid from process object.
+            if proc.name().startswith("python"):
+                if len(proc.cmdline()) > 2:
+                    if proc.cmdline()[1].endswith("grids.py"):
+                        if proc.cmdline()[3] == "s":
+                            return True
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            pass
+    return False
 
 def get_rule():
-    Details = RuleDetails(name="Sudoku Grid", title="sudokugrid")
+    Details = RuleDetails(name="Sudoku Grid", function_context=is_sudoku_on)
     return SudokuGridRule, Details

@@ -16,12 +16,14 @@ def send_input(x, y, action):
     s = control.nexus().comm.get_com("grids")
     s.move_mouse(int(x), int(y))
     int_a = int(action)
-    if (int_a == 0) | (int_a == 1) | (int_a == -1):
+    if (int_a == 0) | (int_a == 1) | (int_a == 2) | (int_a == -1):
         s.kill()
         navigation.wait_for_grid_exit()
     if int_a == 0:
         Mouse("left").execute()
-    elif int_a == 1:
+    if int_a == 1:
+        Mouse("left:2").execute()
+    elif int_a == 2:
         Mouse("right").execute()
 
 
@@ -93,12 +95,9 @@ class DouglasGridRule(MappingRule):
         ShortIntegerRef("y2", 0, 300),
         Choice("action", {
             "kick": 0,
-            "psychic": 1,
-            "move": 2,
-        }),
-        Choice("point", {
-            "one": 1,
-            "two": 2,
+            "kick (double | 2)": 1,
+            "psychic": 2,
+            "move": 3,
         }),
     ]
     defaults = {
