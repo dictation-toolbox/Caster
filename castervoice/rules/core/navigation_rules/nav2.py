@@ -36,8 +36,6 @@ class NavigationNon(MappingRule):
             R(Key("cs-f")),
         "replace":
             R(Key("c-h")),
-        "F<function_key>":
-            R(Key("f%(function_key)s")),
         "[show] context menu":
             R(Key("s-f10")),
         "lean":
