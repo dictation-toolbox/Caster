@@ -37,19 +37,6 @@ def move_mouse(n, s, action):
     time.sleep(0.1)
     perform_mouse_action(int(action))
 
-def send_input(x, y, action):
-    int_a = int(action)
-    if (int_a == 0) | (int_a == 1) | (int_a == 2) | (int_a == -1):
-        s.kill()
-        navigation.wait_for_grid_exit()
-    if int_a == 0:
-        Mouse("left").execute()
-    if int_a == 1:
-        Mouse("left:2").execute()
-    elif int_a == 2:
-        Mouse("right").execute()
-
-
 # Command to drag the mouse from the current position
 # n0 - optional square to drag from
 # s0 - optional inner square to drag from
