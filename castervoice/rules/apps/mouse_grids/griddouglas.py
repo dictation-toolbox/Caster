@@ -79,11 +79,11 @@ class DouglasGridRule(MappingRule):
             R(Function(send_input_select)),
         "<x1> [by] <y1> (grab | select) <x2>":
             R(Function(send_input_select_short)),
-        "squat":
+        "squat {weight=2}":
             R(Function(store_first_point)),
-        "bench":
+        "bench {weight=2}":
             R(Function(select_text)),
-        SymbolSpecs.CANCEL:
+        SymbolSpecs.CANCEL + "{weight=2}":
             R(Function(kill)),
     }
     extras = [
@@ -111,7 +111,7 @@ def is_douglas_on():
             if proc.name().startswith("python"):
                 if len(proc.cmdline()) > 2:
                     if proc.cmdline()[1].endswith("grids.py"):
-                        if proc.cmdline()[3] == "r":
+                        if proc.cmdline()[3] == "d":
                             return True
         except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
             pass

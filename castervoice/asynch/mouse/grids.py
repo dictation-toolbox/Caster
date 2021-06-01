@@ -153,7 +153,6 @@ class RainbowGrid(TkTransparent):
 
     def refresh(self):
         '''thread safe'''
-        self.hide()
         self.after(10, self.draw)
 
     def finalize(self):
