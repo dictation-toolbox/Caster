@@ -1,4 +1,4 @@
-import time
+import time, psutil
 from dragonfly import Function, Choice, MappingRule, ShortIntegerRef
 from dragonfly.actions.mouse import get_cursor_position
 from castervoice.lib import control, navigation
@@ -104,6 +104,19 @@ class DouglasGridRule(MappingRule):
         "action": -1,
     }
 
+def is_douglas_on():
+    for proc in psutil.process_iter():
+        try:
+            # Get process name & pid from process object.
+            if proc.name().startswith("python"):
+                if len(proc.cmdline()) > 2:
+                    if proc.cmdline()[1].endswith("grids.py"):
+                        if proc.cmdline()[3] == "r":
+                            return True
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            pass
+    return False
 
 def get_rule():
-    return DouglasGridRule, RuleDetails(name="douglas grid rule", title="douglasgrid")
+    Details = RuleDetails(name="douglas grid", function_context=is_douglas_on)
+    return DouglasGridRule, Details
