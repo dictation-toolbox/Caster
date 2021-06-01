@@ -25,7 +25,11 @@ initialize_clipboard()
 
 
 def mouse_alternates(mode, monitor=1, rough=True):
+    global GRID_PROCESS
     args = []
+
+    if GRID_PROCESS is not None:
+        raise Exception("Mouse navigation already in progress")
 
     if mode == "legion" and not utilities.window_exists("legiongrid", None):
         from castervoice.asynch.mouse.legion import LegionScanner
@@ -62,7 +66,6 @@ def mouse_alternates(mode, monitor=1, rough=True):
             settings.settings(["paths", "SUDOKU_PATH"]), "-g", "s", "-m",
             str(monitor)
         ]
-    global GRID_PROCESS
     GRID_PROCESS = subprocess.Popen(args) if args else None
 
 
