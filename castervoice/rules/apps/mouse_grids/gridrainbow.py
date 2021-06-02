@@ -1,15 +1,12 @@
 import time
 from dragonfly import Function, Choice, MappingRule, ShortIntegerRef
 from dragonfly.actions.mouse import get_cursor_position
-from castervoice.lib import control, navigation
+from castervoice.lib import control
+from castervoice.lib.navigation import Grid
 from castervoice.lib.actions import Mouse
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.short import R
 from castervoice.rules.ccr.standard import SymbolSpecs
-
-
-def kill():
-    control.nexus().comm.get_com("grids").kill()
 
 
 def send_input(pre, color, n, action):
@@ -18,7 +15,7 @@ def send_input(pre, color, n, action):
     int_a = int(action)
     if (int_a == 0) | (int_a == 1) | (int_a == -1):
         s.kill()
-        navigation.wait_for_grid_exit()
+        Grid.wait_for_grid_exit()
         time.sleep(0.1)
     if int_a == 0:
         Mouse("left").execute()
@@ -33,7 +30,7 @@ def send_input_select(pre1, color1, n1, pre2, color2, n2):
     s.move_mouse(int(pre2), int(color2), int(n2))
     _x2, _y2 = get_cursor_position()
     s.kill()
-    navigation.wait_for_grid_exit()
+    Grid.wait_for_grid_exit()
     drag_from_to(_x1, _y1, _x2, _y2)
 
 
@@ -66,7 +63,7 @@ def select_text():
     x2, y2 = get_cursor_position()
     s = control.nexus().comm.get_com("grids")
     s.kill()
-    navigation.wait_for_grid_exit()
+    Grid.wait_for_grid_exit()
     drag_from_to(x1, y1, x2, y2)
 
 
@@ -83,8 +80,8 @@ class RainbowGridRule(MappingRule):
             R(Function(store_first_point)),
         "bench":
             R(Function(select_text)),
-        SymbolSpecs.CANCEL:
-            R(Function(kill)),
+        SymbolSpecs.CANCEL + " {weight=2}":
+            R(Function(Grid.kill)),
     }
     extras = [
         ShortIntegerRef("pre", 0, 9),
@@ -139,4 +136,4 @@ class RainbowGridRule(MappingRule):
 
 
 def get_rule():
-    return RainbowGridRule, RuleDetails(name="rainbow grid rule", title="rainbowgrid")
+    return RainbowGridRule, RuleDetails(name="rainbow grid rule", function_context=lambda: Grid.is_grid_active("rainbow"))
