@@ -78,7 +78,7 @@ def select_text():
     x2, y2 = get_cursor_position()
     s = control.nexus().comm.get_com("grids")
     s.kill()
-    navigation.wait_for_grid_exit()
+    Grid.wait_for_grid_exit()
     drag_from_to(x1, y1, x2, y2)
 
 '''
