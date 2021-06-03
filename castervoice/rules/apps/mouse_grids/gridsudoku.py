@@ -1,15 +1,11 @@
 import time
 from dragonfly import Function, Choice, MappingRule, ShortIntegerRef
-from castervoice.lib import control, navigation
+from castervoice.lib import control
+from castervoice.lib.navigation import Grid
 from castervoice.lib.actions import Mouse
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.short import R
 from castervoice.rules.ccr.standard import SymbolSpecs
-
-
-# Command to kill the grid
-def kill():
-    control.nexus().comm.get_com("grids").kill()
 
 
 # Perform an action based on the passed in action number
@@ -31,7 +27,7 @@ def move_mouse(n, s, action):
     sudoku = control.nexus().comm.get_com("grids")
     sudoku.move_mouse(int(n), int(s))
     sudoku.kill()
-    navigation.wait_for_grid_exit()
+    Grid.wait_for_grid_exit()
     time.sleep(0.1)
     perform_mouse_action(int(action))
 
@@ -49,7 +45,7 @@ def drag_mouse(n0, s0, n, s, action):
     if int(n0) > 0:
         sudoku.move_mouse(int(n0), int(s0))
     sudoku.kill()
-    navigation.wait_for_grid_exit()
+    Grid.wait_for_grid_exit()
     time.sleep(0.1)
     # Hold down click, move to drag destination, and release click
     Mouse("left:down/10").execute()
@@ -74,10 +70,8 @@ class SudokuGridRule(MappingRule):
             R(Function(move_mouse)),
         "[<n0>] [grid <s0>] drag <n> [grid <s>] [<action>]":
             R(Function(drag_mouse)),
-        "escape":
-            R(Function(kill)),
-        SymbolSpecs.CANCEL:
-            R(Function(kill)),
+        SymbolSpecs.CANCEL + " {weight=2}":
+            R(Function(Grid.kill)),
     }
     extras = [
         ShortIntegerRef("n", -1, 1500),
@@ -101,5 +95,5 @@ class SudokuGridRule(MappingRule):
 
 
 def get_rule():
-    Details = RuleDetails(name="Sudoku Grid", title="sudokugrid")
+    Details = RuleDetails(name="Sudoku Grid", function_context=lambda: Grid.is_grid_active("sudoku"))
     return SudokuGridRule, Details
