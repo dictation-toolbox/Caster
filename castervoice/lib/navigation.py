@@ -6,7 +6,7 @@ import six
 import subprocess
 import time
 from dragonfly import get_current_engine, monitors
-from castervoice.lib import control, settings, utilities, textformat
+from castervoice.lib import control, settings, utilities, textformat, printer
 from castervoice.lib.actions import Key, Text, Mouse
 from castervoice.lib.clipboard import Clipboard
 
@@ -42,7 +42,16 @@ class Grid:
         args = []
 
         if cls.GRID_PROCESS is not None:
-            raise Exception("Mouse navigation already in progress")
+            cls.GRID_PROCESS.poll()
+            # If close by Task Manager
+            # TODO Test MacOS/Linux. Handle error codes when Grid close by Task Manager.
+            if cls.GRID_PROCESS.returncode == 15:
+                cls.GRID_PROCESS = None
+                cls.MODE = None
+            else:
+                # This message should only occur if grid is visible.
+                printer.out("Mouse Grid navigation already in progress \n Return Code: {}".format(cls.GRID_PROCESS.returncode))
+                return
 
         if mode == "legion":
             from castervoice.asynch.mouse.legion import LegionScanner
@@ -111,8 +120,6 @@ class Grid:
         # Kills the current grid
         control.nexus().comm.get_com("grids").kill()
         cls.wait_for_grid_exit()
-        cls.MODE = None
-        cls.GRID_PROCESS = None
 
 def _text_to_clipboard(keystroke, nnavi500):
     if nnavi500 == 1:
