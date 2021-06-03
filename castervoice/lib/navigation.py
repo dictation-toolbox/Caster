@@ -11,8 +11,6 @@ from castervoice.lib.actions import Key, Text, Mouse
 from castervoice.lib.clipboard import Clipboard
 
 _CLIP = {}
-GRID_PROCESS = None
-
 
 def initialize_clipboard():
     global _CLIP
@@ -23,71 +21,98 @@ def initialize_clipboard():
 
 initialize_clipboard()
 
-
-def mouse_alternates(mode, monitor=1, rough=True):
-    args = []
-
-    if mode == "legion" and not utilities.window_exists("legiongrid", None):
-        from castervoice.asynch.mouse.legion import LegionScanner
-        r = monitors[int(monitor) - 1].rectangle
-        bbox = [
-            int(r.x),
-            int(r.y),
-            int(r.x) + int(r.dx) - 1,
-            int(r.y) + int(r.dy) - 1
-        ]
-        ls = LegionScanner()
-        ls.scan(bbox, rough)
-        tscan = ls.get_update()
-        args = [
-            settings.settings(["paths", "PYTHONW"]),
-            settings.settings(["paths", "LEGION_PATH"]), "-t", tscan[0], "-m",
-            str(monitor)
-        ]
-    elif mode == "rainbow" and not utilities.window_exists("rainbowgrid", None):
-        args = [
-            settings.settings(["paths", "PYTHONW"]),
-            settings.settings(["paths", "RAINBOW_PATH"]), "-g", "r", "-m",
-            str(monitor)
-        ]
-    elif mode == "douglas" and not utilities.window_exists("douglasgrid", None):
-        args = [
-            settings.settings(["paths", "PYTHONW"]),
-            settings.settings(["paths", "DOUGLAS_PATH"]), "-g", "d", "-m",
-            str(monitor)
-        ]
-    elif mode == "sudoku" and not utilities.window_exists("sudokugrid", None):
-        args = [
-            settings.settings(["paths", "PYTHONW"]),
-            settings.settings(["paths", "SUDOKU_PATH"]), "-g", "s", "-m",
-            str(monitor)
-        ]
-    global GRID_PROCESS
-    GRID_PROCESS = subprocess.Popen(args) if args else None
-
-
-def wait_for_grid_exit(timeout=5):
-    global GRID_PROCESS
-    if GRID_PROCESS:
-        # TODO Remove if-part after fully migrating to Python3
-        if six.PY2:
-            t = 0.0
-            inc = 0.1
-            while t < timeout:
-                GRID_PROCESS.poll()
-                if GRID_PROCESS.returncode is not None:
-                    break
-                t += inc
-                time.sleep(inc)
-            if t >= timeout:
-                GRID_PROCESS.kill()
-        else:
-            try:
-                GRID_PROCESS.wait(timeout)
-            except subprocess.TimeoutExpired:  # pylint: disable=no-member
-                GRID_PROCESS.kill()
+class Grid:
     GRID_PROCESS = None
+    MODE = None
 
+    @classmethod
+    def is_grid_active(cls, grid):
+        # Mouse Grids call this with function context.
+        # False: MouseGrid rules are not active
+        # True: MouseGrid rule are active
+        # grid: grid name
+        if cls.MODE is None:
+            return False
+        elif cls.MODE == grid:
+            return True    
+
+    @classmethod
+    def mouse_alternates(cls, mode, monitor=1, rough=True):
+        # Launches the Mouse Grid
+        args = []
+
+        if cls.GRID_PROCESS is not None:
+            raise Exception("Mouse navigation already in progress")
+
+        if mode == "legion":
+            from castervoice.asynch.mouse.legion import LegionScanner
+            r = monitors[int(monitor) - 1].rectangle
+            bbox = [
+                int(r.x),
+                int(r.y),
+                int(r.x) + int(r.dx) - 1,
+                int(r.y) + int(r.dy) - 1
+            ]
+            ls = LegionScanner()
+            ls.scan(bbox, rough)
+            tscan = ls.get_update()
+            args = [
+                settings.settings(["paths", "PYTHONW"]),
+                settings.settings(["paths", "LEGION_PATH"]), "-t", tscan[0], "-m",
+                str(monitor)
+            ]
+        elif mode == "rainbow":
+            args = [
+                settings.settings(["paths", "PYTHONW"]),
+                settings.settings(["paths", "RAINBOW_PATH"]), "-g", "r", "-m",
+                str(monitor)
+            ]
+        elif mode == "douglas":
+            args = [
+                settings.settings(["paths", "PYTHONW"]),
+                settings.settings(["paths", "DOUGLAS_PATH"]), "-g", "d", "-m",
+                str(monitor)
+            ]
+        elif mode == "sudoku":
+            args = [
+                settings.settings(["paths", "PYTHONW"]),
+                settings.settings(["paths", "SUDOKU_PATH"]), "-g", "s", "-m",
+                str(monitor)
+            ]
+        cls.MODE=mode
+        cls.GRID_PROCESS = subprocess.Popen(args) if args else None
+
+    @classmethod
+    def wait_for_grid_exit(cls, timeout=5):
+        # Polls Grid process until exit
+        if cls.GRID_PROCESS:
+            # TODO Remove if-part after fully migrating to Python3
+            if six.PY2:
+                t = 0.0
+                inc = 0.1
+                while t < timeout:
+                    cls.GRID_PROCESS.poll()
+                    if cls.GRID_PROCESS.returncode is not None:
+                        break
+                    t += inc
+                    time.sleep(inc)
+                if t >= timeout:
+                    cls.GRID_PROCESS.kill()
+            else:
+                try:
+                    cls.GRID_PROCESS.wait(timeout)
+                except subprocess.TimeoutExpired:  # pylint: disable=no-member
+                    cls.GRID_PROCESS.kill()
+        cls.MODE = None
+        cls.GRID_PROCESS = None
+
+    @classmethod
+    def kill(cls):
+        # Kills the current grid
+        control.nexus().comm.get_com("grids").kill()
+        cls.wait_for_grid_exit()
+        cls.MODE = None
+        cls.GRID_PROCESS = None
 
 def _text_to_clipboard(keystroke, nnavi500):
     if nnavi500 == 1:
@@ -169,16 +194,9 @@ def erase_multi_clipboard():
                              settings.settings([u'paths', u'SAVED_CLIPBOARD_PATH']))
 
 
-def kill_grids_and_wait():
-    window_title = utilities.get_active_window_title()
-    if (window_title == settings.RAINBOW_TITLE or window_title == settings.DOUGLAS_TITLE
-            or window_title == settings.LEGION_TITLE):
-        control.nexus().comm.get_com("grids").kill()
-        time.sleep(0.1)
-
-
 def mouse_click(button):
-    kill_grids_and_wait()
+    if Grid.GRID_PROCESS is not None:
+        Grid.kill()
     Mouse(button).execute()
 
 

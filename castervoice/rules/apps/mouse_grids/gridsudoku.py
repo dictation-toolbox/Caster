@@ -2,14 +2,11 @@ import time, psutil
 from dragonfly import Function, Choice, MappingRule, ShortIntegerRef
 from dragonfly.actions.mouse import get_cursor_position
 from castervoice.lib import control, navigation
+from castervoice.lib.navigation import Grid
 from castervoice.lib.actions import Mouse
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.short import R
 from castervoice.rules.ccr.standard import SymbolSpecs
-
-# Command to kill the grid
-def kill():
-    control.nexus().comm.get_com("grids").kill()
 
 
 # Perform an action based on the passed in action number
@@ -33,7 +30,8 @@ def move_mouse(n, s, action):
     int_a = int(action)
     if (int_a == 0) | (int_a == 1) | (int_a == 2) | (int_a == -1):
         sudoku.kill()
-        navigation.wait_for_grid_exit()
+        Grid.wait_for_grid_exit()
+
     time.sleep(0.1)
     perform_mouse_action(int(action))
 
@@ -52,7 +50,7 @@ def drag_mouse(n0, s0, n, s, action):
     if int(n0) > 0:
         sudoku.move_mouse(int(n0), int(s0))
     sudoku.kill()
-    navigation.wait_for_grid_exit()
+    Grid.wait_for_grid_exit()
     time.sleep(0.1)
     # Hold down click, move to drag destination, and release click
     Mouse("left:down/10").execute()
@@ -103,7 +101,7 @@ class SudokuGridRule(MappingRule):
         "bench {weight=2}":
             R(Function(select_text)),
         SymbolSpecs.CANCEL + "{weight=2}":
-            R(Function(kill)),
+            R(Function(Grid.kill)),
     }
     extras = [
         ShortIntegerRef("n", -1, 1500),
@@ -125,19 +123,6 @@ class SudokuGridRule(MappingRule):
         "action": -1,
     }
 
-def is_sudoku_on():
-    for proc in psutil.process_iter():
-        try:
-            # Get process name & pid from process object.
-            if proc.name().startswith("python"):
-                if len(proc.cmdline()) > 2:
-                    if proc.cmdline()[1].endswith("grids.py"):
-                        if proc.cmdline()[3] == "s":
-                            return True
-        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
-            pass
-    return False
-
 def get_rule():
-    Details = RuleDetails(name="Sudoku Grid", function_context=is_sudoku_on)
+    Details = RuleDetails(name="Sudoku Grid", function_context=lambda: Grid.is_grid_active("sudoku"))
     return SudokuGridRule, Details
