@@ -15,7 +15,7 @@ try:  # Style C -- may be imported into Caster, or externally
         sys.path.append(BASE_PATH)
 finally:
     from castervoice.asynch.mouse.grids import TkTransparent, Dimensions
-    from castervoice.lib import gdi, settings, utilities
+    from castervoice.lib import settings, utilities
     settings.initialize()
 
 import six
@@ -195,9 +195,7 @@ class LegionScanner:
         return result
 
     def scan(self, bbox=None, rough=True):
-        # ImageGrab.grab currently doesn't support multiple monitors.
-        # If PIL gets updated with multimon support, this can be switched back.
-        img = gdi.grab_screen(bbox)  # ImageGrab.grab(bbox)
+        img = ImageGrab.grab(bbox, all_screens=True)
         if rough:
             factor = settings.SETTINGS["miscellaneous"]["legion_downscale_factor"]
             if str(factor) == "auto":
@@ -206,7 +204,6 @@ class LegionScanner:
             new_size = (img.size[0]*factor, img.size[1]*factor)
             img.thumbnail(new_size)
         
-
         img = img.filter(ImageFilter.FIND_EDGES)
         result = self.tirg_scan(img)
         if rough:
