@@ -1,6 +1,6 @@
 import time
 from dragonfly import Function, Choice, MappingRule, Mouse, ShortIntegerRef
-from castervoice.lib import control, navigation
+from castervoice.lib import control
 from castervoice.lib.navigation import Grid
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.short import R
