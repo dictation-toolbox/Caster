@@ -31,7 +31,7 @@ if is_linux():
 try:
     from PIL import ImageGrab, ImageTk, ImageDraw, ImageFont
 except ImportError:
-        utilities.availability_message("Douglas Grid / Rainbow Grid / Sudoku Grid", "PIL")
+    utilities.availability_message("Douglas Grid / Rainbow Grid / Sudoku Grid", "PIL")
 
 
 class Dimensions:
