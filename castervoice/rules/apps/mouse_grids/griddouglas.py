@@ -1,4 +1,4 @@
-import time, psutil
+import time
 from dragonfly import Function, Choice, MappingRule, ShortIntegerRef
 from dragonfly.actions.mouse import get_cursor_position
 from castervoice.lib import control
