@@ -24,14 +24,13 @@ finally:
     from castervoice.lib.contexts import is_linux
     from castervoice.lib.merge.communication import Communicator
     settings.initialize()
+
 if is_linux():
     from tkinter import ttk,font
-    import pyscreenshot as ImageGrab
-    from PIL import ImageTk, ImageDraw, ImageFont
-else:
-    try:
-        from PIL import ImageGrab, ImageTk, ImageDraw, ImageFont
-    except ImportError:
+
+try:
+    from PIL import ImageGrab, ImageTk, ImageDraw, ImageFont
+except ImportError:
         utilities.availability_message("Douglas Grid / Rainbow Grid / Sudoku Grid", "PIL")
 
 
