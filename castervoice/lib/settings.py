@@ -82,9 +82,9 @@ def _get_platform_information():
     else:
         system_information.update({"binary path": str(Path(sys.exec_prefix).joinpath(sys.exec_prefix).joinpath("bin"))})
         system_information.update(
-            {"main binary": str(Path(sys.exec_prefix).joinpath("bin", "python"))})
+            {"main binary": sys.executable})
         system_information.update(
-            {"hidden console binary": str(Path(sys.exec_prefix).joinpath("bin", "python"))})
+            {"hidden console binary": sys.executable})
     return system_information
 
 

@@ -1,6 +1,6 @@
 dragonfly2>=0.29.0
 wxpython==4.0.7
-pillow>=6.2.2
+pillow>=8.0.0
 tomlkit>=0.5.11
 future>=0.18.2
 mock>=3.0.5
