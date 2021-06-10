@@ -105,10 +105,6 @@ class TkTransparent(tk.Tk):
         ''''''
         self.deiconify()
         self.lift()
-        time.sleep(0.1)
-        self.focus_force()
-        self.focus_set()
-        self.focus()
 
     def hide(self):
         self.withdraw()
@@ -152,6 +148,9 @@ class RainbowGrid(TkTransparent):
 
     def refresh(self):
         '''thread safe'''
+        if not sys.platform.startswith("linux"):
+            # When the grid is hidden on Linux it fails to draw on the correct monitor
+            self.hide()
         self.after(10, self.draw)
 
     def finalize(self):
