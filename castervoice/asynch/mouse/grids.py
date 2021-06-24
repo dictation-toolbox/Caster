@@ -21,8 +21,13 @@ try:  # Style C -- may be imported into Caster, or externally
 finally:
     from castervoice.lib import settings, utilities
     from castervoice.lib.actions import Mouse
+    from castervoice.lib.contexts import is_linux
     from castervoice.lib.merge.communication import Communicator
     settings.initialize()
+
+if is_linux():
+    from tkinter import ttk,font
+
 try:
     from PIL import ImageGrab, ImageTk, ImageDraw, ImageFont
 except ImportError:
@@ -100,10 +105,6 @@ class TkTransparent(tk.Tk):
         ''''''
         self.deiconify()
         self.lift()
-        time.sleep(0.1)
-        self.focus_force()
-        self.focus_set()
-        self.focus()
 
     def hide(self):
         self.withdraw()
@@ -147,7 +148,9 @@ class RainbowGrid(TkTransparent):
 
     def refresh(self):
         '''thread safe'''
-        self.hide()
+        if not sys.platform.startswith("linux"):
+            # When the grid is hidden on Linux it fails to draw on the correct monitor
+            self.hide()
         self.after(10, self.draw)
 
     def finalize(self):
@@ -197,7 +200,10 @@ class RainbowGrid(TkTransparent):
         ys_size = len(self.ys)
         box_number = 0
         colors_index = 0
-        font = ImageFont.truetype("arialbd.ttf", 15)
+        if is_linux():
+            font = ImageFont.truetype("FreeMono.ttf", 15)
+        else: 
+            font = ImageFont.truetype("arialbd.ttf", 15)
         draw = ImageDraw.Draw(self.img, 'RGBA')
 
         for ly in range(0, ys_size - 1):
