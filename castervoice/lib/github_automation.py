@@ -9,7 +9,6 @@ from castervoice.lib.actions import Key, Text
 from castervoice.lib.context import read_selected_without_altering_clipboard
 from castervoice.lib.utilities import load_toml_file
 from castervoice.lib import settings
-from castervoice.lib.contexts import is_windows
 
 def _copy_path():
     if not os.path.isfile(settings.SETTINGS["paths"]["GIT_REPO_LOCAL_REMOTE_PATH"]):
