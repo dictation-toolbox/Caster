@@ -242,14 +242,25 @@ def _deep_merge_defaults(data, defaults):
 
 
 def _get_defaults():
-    terminal_path_default = "C:/Program Files/Git/git-bash.exe"
+
+    if sys.platform == "win32":
+        terminal_path_default = "C:/Program Files/Git/git-bash.exe"
+    elif sys.platform.startswith("linux"):
+        terminal_path_default = "/usr/bin/gnome-terminal"
+    elif sys.platform == "darwin":
+        terminal_path_default = "/Applications/Utilities/Terminal.app"
+
     if not os.path.isfile(terminal_path_default):
         terminal_path_default = ""
 
     ahk_path_default = "C:/Program Files/AutoHotkey/AutoHotkey.exe"
     if not os.path.isfile(ahk_path_default):
         ahk_path_default = ""
-
+    
+    if sys.platform == "win32": 
+        terminal_loading_time = 5 
+    else:
+        terminal_loading_time = 1
     return {
         "paths": {
             "BASE_PATH":
@@ -301,7 +312,7 @@ def _get_defaults():
 
             # EXECUTABLES
             "AHK_PATH":
-                str(Path(_BASE_PATH).joinpath(ahk_path_default)),
+                str(Path(ahk_path_default)),
             "DOUGLAS_PATH":
                 str(Path(_BASE_PATH).joinpath("asynch/mouse/grids.py")),
             "ENGINE_PATH":
@@ -365,8 +376,9 @@ def _get_defaults():
         },
 
         # gitbash settings
+        # This really should be labelled "terminal" but was named when caster was Windows only.
         "gitbash": {
-            "loading_time": 5,  # the time to initialise the git bash window in seconds
+            "loading_time": terminal_loading_time,  # the time to initialise the git bash window in seconds
             "fetching_time": 3  # the time to fetch a github repository in seconds
         },
 
