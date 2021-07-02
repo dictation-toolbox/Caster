@@ -27,13 +27,20 @@ def _analyze_extras(spec):
             continue
         if character == '>':
             angles_mode = False
-            extras_data.append(TextReplacementExtraData(current_extra_name, brackets_mode))
+            extras_data.append(TextReplacementExtraData(current_extra_name, not brackets_mode))
             current_extra_name = ""  # reset for next
             continue
         if angles_mode:
             current_extra_name += character
 
     return extras_data
+
+
+def _detect_illegal_spec_alteration(extra_analyses, new_spec):
+    for extra_data in extra_analyses:
+        if extra_data.required and "<{}>".format(extra_data.name) not in new_spec:
+            return extra_data
+    return None
 
 
 def _spec_override_from_config(rule, definitions):
@@ -63,13 +70,14 @@ def _spec_override_from_config(rule, definitions):
         - removing required extras from specs
         - accidentally renaming required extras
         But we still want the user to be able to:
+        - move required extras
         - remove optional extras
         '''
-        for extra_data in extra_analyses:
-            if extra_data.required and extra_data.name not in new_spec:
-                printer.out("Illegal spec modification: cannot alter required extras. " +
-                            "Cannot modify {} in \"{}\".".format(extra_data.name, spec))
-                continue
+        violation = _detect_illegal_spec_alteration(extra_analyses, new_spec)
+        if violation is not None:
+            printer.out("Illegal spec modification: cannot alter required extras. " +
+                        "Cannot modify {} in \"{}\".".format(violation.name, spec))
+            continue
 
         del mapping[spec]
         mapping[new_spec] = action
@@ -136,10 +144,10 @@ class TextReplacerTransformer(BaseRuleTransformer):
         try:
             parser_instance = parser()
             self._definitions = parser_instance.create_definitions()
+            if len(self._definitions) > 0:
+                printer.out("Text replacing transformer from file 'words.txt' activated ...")
         except Exception:
             printer.out("Unable to parse words.txt")
-        if len(self._definitions) > 0:
-            printer.out("Text replacing transformer from file 'words.txt' activated ...")
 
     def get_pronunciation(self):
         return "text replacer"
