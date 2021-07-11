@@ -76,7 +76,7 @@ def _spec_override_from_config(rule, definitions):
         violation = _detect_illegal_spec_alteration(extra_analyses, new_spec)
         if violation is not None:
             printer.out("Illegal spec modification: cannot alter required extras. " +
-                        "Cannot modify {} in \"{}\".".format(violation.name, spec))
+                        "Cannot modify <{}> in \"{}\".".format(violation.name, spec))
             continue
 
         del mapping[spec]
