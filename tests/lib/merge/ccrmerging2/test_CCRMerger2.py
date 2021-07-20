@@ -15,7 +15,7 @@ from castervoice.lib.merge.ccrmerging2.sorting.config_ruleset_sorter import Conf
 from castervoice.lib.merge.ccrmerging2.transformers.text_replacer.text_replacer import TextReplacerTransformer
 from castervoice.lib.merge.ccrmerging2.transformers.transformers_runner import TransformersRunner
 from tests.lib.merge.ccrmerging2.fake_rules import FakeRuleOne, FakeRuleTwo
-from tests.lib.merge.ccrmerging2.transformers.text_replacer import mock_TRParser
+from tests.lib.merge.ccrmerging2.transformers.text_replacer.mock_TRParser import MockTRParser
 from tests.test_util.settings_mocking import SettingsEnabledTestCase
 
 
@@ -117,9 +117,8 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         """
         # transformer setup
         self.transformers_config.is_transformer_active.side_effect = [True, True]
-        trt = TextReplacerTransformer(mock_TRParser.MockTRParser)
-        mock_TRParser.MOCK_SPECS["cut"] = "but"
-        mock_TRParser.MOCK_EXTRAS["goof"] = "gas"
+        def parser_fn(): return MockTRParser(specs={"cut": "but"}, extras={"goof": "gas"}, defaults={})
+        trt = TextReplacerTransformer(parser_fn)
         self.transformers_runner._transformers.append(trt)
 
         # rule setup
