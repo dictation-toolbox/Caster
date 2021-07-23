@@ -38,8 +38,8 @@ class RuleDetails(object):
     def _calculate_filepath_from_frame(stack, index):
         try:
             frame = stack[index]
-            module = inspect.getmodule(frame[0])
-            filepath = module.__file__.replace("\\", "/")  
+            # module = inspect.getmodule(frame[1])
+            filepath = frame[1].replace("\\", "/")
             if filepath.endswith("pyc"):
                 filepath = filepath[:-1]
             return filepath

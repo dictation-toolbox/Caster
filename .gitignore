@@ -13,6 +13,7 @@ complexity_report*
 *.aux
 *.synctex.gz
 _test/
+test_user_dir
 
 # Ignore Rope
 .ropeproject/
