@@ -12,7 +12,7 @@ class UserDirUpdater(object):
 
     def __init__(self, user_dir):
         self.user_dir = user_dir
-        self.root_user_content_package_name = ContentRoot.USER_DIR.detection_root
+        self.root_user_content_package_name = ContentRoot.USER_DIR
 
     def update_user_dir_packages_to_v1_7_0(self):
         """

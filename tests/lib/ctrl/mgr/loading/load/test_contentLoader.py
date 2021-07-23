@@ -60,7 +60,7 @@ class TestContentLoader(SettingsEnabledTestCase):
     _DEFAULT_PACKAGE_NAME = "some_module"
     _DEFAULT_MODULE_NAME = _DEFAULT_PACKAGE_NAME
     _DEFAULT_PACKAGE_PATH = _create_os_path("root", "castervoice", "asdf", _DEFAULT_PACKAGE_NAME)
-    _QUALIFIED_MODULE_NAME = "asdf.some_module.some_module"
+    _QUALIFIED_MODULE_NAME = "castervoice.asdf.some_module.some_module"
 
     def setUp(self):
         self._set_setting(["paths", "RULES_CONFIG_PATH"], TestContentLoader._RULE_CONFIG_PATH)

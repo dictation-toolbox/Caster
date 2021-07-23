@@ -36,16 +36,16 @@ class TestMigrator(TestCase):
 
     def _assert_only_expected_paths_exist(self):
         expected_paths = {str(Path(TEST_USER_DIR)
-                              .joinpath(ContentRoot.USER_DIR.detection_root).joinpath("__init__.py"))}
+                              .joinpath(ContentRoot.USER_DIR).joinpath("__init__.py"))}
         for directory in ["rules", "hooks", "transformers"]:
             expected_paths.add(str(Path(TEST_USER_DIR)
-                                   .joinpath(ContentRoot.USER_DIR.detection_root)
+                                   .joinpath(ContentRoot.USER_DIR)
                                    .joinpath(directory)
                                    .joinpath("__init__.py")))
             for pkg in ["pkg1", "pkg2"]:
                 for python_file in ["__init__.py", pkg + ".py", pkg + "_support.py"]:
                     expected_paths.add(str(Path(TEST_USER_DIR)
-                                           .joinpath(ContentRoot.USER_DIR.detection_root)
+                                           .joinpath(ContentRoot.USER_DIR)
                                            .joinpath(directory)
                                            .joinpath(pkg)
                                            .joinpath(python_file)))

@@ -131,14 +131,15 @@ class ContentLoader(object):
 
     @staticmethod
     def _fully_qualify_module_name(request):
-        if ContentRoot.STARTER.detection_root in request.directory:
-            root = ContentRoot.STARTER.package_root
-        elif ContentRoot.USER_DIR.detection_root in request.directory:
-            root = ContentRoot.USER_DIR.package_root
+        if ContentRoot.STARTER in request.directory:
+            root = ContentRoot.STARTER
+        elif ContentRoot.USER_DIR in request.directory:
+            root = ContentRoot.USER_DIR
         else:
             raise ModuleQualificationError()
 
-        split_index = request.directory.index(root + os.sep) + len(root) + 1
-        tokens = request.directory[split_index:].split(os.sep)
-        tokens.append(request.module_name)
-        return ".".join(tokens)
+        tokens = request.directory.split(os.sep)
+        root_index = tokens.index(root)
+        tokens_for_fully_qualified_module = tokens[root_index:]
+        tokens_for_fully_qualified_module.append(request.module_name)
+        return ".".join(tokens_for_fully_qualified_module)
