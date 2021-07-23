@@ -33,8 +33,8 @@ if control.nexus() is None: # Initialize Caster State
     from castervoice.lib.ctrl.mgr.loading.load.modules_access import SysModulesAccessor
     _crg = ContentRequestGenerator()
     _rp = ReloadFunctionProvider()
-    _modules_accessor = SysModulesAccessor()
-    _content_loader = ContentLoader(_crg, importlib.import_module, _rp.get_reload_fn())
+    _sma = SysModulesAccessor()
+    _content_loader = ContentLoader(_crg, importlib.import_module, _rp.get_reload_fn(), _sma)
     control.init_nexus(_content_loader)
     EngineConfigLate() # Requires grammars to be loaded and nexus
    
