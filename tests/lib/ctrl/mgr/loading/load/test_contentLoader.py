@@ -182,3 +182,19 @@ class TestContentLoader(SettingsEnabledTestCase):
         # assertions
         self.assertIsNone(result)
         self.assertTrue("An error occurred while importing '" in spy.get_first())
+
+    def test_idem_import_module_qualification_failure(self):
+        # setup error message capture
+        spy = printer_mocking.printer_spy()
+        # setup invalid request
+        request = ContentRequest(ContentType.GET_RULE, "adsf", TestContentLoader._DEFAULT_MODULE_NAME, None)
+
+        # method under test
+        self.cl.idem_import_module(request)
+
+        # method under test
+        result = self.cl.idem_import_module(request)
+
+        # assertions
+        self.assertIsNone(result)
+        self.assertTrue("Invalid user content request path" in spy.get_first())
