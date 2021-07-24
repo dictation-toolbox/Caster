@@ -14,6 +14,10 @@ class UserDirUpdater(object):
         self.user_dir = user_dir
         self.root_user_content_package_name = ContentRoot.USER_DIR
 
+    def create_user_dir_directories(self):
+        for directory in ["data", "sikuli", "settings"]:
+            Path(self.user_dir).joinpath(directory).mkdir(parents=True, exist_ok=True)
+
     def update_user_dir_packages_to_v1_7_0(self):
         """
         Migrates Caster user dir from v1.0.0 structure to v1.7.0+ structure.

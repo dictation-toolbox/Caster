@@ -12,6 +12,8 @@ if six.PY2:
 else:
     from pathlib import Path  # pylint: disable=import-error
 
+_INIT_PY = "__init__.py"
+
 
 class TestMigrator(TestCase):
 
@@ -23,34 +25,49 @@ class TestMigrator(TestCase):
         shutil.rmtree(TEST_USER_DIR)
 
     def test_legacy_upgrade(self):
+        # setup 1.0.0 user dir structure
+        self.migrator.create_user_dir_directories()
         TestMigrator._setup_legacy_user_content_structure()
 
+        # run migration
         self.migrator.update_user_dir_packages_to_v1_7_0()
 
-        self._assert_only_expected_paths_exist()
+        # assert paths
+        expected_paths = self._get_first_time_expected_paths()
+        expected_paths.update(self._get_test_migration_content_expected_paths())
+        self.assertSetEqual(expected_paths, self._get_actual_paths())
 
     def test_first_time_use(self):
+        # setup 1.0.0 user dir structure and 1.7.0+ user dir content packages
+        self.migrator.create_user_dir_directories()
         self.migrator.update_user_dir_packages_to_v1_7_0()
 
-        self._assert_only_expected_paths_exist()
+        # assert paths
+        expected_paths = self._get_first_time_expected_paths()
+        self.assertSetEqual(expected_paths, self._get_actual_paths())
 
-    def _assert_only_expected_paths_exist(self):
-        expected_paths = {str(Path(TEST_USER_DIR)
-                              .joinpath(ContentRoot.USER_DIR).joinpath("__init__.py"))}
+    def _get_first_time_expected_paths(self):
+        expected = []
+        content_root = Path(TEST_USER_DIR).joinpath(ContentRoot.USER_DIR)
+        expected.extend([content_root, content_root.joinpath(_INIT_PY)])
         for directory in ["rules", "hooks", "transformers"]:
-            expected_paths.add(str(Path(TEST_USER_DIR)
-                                   .joinpath(ContentRoot.USER_DIR)
-                                   .joinpath(directory)
-                                   .joinpath("__init__.py")))
-            for pkg in ["pkg1", "pkg2"]:
-                for python_file in ["__init__.py", pkg + ".py", pkg + "_support.py"]:
-                    expected_paths.add(str(Path(TEST_USER_DIR)
-                                           .joinpath(ContentRoot.USER_DIR)
-                                           .joinpath(directory)
-                                           .joinpath(pkg)
-                                           .joinpath(python_file)))
-        for f in Path(TEST_USER_DIR).glob("**/*.py"):
-            self.assertIn(str(f), expected_paths)
+            pkg = content_root.joinpath(directory)
+            expected.extend([pkg, pkg.joinpath(_INIT_PY)])
+        expected.extend([Path(TEST_USER_DIR).joinpath(directory) for directory in ["data", "sikuli", "settings"]])
+        return set([str(d) for d in expected])
+
+    def _get_test_migration_content_expected_paths(self):
+        expected = []
+        content_root = Path(TEST_USER_DIR).joinpath(ContentRoot.USER_DIR)
+        for directory in ["rules", "hooks", "transformers"]:
+            for pkg_dir in ["pkg1", "pkg2"]:
+                pkg = content_root.joinpath(directory).joinpath(pkg_dir)
+                expected.append(pkg)
+                expected.extend([pkg.joinpath(pf) for pf in ["__init__.py", pkg_dir + ".py", pkg_dir + "_support.py"]])
+        return set([str(p) for p in expected])
+
+    def _get_actual_paths(self):
+        return set([str(f) for f in Path(TEST_USER_DIR).glob("**/*")])
 
     @staticmethod
     def _setup_legacy_user_content_structure():
