@@ -378,8 +378,6 @@ class GrammarManager(object):
 
     @staticmethod
     def _get_module_package(module_path):
-        if "/" in module_path and os.sep != "/":
-            module_path = module_path.replace("/", os.sep)
         return module_path[:module_path.rindex(os.sep)]
 
     @staticmethod
