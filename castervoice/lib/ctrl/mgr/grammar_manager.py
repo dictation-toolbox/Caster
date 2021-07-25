@@ -5,6 +5,7 @@ from dragonfly import Grammar
 from castervoice.lib import printer
 from castervoice.lib.ctrl.mgr.errors.invalid_companion_configuration_error import InvalidCompanionConfigurationError
 from castervoice.lib.ctrl.mgr.errors.not_a_module import NotAModuleError
+from castervoice.lib.ctrl.mgr.loading.load.content_request import ContentRequest
 from castervoice.lib.ctrl.mgr.loading.load.content_type import ContentType
 from castervoice.lib.ctrl.mgr.managed_rule import ManagedRule
 from castervoice.lib.ctrl.mgr.rule_formatter import _set_rdescripts
@@ -289,8 +290,11 @@ class GrammarManager(object):
         :return:
         """
         try:
+            module_dir = GrammarManager._get_module_package(file_path_changed)
             module_name = GrammarManager._get_module_name_from_file_path(file_path_changed)
-            rule_class, details = self._content_loader.idem_import_module(module_name, ContentType.GET_RULE)
+            # request class name not needed here -- only needed on initial load
+            request = ContentRequest(ContentType.GET_RULE, module_dir, module_name, None)
+            rule_class, details = self._content_loader.idem_import_module(request)
             # re-register:
             self.register_rule(rule_class, details)
 
@@ -371,6 +375,10 @@ class GrammarManager(object):
         if file_path.startswith("__") or not file_path.endswith(".py"):
             raise NotAModuleError(file_path)
         return os.path.basename(file_path).replace(".py", "")
+
+    @staticmethod
+    def _get_module_package(module_path):
+        return module_path[:module_path.rindex(os.sep)]
 
     @staticmethod
     def _get_next_id():

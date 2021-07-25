@@ -1,5 +1,4 @@
 import os
-import sys
 import shlex
 import threading
 import time
@@ -14,11 +13,10 @@ else:
 
 from dragonfly import Function, Choice, Dictation, ContextAction
 from castervoice.lib.context import AppContext
-
+from castervoice.lib.ctrl.mgr.loading.load.content_root import ContentRoot
 from castervoice.lib import settings, utilities, context, contexts
 from castervoice.lib import printer
 from castervoice.lib.actions import Text, Key
-from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.selfmod.selfmodrule import BaseSelfModifyingRule
 from castervoice.lib.merge.state.short import R
@@ -42,8 +40,8 @@ class BringRule(BaseSelfModifyingRule):
     # Paths
     _terminal_path = settings.settings(["paths", "TERMINAL_PATH"])
     _explorer_path = str(Path("C:\\Windows\\explorer.exe"))
-    _source_dir =  Path(settings.SETTINGS["paths"]["BASE_PATH"]).parents[0]
-    _user_dir = settings.SETTINGS["paths"]["USER_DIR"]
+    _source_dir = Path(settings.settings(["paths", "BASE_PATH"])).parents[0]
+    _user_dir = settings.settings(["paths", "USER_DIR"])
     _home_dir = Path.home()
 
     def __init__(self, **kwargs):
@@ -224,9 +222,9 @@ class BringRule(BaseSelfModifyingRule):
             # Caster User Dir Navigation
             "caster source": str(Path(_source_dir)),
             "caster user": str(Path(_user_dir)),
-            "caster hooks": str(Path(_user_dir).joinpath("hooks")),
-            "caster transformers": str(Path(_user_dir).joinpath("transformers")),
-            "caster rules": str(Path(_user_dir).joinpath("rules")),
+            "caster hooks": str(Path(_user_dir).joinpath(ContentRoot.USER_DIR).joinpath("hooks")),
+            "caster transformers": str(Path(_user_dir).joinpath(ContentRoot.USER_DIR).joinpath("transformers")),
+            "caster rules": str(Path(_user_dir).joinpath(ContentRoot.USER_DIR).joinpath("rules")),
             "caster data": str(Path(_user_dir).joinpath("data")),
             "caster settings": str(Path(_user_dir).joinpath("settings")),
             "sick you lee": str(Path(_user_dir).joinpath("sikuli")),
@@ -254,6 +252,7 @@ class BringRule(BaseSelfModifyingRule):
             "caster transformer file": str(Path(_user_dir).joinpath("transformers/words.txt")),
         }
     }
+
 
 def get_rule():
     details = RuleDetails(name="bring me",

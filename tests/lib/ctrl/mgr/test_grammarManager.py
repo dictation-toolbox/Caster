@@ -49,7 +49,7 @@ class TestGrammarManager(SettingsEnabledTestCase):
         settings_mocking.prevent_initialize()
         settings_mocking.prevent_save()
         from tests.test_util import utilities_mocking
-        utilities_mocking.mock_toml_files()
+        utilities_mocking.enable_mock_toml_files()
         from castervoice.lib import utilities
 
         # do most imports here so that nothing imports and initializes settings
@@ -128,6 +128,10 @@ class TestGrammarManager(SettingsEnabledTestCase):
                                   self._transformers_runner,
                                   companion_config,
                                   combo_validator)
+
+    def tearDown(self):
+        from tests.test_util import utilities_mocking
+        utilities_mocking.disable_mock_toml_files()
 
     def test_empty_initialize(self):
         """

@@ -1,10 +1,10 @@
-import importlib
 import os
 import traceback
-from sys import modules as _MODULES
-from sys import path
+from sys import path as syspath
 
 from castervoice.lib import settings, printer
+from castervoice.lib.ctrl.mgr.errors.module_qualification_error import ModuleQualificationError
+from castervoice.lib.ctrl.mgr.loading.load.content_root import ContentRoot
 from castervoice.lib.ctrl.mgr.loading.load.content_type import ContentType
 from castervoice.lib.ctrl.mgr.loading.load.initial_content import FullContentSet
 
@@ -18,20 +18,22 @@ class ContentLoader(object):
     Pass result off to GrammarManager.
     """
 
-    def __init__(self, content_request_generator):
+    def __init__(self, content_request_generator, module_load_fn, module_reload_fn, modules_accessor):
         self._content_request_generator = content_request_generator
+        self._module_load_fn = module_load_fn
+        self._module_reload_fn = module_reload_fn
+        self._modules_accessor = modules_accessor
 
     def load_everything(self, rules_config):
         # Generate all requests for both starter and user locations
-        base_path = settings.SETTINGS["paths"]["BASE_PATH"]
-        user_dir = settings.SETTINGS["paths"]["USER_DIR"]
-        user_rules_dir = user_dir + os.sep + "rules"
+        base_path = settings.settings(["paths", "BASE_PATH"])
+        user_dir = settings.settings(["paths", "USER_DIR"])
 
         starter_content_requests = self._content_request_generator.get_all_content_modules(base_path)
         user_content_requests = self._content_request_generator.get_all_content_modules(user_dir)
 
         # user content should trump starter content
-        path.append(user_rules_dir)
+        syspath.append(user_dir)
         requests = {}
         for item in starter_content_requests:
             requests[item.module_name] = item
@@ -60,51 +62,47 @@ class ContentLoader(object):
 
         return FullContentSet(rules, transformers, hooks)
 
-    def idem_import_module(self, module_name, fn_name):
+    def idem_import_module(self, request):
         """
         Returns the content requested from the specified module.
         """
-        module = None
-        if module_name in _MODULES:
-            module = _MODULES[module_name]
+
+        # import the module
+        try:
+            fully_qualified_module_name = ContentLoader._fully_qualify_module_name(request)
+        except ModuleQualificationError:
+            msg = "Invalid user content request path: '{}'. Skipping '{}'."
+            printer.out(msg.format(request.directory, request.module_name))
+            return None
+
+        if self._modules_accessor.has_module(fully_qualified_module_name):
+            module = self._modules_accessor.get_module(fully_qualified_module_name)
             module = self._reimport_module(module)
         else:
-            module = self._import_module(module_name)
+            module = self._import_module(fully_qualified_module_name)
 
         if module is None:
             return None
 
         # get them and add them to nexus
-        fn = None
         try:
-            fn = getattr(module, fn_name)
+            fn = getattr(module, request.content_type)
         except AttributeError:
-            msg = "No method named '{}' was found on '{}'. Did you forget to implement it?".format(fn_name, module_name)
-            if ContentLoader._detect_pythonpath_module_name_in_use(module):
-                msg = "{} module name is already in use: {}".format(module_name, module.__file__)
-            printer.out(msg)
+            msg = "No method named '{}' was found on '{}'. Did you forget to implement it?"
+            printer.out(msg.format(request.content_type, request.module_name))
             return None
-        except:
+        except Exception as e:
             msg = "Error loading module '{}'."
-            printer.out(msg.format(module_name))
+            printer.out(msg.format(request.module_name))
             return None
 
         return fn()
-
-    @staticmethod
-    def _detect_pythonpath_module_name_in_use(module):
-        not_starter = "castervoice" not in module.__file__
-        not_user = ".caster" not in module.__file__
-        return not_starter and not_user
 
     def _process_requests(self, requests):
         result = []
 
         for request in requests:
-            if request.directory not in path:
-                path.append(request.directory)
-        for request in requests:
-            content_item = self.idem_import_module(request.module_name, request.content_type)
+            content_item = self.idem_import_module(request)
             if content_item is not None:
                 result.append(content_item)
 
@@ -118,34 +116,30 @@ class ContentLoader(object):
         """
 
         try:
-            load_fn = self._get_load_fn()
-            return load_fn(module_name)
+            return self._module_load_fn(module_name)
         except Exception as e:
             printer.out("Could not import '{}'. Module has errors: {}".format(module_name, traceback.format_exc()))
             return None
 
     def _reimport_module(self, module):
-        """
-        Reimports an already imported module. Python 2/3 compatible method.
-        """
-
         try:
-            reload_fn = self._get_reload_fn()
-            return reload_fn(module)
-        except:
+            return self._module_reload_fn(module)
+        except Exception as e:
             msg = "An error occurred while importing '{}': {}"
             printer.out(msg.format(str(module), traceback.format_exc()))
             return None
 
-    def _get_load_fn(self):
-        """Importing broken out for testability"""
-        return importlib.import_module
+    @staticmethod
+    def _fully_qualify_module_name(request):
+        if ContentRoot.STARTER in request.directory:
+            root = ContentRoot.STARTER
+        elif ContentRoot.USER_DIR in request.directory:
+            root = ContentRoot.USER_DIR
+        else:
+            raise ModuleQualificationError()
 
-    def _get_reload_fn(self):
-        """Importing broken out for testability"""
-        try:
-            reload
-        except NameError:
-            # Python 3
-            from imp import reload
-        return reload
+        tokens = request.directory.split(os.sep)
+        root_index = tokens.index(root)
+        tokens_for_fully_qualified_module = tokens[root_index:]
+        tokens_for_fully_qualified_module.append(request.module_name)
+        return ".".join(tokens_for_fully_qualified_module)
