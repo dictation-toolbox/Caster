@@ -7,7 +7,6 @@ from castervoice.rules.core.navigation_rules.nav import Navigation
 from castervoice.lib.merge.ccrmerging2.transformers.text_replacer.text_replacer import TextReplacerTransformer
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.actions2 import NullAction
-from tests.lib.merge.ccrmerging2.transformers.text_replacer import mock_TRParser
 from tests.lib.merge.ccrmerging2.transformers.text_replacer.mock_TRParser import MockTRParser
 
 

@@ -67,12 +67,15 @@ class TestContentLoader(SettingsEnabledTestCase):
         self._set_setting(["paths", "BASE_PATH"], _create_os_path("mock", "base", "path", "castervoice"))
         self._set_setting(["paths", "USER_DIR"], _create_os_path("mock", "user", "dir", "caster"))
         self.crg_mock = ContentRequestGenerator()
-        utilities_mocking.mock_toml_files()
+        utilities_mocking.enable_mock_toml_files()
         self.rc_mock = RulesConfig()
         self.rc_mock._config[RulesConfig._WHITELISTED]["MockRuleOne"] = True
         self.rc_mock._config[RulesConfig._WHITELISTED]["MockRuleTwo"] = False
         self.fake_modules_accessor = _FakeModulesAccessor()
         self.cl = content_loader.ContentLoader(self.crg_mock, Mock(), Mock(), self.fake_modules_accessor)
+
+    def tearDown(self):
+        utilities_mocking.disable_mock_toml_files()
 
     def _create_request(self, module_name, content_type, directory=_DEFAULT_PACKAGE_PATH,
                         content_class_name=None):

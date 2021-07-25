@@ -496,12 +496,13 @@ def initialize():
         _USER_DIR = user_data_dir(appname="caster", appauthor=False)
     _SETTINGS_PATH = str(Path(_USER_DIR).joinpath("settings/settings.toml"))
 
+    # Kick everything off.
+    SETTINGS = _init(_SETTINGS_PATH)
     from castervoice.lib.migration import UserDirUpdater
     migrator = UserDirUpdater(_USER_DIR)
     migrator.create_user_dir_directories()
     migrator.update_user_dir_packages_to_v1_7_0()
-    # Kick everything off.
-    SETTINGS = _init(_SETTINGS_PATH)
+    migrator.update_bringme_toml_to_v1_7_0()
     _debugger_path = SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"]  # pylint: disable=invalid-sequence-index
     if _debugger_path not in sys.path and os.path.isdir(_debugger_path):
         sys.path.append(_debugger_path)
