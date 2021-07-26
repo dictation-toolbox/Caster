@@ -9,6 +9,7 @@ if six.PY2:
     import logging
     logging.basicConfig()
 
+import importlib
 from castervoice.lib.ctrl.dependencies import DependencyMan  # requires nothing
 DependencyMan().initialize()
 
@@ -28,8 +29,12 @@ from castervoice.lib import control
 if control.nexus() is None: # Initialize Caster State
     from castervoice.lib.ctrl.mgr.loading.load.content_loader import ContentLoader
     from castervoice.lib.ctrl.mgr.loading.load.content_request_generator import ContentRequestGenerator
+    from castervoice.lib.ctrl.mgr.loading.load.reload_fn_provider import ReloadFunctionProvider
+    from castervoice.lib.ctrl.mgr.loading.load.modules_access import SysModulesAccessor
     _crg = ContentRequestGenerator()
-    _content_loader = ContentLoader(_crg)
+    _rp = ReloadFunctionProvider()
+    _sma = SysModulesAccessor()
+    _content_loader = ContentLoader(_crg, importlib.import_module, _rp.get_reload_fn(), _sma)
     control.init_nexus(_content_loader)
     EngineConfigLate() # Requires grammars to be loaded and nexus
    

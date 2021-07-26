@@ -11,11 +11,14 @@ class TestTransformersConfig(SettingsEnabledTestCase):
     def setUp(self):
         self._set_setting(["paths", "TRANSFORMERS_CONFIG_PATH"],
                           TestTransformersConfig._MOCK_PATH)
-        utilities_mocking.mock_toml_files()
+        utilities_mocking.enable_mock_toml_files()
         utilities.save_toml_file({
             "MockTransformer": True,
             "OffTransformer": False
         }, TestTransformersConfig._MOCK_PATH)
+
+    def tearDown(self):
+        utilities_mocking.disable_mock_toml_files()
 
     def test_set_transformer_active(self):
         tc = TransformersConfig()

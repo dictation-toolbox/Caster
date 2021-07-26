@@ -10,16 +10,24 @@ from castervoice.lib import control, settings, utilities, textformat, printer
 from castervoice.lib.actions import Key, Text, Mouse
 from castervoice.lib.clipboard import Clipboard
 
-_CLIP = {}
 
-def initialize_clipboard():
-    global _CLIP
-    if len(_CLIP) == 0:
-        _CLIP = utilities.load_json_file(
+class _NavClipBoard(object):
+    """
+    Singleton isn't great, but it's at least better than a global which is
+    read from disk on first import.
+    """
+    _INSTANCE = None
+
+    def __init__(self):
+        self.clip = utilities.load_json_file(
             settings.settings(["paths", "SAVED_CLIPBOARD_PATH"]))
 
+    @staticmethod
+    def get_instance():
+        if _NavClipBoard._INSTANCE is None:
+            _NavClipBoard._INSTANCE = _NavClipBoard()
+        return _NavClipBoard._INSTANCE
 
-initialize_clipboard()
 
 class Grid:
     GRID_PROCESS = None
@@ -129,16 +137,15 @@ def _text_to_clipboard(keystroke, nnavi500):
         cb = Clipboard(from_system=True)
         Key(keystroke).execute()
         key = str(nnavi500)
-        global _CLIP
         for i in range(0, max_tries):
             failure = False
             try:
                 # time for keypress to execute
                 time.sleep(
                     settings.settings([u'miscellaneous', u'keypress_wait'])/1000.)
-                _CLIP[key] = Clipboard.get_system_text()
+                _NavClipBoard.get_instance().clip[key] = Clipboard.get_system_text()
                 utilities.save_json_file(
-                    _CLIP, settings.settings([u'paths', u'SAVED_CLIPBOARD_PATH']))
+                    _NavClipBoard.get_instance().clip, settings.settings([u'paths', u'SAVED_CLIPBOARD_PATH']))
             except Exception:
                 failure = True
                 utilities.simple_log()
@@ -163,8 +170,8 @@ def drop_keep_clipboard(nnavi500, capitalization, spacing):
     # Get clipboard text
     if nnavi500 > 1:
         key = str(nnavi500)
-        if key in _CLIP:
-            text = _CLIP[key]
+        if key in _NavClipBoard.get_instance().clip:
+            text = _NavClipBoard.get_instance().clip[key]
         else:
             get_current_engine().speak("slot empty")
             text = None
@@ -195,9 +202,8 @@ def duple_keep_clipboard(nnavi50):
 
 
 def erase_multi_clipboard():
-    global _CLIP
-    _CLIP = {}
-    utilities.save_json_file(_CLIP,
+    _NavClipBoard.get_instance().clip = {}
+    utilities.save_json_file(_NavClipBoard.get_instance().clip,
                              settings.settings([u'paths', u'SAVED_CLIPBOARD_PATH']))
 
 
