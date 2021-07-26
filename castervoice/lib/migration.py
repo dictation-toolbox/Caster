@@ -39,7 +39,7 @@ class UserDirUpdater(object):
         bringme_config.load()
         directory_dict = bringme_config.get("folder")
 
-        if ContentRoot.USER_DIR not in directory_dict["caster rules"]:
+        if directory_dict is not None and ContentRoot.USER_DIR not in directory_dict["caster rules"]:
             # make a backup copy
             copy_destination = str(Path(bringme_config_path).with_name("sm_bringme.toml.bak"))
             shutil.copy2(str(Path(bringme_config_path)), copy_destination)
