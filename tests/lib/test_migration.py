@@ -40,6 +40,22 @@ class TestMigrator(SettingsEnabledTestCase):
         # assertions
         self._do_bringme_toml_assertions(bringme_toml_path)
 
+    def test_bringme_toml_upgrade_check_works_with_first_time_run(self):
+        """
+        Tests that bringme toml upgrade doesn't crash out because of a blank bringme config
+        file on first run.
+        """
+        # do 1.7.0+ first time setup
+        self.migrator.create_user_dir_directories()
+        self._set_setting(["paths", "USER_DIR"], TEST_USER_DIR)
+        self._set_setting(["paths", "SM_BRINGME_PATH"], str(Path(TEST_USER_DIR).joinpath("settings/sm_bringme.toml")))
+
+        # run migration
+        self.migrator.update_bringme_toml_to_v1_7_0()
+
+        # assertions
+        self.assertFalse(Path(TEST_USER_DIR).joinpath("settings/sm_bringme.toml.bak").exists())
+
     def test_bringme_toml_upgrade_idempotency(self):
         """
         Tests that bringme toml config backup file is not overwritten after update runs 2nd time.
