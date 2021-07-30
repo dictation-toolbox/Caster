@@ -20,7 +20,7 @@ import traceback
 
 from dragonfly import CompoundRule, Key, MappingRule, Pause, Window, get_current_engine
 
-from castervoice.lib import control
+from castervoice.lib import control, printer
 from castervoice.lib.clipboard import Clipboard
 from castervoice.lib.rules_collection import get_instance
 from castervoice.lib.util import guidance
@@ -334,7 +334,7 @@ def enum_files_from_clipboard(target):
                                  stdin=subprocess.PIPE,
                                  )
             for line in iter(p.stdout.readline, b''):
-                if isinstance(line, binary_type):
+                if isinstance(line, six.binary_type):
                     line = line.decode(encoding).strip()
                 if line.startswith("file://"):
                     line = line.replace("file://", "")
