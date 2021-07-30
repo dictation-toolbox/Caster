@@ -3,11 +3,10 @@ __author__ = 'LexiconCode'
 Command-module for Typora
 Official Site "https://typora.io/"
 """
-from dragonfly import Repeat, Dictation, MappingRule
+from dragonfly import Repeat, Dictation, MappingRule, ShortIntegerRef
 
 from castervoice.lib.actions import Key
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 
 
@@ -77,8 +76,8 @@ class TyporaRule(MappingRule):
 
     extras = [
         Dictation("text"),
-        IntegerRefST("h", 0, 6),
-        IntegerRefST("n", 1, 30),
+        ShortIntegerRef("h", 0, 6),
+        ShortIntegerRef("n", 1, 30),
     ]
 
     defaults = {"n": 1, "h": 1}

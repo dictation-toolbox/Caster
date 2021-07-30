@@ -1,4 +1,4 @@
-from dragonfly import Repeat, Dictation, Function, Choice, MappingRule
+from dragonfly import Repeat, Dictation, Function, Choice, MappingRule, ShortIntegerRef
 
 from castervoice.lib.actions import Key
 
@@ -8,7 +8,7 @@ except ImportError:
     from castervoice.rules.apps.editor.eclipse_rules.eclipse_support import ec_con
 
 from castervoice.rules.core.alphabet_rules import alphabet_support # Manually change import path if in user directory.
-from castervoice.lib.merge.additions import IntegerRefST, Boolean
+from castervoice.lib.merge.additions import Boolean
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.short import R
 
@@ -78,7 +78,7 @@ class EclipseRule(MappingRule):
     extras = [
         Dictation("text"),
         Dictation("mim"),
-        IntegerRefST("n", 1, 3000),
+        ShortIntegerRef("n", 1, 3000),
         alphabet_support.get_alphabet_choice("a"),
         alphabet_support.get_alphabet_choice("b"),
         alphabet_support.get_alphabet_choice("c"),

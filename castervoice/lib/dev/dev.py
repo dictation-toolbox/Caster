@@ -6,12 +6,12 @@ import threading
 import shlex
 
 from dragonfly import (Function, BringApp, WaitWindow, Dictation, Choice, Grammar,
-                       MappingRule, Paste)
+                       MappingRule, Paste, ShortIntegerRef)
 
 from castervoice.lib import utilities, settings, context, control
 from castervoice.lib.dev import devgen
 from castervoice.lib.actions import Key, Text
-from castervoice.lib.merge.additions import IntegerRefST
+
 from castervoice.lib.merge.state.actions import ContextSeeker, AsynchronousAction, \
     RegisteredAction
 from castervoice.lib.merge.state.actions2 import NullAction, ConfirmAction, \
@@ -133,7 +133,7 @@ class Experimental(MappingRule):
         #     "dredge [<id> <text>]":         Function(dredge),
         "test dragonfly paste": Paste("some text"),
     }
-    extras = [Dictation("text"), Dictation("text2"), IntegerRefST("n2", 1, 100)]
+    extras = [Dictation("text"), Dictation("text2"), ShortIntegerRef("n2", 1, 100)]
     defaults = {"text": "", "text2": ""}
 
 
@@ -224,7 +224,7 @@ class StackTest(MappingRule):
                 box_type=settings.QTYPE_DEFAULT,
                 log_failure=True),
     }
-    extras = [Dictation("text"), Dictation("text2"), IntegerRefST("n", 1, 5)]
+    extras = [Dictation("text"), Dictation("text2"), ShortIntegerRef("n", 1, 5)]
     defaults = {"text": "", "text2": ""}
 
 

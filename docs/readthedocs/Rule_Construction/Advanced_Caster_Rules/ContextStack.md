@@ -35,7 +35,7 @@ Its constructor requires either or both of two lists, and has a bunch of optiona
 
 **ContextLevel and ContextSet**
 
-A ContextLevel is a set of possible outcomes which can be triggered by a RegisteredAction or other context stack action. Each outcome is called a ContextSet. Each ContextSet requires a set of trigger words to select it with, an outcome, and optionally some other parameters. It looks like one of these:
+A ContextLevel is a set of possible outcomes which can be triggered by a RegisteredAction or other context stack action. Each outcome is called a ContextSet. Each ContextSet requires a set of trigger words to select it with, an outcome, and optionally some other parameters. The following examples will be explained below:
 
 ```python
 ContextSet(["hello", "goodbye"], Text, "greeting"),
@@ -114,7 +114,7 @@ AsynchronousAction optional parameters:
 - `rdescript` - same as RegisteredAction
 - `blocking` - does it block other context stack actions until it completes
 
-AsynchronousAction also has the special property that you can use `time_in_seconds` and `repetitions` as IntegerRefST extras in the spec, and they will override the defaults or whatever is set in the constructor.
+AsynchronousAction also has the special property that you can use `time_in_seconds` and `repetitions` as ShortIntegerRef extras in the spec, and they will override the defaults or whatever is set in the constructor.
 
 Example AsynchronousActions:
 

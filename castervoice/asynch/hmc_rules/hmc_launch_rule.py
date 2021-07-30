@@ -25,7 +25,7 @@ def settings_window():
 
 class HMCLaunchRule(MappingRule):
     mapping = {
-        "caster settings editor":
+        "launch caster settings":
             R(Function(settings_window)),
     }
 

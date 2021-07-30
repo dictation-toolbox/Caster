@@ -138,7 +138,7 @@ class Python(MergeRule):
     extras = [
         Dictation("text"),
         Choice("unary_meth", {
-            "reper": "reper",
+            "reper": "repr",
             "stir": "str",
             "len": "len",
         }),

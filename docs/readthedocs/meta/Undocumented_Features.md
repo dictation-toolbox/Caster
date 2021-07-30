@@ -1,23 +1,23 @@
-## List Of Undocumented Features
+# List Of Undocumented Features
 
   As these features get documented, they can be removed from this page.
 
-  **Needs Docs**
+## Needs Docs
 
-  - MergeRule
-  - SelfModifyingRule
-  - CCRMerger
-  - ConfirmAction
-  - BoxAction
-  - SelectiveAction
+- MergeRule
+- SelfModifyingRule
+- CCRMerger
+- ConfirmAction
+- BoxAction
+- SelectiveAction
+  
+### Needs Update
 
-  **Needs Update**
+- CCR
+- ContextSeeker
+- AsynchronousAction
 
-  - CCR
-  - ContextSeeker
-  - AsynchronousAction
+### More Examples Needed
 
-  **More Examples Needed**
-
-  - ContextSeeker
-  - AsynchronousAction
+- ContextSeeker
+- AsynchronousAction

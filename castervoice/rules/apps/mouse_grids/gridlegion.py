@@ -1,14 +1,10 @@
 import time
-from dragonfly import Function, Choice, MappingRule, Mouse
-from castervoice.lib import control, navigation
+from dragonfly import Function, Choice, MappingRule, Mouse, ShortIntegerRef
+from castervoice.lib import control
+from castervoice.lib.navigation import Grid
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 from castervoice.rules.ccr.standard import SymbolSpecs
-
-
-def kill():
-    control.nexus().comm.get_com("grids").kill()
 
 
 def send_input(n, action):
@@ -23,7 +19,7 @@ def send_input(n, action):
         response = s.retrieve_data_for_highlight(str(int(n)))
 
     s.kill()
-    navigation.wait_for_grid_exit()
+    Grid.wait_for_grid_exit()
 
     if int_a == 0:
         Mouse("left").execute()
@@ -46,7 +42,7 @@ def drag_highlight(n1, n2):
     response1 = s.retrieve_data_for_highlight(str(int(n1)))
     response2 = s.retrieve_data_for_highlight(str(int(n2)))
     s.kill()
-    navigation.wait_for_grid_exit()
+    Grid.wait_for_grid_exit()
     x11 = response1["l"] + 2
     y1 = response1["y"]
     x22 = response2["r"]
@@ -65,9 +61,9 @@ class LegionGridRule(MappingRule):
         "<n> [<action>]":
             R(Function(send_input)),
         "refresh":
-            R(Function(navigation.mouse_alternates, mode="legion")),
-        SymbolSpecs.CANCEL:
-            R(Function(kill)),
+            R(Function(Grid.mouse_alternates, mode="legion")),
+        SymbolSpecs.CANCEL + " {weight=2}":
+            R(Function(Grid.kill)),
         "<n1> (select | light) <n2>":
             R(Function(drag_highlight)),
     }
@@ -77,9 +73,9 @@ class LegionGridRule(MappingRule):
             "psychic": 1,
             "select | light": 2,
         }),
-        IntegerRefST("n", 0, 1000),
-        IntegerRefST("n1", 0, 1000),
-        IntegerRefST("n2", 0, 1000),
+        ShortIntegerRef("n", 0, 1000),
+        ShortIntegerRef("n1", 0, 1000),
+        ShortIntegerRef("n2", 0, 1000),
     ]
     defaults = {
         "action": -1,
@@ -87,4 +83,4 @@ class LegionGridRule(MappingRule):
 
 
 def get_rule():
-    return LegionGridRule, RuleDetails(name="legion grid rule", title="legiongrid")
+    return LegionGridRule, RuleDetails(name="legion grid rule", function_context=lambda: Grid.is_grid_active("legion"))

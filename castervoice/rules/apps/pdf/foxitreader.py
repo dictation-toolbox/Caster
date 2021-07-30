@@ -1,9 +1,8 @@
-from dragonfly import Repeat, Dictation, MappingRule
+from dragonfly import Repeat, Dictation, MappingRule, ShortIntegerRef
 
 from castervoice.lib.actions import Key
 
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 
 
@@ -16,7 +15,7 @@ class FoxitRule(MappingRule):
     extras = [
         Dictation("text"),
         Dictation("mim"),
-        IntegerRefST("n", 1, 1000),
+        ShortIntegerRef("n", 1, 1000),
     ]
     defaults = {"n": 1, "mim": ""}
 

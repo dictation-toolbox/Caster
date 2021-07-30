@@ -1,11 +1,10 @@
-from dragonfly import Function, Repeat, Choice, Dictation, MappingRule, Pause
+from dragonfly import Function, Repeat, Choice, Dictation, MappingRule, Pause, ShortIntegerRef
 
 from castervoice.lib.actions import Key, Mouse
 
 from castervoice.lib import navigation
 from castervoice.lib.actions import Text
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 
 
@@ -290,9 +289,9 @@ class VSCodeNonCcrRule(MappingRule):
     extras = [
         Dictation("text"),
         Dictation("mim"),
-        IntegerRefST("ln1", 1, 1000),
-        IntegerRefST("ln2", 1, 1000),
-        IntegerRefST("n", 1, 1000),
+        ShortIntegerRef("ln1", 1, 1000),
+        ShortIntegerRef("ln2", 1, 1000),
+        ShortIntegerRef("n", 1, 1000),
         Choice("action", navigation.actions),
         Choice(
             "nth", {

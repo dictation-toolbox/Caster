@@ -1,10 +1,10 @@
-## Choose a Speech Recognition Engine
+# Choose a Speech Recognition Engine
 
 Caster currently supports the following speech recognition engines on Microsoft Windows Vista through Windows 10. This is a brief overview of the supported speech recognition engines.
 
 ## Dragon NaturallySpeaking
 
-**Dragon [NaturallySpeaking (DNS)](https://www.nuance.com/dragon.html)** - Caster only supports Dragon NaturallySpeaking 13 or higher. For best results, Dragon Professional Individual (DPI) is recommended.
+**Dragon [NaturallySpeaking (DPI)](https://www.nuance.com/dragon.html)** - Caster supports Dragon NaturallySpeaking 13 (DNS) or higher. For best results, Dragon Professional Individual (DPI) is recommended.
 
 - Known for its high accuracy in speech recognition especially with free dictation.
 
@@ -16,30 +16,25 @@ Caster currently supports the following speech recognition engines on Microsoft 
 
 - Superior Background noise rejection. Distinguishes speech from background noise.
 
-  
-
 Disadvantages
 
-  - Closed source speech recognition engine
-  - Expensive $300 DPI and Dragon NaturallySpeaking Home (DNS) $150 (Note DNS limitations below)
-  - Will never have native cross-platform support by Nuance.
-  - Cannot use custom speech recognition models
+- Closed source speech recognition engine
+- Expensive $300 DPI and Dragon NaturallySpeaking Home (DNS) $150 (Note DNS limitations below)
+- Will never have native cross-platform support by Nuance.
+- Cannot use custom speech recognition models
 - Zero low level access to the engine implementation
-  
 
 **Dragon NaturallySpeaking Home** **(DNS)** can be used by Caster however comes with significant limitations besides what's mentioned in their [matrix comparison](https://www.dragonsupportservice.us/dragon-15-home-vs-professional-specifications/) and therefore not recommended. The retail upgrade cost DPI is about the same as the Dragon NaturallySpeaking Home. 
 
 Limitations of the Home Edition include but not limited to:
 
-  - Does not include vocabulary editor to edit/add/delete words for recognition.
+- Does not include vocabulary editor to edit/add/delete words for recognition.
 
-- Cannot add new DNS commands (You can add new commands created with Dragonfly) 
+- Cannot add new DNS commands (You can add new commands created with Dragonfly)
 
 - Lacks built-in command/dictation/spell/number modes. Using `command mode` is recommended when programming by voice.
 
 - Lacks many other settings to customize DNS for productivity.
-
-  
 
 ## Kaldi
 
@@ -47,7 +42,7 @@ Daanzu's [Kaldi](https://dragonfly2.readthedocs.io/en/latest/kaldi_engine.html) 
 
 - Free and open source engine that respects user privacy.
 
-- Typically lower recognition latency than DNS 
+- Typically lower recognition latency than DNS
 
 - A selection of pre-trained speech recognition models to choose from that are continually developed.
 
@@ -62,8 +57,6 @@ Daanzu's [Kaldi](https://dragonfly2.readthedocs.io/en/latest/kaldi_engine.html) 
 - Alternative Dictation sources such as a cloud based or local speech recognition backend
 
 - Many other highlights can be found in Daanzu's [Kaldi Documentation](https://dragonfly2.readthedocs.io/en/latest/kaldi_engine.html)
-
-   
 
 Disadvantages
 
@@ -81,17 +74,12 @@ Disadvantages
 
 - Preinstalled on all supported Windows OS
 
-  
-
   Disadvantages
 
 - With Caster WSR built-in commands are not available and does not utilize WSR's GUI.
 
-  - Least accurate with free dictation and commands
-  - Not actively developed by Microsoft
-  - Will never have native cross-platform support by Microsoft.
-    - Cannot use custom speech recognition models
-  - Zero low level access to the engine implementation
-
-
-
+- Least accurate with free dictation and commands
+- Not actively developed by Microsoft
+- Will never have native cross-platform support by Microsoft.
+  - Cannot use custom speech recognition models
+- Zero low level access to the engine implementation

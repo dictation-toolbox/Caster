@@ -1,11 +1,10 @@
-from dragonfly import Pause, Function, Choice, MappingRule
+from dragonfly import Pause, Function, Choice, MappingRule, ShortIntegerRef
 
 from castervoice.lib.actions import Key, Text, Mouse
 
 from castervoice.lib import navigation
 from castervoice.lib.actions import Text
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 from castervoice.lib.temporary import Store, Retrieve
 
@@ -70,8 +69,8 @@ class RStudioRule(MappingRule):
 
     }
     extras = [
-        IntegerRefST("ln1", 1, 10000),
-        IntegerRefST("ln2", 1, 10000),
+        ShortIntegerRef("ln1", 1, 10000),
+        ShortIntegerRef("ln2", 1, 10000),
         Choice("action", navigation.actions),
     ]
     defaults = {"ln2": ""}

@@ -23,13 +23,13 @@ Classic Install Location: `castervoice\rules\ccr` in Caster source code.
 - [SQL](#sql)
 - [VHDL](#vhdl)
 
-# Bash
+## Bash
 
 | Command     | Output                             | Command          | Output          |
 | ----------- | ---------------------------------- | ---------------- | --------------- |
 | add comment | `#`                                | lodge and        | `&&`            |
 | breaker     | `break`                            | lodge not        | `!`             |
-| case of     | `TOKEN) ;;`                        | lodge or         | &#124; &#124;   |
+| case of     | `TOKEN) ;;`                        | lodge or         | `||`            |
 | continue    | `continue`                         | print to console | `echo`          |
 | default     | `*) ;;`                            | push             | `TOKEN+=()`     |
 | do loop     | `until [ ]; do`                    | return           | `return`        |
@@ -44,14 +44,14 @@ Classic Install Location: `castervoice\rules\ccr` in Caster source code.
 | key fee     | `fi`                               | while loop       | `while [ ]; do` |
 | length of   | `${#TOKEN[@]}`                     |                  |                 |
 
-# C++
+## C++
 
 | Command                     | Output                            | Command             | Output                                     |
 | --------------------------- | --------------------------------- | ------------------- | ------------------------------------------ |
 | ([global] scope / name)     | `::`                              | integer             | `int`                                      |
 | (pointer / D reference)     | `*`                               | lodge and           | `&&`                                       |
 | (reference to / address of) | `&`                               | lodge not           | `!`                                        |
-| Vic                         | `vector`                          | lodge or            | &#124; &#124;                              |
+| Vic                         | `vector`                          | lodge or            | `||`                              |
 | add comment                 | `//`                              | long comment        | `/**/`                                     |
 | array                       | `Brackets`                        | member              | `->`                                       |
 | big integer                 | `Integer`                         | new new             | `new`                                      |
@@ -73,15 +73,15 @@ Classic Install Location: `castervoice\rules\ccr` in Caster source code.
 | iffae                       | `if(){}`                          | value true          | `true`                                     |
 | import                      | `#include`                        | while loop          | `while ()`                                 |
 
-# C&#35;
+## CSharp
 
 | Command                   | Output                          | Command          | Output                                                        |
 | ------------------------- | ------------------------------- | ---------------- | ------------------------------------------------------------- |
-| (lambda/goes to)          | `=>`                            | internal         | `internal`                                                    |
+| lambda/goes to            | `=>`                            | internal         | `internal`                                                    |
 | add comment               | `//`                            | list             | `List<>`                                                      |
 | array                     | `Brackets`                      | lodge and        | `&&`                                                          |
 | big integer               | `Integer`                       | lodge not        | `!`                                                           |
-| breaker                   | `break;`                        | lodge or         | &#124; &#124;                                                 |
+| breaker                   | `break;`                        | lodge or         | ` || `                                                |
 | case of                   | `case :`                        | long comment     | `/**/`                                                        |
 | cast double               | `(double)`                      | new new          | `new`                                                         |
 | cast integer              | `(int)`                         | print to console | `Console.WriteLine()`                                         |
@@ -102,19 +102,20 @@ Classic Install Location: `castervoice\rules\ccr` in Caster source code.
 | integer                   | `int`                           | while loop       | `while ()`                                                    |
 | interface                 | `interface TOKEN {}`            |                  |                                                               |
 
-# VoiceDevCommands
+## VoiceDevCommands
+
 | Command                                     | Output                                                                     |
 |:--------------------------------------------|:---------------------------------------------------------------------------|
 | `dev key`                                   | `Key(""),`                                                                 |
 | `dev text`                                  | `Text("")`                                                                 |
-| `dev pause`                                 | ` + Pause("")`                                                             |
+| `dev pause`                                 | `+ Pause("")`                                                             |
 | `dev function`                              | `Function()`                                                               |
-| `dev repeat`                                | ` * Repeat(extra='n')`                                                     |
-| `dev choice`                                | `Choice("", {}) `                                                          |
+| `dev repeat`                                | `* Repeat(extra='n')`                                                     |
+| `dev choice`                                | `Choice("", {})`                                                          |
 | `dev mouse [<mouse_button>]`                | `Mouse("left")`                                                            |
 | `dev mouse current [position]`              | `Mouse("[1003, 537]")`                                                     |
 | `dev bring app`                             | `BringApp()`                                                               |
-| `dev descript`                              | ` rdescript="MyGrammar: "`                                                 |
+| `dev descript`                              | `rdescript="MyGrammar: "`                                                 |
 | `dev mimic [<text>]`                        | `Mimic("")`                                                                |
 | `dev split dictation [<text>]`              | `"this", "is", "an", "example"`                                            |
 | `dev execute`                               | `.execute()`                                                               |
@@ -134,7 +135,8 @@ Classic Install Location: `castervoice\rules\ccr` in Caster source code.
 | `commander [<spec>] mimic [<text>]`         | `"example": R(Mimic("test"), rdescript="MyGrammar: ",`                     |
 | `commander [<spec>] mouse [<mouse_button>]` | `"example": R(Mouse("[1244, 690], left, rdescript="" ,`                    |
 
-# Go
+## Go
+
 | Command                | Output                          |   | Command            | Output                              |
 |:-----------------------|:--------------------------------|:--|:-------------------|:------------------------------------|
 | iffae                  | `if  {`<br/>` }`                |   | shells             | `else {`<br/>`   }`                 |
@@ -154,14 +156,14 @@ Classic Install Location: `castervoice\rules\ccr` in Caster source code.
 | (function / funk) main | `func main() {`<br/>`    }`     |   | make map           | `make(map[])`                       |
 | package                | `package `                      |   |                    | ``                                  |
 
-# Haxe
+## Haxe
 
 | Command                   | Output                    | Command          | Output                                                        |
 | ------------------------- | ------------------------- | ---------------- | ------------------------------------------------------------- |
 | add comment               | `//`                      | integer          | `Int`                                                         |
 | anon funk                 | `->`                      | lodge and        | `&&`                                                          |
 | array of                  | `Array<TOKEN>()`          | lodge not        | `!`                                                           |
-| boolean                   | `Bool`                    | lodge or         | &#124; &#124;                                                 |
+| boolean                   | `Bool`                    | lodge or         | lodge or;                                                 |
 | breaker                   | `break;`                  | long comment     | `/**/`                                                        |
 | case of                   | `case :`                  | map of           | `Map<TOKEN, TOKEN>()`                                         |
 | class                     | `class`                   | new new          | `new`                                                         |
@@ -182,7 +184,7 @@ Classic Install Location: `castervoice\rules\ccr` in Caster source code.
 | import                    | `import`                  | while loop       | `while ()`                                                    |
 | instance of               | `Std.is()`                |                  |                                                               |
 
-# HTML
+## HTML
 
 | Command                            | Output                         | Command                        | Output                                                          |
 | ---------------------------------- | ------------------------------ | ------------------------------ | --------------------------------------------------------------- |
@@ -251,7 +253,7 @@ Classic Install Location: `castervoice\rules\ccr` in Caster source code.
 | list element / DL                  | `<dl>`                         | small                          | `<small></small>`                                               |
 | time                               | `<time></time>`                |                                |                                                                 |
 
-# CSS
+## CSS
 
 The CSS commands are designed just like human language. Basically you can write CSS exactly as you read it.
 For writing selector, you just dictate as you normally would and then say selector to put brackets
@@ -281,7 +283,7 @@ output: 10px
 list of units
 Pixel or px, percentage or percent, centimeter or cm, inch or in, millimeter or mm, pica or pc, points or pt, ch, em, rem, ex, viewport height or vh, viewport width or vw, millisecond or ms, second or S
 
-# Java
+## Java
 
 | Command        | Output       | Command            | Output                                                                                                                                                                                  |
 | -------------- | ------------ | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -295,7 +297,7 @@ Pixel or px, percentage or percent, centimeter or cm, inch or in, millimeter or 
 | case of        | `case :`     | private            | `private`                                                                                                                                                                               |
 | cast to double | `(double)()` | public             | `public`                                                                                                                                                                                |
 
-# Javascript
+## Javascript
 
 | Command                   | Output                        | Command          | Output               |
 | ------------------------- | ----------------------------- | ---------------- | -------------------- |
@@ -323,7 +325,7 @@ Pixel or px, percentage or percent, centimeter or cm, inch or in, millimeter or 
 | instance of               | `instanceof`                  | while loop       | `while ()`           |
 | length                    | `length`                      |                  |                      |
 
-# LaTeX
+## LaTeX
 
 Commands are designed to follow LaTeX syntax as closely as possible, for example `insert document class` produces `\documentclass{}`. See lines 69- of caster/lib/ccr/latex/latex.py for a full list of available inputs.
 
@@ -336,7 +338,7 @@ Commands are designed to follow LaTeX syntax as closely as possible, for example
 | `insert <command>`           | `\<command>{}`                                    | `symbol [<big>] <symbol>` | `\<symbol>` |
 | `insert <commandnoarg>`      | `\<commandnoarg>`                                 |                           |             |
 
-# Matlab
+## Matlab
 
 | Command                   | Output          | Command           | Output        |
 | ------------------------- | --------------- | ----------------- | ------------- |
@@ -355,7 +357,7 @@ Commands are designed to follow LaTeX syntax as closely as possible, for example
 | length of                 | `length()`      | while loop        | `while`       |
 | lodge and                 | `&&`            |                   |               |
 
-# Markdown
+## Markdown
 
 | Command                          | Command                  |
 |:---------------------------------|:-------------------------|
@@ -370,8 +372,7 @@ Commands are designed to follow LaTeX syntax as closely as possible, for example
 | `insert R code`                  | `insert in line code`    |
 | `insert code [block]`            | ` `                      |
 
-
-# Prolog
+## Prolog
 
 | Command             | Output               | Command | Output   |
 | ------------------- | -------------------- | ------- | -------- |
@@ -382,7 +383,7 @@ Commands are designed to follow LaTeX syntax as closely as possible, for example
 | Open Block comment  | `/*`                 | implies | `:-`     |
 | Or                  | `;`                  |         |          |
 
-# Python
+## Python
 
 | Command                   | Output                        | Command           | Output                        |
 | ------------------------- | ----------------------------- | ----------------- | ----------------------------- |
@@ -408,7 +409,7 @@ Commands are designed to follow LaTeX syntax as closely as possible, for example
 | list comprehension        | `[x for x in TOKEN if TOKEN]` | with              | `with`                        |
 | lodge and                 | `and`                         |                   |                               |
 
-# R
+## R
 
 | Command         | Output          | Command              | Output                        |
 | --------------- | --------------- | -------------------- | ----------------------------- |
@@ -427,7 +428,7 @@ Commands are designed to follow LaTeX syntax as closely as possible, for example
 | import          | `library()`     | value true           | `TRUE`                        |
 | lodge and       | `&&`            | while loop           | `while ()`                    |
 
-## Core/TidyVerse Functions
+### Core/TidyVerse Functions
 
 If you are having trouble with over-recognition (R commands appearing where you don't want them) due to the large number of commands, consider adding a prefix to the `<function>` command - line 93 - in lib/ccr/r/r.py to increase phonetic distinctness.
 
@@ -455,7 +456,7 @@ If you are having trouble with over-recognition (R commands appearing where you 
 | left join           | `left_join()`        | vector             | `c()`               |
 | length              | `length()`           |                    |                     |
 
-## Graph Plotting Functions
+### Graph Plotting Functions
 
 Should all be prefixed with `graph`
 
@@ -470,7 +471,7 @@ Should all be prefixed with `graph`
 | why label     | `ylab()`          | labels           | `labs()`           |
 | theme minimal | `theme_minimal()` |                  |                    |
 
-## Pacman Functions
+### Pacman Functions
 
 Should all be prefixed with `pack`
 
@@ -481,7 +482,7 @@ Should all be prefixed with `pack`
 | unload          | `p_unload()`          | update      | `p_update()`     |
 | install temp    | `p_temp()`            |             |                  |
 
-# Rust
+## Rust
 
 | Command                                | Output                                   | Command            | Output                                       |
 | -------------------------------------- | ---------------------------------------- | -------------------| -------------------------------------------- |
@@ -513,7 +514,7 @@ Should all be prefixed with `pack`
 | lodge not                              | `!`                                      |                    |                                              |
 | lodge or                               | ` &#124; &#124; `                        |                    |                                              |
 
-# SQL
+## SQL
 
 | Command           | Output        | Command                   | Output                 |
 | ----------------- | ------------- | ------------------------- | ---------------------- |
@@ -535,7 +536,7 @@ Should all be prefixed with `pack`
 | is not null       | `IS NOT NULL` | using                     | `USING ()`             |
 | is null           | `IS NULL`     | where                     | `WHERE`                |
 
-# VHDL
+## VHDL
 
 | Command                     | Output                                                                  | Command                       | Output                                                                                    |
 | --------------------------- | ----------------------------------------------------------------------- | ----------------------------- | ----------------------------------------------------------------------------------------- |
@@ -559,7 +560,7 @@ Should all be prefixed with `pack`
 | case of                     | `case TOKEN is`                                                         | switch                        | `case TOKEN is`<br/>`when 'TOKEN' => TOKEN`<br/>`end case;`                               |
 | type                        | `type :`                                                                | when                          | `when`                                                                                    |
 
-# VHDL Components
+## VHDL Components
 
 | Command               | Output                                                                              |
 | --------------------- | ----------------------------------------------------------------------------------- |

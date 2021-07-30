@@ -47,6 +47,7 @@ QTYPE_DIRECTORY = "5"
 QTYPE_CONFIRM = "6"
 WXTYPE_SETTINGS = "7"
 HMC_SEPARATOR = "[hmc]"
+STARTUP_MESSAGES = []
 
 # calculated fields
 SETTINGS = None
@@ -56,6 +57,16 @@ _BASE_PATH = None
 _USER_DIR = None
 _SETTINGS_PATH = None
 
+def add_message(message):
+    """
+    Add string message to be printed when Caster initializes
+    message: str
+    """
+    try:
+        if message not in STARTUP_MESSAGES:
+            STARTUP_MESSAGES.append(str(message))
+    except Exception as e:
+        print(e)
 
 def _get_platform_information():
     """Return a dictionary containing platform-specific information."""
@@ -71,9 +82,9 @@ def _get_platform_information():
     else:
         system_information.update({"binary path": str(Path(sys.exec_prefix).joinpath(sys.exec_prefix).joinpath("bin"))})
         system_information.update(
-            {"main binary": str(Path(sys.exec_prefix).joinpath("bin", "python"))})
+            {"main binary": sys.executable})
         system_information.update(
-            {"hidden console binary": str(Path(sys.exec_prefix).joinpath("bin", "python"))})
+            {"hidden console binary": sys.executable})
     return system_information
 
 
@@ -332,7 +343,10 @@ def _get_defaults():
             "default_engine_mode": False, 
             "engine_mode": "normal",
             "default_mic": False, 
-            "mic_mode": "on"
+            "mic_mode": "on",
+            "mic_sleep_timer_on": True, 
+            "mic_sleep_timer": 300, # Seconds before microphone goes to sleep after last successful recognition.
+            # Note: No greater than 5 minutes or 300 seconds unless DPI/DPI sleep settings are adjusted
         },
 
         # python settings
@@ -378,9 +392,6 @@ def _get_defaults():
             "keypress_wait": 50,  # milliseconds
             "max_ccr_repetitions": 16,
             "atom_palette_wait": 30,  # hundredths of a second
-            "integer_remap_opt_in": False,
-            "short_integer_opt_out": False,
-            "integer_remap_crash_fix": False,
             "print_rdescripts": True,
             "history_playback_delay_secs": 1.0,
             "legion_vertical_columns": 30,
@@ -479,14 +490,19 @@ def initialize():
     # calculate prerequisites
     SYSTEM_INFORMATION = _get_platform_information()
     _BASE_PATH = str(Path(__file__).resolve().parent.parent)
-    _USER_DIR = user_data_dir(appname="caster", appauthor=False)
+    if os.getenv("CASTER_USER_DIR") is not None:
+        _USER_DIR = os.getenv("CASTER_USER_DIR")
+    else:
+        _USER_DIR = user_data_dir(appname="caster", appauthor=False)
     _SETTINGS_PATH = str(Path(_USER_DIR).joinpath("settings/settings.toml"))
 
-    for directory in ["data", "rules", "transformers", "hooks", "sikuli", "settings"]:
-        d = Path(_USER_DIR).joinpath(directory)
-        d.mkdir(parents=True, exist_ok=True)
     # Kick everything off.
     SETTINGS = _init(_SETTINGS_PATH)
+    from castervoice.lib.migration import UserDirUpdater
+    migrator = UserDirUpdater(_USER_DIR)
+    migrator.create_user_dir_directories()
+    migrator.update_user_dir_packages_to_v1_7_0()
+    migrator.update_bringme_toml_to_v1_7_0()
     _debugger_path = SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"]  # pylint: disable=invalid-sequence-index
     if _debugger_path not in sys.path and os.path.isdir(_debugger_path):
         sys.path.append(_debugger_path)

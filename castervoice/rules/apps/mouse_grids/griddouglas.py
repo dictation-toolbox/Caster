@@ -1,28 +1,26 @@
 import time
-from dragonfly import Function, Choice, MappingRule
+from dragonfly import Function, Choice, MappingRule, ShortIntegerRef
 from dragonfly.actions.mouse import get_cursor_position
-from castervoice.lib import control, navigation
+from castervoice.lib import control
+from castervoice.lib.navigation import Grid
 from castervoice.lib.actions import Mouse
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 from castervoice.rules.ccr.standard import SymbolSpecs
-
-
-def kill():
-    control.nexus().comm.get_com("grids").kill()
 
 
 def send_input(x, y, action):
     s = control.nexus().comm.get_com("grids")
     s.move_mouse(int(x), int(y))
     int_a = int(action)
-    if (int_a == 0) | (int_a == 1) | (int_a == -1):
+    if (int_a == 0) | (int_a == 1) | (int_a == 2) | (int_a == -1):
         s.kill()
-        navigation.wait_for_grid_exit()
+        Grid.wait_for_grid_exit()
     if int_a == 0:
         Mouse("left").execute()
-    elif int_a == 1:
+    if int_a == 1:
+        Mouse("left:2").execute()
+    elif int_a == 2:
         Mouse("right").execute()
 
 
@@ -33,7 +31,7 @@ def send_input_select(x1, y1, x2, y2):
     s.move_mouse(int(x2), int(y2))
     _x2, _y2 = get_cursor_position()
     s.kill()
-    navigation.wait_for_grid_exit()
+    Grid.wait_for_grid_exit()
     drag_from_to(_x1, _y1, _x2, _y2)
 
 
@@ -66,7 +64,7 @@ def select_text():
     x2, y2 = get_cursor_position()
     s = control.nexus().comm.get_com("grids")
     s.kill()
-    navigation.wait_for_grid_exit()
+    Grid.wait_for_grid_exit()
     drag_from_to(x1, y1, x2, y2)
 
 
@@ -78,34 +76,30 @@ class DouglasGridRule(MappingRule):
             R(Function(send_input_select)),
         "<x1> [by] <y1> (grab | select) <x2>":
             R(Function(send_input_select_short)),
-        "squat":
+        "squat {weight=2}":
             R(Function(store_first_point)),
-        "bench":
+        "bench {weight=2}":
             R(Function(select_text)),
-        SymbolSpecs.CANCEL:
-            R(Function(kill)),
+        SymbolSpecs.CANCEL + " {weight=2}":
+            R(Function(Grid.kill)),
     }
     extras = [
-        IntegerRefST("x", 0, 300),
-        IntegerRefST("y", 0, 300),
-        IntegerRefST("x1", 0, 300),
-        IntegerRefST("y1", 0, 300),
-        IntegerRefST("x2", 0, 300),
-        IntegerRefST("y2", 0, 300),
+        ShortIntegerRef("x", 0, 300),
+        ShortIntegerRef("y", 0, 300),
+        ShortIntegerRef("x1", 0, 300),
+        ShortIntegerRef("y1", 0, 300),
+        ShortIntegerRef("x2", 0, 300),
+        ShortIntegerRef("y2", 0, 300),
         Choice("action", {
             "kick": 0,
-            "psychic": 1,
-            "move": 2,
-        }),
-        Choice("point", {
-            "one": 1,
-            "two": 2,
+            "kick (double | 2)": 1,
+            "psychic": 2,
+            "move": 3,
         }),
     ]
     defaults = {
         "action": -1,
     }
 
-
 def get_rule():
-    return DouglasGridRule, RuleDetails(name="douglas grid rule", title="douglasgrid")
+    return DouglasGridRule, RuleDetails(name="douglas grid rule", function_context = lambda: Grid.is_grid_active("douglas"))

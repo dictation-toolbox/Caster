@@ -12,5 +12,3 @@ if __name__ == "__main__":
     # Ignore this if you're using Dragon
     get_engine().recognize_forever()
 ```
-
-

@@ -2,7 +2,7 @@
 
 If you're using DNS make sure you've installed and configured NatLink first! Open [command prompt](https://www.wikihow.com/Open-the-Command-Prompt-in-Windows) (CMD) and type the following then press enter.
 
-`pip install castervoice` 
+`pip install castervoice`
 
 At the end of the PIP install instructions a CMD window will guide you of what to expect for WSR or DNS. Setup complete. **Note** If a window does not appear please refer to the troubleshooting section.  
 
@@ -20,4 +20,4 @@ For WRS double clicking on `_caster.py` or `start_caster.py` opens the file and 
 
 1. Change the directory to  `Desktop` in CMD.
    Example PIP `cd C:\Users\<YourUsername>\Desktop` or Classic `cd C:\Users\<YourUsername>\Documents\Caster`
-2. Then Classic:`python _caster.py` or PIP: `python start_caster.py` 
+2. Then Classic:`python _caster.py` or PIP: `python start_caster.py`

@@ -9,8 +9,6 @@ from castervoice.lib.merge.state.short import R
 
 class DragonRule(MappingRule):
     mapping = {
-        '(lock Dragon | deactivate)':
-            R(Playback([(["go", "to", "sleep"], 0.0)])),
         '(number|numbers) mode':
             R(Playback([(["numbers", "mode", "on"], 0.0)])),
         'spell mode':

@@ -42,7 +42,10 @@ def dep_missing():
         except VersionConflict:
             pass
         except DistributionNotFound:
-            missing_list.append('{0}'.format(dep))
+            if dep.startswith("wxpython") and sys.version_info[0] >= 3: # Remove when natlink Python 3
+                pass
+            else:
+                missing_list.append('{0}'.format(dep))
     if missing_list:
         pippackages = (' '.join(map(str, missing_list)))
         print("\nCaster: dependencys are missing. Use 'python -m pip install {0}'".format(pippackages))
@@ -54,7 +57,7 @@ def dep_min_version():
     # Needs to be manually resolved if Caster requires a specific version of dependency
     # A GitHub Issue URL needed to explain the change to version specific '==' dependency.
     listdependency = ([
-        ["dragonfly2", ">=", "0.26.0", "https://github.com/dictation-toolbox/dragonfly/issues/265"],
+        ["dragonfly2", ">=", "0.29.0", "https://github.com/dictation-toolbox/dragonfly/issues/289"],
     ])
     for dep in listdependency:
         package = dep[0]

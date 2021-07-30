@@ -6,88 +6,128 @@ import six
 import subprocess
 import time
 from dragonfly import get_current_engine, monitors
-from castervoice.lib import control, settings, utilities, textformat
+from castervoice.lib import control, settings, utilities, textformat, printer
 from castervoice.lib.actions import Key, Text, Mouse
 from castervoice.lib.clipboard import Clipboard
 
-_CLIP = {}
-GRID_PROCESS = None
 
+class _NavClipBoard(object):
+    """
+    Singleton isn't great, but it's at least better than a global which is
+    read from disk on first import.
+    """
+    _INSTANCE = None
 
-def initialize_clipboard():
-    global _CLIP
-    if len(_CLIP) == 0:
-        _CLIP = utilities.load_json_file(
+    def __init__(self):
+        self.clip = utilities.load_json_file(
             settings.settings(["paths", "SAVED_CLIPBOARD_PATH"]))
 
-
-initialize_clipboard()
-
-
-def mouse_alternates(mode, monitor=1, rough=True):
-    args = []
-
-    if mode == "legion" and not utilities.window_exists(None, "legiongrid"):
-        from castervoice.asynch.mouse.legion import LegionScanner
-        r = monitors[int(monitor) - 1].rectangle
-        bbox = [
-            int(r.x),
-            int(r.y),
-            int(r.x) + int(r.dx) - 1,
-            int(r.y) + int(r.dy) - 1
-        ]
-        ls = LegionScanner()
-        ls.scan(bbox, rough)
-        tscan = ls.get_update()
-        args = [
-            settings.settings(["paths", "PYTHONW"]),
-            settings.settings(["paths", "LEGION_PATH"]), "-t", tscan[0], "-m",
-            str(monitor)
-        ]
-    elif mode == "rainbow" and not utilities.window_exists(None, "rainbowgrid"):
-        args = [
-            settings.settings(["paths", "PYTHONW"]),
-            settings.settings(["paths", "RAINBOW_PATH"]), "-g", "r", "-m",
-            str(monitor)
-        ]
-    elif mode == "douglas" and not utilities.window_exists(None, "douglasgrid"):
-        args = [
-            settings.settings(["paths", "PYTHONW"]),
-            settings.settings(["paths", "DOUGLAS_PATH"]), "-g", "d", "-m",
-            str(monitor)
-        ]
-    elif mode == "sudoku" and not utilities.window_exists(None, "sudokugrid"):
-        args = [
-            settings.settings(["paths", "PYTHONW"]),
-            settings.settings(["paths", "SUDOKU_PATH"]), "-g", "s", "-m",
-            str(monitor)
-        ]
-    global GRID_PROCESS
-    GRID_PROCESS = subprocess.Popen(args) if args else None
+    @staticmethod
+    def get_instance():
+        if _NavClipBoard._INSTANCE is None:
+            _NavClipBoard._INSTANCE = _NavClipBoard()
+        return _NavClipBoard._INSTANCE
 
 
-def wait_for_grid_exit(timeout=5):
-    global GRID_PROCESS
-    if GRID_PROCESS:
-        # TODO Remove if-part after fully migrating to Python3
-        if six.PY2:
-            t = 0.0
-            inc = 0.1
-            while t < timeout:
-                GRID_PROCESS.poll()
-                if GRID_PROCESS.returncode is not None:
-                    break
-                t += inc
-                time.sleep(inc)
-            if t >= timeout:
-                GRID_PROCESS.kill()
-        else:
-            try:
-                GRID_PROCESS.wait(timeout)
-            except subprocess.TimeoutExpired:  # pylint: disable=no-member
-                GRID_PROCESS.kill()
+class Grid:
     GRID_PROCESS = None
+    MODE = None
 
+    @classmethod
+    def is_grid_active(cls, grid):
+        # Mouse Grids call this with function context.
+        # False: MouseGrid rules are not active
+        # True: MouseGrid rule are active
+        # grid: grid name
+        if cls.MODE is None:
+            return False
+        elif cls.MODE == grid:
+            return True    
+
+    @classmethod
+    def mouse_alternates(cls, mode, monitor=1, rough=True):
+        # Launches the Mouse Grid
+        args = []
+
+        if cls.GRID_PROCESS is not None:
+            cls.GRID_PROCESS.poll()
+            # If close by Task Manager
+            # TODO Test MacOS/Linux. Handle error codes when Grid close by Task Manager.
+            if cls.GRID_PROCESS.returncode == 15:
+                cls.GRID_PROCESS = None
+                cls.MODE = None
+            else:
+                # This message should only occur if grid is visible.
+                printer.out("Mouse Grid navigation already in progress \n Return Code: {}".format(cls.GRID_PROCESS.returncode))
+                return
+
+        if mode == "legion":
+            from castervoice.asynch.mouse.legion import LegionScanner
+            r = monitors[int(monitor) - 1].rectangle
+            bbox = [
+                int(r.x),
+                int(r.y),
+                int(r.x) + int(r.dx) - 1,
+                int(r.y) + int(r.dy) - 1
+            ]
+            ls = LegionScanner()
+            ls.scan(bbox, rough)
+            tscan = ls.get_update()
+            args = [
+                settings.settings(["paths", "PYTHONW"]),
+                settings.settings(["paths", "LEGION_PATH"]), "-t", tscan[0], "-m",
+                str(monitor)
+            ]
+        elif mode == "rainbow":
+            args = [
+                settings.settings(["paths", "PYTHONW"]),
+                settings.settings(["paths", "RAINBOW_PATH"]), "-g", "r", "-m",
+                str(monitor)
+            ]
+        elif mode == "douglas":
+            args = [
+                settings.settings(["paths", "PYTHONW"]),
+                settings.settings(["paths", "DOUGLAS_PATH"]), "-g", "d", "-m",
+                str(monitor)
+            ]
+        elif mode == "sudoku":
+            args = [
+                settings.settings(["paths", "PYTHONW"]),
+                settings.settings(["paths", "SUDOKU_PATH"]), "-g", "s", "-m",
+                str(monitor)
+            ]
+        cls.MODE=mode
+        cls.GRID_PROCESS = subprocess.Popen(args) if args else None
+
+    @classmethod
+    def wait_for_grid_exit(cls, timeout=5):
+        # Polls Grid process until exit
+        if cls.GRID_PROCESS:
+            # TODO Remove if-part after fully migrating to Python3
+            if six.PY2:
+                t = 0.0
+                inc = 0.1
+                while t < timeout:
+                    cls.GRID_PROCESS.poll()
+                    if cls.GRID_PROCESS.returncode is not None:
+                        break
+                    t += inc
+                    time.sleep(inc)
+                if t >= timeout:
+                    cls.GRID_PROCESS.kill()
+            else:
+                try:
+                    cls.GRID_PROCESS.wait(timeout)
+                except subprocess.TimeoutExpired:  # pylint: disable=no-member
+                    cls.GRID_PROCESS.kill()
+        cls.MODE = None
+        cls.GRID_PROCESS = None
+
+    @classmethod
+    def kill(cls):
+        # Kills the current grid
+        control.nexus().comm.get_com("grids").kill()
+        cls.wait_for_grid_exit()
 
 def _text_to_clipboard(keystroke, nnavi500):
     if nnavi500 == 1:
@@ -97,16 +137,15 @@ def _text_to_clipboard(keystroke, nnavi500):
         cb = Clipboard(from_system=True)
         Key(keystroke).execute()
         key = str(nnavi500)
-        global _CLIP
         for i in range(0, max_tries):
             failure = False
             try:
                 # time for keypress to execute
                 time.sleep(
                     settings.settings([u'miscellaneous', u'keypress_wait'])/1000.)
-                _CLIP[key] = Clipboard.get_system_text()
+                _NavClipBoard.get_instance().clip[key] = Clipboard.get_system_text()
                 utilities.save_json_file(
-                    _CLIP, settings.settings([u'paths', u'SAVED_CLIPBOARD_PATH']))
+                    _NavClipBoard.get_instance().clip, settings.settings([u'paths', u'SAVED_CLIPBOARD_PATH']))
             except Exception:
                 failure = True
                 utilities.simple_log()
@@ -131,8 +170,8 @@ def drop_keep_clipboard(nnavi500, capitalization, spacing):
     # Get clipboard text
     if nnavi500 > 1:
         key = str(nnavi500)
-        if key in _CLIP:
-            text = _CLIP[key]
+        if key in _NavClipBoard.get_instance().clip:
+            text = _NavClipBoard.get_instance().clip[key]
         else:
             get_current_engine().speak("slot empty")
             text = None
@@ -163,27 +202,14 @@ def duple_keep_clipboard(nnavi50):
 
 
 def erase_multi_clipboard():
-    global _CLIP
-    _CLIP = {}
-    utilities.save_json_file(_CLIP,
+    _NavClipBoard.get_instance().clip = {}
+    utilities.save_json_file(_NavClipBoard.get_instance().clip,
                              settings.settings([u'paths', u'SAVED_CLIPBOARD_PATH']))
 
 
-def volume_control(n, volume_mode):
-    for i in range(0, int(n)):
-        Key("volume" + str(volume_mode)).execute()
-
-
-def kill_grids_and_wait():
-    window_title = utilities.get_active_window_title()
-    if (window_title == settings.RAINBOW_TITLE or window_title == settings.DOUGLAS_TITLE
-            or window_title == settings.LEGION_TITLE):
-        control.nexus().comm.get_com("grids").kill()
-        time.sleep(0.1)
-
-
 def mouse_click(button):
-    kill_grids_and_wait()
+    if Grid.GRID_PROCESS is not None:
+        Grid.kill()
     Mouse(button).execute()
 
 
