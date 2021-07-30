@@ -6,7 +6,7 @@
 - Disabling the rule which enabled the companion disables the companion
 - Disabling the companion does NOT disable the parent rule
 
-Consider the following example `Python = ["PythonNon"]` 
+Consider the following example `Python = ["PythonNon"]`
 
 `Python` is the parent rule and `PythonNon` is its child. If you say  `Enable Python` then not only `Python` but also `PythonNon` rule would become enabled.
 

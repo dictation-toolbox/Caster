@@ -17,40 +17,41 @@ Caster provides powerful text manipulation and navigation features. These functi
 - Selecting from the cursor to a target: `grab <direction> [<number_of_lines_to_search>] until [<before_after>] [<occurrence_number>] <target_object>`
 - Deleting a single element: `remove <direction> [<number_of_lines_to_search>] [<occurrence_number>] <target_object>`
 - Deleting from the cursor to a target: `remove <direction> [<number_of_lines_to_search>] until [<before_after>] [<occurrence_number>] <target_object>`
-    - This command will also remove a space immediately preceding the target object.
+  - This command will also remove a space immediately preceding the target object.
 - Replacing a single element: `replace <direction>  [<number_of_lines_to_search>] [<occurrence_number>] <target_object> with <replacement_object>`
-    - Note: `<replacement_object>` must be dictation if `<target_object>` is dictation and likewise for character targets. As in, you can't yet replace dictation with a Caster alphabet element.
+  - Note: `<replacement_object>` must be dictation if `<target_object>` is dictation and likewise for character targets. As in, you can't yet replace dictation with a Caster alphabet element.
 - Change capitalization of single element: `capital <direction> [<number_of_lines_to_search>] [<occurrence_number>] [<letter_size>] <character>`
-    - only the 1st letter of the word has its case changed
-    - letter_size defaults to uppercase
+  - only the 1st letter of the word has its case changed
+  - letter_size defaults to uppercase
 
 **Examples**:
 
 - _go ross before deckle_
 - _go ross before deckle char_
 - _go ross before deckle char over oscar_
-    - Moves the cursor before ":c" then inserts "o" before the ":".
+  - Moves the cursor before ":c" then inserts "o" before the ":".
 - _go ross after second deckle_
-    - Moves the cursor after the second occurrence of ":" to the right of the cursor's original position.
+  - Moves the cursor after the second occurrence of ":" to the right of the cursor's original position.
 - _grab sauce eight examples_
-    - Searches eight lines up and selects the first occurrence of the word "examples" above the cursor.
+  - Searches eight lines up and selects the first occurrence of the word "examples" above the cursor.
 - _grab sauce eight until examples_
-    - Searches eight lines up and selects from the cursor to the first occurrence of the word "examples" above the cursor.
+  - Searches eight lines up and selects from the cursor to the first occurrence of the word "examples" above the cursor.
 - _grab ross hello hug quotes_
-    - Selects the nearest occurrence of "hello" (to the right of the cursor on the current line) and surrounds it by quotes.
-    - Note that _hug quotes_ is a separate command not part of this module, but you can do this because these commands are CCR.
+  - Selects the nearest occurrence of "hello" (to the right of the cursor on the current line) and surrounds it by quotes.
+  - Note that _hug quotes_ is a separate command not part of this module, but you can do this because these commands are CCR.
 - _remove sauce eight examples_
-    - Searches eight lines up and deletes the first occurrence of the word "examples" above the cursor.
+  - Searches eight lines up and deletes the first occurrence of the word "examples" above the cursor.
 - _remove sauce eight until examples_
-    - Searches eight lines up and deletes from the cursor to the first occurrence of the word "examples" above the cursor.
+  - Searches eight lines up and deletes from the cursor to the first occurrence of the word "examples" above the cursor.
 - _replace lease num six with hotel_
-    - Replaces the nearest occurrence (to the left of the cursor) of the digit "6" with the letter "h".
+  - Replaces the nearest occurrence (to the left of the cursor) of the digit "6" with the letter "h".
 - _capital dunce three second multiple_
-    - change the 2nd instance of the word "multiple" in the next 3 lines to "Multiple"
+  - change the 2nd instance of the word "multiple" in the next 3 lines to "Multiple"
 - _capital ross lower multiple_
-    - change the next instance of the word "Multiple" to "multiple"
-    
+  - change the next instance of the word "Multiple" to "multiple"
+  
 ## Possible future features
+
 Please feel free to try and implement these and submit a pull request!
 
 - Supporting Caster numbers as targets (e.g. _go lease before numb one_).
@@ -63,6 +64,7 @@ Please feel free to try and implement these and submit a pull request!
 - Use line numbers as location limiters (e.g. go line one fifty nine third right prekris).
 
 ## Known bugs/issues
+
 - Report bugs and discuss solutions [here](https://github.com/dictation-toolbox/Caster/issues/579).
 - Occasionally, the names of characters are interpreted as dictation and thus not found by the program when searching over the selected text (e.g. "arch" is interpreted as the word "arch" instead of the a). One user reported such a problem with "comma". Here are some [suggestions](https://gist.github.com/alexboche/fb3edf3a823744fb041733101331018c) on how to handle this problem, but I do not have a full understanding of the cause of the problem. There's a little bit of discussion on this in the issue page starting [here](https://github.com/dictation-toolbox/Caster/issues/579#issuecomment-517899382)
 - In some applications, the keypress speed is slow such that the cursor takes a long time to move to the desired location (seems to be application dependent). In the background, Caster is just using the left and right keys to move the cursor around after the initial selection. In principle, we could improve this by using the up/down arrows and navigating using Ctrl-left/right.
@@ -76,6 +78,6 @@ Please feel free to try and implement these and submit a pull request!
 - Emacs is not supported yet as it has unusual cursor/selection behavior; see [here](https://www.gnu.org/software/emacs/manual/html_node/eintr/Point-and-mark.html) and [here](https://www.gnu.org/software/emacs/manual/html_node/emacs/Mark-Ring.html). The functions in `text_manipulation_support.py` take an `application` parameter, so one would just need to make an if statement `if application == emacs:` in some of the functions such as `select_text_and_return_it` to account for Emacs cursor/selection behavior. Application parameters need to be added into the dictionary `contexts` at the top of the file.
 - Although these commands do not affect what is on the first slot of the clipboard, they do sometimes affect what is on the second or third slot of the clipboard if you are using a clipboard with multiple slots. (The multi-clipboard on Windows 10 can be accessed by pressing Windows-V.) In particular, the text that the command selects will typically be added onto the second slot of the clipboard by the function `read_selected_without_altering_clipboard`. Sometimes the function `paste_string_without_altering_clipboard` causes a similar problem. It is possible that this issue could be solved by tweaking those functions (I don't totally understand how they work, though I know they use pyperclip). If not, it might be worth looking into a third-party clipboard manager such as CopyQ, which appears to be quite sophisticated and apparently supports python scripting.
 - Sometimes these commands don't work properly in certain apps because those apps take a very long time for text to be added into the clipboard after pressing Ctrl-C. The current solution is to have a dictionary called `copy_pause_time_dict` that lets the user set different pause times (for after pressing Ctrl-C) for different apps. (`copy_pause_time_dict` and the other dictionaries described here are in `text_manipulation_support.py` for now). In order to add a custom pause time for an application, the user must first add that application into the dictionary `contexts`.
-    - In the future, a better solution might be the following:  if the text that is passed into the function is the same as what was on the clipboard before, then have the command try copying again (with an increased pause time afterwards). The tools for doing something like this alternative solution are already available in caster's `lib/context.py`, see for example the function `read_nmax_tries` and the parameter `same_is_okay` in the function `read_selected_without_altering_clipboard`. One problem with this solution seems to be that sometimes you might want to use the commands on the same text multiple times in a row (e.g. for moving the cursor) in which case what was on the first slot of the clipboard wouldn't change so the command would try to copy again unnecessarily. That problem could possibly be avoided by adjusting the function `read_selected_without_altering_clipboard`. 
-    - In addition to the `copy_pause_time_dict`, there is also a dictionary called `paste_pause_time_dict` that adjusts the pause time between putting text onto the clipboard and pressing `Ctrl-V`, since this seems (but not totally sure) to be application dependent.
+  - In the future, a better solution might be the following:  if the text that is passed into the function is the same as what was on the clipboard before, then have the command try copying again (with an increased pause time afterwards). The tools for doing something like this alternative solution are already available in caster's `lib/context.py`, see for example the function `read_nmax_tries` and the parameter `same_is_okay` in the function `read_selected_without_altering_clipboard`. One problem with this solution seems to be that sometimes you might want to use the commands on the same text multiple times in a row (e.g. for moving the cursor) in which case what was on the first slot of the clipboard wouldn't change so the command would try to copy again unnecessarily. That problem could possibly be avoided by adjusting the function `read_selected_without_altering_clipboard`. 
+  - In addition to the `copy_pause_time_dict`, there is also a dictionary called `paste_pause_time_dict` that adjusts the pause time between putting text onto the clipboard and pressing `Ctrl-V`, since this seems (but not totally sure) to be application dependent.
 - Character sequences as target objects is only implemented for "go/move".

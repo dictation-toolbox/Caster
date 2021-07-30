@@ -5,18 +5,17 @@ users may want to make this context-specific to their text editors
 '''
 import copy
 
-from dragonfly import Pause, Choice, Dictation, Function
+from dragonfly import Pause, Choice, Dictation, Function, ShortIntegerRef
 from dragonfly.actions.action_mouse import get_cursor_position
 
 from castervoice.lib.actions import Text, Key
-from castervoice.rules.core.navigation_rules.nav import Navigation  # Updated manually if in user directory
+from castervoice.rules.core.keyboard_rules import keyboard_support
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
-new_modifier_choice_object = copy.deepcopy(Navigation.modifier_choice_object)
+new_modifier_choice_object = copy.deepcopy(keyboard_support.modifier_choice_object)
 
 def split_dictation(text):
     if text:
@@ -88,8 +87,8 @@ class VoiceDevCommands(MergeRule):
 
         # Dragonfly Snippets
         # this first command is probably the most useful one
-        "dev key [<modifier>] <combined_button_dictionary>": 
-            R(Text('Key("%(modifier)s%(combined_button_dictionary)s")'),
+        "dev key [<modifier>] <button_dictionary_1>": 
+            R(Text('Key("%(modifier)s%(button_dictionary_1)s")'),
             rdescript="DragonflyDev: Snippet for creating a full Key action"),
         "dev key":
             R(Text('Key("")') + Key("left:2"), rdescript="DragonflyDev: Snippet for Key Action"),
@@ -199,7 +198,7 @@ class VoiceDevCommands(MergeRule):
 
     extras = [
         new_modifier_choice_object,
-        Choice("combined_button_dictionary", Navigation.combined_button_dictionary),
+        Choice("button_dictionary_1", keyboard_support.button_dictionary_1),
         Dictation("text"),
         Dictation("dict"),
         Dictation("spec"),
@@ -216,8 +215,8 @@ class VoiceDevCommands(MergeRule):
             "up": "up",
             "down": "down",
         }),
-        IntegerRefST("distance_1", 1, 500),
-        IntegerRefST("distance_2", 1, 500),
+        ShortIntegerRef("distance_1", 1, 500),
+        ShortIntegerRef("distance_2", 1, 500),
     ]
     defaults = {"spec": "", "dict": "", "text": "", "mouse_button": ""}
 

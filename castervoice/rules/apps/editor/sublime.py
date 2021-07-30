@@ -1,9 +1,8 @@
-from dragonfly import Function, Dictation, Choice, MappingRule,Repeat
+from dragonfly import Function, Dictation, Choice, MappingRule, Repeat, ShortIntegerRef
 
 from castervoice.lib import navigation
 from castervoice.lib.actions import Key, Text
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 from castervoice.lib.temporary import Store, Retrieve
 
@@ -182,10 +181,10 @@ class SublimeRule(MappingRule):
     }
     extras = [
         Dictation("dict"),
-        IntegerRefST("ln1", 1, 1000),
-        IntegerRefST("ln2", 1, 1000),
-        IntegerRefST("n2", 1, 9),
-        IntegerRefST("n3", 1, 21),
+        ShortIntegerRef("ln1", 1, 1000),
+        ShortIntegerRef("ln2", 1, 1000),
+        ShortIntegerRef("n2", 1, 9),
+        ShortIntegerRef("n3", 1, 21),
         Choice("action", navigation.actions),
         Choice(
             "nth", {

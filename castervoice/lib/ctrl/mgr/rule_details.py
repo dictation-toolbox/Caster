@@ -1,7 +1,12 @@
-import inspect
 import os
 import traceback
+import inspect
 from castervoice.lib import printer
+import six
+if six.PY2:
+    from castervoice.lib.util.pathlib import Path
+else:
+    from pathlib import Path  # pylint: disable=import-error
 
 
 class RuleDetails(object):
@@ -42,8 +47,8 @@ class RuleDetails(object):
     def _calculate_filepath_from_frame(stack, index):
         try:
             frame = stack[index]
-            module = inspect.getmodule(frame[0])
-            filepath = module.__file__.replace("\\", "/")
+            # module = inspect.getmodule(frame[1])
+            filepath = str(Path(frame[1]))
             if filepath.endswith("pyc"):
                 filepath = filepath[:-1]
             return filepath

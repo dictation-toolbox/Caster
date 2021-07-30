@@ -1,9 +1,8 @@
-from dragonfly import Repeat, MappingRule
+from dragonfly import Repeat, MappingRule, ShortIntegerRef
 
 from castervoice.lib.actions import Key
 
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 
 
@@ -43,7 +42,7 @@ class GitHubDeskRule(MappingRule):
         "[create] pull request": R(Key("c-r")),
     }
     extras = [
-        IntegerRefST("n", 1, 10),
+        ShortIntegerRef("n", 1, 10),
     ]
     defaults = {"n": 1}
 

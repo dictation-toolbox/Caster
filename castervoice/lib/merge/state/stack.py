@@ -5,7 +5,7 @@ Created on Jun 7, 2015
 '''
 import six
 if six.PY2:
-    import Queue
+    import Queue # pylint: disable=import-error
 else:
     import queue as Queue
 

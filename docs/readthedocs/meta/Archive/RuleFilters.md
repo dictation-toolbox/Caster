@@ -2,7 +2,7 @@
 
 - **Rule Filters Removed From Caster 1.0.0. Replaced by Transformers.**
 
-### Rule Merging
+## Rule Merging
 
 Before we get into how rule filters work, you need to know a little about the rule-merging process.
 

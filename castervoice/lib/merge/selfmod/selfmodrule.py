@@ -1,8 +1,7 @@
-from dragonfly.grammar.elements import Dictation
+from dragonfly import Dictation, IntegerRef, ShortIntegerRef
 
 from castervoice.lib import printer
 from castervoice.lib.ctrl.mgr.errors.base_class_error import DontUseBaseClassError
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.selfmod.sm_config import SelfModStateSavingConfig
 from castervoice.lib.merge.state.actions2 import NullAction
@@ -25,7 +24,7 @@ class BaseSelfModifyingRule(MergeRule):
         default_smr_mapping = {"spec which gets replaced": NullAction()}
         self._smr_mapping = default_smr_mapping
         # extras and defaults may not get replaced:
-        self._smr_extras = [IntegerRefST("n", 1, 50), Dictation("s")]
+        self._smr_extras = [ShortIntegerRef("n", 1, 50), Dictation("s")]
         self._smr_defaults = {"n": 1, "s": ""}
 
         self._config = SelfModStateSavingConfig(config_path)

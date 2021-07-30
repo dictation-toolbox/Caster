@@ -1,10 +1,9 @@
-from dragonfly import Repeat, Dictation, MappingRule
+from dragonfly import Repeat, Dictation, MappingRule, ShortIntegerRef
 
 from castervoice.lib.actions import Key, Text, Mouse
 
 from castervoice.lib.actions import Text
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 
 
@@ -29,8 +28,8 @@ class NPPRule(MappingRule):
     }
     extras = [
         Dictation("text"),
-        IntegerRefST("n", 1, 1000),
-        IntegerRefST("n2", 1, 10),
+        ShortIntegerRef("n", 1, 1000),
+        ShortIntegerRef("n2", 1, 10),
     ]
     defaults = {"n": 1}
 

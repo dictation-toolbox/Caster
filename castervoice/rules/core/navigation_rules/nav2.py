@@ -1,4 +1,4 @@
-from dragonfly import Function, Repeat, Dictation, Choice, MappingRule
+from dragonfly import Function, Repeat, Dictation, Choice, MappingRule, ShortIntegerRef
 
 from castervoice.lib.actions import Key, Mouse
 from castervoice.lib import navigation, utilities
@@ -10,7 +10,6 @@ except ImportError:
     from castervoice.rules.core.alphabet_rules import alphabet_support
 
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.actions import AsynchronousAction
 from castervoice.lib.merge.state.short import S, L, R
 
@@ -37,8 +36,6 @@ class NavigationNon(MappingRule):
             R(Key("cs-f")),
         "replace":
             R(Key("c-h")),
-        "F<function_key>":
-            R(Key("f%(function_key)s")),
         "[show] context menu":
             R(Key("s-f10")),
         "lean":
@@ -105,9 +102,9 @@ class NavigationNon(MappingRule):
     extras = [
         Dictation("text"),
         Dictation("mim"),
-        IntegerRefST("function_key", 1, 13),
-        IntegerRefST("n", 1, 50),
-        IntegerRefST("nnavi500", 1, 500),
+        ShortIntegerRef("function_key", 1, 13),
+        ShortIntegerRef("n", 1, 50),
+        ShortIntegerRef("nnavi500", 1, 500),
         Choice("time_in_seconds", {
             "super slow": 5,
             "slow": 2,

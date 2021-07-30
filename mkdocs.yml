@@ -23,13 +23,15 @@ nav:
         - "Getting Started Overview": readthedocs/Getting_Started/Getting_Started_Overview.md
         - "Choose a Speech Recognition Engine": readthedocs/Getting_Started/Choose_Recognition_Engine.md
     - Installation: 
-        - 'Dragon NaturallySpeaking': readthedocs/Installation/Dragon_NaturallySpeaking.md
-        - 'Kaldi': readthedocs/Installation/Kaldi.md
-        - 'Windows Speech Recognition': readthedocs/Installation/Windows_Speech_Recognition.md
+        - Windows:
+            - 'Dragon NaturallySpeaking': readthedocs/Installation/Windows/Dragon_NaturallySpeaking.md
+            - 'Windows Speech Recognition': readthedocs/Installation/Windows/Windows_Speech_Recognition.md
+            - 'Kaldi': readthedocs/Installation/Windows/Kaldi_Windows.md
         - 'Troubleshooting Install': readthedocs/Installation/Troubleshooting_Install.md
     - Caster Commands: 
         - 'Using Voice Commands': readthedocs/Caster_Commands/Using_Voice_Commands.md
         - 'Caster Core Reference': readthedocs/Caster_Commands/CasterQuickReference.md
+        - 'Caster Keyboard Replacement': readthedocs/Caster_Commands/Keyboard.md
         - 'Application Commands Reference': readthedocs/Caster_Commands/Application_Commands_Quick_Reference.md
         - 'Languages Reference': readthedocs/Caster_Commands/CCR_languages_Quick_Reference.md
         - 'Text Manipulation and Navigation': readthedocs/Caster_Commands/Text_Manipulation.md
@@ -45,15 +47,18 @@ nav:
     - Rule Construction:
         - 'Intro into Rules and Grammars': readthedocs/Rule_Construction/Intro_Into_Rules_and_Grammars.md
         - 'Taxonomy of a Rule': readthedocs/Rule_Construction/Taxonomy_of_a_Rule.md
-        - 'Loading Rules': readthedocs/Rule_Construction/Rule_Construction.md
-        - Dragonfly Rules:
-            - 'Dragonfly Rules': readthedocs/Rule_Construction/Dragonfly_Rules/Dragonfly_Rules.md
-            - 'Sample File': readthedocs/Rule_Construction/Dragonfly_Rules/Sample_File.md 
-        - Caster Rules:  
-            - 'Caster Rules': readthedocs/Rule_Construction/Caster_Rules/Caster_Rules.md
-            - 'CCR': readthedocs/Rule_Construction/Caster_Rules/CCR.md
-            - 'Context Stack': readthedocs/Rule_Construction/Caster_Rules/ContextStack.md
-            - 'Node Rule': readthedocs/Rule_Construction/Caster_Rules/NodeRule.md
+        - Basic Caster Rules:
+            - 'Your First Rule': readthedocs/Rule_Construction/Basic_Caster_Rules/Your_First_Rule.md
+            - 'Basic Rules': readthedocs/Rule_Construction/Basic_Caster_Rules/Basic_Rules.md
+        - Advanced Caster Rules:  
+            - 'Advanced Rules': readthedocs/Rule_Construction/Advanced_Caster_Rules/Advanced_Rules.md
+            - 'CCR': readthedocs/Rule_Construction/Advanced_Caster_Rules/CCR.md
+            - 'Context Stack': readthedocs/Rule_Construction/Advanced_Caster_Rules/ContextStack.md
+            - 'Node Rule': readthedocs/Rule_Construction/Advanced_Caster_Rules/NodeRule.md
+        - Loading Rules: 
+            - readthedocs/Rule_Construction/Loading_Rules.md
+        - Migrating From Dragonfly or Previous Caster Versions:
+            - readthedocs/Rule_Construction/Migrating_From_Dragonfly-Caster.md
     - Customize Caster:
         - 'Editing Starter Rules': "readthedocs/Customize_Caster/Customizing_Starter_Rules.md"
         - 'Creating Hooks and Events': "readthedocs/Customize_Caster/Creating_Hooks_and_Events.md"
@@ -72,6 +77,9 @@ nav:
     - Meta: 
         - 'Undocumented Features': readthedocs/meta/Undocumented_Features.md
         - 'Grammar Documentation Template': readthedocs/meta/GRAMMAR_DOCUMENTATION_TEMPLATE.md
+        - Dragonfly Rules:
+            - 'Dragonfly Rules': readthedocs/meta/Dragonfly_Rules/Dragonfly_Rules.md
+            - 'Sample File': readthedocs/meta/Dragonfly_Rules/Sample_File.md
         - Archive: 
             - readthedocs/meta/Archive/RuleFilters.md 
             - readthedocs/meta/Archive/Windows_Speech_Recognition.md

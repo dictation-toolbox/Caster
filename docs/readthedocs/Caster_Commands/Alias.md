@@ -16,7 +16,7 @@ For both types of alias commands, if you don't spec, a GUI box will pop up and a
 
 ## Deleting Them
 
-You can delete alias commands either by editing your `sm_aliases.toml` or `sm_chain_aliases.toml `file manually in caster [data user directory](https://caster-lexiconcode.readthedocs.io/en/documentation/readthedocs/User_Dir/Caster_User_Dir/) or by simply saying `delete aliases`. Doing the latter will wipe out both alias and chain aliases.
+You can delete alias commands either by editing your `sm_aliases.toml` or `sm_chain_aliases.toml` file manually in caster [data user directory](https://caster.readthedocs.io/en/latest/readthedocs/User_Dir/Caster_User_Dir/) or by simply saying `delete aliases`. Doing the latter will wipe out both alias and chain aliases.
 
 ## Enabling Them
 

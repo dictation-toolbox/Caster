@@ -1,6 +1,6 @@
+from dragonfly import ShortIntegerRef 
 from castervoice.lib.actions import Key, Text, Mouse
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 from dragonfly import (AppContext, Choice, Dictation, Function, MappingRule,
                        Repeat)
@@ -108,7 +108,7 @@ class MSTeamsRule(MappingRule):
    }
     exported = True
     extras = [
-        IntegerRefST("nnavi10", 1, 11)
+        ShortIntegerRef("nnavi10", 1, 11)
     ]
     defaults = {
         "nnavi10": 1

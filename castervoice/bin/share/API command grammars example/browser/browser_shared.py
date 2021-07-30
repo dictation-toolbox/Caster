@@ -2,10 +2,9 @@
 #
 # __author__ = "lexxish"
 #
-from dragonfly import Choice
+from dragonfly import Choice, ShortIntegerRef
 
 from castervoice.rules.apps.shared.directions import FORWARD, RIGHT, BACK, LEFT
-from castervoice.lib.merge.additions import IntegerRefST
 
 OPEN_NEW_WINDOW = "(new window|win new)"
 OPEN_NEW_INCOGNITO_WINDOW = "(new incognito window | incognito)"
@@ -70,6 +69,6 @@ def get_extras():
             "seventh": "7",
             "eighth": "8",
         }),
-        IntegerRefST("n", 1, 100),
-        IntegerRefST("m", 1, 10)
+        ShortIntegerRef("n", 1, 100),
+        ShortIntegerRef("m", 1, 10)
     ]

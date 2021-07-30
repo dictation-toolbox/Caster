@@ -1,25 +1,17 @@
 # Caster Rules
 
-Dragonfly is a powerful framework for mapping voice commands to actions. Caster gives the user:
-
-- The ability to dynamically combine CCR rules.
-- A pre-made set of rules called `starter rules`.
-- Tools with which to modify starter rules.
-  - Override built-in starter rules with a modified copy of your own.
-  - Simplify transformers to modify all rules on start with your own specs.
-- Grammars are reloadable on save.
-- The Context Stack, a way of tracking state between commands.
+Up until this point most of the grammars have been based on Dragonfly MappingRules and loaded through Caster's `get_rule`  function. Caster provides is a powerful framework to merge multiple rules together. This allows you to say multiple commands in a single utterance that are defined in different grammars. This is substantially different with MappingRules which requires a pause between each command.
 
 ## MergeRules VS MappingRules
 
-A Caster MergeRule is very similar to a Dragonfly MappingRule, but it has a few extra properties and can do things that MappingRules can't easily do. The following is an examples containing two complete MergeRules _and_ a MappingRule.
+A Caster MergeRule is very similar to a MappingRule, but it has a few extra properties and can do things that MappingRules can't easily do. The following is an examples containing two complete MergeRules _and_ a MappingRule.
 
-```Python
+```python
 from dragonfly import MappingRule, Key
 
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 
-class MyMappingRule(MappingRule):
+class MyRule(MappingRule):
   mapping = {
     "some command":         Key("a"),
     "some other command":   Key("b"),
@@ -37,8 +29,8 @@ from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.const import CCRType
 
-class MyMergeRule(MergeRule):
-    pronunciation = "key rule"
+class MyRule(MergeRule):
+    pronunciation = "my rule"
 
     mapping = {
         "press keys <key_one> [<key_two>]": Key("%(key_one)s, %(key_two)s"),
@@ -51,15 +43,13 @@ class MyMergeRule(MergeRule):
 
 def get_rule():
     details = RuleDetails(ccrtype=CCRType.GLOBAL)
-    return MyMergeRule, details
+    return MyRule, details
 ```
-
-
 
 Differences you should notice here:
 
 - The `pronunciation` property: this is what you say in order to enable or disable the rule. If it is not specified, the pronunciation will be the name of the class. So, to enable the first MergeRule, you'd say, "enable key rule". To disable it, you'd say, "disable key rule".
-
+  
   - MappingRule Use `name="Rule Name"`  for enable/disable instead of `pronunciation` 
 
 - The `non` property: this is a reference to a MappingRule. This MappingRule will be activated alongside the MergeRule when it is activated through companion rules. MergeRules will be added to the CCR pool, whereas MappingRules are not. All of its commands will remain as singular, uncombinable. This is often desirable because either (1) certain specs don't blend well, or (2) certain commands are not usually combined with others and so keeping them out of the CCR pool reduces combinatorial complexity and improves performance.
@@ -74,7 +64,7 @@ In addition to new types of rules, Caster provides new types of actions.
 
 The simplest is `RegisteredAction`. (Type aliased to `R` for short.) `R` can wrap any Dragonfly action(s) and adds additional functionality to said wrapped action(s). Let's look at a simple example.
 
-```Python
+```python
 from dragonfly import Text
 
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
@@ -83,8 +73,9 @@ from castervoice.lib.const import CCRType
 
 from castervoice.lib.merge.state.short import R
 
-class Birds(MergeRule):
-        mapping = {
+class MyRule(MergeRule):
+     pronunciation = "my rule"
+     mapping = {
         "favorite bird": R(Text("parakeet"), rdescript="Print my favorite bird"),
     }
 
@@ -101,7 +92,7 @@ Two things of note here.
 
 `R` can also be used to mark a command as a part of another command. This is one significant difference between Caster and Dragonfly. Dragonfly commands are once-and-done. Caster commands can interact with other commands which have been spoken in the past or will be spoken in the future. In order to use this functionality, we set the `rspec` property of the `R` action. Like so:
 
-```Python
+```python
 from dragonfly import Text
 
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
@@ -110,14 +101,15 @@ from castervoice.lib.const import CCRType
 
 from castervoice.lib.merge.state.short import R
 
-class Birds(MergeRule):
-  mapping = {
-    "favorite bird":   R(Text("parakeet"), rdescript="Print my favorite bird", rspec="favorite_bird"),
+class MyRule(MergeRule):
+    pronunciation = "my rule"
+	mapping = {
+	"favorite bird":   R(Text("parakeet"), rdescript="Print my favorite bird", rspec="favorite_bird"),
   }
 
 def get_rule():
     details = RuleDetails(ccrtype=CCRType.GLOBAL)
-    return Birds, details
+    return MyRule, details
 ```
 
 ### ContextSeeker
@@ -126,7 +118,7 @@ def get_rule():
 
 In order to do this, the ContextSeeker constructor takes one or both of two arrays of command-searching objects, the "backward" array and the "forward" array. Let's look at a simple example first, a ContextSeeker that looks backward one command for the "favorite bird" command and then prints the rest of the sentence if and only if it finds it.
 
-```Python
+```python
 from dragonfly import Text, Key
 
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
@@ -137,11 +129,12 @@ from castervoice.lib.merge.state.actions import ContextSeeker
 from castervoice.lib.merge.state.actions2 import NullAction
 from castervoice.lib.merge.state.short import R, L, S
 
-class Birds(MergeRule):
-  mapping = {
-    "press key arch": R(Key("a"), rdescript="Press the A key"),
-    "favorite bird":  R(Text("parakeet"), rdescript="Print my favorite bird", rspec="favorite_bird"),
-    "sentence":       ContextSeeker(back=[
+class MyRule(MergeRule):
+    pronunciation = "my rule"
+    mapping = {
+        "press key arch": R(Key("a"), rdescript="Press the A key"),
+        "favorite bird":  R(Text("parakeet"), rdescript="Print my favorite bird", rspec="favorite_bird"),
+        "sentence":       ContextSeeker(back=[
                                           L(
                                             S(["!!!"], NullAction()),
                                             S(["parakeet"], Text(" is my favorite bird"))
@@ -152,7 +145,7 @@ class Birds(MergeRule):
 
 def get_rule():
     details = RuleDetails(ccrtype=CCRType.GLOBAL)
-    return Birds, details
+    return MyRule, details
 ```
 
 _Whoa there!_ you're thinking. _That's a lot of parentheses and square brackets._ It is. Let's go through what's happening here.
@@ -166,7 +159,7 @@ ContextSeekers can look backwards multiple commands, executing conditional logic
 
 ContextSeekers can also look forward. Let's look at an example of a forward-looking command.
 
-```Python
+```python
 from dragonfly import Text
 
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
@@ -177,8 +170,9 @@ from castervoice.lib.merge.state.actions import ContextSeeker
 from castervoice.lib.merge.state.actions2 import NullAction
 from castervoice.lib.merge.state.short import R, L, S
 
-class Times(MergeRule):
-  mapping = {
+class MyRule(MergeRule):
+  pronunciation = "my rule"
+     mapping = {
     "noon time":      R(Text("noon"), rspec="noon"),
     "afternoon":      R(Text("2 PM"), rspec="afternoon"),
     "midnight":       R(Text("midnight"), rspec="midnight"),
@@ -194,7 +188,7 @@ class Times(MergeRule):
   }
 def get_rule():
     details =  RuleDetails(ccrtype=CCRType.GLOBAL)
-    return Times, details
+    return MyRule, details
 ```
 
 In this example, you can first say "noon time", "afternoon", or "midnight" to print "noon", "2 PM", or "midnight" respectively. But if you say "wait for" first, a forward-looking ContextSeeker will be added to the Context Stack. Nothing will happen immediately. If you then follow up by saying "afternoon", the second `S` will be selected, and "day time" will print. The trigger command, "afternoon" will not execute. It has been _consumed_ by the ContextSeeker. Consumption can be disabled -- see the "ContextSet Parameters" section.
@@ -212,7 +206,7 @@ The `S` object has a lot of options to specify different kinds of behavior. They
 
 That's a lot, so let's see it in action.
 
-```Python
+```python
 from dragonfly import Text
 
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
@@ -226,7 +220,7 @@ from castervoice.lib.merge.state.short import R, L, S
 def print_params_to_console(params):
   print(params)
 
-class Times(MergeRule):
+class MyRule(MergeRule):
   mapping = {
     "noon time":      R(Text("noon"), rspec="noon"),
     "evening":        R(Text("5 PM"), rspec="evening"),
@@ -242,10 +236,10 @@ class Times(MergeRule):
                                          ]
                                     )
   }
-  
+
 def get_rule():
     details = RuleDetails(ccrtype=CCRType.GLOBAL)
-    return Times, details
+    return MyRule, details
 ```
 
 In this example, each of the `S` objects (except the first) delivers parameters to the print_params_to_console function differently. If you say "wait for noon time", an array of strings (specifically, ["some", "parameters"]) will be printed to the console. If you say "wait for midnight", the triggering rspec will be printed ("midnight"). The "evening" option is the most interesting though. If you say "wait for evening", an array containing "wait", "for", and "evening" will be printed. However, if you say, "wait for", and then separately say "evening", an array containing only "evening" will be printed.
@@ -260,7 +254,7 @@ In this example, each of the `S` objects (except the first) delivers parameters 
 
 Let's look at a few basic AsynchronousActions:
 
-```Python
+```python
 from dragonfly import Key
 
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
@@ -284,7 +278,7 @@ def repeat_me():
     return False
 
 
-class Actions(MergeRule):
+class MyRule(MergeRule):
     mapping = {
         "term": R(NullAction(), rspec="term_"),
         "key left": AsynchronousAction([L(S(["term_"], Key("left")))]),
@@ -296,7 +290,7 @@ class Actions(MergeRule):
 
 def get_rule():
     details = RuleDetails(ccrtype=CCRType.GLOBAL)
-    return Actions, details
+    return MyRule, details
 ```
 
 Here we have one `R` and three AsynchronousActions. The first AsynchronousAction will run indefinitely, pressing the left key at one-second intervals (the default for `time_in_seconds`) until the "term" command is spoken. The second AsynchronousAction will run for 10 seconds, pressing the right key at two-second intervals. The third will run the "repeat_me" function twice and then terminate because "repeat_me" returned True.

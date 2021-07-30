@@ -4,12 +4,14 @@ main Caster module
 Created on Jun 29, 2014
 '''
 import imp
+import importlib
 import logging
 import six
 from dragonfly import get_engine
 from dragonfly import RecognitionObserver
 from castervoice.lib import control
 from castervoice.lib import settings
+from castervoice.lib import printer
 from castervoice.lib.ctrl.configure_engine import EngineConfigEarly, EngineConfigLate
 from castervoice.lib.ctrl.dependencies import DependencyMan
 from castervoice.lib.ctrl.updatecheck import UpdateChecker
@@ -64,16 +66,18 @@ if get_engine().name in ["sapi5shared", "sapi5", "sapi5inproc"]:
 if control.nexus() is None:
     from castervoice.lib.ctrl.mgr.loading.load.content_loader import ContentLoader
     from castervoice.lib.ctrl.mgr.loading.load.content_request_generator import ContentRequestGenerator
+    from castervoice.lib.ctrl.mgr.loading.load.reload_fn_provider import ReloadFunctionProvider
+    from castervoice.lib.ctrl.mgr.loading.load.modules_access import SysModulesAccessor
     _crg = ContentRequestGenerator()
-    _content_loader = ContentLoader(_crg)
+    _rp = ReloadFunctionProvider()
+    _sma = SysModulesAccessor()
+    _content_loader = ContentLoader(_crg, importlib.import_module, _rp.get_reload_fn(), _sma)
     control.init_nexus(_content_loader)
     EngineConfigLate() # Requires grammars to be loaded and nexus
 
 if settings.SETTINGS["sikuli"]["enabled"]:
     from castervoice.asynch.sikuli import sikuli_controller
     sikuli_controller.get_instance().bootstrap_start_server_proxy()
-
-print("\n*- Starting " + settings.SOFTWARE_NAME + " -*")
 
 try:
     imp.find_module('PySide2')
@@ -84,3 +88,8 @@ try:
     Observer().register()  # must be after HUD process has started
 except ImportError:
     pass  # HUD is not available
+
+printer.out("\n*- Starting " + settings.SOFTWARE_NAME + " -*")
+
+for message in settings.STARTUP_MESSAGES:
+    printer.out("\n" + message + "\n")

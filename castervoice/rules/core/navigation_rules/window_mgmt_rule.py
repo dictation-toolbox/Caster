@@ -1,8 +1,7 @@
-from dragonfly import MappingRule, Function, Repeat
+from dragonfly import MappingRule, Function, Repeat, ShortIntegerRef
 
 from castervoice.lib import utilities
 from castervoice.lib import virtual_desktops
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.actions import Key
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.short import R
@@ -38,7 +37,7 @@ class WindowManagementRule(MappingRule):
     }
 
     extras = [
-        IntegerRefST("n", 1, 20, default=1),
+        ShortIntegerRef("n", 1, 20, default=1),
     ]
 
 

@@ -41,11 +41,12 @@ class AppsModulesTestCase(ModulesTestCase):
         from castervoice.rules.apps.editor import sublime
         from castervoice.rules.apps.editor import emacs
         from castervoice.rules.apps.chat import gitter, MSTeamsRule, webexteams
+        from castervoice.rules.apps.atlassian import jira
         return [chrome, firefox, jetbrains, adobe_acrobat, atom,
                 dragon, dragon2, eclipse, eclipse2, emacs, excel,
                 explorer, file_dialogue, flashdevelop, fman,
                 foxitreader, gitbash, githubdesktop, gitter,
-                griddouglas, gridlegion, gridrainbow, kdiff3, lyx,
+                griddouglas, gridlegion, gridrainbow, jira, kdiff3, lyx,
                 msvc, MSTeamsRule, notepadplusplus, outlook, rstudio,
                 sqldeveloper, ssms, sublime, totalcmd, totalcmd2,
                 typora, visualstudio, vscode, vscode2, winword,
