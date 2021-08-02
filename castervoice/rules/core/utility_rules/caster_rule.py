@@ -5,10 +5,10 @@ from castervoice.lib.ctrl.dependencies import find_pip  # pylint: disable=no-nam
 from castervoice.lib.ctrl.updatecheck import update
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.short import R
-from castervoice.lib.utilities import show_hud
-from castervoice.lib.utilities import hide_hud
-from castervoice.lib.utilities import show_rules
-from castervoice.lib.utilities import hide_rules
+from castervoice.asynch.hud_support import show_hud
+from castervoice.asynch.hud_support import hide_hud
+from castervoice.asynch.hud_support import show_rules
+from castervoice.asynch.hud_support import hide_rules
 
 _PIP = find_pip()
 
