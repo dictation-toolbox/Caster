@@ -15,7 +15,7 @@ from castervoice.lib import printer
 from castervoice.lib.ctrl.configure_engine import EngineConfigEarly, EngineConfigLate
 from castervoice.lib.ctrl.dependencies import DependencyMan
 from castervoice.lib.ctrl.updatecheck import UpdateChecker
-from castervoice.lib.utilities import start_hud
+from castervoice.asynch.hud_support import start_hud
 
 
 class LoggingHandler(logging.Handler):
