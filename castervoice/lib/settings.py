@@ -325,7 +325,7 @@ def _get_defaults():
             "SUDOKU_PATH":
                 str(Path(_BASE_PATH).joinpath("asynch/mouse/grids.py")),
             "WSR_PATH":
-                str(Path(_BASE_PATH).joinpath("C:/Windows/Speech/Common/sapisvr.exe")),
+                str(Path("C:/Windows/Speech/Common/sapisvr.exe")),
             "TERMINAL_PATH":
                 str(Path(terminal_path_default)),
 
