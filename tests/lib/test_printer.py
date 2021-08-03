@@ -1,9 +1,8 @@
-from queue import Queue
 import time
 import unittest
 import dragonfly.engines
 from castervoice.lib import printer
-from castervoice.lib.printer import SimplePrintMessageHandler, BaseMessageHandler
+from castervoice.lib.printer import SimplePrintMessageHandler, BaseMessageHandler, _DelegatingPrinterMessageHandler
 
 
 class _PrinterArgsCapturer(object):
@@ -18,12 +17,8 @@ class _PrinterArgsCapturer(object):
 class TestPrinter(unittest.TestCase):
 
     def setUp(self):
-        dragonfly.engines.get_engine("text")
-        printer._QUEUE = Queue()
+        printer._DELEGATING_HANDLER = _DelegatingPrinterMessageHandler()
         self._delegating_handler = printer.get_delegating_handler()
-
-    def tearDown(self):
-        self._delegating_handler._timer.stop()
 
     def test_handle_input_before_register(self):
         """
@@ -37,16 +32,15 @@ class TestPrinter(unittest.TestCase):
 
         args_capturer = _PrinterArgsCapturer()
         handler._print = args_capturer._print
-        # handler._print = Mock()
 
         # register the handler
         self._delegating_handler.register_handler(handler)
-        self._delegating_handler.start()
 
-        # wait for the timer on the other thread
-        time.sleep(1.5)
+        # force first message
+        printer.out([])
 
         # assert that the handler handled the queued message
+        self.assertEqual(2, len(args_capturer.captured_args))
         self.assertEqual("some\ntext", args_capturer.captured_args[0])
 
     def test_multiple_handlers(self):
@@ -65,16 +59,13 @@ class TestPrinter(unittest.TestCase):
 
             handler._print = args_capturer._print
             self._delegating_handler.register_handler(handler)
-        self._delegating_handler.start()
 
         # queue up messages
         printer.out("some", 1)
 
-        # wait for the timer on the other thread
-        time.sleep(1.5)
-
         for i in range(0, 2):
             # assert that the handlers each handled the queued message
+            self.assertEqual(1, len(args_capturers[i].captured_args))
             self.assertEqual("some\n1", args_capturers[i].captured_args[0])
 
     def test_broken_handler(self):
@@ -94,7 +85,6 @@ class TestPrinter(unittest.TestCase):
                 raise Exception("something unexpected happened")
 
         self._delegating_handler.register_handler(BrokenHandler())
-        self._delegating_handler.start()
 
         # queue up messages
         printer.out("asdf")
