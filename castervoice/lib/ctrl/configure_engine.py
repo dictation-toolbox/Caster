@@ -8,7 +8,7 @@ class EngineConfigEarly:
     Grammars are not loaded
     """
     # get_engine used as a workaround for running Natlink inprocess
-    engine = get_current_engine().name
+    engine = get_engine().name
 
     def __init__(self):
         self._set_cancel_word()
