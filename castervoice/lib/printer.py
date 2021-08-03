@@ -28,8 +28,8 @@ class _DelegatingPrinterMessageHandler(object):
         self._handlers.append(handler)
 
     def start(self):
-        from dragonfly import get_current_engine
-        self._timer = get_current_engine() \
+        from dragonfly import get_engine
+        self._timer = get_engine() \
             .create_timer(lambda: self._consume_queue(), _DelegatingPrinterMessageHandler._ONE_SECOND)
 
     def _consume_queue(self):
