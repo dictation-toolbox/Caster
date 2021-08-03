@@ -1,4 +1,4 @@
-import Queue
+from queue import Queue
 import time
 import unittest
 import dragonfly.engines
@@ -19,7 +19,7 @@ class TestPrinter(unittest.TestCase):
 
     def setUp(self):
         dragonfly.engines.get_engine("text")
-        printer._QUEUE = Queue.Queue()
+        printer._QUEUE = Queue()
         self._delegating_handler = printer.get_delegating_handler()
 
     def tearDown(self):

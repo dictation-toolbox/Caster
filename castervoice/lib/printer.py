@@ -1,7 +1,7 @@
 from __future__ import print_function
-import Queue
+from queue import Queue
 
-_QUEUE = Queue.Queue()
+_QUEUE = Queue()
 
 
 def out(*args):
