@@ -5,8 +5,6 @@ from builtins import str
 
 import collections
 import io
-import os
-import sys
 import tomlkit
 from past.builtins import xrange
 
@@ -325,7 +323,7 @@ def _get_defaults():
             "SUDOKU_PATH":
                 str(Path(_BASE_PATH).joinpath("asynch/mouse/grids.py")),
             "WSR_PATH":
-                str(Path(_BASE_PATH).joinpath("C:/Windows/Speech/Common/sapisvr.exe")),
+                str(Path("C:/Windows/Speech/Common/sapisvr.exe")),
             "TERMINAL_PATH":
                 str(Path(terminal_path_default)),
 
@@ -506,4 +504,11 @@ def initialize():
     _debugger_path = SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"]  # pylint: disable=invalid-sequence-index
     if _debugger_path not in sys.path and os.path.isdir(_debugger_path):
         sys.path.append(_debugger_path)
+
+    # set up printer -- it doesn't matter where you do this; messages will start printing to the console after this
+    from castervoice.lib.printer import SimplePrintMessageHandler
+    dh = printer.get_delegating_handler()
+    dh.register_handler(SimplePrintMessageHandler())
+    dh.start()
+    # begin using printer
     printer.out("Caster User Directory: {}".format(_USER_DIR))
