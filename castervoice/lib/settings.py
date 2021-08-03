@@ -506,9 +506,7 @@ def initialize():
         sys.path.append(_debugger_path)
 
     # set up printer -- it doesn't matter where you do this; messages will start printing to the console after this
-    from castervoice.lib.printer import SimplePrintMessageHandler
     dh = printer.get_delegating_handler()
-    dh.register_handler(SimplePrintMessageHandler())
-    dh.start()
+    dh.register_handler(printer.SimplePrintMessageHandler())
     # begin using printer
     printer.out("Caster User Directory: {}".format(_USER_DIR))
