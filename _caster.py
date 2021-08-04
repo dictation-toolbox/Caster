@@ -90,6 +90,3 @@ except ImportError:
     pass  # HUD is not available
 
 printer.out("\n*- Starting " + settings.SOFTWARE_NAME + " -*")
-
-for message in settings.STARTUP_MESSAGES:
-    printer.out("\n" + message + "\n")

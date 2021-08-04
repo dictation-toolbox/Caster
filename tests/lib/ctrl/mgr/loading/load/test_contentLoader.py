@@ -73,6 +73,8 @@ class TestContentLoader(SettingsEnabledTestCase):
         self.rc_mock._config[RulesConfig._WHITELISTED]["MockRuleTwo"] = False
         self.fake_modules_accessor = _FakeModulesAccessor()
         self.cl = content_loader.ContentLoader(self.crg_mock, Mock(), Mock(), self.fake_modules_accessor)
+        self.spy, cleanup = printer_mocking.printer_spy()
+        self.addCleanup(cleanup)
 
     def tearDown(self):
         utilities_mocking.disable_mock_toml_files()
@@ -117,8 +119,7 @@ class TestContentLoader(SettingsEnabledTestCase):
 
     def test_idem_import_module_import_failure(self):
         """import"""
-        # setup error message capture
-        spy = printer_mocking.printer_spy()
+        # simulate load error
         self.cl._module_load_fn = _raise
 
         # setup request
@@ -130,15 +131,12 @@ class TestContentLoader(SettingsEnabledTestCase):
         # assertions
         self.assertIsNone(result)
         expected_error = "Could not import '{}'. Module has errors:".format(TestContentLoader._QUALIFIED_MODULE_NAME)
-        self.assertTrue(expected_error in spy.get_first())
+        self.assertTrue(expected_error in self.spy.get_first())
 
     def test_idem_import_module_attribute_error(self):
         """import"""
         # setup mock import
         self.cl._module_load_fn.side_effect = [_FakeImportedHookModule(_FakeContent)]
-
-        # setup error message capture
-        spy = printer_mocking.printer_spy()
 
         # setup request
         request = self._create_request(TestContentLoader._DEFAULT_MODULE_NAME, ContentType.GET_RULE)
@@ -150,7 +148,7 @@ class TestContentLoader(SettingsEnabledTestCase):
         self.assertIsNone(result)
         expected_error = "No method named 'get_rule' was found on '{}'. Did you forget to implement it?".format(
             TestContentLoader._DEFAULT_MODULE_NAME)
-        self.assertEqual(expected_error, spy.get_first())
+        self.assertEqual(expected_error, self.spy.get_first())
 
     def test_idem_import_module_reimport_success(self):
         """reimport"""
@@ -173,8 +171,7 @@ class TestContentLoader(SettingsEnabledTestCase):
         # setup fake sys.modules
         self.fake_modules_accessor.modules = \
             {TestContentLoader._QUALIFIED_MODULE_NAME: _FakeImportedRuleModule(_FakeContent)}
-        # setup error message capture
-        spy = printer_mocking.printer_spy()
+        # simulate reload error
         self.cl._module_reload_fn = _raise
         # setup request
         request = self._create_request(TestContentLoader._DEFAULT_MODULE_NAME, ContentType.GET_RULE)
@@ -184,11 +181,9 @@ class TestContentLoader(SettingsEnabledTestCase):
 
         # assertions
         self.assertIsNone(result)
-        self.assertTrue("An error occurred while importing '" in spy.get_first())
+        self.assertTrue("An error occurred while importing '" in self.spy.get_first())
 
     def test_idem_import_module_qualification_failure(self):
-        # setup error message capture
-        spy = printer_mocking.printer_spy()
         # setup invalid request
         request = ContentRequest(ContentType.GET_RULE, "adsf", TestContentLoader._DEFAULT_MODULE_NAME, None)
 
@@ -200,4 +195,4 @@ class TestContentLoader(SettingsEnabledTestCase):
 
         # assertions
         self.assertIsNone(result)
-        self.assertTrue("Invalid user content request path" in spy.get_first())
+        self.assertTrue("Invalid user content request path" in self.spy.get_first())

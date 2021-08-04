@@ -1,6 +1,6 @@
 from dragonfly import ShortIntegerRef
 from dragonfly.grammar.elements import Choice
-from castervoice.lib import settings 
+from castervoice.lib import printer
 
 
 class IntegerRefST(ShortIntegerRef):
@@ -10,8 +10,7 @@ class IntegerRefST(ShortIntegerRef):
     """
 
     def __init__(self, name, min, max, default=None):
-        message = "Detected 'IntegerRefST' import in rules/grammars.\nIntegerRefST and Integer Remap has been removed. \nUpdate your rules to `from dragonfly import ShortIntegerRef` in instead of IntegerRefST" 
-        settings.add_message(message)
+        printer.out("\nDetected 'IntegerRefST' import in rules/grammars.\nIntegerRefST and Integer Remap has been removed. \nUpdate your rules to `from dragonfly import ShortIntegerRef` in instead of IntegerRefST\n")
         super(IntegerRefST, self).__init__(name, min, max, default)
 
 
