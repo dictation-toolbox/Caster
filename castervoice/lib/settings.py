@@ -45,7 +45,6 @@ QTYPE_DIRECTORY = "5"
 QTYPE_CONFIRM = "6"
 WXTYPE_SETTINGS = "7"
 HMC_SEPARATOR = "[hmc]"
-STARTUP_MESSAGES = []
 
 # calculated fields
 SETTINGS = None
@@ -55,16 +54,6 @@ _BASE_PATH = None
 _USER_DIR = None
 _SETTINGS_PATH = None
 
-def add_message(message):
-    """
-    Add string message to be printed when Caster initializes
-    message: str
-    """
-    try:
-        if message not in STARTUP_MESSAGES:
-            STARTUP_MESSAGES.append(str(message))
-    except Exception as e:
-        print(e)
 
 def _get_platform_information():
     """Return a dictionary containing platform-specific information."""
