@@ -74,7 +74,7 @@ class TestPrinter(unittest.TestCase):
         """
         # set up arg capture on default handler
         args_capturer = _PrinterArgsCapturer()
-        self._delegating_handler._default_handler._print = args_capturer._print
+        self._delegating_handler._error_handler._print = args_capturer._print
 
         # create and register a broken handler
         class BrokenHandler(BaseMessageHandler):

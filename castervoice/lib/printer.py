@@ -6,7 +6,7 @@ class _DelegatingPrinterMessageHandler(object):
     def __init__(self):
         self._queued_messages = []
         self._handlers = []
-        self._default_handler = SimplePrintMessageHandler()
+        self._error_handler = SimplePrintMessageHandler()
 
     def register_handler(self, handler):
         self._handlers.append(handler)
@@ -24,7 +24,7 @@ class _DelegatingPrinterMessageHandler(object):
                     try:
                         handler.handle_message(message)
                     except:
-                        self._default_handler.handle_message(message)
+                        self._error_handler.handle_message(message)
 
 
 class BaseMessageHandler(object):
