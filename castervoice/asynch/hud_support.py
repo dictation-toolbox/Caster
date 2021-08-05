@@ -42,6 +42,10 @@ def hide_hud():
     hud = control.nexus().comm.get_com("hud")
     hud.hide_hud()
 
+def clear_hud():
+    hud = control.nexus().comm.get_com("hud")
+    hud.clear_hud()
+
 
 def show_rules():
     """

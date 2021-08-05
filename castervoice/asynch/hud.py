@@ -26,6 +26,7 @@ try:  # Style C -- may be imported into Caster, or externally
 finally:
     from castervoice.lib.merge.communication import Communicator
 
+CLEAR_HUD_EVENT = PySide2.QtCore.QEvent.Type(PySide2.QtCore.QEvent.registerEventType(-1))
 HIDE_HUD_EVENT = PySide2.QtCore.QEvent.Type(PySide2.QtCore.QEvent.registerEventType(-1))
 SHOW_HUD_EVENT = PySide2.QtCore.QEvent.Type(PySide2.QtCore.QEvent.registerEventType(-1))
 HIDE_RULES_EVENT = PySide2.QtCore.QEvent.Type(PySide2.QtCore.QEvent.registerEventType(-1))
@@ -139,7 +140,7 @@ class HUDWindow(QMainWindow):
                 self.output.setTextCursor(cursor)
                 self.output.ensureCursorVisible()
                 self.commands_count += 1
-                if self.commands_count == 20:
+                if self.commands_count == 50:
                     self.commands_count = 0
                 return True
             elif escaped_text.startswith('#'):
@@ -149,12 +150,16 @@ class HUDWindow(QMainWindow):
             self.output.append(formatted_text)
             self.output.ensureCursorVisible()
             return True
+        if event.type() == CLEAR_HUD_EVENT:
+            self.commands_count = 0
+            return True
         return QMainWindow.event(self, event)
 
     def closeEvent(self, event):
         event.accept()
 
     def setup_xmlrpc_server(self):
+        self.server.register_function(self.xmlrpc_clear, "clear_hud")
         self.server.register_function(self.xmlrpc_ping, "ping")
         self.server.register_function(self.xmlrpc_hide_hud, "hide_hud")
         self.server.register_function(self.xmlrpc_hide_rules, "hide_rules")
@@ -165,6 +170,11 @@ class HUDWindow(QMainWindow):
         server_thread = threading.Thread(target=self.server.serve_forever)
         server_thread.daemon = True
         server_thread.start()
+
+
+    def xmlrpc_clear(self):
+        PySide2.QtCore.QCoreApplication.postEvent(self, PySide2.QtCore.QEvent(CLEAR_HUD_EVENT))
+        return 0
 
     def xmlrpc_ping(self):
         return 0

@@ -9,6 +9,7 @@ from castervoice.asynch.hud_support import show_hud
 from castervoice.asynch.hud_support import hide_hud
 from castervoice.asynch.hud_support import show_rules
 from castervoice.asynch.hud_support import hide_rules
+from castervoice.asynch.hud_support import clear_hud
 
 _PIP = find_pip()
 
@@ -50,7 +51,9 @@ class CasterRule(MappingRule):
         "show rules":
             R(Function(show_rules), rdescript="Open HUD frame with the list of active rules"),
         "hide rules":
-            R(Function(hide_rules), rdescript="Hide the list of active rules")
+            R(Function(hide_rules), rdescript="Hide the list of active rules"),
+        "clear hud":
+            R(Function(clear_hud), rdescript="Clear output the HUD window"),
     }
 
 
