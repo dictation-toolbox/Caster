@@ -18,9 +18,10 @@ finally:
     from castervoice.lib import settings
     
 from castervoice.lib import printer
+from castervoice.lib.printer import BaseMessageHandler
 from castervoice.lib import control
 from castervoice.lib.rules_collection import get_instance
-from castervoice.lib.printer import BaseMessageHandler
+from castervoice.lib.ctrl.mgr.engine_manager import EngineModesManager
 
 _log = logging.getLogger("caster")
 
@@ -96,14 +97,19 @@ class LoggingHandler(logging.Handler):
 
 
 class Observer(RecognitionObserver):
+    def __init__(self):
+        self.mic_mode = None
+
     def on_begin(self):
-        pass
+        self.mic_mode = EngineModesManager.get_mic_mode()
 
     def on_recognition(self, words):
-        printer.out("$ {}".format(" ".join(words)))
+        if not self.mic_mode == "sleeping":
+            printer.out("$ {}".format(" ".join(words)))
 
     def on_failure(self):
-        printer.out("?!")
+        if not self.mic_mode == "sleeping":
+            printer.out("?!")
 
 
 class HudPrintMessageHandler(BaseMessageHandler):
