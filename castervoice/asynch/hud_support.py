@@ -24,6 +24,7 @@ from castervoice.lib.printer import BaseMessageHandler
 
 _log = logging.getLogger("caster")
 
+
 def start_hud():
     hud = control.nexus().comm.get_com("hud")
     try:
@@ -41,6 +42,7 @@ def show_hud():
 def hide_hud():
     hud = control.nexus().comm.get_com("hud")
     hud.hide_hud()
+
 
 def clear_hud():
     hud = control.nexus().comm.get_com("hud")
@@ -88,33 +90,20 @@ def hide_rules():
 class LoggingHandler(logging.Handler):
     def __init__(self):
         logging.Handler.__init__(self)
-        self.hud = control.nexus().comm.get_com("hud")
 
     def emit(self, record):
-        try:
-            self.hud.send("# {}".format(record.msg))
-        except ConnectionRefusedError:  # pylint: disable=undefined-variable
-            print("# {}".format(record.msg))
+        printer.out(_log.debug("# {}".format(record.msg))) 
 
 
 class Observer(RecognitionObserver):
-    def __init__(self):
-        self.hud = control.nexus().comm.get_com("hud")
-
     def on_begin(self):
         pass
 
     def on_recognition(self, words):
-        try:
-            self.hud.send("$ {}".format(" ".join(words)))
-        except ConnectionRefusedError:  # pylint: disable=undefined-variable
-            print("$ {}".format(" ".join(words)))
+        printer.out("$ {}".format(" ".join(words)))
 
     def on_failure(self):
-        try:
-            self.hud.send("?!")
-        except ConnectionRefusedError:  # pylint: disable=undefined-variable
-            print("?!")
+        printer.out("?!")
 
 
 class HudPrintMessageHandler(BaseMessageHandler):
@@ -124,28 +113,32 @@ class HudPrintMessageHandler(BaseMessageHandler):
 
     def __init__(self):
         super(HudPrintMessageHandler, self).__init__()
-        self._print = _log.debug
+        self.hud = control.nexus().comm.get_com("hud")
         self.exception = False
         try:
-            # If an exception print is managed by SimplePrintMessageHandler
-            # Most likely ConnectionRefusedError from trying to ping hud via RPC
             imp.find_module('PySide2') # remove imp dropping python 2
             if get_current_engine().name != "text":
-                control.nexus().comm.get_com("hud").ping() # HUD running?
+                self.hud.ping() # HUD running?
                 Observer().register()
                 _logger = logging.getLogger('caster')
                 _logger.addHandler(LoggingHandler())  # must be after nexus initialization
                 _logger.setLevel(logging.DEBUG)
-            else:
-                self.exception = True
         except Exception as e:
             self.exception = True
             printer.out("Hud not available. \n{}".format(e))
 
     def handle_message(self, items):
-        if not self.exception:
-            self._print("\n".join([str(m) for m in items]))
-        else:
+        if self.exception is False:
+            # The timeout with the hud can interfere with the dragonfly speech recognition loop.
+            # This appears as a stutter recognition latency.
+            # Exceptions are tracked so this stutter only happens to end user once.
             # Make exception if the hud is not available/python 2/text engine
-            # If an exception, print is managed by SimplePrintMessageHandler
-            raise("") 
+            try:
+                self.hud.send("\n".join([str(m) for m in items]))
+            except Exception as e:
+                # If an exception, print is managed by SimplePrintMessageHandler
+                self.exception = True
+                printer.out("Hud not available. \n{}".format(e))
+                raise("")
+        else:
+            raise("")
