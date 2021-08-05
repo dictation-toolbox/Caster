@@ -4,64 +4,28 @@ main Caster module
 Created on Jun 29, 2014
 '''
 import imp
-import importlib
 import logging
 import six
-from dragonfly import get_engine
-from dragonfly import RecognitionObserver
+import importlib
+from dragonfly import get_engine, get_current_engine
 from castervoice.lib import control
 from castervoice.lib import settings
 from castervoice.lib import printer
 from castervoice.lib.ctrl.configure_engine import EngineConfigEarly, EngineConfigLate
 from castervoice.lib.ctrl.dependencies import DependencyMan
 from castervoice.lib.ctrl.updatecheck import UpdateChecker
-from castervoice.asynch.hud_support import start_hud
-
-
-class LoggingHandler(logging.Handler):
-    def __init__(self):
-        logging.Handler.__init__(self)
-        self.hud = control.nexus().comm.get_com("hud")
-
-    def emit(self, record):
-        try:
-            self.hud.send("# {}".format(record.msg))
-        except ConnectionRefusedError:  # pylint: disable=undefined-variable
-            print("# {}".format(record.msg))
-
-
-class Observer(RecognitionObserver):
-    def __init__(self):
-        self.hud = control.nexus().comm.get_com("hud")
-
-    def on_begin(self):
-        pass
-
-    def on_recognition(self, words):
-        try:
-            self.hud.send("$ {}".format(" ".join(words)))
-        except ConnectionRefusedError:  # pylint: disable=undefined-variable
-            print("$ {}".format(" ".join(words)))
-
-    def on_failure(self):
-        try:
-            self.hud.send("?!")
-        except ConnectionRefusedError:  # pylint: disable=undefined-variable
-            print("?!")
-
+from castervoice.asynch import hud_support
 
 if six.PY2:
     logging.basicConfig()
+
+printer.out("\n*- Starting {} with `{}` Engine -*\n".format(settings.SOFTWARE_NAME, get_engine().name))
+
 DependencyMan().initialize()  # requires nothing
 settings.initialize()
 UpdateChecker().initialize()  # requires settings/dependencies
 EngineConfigEarly() # requires settings/dependencies
 
-# get_engine() is used here as a workaround for running Natlink inprocess
-if get_engine().name in ["sapi5shared", "sapi5", "sapi5inproc"]:
-    settings.WSR = True
-    from castervoice.rules.ccr.standard import SymbolSpecs
-    SymbolSpecs.set_cancel_word("escape")
 
 if control.nexus() is None:
     from castervoice.lib.ctrl.mgr.loading.load.content_loader import ContentLoader
@@ -80,13 +44,13 @@ if settings.SETTINGS["sikuli"]["enabled"]:
     sikuli_controller.get_instance().bootstrap_start_server_proxy()
 
 try:
-    imp.find_module('PySide2')
-    start_hud()
-    _logger = logging.getLogger('caster')
-    _logger.addHandler(LoggingHandler())  # must be after nexus initialization
-    _logger.setLevel(logging.DEBUG)
-    Observer().register()  # must be after HUD process has started
+    imp.find_module('PySide2') # remove imp dropping python 2
+    if get_current_engine().name != "text":
+        hud_support.start_hud()
 except ImportError:
     pass  # HUD is not available
 
-printer.out("\n*- Starting " + settings.SOFTWARE_NAME + " -*")
+# HudPrintMessageHandler printer.out to be print out normally as a fallback if Hud is unreachable.
+dh = printer.get_delegating_handler()
+dh.register_handler(hud_support.HudPrintMessageHandler()) # After hud starts
+printer.out("\n") # Force update to display text

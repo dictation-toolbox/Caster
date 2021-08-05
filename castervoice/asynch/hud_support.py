@@ -1,7 +1,14 @@
-
 import sys, subprocess, json
-from pathlib import Path
-from dragonfly import CompoundRule, MappingRule, get_current_engine
+import logging
+import imp
+
+from dragonfly import RecognitionObserver, CompoundRule, MappingRule, get_current_engine
+
+import six
+if six.PY2:
+    from castervoice.lib.util.pathlib import Path
+else:
+    from pathlib import Path  # pylint: disable=import-error
 
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = str(Path(__file__).resolve().parent.parent)
@@ -9,15 +16,19 @@ try:  # Style C -- may be imported into Caster, or externally
         sys.path.append(BASE_PATH)
 finally:
     from castervoice.lib import settings
-
+    
+from castervoice.lib import printer
 from castervoice.lib import control
 from castervoice.lib.rules_collection import get_instance
+from castervoice.lib.printer import BaseMessageHandler
+
+_log = logging.getLogger("caster")
 
 def start_hud():
     hud = control.nexus().comm.get_com("hud")
     try:
         hud.ping()
-    except ConnectionRefusedError:  # pylint: disable=undefined-variable
+    except Exception:
         subprocess.Popen([settings.SETTINGS["paths"]["PYTHONW"],
                           settings.SETTINGS["paths"]["HUD_PATH"]])
 
@@ -68,3 +79,69 @@ def hide_rules():
     """
     hud = control.nexus().comm.get_com("hud")
     hud.hide_rules()
+
+
+class LoggingHandler(logging.Handler):
+    def __init__(self):
+        logging.Handler.__init__(self)
+        self.hud = control.nexus().comm.get_com("hud")
+
+    def emit(self, record):
+        try:
+            self.hud.send("# {}".format(record.msg))
+        except ConnectionRefusedError:  # pylint: disable=undefined-variable
+            print("# {}".format(record.msg))
+
+
+class Observer(RecognitionObserver):
+    def __init__(self):
+        self.hud = control.nexus().comm.get_com("hud")
+
+    def on_begin(self):
+        pass
+
+    def on_recognition(self, words):
+        try:
+            self.hud.send("$ {}".format(" ".join(words)))
+        except ConnectionRefusedError:  # pylint: disable=undefined-variable
+            print("$ {}".format(" ".join(words)))
+
+    def on_failure(self):
+        try:
+            self.hud.send("?!")
+        except ConnectionRefusedError:  # pylint: disable=undefined-variable
+            print("?!")
+
+
+class HudPrintMessageHandler(BaseMessageHandler):
+    """
+    Hud message handler which only prints messages to the gui Hud. 
+    """
+
+    def __init__(self):
+        super(HudPrintMessageHandler, self).__init__()
+        self._print = _log.debug
+        self.exception = False
+        try:
+            # If an exception print is managed by SimplePrintMessageHandler
+            # Most likely ConnectionRefusedError from trying to ping hud via RPC
+            imp.find_module('PySide2') # remove imp dropping python 2
+            if get_current_engine().name != "text":
+                control.nexus().comm.get_com("hud").ping() # HUD running?
+                Observer().register()
+                _logger = logging.getLogger('caster')
+                _logger.addHandler(LoggingHandler())  # must be after nexus initialization
+                _logger.setLevel(logging.DEBUG)
+            else:
+                self.exception = True
+        except Exception as e:
+            self.exception = True
+            printer.out("Hud not available. \n{}".format(e))
+
+    def handle_message(self, items):
+        if not self.exception:
+            self._print("\n".join([str(m) for m in items]))
+        else:
+            # Make exception if the hud is not available/python 2/text engine
+            # If an exception, print is managed by SimplePrintMessageHandler
+            raise("") 

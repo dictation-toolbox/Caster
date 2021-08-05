@@ -497,8 +497,4 @@ def initialize():
     if _debugger_path not in sys.path and os.path.isdir(_debugger_path):
         sys.path.append(_debugger_path)
 
-    # set up printer -- it doesn't matter where you do this; messages will start printing to the console after this
-    dh = printer.get_delegating_handler()
-    dh.register_handler(printer.SimplePrintMessageHandler())
-    # begin using printer
     printer.out("Caster User Directory: {}".format(_USER_DIR))
