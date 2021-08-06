@@ -1,8 +1,7 @@
 import sys, subprocess, json
-import logging
 import imp
 
-from dragonfly import RecognitionObserver, CompoundRule, MappingRule, get_current_engine
+from dragonfly import CompoundRule, MappingRule, get_current_engine
 
 import six
 if six.PY2:
@@ -18,13 +17,8 @@ finally:
     from castervoice.lib import settings
     
 from castervoice.lib import printer
-from castervoice.lib.printer import BaseMessageHandler
 from castervoice.lib import control
 from castervoice.lib.rules_collection import get_instance
-from castervoice.lib.ctrl.mgr.engine_manager import EngineModesManager
-
-_log = logging.getLogger("caster")
-
 
 def start_hud():
     hud = control.nexus().comm.get_com("hud")
@@ -88,33 +82,14 @@ def hide_rules():
     hud.hide_rules()
 
 
-class LoggingHandler(logging.Handler):
-    def __init__(self):
-        logging.Handler.__init__(self)
-
-    def emit(self, record):
-        printer.out(_log.debug("# {}".format(record.msg))) 
-
-
-class Observer(RecognitionObserver):
-    def __init__(self):
-        self.mic_mode = None
-
-    def on_begin(self):
-        self.mic_mode = EngineModesManager.get_mic_mode()
-
-    def on_recognition(self, words):
-        if not self.mic_mode == "sleeping":
-            printer.out("$ {}".format(" ".join(words)))
-
-    def on_failure(self):
-        if not self.mic_mode == "sleeping":
-            printer.out("?!")
-
-
-class HudPrintMessageHandler(BaseMessageHandler):
+class HudPrintMessageHandler(printer.BaseMessageHandler):
     """
-    Hud message handler which only prints messages to the gui Hud. 
+    Hud message handler which prints formatted messages to the gui Hud. 
+    Add symbols as the 1st character in strings utilizing printer.out
+    
+    @ Purple arrow - Bold Text - Important Info
+    # Red arrow - Plain text - Caster Info
+    $ Blue arrow - Plain text - Commands/Dictation
     """
 
     def __init__(self):
@@ -125,10 +100,6 @@ class HudPrintMessageHandler(BaseMessageHandler):
             imp.find_module('PySide2') # remove imp dropping python 2
             if get_current_engine().name != "text":
                 self.hud.ping() # HUD running?
-                Observer().register()
-                _logger = logging.getLogger('caster')
-                _logger.addHandler(LoggingHandler())  # must be after nexus initialization
-                _logger.setLevel(logging.DEBUG)
         except Exception as e:
             self.exception = True
             printer.out("Hud not available. \n{}".format(e))
@@ -136,7 +107,7 @@ class HudPrintMessageHandler(BaseMessageHandler):
     def handle_message(self, items):
         if self.exception is False:
             # The timeout with the hud can interfere with the dragonfly speech recognition loop.
-            # This appears as a stutter recognition latency.
+            # This appears as a stutter in recognition.
             # Exceptions are tracked so this stutter only happens to end user once.
             # Make exception if the hud is not available/python 2/text engine
             try:

@@ -1,7 +1,7 @@
-from dragonfly import get_engine, get_current_engine, FuncContext, Function, MappingRule, Grammar, Choice, Dictation
+from dragonfly import get_engine, FuncContext, Function, MappingRule, Grammar, Choice, Dictation
 from castervoice.lib import printer
 
-engine = get_current_engine().name
+engine = get_engine().name
 if engine == 'natlink':
     import natlink
 

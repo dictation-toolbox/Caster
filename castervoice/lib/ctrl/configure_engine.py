@@ -1,17 +1,36 @@
 import time
-from dragonfly import get_engine, get_current_engine, register_recognition_callback
+from dragonfly import get_current_engine, register_recognition_callback, RecognitionObserver
+from castervoice.lib.ctrl.mgr.engine_manager import EngineModesManager
 from castervoice.lib import settings
+from castervoice.lib import printer
+
+
+class Observer(RecognitionObserver):
+    def __init__(self):
+        self.mic_mode = None
+
+    def on_begin(self):
+        self.mic_mode = EngineModesManager.get_mic_mode()
+
+    def on_recognition(self, words):
+        if not self.mic_mode == "sleeping":
+            printer.out("$ {}".format(" ".join(words)))
+
+    def on_failure(self):
+        if not self.mic_mode == "sleeping":
+            printer.out("?!")
+
 
 class EngineConfigEarly:
     """
-    Initializes engine specific customizations before Nexus initializes.
+    Initializes engine customizations before Nexus initializes.
     Grammars are not loaded
     """
     # get_engine used as a workaround for running Natlink inprocess
-    engine = get_engine().name
-
     def __init__(self):
+        self.engine = get_current_engine().name
         self._set_cancel_word()
+        Observer().register()
 
     def _set_cancel_word(self):
         """
@@ -28,17 +47,16 @@ class EngineConfigLate:
     Initializes engine specific customizations after Nexus has initialized.
     Grammars are loaded into engine.
     """
-    from castervoice.lib.ctrl.mgr.engine_manager import EngineModesManager
 
     engine = get_current_engine().name
     sync_timer = None
     sleep_timer = None
 
     def __init__(self):
-        self.EngineModesManager.initialize()
+        EngineModesManager.initialize()
         if self.engine != 'natlink':
             # Other engines besides natlink needs a default mic state for sleep_timer
-            self.EngineModesManager.mic_state = "on"
+            EngineModesManager.mic_state = "on"
         if self.engine != "text":
             self._engine_timers()
             self._set_default_mic_mode()
@@ -48,7 +66,7 @@ class EngineConfigLate:
         # Timer to synchronize natlink.getMicState/SetRecognitionMode with mode_state in case of changed by end-user via DNS GUI.
         if self.engine == 'natlink' and self.sync_timer is None:
             sync_timer = get_current_engine().create_timer(
-                callback=self.EngineModesManager._sync_mode, interval=1)
+                callback=EngineModesManager._sync_mode, interval=1)
             sync_timer.start()
         # A timer to change microphone state to "sleep" after X amount of seconds after last successful recognition
         if self.sleep_timer is None and settings.SETTINGS["engine"]["mic_sleep_timer_on"] == True:
@@ -61,8 +79,8 @@ class EngineConfigLate:
         """
         Puts microphone to sleep if "on" via sleep_timer callback every x seconds
         """
-        if self.EngineModesManager.get_mic_mode() == "on":
-            self.EngineModesManager.set_mic_mode("sleeping")
+        if EngineModesManager.get_mic_mode() == "on":
+            EngineModesManager.set_mic_mode("sleeping")
 
     def _reset_sleep_timer(self, words=None):
         """
@@ -82,7 +100,7 @@ class EngineConfigLate:
             default_mic_state = settings.SETTINGS["engine"]["mic_mode"]
             if self.engine != "natlink" and default_mic_state == "off":
                 default_mic_state = "sleep"
-            self.EngineModesManager.set_mic_mode(default_mic_state)
+            EngineModesManager.set_mic_mode(default_mic_state)
 
     def _set_engine_default_mode(self):
         """
@@ -95,5 +113,5 @@ class EngineConfigLate:
             default_mode = settings.SETTINGS["engine"]["engine_mode"]
             if self.engine != "natlink" and default_mode == "normal":
                 default_mode = "command"
-            self.EngineModesManager.set_engine_mode(
+            EngineModesManager.set_engine_mode(
                 mode=default_mode, state=True)

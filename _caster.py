@@ -3,8 +3,8 @@
 main Caster module
 Created on Jun 29, 2014
 '''
-import imp
 import logging
+import imp
 import six
 import importlib
 from dragonfly import get_engine, get_current_engine
@@ -19,7 +19,7 @@ from castervoice.asynch import hud_support
 if six.PY2:
     logging.basicConfig()
 
-printer.out("\n*- Starting {} with `{}` Engine -*\n".format(settings.SOFTWARE_NAME, get_engine().name))
+printer.out("@ - Starting {} with `{}` Engine -\n".format(settings.SOFTWARE_NAME, get_engine().name))
 
 DependencyMan().initialize()  # requires nothing
 settings.initialize()
@@ -50,7 +50,6 @@ try:
 except ImportError:
     pass  # HUD is not available
 
-# HudPrintMessageHandler printer.out to be print out normally as a fallback if Hud is unreachable.
 dh = printer.get_delegating_handler()
 dh.register_handler(hud_support.HudPrintMessageHandler()) # After hud starts
 printer.out("\n") # Force update to display text

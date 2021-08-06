@@ -25,6 +25,7 @@ try:  # Style C -- may be imported into Caster, or externally
         sys.path.append(BASE_PATH)
 finally:
     from castervoice.lib.merge.communication import Communicator
+    from castervoice.lib import settings
 
 CLEAR_HUD_EVENT = PySide2.QtCore.QEvent.Type(PySide2.QtCore.QEvent.registerEventType(-1))
 HIDE_HUD_EVENT = PySide2.QtCore.QEvent.Type(PySide2.QtCore.QEvent.registerEventType(-1))
@@ -104,7 +105,7 @@ class HUDWindow(QMainWindow):
         self.server = server
         self.setup_xmlrpc_server()
         self.setGeometry(x, y, dx, dy)
-        self.setWindowTitle("Caster HUD")
+        self.setWindowTitle(settings.HUD_TITLE)
         self.output = QTextEdit()
         self.output.setReadOnly(True)
         self.setCentralWidget(self.output)
@@ -143,8 +144,10 @@ class HUDWindow(QMainWindow):
                 if self.commands_count == 50:
                     self.commands_count = 0
                 return True
-            elif escaped_text.startswith('#'):
-                formatted_text = '<font color="red">&gt;</font>{}'.format(escaped_text[1:])
+            if escaped_text.startswith('@'):
+                formatted_text = '<font color="purple">&gt;</font><b>{}</b>'.format(escaped_text[1:])
+            elif escaped_text.startswith(''):
+                formatted_text = '<font color="red">&gt;</font>{}'.format(escaped_text)
             else:
                 formatted_text = escaped_text
             self.output.append(formatted_text)
