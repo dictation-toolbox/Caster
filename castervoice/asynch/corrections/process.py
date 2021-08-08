@@ -41,7 +41,7 @@ class App(QtCore.QObject):
     for instructions from the multiprocessing pipe.
     '''
     def __init__(self, pipe, parent=None):
-        super(self.__class__, self).__init__(parent)
+        super().__init__(parent)
 
         self.window = Window()
         self.pipe_loop = PipeLoop(pipe)
@@ -73,7 +73,7 @@ class PipeLoop(QtCore.QThread):
     hideWindow = QtCore.Signal()
 
     def __init__(self, pipe, parent=None):
-        super(self.__class__, self).__init__(parent)
+        super().__init__(parent)
         self.pipe = pipe
 
     def run(self):
