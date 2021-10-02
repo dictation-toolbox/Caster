@@ -3,11 +3,6 @@
 main Caster module
 Created on Jun 29, 2014
 '''
-import six
-
-if six.PY2:
-    import logging
-    logging.basicConfig()
 
 import importlib
 from castervoice.lib.ctrl.dependencies import DependencyMan  # requires nothing

@@ -1,14 +1,9 @@
-from __future__ import print_function
 import numbers
 import os
-import six
 import sys
 import threading
 
-if six.PY2:
-    from SimpleXMLRPCServer import SimpleXMLRPCServer   # pylint: disable=import-error
-else:
-    from xmlrpc.server import SimpleXMLRPCServer  # pylint: disable=no-name-in-module
+from xmlrpc.server import SimpleXMLRPCServer
 
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0]
@@ -188,11 +183,11 @@ class SettingsFrame(Frame):
 
     def field_from_value(self, window, value, field):
         item = None
-        if isinstance(value, six.string_types):
+        if isinstance(value, str):
             item = TextCtrl(window, value=value)
             field.text_type = STRING_SETTING
         elif isinstance(value, list):
-            if isinstance(value[0], six.string_types):
+            if isinstance(value[0], str):
                 item = TextCtrl(window, value=", ".join(value))
                 field.text_type = STRING_LIST_SETTING
             elif isinstance(value[0], numbers.Real):

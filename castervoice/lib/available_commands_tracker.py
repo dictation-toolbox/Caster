@@ -1,4 +1,3 @@
-import six
 
 class AvailableCommandsTracker(object):
     """
@@ -14,7 +13,7 @@ class AvailableCommandsTracker(object):
         self._available_commands = "Available commands not set yet."
 
     def set_available_commands(self, commands):
-        if not isinstance(commands, six.string_types):
+        if not isinstance(commands, str):
             raise Exception("Do not set 'commands' to a non-string format.")
         self._available_commands = commands
 
