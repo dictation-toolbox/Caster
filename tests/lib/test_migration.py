@@ -1,6 +1,6 @@
 import shutil
 
-import six
+from pathlib import Path
 
 from castervoice.lib.ctrl.mgr.loading.load.content_root import ContentRoot
 from castervoice.lib.migration import UserDirUpdater
@@ -8,10 +8,6 @@ from tests.test_consts import TEST_USER_DIR
 from castervoice.lib.merge.selfmod.sm_config import SelfModStateSavingConfig
 from tests.test_util.settings_mocking import SettingsEnabledTestCase
 
-if six.PY2:
-    from castervoice.lib.util.pathlib import Path
-else:
-    from pathlib import Path  # pylint: disable=import-error
 
 _INIT_PY = "__init__.py"
 

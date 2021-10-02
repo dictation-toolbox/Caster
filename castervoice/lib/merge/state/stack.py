@@ -3,15 +3,8 @@ Created on Jun 7, 2015
 
 @author: dave
 '''
-import six
-if six.PY2:
-    import Queue # pylint: disable=import-error
-else:
-    import queue as Queue
+import queue as Queue
 
-from dragonfly import RecognitionHistory
-
-from castervoice.lib import settings, utilities
 from castervoice.lib.merge.state.stackitems import StackItemSeeker, \
     StackItemRegisteredAction, StackItemAsynchronous, StackItemConfirm
 

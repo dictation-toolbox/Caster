@@ -18,11 +18,7 @@ finally:
     from castervoice.lib import settings, utilities
     settings.initialize()
 
-import six
-if six.PY2:
-    from castervoice.lib.util.pathlib import Path
-else:
-    from pathlib import Path  # pylint: disable=import-error
+from pathlib import Path
 
 try:
     from PIL import ImageGrab, ImageFilter, Image

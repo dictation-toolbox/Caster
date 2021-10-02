@@ -26,7 +26,7 @@ class RunPostInstall:
     # Returns directory path for caster and engine "wrs" or "dns"
     def _find_directory(self):
         try:
-            import natlinkstatus
+            from natlinkcore import natlinkstatus # pylint: disable=import-error
             status = natlinkstatus.NatlinkStatus()
             directory = status.getUserDirectory()
             return directory, "dns"  # NatLink MacroSystem Directory

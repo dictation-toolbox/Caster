@@ -1,13 +1,9 @@
 import sys
-import six
-if six.PY2:
-    from SimpleXMLRPCServer import SimpleXMLRPCServer  # pylint: disable=import-error
-    import Tkinter as tk # pylint: disable=import-error
-    from Tkinter import Label, Text # pylint: disable=import-error
-else:
-    from xmlrpc.server import SimpleXMLRPCServer # pylint: disable=no-name-in-module
-    from tkinter import Label, Text
-    import tkinter as tk
+
+from xmlrpc.server import SimpleXMLRPCServer
+from tkinter import Label, Text
+import tkinter as tk
+
 import signal, os
 from threading import Timer
 
