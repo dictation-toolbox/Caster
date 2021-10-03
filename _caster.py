@@ -1,4 +1,3 @@
-#! python2.7
 '''
 main Caster module
 Created on Jun 29, 2014
