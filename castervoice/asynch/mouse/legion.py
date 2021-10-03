@@ -187,7 +187,7 @@ class LegionScanner:
         bbstring = self.tirg_dll.getTextBBoxesFromBytes(img.tobytes(), img.size[0],
                                                         img.size[1])
         # clean the results in case any garbage letters come through
-        result = re.sub("[^0-9,]", "", bbstring.decode(locale.getpreferredencoding()))
+        result = re.sub("[^0-9,]", "", str(bbstring))
         return result
 
     def scan(self, bbox=None, rough=True):
