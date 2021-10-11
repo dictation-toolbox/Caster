@@ -85,7 +85,7 @@ class Nexus:
         self._grammar_manager.initialize()
 
         '''engine mode manager imp engine engine modes per engine'''
-        self.engine_modes_manager = EngineModesManager(ExclusiveManager)
+        self.engine_modes_manager = EngineModesManager(ExclusiveManager())
 
     def _load_and_register_all_content(self, rules_config, hooks_runner, transformers_runner):
         """

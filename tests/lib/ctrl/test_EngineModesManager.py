@@ -9,7 +9,7 @@ class mockExclusiveManager():
 
 
 class TestEngineModesManager(TestCase):
-    _manager = EngineModesManager(mockExclusiveManager)
+    _manager = EngineModesManager(mockExclusiveManager())
 
     def test_set_engine_mode(self):
         self._manager.set_engine_mode(mode="numbers", state=True)
@@ -36,5 +36,5 @@ class TestEngineModesManager(TestCase):
         self.assertNotEqual("invalid", self._manager.get_engine_mode())
 
     def test_set_mic_mode(self):
-        self._manager.set_mic_mode("sleeping")
+        self._manager.set_mic_mode(mode="sleeping")
         self.assertEqual("sleeping", self._manager.get_mic_mode())

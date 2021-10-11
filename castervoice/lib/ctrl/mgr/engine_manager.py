@@ -22,7 +22,7 @@ class EngineModesManager(object):
         self.previous_engine_state = None
         self.mic_state = None
         self.engine = get_current_engine().name
-        self._exclusive_manager = ExclusiveManager()
+        self._exclusive_manager = ExclusiveManager
 
         # Remove "normal" and "off" from 'states' for non-DNS based engines.
         if self.engine != 'natlink':

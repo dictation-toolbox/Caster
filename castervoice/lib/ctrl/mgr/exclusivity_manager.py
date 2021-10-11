@@ -33,10 +33,11 @@ class ExclusiveManager(object):
     def _set_sleep_grammar(self):
         for grammar in self._get_engine().grammars:
             for rule in grammar.rules:
-                if rule.exported and "CasterMicRule" in str(grammar.rules):
+                if rule.exported and "CasterMicRule" in str(rule):
                     self.sleep_grammar = grammar
+                    return
         else:
-            printer.out("Caster: ExclusiveManager 'CasterMicRule' grammar not found, is it active? say ' enable caster mic modes'")        
+            printer.out("Caster: ExclusiveManager 'CasterMicRule' grammar not found, is it active? say 'enable caster mic modes'")
 
     def _set_grammar_exclusivity(self, grammar, state):
         grammar.set_exclusive(state)
