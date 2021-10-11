@@ -32,6 +32,8 @@ from castervoice.lib.ctrl.mgr.grammar_manager import GrammarManager
 from castervoice.lib.ctrl.mgr.validation.rules.rule_validation_delegator import CCRRuleValidationDelegator
 from castervoice.lib.merge.ccrmerging2.ccrmerger2 import CCRMerger2
 from castervoice.lib.merge.ccrmerging2.merging.classic_merging_strategy import ClassicMergingStrategy
+from castervoice.lib.ctrl.mgr.engine_manager import EngineModesManager
+from castervoice.lib.ctrl.mgr.exclusivity_manager import ExclusiveManager
 
 class Nexus:
     def __init__(self, content_loader):
@@ -81,6 +83,9 @@ class Nexus:
         '''ACTION TIME:'''
         self._load_and_register_all_content(rules_config, hooks_runner, transformers_runner)
         self._grammar_manager.initialize()
+
+        '''engine mode manager imp engine engine modes per engine'''
+        self.engine_modes_manager = EngineModesManager(ExclusiveManager())
 
     def _load_and_register_all_content(self, rules_config, hooks_runner, transformers_runner):
         """
