@@ -4,7 +4,7 @@ Caster currently supports Kaldi on Microsoft Windows 7 through Windows 10. Consi
 
 ## 1. Python
 
-- First Download and install [Python 3](https://www.python.org/downloads/release/python-388/) listed as `Windows x86-64 MSI installer`.
+- First Download and install [Python 3](https://www.python.org/downloads/release/python-3810/) listed as `Windows installer (64-bit)`.
 
     Make sure to select `Add python to path`. This can be done manually by searching for "edit environment variables for your account" and adding your Python 3 folder to the list of Path values.
 

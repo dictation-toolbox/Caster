@@ -35,6 +35,13 @@ Caster currently supports Windows Speech Recognition (WSR) on Microsoft Windows 
 
 ### Troubleshooting Windows Speech Recognition
 
-Receive the `-2147352567` COM error when Caster starts. This is most likely related to the microphone being utilized by another program. See [issue #821](https://github.com/dictation-toolbox/Caster/issues/821) and [#68](https://github.com/dictation-toolbox/Caster/issues/68).  This can be mitigated by closing the program that's utilizing the microphone.
+- Receive the `-2147352567` COM error when Caster starts. This is most likely related to the microphone being utilized by another program. See [issue #821](https://github.com/dictation-toolbox/Caster/issues/821) and [#68](https://github.com/dictation-toolbox/Caster/issues/68).  This can be mitigated by closing the program that's utilizing the microphone.
 
    > com_error: (-2147352567, 'Exception occurred.', (0, None, None, None, 0, -2004287480), None)`
+
+- Receive the `-win32com.gen_py' has no attribute 'CLSIDToClassMap` COM error when Caster starts. 
+
+      > WARNING:engine:Exception while initializing sapi5 engine: module 'win32com.gen_py.C866CA3A-32F7-11D2-9602-00C04F8EE628x0x5x4' has no attribute 'CLSIDToClassMap'
+      > ERROR:command:Exception while initializing sapi5 engine: module 'win32com.gen_py.C866CA3A-32F7-11D2-9602-00C04F8EE628x0x5x4' has no attribute 'CLSIDToClassMap
+
+   > fix: run `Remove-Item -path $env:LOCALAPPDATA\Temp\gen_py -recurse` in powershell

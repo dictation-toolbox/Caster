@@ -1,20 +1,16 @@
-import six
-if six.PY2:
-    from Tkinter import Label, Entry, StringVar # pylint: disable=import-error
-    import tkFileDialog # pylint: disable=import-error
-else:
-    from tkinter import Label, Entry, StringVar, filedialog as tkFileDialog
 import os
 import sys
 from threading import Timer
+from tkinter import Entry, Label, StringVar
+from tkinter import filedialog as tkFileDialog
 
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0]
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:
-    from castervoice.lib import settings
     from castervoice.asynch.hmc.homunculus import Homunculus
+    from castervoice.lib import settings
 
 
 class HomunculusDirectory(Homunculus):

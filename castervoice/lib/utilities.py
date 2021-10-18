@@ -1,41 +1,29 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import print_function, unicode_literals
-from builtins import str
 import io
+import json
 import os
 import json
 import re
+import subprocess
 import sys
 import six
 import time
-import subprocess
+import traceback
 import webbrowser
 from locale import getpreferredencoding
-try:
-    from urllib import unquote
-except ImportError:
-    from urllib.parse import unquote
+from pathlib import Path
+from urllib.parse import unquote
+
 import tomlkit
-import traceback
-
-from dragonfly import Key, Window, get_current_engine
-
-from castervoice.lib import printer
 from castervoice.lib.clipboard import Clipboard
 from castervoice.lib.util import guidance
-
-if six.PY2:
-    from castervoice.lib.util.pathlib import Path
-else:
-    from pathlib import Path  # pylint: disable=import-error
+from dragonfly import Key, Window, get_current_engine
 
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = str(Path(__file__).resolve().parent.parent)
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:
-    from castervoice.lib import settings
+    from castervoice.lib import printer, settings
 
 DARWIN = sys.platform.startswith('darwin')
 LINUX = sys.platform.startswith('linux')
@@ -187,7 +175,7 @@ def reboot():
         printer.out(popen_parameters)
         subprocess.Popen(popen_parameters)
     if engine.name == 'natlink':
-        import natlinkstatus  # pylint: disable=import-error
+        from natlinkcore import natlinkstatus # pylint: disable=import-error
         status = natlinkstatus.NatlinkStatus()
         if status.NatlinkIsEnabled() == 1:
             # Natlink in-process
@@ -205,12 +193,9 @@ def reboot():
 
 def default_browser_command():
     if WIN32:
-        if six.PY2:
-            from _winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,  # pylint: disable=import-error,no-name-in-module
-                        HKEY_CURRENT_USER, OpenKey, QueryValueEx)
-        else:
-            from winreg import (CloseKey, ConnectRegistry, HKEY_CLASSES_ROOT,  # pylint: disable=import-error,no-name-in-module
-                        HKEY_CURRENT_USER, OpenKey, QueryValueEx)
+        from winreg import (  # pylint: disable=import-error,no-name-in-module
+                HKEY_CLASSES_ROOT, HKEY_CURRENT_USER, CloseKey,
+                ConnectRegistry, OpenKey, QueryValueEx)
         '''
         Tries to get default browser command, returns either a space delimited
         command string with '%1' as URL placeholder, or empty string.
@@ -247,7 +232,7 @@ def clear_log():
         else:
             clearcmd = "clear"  # Linux
         if get_current_engine().name == 'natlink':
-            import natlinkstatus  # pylint: disable=import-error
+            from natlinkcore import natlinkstatus # pylint: disable=import-error
             status = natlinkstatus.NatlinkStatus()
             if status.NatlinkIsEnabled() == 1:
                 import win32gui  # pylint: disable=import-error
@@ -282,7 +267,7 @@ def get_clipboard_formats():
                                  stdin=subprocess.PIPE,
                                  )
             for line in iter(p.stdout.readline, b''):
-                if isinstance(line, six.binary_type):
+                if isinstance(line, str):
                     line = line.decode(encoding)
                 formats.append(line.strip())
         except Exception as e:
@@ -334,7 +319,7 @@ def enum_files_from_clipboard(target):
                                  stdin=subprocess.PIPE,
                                  )
             for line in iter(p.stdout.readline, b''):
-                if isinstance(line, six.binary_type):
+                if isinstance(line, str):
                     line = line.decode(encoding).strip()
                 if line.startswith("file://"):
                     line = line.replace("file://", "")

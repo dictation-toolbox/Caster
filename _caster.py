@@ -1,11 +1,8 @@
-#! python2.7
 '''
 main Caster module
 Created on Jun 29, 2014
 '''
 import logging
-import imp
-import six
 import importlib
 from dragonfly import get_engine, get_current_engine
 from castervoice.lib import control
@@ -15,9 +12,6 @@ from castervoice.lib.ctrl.configure_engine import EngineConfigEarly, EngineConfi
 from castervoice.lib.ctrl.dependencies import DependencyMan
 from castervoice.lib.ctrl.updatecheck import UpdateChecker
 from castervoice.asynch import hud_support
-
-if six.PY2:
-    logging.basicConfig()
 
 printer.out("@ - Starting {} with `{}` Engine -\n".format(settings.SOFTWARE_NAME, get_engine().name))
 
@@ -44,7 +38,6 @@ if settings.SETTINGS["sikuli"]["enabled"]:
     sikuli_controller.get_instance().bootstrap_start_server_proxy()
 
 try:
-    imp.find_module('PySide2') # remove imp dropping python 2
     if get_current_engine().name != "text":
         hud_support.start_hud()
 except ImportError:
