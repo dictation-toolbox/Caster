@@ -31,17 +31,26 @@ def start_hud():
 
 def show_hud():
     hud = control.nexus().comm.get_com("hud")
-    hud.show_hud()
+    try:
+        hud.show_hud()
+    except Exception as e:
+        printer.out("Unable to show hud. Hud not available. \n{}".format(e))
 
 
 def hide_hud():
     hud = control.nexus().comm.get_com("hud")
-    hud.hide_hud()
+    try:
+        hud.hide_hud()
+    except Exception as e:
+        printer.out("Unable to hide hud. Hud not available. \n{}".format(e))
 
 
 def clear_hud():
     hud = control.nexus().comm.get_com("hud")
-    hud.clear_hud()
+    try:
+        hud.clear_hud()
+    except Exception as e:
+        printer.out("Unable to clear hud. Hud not available. \n{}".format(e))
 
 
 def show_rules():
@@ -71,16 +80,21 @@ def show_rules():
             grammars.append({"name": grammar.name, "rules": rules})
     grammars.extend(get_instance().serialize())
     hud = control.nexus().comm.get_com("hud")
-    hud.show_rules(json.dumps(grammars))
-
+    try:
+        hud.show_rules(json.dumps(grammars))
+    except Exception as e:
+        printer.out("Unable to show hud. Hud not available. \n{}".format(e)) 
 
 def hide_rules():
     """
     Instruct HUD to hide the frame with the list of rules.
     """
     hud = control.nexus().comm.get_com("hud")
-    hud.hide_rules()
-
+    try:
+        hud.hide_rules()
+    except Exception as e:
+        printer.out("Unable to show hud. Hud not available. \n{}".format(e)) 
+    
 
 class HudPrintMessageHandler(printer.BaseMessageHandler):
     """
