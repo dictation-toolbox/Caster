@@ -1,13 +1,7 @@
-#! python2.7
 '''
 main Caster module
 Created on Jun 29, 2014
 '''
-import six
-
-if six.PY2:
-    import logging
-    logging.basicConfig()
 
 import importlib
 from castervoice.lib.ctrl.dependencies import DependencyMan  # requires nothing
@@ -24,6 +18,7 @@ EngineConfigEarly() # requires settings/dependencies
 
 _NEXUS = None
 
+from castervoice.lib import printer
 from castervoice.lib import control
 
 if control.nexus() is None: # Initialize Caster State
@@ -42,7 +37,4 @@ if settings.SETTINGS["sikuli"]["enabled"]:
     from castervoice.asynch.sikuli import sikuli_controller
     sikuli_controller.get_instance().bootstrap_start_server_proxy()
 
-print("\n*- Starting " + settings.SOFTWARE_NAME + " -*")
-
-for message in settings.STARTUP_MESSAGES:
-    print("\n" + message + "\n")
+printer.out("\n*- Starting " + settings.SOFTWARE_NAME + " -*")

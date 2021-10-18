@@ -22,7 +22,7 @@ There are two ways to get around this:
 
    1. Simplified transformers need to be enabled `Local\caster\settings\transformers.toml`
    2. Set `TextReplacerTransformer` to `true`.
-   3. Create the file in `Local\caster\transforms\words.txt`
+   3. Create the file in `Local\caster\caster_user_content\transforms\words.txt`
 
    User customizations are defined in words.txt and will be read at boot time, creating a rule transformers. The following is an example `words.txt`:
 

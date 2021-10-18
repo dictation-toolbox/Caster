@@ -1,5 +1,4 @@
 from dragonfly import ActionBase
-import six
 from castervoice.lib.ctrl.mgr.validation.combo.base_combo_validator import BaseComboValidator
 from castervoice.lib.merge.selfmod.tree_rule.tree_node import TreeNode
 from castervoice.lib.merge.selfmod.tree_rule.tree_rule import TreeRule
@@ -21,7 +20,7 @@ class TreeRuleValidator(BaseComboValidator):
         err = str(spec) + ", " + str(action) + ", " + str(children)
 
         invalidations = []
-        if not isinstance(spec, six.string_types):
+        if not isinstance(spec, str):
             invalidations.append("node spec must be string ({})".format(err))
         if not isinstance(action, ActionBase):
             invalidations.append("node base must be ActionBase ({})".format(err))

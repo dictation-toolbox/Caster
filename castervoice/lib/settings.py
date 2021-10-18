@@ -1,26 +1,13 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-from builtins import str
-
+import sys, os
 import collections
 import io
-import os
-import sys
+from pathlib import Path
+
 import tomlkit
-from past.builtins import xrange
-
-from castervoice.lib import printer
-from castervoice.lib import version
-from castervoice.lib.util import guidance
-
 from appdirs import *
-
-import six
-if six.PY2:
-    from castervoice.lib.util.pathlib import Path
-else:
-    from pathlib import Path  # pylint: disable=import-error
+from castervoice.lib import printer, version
+from castervoice.lib.util import guidance
+from past.builtins import xrange
 
 # consts: some of these can easily be moved out of this file
 GENERIC_HELP_MESSAGE = """
@@ -47,7 +34,6 @@ QTYPE_DIRECTORY = "5"
 QTYPE_CONFIRM = "6"
 WXTYPE_SETTINGS = "7"
 HMC_SEPARATOR = "[hmc]"
-STARTUP_MESSAGES = []
 
 # calculated fields
 SETTINGS = None
@@ -57,16 +43,6 @@ _BASE_PATH = None
 _USER_DIR = None
 _SETTINGS_PATH = None
 
-def add_message(message):
-    """
-    Add string message to be printed when Caster initializes
-    message: str
-    """
-    try:
-        if message not in STARTUP_MESSAGES:
-            STARTUP_MESSAGES.append(str(message))
-    except Exception as e:
-        print(e)
 
 def _get_platform_information():
     """Return a dictionary containing platform-specific information."""
@@ -129,10 +105,7 @@ def _find_natspeak():
     '''
 
     try:
-        if six.PY2:
-            import _winreg as winreg
-        else:
-            import winreg
+        import winreg
     except ImportError:
         printer.out("Could not import winreg")
         return ""
@@ -325,7 +298,7 @@ def _get_defaults():
             "SUDOKU_PATH":
                 str(Path(_BASE_PATH).joinpath("asynch/mouse/grids.py")),
             "WSR_PATH":
-                str(Path(_BASE_PATH).joinpath("C:/Windows/Speech/Common/sapisvr.exe")),
+                str(Path("C:/Windows/Speech/Common/sapisvr.exe")),
             "TERMINAL_PATH":
                 str(Path(terminal_path_default)),
 
@@ -506,4 +479,9 @@ def initialize():
     _debugger_path = SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"]  # pylint: disable=invalid-sequence-index
     if _debugger_path not in sys.path and os.path.isdir(_debugger_path):
         sys.path.append(_debugger_path)
+
+    # set up printer -- it doesn't matter where you do this; messages will start printing to the console after this
+    dh = printer.get_delegating_handler()
+    dh.register_handler(printer.SimplePrintMessageHandler())
+    # begin using printer
     printer.out("Caster User Directory: {}".format(_USER_DIR))

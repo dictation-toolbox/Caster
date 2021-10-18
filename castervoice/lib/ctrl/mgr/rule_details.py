@@ -1,12 +1,9 @@
+import inspect
 import os
 import traceback
-import inspect
+from pathlib import Path
+
 from castervoice.lib import printer
-import six
-if six.PY2:
-    from castervoice.lib.util.pathlib import Path
-else:
-    from pathlib import Path  # pylint: disable=import-error
 
 
 class RuleDetails(object):
