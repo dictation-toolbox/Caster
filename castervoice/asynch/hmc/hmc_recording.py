@@ -21,7 +21,7 @@ class HomunculusRecording(Homunculus):
 
     def __init__(self, params):
         self.grid_row = 0
-        Homunculus.__init__(self, params[0])
+        Homunculus.__init__(self, params[0], args=None)
         self.title(settings.HOMUNCULUS_VERSION + settings.HMC_TITLE_RECORDING)
 
         self.geometry("640x480+" + str(int(self.winfo_screenwidth()/2 - 320)) + "+" +

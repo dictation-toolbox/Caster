@@ -1,7 +1,7 @@
-from dragonfly import get_current_engine
+from dragonfly import get_engine, get_current_engine
 from castervoice.lib import printer
 
-if get_current_engine().name == 'natlink':
+if get_engine().name == 'natlink':
     import natlink
 
 
