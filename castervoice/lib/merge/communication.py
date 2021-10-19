@@ -6,9 +6,10 @@ class Communicator:
     def __init__(self):
         self.coms = {}
         self.com_registry = {
-            "hmc": 1338,
-            "grids": 1339,
-            "sikuli": 8000
+            "hmc": 8337,
+            "hud": 8338,
+            "grids": 8339,
+            "sikuli": 8340
         }
 
     def get_com(self, name):

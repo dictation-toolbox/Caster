@@ -4,6 +4,9 @@ Created on Jun 7, 2015
 @author: dave
 '''
 
+from functools import reduce
+from types import FunctionType
+
 
 class ContextSet:  # ContextSet
     '''
@@ -27,6 +30,13 @@ class ContextSet:  # ContextSet
         self.use_spoken = use_spoken
         self.use_rspec = use_rspec
 
+    def __str__(self):
+        prefix = reduce((lambda x, y: '{}`{}'.format(x, y)),
+                        self.specTriggers) if len(self.specTriggers) > 1 else self.specTriggers[0].__str__()
+        params = reduce((lambda x, y: '{}, {}'.format(x, y)), self.parameters) if self.parameters else ''
+        action = self.f.__name__ if type(self.f) is FunctionType else self.f.__str__()
+        return '{}^{}({})'.format(prefix, action, params)
+
 
 class ContextLevel:  # ContextLevel
     '''
@@ -48,3 +58,10 @@ class ContextLevel:  # ContextLevel
 
     def number(self, index):  # used for assigning indices
         self.index = index
+
+    def __str__(self):
+        if len(self.sets) > 1:
+            return reduce((lambda x, y: '{}, {}'.format(x, y)), self.sets)
+        elif len(self.sets) == 1:
+            return '{}'.format(self.sets[0])
+        return ''
