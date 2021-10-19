@@ -1,4 +1,5 @@
-import os, traceback
+import os
+import traceback
 
 from dragonfly import Grammar
 
@@ -12,6 +13,7 @@ from castervoice.lib.ctrl.mgr.rule_formatter import _set_rdescripts
 from castervoice.lib.ctrl.mgr.rules_enabled_diff import RulesEnabledDiff
 from castervoice.lib.merge.ccrmerging2.hooks.events.activation_event import RuleActivationEvent
 from castervoice.lib.merge.ccrmerging2.hooks.events.on_error_event import OnErrorEvent
+from castervoice.lib.merge.ccrmerging2.hooks.events.rules_loaded_event import RulesLoadedEvent
 from castervoice.lib.merge.ccrmerging2.sorting.config_ruleset_sorter import ConfigBasedRuleSetSorter
 from castervoice.lib.util.ordered_set import OrderedSet
 
@@ -240,7 +242,7 @@ class GrammarManager(object):
         active_rule_class_names = [rcn for rcn in enabled_rcns if rcn in loaded_enabled_rcns]
         active_mrs = [self._managed_rules[rcn] for rcn in active_rule_class_names]
         active_ccr_mrs = [mr for mr in active_mrs if mr.get_details().declared_ccrtype is not None]
-
+        self._hooks_runner.execute(RulesLoadedEvent(rules=active_ccr_mrs))
         '''
         The merge may result in 1 to n+1 rules where n is the number of ccr app rules
         which are in the active rules list.
@@ -302,7 +304,7 @@ class GrammarManager(object):
             if class_name in self._config.get_enabled_rcns_ordered():
                 self._delegate_enable_rule(class_name, True)
         except Exception as error:
-            printer.out('Grammar Manager: {} - See error message above'.format(error)) 
+            printer.out('Grammar Manager: {} - See error message above'.format(error))
             self._hooks_runner.execute(OnErrorEvent())
 
     def _get_invalidation(self, rule_class, details):

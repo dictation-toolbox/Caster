@@ -1,12 +1,8 @@
 import os
-import six
 import subprocess
 import sys
 
-if six.PY2:
-    from SimpleXMLRPCServer import SimpleXMLRPCServer  # pylint: disable=import-error
-else:
-    from xmlrpc.server import SimpleXMLRPCServer  # pylint: disable=no-name-in-module
+from xmlrpc.server import SimpleXMLRPCServer  # pylint: disable=no-name-in-module
 
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0]
