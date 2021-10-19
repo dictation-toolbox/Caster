@@ -1,17 +1,37 @@
 import time
-from dragonfly import get_engine, get_current_engine, register_recognition_callback
+from dragonfly import get_current_engine, register_recognition_callback, RecognitionObserver
+from castervoice.lib.ctrl.mgr.engine_manager import EngineModesManager
 from castervoice.lib import settings
+from castervoice.lib import printer
+
+
+class Observer(RecognitionObserver):
+    def __init__(self):
+        from castervoice.lib import control
+        self.mic_mode = None
+        self._engine_modes_manager = control.nexus().engine_modes_manager
+
+    def on_begin(self):
+        self.mic_mode = self._engine_modes_manager.get_mic_mode()
+
+    def on_recognition(self, words):
+        if not self.mic_mode == "sleeping":
+            printer.out("$ {}".format(" ".join(words)))
+
+    def on_failure(self):
+        if not self.mic_mode == "sleeping":
+            printer.out("?!")
+
 
 
 class EngineConfigEarly:
     """
-    Initializes engine specific customizations before Nexus initializes.
+    Initializes engine customizations before Nexus initializes.
     Grammars are not loaded
     """
     # get_engine used as a workaround for running Natlink inprocess
-    engine = get_engine().name
-
     def __init__(self):
+        self.engine = get_current_engine().name
         self._set_cancel_word()
 
     def _set_cancel_word(self):
@@ -35,6 +55,8 @@ class EngineConfigLate:
         self.engine = get_current_engine().name
         self.sync_timer = None
         self.sleep_timer = None
+        Observer().register()
+
 
         if self.engine != 'natlink':
             # Other engines besides natlink needs a default mic state for sleep_timer

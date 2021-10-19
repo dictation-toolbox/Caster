@@ -1,36 +1,26 @@
-from subprocess import Popen
-import sys, os
+import os
+import subprocess
+import sys
+
+from xmlrpc.server import SimpleXMLRPCServer  # pylint: disable=no-name-in-module
 
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0]
     if BASE_PATH not in sys.path:
         sys.path.append(BASE_PATH)
 finally:
-    from castervoice.asynch.hmc.hmc_ask_directory import HomunculusDirectory
-    from castervoice.asynch.hmc.hmc_recording import HomunculusRecording
-    from castervoice.asynch.hmc.hmc_confirm import HomunculusConfirm
-    from castervoice.asynch.hmc.homunculus import Homunculus
     from castervoice.lib import settings
-'''
-To add a new homunculus (pop-up ui window) type:
-    (1) create the module
-    (2) and its type and title constants to settings.py
-    (3) add it to  _get_title(), and "if __name__ == '__main__':" in this module
-    (4) call launch() from this module with its type and any data it needs (data as a single string with no spaces)
-'''
 
 
 def launch(hmc_type, data=None):
     from dragonfly import (WaitWindow, FocusWindow, Key)
     instructions = _get_instructions(hmc_type)
-    if data is not None:  # and callback!=None:
+    if data is not None:
         instructions.append(data)
-    Popen(instructions)
-
+    subprocess.Popen(instructions)
     hmc_title = _get_title(hmc_type)
     WaitWindow(title=hmc_title, timeout=5).execute()
     FocusWindow(title=hmc_title).execute()
-    Key("tab").execute()
 
 
 def _get_instructions(hmc_type):
@@ -61,17 +51,25 @@ def _get_title(hmc_type):
     return default
 
 
+def main():
+    # TODO: Remove this try wrapper when CI server supports Qt
+    try:
+        import PySide2.QtWidgets
+        from castervoice.asynch.hmc.homunculus import Homunculus
+        from castervoice.lib.merge.communication import Communicator
+    except ImportError:
+        sys.exit(0)
+    server_address = (Communicator.LOCALHOST, Communicator().com_registry["hmc"])
+    # Enabled by default logging causes RPC to malfunction when the GUI runs on
+    # pythonw.  Explicitly disable logging for the XML server.
+    server = SimpleXMLRPCServer(server_address, logRequests=False, allow_none=True)
+    app = PySide2.QtWidgets.QApplication(sys.argv)
+    window = Homunculus(server, sys.argv)
+    window.show()
+    exit_code = app.exec_()
+    server.shutdown()
+    sys.exit(exit_code)
+
+
 if __name__ == '__main__':
-    found_word = None
-    if len(sys.argv) > 2:
-        found_word = sys.argv[2]
-    if sys.argv[1] == settings.QTYPE_DEFAULT:
-        app = Homunculus(sys.argv[1])
-    elif sys.argv[1] == settings.QTYPE_RECORDING:
-        app = HomunculusRecording([settings.QTYPE_RECORDING, found_word])
-    elif sys.argv[1] == settings.QTYPE_INSTRUCTIONS:
-        app = Homunculus(sys.argv[1], sys.argv[2])
-    elif sys.argv[1] == settings.QTYPE_DIRECTORY:
-        app = HomunculusDirectory(sys.argv[1])
-    elif sys.argv[1] == settings.QTYPE_CONFIRM:
-        app = HomunculusConfirm([sys.argv[1], sys.argv[2]])
+    main()

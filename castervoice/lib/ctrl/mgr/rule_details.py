@@ -37,6 +37,9 @@ class RuleDetails(object):
         stack = inspect.stack(0)
         self._filepath = RuleDetails._calculate_filepath_from_frame(stack, 1)
 
+    def __str__(self):
+        return 'ccrtype {}'.format(self.declared_ccrtype if self.declared_ccrtype else '_')
+
     @staticmethod
     def _calculate_filepath_from_frame(stack, index):
         try:
@@ -46,11 +49,11 @@ class RuleDetails(object):
             if filepath.endswith("pyc"):
                 filepath = filepath[:-1]
             return filepath
-        except AttributeError as e:
+        except AttributeError:
             if not os.path.isfile(frame[1]):
                 pyc = frame[1] + "c"
                 if os.path.isfile(pyc):
-                    printer.out("\n {} \n Caster Detected a stale .pyc file. The stale file has been removed please restart Caster. \n".format(pyc))
+                    printer.out('\n {}\n Caster removed a stale .pyc file. Please, restart Caster. \n'.format(pyc))
                     os.remove(pyc)
             else:
                 traceback.print_exc()

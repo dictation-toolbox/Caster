@@ -15,7 +15,7 @@ finally:
 
 class HomunculusDirectory(Homunculus):
     def __init__(self, params):
-        Homunculus.__init__(self, params[0])
+        Homunculus.__init__(self, params[0], args=None)
         self.title(settings.HOMUNCULUS_VERSION + settings.HMC_TITLE_DIRECTORY)
 
         self.geometry("640x50+" + str(int(self.winfo_screenwidth()/2 - 320)) + "+" +

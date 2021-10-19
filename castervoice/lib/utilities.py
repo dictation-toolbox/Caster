@@ -1,9 +1,11 @@
 import io
 import json
 import os
+import json
 import re
 import subprocess
 import sys
+import six
 import time
 import traceback
 import webbrowser
@@ -33,19 +35,16 @@ lasthandle = None
 # TODO: Move functions that manipulate or retrieve information from Windows to `window_mgmt_support` in navigation_rules.
 # TODO: Implement Optional exact title matching for `get_matching_windows` in Dragonfly
 def window_exists(windowname=None, executable=None):
-    if Window.get_matching_windows(title=windowname, executable=executable):
-        return True
-    else:
-        return False
+    return Window.get_matching_windows(title=windowname, executable=executable) and True
 
 
-def get_window_by_title(title=None): 
+def get_window_by_title(title=None):
     # returns 0 if nothing found
     Matches = Window.get_matching_windows(title=title)
     if Matches:
         return Matches[0].handle
     else:
-        return 0 
+        return 0
 
 
 def get_active_window_title():
@@ -182,6 +181,7 @@ def remote_debug(who_called_it=None):
         printer.out("ERROR: " + who_called_it +
               " called utilities.remote_debug() but the debug server wasn't running.")
 
+
 def reboot():
     # TODO: Save engine arguments elsewhere and retrieves for reboot. Allows for user-defined arguments.
     popen_parameters = []
@@ -209,7 +209,7 @@ def reboot():
             printer.out(popen_parameters)
             subprocess.Popen(popen_parameters)
         else:
-           # Natlink out-of-process
+            # Natlink out-of-process
             engine.disconnect()
             subprocess.Popen([sys.executable, '-m', 'dragonfly', 'load', '--engine', 'natlink', '_*.py', '--no-recobs-messages'])
 
@@ -251,9 +251,9 @@ def clear_log():
     # TODO: window_exists utilized when engine launched through Dragonfly CLI via bat in future
     try:
         if WIN32:
-            clearcmd = "cls" # Windows OS
+            clearcmd = "cls"  # Windows OS
         else:
-            clearcmd = "clear" # Linux
+            clearcmd = "clear"  # Linux
         if get_current_engine().name == 'natlink':
             from natlinkcore import natlinkstatus # pylint: disable=import-error
             status = natlinkstatus.NatlinkStatus()
