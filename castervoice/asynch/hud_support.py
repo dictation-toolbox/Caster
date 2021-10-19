@@ -1,13 +1,8 @@
 import sys, subprocess, json
-import imp
 
 from dragonfly import CompoundRule, MappingRule, get_current_engine
 
-import six
-if six.PY2:
-    from castervoice.lib.util.pathlib import Path
-else:
-    from pathlib import Path  # pylint: disable=import-error
+from pathlib import Path
 
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = str(Path(__file__).resolve().parent.parent)
@@ -111,7 +106,6 @@ class HudPrintMessageHandler(printer.BaseMessageHandler):
         self.hud = control.nexus().comm.get_com("hud")
         self.exception = False
         try:
-            imp.find_module('PySide2') # remove imp dropping python 2
             if get_current_engine().name != "text":
                 self.hud.ping() # HUD running?
         except Exception as e:
@@ -124,12 +118,13 @@ class HudPrintMessageHandler(printer.BaseMessageHandler):
             # This appears as a stutter in recognition.
             # Exceptions are tracked so this stutter only happens to end user once.
             # Make exception if the hud is not available/python 2/text engine
+            # TODO: handle raising exception gracefully
             try:
                 self.hud.send("\n".join([str(m) for m in items]))
             except Exception as e:
                 # If an exception, print is managed by SimplePrintMessageHandler
                 self.exception = True
                 printer.out("Hud not available. \n{}".format(e))
-                raise("")
+                raise("") # pylint: disable=raising-bad-type
         else:
-            raise("")
+            raise("") # pylint: disable=raising-bad-type
