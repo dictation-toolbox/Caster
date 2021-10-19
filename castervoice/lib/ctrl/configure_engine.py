@@ -1,6 +1,5 @@
 import time
 from dragonfly import get_current_engine, register_recognition_callback, RecognitionObserver
-from castervoice.lib.ctrl.mgr.engine_manager import EngineModesManager
 from castervoice.lib import settings
 from castervoice.lib import printer
 
