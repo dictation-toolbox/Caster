@@ -1,12 +1,8 @@
 import os
-import six
 import subprocess
 import sys
 
-if six.PY2:
-    from SimpleXMLRPCServer import SimpleXMLRPCServer  # pylint: disable=import-error
-else:
-    from xmlrpc.server import SimpleXMLRPCServer  # pylint: disable=no-name-in-module
+from xmlrpc.server import SimpleXMLRPCServer  # pylint: disable=no-name-in-module
 
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0]
@@ -17,9 +13,6 @@ finally:
 
 
 def launch(hmc_type, data=None):
-    if six.PY2:
-        # python 2 is not supported
-        return
     from dragonfly import (WaitWindow, FocusWindow, Key)
     instructions = _get_instructions(hmc_type)
     if data is not None:
