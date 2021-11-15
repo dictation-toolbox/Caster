@@ -1,5 +1,5 @@
-from dragonfly import get_engine, Mimic, MimicFailure
-from castervoice.lib import printer
+from dragonfly import get_engine, MimicFailure
+from castervoice.lib import printer, control
 
 
 # TODO: ExclusiveManager should be integrated into or with grammar_manager/grammar_activator?
@@ -42,14 +42,12 @@ class ExclusiveManager(object):
                 self._activate_grammar(rule_name)
 
     def _activate_grammar(self, rule_name):
-        # TODO: Find another way to activate grammars.
-        # Mimic cannot be used activate a grammar if DNS/DPI in sleep mode already.
-        # To reproduce disable `DictationSinkRule` and try to activate sleep mode.
+        # TODO: This is a hack. `_change_rule_enabled` should only be accessed in the grammar_manager         
         try:
             if str(rule_name) == "CasterMicRule":
-                Mimic("enable", "caster", "mic", "modes").execute()
+                control.nexus()._grammar_manager._change_rule_enabled("CasterMicRule", True)
             if str(rule_name) == "DictationSinkRule":
-                Mimic("enable", "dictation", "sink", "rule").execute()
+                control.nexus()._grammar_manager._change_rule_enabled("DictationSinkRule", True)
             self._get_grammars_loaded()
         except MimicFailure as e:
             printer.out("Caster: {}".format(e))
