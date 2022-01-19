@@ -8,3 +8,4 @@ scandir>=1.10.0
 pylint
 PySide2
 six
+g2p_en
