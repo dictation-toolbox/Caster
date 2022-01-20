@@ -192,6 +192,7 @@ def _init(path):
     if num_default_added > 0:
         printer.out("Default settings values added: {} ".format(num_default_added))
         _save(result, _SETTINGS_PATH)
+    result['paths'] = {k: os.path.expandvars(v) for k, v in result['paths'].items()}    
     return result
 
 
