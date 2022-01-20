@@ -1,6 +1,7 @@
 import sys, os
 import collections
 import io
+import copy
 from pathlib import Path
 
 import tomlkit
@@ -450,11 +451,30 @@ def settings(key_path, default_value=None):
     return value
 
 
-def save_config():
+def save_config(paths = False):
     """
     Save the current in-memory settings to disk
     """
-    _save(SETTINGS, _SETTINGS_PATH)
+    guidance.offer()
+    if not paths:
+        # Use the paths on disk
+        result = {}
+        try:
+            with io.open(_SETTINGS_PATH, "rt", encoding="utf-8") as f:
+                result = tomlkit.loads(f.read()).value
+        except ValueError as e:
+            printer.out("\n\n {} while loading settings file: {} \n\n".format(repr(e), _SETTINGS_PATH))
+            printer.out(sys.exc_info())
+        except IOError as e:
+            printer.out("\n\n {} while loading settings file: {} \nAttempting to recover...\n\n".format(repr(e), _SETTINGS_PATH))
+        SETTINGS_tmp = copy.deepcopy(SETTINGS)
+        SETTINGS_tmp['paths'] = result['paths']
+        _save(SETTINGS_tmp, _SETTINGS_PATH)
+    else:
+        _save(SETTINGS, _SETTINGS_PATH)
+
+     
+    
 
 
 def initialize():
