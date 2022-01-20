@@ -82,7 +82,7 @@ def save_toml_file(data, path):
     guidance.offer()
     try:
         formatted_data = str(tomlkit.dumps(data))
-        with io.open(os.path.expandvars(path), "wt", encoding="utf-8") as f:
+        with io.open(path, "wt", encoding="utf-8") as f:
             f.write(formatted_data)
     except Exception:
         simple_log(True)
@@ -92,7 +92,7 @@ def load_toml_file(path):
     guidance.offer()
     result = {}
     try:
-        with io.open(os.path.expandvars(path), "rt", encoding="utf-8") as f:
+        with io.open(path, "rt", encoding="utf-8") as f:
             result = tomlkit.loads(f.read()).value
     except IOError as e:
         if e.errno == 2:  # The file doesn't exist.
@@ -108,7 +108,7 @@ def save_json_file(data, path):
     guidance.offer()
     try:
         formatted_data = str(json.dumps(data, ensure_ascii=False))
-        with io.open(os.path.expandvars(path), "wt", encoding="utf-8") as f:
+        with io.open(path, "wt", encoding="utf-8") as f:
             f.write(formatted_data)
     except Exception:
         simple_log(True)
@@ -118,7 +118,7 @@ def load_json_file(path):
     guidance.offer()
     result = {}
     try:
-        with io.open(os.path.expandvars(path), "rt", encoding="utf-8") as json_file:
+        with io.open(path, "rt", encoding="utf-8") as json_file:
             result = json.load(json_file)
     except IOError as e:
         if e.errno == 2:  # The file doesn't exist.
@@ -140,7 +140,7 @@ def simple_log(to_file=False):
     for tb in traceback.format_tb(sys.exc_info()[2]):
         printer.out(tb)
     if to_file:
-        with io.open(os.path.expandvars(settings.SETTINGS["paths"]["LOG_PATH"]), 'at', encoding="utf-8") as f:
+        with io.open(settings.SETTINGS["paths"]["LOG_PATH"], 'at', encoding="utf-8") as f:
             f.write(msg + "\n")
 
 
