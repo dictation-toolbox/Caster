@@ -468,7 +468,8 @@ def save_config(paths = False):
         except IOError as e:
             printer.out("\n\n {} while loading settings file: {} \nAttempting to recover...\n\n".format(repr(e), _SETTINGS_PATH))
         SETTINGS_tmp = copy.deepcopy(SETTINGS)
-        SETTINGS_tmp['paths'] = result['paths']
+        if "paths" in result:
+            SETTINGS_tmp['paths'] = result['paths']
         _save(SETTINGS_tmp, _SETTINGS_PATH)
     else:
         _save(SETTINGS, _SETTINGS_PATH)
