@@ -18,11 +18,7 @@ finally:
     from castervoice.lib import settings, utilities
     settings.initialize()
 
-import six
-if six.PY2:
-    from castervoice.lib.util.pathlib import Path
-else:
-    from pathlib import Path  # pylint: disable=import-error
+from pathlib import Path
 
 try:
     from PIL import ImageGrab, ImageFilter, Image
@@ -191,7 +187,7 @@ class LegionScanner:
         bbstring = self.tirg_dll.getTextBBoxesFromBytes(img.tobytes(), img.size[0],
                                                         img.size[1])
         # clean the results in case any garbage letters come through
-        result = re.sub("[^0-9,]", "", bbstring.decode(locale.getpreferredencoding()))
+        result = re.sub("[^0-9,]", "", str(bbstring))
         return result
 
     def scan(self, bbox=None, rough=True):

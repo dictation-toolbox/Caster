@@ -23,7 +23,7 @@ The number of Caster rules has grown immensely in the past few years, which is g
 
 New users will be provided a core set of starter rules to get started with and then expected to manage which rules load for them via the `[whitelisted]` feature. Rules are defined as true in the Whitelist load when Caster starts. However if a rule is set to false, it is not loaded and therefore cannot be enabled or disabled.
 
-- All rules loaded by Caster including from `AppData\Local\caster\Rules` (user made) and `Documents\Caster\castervoice\Rules` (Caster Starter Rules) will automatically be added to `[whitelisted]` as `true` during startup when the rule is first detected.
+- All rules loaded by Caster including from `AppData\Local\caster\caster_user_content\rules` (user made) and `Documents\Caster\castervoice\rules` (Caster Starter Rules) will automatically be added to `[whitelisted]` as `true` during startup when the rule is first detected.
 - Caster must be restarted for changes in `[whitelisted]` to take effect.
 
 The following `rules.toml` is a mock representation of the default settings. `_enabled_ordered` shows the default enabled grammars when Caster first starts. Defaults may vary by Caster version and engine.

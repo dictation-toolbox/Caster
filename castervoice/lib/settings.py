@@ -1,26 +1,14 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-from builtins import str
-
+import sys, os
 import collections
 import io
-import os
-import sys
+import copy
+from pathlib import Path
+
 import tomlkit
-from past.builtins import xrange
-
-from castervoice.lib import printer
-from castervoice.lib import version
-from castervoice.lib.util import guidance
-
 from appdirs import *
-
-import six
-if six.PY2:
-    from castervoice.lib.util.pathlib import Path
-else:
-    from pathlib import Path  # pylint: disable=import-error
+from castervoice.lib import printer, version
+from castervoice.lib.util import guidance
+from past.builtins import xrange
 
 # consts: some of these can easily be moved out of this file
 GENERIC_HELP_MESSAGE = """
@@ -35,6 +23,7 @@ HOMUNCULUS_VERSION = "HMC v " + SOFTWARE_VERSION_NUMBER
 HMC_TITLE_RECORDING = " :: Recording Manager"
 HMC_TITLE_DIRECTORY = " :: Directory Selector"
 HMC_TITLE_CONFIRM = " :: Confirm"
+HUD_TITLE = "Caster HUD v " + SOFTWARE_VERSION_NUMBER
 LEGION_TITLE = "legiongrid"
 RAINBOW_TITLE = "rainbowgrid"
 DOUGLAS_TITLE = "douglasgrid"
@@ -47,7 +36,6 @@ QTYPE_DIRECTORY = "5"
 QTYPE_CONFIRM = "6"
 WXTYPE_SETTINGS = "7"
 HMC_SEPARATOR = "[hmc]"
-STARTUP_MESSAGES = []
 
 # calculated fields
 SETTINGS = None
@@ -57,16 +45,6 @@ _BASE_PATH = None
 _USER_DIR = None
 _SETTINGS_PATH = None
 
-def add_message(message):
-    """
-    Add string message to be printed when Caster initializes
-    message: str
-    """
-    try:
-        if message not in STARTUP_MESSAGES:
-            STARTUP_MESSAGES.append(str(message))
-    except Exception as e:
-        print(e)
 
 def _get_platform_information():
     """Return a dictionary containing platform-specific information."""
@@ -129,10 +107,7 @@ def _find_natspeak():
     '''
 
     try:
-        if six.PY2:
-            import _winreg as winreg
-        else:
-            import winreg
+        import winreg
     except ImportError:
         printer.out("Could not import winreg")
         return ""
@@ -218,6 +193,7 @@ def _init(path):
     if num_default_added > 0:
         printer.out("Default settings values added: {} ".format(num_default_added))
         _save(result, _SETTINGS_PATH)
+    result['paths'] = {k: os.path.expandvars(v) for k, v in result['paths'].items()}    
     return result
 
 
@@ -288,7 +264,7 @@ def _get_defaults():
             "DLL_PATH":
                 str(Path(_BASE_PATH).joinpath("lib/dll/")),
             "GDEF_FILE":
-                str(Path(_USER_DIR).joinpath("transformers/words.txt")),
+                str(Path(_USER_DIR).joinpath("caster_user_content/transformers/words.txt")),
             "LOG_PATH":
                 str(Path(_USER_DIR).joinpath("log.txt")),
             "SAVED_CLIPBOARD_PATH":
@@ -319,6 +295,8 @@ def _get_defaults():
                 _validate_engine_path(),
             "HOMUNCULUS_PATH":
                 str(Path(_BASE_PATH).joinpath("asynch/hmc/h_launch.py")),
+            "HUD_PATH":
+                str(Path(_BASE_PATH).joinpath("asynch/hud.py")),
             "LEGION_PATH":
                 str(Path(_BASE_PATH).joinpath("asynch/mouse/legion.py")),
             "MEDIA_PATH":
@@ -336,7 +314,7 @@ def _get_defaults():
             "SUDOKU_PATH":
                 str(Path(_BASE_PATH).joinpath("asynch/mouse/grids.py")),
             "WSR_PATH":
-                str(Path(_BASE_PATH).joinpath("C:/Windows/Speech/Common/sapisvr.exe")),
+                str(Path("C:/Windows/Speech/Common/sapisvr.exe")),
             "TERMINAL_PATH":
                 str(Path(terminal_path_default)),
 
@@ -395,7 +373,7 @@ def _get_defaults():
 
         # Default enabled hooks: Use hook class name
         "hooks": {
-            "default_hooks": ['PrinterHook'],
+            "default_hooks": ['PrinterHook', 'RulesLoadedHook'],
         },
 
         # miscellaneous section
@@ -485,11 +463,31 @@ def settings(key_path, default_value=None):
     return value
 
 
-def save_config():
+def save_config(paths = False):
     """
     Save the current in-memory settings to disk
     """
-    _save(SETTINGS, _SETTINGS_PATH)
+    guidance.offer()
+    if not paths:
+        # Use the paths on disk
+        result = {}
+        try:
+            with io.open(_SETTINGS_PATH, "rt", encoding="utf-8") as f:
+                result = tomlkit.loads(f.read()).value
+        except ValueError as e:
+            printer.out("\n\n {} while loading settings file: {} \n\n".format(repr(e), _SETTINGS_PATH))
+            printer.out(sys.exc_info())
+        except IOError as e:
+            printer.out("\n\n {} while loading settings file: {} \nAttempting to recover...\n\n".format(repr(e), _SETTINGS_PATH))
+        SETTINGS_tmp = copy.deepcopy(SETTINGS)
+        if "paths" in result:
+            SETTINGS_tmp['paths'] = result['paths']
+        _save(SETTINGS_tmp, _SETTINGS_PATH)
+    else:
+        _save(SETTINGS, _SETTINGS_PATH)
+
+     
+    
 
 
 def initialize():
@@ -508,12 +506,15 @@ def initialize():
         _USER_DIR = user_data_dir(appname="caster", appauthor=False)
     _SETTINGS_PATH = str(Path(_USER_DIR).joinpath("settings/settings.toml"))
 
-    for directory in ["data", "rules", "transformers", "hooks", "sikuli", "settings"]:
-        d = Path(_USER_DIR).joinpath(directory)
-        d.mkdir(parents=True, exist_ok=True)
     # Kick everything off.
     SETTINGS = _init(_SETTINGS_PATH)
+    from castervoice.lib.migration import UserDirUpdater
+    migrator = UserDirUpdater(_USER_DIR)
+    migrator.create_user_dir_directories()
+    migrator.update_user_dir_packages_to_v1_7_0()
+    migrator.update_bringme_toml_to_v1_7_0()
     _debugger_path = SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"]  # pylint: disable=invalid-sequence-index
     if _debugger_path not in sys.path and os.path.isdir(_debugger_path):
         sys.path.append(_debugger_path)
+
     printer.out("Caster User Directory: {}".format(_USER_DIR))

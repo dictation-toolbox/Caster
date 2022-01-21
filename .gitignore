@@ -13,6 +13,7 @@ complexity_report*
 *.aux
 *.synctex.gz
 _test/
+test_user_dir
 
 # Ignore Rope
 .ropeproject/
@@ -47,7 +48,7 @@ castervoice.egg-info
 kaldi_model*
 
 # Ignore virtual
-venv
+venv*
 
 # Dragonfly module loaders
 kaldi_module_loader_plus.py

@@ -1,8 +1,5 @@
 import re
 import os
-import six
-if six.PY2:
-    from io import open
 
 from castervoice.lib.ctrl.mgr.loading.load.content_request import ContentRequest
 from castervoice.lib.ctrl.mgr.loading.load.content_type import ContentType

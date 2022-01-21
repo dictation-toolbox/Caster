@@ -1,4 +1,5 @@
 import time
+import sys
 
 from dragonfly import AppContext, Pause
 
@@ -104,73 +105,78 @@ def read_nmax_tries(n, slp=0.1):
         time.sleep(slp)
 
 
-def read_selected_without_altering_clipboard(same_is_okay=False, pause_time="0"):
-    '''Returns a tuple:
+def read_selected_without_altering_clipboard(same_is_okay=False, cb_timeout=0.200, pause_time="0", key_override=None):
+    '''Returns selected item from temporary clipboard buffer.
+
+    Args:
+        same_is_okay (bool, optional): Initial clipboard contents is same as copied contents. Defaults to False.
+        cb_timeout (int, optional): Timeout monitoring for clipboard change.
+            - Windows OS increments clipboard contents, other OS's comparing clipboard contents
+        pause_time (str, optional): Keypress delay. Defaults to 0 ms.
+            - Allows foreground window to process key events
+        key_override (str, optional): Override platform copy key spec. Defaults to None.
+            - Allows non-standard key specs to invoke copy action
+
+    Returns tuple:
     (0, "text from system") - indicates success
     (1, None) - indicates no change
     (2, None) - indicates clipboard error
     '''
+    if key_override is None:
+        _default_copy_spec = "w-c/20" if sys.platform == "darwin" else "c-c/20"
+    else:
+        _default_copy_spec = key_override
 
-    time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/
-               1000.)  # time for previous keypress to execute
-    cb = Clipboard(from_system=True)
-    temporary = None
-    prior_content = None
-    max_tries = 20
-
-    for i in range(0, max_tries):
-        failure = False
-        try:
-            prior_content = Clipboard.get_system_text()
-            Clipboard.set_system_text("")
-            Key("c-c").execute()
-            Pause(pause_time).execute()
-            time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/
-                       1000.)  # time for keypress to execute
-            temporary = Clipboard.get_system_text()
-            cb.copy_to_system()
-        except Exception:
-            print("Clipboard Read Attempts " + str(i))  # Debugging
-            failure = True
-            utilities.simple_log(False)
-            if i is max_tries:
-                return 2, None
-        if not failure:
-            break
-    if prior_content == temporary and not same_is_okay:
-        return 1, None
-    return 0, temporary
+    original_cb = Clipboard(from_system=True)
+    new_cb = Clipboard(from_system=True)
+    try:
+        with Clipboard.synchronized_changes(cb_timeout, initial_clipboard=original_cb):
+            Key(_default_copy_spec, use_hardware=True).execute()
+        Pause(pause_time).execute()
+        new_cb.copy_from_system()
+    except Exception as e:
+        print(e)
+        return (2, None)
+    original_cb.copy_to_system()
+    if original_cb == new_cb and not same_is_okay:
+        return (1, None)
+    else:
+        return(0, new_cb.get_text())
 
 
-def paste_string_without_altering_clipboard(content, pause_time="1"):
-    '''
+def paste_string_without_altering_clipboard(content, cb_timeout=0.200, pause_time="1", key_override=None):
+    '''Paste content from temporary clipboard buffer.
+    Args:
+        content (str): content to insert into clipboard buffer.
+        cb_timeout (int, optional): timeout monitoring for clipboard change
+            - Windows OS increments clipboard contents, other OS's comparing clipboard contents
+        pause_time (str, optional): Keypress delay. Defaults to 1.
+            - Allows foreground window to process key events
+        key_override (str, optional): Override platform paste key spec. Defaults to None.
+            - Allows non-standard key specs to invoke paste action
+
+    Returns bool:
     True - indicates success
     False - indicates clipboard error
     '''
-    time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/
-               1000.)  # time for previous keypress to execute
+    
+    if key_override is None:
+        _default_paste_spec = "w-v/20" if sys.platform == "darwin" else "c-v/20"
+    else:
+        _default_paste_spec = key_override
+        
+
     cb = Clipboard(from_system=True)
-    max_tries = 20
-
-    for i in range(0, max_tries):
-        failure = False
-        try:
+    try:
+        with cb.synchronized_changes(cb_timeout):
             Clipboard.set_system_text(content)
-            Pause(pause_time).execute()
-            Key("c-v").execute()
-            time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/
-                       1000.)  # time for keypress to execute
-            cb.copy_to_system()
-        except Exception:
-            print("Clipboard Write Attempts " + str(i))  # Debugging
-            failure = True
-            utilities.simple_log(False)
-            if i is max_tries:
-                return False
-        if not failure:
-            break
+        Key(_default_paste_spec, use_hardware=True).execute()
+        Pause(pause_time).execute()
+    except Exception as e:
+        print(e)
+        return False    
+    cb.copy_to_system()
     return True
-
 
 def fill_within_line(target):
     result = navigate_to_character("left", str(target), True)

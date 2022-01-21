@@ -6,6 +6,12 @@ from tests.test_util import utilities_mocking
 
 class ModulesTestCase(TestCase):
 
+    def setUp(self):
+        utilities_mocking.enable_mock_toml_files()
+
+    def tearDown(self):
+        utilities_mocking.disable_mock_toml_files()
+
     def _rule_modules(self):
         """
         Child test classes should override this
@@ -18,17 +24,7 @@ class ModulesTestCase(TestCase):
         """
         pass
 
-    def test_modules_get_rule_contents(self):
-        pass
-        # for module in self._rule_modules():
-        #     content = module.get_rule()
-        #     self.assertTrue(issubclass(content[0], MappingRule),
-        #                     "MappingRule check failed: {}".format(str(content[0])))
-        #     self.assertTrue(isinstance(content[1], RuleDetails),
-        #                     "RuleDetails check failed: {}".format(str(content[1])))
-
     def test_instantiation(self):
-        utilities_mocking.mock_toml_files()
         for module in self._rule_modules():
             printer.out("Test instantiating {}".format(str(module)))
             content = module.get_rule()

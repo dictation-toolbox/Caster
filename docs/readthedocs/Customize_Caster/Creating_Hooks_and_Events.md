@@ -53,7 +53,7 @@ class RuleActivationEvent(BaseHookEvent):
 
      **Note** `run_on_enable` should not be used If a hook is registered as a default hook in `settings.py.  The hook will already be enabled on Casters for starts.
 
-- Hooks can be placed in the Caster User Directory `caster\hooks`.
+- Hooks can be placed in the Caster User Directory `caster\caster_user_content\hooks`.
 
 ```python
 from castervoice.lib import printer

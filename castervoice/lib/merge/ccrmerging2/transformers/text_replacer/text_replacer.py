@@ -2,55 +2,45 @@ from dragonfly.grammar.elements import Choice
 
 from castervoice.lib import printer
 from castervoice.lib.merge.ccrmerging2.transformers.base_transformer import BaseRuleTransformer
-from castervoice.lib.merge.ccrmerging2.transformers.text_replacer.tr_item import TRItem
+from castervoice.lib.merge.ccrmerging2.transformers.text_replacer.tr_extra_data import TextReplacementExtraData
 from castervoice.lib.merge.ccrmerging2.transformers.text_replacer.tr_parser import TRParser
-import six
-if six.PY2:
-    def zip_longest(*args):
-        return map(None, *args)
-else:
-    from itertools import zip_longest # pylint: disable=no-name-in-module
 
-def _preserve(spec):
-    p = TRItem()
-    p.original = spec
+
+def _analyze_extras(spec):
+    """
+    Takes a spec and returns a list of extras and whether they're required or not.
+    """
+    extras_data = []
 
     angles_mode = False
-    preserved_word = ""
-    cleaned_spec = ""
-    for c in spec:
-        if c == '<':
+    brackets_mode = False
+    current_extra_name = ""
+    for character in spec:
+        if character == '[':
+            brackets_mode = True
+            continue
+        if character == ']':
+            brackets_mode = False
+            continue
+        if character == '<':
             angles_mode = True
-            cleaned_spec += "<?"
             continue
-        elif c == '>':
+        if character == '>':
             angles_mode = False
-            p.extras.append(preserved_word)
-            preserved_word = ""
-            cleaned_spec += ">"
+            extras_data.append(TextReplacementExtraData(current_extra_name, not brackets_mode))
+            current_extra_name = ""  # reset for next
             continue
-        elif angles_mode:
-            preserved_word += c
-        else:
-            cleaned_spec += c
-    p.cleaned = cleaned_spec
-    p.altered = cleaned_spec
+        if angles_mode:
+            current_extra_name += character
 
-    return p
+    return extras_data
 
 
-def _restore(pspec):
-    p = pspec
-
-    q = p.altered.split("?")
-    if len(q) == 1:  # no bound extras
-        return p.altered  # so just return the result
-
-    # intersperse the lists
-    c = [b for a in zip_longest(q, p.extras) for b in a if b is not None]
-
-
-    return "".join(c)
+def _detect_illegal_spec_alteration(extra_analyses, new_spec):
+    for extra_data in extra_analyses:
+        if extra_data.required and "<{}>".format(extra_data.name) not in new_spec:
+            return extra_data
+    return None
 
 
 def _spec_override_from_config(rule, definitions):
@@ -64,20 +54,33 @@ def _spec_override_from_config(rule, definitions):
     for spec in list(mapping.keys()):
         action = mapping[spec]
 
-        pspec = _preserve(spec)
+        extra_analyses = _analyze_extras(spec)
 
-        for original in definitions.specs.keys():
-            if original in pspec.altered:
-                new = definitions.specs[original]
-                pspec.altered = pspec.altered.replace(original, new)
+        new_spec = spec
+        for token_to_replace in definitions.specs.keys():
+            if token_to_replace in new_spec:
+                replacement = definitions.specs[token_to_replace]
+                new_spec = new_spec.replace(token_to_replace, replacement)
 
-        pspec.altered = _restore(pspec)
+        if spec == new_spec:
+            continue
 
-        if spec == pspec.altered:
+        '''
+        We want to protect the user from:
+        - removing required extras from specs
+        - accidentally renaming required extras
+        But we still want the user to be able to:
+        - move required extras
+        - remove optional extras
+        '''
+        violation = _detect_illegal_spec_alteration(extra_analyses, new_spec)
+        if violation is not None:
+            printer.out("Illegal spec modification: cannot alter required extras. " +
+                        "Cannot modify <{}> in \"{}\".".format(violation.name, spec))
             continue
 
         del mapping[spec]
-        mapping[pspec.altered] = action
+        mapping[new_spec] = action
         specs_changed = True
 
     '''EXTRAS'''
@@ -111,7 +114,7 @@ def _spec_override_from_config(rule, definitions):
     if len(defaults) > 0:
         for default_key in list(defaults.keys()):  #
             value = defaults[default_key]
-            if isinstance(value, six.string_types):
+            if isinstance(value, str):
                 '''only replace strings; also,
                 only replace values, not keys:
                 default_key should not be changed - it will never be spoken'''
@@ -141,10 +144,10 @@ class TextReplacerTransformer(BaseRuleTransformer):
         try:
             parser_instance = parser()
             self._definitions = parser_instance.create_definitions()
+            if len(self._definitions) > 0:
+                printer.out("Text replacing transformer from file 'words.txt' activated ...")
         except Exception:
             printer.out("Unable to parse words.txt")
-        if len(self._definitions) > 0:
-            printer.out("Text replacing transformer from file 'words.txt' activated ...")
 
     def get_pronunciation(self):
         return "text replacer"

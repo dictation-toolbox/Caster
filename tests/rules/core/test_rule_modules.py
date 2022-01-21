@@ -14,7 +14,8 @@ class CoreModulesTestCase(ModulesTestCase):
         from castervoice.rules.core.utility_rules import caster_rule
         from castervoice.rules.core.utility_rules import hardware_rule
         from castervoice.rules.core.utility_rules import mouse_alts_rules
+        from castervoice.rules.core.engine_manager_rules import mic_rules
 
         return [alphabet, nav, nav2, window_mgmt_rule, numeric, keyboard, punctuation,
                 text_manipulation, caster_rule,
-                hardware_rule, mouse_alts_rules]
+                hardware_rule, mouse_alts_rules, mic_rules]

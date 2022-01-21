@@ -3,7 +3,7 @@ import os
 import sys
 import threading
 
-from xmlrpc.server import SimpleXMLRPCServer  # pylint: disable=no-name-in-module
+from xmlrpc.server import SimpleXMLRPCServer
 
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0]
@@ -14,24 +14,21 @@ finally:
     from castervoice.lib import settings
     from castervoice.lib.merge.communication import Communicator
 
-# TODO: Remove this try wrapper when CI server supports Qt
-try:
-    import PySide2.QtCore
-    from PySide2.QtGui import QPalette
-    from PySide2.QtWidgets import QApplication
-    from PySide2.QtWidgets import QDialogButtonBox
-    from PySide2.QtWidgets import QCheckBox
-    from PySide2.QtWidgets import QDialog
-    from PySide2.QtWidgets import QFormLayout
-    from PySide2.QtWidgets import QGroupBox
-    from PySide2.QtWidgets import QLabel
-    from PySide2.QtWidgets import QLineEdit
-    from PySide2.QtWidgets import QScrollArea
-    from PySide2.QtWidgets import QTabWidget
-    from PySide2.QtWidgets import QVBoxLayout
-    from PySide2.QtWidgets import QWidget
-except ImportError:
-    sys.exit(0)
+from PySide2 import QtCore
+from PySide2.QtGui import QPalette
+from PySide2.QtWidgets import QApplication
+from PySide2.QtWidgets import QDialogButtonBox
+from PySide2.QtWidgets import QCheckBox
+from PySide2.QtWidgets import QDialog
+from PySide2.QtWidgets import QFormLayout
+from PySide2.QtWidgets import QGroupBox
+from PySide2.QtWidgets import QLabel
+from PySide2.QtWidgets import QLineEdit
+from PySide2.QtWidgets import QScrollArea
+from PySide2.QtWidgets import QTabWidget
+from PySide2.QtWidgets import QVBoxLayout
+from PySide2.QtWidgets import QWidget
+
 
 
 settings.initialize()
@@ -42,10 +39,10 @@ NUMBER_LIST_SETTING = 8
 NUMBER_SETTING = 16
 BOOLEAN_SETTING = 32
 
-CONTROL_KEY = PySide2.QtCore.Qt.Key_Meta if sys.platform == "darwin" else PySide2.QtCore.Qt.Key_Control
-SHIFT_TAB_KEY = int(PySide2.QtCore.Qt.Key_Tab) + 1
+CONTROL_KEY = QtCore.Qt.Key_Meta if sys.platform == "darwin" else QtCore.Qt.Key_Control
+SHIFT_TAB_KEY = int(QtCore.Qt.Key_Tab) + 1
 
-RPC_COMPLETE_EVENT = PySide2.QtCore.QEvent.Type(PySide2.QtCore.QEvent.registerEventType(-1))
+RPC_COMPLETE_EVENT = QtCore.QEvent.Type(QtCore.QEvent.registerEventType(-1))
 
 
 class Field:
@@ -74,8 +71,8 @@ class SettingsDialog(QDialog):
         buttons = QDialogButtonBox(
             QDialogButtonBox.StandardButtons((int(QDialogButtonBox.StandardButton.Ok) |
                                               int(QDialogButtonBox.StandardButton.Cancel))))
-        buttons.accepted.connect(self.accept)
-        buttons.rejected.connect(self.reject)
+        buttons.accepted.connect(self.accept)  # pylint: disable=no-member
+        buttons.rejected.connect(self.reject)  # pylint: disable=no-member
         mainLayout = QVBoxLayout()
         mainLayout.addWidget(self.tabs)
         mainLayout.addWidget(buttons)
@@ -86,11 +83,11 @@ class SettingsDialog(QDialog):
         self.expiration.start()
 
     def event(self, event):
-        if event.type() == PySide2.QtCore.QEvent.KeyRelease:
+        if event.type() == QtCore.QEvent.KeyRelease:
             if self.modifier == 1:
                 curr = self.tabs.currentIndex()
                 tabs_count = self.tabs.count()
-                if event.key() == PySide2.QtCore.Qt.Key_Tab:
+                if event.key() == QtCore.Qt.Key_Tab:
                     next = curr + 1
                     next = 0 if next == tabs_count else next
                     self.tabs.setCurrentIndex(next)
@@ -219,7 +216,7 @@ class SettingsDialog(QDialog):
             return None
 
     def xmlrpc_complete(self):
-        PySide2.QtCore.QCoreApplication.postEvent(self, PySide2.QtCore.QEvent(RPC_COMPLETE_EVENT))
+        QtCore.QCoreApplication.postEvent(self, QtCore.QEvent(RPC_COMPLETE_EVENT))
 
     def accept(self):
         self.xmlrpc_complete()

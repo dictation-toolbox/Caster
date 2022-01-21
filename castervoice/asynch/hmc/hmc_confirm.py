@@ -1,8 +1,4 @@
-import six
-if six.PY2:
-    from Tkinter import Label # pylint: disable=import-error
-else:
-    from tkinter import Label
+from tkinter import Label
 import os
 import sys
 from threading import Timer
@@ -18,7 +14,7 @@ finally:
 
 class HomunculusConfirm(Homunculus):
     def __init__(self, params):
-        Homunculus.__init__(self, params[0])
+        Homunculus.__init__(self, params[0], args=None)
         self.title(settings.HOMUNCULUS_VERSION + settings.HMC_TITLE_CONFIRM)
 
         self.geometry("320x50+" + str(int(self.winfo_screenwidth()/2 - 160)) + "+" +

@@ -1,16 +1,19 @@
-import os, traceback
+import os
+import traceback
 
 from dragonfly import Grammar
 
 from castervoice.lib import printer
 from castervoice.lib.ctrl.mgr.errors.invalid_companion_configuration_error import InvalidCompanionConfigurationError
 from castervoice.lib.ctrl.mgr.errors.not_a_module import NotAModuleError
+from castervoice.lib.ctrl.mgr.loading.load.content_request import ContentRequest
 from castervoice.lib.ctrl.mgr.loading.load.content_type import ContentType
 from castervoice.lib.ctrl.mgr.managed_rule import ManagedRule
 from castervoice.lib.ctrl.mgr.rule_formatter import _set_rdescripts
 from castervoice.lib.ctrl.mgr.rules_enabled_diff import RulesEnabledDiff
 from castervoice.lib.merge.ccrmerging2.hooks.events.activation_event import RuleActivationEvent
 from castervoice.lib.merge.ccrmerging2.hooks.events.on_error_event import OnErrorEvent
+from castervoice.lib.merge.ccrmerging2.hooks.events.rules_loaded_event import RulesLoadedEvent
 from castervoice.lib.merge.ccrmerging2.sorting.config_ruleset_sorter import ConfigBasedRuleSetSorter
 from castervoice.lib.util.ordered_set import OrderedSet
 
@@ -239,7 +242,7 @@ class GrammarManager(object):
         active_rule_class_names = [rcn for rcn in enabled_rcns if rcn in loaded_enabled_rcns]
         active_mrs = [self._managed_rules[rcn] for rcn in active_rule_class_names]
         active_ccr_mrs = [mr for mr in active_mrs if mr.get_details().declared_ccrtype is not None]
-
+        self._hooks_runner.execute(RulesLoadedEvent(rules=active_ccr_mrs))
         '''
         The merge may result in 1 to n+1 rules where n is the number of ccr app rules
         which are in the active rules list.
@@ -289,8 +292,11 @@ class GrammarManager(object):
         :return:
         """
         try:
+            module_dir = GrammarManager._get_module_package(file_path_changed)
             module_name = GrammarManager._get_module_name_from_file_path(file_path_changed)
-            rule_class, details = self._content_loader.idem_import_module(module_name, ContentType.GET_RULE)
+            # request class name not needed here -- only needed on initial load
+            request = ContentRequest(ContentType.GET_RULE, module_dir, module_name, None)
+            rule_class, details = self._content_loader.idem_import_module(request)
             # re-register:
             self.register_rule(rule_class, details)
 
@@ -298,7 +304,7 @@ class GrammarManager(object):
             if class_name in self._config.get_enabled_rcns_ordered():
                 self._delegate_enable_rule(class_name, True)
         except Exception as error:
-            printer.out('Grammar Manager: {} - See error message above'.format(error)) 
+            printer.out('Grammar Manager: {} - See error message above'.format(error))
             self._hooks_runner.execute(OnErrorEvent())
 
     def _get_invalidation(self, rule_class, details):
@@ -371,6 +377,10 @@ class GrammarManager(object):
         if file_path.startswith("__") or not file_path.endswith(".py"):
             raise NotAModuleError(file_path)
         return os.path.basename(file_path).replace(".py", "")
+
+    @staticmethod
+    def _get_module_package(module_path):
+        return module_path[:module_path.rindex(os.sep)]
 
     @staticmethod
     def _get_next_id():

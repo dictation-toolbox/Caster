@@ -1,5 +1,4 @@
 from unittest import TestCase
-import six
 from castervoice.lib.util.bidi_graph import BiDiGraph
 
 
@@ -9,11 +8,7 @@ class TestBiDiGraph(TestCase):
     # https://bugs.python.org/issue17866
     @property
     def itemsAreEqual(self):
-        if six.PY2:
-            return self.assertItemsEqual
-        else:
-            return self.assertCountEqual
-
+        return self.assertCountEqual
 
     def test_get_node_1(self):
         """
