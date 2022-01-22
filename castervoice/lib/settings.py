@@ -264,7 +264,7 @@ def _get_defaults():
             "DLL_PATH":
                 str(Path(_BASE_PATH).joinpath("lib/dll/")),
             "GDEF_FILE":
-                str(Path(_USER_DIR).joinpath("transformers/words.txt")),
+                str(Path(_USER_DIR).joinpath("caster_user_content/transformers/words.txt")),
             "LOG_PATH":
                 str(Path(_USER_DIR).joinpath("log.txt")),
             "SAVED_CLIPBOARD_PATH":
