@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 import os
 import shutil
@@ -9,7 +8,6 @@ from castervoice.lib.actions import Key, Text
 from castervoice.lib.context import read_selected_without_altering_clipboard
 from castervoice.lib.utilities import load_toml_file
 from castervoice.lib import settings
-
 
 def _copy_path():
     if not os.path.isfile(settings.SETTINGS["paths"]["GIT_REPO_LOCAL_REMOTE_PATH"]):
@@ -49,16 +47,16 @@ def github_checkoutupdate_pull_request(new):
                 TERMINAL_PATH = settings.SETTINGS["paths"]["TERMINAL_PATH"]
                 AHK_PATH = settings.SETTINGS["paths"]["AHK_PATH"]
                 ahk_installed = os.path.isfile(AHK_PATH)
-                print("AHK_PATH = " + AHK_PATH)
                 if TERMINAL_PATH != "":
                     load_terminal = True  # set default value
                     # ready fetch command string to be appended to
                     fetch_command = ""
                     # find the equivalent ahk script with the same name as this one
                     ahk_script = __file__.replace(".pyc", ".ahk").replace(".py", ".ahk")
-                    pattern_match = "MINGW64"  # the string we expect to find in the title of git bash when loaded
+
                     # if autohotkey is installed
                     if ahk_installed:
+                        pattern_match = "MINGW64"  # the string we expect to find in the title of git bash when loaded
                         # open the script which checks that git bash window is open or not
                         p = Popen([AHK_PATH, ahk_script, "exists", pattern_match], stdout=PIPE)
                         # retrieve the output from the ahk script
@@ -81,7 +79,10 @@ def github_checkoutupdate_pull_request(new):
                             print("Fallback: load new instance of :" + pattern_match)
                     if load_terminal:
                         # open up a new git bash terminal
-                        terminal = Popen(TERMINAL_PATH, cwd=local_directory)
+                        if os.path.isfile(TERMINAL_PATH):
+                            terminal = Popen(TERMINAL_PATH, cwd=local_directory)
+                        else:
+                            raise Exception("Error: terminal path not set correctly in settings.toml")
                         # if autohotkey is installed
                         if ahk_installed:
                             # open the script which checks that git bash windoow is ready or not for input

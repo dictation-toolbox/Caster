@@ -5,6 +5,7 @@ Created on Oct 7, 2015
 '''
 import os, sys, time, pkg_resources
 from pkg_resources import VersionConflict, DistributionNotFound
+from castervoice.lib import printer
 
 DARWIN = sys.platform == "darwin"
 LINUX = sys.platform == "linux"
@@ -48,7 +49,7 @@ def dep_missing():
                 missing_list.append('{0}'.format(dep))
     if missing_list:
         pippackages = (' '.join(map(str, missing_list)))
-        print("\nCaster: dependencys are missing. Use 'python -m pip install {0}'".format(pippackages))
+        printer.out("\nCaster: dependencys are missing. Use 'python -m pip install {0}'".format(pippackages))
         time.sleep(10)
 
 
@@ -69,10 +70,10 @@ def dep_min_version():
         except VersionConflict as e:
             if operator == ">=":
                 if issue_url is not None:
-                    print("\nCaster: Requires {0} v{1} or greater.\nIssue reference: {2}".format(package, version, issue_url))
-                print("Update with: 'python -m pip install {} --upgrade' \n".format(package))
+                    printer.out("\nCaster: Requires {0} v{1} or greater.\nIssue reference: {2}".format(package, version, issue_url))
+                printer.out("Update with: 'python -m pip install {} --upgrade' \n".format(package))
             if operator == "==":
-                print("\nCaster: Requires an exact version of {0}.\nIssue reference: {1}".format(package, issue_url))
+                printer.out("\nCaster: Requires an exact version of {0}.\nIssue reference: {1}".format(package, issue_url))
                 print("Install with: 'python -m pip install {}' \n".format(e.req))
 
 

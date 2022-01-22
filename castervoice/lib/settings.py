@@ -1,24 +1,14 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-from builtins import str
-
+import sys, os
 import collections
 import io
+import copy
+from pathlib import Path
+
 import tomlkit
-from past.builtins import xrange
-
-from castervoice.lib import printer
-from castervoice.lib import version
-from castervoice.lib.util import guidance
-
 from appdirs import *
-
-import six
-if six.PY2:
-    from castervoice.lib.util.pathlib import Path
-else:
-    from pathlib import Path  # pylint: disable=import-error
+from castervoice.lib import printer, version
+from castervoice.lib.util import guidance
+from past.builtins import xrange
 
 # consts: some of these can easily be moved out of this file
 GENERIC_HELP_MESSAGE = """
@@ -33,6 +23,7 @@ HOMUNCULUS_VERSION = "HMC v " + SOFTWARE_VERSION_NUMBER
 HMC_TITLE_RECORDING = " :: Recording Manager"
 HMC_TITLE_DIRECTORY = " :: Directory Selector"
 HMC_TITLE_CONFIRM = " :: Confirm"
+HUD_TITLE = "Caster HUD v " + SOFTWARE_VERSION_NUMBER
 LEGION_TITLE = "legiongrid"
 RAINBOW_TITLE = "rainbowgrid"
 DOUGLAS_TITLE = "douglasgrid"
@@ -116,10 +107,7 @@ def _find_natspeak():
     '''
 
     try:
-        if six.PY2:
-            import _winreg as winreg
-        else:
-            import winreg
+        import winreg
     except ImportError:
         printer.out("Could not import winreg")
         return ""
@@ -205,6 +193,7 @@ def _init(path):
     if num_default_added > 0:
         printer.out("Default settings values added: {} ".format(num_default_added))
         _save(result, _SETTINGS_PATH)
+    result['paths'] = {k: os.path.expandvars(v) for k, v in result['paths'].items()}    
     return result
 
 
@@ -229,14 +218,25 @@ def _deep_merge_defaults(data, defaults):
 
 
 def _get_defaults():
-    terminal_path_default = "C:/Program Files/Git/git-bash.exe"
+
+    if sys.platform == "win32":
+        terminal_path_default = "C:/Program Files/Git/git-bash.exe"
+    elif sys.platform.startswith("linux"):
+        terminal_path_default = "/usr/bin/gnome-terminal"
+    elif sys.platform == "darwin":
+        terminal_path_default = "/Applications/Utilities/Terminal.app"
+
     if not os.path.isfile(terminal_path_default):
         terminal_path_default = ""
 
     ahk_path_default = "C:/Program Files/AutoHotkey/AutoHotkey.exe"
     if not os.path.isfile(ahk_path_default):
         ahk_path_default = ""
-
+    
+    if sys.platform == "win32": 
+        terminal_loading_time = 5 
+    else:
+        terminal_loading_time = 1
     return {
         "paths": {
             "BASE_PATH":
@@ -288,13 +288,15 @@ def _get_defaults():
 
             # EXECUTABLES
             "AHK_PATH":
-                str(Path(_BASE_PATH).joinpath(ahk_path_default)),
+                str(Path(ahk_path_default)),
             "DOUGLAS_PATH":
                 str(Path(_BASE_PATH).joinpath("asynch/mouse/grids.py")),
             "ENGINE_PATH":
                 _validate_engine_path(),
             "HOMUNCULUS_PATH":
                 str(Path(_BASE_PATH).joinpath("asynch/hmc/h_launch.py")),
+            "HUD_PATH":
+                str(Path(_BASE_PATH).joinpath("asynch/hud.py")),
             "LEGION_PATH":
                 str(Path(_BASE_PATH).joinpath("asynch/mouse/legion.py")),
             "MEDIA_PATH":
@@ -352,8 +354,9 @@ def _get_defaults():
         },
 
         # gitbash settings
+        # This really should be labelled "terminal" but was named when caster was Windows only.
         "gitbash": {
-            "loading_time": 5,  # the time to initialise the git bash window in seconds
+            "loading_time": terminal_loading_time,  # the time to initialise the git bash window in seconds
             "fetching_time": 3  # the time to fetch a github repository in seconds
         },
 
@@ -370,7 +373,7 @@ def _get_defaults():
 
         # Default enabled hooks: Use hook class name
         "hooks": {
-            "default_hooks": ['PrinterHook'],
+            "default_hooks": ['PrinterHook', 'RulesLoadedHook'],
         },
 
         # miscellaneous section
@@ -460,11 +463,31 @@ def settings(key_path, default_value=None):
     return value
 
 
-def save_config():
+def save_config(paths = False):
     """
     Save the current in-memory settings to disk
     """
-    _save(SETTINGS, _SETTINGS_PATH)
+    guidance.offer()
+    if not paths:
+        # Use the paths on disk
+        result = {}
+        try:
+            with io.open(_SETTINGS_PATH, "rt", encoding="utf-8") as f:
+                result = tomlkit.loads(f.read()).value
+        except ValueError as e:
+            printer.out("\n\n {} while loading settings file: {} \n\n".format(repr(e), _SETTINGS_PATH))
+            printer.out(sys.exc_info())
+        except IOError as e:
+            printer.out("\n\n {} while loading settings file: {} \nAttempting to recover...\n\n".format(repr(e), _SETTINGS_PATH))
+        SETTINGS_tmp = copy.deepcopy(SETTINGS)
+        if "paths" in result:
+            SETTINGS_tmp['paths'] = result['paths']
+        _save(SETTINGS_tmp, _SETTINGS_PATH)
+    else:
+        _save(SETTINGS, _SETTINGS_PATH)
+
+     
+    
 
 
 def initialize():
@@ -494,8 +517,4 @@ def initialize():
     if _debugger_path not in sys.path and os.path.isdir(_debugger_path):
         sys.path.append(_debugger_path)
 
-    # set up printer -- it doesn't matter where you do this; messages will start printing to the console after this
-    dh = printer.get_delegating_handler()
-    dh.register_handler(printer.SimplePrintMessageHandler())
-    # begin using printer
     printer.out("Caster User Directory: {}".format(_USER_DIR))
