@@ -6,6 +6,6 @@ mock>=3.0.5
 appdirs>=1.4.3
 scandir>=1.10.0
 pylint
-PySide2
+PySide2>=5.14
 six
 g2p_en
