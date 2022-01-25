@@ -194,6 +194,7 @@ def _init(path):
         printer.out("Default settings values added: {} ".format(num_default_added))
         _save(result, _SETTINGS_PATH)
     result['paths'] = {k: os.path.expandvars(v) for k, v in result['paths'].items()}    
+    result['Tree_Node_Path'] = {k: os.path.expandvars(v) for k, v in result['Tree_Node_Path'].items()}
     return result
 
 
