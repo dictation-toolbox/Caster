@@ -40,6 +40,7 @@ finally:
 DARWIN = sys.platform.startswith('darwin')
 LINUX = sys.platform.startswith('linux')
 WIN32 = sys.platform.startswith('win')
+lasthandle = None
 
 # TODO: Move functions that manipulate or retrieve information from Windows to `window_mgmt_support` in navigation_rules.
 # TODO: Implement Optional exact title matching for `get_matching_windows` in Dragonfly
@@ -67,18 +68,6 @@ def get_active_window_path():
     return Window.get_foreground().executable
 
 
-def get_active_window_info():
-    '''Returns foreground window executable_file, executable_path, title, handle, classname'''
-    FILENAME_PATTERN = re.compile(r"[/\\]([\w_ ]+\.[\w]+)")
-    window = Window.get_foreground()
-    executable_path = str(Path(get_active_window_path()))
-    match_object = FILENAME_PATTERN.findall(window.executable)
-    executable_file = None
-    if len(match_object) > 0:
-        executable_file = match_object[0]
-    return [executable_file, executable_path, window.title, window.handle, window.classname]
-
-
 def maximize_window():
     '''
     Maximize foreground Window
@@ -90,7 +79,30 @@ def minimize_window():
     '''
     Minimize foreground Window
     '''
+    global lasthandle
+    lasthandle = Window.get_foreground()
     Window.get_foreground().minimize()
+
+def restore_window():
+    '''
+    Restores last minimized window triggered minimize_window.
+    '''
+    global lasthandle
+    if lasthandle is None:
+        printer.out("No previous window minimized by voice")
+    else:
+        Window.restore(lasthandle)
+
+def get_active_window_info():
+    '''Returns foreground window executable_file, executable_path, title, handle, classname'''
+    FILENAME_PATTERN = re.compile(r"[/\\]([\w_ ]+\.[\w]+)")
+    window = Window.get_foreground()
+    executable_path = str(Path(get_active_window_path()))
+    match_object = FILENAME_PATTERN.findall(window.executable)
+    executable_file = None
+    if len(match_object) > 0:
+        executable_file = match_object[0]
+    return [executable_file, executable_path, window.title, window.handle, window.classname]
 
 
 def save_toml_file(data, path):
@@ -157,6 +169,22 @@ def simple_log(to_file=False):
     if to_file:
         with io.open(settings.SETTINGS["paths"]["LOG_PATH"], 'at', encoding="utf-8") as f:
             f.write(msg + "\n")
+
+def get_caster_messaging_window():
+    '''
+    Returns window title of window that outputs caster messages
+    '''
+    engine = get_current_engine().name
+    if engine == 'natlink':
+        import natlinkstatus  # pylint: disable=import-error
+        status = natlinkstatus.NatlinkStatus()
+        if status.NatlinkIsEnabled() == 1:
+            if six.PY2:
+                return "Messages from Python Macros"
+            else: 
+                return "Messages from Natlink"
+        else:
+            return "Caster: Status Window"
 
 
 def availability_message(feature, dependency):
@@ -243,21 +271,20 @@ def clear_log():
     # Function to clear status window.
     # Natlink status window not used an out-of-process mode.
     # TODO: window_exists utilized when engine launched through Dragonfly CLI via bat in future
+    window_title = get_caster_messaging_window()
     try:
         if WIN32:
             clearcmd = "cls" # Windows OS
         else:
             clearcmd = "clear" # Linux
         if get_current_engine().name == 'natlink':
-            import natlinkstatus  # pylint: disable=import-error
-            status = natlinkstatus.NatlinkStatus()
-            if status.NatlinkIsEnabled() == 1:
+            handle = get_window_by_title(window_title)
+            if handle:
                 import win32gui  # pylint: disable=import-error
-                handle = get_window_by_title("Messages from Python Macros") or get_window_by_title("Messages from Natlink")
                 rt_handle = win32gui.FindWindowEx(handle, None, "RICHEDIT", None)
                 win32gui.SetWindowText(rt_handle, "")
             else:
-                if window_exists(windowname="Caster: Status Window"):
+                if window_exists(windowname=window_title):
                     os.system(clearcmd)
         else:
             if window_exists(windowname="Caster: Status Window"):
