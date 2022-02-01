@@ -1,4 +1,4 @@
-dragonfly2[kaldi]>=0.29.0
+dragonfly2[kaldi]>=0.34.0
 pillow>=8.0.0
 tomlkit>=0.5.11
 future>=0.18.2
