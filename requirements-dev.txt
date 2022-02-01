@@ -8,4 +8,5 @@ appdirs>=1.4.3
 scandir>=1.10.0
 pylint
 pyvda==0.0.8
+PySide2>=5.14
 six
