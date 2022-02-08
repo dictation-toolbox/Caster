@@ -1,6 +1,6 @@
 import sys, subprocess, json
 
-from dragonfly import CompoundRule, MappingRule, get_current_engine
+from dragonfly import CompoundRule, MappingRule, get_current_engine, Function
 
 from pathlib import Path
 
@@ -11,8 +11,7 @@ try:  # Style C -- may be imported into Caster, or externally
 finally:
     from castervoice.lib import settings
     
-from castervoice.lib import printer
-from castervoice.lib import control
+from castervoice.lib import printer, control, utilities
 from castervoice.lib.rules_collection import get_instance
 
 def start_hud():
@@ -46,6 +45,8 @@ def clear_hud():
         hud.clear_hud()
     except Exception as e:
         printer.out("Unable to clear hud. Hud not available. \n{}".format(e))
+        # clear cmd output if hud unavailable
+        Function(utilities.clear_log).execute()
 
 
 def show_rules():
