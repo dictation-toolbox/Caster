@@ -247,7 +247,7 @@ def default_browser_command():
 
 def clear_log():
     # Function to clear status window.
-    # Natlink status window not used an out-of-process mode.
+    # Natlink status window not used in out-of-process mode.
     # TODO: window_exists utilized when engine launched through Dragonfly CLI via bat in future
     try:
         if WIN32:
