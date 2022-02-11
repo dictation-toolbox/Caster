@@ -43,10 +43,7 @@ def dep_missing():
         except VersionConflict:
             pass
         except DistributionNotFound:
-            if dep.startswith("wxpython") and sys.version_info[0] >= 3: # Remove when natlink Python 3
-                pass
-            else:
-                missing_list.append('{0}'.format(dep))
+            missing_list.append('{0}'.format(dep))
     if missing_list:
         pippackages = (' '.join(map(str, missing_list)))
         printer.out("\nCaster: dependencys are missing. Use 'python -m pip install {0}'".format(pippackages))
