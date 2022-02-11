@@ -168,10 +168,6 @@ def simple_log(to_file=False):
             f.write(msg + "\n")
 
 
-def availability_message(feature, dependency):
-    printer.out(feature + " feature not available without " + dependency)
-
-
 def remote_debug(who_called_it=None):
     if who_called_it is None:
         who_called_it = "An unidentified process"

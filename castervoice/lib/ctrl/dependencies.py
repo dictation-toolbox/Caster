@@ -81,8 +81,3 @@ class DependencyMan:
         if install == "classic":
             dep_missing()
             dep_min_version()
-
-    # TODO: Remove variables and underlying logic feature switches based on dependencies. 
-    NATLINK = True
-    PYWIN32 = True
-    WX = True

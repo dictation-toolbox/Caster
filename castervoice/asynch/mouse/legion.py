@@ -20,10 +20,7 @@ finally:
 
 from pathlib import Path
 
-try:
-    from PIL import ImageGrab, ImageFilter, Image
-except ImportError:
-    utilities.availability_message("Legion", "PIL")
+from PIL import ImageGrab, ImageFilter, Image
 '''
 The screen will be divided into vertical columns of equal width.
 The width of each Legion box cannot exceed the width of the column.
