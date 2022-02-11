@@ -16,6 +16,7 @@ from urllib.parse import unquote
 import tomlkit
 from castervoice.lib.clipboard import Clipboard
 from castervoice.lib.util import guidance
+from castervoice.asynch import hud_support
 from dragonfly import Key, Window, get_current_engine
 
 try:  # Style C -- may be imported into Caster, or externally
@@ -212,6 +213,7 @@ def reboot():
             # Natlink out-of-process
             engine.disconnect()
             subprocess.Popen([sys.executable, '-m', 'dragonfly', 'load', '--engine', 'natlink', '_*.py', '--no-recobs-messages'])
+    hud_support.clear_hud()
 
 
 def default_browser_command():
