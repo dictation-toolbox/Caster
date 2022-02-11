@@ -189,7 +189,7 @@ class SettingsDialog(QDialog):
                         value = int(value)
                     d[field.original] = float(value)
                 else:
-                    d[field.original] = value.replace("\\", "/")
+                    d[field.original] = value
             elif isinstance(field.widget, (QScrollArea, QGroupBox)):
                 d[field.original] = self.tree_to_dictionary(field)
             elif isinstance(field.widget, QCheckBox):
