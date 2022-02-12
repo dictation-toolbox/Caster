@@ -76,7 +76,7 @@ def _validate_engine_path():
     if not sys.platform.startswith('win'):
         return ''
     try:
-        import natlink  # pylint: disable=import-error
+        from natlink import isNatSpeakRunning  # pylint: disable=import-error
     except ImportError:
         return ''
     if os.path.isfile(_SETTINGS_PATH):
@@ -86,16 +86,17 @@ def _validate_engine_path():
             if os.path.isfile(engine_path):
                 return engine_path
             else:
-                engine_path = _find_natspeak()
-                data["paths"]["ENGINE_PATH"] = engine_path
-                try:
-                    formatted_data = str(tomlkit.dumps(data))
-                    with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as toml_file:
-                        toml_file.write(formatted_data)
-                    printer.out("Setting engine path to {}".format(engine_path))
-                except Exception as e:
-                    printer.out("Error saving settings file {} {} ".format(e, _SETTINGS_PATH))
-                return engine_path
+                if isNatSpeakRunning() is True:
+                    engine_path = _find_natspeak()
+                    data["paths"]["ENGINE_PATH"] = engine_path
+                    try:
+                        formatted_data = str(tomlkit.dumps(data))
+                        with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as toml_file:
+                            toml_file.write(formatted_data)
+                        printer.out("Setting engine path to {}".format(engine_path))
+                    except Exception as e:
+                        printer.out("Error saving settings file {} {} ".format(e, _SETTINGS_PATH))
+                    return engine_path
     else:
         return _find_natspeak()
 
