@@ -1,5 +1,5 @@
 import sys, os
-import collections
+from collections.abc import Mapping
 import io
 from pathlib import Path
 
@@ -206,7 +206,7 @@ def _deep_merge_defaults(data, defaults):
     for key, default_value in defaults.items():
         # If the key is in the data, use that, but call recursivly if it's a dict.
         if key in data:
-            if isinstance(data[key], six.moves.collections_abc.Mapping):
+            if isinstance(data[key], Mapping):
                 child_data, child_changes = _deep_merge_defaults(data[key], default_value)
                 data[key] = child_data
                 changes += child_changes
