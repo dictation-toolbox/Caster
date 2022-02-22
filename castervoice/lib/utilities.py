@@ -41,6 +41,9 @@ DARWIN = sys.platform.startswith('darwin')
 LINUX = sys.platform.startswith('linux')
 WIN32 = sys.platform.startswith('win')
 
+lasthandle = None
+
+
 # TODO: Move functions that manipulate or retrieve information from Windows to `window_mgmt_support` in navigation_rules.
 # TODO: Implement Optional exact title matching for `get_matching_windows` in Dragonfly
 def window_exists(windowname=None, executable=None):
@@ -90,7 +93,27 @@ def minimize_window():
     '''
     Minimize foreground Window
     '''
+    global lasthandle
+    lasthandle = Window.get_foreground()
     Window.get_foreground().minimize()
+
+
+def close_window():
+    '''
+    Close foreground Window
+    '''
+    Window.get_foreground().close()
+
+
+def restore_window():
+    '''
+    Restores last minimized window triggered minimize_window.
+    '''
+    global lasthandle
+    if lasthandle is None:
+        printer.out("No previous window minimized by voice")
+    else:
+        Window.restore(lasthandle)
 
 
 def save_toml_file(data, path):
