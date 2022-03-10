@@ -3,7 +3,8 @@
 from __future__ import unicode_literals
 from builtins import str
 
-import collections
+import os
+import sys
 import io
 import tomlkit
 from past.builtins import xrange
@@ -15,6 +16,7 @@ from castervoice.lib.util import guidance
 from appdirs import *
 
 import six
+
 if six.PY2:
     from castervoice.lib.util.pathlib import Path
 else:
@@ -218,7 +220,7 @@ def _deep_merge_defaults(data, defaults):
     for key, default_value in defaults.items():
         # If the key is in the data, use that, but call recursivly if it's a dict.
         if key in data:
-            if isinstance(data[key], collections.Mapping):
+            if isinstance(data[key], six.moves.collections_abc.Mapping):
                 child_data, child_changes = _deep_merge_defaults(data[key], default_value)
                 data[key] = child_data
                 changes += child_changes
