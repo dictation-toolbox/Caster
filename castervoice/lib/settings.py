@@ -16,11 +16,15 @@ from castervoice.lib.util import guidance
 from appdirs import *
 
 import six
-
 if six.PY2:
     from castervoice.lib.util.pathlib import Path
 else:
     from pathlib import Path  # pylint: disable=import-error
+
+try:
+    from collections.abc import Mapping
+except ImportError:
+    from collections import Mapping # pylint: disable=import-error
 
 # consts: some of these can easily be moved out of this file
 GENERIC_HELP_MESSAGE = """
@@ -220,7 +224,7 @@ def _deep_merge_defaults(data, defaults):
     for key, default_value in defaults.items():
         # If the key is in the data, use that, but call recursivly if it's a dict.
         if key in data:
-            if isinstance(data[key], six.moves.collections_abc.Mapping):
+            if isinstance(data[key], Mapping):
                 child_data, child_changes = _deep_merge_defaults(data[key], default_value)
                 data[key] = child_data
                 changes += child_changes
