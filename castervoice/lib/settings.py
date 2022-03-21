@@ -1,7 +1,7 @@
 import sys, os
-import collections
-import io
 import copy
+from collections.abc import Mapping
+import io
 from pathlib import Path
 
 import tomlkit
@@ -34,7 +34,7 @@ QTYPE_INSTRUCTIONS = "3"
 QTYPE_RECORDING = "4"
 QTYPE_DIRECTORY = "5"
 QTYPE_CONFIRM = "6"
-WXTYPE_SETTINGS = "7"
+QTTYPE_SETTINGS = "7"
 HMC_SEPARATOR = "[hmc]"
 
 # calculated fields
@@ -77,7 +77,7 @@ def _validate_engine_path():
     if not sys.platform.startswith('win'):
         return ''
     try:
-        import natlink  # pylint: disable=import-error
+        from natlink import isNatSpeakRunning  # pylint: disable=import-error
     except ImportError:
         return ''
     if os.path.isfile(_SETTINGS_PATH):
@@ -87,16 +87,17 @@ def _validate_engine_path():
             if os.path.isfile(engine_path):
                 return engine_path
             else:
-                engine_path = _find_natspeak()
-                data["paths"]["ENGINE_PATH"] = engine_path
-                try:
-                    formatted_data = str(tomlkit.dumps(data))
-                    with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as toml_file:
-                        toml_file.write(formatted_data)
-                    printer.out("Setting engine path to {}".format(engine_path))
-                except Exception as e:
-                    printer.out("Error saving settings file {} {} ".format(e, _SETTINGS_PATH))
-                return engine_path
+                if isNatSpeakRunning() is True:
+                    engine_path = _find_natspeak()
+                    data["paths"]["ENGINE_PATH"] = engine_path
+                    try:
+                        formatted_data = str(tomlkit.dumps(data))
+                        with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as toml_file:
+                            toml_file.write(formatted_data)
+                        printer.out("Setting engine path to {}".format(engine_path))
+                    except Exception as e:
+                        printer.out("Error saving settings file {} {} ".format(e, _SETTINGS_PATH))
+                    return engine_path
     else:
         return _find_natspeak()
 
@@ -208,7 +209,7 @@ def _deep_merge_defaults(data, defaults):
     for key, default_value in defaults.items():
         # If the key is in the data, use that, but call recursivly if it's a dict.
         if key in data:
-            if isinstance(data[key], collections.Mapping):
+            if isinstance(data[key], Mapping):
                 child_data, child_changes = _deep_merge_defaults(data[key], default_value)
                 data[key] = child_data
                 changes += child_changes
@@ -254,7 +255,7 @@ def _get_defaults():
             "DLL_PATH":
                 str(Path(_BASE_PATH).joinpath("lib/dll/")),
             "GDEF_FILE":
-                str(Path(_USER_DIR).joinpath("transformers/words.txt")),
+                str(Path(_USER_DIR).joinpath("caster_user_content/transformers/words.txt")),
             "LOG_PATH":
                 str(Path(_USER_DIR).joinpath("log.txt")),
             "SAVED_CLIPBOARD_PATH":

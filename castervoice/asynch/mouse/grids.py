@@ -22,10 +22,7 @@ finally:
 if is_linux():
     from tkinter import ttk,font
 
-try:
-    from PIL import ImageGrab, ImageTk, ImageDraw, ImageFont
-except ImportError:
-    utilities.availability_message("Douglas Grid / Rainbow Grid / Sudoku Grid", "PIL")
+from PIL import ImageGrab, ImageTk, ImageDraw, ImageFont
 
 
 class Dimensions:

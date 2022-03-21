@@ -14,7 +14,7 @@ def receive_settings(data):
 
 
 def settings_window():
-    h_launch.launch(settings.WXTYPE_SETTINGS)
+    h_launch.launch(settings.QTTYPE_SETTINGS)
     on_complete = AsynchronousAction.hmc_complete(lambda data: receive_settings(data))
     AsynchronousAction(
         [L(S(["cancel"], on_complete))],

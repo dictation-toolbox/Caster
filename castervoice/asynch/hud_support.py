@@ -1,6 +1,6 @@
 import sys, subprocess, json
 
-from dragonfly import CompoundRule, MappingRule, get_current_engine
+from dragonfly import CompoundRule, MappingRule, get_current_engine, Function
 
 from pathlib import Path
 
@@ -11,8 +11,7 @@ try:  # Style C -- may be imported into Caster, or externally
 finally:
     from castervoice.lib import settings
     
-from castervoice.lib import printer
-from castervoice.lib import control
+from castervoice.lib import printer, control, utilities
 from castervoice.lib.rules_collection import get_instance
 
 def start_hud():
@@ -46,6 +45,8 @@ def clear_hud():
         hud.clear_hud()
     except Exception as e:
         printer.out("Unable to clear hud. Hud not available. \n{}".format(e))
+        # clear cmd output if hud unavailable
+        Function(utilities.clear_log).execute()
 
 
 def show_rules():
@@ -104,26 +105,27 @@ class HudPrintMessageHandler(printer.BaseMessageHandler):
     def __init__(self):
         super(HudPrintMessageHandler, self).__init__()
         self.hud = control.nexus().comm.get_com("hud")
-        self.exception = False
+        self.is_hud_active = False
         try:
             if get_current_engine().name != "text":
                 self.hud.ping() # HUD running?
+                self.is_hud_active = True
         except Exception as e:
-            self.exception = True
+            self.is_hud_active = False
             printer.out("Hud not available. \n{}".format(e))
 
     def handle_message(self, items):
-        if self.exception is False:
+        if self.is_hud_active is True:
             # The timeout with the hud can interfere with the dragonfly speech recognition loop.
             # This appears as a stutter in recognition.
-            # Exceptions are tracked so this stutter only happens to end user once.
-            # Make exception if the hud is not available/python 2/text engine
+            # This stutter only happens to end user once, while self.hud.ping() is executing.
+            # is_hud_active is False if the hud is not available/text engine
             # TODO: handle raising exception gracefully
             try:
                 self.hud.send("\n".join([str(m) for m in items]))
             except Exception as e:
                 # If an exception, print is managed by SimplePrintMessageHandler
-                self.exception = True
+                self.is_hud_active = False
                 printer.out("Hud not available. \n{}".format(e))
                 raise("") # pylint: disable=raising-bad-type
         else:

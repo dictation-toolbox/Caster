@@ -29,8 +29,6 @@ class _DependencyUpdate(RunCommand):
 
 class CasterRule(MappingRule):
     mapping = {
-        "clear caster log":
-            R(Function(utilities.clear_log)),
         "reboot caster":
             R(Function(utilities.reboot)),
         "update dragonfly":
@@ -44,15 +42,15 @@ class CasterRule(MappingRule):
             R(Function(lambda: control.nexus().set_ccr_active(True))),
         "disable (c c r|ccr)":
             R(Function(lambda: control.nexus().set_ccr_active(False))),
-        "show hud":
+        "show caster hud":
             R(Function(show_hud), rdescript="Show the HUD window"),
-        "hide hud":
+        "hide caster hud":
             R(Function(hide_hud), rdescript="Hide the HUD window"),
-        "show rules":
+        "show caster rules":
             R(Function(show_rules), rdescript="Open HUD frame with the list of active rules"),
-        "hide rules":
+        "hide caster rules":
             R(Function(hide_rules), rdescript="Hide the list of active rules"),
-        "clear hud":
+        "clear caster hud":
             R(Function(clear_hud), rdescript="Clear output the HUD window"),
     }
 

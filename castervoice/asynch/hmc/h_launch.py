@@ -24,7 +24,7 @@ def launch(hmc_type, data=None):
 
 
 def _get_instructions(hmc_type):
-    if hmc_type == settings.WXTYPE_SETTINGS:
+    if hmc_type == settings.QTTYPE_SETTINGS:
         return [
             settings.SETTINGS["paths"]["PYTHONW"],
             settings.SETTINGS["paths"]["SETTINGS_WINDOW_PATH"]
@@ -46,7 +46,7 @@ def _get_title(hmc_type):
         return default + settings.HMC_TITLE_DIRECTORY
     elif hmc_type == settings.QTYPE_CONFIRM:
         return default + settings.HMC_TITLE_CONFIRM
-    elif hmc_type == settings.WXTYPE_SETTINGS:
+    elif hmc_type == settings.QTTYPE_SETTINGS:
         return settings.SETTINGS_WINDOW_TITLE + settings.SOFTWARE_VERSION_NUMBER
     return default
 

@@ -16,6 +16,7 @@ from urllib.parse import unquote
 import tomlkit
 from castervoice.lib.clipboard import Clipboard
 from castervoice.lib.util import guidance
+from castervoice.asynch import hud_support
 from dragonfly import Key, Window, get_current_engine
 
 try:  # Style C -- may be imported into Caster, or externally
@@ -28,6 +29,9 @@ finally:
 DARWIN = sys.platform.startswith('darwin')
 LINUX = sys.platform.startswith('linux')
 WIN32 = sys.platform.startswith('win')
+
+lasthandle = None
+
 
 # TODO: Move functions that manipulate or retrieve information from Windows to `window_mgmt_support` in navigation_rules.
 # TODO: Implement Optional exact title matching for `get_matching_windows` in Dragonfly
@@ -75,7 +79,27 @@ def minimize_window():
     '''
     Minimize foreground Window
     '''
+    global lasthandle
+    lasthandle = Window.get_foreground()
     Window.get_foreground().minimize()
+
+
+def close_window():
+    '''
+    Close foreground Window
+    '''
+    Window.get_foreground().close()
+
+
+def restore_window():
+    '''
+    Restores last minimized window triggered minimize_window.
+    '''
+    global lasthandle
+    if lasthandle is None:
+        printer.out("No previous window minimized by voice")
+    else:
+        Window.restore(lasthandle)
 
 
 def save_toml_file(data, path):
@@ -144,10 +168,6 @@ def simple_log(to_file=False):
             f.write(msg + "\n")
 
 
-def availability_message(feature, dependency):
-    printer.out(feature + " feature not available without " + dependency)
-
-
 def remote_debug(who_called_it=None):
     if who_called_it is None:
         who_called_it = "An unidentified process"
@@ -189,6 +209,7 @@ def reboot():
             # Natlink out-of-process
             engine.disconnect()
             subprocess.Popen([sys.executable, '-m', 'dragonfly', 'load', '--engine', 'natlink', '_*.py', '--no-recobs-messages'])
+    hud_support.clear_hud()
 
 
 def default_browser_command():
@@ -224,7 +245,7 @@ def default_browser_command():
 
 def clear_log():
     # Function to clear status window.
-    # Natlink status window not used an out-of-process mode.
+    # Natlink status window not used in out-of-process mode.
     # TODO: window_exists utilized when engine launched through Dragonfly CLI via bat in future
     try:
         if WIN32:

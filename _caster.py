@@ -37,11 +37,8 @@ if settings.SETTINGS["sikuli"]["enabled"]:
     from castervoice.asynch.sikuli import sikuli_controller
     sikuli_controller.get_instance().bootstrap_start_server_proxy()
 
-try:
-    if get_current_engine().name != "text":
-        hud_support.start_hud()
-except ImportError:
-    pass  # HUD is not available
+if get_current_engine().name != "text":
+    hud_support.start_hud()
 
 dh = printer.get_delegating_handler()
 dh.register_handler(hud_support.HudPrintMessageHandler()) # After hud starts
