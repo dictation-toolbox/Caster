@@ -24,6 +24,7 @@ jobs:
               python -m pip install --upgrade pip
               pip install --upgrade setuptools
               pip install wheel
+              pip install "regex<2022.1.18"
               pip install -U -r requirements-dev.txt
           - name: Lint with pylint
             run: |
