@@ -1,3 +1,4 @@
+# pylint: skip-file
 class ReloadFunctionProvider(object):
     def get_reload_fn(self):
         """
