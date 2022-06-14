@@ -7,7 +7,11 @@ updates:
     time: "00:00"
     timezone: America/Chicago
   open-pull-requests-limit: 10
+  labels:
+      - 'dependencies'
+  commit-message:
+      prefix: 'deps'
   ignore:
       - dependency-name: "pyvda*"
       - dependency-name: "wxpython*"
-approve: False
+      - dependency-name: "regex*"
