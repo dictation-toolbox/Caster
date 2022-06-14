@@ -1,5 +1,5 @@
 dragonfly2>=0.29.0
-wxpython==4.1.0
+wxpython==4.1.1
 pillow>=6.2.2
 tomlkit>=0.5.11
 future>=0.18.2
