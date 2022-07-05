@@ -23,7 +23,7 @@ Rules should be placed in [Caster User Directory](https://caster.readthedocs.io/
 ## Example Rule Code
 
 ```python
-# These lines that start with the # are called comments. They don't affect the way the code runs.
+# These lines that start with the `#` are called comments. They don't affect the way the code runs.
 # In this tutorial file, I put comments above the relevant lines.
 
 # You can skip down to the next comment, for now this is not important...
@@ -39,23 +39,20 @@ def my_function(n, text):
 
 class MyRule(MappingRule):
 
+    # It is this section that you want to edit if you're new to: mapping, extras, and defaults concepts.
     mapping = {
-    # It is this section that you want to fiddle around with if you're new: mapping, extras, and defaults
-
-    # Here I'm just saying two word to trigger some other words
-    "hotel info":                  Text("These types of hospitality industry are not cheap."),
+    # Here I'm just saying two words to trigger some other words
+    "hotel info":                  Text("These types of hospitality services are not cheap."),
 
     # In the next line, there are two things to observe:
-    # the first is the use of parentheses and the pipe symbol (|)
-    # --this lets me use either "motel" or "lodging" to trigger that command.
-    # The next is the playback action, which lets me tell speech recognition engine to simulate me speaking some words.
+    # 1. The use of parentheses and the pipe symbol ( | ) lets me use either "motel" or "lodging" to trigger that command.
+    # 2. The playback action, lets me tell the speech recognition engine to simulate me speaking some words.
     '(motel | lodging)':           Playback([(["hotel", "info"], 0.0)]),
 
-    # Here I'm using BringApp-- this is the same as typing what goes in between the parentheses
+    # Here I'm using BringApp -- this is the same as typing what goes in between the parentheses
     # Into the command prompt/terminnal, without the quotes and commas, like:
     # Windows OS: explorer C:\NatLink\NatLink\MacroSystem
-    # Could be changed changed for Linux/Mac
-    # -- (which would open Windows Explorer at the specified location). Anything you can do with the command line can be done this way
+    # Could be changed changed for Linux/Mac (which would open Windows Explorer at the specified location). Anything you can do with the command line can be done this way
     "open natlink folder":         BringApp("explorer", r"C:\NatLink\NatLink\MacroSystem"),
 
     # Here I'm using the Key action to press some keys -- see the documentation here: https://dragonfly2.readthedocs.io/en/latest/actions.html?#module-dragonfly.actions.action_key
@@ -81,9 +78,24 @@ class MyRule(MappingRule):
      # That's what `<choice>` Is defined in `extras` allows you define that list. If you dictate `i choose custom grid` Then `CustomGrid` will be printed as text.
      # Items in the list are pairs. e.g `{"custom grid": "CustomGrid"}` The first item of a pair is the command "custom grid" and the second "CustomGrid" output text action.   
     "i choose <choice>":           Text("%(choice)s"),
-
     }
-# This stuff is required too -- However you will learn more about how to change the rule types and contexts later.
-def get_rule():   
+    extras = [
+              IntegerRef("n", 1, 1000),
+              Dictation("text"),
+              Choice("choice",
+                    {
+                    "alarm": "alarm",
+                    "custom grid": "CustomGrid", 
+                    "element": "e"
+                    }),
+                ]
+    defaults = {
+                "n": 1,
+                "text": "",
+            }
+
+# This stuff below is required too -- 
+# However you will learn more about how to change the rule types and contexts later in the documentation.
+def get_rule():
     return MyRule, RuleDetails(name="my rule")
 ```
