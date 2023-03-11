@@ -2,7 +2,7 @@
 @echo off
 
 SetLocal EnableDelayedExpansion
-set python_version=3.8-32
+set python_version=3.10-32
 set currentpath=%~dp0
 echo Installation path: %currentpath%
 
