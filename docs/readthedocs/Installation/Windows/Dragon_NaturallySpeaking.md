@@ -23,17 +23,33 @@ After installing Dragon Naturally Speaking, you can configure the DNS settings b
 
 ## NatLink
 
-- Download and install [Natlink](https://sourceforge.net/projects/natlink/files/natlink/natlink4.2/). Use `Natlink-4.2` or newer.
-  
-  1. Verify (DPI / DNS) is not running.
-  
-  2. Open the start menu and search for `Configure NatLink` and click `Configure NatLink via GUI`.
-      ![Configure start](https://mathfly.org/images/configure_start.png)
+1. Verify (DPI / DNS) is not running.
 
-  3. Register Natlink and Restart your computer.
+1. Download and install [Natlink](https://sourceforge.net/projects/natlink/files/natlink/natlink4.2/). Use `Natlink-4.2` or newer.
+
+1. Open powershell with admin access (win+r, type `powershell` in the textfield, ctrl+shift+enter)
+
+1. Install the python libraries Natlink requires by running these commands in the powershell terminal:
+
+   ```powershell
+   gcm python # this should output a path to Python 2.7
+   gcm pip # this should output a path to Python 2.7
+   
+   cd 'C:\Natlink\Natlink\confignatlinkvocolaunimacro'
+   pip install pywin32
+   pip install setuptools # this may not be necessary. I uninstalled it as part of my troubleshooting steps
+   pip install wxPython==4.0.3
+   ```
+
+1. Start the Natlink GUI by running this command in the powershell terminal:
+   ```powershell
+   python start_configurenatlink.py
+   ```
+
+1. Register Natlink and Restart your computer.
       ![Natlink-Setup1.jpg](https://i.postimg.cc/3wdKsJFS/Natlink-Setup1.jpg)
 
-  4. Relaunch `Configure NatLink via GUI`. Then disable Natlink. Done with Natlink setup.
+1. Relaunch `Configure NatLink via GUI`. Then disable Natlink. Done with Natlink setup.
       ![Natlink-Setup2.jpg](https://i.postimg.cc/j20TGHMv/Natlink-Setup2.jpg)
 
 ### Caster
