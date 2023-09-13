@@ -2,7 +2,7 @@ regex<2022.1.18
 dragonfly2>=0.29.0
 wxpython==4.1.0
 pillow>=6.2.2
-tomlkit<=0.11.6
+tomlkit<=0.12.1
 future>=0.18.2
 mock>=3.0.5
 appdirs>=1.4.3

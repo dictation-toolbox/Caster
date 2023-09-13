@@ -1,6 +1,6 @@
 dragonfly2[kaldi]>=0.29.0
 pillow>=8.0.0
-tomlkit<=0.11.6
+tomlkit<=0.12.1
 future>=0.18.2
 mock>=3.0.5
 appdirs>=1.4.3
