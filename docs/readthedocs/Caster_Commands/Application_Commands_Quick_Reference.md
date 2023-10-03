@@ -184,8 +184,12 @@ Same Commands as [Git Bash](## git-bash)
 | `wipe`            | `FTP`                | `synchronize`   |
 | `sort by name`    | `sort by extension`  | `sort by date`  |
 | `sort by size`    | `file filter`        | `new tab`       |
+| `right tab [n]`    | `left tab [n]` | `quick search`  |
 | `multi rename`    | `display thumbnails` | `display list`  |
-| `display details` | `display file tree`  |                 |
+| `display details` | `display file tree`  | `pack files`    |
+| `occupied space`  | `refresh current directory`    | `directory contents` |
+| `selected directory contents` | `file properties`  | `create [new] text file`    |
+
 
 ## Total Commander: synchronize directories
 
