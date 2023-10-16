@@ -1,7 +1,7 @@
 regex<2022.1.18
 dragonfly2>=0.29.0
 wxpython==4.1.0
-pillow<=9.5.0
+pillow<=10.1.0
 tomlkit<=0.11.6
 future>=0.18.2
 mock>=3.0.5
