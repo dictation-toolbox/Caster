@@ -7,8 +7,7 @@
 
   - [Caster voice coding: Advent of Code 2018](https://youtu.be/oDsMGroASSw?t=3) - Programming with Go
   - [VimGolf and Project Euler](https://www.youtube.com/watch?v=T1bKAqDhH_E)
-  - [Dictating maths into scientific notebook](https://www.youtube.com/watch?v=oq8EoPu0cGY&t=3s) and [Dictating math by voice using Caster](https://www.youtube.com/watch?v=z-iHvPmjcas)
-  
+
 - Read the [Frequently Asked Questions - FAQ](https://caster.readthedocs.io/en/latest/readthedocs/meta/Caster_FAQ/)
 
 - [Getting started with Caster - ReadTheDocs](https://caster.readthedocs.io/en/latest/readthedocs/Getting_Started/Getting_Started_Overview/)
@@ -43,7 +42,7 @@
 
 - The [DictationToolbox.org](https://dictation-toolbox.github.io/dictation-toolbox.org/) (WIP) is a curated webpage of information related to voice programming and accessibility. Content Includes: User Tips, Hardware, Videos, Blogs, Repositories, Presentations, and etc. Pull requests welcome!
 
-## Feature List
+## Feature List <!-- {docsify-ignore} -->
 
 - Configurable [Settings](https://caster.readthedocs.io/en/latest/readthedocs/User_Dir/Caster_User_Dir/)
 

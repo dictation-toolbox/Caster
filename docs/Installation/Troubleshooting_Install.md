@@ -4,7 +4,7 @@ In the previous install documentation, each speech recognition engine has its ow
 
 ## Caster
 
-On startup Caster checks for missing python dependencies.    When a dependency is missing, Caster will print out the appropriate commands to the status window for the end-user to fix the issue in command prompt/terminal.
+On startup Caster checks for missing python dependencies. When a dependency is missing, Caster will print out the appropriate commands to the status window for the end-user to fix the issue in command prompt/terminal.
 
 - To fix `ERROR:action.exec:Execution failed: Function(mouse_alternates): [Error 126] The specified module could not be found`. Triggered by using the `Legion` command.
 
@@ -20,8 +20,7 @@ Please raise an issue if you find Legion still doesn't work on Windows 10 after 
     - [Proof of Concept](https://github.com/dictation-toolbox/dragonfly/issues/11) work around but the project needs an active developer with C#. This allows Caster and Dragonfly to only elevate specific functionality that is necessary such as Key/Text actions and application context details.
     - Advanced [Workaround](https://groups.google.com/g/dragonflyspeech/c/2VrJKBI2mSo/m/R4zl6u2mBwAJ) - Editing natlink.exe with hex editor and re-signing with self signed certificate - **Use at your own risk!** Instructions note disadvantages.
 
-- Fix `TypeError: command must be a non-empty string, not ['C:\\Python27\\Scripts\\pip.exe', 'search', 'castervoice']`
-    
+- Fix `TypeError: command must be a non-empty string, not ['C:\\Python27\\Scripts\\pip.exe', 'search', 'castervoice'`
     - Update Dragonfly `python -m pip install dragonfly2 --upgrade` in command prompt
 
 - To fix `ImportError: No module named win32con`
