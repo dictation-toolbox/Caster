@@ -3,7 +3,7 @@ generated-members=pythoncom.*,wx.*
 ignored-modules=natlink,natlinkstatus
 
 [MASTER]
-extension-pkg-whitelist=pythoncom,wx,pydevd,win32gui
+extension-pkg-whitelist=pythoncom,wx,pydevd,win32gui,PySide2
 
 [MESSAGES CONTROL]
 disable=all

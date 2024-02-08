@@ -5,6 +5,7 @@ Created on Oct 7, 2015
 '''
 import os, sys, time, pkg_resources
 from pkg_resources import VersionConflict, DistributionNotFound
+from castervoice.lib import printer
 
 DARWIN = sys.platform == "darwin"
 LINUX = sys.platform == "linux"
@@ -42,13 +43,10 @@ def dep_missing():
         except VersionConflict:
             pass
         except DistributionNotFound:
-            if dep.startswith("wxpython") and sys.version_info[0] >= 3: # Remove when natlink Python 3
-                pass
-            else:
-                missing_list.append('{0}'.format(dep))
+            missing_list.append('{0}'.format(dep))
     if missing_list:
         pippackages = (' '.join(map(str, missing_list)))
-        print("\nCaster: dependencys are missing. Use 'python -m pip install {0}'".format(pippackages))
+        printer.out("\nCaster: dependencys are missing. Use 'python -m pip install {0}'".format(pippackages))
         time.sleep(10)
 
 
@@ -57,7 +55,7 @@ def dep_min_version():
     # Needs to be manually resolved if Caster requires a specific version of dependency
     # A GitHub Issue URL needed to explain the change to version specific '==' dependency.
     listdependency = ([
-        ["dragonfly2", ">=", "0.29.0", "https://github.com/dictation-toolbox/dragonfly/issues/289"],
+        ["dragonfly2", ">=", "0.34.0", "https://github.com/dictation-toolbox/dragonfly/blob/master/CHANGELOG.rst#fixed"],
     ])
     for dep in listdependency:
         package = dep[0]
@@ -69,10 +67,10 @@ def dep_min_version():
         except VersionConflict as e:
             if operator == ">=":
                 if issue_url is not None:
-                    print("\nCaster: Requires {0} v{1} or greater.\nIssue reference: {2}".format(package, version, issue_url))
-                print("Update with: 'python -m pip install {} --upgrade' \n".format(package))
+                    printer.out("\nCaster: Requires {0} v{1} or greater.\nIssue reference: {2}".format(package, version, issue_url))
+                printer.out("Update with: 'python -m pip install {} --upgrade' \n".format(package))
             if operator == "==":
-                print("\nCaster: Requires an exact version of {0}.\nIssue reference: {1}".format(package, issue_url))
+                printer.out("\nCaster: Requires an exact version of {0}.\nIssue reference: {1}".format(package, issue_url))
                 print("Install with: 'python -m pip install {}' \n".format(e.req))
 
 
@@ -83,8 +81,3 @@ class DependencyMan:
         if install == "classic":
             dep_missing()
             dep_min_version()
-
-    # TODO: Remove variables and underlying logic feature switches based on dependencies. 
-    NATLINK = True
-    PYWIN32 = True
-    WX = True

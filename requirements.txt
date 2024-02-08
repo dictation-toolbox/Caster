@@ -1,11 +1,10 @@
-regex<2022.1.18
-dragonfly2>=0.29.0
-wxpython==4.1.0
-pillow<=9.5.0
-tomlkit<=0.11.6
+dragonfly2>=0.34.0
+pillow==9.5.0
+tomlkit>=0.11.8
 future>=0.18.2
 mock>=3.0.5
 appdirs>=1.4.3
 scandir>=1.10.0
 pyvda==0.0.8
+PySide2>=5.14
 six

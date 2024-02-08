@@ -1,30 +1,13 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-from builtins import str
-
-import os
-import sys
+import sys, os
+from collections.abc import Mapping
 import io
+from pathlib import Path
+
 import tomlkit
-from past.builtins import xrange
-
-from castervoice.lib import printer
-from castervoice.lib import version
-from castervoice.lib.util import guidance
-
 from appdirs import *
-
-import six
-if six.PY2:
-    from castervoice.lib.util.pathlib import Path
-else:
-    from pathlib import Path  # pylint: disable=import-error
-
-try:
-    from collections.abc import Mapping
-except ImportError:
-    from collections import Mapping # pylint: disable=import-error
+from castervoice.lib import printer, version
+from castervoice.lib.util import guidance
+from past.builtins import xrange
 
 # consts: some of these can easily be moved out of this file
 GENERIC_HELP_MESSAGE = """
@@ -39,6 +22,7 @@ HOMUNCULUS_VERSION = "HMC v " + SOFTWARE_VERSION_NUMBER
 HMC_TITLE_RECORDING = " :: Recording Manager"
 HMC_TITLE_DIRECTORY = " :: Directory Selector"
 HMC_TITLE_CONFIRM = " :: Confirm"
+HUD_TITLE = "Caster HUD v " + SOFTWARE_VERSION_NUMBER
 LEGION_TITLE = "legiongrid"
 RAINBOW_TITLE = "rainbowgrid"
 DOUGLAS_TITLE = "douglasgrid"
@@ -49,7 +33,7 @@ QTYPE_INSTRUCTIONS = "3"
 QTYPE_RECORDING = "4"
 QTYPE_DIRECTORY = "5"
 QTYPE_CONFIRM = "6"
-WXTYPE_SETTINGS = "7"
+QTTYPE_SETTINGS = "7"
 HMC_SEPARATOR = "[hmc]"
 
 # calculated fields
@@ -92,7 +76,7 @@ def _validate_engine_path():
     if not sys.platform.startswith('win'):
         return ''
     try:
-        import natlink  # pylint: disable=import-error
+        from natlink import isNatSpeakRunning  # pylint: disable=import-error
     except ImportError:
         return ''
     if os.path.isfile(_SETTINGS_PATH):
@@ -102,16 +86,17 @@ def _validate_engine_path():
             if os.path.isfile(engine_path):
                 return engine_path
             else:
-                engine_path = _find_natspeak()
-                data["paths"]["ENGINE_PATH"] = engine_path
-                try:
-                    formatted_data = str(tomlkit.dumps(data))
-                    with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as toml_file:
-                        toml_file.write(formatted_data)
-                    printer.out("Setting engine path to {}".format(engine_path))
-                except Exception as e:
-                    printer.out("Error saving settings file {} {} ".format(e, _SETTINGS_PATH))
-                return engine_path
+                if isNatSpeakRunning() is True:
+                    engine_path = _find_natspeak()
+                    data["paths"]["ENGINE_PATH"] = engine_path
+                    try:
+                        formatted_data = str(tomlkit.dumps(data))
+                        with io.open(_SETTINGS_PATH, "w", encoding="utf-8") as toml_file:
+                            toml_file.write(formatted_data)
+                        printer.out("Setting engine path to {}".format(engine_path))
+                    except Exception as e:
+                        printer.out("Error saving settings file {} {} ".format(e, _SETTINGS_PATH))
+                    return engine_path
     else:
         return _find_natspeak()
 
@@ -122,10 +107,7 @@ def _find_natspeak():
     '''
 
     try:
-        if six.PY2:
-            import _winreg as winreg
-        else:
-            import winreg
+        import winreg
     except ImportError:
         printer.out("Could not import winreg")
         return ""
@@ -301,6 +283,8 @@ def _get_defaults():
                 _validate_engine_path(),
             "HOMUNCULUS_PATH":
                 str(Path(_BASE_PATH).joinpath("asynch/hmc/h_launch.py")),
+            "HUD_PATH":
+                str(Path(_BASE_PATH).joinpath("asynch/hud.py")),
             "LEGION_PATH":
                 str(Path(_BASE_PATH).joinpath("asynch/mouse/legion.py")),
             "MEDIA_PATH":
@@ -376,7 +360,7 @@ def _get_defaults():
 
         # Default enabled hooks: Use hook class name
         "hooks": {
-            "default_hooks": ['PrinterHook'],
+            "default_hooks": ['PrinterHook', 'RulesLoadedHook'],
         },
 
         # miscellaneous section
@@ -500,8 +484,4 @@ def initialize():
     if _debugger_path not in sys.path and os.path.isdir(_debugger_path):
         sys.path.append(_debugger_path)
 
-    # set up printer -- it doesn't matter where you do this; messages will start printing to the console after this
-    dh = printer.get_delegating_handler()
-    dh.register_handler(printer.SimplePrintMessageHandler())
-    # begin using printer
     printer.out("Caster User Directory: {}".format(_USER_DIR))

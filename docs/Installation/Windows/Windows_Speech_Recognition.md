@@ -5,8 +5,7 @@ Caster currently supports Windows Speech Recognition (WSR) on Microsoft Windows 
 ## 1. Python
 
 - **First** Download and install  [Python 3](https://www.python.org/downloads/release/python-388/) listed as `Windows x86-64 MSI installer`.`
-
-      - Make sure to select `Add python to path`. This can be done manually by searching for "edit environment variables for your account" and adding your Python folder to the list of Path values.
+   - Make sure to select `Add python to path`. This can be done manually by searching for "edit environment variables for your account" and adding your Python folder to the list of Path values.
 
 ## 2. Caster
 

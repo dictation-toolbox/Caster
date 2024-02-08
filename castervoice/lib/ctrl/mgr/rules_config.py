@@ -57,7 +57,7 @@ class RulesConfig(TomlConfig):
         """
         Only internal and whitelisted rules should be able to get enabled.
         """
-        initial = self._config[RulesConfig._ENABLED_ORDERED][:]
+        initial = self._config[RulesConfig._ENABLED_ORDERED]
         validated = []
         for rcn in initial:
             is_internal = rcn in self._config[RulesConfig._INTERNAL]

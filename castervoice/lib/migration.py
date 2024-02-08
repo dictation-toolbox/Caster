@@ -1,15 +1,10 @@
+from pathlib import Path
 import shutil
-
-import six
 
 from castervoice.lib import settings
 from castervoice.lib.ctrl.mgr.loading.load.content_root import ContentRoot
 from castervoice.lib.merge.selfmod.sm_config import SelfModStateSavingConfig
 
-if six.PY2:
-    from castervoice.lib.util.pathlib import Path
-else:
-    from pathlib import Path  # pylint: disable=import-error
 
 
 class UserDirUpdater(object):

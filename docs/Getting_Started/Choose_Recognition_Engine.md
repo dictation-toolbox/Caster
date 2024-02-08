@@ -1,6 +1,6 @@
 # Choose a Speech Recognition Engine
 
-Caster currently supports the following speech recognition engines on Microsoft Windows Vista through Windows 10. This is a brief overview of the supported speech recognition engines.
+Caster currently supports the following speech recognition engines on Microsoft Windows 10 through Windows 11. This is a brief overview of the supported speech recognition engines. Windows Vista and Windows 8 may work but are no longer supported.
 
 ## Dragon NaturallySpeaking
 

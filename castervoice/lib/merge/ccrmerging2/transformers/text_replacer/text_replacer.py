@@ -4,7 +4,7 @@ from castervoice.lib import printer
 from castervoice.lib.merge.ccrmerging2.transformers.base_transformer import BaseRuleTransformer
 from castervoice.lib.merge.ccrmerging2.transformers.text_replacer.tr_extra_data import TextReplacementExtraData
 from castervoice.lib.merge.ccrmerging2.transformers.text_replacer.tr_parser import TRParser
-import six
+
 
 def _analyze_extras(spec):
     """
@@ -114,7 +114,7 @@ def _spec_override_from_config(rule, definitions):
     if len(defaults) > 0:
         for default_key in list(defaults.keys()):  #
             value = defaults[default_key]
-            if isinstance(value, six.string_types):
+            if isinstance(value, str):
                 '''only replace strings; also,
                 only replace values, not keys:
                 default_key should not be changed - it will never be spoken'''

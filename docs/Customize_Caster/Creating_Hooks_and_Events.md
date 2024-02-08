@@ -2,7 +2,7 @@
 
 Hooks are a new concept to Caster 1.x.x. The basic idea is that Caster itself defines "events." Event objects contain immutable information about the stuff going on in the "guts" of Caster. Those objects are fed to "hooks", user-defined listeners, which can do whatever they want with that event data.  
 
-Hooks and Events make use of dependency injection and class inheritance through base classes. This design pattern coupled with loosely coupled code leads to less bugs and more productivity, and so the use of hooks rather than "guts" modifications is encouraged whenever possible. This should allow a decent amount of customization to happen without needing to make changes in the "guts" (Nexus, GrammarManager, CCRMerger, etc. of Caster. 
+Hooks and Events make use of dependency injection and class inheritance through base classes. This design pattern coupled with loosely coupled code leads to less bugs and more productivity, and so the use of hooks rather than "guts" modifications is encouraged whenever possible. This should allow a decent amount of customization to happen without needing to make changes in the "guts" (Nexus, GrammarManager, CCRMerger, etc. of Caster). 
 
 All new hooks are set to `false` by default unless they' are defined as defaults in `settings.py`  under `default_hooks`. 
 
