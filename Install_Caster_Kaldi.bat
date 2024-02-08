@@ -5,8 +5,8 @@ echo Using this python/pip:
 python -m pip -V
 
 echo Installing Caster Dependencies
-python -m pip install -r "%currentpath%requirements.txt"
-python -m pip install dragonfly2[kaldi]
+py -m pip install -r "%currentpath%requirements.txt"
+py -m pip install dragonfly2[kaldi]
 
 echo Remember: Manually install kaldi a model. 
 echo See Caster kaldi install instructions on ReadTheDocs.
