@@ -115,10 +115,11 @@ _executables = [
     "idea",
     "idea64",
     "studio64",
-    "pycharm"
+    "pycharm",
+    "gnome-terminal"
 ]
 
 
 def get_rule():
-    return GitBashRule, RuleDetails(name="git bash", executable=_executables)
+    return GitBashRule, RuleDetails(name="(git bash | terminal)", executable=_executables)
 
