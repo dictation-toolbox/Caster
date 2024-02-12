@@ -1,4 +1,5 @@
 import sys, os
+import copy
 from collections.abc import Mapping
 import io
 from pathlib import Path
@@ -193,6 +194,8 @@ def _init(path):
     if num_default_added > 0:
         printer.out("Default settings values added: {} ".format(num_default_added))
         _save(result, _SETTINGS_PATH)
+    result['paths'] = {k: os.path.expandvars(v) for k, v in result['paths'].items()}    
+    result['Tree_Node_Path'] = {k: os.path.expandvars(v) for k, v in result['Tree_Node_Path'].items()}
     return result
 
 
@@ -450,11 +453,31 @@ def settings(key_path, default_value=None):
     return value
 
 
-def save_config():
+def save_config(paths = False):
     """
     Save the current in-memory settings to disk
     """
-    _save(SETTINGS, _SETTINGS_PATH)
+    guidance.offer()
+    if not paths:
+        # Use the paths on disk
+        result = {}
+        try:
+            with io.open(_SETTINGS_PATH, "rt", encoding="utf-8") as f:
+                result = tomlkit.loads(f.read()).value
+        except ValueError as e:
+            printer.out("\n\n {} while loading settings file: {} \n\n".format(repr(e), _SETTINGS_PATH))
+            printer.out(sys.exc_info())
+        except IOError as e:
+            printer.out("\n\n {} while loading settings file: {} \nAttempting to recover...\n\n".format(repr(e), _SETTINGS_PATH))
+        SETTINGS_tmp = copy.deepcopy(SETTINGS)
+        if "paths" in result:
+            SETTINGS_tmp['paths'] = result['paths']
+        _save(SETTINGS_tmp, _SETTINGS_PATH)
+    else:
+        _save(SETTINGS, _SETTINGS_PATH)
+
+     
+    
 
 
 def initialize():

@@ -9,7 +9,7 @@ from castervoice.lib.merge.state.short import R, S, L
 
 def receive_settings(data):
     settings.SETTINGS = data
-    settings.save_config()
+    settings.save_config(paths = True)
     # TODO: apply new settings
 
 
