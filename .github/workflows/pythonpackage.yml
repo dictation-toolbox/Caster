@@ -8,11 +8,11 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        python-version: [2.7.x]
+        python-version: [2.7]
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: LizardByte/setup-python-action@master
         with:
           python-version: ${{ matrix.python-version }}
           architecture: "x86"
