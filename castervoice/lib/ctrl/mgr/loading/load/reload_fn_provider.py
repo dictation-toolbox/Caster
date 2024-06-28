@@ -4,5 +4,6 @@ class ReloadFunctionProvider(object):
         """
         Reimports an already imported module. Python 2/3 compatible method.
         """
-        from imp import reload
+        #Python 3.12 support
+        from importlib import reload
         return reload
