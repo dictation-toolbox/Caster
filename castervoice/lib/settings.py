@@ -50,18 +50,22 @@ def _get_platform_information():
     import sysconfig
     system_information = {"platform": sysconfig.get_platform()}
     system_information.update({"python version": sys.version_info})
+    binary_path = str(Path(sys.exec_prefix).joinpath(sys.exec_prefix).joinpath("bin"))
+    hidden_console_binary = str(Path(sys.executable))
+    main_binary = str(Path(sys.executable))
     if sys.platform == "win32":
-        system_information.update({"binary path": sys.exec_prefix})
-        system_information.update(
-            {"main binary": str(Path(sys.exec_prefix).joinpath("python.exe"))})
-        system_information.update(
-            {"hidden console binary": str(Path(sys.exec_prefix).joinpath("pythonw.exe"))})
-    else:
-        system_information.update({"binary path": str(Path(sys.exec_prefix).joinpath(sys.exec_prefix).joinpath("bin"))})
-        system_information.update(
-            {"main binary": sys.executable})
-        system_information.update(
-            {"hidden console binary": sys.executable})
+        if sys.prefix == sys.base_prefix:
+            main_binary = str(Path(sys.exec_prefix).joinpath("python.exe"))
+            hidden_console_binary = str(Path(sys.exec_prefix).joinpath("pythonw.exe"))
+        else:
+            # Virtual environment detected
+            # TODO: MacOS and Linux?
+            main_binary = str(Path(sys.prefix) / "Scripts" / "python.exe")
+            hidden_console_binary = str(Path(sys.prefix) / "Scripts" / "pythonw.exe")
+    system_information.update({"binary path": binary_path})
+    system_information.update({"main binary": main_binary})
+    system_information.update({"hidden console binary": hidden_console_binary})
+    
     return system_information
 
 
