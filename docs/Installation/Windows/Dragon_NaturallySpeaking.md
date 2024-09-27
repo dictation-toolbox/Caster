@@ -39,13 +39,13 @@ After installing Dragon, you can configure the DNS settings based on your prefer
 
 3. Configure the Natlink GUI
    
-   ![natlink_gui](/images/natlink_gui.png)
+   ![natlink_gui](https://raw.githubusercontent.com/dictation-toolbox/Caster/refs/heads/master/docs/images/natlink_gui.png)
    
    - **Optionally** Check the relevant project Dragonfly or Unimacro to configure the file path to the grammars.
 
 4. Start Dragon start Dragon, the `Messages from Natlink` window should show loading a dragonfly script.  In the picture blow is an example loading module`_caster` is `_caster.py`.
 
-   ![natlink_running](/images/natlink_running.png)
+   ![natlink_running](https://raw.githubusercontent.com/dictation-toolbox/Caster/refs/heads/master/docs/images/natlink_running.png)
 
 Scrips starting with an underscore and ending in .py `_*.py` will be imported in alphabetical order, except `__init__.py` will be loaded first if it exists. 
 

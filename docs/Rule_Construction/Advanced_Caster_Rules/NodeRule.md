@@ -23,7 +23,7 @@ So, let's say for example that I want to be able to speak any of the following c
 
 That's sixteen specs getting added. Since a lot of them will only be spoken after others, this command set fits well into a tree structure. (Not all command sets will.) The number of specs in the active CCR grammar from this command set can be reduced by only keeping a certain number of levels of the tree structure open (speakable) at a given time.
 
-<img src="https://raw.githubusercontent.com/dictation-toolbox/Caster/master/docs/img/noderule1.png">
+<img src="https://raw.githubusercontent.com/dictation-toolbox/Caster/refs/heads/master/docs/images/noderule1.png">
 
 In the above diagram, the first two levels of the tree are active. This means I can speak these specs:
 
@@ -41,7 +41,7 @@ In the above diagram, the first two levels of the tree are active. This means I 
 
 If I then speak spec (a), it's effect occurs, and the NodeRule updates itself so that the active nodes look like the diagram below.
 
-<img src="https://raw.githubusercontent.com/dictation-toolbox/Caster/master/docs/img/noderule2.png">
+<img src="https://raw.githubusercontent.com/dictation-toolbox/Caster/refs/heads/master/docs/images/noderule2.png">
 
 If I had spoken (a d) instead, only (m) would have been available next.
 
