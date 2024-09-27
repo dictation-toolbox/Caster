@@ -3,11 +3,15 @@
   * [Caster FAQ](/meta/Caster_FAQ.md)
   * [Getting Started Overview](/Getting_Started/Getting_Started_Overview.md)
   * [Choose a Speech Recognition Engine](/Getting_Started/Choose_Recognition_Engine.md)
-* Installation 
+* Installation
   * Windows
     * [Dragon NaturallySpeaking](/Installation/Windows/Dragon_NaturallySpeaking.md)
     * [Windows Speech Recognition](/Installation/Windows/Windows_Speech_Recognition.md)
-    * [Kaldi](/Installation/Windows/Kaldi_Windows.md)
+    * [Kaldi](/Installation/Windows/Kaldi.md)
+  * Linux
+    * [Kaldi](/Installation/Linux/Kaldi.md)
+  * Mac
+    * [Kaldi](/Installation/Mac/Kaldi.md)
   * [Troubleshooting Install](/Installation/Troubleshooting_Install.md)
 * Caster Commands
   * [Using Voice Commands](/Caster_Commands/Using_Voice_Commands.md)
