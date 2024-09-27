@@ -1,3 +1,5 @@
+This branch is no longer supported but is here for legacy Python 2 users. You may have to find precompiled packages to properly install this repository.
+
 # Caster
 [![Caster Lint/Unit Tests](https://github.com/dictation-toolbox/Caster/actions/workflows/pythonpackage.yml/badge.svg)](https://github.com/dictation-toolbox/Caster/actions/workflows/pythonpackage.yml)![GitHub top language](https://img.shields.io/github/languages/top/dictation-toolbox/Caster)[![https://github.com/dictation-toolbox/Caster/blob/master/LICENSE](https://img.shields.io/badge/license-GNU-informational)](https://matrix.to/#/!KOGBGqVOBKJjKLgFUY:matrix.org?via=matrix.org)
 
