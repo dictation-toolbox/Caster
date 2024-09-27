@@ -4,7 +4,7 @@ Up until this point we talk a lot about of how to create your own commands but n
 
 A few things to note as your thinking of loading rule.
 
-- User Caster Rules are loaded from [Caster User Directory](https://caster.readthedocs.io/en/latest/readthedocs/User_Dir/Caster_User_Dir/) `Rules` folder including subfolders and/or the Caster source code directly typically `Documents\Caster\Rules`.
+- User Caster Rules are loaded from [Caster User Directory](https://dictation-toolbox.github.io/Caster/#/User_Dir/Caster_User_Dir) `Rules` folder including subfolders and/or the Caster source code directly typically `Documents\Caster\Rules`.
 
 - Up until this point we've used rule class as `MyRule` eg `class MyRule(MappingRule):` in the documentation. This is been done to save time and to reuse the same rule and file. When creating your own rule in a new file create your own unique rule class.
 

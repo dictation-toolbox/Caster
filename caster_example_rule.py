@@ -1,7 +1,7 @@
 # These lines that start with the '#' are called comments. They don't affect the way the code runs.
 # In this tutorial file, I put comments above the relevant lines.
 
-# 1. Before we begin. Caster Rules should be placed in [Caster User Directory](https://caster.readthedocs.io/en/latest/readthedocs/User_Dir/Caster_User_Dir/) `rules` directory. See hyperlink for directory file path based on OS. The `rules` folder is where all your created rules should be stored. This folder can be summoned by voice say `bring me caster rules` If Caster is running. 
+# 1. Before we begin. Caster Rules should be placed in [Caster User Directory](https://dictation-toolbox.github.io/Caster/#/User_Dir/Caster_User_Dir) `rules` directory. See hyperlink for directory file path based on OS. The `rules` folder is where all your created rules should be stored. This folder can be summoned by voice say `bring me caster rules` If Caster is running. 
 # The function 'get_rule()' that loads this rule is commented out. Therefore will cause it to never run.
 # You will need to scroll to the very end of the file and uncomment the following:
 

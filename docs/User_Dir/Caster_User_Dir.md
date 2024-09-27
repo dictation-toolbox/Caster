@@ -16,11 +16,11 @@ Users can set the location of their Caster user directory using the environment 
 ### Layout  Description
 
 - `data` - Caster stores the files that are not intended to be edited by the user in the `data` directory. Most files here are for self-modifying rules, such as [Alias](../Caster_Commands/Alias.md), and start with `sm_`.
-- `caster_user_content\hooks` - For user-made [hooks](https://caster.readthedocs.io/en/latest/readthedocs/Caster_Settings/hooks/) (Empty by default).
-- `caster_user_content\rules` - For user-made [rules](https://caster.readthedocs.io/en/latest/readthedocs/Caster_Settings/rules/) and overrides of rules from Caster (Empty by default).
-- `settings` - All Caster [settings](https://caster.readthedocs.io/en/latest/readthedocs/Caster_Settings/settings/) files.
-- `sikuli` - For user-made [Sikuli](https://caster.readthedocs.io/en/latest/readthedocs/Third-party_Integrations/Sikuli/) scripts (Empty by default).
-- `caster_user_content\transformers` - For [simplified transformers](https://caster.readthedocs.io/en/latest/readthedocs/Customize_Caster/Customizing_Starter_Rules/#use-simplified-transformers) i.e words.txt (Empty by default).
+- `caster_user_content\hooks` - For user-made [hooks](https://dictation-toolbox.github.io/Caster/#/Caster_Settings/hooks) (Empty by default).
+- `caster_user_content\rules` - For user-made [rules](https://dictation-toolbox.github.io/Caster/#/Caster_Settings/rules) and overrides of rules from Caster (Empty by default).
+- `settings` - All Caster [settings](https://dictation-toolbox.github.io/Caster/#/Caster_Settings/settings) files.
+- `sikuli` - For user-made [Sikuli](https://dictation-toolbox.github.io/Caster/#/Third-party_Integrations/Sikuli) scripts (Empty by default).
+- `caster_user_content\transformers` - For [simplified transformers](https://dictation-toolbox.github.io/Caster/#/Customize_Caster/Customizing_Starter_Rules/#use-simplified-transformers) i.e words.txt (Empty by default).
 
 ### Backup Procedures
 

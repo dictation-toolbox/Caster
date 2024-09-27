@@ -27,7 +27,7 @@ grammar.add_rule(MyRule())
 grammar.load()
 ```
 
-Dragonfly rules can be converted to Caster equivalents by replacing the loading functions and with the proper Caster imports. See More details on how to load Caster rules in [Rule Construction](https://caster.readthedocs.io/en/latest/readthedocs/Rule_Construction/Rule_Construction/) including imports.
+Dragonfly rules can be converted to Caster equivalents by replacing the loading functions and with the proper Caster imports. See More details on how to load Caster rules in [Rule Construction](https://dictation-toolbox.github.io/Caster/#/Rule_Construction/Rule_Construction) including imports.
 
 **Caster App Rule**
 

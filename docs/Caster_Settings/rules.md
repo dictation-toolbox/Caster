@@ -1,6 +1,6 @@
 # Rules
 
-All rules managed by Caster are tracked in this config file `rules.toml`located in [Caster User Directory](https://caster.readthedocs.io/en/latest/readthedocs/User_Dir/Caster_User_Dir/) `settings` folder.  This configuration file allows you not only to see what rules are active but change with the whitelist which rules are loaded by Caster during startup.  Rules are loaded from [Caster User Directory](https://caster.readthedocs.io/en/latest/readthedocs/User_Dir/Caster_User_Dir/) `Rules` folder and/or the Caster source code directly typically `Documents\Caster\Rules`.
+All rules managed by Caster are tracked in this config file `rules.toml`located in [Caster User Directory](https://dictation-toolbox.github.io/Caster/#/User_Dir/Caster_User_Dir) `settings` folder.  This configuration file allows you not only to see what rules are active but change with the whitelist which rules are loaded by Caster during startup.  Rules are loaded from [Caster User Directory](https://dictation-toolbox.github.io/Caster/#/User_Dir/Caster_User_Dir) `Rules` folder and/or the Caster source code directly typically `Documents\Caster\Rules`.
 
 Rules can exist in different states:
 

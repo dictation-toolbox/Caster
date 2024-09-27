@@ -198,7 +198,7 @@ class BringRule(BaseSelfModifyingRule):
     _bm_defaults = {
         "website": {
             # Documentation
-            "caster documentation": "https://caster.readthedocs.io/en/latest/",
+            "caster documentation": "https://dictation-toolbox.github.io/Caster",
             "dragonfly documentation": "https://dragonfly2.readthedocs.io/en/latest/",
 
             # Caster Support

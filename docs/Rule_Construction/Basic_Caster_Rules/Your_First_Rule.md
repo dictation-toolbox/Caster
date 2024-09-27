@@ -2,7 +2,7 @@
 
 This page demonstrates how to get started experimenting with voice commands with your first rule.  You should experriment here before moving on to 'Basic Rules' Which gives further explanation to many of the concepts demonstrated in `Example Rule Code`  Rule.
 
-Rules should be placed in [Caster User Directory](https://caster.readthedocs.io/en/latest/readthedocs/User_Dir/Caster_User_Dir/) `rules` directory. See hyperlink for directory file path based on OS. The `rules` folder is where all your created rules should be stored. This folder can be summoned by voice say `bring me caster rules` If Caster is running. 
+Rules should be placed in [Caster User Directory](https://dictation-toolbox.github.io/Caster/#/User_Dir/Caster_User_Dir) `rules` directory. See hyperlink for directory file path based on OS. The `rules` folder is where all your created rules should be stored. This folder can be summoned by voice say `bring me caster rules` If Caster is running. 
 
 1. Create a new file called `caster_example_rule.py`
     - Windows OS users may need to [enable viewing file extensions](https://helpdesk.flexradio.com/hc/en-us/articles/204676189-How-to-change-a-File-Extension-in-Windows) like `.py`.

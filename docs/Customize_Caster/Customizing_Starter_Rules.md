@@ -46,14 +46,14 @@ There are two ways to get around this:
    - `<<<NOT_SPECS>>>` (for extras and defaults, but not specs)
    - `<<<ANY>>>` (for specs, extras, and defaults).
 
-   For pictorial representation of how these modes affect rules refer to [Taxonomy of a Rule](https://caster.readthedocs.io/en/latest/readthedocs/Rule_Construction/Taxonomy_of_a_Rule/).
+   For pictorial representation of how these modes affect rules refer to [Taxonomy of a Rule](https://dictation-toolbox.github.io/Caster/#/Rule_Construction/Taxonomy_of_a_Rule).
    Note: Hyphens `-` are used in `->`
 
 ### Override Caster starter rules using the User Directory
 
    This allows you to copy starter rules and have them override the original ones in the core Caster code by placing them in the user directory. This allows you to make any edits such as adding, renaming, deleting specs and actions. Any rule copied into the user directory is not updated with Caster. It becomes the end-users responsibility to manage how and when the rules update manually. 
 
-   To begin copy the rule file or folder of interest from `castervoice\rules` in the source code to the [user directory](https://caster.readthedocs.io/en/latest/readthedocs/User_Dir/Caster_User_Dir/) `caster_user_content\rules` folder. There are some important things to keep in mind:
+   To begin copy the rule file or folder of interest from `castervoice\rules` in the source code to the [user directory](https://dictation-toolbox.github.io/Caster/#/User_Dir/Caster_User_Dir) `caster_user_content\rules` folder. There are some important things to keep in mind:
 
 - The rule class name e.g  `class ChromeRule` must stays the same for the override to work.
 - Any directory `<SomeName>_rules` must be copied as a whole file to the user directory as they contain a grammar with multiple rules that are designed to work together or require imports.

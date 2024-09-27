@@ -117,7 +117,7 @@ class DevelopmentHelp(MappingRule):
         }),
         Choice(
             "url", {
-                "caster": "https://caster.readthedocs.io/en/latest/",
+                "caster": "https://dictation-toolbox.github.io/Caster",
                 "dragonfly": "https://dragonfly2.readthedocs.io/en/latest/",
             }),
     ]
