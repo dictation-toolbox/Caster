@@ -13,23 +13,22 @@ After installing Dragon, you can configure the DNS settings based on your prefer
 ### Preinstall Natlink requirements
 
 - DPI 16, 15, 14, 13 or derivative of the same version
-- Download and install  [**Python 3.10.X 32 bit**](https://www.python.org/downloads/release/python-3810/) as `Windows x86 MSI installer` and **Optionally** select **add Python to Path**.
+- Download and install  [**Python 3.10.X 32 bit**](https://www.python.org/downloads/release/python-31011/) as `Windows x86 MSI installer` and **Optionally** select **add Python to Path**.
 - Make sure any previous versions of Natlink are unregistered and uninstalled. (Dragon must be close during that process)
 
 ### Caster
 
 1. Download Caster from the [master branch](https://github.com/dictation-toolbox/Caster/archive/master.zip).
-2. Open up the zip file downloaded
-3. Copy the contents of `Caster-master` folder. You can put it anywhere but it is common to use `%USERPROFILE%\Documents\Caster`.
-4. Install dependencies and set up Natlink by running `Caster/Install_Caster_DNS-WSR.bat`. 
-5. *Optional Step* for Caster's`Legion` MouseGrid - Legion Feature available on Windows 10 and above
-    - The Legion MouseGrid requires [Microsoft Visual C++ Redistributable Packages for Visual Studio 2015, 2017 and 2019 (x86).](https://support.microsoft.com/en-nz/help/2977003/the-latest-supported-visual-c-downloads) 
+2. Extract the files. You can put it anywhere but it is common to use `%USERPROFILE%\Documents\Caster-master`. The `Caster-master` could be renamed to `Caster`.
+3. Install dependencies and set up Natlink by running `Caster-master/Install_Caster_DNS-WSR.bat`.
+4. *Optional Step* for Caster's`Legion` MouseGrid - Legion Feature available on Windows 10 and above
+    - The Legion MouseGrid requires [Microsoft Visual C++ Redistributable Packages for Visual Studio 2015, 2017 and 2019 (x86).](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist) 
 
 ### Install Natlink
 
 1. Download the latest [Natlink](https://github.com/dictation-toolbox/natlink/releases)
    
-   - Python 3.10.X 32 bit is required. (if you don't have Python 3.10 installed Natlink Installer will install it off path for you automatically)
+   - Python 3.10.X 32 bit is required but does not need to be on path.
    - Do not uncheck the default `Py Launcher`
 
 2. Run the Natlink Installer and a GUI should pop up at the end.
