@@ -2,7 +2,6 @@
 
 This provides a brief overview of the Caster user directory. The main function of the user directory is to store Caster settings and user-made content. 
 
-*Note for Dragon users*: The Caster User directory is managed by Caster, and should not be confused with Natlink's UserDirectory, which is set to the Caster source code directory if using the [Alternative Natlink Configuration](../Installation/Dragon_NaturallySpeaking.md/#-alternative-natlink-configuration).
 
 ## User Directory Location
 
@@ -15,12 +14,12 @@ Users can set the location of their Caster user directory using the environment 
 
 ### Layout  Description
 
-- `data` - Caster stores the files that are not intended to be edited by the user in the `data` directory. Most files here are for self-modifying rules, such as [Alias](../Caster_Commands/Alias.md), and start with `sm_`.
+- `data` - Caster stores the files that are not intended to be edited by the user in the `data` directory. Most files here are for self-modifying rules, such as [Alias](https://dictation-toolbox.github.io/Caster/#/Caster_Commands/Alias), and start with `sm_`.
 - `caster_user_content\hooks` - For user-made [hooks](https://dictation-toolbox.github.io/Caster/#/Caster_Settings/hooks) (Empty by default).
 - `caster_user_content\rules` - For user-made [rules](https://dictation-toolbox.github.io/Caster/#/Caster_Settings/rules) and overrides of rules from Caster (Empty by default).
 - `settings` - All Caster [settings](https://dictation-toolbox.github.io/Caster/#/Caster_Settings/settings) files.
 - `sikuli` - For user-made [Sikuli](https://dictation-toolbox.github.io/Caster/#/Third-party_Integrations/Sikuli) scripts (Empty by default).
-- `caster_user_content\transformers` - For [simplified transformers](https://dictation-toolbox.github.io/Caster/#/Customize_Caster/Customizing_Starter_Rules/#use-simplified-transformers) i.e words.txt (Empty by default).
+- `caster_user_content\transformers` - For [simplified transformers](https://dictation-toolbox.github.io/Caster/#/Customize_Caster/Customizing_Starter_Rules?id=use-simplified-transformers) i.e words.txt (Empty by default).
 
 ### Backup Procedures
 
