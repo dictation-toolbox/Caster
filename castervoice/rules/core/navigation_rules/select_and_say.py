@@ -15,6 +15,7 @@ The grammar gracefully handles cases where no accessible control is focused
 or when the requested text cannot be found.
 """
 
+import logging
 from dragonfly import Function, Dictation, Choice
 
 try:
@@ -33,6 +34,7 @@ from castervoice.lib.merge.state.short import R
 
 # Global controller instance
 _accessibility_controller = None
+_log = logging.getLogger(__name__)
 
 
 def _get_accessibility_controller():
@@ -40,7 +42,7 @@ def _get_accessibility_controller():
     global _accessibility_controller
 
     if not DRAGONFLY_ACCESSIBILITY_AVAILABLE:
-        print("dragonfly accessibility not available - update dragonfly for Select-and-Say")
+        _log.warning("dragonfly accessibility not available - update dragonfly for Select-and-Say")
         return None
 
     try:
@@ -48,15 +50,15 @@ def _get_accessibility_controller():
             _accessibility_controller = get_accessibility_controller()
         return _accessibility_controller
     except Exception as e:
-        print(f"Accessibility controller not available: {e}")
+        _log.error(f"Accessibility controller not available: {e}")
         return None
 
 
-def select_text_command(text1, text2=None):
+def select_text_command(text, text2=None):
     """Select text using dragonfly accessibility.
 
     Args:
-        text1: Start text to find
+        text: Start text to find
         text2: End text (optional, for range selection)
     """
     controller = _get_accessibility_controller()
@@ -65,41 +67,41 @@ def select_text_command(text1, text2=None):
 
     try:
         if not controller.is_editable_focused():
-            print("No editable control is focused")
+            _log.info("No editable control is focused")
             return
 
         # Create query based on parameters
         if text2:
             # Range selection: "select hello through world"
-            query = TextQuery(start_phrase=str(text1), end_phrase=str(text2), through=True)
-            print(f"Selecting from '{text1}' through '{text2}'")
+            query = TextQuery(start_phrase=str(text), end_phrase=str(text2), through=True)
+            _log.info(f"Selecting from '{text}' through '{text2}'")
         else:
             # Single text selection: "select hello"
             # For single phrase, use end_phrase only
-            query = TextQuery(end_phrase=str(text1))
-            print(f"Selecting '{text1}'")
+            query = TextQuery(end_phrase=str(text))
+            _log.info(f"Selecting '{text}'")
 
         success = controller.select_text(query)
         if not success:
             if text2:
-                print(f"Could not find text from '{text1}' to '{text2}'")
+                _log.warning(f"Could not find text from '{text}' to '{text2}'")
             else:
-                print(f"Could not find text '{text1}'")
+                _log.warning(f"Could not find text '{text}'")
 
     except UnsupportedSelectionError:
-        print("Current control does not support text selection")
+        _log.warning("Current control does not support text selection")
     except AccessibilityError as e:
-        print(f"Accessibility error: {e}")
+        _log.error(f"Accessibility error: {e}")
     except Exception as e:
-        print(f"Text selection failed: {e}")
+        _log.error(f"Text selection failed: {e}")
 
 
-def replace_text_command(find_text, replacement_text):
+def replace_text_command(text, text2):
     """Replace text using dragonfly accessibility.
 
     Args:
-        find_text: Text to find and replace
-        replacement_text: Replacement text
+        text: Text to find and replace
+        text2: Replacement text
     """
     controller = _get_accessibility_controller()
     if controller is None:
@@ -107,31 +109,31 @@ def replace_text_command(find_text, replacement_text):
 
     try:
         if not controller.is_editable_focused():
-            print("No editable control is focused")
+            _log.info("No editable control is focused")
             return
 
         # Create query for text to replace
-        query = TextQuery(end_phrase=str(find_text))
-        print(f"Replacing '{find_text}' with '{replacement_text}'")
+        query = TextQuery(end_phrase=str(text))
+        _log.info(f"Replacing '{text}' with '{text2}'")
 
-        success = controller.replace_text(query, str(replacement_text))
+        success = controller.replace_text(query, str(text2))
         if not success:
-            print(f"Could not find text '{find_text}' to replace")
+            _log.warning(f"Could not find text '{text}' to replace")
 
     except UnsupportedSelectionError:
-        print("Current control does not support text replacement")
+        _log.warning("Current control does not support text replacement")
     except AccessibilityError as e:
-        print(f"Accessibility error: {e}")
+        _log.error(f"Accessibility error: {e}")
     except Exception as e:
-        print(f"Text replacement failed: {e}")
+        _log.error(f"Text replacement failed: {e}")
 
 
-def move_cursor_command(text, position_name):
+def move_cursor_command(text, position):
     """Move cursor relative to found text.
 
     Args:
         text: Text to find as reference point
-        position_name: Where to position cursor ("before" or "after")
+        position: Where to position cursor ("before" or "after")
     """
     controller = _get_accessibility_controller()
     if controller is None:
@@ -139,7 +141,7 @@ def move_cursor_command(text, position_name):
 
     try:
         if not controller.is_editable_focused():
-            print("No editable control is focused")
+            _log.info("No editable control is focused")
             return
 
         # Map voice command to CursorPosition
@@ -148,20 +150,20 @@ def move_cursor_command(text, position_name):
             "after": CursorPosition.AFTER
         }
 
-        position = position_map.get(position_name, CursorPosition.BEFORE)
+        cursor_pos = position_map.get(position, CursorPosition.BEFORE)
         query = TextQuery(end_phrase=str(text))
 
-        print(f"Moving cursor {position_name} '{text}'")
-        success = controller.move_cursor(query, position)
+        _log.info(f"Moving cursor {position} '{text}'")
+        success = controller.move_cursor(query, cursor_pos)
         if not success:
-            print(f"Could not find text '{text}'")
+            _log.warning(f"Could not find text '{text}'")
 
     except UnsupportedSelectionError:
-        print("Current control does not support cursor positioning")
+        _log.warning("Current control does not support cursor positioning")
     except AccessibilityError as e:
-        print(f"Accessibility error: {e}")
+        _log.error(f"Accessibility error: {e}")
     except Exception as e:
-        print(f"Cursor positioning failed: {e}")
+        _log.error(f"Cursor positioning failed: {e}")
 
 
 class SelectAndSay(MergeRule):
@@ -209,7 +211,7 @@ def get_rule():
 
     if not DRAGONFLY_ACCESSIBILITY_AVAILABLE:
         details.enabled = False
-        print("SelectAndSay rule disabled: dragonfly accessibility not available")
-        print("Update dragonfly to enable Select-and-Say functionality")
+        _log.warning("SelectAndSay rule disabled: dragonfly accessibility not available")
+        _log.info("Update dragonfly to enable Select-and-Say functionality")
 
     return SelectAndSay, details
