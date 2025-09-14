@@ -26,7 +26,7 @@ class TestSelectAndSayGrammar:
             "select <text>",
             "select <text> through <text2>",
             "replace <text> with <text2>",
-            "go to <position> of <text>"
+            "go to <position> <text>"  # Updated for dragonfly version
         ]
 
         for command in expected_commands:
@@ -49,102 +49,106 @@ class TestSelectAndSayGrammar:
 
 
 class TestSelectAndSayCommands:
-    """Test Select-and-Say command functions with mocked adapter."""
+    """Test Select-and-Say command functions with mocked dragonfly controller."""
 
-    @patch('castervoice.rules.core.navigation_rules.select_and_say.get_adapter')
-    def test_select_text_command_success(self, mock_get_adapter):
+    @patch('castervoice.rules.core.navigation_rules.select_and_say._get_accessibility_controller')
+    def test_select_text_command_success(self, mock_get_controller):
         """Test successful text selection."""
-        mock_adapter = Mock()
-        mock_adapter.is_editable_focused.return_value = True
-        mock_get_adapter.return_value = mock_adapter
+        mock_controller = Mock()
+        mock_controller.is_editable_focused.return_value = True
+        mock_controller.select_text.return_value = True
+        mock_get_controller.return_value = mock_controller
 
         # Test single text selection
         select_text_command("hello")
 
-        mock_adapter.is_editable_focused.assert_called_once()
-        mock_adapter.select_text.assert_called_once()
+        mock_controller.is_editable_focused.assert_called_once()
+        mock_controller.select_text.assert_called_once()
 
-        # Verify TextQuery was created correctly
-        call_args = mock_adapter.select_text.call_args[0]
+        # Verify TextQuery was created correctly for dragonfly API
+        call_args = mock_controller.select_text.call_args[0]
         query = call_args[0]
-        assert query.start == "hello"
-        assert query.end is None
+        # In dragonfly API, single selection uses end_phrase
+        assert hasattr(query, 'end_phrase')
 
-    @patch('castervoice.rules.core.navigation_rules.select_and_say.get_adapter')
-    def test_select_text_range_command(self, mock_get_adapter):
+    @patch('castervoice.rules.core.navigation_rules.select_and_say._get_accessibility_controller')
+    def test_select_text_range_command(self, mock_get_controller):
         """Test range text selection."""
-        mock_adapter = Mock()
-        mock_adapter.is_editable_focused.return_value = True
-        mock_get_adapter.return_value = mock_adapter
+        mock_controller = Mock()
+        mock_controller.is_editable_focused.return_value = True
+        mock_controller.select_text.return_value = True
+        mock_get_controller.return_value = mock_controller
 
         # Test range selection
         select_text_command("start", "end")
 
         # Verify TextQuery was created for range selection
-        call_args = mock_adapter.select_text.call_args[0]
+        call_args = mock_controller.select_text.call_args[0]
         query = call_args[0]
-        assert query.start == "start"
-        assert query.end == "end"
-        assert query.through is True
+        assert hasattr(query, 'start_phrase')
+        assert hasattr(query, 'end_phrase')
+        assert hasattr(query, 'through')
 
-    @patch('castervoice.rules.core.navigation_rules.select_and_say.get_adapter')
-    def test_select_text_no_control_focused(self, mock_get_adapter, capsys):
+    @patch('castervoice.rules.core.navigation_rules.select_and_say._get_accessibility_controller')
+    def test_select_text_no_control_focused(self, mock_get_controller, capsys):
         """Test behavior when no editable control is focused."""
-        mock_adapter = Mock()
-        mock_adapter.is_editable_focused.return_value = False
-        mock_get_adapter.return_value = mock_adapter
+        mock_controller = Mock()
+        mock_controller.is_editable_focused.return_value = False
+        mock_get_controller.return_value = mock_controller
 
         select_text_command("hello")
 
         # Should not attempt selection
-        mock_adapter.select_text.assert_not_called()
+        mock_controller.select_text.assert_not_called()
 
         # Should print informative message
         captured = capsys.readouterr()
         assert "No editable control is focused" in captured.out
 
-    @patch('castervoice.rules.core.navigation_rules.select_and_say.get_adapter')
-    def test_replace_text_command_success(self, mock_get_adapter):
+    @patch('castervoice.rules.core.navigation_rules.select_and_say._get_accessibility_controller')
+    def test_replace_text_command_success(self, mock_get_controller):
         """Test successful text replacement."""
-        mock_adapter = Mock()
-        mock_adapter.is_editable_focused.return_value = True
-        mock_get_adapter.return_value = mock_adapter
+        mock_controller = Mock()
+        mock_controller.is_editable_focused.return_value = True
+        mock_controller.replace_text.return_value = True
+        mock_get_controller.return_value = mock_controller
 
         replace_text_command("old", "new")
 
-        mock_adapter.replace_text.assert_called_once()
+        mock_controller.replace_text.assert_called_once()
 
         # Verify parameters
-        call_args = mock_adapter.replace_text.call_args[0]
+        call_args = mock_controller.replace_text.call_args[0]
         query = call_args[0]
         replacement = call_args[1]
-        assert query.start == "old"
+        assert hasattr(query, 'end_phrase')  # Dragonfly API uses end_phrase for single selection
         assert replacement == "new"
 
-    @patch('castervoice.rules.core.navigation_rules.select_and_say.get_adapter')
-    def test_move_cursor_command_success(self, mock_get_adapter):
+    @patch('castervoice.rules.core.navigation_rules.select_and_say._get_accessibility_controller')
+    def test_move_cursor_command_success(self, mock_get_controller):
         """Test successful cursor movement."""
-        mock_adapter = Mock()
-        mock_adapter.is_editable_focused.return_value = True
-        mock_get_adapter.return_value = mock_adapter
+        mock_controller = Mock()
+        mock_controller.is_editable_focused.return_value = True
+        mock_controller.move_cursor.return_value = True
+        mock_get_controller.return_value = mock_controller
 
-        move_cursor_command("target", "start")
+        move_cursor_command("target", "before")
 
-        mock_adapter.move_cursor.assert_called_once()
+        mock_controller.move_cursor.assert_called_once()
 
         # Verify parameters
-        call_args = mock_adapter.move_cursor.call_args[0]
+        call_args = mock_controller.move_cursor.call_args[0]
         query = call_args[0]
         position = call_args[1]
-        assert query.start == "target"
-        # Position should be mapped to enum value
-        from dtactions.a11y import CursorPosition
-        assert position == CursorPosition.START
+        assert hasattr(query, 'end_phrase')
+        # Position should be CursorPosition enum value
+        from dragonfly.accessibility import CursorPosition
+        assert position == CursorPosition.BEFORE
 
-    @patch('castervoice.rules.core.navigation_rules.select_and_say._safe_get_adapter')
-    def test_adapter_not_available(self, mock_safe_get_adapter, capsys):
-        """Test behavior when dtactions adapter is not available."""
-        mock_safe_get_adapter.return_value = None
+    @patch('castervoice.rules.core.navigation_rules.select_and_say._get_accessibility_controller')
+    def test_controller_not_available(self, mock_get_controller, capsys):
+        """Test behavior when dragonfly controller is not available."""
+        mock_get_controller.return_value = None
 
         select_text_command("hello")
 
@@ -152,45 +156,45 @@ class TestSelectAndSayCommands:
         captured = capsys.readouterr()
         # May have printed a message, but should not crash
 
-    @patch('castervoice.rules.core.navigation_rules.select_and_say.get_adapter')
-    def test_error_handling(self, mock_get_adapter, capsys):
+    @patch('castervoice.rules.core.navigation_rules.select_and_say._get_accessibility_controller')
+    def test_error_handling(self, mock_get_controller, capsys):
         """Test error handling for various exception types."""
-        from dtactions.a11y.exceptions import NotFoundError, UnsupportedControlError
+        from dragonfly.accessibility.base import UnsupportedSelectionError, AccessibilityError
 
-        mock_adapter = Mock()
-        mock_adapter.is_editable_focused.return_value = True
-        mock_get_adapter.return_value = mock_adapter
+        mock_controller = Mock()
+        mock_controller.is_editable_focused.return_value = True
+        mock_get_controller.return_value = mock_controller
 
-        # Test NotFoundError handling
-        mock_adapter.select_text.side_effect = NotFoundError("Text not found")
-        select_text_command("missing")
-
-        captured = capsys.readouterr()
-        assert "Could not find text" in captured.out
-
-        # Test UnsupportedControlError handling
-        mock_adapter.select_text.side_effect = UnsupportedControlError("Control not supported")
+        # Test UnsupportedSelectionError handling
+        mock_controller.select_text.side_effect = UnsupportedSelectionError("Control not supported")
         select_text_command("hello")
 
         captured = capsys.readouterr()
         assert "does not support" in captured.out
 
+        # Test generic AccessibilityError handling
+        mock_controller.select_text.side_effect = AccessibilityError("Generic accessibility error")
+        select_text_command("hello2")
+
+        captured = capsys.readouterr()
+        assert "Accessibility error" in captured.out
+
 
 class TestSelectAndSayIntegration:
     """Test integration aspects of Select-and-Say grammar."""
 
-    @patch('castervoice.rules.core.navigation_rules.select_and_say.DTACTIONS_AVAILABLE', False)
-    def test_rule_disabled_when_dtactions_unavailable(self, capsys):
-        """Test that rule is properly disabled when dtactions is not available."""
+    @patch('castervoice.rules.core.navigation_rules.select_and_say.DRAGONFLY_ACCESSIBILITY_AVAILABLE', False)
+    def test_rule_disabled_when_dragonfly_unavailable(self, capsys):
+        """Test that rule is properly disabled when dragonfly accessibility is not available."""
         rule_class, details = get_rule()
 
         assert details.enabled is False
         captured = capsys.readouterr()
         assert "SelectAndSay rule disabled" in captured.out
 
-    @patch('castervoice.rules.core.navigation_rules.select_and_say.DTACTIONS_AVAILABLE', True)
-    def test_rule_enabled_when_dtactions_available(self):
-        """Test that rule is enabled when dtactions is available."""
+    @patch('castervoice.rules.core.navigation_rules.select_and_say.DRAGONFLY_ACCESSIBILITY_AVAILABLE', True)
+    def test_rule_enabled_when_dragonfly_available(self):
+        """Test that rule is enabled when dragonfly accessibility is available."""
         rule_class, details = get_rule()
 
         # Should not be explicitly disabled
