@@ -14,6 +14,15 @@ import queue
 
 from dragonfly.accessibility import base
 
+# Exception classes
+class AccessibilityError(Exception):
+    """Base exception for accessibility errors."""
+    pass
+
+class UnsupportedSelectionError(AccessibilityError):
+    """Exception for unsupported text selection operations."""
+    pass
+
 try:
     import comtypes
     import comtypes.client
@@ -142,6 +151,32 @@ class Context(object):
             self._log.error("Failed to initialize UIA: %s", e)
             raise
 
+    def get_desktop(self):
+        """Get desktop accessible element."""
+        if not self.automation:
+            return None
+        try:
+            desktop_element = self.automation.GetRootElement()
+            return UiaAccessible(desktop_element) if desktop_element else None
+        except Exception as e:
+            self._log.error("Failed to get desktop: %s", e)
+            return None
+
+    def get_foreground(self):
+        """Get foreground window accessible element."""
+        if not self.automation:
+            return None
+        try:
+            foreground_element = self.automation.GetFocusedElement()
+            return UiaAccessible(foreground_element) if foreground_element else None
+        except Exception as e:
+            self._log.error("Failed to get foreground: %s", e)
+            return None
+
+    def get_focused(self):
+        """Get currently focused accessible element."""
+        return self.focused
+
     def update_focus(self):
         """Update the focused element."""
         if not self.automation:
@@ -189,6 +224,86 @@ class UiaAccessible(object):
             return control_type in [UIA.UIA_EditControlTypeId, UIA.UIA_DocumentControlTypeId]
         except Exception:
             return False
+
+    def get_parent(self):
+        """Get parent accessible element."""
+        if not self._element:
+            return None
+        try:
+            parent_element = self._element.CachedParent
+            return UiaAccessible(parent_element) if parent_element else None
+        except Exception:
+            return None
+
+    def get_children(self):
+        """Get child accessible elements."""
+        if not self._element:
+            return []
+        try:
+            children = []
+            child_elements = self._element.CachedChildren
+            for i in range(child_elements.Length):
+                child = child_elements.GetElement(i)
+                if child:
+                    children.append(UiaAccessible(child))
+            return children
+        except Exception:
+            return []
+
+    def get_control_type(self):
+        """Get control type name."""
+        if not self._element:
+            return None
+        try:
+            return self._element.CurrentControlType
+        except Exception:
+            return None
+
+    def get_name(self):
+        """Get element name."""
+        if not self._element:
+            return None
+        try:
+            return self._element.CurrentName
+        except Exception:
+            return None
+
+    def get_value(self):
+        """Get element value."""
+        if not self._element:
+            return None
+        try:
+            value_pattern = self._element.GetCurrentPattern(UIA.UIA_ValuePatternId)
+            if value_pattern:
+                value_pattern_obj = value_pattern.QueryInterface(UIA.IUIAutomationValuePattern)
+                return value_pattern_obj.CurrentValue
+        except Exception:
+            pass
+        return None
+
+    def set_value(self, value):
+        """Set element value."""
+        if not self._element:
+            return False
+        try:
+            value_pattern = self._element.GetCurrentPattern(UIA.UIA_ValuePatternId)
+            if value_pattern:
+                value_pattern_obj = value_pattern.QueryInterface(UIA.IUIAutomationValuePattern)
+                value_pattern_obj.SetValue(str(value))
+                return True
+        except Exception:
+            pass
+        return False
+
+    def get_bounding_box(self):
+        """Get element bounding box."""
+        if not self._element:
+            return None
+        try:
+            rect = self._element.CurrentBoundingRectangle
+            return (rect.left, rect.top, rect.right, rect.bottom)
+        except Exception:
+            return None
 
 
 class UiaAccessibleTextNode(object):
@@ -319,7 +434,7 @@ class UiaAccessibleTextNode(object):
         except Exception as e:
             self._log.error("Failed to set cursor: %s", e)
 
-    def get_bounding_box(self, offset):
+    def get_bounding_box(self, offset=0):
         """Get bounding box for character at offset."""
         try:
             doc_range = self._text_pattern.DocumentRange
