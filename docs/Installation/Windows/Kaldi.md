@@ -24,12 +24,12 @@ Caster currently supports Kaldi on Microsoft Windows 7 through Windows 10. Consi
 1. Download your preferred Kaldi model at [kaldi-active-grammar/releases](https://github.com/daanzu/kaldi-active-grammar/releases)
 2. Extract `kaldi_model_< Model Type >.zip` to  `%USERPROFILE%\Documents\Caster`
 
-## 4. Launch for Kaldi  for Classic Install.
+## 4. Launch Caster (Kaldi) for Classic Install
 
 1. Go to `%USERPROFILE%\Documents\Caster`
 2. Double-click on `Run_Caster_Kaldi.bat`
 
-**Note:**  Kaldi is flexible engine which can be configured via engine parameters to customize your experience. 
+**Note:** Kaldi is a flexible engine which can be configured via engine parameters to customize your experience. 
 
 - You can modify the `Run_Caster_Kaldi.bat` file for  `python -m dragonfly load _*.py --engine kaldi --no-recobs-messages --engine-options "model_dir=kaldi_model, vad_padding_end_ms=300"`
 - List of kaldi [engine parameters](https://dragonfly2.readthedocs.io/en/latest/kaldi_engine.html#engine-configuration). Scroll down for parameter explanations.

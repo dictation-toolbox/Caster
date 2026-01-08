@@ -1,5 +1,5 @@
 # Caster
-[![Caster Lint/Unit Tests](https://github.com/dictation-toolbox/Caster/actions/workflows/pythonpackage.yml/badge.svg)](https://github.com/dictation-toolbox/Caster/actions/workflows/pythonpackage.yml)![GitHub top language](https://img.shields.io/github/languages/top/dictation-toolbox/Caster)[![https://github.com/dictation-toolbox/Caster/blob/master/LICENSE](https://img.shields.io/badge/license-GNU-informational)](https://matrix.to/#/!KOGBGqVOBKJjKLgFUY:matrix.org?via=matrix.org)
+[![Caster Lint/Unit Tests](https://github.com/dictation-toolbox/Caster/actions/workflows/pythonpackage.yml/badge.svg)](https://github.com/dictation-toolbox/Caster/actions/workflows/pythonpackage.yml) ![GitHub top language](https://img.shields.io/github/languages/top/dictation-toolbox/Caster) [![License](https://img.shields.io/badge/license-GNU-informational)](https://github.com/dictation-toolbox/Caster/blob/master/LICENSE)
 
 [Caster](https://github.com/dictation-toolbox/Caster) gives you the power to control your computer by voice. Take control of your applications, games, mouse and keyboard to augment your workflow for every day activities or as an accessibility tool to develop applications entirely by voice built upon the [Dragonfly](https://github.com/dictation-toolbox/dragonfly) framework.  
 
@@ -24,7 +24,7 @@
     - `find` will execute a `ctrl-f` keystroke, bringing up the find and replace prompt,
     - `open file` will execute a `ctrl-o` keystroke,
     - `edit next <n>` - `ctrl-d` n times, selecting the next n instances of the currently selected word.
-  - [Program Languages](https://dictation-toolbox.github.io/Caster/#/Caster_Commands/CCR_languages_Quick_Reference) - Language specific coding - These modules are activated and deactivated with the `enable/disable <language>` voice command. For example after saying `enable python`, the following commands become available for dictation: 
+  - [Programming Languages](https://dictation-toolbox.github.io/Caster/#/Caster_Commands/CCR_languages_Quick_Reference) - Language specific coding - These modules are activated and deactivated with the `enable/disable <language>` voice command. For example after saying `enable python`, the following commands become available for dictation: 
     - `for loop` which will insert `for i in range(0, ):`
     - `print to console` - `print()`
     - `open file` -  `open('filename', 'r') as f:`
@@ -67,7 +67,7 @@
 
   - Python, Java, Bash, C++, C#, Rust, Go, HTML, CSS, JavaScript, SQL, Dart, Latex , Matlab, R, Prolog, VHDL, and Haxe
   
-- [Editing and Navigation](https://github.com/dictation-toolbox/Caster/blob/master/CasterQuickReference.pdf)
+- [Editing and Navigation](https://github.com/dictation-toolbox/Caster/blob/master/docs/CasterQuickReference.pdf)
 
 - Five additional [mouse navigation modes](https://dictation-toolbox.github.io/Caster/#/Caster_Commands/Mouse): curse, sudoku, douglas, legion, and rainbow - [Demo](https://www.youtube.com/watch?v=UISjQBMmQ-I&feature=youtu.be)
   - [Text navigation commands](https://dictation-toolbox.github.io/Caster/#/Caster_Commands/Text_Manipulation) - [Demo](https://www.youtube.com/watch?v=xj8IzNlfM70), Text formatting commands
