@@ -4,23 +4,6 @@ import threading
 
 import dragonfly
 
-# TODO: Remove this try wrapper when CI server supports Qt
-try:
-    import PySide2.QtCore
-    from PySide2.QtWidgets import QApplication
-    from PySide2.QtWidgets import QCheckBox
-    from PySide2.QtWidgets import QDialog
-    from PySide2.QtWidgets import QFileDialog
-    from PySide2.QtWidgets import QFormLayout
-    from PySide2.QtWidgets import QLabel
-    from PySide2.QtWidgets import QLineEdit
-    from PySide2.QtWidgets import QScrollArea
-    from PySide2.QtWidgets import QTextEdit
-    from PySide2.QtWidgets import QVBoxLayout
-    from PySide2.QtWidgets import QWidget
-except ImportError:
-    sys.exit(0)
-
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0]
     if BASE_PATH not in sys.path:
@@ -28,7 +11,31 @@ try:  # Style C -- may be imported into Caster, or externally
 finally:
     from castervoice.lib import settings
 
-RPC_DIR_EVENT = PySide2.QtCore.QEvent.Type(PySide2.QtCore.QEvent.registerEventType(-1))
+try:
+    from castervoice.lib.qt import QtCore, QtWidgets, qt_attr
+except ImportError:
+    sys.exit(0)
+
+QApplication = QtWidgets.QApplication
+QCheckBox = QtWidgets.QCheckBox
+QDialog = QtWidgets.QDialog
+QFileDialog = QtWidgets.QFileDialog
+QFormLayout = QtWidgets.QFormLayout
+QLabel = QtWidgets.QLabel
+QLineEdit = QtWidgets.QLineEdit
+QScrollArea = QtWidgets.QScrollArea
+QTextEdit = QtWidgets.QTextEdit
+QVBoxLayout = QtWidgets.QVBoxLayout
+QWidget = QtWidgets.QWidget
+
+ALIGN_CENTER = qt_attr(QtCore, ("Qt", "AlignCenter"), ("Qt", "AlignmentFlag", "AlignCenter"))
+SHOW_DIRS_ONLY = qt_attr(
+    QtWidgets,
+    ("QFileDialog", "ShowDirsOnly"),
+    ("QFileDialog", "Option", "ShowDirsOnly"),
+)
+
+RPC_DIR_EVENT = QtCore.QEvent.Type(QtCore.QEvent.registerEventType(-1))
 
 
 class Homunculus(QDialog):
@@ -64,7 +71,7 @@ class Homunculus(QDialog):
         self.setWindowTitle(settings.HOMUNCULUS_VERSION)
         self.data = data.split("|") if data else [0, 0]
         label = QLabel(" ".join(self.data[0].split(settings.HMC_SEPARATOR))) if data else QLabel("Enter response then say 'complete'")  # pylint: disable=no-member
-        label.setAlignment(PySide2.QtCore.Qt.AlignCenter)
+        label.setAlignment(ALIGN_CENTER)
         self.ext_box = QTextEdit()
         self.mainLayout.addWidget(label)
         self.mainLayout.addWidget(self.ext_box)
@@ -98,7 +105,7 @@ class Homunculus(QDialog):
         self.setGeometry(x, y, 640, 480)
         self.setWindowTitle(settings.HOMUNCULUS_VERSION + settings.HMC_TITLE_RECORDING)
         label = QLabel("Macro Recording Options")
-        label.setAlignment(PySide2.QtCore.Qt.AlignCenter)
+        label.setAlignment(ALIGN_CENTER)
         self.mainLayout.addWidget(label)
         label = QLabel("Command Words:")
         self.word_box = QLineEdit()
@@ -108,7 +115,7 @@ class Homunculus(QDialog):
         self.repeatable = QCheckBox("Make Repeatable")
         self.mainLayout.addWidget(self.repeatable)
         label = QLabel("Dictation History")
-        label.setAlignment(PySide2.QtCore.Qt.AlignCenter)
+        label.setAlignment(ALIGN_CENTER)
         self.mainLayout.addWidget(label)
         self.word_state = []
         cb_number = 1
@@ -144,7 +151,7 @@ class Homunculus(QDialog):
             self.word_state[i].setChecked(True)
 
     def ask_directory(self):
-        result = QFileDialog.getExistingDirectory(self, "Please select directory", os.environ["HOME"], QFileDialog.ShowDirsOnly)
+        result = QFileDialog.getExistingDirectory(self, "Please select directory", os.environ["HOME"], SHOW_DIRS_ONLY)
         self.word_box.setText(result)
 
     def event(self, event):
@@ -214,7 +221,7 @@ class Homunculus(QDialog):
 
     def xmlrpc_do_action_directory(self, action, details=None):
         if action == "dir":
-            PySide2.QtCore.QCoreApplication.postEvent(self, PySide2.QtCore.QEvent(RPC_DIR_EVENT))
+            QtCore.QCoreApplication.postEvent(self, QtCore.QEvent(RPC_DIR_EVENT))
 
     def xmlrpc_get_message_directory(self):
         response = None

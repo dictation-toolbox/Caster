@@ -1,8 +1,10 @@
-from dragonfly import get_engine, get_current_engine
+from dragonfly import get_current_engine
 from castervoice.lib import printer
 
-if get_engine().name == 'natlink':
+try:
     import natlink
+except ImportError:
+    natlink = None
 
 
 class EngineModesManager(object):
@@ -43,7 +45,10 @@ class EngineModesManager(object):
         if mode in self.mic_modes:
             self.mic_state = mode
             if self.engine == 'natlink':
-                natlink.setMicState(mode)
+                if natlink is not None:
+                    natlink.setMicState(mode)
+                else:
+                    printer.out("Caster: natlink is not available on this system")
             # Overrides DNS/DPI is built in sleep grammar
             self._exclusive_manager.set_mode(mode, modetype="mic_mode")
         else:
@@ -85,6 +90,9 @@ class EngineModesManager(object):
 
         if mode in self.engine_modes:
             if self.engine == 'natlink':
+                if natlink is None:
+                    printer.out("Caster: natlink is not available on this system")
+                    return
                 try:
                     natlink.execScript("SetRecognitionMode {}".format(
                         self.engine_modes[mode]))  # mode is an integer
@@ -117,6 +125,8 @@ class EngineModesManager(object):
         Synchronizes Caster exclusivity modes an with DNS/DPI GUI built-in modes state.
         """
         # TODO: Implement set_engine_mode logic with modes not just mic_state.
+        if self.engine != 'natlink' or natlink is None:
+            return
         caster_mic = self.get_mic_mode()
         natlink_mic = natlink.getMicState()
         if caster_mic is None:
