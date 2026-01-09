@@ -31,7 +31,7 @@ jobs:
 
   python-linux-3-10-x:
         name: python 3 linux
-        runs-on: ubuntu-20.04
+        runs-on: ubuntu-latest
         strategy:
           matrix:
             python-version: [3.10.x]
