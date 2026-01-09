@@ -25,21 +25,28 @@ def get_start_end_position(text, phrase, direction, occurrence_number, dictation
     # def get_start_end_position(text, phrase, direction):
     if dictation_versus_character == "character":
         pattern = re.escape(phrase)
-    if dictation_versus_character == "dictation":
+    elif dictation_versus_character == "dictation":
         # avoid e.g. matching 'and' in 'land' but allow e.g. matching 'and' in 'hello.and'
         # for matching purposes use lowercase
         # PROBLEM: this will not match words in class names like "Class" in "ClassName"
         # PROBLEM: it's not matching the right one when you have two occurrences of the same word in a row
         pattern = r'(?:[^A-Za-z]|\A)({})(?:[^A-Za-z]|\Z)'.format(phrase.lower()) # must get group 1
+    else:
+        print(
+            "dictation_versus_character must be either 'character' or 'dictation' (got '{}')"
+            .format(dictation_versus_character)
+        )
+        return
 
-    if not re.search(pattern, text.lower()):
+    lowered_text = text.lower()
+    if not re.search(pattern, lowered_text):
         # replaced phase not found
         print("'{}' not found".format(phrase))
         return
-    match_iter = re.finditer(pattern, text.lower())
+    match_iter = re.finditer(pattern, lowered_text)
     if dictation_versus_character == "character":
         match_index_list = [(m.start(), m.end()) for m in match_iter] 
-    if dictation_versus_character == "dictation":
+    else:
         match_index_list = [(m.start(1), m.end(1)) for m in match_iter] # first group
     
     if direction == "left":
@@ -48,12 +55,15 @@ def get_start_end_position(text, phrase, direction, occurrence_number, dictation
         except IndexError:
             print("There aren't that many occurrences of '{}'".format(phrase))
             return
-    if direction == "right":
+    elif direction == "right":
         try:
             match = match_index_list[occurrence_number - 1] # count from the left
         except IndexError:
             print("There aren't that many occurrences of '{}'".format(phrase))
             return 
+    else:
+        print("Direction must be either 'left' or 'right' (got '{}')".format(direction))
+        return
     left_index, right_index = match
     return (left_index, right_index)
 
@@ -315,6 +325,9 @@ def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search
             before_after = "after"
         if direction == "right":
             before_after = "before"
+    elif before_after not in ("before", "after"):
+        print("before_after must be either 'before' or 'after' (got '{}')".format(before_after))
+        return
     
     selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
     if not selected_text:
@@ -329,7 +342,7 @@ def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search
         return
               
     if application == "texstudio":
-    # Approach 1: Unselect text by pressing left and then right. A little slower but works in Texstudio
+        # Approach 1: Unselect text by pressing left and then right. A little slower but works in Texstudio
         Key("left, right").execute() # unselect text
         if direction == "left":
             # cursor is at the left side of the previously selected text
@@ -337,24 +350,32 @@ def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search
                 selected_text_to_the_left_of_phrase = selected_text[:left_index]
                 multiline_offset_correction = selected_text_to_the_left_of_phrase.count("\r\n")
                 offset = left_index - multiline_offset_correction
-            if before_after == "after":
+            elif before_after == "after":
                 selected_text_to_the_left_of_phrase = selected_text[:right_index]
                 multiline_offset_correction = selected_text_to_the_left_of_phrase.count("\r\n")
                 offset = right_index - multiline_offset_correction
-            Key("right:%d" %offset).execute()
+            else:
+                print("before_after must be either 'before' or 'after' (got '{}')".format(before_after))
+                return
+            Key("right:%d" % offset).execute()
 
-        if direction == "right":
+        elif direction == "right":
             # cursor is at the left side of the previously selected text
             if before_after == "before":
                 selected_text_to_the_right_of_phrase = selected_text[left_index :]    
-            if before_after == "after":
+                offset_index = left_index
+            elif before_after == "after":
                 selected_text_to_the_right_of_phrase = selected_text[right_index :]
+                offset_index = right_index
+            else:
+                print("before_after must be either 'before' or 'after' (got '{}')".format(before_after))
+                return
             multiline_offset_correction = selected_text_to_the_right_of_phrase.count("\r\n")
-            if before_after  == "before":
-                offset = len(selected_text) - left_index - multiline_offset_correction
-            if before_after == "after":
-                offset = len(selected_text) - right_index - multiline_offset_correction
-            Key("left:%d" %offset).execute()
+            offset = len(selected_text) - offset_index - multiline_offset_correction
+            Key("left:%d" % offset).execute()
+        else:
+            print("Direction must be either 'left' or 'right' (got '{}')".format(direction))
+            return
     else:
         # Approach 2: unselect using arrow keys rather than pasting over the existing text. (a little faster) does not work texstudio
         if right_index < round(len(selected_text))/2:
@@ -363,20 +384,26 @@ def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search
             if before_after  == "before":
                 offset_correction = selected_text[: left_index].count("\r\n")
                 offset = left_index - offset_correction
-            if before_after  == "after":
+            elif before_after  == "after":
                 offset_correction = selected_text[: right_index].count("\r\n")
                 offset = right_index - offset_correction
-            Key("right:%d" %offset).execute()
+            else:
+                print("before_after must be either 'before' or 'after' (got '{}')".format(before_after))
+                return
+            Key("right:%d" % offset).execute()
         else:
             # it's faster to approach phrase from the right
             Key("right").execute() # unselect text and place cursor on the right side of selection
             if before_after  == "before":
                 offset_correction = selected_text[left_index :].count("\r\n")
                 offset = len(selected_text) - left_index - offset_correction
-            if before_after  == "after":
+            elif before_after  == "after":
                 offset_correction = selected_text[right_index :].count("\r\n")
                 offset = len(selected_text) - right_index - offset_correction
-            Key("left:%d" %offset).execute()
+            else:
+                print("before_after must be either 'before' or 'after' (got '{}')".format(before_after))
+                return
+            Key("left:%d" % offset).execute()
     
 
 def select_phrase(phrase, direction, number_of_lines_to_search, occurrence_number, dictation_versus_character):
@@ -443,6 +470,9 @@ def select_until_phrase(direction, phrase, before_after, number_of_lines_to_sear
             before_after = "before"
         if direction == "right":
             before_after = "after"
+    elif before_after not in ("before", "after"):
+        print("before_after must be either 'before' or 'after' (got '{}')".format(before_after))
+        return
     
     selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
     if not selected_text:
@@ -461,32 +491,39 @@ def select_until_phrase(direction, phrase, before_after, number_of_lines_to_sear
     if application == "texstudio":
         text_manipulation_paste(selected_text, application) # yes, this is kind of redundant but it gets the proper pause time
         if direction == "left":
-            if before_after == "before": 
-                selected_text_to_the_right_of_phrase = selected_text[left_index :]    
-                multiline_offset_correction = selected_text_to_the_right_of_phrase.count("\r\n")
-                offset = len(selected_text) - left_index - multiline_offset_correction
-                
-            if before_after == "after":
-                selected_text_to_the_right_of_phrase = selected_text[right_index :]
-                multiline_offset_correction = selected_text_to_the_right_of_phrase.count("\r\n")
-                offset = len(selected_text) - right_index - multiline_offset_correction
-            
-            Key("s-left:%d" %offset).execute()
-        if direction == "right":
+            if before_after == "before":
+                offset_index = left_index
+            elif before_after == "after":
+                offset_index = right_index
+            else:
+                print("before_after must be either 'before' or 'after' (got '{}')".format(before_after))
+                return
+
+            selected_text_to_the_right_of_phrase = selected_text[offset_index :]
+            multiline_offset_correction = selected_text_to_the_right_of_phrase.count("\r\n")
+            offset = len(selected_text) - offset_index - multiline_offset_correction
+            Key("s-left:%d" % offset).execute()
+        elif direction == "right":
             multiline_movement_correction = selected_text.count("\r\n")
             movement_offset = len(selected_text) - multiline_movement_correction
             
             if before_after == "before":
-                multiline_selection_correction = selected_text[: left_index].count("\r\n")
-                selection_offset = left_index - multiline_movement_correction
-            if before_after == "after":
-                multiline_selection_correction = selected_text[: right_index].count("\r\n")
-                selection_offset = right_index
+                selection_offset_correction = selected_text[: left_index].count("\r\n")
+                selection_offset = left_index - selection_offset_correction
+            elif before_after == "after":
+                selection_offset_correction = selected_text[: right_index].count("\r\n")
+                selection_offset = right_index - selection_offset_correction
+            else:
+                print("before_after must be either 'before' or 'after' (got '{}')".format(before_after))
+                return
 
             # move cursor to original position
-            Key("left:%d" %movement_offset).execute()
+            Key("left:%d" % movement_offset).execute()
             # select text
-            Key("s-right:%d" %selection_offset).execute()
+            Key("s-right:%d" % selection_offset).execute()
+        else:
+            print("Direction must be either 'left' or 'right' (got '{}')".format(direction))
+            return
     
     # Approach 2: unselect using arrow keys rather than pasting over the existing text. (a little faster) does not work texstudio
     else:
@@ -495,17 +532,25 @@ def select_until_phrase(direction, phrase, before_after, number_of_lines_to_sear
             if before_after == "before":
                 multiline_correction = selected_text[left_index :].count("\r\n")
                 offset = len(selected_text) - left_index - multiline_correction
-            if before_after == "after":
+            elif before_after == "after":
                 multiline_correction = selected_text[right_index :].count("\r\n")
                 offset = len(selected_text) - right_index - multiline_correction
-            Key("s-left:%d" %offset).execute()
-        if direction == "right": 
+            else:
+                print("before_after must be either 'before' or 'after' (got '{}')".format(before_after))
+                return
+            Key("s-left:%d" % offset).execute()
+        elif direction == "right": 
             Key("left").execute() # unselect text and move to the right side of selection
             if before_after == "before":
                 multiline_correction = selected_text[: left_index].count("\r\n")
                 offset = left_index - multiline_correction
-            if before_after == "after":
+            elif before_after == "after":
                 multiline_correction = selected_text[: right_index].count("\r\n")
                 offset = right_index - multiline_correction
-            Key("s-right:%d" %offset).execute()
-
+            else:
+                print("before_after must be either 'before' or 'after' (got '{}')".format(before_after))
+                return
+            Key("s-right:%d" % offset).execute()
+        else:
+            print("Direction must be either 'left' or 'right' (got '{}')".format(direction))
+            return
