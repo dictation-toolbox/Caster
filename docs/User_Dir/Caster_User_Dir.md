@@ -12,7 +12,7 @@ The default locations are:
 
 Users can set the location of their Caster user directory using the environment variable `CASTER_USER_DIR`. For help on setting environment variables on your system, search for "setting environment variables <_your OS_>".
 
-### Layout  Description
+### Layout Description
 
 - `data` - Caster stores the files that are not intended to be edited by the user in the `data` directory. Most files here are for self-modifying rules, such as [Alias](https://dictation-toolbox.github.io/Caster/#/Caster_Commands/Alias), and start with `sm_`.
 - `caster_user_content\hooks` - For user-made [hooks](https://dictation-toolbox.github.io/Caster/#/Caster_Settings/hooks) (Empty by default).

@@ -25,8 +25,8 @@
   * [Alias](/Caster_Commands/Alias.md)
   * [Bring Me](/Caster_Commands/Bringme.md)
 * Programming By Voice
-  * [Speaking Examples](/Getting_Started/How_to_Speak_Code/How_to_Speak_Code_Intro.md)
-  * [How to Speak Code](/Getting_Started/How_to_Speak_Code/Speaking/Examples.md)
+  * [How to Speak Code](/Getting_Started/How_to_Speak_Code/How_to_Speak_Code_Intro.md)
+  * [Speaking Examples](/Getting_Started/How_to_Speak_Code/Speaking/Examples.md)
 * [Caster User Directory](/User_Dir/Caster_User_Dir.md)
 * Rule Construction
   * [Intro into Rules and Grammars](/Rule_Construction/Intro_Into_Rules_and_Grammars.md)
@@ -41,8 +41,8 @@
   * [Loading Rules](/Rule_Construction/Loading_Rules.md)
   * [Migrating From Dragonfly or Previous Caster Versions](/Rule_Construction/Migrating_From_Dragonfly-Caster.md)
 * Customize Caster
-    * [Editing Starter Rules]("/Customize_Caster/Customizing_Starter_Rules.md")
-    * [Creating Hooks and Events]("/Customize_Caster/Creating_Hooks_and_Events.md")
+  * [Editing Starter Rules](/Customize_Caster/Customizing_Starter_Rules.md)
+  * [Creating Hooks and Events](/Customize_Caster/Creating_Hooks_and_Events.md)
   * Explanation of Settings
     * [Rules](/Caster_Settings/rules.md)
     * [Caster Settings](/Caster_Settings/settings.md)
@@ -52,8 +52,8 @@
 * Third-party Integrations
   * [Aenea](/Third-party_Integrations/Aenea.md)
   * [Sikuli](/Third-party_Integrations/Sikuli.md)
-* [Contributing](Contributing.md)
-  * [Code of Conduct](CODE_OF_CONDUCT.md)
+* [Contributing](/Contributing.md)
+  * [Code of Conduct](/CODE_OF_CONDUCT.md)
 * Meta
   * [Undocumented Features](/meta/Undocumented_Features.md)
   * [Grammar Documentation Template](/meta/GRAMMAR_DOCUMENTATION_TEMPLATE.md)

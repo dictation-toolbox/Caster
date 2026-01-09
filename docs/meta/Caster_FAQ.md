@@ -1,6 +1,6 @@
-# **Caster Frequently Asked Questions - FAQ**
+# Caster Frequently Asked Questions (FAQ)
 
-Welcome to the Caster project! This FAQ guide this to help introduce the Caster project and the community. 
+Welcome to the Caster project! This FAQ is meant to help introduce the project and the community. 
 
 1. **What type of individuals are in the Caster community?**  
 
@@ -10,15 +10,15 @@ Welcome to the Caster project! This FAQ guide this to help introduce the Caster 
 
 2. **Is Caster only meant to be used by developers who code only by voice?**
 
-      Both developers and everyday users can benefit from a simple experience to control their computer. Caster was designed for voice programmers who develop software. However programming is a barrier for most people. We want to simplify experience for the everyday users, yet maintain the power and flexibility necessary for developers underneath the hood. 
+      Both developers and everyday users can benefit from a simple experience to control their computer. Caster was designed for voice programmers who develop software. However programming is a barrier for most people. We want to simplify the experience for everyday users, yet maintain the power and flexibility necessary for developers underneath the hood. 
 
-      Caster can be used without programming experience and customized on a basic level through simplified transformers. Which allow you to redefine command names without programming experience. We acknowledge there is a lot of work to be done to make Caster truly accessible for those without a technical background, but that vision is a work in progress.
+      Caster can be used without programming experience and customized on a basic level through simplified transformers, which allow you to redefine command names without programming experience. We acknowledge there is a lot of work to be done to make Caster truly accessible for those without a technical background, but that vision is a work in progress.
 
 3. **Maybe I do not need certain features. How flexible is Caster?** 
 
-      The voice commands are purposely structured to allow you to pick and choose how you want to use the project. This allows for a broad userbase with diverse interests and abelites.  A configuration file allows you to block categories of commands called `rules`  giving you control over your experience. The sky is the limit. Consider the following use cases:
+      The voice commands are purposely structured to allow you to pick and choose how you want to use the project. This allows for a broad user base with diverse interests and abilities. A configuration file allows you to block categories of commands called `rules`, giving you control over your experience. The sky is the limit. Consider the following use cases:
 
-      - I am developer or person who does not have barriers using computer inputs like keyboard and mouse. I only want to control applications by voice to augment their workflow.
+      - I am a developer or person who does not have barriers using computer inputs like the keyboard and mouse. I only want to control applications by voice to augment my workflow.
 
         You can disable all the rules that are related to voice programming, advanced mouse and keyboard control.
 
@@ -26,7 +26,7 @@ Welcome to the Caster project! This FAQ guide this to help introduce the Caster 
 
         You could disable all the starter rules and create your own with Caster as a framework.
 
-4. **Why does the Caster use obscure or strange words for command names?**
+4. **Why does Caster use obscure or strange words for command names?**
 
       Typically speech recognition engines are great with sentences not short commands. Basically the general vocabulary is too ambiguous for speech recognition engines to discern between words that are phonetically close and how they are pronounced. Think of how similar "end", "and", "n" and "m" sound, and if that's all you heard and did not know the context of it being in a sentence. Words that are phonetically distinct from each other increase speech recognition accuracy.  
 
@@ -37,7 +37,7 @@ Welcome to the Caster project! This FAQ guide this to help introduce the Caster 
       - Customizing commands will lead to higher accuracy 
       - Commands that are created by the end-user are more likely to be remembered
 
-      You can customize commands by copying starter rules, utilizing simplified transformers, or creating your own from scratch. See the read the `Caster Rules` in the documentation.
+      You can customize commands by copying starter rules, utilizing simplified transformers, or creating your own from scratch. See the `Caster Rules` section in the documentation.
 
 6. **Does Caster support multiple languages?**
 
@@ -45,7 +45,7 @@ Welcome to the Caster project! This FAQ guide this to help introduce the Caster 
 
 7. **Does Dragonfly come with its own commands?**
 
-      Dragonfly does not come with built-in commands, and you would have to to create their own commands.
+      Dragonfly does not come with built-in commands, and you would have to create your own commands.
 
 8. **What's the difference between Caster and Dragonfly?**
 

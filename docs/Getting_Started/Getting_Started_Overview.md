@@ -7,4 +7,4 @@ This is a place where your journey to control your computer by voice begins. The
 3. Customizing existing and creating your own sets of voice commands
 4. Explanation of Caster settings
 
-So to get started by choosing a speech recognition engine.
+Start by choosing a speech recognition engine.
