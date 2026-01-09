@@ -14,20 +14,21 @@ finally:
     from castervoice.lib import settings
     from castervoice.lib.merge.communication import Communicator
 
-from PySide2 import QtCore
-from PySide2.QtGui import QPalette
-from PySide2.QtWidgets import QApplication
-from PySide2.QtWidgets import QDialogButtonBox
-from PySide2.QtWidgets import QCheckBox
-from PySide2.QtWidgets import QDialog
-from PySide2.QtWidgets import QFormLayout
-from PySide2.QtWidgets import QGroupBox
-from PySide2.QtWidgets import QLabel
-from PySide2.QtWidgets import QLineEdit
-from PySide2.QtWidgets import QScrollArea
-from PySide2.QtWidgets import QTabWidget
-from PySide2.QtWidgets import QVBoxLayout
-from PySide2.QtWidgets import QWidget
+from castervoice.lib.qt import QtCore, QtGui, QtWidgets, qt_attr, qapp_exec
+
+QPalette = QtGui.QPalette
+QApplication = QtWidgets.QApplication
+QDialogButtonBox = QtWidgets.QDialogButtonBox
+QCheckBox = QtWidgets.QCheckBox
+QDialog = QtWidgets.QDialog
+QFormLayout = QtWidgets.QFormLayout
+QGroupBox = QtWidgets.QGroupBox
+QLabel = QtWidgets.QLabel
+QLineEdit = QtWidgets.QLineEdit
+QScrollArea = QtWidgets.QScrollArea
+QTabWidget = QtWidgets.QTabWidget
+QVBoxLayout = QtWidgets.QVBoxLayout
+QWidget = QtWidgets.QWidget
 
 
 
@@ -39,8 +40,21 @@ NUMBER_LIST_SETTING = 8
 NUMBER_SETTING = 16
 BOOLEAN_SETTING = 32
 
-CONTROL_KEY = QtCore.Qt.Key_Meta if sys.platform == "darwin" else QtCore.Qt.Key_Control
-SHIFT_TAB_KEY = int(QtCore.Qt.Key_Tab) + 1
+KEY_META = qt_attr(QtCore, ("Qt", "Key_Meta"), ("Qt", "Key", "Key_Meta"))
+KEY_CONTROL = qt_attr(QtCore, ("Qt", "Key_Control"), ("Qt", "Key", "Key_Control"))
+KEY_TAB = qt_attr(QtCore, ("Qt", "Key_Tab"), ("Qt", "Key", "Key_Tab"))
+
+CONTROL_KEY = int(KEY_META if sys.platform == "darwin" else KEY_CONTROL)
+TAB_KEY = int(KEY_TAB)
+SHIFT_TAB_KEY = TAB_KEY + 1
+
+KEY_RELEASE_EVENT = qt_attr(QtCore, ("QEvent", "KeyRelease"), ("QEvent", "Type", "KeyRelease"))
+PALETTE_MID = qt_attr(QtGui, ("QPalette", "Mid"), ("QPalette", "ColorRole", "Mid"))
+FORM_GROW_ALL_NON_FIXED = qt_attr(
+    QtWidgets,
+    ("QFormLayout", "AllNonFixedFieldsGrow"),
+    ("QFormLayout", "FieldGrowthPolicy", "AllNonFixedFieldsGrow"),
+)
 
 RPC_COMPLETE_EVENT = QtCore.QEvent.Type(QtCore.QEvent.registerEventType(-1))
 
@@ -83,11 +97,11 @@ class SettingsDialog(QDialog):
         self.expiration.start()
 
     def event(self, event):
-        if event.type() == QtCore.QEvent.KeyRelease:
+        if event.type() == KEY_RELEASE_EVENT:
             if self.modifier == 1:
                 curr = self.tabs.currentIndex()
                 tabs_count = self.tabs.count()
-                if event.key() == QtCore.Qt.Key_Tab:
+                if event.key() == TAB_KEY:
                     next = curr + 1
                     next = 0 if next == tabs_count else next
                     self.tabs.setCurrentIndex(next)
@@ -116,7 +130,7 @@ class SettingsDialog(QDialog):
     def make_tab(self, title):
         area = QScrollArea()
         field = Field(area, title)
-        area.setBackgroundRole(QPalette.Mid)
+        area.setBackgroundRole(PALETTE_MID)
         area.setWidgetResizable(True)
         area.setWidget(self.add_fields(self, title, field))
         self.fields.append(field)
@@ -125,7 +139,7 @@ class SettingsDialog(QDialog):
     def add_fields(self, parent, title, field):
         tab = QWidget(parent)
         form = QFormLayout()
-        form.setFieldGrowthPolicy(QFormLayout.AllNonFixedFieldsGrow)
+        form.setFieldGrowthPolicy(FORM_GROW_ALL_NON_FIXED)
         for label in sorted(settings.SETTINGS[title].keys()):
             value = settings.SETTINGS[title][label]
             subfield = Field(None, label)
@@ -233,7 +247,7 @@ def main():
     app = QApplication(sys.argv)
     window = SettingsDialog(server)
     window.show()
-    exit_code = app.exec_()
+    exit_code = qapp_exec(app)
     server.shutdown()
     sys.exit(exit_code)
 

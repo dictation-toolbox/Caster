@@ -6,6 +6,7 @@ mock>=3.0.5
 appdirs>=1.4.3
 scandir>=1.10.0
 pylint
-PySide2>=5.14
+PySide6>=6.5; platform_system == "Darwin"
+PySide2>=5.14; platform_system != "Darwin"
 six
 g2p_en
