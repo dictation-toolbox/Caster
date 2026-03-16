@@ -9,7 +9,8 @@ class mockExclusiveManager():
 
 
 class TestEngineModesManager(TestCase):
-    _manager = EngineModesManager(mockExclusiveManager())
+    def setUp(self):
+        self._manager = EngineModesManager(mockExclusiveManager())
 
     def test_set_engine_mode(self):
         self._manager.set_engine_mode(mode="numbers", state=True)
