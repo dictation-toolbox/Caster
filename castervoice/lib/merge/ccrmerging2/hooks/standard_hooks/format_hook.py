@@ -28,9 +28,12 @@ class FormattingHook(BaseHook):
     def get_pronunciation(self):
         return "formatting"
 
-    def run(self, event_content):
-        pronunciation = event_content["pronunciation"]
-        _apply_format(pronunciation)
+    def run(self, event):
+        if event.active:
+            _apply_format(event.rule_class_name)
+        else:
+            textformat.format.clear_text_format()
+            textformat.secondary_format.clear_text_format()
 
 
 def get_hook():
