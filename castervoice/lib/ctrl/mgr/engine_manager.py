@@ -23,7 +23,8 @@ class EngineModesManager(object):
         self.engine_state = None
         self.previous_engine_state = None
         self.mic_state = None
-        self.engine = get_current_engine().name
+        engine = get_current_engine()
+        self.engine = engine.name if engine is not None else "text"
         self._exclusive_manager = ExclusiveManager
 
         # Remove "normal" and "off" from 'states' for non-DNS based engines.
