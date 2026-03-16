@@ -3,8 +3,9 @@ Created on Oct 7, 2015
 
 @author: synkarius
 '''
-import os, sys, time, pkg_resources
-from pkg_resources import VersionConflict, DistributionNotFound
+import os, sys, time
+from importlib.metadata import version, PackageNotFoundError
+from packaging.version import Version
 from castervoice.lib import printer
 
 DARWIN = sys.platform == "darwin"
@@ -13,10 +14,8 @@ LINUX = sys.platform == "linux"
 def install_type():
     # Checks if Caster install is Classic or PIP.
     try:
-        pkg_resources.require("castervoice")
-    except VersionConflict:
-        pass
-    except DistributionNotFound:
+        version("castervoice")
+    except PackageNotFoundError:
         return "classic"
     return "pip"
 
@@ -39,11 +38,9 @@ def dep_missing():
     for dep in requirements:
         dep = dep.split(">=", 1)[0]
         try:
-            pkg_resources.require("{}".format(dep))
-        except VersionConflict:
-            pass
-        except DistributionNotFound:
-            missing_list.append('{0}'.format(dep))
+            version(dep)
+        except PackageNotFoundError:
+            missing_list.append(dep)
     if missing_list:
         pippackages = (' '.join(map(str, missing_list)))
         printer.out("\nCaster: dependencys are missing. Use 'python -m pip install {0}'".format(pippackages))
@@ -60,18 +57,20 @@ def dep_min_version():
     for dep in listdependency:
         package = dep[0]
         operator = dep[1]
-        version = dep[2]
+        req_version = dep[2]
         issue_url = dep[3]
         try:
-            pkg_resources.require('{0} {1} {2}'.format(package, operator, version))
-        except VersionConflict as e:
-            if operator == ">=":
+            installed = Version(version(package))
+            required = Version(req_version)
+            if operator == ">=" and installed < required:
                 if issue_url is not None:
-                    printer.out("\nCaster: Requires {0} v{1} or greater.\nIssue reference: {2}".format(package, version, issue_url))
+                    printer.out("\nCaster: Requires {0} v{1} or greater.\nIssue reference: {2}".format(package, req_version, issue_url))
                 printer.out("Update with: 'python -m pip install {} --upgrade' \n".format(package))
-            if operator == "==":
+            elif operator == "==" and installed != required:
                 printer.out("\nCaster: Requires an exact version of {0}.\nIssue reference: {1}".format(package, issue_url))
-                print("Install with: 'python -m pip install {}' \n".format(e.req))
+                printer.out("Install with: 'python -m pip install {0}=={1}' \n".format(package, req_version))
+        except PackageNotFoundError:
+            pass
 
 
 class DependencyMan:
