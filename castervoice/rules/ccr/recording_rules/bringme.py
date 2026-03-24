@@ -245,7 +245,7 @@ class BringRule(BaseSelfModifyingRule):
             "caster log file": str(Path(_user_dir).joinpath("log.txt")),
 
             # Simplified Transformer
-            "caster transformer file": str(Path(_user_dir).joinpath("transformers/words.txt")),
+            "caster transformer file": str(Path(_user_dir).joinpath(ContentRoot.USER_DIR).joinpath("transformers/words.txt")),
         }
     }
 
