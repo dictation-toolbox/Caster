@@ -248,6 +248,7 @@ def clear_log():
     # Natlink status window not used in out-of-process mode.
     # TODO: window_exists utilized when engine launched through Dragonfly CLI via bat in future
     try:
+        window_title = "Caster: Status Window"
         if WIN32:
             clearcmd = "cls"  # Windows OS
         else:
@@ -256,15 +257,20 @@ def clear_log():
             from natlinkcore import natlinkstatus # pylint: disable=import-error
             status = natlinkstatus.NatlinkStatus()
             if status.NatlinkIsEnabled() == 1:
+                window_title = "Messages from Natlink"
                 import win32gui  # pylint: disable=import-error
-                handle = get_window_by_title("Messages from Python Macros") or get_window_by_title("Messages from Natlink")
-                rt_handle = win32gui.FindWindowEx(handle, None, "RICHEDIT", None)
-                win32gui.SetWindowText(rt_handle, "")
+                handle = get_window_by_title("Messages from Python Macros")
+                if not handle:
+                    handle = get_window_by_title(window_title)
+                if handle:
+                    rt_handle = win32gui.FindWindowEx(handle, None, "RICHEDIT", None)
+                    if rt_handle:
+                        win32gui.SetWindowText(rt_handle, "")
             else:
-                if window_exists(windowname="Caster: Status Window"):
+                if window_exists(windowname=window_title):
                     os.system(clearcmd)
         else:
-            if window_exists(windowname="Caster: Status Window"):
+            if window_exists(windowname=window_title):
                 os.system(clearcmd)
             else:
                 printer.out("clear_log: Not implemented with GUI")
