@@ -2,6 +2,7 @@ import re
 from dragonfly import Window
 from castervoice.lib.context import AppContext
 from castervoice.lib import context
+from castervoice.lib import accessibility
 from castervoice.lib.actions import Key
 
 contexts = {
@@ -159,12 +160,15 @@ def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, di
         # "up" and "down" get treated just as the "left" and "right" 
         # except that the default number of lines to search get set to three instead of zero
         number_of_lines_to_search, direction = deal_with_up_down_directions(direction, number_of_lines_to_search)
+    replaced_phrase = str(replaced_phrase)
+    replacement_phrase = str(replacement_phrase)
+    if number_of_lines_to_search == 0 and occurrence_number == 1:
+        if accessibility.replace_nearest_phrase(direction, replaced_phrase, replacement_phrase):
+            return
     application = get_application()
     selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
     if not selected_text:
         return 
-    replaced_phrase = str(replaced_phrase)
-    replacement_phrase = str(replacement_phrase) 
     new_text = replace_phrase_with_phrase(selected_text, replaced_phrase, replacement_phrase, direction, occurrence_number, dictation_versus_character)
     if not new_text:
         # replaced_phrase not found
@@ -184,16 +188,19 @@ def copypaste_change_phrase_capitalization(phrase, direction, number_of_lines_to
         # "up" and "down" get treated just as the "left" and "right" 
         # except that the default number of lines to search get set to three instead of zero
         number_of_lines_to_search, direction = deal_with_up_down_directions(direction, number_of_lines_to_search)
-    application = get_application()
-    selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
-    if not selected_text:
-        return 
     replaced_phrase = phrase
     if letter_size == "lower":
         replacement_phrase = phrase[0].lower()
     else:
         replacement_phrase = phrase[0].upper()
     replacement_phrase += phrase[1:]
+    if number_of_lines_to_search == 0 and occurrence_number == 1:
+        if accessibility.replace_nearest_phrase(direction, replaced_phrase, replacement_phrase):
+            return
+    application = get_application()
+    selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
+    if not selected_text:
+        return 
     new_text = replace_phrase_with_phrase(selected_text, replaced_phrase, replacement_phrase, direction, occurrence_number, dictation_versus_character)
     if not new_text:
         # replaced_phrase not found
@@ -232,11 +239,14 @@ def remove_phrase_from_text(text, phrase, direction, occurrence_number, dictatio
 def copypaste_remove_phrase_from_text(phrase, direction, number_of_lines_to_search, occurrence_number, dictation_versus_character):
     if direction == "up" or direction == "down":
         number_of_lines_to_search, direction = deal_with_up_down_directions(direction, number_of_lines_to_search)
+    phrase = str(phrase)
+    if number_of_lines_to_search == 0 and occurrence_number == 1:
+        if accessibility.remove_nearest_phrase(direction, phrase, dictation_versus_character != "character"):
+            return
     application = get_application()
     selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
     if not selected_text:
         return 
-    phrase = str(phrase)
     new_text = remove_phrase_from_text(selected_text, phrase, direction, occurrence_number, dictation_versus_character)
     if not new_text:
         # phrase not found
@@ -281,18 +291,21 @@ def delete_until_phrase(text, phrase, direction, before_after, occurrence_number
 def copypaste_delete_until_phrase(direction, phrase, number_of_lines_to_search, before_after, occurrence_number, dictation_versus_character):
     if direction == "up" or direction == "down":
         number_of_lines_to_search, direction = deal_with_up_down_directions(direction, number_of_lines_to_search)
-    application = get_application()  
+    phrase = str(phrase)
     if not before_after:
         # default to delete all the way through the phrase not just up until it
         if direction == "left":
             before_after = "before"
         if direction == "right":
             before_after = "after"
+    if number_of_lines_to_search == 0 and occurrence_number == 1:
+        if accessibility.remove_until_nearest_phrase(direction, before_after, phrase):
+            return
+    application = get_application()  
 
     selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
     if not selected_text:
         return 
-    phrase = str(phrase)
     new_text = delete_until_phrase(selected_text, phrase, direction, before_after, occurrence_number, dictation_versus_character)
         
     if new_text is None: 
@@ -318,7 +331,7 @@ def copypaste_delete_until_phrase(direction, phrase, number_of_lines_to_search, 
 def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search, occurrence_number, dictation_versus_character):
     if direction == "up" or direction == "down":
         number_of_lines_to_search, direction = deal_with_up_down_directions(direction, number_of_lines_to_search)
-    application = get_application()
+    phrase = str(phrase)
     if not before_after:
           # default to whatever is closest to the cursor
         if direction  == "left":
@@ -328,11 +341,14 @@ def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search
     elif before_after not in ("before", "after"):
         print("before_after must be either 'before' or 'after' (got '{}')".format(before_after))
         return
+    if number_of_lines_to_search == 0 and occurrence_number == 1:
+        if accessibility.move_nearest_phrase(direction, before_after, phrase):
+            return
+    application = get_application()
     
     selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
     if not selected_text:
         return
-    phrase = str(phrase)
     match_index = get_start_end_position(selected_text, phrase, direction, occurrence_number, dictation_versus_character)
     if match_index:
         left_index, right_index = match_index
@@ -409,11 +425,14 @@ def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search
 def select_phrase(phrase, direction, number_of_lines_to_search, occurrence_number, dictation_versus_character):
     if direction == "up" or direction == "down":
         number_of_lines_to_search, direction = deal_with_up_down_directions(direction, number_of_lines_to_search)
+    phrase = str(phrase)
+    if number_of_lines_to_search == 0 and occurrence_number == 1:
+        if accessibility.select_nearest_phrase(direction, phrase):
+            return
     application = get_application()
     selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
     if not selected_text:
         return 
-    phrase = str(phrase)
     match_index = get_start_end_position(selected_text, phrase, direction, occurrence_number, dictation_versus_character)
     if match_index:
         left_index, right_index = match_index
@@ -463,7 +482,7 @@ def select_phrase(phrase, direction, number_of_lines_to_search, occurrence_numbe
 def select_until_phrase(direction, phrase, before_after, number_of_lines_to_search, occurrence_number, dictation_versus_character):
     if direction == "up" or direction == "down":
         number_of_lines_to_search, direction = deal_with_up_down_directions(direction, number_of_lines_to_search)
-    application = get_application()  
+    phrase = str(phrase)
     if not before_after:
     # default to select all the way through the phrase not just up until it
         if direction == "left":
@@ -473,11 +492,14 @@ def select_until_phrase(direction, phrase, before_after, number_of_lines_to_sear
     elif before_after not in ("before", "after"):
         print("before_after must be either 'before' or 'after' (got '{}')".format(before_after))
         return
+    if number_of_lines_to_search == 0 and occurrence_number == 1:
+        if accessibility.select_until_nearest_phrase(direction, before_after, phrase):
+            return
+    application = get_application()  
     
     selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
     if not selected_text:
         return 
-    phrase = str(phrase)
     match_index = get_start_end_position(selected_text, phrase, direction, occurrence_number, dictation_versus_character)
     if match_index:
         left_index, right_index = match_index
