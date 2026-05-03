@@ -3,7 +3,7 @@ from ctypes import windll
 
 # https://github.com/mirober/pyvda
 try:
-    from pyvda import VirtualDesktop, AppView, get_virtual_desktops
+    from pyvda import VirtualDesktop, AppView, get_virtual_desktops  # pylint: disable=import-error
 except Exception as e:
     # This could fail on linux or windows <10
     print("Importing package pyvda failed with exception %s" % str(e))
