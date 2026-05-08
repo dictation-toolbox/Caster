@@ -1,3 +1,4 @@
+import re
 from builtins import str
 
 from castervoice.lib import settings
@@ -34,8 +35,17 @@ class TextFormat():
                 t = t.upper()
             elif capitalization == 2:
                 t = t.title()
+                # Python's built-in .title() treats apostrophes as word boundaries, 
+                # incorrectly capitalizing contractions (e.g., "don't" becomes "Don'T").
+                # This regex lowercases common contractions and possessives, while 
+                # safely preserving proper names like "O'Reilly" or "D'Angelo".
+                #   (?<=[a-zA-Z])            : Ensures a letter precedes the apostrophe.
+                #   '(S|T|M|D|Re|Ve|Ll)\b    : Matches the contraction at a word boundary.
+                t = re.sub(r"(?<=[a-zA-Z])'(S|T|M|D|Re|Ve|Ll)\b", lambda m: m.group(0).lower(), t)
             elif capitalization == 3:
-                t = t[0].lower() + t.title()[1:]
+                t = t.title()
+                t = re.sub(r"(?<=[a-zA-Z])'(S|T|M|D|Re|Ve|Ll)\b", lambda m: m.group(0).lower(), t)
+                t = t[0].lower() + t[1:]
             elif capitalization == 4:
                 t = t.capitalize()
             elif capitalization == 5:
