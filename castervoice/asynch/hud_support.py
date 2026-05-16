@@ -1,4 +1,4 @@
-import sys, subprocess, json
+import sys, subprocess, json, time
 
 from dragonfly import CompoundRule, MappingRule, get_current_engine, Function
 
@@ -106,13 +106,22 @@ class HudPrintMessageHandler(printer.BaseMessageHandler):
         super(HudPrintMessageHandler, self).__init__()
         self.hud = control.nexus().comm.get_com("hud")
         self.is_hud_active = False
-        try:
-            if get_current_engine().name != "text":
-                self.hud.ping() # HUD running?
-                self.is_hud_active = True
-        except Exception as e:
-            self.is_hud_active = False
-            printer.out("Hud not available. \n{}".format(e))
+        
+        if get_current_engine().name != "text":
+            # Retry loop to handle the cold-boot race condition
+            max_retries = 10
+            for attempt in range(max_retries):
+                try:
+                    self.hud.ping() # HUD running?
+                    self.is_hud_active = True
+                    break # Connection successful, break out of loop
+                except Exception as e:
+                    if attempt < max_retries - 1:
+                        time.sleep(0.5) # Wait 500ms before next attempt
+                    else:
+                        # Log failure if it still won't connect after 5 seconds
+                        self.is_hud_active = False
+                        printer.out("Hud not available after {} retries. \n{}".format(max_retries, e))
 
     def handle_message(self, items):
         if self.is_hud_active is True:
