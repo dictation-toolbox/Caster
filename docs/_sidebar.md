@@ -52,6 +52,7 @@
 * Third-party Integrations
   * [Aenea](/Third-party_Integrations/Aenea.md)
   * [Sikuli](/Third-party_Integrations/Sikuli.md)
+  * [Accessibility API Integration](/Third-party_Integrations/Accessibility_API_Integration.md)
 * [Contributing](/Contributing.md)
   * [Code of Conduct](/CODE_OF_CONDUCT.md)
 * Meta
