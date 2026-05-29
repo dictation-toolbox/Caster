@@ -1,6 +1,0 @@
-<<<SPEC>>>
-shock -> earthquake
-<<<NOT_SPECS>>>
-sauce -> up
-dunce -> down
-lease -> left
