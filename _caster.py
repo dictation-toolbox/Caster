@@ -2,7 +2,6 @@
 main Caster module
 Created on Jun 29, 2014
 '''
-import atexit
 import logging
 import importlib
 from dragonfly import get_engine, get_current_engine
@@ -43,6 +42,4 @@ if get_current_engine().name != "text":
 
 dh = printer.get_delegating_handler()
 dh.register_handler(hud_support.HudPrintMessageHandler()) # After hud starts
-atexit.register(hud_support.stop_hud)
-
 printer.out("\n") # Force update to display text
