@@ -5,11 +5,16 @@ from castervoice.lib.ctrl.dependencies import find_pip  # pylint: disable=no-nam
 from castervoice.lib.ctrl.updatecheck import update
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.short import R
-from castervoice.asynch.hud_support import show_hud
-from castervoice.asynch.hud_support import hide_hud
-from castervoice.asynch.hud_support import show_rules
-from castervoice.asynch.hud_support import hide_rules
-from castervoice.asynch.hud_support import clear_hud
+from castervoice.asynch.hud_support import (
+    show_hud,
+    hide_hud,
+    start_hud,
+    stop_hud,
+    restart_hud,
+    show_rules,
+    hide_rules,
+    clear_hud,
+)
 
 _PIP = find_pip()
 
@@ -42,16 +47,23 @@ class CasterRule(MappingRule):
             R(Function(lambda: control.nexus().set_ccr_active(True))),
         "disable (c c r|ccr)":
             R(Function(lambda: control.nexus().set_ccr_active(False))),
-        "show caster hud":
+        # Standard HUD control
+        "(show caster hud | caster show hud)":
             R(Function(show_hud), rdescript="Show the HUD window"),
-        "hide caster hud":
+        "(hide caster hud | caster hide hud)":
             R(Function(hide_hud), rdescript="Hide the HUD window"),
-        "show caster rules":
-            R(Function(show_rules), rdescript="Open HUD frame with the list of active rules"),
-        "hide caster rules":
-            R(Function(hide_rules), rdescript="Hide the list of active rules"),
-        "clear caster hud":
+        "(start caster hud | launch caster hud | caster (start | launch) hud)":
+            R(Function(start_hud), rdescript="Start the HUD process"),
+        "(stop caster hud | kill caster hud | close caster hud | caster (stop | kill | close) hud)":
+            R(Function(stop_hud), rdescript="Stop and close the HUD process"),
+        "(clear caster hud | caster clear hud)":
             R(Function(clear_hud), rdescript="Clear output the HUD window"),
+        "(caster (restart | reset) hud | caster hud (restart | reset) | (restart | reset) caster hud)":
+            R(Function(restart_hud), rdescript="Restart the HUD process cleanly"),
+        "(show caster rules | caster show rules)":
+            R(Function(show_rules), rdescript="Open HUD frame with the list of active rules"),
+        "(hide caster rules | caster hide rules)":
+            R(Function(hide_rules), rdescript="Hide the list of active rules"),
     }
 
 
