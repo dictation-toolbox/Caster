@@ -15,6 +15,27 @@ def install_type():
     # Checks if Caster install is Classic or PIP.
     try:
         version("castervoice")
+def get_text_via_accessibility():
+    import sys
+    if sys.platform=="win32":
+        try:
+            import uiautomation as uia 
+            focused_element = uia.GetFocusedControl()
+            if focused_element:
+                #ValuePattern
+                pattern=focused_element.GetValuePattern()
+                if pattern:
+                    return pattern.value
+                return focused_element.Name
+        except Exception:
+    elif sys.platform=="darwin":
+        try:
+            import Appkit
+            workspace=AppKit.NSWorkspace.sharedWorkspace()
+            return"Mac Accessibility Active"
+            except Exception:
+                return""
+                return""
     except PackageNotFoundError:
         return "classic"
     return "pip"
@@ -80,3 +101,5 @@ class DependencyMan:
         if install == "classic":
             dep_missing()
             dep_min_version()
+            def get_text_via_accessibility()
+            
