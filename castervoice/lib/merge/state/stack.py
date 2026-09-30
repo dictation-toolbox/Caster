@@ -119,8 +119,19 @@ class ContextStack:
             seeker_execution()
 
         self.list.append(stack_item)
-        if len(self.list) > self.max_list_size:  # make this number configurable
-            self.list.remove(self.list[0])
+        if len(self.list) > self.max_list_size:
+            # Evict the oldest completed item first so that active/incomplete seekers
+            # and asynchronous actions remain in the stack to receive triggers and cancellation
+            for i, item in enumerate(self.list):
+                if item.complete:
+                    self.list.pop(i)
+                    break
+            else:
+                # If all items in the stack are incomplete, evict the oldest item
+                # and clean up its resources to prevent orphaned background timers
+                oldest = self.list.pop(0)
+                if hasattr(oldest, "clean"):
+                    oldest.clean()
 
     def get_incomplete_seekers(self):
         incomplete = []
