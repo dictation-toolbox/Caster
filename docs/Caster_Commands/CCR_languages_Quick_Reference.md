@@ -1,27 +1,253 @@
 # CCR Languages Quick Reference
 
-A quick reference guide for the language-specific commands included with Caster. Use the `"enable <language>"` command to activate a particular module.
+A quick reference guide for the language-specific Continuous Command Recognition (CCR) commands included with Caster.
 
 Classic Install Location: `castervoice\rules\ccr` in Caster source code.
 
-- [Bash](#bash)
-- [C++](#c)
-- [C&#35;](#c-1)
-- [VoiceDevCommands](#VoiceDevCommands)
-- [Haxe](#haxe)
-- [HTML](#html)
-- [CSS](#css)
-- [Java](#java)
-- [Javascript](#javascript)
-- [LaTeX](#latex)
-- [Matlab](#matlab)
-- [Markdown](#markdown)
-- [Prolog](#prolog)
-- [Python](#python)
-- [R](#r)
-- [Rust](#rust)
-- [SQL](#sql)
-- [VHDL](#vhdl)
+- [Enabling and Disabling Languages](#enabling-and-disabling-languages)
+  - [Why Disabling Languages Is Important](#why-disabling-languages-is-important)
+  - [Temporarily Disabling Languages via Voice Commands](#temporarily-disabling-languages-via-voice-commands)
+  - [Disabling All CCR Commands Globally](#disabling-all-ccr-commands-globally)
+  - [Inspecting Active Rules via HUD](#inspecting-active-rules-via-hud)
+  - [Permanently Disabling Languages in Settings](#permanently-disabling-languages-in-settings)
+  - [Global vs. Contextual Activation Settings](#global-vs-contextual-activation-settings)
+  - [Related Documentation](#related-documentation)
+- [Language Command Reference](#language-command-reference)
+  - [Bash](#bash)
+  - [C++](#c)
+  - [CSharp](#csharp)
+  - [VoiceDevCommands](#voicedevcommands)
+  - [Go](#go)
+  - [Haxe](#haxe)
+  - [HTML](#html)
+  - [CSS](#css)
+  - [Java](#java)
+  - [Javascript](#javascript)
+  - [LaTeX](#latex)
+  - [Matlab](#matlab)
+  - [Markdown](#markdown)
+  - [Prolog](#prolog)
+  - [Python](#python)
+  - [R](#r)
+  - [Rust](#rust)
+  - [SQL](#sql)
+  - [VHDL](#vhdl)
+  - [VHDL Components](#vhdl-components)
+
+## Enabling and Disabling Languages
+
+### Why Disabling Languages Is Important
+
+Caster's programming language modules use Continuous Command Recognition (CCR) to allow rapid, uninterrupted chaining of code commands. By default, these modules are loaded as **global CCR rules** (`CCRType.GLOBAL`), meaning their command vocabulary is active across all applications on your system (code editors, web browsers, email clients, word processors, chat applications).
+
+Because programming languages use common English words as commands (such as `if`, `else`, `for`, `while`, `return`, `def`, `class`, `print`, `and`, `or`, `not`, `self`, `in`), leaving a language active during general dictation or email writing can cause unexpected behavior:
+- **Unexpected completions**: Speaking words like "if" or "while" inserts language code templates instead of plain text.
+- **Unexpected parentheses or formatting**: Spoken words matching language functions (such as "print", "len", "integer", "string") insert syntax with parentheses like `print()`, `len()`, or `int()`.
+- **Text formatting changes**: Caster's `FormattingHook` applies the active language's capitalization and spacing styles (e.g., camelCase, snake_case) to dictated words.
+
+To avoid interference with general prose and dictation, you can temporarily disable active languages via voice, disable all CCR rules at once, or permanently disable unused languages in Caster's configuration files.
+
+---
+
+### Temporarily Disabling Languages via Voice Commands
+
+You can dynamically enable and disable any language module while Caster is running:
+
+- **Enable a language**: Say `enable <language>`
+- **Disable a language**: Say `disable <language>`
+
+When you say `disable <language>`:
+1. The language's CCR MergeRule is immediately deactivated.
+2. Any associated **companion rules** (e.g., `PythonNon`, `RustNon`, `JavaNon`, `MatlabNon`, `PrologNon`, `VHDLnon`) are automatically deactivated as well.
+3. Language-specific formatting hooks (capitalization and spacing) are cleared.
+4. Caster updates the active rule list (`_enabled_ordered`) in `rules.toml`, persisting the disabled state so the language does not re-enable on restart.
+
+#### Spoken Language Triggers
+
+The trigger word in the voice command is based on the language rule's declared pronunciation:
+
+| Language | Rule Class | Voice Command to Enable | Voice Command to Disable | Companion Rule |
+| :--- | :--- | :--- | :--- | :--- |
+| **Bash** | `Bash` | `enable bash` | `disable bash` | None |
+| **C++** | `CPP` | `enable C plus plus` | `disable C plus plus` | None |
+| **C#** | `CSharp` | `enable C sharp` | `disable C sharp` | None |
+| **CSS** | `CSS` | `enable css` | `disable css` | None |
+| **Dart** | `Dart` | `enable dart` | `disable dart` | None |
+| **Go** | `Go` | `enable go` | `disable go` | None |
+| **Haxe** | `Haxe` | `enable hacks` | `disable hacks` | None |
+| **HTML** | `HTML` | `enable html` | `disable html` | None |
+| **Java** | `Java` | `enable java` | `disable java` | `JavaNon` |
+| **JavaScript** | `Javascript` | `enable javascript` | `disable javascript` | None |
+| **LaTeX** | `LaTeX` | `enable latex` | `disable latex` | None |
+| **Markdown** | `Markdown` | `enable mark down` | `disable mark down` | None |
+| **Matlab** | `Matlab` | `enable matlab` | `disable matlab` | `MatlabNon` |
+| **Prolog** | `Prolog` | `enable prolog` | `disable prolog` | `PrologNon` |
+| **Python** | `Python` | `enable python` | `disable python` | `PythonNon` |
+| **R** | `Rlang` | `enable are` | `disable are` | None |
+| **Rust** | `Rust` | `enable rust` | `disable rust` | `RustNon` |
+| **SQL** | `SQL` | `enable sequel` | `disable sequel` | None |
+| **VHDL** | `VHDL` | `enable VHDL` | `disable VHDL` | `VHDLnon` |
+| **VoiceDevCommands** | `VoiceDevCommands` | `enable voice dev commands` | `disable voice dev commands` | None |
+
+> **Note:** When switching programming languages, Caster automatically deactivates the previously active language in favor of the new one (e.g., saying `enable rust` while Python is active will disable Python). However, when transitioning from code to general dictation or non-programming applications, you should explicitly say `disable <language>` or `disable ccr`.
+
+---
+
+### Disabling All CCR Commands Globally
+
+If you frequently switch between programming and dictating long-form prose or emails, toggling individual languages can become tedious. You can toggle off all Continuous Command Recognition globally:
+
+- **Disable all CCR commands**: Say `disable ccr` (or `disable c c r`).
+- **Re-enable CCR commands**: Say `enable ccr` (or `enable c c r`).
+
+**Why this is effective**:
+- `disable ccr` completely unloads the active CCR grammar from recognition.
+- General navigation, keyboard, mouse, and application-specific commands remain fully functional.
+- No programming keywords, operators, or symbols will be recognized or injected during general dictation.
+- When you are ready to write code again, say `enable ccr` to immediately re-enable your CCR rules without reconfiguring each language.
+
+---
+
+### Inspecting Active Rules via HUD
+
+If you are experiencing unexpected completions and want to verify which languages or rules are currently active:
+
+- Say `show caster rules`: Opens the HUD overlay showing the complete list of currently active rules.
+- Say `hide caster rules`: Closes the active rules HUD window.
+- Say `show caster hud` / `hide caster hud`: Opens or closes the primary Caster Heads-Up Display.
+- Say `clear caster hud`: Clears output in the HUD window.
+
+If an unexpected language (e.g., `Python` or `CPP`) appears in the active rules list, simply say `disable <language>` or `disable ccr`.
+
+---
+
+### Permanently Disabling Languages in Settings
+
+To permanently disable programming languages that you do not use, or to prevent languages from being loaded or auto-activated on startup, edit Caster's configuration files in your [Caster User Directory](https://dictation-toolbox.github.io/Caster/#/User_Dir/Caster_User_Dir).
+
+#### 1. Blacklisting Unused Languages in `rules.toml`
+
+Caster tracks all rules in `settings/rules.toml`. You can open this file by saying `bring me caster rules file` or browsing to `<USER_DIR>/settings/rules.toml`.
+
+Under the `[whitelisted]` table, set any language rule you do not need to `false`:
+
+```toml
+[whitelisted]
+# Set unused programming rules to false to prevent loading
+Bash = false
+CPP = false
+CSharp = false
+Dart = false
+Go = false
+Haxe = false
+Java = false
+JavaNon = false
+Javascript = false
+LaTeX = false
+Matlab = false
+MatlabNon = false
+Prolog = false
+PrologNon = false
+Python = false
+PythonNon = false
+Rlang = false
+Rust = false
+RustNon = false
+SQL = false
+VHDL = false
+VHDLnon = false
+```
+
+**Effects of setting a rule to `false` in `[whitelisted]`**:
+- **Rule is not loaded**: The rule is never loaded into memory or registered with the speech recognition engine at startup.
+- **Cannot be activated by voice**: Saying `enable <language>` will have no effect on a non-whitelisted rule.
+- **Faster startup**: Reduces Caster's boot time and memory footprint.
+- **Restart required**: Whitelist changes take effect when Caster restarts. Say `reboot caster` to restart Caster by voice.
+
+#### 2. Preventing Auto-Activation on Startup (`_enabled_ordered`)
+
+In `settings/rules.toml`, the `_enabled_ordered` list defines the rules that Caster automatically activates at startup:
+
+```toml
+_enabled_ordered = ["Alphabet", "Navigation", "Numbers", "Punctuation", "CasterRule"]
+```
+
+- Disabling a language via voice (`disable <language>`) automatically removes that rule from `_enabled_ordered`.
+- If a language was inadvertently left enabled, you can either say `disable <language>` or open `rules.toml` and remove its class name from the `_enabled_ordered` array.
+
+#### 3. Starting Caster with CCR Disabled by Default (`settings.toml`)
+
+To have CCR disabled globally every time Caster starts up, configure `settings/settings.toml` (open with `bring me caster settings file`):
+
+Under `[miscellaneous]`:
+
+```toml
+[miscellaneous]
+ccr_on = false # Starts Caster with CCR disabled globally
+```
+
+When `ccr_on = false`, CCR remains inactive upon startup until you explicitly say `enable ccr`.
+
+#### 4. Disabling Automatic Language Formatting Hooks (`hooks.toml`)
+
+When a language rule is activated, Caster's `FormattingHook` applies the language's configured text formatting (such as casing and spacing). If this interferes with your dictation style:
+
+- **Via voice**: Say `disable formatting hook`.
+- **Via configuration**: In `<USER_DIR>/settings/hooks.toml` (open with `bring me caster hooks file`), set:
+  ```toml
+  FormattingHook = false
+  ```
+
+---
+
+### Global vs. Contextual Activation Settings
+
+Understanding how Caster scopes rules helps prevent dictation conflicts:
+
+#### Global Activation (`CCRType.GLOBAL`)
+- Built-in programming language CCR rules are registered as `CCRType.GLOBAL`.
+- Global rules remain active across your entire desktop regardless of which window is focused.
+- **Advantage**: Fast coding in any tool—scratchpads, terminal windows, browser text boxes, Jupyter notebooks, or quick scripts.
+- **Disadvantage**: Can intercept common spoken words during general dictation or email writing across any program.
+
+#### Contextual Activation (`CCRType.APP`)
+- Application rules use `CCRType.APP` and Dragonfly contexts to bind commands strictly to specific software (such as Visual Studio Code, Eclipse, or Sublime Text).
+- Commands in an App rule are active **only** when that application window has focus. Switching to a browser or document immediately deactivates them.
+
+#### Creating Contextual Programming Rules
+
+If you prefer language commands to activate automatically inside your code editor and nowhere else, you can create a custom App rule in your [Caster User Directory](https://dictation-toolbox.github.io/Caster/#/User_Dir/Caster_User_Dir) `rules` directory (say `bring me caster rules`):
+
+```python
+# Save as <USER_DIR>/rules/vscode_python.py
+from castervoice.rules.ccr.python_rules.python import Python
+from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
+from castervoice.lib.const import CCRType
+
+def get_rule():
+    # Only active when Visual Studio Code is the focused window
+    details = RuleDetails(ccrtype=CCRType.APP, executable="code")
+    return Python, details
+```
+
+With this contextual configuration:
+- Python commands are active whenever Visual Studio Code has focus.
+- Python commands are completely dormant in all other applications, eliminating any unexpected completions or interference during general dictation.
+
+---
+
+### Related Documentation
+
+- [Rules Configuration and Whitelist](https://dictation-toolbox.github.io/Caster/#/Caster_Settings/rules)
+- [Caster Settings Reference](https://dictation-toolbox.github.io/Caster/#/Caster_Settings/settings)
+- [Companion Rules Configuration](https://dictation-toolbox.github.io/Caster/#/Caster_Settings/companion_config)
+- [Hooks Configuration](https://dictation-toolbox.github.io/Caster/#/Caster_Settings/hooks)
+- [Continuous Command Recognition (CCR) Guide](https://dictation-toolbox.github.io/Caster/#/Rule_Construction/Advanced_Caster_Rules/CCR)
+- [Using Voice Commands](https://dictation-toolbox.github.io/Caster/#/Caster_Commands/Using_Voice_Commands)
+
+---
+
+## Language Command Reference
 
 ## Bash
 

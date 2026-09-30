@@ -22,6 +22,8 @@ For an introduction to CCR, check out [this video](http://www.youtube.com/watch?
 
 Caster groups sets of CCR commands together so that they can be de/activated together. For example, you might want to turn Python and SQL on at the same time, but then switch over to C++ and SQL. To activate a command set, you say `enable <something>` where `<something>` is the name of the set. So, saying `enable Python` turns on Python.
 
+To deactivate an active command set, say `disable <something>` (for example, `disable Python`). All CCR commands can also be toggled off at once by saying `disable ccr`. For a full guide on voice commands, settings configuration, and preventing interference during general dictation, see [CCR Languages Quick Reference](https://dictation-toolbox.github.io/Caster/#/Caster_Commands/CCR_languages_Quick_Reference?id=enabling-and-disabling-languages).
+
 ### Command Standards and Compatibility
 
 Caster also has a standard set of language command words ("specs"). For instance, "if" is the same word ("iffae" at time of writing) for Python, C++, Rust, etc. This reduces cognitive load required to program by voice. You don't have to re-learn all of the basic commands for each language you want to use.
