@@ -2,6 +2,8 @@
 
 Caster provides powerful text manipulation and navigation features. These functions are experimental and subject to change (perhaps based on your feedback!). We encourage contributions; please discuss your ideas [here](https://github.com/dictation-toolbox/Caster/issues/579). These commands are "CCR" and so are able to be combined with other CCR commands. Enable these commands by saying "Enable text manipulation".
 
+When Dragonfly exposes an accessibility controller for the focused editable text field, Caster first tries that controller for text manipulation. This can select, move through, replace, and remove text through OS accessibility-backed ranges instead of copying the surrounding text through the clipboard. If accessibility is unavailable for the focused application, or the requested phrase is not found through accessibility, Caster falls back to the existing clipboard-based behavior.
+
 ## Common elements
 
 - `direction` _sauce_ (up), _dunce_ (down), _lease_ (left) or _ross_ (right). Direction _must_ be included for all commands.
