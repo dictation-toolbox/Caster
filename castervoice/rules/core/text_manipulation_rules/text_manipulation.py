@@ -1,8 +1,17 @@
-from dragonfly import Function, Choice, Repetition, Dictation, ShortIntegerRef
-
-try:  # Try first loading from caster user directory
-    from text_manipulation_rules import text_manipulation_support
-except ImportError:
+import ctypes
+from comtypes.client import CreateObject
+def get_live_text_from_window():
+    try:
+        uia=CreateObject("ff48dba4-60ef-4201-aa87-54103bef5902}")
+        focused_element=uia.GetFocusedElement()
+        if focused_element:
+            text_pattern=focused_element.GetCurrentPattern(10014)
+            document_range=text_pattern.DocumentRange
+            live_text=document_range.GetText(-1)
+            return live_text
+    except Exception as e:
+        print("Error:",e)
+        return None
     from castervoice.rules.core.text_manipulation_rules import text_manipulation_support
 
 try:  # Try first loading from caster user directory
