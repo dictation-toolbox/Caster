@@ -21,7 +21,7 @@ jobs:
         pip install --upgrade setuptools
     - name: Lint with pylint
       run: |
-        pip install -u -r requirements-dev.txt
+        pip install -U -r requirements-dev.txt
         pip install wheel
         pip install pylint
         pylint -E castervoice
@@ -51,7 +51,7 @@ jobs:
     - name: Lint with pylint
       run: |
         pip install wheel
-        pip install -u -r requirements-mac-linux.txt
+        pip install -U -r requirements-mac-linux.txt
         pip install pylint
         pylint -E castervoice
     - name: Unit Tests Via Testrunner
@@ -77,7 +77,7 @@ jobs:
     - name: Lint with pylint
       run: |
         pip install wheel
-        pip install -u -r requirements-mac-linux.txt
+        pip install -U -r requirements-mac-linux.txt
         pip install pylint
         pylint -E castervoice
     - name: Unit Tests Via Testrunner
