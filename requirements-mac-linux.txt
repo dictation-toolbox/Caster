@@ -2,7 +2,7 @@ dragonfly2>=0.34.0; platform_system == "Darwin"
 dragonfly2[kaldi]>=0.34.0; platform_system == "Linux"
 pillow>=8.0.0
 tomlkit>=0.11.8
-future>=0.18.2
+future>=1.0.0
 mock>=3.0.5
 appdirs>=1.4.3
 scandir>=1.10.0
