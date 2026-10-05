@@ -1,4 +1,4 @@
-dragonfly2>=0.34.0; platform_system == "Darwin"
+dragonfly2>=0.35.0; platform_system == "Darwin"
 dragonfly2[kaldi]>=0.34.0; platform_system == "Linux"
 pillow>=8.0.0
 tomlkit>=0.11.8
